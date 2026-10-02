@@ -4,12 +4,25 @@
 |---|---|
 | App | TAVI CRM — `https://crm.taviportal.com` (tenant NDC-Staging) |
 | Feature spec (PRD) | NDC-1868 — local copy `Test Cases/CRM/custom-views-spec.md` |
-| Version | **v2 — draft for review** (1 Oct 2026). v1 = `spec-crm-custom-views.md`; see "Changes in v2" below |
-| Gap ticket | NDC-1869 — 22 missing functions (updated 1 Oct 2026 to match this v2 spec); each Z row names its NDC-1869 item number |
+| Version | **v3 — draft for review** (2 Oct 2026). v2 = `spec-crm-custom-views-v2.md`; see "Changes in v3" below |
+| Gap ticket | NDC-1869 — 22 missing functions (Z5–Z27); each of those Z rows names its NDC-1869 item number. Z28–Z55 are the 11 new gaps from the live Zoho check (missing list Part B) and are **not filed yet** |
+| Requirements | `docs/custom-views/custom-views-requirements-v3.md` — every requirement (`CVR-…`) points to scenarios here |
+| Missing list | `docs/custom-views/custom-views-missing-list.md` |
+| Test cases (v3) | `docs/custom-views/Custom Views - Spec v3 Test Cases.xlsx` (ids `CVS-<scenario id>`) |
 | Related | NDC-1836 (queues vs views), NDC-1317 (Kanban defects), NDC-1644 (Work Queue), NDC-1478 (Missing module views) |
 | Existing test cases | `Test Cases/CRM/Custom Views.xlsx` (CV-001…CV-179), mapped in §Traceability |
 | Reference product | Zoho CRM — List View, Kanban View, Module Views, Custom View API v8 |
 | Written | 1 Oct 2026, from bundle `index-DfcbYBNN.js` + live API + UI (owner account); v2 re-checked against the Zoho list-view FAQ, list-view and NextGen list-view help pages, and the same build |
+
+### Changes in v3
+1. **Zoho CRM checked live** (2 Oct 2026, Leads module, admin account): view picker, Manage Custom View page, New Custom View form (operator lists per field type, sharing picker, lock), list view grid (header menu, column settings, row menu, selection bar, module menu), filter panel and Kanban settings dialog. Nothing was created in Zoho.
+2. **New Group Z rows Z28–Z55** for the 11 new gaps (missing list Part B): saved filters, filter by related modules, Lock this View, owner criteria by role, Previous / Next N units, text operators on pick lists, Wrap Text, Reset Column Size, A–Z letter filter, bulk delete of views, more selection and module actions. They are not in NDC-1869 yet.
+3. **Z7 corrected**: live Zoho has fiscal quarter and fiscal year operators only — no plain calendar-quarter operator. The build does have a tenant fiscal-year setting (Company settings → Fiscal year), so Z7 is no longer blocked by a missing setting.
+4. **Z24 corrected**: "Set reminders" is not in live Zoho's selection menu and is removed from the expected result.
+5. **J5 corrected**: Zoho's Sheet View article says 100 existing rows plus 200 new rows; the list-view FAQ says 999. Both are quoted.
+6. **New D25**: Last Activity Time as a criteria field (NDC-1868 P1-5) — Zoho offers it (seen live); to be run on CRM.
+7. Zoho details confirmed live and added to the expected results of existing gaps: sharing picker kinds (Z8), header menu items (Z12), row menu items (Z20), System Defined Filters list (Z25), Manage page grouping (Z27).
+8. Traceability extended with the new requirements; a requirements document was added (see the table above).
 
 ### Changes in v2
 1. **Re-checked against Zoho docs** — [FAQs: List Views](https://help.zoho.com/portal/en/kb/crm/faqs/list-view/articles/faqs-list-views-in-zoho-crm), [Managing List Views](https://help.zoho.com/portal/en/kb/crm/customize-crm-account/managing-module-views/articles/list-view), [Managing List Views (NextGen)](https://help.zoho.com/portal/en/kb/crm-nextgen/customize-crm-account/managing-module-views/articles/nextgen-list-view), [Managing Profile Permissions](https://help.zoho.com/portal/en/kb/crm/security-control/profile-management/articles/manage-profile-permissions).
@@ -78,7 +91,7 @@ What the CRM build has today compared with current Zoho CRM, as found on 1 Oct 2
 - Keyboard way to move Kanban cards — I13
 
 ### Missing in CRM
-Z1, Z2, Z3, Z4 and Z22 are withdrawn (see "Not a gap"). All other Z rows are in NDC-1869 (22 items); the Group Z table gives each one's item number.
+Z1, Z2, Z3, Z4 and Z22 are withdrawn (see "Not a gap"). Z5–Z27 are in NDC-1869 (22 items); the Group Z table gives each one's item number. Z28–Z55 are new in v3 and not filed yet.
 - **View picker:** Z26 collapse and expand each picker group · Z27 Manage custom views page grouped by type
 - **Criteria:** Z5 number between / not between · Z6 Starting tomorrow / Till yesterday · Z7 quarter and fiscal-year operators
 - **Sharing and permissions:** Z8 share with roles and groups · Z9 permission to create custom views · Z10 permission to manage Kanban views
@@ -87,6 +100,13 @@ Z1, Z2, Z3, Z4 and Z22 are withdrawn (see "Not a gap"). All other Z rows are in 
 - **Deleting a view:** Z17 warn before deleting a view a Work Queue queue uses (today the queue shows "source view unavailable" afterwards)
 - **Actions and filters:** Z23 actions that only show "Coming soon" (Mass Convert, Mass Email, Drafts, Approve, Deduplicate, Add to Campaigns, Create Client Script, Sheet View, Print View) · Z24 Run macro, Create task, Set reminders, Change owner for many records, Bulk mail merge · Z25 System-defined and Website Activity filters
 - **Other view types:** Z18 Chart, Timeline, Grid, Map, Canvas (PRD non-goal)
+
+New in v3 — seen in live Zoho on 2 Oct 2026, **not in NDC-1869 yet** (missing list Part B):
+- **Filters:** Z28–Z31 Save filter · Z32–Z33 Filter By Related Modules
+- **Create / edit a view:** Z34–Z37 Lock this View · Z38–Z39 owner "belongs to Role" · Z40–Z42 date "Previous / Next" N days, weeks, months, years · Z43–Z44 text operators on pick lists
+- **List view grid:** Z45–Z46 Wrap Text view mode · Z47 Reset Column Size · Z48–Z49 A–Z letter filter
+- **Manage custom views:** Z50–Z52 delete several views at once
+- **Actions:** Z53 Cadences, Print Mailing Labels, Print Using Canvas · Z54 Export Selected Records · Z55 Assignment Rules, Mass Transfer
 
 ### Not a gap
 - Favourites: current Zoho replaced them with Pin view, which CRM has — Z1 (withdrawn), G5
@@ -104,7 +124,9 @@ Z1, Z2, Z3, Z4 and Z22 are withdrawn (see "Not a gap"). All other Z rows are in 
 - Everything marked 🔒 (who can share, edit standard view columns, edit or delete other users' views, drag cards): no working lower-profile account — §1.4
 - Subform criteria (PRD P1-2): no module with a subform on NDC-Staging — §1.4
 - Last Activity Time as a criteria field (PRD P1-5): the Leads grid has a "Last Activity" column, but it hasn't been checked as a criteria field yet — Traceability P1-5
-- Fiscal-year setting for fiscal operators (Z7): no tenant setting found
+- Last Activity Time as a criteria field: now has its own scenario, D25
+- Date "isn't" and "is not empty" (Zoho has both): not in the build's date operator list in §2.3 — check in D1
+- Zoho Kanban sort, reorder and rollup (Z14–Z16) and "Select all records in this view" (Z13): not seen live (needs a Kanban view created in Zoho, and more records than one page); they rest on Zoho's help pages
 
 Tags used on every scenario: `[func]` functional · `[edge]` edge/boundary · `[neg]` negative · `[data]` data-class sweep ·
 `[ui]` rendering/i18n/RTL · `[ux]` usability/a11y · `[perf]` performance · `[sec]` security/permissions/API ·
@@ -153,7 +175,7 @@ Revert = delete every `QA CV` object, restore preferences, and prove it with the
 |---|---|---|
 | No working lower-profile account | every 🔒 scenario | Inconclusive until provided (requested in NDC-1869) |
 | No module with a subform | Z-subform, E-subform | Inconclusive |
-| No tenant fiscal-year setting found | Z7 | Inconclusive for fiscal; quarter still testable once built |
+| Fiscal year | Z7 | Not a blocker any more: the build has Company settings → Fiscal year. Record its start month before running Z7 |
 | Only Deals has a pipeline + blueprint-governed stage (`group_by_blueprint_governed:true`) | I-blueprint | Use Deals |
 
 ### 1.5 Things that cannot be undone cleanly
@@ -209,12 +231,12 @@ View object: `id, module_id, layout_id, kind, name, owner_user_id, visibility (p
 ### 2.3 Operators per field type (build)
 - Text: equals, not_equal_to, contains, does_not_contain, starts_with, ends_with, is_empty, is_not_empty.
 - Number/currency/decimal/percent: equals, not_equal_to, greater_than, less_than, ≥, ≤, is_empty, is_not_empty. *(no between — Z5)*
-- Date: is, is_before, is_after, is_between, is_not_between, today, yesterday, tomorrow, this/last/next week, this/last/next month, this/last/next year, last_n_days, next_n_days, age_in_days, due_in_days, before_now, after_now, empty. *(no starting tomorrow / till yesterday — Z6; no quarter/fiscal — Z7)*
+- Date: is, is_before, is_after, is_between, is_not_between, today, yesterday, tomorrow, this/last/next week, this/last/next month, this/last/next year, last_n_days, next_n_days, age_in_days, due_in_days, before_now, after_now, empty. *(no starting tomorrow / till yesterday — Z6; no fiscal — Z7; no previous / next N weeks, months, years — Z40; Zoho also has "isn't" and "is not empty")*
 - Datetime: date set + last_n_hours, next_n_hours.
 - Checkbox: is_true, is_false.
-- Picklist/status/department/team: equals, not_equal_to, contains_any_of, contains_none_of, empty.
+- Picklist/status/department/team: equals, not_equal_to, contains_any_of, contains_none_of, empty. *(no contains / starts with / ends with — Z43)*
 - Multi-select: contains_any_of, contains_all_of, contains_none_of, empty.
-- Lookup/pipeline: equals, not_equal_to, empty.
+- Lookup/pipeline: equals, not_equal_to, empty. *(no "belongs to Role" on owner fields — Z38)*
 - Synthetic fields: owner (incl. `$me`), source, tags, review_status (permission-gated).
 
 ### 2.4 Page states and messages (en)
@@ -330,6 +352,7 @@ Run each `[data]` row via the editor and assert the grid count against an indepe
 | D22 | Pattern errors: unbalanced, `()`, `(and)`, `1 and`, `1 2`, `1 and 5` (row missing), unused row, row used twice, word `xor`, `AND` upper-case, 201 chars, depth 4 | "Fix the criteria pattern…" (or specific message); save blocked; API rejects too | `[neg]` `[data]` |
 | D23 | Pattern round trip: save `(1 or 2) and 3`, reopen | Same meaning; record canonical form | `[func]` |
 | D24 | Pattern in RTL | Arabic UI: row numbers, brackets and and/or read correctly | `[ui]` |
+| D25 | Last Activity Time as a criteria field: Age in Days = 7 on a lead with a note today and a lead with no activity | Field offered with the date-time operators; only the lead with recent activity is returned; adding a note brings the other lead in (NDC-1868 P1-5; Zoho offers the field) | `[func]` |
 
 ## Group E — Related modules, lookup paths, hidden fields
 
@@ -442,7 +465,7 @@ Run each `[data]` row via the editor and assert the grid count against an indepe
 | J2 | Split by field / owner / criteria | Sections per value; counts; collapse; per-section columns | `[func]` |
 | J3 | Split limits | "too many conditions" message; max values | `[edge]` |
 | J4 | Records per split; create in section | Works | `[func]` |
-| J5 | Sheet View / Print View from module actions | Today: "Coming soon" toast, no navigation (Z23). After build: open with the active view's records; Sheet View max 999 rows, edits saved back, record ID column kept (Zoho FAQ 17) | `[int]` |
+| J5 | Sheet View / Print View from module actions | Today: "Coming soon" toast, no navigation (Z23). After build: open with the active view's records; Sheet View row limit stated (Zoho's Sheet View article: 100 existing rows plus 200 new rows; the list-view FAQ 17 says 999 — record which CRM adopts), edits saved back, record ID column kept | `[int]` |
 
 ## Group K — Security
 
@@ -490,9 +513,11 @@ Run each `[data]` row via the editor and assert the grid count against an indepe
 
 ---
 
-## Group Z — Gaps (NDC-1869), run to confirm they are still missing or now built
+## Group Z — Gaps, run to confirm they are still missing or now built
 
-All active Z rows are in NDC-1869 (22 items, updated 1 Oct 2026); each row names its item number. NDC-1869 item order: 1 Z26 · 2 Z27 · 3 Z5 · 4 Z6 · 5 Z7 · 6 Z8 · 7 Z9 · 8 Z10 · 9 Z11 · 10 Z12 · 11 Z19 · 12 Z13 · 13 Z20 · 14 Z21 · 15 Z14 · 16 Z15 · 17 Z16 · 18 Z17 · 19 Z23 · 20 Z24 · 21 Z25 · 22 Z18. Withdrawn in v2 (not gaps, kept here so the numbering stays stable): Z1 (Favourites — current Zoho uses Pin view instead, which CRM has), and Z2, Z3, Z4, Z22 (confirmed not gaps by the user, 1 Oct 2026). Do not run withdrawn rows.
+Z5–Z27 are in NDC-1869. **Z28–Z55 are new in v3** (live Zoho, 2 Oct 2026): each names its item in the missing list Part B and is not in NDC-1869 yet. Every active Z row is expected to fail until the function is built.
+
+Rows Z5–Z27 are in NDC-1869 (22 items, updated 1 Oct 2026); each names its item number. NDC-1869 item order: 1 Z26 · 2 Z27 · 3 Z5 · 4 Z6 · 5 Z7 · 6 Z8 · 7 Z9 · 8 Z10 · 9 Z11 · 10 Z12 · 11 Z19 · 12 Z13 · 13 Z20 · 14 Z21 · 15 Z14 · 16 Z15 · 17 Z16 · 18 Z17 · 19 Z23 · 20 Z24 · 21 Z25 · 22 Z18. Withdrawn in v2 (not gaps, kept here so the numbering stays stable): Z1 (Favourites — current Zoho uses Pin view instead, which CRM has), and Z2, Z3, Z4, Z22 (confirmed not gaps by the user, 1 Oct 2026). Do not run withdrawn rows.
 
 | ID | Gap (NDC-1869 item) | How to test | Expected (Zoho / PRD) |
 |---|---|---|---|
@@ -502,8 +527,8 @@ All active Z rows are in NDC-1869 (22 items, updated 1 Oct 2026); each row names
 | Z4 | ~~Recently Viewed standard view (removed from NDC-1869)~~ — **withdrawn, not a gap** | — | Confirmed not a gap by the user (1 Oct 2026). Standard views are tested in B7. Removed from NDC-1869 on 1 Oct 2026 |
 | Z5 | Number between / not between (NDC-1869 item 3) | Operator list on Amount | Both present, inclusive bounds documented |
 | Z6 | Starting tomorrow / Till yesterday (NDC-1869 item 4) | Date operator list | Both present, open-ended ranges |
-| Z7 | Quarter and fiscal operators (NDC-1869 item 5) | Date operator list; fiscal setting | Last/Current/Next Quarter, FQ, FY by tenant fiscal calendar |
-| Z8 | Share with roles/groups (NDC-1869 item 6) | Share picker kinds | Users, roles, roles & subordinates, groups (and territories) |
+| Z7 | Fiscal operators (NDC-1869 item 5) | Date operator list; set Company settings → Fiscal year first | Current / Previous / Next FY and FQ by the tenant fiscal calendar (Zoho live). Live Zoho has **no** plain calendar-quarter operator, so Last/Current/Next Quarter is only needed if the product owner wants it (NDC-1869 item 5 lists both) |
+| Z8 | Share with roles/groups (NDC-1869 item 6) | Share picker kinds | Users, Groups, Roles, Roles and Subordinates (Zoho live; territories only where the org uses them) |
 | Z9 | Create-view permission (NDC-1869 item 7) | Profile settings for a "Manage custom views" permission; 🔒 user without it | New custom view hidden; API create refused |
 | Z10 | Kanban manage permission (NDC-1869 item 8) | Profile setting; 🔒 user without it | Create/Edit/Delete Kanban absent; API refused |
 | Z11 | Pin (freeze) a column (NDC-1869 item 9) | Column header menu | One column frozen at leading edge (right in RTL) |
@@ -519,10 +544,38 @@ All active Z rows are in NDC-1869 (22 items, updated 1 Oct 2026); each row names
 | Z21 | Activity and Notes badges (NDC-1869 item 14) | Lead with open tasks and notes; lead without | Activity badge lists open tasks/meetings/calls/appointments + Create Activity; Notes badge opens Notes panel (view/add/edit/delete/sort), shows on hover when empty; both can be toggled in Manage Columns (NDC-1868 P1-6) |
 | Z22 | ~~Converted Leads and Junk Leads standard views (never filed)~~ — **withdrawn, not a gap** | — | Confirmed not a gap by the user (1 Oct 2026); not to be filed |
 | Z23 | "Coming soon" module actions (NDC-1869 item 19) | F12 for Mass Convert, Mass Email, Drafts, Approve, Deduplicate, Add to Campaigns, Create Client Script, Sheet View, Print View | Each opens a working screen scoped to the selection/view (NDC-1868 N3/N4 — non-goals, listed for triage) |
-| Z24 | Missing bulk actions (NDC-1869 item 20) | Select records → actions menu | Run macro, Create task, Set reminders, Change owner (many records), Bulk mail merge present (Zoho quick actions; NDC-1868 N4) |
+| Z24 | Missing bulk actions (NDC-1869 item 20) | Select records → selection "…" menu | Run Macro, Create Task, Change Owner (many records), Mail Merge present (Zoho live; NDC-1868 N4). "Set reminders" is not in live Zoho and is no longer expected |
 | Z25 | System-defined and Website Activity filters (NDC-1869 item 21) | Filter panel → Untouched Records (e.g. 4 weeks), Touched Records, Record Action, Related Records Action, Latest Email Status; Website Activity | Filters apply on top of the view and narrow results (Zoho FAQ 14; NDC-1868 N5). Today "aren't available yet" |
 | Z26 | Collapse/expand picker groups (NDC-1869 item 1) | Open the view picker; click each group name (Pinned views, Created by me, Shared with me, Public views); reopen the picker | Each group collapses to hide its views and expands to show them again; state is kept while the picker is reopened (record whether it persists across reload). Today the group names are plain labels (user requirement, 1 Oct 2026) |
-| Z27 | Manage custom views page grouped by type (NDC-1869 item 2) | Open Manage custom views with own, shared 🔒, public and pinned views; unpin all, reload | Views listed under Created by me, Shared with me, Public views, and Pinned views; the Pinned views group appears only while at least one view is pinned. Today one flat table with "All custom views" / "Public views" tabs (user requirement, 1 Oct 2026) |
+| Z27 | Manage custom views page grouped by type (NDC-1869 item 2) | Open Manage custom views with own, shared 🔒, public and pinned views; unpin all, reload | Views listed under Created by me, Shared with me, Public views, and Pinned views; the Pinned views group appears only while at least one view is pinned. Today one flat table with "All custom views" / "Public views" tabs (user requirement, 1 Oct 2026; Zoho live groups its Manage page by Created By Me / Public Views) |
+| Z28 | Save filter — Save a Filter (missing list B1; not filed) | Apply a field filter on a view → Save filter → clear → click the saved filter → reload | A "Save filter" button appears after a filter is applied; the saved filter is listed, re-applies in one click with the same count, and survives reload (Zoho live, 2 Oct 2026) `[func]` |
+| Z29 | Save filter — Saved Filters Are Personal (missing list B1; not filed) | Save a filter on All Leads as owner → open another view → open All Leads as another user 🔒 | Listed only for its creator and only on the view it was saved on (Zoho help: saved filters are user-specific and per view) `[func]` `[sec]` 🔒 |
+| Z30 | Save filter — Manage Saved Filters (missing list B1; not filed) | Save three filters; compare counts; reorder; rename; delete; save until refused | Live count per saved filter equals the grid count; order kept per user; limit stated when reached (Zoho: 5 or 10 per view) `[func]` `[edge]` |
+| Z31 | Save filter — Saved Filter Name Sweep (missing list B1; not filed) | Save filters named D1, D2, D3, over-long, D8, D11, D19 | Empty refused; limit stated; HTML shown as text; duplicate rule recorded `[data]` `[sec]` |
+| Z32 | Filter By Related Modules — Filter by Related Modules (missing list B2; not filed) | Filter panel → Filter By Related Modules → Tasks with a condition → apply → clear | Section present; filters on top of the view by related records (Zoho live: third section of the filter panel) `[func]` `[int]` |
+| Z33 | Filter By Related Modules — Related-Module Filter Limits (missing list B2; not filed) | Add related-module filters until refused; combine one with a field filter | Limit stated (Zoho: 3 modules, 5 fields each); combined filters are ANDed `[edge]` |
+| Z34 | Lock this View — Lock Toggle (missing list B3; not filed) | New custom view → Only me vs Everyone → turn Lock this View on → Save → reopen → GET the view | Toggle shown only for shared views with "Restrict any changes by users with whom the view is shared."; state saved and returned by the API (Zoho live) `[func]` |
+| Z35 | Lock this View — Locked View Blocks Changes (missing list B3; not filed) | As a second user with Manage Shared Views, try Edit, Save to view and Delete on a locked view; then edit as creator and as admin 🔒 | Others cannot change name, criteria, columns or sharing or delete; creator and administrators can (Zoho API: "only Admins and creators can modify it") `[sec]` 🔒 |
+| Z36 | Lock this View — Locked View in the API (missing list B3; not filed) | As a non-creator: PATCH name, PATCH locked=false, DELETE on a locked view 🔒 | All refused; view unchanged (name, lock, row_version) `[sec]` 🔒 |
+| Z37 | Lock this View — Unlock and Clone (missing list B3; not filed) | Clone a locked view as another user; unlock as creator; edit as the other user; set to Only me 🔒 | Clone is private and unlocked; unlock restores editing; lock is cleared when the view is no longer shared `[func]` `[edge]` 🔒 |
+| Z38 | Owner criteria by role — Owner Belongs to Role (missing list B4; not filed) | Lead Owner operator list → belongs to Role → pick a role → Save 🔒 | Operators "belongs to Role" and "does not belong to Role" offered; results are the records owned by users in that role (Zoho live) `[func]` 🔒 |
+| Z39 | Owner criteria by role — Owner Role Edge Cases (missing list B4; not filed) | does not belong to Role; role with no users; user moved to another role; unknown role id via API 🔒 | Complement set returned; empty role = empty view; results follow the current role; unknown id refused `[edge]` `[sec]` 🔒 |
+| Z40 | Date criteria Previous / Next N units — Previous and Next N Units (missing list B5; not filed) | Date operator list → Previous / Next → number + unit (days, weeks, months, years) → Save each | Operators offered with the four units; each returns only records inside the range (Zoho live) `[func]` |
+| Z41 | Date criteria Previous / Next N units — Previous and Next Boundaries (missing list B5; not filed) | Previous with D1, 0, 1, max, max+1, -1, 1.5, text, Arabic-Indic digits — UI and API | Invalid numbers refused in UI and API; limits stated; no 500 `[data]` `[sec]` |
+| Z42 | Date criteria Previous / Next N units — Previous and Next at Period Edges (missing list B5; not filed) | Previous 1 day / week / month with records at 23:50 and 00:10 Cairo around each edge | Edges follow the tenant timezone; the rule for the current period is consistent and stated (Zoho API excludes it) `[edge]` |
+| Z43 | Text operators on pick lists — Text Operators on Pick Lists (missing list B6; not filed) | Lead Status operator list → contains / doesn't contain / starts with / ends with | The four text operators are offered on pick lists and match on the option label (Zoho live) `[func]` |
+| Z44 | Text operators on pick lists — Pick List Text Operator Sweep (missing list B6; not filed) | contains with D7, D6, D8, D12, D11; Arabic UI; removed option | Same matching rule as text fields; input treated as text; same results in Arabic; no crash `[data]` `[sec]` |
+| Z45 | Wrap Text view mode — Wrap Text View Mode (missing list B7; not filed) | Column settings menu → View Mode → Wrap Text / clipped with a 255-character value → reload | View Mode offered; wrap shows the whole value, clip shows one line; choice kept (Zoho live: "View Mode — Wrap Text") `[func]` `[ui]` |
+| Z46 | Wrap Text view mode — Wrap Text Is Personal (missing list B7; not filed) | Change wrap mode on a shared view as owner; open as another user; check row_version; Arabic text 🔒 | Per user; shared definition unchanged; correct in RTL `[func]` `[ui]` 🔒 |
+| Z47 | Reset Column Size — Reset Column Size (missing list B8; not filed) | Resize two columns → column settings menu → Reset Column Size → reload | All widths back to default and kept; order, visibility and sort untouched (Zoho live) `[func]` |
+| Z48 | A–Z letter filter — A–Z Letter Filter (missing list B9; not filed) | Name column "All" dropdown → pick a letter → pick a letter with no records → All | Options All, A–Z; only names starting with the letter; count updates; All resets (Zoho live) `[func]` |
+| Z49 | A–Z letter filter — Letter Filter Combined (missing list B9; not filed) | Letter + view criteria + paging + sort + field filter; change view; Arabic UI; names starting with a digit | Narrows on top of the view; kept through paging and sort; cleared on view change; rule for Arabic and digits recorded `[edge]` `[ui]` |
+| Z50 | Delete several views at once — Delete Several Views (missing list B10; not filed) | Manage custom views → tick two views → Delete → Cancel → Delete → confirm | Checkbox per custom view; Delete appears; confirmation counts the views; only the ticked views are deleted (Zoho live) `[func]` |
+| Z51 | Delete several views at once — Bulk Delete Protections (missing list B10; not filed) | Try to tick a system view and a view shared by someone else; bulk delete a view that a queue uses 🔒 | System and non-deletable views cannot be selected; dependent queues are listed before deletion `[sec]` `[int]` 🔒 |
+| Z52 | Delete several views at once — Bulk Delete in the API (missing list B10; not filed) | Bulk delete with a valid id, a system view id and an unknown id; send twice in parallel | Per-id result; system and unknown ids refused; no partial surprise; no 500 `[sec]` `[edge]` |
+| Z53 | More selection and module actions — More Selection Actions (missing list B11; not filed) | Select two records → selection "…" menu → Cadences, Print Mailing Labels, Print Using Canvas | Each is offered and opens a screen scoped to the selection (Zoho live; NDC-1868 N4 non-goal) `[int]` |
+| Z54 | More selection and module actions — Export Selected Records (missing list B11; not filed) | Tick three records → Export Selected Records → open the file → clear the selection | Only the selected records are exported; formula-like values are neutralised; needs a selection `[int]` `[sec]` |
+| Z55 | More selection and module actions — Assignment Rules and Mass Transfer (missing list B11; not filed) | Module actions menu → Assignment Rules; Mass Transfer up to the preview | Both offered; Mass Transfer previews the records before changing owner (Zoho live; NDC-1868 N4 non-goal) `[int]` |
 
 ---
 
@@ -546,7 +599,7 @@ PRD = NDC-1868 (`custom-views-spec.md`). CV = existing xlsx ids.
 | P1-2 Subform criteria | Inconclusive (§1.4) | CV-143–CV-145 |
 | P1-3 Lookup criteria | E8 | CV-146–CV-147 |
 | P1-4 Fiscal operators | Z7 | CV-148–CV-149 |
-| P1-5 Last Activity Time | D9–D10 run on Last Activity field (if offered as criteria) | CV-150–CV-151 |
+| P1-5 Last Activity Time | D25 | CV-150–CV-151 |
 | P1-6 Row actions and badges | F14, F18, I15, Z20, Z21 | CV-152–CV-156 |
 | N3 Sheet and Print views (non-goal) | F12, J5, Z23 | — (new) |
 | N4 Bulk operations (non-goal, scoping only) | F11, F12, Z23, Z24 | — (new) |
@@ -562,8 +615,14 @@ PRD = NDC-1868 (`custom-views-spec.md`). CV = existing xlsx ids.
 | Request tampering | K2–K4 | CV-178 |
 | Empty view | F15 | CV-179 |
 | Beyond PRD (built): Split view, version conflict, Recycle Bin, last N hours | J1–J4, C18, G8, D11 | — (new) |
+| Beyond PRD (new gaps, missing list Part B): saved filters and related-module filters | Z28–Z33 | — (new) |
+| Beyond PRD (new gaps): Lock this View | Z34–Z37 | — (new) |
+| Beyond PRD (new gaps): criteria — owner by role, Previous / Next N units, pick list text operators | Z38–Z44 | — (new) |
+| Beyond PRD (new gaps): grid — Wrap Text, Reset Column Size, A–Z letter filter | Z45–Z49 | — (new) |
+| Beyond PRD (new gaps): delete several views at once | Z50–Z52 | — (new) |
+| Beyond PRD (new gaps): more selection and module actions (N4 non-goal) | Z53–Z55 | — (new) |
 
-Holes: instrumentation events (no way to observe from QA) and P1-2 subform (no subform module) — both listed in NDC-1869 "Could not be checked" or here.
+Holes: instrumentation events (no way to observe from QA) and P1-2 subform (no subform module) — both listed in NDC-1869 "Could not be checked" or here. Requirement-by-requirement coverage is in `custom-views-requirements-v3.md`.
 
 ---
 
