@@ -1,0 +1,655 @@
+{
+ "schemaVersion": 2,
+ "title": "CRM Custom Views v3 — Backlog cases (24) — 2026-10-04",
+ "date": "2026-10-04",
+ "run": {
+  "startedAt": "2026-10-04T14:47:34.853Z",
+  "endedAt": "2026-10-04T21:14:43.123Z",
+  "durationMs": 7389123,
+  "mode": "sequential",
+  "environment": "",
+  "targetUrl": "https://crm.taviportal.com",
+  "loginMode": "fresh",
+  "sessions": [
+   {
+    "session": "run-174737-d749",
+    "spec": "Custom Views - Spec v3 Test Cases.xlsx (Status = Backlog)",
+    "label": "run"
+   }
+  ],
+  "tools": {
+   "node": {
+    "ok": true,
+    "version": "v24.14.1"
+   },
+   "playwright-cli": {
+    "ok": true,
+    "version": "0.1.22"
+   },
+   "playwright": {
+    "ok": true,
+    "version": "playwright@1.62.1"
+   },
+   "curl": {
+    "ok": true,
+    "version": "curl 8.16.0"
+   }
+  },
+  "note": "durationMs = active execution: excludes the scheduled idle wait between 16:45Z and 20:50Z for the D08 23:50/00:10 Cairo checks, and the user-question wait."
+ },
+ "summary": {
+  "total": 24,
+  "passed": 14,
+  "failed": 8,
+  "blocked": 2,
+  "naDescoped": 0,
+  "notRun": 0
+ },
+ "testCases": [
+  {
+   "name": "CVS-A03 — The API refuses a public view from a user without Manage Shared Views",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 4)",
+   "status": "blocked",
+   "durationMs": 0,
+   "startedAt": "2026-10-04T16:29:36.424Z",
+   "endedAt": "2026-10-04T16:29:36.424Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "The API refuses a public view from a user without Manage Shared Views",
+     "status": "blocked",
+     "note": "Needs a User-profile login (no Manage Shared Views). 'test user 1' (User profile, user id 45ffbc5b-…) exists in the tenant, but its credentials are not in CRM-TAVI-Automation/.env and could not be read from elsewhere. ALT1/ALT2 are Admin profiles, so running as them would not test the permission. Per the case text: Inconclusive, not Fail, until the account is provided."
+    }
+   ]
+  },
+  {
+   "name": "CVS-A04 — A user a view is shared with cannot edit or delete it in the UI or the API",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 5)",
+   "status": "blocked",
+   "durationMs": 0,
+   "startedAt": "2026-10-04T16:29:36.424Z",
+   "endedAt": "2026-10-04T16:29:36.424Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "A user a view is shared with cannot edit or delete it in the UI or the API",
+     "status": "blocked",
+     "note": "Needs a User-profile login (no Manage Shared Views). 'test user 1' (User profile, user id 45ffbc5b-…) exists in the tenant, but its credentials are not in CRM-TAVI-Automation/.env and could not be read from elsewhere. ALT1/ALT2 are Admin profiles, so running as them would not test the permission. Per the case text: Inconclusive, not Fail, until the account is provided. (The view shared TO a user can be prepared by OWNER in seconds once the login exists.)"
+    }
+   ]
+  },
+  {
+   "name": "CVS-A10 — View requests without a valid token are refused with no data",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 11)",
+   "status": "failed",
+   "durationMs": 2520000,
+   "startedAt": "2026-10-04T14:49:00.000Z",
+   "endedAt": "2026-10-04T15:31:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/annotated/CVS-A10-vs-zoho.png",
+     "caption": "CVS-A10-vs-zoho.png"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "View requests without a valid token are refused with no data",
+     "status": "failed",
+     "note": "Request 1 (no Authorization header) -> 401 TOKEN_MISSING 'Authorization token is required.', no data (ok); a malformed bearer -> 401 TOKEN_INVALID (ok). Request 2 (expired token): a fresh login token (JWT iat 15:14:38Z, exp 15:19:38Z = 5 min), never refreshed, was sent at 15:22:55Z (server Date header; server and local clocks agree within 1 s) -> 200 OK with the full Leads view list, 197 s after its exp. After POST /iam/auth/logout the same token -> 401 SESSION_REVOKED. So access-token expiry is not enforced; only session revocation stops a token. One clean observation: two other probe tokens were revoked by the account's 5-session cap (shared with a parallel run) before they could be checked (both answered 401 SESSION_REVOKED, not an expiry code)."
+    }
+   ]
+  },
+  {
+   "name": "CVS-A11 — A request without x-tenant-id never returns another tenant's data",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 12)",
+   "status": "passed",
+   "durationMs": 1428,
+   "startedAt": "2026-10-04T14:50:43.386Z",
+   "endedAt": "2026-10-04T14:50:44.814Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "A request without x-tenant-id never returns another tenant's data",
+     "status": "passed",
+     "note": "With bearer + x-tenant-id: 200, 96 Leads list views. Without x-tenant-id: 200, the identical 96 views (same ids). Recorded behaviour: the header is not required - the tenant comes from the token. Extra: a different tenant id (…0003) and a non-UUID value in x-tenant-id were also ignored and returned the same NDC-Staging views; no request returned another tenant's data."
+    }
+   ]
+  },
+  {
+   "name": "CVS-B14 — The ?view= URL opens permitted views and falls back safely for others",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 28)",
+   "status": "failed",
+   "durationMs": 270000,
+   "startedAt": "2026-10-04T15:13:00.000Z",
+   "endedAt": "2026-10-04T15:17:30.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/B14-foreign-id-falls-back-to-QA-CV-tab2.png",
+     "caption": "B14-foreign-id-falls-back-to-QA-CV-tab2.png"
+    },
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/annotated/CVS-B14-vs-zoho.png",
+     "caption": "CVS-B14-vs-zoho.png"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "The ?view= URL opens permitted views and falls back safely for others",
+     "status": "failed",
+     "note": "Shared/foreign views were made by ALT1 (creator profile does not matter here). Own 'QA CV x' -> opens, tab selected. 'QA CV shared-to-me' (ALT1, shared with OWNER) -> opens, 9 records. Deleted 'QA CV gone' and ALT1's private 'QA CV user-private' (both API 404 for OWNER) -> ?view= is stripped, a toast says 'That view is no longer available. Showing your default view.', nothing of the view is shown, no console errors, no failed API calls. FAIL: the fallback is not All Leads - both land on 'QA CV tab2' and lastListViewId is rewritten to it (it was 'QA CV shared-to-me' a moment before), so the 'default view' is neither All Leads nor the last view used. Zoho for an unknown view id shows 'This action cannot be performed. The view you are trying to access is not available. Go To All Leads'. Extra finding (seen in D08): a full page load of ?view=<id> for a view on a non-default layout (FieldPermissions) is also dropped - the app loads the Standard layout and ignores the view, even though the view exists; in-app navigation to the same URL works. openListViewIds still holds 3 deleted ids (as in B03)."
+    }
+   ]
+  },
+  {
+   "name": "CVS-C02 — The view name is validated and every accepted name is shown as plain text",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 32)",
+   "status": "failed",
+   "durationMs": 150000,
+   "startedAt": "2026-10-04T15:00:40.000Z",
+   "endedAt": "2026-10-04T15:03:10.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/annotated/CVS-C02-vs-zoho.png",
+     "caption": "CVS-C02-vs-zoho.png"
+    },
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/C02-spaces-name-save-disabled-no-message.png",
+     "caption": "C02-spaces-name-save-disabled-no-message.png"
+    },
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/C02-121-chars-truncated-to-120.png",
+     "caption": "C02-121-chars-truncated-to-120.png"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "The view name is validated and every accepted name is shown as plain text",
+     "status": "failed",
+     "note": "D1 '' and D2 '   ': Save is silently disabled and 'Enter a name for the view.' is never shown (Zoho keeps Save enabled and shows 'Custom view name cannot be empty.'). D5 (121 chars): input maxlength=120 cuts the 121st char silently, so 'A view name can be at most 120 characters.' never appears - same pattern as Zoho (maxlength=100); the API alone enforces it (121 chars -> 422 too_long). D3 'Q', D4 (120), D8 Arabic, D9 (RLM kept), D10 emoji/astral saved exactly as typed. D6 stored trimmed ('QA CV trim'). D7 'qa cv NAME' refused as duplicate of 'QA CV name' (409 VIEW_NAME_TAKEN, names are case-insensitive). D14: U+200B and U+0007 kept in the stored name. D11 shown as literal text in tab, picker, Manage page and delete dialog; no <img> created, no alert, no console errors."
+    }
+   ]
+  },
+  {
+   "name": "CVS-C09 — The grid shows exactly the chosen columns in the chosen order",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 39)",
+   "status": "failed",
+   "durationMs": 270000,
+   "startedAt": "2026-10-04T14:56:00.000Z",
+   "endedAt": "2026-10-04T15:00:30.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/C09-grid-columns.png",
+     "caption": "C09-grid-columns.png"
+    },
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/C09-manage-columns-8-vs-grid-10.png",
+     "caption": "C09-manage-columns-8-vs-grid-10.png"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "The grid shows exactly the chosen columns in the chosen order",
+     "status": "failed",
+     "note": "Editor (Standard layout): added Company, Created At, Email, Full Name, Last Activity, Lead Owner, Lead Status, Phone, then reordered with Move up to Full Name, Lead Status, Company, Email, Phone, Lead Owner, Created At, Last Activity ('Modified Time' is not offered on the Standard layout; Last Activity = last_modified_at). POST columns in that exact order -> 201. Grid after reload: Full Name, Lead Status, Company, Email, Phone, Lead Owner, Created At, Last Activity - order correct - but two unchosen columns, Tags and Source, are appended. Manage Columns panel says 'VISIBLE (8)' and lists only the 8, so the panel and the grid disagree, and Tags/Source cannot be chosen or removed in the editor. Not exactly the chosen columns."
+    }
+   ]
+  },
+  {
+   "name": "CVS-C20 — A PATCH with only a name keeps the other settings",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 50)",
+   "status": "passed",
+   "durationMs": 1060,
+   "startedAt": "2026-10-04T14:50:58.795Z",
+   "endedAt": "2026-10-04T14:50:59.855Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "A PATCH with only a name keeps the other settings",
+     "status": "passed",
+     "note": "'QA CV partial' created with criteria (2 rows), 8 columns, sort created_at asc, page size 50. PATCH {name:'QA CV partial-2', row_version} -> 200. GET after: only name, row_version and last_modified_at changed; settings, visibility and shared_user_ids identical."
+    }
+   ]
+  },
+  {
+   "name": "CVS-C21 — Read-only view keys cannot be changed through the API",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 51)",
+   "status": "passed",
+   "durationMs": 869236,
+   "startedAt": "2026-10-04T14:51:10.764Z",
+   "endedAt": "2026-10-04T15:05:40.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Read-only view keys cannot be changed through the API",
+     "status": "passed",
+     "note": "PATCH with is_system:true, owner_user_id:<ALT1>, category:public_views + can_edit:false, row_version:999 -> each 200 and the key ignored: GET shows is_system false, owner/created_by unchanged, category created_by_me, can_edit/can_delete true. row_version only advanced by the normal +1 per save (the body's row_version is ignored). The concurrency key is expected_row_version (what the editor sends): expected_row_version:1 when current is 9 -> 409 VERSION_CONFLICT, nothing changed. Observation: a PATCH that omits expected_row_version is accepted without any version check (last write wins)."
+    }
+   ]
+  },
+  {
+   "name": "CVS-C22 — Wrong value types in a create request are rejected cleanly",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 52)",
+   "status": "passed",
+   "durationMs": 2392,
+   "startedAt": "2026-10-04T14:51:40.625Z",
+   "endedAt": "2026-10-04T14:51:43.017Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Wrong value types in a create request are rejected cleanly",
+     "status": "passed",
+     "note": "name 12345 / ['QA CV arr'] / {x:1} -> 400 VALIDATION_ERROR; name null -> 422; columns 'name' / {a:1} -> 422; criteria 'status=1' / [] / 7 -> 422; page_size '25' / [25] / {n:25} -> 422 (also 0 and 500 -> 422). No 500 anywhere, no partial view. Two nulls in the test data are valid per the contract and were accepted as 'not set': columns:null -> 201, stored as [] (= 'No columns chosen'); page_size:null -> 201 (contract: page_size|null). Suggest removing those two values from the case. Observation: 422 bodies only say 'The view is not valid.' with no field detail."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D01 — Each field type offers exactly the operators listed in spec §2.3, with none missing and none extra",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 55)",
+   "status": "passed",
+   "durationMs": 1200000,
+   "startedAt": "2026-10-04T16:25:00.000Z",
+   "endedAt": "2026-10-04T16:45:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Each field type offers exactly the operators listed in spec §2.3, with none missing and none extra",
+     "status": "passed",
+     "note": "Operator lists read in the editor for 21 fields (Leads Standard: Company, Lead Status, Owner, Source, Tags, Review Status, Created At, Lead Source; Leads FieldPermissions: Date, Date Time, Checkbox, Multi Select, Lookup, Pick List, Number, Currency Permission; Deals: Amount, Stage, Pipeline, Closing date, Account) and in the Filter panel for the same fields - every list is identical (same operators, same order). Against spec §2.3: Text (Company) = the 8 listed; Number/Currency/Amount = equals, not_equal_to, greater_than, less_than, >=, <=, is_empty, is_not_empty (no between); Date = the listed set incl. last/next_n_days, age_in_days, due_in_days, before/after_now; Datetime = date set + last_n_hours/next_n_hours; Checkbox = is_true/is_false; Picklist/Status/Owner/Source/Review status = equals, not_equal_to, contains_any_of, contains_none_of, is_empty; Multi-select/Tags = contains_any/all/none_of, is_empty; Lookup/Pipeline/Account = equals, not_equal_to, is_empty. Nothing from §2.3 is missing. Only difference: date, datetime, picklist, multi-select and lookup also offer 'Is not empty' (and the empty id is is_empty, not 'empty'), which §2.3 does not list - Zoho has both, so this is treated as a spec update, not a defect. Amount never offers contains (cf. D19 API gap)."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D02 — Text operators split records correctly for odd input, follow the module filter's case rule, and treat SQL-like input as a literal",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 56)",
+   "status": "passed",
+   "durationMs": 480000,
+   "startedAt": "2026-10-04T15:16:00.000Z",
+   "endedAt": "2026-10-04T15:24:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Text operators split records correctly for odd input, follow the module filter's case rule, and treat SQL-like input as a literal",
+     "status": "passed",
+     "note": "Seeds (Standard layout): L01 'QA CV Acme', L02 'qa cv acme', L03 'شركة الأمل', L04 'QA CV Rocket 🚀', L05 'QA​CV Zero', L06 empty (other QA CV leads empty). 'QA CV text-sweep' built in the editor (Full Name starts with 'QA CV' + Company <op> <value>); one UI save per value (D3 starts_with, D6/D7/D12 equals, D8/D14 contains, D10 ends_with) - the PATCH body and GET carry the value byte-exact (D6 spaces kept, U+200B kept, emoji U+1F680, Arabic). Full 6 operators x 7 values via PATCH: in all 42 cases grid (records?view_id) == module filter (records?filters=, the call the Filter panel makes). Rules recorded: matching is case-insensitive (D3 starts_with 'Q' -> L01,L02,L04,L05; D7 equals 'QA CV ACME' -> L01,L02); leading/trailing spaces are trimmed at match time but stored as typed (D6 equals -> L01,L02); D8 contains 'الأمل' -> L03 only; D10 ends_with '🚀' -> L04 only; D12 is a literal (equals/contains/starts/ends -> 0, not_equal_to/does_not_contain -> all 16, no error); D14 contains/starts_with 'QA​CV' -> L05 only, not L01 (zero-width kept). not_equal_to/does_not_contain include records with an empty Company (same in the module filter). No 500."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D03 — is_empty and is_not_empty classify null, blank and whitespace-only text the same way as the module filter",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 57)",
+   "status": "passed",
+   "durationMs": 150000,
+   "startedAt": "2026-10-04T15:24:30.000Z",
+   "endedAt": "2026-10-04T15:27:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "is_empty and is_not_empty classify null, blank and whitespace-only text the same way as the module filter",
+     "status": "passed",
+     "note": "Seeds: L01 Comment never set (null), L02 '' (set to 'x', then cleared - stored as an empty string), L03 '   ', L04 'Call back' (L09 also '   ' from an earlier run). 'QA CV text-empty' built in the editor (Full Name starts with 'QA CV' + Comment Is empty) -> 13 records; edited in the editor to Is not empty -> 3. Rule recorded: null and '' match is_empty; whitespace-only ('   ') does NOT (it matches is_not_empty). is_empty: H01q,L01,L02,L05,L06,L07,L08,L10,L11,L12,L13,L14,L15; is_not_empty: L03,L04,L09 - exact complement (13+3 = 16 QA CV leads), L04 never in is_empty, and both identical to the module filter (records?filters=)."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D04 — Number operators are exact at the 9999.99 / 10000 / 10000.01 boundary",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 58)",
+   "status": "passed",
+   "durationMs": 300000,
+   "startedAt": "2026-10-04T15:33:00.000Z",
+   "endedAt": "2026-10-04T15:38:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Number operators are exact at the 9999.99 / 10000 / 10000.01 boundary",
+     "status": "passed",
+     "note": "Seeds already in place: D01 0, D02 9999.99, D03 10000, D04 10000.01, D05 empty, D06 -1, D07 15000, D08 1000000000 (+ D09 empty). 'QA CV amount-bounds' built in the Deals editor (Deal name starts with 'QA CV' + Amount equals 10000) -> 1; edited in the editor through every operator (ids: not_equal_to, greater_than, less_than, greater_than_or_equal_to, less_than_or_equal_to). equals 10000 -> D03; not_equal_to -> D01,D02,D04,D05,D06,D07,D08,D09 (empty amounts included, same as the module filter); greater_than -> D04,D07,D08; less_than -> D01,D02,D06; >= -> D03,D04,D07,D08; <= -> D01,D02,D03,D06; equals 9999.99 -> D02 only; equals 10000.01 -> D04 only (no rounding). Grid == module filter in all 8. Observation: the editor sends the amount as a string ('10000')."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D05 — Odd numeric input is normalised or rejected with a message and is never stored as 15",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 59)",
+   "status": "failed",
+   "durationMs": 330000,
+   "startedAt": "2026-10-04T15:38:30.000Z",
+   "endedAt": "2026-10-04T15:44:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/D05-1e9-saved-zero-records.png",
+     "caption": "D05-1e9-saved-zero-records.png"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Odd numeric input is normalised or rejected with a message and is never stored as 15",
+     "status": "failed",
+     "note": "Editor (Amount box is input type=number): '15,000' -> the browser drops the comma, saved as '15000' -> D07 (ok). '١٥٠٠٠' and 'abc' -> box stays empty, Save shows 'Complete this row (field, operator and value) or remove it.' (ok, blocked with a message). '-1' -> D06 (ok). FAIL '1e9' -> saved as the string '1e9' (not normalised, not rejected) and the view returns 0 records although D08 = 1000000000. API: POST with value '15,000', '١٥٠٠٠', '1e9' and 'abc' -> all 201 Created, the raw string is stored and the view matches 0 records (module filter also 0); expected 400/422 for 'abc' and normalise-or-reject for the others. Numbers work: '15000'/15000 -> D07, 1e9 as a JSON number -> D08, '-1' -> D06. Nothing was ever stored as 15 or 0. No 500."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D06 — An empty number is distinguished from zero in view criteria",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 60)",
+   "status": "passed",
+   "durationMs": 180000,
+   "startedAt": "2026-10-04T15:45:00.000Z",
+   "endedAt": "2026-10-04T15:48:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "An empty number is distinguished from zero in view criteria",
+     "status": "passed",
+     "note": "'QA CV amount-empty' built in the Deals editor (Deal name starts with 'QA CV' + Amount is empty), then edited to is not empty and equals 0. is_empty -> D05, D09 (both have no amount; D09 is an extra empty-amount deal from an earlier run); is_not_empty -> D01 (0), D02, D03, D04, D06, D07, D08 - never D05; equals 0 -> D01 only, never D05/D09. Grid == module filter for all three."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D07 — Date is/before/after/between/not between follow one stated bound rule, including same-day bounds",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 61)",
+   "status": "passed",
+   "durationMs": 660000,
+   "startedAt": "2026-10-04T15:49:00.000Z",
+   "endedAt": "2026-10-04T16:00:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Date is/before/after/between/not between follow one stated bound rule, including same-day bounds",
+     "status": "passed",
+     "note": "Run on the FieldPermissions layout (Date Permission only exists there). First seeds (H01-H04/N01) were deleted mid-case by the parallel morning run's cleanup, so the case was re-run on fresh seeds QA CV R01-R10 (R01 = D-6 28 Sep, R02 = D-5 29 Sep, R03 = D-2 2 Oct, R04 = D 4 Oct, R05 = D+1 5 Oct, R06-R10 empty; D = 4 Oct 2026 Cairo). 'QA CV date-abs' built and edited in the editor (between uses two date inputs 'from'/'to', stored as [from,to]). is D -> R04; is_before D -> R01,R02,R03; is_after D -> R05; is_between D-5..D -> R02,R03,R04 (bounds inclusive); is_not_between D-5..D -> R01,R05; is_between D..D -> R04. Grid == module filter for all. Rule recorded: bounds are inclusive. Observation: is_not_between returns the complement only among records that have a date (empty dates excluded), whereas number not_equal_to includes empty amounts (D04) - same in the module filter."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D08 — today, yesterday and tomorrow resolve in the tenant timezone (Cairo), not UTC",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 62)",
+   "status": "failed",
+   "durationMs": 15360000,
+   "startedAt": "2026-10-04T16:55:00.000Z",
+   "endedAt": "2026-10-04T21:11:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/annotated/CVS-D08-vs-zoho.png",
+     "caption": "CVS-D08-vs-zoho.png"
+    },
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/D08-today-1900-cairo-shows-utc-day.png",
+     "caption": "D08-today-1900-cairo-shows-utc-day.png"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "today, yesterday and tomorrow resolve in the tenant timezone (Cairo), not UTC",
+     "status": "failed",
+     "note": "FieldPermissions seeds (Date Time Permission, stored UTC, shown by the app in Cairo UTC+3): R01 = 3 Oct 23:50, R02 = 4 Oct 00:10, R03 = 4 Oct 23:50, R04 = 5 Oct 00:10 Cairo. 'QA CV date-rel' built in the editor (Name starts with 'QA CV' + Date Time Permission Today). Grid (records?view_id) == module filter at every check. 19:10 Cairo 4 Oct: today -> R03,R04 (expected R02,R03); yesterday -> R01,R02 (expected R01); tomorrow -> none (expected R04); the grid shows R04 as '05/10/2026 12:10 AM' inside the Today view. 23:50 Cairo 4 Oct: same (today R03,R04; yesterday R01,R02; tomorrow none). 00:10 Cairo 5 Oct: same again - expected today R04, yesterday R02,R03, tomorrow none; the results did not move at Cairo midnight because the UTC date was still 4 Oct. Relative dates are resolved on the UTC date, not the tenant's Cairo date, in both the view and the Filter panel."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D09 — this/last/next week, month and year return records inside the correct calendar boundaries",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 63)",
+   "status": "passed",
+   "durationMs": 420000,
+   "startedAt": "2026-10-04T16:01:00.000Z",
+   "endedAt": "2026-10-04T16:08:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "this/last/next week, month and year return records inside the correct calendar boundaries",
+     "status": "passed",
+     "note": "FieldPermissions layout, seeds R01-R10, D = Sun 4 Oct 2026 (Cairo). Week-start probe (26 Sep-12 Oct spread): this_week -> 28 Sep (Mon) .. 4 Oct (Sun) -> the build's week starts on MONDAY. Case seeds: R01 27 Sep (last day of last week), R02 28 Sep (first day of this week), R03 4 Oct (last day of this week), R04 5 Oct (first day of next week), R05 30 Sep (last day of last month), R06 1 Oct, R07 1 Nov, R08 31 Dec 2025, R09 1 Jan 2026, R10 1 Jan 2027. 'QA CV date-cal' built in the editor with This week. this_week -> R02,R03,R05,R06; last_week -> R01; next_week -> R04; this_month -> R03,R04,R06; last_month -> R01,R02,R05; next_month -> R07; this_year -> all but R08,R10; last_year -> R08; next_year -> R10. Every record falls inside its period; grid == module filter for all 9. Note: Monday start is fixed (Egypt commonly uses Saturday/Sunday; Zoho follows the locale/week setting) - worth confirming it is intended."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D15 — Multi-select contains_any_of, contains_all_of and contains_none_of follow correct set logic",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 69)",
+   "status": "passed",
+   "durationMs": 420000,
+   "startedAt": "2026-10-04T16:09:00.000Z",
+   "endedAt": "2026-10-04T16:16:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Multi-select contains_any_of, contains_all_of and contains_none_of follow correct set logic",
+     "status": "passed",
+     "note": "Deviation: Multi Select Permission has only two options ('1','2'), so A='1', B='2' and the case's L04 {C} could not be seeded. Seeds R01 {1}, R02 {1,2}, R03 {2}, R04-R10 empty. 'QA CV multiselect' built in the editor (options are checkboxes) with contains any of 1,2 -> 3. contains_any_of [1,2] -> R01,R02,R03; contains_all_of [1,2] -> R02 only; contains_none_of [1,2] -> R04..R10 (empty values count as 'none of', same as module filter); is_empty -> R04..R10 (7); is_not_empty -> R01,R02,R03; extra: any_of [1] -> R01,R02, all_of [1] -> R01,R02, none_of [1] -> R03..R10. Grid == module filter in every case. Note: the empty operator id is is_empty (spec §2.3 says 'empty' - sending 'empty' gives 422), and the build also offers 'Is not empty' for multi-select, which §2.3 does not list (Zoho has both)."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D16 — Lookup equals, not_equal_to and empty return the correctly linked records",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 70)",
+   "status": "failed",
+   "durationMs": 420000,
+   "startedAt": "2026-10-04T16:17:00.000Z",
+   "endedAt": "2026-10-04T16:24:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [
+    {
+     "path": "browser-sessions/run-174737-d749/screenshots/D16-lookup-value-is-plain-text.png",
+     "caption": "D16-lookup-value-is-plain-text.png"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Lookup equals, not_equal_to and empty return the correctly linked records",
+     "status": "failed",
+     "note": "Seeds (FieldPermissions): R01 -> Contact X 'lead01', R02 -> X, R03 -> Contact Y 'lead02', R04-R10 empty. Editor: Lookup Permission offers Equals / Not equal to / Is empty / Is not empty, but the value control for Equals is a plain text box ('Value'), with no record search or picker and no suggestions while typing. Typing the record name 'lead01' saves value 'lead01' literally and the view shows 0 records (R01/R02 are linked to lead01). The only way to get a working criterion is to know and paste the record's UUID. Server logic is correct when the UUID is sent (API): equals X -> R01,R02; not_equal_to X -> R03..R10 (empty included, as the module filter does); is_empty -> R04..R10; is_not_empty -> R01,R02,R03; grid == module filter in all. So from the UI the expected results cannot be reached. Not in the missing list / NDC-1869."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D17 — A shared view with Owner = $me shows each user only the records they own",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 71)",
+   "status": "passed",
+   "durationMs": 360000,
+   "startedAt": "2026-10-04T16:46:00.000Z",
+   "endedAt": "2026-10-04T16:52:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "A shared view with Owner = $me shows each user only the records they own",
+     "status": "passed",
+     "note": "Second user = ALT1 (Mahmoud Mohamed, Admin profile) - test user 1 (User profile) credentials were not available; $me resolution does not depend on profile. Seeds (FieldPermissions): R01-R05 owned by OWNER, R06-R10 reassigned to ALT1. As OWNER, 'QA CV owner-me' built in the editor: Name starts with 'QA CV' + Owner equals 'Current user' (picker option), shared with Everyone -> POST value '$me', visibility everyone; grid 5 records. Grid call (records?view_id) as OWNER -> R01..R05; as ALT1 -> R06..R10. Module filter owner = own user id with each user's token gives the same sets. ALT1 GET view: category public_views, stored criterion owner equals '$me' (not OWNER's id)."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D19 — A view definition with an unknown field or operator is rejected by the API with 400/422",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 73)",
+   "status": "failed",
+   "durationMs": 1185743,
+   "startedAt": "2026-10-04T14:52:14.257Z",
+   "endedAt": "2026-10-04T15:12:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "A view definition with an unknown field or operator is rejected by the API with 400/422",
+     "status": "failed",
+     "note": "First pass was a false positive: every POST used pattern '(1)' with one row, and the API rejects that for the pattern alone ('A pattern needs at least two criteria rows'). Re-run with valid patterns (control view with 1 row + pattern null -> 201): unknown field does_not_exist_c -> 422 unknown_field 'That field does not exist on this module.' (1 and 2 rows); unknown operator xor_like -> 422 \"filters[n].operator 'xor_like' is not a supported operator.\"; PATCH with the unknown field -> 422, view unchanged. FAIL: Deals 'QA CV wrong-type' with Amount (currency) + operator contains -> 201 Created (also as row 2 of '(1 and 2)' -> 201). The editor never offers contains for Amount, but the API stores it, and GET records?view_id= applies it as a text match (29 of 51 deals for '1', no error). Operator-vs-field-type is not validated server-side."
+    }
+   ]
+  },
+  {
+   "name": "CVS-D20 — Three rows with an untouched pattern combine as 1 and 2 and 3",
+   "spec": "Custom Views - Spec v3 Test Cases.xlsx (row 74)",
+   "status": "passed",
+   "durationMs": 110000,
+   "startedAt": "2026-10-04T15:27:10.000Z",
+   "endedAt": "2026-10-04T15:29:00.000Z",
+   "session": "run-174737-d749",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Three rows with an untouched pattern combine as 1 and 2 and 3",
+     "status": "passed",
+     "note": "'QA CV and-default' built in the editor with 3 rows (Full Name starts with 'QA CV L0'; Lead Status is not empty; Comment is empty), pattern untouched - POST sends pattern null. Reopened editor shows AND between rows and 'Criteria Pattern ( 1 and 2 and 3 )'. Grid: 6 records L01, L02, L05, L06, L07, L08 (L03/L09 have whitespace-only Comment, L04 'Call back'); module filter with the 3 conditions ANDed returns the same 6."
+    }
+   ]
+  }
+ ],
+ "defects": [
+  {
+   "id": 1,
+   "title": "API accepts expired access tokens (JWT exp not enforced) as long as the session is alive",
+   "severity": "High",
+   "scenario": "CVS-A10",
+   "steps": [
+    "Sign in via POST /api/v1/iam/auth/login (x-tenant-id header) and keep the access_token; do not refresh it",
+    "Wait until the token's exp claim has passed (token lifetime is 5 min)",
+    "Call GET /api/v1/modules/{Leads}/views?kind=list with that bearer"
+   ],
+   "expected": "401 for an expired token, no data",
+   "actual": "200 OK with the full view list 197 s after exp (server clock checked via Date header); only logout/revocation makes the token fail (401 SESSION_REVOKED)",
+   "evidence": [
+    "bugs/screenshots/run-174737-d749-CVS-A10-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 2,
+   "title": "today / yesterday / tomorrow criteria cut days at UTC midnight instead of the tenant's Cairo time",
+   "severity": "High",
+   "scenario": "CVS-D08",
+   "steps": [
+    "Set Date Time Permission on 4 FieldPermissions leads to 3 Oct 23:50, 4 Oct 00:10, 4 Oct 23:50 and 5 Oct 00:10 Cairo time",
+    "Create a view: Name starts with 'QA CV' + Date Time Permission = Today",
+    "Open it on 4 Oct (any time after 03:00 Cairo); repeat with Yesterday and Tomorrow"
+   ],
+   "expected": "Today -> the 00:10 and 23:50 records of 4 Oct; Yesterday -> 3 Oct 23:50; Tomorrow -> 5 Oct 00:10 (Cairo dates, as the app displays them)",
+   "actual": "Today -> 4 Oct 23:50 and 5 Oct 00:10 (the app itself shows the latter as 05/10/2026 12:10 AM); Yesterday -> 3 Oct 23:50 and 4 Oct 00:10; Tomorrow -> none. Same in the Filter panel. See report for the 23:50/00:10 runs",
+   "evidence": [
+    "bugs/screenshots/run-174737-d749-CVS-D08-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 3,
+   "title": "Lookup criterion value is a plain text box - no record picker, so 'equals <record>' cannot be built in the UI",
+   "severity": "Medium",
+   "scenario": "CVS-D16",
+   "steps": [
+    "Leads > New custom view on the FieldPermissions layout",
+    "Add criterion Lookup Permission > Equals",
+    "Try to choose a contact (e.g. 'lead01') as the value; save"
+   ],
+   "expected": "A searchable list of the lookup module's records (as in Zoho); the view returns the leads linked to the chosen record",
+   "actual": "Only a free-text box ('Value'), no suggestions; the typed name is stored literally and the view returns 0 records. Works only if the record UUID is pasted (server logic is correct)",
+   "evidence": [
+    "bugs/screenshots/run-174737-d749-CVS-D16-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 4,
+   "title": "Number criteria accept non-numeric values ('1e9' in the editor; 'abc', '15,000', Arabic digits via API) and silently match nothing",
+   "severity": "Medium",
+   "scenario": "CVS-D05",
+   "steps": [
+    "Deals > New custom view, Amount equals, type '1e9', Save",
+    "Open the view",
+    "API: POST /modules/{Deals}/views with amount equals 'abc'"
+   ],
+   "expected": "'1e9' read as 1000000000 or rejected with a message; API 400/422 for 'abc'",
+   "actual": "Editor saves the string '1e9' -> 0 records; API returns 201 for 'abc', '15,000', '١٥٠٠٠', '1e9' and stores the raw strings (0 matches). Zoho's amount box only accepts digits",
+   "evidence": [
+    "bugs/screenshots/run-174737-d749-CVS-D05-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 5,
+   "title": "API stores a criteria operator that is invalid for the field type (contains on a currency field)",
+   "severity": "Medium",
+   "scenario": "CVS-D19",
+   "steps": [
+    "POST /api/v1/modules/{Deals}/views with criteria [{field:'amount',operator:'contains',value:'1'}] and pattern null",
+    "GET /modules/{Deals}/records?view_id=<new view>"
+   ],
+   "expected": "400/422 validation error, no view created",
+   "actual": "201 Created; the view applies a text match on Amount (29 of 51 deals for '1'). Unknown fields/operators are correctly rejected with 422",
+   "evidence": [
+    "bugs/screenshots/run-174737-d749-CVS-D19-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 6,
+   "title": "Grid appends unchosen Tags and Source columns to a view with a chosen column list; Manage Columns says 8 while 10 are shown",
+   "severity": "Low",
+   "scenario": "CVS-C09",
+   "steps": [
+    "Leads > New custom view, choose 8 columns and order them",
+    "Save and open the view",
+    "Open Manage columns"
+   ],
+   "expected": "Exactly the 8 chosen columns, in order",
+   "actual": "8 columns in the right order + Tags + Source appended; Manage Columns shows 'VISIBLE (8)'; Tags/Source cannot be chosen or removed in the editor",
+   "evidence": [
+    "bugs/screenshots/run-174737-d749-CVS-C09-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 7,
+   "title": "Empty or spaces-only view name: Save is silently disabled, 'Enter a name for the view.' is never shown",
+   "severity": "Low",
+   "scenario": "CVS-C02",
+   "steps": [
+    "Leads > New custom view",
+    "Leave the name empty or type 3 spaces, tab out",
+    "Look at the form and the Save button"
+   ],
+   "expected": "The message 'Enter a name for the view.' (Zoho: 'Custom view name cannot be empty.')",
+   "actual": "No message anywhere; Save just turns disabled",
+   "evidence": [
+    "bugs/screenshots/run-174737-d749-CVS-C02-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 8,
+   "title": "?view= with a deleted or foreign view id falls back to an arbitrary view ('QA CV tab2') instead of All Leads and overwrites the last-used view",
+   "severity": "Low",
+   "scenario": "CVS-B14",
+   "steps": [
+    "As OWNER open /modules/{Leads}?view=<deleted view id> (or another user's private view id)"
+   ],
+   "expected": "Fall back to All Leads (Zoho: 'The view you are trying to access is not available. Go To All Leads')",
+   "actual": "Toast 'That view is no longer available. Showing your default view.' then 'QA CV tab2' opens and lastListViewId is rewritten to it",
+   "evidence": [
+    "bugs/screenshots/run-174737-d749-CVS-B14-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 9,
+   "title": "Deep link ?view= to a view of a non-default layout is dropped on a full page load",
+   "severity": "Low",
+   "scenario": "CVS-B14",
+   "steps": [
+    "Create a view on the Leads FieldPermissions layout",
+    "Open /modules/{Leads}?view=<that id> in a new tab (full load), or reload while on it"
+   ],
+   "expected": "The FieldPermissions layout and the view open",
+   "actual": "The Standard layout opens and ?view= is discarded; the view is only reachable by in-app navigation",
+   "evidence": [
+    "bugs/screenshots/run-174737-d749-CVS-B14-vs-zoho.png"
+   ]
+  }
+ ]
+}

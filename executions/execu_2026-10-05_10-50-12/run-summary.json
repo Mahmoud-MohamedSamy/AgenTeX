@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 2,
+  "title": "CRM Custom Views — CVS-A03 / CVS-A04 rerun with a User-profile account — 2026-10-05",
+  "date": "2026-10-05",
+  "run": {
+    "startedAt": "2026-10-05T07:50:12Z",
+    "endedAt": "2026-10-05T07:52:00.000Z",
+    "durationMs": 108000,
+    "mode": "sequential",
+    "environment": "NDC-Staging",
+    "targetUrl": "https://crm.taviportal.com",
+    "loginMode": "fresh",
+    "sessions": [
+      {
+        "session": "a03-a04-105012-9ff8",
+        "spec": "Custom Views - Spec v3 Test Cases.xlsx (CVS-A03, CVS-A04)",
+        "label": "a03-a04"
+      }
+    ]
+  },
+  "summary": {
+    "total": 2,
+    "passed": 0,
+    "failed": 2,
+    "blocked": 0,
+    "naDescoped": 0,
+    "notRun": 0
+  },
+  "testCases": [
+    {
+      "name": "CVS-A03 — The API refuses a public view from a user without Manage Shared Views",
+      "status": "failed",
+      "durationMs": 10234,
+      "startedAt": "2026-10-05T07:51:36.725Z",
+      "endedAt": "2026-10-05T07:51:46.959Z",
+      "session": "a03-a04-105012-9ff8",
+      "screenshots": [
+        {
+          "path": "browser-sessions/a03-a04-105012-9ff8/screenshots/A03-owner-picker-search.png",
+          "caption": "A03-owner-picker-search.png"
+        },
+        {
+          "path": "browser-sessions/a03-a04-105012-9ff8/screenshots/annotated/A03-vs-zoho.png",
+          "caption": "A03-vs-zoho.png"
+        }
+      ],
+      "steps": [
+        {
+          "desc": "The API refuses a public view from a user without Manage Shared Views",
+          "status": "failed",
+          "note": "As test user 1 (User profile, no Manage Shared Views): POST /api/v1/modules/{Leads}/views {kind:list, name:QA CV api-public, visibility:everyone} -> 201; the same with a complete body -> 201. Both stored as public: listed in test user 1 GET and in the Owner GET; the Owner picker shows both under PUBLIC VIEWS. Expected 403/422 and nothing new under Public views. Both views deleted and purged by the Owner afterwards."
+        }
+      ]
+    },
+    {
+      "name": "CVS-A04 — A user a view is shared with cannot edit or delete it in the UI or the API",
+      "status": "failed",
+      "durationMs": 10484,
+      "startedAt": "2026-10-05T07:51:46.959Z",
+      "endedAt": "2026-10-05T07:51:57.443Z",
+      "session": "a03-a04-105012-9ff8",
+      "screenshots": [
+        {
+          "path": "browser-sessions/a03-a04-105012-9ff8/screenshots/A04-user-editor.png",
+          "caption": "A04-user-editor.png"
+        },
+        {
+          "path": "browser-sessions/a03-a04-105012-9ff8/screenshots/annotated/A04-vs-zoho.png",
+          "caption": "A04-vs-zoho.png"
+        }
+      ],
+      "steps": [
+        {
+          "desc": "A user a view is shared with cannot edit or delete it in the UI or the API",
+          "status": "failed",
+          "note": "Owner created QA CV shared (visibility selected, shared with test user 1 only). As test user 1: GET -> can_edit=true, can_delete=true; /views/{id}/edit opens with Save enabled and no You cannot edit this view message; PATCH {name:QA CV hijacked} -> 200 (renamed); DELETE -> 204; the Owner then gets 404. The deleted view is in neither the Owner nor the user Recycle Bin, so it cannot be restored."
+        }
+      ]
+    }
+  ],
+  "defects": [
+    {
+      "id": 1,
+      "title": "A User-profile user (no Manage Shared Views) can create public views through the API (POST 201, visible to everyone under Public views)",
+      "severity": "High",
+      "scenario": "CVS-A03 — The API refuses a public view from a user without Manage Shared Views",
+      "steps": [
+        "Sign in as a User-profile user (no Manage Shared Views).",
+        "POST /api/v1/modules/{Leads}/views with {\"kind\":\"list\",\"name\":\"QA CV api-public\",\"visibility\":\"everyone\"}.",
+        "GET /api/v1/modules/{Leads}/views?kind=list as that user.",
+        "As the Owner, open the Leads view picker and look under Public views."
+      ],
+      "expected": "The POST is refused with 403 or 422; no \"QA CV api-public\" in either listing; nothing new under Public views.",
+      "actual": "As test user 1 (User profile, no Manage Shared Views): POST /api/v1/modules/{Leads}/views {kind:list, name:QA CV api-public, visibility:everyone} -> 201; the same with a complete body -> 201. Both stored as public: listed in test user 1 GET and in the Owner GET; the Owner picker shows both under PUBLIC VIEWS. Expected 403/422 and nothing new under Public views. Both views deleted and purged by the Owner afterwards.",
+      "evidence": [
+        "bugs/screenshots/a03-a04-105012-9ff8-A03-owner-picker-search.png",
+        "bugs/screenshots/a03-a04-105012-9ff8-A03-vs-zoho.png",
+        "bugs/screenshots/a03-a04-105012-9ff8-a03-a04.json"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "A user a view is shared with can edit and delete it (can_edit/can_delete true, PATCH 200, DELETE 204); the deleted view bypasses the Recycle Bin",
+      "severity": "High",
+      "scenario": "CVS-A04 — A user a view is shared with cannot edit or delete it in the UI or the API",
+      "steps": [
+        "As the Owner, create a list view \"QA CV shared\" on Leads and share it with a User-profile user only.",
+        "As that user, GET /api/v1/modules/{Leads}/views/{id} and read can_edit / can_delete.",
+        "As that user, open /modules/{Leads}/views/{id}/edit.",
+        "As that user, PATCH the view with {\"name\":\"QA CV hijacked\"}.",
+        "As that user, DELETE the view.",
+        "As the Owner, GET the view and check the Recycle Bin."
+      ],
+      "expected": "can_edit=false and can_delete=false; the editor shows \"You cannot edit this view — Only its owner, or someone who can manage shared views, can change it.\"; PATCH and DELETE are refused; the view is unchanged for the Owner.",
+      "actual": "Owner created QA CV shared (visibility selected, shared with test user 1 only). As test user 1: GET -> can_edit=true, can_delete=true; /views/{id}/edit opens with Save enabled and no You cannot edit this view message; PATCH {name:QA CV hijacked} -> 200 (renamed); DELETE -> 204; the Owner then gets 404. The deleted view is in neither the Owner nor the user Recycle Bin, so it cannot be restored.",
+      "evidence": [
+        "bugs/screenshots/a03-a04-105012-9ff8-A04-user-editor.png",
+        "bugs/screenshots/a03-a04-105012-9ff8-A04-vs-zoho.png",
+        "bugs/screenshots/a03-a04-105012-9ff8-a03-a04.json"
+      ]
+    }
+  ]
+}
