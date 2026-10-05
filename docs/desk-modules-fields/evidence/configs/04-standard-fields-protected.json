@@ -1,0 +1,127 @@
+{
+  "out": "../04-standard-fields-protected-vs-zoho.png",
+  "date": "5 Oct 2026",
+  "id": "Item 4 (Z11)",
+  "title": "Standard fields are protected",
+  "verdict": "Gap",
+  "panels": [
+    {
+      "side": "TAVI",
+      "caption": "Tickets → Fields → Field Listing",
+      "img": "../originals/tavi/45-tickets-field-listing.png",
+      "boxes": [
+        {
+          "n": 1,
+          "x": 936,
+          "y": 690,
+          "w": 80,
+          "h": 210
+        }
+      ]
+    },
+    {
+      "side": "TAVI",
+      "caption": "Calls layout builder → Subject → field menu",
+      "img": "../originals/tavi/41-calls-subject-field-menu.png",
+      "boxes": [
+        {
+          "n": 3,
+          "x": 644,
+          "y": 280,
+          "w": 202,
+          "h": 28
+        },
+        {
+          "n": 4,
+          "x": 644,
+          "y": 522,
+          "w": 202,
+          "h": 28
+        }
+      ]
+    },
+    {
+      "side": "Zoho",
+      "caption": "Tickets layout editor",
+      "img": "../originals/zoho/11-tickets-layout-editor.png",
+      "boxes": [
+        {
+          "n": 2,
+          "x": 52,
+          "y": 262,
+          "w": 372,
+          "h": 56
+        },
+        {
+          "n": 2,
+          "x": 52,
+          "y": 578,
+          "w": 372,
+          "h": 56
+        }
+      ]
+    },
+    {
+      "side": "Zoho",
+      "caption": "Tickets layout editor → Contact Name → Field Settings",
+      "img": "../originals/zoho/09b-field-settings-menu-1483686000000000391.png",
+      "boxes": [
+        {
+          "n": 3,
+          "x": 236,
+          "y": 314,
+          "w": 206,
+          "h": 28
+        },
+        {
+          "n": 4,
+          "x": 236,
+          "y": 402,
+          "w": 206,
+          "h": 28
+        }
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "n": "1",
+      "b": "Standard fields marked as custom",
+      "zoho": "All standard fields are System fields; none is marked custom (Fields List, API)",
+      "tavi": "Field Listing ticks \"Custom Field\" on Subject, Contact, Account, Status (seen)",
+      "match": "Gap"
+    },
+    {
+      "n": "2",
+      "b": "Core fields labelled as protected",
+      "zoho": "\"Non-removable standard field\" under Contact Name, Department, Email, Subject, Description, Status, Ticket Owner (seen)",
+      "tavi": "No such label or lock",
+      "match": "Gap"
+    },
+    {
+      "n": "3",
+      "b": "Make a system-mandatory field optional",
+      "zoho": "Contact Name: \"Mark as required\" ticked and disabled (seen)",
+      "tavi": "Calls Subject: \"Unmark as Required\" is enabled (seen)",
+      "match": "Gap"
+    },
+    {
+      "n": "4",
+      "b": "Remove a core field from the layout",
+      "zoho": "Contact Name: \"Remove Field\" disabled (seen)",
+      "tavi": "\"Remove from Layout\" is disabled only while the field is required. API flags say Contact, Department, Email, Description, Due Date, Priority, Channel, Ticket Owner, Resolution can be removed (flags read, not clicked)",
+      "match": "Gap"
+    },
+    {
+      "n": "5",
+      "b": "Delete a standard field permanently",
+      "zoho": "Not offered; standard fields only go to Unused Fields (docs + editor)",
+      "tavi": "API: isDeletable / canPermanentlyDelete = true on Calls, Events, Tasks Subject, Product Name, Contract Name (API, not clicked)",
+      "match": "Gap"
+    }
+  ],
+  "notes": [
+    "Rows 4 and 5 for TAVI come from the API permission flags of each field (GET /modules/{id}/fields); nothing was removed or deleted.",
+    "Originals: originals/tavi/45-tickets-field-listing.png, 41-calls-subject-field-menu.png; originals/zoho/11-tickets-layout-editor.png, 09b-field-settings-menu-1483686000000000391.png."
+  ]
+}
