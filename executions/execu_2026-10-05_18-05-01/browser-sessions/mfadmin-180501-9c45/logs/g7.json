@@ -1,0 +1,88 @@
+[
+ {
+  "id": "L1",
+  "verdict": "PASS",
+  "note": "html in field label / pick-list option / module & data-type names rendered as elements: create form 0, records list 0, field listing 0; alert dialogs 0 (earlier: module list C3, data types J8 also escaped)"
+ },
+ {
+  "id": "L2",
+  "verdict": "PASS",
+  "note": "labels as string → 400 ; allowed_values object → 400 ; required \"yes\" → 400 ; unknown datatypeKey → 400 ; fields not an array → 400 ; record data as string → 400 ; malformed JSON → 400; half-created fields: none"
+ },
+ {
+  "id": "L3",
+  "verdict": "PASS",
+  "note": "PUT module with appKey/moduleKey/createdBy/moduleType → 200; PUT field with isSystemField/isCustomField → 200; read-only keys changed: none"
+ },
+ {
+  "id": "L4",
+  "verdict": "PASS",
+  "note": "create module with appKey crm, moduleType activity → 201; stored appKey=desk, moduleType=module, recordVisibility=public (deleted again)"
+ },
+ {
+  "id": "L5",
+  "verdict": "INFO",
+  "note": "CRM module list with x-app-key crm → 403 (0 modules). Same tenant and the account is a Desk admin — whether a Desk-only user may read CRM module metadata depends on SEC-1; cross-tenant not tested (A9)"
+ },
+ {
+  "id": "L6",
+  "verdict": "FAIL",
+  "note": "Audit Log page lists QA MF module/field/layout changes from this run: false",
+  "shot": "screenshots/L6-audit-log.png"
+ },
+ {
+  "id": "L7",
+  "verdict": "BLOCKED",
+  "note": "script error: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Switch language' })\u001b[22m\n"
+ },
+ {
+  "id": "L9",
+  "verdict": "FAIL",
+  "note": "layout builder: visible buttons without an accessible name: 2 (named ones include \"Field options\", \"Section settings\", \"Layout settings\", \"Back to module\", \"Move X up\")"
+ },
+ {
+  "id": "L10",
+  "verdict": "PASS",
+  "note": "Tickets layout builder ready (5 loads, ms): 1570, 1576, 2075, 2082, 2109; median 2075"
+ },
+ {
+  "id": "L11",
+  "verdict": "PASS",
+  "note": "QA layout with 34 fields in CREATE: save → 200 in 426 ms; builder opens in 1517 ms (200-field layout not built in this pass)"
+ },
+ {
+  "id": "L12",
+  "verdict": "INCONCLUSIVE",
+  "note": "run on headless Chromium only (Edge used for Zoho); Firefox/WebKit, tablet widths not covered"
+ },
+ {
+  "id": "L8",
+  "verdict": "PASS",
+  "note": "Arabic content kept end to end: module name \"QA MF أصول\" (C3), section name \"قسم QA MF\" (G16), field label \"حقل QA\" (I11), pick-list option \"بيتا\" (I20)"
+ },
+ {
+  "id": "E2E-1",
+  "verdict": "BLOCKED",
+  "note": "script error: no contact record on the tenant"
+ },
+ {
+  "id": "E2E-3",
+  "verdict": "NOT RUN",
+  "note": "renaming a standard module is outside the allowed writes"
+ },
+ {
+  "id": "E2E-4",
+  "verdict": "PASS",
+  "note": "field lifecycle covered: add (I2) → values on records → remove to Unused keeps data (I41) → delete permanently (I42); option replacement not automated (I21)"
+ },
+ {
+  "id": "E2E-5",
+  "verdict": "INFO",
+  "note": "negative-recovery pieces covered separately: layout name errors (G4), stale saves accepted (D7, G26), delete blocked while records exist then move (C12, G8)"
+ },
+ {
+  "id": "E2E-6",
+  "verdict": "PASS",
+  "note": "Arabic UI renders RTL (L7) and Arabic module/section/field names save and display (L8)"
+ }
+]

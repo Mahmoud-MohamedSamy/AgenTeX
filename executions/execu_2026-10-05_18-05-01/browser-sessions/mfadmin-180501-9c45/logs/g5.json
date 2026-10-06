@@ -1,0 +1,128 @@
+[
+ {
+  "id": "I11",
+  "verdict": "FAIL",
+  "note": "51-char label → 201 CREATED; EN/AR/FR label → 201 stored {\"ar\":\"حقل QA\",\"en\":\"QA MF Label\",\"fr\":\"Champ QA\"}; html label → 201 stored \"QA MF <img src=x onerror=alert(1)>\""
+ },
+ {
+  "id": "I12",
+  "verdict": "PASS",
+  "note": "\"1abc\" → 400 FIELD_NAME_INVALID Field name '1abc' is invalid. Use lowerca ; \"a-b\" → 400 FIELD_NAME_INVALID Field name 'a-b' is invalid. Use lowercas ; \"a b\" → 201  ; \"ابجد\" → 400 FIELD_NAME_INVALID Field name 'ابجد' is invalid. Use lowerca ; \"Single_Line\" → 409 FIELD_ALREADY_EXISTS Field 'single_line' already exists on t"
+ },
+ {
+  "id": "I13",
+  "verdict": "FAIL",
+  "note": "PUT datatypeKey single_line→number → 200; stored type number"
+ },
+ {
+  "id": "I14",
+  "verdict": "FAIL",
+  "note": "field max_length 10 → 201; max_length 20001 → 400 DATATYPE_OPTION_TOO_LARGE Field 'qa_sl_big': Option 'max_length' exceeds the maximum allowed value.; record 10 chars → 201; 11 chars → 201 "
+ },
+ {
+  "id": "I15",
+  "verdict": "PASS",
+  "note": "multi_line max_length 100000 → 201; 100001 → 400 DATATYPE_OPTION_TOO_LARGE Field 'qa_ml_big': Option 'max_length' exceeds the maximum allowed value."
+ },
+ {
+  "id": "I16",
+  "verdict": "FAIL",
+  "note": "num 50 → 201 stored {\"kind\":\"number\",\"value\":50} ; num 101 → 201 stored {\"kind\":\"number\",\"value\":101} ; num -1 → 201 stored {\"kind\":\"number\",\"value\":-1} ; num \"abc\" → 201 stored {\"kind\":\"string\",\"value\":\"abc\"} ; num \"15,000\" → 201 stored {\"kind\":\"number\",\"value\":15000} ; dec 1.236 → 201 stored {\"kind\":\"number\",\"value\":1.236} ; dec 1e9 → 201 stored {\"kind\":\"number\",\"value\":1000000000}; currency symbol \"EGP12\" (5 chars, UI max 4) → field 201 stored undefined"
+ },
+ {
+  "id": "I17",
+  "verdict": "FAIL",
+  "note": "2026-02-29 → 201 stored {\"kind\":\"string\",\"value\":\"2026-02-29\"} ; 2028-02-29 → 201 stored {\"kind\":\"string\",\"value\":\"2028-02-29\"} ; \"not a date\" → 201 stored {\"kind\":\"string\",\"value\":\"not a date\"} ; dt ISO → 201 stored {\"kind\":\"string\",\"value\":\"2026-10-06T21:59:00Z\"} ; dt garbage → 201 stored {\"kind\":\"string\",\"value\":\"yesterday\"}"
+ },
+ {
+  "id": "I18",
+  "verdict": "FAIL",
+  "note": "email ok → 201 ; email bad → 201 ; phone letters → 201 ; url ok → 201 ; url javascript: → 201"
+ },
+ {
+  "id": "I20",
+  "verdict": "FAIL",
+  "note": "duplicate options [\"A\",\"A\"] → 400 DATATYPE_OPTION_DUPLICATE Field 'qa_pl_dup': Allowed values must be unique.; Arabic/html options stored [\"Alpha\",\"بيتا\",\"<b>Gamma</b>\"]; record \"Alpha\" → 201; value not in list \"Delta\" → 201 "
+ },
+ {
+  "id": "I22",
+  "verdict": "FAIL",
+  "note": "multi-select max_items 2: 2 values → 201; 3 values → 201 "
+ },
+ {
+  "id": "I4",
+  "verdict": "FAIL",
+  "note": "required field: record without it → 201 ; with it → 201",
+  "severity": "High"
+ },
+ {
+  "id": "I5",
+  "verdict": "FAIL",
+  "note": "field with required + read_only → 201 CREATED (config {\"required\":true,\"unique\":false,\"uniquePeerModuleIds\":[]})"
+ },
+ {
+  "id": "I6",
+  "verdict": "PASS",
+  "note": "unique: \"abc\" → 201; \"abc\" again → 422 RECORD_VALIDATION_FAILED Validation failed.; \"ABC\" → 422; \" abc \" → 422"
+ },
+ {
+  "id": "I25",
+  "verdict": "FAIL",
+  "note": "regex stored undefined; \"AB1234\" → 201; \"ab12\" → 201 ; invalid regex \"([\" → 201 CREATED"
+ },
+ {
+  "id": "I26",
+  "verdict": "PASS",
+  "note": "regex (a+)+$ with 32×\"a\"+\"b\" → 201 in 119 ms"
+ },
+ {
+  "id": "I30",
+  "verdict": "FAIL",
+  "note": "auto number field → 201; first two records: {\"kind\":\"string\",\"value\":\"QA-0079-EG\"}, {\"kind\":\"string\",\"value\":\"QA-0081-EG\"}; 5 parallel creates: {\"kind\":\"string\",\"value\":\"QA-0083-EG\"}, {\"kind\":\"string\",\"value\":\"QA-0085-EG\"}, {\"kind\":\"string\",\"value\":\"QA-0087-EG\"}, {\"kind\":\"string\",\"value\":\"QA-0091-EG\"}, {\"kind\":\"string\",\"value\":\"QA-0089-EG\"}; all unique=true"
+ },
+ {
+  "id": "I31",
+  "verdict": "PASS",
+  "note": "padding 13 → 400 DATATYPE_OPTION_TOO_LARGE Field 'qa_auto_b1': Option 'padding' exceeds the maximum allowed value.; increment 0 → 400 DATATYPE_OPTION_TOO_SMALL Field 'qa_auto_b2': Option 'increment' is below the minimum allowed value."
+ },
+ {
+  "id": "I32",
+  "verdict": "FAIL",
+  "note": "lookup to Contacts → 201; second lookup with the same related-list title → 201 CREATED; Contacts related-modules lists it: false"
+ },
+ {
+  "id": "I33",
+  "verdict": "FAIL",
+  "note": "multi-module lookup with no modules → 201 CREATED"
+ },
+ {
+  "id": "I34",
+  "verdict": "PASS",
+  "note": "formula upper(name) → 201; computed value on save: {\"kind\":\"string\",\"value\":\"QA MF REC 53440\"}; empty expression → 400 DATATYPE_FORMULA_INVALID Field 'qa_fx_empty': Option 'expression' cannot be empty — a formula field needs an expression.; unknown field in expression → 400 DATATYPE_FORMULA_FIELD_UNKNOWN Formula for field 'qa_fx_bad' references 'no_such_field', which is not a field on this module."
+ },
+ {
+  "id": "I35",
+  "verdict": "PASS",
+  "note": "subform with 0 columns → 400 DATATYPE_SUBFORM_NO_SUBFIELDS Field 'qa_sub0': A subform needs at least one subfield before it can be saved — otherwise it saves with nothin; with 1 column → 201"
+ },
+ {
+  "id": "I39",
+  "verdict": "FAIL",
+  "note": "address record → 400; stored absent"
+ },
+ {
+  "id": "I40",
+  "verdict": "FAIL",
+  "note": "rich text with <script> and onerror → 201; stored {\"kind\":\"string\",\"value\":\"<p>ok</p><script>alert(1)</script><img src=x onerror=alert(2)>\"}"
+ },
+ {
+  "id": "I42",
+  "verdict": "PASS",
+  "note": "DELETE unused QA field → 204 ; field now gone"
+ },
+ {
+  "id": "I.created",
+  "verdict": "INFO",
+  "note": "QA fields now: single_line, qa_lbl51, qa_lbl_html, a_b, qa_sl10, qa_ml, qa_num, qa_dec, qa_cur5, qa_date, qa_dt, qa_email, qa_phone, qa_url, qa_pl, qa_ms, qa_req, qa_req_ro, qa_uniq, qa_rx, qa_rx_bad, qa_redos, qa_auto, qa_lk, qa_lk2, qa_lk_multi, qa_fx, qa_sub, qa_addr, qa_rt; QA records created: 38"
+ }
+]

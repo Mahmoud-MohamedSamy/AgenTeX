@@ -1,0 +1,123 @@
+[
+ {
+  "id": "C2",
+  "verdict": "PASS",
+  "note": "empty submit shows \"Enter the plural module name.\"=true; plural only shows \"Enter the singular module name.\"=true; request sent=false (messages appear one at a time)"
+ },
+ {
+  "id": "C1",
+  "verdict": "PASS",
+  "note": "toast shown=false; GET: id=bee9c8af-46b1-4d35-8772-d6594bb5477a, apiName=null, moduleKey=desk_qa_mf_assets, storageScope=organization, appKey=desk, recordVisibility=public; request /teamspaces/a641f1df-f2c6-450e-a881-857776dacf70/modules body {\"moduleKey\":\"qa_mf_assets\",\"labels\":{\"en\":\"QA MF Assets\"},\"description\":\"QA MF test module — safe to delete\",\"pluralForm\":\"QA MF Assets\",\"singularForm\":\"QA MF Asset\",\"storageScope\":\"organization\"}",
+  "qaModuleId": "bee9c8af-46b1-4d35-8772-d6594bb5477a"
+ },
+ {
+  "id": "C3",
+  "verdict": "PASS",
+  "note": "D2 spaces: 409 Module key already exists in this organization. ; D3 one char: 409 Module key already exists in this organization. ; D4 25: 409 Module key already exists in this organization. ; D5 26: 409 Module key already exists in this organization. ; long 120: 409 Module key already exists in this organization. ; D6 trim: 409 Module key already exists in this organization. ; D8 Arabic: 409 Module key already exists in this organization. ; D10 emoji: 409 Module key already exists in this organization. ; D11 html: 409 Module key already exists in this organization. ; D14 zero-width: 409 Module key already exists in this organization."
+ },
+ {
+  "id": "C6",
+  "verdict": "PASS",
+  "note": "same name: 409 Module key already exists in this organization. ; case variant: 409 Module key already exists in this organization. ; standard name: 409 Module key already exists in this organization."
+ },
+ {
+  "id": "C8",
+  "verdict": "PASS",
+  "note": "layouts: Default(default); fields: Name*, Created Time, Created By, Modified Time, Modified By, Approval Status",
+  "qaLayoutId": "457a71a0-de0d-46a1-9189-31c9989f15c3"
+ },
+ {
+  "id": "C10",
+  "verdict": "PASS",
+  "note": "double click on Create made 1 module(s) (all deleted again)"
+ },
+ {
+  "id": "C11",
+  "verdict": "INFO",
+  "note": "top bar text has it: false ; More modules: true ; Create menu: true ; Organize Tabs: true ; records page /modules/{id}: true",
+  "shot": "screenshots/C11-qa-module-records-page.png"
+ },
+ {
+  "id": "F9",
+  "verdict": "BLOCKED",
+  "note": "script error: temp module create → 409 {\"success\":false,\"data\":null,\"error\":{\"code\":\"MODULE_ALREADY_EXISTS\",\"message\":\"Module key already exists in this organization.\",\"details\":[]},\"meta\":null}"
+ },
+ {
+  "id": "B5",
+  "verdict": "FAIL",
+  "note": "after switch off: status=disabled; still in top bar=false; API record create while disabled → 201 (CREATED — deleted again); records page still usable=true; switched back on: status=active (NDC-1864)"
+ },
+ {
+  "id": "C14",
+  "verdict": "INFO",
+  "note": "Team Module opens: \"\" (cancelled, nothing created)",
+  "shot": "screenshots/C14-team-module.png"
+ },
+ {
+  "id": "D1",
+  "verdict": "PASS",
+  "note": "GET plural=QA MF Devices, singular=QA MF Device, apiName=null; records page shows new name=true; top bar/More shows it=false"
+ },
+ {
+  "id": "D5",
+  "verdict": "FAIL",
+  "note": "D1 empty: 200 → stored \"null\" ; D5 26 chars: 200 → stored \"QA MF xxxxxxxxxxxxxxxxxxxx\" ; D8 Arabic: 200 → stored \"QA MF أجهزة\" ; D11 html: 200 → stored \"QA MF <img src=x onerror=alert(2)>\" ; D19 other module: 200 → stored \"Tickets\""
+ },
+ {
+  "id": "D4",
+  "verdict": "INFO",
+  "note": "PUT apiName QA_MF_Devices2 → 200; stored apiName \"QA_MF_Devices2\" (was \"null\"). The warning text exists in the builder's Rename Module modal, which crashes (D9)"
+ },
+ {
+  "id": "D6",
+  "verdict": "PASS",
+  "note": "PUT → 200; stored description=\"QA MF description <b>x</b>\", icon=Package; summary shows description as text=true, html rendered=false"
+ },
+ {
+  "id": "D7",
+  "verdict": "FAIL",
+  "note": "first save with rowVersion 12 → 200; second save with the same (stale) rowVersion → 200 ; stored \"tab two (stale)\""
+ },
+ {
+  "id": "D9",
+  "verdict": "FAIL",
+  "note": "crash again on QA module: \"Cannot read properties of undefined (reading 'trim')\"",
+  "shot": "screenshots/D9-rename-module-builder.png",
+  "severity": "Medium"
+ },
+ {
+  "id": "D2",
+  "verdict": "NOT RUN",
+  "note": "renaming a standard module is outside the allowed writes"
+ },
+ {
+  "id": "D3",
+  "verdict": "NOT RUN",
+  "note": "renaming a standard module is outside the allowed writes; tab label for a renamed custom module is covered in C11/D1"
+ },
+ {
+  "id": "C4",
+  "verdict": "INCONCLUSIVE",
+  "note": "tenant has 0 departments (GET /desk/departments = [])"
+ },
+ {
+  "id": "C5",
+  "verdict": "PASS",
+  "note": "PUT storageScope=department → 409; stored storageScope=organization (must stay organization)"
+ },
+ {
+  "id": "C7",
+  "verdict": "INFO",
+  "note": "create with no profile ticked → 409;  (deleted again). Who can open it could not be judged without a clean agent account"
+ },
+ {
+  "id": "C9",
+  "verdict": "INCONCLUSIVE",
+  "note": "no tenant without a teamspace available"
+ },
+ {
+  "id": "C.cleanup",
+  "verdict": "INFO",
+  "note": "throwaway modules deleted: 1; leftovers found and deleted now: none; kept for later groups: bee9c8af-46b1-4d35-8772-d6594bb5477a (QA MF Devices)"
+ }
+]

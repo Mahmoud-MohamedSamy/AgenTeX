@@ -1,0 +1,15 @@
+const fs = require('fs'); const f = __dirname + '/overrides.json'; const o = JSON.parse(fs.readFileSync(f));
+delete o.B5; delete o.F9;
+Object.assign(o, {
+  C3: { severity: 'Medium', note: 'POST module names: whitespace-only "   " → 201 and the module is stored with pluralForm null (a nameless module); one character, 25, 26 and 120 characters all accepted (no length limit; Zoho UI limit is 25); leading/trailing spaces trimmed; Arabic, emoji and zero-width kept; <img onerror> stored as text and NOT rendered as HTML in the list, no alert. Each module deleted again.' },
+  C6: { severity: 'Low', note: 'Two modules can have the same display name: "QA MF Devices" created a second time (new key) → 201; only an identical moduleKey is refused (409 "Module key already exists"), e.g. "Tickets" → key tickets → 409. Each created module deleted again.' },
+  F9: { verdict: 'FAIL', severity: 'High', note: 'The required record-name field is not enforced by the API: POST /modules/{QA MF Temp}/records with data:[] → 201, record stored with no name. With a name → 201. Records deleted again.' },
+  C13: { verdict: 'PASS', note: 'After all records are deleted, DELETE /modules/{id}?cascade=true → 204 and the module is gone. Its deleted records stay in the Recycle Bin (known: NDC-1637) — QA items purged at cleanup.' },
+  B5: { verdict: 'FAIL', severity: 'Medium', note: 'Disabled QA module: status=disabled and it leaves the top bar, but POST /modules/{id}/records still creates a record (201, deleted again) and /modules/{id} still opens and works. Same as NDC-1864 (open). Switched back on: status=active.' },
+  D5: { severity: 'Medium', note: "PUT /modules/{id} rename: empty plural → 200 and plural stored as null; plural \"Tickets\" (another module's name) → 200 stored; 26 chars, Arabic and <img onerror> accepted (shown as text). Name restored to QA MF Devices." },
+  D7: { severity: 'Medium', note: 'No lost-update protection on module PUT: two saves with the same rowVersion both return 200 and the second (stale) one silently overwrites the first (description became "tab two (stale)"). Expected 409 for the stale write.' },
+  D9: { verdict: 'FAIL', severity: 'Medium', note: "Layout builder → gear (Layout settings) → Rename Module crashes the page \"Cannot read properties of undefined (reading 'trim')\" — reproduced on Tickets (2/2) and on the QA module.", shot: 'screenshots/D9-rename-module-builder.png' },
+  C11: { verdict: 'PASS', note: 'New module appears in More modules, the Create menu ("Create in another module"), Organize Tabs and has a working records page /modules/{id}; it is not in the visible top bar (it goes to More), which is expected' },
+  C1: { note: 'Created through the UI dialog (POST /teamspaces/{ts}/modules {moduleKey, labels, description, pluralForm, singularForm, storageScope}). GET: storageScope=organization, appKey=desk, recordVisibility=public, moduleKey desk_qa_mf_assets. Note: apiName is null for a new custom module (Zoho generates cm_<plural>).' }
+});
+fs.writeFileSync(f, JSON.stringify(o, null, 1));
