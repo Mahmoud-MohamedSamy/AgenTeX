@@ -1,0 +1,58 @@
+{
+  "out": "../12-workflow-assign-team-vs-zoho.png",
+  "date": "6 Oct 2026",
+  "id": "Item 12 (Z12)",
+  "title": "Workflow action that assigns a ticket to a team or to an agent in a team",
+  "verdict": "Gap",
+  "panels": [
+    {
+      "side": "TAVI",
+      "caption": "Workflow Rules → action \"Owner Assignment\"",
+      "flag": "FROM THE BUILD'S CODE — not seen on screen",
+      "text": [
+        "Action \"Owner Assignment\" — \"Sets the record's owner when the rule fires.\"",
+        "Targets in the code: SpecificUser, UserField, Role, RoleRoundRobin (\"The users in the role will be assigned in a round-robin pattern\").",
+        "No team target and no \"agent in a team\" target."
+      ],
+      "sources": [
+        "crm-workflow locale (owner.*, actionType.OwnerAssignment); chunk pages-*.js"
+      ]
+    },
+    {
+      "side": "Zoho",
+      "caption": "Workflows → Rules → Actions → Assign",
+      "text": [
+        "Workflow rules can assign the ticket to an Agent, a Team, or an Agent in a Team, and can add or remove skills."
+      ],
+      "sources": [
+        "https://help.zoho.com/portal/en/kb/desk/automation/assignment-rules-notification/articles/assigning-tickets-using-workflows-assignment-rule"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "n": "1",
+      "b": "Assign to a team from a workflow",
+      "zoho": "Yes (docs)",
+      "tavi": "No (code)",
+      "match": "Gap"
+    },
+    {
+      "n": "2",
+      "b": "Assign to an agent inside a team",
+      "zoho": "Yes (docs)",
+      "tavi": "No (code)",
+      "match": "Gap"
+    },
+    {
+      "n": "3",
+      "b": "Round robin inside a workflow action",
+      "zoho": "No; done by round-robin rules (docs)",
+      "tavi": "Round robin over a role (code)",
+      "match": "TAVI extra"
+    }
+  ],
+  "notes": [
+    "New gap. The TAVI workflow builder was not opened past its first dialog because \"Next\" may save a draft rule."
+  ]
+}

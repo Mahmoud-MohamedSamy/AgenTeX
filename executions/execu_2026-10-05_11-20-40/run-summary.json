@@ -1,0 +1,2375 @@
+{
+ "schemaVersion": 2,
+ "run": {
+  "id": "execu_2026-10-05_11-20-40",
+  "mode": "sequential",
+  "environment": "staging",
+  "target": "https://staging-crm.taviportal.com",
+  "loginMode": "fresh",
+  "startedAt": "2026-10-05T08:20:40Z",
+  "endedAt": "2026-10-05T22:02:46.171Z",
+  "durationMs": null,
+  "sessions": {
+   "owner-112040-7855": {
+    "label": "owner"
+   }
+  },
+  "notes": "Durations per scenario are recorded; the run-level duration is not given because work was interleaved with user waits and reruns."
+ },
+ "totals": {
+  "total": 178,
+  "passed": 119,
+  "failed": 43,
+  "blocked": 16,
+  "flaky": 0
+ },
+ "scenarios": [
+  {
+   "id": "CVS-A01",
+   "title": "The owner sees every view control on the Leads list",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:26:01Z",
+   "endedAt": "2026-10-05T08:28:30Z",
+   "durationMs": 149000,
+   "observed": "Leads as Owner: List/Kanban/Split view switchers present; picker ('Custom views' in dropdown mode) with Search views and footer New custom view, Manage custom views, Show custom views as tabs. Switched to tabs: tab list 'Custom views' with test, All Leads, Recently Created/Modified Leads, Today's Leads, My Leads; overflow 'More custom views' with the same footer.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A02",
+   "title": "A user without Manage Shared Views can save a private view but cannot share it",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:38:20Z",
+   "endedAt": "2026-10-05T08:38:58Z",
+   "durationMs": 38000,
+   "observed": "As test user 2 (profile 'test', no metadata.views.manage): New custom view 'QA CV private' - Share with offers only 'Only me' with 'You need the Manage Shared Views permission to share a view with other people.'; Save -> 201, stored visibility private; picker shows it under CREATED BY ME. Note: Everyone / Selected users are hidden rather than shown disabled. Deleted afterwards.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A03",
+   "title": "The API refuses a public view from a user without Manage Shared Views",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:38:58Z",
+   "endedAt": "2026-10-05T08:38:59Z",
+   "durationMs": 1000,
+   "observed": "As test user 2 (no metadata.views.manage): POST views {kind:list, name:QA CV api-public, visibility:everyone} -> 403 PERMISSION_DENIED; with a complete body -> 403; not in the user's list nor the Owner's list. (Yesterday's Fail used test user 1, whose User profile includes metadata.views.manage, so that result did not test this case.)",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A04",
+   "title": "A user a view is shared with cannot edit or delete it in the UI or the API",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:38:59Z",
+   "endedAt": "2026-10-05T08:43:50Z",
+   "durationMs": 291000,
+   "observed": "Owner shared 'QA CV shared' with test user 2 only. As test user 2: GET -> can_edit=false, can_delete=false; /edit shows 'You cannot edit this view - Only its owner, or someone who can manage shared views, can change it.' with no Save; PATCH name -> 403 PERMISSION_DENIED; DELETE -> 403. Owner re-reads: name 'QA CV shared', row_version 1 (unchanged). (Yesterday's Fail used test user 1, who has metadata.views.manage.)",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A05",
+   "title": "A user cannot open another user's private view by its ID",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:39:06Z",
+   "endedAt": "2026-10-05T08:39:21Z",
+   "durationMs": 15000,
+   "observed": "As test user 2: GET Owner's private view by ID -> 404 NOT_FOUND, no name or criteria in the body; /edit shows 'View not found - This view was deleted, or it is not shared with you.'; /modules/{Leads}?view={id} shows no part of the view (picker shows 'Choose a view').",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A06",
+   "title": "A view shared with selected users is hidden from everyone else",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:39:21Z",
+   "endedAt": "2026-10-05T08:40:54Z",
+   "durationMs": 93000,
+   "observed": "'QA CV selected' shared with test user 2 only. Outsider test user 1 (no Manager-profile account exists; test user 1 is not in the share list): picker search -> 'No views match.', list API does not contain it, GET by ID -> 404 NOT_FOUND with no name. Test user 2 sees it under SHARED WITH ME.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A07",
+   "title": "A non-admin's column change on a standard view stays personal",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:39:34Z",
+   "endedAt": "2026-10-05T08:43:50Z",
+   "durationMs": 256000,
+   "observed": "As test user 2 on All Leads: Manage columns -> Apply shows 'You changed the columns for this view. Only you see this change.'; no 'Save to view' offered; the user's list-preferences hold a personal viewColumns entry for All Leads; the view itself is unchanged (row_version 3 before and after, 7 columns; Owner sees the same). Note: Company was not in test user 2's column panel (7 visible columns only), so the change applied was the column set itself.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A08",
+   "title": "A user without record edit rights cannot move Kanban cards",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T08:36:00Z",
+   "endedAt": "2026-10-05T08:36:30Z",
+   "durationMs": 30000,
+   "observed": "Needs a user whose profile lacks metadata.records.manage. Both available lower-profile accounts have it (test user 1 'User': metadata.records.manage true; test user 2 'test': true), so the precondition cannot be met.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A09",
+   "title": "A user of another tenant cannot read an NDC-Staging view",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": null,
+   "endedAt": null,
+   "durationMs": null,
+   "observed": "Needs a signed-in user of another tenant. The case points to Test Data/AnywareStagingTempAccounts.txt; that credentials file was not used without the tester's go-ahead (credentials are only used from paths the tester gives).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A10",
+   "title": "View requests without a valid token are refused with no data",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:56:54Z",
+   "endedAt": "2026-10-05T09:03:41Z",
+   "durationMs": 407000,
+   "observed": "Run as test user 2 with no other sign-in of that user during the wait. Request 1 without Authorization -> 401 TOKEN_MISSING 'Authorization token is required.', no view data. Token issued 08:57:23Z, exp 09:02:23Z (5 min): at 09:01:54 (before expiry) -> 200 with views; at 09:03:42 (80 s after expiry, >6 min after issue) -> 401, no view data. Note: the code is SESSION_REVOKED ('This session has been revoked.') rather than an expiry-specific code. (Two earlier attempts were invalid: one was revoked by a server-wide revocation around 08:30, the other by this run's own sign-in of the same user.)",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A11",
+   "title": "A request without x-tenant-id never returns another tenant's data",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:26:12Z",
+   "endedAt": "2026-10-05T08:26:14Z",
+   "durationMs": 2000,
+   "observed": "GET views?kind=list with bearer + x-tenant-id: 200, 7 views. Without x-tenant-id: 200, identical 7 views. With another tenant id (…0003) or a non-UUID value: 200, the same NDC-Staging views. Recorded behaviour: the header is ignored and the tenant comes from the session; no request returned another tenant's data.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A12",
+   "title": "The editor of a system view locks its name and criteria",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:26:14Z",
+   "endedAt": "2026-10-05T08:26:20Z",
+   "durationMs": 6000,
+   "observed": "/views/{All Leads}/edit: name shown as locked text 'All Leads' with 'System-defined views keep their name and criteria. You can change their columns, sort and page size.'; no name input and no criteria section (cannot be changed); columns (Add field), Sort by, Direction and Records per page enabled; Save enabled. Note: the criteria section is hidden rather than shown read-only.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-A13",
+   "title": "A workspace with custom views turned off shows a clear message",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T08:26:20Z",
+   "endedAt": "2026-10-05T08:26:21Z",
+   "durationMs": 1000,
+   "observed": "Still no way to turn custom views off in CRM: this build loads the same featureFlags-Bty4zi8j.js, whose four flags are all hard-coded to return true. No workspace with custom views turned off exists, so the message cannot be reached.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B02",
+   "title": "Picker search filters across groups, ignores case and handles Arabic",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:50:10Z",
+   "endedAt": "2026-10-05T08:50:29Z",
+   "durationMs": 19000,
+   "observed": "Picker search: 'Search' -> QA CV Search Alpha and QA CV Search Public; 'qa cv search alpha' -> QA CV Search Alpha; 'عملاء' -> QA CV عملاء; 'zzqq-no-match' -> 'No views match.'; cleared -> all 18 entries back.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B03",
+   "title": "Views ticked to show as tabs stay as tabs after reload",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:50:29Z",
+   "endedAt": "2026-10-05T08:50:46Z",
+   "durationMs": 17000,
+   "observed": "Ticked QA CV tab1 and tab2, unticked Today's Leads. Tab bar before and after reload: test, All Leads, Recently Created Leads, Recently Modified Leads, My Leads, QA CV tab1, QA CV tab2; openListViewIds holds exactly these 7 IDs and all resolve (no deleted IDs - yesterday's stale-ID failure is not reproduced). Observation: My Leads (8f163184) is in both openListViewIds and recentlyClosedListViewIds.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B04",
+   "title": "A pinned view cannot be unticked from the tabs",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:50:46Z",
+   "endedAt": "2026-10-05T08:50:56Z",
+   "durationMs": 10000,
+   "observed": "Tab menu on QA CV pinned: Edit, Pin view, Clone, Close view, Delete view. After Pin view, both 'Show as tab: QA CV pinned' checkboxes are disabled and ticked with the title 'Pinned views always show as tabs. Unpin the view to hide its tab.'; a forced click leaves it ticked; the tab stays. Observation: the message is only a native title (no aria-describedby, not shown as text).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B05",
+   "title": "Closed views move to Recently closed, keeping at most 10",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:54:20Z",
+   "endedAt": "2026-10-05T08:55:18Z",
+   "durationMs": 58000,
+   "observed": "11 'QA CV close' views shown as tabs. Close view on close01 -> Recently closed: QA CV close01, Today's Leads*, My Leads*. After closing close02…close11 -> Recently closed shows exactly 10: close11 … close02 (close01 dropped); recentlyClosedListViewIds holds the same 10 in the same order; no close tabs left.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B06",
+   "title": "Switching between dropdown and tabs layout works and persists",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:51:00Z",
+   "endedAt": "2026-10-05T08:51:21Z",
+   "durationMs": 21000,
+   "observed": "'Show custom views as a dropdown' -> after reload a 'Custom views' dropdown, no tab list (pref listPickerMode=dropdown); 'Show custom views as tabs' -> after reload the tab list with 8 tabs (pref=tabs).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B07",
+   "title": "Every module has the five standard views and each behaves as named",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:55:18Z",
+   "endedAt": "2026-10-05T08:55:24Z",
+   "durationMs": 6000,
+   "observed": "Leads, Deals, Contacts, Tasks and Subscriptions each have 5 system views (keys all, my, recently_created, recently_modified, today). All returns everything (Leads 10730); My only the viewer's (owner criterion $me; Deals/Tasks pages all owner; Leads Standard layout 49/49 owner); Recently Created sorted by created_at desc, Recently Modified by updated_at desc; Today's only records created today in Cairo time (Leads 21/21). Note: on the Leads 'New Layout' layout the Owner field is not on the layout, so the API omits it from those records.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B08",
+   "title": "The My view shows only records owned by the viewer",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:52:50Z",
+   "endedAt": "2026-10-05T08:55:24Z",
+   "durationMs": 154000,
+   "observed": "QA CV L01 owned by OWNER, QA CV L02 owned by test user 2 (USER). OWNER's My Leads (Standard layout): 49 rows, all owned by OWNER, includes L01, not L02. Test user 2's My Leads: 3 rows, all owned by test user 2, QA CV rows = L02 only.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B09",
+   "title": "Today's view uses the tenant timezone (Cairo), not UTC",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T09:11:00Z",
+   "endedAt": "2026-10-05T09:12:30Z",
+   "durationMs": 90000,
+   "observed": "Needs leads created at 23:50 Cairo on D-1 and 00:10 Cairo on D; created_at cannot be backdated, and no existing lead falls in either window (Today's Leads: 21 records, oldest created 06:22 UTC today). Supporting check: Today's views in 5 modules return only records created today in Cairo time (B07). To settle it, create the two leads around 21:00 UTC (midnight Cairo).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B10",
+   "title": "A standard view offers only Edit, Pin/Unpin, Clone, Delete View",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:50:56Z",
+   "endedAt": "2026-10-05T08:51:00Z",
+   "durationMs": 4000,
+   "observed": "All Leads 'Actions' menu: Edit columns, Pin view, Clone (disabled, title 'You cannot clone a system-defined view.'), Close view. No Delete view and no rename. Note: the expected list's 'Delete View' conflicts with its own 'Delete view ... not offered'; Delete is not offered.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B11",
+   "title": "View, sort and page survive opening a record and going back",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:06:05Z",
+   "endedAt": "2026-10-05T09:07:05Z",
+   "durationMs": 60000,
+   "observed": "QA CV x (101 records, 10 per page). Sort dialog: Created At + Descending -> Apply ('Sort: created_at desc'); Next page -> page 2. Opened the 3rd record, browser Back -> QA CV x, Sort: created_at desc, page 2, same first row. Opened it again, in-app Back -> same view, sort and page 2. Note: the sort label shows the API names (see F06).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B12",
+   "title": "The last selected view is restored after signing out and in",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:09:00Z",
+   "endedAt": "2026-10-05T09:11:00Z",
+   "durationMs": 120000,
+   "observed": "Selected QA CV x; list-preferences lastListViewId = QA CV x (fd6535d1). Profile drawer -> Logout; signed in again; Leads opens with QA CV x selected.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B13",
+   "title": "Changing the view in Leads does not change Deals",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T08:51:21Z",
+   "endedAt": "2026-10-05T08:51:39Z",
+   "durationMs": 18000,
+   "observed": "Leads: selected QA CV x -> Deals shows All Deals -> Leads still QA CV x -> Deals still All Deals. list-preferences: Leads lastListViewId = QA CV x, Deals lastListViewId = All Deals (9707b09e).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-B14",
+   "title": "The ?view= URL opens permitted views and falls back safely for others",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T08:55:49Z",
+   "endedAt": "2026-10-05T08:56:26Z",
+   "durationMs": 37000,
+   "observed": "?view= own QA CV x -> opens; QA CV shared-to-me (shared by test user 1) -> opens; deleted QA CV gone and test user 1's private QA CV user-private -> toast 'That view is no longer available. Showing your default view.', ?view= removed, nothing of the foreign view shown, no console errors. FAIL: the fallback is not All Leads - both land on the last-used view (QA CV close11).",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-B14-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-B15",
+   "title": "Preferences changed in two browser tabs are saved consistently",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T09:07:05Z",
+   "endedAt": "2026-10-05T09:08:33Z",
+   "durationMs": 88000,
+   "observed": "QA CV A and QA CV B shown as tabs. Tab 1 selected A, tab 2 selected B. Tab 1 closed B (its tab bar: A). Tab 2 (stale) closed A (its tab bar: B). Final list-preferences (version 193): openListViewIds has B and not A; recentlyClosedListViewIds starts with A and does not contain B; after reloading tab 1 the B tab is back. Lost update: tab 2's write replaced the whole preference object and undid tab 1's close; no conflict was raised.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-B15-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-C01",
+   "title": "A view with a name and no criteria returns every accessible record",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:29:21Z",
+   "endedAt": "2026-10-05T09:29:32Z",
+   "durationMs": 11000,
+   "observed": "New custom view 'QA CV no-criteria' with no criteria -> 201, category created_by_me; returns 101 records on the Standard layout, the same as All Leads (101).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C02",
+   "title": "The view name is validated and every accepted name is shown as plain text",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T09:29:32Z",
+   "endedAt": "2026-10-05T09:31:50Z",
+   "durationMs": 138000,
+   "observed": "D1 '' and D2 '   ': Save is disabled and 'Enter a name for the view.' is never shown. D5 (121 chars): the input stops at 120 characters, so 'A view name can be at most 120 characters.' never appears (the truncated name then hit 409 VIEW_NAME_TAKEN against the D4 view). D3 'Q', D4 (120), D8 Arabic, D9 (RLM kept), D10 emoji saved exactly as typed. D6 stored trimmed ('QA CV trim'). D7 'qa cv NAME' refused as a duplicate of 'QA CV name' (409, names are case-insensitive). D14 zero-width space and U+0007 kept as typed. D11 '<img src=x onerror=alert(1)>' shown as literal text in the tab, picker, Manage page and delete dialog; no <img> element, no script ran.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-C02-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-C03",
+   "title": "A user cannot save two views with the same name in a module",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:31:50Z",
+   "endedAt": "2026-10-05T09:32:01Z",
+   "durationMs": 11000,
+   "observed": "OWNER already owns 'QA CV dup'. New custom view 'QA CV dup' -> Save refused, 409 VIEW_NAME_TAKEN, message 'You already have a view with this name.'; only one 'QA CV dup' (owner), row_version 1 unchanged.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C04",
+   "title": "Two users may each own a view with the same name",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:27:20Z",
+   "endedAt": "2026-10-05T09:27:44Z",
+   "durationMs": 24000,
+   "observed": "As test user 2 (lower profile), New custom view 'QA CV dup' -> 201, toast 'Custom view \"QA CV dup\" created.', listed under test user 2's CREATED BY ME. OWNER's 'QA CV dup' unchanged.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C05",
+   "title": "A list view and a queue with the same name follow one documented rule",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:14:22Z",
+   "endedAt": "2026-10-05T09:27:20Z",
+   "durationMs": 778000,
+   "observed": "Rule recorded: names are unique per owner and per kind. As OWNER the queue POST cannot reach the name check (409 WORKQUEUE_LIMIT - the owner already owns 15 queues). As test user 1: list 'QA CV k' -> 201 and queue 'QA CV k' -> 201; GET ?kind=list returns only the list, ?kind=queue only the queue.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C06",
+   "title": "A criteria row with no value blocks save",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:32:01Z",
+   "endedAt": "2026-10-05T09:32:21Z",
+   "durationMs": 20000,
+   "observed": "Row Company | Contains | (empty), name 'QA CV incomplete' -> Save blocked with 'Complete this row (field, operator and value) or remove it.'; no POST sent; no 'QA CV incomplete' exists.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C07",
+   "title": "Operators that take no value save without one",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:12:12Z",
+   "endedAt": "2026-10-05T10:12:25Z",
+   "durationMs": 13000,
+   "observed": "Run as ALT1 on layout 'New Layout' (Standard has no checkbox field): rows Single Line Is empty, Created At Today, Use Wallet Number Is true. No value input appeared for any row; Save -> 201; stored conditions single_line is_empty null, created_at today null, use_wallet_number is_true null. Results: QA CV N01 (created today, wallet true, single line empty) only; the other 7 wallet-true records on the layout are excluded (not created today). Note: the Created Time field is labelled 'Created At' in the editor.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C08",
+   "title": "A view holds at most 25 criteria rows in the UI and the API",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:14:23Z",
+   "endedAt": "2026-10-05T09:52:20Z",
+   "durationMs": 2277000,
+   "observed": "Editor: 25 rows (Full Name Is not empty) added; 'Add criteria row' is disabled at 25; the 25-row view saved (201) with 25 stored conditions. API: POST with 26 conditions -> 422 INVALID_VIEW 'At most 25 criteria rows are allowed.'; no 'QA CV 26-rows' exists. Note: the disabled add button has no tooltip explaining the limit.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C09",
+   "title": "The grid shows exactly the chosen columns in the chosen order",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T10:04:42Z",
+   "endedAt": "2026-10-05T10:12:00Z",
+   "durationMs": 438000,
+   "observed": "Run as ALT1. Editor (Standard layout): added Full Name, Lead Status, Company, Email, Phone, Lead Owner, Created At, Last Activity in that order ('Modified Time' is not offered; Last Activity = last_modified_at). Saved (201); stored columns in exactly that order. Grid after selecting the view: Full Name, Lead Status, Company, Email, Phone, Lead Owner, Created At, Last Activity - order correct - but two unchosen columns, Tags and Source, are appended.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-C09-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-C10",
+   "title": "A view with no columns uses each person's usual columns",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:52:20Z",
+   "endedAt": "2026-10-05T09:52:36Z",
+   "durationMs": 16000,
+   "observed": "Editor shows 'No columns chosen: everyone sees their usual columns.'; 'QA CV no-columns' saved (201). Its grid shows the owner's usual columns (list-preferences visibleKeys: Full Name, Phone, Lead Status, Lead Owner, Created At, Last Activity) plus Tags and Source.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C11",
+   "title": "More than 10 columns shows a tip, 30 are allowed and 31 are refused",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:14:24Z",
+   "endedAt": "2026-10-05T09:55:00Z",
+   "durationMs": 2436000,
+   "observed": "Editor (FieldPermissions layout): no tip at 10 columns; at 11 'Tip: more than 10 columns makes the table hard to read.'. API: a 30-column view saves (201); PATCH with 31 columns -> 422 INVALID_VIEW 'A view may show at most 30 columns.'; GET still shows 30. Note: the 30-column save from the editor itself was interrupted by an owner-session revocation, so the 30-column save was confirmed through the API.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C12",
+   "title": "Sort and page size are applied and out-of-range page sizes are refused",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T09:14:26Z",
+   "endedAt": "2026-10-05T09:55:49Z",
+   "durationMs": 2483000,
+   "observed": "Works: 'QA CV sort-page' sorted Created At descending (header 'Created At ↓') with page size 10; PATCH page_size 9 and 201 -> 422 'Page size must be a whole number between 10 and 200.', stored value unchanged. FAIL: the editor offers only Each person's usual page size / 10 / 25 / 50 / 100 - 200 cannot be chosen although the server accepts it (PATCH 200 -> 200). With 200 stored, the editor shows 'Select…' and the grid shows 1–101 of 101 rows while its Rows per page control reads 10.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-C12-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-C13",
+   "title": "A view applies only to the layout it was created on",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:05:26Z",
+   "endedAt": "2026-10-05T10:16:00Z",
+   "durationMs": 634000,
+   "observed": "Run as ALT1. Editor on Standard shows 'Applies to the \"Standard\" layout — its fields and its records.'; 'QA CV layout' saved with layout Standard. Views API lists it for layout Standard, not for New Layout. Picker on New Layout: 'No views match.'; back on Standard it is listed under CREATED BY ME and returns 101 records. Observation: GET records?view_id=<it>&layout_id=<New Layout> is not refused (returns 14 records), but the UI never makes that call.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C14",
+   "title": "Sharing with selected users requires at least one user",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:02:44Z",
+   "endedAt": "2026-10-05T10:03:05Z",
+   "durationMs": 21000,
+   "observed": "Run as ALT1 (Admin; owner sessions were being revoked by another sign-in). 'QA CV no-users', Share with = Selected users, no user picked, Save -> blocked with 'Choose at least one user, or share with everyone instead.'; no view created. API: POST visibility 'selected' with shared_user_ids [] -> 422 INVALID_VIEW 'Select at least one user to share this view with, or choose a different visibility.'",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C15",
+   "title": "Changing a shared view's criteria changes the recipient's results",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:23:30Z",
+   "endedAt": "2026-10-05T10:27:00Z",
+   "durationMs": 210000,
+   "observed": "ALT1 created 'QA CV shared15' (Full Name starts with 'QA CV L' + Lead Status equals 'No Answer' = status of L01), shared with test user 2 only. Test user 2's grid: L01, L15. ALT1 changed the criterion to 'Busy' (status of L02) -> 200. Test user 2 reloads the view: L02, L13, L14 (3 records) - matches the new criterion. Note: the deep-linked grid can take more than 8 s to load (see L08).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C16",
+   "title": "A new view starts with the filters applied on the list",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:22:00Z",
+   "endedAt": "2026-10-05T10:23:07Z",
+   "durationMs": 67000,
+   "observed": "Run as ALT1. Filter sidebar: Lead Status, operator Equals, Busy ticked, Apply Filter -> 18 records (URL f=[{fieldKey:lead_status, operator:equals, value:Busy}]). New custom view shows 'The criteria start with the filters applied on the records page.' with the row 'Leads | Lead Status | Equals | Busy'. Saved 'QA CV from-filter-3': stored criteria lead_status equals Busy; the view returns the same 18 records. Observation: after saving, the list filter stays in the URL (&f=…) on top of the new view.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C17",
+   "title": "Cancelling the editor creates nothing",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:03:05Z",
+   "endedAt": "2026-10-05T10:03:45Z",
+   "durationMs": 40000,
+   "observed": "Run as ALT1. Filled name 'QA CV discard', a criteria row; Cancel -> back to Leads, no POST; repeated with the top Back control -> back to Leads, no POST. List count unchanged; no 'QA CV discard' exists. (No 'discard changes?' prompt - not required.)",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C18",
+   "title": "A save over a newer version is refused, not silently overwritten",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:06:48Z",
+   "endedAt": "2026-10-05T10:07:17Z",
+   "durationMs": 29000,
+   "observed": "Run as ALT1. 'QA CV conflict' opened in the editor in two browser tabs. Tab 1 renamed to 'QA CV conflict-1' and saved (PATCH 200). Tab 2 changed the criteria value and saved -> 409 VERSION_CONFLICT; tab 2 shows 'Someone else saved this view after you opened it. Reload to get the latest version — your unsaved changes will be lost.' with Reload; after Reload the name is 'QA CV conflict-1'. Final view: name QA CV conflict-1, criteria value unchanged (tab 2's change not saved), row_version 2.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C19",
+   "title": "Saving twice in quick succession creates one view only",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:14:28Z",
+   "endedAt": "2026-10-05T10:04:02Z",
+   "durationMs": 2974000,
+   "observed": "UI (ALT1): double-click Save on 'QA CV double' sent one POST (201); one view exists - the Save button now guards against the second click. API (OWNER): two parallel POSTs 'QA CV double-api' -> 201 and 409 VIEW_NAME_TAKEN; one view exists.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C20",
+   "title": "A PATCH with only a name keeps the other settings",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:14:28Z",
+   "endedAt": "2026-10-05T09:14:29Z",
+   "durationMs": 1000,
+   "observed": "'QA CV partial' with 2 criteria rows, 8 columns, sort created_at asc, page size 50. PATCH {name:'QA CV partial-2', row_version} -> 200. Changed fields: only name, row_version and last_modified_at; settings, visibility and shared_user_ids identical.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C21",
+   "title": "Read-only view keys cannot be changed through the API",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:14:29Z",
+   "endedAt": "2026-10-05T09:14:30Z",
+   "durationMs": 1000,
+   "observed": "PATCH is_system:true / owner_user_id:<test user 2> / category:public_views + can_edit:false / row_version:999 -> each 200 with the key ignored: is_system false, owner unchanged, category created_by_me, can_edit true; row_version only advanced +1 per save (1 -> 5). A PATCH with expected_row_version 1 -> 409 VERSION_CONFLICT 'The view changed since you loaded it (current version 5).'",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C22",
+   "title": "Wrong value types in a create request are rejected cleanly",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:14:30Z",
+   "endedAt": "2026-10-05T09:14:32Z",
+   "durationMs": 2000,
+   "observed": "name 12345 / ['QA CV arr'] / {x:1} -> 400; name null -> 422; columns 'name' / {a:1} -> 422; criteria 'status=1' / [] / 7 -> 422; page_size '25' / [25] / {n:25} -> 422; no 500, list count unchanged. columns:null and page_size:null -> 201 (valid 'not set' values per the contract; deleted again).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C23",
+   "title": "Saving after the token expires never loses work silently",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T09:13:20Z",
+   "endedAt": "2026-10-05T09:19:18Z",
+   "durationMs": 358000,
+   "observed": "Run as test user 1. Editor filled ('QA CV expiry', Full Name Is not empty, columns) at 09:13:27 and left open; the app refreshed the token in the background (POST /iam/auth/refresh 200 at 09:17:26). Save at 09:19:07 -> 201 at 09:19:18 (11 s); stored 1 condition; name still filled before save. No data lost. Observation: the save took 11 s with the editor still showing.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-C24",
+   "title": "Creating, editing, sharing, cloning and deleting a view are audit-logged",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:13:00Z",
+   "endedAt": "2026-10-05T10:16:00Z",
+   "durationMs": 180000,
+   "observed": "As ALT1: created 'QA CV audit', edited its criteria, shared it with Everyone, cloned it, deleted the clone. Audit Log (Settings > Security > Audit Log, API /audit/events) has 5 entries, each with actor 'Mahmoud Mohamed' (ALT1) and time: 10:13:02 created 'QA CV audit', 10:13:02 updated, 10:13:03 updated (sharing), 10:13:03 created 'Copy of QA CV audit' (clone), 10:13:03 deleted 'Copy of QA CV audit' (app metadata-engine, entity module_view). Note: the sharing change and the clone are logged as generic updated / created entries.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D01",
+   "title": "Each field type offers exactly the operators listed in spec §2.3, with none missing and none extra",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:40:09Z",
+   "endedAt": "2026-10-05T10:42:00Z",
+   "durationMs": 111000,
+   "observed": "Run as ALT1. Editor operator lists: Text (Company) = Contains, Does not contain, Equals, Not equal to, Starts with, Ends with, Is empty, Is not empty. Number/Currency/Amount = Equals, Not equal to, Greater than, Less than, ≥, ≤, Is empty, Is not empty (no between). Date = Is, Is before, Is after, Is between, Is not between, Today, Yesterday, Tomorrow, This/Last/Next week, month, year, In the last/next N days, Age in days, Due in days, Before now, After now, Is empty, Is not empty. Date-time = the date set plus In the last/next N hours. Checkbox = Is true, Is false. Pick list / status / Source / Stage = Contains any of, Contains none of, Equals, Not equal to, Is empty, Is not empty. Multi-select and Tags = Contains any of, Contains all of, Contains none of, Is empty, Is not empty. Lookup = Equals, Not equal to, Is empty, Is not empty. Owner offers 'Current user'. The Filter panel offers the same operators (e.g. Lead Status). Notes: Approval Status (system pick list) has no Is empty / Is not empty; the Deals Closing Date field was not found by label in the editor.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D02",
+   "title": "Text operators split records correctly for odd input, follow the module filter's case rule, and treat SQL-like input as a literal",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:36:14Z",
+   "endedAt": "2026-10-05T10:38:00Z",
+   "durationMs": 106000,
+   "observed": "Run as ALT1, 7 values x 6 operators saved on 'QA CV text-sweep'; in all 42 cases the grid (records?view_id) equals the module filter (records?filters=) and the stored value equals the typed value byte-for-byte. Rules: case-insensitive (D3 starts_with 'Q' -> L01, L02, L04, L05; D7 equals 'QA CV ACME' -> L01, L02); leading/trailing spaces trimmed at match time but stored as typed (D6 equals -> L01, L02); D8 contains Arabic -> L03; D10 ends_with emoji -> L04; D12 SQL-like value treated as a literal (equals/contains 0, not_equal_to/does_not_contain all); D14 zero-width space kept, contains -> L05 only. No 500.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D03",
+   "title": "is_empty and is_not_empty classify null, blank and whitespace-only text the same way as the module filter",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:38:00Z",
+   "endedAt": "2026-10-05T10:38:10Z",
+   "durationMs": 10000,
+   "observed": "Comment: L01 null, L02 empty string, L03 whitespace only, L04 'Call back'. is_empty -> L01, L02, L05…L15 (null and empty string count as empty); is_not_empty -> L03, L04 (whitespace-only counts as not empty); exact complement; L04 never in is_empty; both equal the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D04",
+   "title": "Number operators are exact at the 9999.99 / 10000 / 10000.01 boundary",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:38:10Z",
+   "endedAt": "2026-10-05T10:38:20Z",
+   "durationMs": 10000,
+   "observed": "Deals D01 0, D02 9999.99, D03 10000, D04 10000.01, D05 empty, D06 -1, D07 15000, D08 1000000000. equals 10000 -> D03; not_equal_to -> D01, D02, D04, D05, D06, D07, D08 (empty included, same as module filter); greater_than -> D04, D07, D08; less_than -> D01, D02, D06; ≥ -> D03, D04, D07, D08; ≤ -> D01, D02, D03, D06; equals 9999.99 -> D02; equals 10000.01 -> D04. All equal the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D05",
+   "title": "Odd numeric input is normalised or rejected with a message and is never stored as 15",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T10:38:20Z",
+   "endedAt": "2026-10-05T10:42:00Z",
+   "durationMs": 220000,
+   "observed": "Editor (Amount box is input type=number): Arabic-Indic digits and 'abc' leave the box empty and Save is blocked with 'Complete this row (field, operator and value) or remove it.'; '-1' saves and returns D06. FAIL (API): POST with value '15,000', Arabic-Indic '15000', '1e9' and 'abc' -> all 201 Created, the raw string is stored and the view matches 0 records - 'abc' is not rejected (expected 400/422) and '15,000' / '1e9' are neither normalised (15000 / 1000000000) nor rejected.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-D05-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-D06",
+   "title": "An empty number is distinguished from zero in view criteria",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:38:30Z",
+   "endedAt": "2026-10-05T10:38:40Z",
+   "durationMs": 10000,
+   "observed": "is_empty -> D05 only; is_not_empty -> D01 (0), D02, D03, D04, D06, D07, D08 - never D05; equals 0 -> D01 only. All equal the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D07",
+   "title": "Date is/before/after/between/not between follow one stated bound rule, including same-day bounds",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:38:40Z",
+   "endedAt": "2026-10-05T10:38:50Z",
+   "durationMs": 10000,
+   "observed": "FieldPermissions seeds RA1 29 Sep (D-6), RA2 30 Sep (D-5), RA3 3 Oct (D-2), RA4 5 Oct (D), RA5 6 Oct (D+1); D = 5 Oct 2026 Cairo. is D -> RA4; is_before -> RA1, RA2, RA3; is_after -> RA5; is_between D-5..D -> RA2, RA3, RA4 (bounds inclusive); is_not_between -> RA1, RA5 (exact complement); is_between D..D -> RA4. All equal the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D08",
+   "title": "today, yesterday and tomorrow resolve in the tenant timezone (Cairo), not UTC",
+   "status": "failed",
+   "severity": "High",
+   "startedAt": "2026-10-05T10:38:50Z",
+   "endedAt": "2026-10-05T10:43:00Z",
+   "durationMs": 250000,
+   "observed": "Date Time Permission seeds: T01 4 Oct 23:50, T02 5 Oct 00:10, T03 5 Oct 23:50, T04 6 Oct 00:10 Cairo (stored UTC). At 13:37 Cairo on 5 Oct: today -> T03, T04 (expected T02, T03); yesterday -> T01, T02 (expected T01); tomorrow -> none (expected T04). The grid shows T04 as '06/10/2026 12:10 AM' inside the Today view. The relative operators use the UTC date, not the Cairo date. Grid and module filter agree. (The case's 23:50 / 00:10 run times were not needed: the UTC-vs-Cairo split shows at any time.)",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-D08-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-D09",
+   "title": "this/last/next week, month and year return records inside the correct calendar boundaries",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:38:55Z",
+   "endedAt": "2026-10-05T10:39:10Z",
+   "durationMs": 15000,
+   "observed": "D = Mon 5 Oct 2026. Seeds W01 4 Oct, W02 5 Oct, W03 11 Oct, W04 12 Oct, W05 30 Sep, W06 1 Oct, W07 1 Nov, W08 31 Dec 2025, W09 1 Jan 2026, W10 1 Jan 2027. this_week -> W02, W03; last_week -> W01, W05, W06; next_week -> W04; this_month -> W01, W02, W03, W04, W06; last_month -> W05; next_month -> W07; this_year -> all 2026 seeds; last_year -> W08; next_year -> W10. Week starts on Monday. All equal the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D10",
+   "title": "last_n_days, next_n_days, age_in_days and due_in_days accept 0/1–3650 and reject other values",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:39:10Z",
+   "endedAt": "2026-10-05T10:39:40Z",
+   "durationMs": 30000,
+   "observed": "API (24 POSTs, Date Permission): last_n_days / next_n_days accept 1 and 3650, reject 0, 3651, -1, 1.5 (lower bound 1); age_in_days / due_in_days accept 0, 1, 3650, reject 3651, -1, 1.5 (lower bound 0). Rejected values -> 422, no view created; accepted values give grid = module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D11",
+   "title": "last_n_hours and next_n_hours accept 1 and 720 and reject 721",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:39:40Z",
+   "endedAt": "2026-10-05T10:39:50Z",
+   "durationMs": 10000,
+   "observed": "Seeds H01 now-30m, H02 now-2h, H03 now+30m, H04 now+2h. last_n_hours 1 -> H01; 720 -> H01, H02; next_n_hours 1 -> H03; 720 -> H03, H04; 721 -> 422 'value must be a whole number of hours between 1 and 720'. Counts equal the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D12",
+   "title": "before_now and after_now split records exactly at the current time",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:39:50Z",
+   "endedAt": "2026-10-05T10:39:55Z",
+   "durationMs": 5000,
+   "observed": "Seeds NA1 now-1h, NA2 now+1h, NA3 empty. before_now -> NA1 only; after_now -> NA2 only; NA3 in neither. Equal to the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D13",
+   "title": "is_false treats a never-set checkbox by one recorded rule, identical to the module filter",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:39:55Z",
+   "endedAt": "2026-10-05T10:40:00Z",
+   "durationMs": 5000,
+   "observed": "Checkbox Permission: K01 true, K02 false, K03 never set. is_true -> K01; is_false -> K02, K03. Rule: a never-set checkbox counts as false; same as the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D14",
+   "title": "Picklist operators split records correctly and a value later removed from the picklist does not crash the view",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T11:22:38Z",
+   "endedAt": "2026-10-05T11:29:00Z",
+   "durationMs": 382000,
+   "observed": "S1 = No Answer, S2 = Busy. equals S1 -> L01, L15; not_equal_to S1 -> the rest incl. empty-status L12; contains_any_of S1,S2 -> L01, L02, L13, L14, L15; contains_none_of -> the rest (all equal the module filter). OWNER added 'QA CV Temp' to Lead Status and set L12 to it; view equals 'QA CV Temp' -> L12. OWNER removed the value again (back to 16 values). Reopened: the grid works and still returns L12 showing 'QA CV Temp', no crash. FAIL: the editor shows the row as 'Lead Status | Equals | Value' - the stored value is not shown (a normal value such as 'No Answer' is shown) and there is no notice that it is no longer an option. Also 2 console errors (403) when ALT1 opens the editor.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-D14-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-D15",
+   "title": "Multi-select contains_any_of, contains_all_of and contains_none_of follow correct set logic",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:40:00Z",
+   "endedAt": "2026-10-05T10:40:05Z",
+   "durationMs": 5000,
+   "observed": "Multi Select Permission has only two options ('1','2'), so A='1', B='2' and the case's {C} record could not be seeded. Seeds M01 {1}, M02 {1,2}, M03 {2}, M04 empty. contains_any_of 1,2 -> M01, M02, M03; contains_all_of 1,2 -> M02 only; contains_none_of 1,2 -> M04 (empty counts as none of); is_empty -> M04; is_not_empty -> M01, M02, M03. Equal to the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D16",
+   "title": "Lookup equals, not_equal_to and empty return the correctly linked records",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T10:40:05Z",
+   "endedAt": "2026-10-05T10:45:00Z",
+   "durationMs": 295000,
+   "observed": "Seeds Q01 -> contact X (QA CV C01), Q02 -> X, Q03 -> Y (QA CV C02), Q04 empty. API with the stored form '<module id>:<record id>': equals X -> Q01, Q02; not_equal_to X -> Q03, Q04 (empty included); is_empty -> Q04; is_not_empty -> Q01, Q02, Q03 - grid equals the module filter. FAIL (editor): the value for Lookup Permission is a plain text box ('Value for Lookup Permission') with no record search, picker or suggestions; typing the record name 'QA CV C01' saves the literal text and the view returns 0 records. A bare record id also matches nothing. A user cannot build a working lookup criterion in the editor.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-D16-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-D17",
+   "title": "A shared view with Owner = $me shows each user only the records they own",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T11:29:00Z",
+   "endedAt": "2026-10-05T11:33:30Z",
+   "durationMs": 270000,
+   "observed": "ALT1 built 'QA CV owner-me' in the editor: Name starts with 'QA CV O0' + Owner Equals 'Current user' (picker option), shared with Everyone -> POST value '$me', visibility everyone; stored value '$me'. OWNER (owns O01-O03) sees O01, O02, O03; test user 2 (owns O04-O06) sees O04, O05, O06; ALT1 sees none. Each equals that user's module filter on owner = own id.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D18",
+   "title": "A Tags criterion returns only the records carrying that tag",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:49:01Z",
+   "endedAt": "2026-10-05T11:21:45Z",
+   "durationMs": 1964000,
+   "observed": "As ALT1: tag 'QA CV VIP' created; L01 and L02 selected in the grid -> Module actions -> Manage Tags -> 'QA CV VIP' -> Apply tags -> 'Tagged 2 records.'. View 'QA CV tags' (Full Name starts with 'QA CV' + Tags contains any of QA CV VIP): grid L01, L02 only; module filter the same.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D19",
+   "title": "A view definition with an unknown field or operator is rejected by the API with 400/422",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T10:40:30Z",
+   "endedAt": "2026-10-05T10:40:40Z",
+   "durationMs": 10000,
+   "observed": "Unknown field does_not_exist_c -> 422 unknown_field 'That field does not exist on this module.'; unknown operator xor_like -> 422 'not a supported operator'; PATCH with the unknown field -> 422, control view unchanged; views list unchanged. FAIL: Deals 'QA CV wrong-type' with Amount (currency) + operator contains -> 201 Created - an operator that is not valid for the field type is accepted.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-D19-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-D20",
+   "title": "Three rows with an untouched pattern combine as 1 and 2 and 3",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:40:40Z",
+   "endedAt": "2026-10-05T10:42:30Z",
+   "durationMs": 110000,
+   "observed": "3 rows (Full Name starts with 'QA CV L0'; Lead Status is not empty; Comment is empty), pattern untouched -> stored pattern null; reopened editor shows 'Criteria Pattern ( 1 and 2 and 3 )'. Grid L01, L02, L05, L06, L07, L08, L09 = module filter with the three conditions ANDed.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D21",
+   "title": "The pattern 1 or 2 and 3 is read left to right as ((1 or 2) and 3) and the results match that grouping",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T10:42:30Z",
+   "endedAt": "2026-10-05T10:44:00Z",
+   "durationMs": 90000,
+   "observed": "Rows: Lead Status = No Answer, Lead Status = Busy, Comment is not empty (+ Full Name starts with 'QA CV P' to isolate P01-P04). Pattern typed '1 or 2 and 3 and 4'. The help ('read from left to right') is present as a tooltip on the pattern help icon. Results P02, P03 - correct for ((1 or 2) and 3); P01 and P04 not returned. FAIL: the saved pattern is stored and reopened exactly as typed ('( 1 or 2 and 3 and 4 )'), not fully bracketed as ((1 or 2) and 3).",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-D21-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-D22",
+   "title": "Every invalid criteria pattern is blocked in the editor and rejected by the API",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T10:44:56Z",
+   "endedAt": "2026-10-05T10:47:30Z",
+   "durationMs": 154000,
+   "observed": "Editor: every invalid pattern disables the pattern Save and shows a specific message (e.g. 'Brackets are not balanced.'); the view Save is paused while the pattern is edited. API: every invalid pattern -> 422 with a specific message (unbalanced, unexpected ')', two operators, ends unexpectedly, criteria 5 does not exist, criteria 3 missing, criteria 1 used twice, unknown word xor, nests deeper than 3 levels, at most 200 characters). FAIL: the upper-case pattern '1 AND 2 AND 3' is accepted by the editor and by the API (201), although the case lists it as invalid.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-D22-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-D23",
+   "title": "A saved pattern (1 or 2) and 3 reopens with the same meaning and returns the same records",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T10:40:50Z",
+   "endedAt": "2026-10-05T10:41:00Z",
+   "durationMs": 10000,
+   "observed": "Rows Lead Status = No Answer, Lead Status = Busy, Comment is not empty, Full Name starts with 'QA CV P'; pattern '((1 or 2) and 3) and 4'. Stored and re-saved pattern identical; results P02, P03 before and after re-save = union of (No Answer AND comment) and (Busy AND comment) from the module filter.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-D24",
+   "title": "In the Arabic UI the pattern's row numbers, brackets and and/or read correctly",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T11:29:00Z",
+   "endedAt": "2026-10-05T11:31:00Z",
+   "durationMs": 120000,
+   "observed": "Run as ALT1. 'QA CV rtl-pattern' with rows Lead Status = No Answer, Lead Status = Busy, Comment is not empty, Full Name starts with 'QA CV' and pattern '(1 or 2) and (3 or 4)'. UI switched to Arabic (dir=rtl). FAIL: the editor shows the pattern as '( and (3 or 4) (or 2 1) )' - brackets and token order scrambled (English text inside an RTL line without isolation). Results identical in Arabic and English (9 records). Switched back to English afterwards.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-D24-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-D25",
+   "title": "Last Activity Time can be used as a criteria field and follows record activity",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T10:47:30Z",
+   "endedAt": "2026-10-05T10:48:00Z",
+   "durationMs": 30000,
+   "observed": "'Last Activity' is offered in the criteria field list with the date-time operators. FAIL: it is the record's modified time, not an activity time - a note added to QA CV L02 (POST notes 201) left last_modified_at unchanged (08:47:45Z) and a 'last 1 hour' Last Activity filter does not return L02.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-D25-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-E01",
+   "title": "A Contacts view with Deals Stage = Negotiation returns only contacts that have at least one such deal",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T11:38:00Z",
+   "endedAt": "2026-10-05T11:42:00Z",
+   "durationMs": 240000,
+   "observed": "Run as ALT1. Seeds: C01 <- D01 (Stage negotiation, via Connected To), C02 <- D02 (qualification), C03 no deals. 'QA CV with-negotiation' (First name starts with 'QA CV' + with Deals, any link field, Stage equals negotiation) -> C01 only. Stored related_criteria: [{module_id: Deals, link_field: null, mode: 'with', criteria: stage equals negotiation}]. The same block built in the editor ('QA CV link-field') produced the identical related_criteria body. (The records filter API has no related-criteria parameter, so the cross-check is the expected set.)",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E02",
+   "title": "A Contacts view without Deals returns only contacts that have no deals",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T11:42:00Z",
+   "endedAt": "2026-10-05T11:42:30Z",
+   "durationMs": 30000,
+   "observed": "'QA CV without-deals' (First name starts with 'QA CV' + without Deals, any link field) -> C03 only; C01, C02 (and C04, linked to D08) not returned.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E2E-1",
+   "title": "A pinned working view survives opening a record and signing out and back in",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T15:12:39Z",
+   "endedAt": "2026-10-05T21:19:59Z",
+   "durationMs": 22040000,
+   "observed": "ALT1 'QA CV hot leads' = (Lead Status Interested OR Follow Up) AND Created Time in the last 7 days (Owner = me left out: the QA CV seeds belong to the Owner account) - 13 records (QA CV L05…L11, L16 …). Pinned. Open QA CV L05, browser Back: same view, 13 records. Pinned views group lists 'QA CV hot leads' after signing in again. FAIL: after signing out (session ended, sign-in form shown) and signing in again, Leads opens on 'QA CV count' (16 records) instead of the working view 'QA CV hot leads' - the view opened by link/back is not kept as the last-used view across sign-in.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-E2E-1-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-E2E-2",
+   "title": "A shared view follows the owner's edits while the recipient's clone stays independent",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T15:13:17Z",
+   "endedAt": "2026-10-05T15:13:37Z",
+   "durationMs": 20000,
+   "observed": "ALT1 'QA CV team set' (Lead Status Interested, QA CV names) shared with test user 2 (no Manage Shared Views). Test user 2 sees 7 Interested QA CV leads; clones it (201), renames to 'QA CV team set clone' and sets Follow Up (200). Test user 2 opening Edit on the shared view gets 'You cannot edit this view' and no form. ALT1 changes the shared view to Busy (staging has no 'Contacted' status) -> test user 2's shared view now shows the Busy leads (QA CV L02, L13, L14, P02); the clone still shows Follow Up (QA CV L11), stays private and is not visible to ALT1; ALT1's view unaffected by the clone edit.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E2E-3",
+   "title": "Dragging a deal on a Stage board updates sums, writes an audit entry and keeps the board state after Back",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T15:13:37Z",
+   "endedAt": "2026-10-06T08:00:00Z",
+   "durationMs": 60383000,
+   "observed": "Deals Kanban 'QA CV pipeline' (Stage, Amount). QA CV D02 (9,999.99) moved qualification -> negotiation (no transition dialog - D02 is outside the blueprint's entry criteria): qualification 35/5,516,962,114,653.99 -> 34/5,516,962,104,654.00, negotiation 10/16,893,538,880.00 -> 11/16,893,548,879.99 (moved by exactly D02's amount). Audit: Mahmoud Mohamed, stage qualification -> negotiation. Open D02 and Back: same Kanban view and layout; scroll resets to 0 - Zoho does the same (checked live). D02 restored.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E2E-4",
+   "title": "A Work Queue queue built on a view reflects later edits to that view",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T21:22:27Z",
+   "endedAt": "2026-10-05T21:23:12Z",
+   "durationMs": 45000,
+   "observed": "'QA CV feed' (Lead Status Interested, QA CV L names). Work Queue > Add a queue > Create Queue: Module Leads, Layout Standard, 'How should this queue choose its records?' Custom view = QA CV feed, name 'QA CV feed-queue', Only me -> POST kind queue settings {source: view, view_id: feed} 201. Queue shows 7 records (Interested). Edited 'QA CV feed' to Follow Up -> the same queue now shows 1 record (Follow Up); Work Queue tile 7 -> 1 without recreating the queue.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E2E-5",
+   "title": "Each failure in a create-edit-delete-restore chain has a clear message and ends in one consistent view",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T21:20:08Z",
+   "endedAt": "2026-10-05T21:20:51Z",
+   "durationMs": 43000,
+   "observed": "Editor: 'QA CV recovery' with 3 rows; pattern '(1 and 2' -> both Save buttons disabled with 'Brackets are not balanced.' and 'Save or cancel the pattern to continue' - nothing saved (spec wording 'Fix the criteria pattern…' differs). '(1 and 2) or 3' -> saved (201, pattern stored). Two tabs on Edit: tab 1 changed a value and saved; tab 2 renamed and pressed Save -> 'Someone else saved this view after you opened it. Reload to get the latest version — your unsaved changes will be lost.', no PATCH sent; Reload loads tab 1's version. Deleted (the editor has no delete action and the dropdown row-menu Delete does nothing, see G04, so via API 204) -> Recycle Bin -> Restore: exactly one 'QA CV recovery', same id, tab 1's settings (value 'QA CV L1', pattern '(1 and 2) or 3').",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E2E-6",
+   "title": "An Arabic user can create an Arabic-named view with Arabic criteria and use a Kanban board in RTL",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:52:58Z",
+   "endedAt": "2026-10-05T14:54:47Z",
+   "durationMs": 109000,
+   "observed": "Arabic session. List view 'QA CV عملاء' (criterion Full Name contains 'أحمد') and Leads Kanban 'QA CV لوحة' (Lead Status). Picker search 'عملاء' lists 'QA CV عملاء'; tab/selected view shows it; Manage custom views row 'QA CV عملاء'; editor title 'تعديل طريقة العرض المخصصة: QA CV عملاء'; results = QA CV L10 أحمد. Kanban columns run right to left (No Answer right-most) and the card 'QA CV L10 أحمد' is intact. Restored to English.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E03",
+   "title": "\"Without Deals\" for a contact whose only deal is hidden from the viewer follows the PRD Q14 rule without leaking the deal's existence",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T11:44:00Z",
+   "endedAt": "2026-10-05T11:45:00Z",
+   "durationMs": 60000,
+   "observed": "Precondition not met: the case needs a user who can see contact C04 but not deal D08. C04 was given to test user 1 (User profile), but test user 1 can also open D08 (GET 200), so the deal is not hidden. Recorded anyway: as test user 1, without Deals -> C03 only; with Deals -> C01, C02, C04; no D08 data in either response.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E04",
+   "title": "Choosing a specific link field narrows related criteria to deals linked through that field only",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T11:38:00Z",
+   "endedAt": "2026-10-05T11:42:00Z",
+   "durationMs": 240000,
+   "observed": "Contacts' link fields from Deals: Contact, Connected To, Lookup ('Lookup 2' does not exist on Deals; 'Lookup' used). Seeds: C01 <- D01 via Connected To, C02 <- D03 via Lookup, both Stage negotiation (Stage is labelled 'Test-Stage'). 'QA CV link-field' built in the editor (with Deals, Linked through Any link field, Test-Stage equals negotiation) -> saved 201. Any link field -> C01, C02; Connected To -> C01 only; Lookup -> C02 only.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E05",
+   "title": "A view can use at most 3 related modules in the editor and the API",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T11:42:30Z",
+   "endedAt": "2026-10-05T11:46:00Z",
+   "durationMs": 210000,
+   "observed": "Editor (Contacts): related blocks Deals, Tasks, Calls added; 'Add condition' then disabled. API: 3 related modules -> 201; a 4th related_criteria entry -> 422 'A view may use at most 3 related modules.'; no view created. Note: the disabled 'Add condition' shows no tooltip/message in the editor.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E06",
+   "title": "A related module block accepts at most 3 criteria rows",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T11:42:30Z",
+   "endedAt": "2026-10-05T11:46:00Z",
+   "durationMs": 210000,
+   "observed": "Editor: Deals block with 'Specify Deals criteria' - 3 rows, then 'Add criteria row' in the block is disabled. API: 3 rows (Stage = negotiation, Amount > 0, Deal name starts with 'QA CV') -> 201; 4 rows -> 422 'At most 3 criteria rows are allowed.'; no view created.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E07",
+   "title": "A module that no other module looks up shows \"No module has a lookup to {{module}} yet.\"",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T11:46:00Z",
+   "endedAt": "2026-10-05T11:46:40Z",
+   "durationMs": 40000,
+   "observed": "Tasks and Subscriptions both have related modules, so module 'test' (no related modules) was used. New custom view -> Related modules criteria shows 'No module has a lookup to test yet.' (module name filled in). FAIL: an empty related block is still rendered and 'Add condition' stays enabled and adds more empty blocks (1 -> 2). Expected: no related block can be added.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-E07-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-E08",
+   "title": "At most 5 criteria rows can use fields of lookup modules",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T11:42:30Z",
+   "endedAt": "2026-10-05T11:46:00Z",
+   "durationMs": 210000,
+   "observed": "Editor (Contacts): six rows 'Account › Created At · Is not empty' -> Save refused with 'At most 5 criteria rows can use fields of lookup modules.' (no POST). API: 5 lookup-path rows (account_id.accounts.created_at) -> 201; 6 -> 422 too_many_lookup_fields 'At most 5 criteria rows may use fields of lookup modules.'",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E09",
+   "title": "A view whose criteria field is deleted shows the deleted-field banner and still runs",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T11:46:45Z",
+   "endedAt": "2026-10-05T11:50:30Z",
+   "durationMs": 225000,
+   "observed": "OWNER created number field 'QA CV Temp Number' (qa_cv_temp_number); L01 = 5, L02 = 0. ALT1 view 'QA CV temp-field' (First name starts with 'QA CV' + QA CV Temp Number > 1) -> L01. OWNER deleted the field (204). The view still runs with no error and still returns only L01 (the stored criterion on the deleted field keeps filtering; Name-only filter gives 19 QA CV rows). FAIL: the list page shows no banner at all; only the editor shows 'Some fields in this view's criteria are deleted or hidden from you: qa_cv_temp_number.' - with the API name, not 'QA CV Temp Number' - and the row reads 'Select a field'. 2 console errors (403) on the page.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-E09-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-E10",
+   "title": "A criterion on a field hidden from the viewer is masked and read-only, and the view still runs",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T11:36:00Z",
+   "endedAt": "2026-10-05T11:37:00Z",
+   "durationMs": 60000,
+   "observed": "Precondition not met: Percent Permission is not hidden for the User profile (test user 1 receives the field definition), and the Profiles settings page is not reachable on staging-crm.taviportal.com ('You don't have access to CRM'), so the field could not be hidden for this case.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E11",
+   "title": "A column for a field hidden from the viewer is absent from the grid and from the API response",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T11:36:00Z",
+   "endedAt": "2026-10-05T11:37:00Z",
+   "durationMs": 60000,
+   "observed": "Precondition not met: Percent Permission is not hidden for the User profile, and the Profiles settings page is not reachable on staging-crm.taviportal.com ('You don't have access to CRM').",
+   "evidence": []
+  },
+  {
+   "id": "CVS-E12",
+   "title": "The review_status field is not offered to a user without the review permission",
+   "status": "failed",
+   "severity": "High",
+   "startedAt": "2026-10-05T11:44:00Z",
+   "endedAt": "2026-10-05T11:46:00Z",
+   "durationMs": 120000,
+   "observed": "Field list: ALT1 (CRM Admin) is offered 'Review Status'; test user 1 (User profile, no review permission) is not (only 'Approval Status'). FAIL: as test user 1, POST view 'QA CV review-gate' with review_status equals 'approved' -> 201, stored as sent, and the view filters on it: 4 of test user 1's 20 visible leads are returned (pending / rejected / not_submitted -> 0). The records filter API also accepts review_status from test user 1. A user without the review permission gets review data through a view.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-E12-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-F01",
+   "title": "Manage Columns shows and hides columns, keeps the record-name column locked, and resets",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T11:55:00Z",
+   "endedAt": "2026-10-05T12:06:00Z",
+   "durationMs": 660000,
+   "observed": "Run as ALT1 on 'QA CV columns-f' (columns Full Name, Lead Status, Company). Manage Columns lists only VISIBLE (4): Full Name, Lead Status, Company, Lead Owner - no hidden/available list. Hiding Lead Status works (column disappears, banner 'You changed the columns for this view. Only you see this change.'). Full Name's Hide button is disabled (locked). There is no reset option inside Manage Columns; the banner's 'Use the view's columns' restores Full Name, Lead Status, Company. FAIL: Comment cannot be shown - Manage Columns offers no way to add a field that the view does not already show.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-F01-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-F02",
+   "title": "A column change on a shared view is personal and leaves the other user's columns unchanged",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:35:34Z",
+   "endedAt": "2026-10-05T12:36:30Z",
+   "durationMs": 56000,
+   "observed": "ALT1 owns 'QA CV shared-cols' (Full Name, Lead Status, Company, Comment), shared with Everyone. Test user 2 hides Company -> 'You changed the columns for this view. Only you see this change.'; test user 2's list-preferences hold the override (hiddenKeys company); no 'Save to view' for that user. ALT1 still sees Full Name, Lead Status, Company, Comment; the view's row_version is unchanged (1). Test user 2 then chose 'Use the view's columns'.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-F03",
+   "title": "\"Save to view\" writes the owner's column change into the view and \"Use the view's columns\" removes an override",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T12:35:02Z",
+   "endedAt": "2026-10-05T12:39:00Z",
+   "durationMs": 238000,
+   "observed": "Run as ALT1 on 'QA CV save-cols' (Full Name, Lead Status, Company). Step 1 (add Comment) cannot be done: Manage Columns does not offer Comment (same cause as F01). Tested the rest with a hide instead: hide Company -> banner with 'Save to view' and 'Use the view's columns'; Save to view -> settings.columns first_name, lead_status, owner and row_version 1 -> 2; then hide Lead Status -> 'Use the view's columns' restores the view's columns and the override is gone from list-preferences. Note: 'Save to view' also wrote the default Lead Owner column into the view.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-F03-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-F04",
+   "title": "A 51st column override is handled by one recorded rule (oldest dropped or rejected)",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T12:35:29Z",
+   "endedAt": "2026-10-05T12:36:00Z",
+   "durationMs": 31000,
+   "observed": "As ALT1: 51 Leads list views (incl. 'QA CV ov-NN'); PUT list-preferences with a column override for each of the 51 -> 200; GET shows all 51 stored (first and last both kept) - neither the oldest dropped nor the 51st rejected; the 50-override limit is not enforced. ALT1's preferences restored afterwards (PUT 200).",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-F04-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-F05",
+   "title": "Header sort orders text, number and date columns correctly and places empty values consistently",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T11:56:00Z",
+   "endedAt": "2026-10-05T12:10:00Z",
+   "durationMs": 840000,
+   "observed": "Header sort as ALT1. Company asc: QA CV Acme, qa cv acme, QA CV Rocket, QA​CV Zero, Arabic, then empties; desc: Arabic … QA CV Acme, qa cv acme, then empties. Amount asc: -1, 0, 9,999.99, 10,000, 10,000.01, 15,000, 1,000,000,000, then empty (D05); desc the exact reverse with empty last (numeric order). Date Permission asc 29/09, 30/09, 03/10, 05/10, 06/10; desc reversed. Empty values always last. Observation: opening a FieldPermissions view by link while the page is on the Standard layout shows another view; it had to be picked in the picker after switching layout.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-F06",
+   "title": "The toolbar sort control gives the same result as header sort and shows \"Sort: field dir\"",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T11:57:00Z",
+   "endedAt": "2026-10-05T11:58:00Z",
+   "durationMs": 60000,
+   "observed": "'QA CV sort-deals': header Amount descending and toolbar Sort (Amount, Descending, Apply) give the identical order D08, D07, D04, D03, D02, D01, D06, D05 (empty last). FAIL: the toolbar label reads 'Sort: amount desc' - internal field and direction keys, not 'Amount' / 'Descending' as in the sort dialog.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-F06-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-F07",
+   "title": "Each page size shows the right number of rows, a correct page indicator and a partial last page",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T11:58:00Z",
+   "endedAt": "2026-10-05T12:00:00Z",
+   "durationMs": 120000,
+   "observed": "All Leads (109 records): 10 -> 10 rows, 11 pages; 25 -> 25 rows, 5 pages; 50 -> 50 rows, 3 pages; 100 -> 100 rows, 2 pages; pageSize in list-preferences follows the last choice (set back to 25). FAIL: 200 is not offered in 'Rows per page' (options 10/25/50/100) although the case and spec list it.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-F07-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-F08",
+   "title": "The header \"N records\" equals the rows across all pages and the API total",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:00:00Z",
+   "endedAt": "2026-10-05T12:01:00Z",
+   "durationMs": 60000,
+   "observed": "'QA CV count' (Full Name starts with 'QA CV L'; this run's seed set is L01-L15): header '15 records', pages 10 + 5 rows (15 unique), records filter API total 15.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-F09",
+   "title": "The header checkbox selects the visible page only and the bar shows the count",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:01:00Z",
+   "endedAt": "2026-10-05T12:02:00Z",
+   "durationMs": 60000,
+   "observed": "All Leads, 25 per page: the header checkbox ticks every selectable row on page 1 (22 - the other 3 are locked records without a checkbox), bar '22 selected'; page 2 has no row ticked (bar keeps the page-1 count); back on page 1 unticking clears all rows and the bar.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-F10",
+   "title": "Switching view clears the row selection",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T12:02:00Z",
+   "endedAt": "2026-10-05T12:11:00Z",
+   "durationMs": 540000,
+   "observed": "'QA CV select': L01, L02, L03 selected, bar '3 selected'. Switched to All Leads (URL ?view=All Leads, picker shows All Leads): L01, L02, L03 are still ticked and the bar still shows '3 selected'; switching back to 'QA CV select' - still 3 selected. FAIL: the selection is not cleared when the view changes (the earlier run on crm.taviportal.com cleared it).",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-F10-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-F11",
+   "title": "Mass Update on 2 selected QA CV leads changes only those 2 records",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:03:00Z",
+   "endedAt": "2026-10-05T12:11:30Z",
+   "durationMs": 510000,
+   "observed": "'QA CV mass': selected QA CV L03 and L04 (L01/L02 used other selectors in this build; same check). Module actions -> Mass Update ('Apply the same values to 2 selected records') -> Comment = 'QA CV mass-updated' -> Update records -> '2 records updated'. API: only L03 and L04 changed; L01, L02, L05-L15 unchanged.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-F13",
+   "title": "Export Leads while a QA CV view is active follows a recorded rule for the view's criteria and columns",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:04:00Z",
+   "endedAt": "2026-10-05T12:40:00Z",
+   "durationMs": 2160000,
+   "observed": "'QA CV export' (Full Name starts with 'QA CV L'; columns Full Name, Lead Status, Company). Export dialog: 'All records (15)' / 'Current page only'; 'Visible columns (4) - the columns shown in the table, in the same order, plus Tags' / 'All fields'. Exported with defaults -> leads-export-2026-10-05.xlsx: 15 data rows = exactly the view's records (QA CV L01-L15); columns Full Name, Lead Status, Company, Lead Owner, Tags. Recorded rule: export follows the view's criteria and visible columns.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-F14",
+   "title": "Inline \"Edit field\" saves through the record rules (validation and required fields)",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:13:00Z",
+   "endedAt": "2026-10-05T12:33:00Z",
+   "durationMs": 1200000,
+   "observed": "As ALT1: Company is read-only for this profile (no inline Edit field; locked on the form), so Full Name was used. Inline edit 'QA CV L03 Inline' -> saved, API shows it. 256 characters -> saved (no length limit on Full Name; the same record API the form uses) - name restored afterwards. FieldPermissions record QA CV K01: clearing the required Single Line Permission inline -> refused with 'This field is required', popover stays open, stored value 'qa' unchanged. No partial save.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-F15",
+   "title": "A view whose criteria match nothing shows an empty state, not an error",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T11:59:00Z",
+   "endedAt": "2026-10-05T12:00:00Z",
+   "durationMs": 60000,
+   "observed": "'QA CV empty' (Full Name equals 'QA CV no-such-record'): '0 records' with the empty state 'No Leads yet - Create your first Lead to get started'; no alert or toast; records filter API total 0. Note: the empty-state text speaks of no leads at all rather than 'no records match this view'.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G01",
+   "title": "Cloning your own view creates a private copy with identical settings and leaves the original untouched",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:44:16Z",
+   "endedAt": "2026-10-05T12:53:24Z",
+   "durationMs": 548000,
+   "observed": "Run as ALT1 (CRM Admin; the Owner session is in use by another operator). 'QA CV clone-src' (everyone; Lead Status equals Interested AND Company contains 'QA'; 6 columns; sort first_name asc; page size 50). Tab menu: Edit, Pin view, Clone, Close view, Delete view. Clone -> editor with 'Copy of QA CV clone-src' -> renamed 'QA CV clone-src copy' -> 'Custom view \"QA CV clone-src copy\" saved.'. Copy: owner ALT1, visibility private, Created by me; criteria, columns, sort, page size identical. Source unchanged (name, everyone, settings, row_version 1). Note: the explicit pattern '1 and 2' came back as null on the UI copy (the editor drops a pattern equal to the default AND; same results). A source with '1 or 2' keeps its pattern on clone (2 = 2 records).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G02",
+   "title": "Cloning a view another user shared with you creates a private copy owned by you",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:10:39Z",
+   "endedAt": "2026-10-05T13:20:00Z",
+   "durationMs": 561000,
+   "observed": "ALT1 shares 'QA CV shared-src' with Selected users = test user 1 (Shared with me for that user). Test user 1: tab menu -> Clone -> editor -> 'QA CV shared-src copy' saved. Copy: owner_user_id = test user 1, private, created_by_me; not visible to ALT1; source unchanged (settings and row_version). Criteria and sort equal; columns equal except Company, which test user 1 has no read access to (Company is absent from every record that user can read) - the API clone drops it too, so this follows field security. Observation: test user 1 (User profile WITH Manage Shared Views) gets can_edit/can_delete = true on a view shared with them and could rename it via PATCH (200; reverted). CVR-SHARE-5 says only owner and administrators may edit; A04 (recipient without Manage Shared Views) passed. Needs a product decision whether Manage Shared Views grants edit on others' shared views.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G03",
+   "title": "A system-defined view cannot be cloned from the UI or the API",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:53:24Z",
+   "endedAt": "2026-10-05T12:53:43Z",
+   "durationMs": 19000,
+   "observed": "All Leads (is_system true). Tab menu: Edit columns, Pin view, Clone (disabled, title 'You cannot clone a system-defined view.'), Close view. POST …/views/{All Leads}/clone -> 409 SYSTEM_VIEW_LOCKED 'This is a system-defined view. Only its columns, sort and page size can be changed.'; view count unchanged.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G04",
+   "title": "Cloning the same view twice never fails with a server error on the duplicate name",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T12:45:15Z",
+   "endedAt": "2026-10-05T13:22:00Z",
+   "durationMs": 2205000,
+   "observed": "API: POST …/clone twice -> 201 'Copy of QA CV clone-src' and 201 'Copy of QA CV clone-src (2)'. Tabs layout: Clone from the tab menu twice -> editor suggests 'Copy of QA CV clone-src (3)' / '(4)', saved with toasts. No 500, no VIEW_NAME_TAKEN, no duplicate names among ALT1's views. FAIL (reproduced from the 4 Oct run): in the dropdown layout, the view's 'Actions for QA CV clone-src' menu inside the picker offers Clone, but clicking it does nothing - no POST, no editor, no toast.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-G04-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-G05",
+   "title": "A pinned view is listed first under Pinned views, always shows as a tab, and is pinned only for the user who pinned it",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:04:42Z",
+   "endedAt": "2026-10-05T13:09:39Z",
+   "durationMs": 297000,
+   "observed": "ALT1 pinned 'QA CV pin-a', 'QA CV pin-b' and All Leads from the tab menu: picker starts with PINNED VIEWS: QA CV pin-a, QA CV pin-b, All Leads* (pin_order 140/150/160) and all three show as tabs. Test user 1's picker shows no Pinned views group (ALT1's pins are per user). Test user 1 pinned the shared 'QA CV shared-src' -> pinned for that user only; ALT1's view of it is not pinned and ALT1's picker is unchanged. Unpin view on every pinned view -> views leave the group; with nothing pinned the Pinned views group is gone.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G06",
+   "title": "A 16th pin is refused because the limit is 15 pinned views",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T12:46:14Z",
+   "endedAt": "2026-10-05T12:47:09Z",
+   "durationMs": 55000,
+   "observed": "ALT1 had 0 pins; pinned QA CV pin-01…pin-15 (15 pinned). Tab menu on 'QA CV pin-16': Pin view enabled; clicking it pins the view with no message (16 pinned). PUT …/views/{pin-16}/pin -> 204. GET: 16 pinned, pin-16 pinned=true; Pinned views group lists 16. Expected a refusal stating the 15 limit and a 4xx. All pins removed afterwards.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-G06-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-G07",
+   "title": "Deleting a view asks for confirmation naming it, and confirming moves it to the Recycle Bin",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:55:32Z",
+   "endedAt": "2026-10-05T12:56:07Z",
+   "durationMs": 35000,
+   "observed": "All Leads 114 records. 'QA CV delete-me' -> Delete view: 'Delete custom view? Are you sure you want to delete the \"QA CV delete-me\" custom view? It moves to the Recycle Bin; its records are not affected.' Cancel -> view kept (GET 200). Delete -> '\"QA CV delete-me\" was deleted.', GET 404, gone from tabs and picker; Recycle Bin lists it (Custom View, record_label 'QA CV delete-me'); All Leads still 114.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G08",
+   "title": "A deleted QA CV view restored from the Recycle Bin comes back with the same id and settings",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:05:54Z",
+   "endedAt": "2026-10-05T13:06:09Z",
+   "durationMs": 15000,
+   "observed": "'QA CV restore-me' (everyone, criteria, 3 columns, sort first_name asc, page size 25) row_version 1, not pinned. Deleted (204) -> Recycle Bin item 'QA CV restore-me' (Custom View, expires 4 Dec 2026). Settings > Data > Recycle Bin -> Restore -> 'Restore items? Restore 1 item?' -> Restore. GET: same id, same name, visibility everyone, identical settings, pinned false; row_version 1 -> 3 (delete and restore each bump it).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G09",
+   "title": "The API refuses to delete a system-defined view",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:47:53Z",
+   "endedAt": "2026-10-05T12:47:54Z",
+   "durationMs": 1000,
+   "observed": "All Leads: is_system true, can_delete false, row_version 3. DELETE -> 409 SYSTEM_VIEW_LOCKED ('This is a system-defined view. Only its columns, sort and page size can be changed.'). GET afterwards 200, unchanged (row_version 3); not in the Recycle Bin.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G11",
+   "title": "When the last-used view is deleted, the module falls back to the default view without an error",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T12:47:54Z",
+   "endedAt": "2026-10-05T12:48:11Z",
+   "durationMs": 17000,
+   "observed": "'QA CV last-used' selected (lastListViewId = its id). Opened Deals; DELETE the view (204). Opened Leads: All Leads selected, no error page or toast, 'QA CV last-used' not in tabs. Network: 403 /telephony/status (unrelated) and two 400s on GET /modules/{Leads}/views while the page loaded (not visible to the user).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G12",
+   "title": "The Tenant Owner can delete a public view owned by another user, and the owner's picker updates",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:09:39Z",
+   "endedAt": "2026-10-05T13:10:12Z",
+   "durationMs": 33000,
+   "observed": "Test user 1 owns 'QA CV user-public' (everyone) and has it selected. Deleted by ALT1 (CRM Admin - deviation: Owner session in use by another operator): GET can_delete true, listed under Public views; tab menu Delete view -> confirmed. Test user 1's GET 404; after reload test user 1 is on All Leads and the picker no longer lists the view.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-G13",
+   "title": "A user removed from a view's Selected users loses access to it immediately",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:10:12Z",
+   "endedAt": "2026-10-05T13:13:27Z",
+   "durationMs": 195000,
+   "observed": "ALT1's 'QA CV selected-share' shared with test user 1 and test user 2; test user 1 had it open (GET 200). ALT1 edited it, removed test user 1 ('Remove test user 1'), kept test user 2, saved ('Custom view \"QA CV selected-share\" saved.'; shared_user_ids = test user 2 only). Test user 1 reloading the view link lands on All Leads; GET view -> 404 NOT_FOUND 'Not Found'; records with view_id -> 404 (no records exposed). Note: the API message is the generic 'Not Found', not 'View not found - This view was deleted, or it is not shared with you.', and the UI falls back silently.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H01",
+   "title": "A module with no Kanban views shows the empty state and a way to create one",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:14:00Z",
+   "endedAt": "2026-10-05T13:15:00Z",
+   "durationMs": 60000,
+   "observed": "Contacts has 0 Kanban views (API). Clicking 'Kanban view' opens the 'New Kanban view' settings form directly (Name, Categorize by, Aggregate by, Header style, Select fields, Share with); Cancel returns to the list. The 'No Kanban views yet' empty state is never shown - Zoho does the same (opens 'Kanban View - Settings' directly), so the result matches the reference product (same as the 4 Oct run).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H02",
+   "title": "A Kanban view on Leads categorized by Lead Status shows one column per value in picklist order plus Unaccounted",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:15:00Z",
+   "endedAt": "2026-10-05T13:24:00Z",
+   "durationMs": 540000,
+   "observed": "'QA CV leads-by-status' created in the UI (Categorize by defaults to Lead Status). Columns: the 16 Lead Status values in exactly the field order (No Answer … Cold Customer), then Unaccounted last. Unaccounted shows 55 = the number of leads with an empty Lead Status (API). No QA CV L seed has an empty Lead Status on staging, so step 5 was checked through the count. Observation: a 17th column 'QA CV Temp' sits before Unaccounted for QA CV L12, which still holds a value removed from the pick list (see I04).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H03",
+   "title": "Only single-value pick list, status and radio fields can be used to categorize a board",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:16:00Z",
+   "endedAt": "2026-10-05T13:17:00Z",
+   "durationMs": 60000,
+   "observed": "New Kanban view > Categorize by offers: Lead Status (status), Reason, Lead Source, Complaint Reason (pick lists). Hint 'Single-value pick list, status or radio-button fields only.' No multi-select, text, number, date, user or lookup field is offered.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H04",
+   "title": "A module with no pick list, status or radio field cannot be used for a Kanban view",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T13:17:00Z",
+   "endedAt": "2026-10-05T13:18:00Z",
+   "durationMs": 60000,
+   "observed": "Every module on NDC-Staging has a groupable field - at least the system 'Approval Status' pick list (Leads, Contacts, Deals, Accounts, Tasks, Calls, Meetings, Subscriptions, test). The 4 Oct run showed that a new custom module with text fields only still gets Approval Status, so a module with no pick list/status/radio field cannot exist and the two messages cannot be reached.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H05",
+   "title": "The Kanban view name is required, limited to 120 characters and rendered as plain text",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T13:18:00Z",
+   "endedAt": "2026-10-05T13:33:00Z",
+   "durationMs": 900000,
+   "observed": "Empty name -> 'A view name is required.' (no request; spec wording 'Give the view a name.'). 120-character name saves. 121 characters: the field has no maxlength, Save sends POST -> 422 INVALID_VIEW name too_long 'A view name may be at most 120 characters.', but the form only shows the generic 'The view is not valid.' - the user is not told the name is too long or what the limit is. API POST kind kanban with 122 characters -> 422 (no 500). Name 'QA CV <img src=x onerror=alert(1)>' saved; shown as literal text in the chooser and in Manage Kanban views; no <img> element rendered, no alert.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-H05-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-H07",
+   "title": "A Kanban card holds at most 10 fields, can be reordered, and always starts with the record name",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:20:00Z",
+   "endedAt": "2026-10-05T13:30:00Z",
+   "durationMs": 600000,
+   "observed": "Default card fields: Full Name, Phone, Email (3). The Standard layout offers 6 more (Company, Lead Owner, Reason, Comment, Lead Source, Complaint Reason) - 9 in total, so an 11th cannot be reached in the UI; API PATCH with 11 card_fields -> 422 settings.card_fields too_many 'A card can show at most 10 fields.' (stored stays 10). Move up twice moved Complaint Reason above Comment and Lead Source; saved order respected (card: title, Full Name, phone, company, owner …). Hint 'The record name always shows first.' - the record name is the card title and cannot be removed (the Full Name card field itself can be moved/removed).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H08",
+   "title": "The board header renders in a single colour or in varied colours as chosen",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:30:00Z",
+   "endedAt": "2026-10-05T13:32:00Z",
+   "durationMs": 120000,
+   "observed": "'QA CV kb-status' > Edit > Header style Mono color > Save > reload: all 18 column headers use the same blue accent (settings.header_style mono). Multi color > Save > reload: headers use 12 distinct colours (multi stored).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H09",
+   "title": "Kanban views share like list views, and a user without Manage Shared Views can only create views for themselves",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:23:00Z",
+   "endedAt": "2026-10-05T13:24:00Z",
+   "durationMs": 60000,
+   "observed": "ALT1 (CRM Admin) sees Share with: Only me, Everyone, Selected users. 'QA CV kb-share' shared with test user 2 (profile 'test', no Manage Shared Views) - it appears in test user 2's Kanban chooser. Test user 2's new Kanban form offers only 'Only me' (checked) with 'You need the Manage Shared Views permission to share a view with other people.' Test user 2's API POST kind kanban visibility everyone -> 403 PERMISSION_DENIED. (Wording differs from the spec text 'You can create views for yourself…' but the rule holds.)",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H10",
+   "title": "A module holds several Kanban views on different fields, and the chooser switches between them",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T13:24:00Z",
+   "endedAt": "2026-10-05T13:26:00Z",
+   "durationMs": 120000,
+   "observed": "'QA CV kb-status' (Lead Status) and 'QA CV kb-second' (Lead Source) both exist; switching in the chooser rebuilds the board: 16 status columns + QA CV Temp + Unaccounted vs chat, web, referral, other + Unaccounted. Test user 1's 'QA CV kb-user1' (shared with everyone) is listed in ALT1's chooser as just 'QA CV kb-user1' - no 'Shared by <name>' label, and own and shared views are not distinguished.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-H10-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-H11",
+   "title": "Changing the categorize-by field rebuilds the board on the new field",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:26:00Z",
+   "endedAt": "2026-10-05T13:27:00Z",
+   "durationMs": 60000,
+   "observed": "'QA CV kb-edit' by Lead Status (16 + QA CV Temp + Unaccounted). Edit > Categorize by Lead Source > Save: board rebuilt with chat, web, referral, other + Unaccounted (= the 4 Lead Source values); GET settings.categorize_field = lead_source.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H12",
+   "title": "Deleting a Kanban view asks for confirmation, moves it to the Recycle Bin and leaves its records alone",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:34:03Z",
+   "endedAt": "2026-10-05T13:34:46Z",
+   "durationMs": 43000,
+   "observed": "All Leads 118. 'QA CV kb-delete' > Edit this Kanban view > Delete this view: inline confirmation 'Delete view? \"QA CV kb-delete\" moves to the Recycle Bin. Its records are not affected.' Cancel -> view kept (GET 200). Delete -> 'View deleted', GET 404, gone from the chooser, in the Recycle Bin as 'QA CV kb-delete (Kanban View)'; All Leads still 118.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H13",
+   "title": "The Manage Kanban views page lists every Kanban view the user can see and offers Create Kanban View",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:28:00Z",
+   "endedAt": "2026-10-05T13:29:00Z",
+   "durationMs": 60000,
+   "observed": "Chooser > Manage Kanban views opens 'Manage Kanban Views' (View Name, Used Field, Layout, Shared To, Last Modified By, Created By, Actions) listing 10 views - exactly the names GET ?kind=kanban returns (incl. QA CV kb-status). 'Create Kanban View' opens the 'New Kanban view' form; closed without saving.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-H14",
+   "title": "A board on a pick list with more than 75 values shows the column cap notice",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T13:35:00Z",
+   "endedAt": "2026-10-05T13:42:00Z",
+   "durationMs": 420000,
+   "observed": "Field 'QA CV Picklist80' (v01…v80) created on Leads; QA CV L01 = v76, QA CV L02 = v80. Kanban 'QA CV kb-80': notice 'Only the first 75 values are shown as columns.'; 75 value columns v01–v75 + Unaccounted (76). FAIL (reproduced from 4 Oct): L01 and L02 appear nowhere on the board - no v76/v80 column, not in Unaccounted, no 'Other values' column (PRD P1-7). board-summary returns columns v76 count 1 and v80 count 1 but truncated=false.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-H14-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-I01",
+   "title": "Column counts and totals come from the server and are correct before any scrolling",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:45:00Z",
+   "endedAt": "2026-10-05T13:50:00Z",
+   "durationMs": 300000,
+   "observed": "Leads 'QA CV kb-status': Aggregate by offers only 'None' (no number/currency field on the Leads Standard layout), so totals were checked on the Deals board. Leads first-load header counts (No Answer 8, Busy 21, Switched Off 6, Wrong Number 7, Interested 13, Follow Up 3, WhatsApp 1, Cold Customer 1, QA CV Temp 1, Unaccounted 60) equal the board-summary the page requested, Unaccounted = unaccounted; Interested 13 = list filtered to Interested (13). Deals 'QA CV deals-by-stage' (Stage, Amount): qualification 35 / 5,516,962,114,653.99, negotiation 9 / 16,893,538,880.00, proposal 3 / 1,000,025,000.01, closed_won 2 / 85,000.00 - identical to board-summary counts and sums. Note: the page calls board-summary with the list view id (All Leads) as view_id; calling it with the Kanban view's own id returns 404.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I02",
+   "title": "Load more brings in 100 cards at a time until the column holds every record in its header count",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T13:50:00Z",
+   "endedAt": "2026-10-05T13:50:00Z",
+   "durationMs": 0,
+   "observed": "No Lead Status column holds more than 100 records (largest: Unaccounted 60, Busy 21); on Deals the largest column is qualification with 35. Load more / 100-card paging cannot be exercised on NDC-Staging without bulk-creating records.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I03",
+   "title": "Records with no value in the categorize-by field appear in the Unaccounted column",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T13:51:00Z",
+   "endedAt": "2026-10-05T13:53:00Z",
+   "durationMs": 120000,
+   "observed": "No seed had an empty Lead Status, so QA CV L15's Lead Status was cleared for the test (restored to No Answer afterwards). On 'QA CV kb-status' QA CV L15 is in the Unaccounted column; Unaccounted header 60 = board-summary unaccounted 60.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I04",
+   "title": "A record holding a value removed from the pick list is flagged on the board",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T13:53:00Z",
+   "endedAt": "2026-10-05T13:55:00Z",
+   "durationMs": 120000,
+   "observed": "QA CV L12 holds 'QA CV Temp', a value added to Lead Status and then removed earlier in this run. Board 'QA CV kb-status': L12 is still shown, in an extra column 'QA CV Temp' (count 1) placed before Unaccounted. FAIL (reproduced from 4 Oct): no 'This value is no longer an option of the field' marker anywhere - not in text, title, aria-label or a tooltip on the column header or the card; the stale column looks like any normal value column and offers 'Create Lead'.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-I04-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-I05",
+   "title": "A Deals board by Stage shows the pipeline picker and each stage's probability",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T13:56:00Z",
+   "endedAt": "2026-10-05T14:00:00Z",
+   "durationMs": 240000,
+   "observed": "Deals Standard layout has one pipeline 'Standard' (qualification, needs_analysis, proposal, negotiation, closed_won, closed_lost); the Test layout has two ('Standard Pipeline', 'Test-Pipeline copy'). Board 'QA CV deals-by-stage' (Standard) and 'QA CV deals-test-layout' (Test): no pipeline picker on either board (only the Layout picker); both show all 11 Stage pick-list values (test-01, test-02, qualification … closed_lost_to_competition) instead of the chosen pipeline's stages; no stage header shows 'Probability N%' (the pipeline API carries no probability). Column titles show raw stage keys (needs_analysis, closed_won).",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-I05-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-I06",
+   "title": "Dragging a QA CV lead to another status saves the change like a normal edit and updates both columns",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:00:00Z",
+   "endedAt": "2026-10-05T14:02:00Z",
+   "durationMs": 120000,
+   "observed": "QA CV L03 set to Interested for the test (original Switched Off, restored). Board: Interested 14, Follow Up 3. Mouse drag L03 Interested -> Follow Up: one PATCH on the record, toast 'Record updated successfully'; headers Interested 13, Follow Up 4, card in Follow Up; board-summary Interested 13 / Follow Up 4; API lead_status Follow Up. Audit events list the change (actor Mahmoud Mohamed, lead_status Interested -> Follow Up). No active email workflow on Leads/Deals.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I07",
+   "title": "A record cannot be dragged into Unaccounted when the categorize-by field is required",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T14:02:00Z",
+   "endedAt": "2026-10-05T14:03:00Z",
+   "durationMs": 60000,
+   "observed": "Precondition not met: Lead Status is not required on the Leads layout (required=false). Observation: dragging QA CV L04 (Interested) to Unaccounted sends a PATCH and clears Lead Status ('Record updated successfully', API empty), but right after the drop the card was still drawn under Interested. L04 restored to Wrong Number.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I08",
+   "title": "A drag on the blueprint-governed Deals Stage never bypasses the Blueprint",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T14:03:00Z",
+   "endedAt": "2026-10-05T14:20:00Z",
+   "durationMs": 1020000,
+   "observed": "board-summary group_by_blueprint_governed = true for Deals Stage, but the only active blueprint ('AEX-01', another operator's) has entry criteria Amount >= 15,000 AND Deal Name contains 'AEX-01' - no QA CV deal is under it. Moving QA CV D02 qualification -> negotiation on the board saved directly (PATCH 200, no transition dialog), which is expected for a record outside the blueprint. Testing a record under the blueprint would mean entering the other operator's blueprint; D02 restored to qualification.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I09",
+   "title": "Dragging a deal to Closed Won or Closed Lost opens the closing dialog and enforces its mandatory fields",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T14:05:00Z",
+   "endedAt": "2026-10-05T14:08:00Z",
+   "durationMs": 180000,
+   "observed": "QA CV D03 (negotiation) moved to closed_lost on the board: no closing dialog opens; a PATCH is sent and refused - toast 'Closing Date is required to close a deal.'; the card returns to negotiation and Stage is unchanged. Same for closed_won. The user is never offered a dialog to fill the mandatory closing fields, so a deal cannot be closed from the board at all.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-I09-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-I10",
+   "title": "A drag made before the board finishes loading is refused with a message",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T14:22:00Z",
+   "endedAt": "2026-10-05T14:23:30Z",
+   "durationMs": 90000,
+   "observed": "Network throttled through the DevTools protocol (2 s latency, 50 KB/s), board reloaded: cards first appeared after 51 s, with no loading indicator left; a keyboard move of QA CV L05 to Follow Up at that moment was accepted (PATCH, 'Dropped … into Follow Up.'). Cards only become draggable once the board has loaded, so a drag 'before loading finishes' and the refusal message could not be produced (same as 4 Oct). L05 restored to Interested.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I11",
+   "title": "Two sessions moving the same card never lose an update",
+   "status": "failed",
+   "severity": "Medium",
+   "startedAt": "2026-10-05T14:20:30Z",
+   "endedAt": "2026-10-05T14:21:30Z",
+   "durationMs": 60000,
+   "observed": "Two tabs (same user, separate pages) on 'QA CV kb-status'. Tab A: QA CV L06 Interested -> Follow Up (saved). Tab B, not refreshed (still showing L06 in Interested): moved L06 to WhatsApp Follow Up -> PATCH accepted, 'Record updated successfully'. Final Lead Status WhatsApp Follow Up; audit shows Interested->Follow Up then Follow Up->WhatsApp Follow Up. No conflict, no 'Could not move the record' and no board refresh in tab B - the stale move silently overwrote A's change (the PATCH carries no version check). L06 restored to Interested.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-I11-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-I12",
+   "title": "Dropping a card back on its own column sends no update",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:08:00Z",
+   "endedAt": "2026-10-05T14:09:00Z",
+   "durationMs": 60000,
+   "observed": "QA CV L07 dragged ~60 px and dropped back inside Interested: no PATCH/PUT/POST on records, Interested count 13 -> 13, Lead Status still Interested.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I13",
+   "title": "A card can be moved with the keyboard under the same rules as dragging",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:09:00Z",
+   "endedAt": "2026-10-05T14:10:00Z",
+   "durationMs": 60000,
+   "observed": "QA CV L08 card focused; Enter picks it up, ArrowRight -> live region '… is over Follow Up.', Enter drops -> 'Dropped … into Follow Up.', 'Record updated successfully', PATCH 200; Interested 13 -> 12, Follow Up 3 -> 4; API Follow Up (same save path as a drag). The Unaccounted half does not apply (Lead Status not required). Accessibility note (L05): announcements read the record UUID, not its name. L08 restored.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I14",
+   "title": "Columns collapse and expand singly and all at once, and accept drops while collapsed",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:01:00Z",
+   "endedAt": "2026-10-05T14:03:00Z",
+   "durationMs": 120000,
+   "observed": "Interested collapsed and expanded; 'Collapse all columns' collapses all 18, 'Expand all columns' expands all 18. Follow Up collapsed; QA CV L09 dragged onto the collapsed Follow Up column -> PATCH; after expanding, counts Interested 13 -> 12, Follow Up 3 -> 4 and the API holds Follow Up. L09 restored to Interested.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I15",
+   "title": "Creating a record from a column footer pre-sets the column value, layout and pipeline",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:24:00Z",
+   "endedAt": "2026-10-05T14:25:30Z",
+   "durationMs": 90000,
+   "observed": "Deals board 'QA CV deals-by-stage': the negotiation column's 'Create Deal' link opens /records/new?layout=<Standard>&prefill_field=stage&prefill_value=negotiation; form shows Layout Standard, Pipeline Standard, Stage negotiation (Probability prefilled 70). Saved 'QA CV D09' -> 201; API stage negotiation, pipeline = Standard (5170500c…).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I16",
+   "title": "Select all loaded selects exactly the cards loaded in that column",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:15:00Z",
+   "endedAt": "2026-10-05T14:16:00Z",
+   "durationMs": 60000,
+   "observed": "Interested has 13 cards loaded; 'Select all loaded records in Interested' -> bulk bar '13 selected'; 0 cards selected in other columns; unticking clears the bar. Accessibility issue (L05): every card checkbox carries the column select-all name 'Select all loaded records in <column>'.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I17",
+   "title": "A board shows only the deals the viewer can access, and totals cover only those deals",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T14:23:30Z",
+   "endedAt": "2026-10-05T14:24:30Z",
+   "durationMs": 60000,
+   "observed": "'QA CV deals-by-stage' shared with Everyone (reverted to private afterwards). Test user 1's board, Deals list (49) and board-summary all agree (qualification 35, negotiation 9, proposal 3, closed_won 2, same sums) - but they are identical to ALT1's: test user 1 can open every deal, so the precondition 'some QA CV deals are not accessible to USER' is not met and the restriction cannot be shown.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I18",
+   "title": "A change made elsewhere shows in the board headers within 30 seconds without a reload",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:16:00Z",
+   "endedAt": "2026-10-05T14:17:00Z",
+   "durationMs": 60000,
+   "observed": "Board open with Interested 13 / Follow Up 3. QA CV L10 changed to Follow Up from outside the board (API PATCH 200). Without reload the headers updated after 23 s: Interested 12, Follow Up 4. L10 restored.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I19",
+   "title": "Opening a card and going back restores the same Kanban view, layout, pipeline and scroll",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:24:30Z",
+   "endedAt": "2026-10-06T08:00:00Z",
+   "durationMs": 63330000,
+   "observed": "Deals 'QA CV deals-by-stage' (only one pipeline on the Standard layout), board scrolled 600 px right. Open QA CV D07 -> browser Back, and again with the in-app back button: same Kanban view and layout restored; the board's horizontal scroll returns to 0. list-preferences: lastView kanban, lastKanbanViewId = the view (no lastKanbanPipelineId - single pipeline). Zoho (live, Deals Kanban, scrolled 600 px, open card, Back) also returns with scroll 0, so TAVI matches the reference; the case's scroll-restore expectation looks stricter than Zoho.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-I20",
+   "title": "A filter or search applies the same way to the column headers and the cards",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:18:00Z",
+   "endedAt": "2026-10-06T08:00:00Z",
+   "durationMs": 63720000,
+   "observed": "Filter: Company contains 'QA' -> No Answer 1, Busy 1, Wrong Number 1, Interested 1 (cards loaded = header counts) = board-summary called with the same filters = list total 4. The board has no record search box; Zoho's Deals Kanban (checked live) has none either - only the global 'Search records' and the filter panel - so the search half of the case does not apply to this design.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-J01",
+   "title": "A module with no split views shows the empty state and a way to create one",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:28:00Z",
+   "endedAt": "2026-10-05T14:30:00Z",
+   "durationMs": 120000,
+   "observed": "Leads had 0 split views (API). 'Split view' opens the 'Create Split View' form directly (Name, View based on Picklist/User or Criteria, Split by, Splits 'The selection is limited to a maximum of 10 values.', Select columns, Share with); Cancel closes it. No 'No split views yet' empty state - Zoho does the same (goes straight to the create form), so this matches the reference and the case's expected text looks outdated.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-J02",
+   "title": "A split view shows one section per value with counts, collapse and per-section columns",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:32:00Z",
+   "endedAt": "2026-10-05T14:45:00Z",
+   "durationMs": 780000,
+   "observed": "'QA CV split-status' created in the UI split by Lead Status (Busy, Interested, Follow Up): sections Busy 21, Interested 13 (14 after J04), Follow Up 3 = API counts. Collapse/Expand per section works. Edited to split by Owner (3 users): sections 0, 8, 10 = API owner counts. Criteria mode: 'New Split' with its own name, criteria rows and per-split columns ('Apply for all splits'); saving with one split is refused 'A split view needs at least 2 splits.' (criteria splits were not completed - the field picker is a custom control). Columns: in Picklist/User mode a section's 'Section options > Manage columns' opens the whole Edit Split View form and the columns are 'common for all splits' (the same rule and wording as Zoho); per-section columns exist only for criteria splits. Observation: the form saves a split view with zero columns, after which sections show only #, Tags and Source (no record names).",
+   "evidence": []
+  },
+  {
+   "id": "CVS-J03",
+   "title": "A split view refuses too many conditions and values with a message",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T14:40:00Z",
+   "endedAt": "2026-10-05T14:50:00Z",
+   "durationMs": 600000,
+   "observed": "Values: the 'Select Splits' chooser disables the 11th value once 10 are ticked, with 'The selection is limited to a maximum of 10 values.'; API PATCH with 11 splits -> 422 settings.splits too_many 'A split view may have at most 10 splits.' Criteria: 'Add criteria row' becomes disabled after 10 rows. FAIL: no message is shown for the criteria limit - no text, tooltip, title or aria-describedby (the 4 Oct build had the title 'A maximum of 10 criteria rows is allowed'). Maximums recorded: 10 values, 10 criteria rows.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-J03-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-J04",
+   "title": "The records-per-section setting is applied, and a record created in a section gets that section's value",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:36:00Z",
+   "endedAt": "2026-10-05T14:38:00Z",
+   "durationMs": 120000,
+   "observed": "Records per split = 10 (options 10/25/50): Busy (21) shows 10 rows, '1–10 of 21', 3 pages. 'Create Lead' in the Interested section opens /records/new?…&prefill_field=lead_status&prefill_value=Interested; saved 'QA CV L16' (name QA CV L13 already exists on staging) -> 201, API lead_status Interested; Interested section count 13 -> 14.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K01",
+   "title": "Script payloads in view names and criteria values render as plain text everywhere",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:42:00Z",
+   "endedAt": "2026-10-05T14:52:00Z",
+   "durationMs": 600000,
+   "observed": "Created 'QA CV <img src=x onerror=alert(1)>' as a Leads list view (criterion Full Name contains the payload), a Leads split view and a Deals Kanban view (all 201). Shown as literal text in the Leads picker and selected-view button, Manage custom views, the split chooser, the Deals Kanban chooser and Manage Kanban views (and, from H05, in the Leads Kanban chooser/manage dialog). No <img src=x> element anywhere, no alert/dialog fired, no request to /x. The Audit Log page (/settings/security/audit-log) did not list the view name. Not reached: the delete dialog - in the dropdown layout the picker row menu's 'Delete view' does nothing (no dialog, view kept; same defect family as G04), and the Work Queue step was not run.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K02",
+   "title": "Another user's private view cannot be read, changed, deleted, cloned or pinned by its id through any verb",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:44:00Z",
+   "endedAt": "2026-10-05T14:45:00Z",
+   "durationMs": 60000,
+   "observed": "ALT1's private 'QA CV owner-private'. As test user 1: GET, PATCH {name:'QA CV hacked'}, DELETE, POST …/clone, PUT …/pin, DELETE …/pin and records?view_id all -> 404 NOT_FOUND 'Not Found' with no view data. Editor URL shows the 'not shared with you' message. ALT1's view keeps its name and row_version 1, not in the Recycle Bin; test user 1's list has no such view and no clone.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K03",
+   "title": "A view cannot be moved to another module or reached under another module's path",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:45:00Z",
+   "endedAt": "2026-10-05T14:45:30Z",
+   "durationMs": 30000,
+   "observed": "'QA CV k3' on Leads. PATCH {module_id: Deals} -> 200 but ignored (module stays Leads). GET/PATCH/DELETE under /modules/{Deals}/views/{v} -> 404 each. GET under Leads -> 200 'QA CV k3', module Leads; not listed among Deals views.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K04",
+   "title": "Unknown, deleted and private view ids all return the same 404 body",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:45:30Z",
+   "endedAt": "2026-10-05T14:46:00Z",
+   "durationMs": 30000,
+   "observed": "As test user 1: random UUID, the deleted 'QA CV k4-deleted' (in the Recycle Bin) and ALT1's private view all return 404 with the identical body {success:false, error NOT_FOUND 'Not Found'} and identical headers (ignoring date/request ids). Nothing distinguishes existing, deleted and private.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K05",
+   "title": "A user without Manage Shared Views cannot make an own view public or shared through the API",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:46:00Z",
+   "endedAt": "2026-10-05T14:46:30Z",
+   "durationMs": 30000,
+   "observed": "Test user 2 (profile 'test', no Manage Shared Views) created private 'QA CV k5' (201). PATCH visibility everyone -> 403 PERMISSION_DENIED; PATCH selected + [ALT1] -> 403. View stays private with no shared users; ALT1 does not see it.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K06",
+   "title": "Sharing with a user of another tenant or a non-existent user is rejected",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T14:46:30Z",
+   "endedAt": "2026-10-05T14:47:00Z",
+   "durationMs": 30000,
+   "observed": "Random user id part passes: PATCH 'QA CV k6' selected + 00000000-…-0001 -> 422 shared_user_ids[0] unknown_principal 'User not found.'; POST 'QA CV k6-new' with it -> 422, not created; k6 stays private with no shared users. The other-tenant user part was not run - the other-tenant account file was not cleared for use.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K07",
+   "title": "A public view filtering on a field hidden from the viewer follows the Q13 decision and never exposes the value",
+   "status": "failed",
+   "severity": "High",
+   "startedAt": "2026-10-05T14:46:15Z",
+   "endedAt": "2026-10-05T14:48:04Z",
+   "durationMs": 109000,
+   "observed": "Company is hidden from test user 1 (User profile). QA CV L03 temporarily owned by test user 1 (restored afterwards) so the record is visible but its Company is not. ALT1's 'QA CV k7' (Everyone) filters Company equals <L03's company>. As test user 1: the editor shows the banner 'Some fields in this view's criteria are deleted or hidden from you: company. The view still filters on them.' BUT the criterion row still displays the hidden field and its actual value (Company Equals 'شركة الأمل') in the value box; GET /modules/{Leads}/views/{k7} also returns settings.criteria with the value in plain text; and the grid shows QA CV L03 as the match - so test user 1 learns L03's hidden Company value from the UI and the API.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-K07-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-K08",
+   "title": "board-summary refuses to group or total by a field hidden from the viewer",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T14:47:00Z",
+   "endedAt": "2026-10-05T14:47:30Z",
+   "durationMs": 30000,
+   "observed": "Precondition not met: no Deals pick list or number field is hidden from test user 1 (the fields in test user 1's Deals records equal ALT1's), so board-summary on hidden fields cannot be tried.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K09",
+   "title": "Oversized view payloads are rejected with 413 or 422, never a 500",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:47:30Z",
+   "endedAt": "2026-10-05T14:48:00Z",
+   "durationMs": 30000,
+   "observed": "POST with a 1 MB name -> 422 name too_long 'A view name may be at most 120 characters.'; POST 'QA CV k9-cols' with 10,000 columns -> 422 settings.columns too_many 'A view may show at most 30 columns.'; PATCH 'QA CV k9' with 10,000 columns -> 422, columns unchanged (2). No 500, no stack trace; GET views afterwards 200 in 393 ms.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K10",
+   "title": "A PATCH preflight from an untrusted origin is not allowed",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:48:00Z",
+   "endedAt": "2026-10-05T14:48:10Z",
+   "durationMs": 10000,
+   "observed": "OPTIONS preflight with Origin https://evil.example -> 204 with no Access-Control-Allow-Origin/Credentials/Methods (a browser blocks the PATCH). Control Origin https://staging-crm.taviportal.com -> ACAO echoed, methods PATCH. (https://crm.taviportal.com is not allowed on the staging API.)",
+   "evidence": []
+  },
+  {
+   "id": "CVS-K11",
+   "title": "A user of another tenant can neither read nor change NDC-Staging views",
+   "status": "blocked",
+   "severity": null,
+   "startedAt": "2026-10-05T14:48:10Z",
+   "endedAt": "2026-10-05T14:48:10Z",
+   "durationMs": 0,
+   "observed": "Not run: needs a signed-in user of another tenant; the other-tenant account file (AnywareStagingTempAccounts.txt) was not cleared for use in this session.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-L01",
+   "title": "The picker, editor, manage pages, Kanban and Split are fully translated in Arabic, including user-count plurals",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T14:51:00Z",
+   "endedAt": "2026-10-05T14:55:00Z",
+   "durationMs": 240000,
+   "observed": "ALT1 switched to Arabic (dir=rtl, lang=ar), restored to English afterwards. Translated: picker button 'طرق العرض المخصصة', picker items ('كل Leads*', 'Leads الخاصة بي*' …), editor ('طريقة عرض مخصصة جديدة لـ Leads', 'تحديد المعايير'), Manage page ('إدارة طرق العرض المخصصة لـ Leads'), Kanban/Split controls. Plurals in Shared To: 1 'مستخدم واحد', 2 'مستخدمان', 3 '3 مستخدمين' - correct forms (the '3' uses a Latin digit while dates use Arabic-Indic digits). FAIL - English left in the Arabic UI: the record count reads '٥٠ records' ('records' untranslated) and the toolbar sort label reads 'ترتيب: created_at desc' (raw field key and direction). Module and field names (Leads, Deals, Full Name) are tenant data and were not counted.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-L01-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-L02",
+   "title": "In Arabic the picker, tabs, criteria rows and Kanban columns are mirrored",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T14:51:00Z",
+   "endedAt": "2026-10-05T14:55:00Z",
+   "durationMs": 240000,
+   "observed": "Arabic session: document dir=rtl. Deals board 'QA CV deals-by-stage': first stage (test-01) is the right-most column (x 876), next ones run right to left (test-02 576, qualification 276 …). Leads Kanban 'QA CV لوحة': No Answer right-most, then Busy, Switched Off leftwards. Picker opens from the right side (dropdown layout; the account's tabs layout was not active). Direction icons were not individually inspected.",
+   "evidence": []
+  },
+  {
+   "id": "CVS-L03",
+   "title": "Probability, Layout and Pipeline labels are translated in Arabic",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T14:51:00Z",
+   "endedAt": "2026-10-05T14:53:00Z",
+   "durationMs": 120000,
+   "observed": "Deals board in Arabic: board layout picker 'التخطيط' (translated) but the header layout picker keeps the accessible name 'Layout'; the count reads '٥٠ records'. No pipeline picker and no 'Probability …%' in stage headers in either language (see I05), so those two labels cannot be checked. (Reproduced from 4 Oct.)",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-L03-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-L04",
+   "title": "The picker, view editor, pattern editor and Kanban card move work with the keyboard alone",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T14:55:44Z",
+   "endedAt": "2026-10-05T14:56:14Z",
+   "durationMs": 30000,
+   "observed": "Keyboard only: focus 'Custom views', Enter -> focus moves to 'Search views'; typing filters; ArrowDown does NOT move into the list (focus stays in the search box); Tab reaches 'QA CV count' and Enter opens it. Editor: name typed, 'Filter by criteria' toggled with Space, 'Add criteria row' with Enter adds a row but focus is lost to the page body. 'Edit Pattern' opens with focus in the pattern box. Kanban card move by keyboard works (I13). FAIL: focus lost after 'Add criteria row'; no arrow-key navigation in the picker menu (reproduced from 4 Oct).",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-L04-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-L05",
+   "title": "View and Kanban controls expose meaningful accessible names",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T14:56:14Z",
+   "endedAt": "2026-10-05T14:56:35Z",
+   "durationMs": 21000,
+   "observed": "Names present: Leads picker 'Custom views', Deals 'Choose a Kanban view', 'Collapse all columns'; 0 unnamed buttons; no 'Load more' (no column over 100). FAIL: (1) every card checkbox carries its column's select-all name ('Select all loaded records in qualification' ×35, negotiation ×10 …); (2) every column button is just 'Collapse column', without the column name; (3) the drag live region reads the record UUID ('77828678-… is over needs_analysis.') instead of the record name. (Reproduced from 4 Oct.)",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-L05-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-L06",
+   "title": "At 390 px wide the picker and editor are usable with no horizontal page scroll",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T14:56:35Z",
+   "endedAt": "2026-10-05T14:56:57Z",
+   "durationMs": 22000,
+   "observed": "Viewport 390x844 (dropdown picker layout): document scrollWidth 390 (no horizontal page scroll); picker button opens by tap and lists views; editor usable - 'QA CV mobile' with Full Name starts with 'QA CV L' saved (201), editor scrollWidth 390. FAIL: the 'Create Lead' / 'More create options' buttons are cut off at the right edge of the header (only 'Crea… Lea…' visible). The 4 Oct tabs-layout break (0 px wide tab list) was not re-checked because this account is in dropdown layout.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-L06-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-L07",
+   "title": "Core picker, create-view and Kanban flows behave the same in Edge, Chrome and Firefox",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T14:57:39Z",
+   "endedAt": "2026-10-05T15:03:15Z",
+   "durationMs": 336000,
+   "observed": "Same flow per browser (fresh sign-in each): picker search + switch to 'QA CV count'; create 'QA CV chrome/edge/firefox' (Full Name starts with 'QA CV L0') -> 201, 9 rows; Kanban 'QA CV kb-status' QA CV L01 No Answer -> Busy -> No Answer (PATCH 200 ×2, final No Answer). Chrome 131.0.6778.205 and Edge 154.0.4258.53: identical, only the unrelated 403 on /telephony/status in the console. Firefox 153.0 (Playwright build): identical results but a React '[ErrorBoundary] … Lazy@unknown' console error (reproduced from 4 Oct). Sign-out step skipped (a new sign-in revokes the previous session anyway). Note: the staging bundle changed during the run (index-Bzy9m5yg.js).",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-L07-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-L08",
+   "title": "A list view's first page loads within 1.5 s at p95 on Leads and Deals",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T15:04:12Z",
+   "endedAt": "2026-10-05T15:07:06Z",
+   "durationMs": 174000,
+   "observed": "20 reloads each, navigation -> first row with content (Chromium, cache on, another operator active on the tenant). All Leads (128 records): p95 9125 ms, median 4122, min 2851, max 10116. All Deals (50 records): p95 3300 ms, median 2585, min 1945, max 3696. Target p95 <= 1.5 s missed on both (4 Oct: Leads p95 6826, Deals 3885).",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-L08-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-L09",
+   "title": "Kanban column headers and first cards render within 2 s at p95",
+   "status": "failed",
+   "severity": "Low",
+   "startedAt": "2026-10-05T15:07:06Z",
+   "endedAt": "2026-10-05T15:08:38Z",
+   "durationMs": 92000,
+   "observed": "Deals Kanban 'QA CV deals-by-stage' (Stage, Amount; 12 columns), 20 reloads until all column headers with Amount totals and at least one card are shown: p95 5100 ms, median 2290, min 1261, max 26045. Target 2 s p95 missed.",
+   "evidence": [
+    "bugs/screenshots/owner-112040-7855-L09-vs-zoho.png"
+   ]
+  },
+  {
+   "id": "CVS-L10",
+   "title": "With 15 pinned and 50 other views, the picker opens in under 500 ms and search stays responsive",
+   "status": "passed",
+   "severity": null,
+   "startedAt": "2026-10-05T15:08:38Z",
+   "endedAt": "2026-10-05T15:09:33Z",
+   "durationMs": 55000,
+   "observed": "65 'QA CV perf-NN' views created via API, perf-01…15 pinned (15 pinned; 173 Leads list views in total). Picker open (click -> search box + list stable 2 frames), 10 times: median 110 ms, max 133 ms (< 500 ms). Search 'perf-4' -> only perf-40…49 immediately; 'zzz' -> 'No views match.' immediately. All 15 unpinned afterwards.",
+   "evidence": []
+  }
+ ],
+ "defects": [
+  {
+   "n": 1,
+   "id": "CVS-D08",
+   "severity": "High",
+   "title": "Date-time 'today/yesterday/tomorrow' criteria use the UTC day instead of the tenant timezone (Cairo)",
+   "evidence": "bugs/screenshots/owner-112040-7855-D08-vs-zoho.png"
+  },
+  {
+   "n": 2,
+   "id": "CVS-E12",
+   "severity": "High",
+   "title": "A user without the review permission can filter by review_status through the views API (condition accepted and applied), exposing review data",
+   "evidence": "bugs/screenshots/owner-112040-7855-E12-vs-zoho.png"
+  },
+  {
+   "n": 3,
+   "id": "CVS-K07",
+   "severity": "High",
+   "title": "A criterion on a field hidden from the viewer exposes its value in the view editor and the view API",
+   "evidence": "bugs/screenshots/owner-112040-7855-K07-vs-zoho.png"
+  },
+  {
+   "n": 4,
+   "id": "CVS-B14",
+   "severity": "Medium",
+   "title": "?view= with a deleted or foreign view ID falls back to the last-used view instead of All Leads",
+   "evidence": "bugs/screenshots/owner-112040-7855-B14-vs-zoho.png"
+  },
+  {
+   "n": 5,
+   "id": "CVS-B15",
+   "severity": "Medium",
+   "title": "List preferences changed in two browser tabs: the later write silently overwrites the earlier one (lost update, no version conflict)",
+   "evidence": "bugs/screenshots/owner-112040-7855-B15-vs-zoho.png"
+  },
+  {
+   "n": 6,
+   "id": "CVS-D05",
+   "severity": "Medium",
+   "title": "View API accepts non-numeric Amount values ('abc', '15,000', '1e9') and stores them as raw strings that match nothing",
+   "evidence": "bugs/screenshots/owner-112040-7855-D05-vs-zoho.png"
+  },
+  {
+   "n": 7,
+   "id": "CVS-D16",
+   "severity": "Medium",
+   "title": "Lookup criteria in the view editor take free text only (no record picker); a typed record name is saved literally and matches nothing",
+   "evidence": "bugs/screenshots/owner-112040-7855-D16-vs-zoho.png"
+  },
+  {
+   "n": 8,
+   "id": "CVS-D19",
+   "severity": "Medium",
+   "title": "View API accepts an operator that does not fit the field type (Amount 'contains' -> 201)",
+   "evidence": "bugs/screenshots/owner-112040-7855-D19-vs-zoho.png"
+  },
+  {
+   "n": 9,
+   "id": "CVS-D24",
+   "severity": "Medium",
+   "title": "Arabic UI: the criteria pattern '(1 or 2) and (3 or 4)' is displayed as '( and (3 or 4) (or 2 1) )'",
+   "evidence": "bugs/screenshots/owner-112040-7855-D24-vs-zoho.png"
+  },
+  {
+   "n": 10,
+   "id": "CVS-D25",
+   "severity": "Medium",
+   "title": "'Last Activity' in view criteria is the record's modified time; adding a note does not update it",
+   "evidence": "bugs/screenshots/owner-112040-7855-D25-vs-zoho.png"
+  },
+  {
+   "n": 11,
+   "id": "CVS-E2E-1",
+   "severity": "Medium",
+   "title": "After sign-out/sign-in Leads does not reopen the working view the user had open",
+   "evidence": "bugs/screenshots/owner-112040-7855-E2E-1-vs-zoho.png"
+  },
+  {
+   "n": 12,
+   "id": "CVS-E09",
+   "severity": "Medium",
+   "title": "Deleted criteria field: no banner on the view's list page (only in the editor, by API name) while the view keeps filtering on the deleted field",
+   "evidence": "bugs/screenshots/owner-112040-7855-E09-vs-zoho.png"
+  },
+  {
+   "n": 13,
+   "id": "CVS-F01",
+   "severity": "Medium",
+   "title": "Manage Columns on a view with chosen columns offers no hidden/available fields, so a column (e.g. Comment) cannot be added",
+   "evidence": "bugs/screenshots/owner-112040-7855-F01-vs-zoho.png"
+  },
+  {
+   "n": 14,
+   "id": "CVS-F03",
+   "severity": "Medium",
+   "title": "Manage Columns cannot add a column to a view (so a new column cannot be saved to the view)",
+   "evidence": "bugs/screenshots/owner-112040-7855-F03-vs-zoho.png"
+  },
+  {
+   "n": 15,
+   "id": "CVS-F10",
+   "severity": "Medium",
+   "title": "Row selection is kept when switching to another view (bar still '3 selected')",
+   "evidence": "bugs/screenshots/owner-112040-7855-F10-vs-zoho.png"
+  },
+  {
+   "n": 16,
+   "id": "CVS-G04",
+   "severity": "Medium",
+   "title": "Clone in the picker row menu (dropdown layout) does nothing",
+   "evidence": "bugs/screenshots/owner-112040-7855-G04-vs-zoho.png"
+  },
+  {
+   "n": 17,
+   "id": "CVS-G06",
+   "severity": "Medium",
+   "title": "The 15-pinned-views limit is not enforced (16th pin accepted in UI and API)",
+   "evidence": "bugs/screenshots/owner-112040-7855-G06-vs-zoho.png"
+  },
+  {
+   "n": 18,
+   "id": "CVS-H14",
+   "severity": "Medium",
+   "title": "Records whose value is beyond the 75-column cap vanish from the Kanban board; board-summary says truncated=false",
+   "evidence": "bugs/screenshots/owner-112040-7855-H14-vs-zoho.png"
+  },
+  {
+   "n": 19,
+   "id": "CVS-I04",
+   "severity": "Medium",
+   "title": "A record holding a removed pick-list value is shown in an unmarked extra column - no 'no longer an option' flag",
+   "evidence": "bugs/screenshots/owner-112040-7855-I04-vs-zoho.png"
+  },
+  {
+   "n": 20,
+   "id": "CVS-I05",
+   "severity": "Medium",
+   "title": "Deals Kanban by Stage has no pipeline picker, ignores the pipeline's stages and shows no stage probability",
+   "evidence": "bugs/screenshots/owner-112040-7855-I05-vs-zoho.png"
+  },
+  {
+   "n": 21,
+   "id": "CVS-I09",
+   "severity": "Medium",
+   "title": "Dropping a deal on Closed Won/Lost opens no closing dialog - the move just fails with 'Closing Date is required'",
+   "evidence": "bugs/screenshots/owner-112040-7855-I09-vs-zoho.png"
+  },
+  {
+   "n": 22,
+   "id": "CVS-I11",
+   "severity": "Medium",
+   "title": "Kanban move from a stale board overwrites a newer change with no conflict check",
+   "evidence": "bugs/screenshots/owner-112040-7855-I11-vs-zoho.png"
+  },
+  {
+   "n": 23,
+   "id": "CVS-C02",
+   "severity": "Low",
+   "title": "View name validation messages are never shown: empty/space-only names just disable Save, and a 121-character name is silently cut to 120",
+   "evidence": "bugs/screenshots/owner-112040-7855-C02-vs-zoho.png"
+  },
+  {
+   "n": 24,
+   "id": "CVS-C09",
+   "severity": "Low",
+   "title": "A view's grid shows two columns that were not chosen (Tags and Source are always appended)",
+   "evidence": "bugs/screenshots/owner-112040-7855-C09-vs-zoho.png"
+  },
+  {
+   "n": 25,
+   "id": "CVS-C12",
+   "severity": "Low",
+   "title": "Page size 200 is accepted by the server but cannot be chosen in the editor; with 200 stored the editor shows 'Select…' and the grid's Rows per page reads 10",
+   "evidence": "bugs/screenshots/owner-112040-7855-C12-vs-zoho.png"
+  },
+  {
+   "n": 26,
+   "id": "CVS-D14",
+   "severity": "Low",
+   "title": "A pick list value removed from the field is not shown in the view editor (blank 'Value', no warning), although the view still filters on it",
+   "evidence": "bugs/screenshots/owner-112040-7855-D14-vs-zoho.png"
+  },
+  {
+   "n": 27,
+   "id": "CVS-D21",
+   "severity": "Low",
+   "title": "An unbracketed criteria pattern is stored and redisplayed as typed instead of in its fully bracketed form",
+   "evidence": "bugs/screenshots/owner-112040-7855-D21-vs-zoho.png"
+  },
+  {
+   "n": 28,
+   "id": "CVS-D22",
+   "severity": "Low",
+   "title": "Upper-case 'AND' pattern is accepted by the editor and the API (case expects it to be rejected)",
+   "evidence": "bugs/screenshots/owner-112040-7855-D22-vs-zoho.png"
+  },
+  {
+   "n": 29,
+   "id": "CVS-E07",
+   "severity": "Low",
+   "title": "Module with no related modules: the editor still shows an empty related block and an enabled 'Add condition'",
+   "evidence": "bugs/screenshots/owner-112040-7855-E07-vs-zoho.png"
+  },
+  {
+   "n": 30,
+   "id": "CVS-F04",
+   "severity": "Low",
+   "title": "List preferences accept more than 50 column overrides (51 stored); no oldest-dropped or 4xx rule",
+   "evidence": "bugs/screenshots/owner-112040-7855-F04-vs-zoho.png"
+  },
+  {
+   "n": 31,
+   "id": "CVS-F06",
+   "severity": "Low",
+   "title": "Toolbar sort label shows API names ('Sort: amount desc') instead of the field label and direction",
+   "evidence": "bugs/screenshots/owner-112040-7855-F06-vs-zoho.png"
+  },
+  {
+   "n": 32,
+   "id": "CVS-F07",
+   "severity": "Low",
+   "title": "Rows per page offers 10/25/50/100 only - 200 is missing",
+   "evidence": "bugs/screenshots/owner-112040-7855-F07-vs-zoho.png"
+  },
+  {
+   "n": 33,
+   "id": "CVS-H05",
+   "severity": "Low",
+   "title": "Kanban view form: an over-long name gets only 'The view is not valid.' - the 120-character limit is not shown or enforced in the field",
+   "evidence": "bugs/screenshots/owner-112040-7855-H05-vs-zoho.png"
+  },
+  {
+   "n": 34,
+   "id": "CVS-H10",
+   "severity": "Low",
+   "title": "Kanban chooser does not label other users' views with 'Shared by <name>'",
+   "evidence": "bugs/screenshots/owner-112040-7855-H10-vs-zoho.png"
+  },
+  {
+   "n": 35,
+   "id": "CVS-J03",
+   "severity": "Low",
+   "title": "Split view criteria: the 'Add criteria row' button silently disables at 10 rows - no limit message",
+   "evidence": "bugs/screenshots/owner-112040-7855-J03-vs-zoho.png"
+  },
+  {
+   "n": 36,
+   "id": "CVS-L01",
+   "severity": "Low",
+   "title": "Arabic UI: 'records' in the record count and the sort label's field/direction are not translated",
+   "evidence": "bugs/screenshots/owner-112040-7855-L01-vs-zoho.png"
+  },
+  {
+   "n": 37,
+   "id": "CVS-L03",
+   "severity": "Low",
+   "title": "Arabic: header layout picker accessible name stays 'Layout'; 'records' untranslated",
+   "evidence": "bugs/screenshots/owner-112040-7855-L03-vs-zoho.png"
+  },
+  {
+   "n": 38,
+   "id": "CVS-L04",
+   "severity": "Low",
+   "title": "Keyboard: focus drops to <body> after 'Add criteria row'; picker list has no arrow-key navigation",
+   "evidence": "bugs/screenshots/owner-112040-7855-L04-vs-zoho.png"
+  },
+  {
+   "n": 39,
+   "id": "CVS-L05",
+   "severity": "Low",
+   "title": "Kanban a11y names: card checkboxes reuse the column select-all name, column buttons lack the column name, drag announcements read UUIDs",
+   "evidence": "bugs/screenshots/owner-112040-7855-L05-vs-zoho.png"
+  },
+  {
+   "n": 40,
+   "id": "CVS-L06",
+   "severity": "Low",
+   "title": "At 390 px the 'Create Lead' button is cut off at the right edge",
+   "evidence": "bugs/screenshots/owner-112040-7855-L06-vs-zoho.png"
+  },
+  {
+   "n": 41,
+   "id": "CVS-L07",
+   "severity": "Low",
+   "title": "Firefox: React ErrorBoundary console error from a lazy-loaded component during the view/Kanban flow",
+   "evidence": "bugs/screenshots/owner-112040-7855-L07-vs-zoho.png"
+  },
+  {
+   "n": 42,
+   "id": "CVS-L08",
+   "severity": "Low",
+   "title": "List first page p95 far above 1.5 s (Leads 9.1 s, Deals 3.3 s)",
+   "evidence": "bugs/screenshots/owner-112040-7855-L08-vs-zoho.png"
+  },
+  {
+   "n": 43,
+   "id": "CVS-L09",
+   "severity": "Low",
+   "title": "Kanban headers + first cards p95 5.1 s (target 2 s)",
+   "evidence": "bugs/screenshots/owner-112040-7855-L09-vs-zoho.png"
+  }
+ ]
+}

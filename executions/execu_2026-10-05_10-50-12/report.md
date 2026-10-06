@@ -31,3 +31,7 @@
 | 2 × "QA CV api-public" (created by test user 1) | Deleted by the Owner and purged from the Recycle Bin |
 | "QA CV shared" (renamed "QA CV hijacked" by test user 1) | Deleted by test user 1 in step 4; not in either Recycle Bin |
 | Live views named QA CV api-public / shared / hijacked | None left (checked as the Owner) |
+
+---
+## Correction (6 Oct 2026)
+The Fail verdicts for **CVS-A03** and **CVS-A04** in this run are **withdrawn**. They were run with test user 1, which has the *Manage Shared Views* permission, so the account did not meet the cases' precondition (a user without that permission). Both cases were re-run in **execu_2026-10-05_11-20-40** with test user 2 (no Manage Shared Views) and **passed**. See that run's report and the "Combined Status" sheet.

@@ -1,0 +1,60 @@
+{
+  "out": "../15-api-vs-zoho.png",
+  "date": "6 Oct 2026",
+  "id": "Item 15 (Z15)",
+  "title": "Assignment API coverage",
+  "verdict": "Gap",
+  "panels": [
+    {
+      "side": "TAVI",
+      "caption": "Live API, GET only, 6 Oct 2026",
+      "flag": "FROM THE LIVE API — not a screen",
+      "text": [
+        "Exists: /desk/assignment-rules (list per department, create, update, delete, PUT /order), /desk/departments/{id}/team-assignment, /desk/agent-skills, /desk/agents/{id}/skills, /desk/assignment-backlog (+ /process), /desk/assignment/notification-settings.",
+        "GET /desk/assignment-rules/{id} → 405 (no read of one rule).",
+        "404: /desk/routing-preferences, /desk/round-robin, /desk/skills, /desk/skill-types, /desk/agents/online, /desk/agents/availability, /desk/agents/tickets-count."
+      ],
+      "sources": [
+        "reference/tavi-baseline-2026-10-06.json (probes)"
+      ]
+    },
+    {
+      "side": "Zoho",
+      "caption": "Zoho Desk API",
+      "text": [
+        "Direct assignment rules: list, get, create, update, reorder, on/off.",
+        "Round robin preferences (/routingPreferences), skills, skill types, skill configuration, agent–skill mapping, executeSkillbasedAssignment, recalculateSkills.",
+        "Agent availability (onlineAgents, offlineAgents, agentAvailability) and agentsTicketsCount."
+      ],
+      "sources": [
+        "https://desk.zoho.com/DeskAPIDocument"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "n": "1",
+      "b": "Read one rule",
+      "zoho": "Yes (docs)",
+      "tavi": "405",
+      "match": "Gap"
+    },
+    {
+      "n": "2",
+      "b": "Round-robin preferences, skill types, skills with criteria",
+      "zoho": "Yes (docs)",
+      "tavi": "404",
+      "match": "Gap"
+    },
+    {
+      "n": "3",
+      "b": "Online / offline agents and ticket count per agent",
+      "zoho": "Yes (docs)",
+      "tavi": "404",
+      "match": "Gap"
+    }
+  ],
+  "notes": [
+    "New gap. These follow from items 8, 9 and 11."
+  ]
+}
