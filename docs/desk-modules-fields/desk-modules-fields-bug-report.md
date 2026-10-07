@@ -146,7 +146,7 @@ Evidence paths below are relative to the run folder named in each bug. API-only 
 - **Steps:** Open a layout (or a module) → Layout Permissions / Access Control → Selected Users → "Select principals". Switch the kind to Profiles, then search Users for a Desk agent.
 - **Expected:** Desk profiles (Desk Administrator, Desk Supervisor, Desk Agent, Desk Light Agent, Desk Reviewer) and Desk users.
 - **Actual:** Profiles shows only CRM Admin, Manager, Supervisor, test, User. The Desk agent `mahmoud.mohamed1@taviportal.com` cannot be found. The picker loads `GET /iam/users?app_key=crm`. A layout or module therefore cannot be limited to a Desk profile or Desk user from the UI. (Limits set through the API with the Desk Agent profile are enforced correctly — G10 passed.)
-- **Evidence:** `browser-sessions/mfowner-230945-b20f/screenshots/G10-picker-L-Admin.png`, `A8-selected-users.png`; log `o-g10g.json`
+- **Evidence:** `browser-sessions/mfowner-230945-b20f/screenshots/G10-picker-L-Admin.png`, `browser-sessions/mfowner-230945-b20f/screenshots/A8-selected-users.png`; log `o-g10g.json`
 
 ---
 
