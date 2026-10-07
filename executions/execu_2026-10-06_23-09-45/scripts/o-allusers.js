@@ -1,0 +1,1 @@
+const r = await api('PATCH', '/modules/64625328-d671-4fe8-b323-b63b9d15a46c/access-mode', { access_mode: 'all_users' }); rec('RESTORE.access', r.s < 300 ? 'INFO' : 'FAIL', 'QA MF Open access-mode all_users → ' + r.s); return done();

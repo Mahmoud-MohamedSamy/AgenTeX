@@ -1,0 +1,13 @@
+const cap = []; const onW = r => { const u = r.url(); if (['POST','PUT','PATCH','DELETE'].includes(r.method()) && u.includes('/api/v1/') && !/heartbeat|resolved-batch|presence|\/iam\/auth/.test(u)) cap.push(r.method() + ' ' + u.replace(API, '') + ' ' + (r.postData() || '').slice(0, 300) + ' {hdr dept=' + (r.headers()['x-department-id'] || '') + '}'); };
+page.on('request', onW);
+await go('/settings/modules-and-fields', 6000); await page.getByRole('button', { name: /Create New Module/ }).click(); await sleep(1500);
+await page.getByPlaceholder('e.g. Tickets').fill('QA MF DeptMod'); await page.getByPlaceholder('e.g. Ticket', { exact: true }).fill('QA MF DeptMod1');
+await page.locator('[role=dialog] input[type=radio][value=department]').check({ force: true }); await sleep(300);
+await page.getByRole('button', { name: /^Create$/ }).last().click(); await sleep(5000);
+const m = arr((await api('GET', '/modules')).j.data).find(x => x.pluralForm === 'QA MF DeptMod');
+await go(`/modules/${m.id}`, 8000);
+const btns = (await page.locator('main button:visible, button:visible').allInnerTexts()).map(x => x.trim()).filter(Boolean);
+const s = await shot('C4-deptmod-list');
+page.off('request', onW);
+rec('C4.create', 'INFO', `module ${m && m.id} storageScope=${m && m.storageScope}; list buttons [${btns.join(' | ').slice(0, 400)}]; writes ${cap.join(' || ').slice(0, 500)}`, { shot: s, id: m && m.id });
+return done();

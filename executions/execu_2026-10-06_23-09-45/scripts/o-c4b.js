@@ -1,0 +1,12 @@
+const DM = 'e8845f1d-1153-4c9c-b3a8-a74b08e078dc';
+const cap = []; const onW = r => { const u = r.url(); if (r.method() === 'POST' && u.includes(`/modules/${DM}/records`)) { const h = r.headers(); cap.push('POST ' + u.replace(API, '') + ' ' + (r.postData() || '').slice(0, 400) + ' headers:' + Object.keys(h).filter(k => /dep|org|scope|tenant|x-/.test(k)).map(k => k + '=' + (/(auth|token|key)/i.test(k) ? '[len ' + h[k].length + ']' : h[k])).join(',')); } };
+page.on('request', onW);
+await go(`/modules/${DM}`, 8000);
+await page.getByRole('button', { name: /Create QA MF DeptMod1/ }).click(); await sleep(3000);
+const form = (await txt()).replace(/\s+/g, ' '); const s1 = await shot('C4-create-form');
+await page.getByPlaceholder('Name').first().fill('QA MF dept rec owner'); await sleep(300);
+await page.getByRole('button', { name: /^Save$/ }).last().click(); await sleep(3500);
+page.off('request', onW);
+const L = await api('GET', `/modules/${DM}/records?page_size=10`);
+rec('C4.rec', 'INFO', `form mentions Department=${/Department/.test(form)}; writes ${cap.join(' || ').slice(0, 700)}; list → ${L.s}: ${(L.t || '').slice(0, 400)}`, { shot: s1 });
+return done();

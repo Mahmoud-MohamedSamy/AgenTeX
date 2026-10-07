@@ -1,0 +1,11 @@
+const OPEN = '64625328-d671-4fe8-b323-b63b9d15a46c';
+await go(`/settings/modules-and-fields/${OPEN}`, 6000);
+await page.getByRole('tab', { name: 'Layouts' }).first().click(); await sleep(1500);
+await page.getByRole('button', { name: /Create New Layout/ }).click(); await sleep(3000);
+const gear = page.locator('button', { has: page.locator('svg') }).filter({ hasNotText: /./ });
+const g = page.getByText('New Layout', { exact: true }).locator('xpath=following::button[1]'); await g.click(); await sleep(1500);
+const panel = (await page.locator('[role=dialog]').last().innerText().catch(() => '')).replace(/\s+/g, ' ');
+const inputs = await page.locator('[role=dialog] input, [role=dialog] select, [role=dialog] textarea').evaluateAll(es => es.map(e => e.tagName + ':' + (e.type || '') + ':' + (e.placeholder || e.name || '')));
+const s = await shot('G10-layout-settings');
+rec('G10.dialog', 'INFO', `settings panel: "${panel.slice(0, 500)}"; inputs: ${inputs.join(', ')}`, { shot: s });
+return done();

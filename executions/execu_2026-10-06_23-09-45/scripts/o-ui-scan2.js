@@ -1,0 +1,10 @@
+const OPEN = '64625328-d671-4fe8-b323-b63b9d15a46c';
+await go(`/settings/modules-and-fields/${OPEN}`, 6000);
+await page.getByRole('tab', { name: 'Layouts' }).first().click().catch(() => {}); await sleep(2000);
+const row = page.locator('tr', { hasText: 'Everyone' }).first(); await row.hover(); await sleep(500);
+const labels = await row.locator('button').evaluateAll(bs => bs.map(b => (b.getAttribute('aria-label') || b.title || b.innerText || '').trim()));
+await row.locator('button').last().click(); await sleep(900);
+const menu = (await page.locator('[role=menu], [role=listbox], [data-radix-popper-content-wrapper]').last().innerText().catch(() => '')).replace(/\s+/g, ' | ');
+const s = await shot('scan-layout-row-menu'); await page.keyboard.press('Escape');
+rec('SCAN2', 'INFO', `row buttons: ${JSON.stringify(labels)}; menu: ${menu}`, { shot: s });
+return done();

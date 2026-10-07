@@ -1,0 +1,65 @@
+[
+ {
+  "id": "A2",
+  "verdict": "PASS",
+  "note": "Desk Agent: Setup menu shows [Modules and Fields, Organize Tabs]; /settings/modules-and-fields renders the module table=false; access message=true (\"You don't have permission to view this page\")",
+  "shot": "screenshots/A2-agent-modules-and-fields.png"
+ },
+ {
+  "id": "A3",
+  "verdict": "PASS",
+  "note": "agent POST module → 403; PUT QA MF Open → 403; DELETE QA MF Closed → 403",
+  "severity": "High"
+ },
+ {
+  "id": "A4",
+  "verdict": "PASS",
+  "note": "agent POST field → 403; PUT layout → 403; POST field-permission (unhide own field) → 403",
+  "severity": "High"
+ },
+ {
+  "id": "A5",
+  "verdict": "INFO",
+  "note": "agent GET /modules → 200 (QA MF Open, QA MF Closed visible); GET fields → 200 (field metadata lists the hidden qa_secret: false); GET field-permissions → 200; GET datatypes → 403"
+ },
+ {
+  "id": "H2",
+  "verdict": "PASS",
+  "note": "agent sees 2 records; value of the Don't-Show field \"TOP-SECRET-123\" in API record JSON: false; on the record page: false",
+  "shot": "screenshots/H2-agent-record.png",
+  "severity": "High"
+ },
+ {
+  "id": "H3",
+  "verdict": "PASS",
+  "note": "agent update of the Read-Only field: PATCH → 422; value changed=false",
+  "severity": "High"
+ },
+ {
+  "id": "H4b",
+  "verdict": "INFO",
+  "note": "with Name set to Don't Show for Desk Agent, agent POST record with a name → 422 One or more fields in the payload are not writable for your profile.; stored name visible to agent: false"
+ },
+ {
+  "id": "H10",
+  "verdict": "FAIL",
+  "note": "module permission = Desk Administrator only: listed for the agent=true; GET records → 200; POST record → 201 (CREATED); records page usable=true",
+  "shot": "screenshots/H10-agent-closed-module.png",
+  "severity": "High"
+ },
+ {
+  "id": "J7",
+  "verdict": "PASS",
+  "note": "/settings/data-types: catalogue rendered=false ; /settings/capabilities: catalogue rendered=false; agent POST custom data type → 403; POST capability → 403"
+ },
+ {
+  "id": "A6",
+  "verdict": "PASS",
+  "note": "covered by A2: the agent cannot reach the module pages, so the Field Permissions tab is not reachable"
+ },
+ {
+  "id": "I50",
+  "verdict": "INFO",
+  "note": "per-profile field permissions are the same store as the Field Permissions tab (POST /modules/{id}/field-permissions {fieldId, profileId, permission}); enforcement result in H2/H3"
+ }
+]

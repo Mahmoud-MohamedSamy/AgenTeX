@@ -7,7 +7,7 @@
 | Scope | Modules and Fields, layouts, fields, Organize Tabs and the tab bar, for Tickets, Contacts, Accounts, Products, Calls, Events, Tasks, Contracts and custom modules. **Time Entry skipped** (user, 5 Oct 2026) |
 | Already in Plane | **NDC-1879** "Customization (modules, fields, layouts): features Zoho Desk has that Desk is missing" — 6 items, not repeated below. NDC-1866 item 16 (ticket number format) |
 | Test spec | `docs/desk-modules-fields/spec-desk-modules-fields.md` (Group Z: Z1–Z7 = filed items, Z8–Z19 = items 1–12 below) |
-| Status | **Draft for review. Nothing filed in Plane** (user asked for no Plane changes) |
+| Status | **Filed in Plane as NDC-2174** "Modules and Fields Missings" (7 Oct 2026), with the 12 evidence images attached |
 
 How each side was checked:
 - **Zoho Desk:** opened in headless Edge. Looked at the tab bar, Setup → Modules and Tabs (Manage Modules, New Module form, Organize Tabs, Rename Tabs) and Layouts and Fields (Layouts, the layout editor of every module, Layout Rules, Validation Rules, Fields List, Field Dependencies, Field Permissions, Search Fields, Ticket Status). Also one ticket and one contact. Nothing was saved, created, dragged or switched.
