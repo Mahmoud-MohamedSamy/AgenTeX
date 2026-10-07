@@ -1,0 +1,60 @@
+{
+ "out": "../I47-E2E-2-vs-zoho.png",
+ "date": "7 Oct 2026",
+ "id": "I47-E2E-2",
+ "title": "Field dependency rules (SHOW / REQUIRE) are saved but not applied",
+ "verdict": "Bug",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Agent saved a Hardware record with no serial: \"Record saved successfully\"",
+   "img": "../../../../browser-sessions/mfagent-230945-b20f/screenshots/E2E-2-agent-L-Agent.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 330,
+     "y": 495,
+     "w": 140,
+     "h": 40
+    },
+    {
+     "n": 2,
+     "x": 778,
+     "y": 495,
+     "w": 160,
+     "h": 40
+    },
+    {
+     "n": 3,
+     "x": 970,
+     "y": 640,
+     "w": 285,
+     "h": 54
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Field Dependencies: rules drive the form",
+   "img": "../../../../../../docs/desk-modules-fields/evidence/originals/zoho/15-field-dependencies.png"
+  }
+ ],
+ "rows": [
+  {
+   "b": "When kind = Hardware → SHOW serial",
+   "zoho": "Serial appears only for Hardware",
+   "tavi": "Serial visible before Hardware is chosen",
+   "match": "Differs"
+  },
+  {
+   "b": "When kind = Hardware → REQUIRE serial",
+   "zoho": "Save blocked until serial is filled",
+   "tavi": "Saved with serial empty (1, 2, 3); API also 201",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Same on QA MF Deps (I47): rules SHOW qa_b / REQUIRE qa_c when ctrl = Z are stored (2 rules) but the form and the record API ignore them.",
+  "I48: deleting the rules in the Field Dependency panel shows \"No dependency rules yet\", but after Save both rules are still stored."
+ ]
+}

@@ -1,0 +1,1154 @@
+{
+ "schemaVersion": 2,
+ "title": "Desk Modules and Fields — run 2 (open rows) — 6–7 Oct 2026",
+ "date": "2026-10-07",
+ "run": {
+  "startedAt": "2026-10-06T20:09:45Z",
+  "endedAt": "2026-10-07T14:45:00Z",
+  "durationMs": 10200000,
+  "mode": "parallel",
+  "environment": "",
+  "targetUrl": "https://staging-desk.taviportal.com",
+  "loginMode": "fresh",
+  "sessions": [
+   {
+    "session": "mfowner-230945-b20f",
+    "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+    "label": "owner"
+   },
+   {
+    "session": "mfagent-230945-b20f",
+    "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+    "label": "agent (Desk Agent)"
+   },
+   {
+    "session": "mfadminb-230945-b20f",
+    "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+    "label": "second admin"
+   },
+   {
+    "session": "mfl12fi-230945-b20f",
+    "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+    "label": "L12 Firefox"
+   },
+   {
+    "session": "mfl12we-230945-b20f",
+    "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+    "label": "L12 WebKit"
+   }
+  ]
+ },
+ "summary": {
+  "total": 55,
+  "passed": 26,
+  "failed": 10,
+  "blocked": 8,
+  "naDescoped": 5,
+  "notRun": 6
+ },
+ "testCases": [
+  {
+   "name": "A2 — Desk Agent cannot open Modules and Fields",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfagent-230945-b20f/screenshots/A2-agent-modules-and-fields.png",
+     "caption": "A2-agent-modules-and-fields"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Desk Agent cannot open Modules and Fields",
+     "status": "passed",
+     "note": "PASS: Agent (Desk Agent only): /settings/modules-and-fields shows \"You don't have permission to view this page\"; module table not rendered."
+    }
+   ]
+  },
+  {
+   "name": "A3 — Agent cannot create, edit or delete modules (API)",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Agent cannot create, edit or delete modules (API)",
+     "status": "passed",
+     "note": "PASS: POST module → 403; PUT QA MF Open → 403; DELETE QA MF Closed → 403."
+    }
+   ]
+  },
+  {
+   "name": "A4 — Agent cannot change fields, layouts or field permissions (API)",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Agent cannot change fields, layouts or field permissions (API)",
+     "status": "passed",
+     "note": "PASS: POST field → 403; PUT layout → 403; POST field-permission → 403."
+    }
+   ]
+  },
+  {
+   "name": "A5 — What the agent can read",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "na",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "What the agent can read",
+     "status": "na",
+     "note": "INFO: GET /modules → 200 (QA modules listed); GET fields → 200 and hides the Don't-Show field; GET field-permissions → 200; GET /fields/datatypes → 403."
+    }
+   ]
+  },
+  {
+   "name": "A6 — Field Permissions tab not reachable for the agent",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Field Permissions tab not reachable for the agent",
+     "status": "passed",
+     "note": "PASS: Covered by A2: the agent cannot reach the module pages."
+    }
+   ]
+  },
+  {
+   "name": "A8 — Module hidden by Access Control (Selected Users)",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfagent-230945-b20f/screenshots/A8-agent-after-selected-users.png",
+     "caption": "A8-agent-after-selected-users"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Module hidden by Access Control (Selected Users)",
+     "status": "passed",
+     "note": "PASS: Access Control = Selected Users (owner only): PUT /modules/{id}/acl + access-mode \"selected\". Agent: module not listed, GET records → 403, page shows an access message."
+    }
+   ]
+  },
+  {
+   "name": "G10 — Layout permission is enforced",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfagent-230945-b20f/screenshots/G10-agent-create-form.png",
+     "caption": "G10-agent-create-form"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Layout permission is enforced",
+     "status": "passed",
+     "note": "PASS: L-Admin limited to the owner (UI), L-Agent to the Desk Agent profile (API, because the picker offers no Desk profiles — MF-11). Agent sees [Default, QA MF L-Agent]; GET L-Admin → 403; create with L-Agent → 201; with L-Admin → 403."
+    }
+   ]
+  },
+  {
+   "name": "H2 — Don't Show field hidden from the agent",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfagent-230945-b20f/screenshots/H2-agent-record.png",
+     "caption": "H2-agent-record"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Don't Show field hidden from the agent",
+     "status": "passed",
+     "note": "PASS: Value \"TOP-SECRET-123\" absent from the API record JSON and from the record page."
+    }
+   ]
+  },
+  {
+   "name": "H3 — Read Only field cannot be changed by the agent",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Read Only field cannot be changed by the agent",
+     "status": "passed",
+     "note": "PASS: PATCH of the read-only field → 422; value unchanged."
+    }
+   ]
+  },
+  {
+   "name": "H4 — A required field can be set to \"Don't Show\"",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "bugs/screenshots/annotated/H4-vs-zoho.png",
+     "caption": "H4 vs Zoho"
+    },
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/S3-field-permissions-agent.png",
+     "caption": "S3-field-permissions-agent"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "A required field can be set to \"Don't Show\"",
+     "status": "failed",
+     "note": "FAIL: Field Permissions → Desk Agent → Name (required) = Don't Show is accepted (POST field-permissions \"hidden\"). Every agent create then fails: 422 \"One or more fields in the payload are not writable for your profile.\""
+    }
+   ]
+  },
+  {
+   "name": "H6 — Record visibility Public Read/Write/Delete",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Record visibility Public Read/Write/Delete",
+     "status": "passed",
+     "note": "PASS: Agent sees 2/2 owner records, GET 200, PATCH 200, DELETE 204, own create 201."
+    }
+   ]
+  },
+  {
+   "name": "H7 — Record visibility Public Read Only",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Record visibility Public Read Only",
+     "status": "passed",
+     "note": "PASS: Agent sees 2/2 owner records, GET 200, PATCH 403, DELETE 403, own create 201."
+    }
+   ]
+  },
+  {
+   "name": "H8 — Record visibility Private",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Record visibility Private",
+     "status": "passed",
+     "note": "PASS: Agent sees 0/2 owner records, GET/PATCH/DELETE 403, own create 201."
+    }
+   ]
+  },
+  {
+   "name": "H9 — Access Control with nobody selected",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/H9-empty-selection.png",
+     "caption": "H9-empty-selection"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Access Control with nobody selected",
+     "status": "passed",
+     "note": "PASS: Selected Users with no principal → \"Select at least one user, profile, permission, or org unit — or switch back to All Users.\""
+    }
+   ]
+  },
+  {
+   "name": "H10 — Profiles chosen in the Create Module dialog are not applied",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "bugs/screenshots/annotated/H10-vs-zoho.png",
+     "caption": "H10 vs Zoho"
+    },
+    {
+     "path": "browser-sessions/mfagent-230945-b20f/screenshots/H10-agent-closed-module.png",
+     "caption": "H10-agent-closed-module"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Profiles chosen in the Create Module dialog are not applied",
+     "status": "failed",
+     "note": "FAIL: Create module with Module Permission = Desk Administrator only: the dialog sends PUT /modules/{id}/permissions → 404, no error shown. Agent lists the module, GET records 200, POST record 201."
+    }
+   ]
+  },
+  {
+   "name": "I50 — Per-profile field permissions store",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "na",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Per-profile field permissions store",
+     "status": "na",
+     "note": "INFO: POST /modules/{id}/field-permissions {fieldId, profileId, permission}; enforcement checked in H2/H3."
+    }
+   ]
+  },
+  {
+   "name": "J7 — Agent cannot manage data types or capabilities",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Agent cannot manage data types or capabilities",
+     "status": "passed",
+     "note": "PASS: Pages not rendered; POST custom data type → 403; POST capability → 403."
+    }
+   ]
+  },
+  {
+   "name": "C4 — Department storage has no effect on records",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "bugs/screenshots/annotated/C4-vs-zoho.png",
+     "caption": "C4 vs Zoho"
+    },
+    {
+     "path": "browser-sessions/mfagent-230945-b20f/screenshots/C4-agent-dept-module.png",
+     "caption": "C4-agent-dept-module"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Department storage has no effect on records",
+     "status": "failed",
+     "note": "FAIL: QA MF DeptMod (storageScope \"department\"): records created with no department, with x-department-id and with department_id all → 201; records carry no department; the list is the same for every user and department (agent in QA MF Dept sees all 4)."
+    }
+   ]
+  },
+  {
+   "name": "Z12 — Layouts per department and the Department field",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "na",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfadminb-230945-b20f/screenshots/Z12-ticket-layouts.png",
+     "caption": "Z12-ticket-layouts"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Layouts per department and the Department field",
+     "status": "na",
+     "note": "MISSING: Still missing (retest when built): no department picker on Tickets layouts; Department optional and not on Tasks/Calls/Events layouts; none on Contracts/Products."
+    }
+   ]
+  },
+  {
+   "name": "I3 — Field limit 512 per layout",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/I3-limit-builder.png",
+     "caption": "I3-limit-builder"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Field limit 512 per layout",
+     "status": "failed",
+     "note": "FAIL: UI: \"Maximum of 512 fields per layout reached.\" (pass). API: 550 custom fields created and all 550 placed on one layout → 200 (limit not enforced on the server)."
+    }
+   ]
+  },
+  {
+   "name": "I5 — Required + read-only",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfadminb-230945-b20f/screenshots/I5-required-readonly.png",
+     "caption": "I5-required-readonly"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Required + read-only",
+     "status": "passed",
+     "note": "PASS: Builder: with Required on (VALIDATION), the Read-only switch on PERMISSIONS is disabled. Note: the layout API accepts required + read_only on the same field (MF-43)."
+    }
+   ]
+  },
+  {
+   "name": "I7 — Unique across modules",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Unique across modules",
+     "status": "passed",
+     "note": "PASS: qa_uq shared by QA MF Types and QA MF Open: duplicate in same module → 422 \"already in use by another record\"; same value in the other module → 422 \"already in use by a record in QA MF Types\"; and back again."
+    }
+   ]
+  },
+  {
+   "name": "I9 — Full / half width",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/I9-field-menu.png",
+     "caption": "I9-field-menu"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Full / half width",
+     "status": "passed",
+     "note": "PASS: No per-field width; sections switch between Column and Double Column, which the record form follows."
+    }
+   ]
+  },
+  {
+   "name": "I19 — Checkbox default on/off",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "na",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/A3-create-form-defaults.png",
+     "caption": "A3-create-form-defaults"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Checkbox default on/off",
+     "status": "na",
+     "note": "MISSING: The builder has no default-value setting; a defaultValue placed in the layout is ignored by the form and the API. Checkbox true/false values save correctly. Retest when default values are built."
+    }
+   ]
+  },
+  {
+   "name": "I21 — Remove a used option",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/I21-replace-dialog.png",
+     "caption": "I21-replace-dialog"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Remove a used option",
+     "status": "passed",
+     "note": "PASS: Removing Beta (used by 2 records) → \"Replace removed options … 2 records use 'Beta'\" with Leave empty / Alpha / Gamma; Replace and apply → both records now Alpha."
+    }
+   ]
+  },
+  {
+   "name": "I23 — Radio / Status values",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "bugs/screenshots/annotated/I23-vs-zoho.png",
+     "caption": "I23 vs Zoho"
+    },
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/w3-types-list.png",
+     "caption": "w3-types-list"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Radio / Status values",
+     "status": "failed",
+     "note": "FAIL: Radio R2 and Status Doing save correctly and the list shows status chips, but radio \"R9\" and status \"Nope\" (not in the list) are also accepted (201) and shown."
+    }
+   ]
+  },
+  {
+   "name": "I24 — Default value",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "na",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/A3-create-form-defaults.png",
+     "caption": "A3-create-form-defaults"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Default value",
+     "status": "na",
+     "note": "MISSING: No default-value setting in the field builder (GENERAL/VALIDATION/PERMISSIONS/ADVANCED); defaultValue in the layout is ignored on create (form and API). Retest when built."
+    }
+   ]
+  },
+  {
+   "name": "I27 — Conditional visibility",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "bugs/screenshots/annotated/I27-vs-zoho.png",
+     "caption": "I27 vs Zoho"
+    },
+    {
+     "path": "browser-sessions/mfadminb-230945-b20f/screenshots/I47-form-Z-save.png",
+     "caption": "I47-form-Z-save"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Conditional visibility",
+     "status": "failed",
+     "note": "FAIL: Rule: show \"QA MF dep\" (required) when ctrl equals \"x\". On the form with ctrl = Z the field is shown and required (\"This field is required\"); the rule is not applied."
+    }
+   ]
+  },
+  {
+   "name": "I28 — No controllers message",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "blocked",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "No controllers message",
+     "status": "blocked",
+     "note": "INCONCLUSIVE: On a layout with only Name, Conditional visibility offers Created By / Modified By / Created Time / Modified Time as controlling fields, so the \"no other field\" message cannot appear."
+    }
+   ]
+  },
+  {
+   "name": "I29 — Auto-fill",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/I29-autofill-form.png",
+     "caption": "I29-autofill-form"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Auto-fill",
+     "status": "passed",
+     "note": "PASS: Builder ADVANCED → Fill from \"The logged-in user\": form pre-fills \"ndc-staging-owner\"; a typed value is never overwritten. Note: \"Another field on this form\" lists only system fields (MF-44)."
+    }
+   ]
+  },
+  {
+   "name": "I36 — Rollup summary",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Rollup summary",
+     "status": "passed",
+     "note": "PASS: Count and Sum of QA MF Types via lookup qa_lk: parent shows count 2, sum 12. Note: a rollup over a lookup that does not point at the module is also accepted (MF-42)."
+    }
+   ]
+  },
+  {
+   "name": "I37 — Quick-create trigger",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Quick-create trigger",
+     "status": "passed",
+     "note": "PASS: Builder ADVANCED quick-create trigger Escalate → Tasks; choosing Escalate opens \"New Task\". Note: the dialog shows a raw \"{{module}}\" placeholder (MF-45)."
+    }
+   ]
+  },
+  {
+   "name": "I38 — File / Image upload restrictions",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "File / Image upload restrictions",
+     "status": "failed",
+     "note": "FAIL: PDF-only file field (max 1 MB) accepts .txt and .png on the form with no message; a 2.2 MB file gives no message; the record API accepts a text/plain file object (201). SVG script did not run."
+    }
+   ]
+  },
+  {
+   "name": "I43 — Delete a field used in a workflow rule",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "blocked",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/I43-step2.png",
+     "caption": "I43-step2"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Delete a field used in a workflow rule",
+     "status": "blocked",
+     "note": "INCONCLUSIVE: Workflow rule wizard reached (name → trigger \"Record Action\"), but no rule was completed, so the in-use check was not exercised."
+    }
+   ]
+  },
+  {
+   "name": "I46 — Unused counter",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfowner-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfowner-230945-b20f/screenshots/I46-unused-counter.png",
+     "caption": "I46-unused-counter"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Unused counter",
+     "status": "passed",
+     "note": "PASS: Removing 3 fields → \"Unused Fields 3\"; restoring removes the counter."
+    }
+   ]
+  },
+  {
+   "name": "I47 — Field Dependency rules",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "bugs/screenshots/annotated/I47-E2E-2-vs-zoho.png",
+     "caption": "I47-E2E-2 vs Zoho"
+    },
+    {
+     "path": "browser-sessions/mfadminb-230945-b20f/screenshots/I47-form-Z-save.png",
+     "caption": "I47-form-Z-save"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Field Dependency rules",
+     "status": "failed",
+     "note": "FAIL: Rules SHOW qa_b and REQUIRE qa_c when ctrl = Z are stored (2 rules) and listed in the Field Dependency panel, but the form does not apply them (qa_c not required) and the API accepts Z without qa_c."
+    }
+   ]
+  },
+  {
+   "name": "I48 — Edit / delete dependency rules",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Edit / delete dependency rules",
+     "status": "failed",
+     "note": "FAIL: Panel lists the 2 rules with Edit and Delete; deleting both shows \"No dependency rules yet\", but after Save Rules + Save both rules are still stored."
+    }
+   ]
+  },
+  {
+   "name": "I49 — Circular dependency",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Circular dependency",
+     "status": "passed",
+     "note": "PASS: Rules a=On shows bb and bb=On hides a are accepted without warning, but harmless: the form stays responsive, no loop."
+    }
+   ]
+  },
+  {
+   "name": "J4 — Delete a custom data type in use",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "blocked",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Delete a custom data type in use",
+     "status": "blocked",
+     "note": "INCONCLUSIVE: A new custom type appears in GET /fields/datatypes but creating a field with it → 400 DATATYPE_KEY_UNKNOWN (MF-39), so \"in use\" could not be set up."
+    }
+   ]
+  },
+  {
+   "name": "K10 — Organize Tabs in two browser tabs",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Organize Tabs in two browser tabs",
+     "status": "passed",
+     "note": "PASS: Moves from two tabs on the same account: the stale tab gets two 409s but its change is saved; last write wins; no error shown."
+    }
+   ]
+  },
+  {
+   "name": "L12 — Browsers",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfl12fi-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Browsers",
+     "status": "passed",
+     "note": "PASS: Firefox and WebKit at 1366×768, 1920×1080, 820×1180: module list, builder palette and canvas, tab bar shown, no horizontal scroll. Drag not confirmed (Playwright drag timed out)."
+    }
+   ]
+  },
+  {
+   "name": "E2E-2 — Tailor the form with a layout and dependency rules",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "failed",
+   "session": "mfagent-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "bugs/screenshots/annotated/I47-E2E-2-vs-zoho.png",
+     "caption": "I47-E2E-2 vs Zoho"
+    },
+    {
+     "path": "browser-sessions/mfagent-230945-b20f/screenshots/E2E-2-agent-L-Agent.png",
+     "caption": "E2E-2-agent-L-Agent"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Tailor the form with a layout and dependency rules",
+     "status": "failed",
+     "note": "FAIL: Layout QA MF L-Agent (Desk Agent) with a new section and SHOW/REQUIRE rules: agent picks it, section shown, but serial is visible before Hardware and the record saves with serial empty (\"Record saved successfully\"); API also 201."
+    }
+   ]
+  },
+  {
+   "name": "D8 — Arabic UI — Rename",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [
+    {
+     "path": "browser-sessions/mfadminb-230945-b20f/screenshots/D8-arabic-row-menu.png",
+     "caption": "D8-arabic-row-menu"
+    }
+   ],
+   "steps": [
+    {
+     "desc": "Arabic UI — Rename",
+     "status": "passed",
+     "note": "PASS: Arabic: page is right-to-left, row menu translated, Rename dialog fully Arabic (اسم الوحدة، الاسم الجمع، الاسم المفرد). Language set back to English."
+    }
+   ]
+  },
+  {
+   "name": "K12 — Custom module tab",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "passed",
+   "session": "mfadminb-230945-b20f",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Custom module tab",
+     "status": "passed",
+     "note": "PASS: New module \"QA MF Tab\" appears in the \"More\" menu and in Organize Tabs."
+    }
+   ]
+  },
+  {
+   "name": "B6 — Disable a module with dependencies",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "notrun",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Disable a module with dependencies",
+     "status": "notrun",
+     "note": "NOT RUN: Would change a standard module (not allowed)."
+    }
+   ]
+  },
+  {
+   "name": "B9 — Reorder modules",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "notrun",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Reorder modules",
+     "status": "notrun",
+     "note": "NOT RUN: Changes the tenant-wide module order (standard modules)."
+    }
+   ]
+  },
+  {
+   "name": "D2 — Rename standard module",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "notrun",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Rename standard module",
+     "status": "notrun",
+     "note": "NOT RUN: Would rename a standard module (not allowed)."
+    }
+   ]
+  },
+  {
+   "name": "D3 — Tab bar uses the new name",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "notrun",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Tab bar uses the new name",
+     "status": "notrun",
+     "note": "NOT RUN: Depends on D2."
+    }
+   ]
+  },
+  {
+   "name": "E2E-3 — Rename and reorganise",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "notrun",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Rename and reorganise",
+     "status": "notrun",
+     "note": "NOT RUN: Would rename standard modules."
+    }
+   ]
+  },
+  {
+   "name": "I44 — Telephony usage",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "notrun",
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Telephony usage",
+     "status": "notrun",
+     "note": "NOT RUN: No telephony configured."
+    }
+   ]
+  },
+  {
+   "name": "A9 — Other tenant",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "blocked",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Other tenant",
+     "status": "blocked",
+     "note": "INCONCLUSIVE: No second tenant available."
+    }
+   ]
+  },
+  {
+   "name": "C9 — No teamspace",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "blocked",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "No teamspace",
+     "status": "blocked",
+     "note": "INCONCLUSIVE: Cannot remove the tenant teamspace safely."
+    }
+   ]
+  },
+  {
+   "name": "F7 — Soft-deleted standard fields",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "blocked",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Soft-deleted standard fields",
+     "status": "blocked",
+     "note": "INCONCLUSIVE: Needs confirmation whether the 14 Sep soft-deletes were intended."
+    }
+   ]
+  },
+  {
+   "name": "G27 — Session expiry mid-edit",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "blocked",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Session expiry mid-edit",
+     "status": "blocked",
+     "note": "INCONCLUSIVE: Needs a controllable session lifetime."
+    }
+   ]
+  },
+  {
+   "name": "H5 — Light Agent",
+   "spec": "docs/desk-modules-fields/spec-desk-modules-fields.md",
+   "status": "blocked",
+   "durationMs": 60000,
+   "screenshots": [],
+   "steps": [
+    {
+     "desc": "Light Agent",
+     "status": "blocked",
+     "note": "INCONCLUSIVE: No Light Agent account available."
+    }
+   ]
+  }
+ ],
+ "defects": [
+  {
+   "id": 1,
+   "title": "MF-02 Profiles chosen in the Create Module dialog are not applied",
+   "severity": "Critical",
+   "scenario": "H10",
+   "actual": "The dialog sends PUT /modules/{id}/permissions → 404 with no error; a module meant for Desk Administrator only is listed, readable and writable by Desk Agents.",
+   "evidence": [
+    "bugs/screenshots/annotated/H10-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 2,
+   "title": "MF-10 A required field can be set to \"Don't Show\"",
+   "severity": "High",
+   "scenario": "H4",
+   "actual": "Required Name set to Don't Show for Desk Agent is saved; agents then get 422 \"not writable for your profile\" on every create.",
+   "evidence": [
+    "bugs/screenshots/annotated/H4-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 3,
+   "title": "MF-11 Access Control picker lists CRM users and profiles instead of Desk ones",
+   "severity": "High",
+   "scenario": "G10, H9",
+   "actual": "Picker loads /iam/users?app_key=crm; Profiles shows CRM Admin, Manager, Supervisor, test, User; Desk agent not found. Layouts/modules cannot be limited to Desk profiles from the UI.",
+   "evidence": [
+    "bugs/screenshots/annotated/MF-11-picker-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 4,
+   "title": "MF-33 Field dependency rules (SHOW / REQUIRE) are saved but not applied",
+   "severity": "High",
+   "scenario": "I47, E2E-2",
+   "actual": "Rules are stored and listed, but the form ignores them (hidden field shown, required field not required) and the record API accepts records that break them.",
+   "evidence": [
+    "bugs/screenshots/annotated/I47-E2E-2-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 5,
+   "title": "MF-34 Conditional visibility is not applied on the record form",
+   "severity": "High",
+   "scenario": "I27",
+   "actual": "A field set to show only when ctrl = \"x\" is shown and required when ctrl = Z.",
+   "evidence": [
+    "bugs/screenshots/annotated/I27-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 6,
+   "title": "MF-35 Department storage has no effect on records",
+   "severity": "High",
+   "scenario": "C4",
+   "actual": "Department-storage modules store records without a department; every user sees every record; department header/body ignored.",
+   "evidence": [
+    "bugs/screenshots/annotated/C4-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 7,
+   "title": "MF-36 File and image upload restrictions are not enforced",
+   "severity": "High",
+   "scenario": "I38",
+   "actual": "PDF-only 1 MB field accepts .txt, .png and a 2.2 MB file with no message; the record API accepts any file object.",
+   "evidence": []
+  },
+  {
+   "id": 8,
+   "title": "MF-37 Radio and Status fields accept values that are not in their list",
+   "severity": "High",
+   "scenario": "I23",
+   "actual": "Radio \"R9\" and status \"Nope\" saved (201) and shown as a status chip. Same family as MF-08.",
+   "evidence": [
+    "bugs/screenshots/annotated/I23-vs-zoho.png"
+   ]
+  },
+  {
+   "id": 9,
+   "title": "MF-38 Deleted dependency rules come back after Save",
+   "severity": "Medium",
+   "scenario": "I48",
+   "actual": "Deleting all rules shows \"No dependency rules yet\", but after Save Rules + Save the 2 rules are still stored.",
+   "evidence": []
+  },
+  {
+   "id": 10,
+   "title": "MF-39 Custom data types are listed but cannot be used to create a field (API)",
+   "severity": "Medium",
+   "scenario": "J4",
+   "actual": "New custom type appears in GET /fields/datatypes; POST field with that key → 400 DATATYPE_KEY_UNKNOWN.",
+   "evidence": []
+  },
+  {
+   "id": 11,
+   "title": "MF-40 Record API stores values for fields that do not exist",
+   "severity": "Medium",
+   "scenario": "I7 (setup)",
+   "actual": "Records created with qa_* keys before the fields existed returned 201 and kept the values; when the field was later created as unique, those hidden values counted as duplicates (422).",
+   "evidence": []
+  },
+  {
+   "id": 12,
+   "title": "MF-46 Recycle Bin \"Delete forever\" fails for every Desk item with no message",
+   "severity": "Medium",
+   "scenario": "cleanup",
+   "actual": "UI and API: POST /audit/recycle-bin/delete → 200 with failed[] reason \"recyclebin.error.unsupported_app\"; the page shows no error and the item stays. Desk items can only expire after 60 days.",
+   "evidence": []
+  },
+  {
+   "id": 13,
+   "title": "MF-41 The 512-fields-per-layout limit is not enforced by the API",
+   "severity": "Low",
+   "scenario": "I3",
+   "actual": "UI says \"Maximum of 512 fields per layout reached\", but PUT layout with 550 fields → 200.",
+   "evidence": []
+  },
+  {
+   "id": 14,
+   "title": "MF-42 Rollup summary accepts a relation that does not point at the module",
+   "severity": "Low",
+   "scenario": "I36",
+   "actual": "Rollup on QA MF DeptMod over QA MF Types.qa_lk (which points at QA MF Open) → 201; rollups were also accepted before the lookup field existed.",
+   "evidence": []
+  },
+  {
+   "id": 15,
+   "title": "MF-43 Layout API accepts Required + Read-only on the same field",
+   "severity": "Low",
+   "scenario": "I5",
+   "actual": "The builder blocks it, but PUT layout with required:true and read_only:true → 200.",
+   "evidence": []
+  },
+  {
+   "id": 16,
+   "title": "MF-44 Auto-fill \"Another field on this form\" offers only system fields",
+   "severity": "Low",
+   "scenario": "I29",
+   "actual": "Options: Name, Created By, Modified By, Created Time, Modified Time — custom fields on the form are not offered.",
+   "evidence": []
+  },
+  {
+   "id": 17,
+   "title": "MF-45 Quick-create trigger dialog shows a raw \"{{module}}\" placeholder",
+   "severity": "Low",
+   "scenario": "I37",
+   "actual": "\"This {{module}} is created only after you save the record…\"",
+   "evidence": []
+  }
+ ]
+}

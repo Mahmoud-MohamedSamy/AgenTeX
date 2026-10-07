@@ -4,9 +4,9 @@
 |---|---|
 | App | TAVI Desk — `https://staging-desk.taviportal.com` (tenant NDC-Staging) |
 | Spec | `docs/desk-modules-fields/spec-desk-modules-fields.md` (206 rows) |
-| Runs | Run 1 `executions/execu_2026-10-05_18-05-01` (5–6 Oct 2026) · Run 2 `executions/execu_2026-10-06_23-09-45` (6–7 Oct 2026, in progress) |
+| Runs | Run 1 `executions/execu_2026-10-05_18-05-01` (5–6 Oct 2026) · Run 2 `executions/execu_2026-10-06_23-09-45` (6–7 Oct 2026) |
 | Accounts | Owner, second admin, and `mahmoud.mohamed1` lowered to Desk Agent for run 2 (to be restored at cleanup) |
-| Total | **32 bugs** — 29 from run 1, 3 from run 2 |
+| Total | **46 bugs** — 29 from run 1, 17 from run 2 |
 
 Missing features compared with Zoho Desk are **not** in this report. They are filed in **NDC-2174**.
 
@@ -18,9 +18,9 @@ Missing features compared with Zoho Desk are **not** in this report. They are fi
 | Severity | Count | | Priority | Count |
 |---|---|---|---|---|
 | Critical | 2 | | Urgent | 2 |
-| High | 9 | | High | 10 |
-| Medium | 11 | | Medium | 11 |
-| Low | 10 | | Low | 9 |
+| High | 14 | | High | 15 |
+| Medium | 15 | | Medium | 15 |
+| Low | 15 | | Low | 14 |
 
 | # | Bug | Severity | Priority | Spec row | Run |
 |---|---|---|---|---|---|
@@ -56,6 +56,20 @@ Missing features compared with Zoho Desk are **not** in this report. They are fi
 | MF-30 | Two lookups to the same module can use the same related-list title | Low | Low | I32 | 1 |
 | MF-31 | A multi-module lookup can be saved with no modules | Low | Low | I33 | 1 |
 | MF-32 | Two layout-builder buttons have no accessible name | Low | Low | L9 | 1 |
+| MF-33 | Field dependency rules (SHOW / REQUIRE) are saved but not applied | High | High | I47, E2E-2 | 2 |
+| MF-34 | Conditional visibility is not applied on the record form | High | High | I27 | 2 |
+| MF-35 | Department storage has no effect on records | High | High | C4 | 2 |
+| MF-36 | File and image upload restrictions are not enforced | High | High | I38 | 2 |
+| MF-37 | Radio and Status fields accept values that are not in their list | High | High | I23 | 2 |
+| MF-38 | Deleted dependency rules come back after Save | Medium | Medium | I48 | 2 |
+| MF-39 | Custom data types are listed but cannot be used to create a field (API) | Medium | Medium | J4 | 2 |
+| MF-40 | Record API stores values for fields that do not exist | Medium | Medium | I7 setup | 2 |
+| MF-46 | Recycle Bin "Delete forever" fails for every Desk item | Medium | Medium | cleanup | 2 |
+| MF-41 | The 512-fields-per-layout limit is not enforced by the API | Low | Low | I3 | 2 |
+| MF-42 | Rollup summary accepts a relation that does not point at the module | Low | Low | I36 | 2 |
+| MF-43 | Layout API accepts Required + Read-only on the same field | Low | Low | I5 | 2 |
+| MF-44 | Auto-fill "Another field on this form" offers only system fields | Low | Low | I29 | 2 |
+| MF-45 | Quick-create trigger dialog shows a raw "{{module}}" placeholder | Low | Low | I37 | 2 |
 
 Evidence paths below are relative to the run folder named in each bug. API-only bugs carry the request and response in the text.
 
@@ -148,6 +162,46 @@ Evidence paths below are relative to the run folder named in each bug. API-only 
 - **Actual:** Profiles shows only CRM Admin, Manager, Supervisor, test, User. The Desk agent `mahmoud.mohamed1@taviportal.com` cannot be found. The picker loads `GET /iam/users?app_key=crm`. A layout or module therefore cannot be limited to a Desk profile or Desk user from the UI. (Limits set through the API with the Desk Agent profile are enforced correctly — G10 passed.)
 - **Evidence:** `browser-sessions/mfowner-230945-b20f/screenshots/G10-picker-L-Admin.png`, `browser-sessions/mfowner-230945-b20f/screenshots/A8-selected-users.png`; log `o-g10g.json`
 
+### MF-33 — Field dependency rules (SHOW / REQUIRE) are saved but not applied
+**Severity:** High · **Priority:** High · **Spec row:** I47, E2E-2 · **Run 2**
+
+- **Steps:** Add rules "When kind = Hardware → Show serial" and "→ Require serial" to a layout (QA MF L-Agent). As a Desk Agent, create a record with that layout, choose Hardware, leave serial empty, Save.
+- **Expected:** Serial appears only for Hardware and is required; Save is blocked until it is filled; the API refuses the same record.
+- **Actual:** Rules are stored and listed in the Field Dependency panel, but the serial is visible before Hardware is chosen and the record saves with it empty ("Record saved successfully"); the record API also returns 201. Same on QA MF Deps (SHOW qa_b / REQUIRE qa_c).
+- **Evidence:** `bugs/screenshots/annotated/I47-E2E-2-vs-zoho.png`, `browser-sessions/mfagent-230945-b20f/screenshots/E2E-2-agent-L-Agent.png`
+
+### MF-34 — Conditional visibility is not applied on the record form
+**Severity:** High · **Priority:** High · **Spec row:** I27 · **Run 2**
+
+- **Steps:** Field "QA MF dep" (required) → VALIDATION → Conditional visibility: show when QA MF ctrl equals "x". Open the create form, set ctrl = Z.
+- **Expected:** QA MF dep stays hidden and not required while ctrl is not "x".
+- **Actual:** QA MF dep is shown and Save says "This field is required" with ctrl = Z.
+- **Evidence:** `bugs/screenshots/annotated/I27-vs-zoho.png`, `browser-sessions/mfadminb-230945-b20f/screenshots/I47-form-Z-save.png`
+
+### MF-35 — Department storage has no effect on records
+**Severity:** High · **Priority:** High · **Spec row:** C4 · **Run 2**
+
+- **Steps:** Create a module with Module Data Storage = Department. Create records (plain, with `x-department-id`, with `department_id`). List them as an agent who belongs to one department.
+- **Expected:** Each record belongs to a department; users see only their departments' records.
+- **Actual:** All creates → 201 and records carry no department; every user sees every record; the list is the same with any department header.
+- **Evidence:** `bugs/screenshots/annotated/C4-vs-zoho.png`, `browser-sessions/mfagent-230945-b20f/screenshots/C4-agent-dept-module.png`
+
+### MF-36 — File and image upload restrictions are not enforced
+**Severity:** High · **Priority:** High · **Spec row:** I38 · **Run 2**
+
+- **Steps:** File Upload field with allowed extensions [pdf], max 1 MB. On the create form upload qa-mf.txt, qa-mf.png and a 2.2 MB pdf; via API send a text/plain file object.
+- **Expected:** Wrong type and too-large files refused with a message, on the form and in the API.
+- **Actual:** The form takes .txt and .png with no message and shows no message for the 2.2 MB file; the API returns 201. (An SVG with a script did not run.)
+- **Evidence:** API / run log `browser-sessions/mfadminb-230945-b20f/logs/gB6.json`
+
+### MF-37 — Radio and Status fields accept values that are not in their list
+**Severity:** High · **Priority:** High · **Spec row:** I23 · **Run 2**
+
+- **Steps:** Radio options R1/R2, Status options New/Doing/Done. `POST` a record with radio "R9" and status "Nope".
+- **Expected:** 400 — not one of the values.
+- **Actual:** 201; "Nope" is stored and shown as a status chip on the list. Same family as MF-08.
+- **Evidence:** `bugs/screenshots/annotated/I23-vs-zoho.png`, `browser-sessions/mfowner-230945-b20f/screenshots/w3-types-list.png`
+
 ---
 
 ## Medium
@@ -231,6 +285,38 @@ Evidence paths below are relative to the run folder named in each bug. API-only 
 - **Expected:** The QA module is listed, so its related list shows on contacts.
 - **Actual:** Not listed (Tickets, Calls, Events are).
 
+### MF-38 — Deleted dependency rules come back after Save
+**Severity:** Medium · **Priority:** Medium · **Spec row:** I48 · **Run 2**
+
+- **Steps:** Layout settings → Field Dependency → delete both rules → Save Rules → Save.
+- **Expected:** Rules removed.
+- **Actual:** The panel says "No dependency rules yet", but GET layout still returns both rules.
+- **Evidence:** API / run log `browser-sessions/mfadminb-230945-b20f/logs/gB5.json`
+
+### MF-39 — Custom data types are listed but cannot be used to create a field (API)
+**Severity:** Medium · **Priority:** Medium · **Spec row:** J4 · **Run 2**
+
+- **Steps:** `POST /custom-datatypes` {key qa_mf_dt2, base single_line}; it appears in `GET /fields/datatypes`; `POST` a field with datatypeKey qa_mf_dt2.
+- **Expected:** Field created with the custom type.
+- **Actual:** 400 DATATYPE_KEY_UNKNOWN "not a recognized datatype". This also blocks J4 (delete a type in use).
+- **Evidence:** API / run log
+
+### MF-40 — Record API stores values for fields that do not exist
+**Severity:** Medium · **Priority:** Medium · **Spec row:** I7 (setup) · **Run 2**
+
+- **Steps:** `POST` records with keys qa_uq, qa_cb … before those fields exist; later create qa_uq as unique and reuse a value.
+- **Expected:** Unknown fields refused (400).
+- **Actual:** The records were saved (201) with the unknown values kept; when qa_uq was created later, those hidden values counted as duplicates (422 "already in use").
+- **Evidence:** API / run log `browser-sessions/mfowner-230945-b20f/logs/gA1.json`
+
+### MF-46 — Recycle Bin "Delete forever" fails for every Desk item with no message
+**Severity:** Medium · **Priority:** Medium · **Spec row:** cleanup · **Run 2**
+
+- **Steps:** Setup → Data → Recycle Bin → row ⋮ → Delete forever on a Desk item (or `POST /audit/recycle-bin/delete`).
+- **Expected:** Item permanently deleted.
+- **Actual:** 200 with `failed:[{reason_key:"recyclebin.error.unsupported_app"}]`; the page shows no error and the item stays. Desk items can only expire after 60 days.
+- **Evidence:** API / run log `browser-sessions/mfadminb-230945-b20f/logs/gBin2.json`
+
 ---
 
 ## Low
@@ -277,10 +363,52 @@ Evidence paths below are relative to the run folder named in each bug. API-only 
 **Severity:** Low · **Priority:** Low · **Spec row:** L9 · **Run 1**
 - The Module Image switch (`role=switch`, no `aria-label`) and one icon-only button.
 
+### MF-41 — The 512-fields-per-layout limit is not enforced by the API
+**Severity:** Low · **Priority:** Low · **Spec row:** I3 · **Run 2**
+
+- **Steps:** Create 550 custom fields and `PUT` the layout with all of them.
+- **Expected:** 400 over the limit (the builder says "Maximum of 512 fields per layout reached").
+- **Actual:** 200; 550 fields on one layout.
+- **Evidence:** `browser-sessions/mfowner-230945-b20f/screenshots/I3-limit-builder.png`
+
+### MF-42 — Rollup summary accepts a relation that does not point at the module
+**Severity:** Low · **Priority:** Low · **Spec row:** I36 · **Run 2**
+
+- **Steps:** Add a rollup to QA MF DeptMod over QA MF Types.qa_lk (which points at QA MF Open).
+- **Expected:** Refused ("no lookup field pointing at this module").
+- **Actual:** 201. Rollups were also accepted while the lookup field did not exist yet.
+- **Evidence:** API / run log
+
+### MF-43 — Layout API accepts Required + Read-only on the same field
+**Severity:** Low · **Priority:** Low · **Spec row:** I5 · **Run 2**
+
+- **Steps:** `PUT` layout with required:true and read_only:true on one field.
+- **Expected:** 400 (the builder blocks this combination).
+- **Actual:** 200.
+- **Evidence:** API / run log
+
+### MF-44 — Auto-fill "Another field on this form" offers only system fields
+**Severity:** Low · **Priority:** Low · **Spec row:** I29 · **Run 2**
+
+- **Steps:** Field → ADVANCED → Fill from → Another field on this form.
+- **Expected:** All fields on the form are offered.
+- **Actual:** Only Name, Created By, Modified By, Created Time, Modified Time.
+- **Evidence:** `browser-sessions/mfowner-230945-b20f/screenshots/I29-autofill-form.png`
+
+### MF-45 — Quick-create trigger dialog shows a raw "{{module}}" placeholder
+**Severity:** Low · **Priority:** Low · **Spec row:** I37 · **Run 2**
+
+- **Steps:** Pick list with quick-create trigger Escalate → Tasks; choose Escalate on the form.
+- **Expected:** Text names the module.
+- **Actual:** "This {{module}} is created only after you save the record…"
+- **Evidence:** run log
+
 ---
 
 ## Notes
 - MF-05 to MF-09, MF-20 and MF-21 share one cause: the record API does not validate values against the field settings. They can be fixed and retested together.
 - MF-01 and MF-11 both come from Desk reading CRM data (permissions and the user/profile directory).
-- Run 2 is not finished: 25 spec rows are still to run, so more bugs may be added. The tenant still has QA modules, a QA department and the lowered agent profile; these are cleaned up at the end of run 2.
+- MF-33 and MF-34 share one cause: layout rules (dependencies and conditional visibility) are stored, but neither the form nor the record API applies them.
+- Run 2 is complete (55 rows). The tenant is cleaned up and the agent profile restored; only the QA items in the Recycle Bin remain, because of MF-46.
+- Not bugs: default values for fields (I19, I24) are not built yet — recorded as MISSING, and the missing list is corrected.
 - Nothing is filed in Plane for these bugs yet.

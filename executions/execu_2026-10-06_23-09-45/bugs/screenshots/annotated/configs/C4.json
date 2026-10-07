@@ -1,0 +1,52 @@
+{
+ "out": "../C4-vs-zoho.png",
+ "date": "7 Oct 2026",
+ "id": "C4",
+ "title": "Department storage has no effect on records",
+ "verdict": "Bug",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Agent (member of QA MF Dept) sees every record of a Department-storage module",
+   "img": "../../../../browser-sessions/mfagent-230945-b20f/screenshots/C4-agent-dept-module.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 300,
+     "y": 70,
+     "w": 210,
+     "h": 30
+    },
+    {
+     "n": 2,
+     "x": 268,
+     "y": 112,
+     "w": 980,
+     "h": 288
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "New module form: department accessibility",
+   "img": "../../../../../../docs/desk-modules-fields/evidence/originals/zoho/05-new-module-form.png"
+  }
+ ],
+ "rows": [
+  {
+   "b": "Module created with storage = Department",
+   "zoho": "Records belong to a department",
+   "tavi": "storageScope \"department\" saved, but records carry no department",
+   "match": "Differs"
+  },
+  {
+   "b": "Who sees the records",
+   "zoho": "Users of that department",
+   "tavi": "Everyone sees all records (1, 2); department header ignored",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "API: records created with no department, with x-department-id and with department_id all return 201; the list is identical with or without a department."
+ ]
+}

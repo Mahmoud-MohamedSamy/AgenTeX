@@ -42,7 +42,7 @@ The unannotated screenshots are in `evidence/originals/`. To rebuild an image, e
 - Layout builder with Create, Quick Create and Detail views. Sections in 1 or 2 columns, tab order, and section names in English and Arabic.
 - Several layouts per module: create, clone, set default, enable/disable, and delete with "Move records to" another layout. Layouts are assigned to profiles.
 - 33 field types, including all of Zoho's custom field types except colour-coded and nested picklists.
-- Field properties: required, read-only, unique, regex, conditional visibility, default value and description. Labels in English, Arabic and French.
+- Field properties: required, read-only, unique, regex, conditional visibility and description. Labels in English, Arabic and French. (Corrected 7 Oct 2026: default value is not built — see item 13.)
 - Remove a field to Unused Fields, or delete it permanently with a usage check.
 - Picklist option replacement when you remove an option that records still use.
 - Field Dependency rules (show, hide, require, make optional).
@@ -121,6 +121,10 @@ The unannotated screenshots are in `evidence/originals/`. To rebuild an image, e
 10. **Help Center settings on a layout.** Display in Help Center (a column on the Tickets layouts list), Display Name in Help Center, Description, and Allow non-department agents. Today the Create New Layout form has a name only. — Live (column), Docs (form). (Z17)
 11. **Ticket Status page.** Per department: add statuses, give each one a status type (Open, On Hold, Closed) and a fall-back, so that On Hold pauses the SLA clock. Today Status is a field with a list of values only. Check whether a Tickets or SLA gap item already covers this before filing. — Live. (Z18)
 12. **Agents as a customisable module.** In Zoho, Agents has its own layout (2 sections), 15 field types and 240 custom fields left. TAVI has no Agents module in Modules and Fields. Check NDC-1878 (Agents gaps) before filing. — Live. (Z19)
+
+## Missing — added after functional run 2 (7 Oct 2026)
+
+13. **Default value for a field.** Zoho lets you set a default value on text, pick list, checkbox and other fields; it is pre-filled on new records only. TAVI's field properties (GENERAL, VALIDATION, PERMISSIONS, ADVANCED) have no default-value setting, and a `defaultValue` put in the layout is ignored by the create form and the record API. Spec rows I19 and I24 are MISSING until this is built. Not yet in NDC-2174.
 
 ---
 
