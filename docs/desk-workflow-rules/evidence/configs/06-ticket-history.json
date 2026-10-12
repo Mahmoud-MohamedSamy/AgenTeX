@@ -1,0 +1,30 @@
+{
+  "out": "../06-ticket-history-shows-rule-vs-zoho.png",
+  "date": "11 Oct 2026",
+  "id": "Item 28 (Z28)",
+  "title": "Ticket history — say which workflow rule changed the ticket, and why an action failed",
+  "verdict": "Gap",
+  "panels": [
+    { "side": "TAVI", "caption": "Ticket #62 → HISTORY (ticket made by a teammate's test; tags added by workflow rules)", "img": "../originals/tavi/tavi-08-ticket-history.png",
+      "boxes": [ { "n": 1, "x": 656, "y": 176, "w": 362, "h": 24 }, { "n": 2, "x": 664, "y": 514, "w": 336, "h": 82 } ] },
+    { "side": "TAVI", "caption": "Setup → Workflow Execution History (typed URL; no menu link)", "img": "../originals/tavi/tavi-09-execution-history.png",
+      "boxes": [ { "n": 3, "x": 290, "y": 268, "w": 1150, "h": 62 } ] },
+    { "side": "Zoho", "caption": "Ticket History for workflow actions", "flag": "DOCS ONLY — no workflow ran on the Zoho trial ticket",
+      "text": [
+        "Workflow and custom-action results are logged in the ticket's History with the Rule Name, Action Name, Status and Reason; disabled actions are flagged there too.",
+        "API: GET /api/v1/tickets/{ticket_id}/History?eventFilter=WorkflowHistory.",
+        "Zoho has no separate execution-history page for workflow rules."
+      ],
+      "sources": [ "https://help.zoho.com/portal/en/kb/desk/automation/workflows/articles/custom-actions-gallery", "https://desk.zoho.com/DeskAPIDocument#Tickets#Tickets_Getthehistoryofaticket" ] }
+  ],
+  "rows": [
+    { "n": "1", "b": "Workflow changes visible on the ticket", "zoho": "Yes, in Ticket History (docs)", "tavi": "Yes — tags Newly Created / Field Changed / Recently Edited were added by rules (seen)", "match": "Same as Zoho" },
+    { "n": "2", "b": "Which rule made the change (item 28)", "zoho": "Rule name, action name, status and reason (docs)", "tavi": "\"Tags changed … by System\" — no rule name, no action, no failure reason (seen)", "match": "Gap" },
+    { "n": "3", "b": "Separate run log", "zoho": "None", "tavi": "Execution History page: every run, outcome, actions run, errors; filter by rule or record id (seen)", "match": "TAVI extra" }
+  ],
+  "notes": [
+    "Item 28 is new. On TAVI the run can only be traced on the Execution History page, by pasting the ticket's record id.",
+    "Possible bug to check separately: the same history shows \"Department changed — Old blank, New 7e1ac409-…\" — the raw department id instead of its name.",
+    "Opening the ticket made the app mark it as read for the owner account (the app's own call); nothing else changed. Originals: originals/tavi/tavi-08-ticket-history.png, tavi-09-execution-history.png."
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "out": "../05-email-recipients-assign-team-one-per-type-vs-zoho.png",
+  "date": "11 Oct 2026",
+  "id": "Items 16–18 (Z16–Z18)",
+  "title": "Email to the contact and outside addresses, assign to a team, several actions of one type",
+  "verdict": "Gap",
+  "panels": [
+    { "side": "TAVI", "caption": "Setup → Automation → Actions → New Email Action (Tickets; not created)", "img": "../originals/tavi/tavi-14-email-recipients.png",
+      "boxes": [ { "n": 1, "x": 312, "y": 655, "w": 515, "h": 105 } ] },
+    { "side": "TAVI", "caption": "New Owner Assignment Action (Tickets; not created)", "img": "../originals/tavi/tavi-15-owner-assign-to.png",
+      "boxes": [ { "n": 2, "x": 312, "y": 650, "w": 204, "h": 52 } ] },
+    { "side": "TAVI", "caption": "One action per type", "flag": "FROM THE BUILD'S CODE",
+      "text": [ "\"Every action type is already added — a rule can use each action once.\" (crm-workflow string caps.oneActionPerType; Add action is disabled once every type is used).", "Limit per rule: 10 actions in total." ] },
+    { "side": "Zoho", "caption": "Create Rule → Actions → + (menu opened, not saved)", "img": "../originals/zoho/zoho-09-actions-menu.png",
+      "boxes": [ { "n": 1, "x": 880, "y": 1655, "w": 160, "h": 28 }, { "n": 2, "x": 880, "y": 1725, "w": 160, "h": 28 } ] },
+    { "side": "Zoho", "caption": "Alert recipients and per-rule limits", "flag": "DOCS ONLY — the alert form was not opened",
+      "text": [ "Workflow Alert recipients: Groups, Roles, Roles and Subordinates, Agents, plus Record Owner, Record Creator, Notify Contact (the requester) and Additional Recipients (comma-separated e-mail addresses).", "Each rule can have up to 10 alerts, 10 tasks and 10 field updates.", "Assign Ticket (custom action): assign to an Agent, a Team or an Agent in a Team." ],
+      "sources": [ "https://help.zoho.com/portal/en/kb/desk/automation/workflows/articles/workflow-automations", "https://help.zoho.com/portal/en/kb/desk/automation/workflows/articles/custom-actions-gallery" ] }
+  ],
+  "rows": [
+    { "n": "1", "b": "Email the contact and outside addresses (item 16)", "zoho": "Notify Contact + Additional Recipients; teams too (docs; Alerts in the menu, seen)", "tavi": "\"Recipients are internal principals only … Free-text addresses aren't allowed.\" No team, no contact (seen)", "match": "Gap" },
+    { "n": "2", "b": "Assign to a team or an agent in a team (item 17)", "zoho": "\"Assign Ticket\" action in the menu (seen); Agent / Team / Agent in a Team (docs)", "tavi": "Assign owner to Users / Roles / User Fields only (seen)", "match": "Gap" },
+    { "n": "—", "b": "Several actions of the same type (item 18)", "zoho": "Up to 10 alerts, 10 tasks, 10 field updates per rule (docs)", "tavi": "Each action type once per rule (code)", "match": "Gap" }
+  ],
+  "notes": [
+    "Items 16 and 17 are already in NDC-2203 (\"partial\"); item 18 is new. Related bug: NDC-2204 (the Roles list shows CRM profiles).",
+    "TAVI forms were opened and the module set to Tickets to show the settings; \"Create action\" was not clicked. Originals: originals/tavi/tavi-14-email-recipients.png, tavi-15-owner-assign-to.png; originals/zoho/zoho-09-actions-menu.png."
+  ]
+}

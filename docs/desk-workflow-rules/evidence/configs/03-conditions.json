@@ -1,0 +1,35 @@
+{
+  "out": "../03-conditions-vs-zoho.png",
+  "date": "11 Oct 2026",
+  "id": "Items 10–13 (Z10–Z13)",
+  "title": "Conditions — contact and account fields, business hours, ticket fields, operators",
+  "verdict": "Gap",
+  "panels": [
+    { "side": "TAVI", "caption": "Rule editor → condition 1 → field list (top of the list; not saved)", "img": "../originals/tavi/tavi-04-condition-fields.png",
+      "boxes": [ { "n": 1, "x": 346, "y": 574, "w": 227, "h": 286 } ] },
+    { "side": "TAVI", "caption": "Same list, searched \"Happiness\"", "img": "../originals/tavi/tavi-12-condition-happiness.png",
+      "boxes": [ { "n": 3, "x": 346, "y": 524, "w": 227, "h": 108 } ] },
+    { "side": "TAVI", "caption": "Full field list and operators", "flag": "SEEN IN THE LIST + FROM THE BUILD'S CODE",
+      "text": [
+        "Fields offered (all 21, read from the open list): Subject, Contact, Account, Status, Priority, Channel, Classification, Due Date, Ticket Owner, Product, Email, Phone, Description, Resolution, Department, Skills, Language, CRM Deal, Contract, Approval Status, Tags.",
+        "Ticket fields NOT offered (from GET /modules/{tickets}/fields, 40 fields): Name, Ticket Number, Team, Created Time, Created By, Modified Time, Modified By, Closed Time, Response Due Date, First Response Time, Happiness Rating, Happiness Link Status, Spam, Customer Responded, Pending Review, Archived, Shared Departments, SLA Name, SLA Violated, SLA Escalated.",
+        "No CONTACTS or ACCOUNTS group: searching \"Contact\" returns only the ticket's own Contact lookup.",
+        "Operators in the picker (code): text = equals, does not equal, contains, starts with, ends with, is one of, is not one of, empty, changed. Date = on, after, on or after, before, on or before, empty, changed. No \"doesn't contain\", no \"between\", no \"current time\" value — although the engine has NotContains and Between."
+      ] },
+    { "side": "Zoho", "caption": "Workflow rule → Criteria → field list (live, not saved)", "img": "../originals/zoho/zoho-05-criteria-fields.png",
+      "boxes": [ { "n": 2, "x": 360, "y": 834, "w": 220, "h": 26 }, { "n": 3, "x": 360, "y": 866, "w": 220, "h": 70 } ] },
+    { "side": "Zoho", "caption": "Same criteria builder, searched \"Owner\" (Assignment Rules, 6 Oct 2026)", "img": "../originals/zoho/zoho-07-criteria-groups-6oct.png",
+      "boxes": [ { "n": 1, "x": 562, "y": 436, "w": 226, "h": 136 } ] },
+    { "side": "Zoho", "caption": "Execution Time operators (Assignment Rules, 6 Oct 2026)", "img": "../originals/zoho/zoho-08-execution-time-6oct.png", "boxes": [] }
+  ],
+  "rows": [
+    { "n": "1", "b": "Conditions on the contact and account (item 10)", "zoho": "Field list grouped TICKETS / CONTACTS / ACCOUNTS (seen 6 Oct, same builder)", "tavi": "Ticket fields only; no Contacts or Accounts group (seen)", "match": "Gap" },
+    { "n": "2", "b": "Business hours / holiday condition (item 11)", "zoho": "\"Execution Time\" — during / outside business hours of, on / not a holiday of (seen)", "tavi": "Not offered (seen)", "match": "Gap" },
+    { "n": "3", "b": "Ticket fields offered (item 12)", "zoho": "38 ticket fields incl. Recent Comment, Recent Comment Type, Happiness Rating, Team, Created / Closed Time, Is Escalated, Is Overdue, Number of Threads / Comments (seen)", "tavi": "21 fields; 20 ticket fields left out, incl. Happiness Rating, Team, Created / Closed Time, SLA Violated / Escalated, Spam (seen)", "match": "Gap" },
+    { "n": "4", "b": "Operators (item 13)", "zoho": "doesn't contain; dates between / not between, \"Current Time\" (seen 6 Oct)", "tavi": "No doesn't contain, no between, no current time (code)", "match": "Gap" }
+  ],
+  "notes": [
+    "All four items are new (not in NDC-2203).",
+    "Originals: originals/tavi/tavi-04-condition-fields.png, tavi-12-condition-happiness.png; originals/zoho/zoho-05-criteria-fields.png (11 Oct), zoho-07-criteria-groups-6oct.png and zoho-08-execution-time-6oct.png (6 Oct, from the Assignment Rules check — same Zoho criteria builder)."
+  ]
+}
