@@ -1,4 +1,4 @@
-// Builds desk-modules-fields-bug-report.html from desk-modules-fields-bug-report.md.
+// Builds desk-modules-fields-bug-report.html from bug-report-data.js (bugs) and desk-modules-fields-bug-report.md (header facts, notes).
 // Usage: node make-bug-report-html.js   (run from any folder)
 // Evidence screenshots that exist on disk are embedded as base64, so the HTML works on its own.
 const fs = require('fs'), path = require('path');
@@ -9,32 +9,21 @@ const md = fs.readFileSync(path.join(DIR, 'desk-modules-fields-bug-report.md'), 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const inline = s => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
 
-// Bugs: "### MF-xx — title" blocks
-const bugs = [];
-const blocks = md.split(/^### /m).slice(1);
-for (const b of blocks) {
-  const lines = b.split('\n'); const [id, ...t] = lines[0].split(' — '); const title = t.join(' — ').trim();
-  const meta = lines.find(l => l.startsWith('**Severity:**')) || '';
-  const sev = (meta.match(/Severity:\*\* (\w+)/) || [])[1], pri = (meta.match(/Priority:\*\* (\w+)/) || [])[1];
-  const spec = (meta.match(/Spec rows?:\*\* ([^·]+)/) || [])[1].trim(), run = +(meta.match(/Run (\d)/) || [])[1];
-  const ticket = (meta.match(/Existing ticket: ([^*]+)/) || [])[1];
-  const body = lines.slice(1).filter(l => l.trim() && !l.startsWith('**Severity:**') && !/^---/.test(l) && !/^## /.test(l)).map(l => l.replace(/^- /, ''));
-  const evLine = body.find(l => /^\*\*Evidence:\*\*/.test(l)) || '';
-  const shots = [...evLine.matchAll(/`([^`]+\.png)`/g)].map(m => m[1]).map(p => {
-    const abs = path.join(ROOT, RUNS[run], p);
-    return fs.existsSync(abs) ? { name: path.basename(p), data: 'data:image/png;base64,' + fs.readFileSync(abs).toString('base64') } : null;
-  }).filter(Boolean);
-  bugs.push({ id: id.trim(), title, sev, pri, spec, run, ticket, body, shots });
-}
-
+// Bugs come from bug-report-data.js (same source as the markdown)
+const DATA = require('./bug-report-data.js');
+const ENVW = { 1: '5–6 Oct 2026 (run 1)', 2: '6–7 Oct 2026 (run 2)' };
+const bugs = DATA.map(d => ({ ...d, shots: d.evidence.map(p => { const abs = p.startsWith('docs/') ? path.join(ROOT, p) : path.join(ROOT, RUNS[d.run], p); return fs.existsSync(abs) ? { name: path.basename(p), data: 'data:image/png;base64,' + fs.readFileSync(abs).toString('base64') } : null; }).filter(Boolean),
+  envText: `staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, ${ENVW[d.run]}; ${d.env}.` }));
 // Header facts from the first table
-const facts = [...md.split('## Summary')[0].matchAll(/^\| (App|Spec|Runs|Accounts|Total) \| (.+) \|$/gm)].map(m => [m[1], m[2]]);
+const facts = [...md.split('## Summary')[0].matchAll(/^| (App|Spec|Runs|Accounts|Total|Plane)| (App|Spec|Runs|Accounts|Total) \| (.+) \|$/gm)].map(m => [m[1], m[2]]);
 const notes = (md.split('## Notes')[1] || '').split('\n').filter(l => l.startsWith('- ')).map(l => l.slice(2));
 const count = (k, v) => bugs.filter(b => b[k] === v).length;
 const SEV = ['Critical', 'High', 'Medium', 'Low'], PRI = ['Urgent', 'High', 'Medium', 'Low'];
 
+const sec = (label, html) => `<div class="sec"><h4>${label}</h4>${html}</div>`;
+const pre = t => t ? `<pre>${esc(t)}</pre>` : '';
 const card = b => `
-<article class="bug" data-sev="${b.sev}" data-pri="${b.pri}" data-run="${b.run}" data-text="${esc((b.id + ' ' + b.title + ' ' + b.spec + ' ' + b.body.join(' ')).toLowerCase())}">
+<article class="bug" data-sev="${b.sev}" data-pri="${b.pri}" data-run="${b.run}" data-text="${esc((b.id + ' ' + (b.plane || '') + ' ' + b.title + ' ' + b.spec + ' ' + b.summary + ' ' + b.actual + ' ' + (b.req || '')).toLowerCase())}">
   <button class="bug-head" aria-expanded="false">
     <span class="bid">${b.id}</span>
     <span class="btitle">${inline(b.title)}</span>
@@ -42,9 +31,15 @@ const card = b => `
     <span class="chev" aria-hidden="true">›</span>
   </button>
   <div class="bug-body">
-    <p class="meta">Spec row <strong>${esc(b.spec)}</strong> · Run ${b.run}${b.ticket ? ` · <span class="ticket">Existing ticket ${esc(b.ticket)} — do not refile</span>` : ''}</p>
-    <ul>${b.body.map(l => `<li>${inline(l)}</li>`).join('')}</ul>
-    ${b.shots.map(s => `<figure><a href="${s.data}" target="_blank" rel="noopener"><img src="${s.data}" alt="${esc(s.name)}" loading="lazy"></a><figcaption>${esc(s.name)}</figcaption></figure>`).join('')}
+    <p class="meta">Plane <strong>${esc(b.plane || '—')}</strong> · Spec row <strong>${esc(b.spec)}</strong> · Run ${b.run}${b.ticket ? ` · <span class="ticket">Existing ticket ${esc(b.ticket)}</span>` : ''}</p>
+    ${sec('Summary', '<p>' + inline(b.summary) + '</p>')}
+    ${sec('Steps to reproduce', '<ol>' + b.steps.map(x => '<li>' + inline(x) + '</li>').join('') + '</ol>')}
+    ${sec('Expected result', '<p>' + inline(b.expected) + '</p>')}
+    ${sec('Actual result', '<p>' + inline(b.actual) + '</p>')}
+    ${b.req ? sec('Request', pre(b.req)) : ''}
+    ${b.res ? sec('Response', pre(b.res)) : ''}
+    ${sec('Evidence', b.shots.length ? b.shots.map(s => `<figure><a href="${s.data}" target="_blank" rel="noopener"><img src="${s.data}" alt="${esc(s.name)}" loading="lazy"></a><figcaption>${esc(s.name)}</figcaption></figure>`).join('') : (b.req ? '<p class="muted">API only — see the request and response above.</p>' : '<p class="muted">No screenshot — follow the steps above.</p>'))}
+    ${sec('Environment', '<p>' + inline(b.envText) + '</p>')}
   </div>
 </article>`;
 
@@ -83,7 +78,7 @@ h1{font-size:26px;margin:0 0 4px}.sub{color:var(--muted);margin:0 0 20px}
 .chev{color:var(--muted);transition:transform .15s;font-size:20px}.bug.open .chev{transform:rotate(90deg)}
 .bug-body{display:none;padding:0 16px 14px 78px;border-top:1px solid var(--line)}.bug.open .bug-body{display:block}
 .bug-body ul{padding-left:18px;margin:8px 0}.bug-body li{margin:4px 0}
-.meta{color:var(--muted);font-size:14px;margin:10px 0 0}.ticket{color:var(--urg)}
+.meta{color:var(--muted);font-size:14px;margin:10px 0 0}.sec h4{margin:14px 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.sec p,.sec ol{margin:4px 0}.sec ol{padding-left:20px}.muted{color:var(--muted)}pre{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px;font:12.5px/1.45 ui-monospace,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0}.ticket{color:var(--urg)}
 code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:0 4px;overflow-wrap:anywhere}
 figure{margin:10px 0}figure img{max-width:100%;border:1px solid var(--line);border-radius:6px;display:block}figcaption{font-size:12px;color:var(--muted)}
 .notes{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px 12px 32px;margin-top:24px}
@@ -122,4 +117,4 @@ q.oninput=apply;run.onchange=apply;apply();
 const out = path.join(DIR, 'desk-modules-fields-bug-report.html');
 fs.writeFileSync(out, html);
 console.log(`bugs ${bugs.length}; with screenshots ${bugs.filter(b => b.shots.length).length} (${bugs.reduce((a, b) => a + b.shots.length, 0)} images); size ${(fs.statSync(out).size / 1e6).toFixed(1)} MB`);
-console.log('missing images:', bugs.flatMap(b => [...(b.body.find(l => /Evidence/.test(l)) || '').matchAll(/`([^`]+\.png)`/g)].map(m => m[1]).filter(p => !fs.existsSync(path.join(ROOT, RUNS[b.run], p))).map(p => b.id + ' ' + p)).join(', ') || 'none');
+console.log('missing images:', bugs.flatMap(b => b.evidence.filter(p => !fs.existsSync(p.startsWith('docs/') ? path.join(ROOT, p) : path.join(ROOT, RUNS[b.run], p))).map(p => b.id + ' ' + p)).join(', ') || 'none');

@@ -1,6 +1,6 @@
 # Bug list — Desk Modules and Fields, run 2 (execu_2026-10-06_23-09-45)
 
-Target: staging-desk.taviportal.com (NDC-Staging), 6–7 Oct 2026. Accounts: owner, second admin (mahmoud.mmohamedsamy), agent (mahmoud.mohamed1 lowered to Desk Agent for the run, restored after), a third admin for L12. **17 bugs** (IDs continue the consolidated list in docs/desk-modules-fields/desk-modules-fields-bug-report.md). Missing features are not bugs — see NDC-2174.
+Target: staging-desk.taviportal.com (NDC-Staging), 6–7 Oct 2026. Accounts: owner, second admin (mahmoud.mmohamedsamy), agent (mahmoud.mohamed1 lowered to Desk Agent for the run, restored after), a third admin for L12. **16 bugs** (IDs continue the consolidated list in docs/desk-modules-fields/desk-modules-fields-bug-report.md). Missing features are not bugs — see NDC-2174.
 
 Evidence rule: annotated TAVI vs Zoho image where a screen exists; API-only bugs carry the request/response in the text.
 
@@ -21,7 +21,6 @@ Evidence rule: annotated TAVI vs Zoho image where a screen exists; API-only bugs
 | MF-41 | The 512-fields-per-layout limit is not enforced by the API | Low | Low | I3 |
 | MF-42 | Rollup summary accepts a relation that does not point at the module | Low | Low | I36 |
 | MF-43 | Layout API accepts Required + Read-only on the same field | Low | Low | I5 |
-| MF-44 | Auto-fill "Another field on this form" offers only system fields | Low | Low | I29 |
 | MF-45 | Quick-create trigger dialog shows a raw "{{module}}" placeholder | Low | Low | I37 |
 
 ## MF-02 — Profiles chosen in the Create Module dialog are not applied
@@ -100,7 +99,7 @@ Evidence rule: annotated TAVI vs Zoho image where a screen exists; API-only bugs
 **Severity:** Low · **Priority:** Low · **Spec row:** I3
 
 - **Actual:** UI says "Maximum of 512 fields per layout reached", but PUT layout with 550 fields → 200.
-- **Evidence:** API / run log (no screen)
+- **Evidence:** `bugs/screenshots/annotated/I3-vs-zoho.png`
 
 ## MF-42 — Rollup summary accepts a relation that does not point at the module
 **Severity:** Low · **Priority:** Low · **Spec row:** I36
@@ -112,12 +111,6 @@ Evidence rule: annotated TAVI vs Zoho image where a screen exists; API-only bugs
 **Severity:** Low · **Priority:** Low · **Spec row:** I5
 
 - **Actual:** The builder blocks it, but PUT layout with required:true and read_only:true → 200.
-- **Evidence:** API / run log (no screen)
-
-## MF-44 — Auto-fill "Another field on this form" offers only system fields
-**Severity:** Low · **Priority:** Low · **Spec row:** I29
-
-- **Actual:** Options: Name, Created By, Modified By, Created Time, Modified Time — custom fields on the form are not offered.
 - **Evidence:** API / run log (no screen)
 
 ## MF-45 — Quick-create trigger dialog shows a raw "{{module}}" placeholder

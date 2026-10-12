@@ -22,9 +22,9 @@
 
 Still open: NOT RUN 6 (standard-module writes, telephony) and INCONCLUSIVE 9 (A9, C9, F7, G27, H5 need access; I26 waits for MF-09; I28, I43, J4 explained below).
 
-## Bugs found in this run — 17
+## Bugs found in this run — 16
 
-See [bugs/bug-list.md](bugs/bug-list.md). Critical 1 (MF-02), High 7, Medium 4, Low 5.
+See [bugs/bug-list.md](bugs/bug-list.md). Critical 1 (MF-02), High 7, Medium 4, Low 4. (MF-44 was removed after a re-check: test-setup artefact.)
 
 ## Rows
 
@@ -59,7 +59,7 @@ See [bugs/bug-list.md](bugs/bug-list.md). Critical 1 (MF-02), High 7, Medium 4, 
 | I24 | MISSING | Default value | No default-value setting in the field builder (GENERAL/VALIDATION/PERMISSIONS/ADVANCED); defaultValue in the layout is ignored on create (form and API). Retest when built. |  |
 | I27 | FAIL | Conditional visibility | Rule: show "QA MF dep" (required) when ctrl equals "x". On the form with ctrl = Z the field is shown and required ("This field is required"); the rule is not applied. | MF-34 |
 | I28 | INCONCLUSIVE | No controllers message | On a layout with only Name, Conditional visibility offers Created By / Modified By / Created Time / Modified Time as controlling fields, so the "no other field" message cannot appear. |  |
-| I29 | PASS | Auto-fill | Builder ADVANCED → Fill from "The logged-in user": form pre-fills "ndc-staging-owner"; a typed value is never overwritten. Note: "Another field on this form" lists only system fields (MF-44). | MF-44 |
+| I29 | PASS | Auto-fill | Builder ADVANCED → Fill from "The logged-in user": form pre-fills "ndc-staging-owner"; a typed value is never overwritten. |  |
 | I36 | PASS | Rollup summary | Count and Sum of QA MF Types via lookup qa_lk: parent shows count 2, sum 12. Note: a rollup over a lookup that does not point at the module is also accepted (MF-42). | MF-42 |
 | I37 | PASS | Quick-create trigger | Builder ADVANCED quick-create trigger Escalate → Tasks; choosing Escalate opens "New Task". Note: the dialog shows a raw "{{module}}" placeholder (MF-45). | MF-45 |
 | I38 | FAIL | File / Image upload restrictions | PDF-only file field (max 1 MB) accepts .txt and .png on the form with no message; a 2.2 MB file gives no message; the record API accepts a text/plain file object (201). SVG script did not run. | MF-36 |

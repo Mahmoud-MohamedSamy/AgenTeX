@@ -1,0 +1,70 @@
+{
+ "out": "../SEC-1-vs-zoho.png",
+ "date": "7 Oct 2026",
+ "id": "SEC-1",
+ "title": "MF-01 A CRM Admin profile gives module and field administration inside Desk",
+ "verdict": "Bug",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Desk Agent (+ CRM Admin in CRM) opens Setup → Modules and Fields",
+   "img": "../../../../browser-sessions/mfadmin-180501-9c45/screenshots/A2-agent-modules-and-fields.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 1220,
+     "y": 8,
+     "w": 46,
+     "h": 42
+    },
+    {
+     "n": 2,
+     "x": 292,
+     "y": 185,
+     "w": 963,
+     "h": 535
+    },
+    {
+     "n": 3,
+     "x": 1073,
+     "y": 135,
+     "w": 168,
+     "h": 36
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Agent profile (docs)",
+   "text": [
+    "Only users whose profile has the \"Customize\" / Setup permission can open Modules and Tabs or Layouts and Fields. An Agent profile cannot."
+   ],
+   "sources": [
+    "help.zoho.com/portal/en/kb/desk/user-management-and-security/profiles"
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "b": "Signed-in user (1)",
+   "zoho": "Agent profile",
+   "tavi": "Desk Agent in Desk, CRM Admin in CRM",
+   "match": "Not comparable"
+  },
+  {
+   "b": "Modules and Fields page (2)",
+   "zoho": "Not available to agents",
+   "tavi": "Full module table shown",
+   "match": "Differs"
+  },
+  {
+   "b": "Create New Module (3)",
+   "zoho": "Not available to agents",
+   "tavi": "Button shown and usable",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "GET /api/v1/iam/me/permissions (x-app-key desk) returns CRM Admin metadata permissions such as metadata.modules.manage."
+ ]
+}

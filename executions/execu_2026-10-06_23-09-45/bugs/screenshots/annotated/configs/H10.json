@@ -2,27 +2,58 @@
  "out": "../H10-vs-zoho.png",
  "date": "7 Oct 2026",
  "id": "H10",
- "title": "Profiles chosen in the Create Module dialog are not applied",
+ "title": "MF-02 Profiles chosen in the Create Module dialog are not applied",
  "verdict": "Bug",
  "panels": [
   {
    "side": "TAVI",
-   "caption": "Desk Agent opens \"QA MF Closed\" (created for Desk Administrator only)",
-   "img": "../../../../browser-sessions/mfagent-230945-b20f/screenshots/H10-agent-closed-module.png"
+   "caption": "Desk Agent inside \"QA MF Closed\" (created for Desk Administrator only)",
+   "img": "../../../../browser-sessions/mfagent-230945-b20f/screenshots/H10-agent-closed-module.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 10,
+     "y": 72,
+     "w": 240,
+     "h": 44
+    },
+    {
+     "n": 2,
+     "x": 268,
+     "y": 116,
+     "w": 980,
+     "h": 64
+    },
+    {
+     "n": 3,
+     "x": 1218,
+     "y": 8,
+     "w": 48,
+     "h": 42
+    }
+   ]
   },
   {
    "side": "Zoho",
-   "caption": "New module form: profile/department access",
+   "caption": "New module form: who can use the module",
    "img": "../../../../../../docs/desk-modules-fields/evidence/originals/zoho/05-new-module-form.png"
   }
  ],
  "rows": [
   {
    "b": "Module Permission = Desk Administrator only",
-   "zoho": "Other profiles cannot open the module",
-   "tavi": "PUT /modules/{id}/permissions → 404; agent lists, reads and creates records",
+   "zoho": "Other profiles cannot open it",
+   "tavi": "Agent (3) sees the module (1)",
+   "match": "Differs"
+  },
+  {
+   "b": "Agent creates a record",
+   "zoho": "Not possible",
+   "tavi": "\"QA MF agent in closed\" created (2)",
    "match": "Differs"
   }
  ],
- "notes": []
+ "notes": [
+  "The dialog sends PUT /api/v1/modules/{id}/permissions, which returns 404; no error is shown."
+ ]
 }

@@ -1,0 +1,399 @@
+[
+ {
+  "mf": "MF-01",
+  "name": "Modules and Fields | A CRM Admin profile gives module and field administration inside Desk",
+  "priority": "urgent",
+  "html": "<p><strong>Summary</strong></p><p>A user who has the Desk Agent profile in Desk and the CRM Admin profile in CRM gets CRM Admin's metadata permissions inside Desk, so an agent can open and change Setup → Modules and Fields.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Give a user the Desk Agent profile (Desk) and the CRM Admin profile (CRM).</p></li><li><p>Sign in to Desk as that user.</p></li><li><p>Open Setup → Modules and Fields.</p></li><li><p>Call GET /api/v1/iam/me/permissions with header x-app-key: desk.</p></li></ol><p><strong>Expected result</strong></p><p>Only Desk Agent permissions apply in Desk (metadata.records.access, metadata.records.manage). Modules and Fields says \"You don't have permission to view this page\".</p><p><strong>Actual result</strong></p><p>The page opens with the full module table and \"Create New Module\". The permissions response contains CRM Admin's metadata permissions.</p><p><strong>Request</strong></p><pre><code>GET /api/v1/iam/me/permissions  (x-app-key: desk)</code></pre><p><strong>Response</strong></p><pre><code>200 — includes metadata.modules.manage, metadata.fields.manage_permissions, metadata.capabilities.manage, metadata.views.manage, metadata.integrations.manage, metadata.records.convert. GET /api/v1/iam/profiles/{desk_agent_id}/effective lists only metadata.records.access and metadata.records.manage.</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; Gmail test user with Desk Agent + CRM Admin.</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Critical. Spec row SEC-1 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>MF-11 (Access Control picker lists CRM users) is the same family: Desk reads CRM data.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-01).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/SEC-1-vs-zoho.png",
+   "browser-sessions/mfadmin-180501-9c45/screenshots/A2-agent-modules-and-fields.png"
+  ],
+  "run": 1
+ },
+ {
+  "mf": "MF-02",
+  "name": "Modules and Fields | Profiles chosen in the Create Module dialog are not applied",
+  "priority": "urgent",
+  "html": "<p><strong>Summary</strong></p><p>When a module is created with \"Module Permission\" limited to some profiles, the limit is silently lost: the request that saves it returns 404 and the module stays open to everyone.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Setup → Modules and Fields → Create New Module.</p></li><li><p>Name \"QA MF Closed\", Module Permission: tick only Desk Administrator → Create.</p></li><li><p>Sign in as a Desk Agent.</p></li><li><p>Open the \"+\" create menu and the module page; create a record.</p></li></ol><p><strong>Expected result</strong></p><p>The agent does not see the module and cannot read or create its records. If saving the permission fails, the dialog shows an error.</p><p><strong>Actual result</strong></p><p>No error is shown. The agent sees the module (sidebar and \"+\" menu), lists its records and creates a record. Access Control on the module still shows \"All Users\".</p><p><strong>Request</strong></p><pre><code>PUT /api/v1/modules/{module_id}/permissions\n{\"profileIds\":[\"44444444-4444-4444-4444-444444444401\"]}</code></pre><p><strong>Response</strong></p><pre><code>404 {\"success\":false,\"error\":{\"code\":\"NOT_FOUND\",\"message\":\"The requested resource was not found.\"}}. As the agent afterwards: GET /modules/{module_id}/records → 200; POST /modules/{module_id}/records → 201.</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; tenant owner creates the module; Desk Agent account (mahmoud.mohamed1, profile lowered for the test) checks access.</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Critical. Spec row H10 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-02).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/H10-vs-zoho.png",
+   "browser-sessions/mfagent-230945-b20f/screenshots/H10-agent-closed-module.png"
+  ],
+  "run": 2
+ },
+ {
+  "mf": "MF-03",
+  "name": "Modules and Fields | Records can be saved without the required Name field",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>The record API accepts a record with no Name although Name is required on the layout.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Use a custom module whose default layout has the required Name field.</p></li><li><p>Send the request below with no \"name\" value.</p></li></ol><p><strong>Expected result</strong></p><p>400/422 — Name is required (as for other required fields, see I4).</p><p><strong>Actual result</strong></p><p>201 Created; the record has no name.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[],\"layout_id\":\"{default_layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created (also 201 without layout_id).</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row F9 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-03).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-04",
+  "name": "Modules and Fields | A saved field's data type can be changed",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>An existing field can be switched to another data type through the API; existing values are left unconverted.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create a single-line field and save a record with text in it.</p></li><li><p>Send the request below to change its type to number.</p></li><li><p>Read the field and the record.</p></li></ol><p><strong>Expected result</strong></p><p>Refused (Zoho: \"the field type cannot be changed\").</p><p><strong>Actual result</strong></p><p>200; the field is now a number field and the old text value stays as text.</p><p><strong>Request</strong></p><pre><code>PUT /api/v1/modules/{module_id}/fields/{field_id}\n{\"fieldName\":\"qa_sl\",\"labels\":{\"en\":\"QA MF sl\"},\"datatypeKey\":\"number\",\"required\":false,\"unique\":false,\"uniquePeerModuleIds\":[]}</code></pre><p><strong>Response</strong></p><pre><code>200 OK — datatypeKey \"number\".</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I13 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-04).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-05",
+  "name": "Modules and Fields | Record API ignores single-line max length",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>A single-line field with max_length 10 accepts a longer value through the record API.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create single-line field qa_sl10 with max_length 10 and place it on the default layout.</p></li><li><p>Send the request below with 11 characters.</p></li></ol><p><strong>Expected result</strong></p><p>400/422 — value too long.</p><p><strong>Actual result</strong></p><p>201; the 11-character value is stored.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF len\"}},{\"field\":\"qa_sl10\",\"value\":{\"kind\":\"string\",\"value\":\"ABCDEFGHIJK\"}}],\"layout_id\":\"{default_layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I14 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-05).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-06",
+  "name": "Modules and Fields | Record API ignores number min/max and accepts text in number fields",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>Number fields accept values outside min/max and even text.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create number field qa_num with min 0, max 100 on the default layout.</p></li><li><p>Send records with 101, -1, \"abc\" and \"15,000\".</p></li></ol><p><strong>Expected result</strong></p><p>101, -1 and \"abc\" refused.</p><p><strong>Actual result</strong></p><p>All 201. \"abc\" is stored as a string in the number field; \"15,000\" becomes 15000. (Also: currency symbol \"EGP12\", UI max 4, is silently not stored.)</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF num\"}},{\"field\":\"qa_num\",\"value\":{\"kind\":\"number\",\"value\":101}}],\"layout_id\":\"{default_layout_id}\"}\n(same with -1 and {\"kind\":\"string\",\"value\":\"abc\"})</code></pre><p><strong>Response</strong></p><pre><code>201 Created for each.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I16 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-06).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-07",
+  "name": "Modules and Fields | Record API accepts invalid email, phone and javascript: URLs",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>Email, phone and URL fields accept invalid values; a javascript: URL is a stored-XSS risk wherever URLs become links.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create email, phone and URL fields on the default layout.</p></li><li><p>Send a record with the values below.</p></li></ol><p><strong>Expected result</strong></p><p>400/422 for each invalid value; javascript: URLs always refused.</p><p><strong>Actual result</strong></p><p>201; all three values stored.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF fmt\"}},{\"field\":\"qa_email\",\"value\":{\"kind\":\"string\",\"value\":\"not-an-email\"}},{\"field\":\"qa_phone\",\"value\":{\"kind\":\"string\",\"value\":\"call me\"}},{\"field\":\"qa_url\",\"value\":{\"kind\":\"string\",\"value\":\"javascript:alert(1)\"}}],\"layout_id\":\"{default_layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I18 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-07).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-08",
+  "name": "Modules and Fields | Record API accepts pick-list values that are not in the list",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>A pick list with options Alpha/Beta/Gamma accepts any other value.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create pick list qa_pl with options Alpha, Beta, Gamma on the default layout.</p></li><li><p>Send a record with \"Delta\".</p></li></ol><p><strong>Expected result</strong></p><p>400/422 — not one of the options.</p><p><strong>Actual result</strong></p><p>201; \"Delta\" stored.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF pl\"}},{\"field\":\"qa_pl\",\"value\":{\"kind\":\"string\",\"value\":\"Delta\"}}],\"layout_id\":\"{default_layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I20 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-08).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-09",
+  "name": "Modules and Fields | Field regex is saved but not enforced",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>A regex set in the builder is saved on the layout but the server does not check it.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Builder → field qa_rx → Edit Properties → VALIDATION → Regex ^[A-Z]{2}[0-9]{4}$ → Apply → Save.</p></li><li><p>Send a record with \"ab12\".</p></li></ol><p><strong>Expected result</strong></p><p>400/422 — value does not match the pattern.</p><p><strong>Actual result</strong></p><p>201; \"ab12\" stored. (The layout stores \"regex\":\"^[A-Z]{2}[0-9]{4}$\"; the builder's tester works.)</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF rx\"}},{\"field\":\"qa_rx\",\"value\":{\"kind\":\"string\",\"value\":\"ab12\"}}],\"layout_id\":\"{default_layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I25 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-09).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-10",
+  "name": "Modules and Fields | A required field can be set to \"Don't Show\"",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>Field Permissions lets an admin hide a required field from a profile; that profile can then no longer create any record.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Module → Fields → Field Permissions → profile Desk Agent.</p></li><li><p>Set Name (required) to \"Don't Show\" → Save.</p></li><li><p>As a Desk Agent, create a record (form or API).</p></li></ol><p><strong>Expected result</strong></p><p>\"Don't Show\" disabled for required fields, or Save refused with a message.</p><p><strong>Actual result</strong></p><p>Saved (\"3 field permissions updated\"). Every agent create then fails with 422 \"One or more fields in the payload are not writable for your profile.\"</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/field-permissions\n{\"fieldId\":\"{name_field_id}\",\"profileId\":\"44444444-4444-4444-4444-444444444402\",\"permission\":\"hidden\"}\nthen as the agent: POST /api/v1/modules/{module_id}/records {\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF agent rec\"}}]}</code></pre><p><strong>Response</strong></p><pre><code>field-permissions → 200/201. Agent record → 422 \"One or more fields in the payload are not writable for your profile.\"</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; tenant owner; Desk Agent account (mahmoud.mohamed1, profile lowered for the test).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row H4 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-10).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/H4-vs-zoho.png",
+   "browser-sessions/mfowner-230945-b20f/screenshots/S3-field-permissions-agent.png"
+  ],
+  "run": 2
+ },
+ {
+  "mf": "MF-11",
+  "name": "Modules and Fields | Access Control picker lists CRM users and profiles instead of Desk ones",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>The \"Select principals\" picker used by module Access Control and Layout Permissions loads CRM users and profiles, so a layout or module cannot be limited to a Desk profile or a Desk agent.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Open a layout → Layout settings → Layout Permissions (or a module → Access Control).</p></li><li><p>Choose Selected Users → Select principals.</p></li><li><p>Switch the kind to Profiles; then search Users for a Desk agent.</p></li></ol><p><strong>Expected result</strong></p><p>Desk profiles (Desk Administrator, Supervisor, Agent, Light Agent, Reviewer) and Desk agents.</p><p><strong>Actual result</strong></p><p>Profiles: CRM Admin, Manager, Supervisor, test, User. The Desk agent mahmoud.mohamed1@taviportal.com is not found.</p><p><strong>Request</strong></p><pre><code>GET /api/v1/iam/users?app_key=crm  (sent by the picker; also GET /iam/profiles, /iam/org-units)</code></pre><p><strong>Response</strong></p><pre><code>200 — CRM users only. Note: a limit set through the API with the Desk Agent profile id is enforced correctly (G10 passed).</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; tenant owner.</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row G10, H9 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Same root cause as the CRM users/profiles shown in other Desk pickers: NDC-2204, NDC-1915.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-11).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/MF-11-picker-vs-zoho.png",
+   "browser-sessions/mfowner-230945-b20f/screenshots/A8-selected-users.png"
+  ],
+  "run": 2
+ },
+ {
+  "mf": "MF-33",
+  "name": "Modules and Fields | Field dependency rules (SHOW / REQUIRE) are saved but not applied",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>Field Dependency rules are stored and listed, but neither the record form nor the record API applies them.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Layout QA MF L-Agent: add rules \"When QA MF e2e_kind = Hardware → Show QA MF e2e_serial\" and \"→ Require QA MF e2e_serial\".</p></li><li><p>As a Desk Agent: \"+\" → QA MF Open1 → choose layout QA MF L-Agent.</p></li><li><p>Look at QA MF e2e_serial before choosing a kind; choose Hardware; leave serial empty; Save.</p></li></ol><p><strong>Expected result</strong></p><p>Serial hidden until Hardware is chosen; then required; Save blocked. The API refuses the same record.</p><p><strong>Actual result</strong></p><p>Serial is visible before Hardware; the record saves with serial empty (\"Record saved successfully\"); the API returns 201. Same on module QA MF Deps (SHOW qa_b / REQUIRE qa_c when ctrl = Z).</p><p><strong>Request</strong></p><pre><code>PUT /api/v1/modules/{module_id}/layouts/{layout_id}  (…\"dependencies\":[{\"id\":\"{uuid}\",\"parentFieldId\":\"{kind_id}\",\"parentValues\":[\"Hardware\"],\"action\":\"SHOW\",\"childFieldIds\":[\"{serial_id}\"]},{\"id\":\"{uuid}\",\"parentFieldId\":\"{kind_id}\",\"parentValues\":[\"Hardware\"],\"action\":\"REQUIRE\",\"childFieldIds\":[\"{serial_id}\"]}])\nthen as the agent: POST /api/v1/modules/{module_id}/records {\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF E2E hw no serial\"}},{\"field\":\"qa_e2e_kind\",\"value\":{\"kind\":\"string\",\"value\":\"Hardware\"}}],\"layout_id\":\"{layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>Layout PUT → 200 (2 rules stored). Record → 201 Created.</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; tenant owner sets the rules; Desk Agent account (mahmoud.mohamed1, profile lowered for the test) creates the record.</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I47, E2E-2 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-33).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/I47-E2E-2-vs-zoho.png",
+   "browser-sessions/mfagent-230945-b20f/screenshots/E2E-2-agent-L-Agent.png"
+  ],
+  "run": 2
+ },
+ {
+  "mf": "MF-34",
+  "name": "Modules and Fields | Conditional visibility is not applied on the record form",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>A field set to show only when another field has a given value is always shown, and its Required flag applies even while it should be hidden.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Field \"QA MF dep\" (required) → Edit Properties → VALIDATION → Conditional visibility: show when QA MF ctrl equals \"x\" → Apply → Save.</p></li><li><p>\"+\" → create a record, set QA MF ctrl = Z, fill Name and Save.</p></li></ol><p><strong>Expected result</strong></p><p>QA MF dep hidden and not required while ctrl ≠ x.</p><p><strong>Actual result</strong></p><p>QA MF dep is shown and Save says \"This field is required\" with ctrl = Z.</p><p><strong>Request</strong></p><pre><code>Layout field config stored: \"visibilityRule\":{\"dependsOn\":\"qa_ctrl\",\"anyNonEmpty\":false,\"equalsAny\":[\"x\"]}</code></pre><p><strong>Response</strong></p><pre><code>—</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; second admin (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I27 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Related: NDC-1230 (Controlling Field dropdown in Conditional Visibility).</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-34).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/I27-vs-zoho.png",
+   "browser-sessions/mfadminb-230945-b20f/screenshots/I47-form-Z-save.png"
+  ],
+  "run": 2
+ },
+ {
+  "mf": "MF-35",
+  "name": "Modules and Fields | Department storage has no effect on records",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>A module created with Module Data Storage = Department stores records without a department, and every user sees every record.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create New Module \"QA MF DeptMod\" with Module Data Storage = Department.</p></li><li><p>Create records: plain, with header x-department-id, and with department_id in the body.</p></li><li><p>List the records as an agent who belongs only to \"QA MF Dept\", and as an admin.</p></li></ol><p><strong>Expected result</strong></p><p>Each record belongs to a department; users see only their departments' records.</p><p><strong>Actual result</strong></p><p>All creates return 201; records carry no department field; the agent and the admin see the same 4 records; the list is the same with or without a department header.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/teamspaces/{teamspace_id}/modules {\"moduleKey\":\"qa_mf_deptmod\",\"labels\":{\"en\":\"QA MF DeptMod\"},\"pluralForm\":\"QA MF DeptMod\",\"singularForm\":\"QA MF DeptMod1\",\"storageScope\":\"department\"}\nPOST /api/v1/modules/{module_id}/records {\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF dept rec hdr\"}}]}  (header x-department-id: {department_id})\nPOST /api/v1/modules/{module_id}/records {\"data\":[…],\"department_id\":\"{department_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>Module 201 (storageScope \"department\"). Records 201 ×3, no department in the stored record. GET records → same 3–4 records for every user and header.</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; second admin; Desk Agent account (mahmoud.mohamed1, profile lowered for the test).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row C4 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-35).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/C4-vs-zoho.png",
+   "browser-sessions/mfagent-230945-b20f/screenshots/C4-agent-dept-module.png"
+  ],
+  "run": 2
+ },
+ {
+  "mf": "MF-36",
+  "name": "Modules and Fields | File and image upload restrictions are not enforced",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>A File Upload field limited to PDF and 1 MB accepts other file types and larger files, on the form and through the API, with no message.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create File Upload field \"QA MF file\" with allowed extensions [pdf], max 1 MB, and Image Upload \"QA MF img\" with [png], 1 MB.</p></li><li><p>On the create form upload qa-mf.txt, qa-mf.png and a 2.2 MB PDF to QA MF file.</p></li><li><p>Send the API request below.</p></li></ol><p><strong>Expected result</strong></p><p>Wrong type and too-large files refused with a message; the API refuses them too.</p><p><strong>Actual result</strong></p><p>The form takes the .txt and .png with no message and shows no message for the 2.2 MB file; the API returns 201. (An SVG with a script did not run.)</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF upload api\"}},{\"field\":\"qa_file\",\"value\":{\"kind\":\"object\",\"properties\":{\"url\":{\"kind\":\"string\",\"value\":\"x\"},\"mime\":{\"kind\":\"string\",\"value\":\"text/plain\"},\"name\":{\"kind\":\"string\",\"value\":\"qa-mf.txt\"},\"size\":{\"kind\":\"number\",\"value\":22}}}}],\"layout_id\":\"{default_layout_id}\"}\nField options: {\"allowed_extensions\":[\"pdf\"],\"max_size_mb\":1}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; second admin (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I38 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-36).</p></li></ul>",
+  "evidence": [],
+  "run": 2
+ },
+ {
+  "mf": "MF-37",
+  "name": "Modules and Fields | Radio and Status fields accept values that are not in their list",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>Radio button and Status fields accept any value through the record API, and the list then shows it as a status.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create radio qa_rb (R1, R2) and status qa_st (New, Doing, Done) on the default layout.</p></li><li><p>Send the request below.</p></li><li><p>Open the module's record list.</p></li></ol><p><strong>Expected result</strong></p><p>400/422 — not one of the values.</p><p><strong>Actual result</strong></p><p>201; \"R9\" and \"Nope\" stored; \"Nope\" shown as a status chip on the list. Same family as MF-08.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF radio bad\"}},{\"field\":\"qa_rb\",\"value\":{\"kind\":\"string\",\"value\":\"R9\"}},{\"field\":\"qa_st\",\"value\":{\"kind\":\"string\",\"value\":\"Nope\"}}],\"layout_id\":\"{default_layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; tenant owner.</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: High. Spec row I23 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-37).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/I23-vs-zoho.png",
+   "browser-sessions/mfowner-230945-b20f/screenshots/w3-types-list.png"
+  ],
+  "run": 2
+ },
+ {
+  "mf": "MF-12",
+  "name": "Modules and Fields | Standard modules offer Delete, and five row-menu items do nothing",
+  "priority": "high",
+  "html": "<p><strong>Summary</strong></p><p>The row menu on standard modules offers Delete (stopped only when the module has records), and five items only change the URL.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Setup → Modules and Fields → row menu (⋯) on Tickets or Calls.</p></li><li><p>Click Set Validation Rules, Map Dependency Fields, Button, Links, Assignment Rules.</p></li><li><p>Click Delete (cancel at the confirmation).</p></li></ol><p><strong>Expected result</strong></p><p>No Delete on standard modules; every item opens its page.</p><p><strong>Actual result</strong></p><p>The five items only add ?tab=… and stay on Layouts. Delete opens a real 'Delete \"Tickets\"? … Delete module' confirmation; an empty standard module could be deleted.</p><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row B8 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-12).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/B8-vs-zoho.png",
+   "browser-sessions/mfadmin-180501-9c45/screenshots/B8-Delete.png"
+  ],
+  "run": 1
+ },
+ {
+  "mf": "MF-14",
+  "name": "Modules and Fields | A module can be created with a blank name",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>The module API accepts a name made only of spaces and has no length limit.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Send the request below.</p></li><li><p>Repeat with a 120-character name.</p></li></ol><p><strong>Expected result</strong></p><p>400 — name required; max length enforced (Zoho UI limit 25).</p><p><strong>Actual result</strong></p><p>201; module stored with pluralForm null. 120 characters accepted.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/teamspaces/{teamspace_id}/modules\n{\"moduleKey\":\"qa_mf_blank\",\"labels\":{\"en\":\"   \"},\"pluralForm\":\"   \",\"singularForm\":\"   \",\"storageScope\":\"organization\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created — \"pluralForm\": null.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row C3 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-14).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-15",
+  "name": "Modules and Fields | Rename accepts an empty name or another module's name",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>A module can be renamed to an empty name or to the name of another module.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Send the request below with an empty plural.</p></li><li><p>Send it again with pluralForm \"Tickets\".</p></li></ol><p><strong>Expected result</strong></p><p>Both refused.</p><p><strong>Actual result</strong></p><p>Both 200; plural stored as null, then as \"Tickets\".</p><p><strong>Request</strong></p><pre><code>PUT /api/v1/modules/{module_id}\n{\"pluralForm\":\"\",\"singularForm\":\"QA MF Device\",\"description\":null,\"rowVersion\":{n}}</code></pre><p><strong>Response</strong></p><pre><code>200 OK (pluralForm null); with \"Tickets\" → 200 OK.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row D5 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-15).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-16",
+  "name": "Modules and Fields | Module save has no lost-update protection",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>Two saves of a module with the same rowVersion both succeed; the stale one silently overwrites the other.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>GET /api/v1/modules/{module_id} and note rowVersion.</p></li><li><p>Send PUT with description \"tab one\" and that rowVersion.</p></li><li><p>Send PUT with description \"tab two (stale)\" and the same rowVersion.</p></li></ol><p><strong>Expected result</strong></p><p>Second PUT → 409 Conflict.</p><p><strong>Actual result</strong></p><p>Both 200; description is \"tab two (stale)\".</p><p><strong>Request</strong></p><pre><code>PUT /api/v1/modules/{module_id}\n{\"pluralForm\":\"QA MF Devices\",\"singularForm\":\"QA MF Device\",\"description\":\"tab two (stale)\",\"rowVersion\":{same_n}}</code></pre><p><strong>Response</strong></p><pre><code>200 OK (twice).</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row D7 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-16).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-17",
+  "name": "Modules and Fields | Layout builder → Rename Module crashes the page",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>Opening Rename Module from the layout builder's gear menu crashes the page.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Open any layout in the builder (e.g. Tickets → Default).</p></li><li><p>Gear (Layout settings) → Rename Module.</p></li></ol><p><strong>Expected result</strong></p><p>The rename dialog opens.</p><p><strong>Actual result</strong></p><p>\"Something went wrong — Cannot read properties of undefined (reading 'trim')\". Reproduced on Tickets 2/2 and on a QA module.</p><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row D9 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-17).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/D9-vs-zoho.png",
+   "browser-sessions/mfadmin-180501-9c45/screenshots/D9-rename-module-builder.png"
+  ],
+  "run": 1
+ },
+ {
+  "mf": "MF-18",
+  "name": "Modules and Fields | Set as default on a layout that holds records returns 500",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>Making a layout the default fails with a server error when that layout already has records.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>On a QA module, create a second active layout and save 6 records with it.</p></li><li><p>Send the request below.</p></li></ol><p><strong>Expected result</strong></p><p>200; the layout becomes the default.</p><p><strong>Actual result</strong></p><p>500 on 2 of 2 attempts. The same call on a layout without records returns 200.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/layouts/{layout_id}/set-default</code></pre><p><strong>Response</strong></p><pre><code>500 \"An unexpected error occurred\" — trace ids 0cb41259-d069-4ef0-8aff-80670c7c5c8e, 6bf735ec-b2c4-4f7c-88b6-5a4dd621adbe.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row G6 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Related: NDC-1588 (default layout handling).</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-18).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-19",
+  "name": "Modules and Fields | Layout save has no lost-update protection",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>Two layout saves with the same rowVersion both succeed and rowVersion never increases.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>GET a layout and note rowVersion.</p></li><li><p>Send two PUTs with different names and the same rowVersion.</p></li></ol><p><strong>Expected result</strong></p><p>Second PUT → 409.</p><p><strong>Actual result</strong></p><p>Both 200; the second overwrites the first; rowVersion stays the same.</p><p><strong>Request</strong></p><pre><code>PUT /api/v1/modules/{module_id}/layouts/{layout_id}\n{…full layout…,\"name\":\"QA MF L2 stale\",\"rowVersion\":{same_n}}</code></pre><p><strong>Response</strong></p><pre><code>200 OK (twice).</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row G26 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-19).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-20",
+  "name": "Modules and Fields | Record API accepts invalid dates",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>Date and date-time fields accept any text.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create date qa_date and date-time qa_dt on the default layout.</p></li><li><p>Send records with \"not a date\", \"2026-02-29\" and \"yesterday\".</p></li></ol><p><strong>Expected result</strong></p><p>400/422.</p><p><strong>Actual result</strong></p><p>201; all stored as plain strings.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF date\"}},{\"field\":\"qa_date\",\"value\":{\"kind\":\"string\",\"value\":\"2026-02-29\"}},{\"field\":\"qa_dt\",\"value\":{\"kind\":\"string\",\"value\":\"yesterday\"}}],\"layout_id\":\"{default_layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row I17 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-20).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-21",
+  "name": "Modules and Fields | Record API ignores multi-select max items",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>A multi-select with max_items 2 accepts 3 values.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create multi-select qa_ms (A, B, C) with max_items 2 on the default layout.</p></li><li><p>Send the request below.</p></li></ol><p><strong>Expected result</strong></p><p>400/422.</p><p><strong>Actual result</strong></p><p>201; 3 values stored.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF ms\"}},{\"field\":\"qa_ms\",\"value\":{\"kind\":\"array\",\"items\":[{\"kind\":\"string\",\"value\":\"A\"},{\"kind\":\"string\",\"value\":\"B\"},{\"kind\":\"string\",\"value\":\"C\"}]}}],\"layout_id\":\"{default_layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row I22 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-21).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-22",
+  "name": "Modules and Fields | A new lookup to Contacts is not registered as a related module",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>After a custom module gets a lookup to Contacts, Contacts does not list it as a related module, so the related list will not appear on contacts.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Add lookup qa_lk from QA MF Devices to Contacts (related-list title \"QA MF Devices\").</p></li><li><p>Send the request below.</p></li></ol><p><strong>Expected result</strong></p><p>QA MF Devices is listed.</p><p><strong>Actual result</strong></p><p>Not listed (Tickets, Calls, Events … are).</p><p><strong>Request</strong></p><pre><code>GET /api/v1/modules/43004ce2-577f-4eda-b00a-0750fe40c3d4/related-modules</code></pre><p><strong>Response</strong></p><pre><code>200 — QA MF Devices missing from the list.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row E2E-1 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-22).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-38",
+  "name": "Modules and Fields | Deleted dependency rules come back after Save",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>Deleting Field Dependency rules in the builder looks successful, but the rules are still stored after saving.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Layout with 2 Field Dependency rules → Layout settings → Field Dependency.</p></li><li><p>Delete both rules (\"No dependency rules yet\" appears) → Save Rules → Save.</p></li><li><p>Read the layout.</p></li></ol><p><strong>Expected result</strong></p><p>No rules stored.</p><p><strong>Actual result</strong></p><p>GET layout still returns both rules.</p><p><strong>Request</strong></p><pre><code>GET /api/v1/modules/{module_id}/layouts/{layout_id}</code></pre><p><strong>Response</strong></p><pre><code>200 — \"dependencies\" still has 2 rules.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; second admin (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row I48 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-38).</p></li></ul>",
+  "evidence": [],
+  "run": 2
+ },
+ {
+  "mf": "MF-39",
+  "name": "Modules and Fields | Custom data types are listed but cannot be used to create a field (API)",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>A new custom data type appears in the datatype catalogue, but creating a field with it is refused.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create a custom data type (request 1).</p></li><li><p>Check GET /api/v1/fields/datatypes — qa_mf_dt2 is listed.</p></li><li><p>Create a field with it (request 2).</p></li></ol><p><strong>Expected result</strong></p><p>Field created with the custom type.</p><p><strong>Actual result</strong></p><p>400 DATATYPE_KEY_UNKNOWN. This also blocks spec row J4 (delete a type in use).</p><p><strong>Request</strong></p><pre><code>1) POST /api/v1/custom-datatypes {\"key\":\"qa_mf_dt2\",\"label\":\"QA MF dt2\",\"base_datatype_key\":\"single_line\",\"icon\":\"type\"}\n2) POST /api/v1/modules/{module_id}/fields {\"fields\":[{\"fieldName\":\"qa_cdt2\",\"labels\":{\"en\":\"QA MF cdt2\"},\"datatypeKey\":\"qa_mf_dt2\",\"required\":false,\"unique\":false,\"uniquePeerModuleIds\":[]}]}</code></pre><p><strong>Response</strong></p><pre><code>1) 201. 2) 400 {\"code\":\"DATATYPE_KEY_UNKNOWN\",\"message\":\"Field 'qa_cdt2': Datatype key 'qa_mf_dt2' is not a recognized datatype. Call GET /api/v1/fields/datatypes …\"}</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; second admin (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row J4 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-39).</p></li></ul>",
+  "evidence": [],
+  "run": 2
+ },
+ {
+  "mf": "MF-40",
+  "name": "Modules and Fields | Record API stores values for fields that do not exist",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>The record API accepts and keeps values for field names that do not exist on the module; they later collide with real fields.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>On a module without field qa_uq, send the request below.</p></li><li><p>Later create qa_uq as a unique field.</p></li><li><p>Create a new record with qa_uq = \"QA-UQ-1\".</p></li></ol><p><strong>Expected result</strong></p><p>Unknown field refused (400).</p><p><strong>Actual result</strong></p><p>First record 201 and the value is kept; after qa_uq is created, the new record is refused as a duplicate (422 \"already in use\").</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/records\n{\"data\":[{\"field\":\"name\",\"value\":{\"kind\":\"string\",\"value\":\"QA MF uq 1\"}},{\"field\":\"qa_uq\",\"value\":{\"kind\":\"string\",\"value\":\"QA-UQ-1\"}}],\"layout_id\":\"{default_layout_id}\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created; later 422 RECORD_FIELD_INVALID \"QA MF uq is already in use by another record.\"</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; tenant owner.</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row I7 (setup) in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-40).</p></li></ul>",
+  "evidence": [],
+  "run": 2
+ },
+ {
+  "mf": "MF-46",
+  "name": "Modules and Fields | Recycle Bin \"Delete forever\" fails for every Desk item with no message",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>Permanently deleting a Desk item from the Recycle Bin fails, but the page shows no error.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Setup → Data → Recycle Bin.</p></li><li><p>Row ⋮ → Delete forever on any Desk item (e.g. a deleted department or record).</p></li></ol><p><strong>Expected result</strong></p><p>Item permanently deleted, or an error message.</p><p><strong>Actual result</strong></p><p>No message; the item stays. Desk items can only expire after 60 days.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/audit/recycle-bin/delete\n{\"ids\":[\"607b8057-8e25-4ba8-bfcc-86a320facd4f\"]}</code></pre><p><strong>Response</strong></p><pre><code>200 {\"success\":true,\"data\":{\"succeeded\":[],\"failed\":[{\"id\":\"607b8057-…\",\"reason_key\":\"recyclebin.error.unsupported_app\",\"detail\":null}],\"skipped\":[]}}</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; second admin (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Medium. Spec row cleanup in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Related: NDC-1797 (some records cannot be deleted forever in a bulk delete).</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-46).</p></li></ul>",
+  "evidence": [],
+  "run": 2
+ },
+ {
+  "mf": "MF-23",
+  "name": "Modules and Fields | Arabic UI leaves \"Create New Layout\" and the layouts description in English",
+  "priority": "medium",
+  "html": "<p><strong>Summary</strong></p><p>Two strings on a module's Layouts tab are not translated.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Switch the UI to العربية.</p></li><li><p>Setup → Modules and Fields → open a module → Layouts.</p></li></ol><p><strong>Expected result</strong></p><p>All text in Arabic.</p><p><strong>Actual result</strong></p><p>\"Create New Layout\" and \"Design your own layouts to fit your business processes…\" stay in English.</p><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row L7 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-23).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/L7-vs-zoho.png",
+   "browser-sessions/mfadmin-180501-9c45/screenshots/L7-arabic-module-page.png"
+  ],
+  "run": 1
+ },
+ {
+  "mf": "MF-24",
+  "name": "Modules and Fields | Module list shows \"UN\" as last modifier of every seeded module",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>The Last Modified avatar shows \"UN\" because seeded modules have no modifier name.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Setup → Modules and Fields → look at Last Modified.</p></li></ol><p><strong>Expected result</strong></p><p>A real name (or \"System\").</p><p><strong>Actual result</strong></p><p>\"UN\" on all 9 seeded modules; GET /modules returns empty lastModifiedByName.</p><p><strong>Request</strong></p><pre><code>GET /api/v1/modules</code></pre><p><strong>Response</strong></p><pre><code>200 — \"lastModifiedByName\": \"\" on all 9 seeded modules (created by system user a7a7a7a7-…0004).</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row B2 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-24).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/B2-vs-zoho.png",
+   "browser-sessions/mfadmin-180501-9c45/screenshots/B2-last-modified-UN.png"
+  ],
+  "run": 1
+ },
+ {
+  "mf": "MF-25",
+  "name": "Modules and Fields | Web Tabs placeholder says \"inside the CRM\"",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>Desk shows CRM wording on the Web Tabs placeholder.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Setup → Modules and Fields → Web Tabs.</p></li></ol><p><strong>Expected result</strong></p><p>Desk wording.</p><p><strong>Actual result</strong></p><p>Text says \"inside the CRM\".</p><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row B7 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-25).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/B7-vs-zoho.png",
+   "browser-sessions/mfadmin-180501-9c45/screenshots/B7-web-tabs-says-CRM.png"
+  ],
+  "run": 1
+ },
+ {
+  "mf": "MF-26",
+  "name": "Modules and Fields | Setup sidebar says \"Set up your CRM\"",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>Desk Setup shows CRM wording.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Open Setup in Desk.</p></li></ol><p><strong>Expected result</strong></p><p>Desk wording.</p><p><strong>Actual result</strong></p><p>Sidebar button \"Set up your CRM\".</p><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row B10 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-26).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/B10-vs-zoho.png",
+   "browser-sessions/mfadmin-180501-9c45/screenshots/B10-setup-your-crm.png"
+  ],
+  "run": 1
+ },
+ {
+  "mf": "MF-27",
+  "name": "Modules and Fields | Two modules can share the same display name",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>A second module can use an existing display name; only an identical module key is refused.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create \"QA MF Devices\".</p></li><li><p>Create another module named \"QA MF Devices\" with a different key.</p></li></ol><p><strong>Expected result</strong></p><p>Refused — name already used.</p><p><strong>Actual result</strong></p><p>201. Only an identical moduleKey gives 409 \"Module key already exists\".</p><p><strong>Request</strong></p><pre><code>POST /api/v1/teamspaces/{teamspace_id}/modules\n{\"moduleKey\":\"qa_mf_devices2\",\"labels\":{\"en\":\"QA MF Devices\"},\"pluralForm\":\"QA MF Devices\",\"singularForm\":\"QA MF Device\",\"storageScope\":\"organization\"}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row C6 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-27).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-28",
+  "name": "Modules and Fields | Layout builder does not warn about a duplicate layout name",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>The builder lets you type an existing layout name; the error appears only when saving.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Builder → rename a layout to \"Default\" (already used).</p></li><li><p>Save.</p></li></ol><p><strong>Expected result</strong></p><p>Inline warning \"A layout with this name already exists\".</p><p><strong>Actual result</strong></p><p>No warning while typing; on Save the server refuses (409).</p><p><strong>Request</strong></p><pre><code>PUT /api/v1/modules/{module_id}/layouts/{layout_id} {…,\"name\":\"Default\"}</code></pre><p><strong>Response</strong></p><pre><code>409 \"A layout named 'Default' already exists on this module. Choose a different name\".</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row G4 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-28).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-29",
+  "name": "Modules and Fields | Field label length (50) not enforced by the API",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>The 50-character label limit is only checked in the builder.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Send the request below with a 51-character label.</p></li></ol><p><strong>Expected result</strong></p><p>400 — label too long.</p><p><strong>Actual result</strong></p><p>201.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/fields\n{\"fields\":[{\"fieldName\":\"qa_long\",\"labels\":{\"en\":\"{51 characters}\"},\"datatypeKey\":\"single_line\",\"required\":false,\"unique\":false,\"uniquePeerModuleIds\":[]}]}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row I11 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-29).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-30",
+  "name": "Modules and Fields | Two lookups to the same module can use the same related-list title",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>Related-list titles are not unique among lookups to the same module.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create a lookup to Contacts with related-list title \"QA MF Devices\".</p></li><li><p>Create a second lookup to Contacts with the same title.</p></li></ol><p><strong>Expected result</strong></p><p>Second one refused.</p><p><strong>Actual result</strong></p><p>201.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/fields\n{\"fields\":[{\"fieldName\":\"qa_lk2\",\"labels\":{\"en\":\"QA MF lk2\"},\"datatypeKey\":\"lookup\",\"datatypeOptions\":{\"target_module_id\":\"43004ce2-577f-4eda-b00a-0750fe40c3d4\",\"display_field\":\"first_name\",\"related_module\":\"QA MF Devices\"}}]}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row I32 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-30).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-31",
+  "name": "Modules and Fields | A multi-module lookup can be saved with no modules",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>The API accepts a multi-module lookup with an empty module list.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Send the request below.</p></li></ol><p><strong>Expected result</strong></p><p>400 (the UI says \"Select at least one module\").</p><p><strong>Actual result</strong></p><p>201.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/fields\n{\"fields\":[{\"fieldName\":\"qa_mlk\",\"labels\":{\"en\":\"QA MF mlk\"},\"datatypeKey\":\"lookup\",\"datatypeOptions\":{\"target_modules\":[]}}]}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row I33 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-31).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-32",
+  "name": "Modules and Fields | Two layout-builder buttons have no accessible name",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>Screen readers cannot name two builder controls.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Open the layout builder.</p></li><li><p>Inspect the Module Image switch and the icon-only button next to it.</p></li></ol><p><strong>Expected result</strong></p><p>Both have an aria-label.</p><p><strong>Actual result</strong></p><p>The switch (role=switch) and the svg-only button have no accessible name.</p><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 5–6 Oct 2026; admin account (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row L9 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 1.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-32).</p></li></ul>",
+  "evidence": [],
+  "run": 1
+ },
+ {
+  "mf": "MF-41",
+  "name": "Modules and Fields | The 512-fields-per-layout limit is not enforced by the API",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>The builder stops at 512 fields per layout, but the API saves a layout with more.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Create 550 custom fields on a QA module.</p></li><li><p>Send the layout PUT below with all 550 fields.</p></li><li><p>Open the builder and click a palette item.</p></li></ol><p><strong>Expected result</strong></p><p>API refuses more than 512 fields per layout.</p><p><strong>Actual result</strong></p><p>API 200 with 550 fields on the layout; the builder then shows \"Maximum of 512 fields per layout reached.\"</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{module_id}/fields (11 × 50 fields)\nPUT /api/v1/modules/{module_id}/layouts/{layout_id} {…550 fields in the sections…}</code></pre><p><strong>Response</strong></p><pre><code>Fields 201 ×11; layout 200 OK.</code></pre><p><strong>Evidence</strong></p><p>Attached: the annotated image (TAVI vs Zoho, numbered boxes and an expected-vs-actual table) and the original screenshot.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; tenant owner.</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row I3 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-41).</p></li></ul>",
+  "evidence": [
+   "bugs/screenshots/annotated/I3-vs-zoho.png",
+   "browser-sessions/mfowner-230945-b20f/screenshots/I3-limit-builder.png"
+  ],
+  "run": 2
+ },
+ {
+  "mf": "MF-42",
+  "name": "Modules and Fields | Rollup summary accepts a relation that does not point at the module",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>A rollup can be created over a lookup that does not point at the module (or does not exist yet).</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Send the request below on QA MF DeptMod (qa_lk on QA MF Types points at QA MF Open, not DeptMod).</p></li></ol><p><strong>Expected result</strong></p><p>Refused (\"The selected module has no lookup field pointing at this module\").</p><p><strong>Actual result</strong></p><p>201. Rollups were also accepted while the lookup field did not exist.</p><p><strong>Request</strong></p><pre><code>POST /api/v1/modules/{deptmod_id}/fields\n{\"fields\":[{\"fieldName\":\"qa_bad_rollup\",\"labels\":{\"en\":\"QA MF bad_rollup\"},\"datatypeKey\":\"rollup_summary\",\"datatypeOptions\":{\"target_module_id\":\"{types_id}\",\"relation_field\":\"qa_lk\",\"target_field\":\"qa_num\",\"aggregation\":\"count\"}}]}</code></pre><p><strong>Response</strong></p><pre><code>201 Created.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; tenant owner.</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row I36 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Related: NDC-1444 (rollup says there is no lookup when there is one).</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-42).</p></li></ul>",
+  "evidence": [],
+  "run": 2
+ },
+ {
+  "mf": "MF-43",
+  "name": "Modules and Fields | Layout API accepts Required + Read-only on the same field",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>The builder blocks Required + Read-only together, but the layout API accepts it.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Send a layout PUT where one field entry has config required:true and read_only:true.</p></li></ol><p><strong>Expected result</strong></p><p>400 — cannot be both.</p><p><strong>Actual result</strong></p><p>200.</p><p><strong>Request</strong></p><pre><code>PUT /api/v1/modules/{module_id}/layouts/{layout_id} {…{\"fieldName\":\"qa_req\",\"config\":{\"required\":true,\"read_only\":true}}…}</code></pre><p><strong>Response</strong></p><pre><code>200 OK.</code></pre><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; second admin (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row I5 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-43).</p></li></ul>",
+  "evidence": [],
+  "run": 2
+ },
+ {
+  "mf": "MF-45",
+  "name": "Modules and Fields | Quick-create trigger dialog shows a raw \"{{module}}\" placeholder",
+  "priority": "low",
+  "html": "<p><strong>Summary</strong></p><p>The quick-create pop-up shows an untranslated placeholder.</p><p><strong>Steps to reproduce</strong></p><ol><li><p>Pick list with quick-create trigger \"Escalate → Tasks\".</p></li><li><p>On the create form choose Escalate.</p></li></ol><p><strong>Expected result</strong></p><p>\"This Task is created only after you save the record…\"</p><p><strong>Actual result</strong></p><p>\"This {{module}} is created only after you save the record…\"</p><p><strong>Evidence</strong></p><p>API only — see the request and response above.</p><p><strong>Environment</strong></p><p>staging-desk.taviportal.com (tenant NDC-Staging), TAVI Desk web app, headless Chromium, 6–7 Oct 2026; second admin (Desk Administrator).</p><p><strong>Additional notes</strong></p><ul><li><p>Severity: Low. Spec row I37 in docs/desk-modules-fields/spec-desk-modules-fields.md (QA repository), functional run 2.</p></li><li><p>Full bug report: docs/desk-modules-fields/desk-modules-fields-bug-report.md (MF-45).</p></li></ul>",
+  "evidence": [],
+  "run": 2
+ }
+]
