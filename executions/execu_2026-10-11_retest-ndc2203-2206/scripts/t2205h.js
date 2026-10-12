@@ -1,0 +1,11 @@
+const out = {}; const off2 = respOn();
+await page.keyboard.press('Escape'); await sleep(400);
+const sel = page.getByRole('button', { name: 'Select', exact: true });
+await sel.nth(1).click(); await sleep(800); await page.getByRole('option', { name: 'Open', exact: true }).click(); await sleep(800);
+await page.getByRole('button', { name: 'Select', exact: true }).nth(1).click(); await sleep(800); await page.getByRole('option', { name: 'high', exact: true }).click(); await sleep(800);
+await page.keyboard.press('Escape'); await sleep(400);
+await shot('NDC-2205-ticket-form');
+await page.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(8000);
+out.url = page.url(); out.toasts = await page.locator('[data-sonner-toast],[role=alert]').allInnerTexts();
+out.resp = capResp.filter(s => /records/.test(s)).map(s => s.slice(0, 300));
+off2(); return done(out);
