@@ -7,7 +7,7 @@
 | Scope | Modules and Fields, layouts, fields, Organize Tabs and the tab bar, for Tickets, Contacts, Accounts, Products, Calls, Events, Tasks, Contracts and custom modules. **Time Entry skipped** (user, 5 Oct 2026) |
 | Already in Plane | **NDC-1879** "Customization (modules, fields, layouts): features Zoho Desk has that Desk is missing" — 6 items, not repeated below. NDC-1866 item 16 (ticket number format) |
 | Test spec | `docs/desk-modules-fields/spec-desk-modules-fields.md` (Group Z: Z1–Z7 = filed items, Z8–Z19 = items 1–12 below) |
-| Status | **Filed in Plane as NDC-2174** "Modules and Fields Missings" (7 Oct 2026), with the 12 evidence images attached |
+| Status | **Filed in Plane as NDC-2174** "Modules and Fields Missings" (7 Oct 2026), with the 12 evidence images attached; item 13 and its image added 13 Oct 2026 |
 
 How each side was checked:
 - **Zoho Desk:** opened in headless Edge. Looked at the tab bar, Setup → Modules and Tabs (Manage Modules, New Module form, Organize Tabs, Rename Tabs) and Layouts and Fields (Layouts, the layout editor of every module, Layout Rules, Validation Rules, Fields List, Field Dependencies, Field Permissions, Search Fields, Ticket Status). Also one ticket and one contact. Nothing was saved, created, dragged or switched.
@@ -28,6 +28,7 @@ How each side was checked:
 - `10-layout-help-center-vs-zoho.png`
 - `11-ticket-status-vs-zoho.png`
 - `12-agents-module-vs-zoho.png`
+- `13-default-values-vs-zoho.png`
 
 The unannotated screenshots are in `evidence/originals/`. To rebuild an image, edit `evidence/configs/` and run `node make-evidence.js configs/<item>.json`. All captures were read-only; menus and panels were closed with Cancel or Escape.
 
@@ -124,7 +125,7 @@ The unannotated screenshots are in `evidence/originals/`. To rebuild an image, e
 
 ## Missing — added after functional run 2 (7 Oct 2026)
 
-13. **Default value for a field.** Zoho lets you set a default value on text, pick list, checkbox and other fields; it is pre-filled on new records only. TAVI's field properties (GENERAL, VALIDATION, PERMISSIONS, ADVANCED) have no default-value setting, and a `defaultValue` put in the layout is ignored by the create form and the record API. Spec rows I19 and I24 are MISSING until this is built. Not yet in NDC-2174.
+13. **Default value for a field.** Zoho lets you set a default value on text, pick list, checkbox and other fields; it is pre-filled on new records only. TAVI's field properties (GENERAL, VALIDATION, PERMISSIONS, ADVANCED) have no default-value setting, and a `defaultValue` put in the layout is ignored by the create form and the record API. Spec rows I19 and I24 are MISSING until this is built. Added to NDC-2174 on 13 Oct 2026. Evidence: `evidence/13-default-values-vs-zoho.png`.
 
 ---
 

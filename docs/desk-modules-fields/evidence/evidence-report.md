@@ -147,6 +147,14 @@ All captures were read-only. Menus and panels were opened, captured, then closed
 
 ![Item 12 — agents module](12-agents-module-vs-zoho.png)
 
+## 13. Default value for a field (I19, I24) — added after run 2
+
+- **Zoho:** a default value for text, pick list and checkbox fields, pre-filled on new records only. On screen: the Priority value list shows a Default tag.
+- **TAVI:** no default-value setting in any Field Properties tab. Defaults saved into the layout by API are ignored by the create form and the record API.
+- Added to NDC-2174 on 13 Oct 2026.
+
+![Item 13 — default values](13-default-values-vs-zoho.png)
+
 ---
 
 ## Not shown as images
