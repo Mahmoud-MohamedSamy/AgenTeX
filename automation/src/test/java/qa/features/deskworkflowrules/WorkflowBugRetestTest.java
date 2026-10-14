@@ -38,13 +38,15 @@ public class WorkflowBugRetestTest extends BaseTest {
         for (String desk : data.list("deskRoles")) assertTrue(roles.contains(desk), "Desk role '" + desk + "' missing; roles: " + roles);
     }
 
-    @Test(groups = {"regression", "NDC-2205"}, description = "An On Edit rule does not fire when a ticket is created")
+    // Not in regression since 14 Oct 2026: uses the old UI ticket form (unstable); WFR-H3 covers the same check through the API.
+    @Test(groups = {"NDC-2205"}, description = "An On Edit rule does not fire when a ticket is created")
     @CaseId("WFR-012")
     public void onEditRuleDoesNotFireOnCreate() {
         assertRuleDoesNotFireOnCreate("2205 On Edit", "Edit", null, "onEditMarker");
     }
 
-    @Test(groups = {"regression", "NDC-2205"}, description = "A Field Changed (Watch field = Subject) rule does not fire when a ticket is created")
+    // Not in regression since 14 Oct 2026: shares the old UI ticket form with WFR-012; WFR-H4 covers it through the API.
+    @Test(groups = {"NDC-2205"}, description = "A Field Changed (Watch field = Subject) rule does not fire when a ticket is created")
     @CaseId("WFR-013")
     public void fieldChangedRuleDoesNotFireOnCreate() {
         assertRuleDoesNotFireOnCreate("2205 Field Changed", "Field Changed", data.text("fieldChangedMarker.watchField"), "fieldChangedMarker");
@@ -119,13 +121,16 @@ public class WorkflowBugRetestTest extends BaseTest {
         String rule = data.uniqueName("2206 Date-Time");
         RuleEditorPage editor = new RuleEditorPage().openNew(DeskWorkflowRulesFeature.TICKETS_MODULE_ID)
                 .setLayout(data.text("layout")).setName(rule)
-                .openWhen().chooseDateTimeTrigger().done()
+                .openWhen().chooseDateTimeTrigger().dateField("Due Date").done()
                 .addPickListCondition("Priority", "is one of", "urgent")
-                .addAction("Field Update").fieldUpdate("Description", "QA date-time rule");
+                .addAction("Task").taskTitle("QA WF date-time task"); // Date-Time rules offer only async actions
         String toast = editor.saveAndActivate();
         createdRules.add(rule);
         assertFalse(toast.toLowerCase().contains("unexpected error"), "save failed with: " + toast);
-        assertTrue(Pattern.compile("/workflow-rules/[0-9a-f-]{36}").matcher(editor.currentUrl()).find(), "editor did not move to the saved rule; url " + editor.currentUrl());
+        // since 14 Oct 2026 a successful save returns to the rules list instead of the rule's page, so check the rule exists
+        boolean onRulePage = Pattern.compile("/workflow-rules/[0-9a-f-]{36}").matcher(editor.currentUrl()).find();
+        assertTrue(onRulePage || !new DeskWorkflowRulesApi().ruleIdsNamed(rule).isEmpty(),
+                "Date-Time rule was not saved; url " + editor.currentUrl() + ", toast " + toast);
     }
 
     /** Leave nothing active behind: deactivate the QA rules this class created (teammates' rules are never touched). */

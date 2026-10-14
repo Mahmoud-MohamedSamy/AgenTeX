@@ -1,0 +1,390 @@
+<title>Desk Workflow Rules Bugs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~860px). Bug entries are the only boxed objects; tickets and gaps are plain tables and figures. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1c2330;
+  --muted: #5b6577;
+  --line: #dde1e8;
+  --accent: #2456c9;
+  --code-bg: #eef1f6;
+  --bug: #b4232a;      --bug-bg: #fbe9ea;
+  --warn: #8a5a00;     --warn-bg: #fdf1d8;
+  --ok: #19703e;       --ok-bg: #e3f4ea;
+  --info: #3d4a63;     --info-bg: #e8ecf3;
+  --font-display: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+    --accent: #7ea2ff; --code-bg: #222a36;
+    --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+    --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+  --accent: #7ea2ff; --code-bg: #222a36;
+  --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+  --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--font-body); }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 48px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.25; }
+h1 { font-size: 2rem; font-weight: 700; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, pre { font-family: var(--font-mono); font-size: 0.85em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 600 0.75rem/1 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 12px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 20px; color: var(--muted); font-size: 0.9rem; }
+.meta b { color: var(--fg); font-weight: 600; }
+section { display: grid; gap: 16px; }
+section > p.lead { color: var(--muted); }
+
+.tally { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font: 600 0.78rem/1.6 var(--font-body); white-space: nowrap; }
+.pill.bug { color: var(--bug); background: var(--bug-bg); }
+.pill.warn { color: var(--warn); background: var(--warn-bg); }
+.pill.ok { color: var(--ok); background: var(--ok-bg); }
+.pill.info { color: var(--info); background: var(--info-bg); }
+
+.bug-entry { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; display: grid; gap: 14px; min-width: 0; }
+.bug-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.bug-id { font: 600 0.85rem/1 var(--font-mono); color: var(--muted); }
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; }
+dl.facts dt { font-weight: 600; color: var(--muted); font-size: 0.9rem; }
+dl.facts dd { margin: 0; min-width: 0; }
+ol.steps { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pair > div { min-width: 0; display: grid; gap: 6px; }
+pre { background: var(--code-bg); border-radius: 8px; padding: 12px 14px; margin: 0; overflow-x: auto; line-height: 1.5; }
+pre .k { color: var(--bug); font-weight: 600; }
+pre .g { color: var(--ok); font-weight: 600; }
+figure { margin: 0; display: grid; gap: 6px; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+figcaption { font-size: 0.85rem; color: var(--muted); }
+
+.table-box { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+th { font: 600 0.75rem/1.4 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td.mono { font-family: var(--font-mono); font-size: 0.85rem; white-space: nowrap; }
+
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.gallery { display: grid; gap: 28px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; }
+details[open] { padding-bottom: 18px; }
+summary { cursor: pointer; font-weight: 600; }
+details > .gallery { margin-top: 16px; }
+footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
+
+@media (max-width: 640px) {
+  .wrap { padding-inline: 16px; padding-block: 28px 48px; gap: 36px; }
+  h1 { font-size: 1.6rem; }
+  .pair { grid-template-columns: 1fr; }
+  dl.facts { grid-template-columns: 1fr; gap: 2px; }
+  dl.facts dd { margin-bottom: 8px; }
+  .bug-entry { padding: 18px 16px; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">TAVI Desk · QA run · 12–14 Oct 2026</span>
+    <h1>Desk Workflow Rules: bugs found</h1>
+    <p>Results of the automated run of the Workflow Rules test spec on staging, compared with Zoho Desk. Every automated case has now run. Nothing here is filed in Plane yet.</p>
+    <div class="meta">
+      <span><b>Host</b> staging-desk.taviportal.com</span>
+      <span><b>Account</b> owner</span>
+      <span><b>Browser</b> Edge 154</span>
+      <span><b>Result</b> 85 passed · 9 app bugs · 12 known gaps vs Zoho · 5 cases wait for a settings OK</span>
+    </div>
+    <div class="tally">
+      <span class="pill bug">9 bugs</span>
+      <span class="pill ok">5 earlier bugs look fixed</span>
+      <span class="pill ok">5 suspected bugs cleared</span>
+      <span class="pill ok">2 gaps now built</span>
+    </div>
+  </header>
+
+  <section aria-labelledby="new-bugs">
+    <h2 id="new-bugs">New bugs</h2>
+
+    <article class="bug-entry">
+      <div class="bug-head">
+        <span class="bug-id">B-1 · WFR-API-T3</span>
+        <span class="pill bug">High</span>
+      </div>
+      <h3>Creating a ticket fails with a server error when "kind" is not the first key of a field value</h3>
+      <p>The records API depends on the order of keys inside each field value. If <code>"kind"</code> comes after <code>"value"</code>, ticket creation answers 500 instead of creating the ticket. JSON key order must not matter, and many client libraries don't keep key order, so integrations see what looks like random 500s. Reproduced 3 times on 12 and 13 Oct.</p>
+      <dl class="facts">
+        <dt>Endpoint</dt><dd><code>POST /api/v1/modules/{tickets}/records</code>, header <code>x-app-key: desk</code></dd>
+        <dt>Trace ids</dt><dd><code>1a8142a0-…</code>, <code>2cb19344-…</code>, <code>5a4ce6fa-…</code>, <code>be6c6962-…</code></dd>
+      </dl>
+      <ol class="steps">
+        <li>Send a ticket create with subject, department, email, status and priority.</li>
+        <li>In the subject value, put <code>"value"</code> before <code>"kind"</code>.</li>
+        <li>Send the same body again with <code>"kind"</code> first.</li>
+      </ol>
+      <div class="pair">
+        <div>
+          <span class="eyebrow">Fails · 500</span>
+<pre>{"field": "subject",
+ "value": {"value": "QA WF API T3",
+           <span class="k">"kind": "string"</span>}}
+
+→ 500 INTERNAL_ERROR
+  "An unexpected error occurred."</pre>
+        </div>
+        <div>
+          <span class="eyebrow">Works · 201</span>
+<pre>{"field": "subject",
+ "value": {<span class="g">"kind": "string"</span>,
+           "value": "QA WF API T3"}}
+
+→ 201 Created</pre>
+        </div>
+      </div>
+      <dl class="facts">
+        <dt>Expected</dt><dd>201 for both bodies. If a body really is invalid, a 400 with a message, never a 500.</dd>
+        <dt>Actual</dt><dd>500 every time <code>"kind"</code> is not the first key.</dd>
+      </dl>
+    </article>
+
+    <article class="bug-entry">
+      <div class="bug-head">
+        <span class="bug-id">B-2 · WFR-F7</span>
+        <span class="pill bug">Medium</span>
+      </div>
+      <h3>A workflow rule can be saved with a Field Update on the read-only "Created By" field</h3>
+      <p>The server refuses Field Update actions on read-only system fields such as Ticket Number, Created Time and Approval Status, but it accepts one on <code>created_by</code>. A rule could then overwrite who created a ticket. This is the same family as CRM bug NDC-1437.</p>
+      <ol class="steps">
+        <li><code>POST /api/v1/workflow/rules</code>: an On Create rule on Tickets with one Field Update action, field <code>created_by</code>, value <code>"1"</code>.</li>
+        <li>Repeat with <code>ticket_number</code>, <code>created_time</code> and <code>approval_status</code>.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>All four are refused with a 4xx that names the read-only field.</dd>
+        <dt>Actual</dt><dd><code>created_by</code> is accepted and the rule is saved; the other three are refused.</dd>
+        <dt>Not checked</dt><dd>Whether running the rule really changes the creator.</dd>
+      </dl>
+    </article>
+
+    <article class="bug-entry">
+      <div class="bug-head">
+        <span class="bug-id">B-3 · WFR-K2</span>
+        <span class="pill warn">Medium</span>
+      </div>
+      <h3>The Actions library cannot create a "Send happiness email" action</h3>
+      <p>The rule editor offers "Send happiness email" as an inline action, but the reusable Actions library has no such type. A happiness email therefore can't be defined once and shared between rules like the other action types.</p>
+      <ol class="steps">
+        <li>Open Setup › Automation › Actions (<code>/settings/automation/actions</code>).</li>
+        <li>Look at the type tabs, then click <b>New Action</b>.</li>
+        <li>Compare with the action picker in a Ticket workflow rule.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Every action type the rule editor offers can also be saved in the library.</dd>
+        <dt>Actual</dt><dd>The types stop at Remove Tags; there's no "Send happiness email".</dd>
+      </dl>
+      <figure>
+        <img src="screenshots/annotated/WFR-K2-tavi-only.png" alt="TAVI Actions library: tabs Email, Task, Field Update, Webhook, Owner, Create Record, Add Tags, Remove Tags; no Send happiness email" loading="lazy">
+        <figcaption>TAVI only: the library's type tabs. Zoho has no shared action library to compare with.</figcaption>
+      </figure>
+    </article>
+
+    <article class="bug-entry">
+      <div class="bug-head">
+        <span class="bug-id">B-4 · WFR-I14</span>
+        <span class="pill warn">Low</span>
+      </div>
+      <h3>A webhook rejected with HTTP 404 is shown as "cancelled" instead of "failed"</h3>
+      <p>When the receiving server answers 404, the engine correctly makes one attempt and does not retry. But the dispatch is stored as <code>cancelled</code> and <code>responseStatus</code> is empty, although <code>lastError</code> says "http 404". In Execution History a rejected webhook therefore looks as if someone cancelled it.</p>
+      <ol class="steps">
+        <li>An On Create rule with a Webhook action (POST) to a receiver that always answers 404.</li>
+        <li>Create a ticket that matches the rule.</li>
+        <li>Open the rule's execution for that ticket and look at the webhook dispatch.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Status <code>failed</code>, response status 404, 1 attempt.</dd>
+        <dt>Actual</dt><dd>Status <code>cancelled</code>, response status empty, <code>lastError: "http 404"</code>, 1 attempt.</dd>
+      </dl>
+    </article>
+
+    <article class="bug-entry">
+      <div class="bug-head">
+        <span class="bug-id">B-5 · WFR-F3</span>
+        <span class="pill warn">Low</span>
+      </div>
+      <h3>The action picker offers Task and Add Tags again after the rule already has them</h3>
+      <p>A rule allows one action of each type. In a rule that already has Field Update, Add Tags and Task, the Add action picker hides Field Update but still offers Task and Add Tags. Picking one leads to a rule that can't be saved.</p>
+      <ol class="steps">
+        <li>Open a Ticket rule that has Field Update, Add Tags and Task actions.</li>
+        <li>Click <b>Add action</b> and look at the offered types.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Types the rule already uses are not offered, as for Field Update.</dd>
+        <dt>Actual</dt><dd>Task and Add Tags are offered again.</dd>
+      </dl>
+      <figure>
+        <img src="screenshots/annotated/WFR-F3-tavi-only.png" alt="TAVI rule editor: Task action open above, picker cards below still offer Task and Add Tags" loading="lazy">
+        <figcaption>TAVI only: the rule's Task form is open, and the picker below starts at Owner Assignment, so Field Update is hidden but Task is offered again. Zoho allows several actions of one type, so it isn't comparable.</figcaption>
+      </figure>
+    </article>
+
+    <article class="bug-entry">
+      <div class="bug-head">
+        <span class="bug-id">B-6 · WFR-M1</span>
+        <span class="pill warn">Low</span>
+      </div>
+      <h3>No menu link to Execution History</h3>
+      <p>The Execution History page exists and works, but nothing in the app leads to it. With the Setup menu fully loaded, the AUTOMATION section lists Workflow Rules, Actions, SLA &amp; Escalation, Support Plans, Assignment Rules, Macros, AI Tagging, Ticket Archiving and Time Tracking. The rules list and the rule editor don't link to it either. An admin can only reach it by typing the address.</p>
+      <dl class="facts">
+        <dt>Page</dt><dd><code>/settings/workflow-executions</code> (route found in the app's code)</dd>
+        <dt>Expected</dt><dd>An "Execution History" entry under Setup › Automation, or a link from the rules list.</dd>
+        <dt>Actual</dt><dd>No entry or link anywhere.</dd>
+      </dl>
+    </article>
+
+    <article class="bug-entry">
+      <div class="bug-head">
+        <span class="bug-id">B-7 · WFR-J7</span>
+        <span class="pill warn">Low</span>
+      </div>
+      <h3>A scheduled action cancelled because the ticket stopped matching leaves no trace in Execution History</h3>
+      <p>The editor says scheduled actions "are cancelled if the record stops matching the rule's conditions before then". The cancelling works, but Execution History never shows it. It also doesn't show the action as scheduled while it waits, so an admin can't tell what is pending or what was cancelled.</p>
+      <ol class="steps">
+        <li>An On Create rule, condition Priority is High, with a Webhook action scheduled 3 minutes after the trigger.</li>
+        <li>Create two matching tickets (Priority High).</li>
+        <li>Within the 3 minutes, change one ticket's Priority to Low. Leave the other as it is.</li>
+        <li>After the delay, open each ticket's execution for the rule.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Ticket kept High</dt><dd>The webhook arrived after 3 minutes; the dispatch shows <code>succeeded</code>, response 200.</dd>
+        <dt>Ticket changed to Low</dt><dd>No webhook arrived (correct), but its execution has <b>no dispatch at all</b>, neither "scheduled" before nor "cancelled" after.</dd>
+        <dt>Expected</dt><dd>A dispatch that shows the action as scheduled, then as cancelled with the reason.</dd>
+        <dt>Same blind spot</dt><dd>An inactive saved action is skipped correctly (WFR-I32), but its execution only says "Fired" and doesn't mention the skipped action.</dd>
+      </dl>
+    </article>
+
+    <article class="bug-entry">
+      <div class="bug-head">
+        <span class="bug-id">B-8 · WFR-I25</span>
+        <span class="pill bug">Medium</span>
+      </div>
+      <h3>Workflow "Create Record" skips required fields and creates a record with no owner</h3>
+      <p>On Calls, Name, Subject and Call Start Time are required. The rule editor says "required fields can't be empty", but the API saves a Create Record action that maps only Call Start Time, and when the rule runs, the engine creates the Call anyway. The new Call has no Name, no Subject and no owner, yet it is marked valid and the dispatch reports success.</p>
+      <ol class="steps">
+        <li><code>POST /api/v1/workflow/rules</code>: an On Create rule on Tickets with a Create Record action, target module Calls, mapping only <code>call_start_time</code>.</li>
+        <li>Create a ticket that matches the rule.</li>
+        <li>Read the rule's execution and the created Call.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The rule is refused on save with a message naming the missing required fields, or the action fails at run time with that reason.</dd>
+        <dt>Actual</dt><dd>Saved (201). At run time, dispatch <code>succeeded</code> (201), and a Call is created with only <code>call_start_time</code>, <code>compliance_state: valid</code>, <code>owner_user_id: 00000000-0000-0000-0000-000000000000</code>.</dd>
+      </dl>
+    </article>
+
+    <article class="bug-entry">
+      <div class="bug-head">
+        <span class="bug-id">B-9 · WFR-I8</span>
+        <span class="pill bug">Medium</span>
+      </div>
+      <h3>Owner Assignment by role (round robin) does not assign anyone</h3>
+      <p>A rule that assigns the owner by role silently does nothing. The rule shows as fired, but the ticket keeps its default owner and the execution has no dispatch and no error.</p>
+      <ol class="steps">
+        <li>The Desk role CEO has 7 active users; 4 of them are agents in the ticket's department (Tech). The account creating the tickets is not in the role.</li>
+        <li>An On Create rule with Owner Assignment › Roles › CEO (round robin).</li>
+        <li>Create 3 matching tickets in Tech.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Each ticket gets a CEO-role user as owner, rotating between them.</dd>
+        <dt>Actual</dt><dd>All 3 tickets keep the creator as owner (the same default owner as a ticket with no rule). Execution: <code>Fired</code>, criteria matched, no dispatch, no error.</dd>
+      </dl>
+    </article>
+  </section>
+
+
+  <section aria-labelledby="earlier">
+    <h2 id="earlier">Earlier tickets, retested</h2>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Ticket</th><th>Problem</th><th>Today</th><th>How we know</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">NDC-2204</td><td>Owner Assignment › Roles listed CRM profiles</td><td><span class="pill ok">Looks fixed</span></td><td>Owner Assignment now has separate tabs: Roles lists the Desk roles CEO and Manager, and a new Profiles tab lists the 5 Desk profiles (Desk Administrator, Supervisor, Agent, Light Agent, Reviewer).</td></tr>
+          <tr><td class="mono">NDC-2205</td><td>On Edit and Field Changed rules fire on create</td><td><span class="pill ok">Looks fixed</span></td><td>H3: an On Edit rule did not run on create and ran once on edit. H4: a Field Changed rule did not run on create. Both used a control rule.</td></tr>
+          <tr><td class="mono">NDC-2206</td><td>A Date-Time rule cannot be saved (500)</td><td><span class="pill ok">Looks fixed</span></td><td>J2, D7 and WFR-020: Date-Time rules save (through the API and the editor) and fire on time. They accept only async actions such as Webhook, Task, Email and Create Record; the editor hides the others, and the API refuses them with a clear 400.</td></tr>
+          <tr><td class="mono">NDC-2173</td><td>Long names break the Name column</td><td><span class="pill ok">Looks fixed</span></td><td>B6 passed.</td></tr>
+          <tr><td class="mono">NDC-2203</td><td>Features Zoho has and TAVI lacks</td><td><span class="pill warn">Still open</span></td><td>Rules per department and the Active / Inactive tabs are now built. The rest are still missing (see below).</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="cleared">
+    <h2 id="cleared">Suspected bugs that turned out fine</h2>
+    <ul class="plain">
+      <li><b>Add Tags "Add to existing tags" / "Replace existing tags" work correctly</b> (I26). "Add to existing tags" kept tag B and added A; "Replace existing tags" left only C. The first failure was in our test: it put the starting tags in the ticket-create body, which doesn't save tags. The app sets them through <code>POST /desk/tickets/{id}/tags</code>.</li>
+      <li><b>One Execution History row per run</b> (H19). The duplicate rows seen earlier did not come back.</li>
+      <li><b>The Execution History page loads</b> (M2). It renders a few seconds after it opens; the earlier blank screenshots were taken too early.</li>
+      <li><b>A Field Changed rule can't be saved without a watch field</b> (D2). The editor now pre-selects one.</li>
+      <li><b>Date-only and address Field Updates are correct in Desk</b> (I3, I4). A date-only field stores just the date, and changing one address part keeps the others. The CRM bugs NDC-1438 and NDC-1436 do not appear here. Tested on a temporary QA layout and fields, deleted afterwards; the Standard layout was never changed.</li>
+      <li><b>Rule engine behaviour checked and correct:</b> rules run in list order; layout scope; bulk edit runs Edit rules once per ticket; no edit loops; a workflow's own update is not an edit; On Delete sends the deleted ticket's values; date rules fire on time and reschedule when the date moves; deleting or deactivating the rule, or deleting the ticket, cancels queued actions.</li>
+      <li><b>"Ticket without department gives 500"</b> and <b>"ticket create 500 in Customer Support"</b> were both bug B-1.</li>
+      <li><b>Email service:</b> the workflow Email action to an agent succeeded on the first attempt. Inbox delivery was not checked.</li>
+      <li><b>Webhooks:</b> POST and PUT arrive with merge fields filled in. A 500 is retried, a slow receiver is not reported as succeeded, a scheduled webhook runs after its delay, and a failing webhook does not stop the rule's other actions.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="gaps">
+    <h2 id="gaps">Still missing compared with Zoho (NDC-2203)</h2>
+    <p class="lead">These are gaps, not bugs. Each image shows TAVI on the left and Zoho Desk on the right.</p>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Gap</th><th>Today</th></tr></thead>
+        <tbody>
+          <tr><td>Customer Reply, Agent Response, Private Thread, Happiness Rating and Comment triggers; several events in one rule</td><td><span class="pill warn">Missing</span></td></tr>
+          <tr><td>Field Update trigger on several fields (Any / All)</td><td><span class="pill warn">Missing</span> Watch field is single-select</td></tr>
+          <tr><td>Rules per department</td><td><span class="pill ok">Built</span> Departments column and filter on the list, and "Departments … Change" in the editor</td></tr>
+          <tr><td>Active / Inactive tabs on the rules list</td><td><span class="pill ok">Built</span></td></tr>
+          <tr><td>Contact and account fields, business hours and holidays in conditions</td><td><span class="pill warn">Missing</span></td></tr>
+          <tr><td>Ticket fields in conditions</td><td><span class="pill info">Partly</span> Closed Time, Ticket Number, Spam and Skills are now offered</td></tr>
+          <tr><td>Add Comment and Send Email Reply actions</td><td><span class="pill warn">Missing</span></td></tr>
+          <tr><td>Email to the contact or to outside addresses</td><td><span class="pill warn">Missing</span> "Free-text addresses aren't allowed."</td></tr>
+          <tr><td>Assign to a team</td><td><span class="pill warn">Missing</span> Users, Roles, Profiles and User Fields only</td></tr>
+          <tr><td>Custom functions, chat and instant-messaging, skills and AI actions</td><td><span class="pill warn">Missing</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details>
+      <summary>Show the 7 side-by-side screenshots</summary>
+      <div class="gallery">
+        <figure><img src="screenshots/annotated/WFR-Z01-vs-zoho.png" alt="Triggers: TAVI vs Zoho" loading="lazy"><figcaption>Triggers: Zoho's Execute On has Customer Reply, Agent Response, Comment, Private Thread and Happiness Rating.</figcaption></figure>
+        <figure><img src="screenshots/annotated/WFR-Z06-vs-zoho.png" alt="Field Update trigger: TAVI vs Zoho" loading="lazy"><figcaption>Field Update trigger: Zoho watches up to 3 fields with Any / All.</figcaption></figure>
+        <figure><img src="screenshots/annotated/WFR-Z10_WFR-Z11_WFR-Z12-vs-zoho.png" alt="Condition fields: TAVI vs Zoho" loading="lazy"><figcaption>Condition fields: Zoho adds contact, account and execution-time fields.</figcaption></figure>
+        <figure><img src="screenshots/annotated/WFR-Z14-vs-zoho.png" alt="Actions: TAVI vs Zoho" loading="lazy"><figcaption>Actions: Zoho has Add Comment and Send Email Reply.</figcaption></figure>
+        <figure><img src="screenshots/annotated/WFR-Z16-vs-zoho.png" alt="Email recipients, team assignment and actions per type: TAVI vs Zoho" loading="lazy"><figcaption>Email recipients, assign to team, and several actions of one type.</figcaption></figure>
+        <figure><img src="screenshots/annotated/WFR-Z17-vs-zoho.png" alt="Owner assignment: TAVI vs Zoho" loading="lazy"><figcaption>Owner assignment: Zoho assigns to an agent, a team, or an agent in a team.</figcaption></figure>
+        <figure><img src="screenshots/annotated/WFR-Z23_WFR-Z24_WFR-Z25_WFR-Z26_WFR-Z27-vs-zoho.png" alt="Extra action types: TAVI vs Zoho" loading="lazy"><figcaption>Custom functions, chat, instant messaging, skills and AI actions.</figcaption></figure>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <span>Test data used the prefix "QA WF " in the Tech department. Teammates' rules were paused during execution tests and restored after each one. All 8 are active again, and no QA rules, actions or tickets remain.</span>
+    <span>Network drops between the test PC and staging forced reruns in small batches; every automated case has now run. Final cleanup check: 14 Oct 2026.</span>
+  </footer>
+</div>

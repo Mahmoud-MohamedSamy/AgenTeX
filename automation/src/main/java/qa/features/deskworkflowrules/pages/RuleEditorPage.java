@@ -71,6 +71,13 @@ public class RuleEditorPage extends BasePage {
         return this;
     }
 
+    /** Date-Time trigger: picks the record date field the offset is counted from (required). */
+    public RuleEditorPage dateField(String field) {
+        click("dateFieldButton");
+        click("option", field);
+        return this;
+    }
+
     /** Field Changed › Watch field: true when the list lets you pick several fields. */
     public boolean watchFieldAllowsSeveral() {
         click("watchFieldButton");
@@ -144,6 +151,12 @@ public class RuleEditorPage extends BasePage {
         return this;
     }
 
+    /** Task action: fills the required title. */
+    public RuleEditorPage taskTitle(String title) {
+        type("taskTitle", title);
+        return this;
+    }
+
     /** Owner Assignment › Roles: the roles offered in the picker. */
     public List<String> ownerAssignmentRoles() {
         click("ownerRolesTab");
@@ -165,5 +178,50 @@ public class RuleEditorPage extends BasePage {
 
     public String currentUrl() {
         return driver.getCurrentUrl();
+    }
+
+    /** Opens a saved rule in the editor. */
+    public RuleEditorPage openRule(String ruleId) {
+        open(DeskWorkflowRulesFeature.LIST_PATH);
+        clearDrafts();
+        open(DeskWorkflowRulesFeature.LIST_PATH + "/" + ruleId);
+        el("whenCard");
+        return this;
+    }
+
+    /** Visible text of the editor (validation lists, warnings, hints). */
+    public String pageText() {
+        return bodyText();
+    }
+
+    /** Clicks Save and returns the page text a moment later (validation list or toast). */
+    public String clickSave() {
+        click("saveButton");
+        Waits.sleep(2500);
+        String toasts = all("toasts").stream().map(WebElement::getText).collect(Collectors.joining(" | "));
+        return bodyText() + "\n[toasts] " + toasts;
+    }
+
+    /** Field names offered by the condition field picker (opens it on a fresh condition, then Escape). */
+    public List<String> conditionFieldsOffered() {
+        if (isShown("editConditionsButton", 2)) click("editConditionsButton");
+        click("matchingConditionsRadio");
+        if (!isShown("selectFieldButton", 2)) click("addConditionButton");
+        click("selectFieldButton");
+        Waits.sleep(800);
+        List<String> out = all("openOptions").stream().map(WebElement::getText).map(String::trim).filter(s -> !s.isEmpty()).toList();
+        press(Keys.ESCAPE);
+        return out;
+    }
+
+    /** Opens the scheduled-action picker. */
+    public RuleEditorPage openScheduledPicker() {
+        click("addScheduledActionButton");
+        return this;
+    }
+
+    public RuleEditorPage closePicker() {
+        if (isShown("closePickerButton", 2)) click("closePickerButton");
+        return this;
     }
 }

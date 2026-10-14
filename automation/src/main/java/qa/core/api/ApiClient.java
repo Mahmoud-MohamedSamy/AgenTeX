@@ -25,6 +25,12 @@ public class ApiClient {
 
     public RequestSpecification req() {
         RequestSpecification r = RestAssured.given().baseUri(base).contentType(ContentType.JSON)
+                // tokens and cookies are masked in the Allure request/response attachments
+                .config(RestAssured.config().logConfig(io.restassured.config.LogConfig.logConfig()
+                        .blacklistHeaders(java.util.List.of("Authorization", "Cookie", "Set-Cookie")))
+                        // a stalled response must fail the call, not hang the run (seen on staging 12 Oct 2026)
+                        .httpClient(io.restassured.config.HttpClientConfig.httpClientConfig()
+                                .setParam("http.connection.timeout", 30000).setParam("http.socket.timeout", 90000)))
                 .filter(new AllureRestAssured()).relaxedHTTPSValidation();
         String h = Config.get("api.headers", "");
         for (String pair : h.split(";")) {

@@ -45,7 +45,13 @@
         "value" : "textbox",
         "name" : "Search",
         "exact" : false
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "input",
+        "type" : "search",
+        "placeholder" : "Search rules…",
+        "classes" : "w-full ps-7 pe-3 py-1.5 text-xs rounded-md border focus:outline-none"
+      }
     },
     "ruleRow" : {
       "description" : "Table row of the rule named {0}",
@@ -66,7 +72,14 @@
       }, {
         "by" : "ariaLabel",
         "value" : "Create in another module"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "ariaLabel" : "Create in another module",
+        "testId" : "desk-create-toggle",
+        "classes" : "flex h-8 w-7 items-center justify-center text-white outline-none transition-colors"
+      }
     },
     "createMenuItem" : {
       "description" : "Item {0} in the 'Create in another module' menu",
@@ -77,6 +90,78 @@
       }, {
         "by" : "xpath",
         "value" : "//*[@role='menu']//*[normalize-space(.)='{0}']"
+      } ]
+    },
+    "rowMenuButton" : {
+      "description" : "Row menu (⋯) of the rule named {0}",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Actions for {0}"
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[.//*[normalize-space(text())='{0}']]//button[last()]"
+      } ]
+    },
+    "menuItem" : {
+      "description" : "Open menu item {0}",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "menuitem",
+        "name" : "{0}"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='menuitem'][normalize-space(.)='{0}']"
+      } ]
+    },
+    "moduleFilterButton" : {
+      "description" : "Module filter (All modules)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "All modules"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[contains(normalize-space(.),'modules')]"
+      } ]
+    },
+    "nameCell" : {
+      "description" : "Name cell of the rule named {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//tr[.//*[normalize-space(text())='{0}']]/td[2]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(text())='{0}']/ancestor::td[1]"
+      } ]
+    },
+    "wizardModuleSelect" : {
+      "description" : "Create New Rule › Module select",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Select a module"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//button[contains(normalize-space(.),'Select a module')]"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Select a module",
+        "ariaLabel" : "Select a module",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Select a module"
+      }
+    },
+    "openOptions" : {
+      "description" : "Options of the open list",
+      "candidates" : [ {
+        "by" : "css",
+        "value" : "[role='option']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='listbox']//*[@role='option']"
       } ]
     }
   },
@@ -141,18 +226,52 @@
       }, {
         "by" : "ariaLabel",
         "value" : "Layout"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "All layouts",
+        "ariaLabel" : "Layout",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "All layouts"
+      }
     },
     "option" : {
-      "description" : "Any open dropdown option named {0} (layout, field, operator, watch field)",
+      "description" : "Any open dropdown option named {0} (layout, field, operator, watch field, date field)",
       "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='option'][starts-with(normalize-space(.),'{0}')]"
+      }, {
         "by" : "xpath",
         "value" : "//*[@role='option'][normalize-space(.)='{0}']"
       }, {
         "by" : "role",
         "value" : "option",
         "name" : "{0}"
-      } ]
+      } ],
+      "lastHeal" : "2026-10-14T09:32:31.008867500+03:00 promoted 'xpath=//*[@role='option'][starts-with(normalize-space(.),'{0}')]' over 'xpath=//*[@role='option'][normalize-space(.)='Due Date']'"
+    },
+    "dateFieldButton" : {
+      "description" : "Date-Time trigger: the Date field picker (aria-label Date field)",
+      "candidates" : [ {
+        "by" : "css",
+        "value" : "[aria-label='Date field']"
+      }, {
+        "by" : "role",
+        "value" : "combobox",
+        "name" : "Date field"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(.)='Pick a date field']"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Pick a date field",
+        "ariaLabel" : "Date field",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Pick a date field"
+      }
     },
     "openOptions" : {
       "description" : "All options of the dropdown that is open",
@@ -169,7 +288,15 @@
       "candidates" : [ {
         "by" : "css",
         "value" : "[role='listbox']"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "ul",
+        "id" : "_r_h_",
+        "role" : "listbox",
+        "text" : "Subject On: Standard Contact On: Standard Account On: Standard Status On: Standard Priority On: Standard Channel On: Sta",
+        "classes" : "max-h-72 overflow-y-auto py-1 outline-none",
+        "parentText" : "Subject On: Standard Contact On: Standard Account On: Standa"
+      }
     },
     "editNameButton" : {
       "description" : "Pencil next to the rule name",
@@ -180,7 +307,15 @@
       }, {
         "by" : "ariaLabel",
         "value" : "Edit rule name"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "New Workflow Rule",
+        "ariaLabel" : "Edit rule name",
+        "classes" : "min-w-0 max-w-full truncate text-start px-2 py-0.5 rounded-md transition-colors",
+        "parentText" : "New Workflow Rule"
+      }
     },
     "nameInput" : {
       "description" : "Rule name text box (default value 'New Workflow Rule')",
@@ -194,7 +329,12 @@
       }, {
         "by" : "css",
         "value" : "header input[type='text']"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "input",
+        "placeholder" : "New Workflow Rule",
+        "classes" : "min-w-0 w-full px-2 py-0.5 rounded-md border focus:outline-none focus:ring-1"
+      }
     },
     "triggerButton" : {
       "description" : "Trigger choice {0} in the WHEN panel: Create, Edit, Create or Edit, Delete, Field Changed",
@@ -218,7 +358,13 @@
       }, {
         "by" : "xpath",
         "value" : "//*[normalize-space(.)='A Date-Time field']"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "div",
+        "text" : "A Date-Time field",
+        "classes" : "text-sm font-medium",
+        "parentText" : "A Date-Time field Run a fixed time before/after a date field"
+      }
     },
     "watchFieldButton" : {
       "description" : "'Watch field' picker shown for the Field Changed trigger",
@@ -229,7 +375,15 @@
       }, {
         "by" : "ariaLabel",
         "value" : "Watch field"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "— pick a field —",
+        "ariaLabel" : "Watch field",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "— pick a field —"
+      }
     },
     "doneButton" : {
       "description" : "'Done' button of the open WHEN / CONDITION panel",
@@ -237,7 +391,14 @@
         "by" : "role",
         "value" : "button",
         "name" : "Done"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Done",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Done"
+      }
     },
     "editConditionsButton" : {
       "description" : "'Edit conditions' on the CONDITION card",
@@ -248,19 +409,34 @@
       }, {
         "by" : "ariaLabel",
         "value" : "Edit conditions"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "No conditions — actions run on every event of this trigger.",
+        "ariaLabel" : "Edit conditions",
+        "classes" : "w-full text-start group",
+        "parentText" : "No conditions — actions run on every event of this trigger."
+      }
     },
     "matchingConditionsRadio" : {
       "description" : "Radio '<Module> matching certain conditions'",
       "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'matching certain conditions')]"
+      }, {
         "by" : "role",
         "value" : "radio",
         "name" : "matching certain conditions",
         "exact" : false
-      }, {
-        "by" : "xpath",
-        "value" : "//label[contains(normalize-space(.),'matching certain conditions')]"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "label",
+        "text" : "Tickets matching certain conditions",
+        "classes" : "inline-flex items-center gap-2 cursor-pointer",
+        "parentText" : "Tickets matching certain conditions All Tickets"
+      },
+      "lastHeal" : "2026-10-12T19:53:44.092471200+03:00 promoted 'xpath=//label[contains(normalize-space(.),'matching certain conditions')]' over 'role=radio [matching certain conditions] (contains)'"
     },
     "addConditionButton" : {
       "description" : "'Add condition'",
@@ -279,7 +455,15 @@
       }, {
         "by" : "xpath",
         "value" : "//button[contains(normalize-space(.),'select field')]"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "— select field —",
+        "ariaLabel" : "— select field —",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "— select field —"
+      }
     },
     "operatorButton" : {
       "description" : "Operator picker of the condition row",
@@ -290,7 +474,15 @@
       }, {
         "by" : "ariaLabel",
         "value" : "Operator"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "is",
+        "ariaLabel" : "Operator",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "is"
+      }
     },
     "valueChip" : {
       "description" : "Pick-list value chip {0} in a condition (e.g. high, urgent)",
@@ -309,7 +501,14 @@
       }, {
         "by" : "xpath",
         "value" : "//button[contains(normalize-space(.),'Add action')]"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Add action",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Instant actions Run as soon as the rule fires. No actions ye"
+      }
     },
     "actionType" : {
       "description" : "Action type card in the action picker whose title starts with {0} (Field Update, Owner Assignment, Email…)",
@@ -329,7 +528,36 @@
         "by" : "role",
         "value" : "button",
         "name" : "Add field"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Add field",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "No fields set yet. Add field"
+      }
+    },
+    "taskTitle" : {
+      "description" : "Title box of a Task action (aria-label Task title)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//input[starts-with(@placeholder,'e.g. Follow up')]"
+      }, {
+        "by" : "css",
+        "value" : "input[aria-label='Task title']"
+      }, {
+        "by" : "role",
+        "value" : "textbox",
+        "name" : "Task title"
+      } ],
+      "fingerprint" : {
+        "tag" : "input",
+        "ariaLabel" : "Title",
+        "placeholder" : "e.g. Follow up with ${first_name}",
+        "classes" : "w-full rounded-lg border bg-white px-3 py-2 text-sm text-[color:var(--text-main)]",
+        "parentText" : "Insert field"
+      },
+      "lastHeal" : "2026-10-14T09:19:14.967052800+03:00 promoted 'xpath=//input[starts-with(@placeholder,'e.g. Follow up')]' over 'css=input[aria-label='Task title']'"
     },
     "fieldUpdateValue" : {
       "description" : "Value box in the Field Update row of field {0} (the row holds a 'Remove {0}' button)",
@@ -353,7 +581,14 @@
         "by" : "role",
         "value" : "tab",
         "name" : "Roles"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Roles",
+        "classes" : "px-3 py-1.5 text-xs font-medium transition-colors",
+        "parentText" : "Users Roles User Fields"
+      }
     },
     "ownerRoleSelect" : {
       "description" : "Role picker ('Select…') shown after choosing Roles",
@@ -363,7 +598,13 @@
       }, {
         "by" : "xpath",
         "value" : "(//*[@role='combobox'])[last()]"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "span",
+        "text" : "Select…",
+        "classes" : "text-[color:var(--text-muted)]",
+        "parentText" : "Select…"
+      }
     },
     "saveAndActivateButton" : {
       "description" : "'Save & Activate'",
@@ -374,7 +615,14 @@
       }, {
         "by" : "xpath",
         "value" : "//button[contains(normalize-space(.),'Activate') and contains(normalize-space(.),'Save')]"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Save & Activate",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Save & Activate Cancel"
+      }
     },
     "toasts" : {
       "description" : "Toast / alert messages after Save",
@@ -386,6 +634,57 @@
         "value" : "[role='status'], [role='alert']"
       } ],
       "allowHidden" : true
+    },
+    "saveButton" : {
+      "description" : "Save button (bottom bar); a new rule on staging only has 'Save & Activate'",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[starts-with(normalize-space(.),'Save')]"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Save"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='Save']"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Save & Activate",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Save & Activate Cancel"
+      },
+      "lastHeal" : "2026-10-14T09:22:02.358686200+03:00 promoted 'xpath=//button[starts-with(normalize-space(.),'Save')]' over 'role=button [Save]'"
+    },
+    "addScheduledActionButton" : {
+      "description" : "Add scheduled action",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Add scheduled action"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[contains(normalize-space(.),'Add scheduled action')]"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Add scheduled action",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Scheduled actions Run after a delay you set. They are cancel"
+      }
+    },
+    "closePickerButton" : {
+      "description" : "Close the action picker",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Close"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[normalize-space(.)='Close'])[last()]"
+      } ]
     }
   },
   "ExecutionHistoryPage" : {
@@ -410,7 +709,13 @@
       }, {
         "by" : "placeholder",
         "value" : "name@example.com"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "input",
+        "type" : "email",
+        "placeholder" : "name@example.com",
+        "classes" : "w-full rounded-md border bg-white px-3 py-2 text-sm transition-colors"
+      }
     },
     "subject" : {
       "description" : "Subject combobox 'Type or pick a subject'",
@@ -420,7 +725,14 @@
       }, {
         "by" : "ariaLabel",
         "value" : "Type or pick a subject"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "input",
+        "role" : "combobox",
+        "type" : "text",
+        "placeholder" : "Type or pick a subject",
+        "classes" : "w-full rounded-md border bg-white px-3 py-2 text-sm transition-colors"
+      }
     },
     "description" : {
       "description" : "Description box",
@@ -431,7 +743,12 @@
       }, {
         "by" : "css",
         "value" : "textarea"
-      } ]
+      } ],
+      "fingerprint" : {
+        "tag" : "textarea",
+        "placeholder" : "Description",
+        "classes" : "w-full rounded-md border bg-white px-3 py-2 text-sm transition-colors"
+      }
     },
     "selectButton" : {
       "description" : "Pick-list buttons still showing 'Select', number {0} on the form (1-based; 2 = Status, then Priority once Status is set)",
@@ -461,6 +778,44 @@
         "value" : "button",
         "name" : "Save"
       } ]
+    }
+  },
+  "ActionsLibraryPage" : {
+    "newActionButton" : {
+      "description" : "New Action button",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "New Action"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[contains(normalize-space(.),'New Action')])[1]"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "New Action",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Actions Reusable actions your Workflow Rules can share — def"
+      }
+    },
+    "dialog" : {
+      "description" : "Open dialog",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "dialog"
+      }, {
+        "by" : "css",
+        "value" : "[role='dialog']"
+      } ],
+      "fingerprint" : {
+        "tag" : "div",
+        "role" : "dialog",
+        "text" : "New Action Pick a type. You can't change it later — to switch types, create a new action. Email Send an email to interna",
+        "ariaLabel" : "New Action",
+        "classes" : "w-full max-w-2xl rounded-xl bg-[var(--bg-surface)] shadow-xl ring-1 ring-black/5 flex",
+        "parentText" : "New Action Pick a type. You can't change it later — to switc"
+      }
     }
   }
 }
