@@ -1,0 +1,51 @@
+{
+ "id": "Items 1–2",
+ "title": "Import: which automations an import can start",
+ "verdict": "Gap",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Import wizard → step \"Assign & approve\" (text from the build)",
+   "text": [
+    "Automation — [ ] Trigger workflow rules",
+    "\"Run your workflow rules on the imported records. Off by default — a bulk import is a pure data load. Owner assignment from the chosen rule runs regardless.\"",
+    "Manual Record Approval — [ ] Enable manual approval — \"Coming soon\""
+   ],
+   "flag": "TEXT FROM THE BUILD — the wizard was not opened, because opening it starts an import session on the tenant"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Import → \"Trigger automation and process management\" (official help)",
+   "text": [
+    "One checkbox, \"Trigger automation and process management for imported records\", runs Workflow rules, Approval process, Review process, Blueprint and CommandCenter on created or updated records (files under 10,000 rows).",
+    "\"Enable Manual Lead Approval\": imported records wait in Approve Leads; owner assignment and rules run after approval."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/community/topic/execute-automation-and-other-processes-during-import",
+    "https://help.zoho.com/portal/en/kb/crm/data-administration/import-data/articles/import-data-into-a-crm-module"
+   ],
+   "flag": "DOCS ONLY — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "What an import can trigger (item 1)",
+   "zoho": "Workflow + Approval + Review + Blueprint + CommandCenter (docs)",
+   "tavi": "Only \"Trigger workflow rules\" (build text). Whether approval or blueprint also start on import is tested in the spec (Z1)",
+   "match": "Gap"
+  },
+  {
+   "n": "2",
+   "b": "Manual approval of imported records (item 2)",
+   "zoho": "Enable Manual Lead Approval (docs)",
+   "tavi": "\"Coming soon\" (build text)",
+   "match": "Gap"
+  }
+ ],
+ "notes": [
+  "Assignment rule on import: both offer one rule for new records — same as Zoho."
+ ],
+ "out": "../01-import-automation-vs-zoho.png",
+ "date": "18 Oct 2026"
+}

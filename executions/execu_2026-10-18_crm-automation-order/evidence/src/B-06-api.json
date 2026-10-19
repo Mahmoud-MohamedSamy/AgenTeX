@@ -1,0 +1,32 @@
+{
+ "out": "B-06-api.png",
+ "title": "B-06 · G-04 · TAVI request/response (19 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "Setup: review \"QA AEO V1 G-04r RP\" (Excel import channel); workflow On Create -> Description = \"WF G-04r\"",
+   "lines": [
+    {
+     "t": "PUT /modules/841043e1-…/import/{session}/mapping  options.trigger_automation=false",
+     "box": "automation off"
+    },
+    "import completed -> lead 3dbedc30",
+    "review status: pending_for_review  ->  reviewer approves Email  ->  approved"
+   ]
+  },
+  {
+   "head": "Lead 3dbedc30 after the review approval",
+   "lines": [
+    {
+     "t": "description=\"WF G-04r\"; execution RecordCreated outcome=Fired",
+     "box": "workflow ran"
+    }
+   ]
+  },
+  {
+   "head": "Control (no review): import with trigger_automation=false, lead a3221c31",
+   "lines": [
+    "description=null, workflow fired 0, approval none  (correct)"
+   ]
+  }
+ ]
+}

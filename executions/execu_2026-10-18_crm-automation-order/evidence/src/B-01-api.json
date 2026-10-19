@@ -1,0 +1,32 @@
+{
+ "out": "B-01-api.png",
+ "title": "B-01 · D-21 / H-03 · TAVI request/response (19 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "Setup: approval process \"QA AEO V3 H-03 appr\" (on create, approver mahmoud.mmohamedsamy); lead fe605f05 created by nameb56175",
+   "lines": [
+    "GET /workflow/approvals/records/841043e1-…/fe605f05-…  ->  200  \"state\":\"pending_approval\""
+   ]
+  },
+  {
+   "head": "Delete (control) — blocked as expected",
+   "lines": [
+    {
+     "t": "DELETE /modules/841043e1-…/records/fe605f05-…  ->  422 APPROVAL_LOCKED",
+     "box": "locked"
+    }
+   ]
+  },
+  {
+   "head": "Convert by the record owner (User profile) — accepted",
+   "lines": [
+    {
+     "t": "POST /modules/841043e1-…/records/fe605f05-…/convert  {}  ->  200",
+     "box": "should be refused"
+    },
+    "\"targets\":[ accounts: skipped, contacts: created 719ccc77-…, subscriptions: created … ]",
+    "approval state after convert: pending_approval"
+   ]
+  }
+ ]
+}

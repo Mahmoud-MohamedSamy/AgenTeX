@@ -1,0 +1,47 @@
+{
+ "out": "../B-06-import-trigger-off-review-vs-zoho.png",
+ "id": "B-06 (G-04)",
+ "title": "Import with \"Trigger automation\" off still runs the workflow once the review is approved",
+ "verdict": "Differs",
+ "date": "19 Oct 2026",
+ "zohoSource": "Zoho CRM help (documentation; the state cannot be produced read-only in the live org)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "trigger_automation=false is lost when the record passes through review",
+   "img": "B-06-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Import: automation only with the checkbox",
+   "text": [
+    "Imported records run workflow rules only when \"Trigger automation and process management for imported records\" is selected; that option covers \"Workflow rules, Approval process, Review process, Blueprint, and CommandCenter\".",
+    "Review FAQ: \"Can imported records be reviewed? No.\""
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/community/topic/execute-automation-and-other-processes-during-import",
+    "https://help.zoho.com/portal/en/kb/crm/faqs/review-process/articles/faqs-review-process (Q26)"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Import, automation off, no review",
+   "zoho": "Nothing runs",
+   "tavi": "Nothing runs",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "Import, automation off, review on the Excel-import channel",
+   "zoho": "No review, no workflow",
+   "tavi": "Review holds it, then the workflow runs after approval",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Run 2 (lead 224a4501): the approval was also started after the review."
+ ]
+}

@@ -1,0 +1,32 @@
+{
+ "out": "B-12-api.png",
+ "title": "B-12 · C-11 / H-05 / C-15 · TAVI request/response (19 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "POST /workflow/rules  \"QA AEO V5 C-11d WF\"  On Create",
+   "lines": [
+    {
+     "t": "\"actions\":[{\"type\":\"FieldUpdate\",\"delaySeconds\":300,\"fieldUpdates\":{\"description\":\"WF C-11d\"}}]  -> 201 (stored delaySeconds=300)",
+     "box": "5-minute delay"
+    }
+   ]
+  },
+  {
+   "head": "Lead created 07:25:47 by nameb56175, then read",
+   "lines": [
+    {
+     "t": "+3 s   description = \"WF C-11d\"",
+     "box": "ran at once"
+    },
+    "+20 s  description = \"WF C-11d\"",
+    "+60 s  description = \"WF C-11d\""
+   ]
+  },
+  {
+   "head": "Control: the same kind of rule with a delayed Webhook (C-11w, 120 s)",
+   "lines": [
+    "dispatch ran ~2 min after create; a lead edited out of the criteria got no dispatch (cancelled correctly)"
+   ]
+  }
+ ]
+}

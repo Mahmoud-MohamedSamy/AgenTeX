@@ -37,9 +37,19 @@ public final class Credentials {
     public static Credentials load() {
         String e = Config.get("qa.email"), p = Config.get("qa.password");
         if (e != null && p != null && !e.isEmpty()) return new Credentials(e, e, p);
+        return find(Config.get("credentials.account", ""));
+    }
 
-        String file = Config.get("credentials.file");
-        String want = Config.get("credentials.account", "");
+    /**
+     * Entry for one account (label, email, or the email's part before @) from credentials.file. Rows whose name/url
+     * don't contain credentials.host (when set) are skipped, so one browser export can hold several apps.
+     */
+    public static Credentials find(String want) {
+        return find(Config.get("credentials.file"), Config.get("credentials.host", ""), want);
+    }
+
+    /** Same as {@link #find(String)} with an explicit file (relative to the project dir) and host filter. */
+    public static Credentials find(String file, String host, String want) {
         if (file == null) throw new IllegalStateException("No credentials: set QA_EMAIL/QA_PASSWORD or credentials.file");
         Path path = Config.projectDir().resolve(file).normalize();
         try {
@@ -49,6 +59,7 @@ public final class Credentials {
                 String acc = text(n, "Account", "account", "note");
                 String em = text(n, "Email", "email", "username");
                 if (em.isEmpty()) continue;
+                if (!host.isEmpty() && !(text(n, "name") + text(n, "url")).contains(host)) continue;
                 String local = em.contains("@") ? em.substring(0, em.indexOf('@')) : em;
                 if (want.isEmpty() || want.equalsIgnoreCase(acc) || want.equalsIgnoreCase(em) || want.equalsIgnoreCase(local))
                     return new Credentials(acc.isEmpty() ? local : acc, em, text(n, "Password", "password"));
@@ -87,6 +98,11 @@ public final class Credentials {
         if (row.size() > 1 || !row.get(0).isEmpty()) rows.add(row);
         if (rows.isEmpty()) return out;
         List<String> head = rows.get(0);
+        // A browser export saved without its header row starts straight with data (host,url,username,password)
+        if (String.join(",", head).contains("@")) {
+            head = List.of("name", "url", "username", "password");
+            rows.add(0, head);
+        }
         for (List<String> r : rows.subList(1, rows.size())) {
             ObjectNode o = out.addObject();
             for (int i = 0; i < head.size() && i < r.size(); i++) o.put(head.get(i).trim(), r.get(i).trim());

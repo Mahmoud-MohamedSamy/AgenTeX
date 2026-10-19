@@ -1,0 +1,32 @@
+{
+ "out": "B-02-api.png",
+ "title": "B-02 · H-02 · TAVI request/response (19 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "Setup: review process \"QA AEO V3 H-02 RP\" (manual channel, field Email); lead da6f6b7c created by nameb56175",
+   "lines": [
+    "review status: pending_for_review"
+   ]
+  },
+  {
+   "head": "Edit while held (control) — blocked as expected",
+   "lines": [
+    {
+     "t": "PATCH /modules/841043e1-…/records/da6f6b7c-…  description  ->  422 REVIEW_LOCKED",
+     "box": "locked"
+    }
+   ]
+  },
+  {
+   "head": "Convert by the record owner — accepted",
+   "lines": [
+    {
+     "t": "POST /modules/841043e1-…/records/da6f6b7c-…/convert  {}  ->  200",
+     "box": "should be refused"
+    },
+    "\"targets\":[ accounts: skipped, contacts: created 488a39dd-…, subscriptions: created … ]",
+    "review status after convert: pending_for_review"
+   ]
+  }
+ ]
+}

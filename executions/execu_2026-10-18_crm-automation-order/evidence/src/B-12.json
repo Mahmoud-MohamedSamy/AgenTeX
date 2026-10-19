@@ -1,0 +1,53 @@
+{
+ "out": "../B-12-scheduled-field-update-runs-at-once-vs-zoho.png",
+ "id": "B-12 (C-11 / H-05 / C-15)",
+ "title": "A scheduled (delayed) Field Update runs immediately",
+ "verdict": "Differs",
+ "date": "19 Oct 2026",
+ "zohoSource": "Zoho CRM help (documentation; the state cannot be produced read-only in the live org)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "delaySeconds=300 is stored but the update is applied within 3 s",
+   "img": "B-12-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: scheduled actions run at the set time",
+   "text": [
+    "Scheduled actions (incl. Field Update) run at the configured time and appear under Timeline > Upcoming Actions.",
+    "For Edit / Create-or-Edit rules \"the scheduled actions scheduled earlier will be deleted\" if an edit makes the record stop meeting the criteria; \"When a lead is converted, all the scheduled actions scheduled for the record will not be executed.\""
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/crm-v2-1/automate-business-processes/workflow-management/articles/crm-v2-configuring-workflow-rules"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Scheduled Webhook",
+   "zoho": "Runs after the delay",
+   "tavi": "Runs after the delay",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "Scheduled Field Update",
+   "zoho": "Runs after the delay",
+   "tavi": "Runs immediately",
+   "match": "Differs"
+  },
+  {
+   "n": "3",
+   "b": "Cancel / convert / deactivate before the time",
+   "zoho": "Not run",
+   "tavi": "Already applied",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "This is why C-11 (lead 3e3fcd8a), H-05 (ba12d70d) and C-15 (\"pending action RAN\") failed on 18 Oct: the update had already happened before the edit, convert or deactivation."
+ ]
+}

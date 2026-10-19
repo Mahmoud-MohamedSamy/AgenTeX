@@ -1,0 +1,34 @@
+{
+ "out": "B-03-api.png",
+ "title": "B-03 · G-07 · TAVI request/response (19 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "Setup: review \"QA AEO V2 G-07 RP\" (manual, Email); workflow \"QA AEO V2 G-07 WF\" On Edit, Lead Status = Follow Up -> Description = \"WF G-07\"",
+   "lines": [
+    "leads created BEFORE the processes were switched on (no hold on create)"
+   ]
+  },
+  {
+   "head": "Lead 621270ac: mass update / Lead 30ce81a7: single edit (both by nameb56175)",
+   "lines": [
+    "POST /modules/841043e1-…/records/mass-update {record_ids:[621270ac], lead_status:\"Follow Up\"} -> 200",
+    "PATCH /modules/841043e1-…/records/30ce81a7-… {lead_status:\"Follow Up\"} -> 200",
+    "review after edit: pending_for_review (both)  ->  reviewer approves Email  ->  review: approved (both)",
+    {
+     "t": "after approval (+60 s): description=null, workflow fired 0 times (both leads)",
+     "box": "workflow never ran"
+    }
+   ]
+  },
+  {
+   "head": "Control lead c59f5605 (not covered by the review process): same edit",
+   "lines": [
+    "PATCH {lead_status:\"Follow Up\"} -> 200  review=null",
+    {
+     "t": "description=\"WF G-07\", workflow fired 1 time",
+     "box": "works without review"
+    }
+   ]
+  }
+ ]
+}

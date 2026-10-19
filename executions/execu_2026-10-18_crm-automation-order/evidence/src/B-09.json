@@ -1,0 +1,46 @@
+{
+ "out": "../B-09-excluded-record-still-locked-vs-zoho.png",
+ "id": "B-09 (E-13)",
+ "title": "A record excluded from a blueprint keeps its blueprint field locked",
+ "verdict": "Differs",
+ "date": "19 Oct 2026",
+ "zohoSource": "Zoho CRM help (documentation; the state cannot be produced read-only in the live org)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Out of the blueprint, but Lead Source still refused",
+   "img": "B-09-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: the field is locked only while in the process",
+   "text": [
+    "\"the field using which you configured the Blueprint will be locked for editing once the record has entered the process.\"",
+    "Admins can mass include or exclude records from the blueprint's Filters tab."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/crm/process-management/blueprint/articles/execute-blueprint"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Edit the field of a governed record",
+   "zoho": "Locked",
+   "tavi": "422",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "Edit the field after the record was excluded",
+   "zoho": "Editable (no longer in the process)",
+   "tavi": "422 BLUEPRINT_GOVERNED_FIELD",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Zoho text says \"locked … once the record has entered the process\"; after exclusion the record is no longer in it (blueprint-state is empty). Run 2 lead: 66c008ba."
+ ]
+}

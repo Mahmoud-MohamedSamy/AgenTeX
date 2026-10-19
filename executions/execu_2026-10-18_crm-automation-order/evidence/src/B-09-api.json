@@ -1,0 +1,26 @@
+{
+ "out": "B-09-api.png",
+ "title": "B-09 · E-13 · TAVI request/response (19 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "Blueprint \"QA AEO V3 E-13 BP\" on Lead Source; leads bb67fa6e and f12f4ba0 governed",
+   "lines": [
+    {
+     "t": "POST /modules/841043e1-…/blueprints/368a0ad4-…/mass-exclude {\"record_ids\":[\"bb67fa6e-…\"]} -> 200 {\"affected\":1}",
+     "box": "excluded"
+    },
+    "GET …/records/bb67fa6e-…/blueprint-state -> {\"states\":[],\"transitions\":[]}"
+   ]
+  },
+  {
+   "head": "Edit the excluded lead",
+   "lines": [
+    {
+     "t": "PATCH …/records/bb67fa6e-… {lead_source:\"referral\"} (owner and CRM Admin) -> 422 BLUEPRINT_GOVERNED_FIELD",
+     "box": "still locked"
+    },
+    "\"This field is controlled by a blueprint.\"  — PATCH description -> 200"
+   ]
+  }
+ ]
+}

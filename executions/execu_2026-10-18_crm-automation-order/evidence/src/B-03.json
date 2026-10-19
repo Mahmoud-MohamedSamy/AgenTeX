@@ -1,0 +1,47 @@
+{
+ "out": "../B-03-edit-review-skips-workflow-vs-zoho.png",
+ "id": "B-03 (G-07)",
+ "title": "An edit held by review never runs the On Edit workflow after the review is approved",
+ "verdict": "Differs",
+ "date": "19 Oct 2026",
+ "zohoSource": "Zoho CRM help (documentation; the state cannot be produced read-only in the live org)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Edit -> review hold -> approval: the On Edit rule is dropped",
+   "img": "B-03-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Review FAQ: workflows run after the review",
+   "text": [
+    "\"Blueprints and workflows run only after approval [of the review].\"",
+    "Workflow rules are \"triggered when records are modified using Mass Update, Macros\"."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/crm/faqs/review-process/articles/faqs-review-process (Q26)",
+    "https://help.zoho.com/portal/en/kb/crm-v2-1/automate-business-processes/workflow-management/articles/crm-v2-configuring-workflow-rules"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "On Edit workflow, record not under review",
+   "zoho": "Runs",
+   "tavi": "Runs",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "On Edit workflow, edit held by review, review approved",
+   "zoho": "Runs after the review",
+   "tavi": "Never runs (mass update and single edit)",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Review on edit is a TAVI behaviour (Zoho reviews on create only); whatever holds the edit, the edit's workflow must not be lost. The create path (F-06) works."
+ ]
+}
