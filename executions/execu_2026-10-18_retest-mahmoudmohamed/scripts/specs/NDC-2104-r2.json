@@ -1,0 +1,14 @@
+{ "out": "NDC-2104-retest-PASS.png", "ticket": "NDC-2104", "title": "Custom Views | 'Last Activity' (kept label) follows the record's modified time — retested with the agreed behaviour", "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · account ndc-staging-owner", "date": "19 Oct 2026",
+ "panels": [
+  { "img": "NDC-2104-r2-api.png", "caption": "API: \"Last Activity is Today\" returns nothing before the edit; after editing QA RT tz L2 it returns L2 only.", "crop": [0, 0, 1600, 340], "boxes": [ { "b": [36, 146, 1564, 183], "n": 1, "kind": "PASS" }, { "b": [36, 193, 1564, 230], "n": 2, "kind": "PASS" }, { "b": [36, 240, 1564, 277], "n": 3, "kind": "PASS" } ] },
+  { "img": "NDC-2104-r2-view-today.png", "caption": "Leads → view QA RT tz-day (Last Activity is Today): 1 record, QA RT tz L2, Last Activity 19/10/2026 10:07 AM.", "crop": [262, 60, 1338, 330], "boxes": [ { "b": [270, 284, 1590, 324], "n": 3, "kind": "PASS" }, { "b": [590, 240, 760, 264], "n": 4, "kind": "PASS" } ] },
+  { "img": "NDC-2104-r2-workqueue.png", "caption": "Work Queue → My Leads: L2 Last Activity 19/10/2026 10:07 AM; L1 (note only, no edit) still 18/10/2026 3:31 PM.", "crop": [572, 250, 1004, 270], "boxes": [ { "b": [1390, 416, 1500, 458], "n": 2, "kind": "PASS" }, { "b": [1390, 472, 1500, 514], "n": 5, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Last Activity criteria before any edit", "Today → no QA RT tz lead (all modified 18 Oct)", "0 records", "PASS"],
+  ["2", "Editing a field moves Last Activity", "Becomes the edit time", "L2 → 19/10/2026 10:07 AM (last_modified_at 07:07:16Z)", "PASS"],
+  ["3", "Criteria follow the new value", "Today → L2 only", "1 record: QA RT tz L2 (API and view grid agree)", "PASS"],
+  ["4", "Label kept", "\"Last Activity\" (your decision 19 Oct)", "Column and criteria labelled Last Activity", "PASS"],
+  ["5", "A note alone", "Does not move it (agreed: modified time)", "L1 still 18/10/2026 3:31 PM after its note", "PASS"]
+ ] }

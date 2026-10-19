@@ -1,0 +1,11 @@
+{ "out": "NDC-2124-retest-FAIL.png", "ticket": "NDC-2124", "title": "Custom Views | List preferences accept more than 50 column overrides; no oldest-dropped rule", "verdict": "FAIL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (UI, as the developer asked) · account ndc-staging-owner", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-2124-api.png", "caption": "Manage Columns → Hide → Apply on 51 private views QA RT ov-01…ov-51 through the UI; prefs.viewColumns read after each batch.", "crop": [0, 0, 1600, 420], "boxes": [ { "b": [36, 240, 1564, 277], "n": 1, "kind": "PASS" }, { "b": [36, 287, 1564, 324], "n": 2, "kind": "FAIL" }, { "b": [36, 334, 1564, 392], "n": 3, "kind": "FAIL" } ] }
+ ],
+ "rows": [
+  ["1", "Cap of 50 overrides (UI path)", "51st override handled by one rule — 50 remain", "50 remain after the 51st", "PASS"],
+  ["2", "The OLDEST override (view 1) is dropped", "ov-01 dropped, ov-02…ov-51 kept", "ov-38 dropped; ov-01 and ov-02 still kept", "FAIL"],
+  ["3", "Why (observation)", "—", "Stored key order is not creation order (first keys ov-29, ov-46, ov-36…, looks sorted by view id), so \"oldest\" is taken from a reordered object — ov-38's id 01431e95… sorts first", "INFO"],
+  ["—", "Direct API PUT of 51 entries", "—", "Not retested — developer: the endpoint is an opaque round-trip by design", "INFO"]
+ ] }

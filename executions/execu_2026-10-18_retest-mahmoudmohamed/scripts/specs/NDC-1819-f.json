@@ -1,0 +1,21 @@
+{ "out": "NDC-1819-functional-PARTIAL.png", "ticket": "NDC-1819", "title": "Work Queue — functional pass on the newly delivered features (19 Oct 2026)", "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · account ndc-staging-owner (CRM Admin)", "date": "19 Oct 2026",
+ "panels": [
+  { "img": "NDC-1819-f-mc-show-disabled.png", "caption": "Phone hidden from its column header menu → Manage Columns lists it under Hidden with Show disabled (locked column). Only \"Reset to default columns\" brings it back.", "crop": [880, 0, 720, 680], "boxes": [ { "b": [1296, 620, 1584, 650], "n": 3, "kind": "FAIL" }, { "b": [1296, 142, 1584, 170], "n": 3, "kind": "INFO" } ] },
+  { "img": "NDC-1819-f-period-overdue.png", "caption": "Period \"Overdue\": 2 tasks only (both In Progress) although many open tasks are past due.", "crop": [284, 130, 1300, 310], "boxes": [ { "b": [301, 170, 539, 202], "n": 7, "kind": "FAIL" }, { "b": [574, 258, 1574, 376], "n": 7, "kind": "FAIL" } ] },
+  { "img": "NDC-1819-f-period-overdue-completed.png", "caption": "Period \"Today & Overdue\": 110 records, Completed tasks listed as \"Late by 27 days\"; the side-panel counts are blank for this period.", "crop": [284, 130, 1300, 560], "boxes": [ { "b": [858, 266, 1060, 750], "n": 8, "kind": "FAIL" }, { "b": [574, 176, 712, 204], "n": 8, "kind": "FAIL" }, { "b": [300, 212, 545, 320], "n": 9, "kind": "INFO" } ] },
+  { "img": "NDC-1819-f-clip.png", "caption": "Clip Text on a narrowed Created At column: the date still breaks over 5 lines and the header overlaps \"Last Activity\".", "crop": [572, 250, 1004, 380], "boxes": [ { "b": [1364, 296, 1432, 504], "n": 5, "kind": "FAIL" }, { "b": [1366, 260, 1512, 288], "n": 5, "kind": "FAIL" } ] },
+  { "img": "NDC-1819-f-api.png", "caption": "The buckets come from the server (GET /workqueue/activities?bucket=…). 110 of 118 tasks were imported from Excel with text due dates.", "crop": [0, 0, 1600, 420], "boxes": [ { "b": [36, 146, 1564, 204], "n": 7, "kind": "FAIL" }, { "b": [36, 214, 1564, 272], "n": 8, "kind": "FAIL" }, { "b": [36, 329, 1564, 408], "n": 7, "kind": "INFO" } ] }
+ ],
+ "rows": [
+  ["1", "Sort from the column menu (item 7)", "Asc / Desc order the rows", "Full Name natural order 1, 2, 3 … 813 and back; Created At ascending — sort not kept after reload", "PASS"],
+  ["2", "Hide column from the menu (item 7)", "Column hidden, kept", "Hidden and still hidden after reload", "PASS"],
+  ["3", "Hide a locked column (Full Name / Phone)", "Not offered, or Show brings it back", "Header menu hides Phone; Manage Columns then shows Show disabled — only Reset to default restores it (Company is dropped by the reset)", "FAIL"],
+  ["4", "Records per page, resize, Reset Column Size (item 8)", "Applied and kept", "25 rows kept after reload; 183 → 278 px kept after reload; Reset restores", "PASS"],
+  ["5", "Wrap Text / Clip Text (item 8)", "Clip keeps one line per cell", "Text cells change, but date cells still wrap mid-number in Clip mode", "FAIL"],
+  ["6", "Manage Columns search / Show / Hide; filter field search (items 4, 9)", "Narrow, apply, clear", "\"pho\" → Phone; Show Email applied and kept; Clear search empties; \"ph\" → Phone in the filter (still no ×)", "PASS"],
+  ["7", "Period Overdue (item 11)", "Every open task past due", "2 tasks — only ISO-dated ones; 87 open imported tasks with text due dates are skipped", "FAIL"],
+  ["8", "Today & Overdue / All open (item 11)", "Open tasks only; = Today + Overdue", "110 / 112, incl. 20 Completed; Today (1) + Overdue (2) ≠ 110", "FAIL"],
+  ["9", "Due today, Tomorrow, Next 7 days, This/Next week, This/Next month, On a specific date", "Match the data", "1, 0, 0, 1, 0, 2, 0; 17 Oct → 0 (its task is Completed), 19 Oct → 1. Side counts blank for some periods", "PASS"],
+  ["10", "Row ⋮ actions + Add Note (item 10)", "Work from the left", "Edit opens the record; Delete asks to confirm (Cancel keeps it); Add Note saves (201)", "PASS"]
+ ] }

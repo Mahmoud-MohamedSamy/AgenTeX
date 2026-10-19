@@ -1,0 +1,8 @@
+{ "out": "NDC-1234-api.png", "who": "ndc-staging-owner and test user 1", "title": "NDC-1234 — Approval Process smoke test (temporary process \"QA RT ap\" on Deals)", "rows": [
+ ["Field", "GET /modules/{Leads}/fields approval_status", "pick_list read_only, system-managed, values not_submitted / pending_approval / approved / rejected; properties not editable", "ok"],
+ ["Entry guard", "POST /workflow/approval-processes (no guard sent)", "201 — entryGuard {approval_status equals not_submitted, system: true} added by the server", "ok"],
+ ["Create + approve", "POST deal \"QA RT ap 1\" Amount 20000 → Respond → Approve", "pending_approval on create; POST /workflow/approvals/{id}/approve → 204; approved", "ok"],
+ ["Allowed edit", "PATCH next_step (owner, then test user 1)", "200 — status stays approved; timeline \"re-entry blocked\"", "ok"],
+ ["Locked edit, non-owner", "PATCH amount 2000 → 3000 as test user 1", "422 APPROVAL_LOCKED — \"the field(s) amount cannot be edited\"", "ok"],
+ ["Locked edit, owner", "PATCH amount 20000 → 2000 as tenant owner", "200 — timeline \"locked field(s) overridden by ndc-staging-owner\" (owner permission)", "info"],
+ ["Write status", "PATCH approval_status as owner / test user 1", "422 APPROVAL_STATUS_READ_ONLY / APPROVAL_LOCKED", "ok"] ] }

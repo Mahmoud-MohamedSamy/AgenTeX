@@ -1,0 +1,15 @@
+{ "out": "NDC-1789-retest-FAIL.png", "ticket": "NDC-1789", "title": "Work Queue | Applied filters don't persist on refresh / next session (new login)", "verdict": "FAIL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge · account ndc-staging-owner (two browsers)", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-1789-deep-reload-lost.png", "caption": "Reload of /workqueue/activities/tasks with \"Priority equals high\" saved: funnel has no count, 112 records (unfiltered). Same after a new login in another browser.", "crop": [280, 60, 1320, 420], "boxes": [ { "b": [1510, 128, 1544, 160], "n": 1, "kind": "FAIL" }, { "b": [586, 180, 706, 200], "n": 2, "kind": "FAIL" } ] },
+  { "img": "NDC-1789-section-click-restored.png", "caption": "Same page after clicking Calls and back to Tasks: the saved filter is restored — Priority Equals high, 44 records.", "crop": [280, 60, 1320, 420], "boxes": [ { "b": [1512, 126, 1546, 162], "n": 3, "kind": "PASS" }, { "b": [572, 190, 1560, 224], "n": 3, "kind": "PASS" }, { "b": [580, 312, 700, 336], "n": 3, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["—", "Filter saved per user, per list (server)", "Stored in module preferences", "GET list-preferences → workqueueFilters.activities = [priority equals high] after every step", "PASS"],
+  ["1–2", "Hard refresh keeps the filter", "Chips, badge and narrowed rows restored", "Restored once in the first run, then lost on 4 of 4 reloads (badge \"Filter\", 112 records)", "FAIL"],
+  ["—", "New login / other browser", "Still applied", "Fresh sign-in in a second browser: unfiltered (112) although the preference holds the filter", "FAIL"],
+  ["3", "Restore after section switch", "—", "Clicking Calls → Tasks restores it (44) — the data is there, the page does not read it on first load", "INFO"],
+  ["—", "Clear filters", "Only way to drop; stays dropped", "workqueueFilters {} after Clear; still unfiltered after reload", "PASS"],
+  ["—", "Scope", "Tasks filter not on Calls/Meetings or other queues", "Not shown on Calls, Meetings, My Leads, EveryLeadWithNoAnswerStatus", "PASS"],
+  ["—", "Period switch (Overdue)", "Filter stays applied", "Lost in the isolation run (same first-load problem)", "FAIL"]
+ ] }

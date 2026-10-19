@@ -1,0 +1,16 @@
+{ "out": "NDC-1788-retest-PARTIAL.png", "ticket": "NDC-1788", "title": "Work Queue | Filter offers only Status and Priority — every other layout field is unavailable", "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account ndc-staging-owner (CRM Admin)", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-1788-field-list.png", "caption": "Tasks filter: field search + every layout field (Filter By Fields) + System Fields.", "crop": [560, 120, 1040, 460], "boxes": [ { "b": [630, 232, 924, 268], "n": 1, "kind": "PASS" }, { "b": [624, 286, 930, 564], "n": 2, "kind": "PASS" } ] },
+  { "img": "NDC-1788-priority-values.png", "caption": "Priority value list still shows raw tokens (low, normal, high, highest) while the grid shows Highest.", "crop": [1000, 120, 600, 340], "boxes": [ { "b": [1208, 228, 1516, 372], "n": 3, "kind": "FAIL" }, { "b": [1036, 400, 1104, 436], "n": 4, "kind": "INFO" } ] },
+  { "img": "NDC-1788-status-values.png", "caption": "Status (status type) shows proper labels — only plain pick lists without labels are affected.", "crop": [1000, 120, 600, 340], "boxes": [ { "b": [1204, 228, 1514, 404], "n": 5, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Field search", "Search box at the top of the panel", "\"Search fields\" box present", "PASS"],
+  ["2", "Every layout field offered", "All Tasks layout fields, not a hard-coded pair", "12 layout fields + 7 system fields; still missing Created By, Modified At (Modified Time), Modified By", "PARTIAL"],
+  ["—", "Type-driven operators", "Date pickers, text match, lookup pickers, tag picker", "Due date 27 date operators; Subject contains / starts with…; Related To equals / empty; Tags contains any / all / none", "PASS"],
+  ["3–4", "Display labels, not stored tokens", "Low, Normal, High, Highest", "Still low, normal, high, highest (field metadata has no labels; the grid title-cases them) — developer said fixed", "FAIL"],
+  ["5", "Other pick lists", "Display labels", "Status shows Not Started / In Progress / Completed / Deferred / Waiting on someone else", "PASS"],
+  ["—", "Field name not inside its own value list", "\"Priority\" not a pre-checked option", "No longer shown", "PASS"],
+  ["—", "System-defined group / related modules", "Locked, Touched… and related-module filtering", "Not delivered — developer moved them to NDC-1819 as backend follow-ups", "INFO"]
+ ] }

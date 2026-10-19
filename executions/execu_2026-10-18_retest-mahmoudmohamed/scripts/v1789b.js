@@ -1,0 +1,14 @@
+const out = { reqs: [] };
+const fr = r => { if (/\/records\?/.test(r.url()) && /a9d87b62/.test(r.url())) out.reqs.push(decodeURIComponent(r.url().replace(API, '')).replace(/^.*filters=/, '').slice(0, 300)); }; page.on('request', fr);
+const settle = async () => { let last = '', same = 0; for (let i = 0; i < 30; i++) { await sleep(1000); const t = await total(); if (t === last) { if (++same >= 3) break; } else { same = 0; last = t; } } return last; };
+await openWQ(); await pick(/^Tasks, /);
+out.allOpenHigh = { total: await settle(), row: await rowTxt() };
+await page.getByRole('button', { name: 'Which open activities to count and list' }).click(); await sleep(900); await page.getByText('Overdue', { exact: true }).last().click();
+out.overdueHigh = { total: await settle(), row: await rowTxt() }; await shot('NDC-1789-5-period-overdue');
+out.overdueRows = (await page.locator('main tbody').last().innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300);
+await page.getByRole('button', { name: 'Which open activities to count and list' }).click(); await sleep(900); await page.getByText('All open', { exact: true }).last().click(); await settle();
+const T = 'a9d87b62-b704-4c2e-b2d5-1b745d7c2065'; const me = '97be04b6-0a08-4883-aa51-e1650b11cab7';
+const q = async f => { const r = await api('GET', '/modules/' + T + '/records?page=1&per_page=5&filters=' + encodeURIComponent(JSON.stringify(f))); return r.s + ' ' + (r.j && r.j.meta && r.j.meta.total_count); };
+out.apiOpenHigh = await q([{ field: 'owner', operator: 'equals', value: me }, { field: 'status', operator: 'contains_none_of', value: ['Completed', 'Deferred'] }, { field: 'priority', operator: 'equals', value: 'high' }]);
+out.apiOverdueHigh = await q([{ field: 'owner', operator: 'equals', value: me }, { field: 'status', operator: 'contains_none_of', value: ['Completed', 'Deferred'] }, { field: 'priority', operator: 'equals', value: 'high' }, { field: 'due_date', operator: 'before_now' }]);
+page.off('request', fr); out.reqs = out.reqs.slice(-4); return done(out);

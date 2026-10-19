@@ -1,0 +1,10 @@
+const D = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430'; const out = {};
+const tot = async flt => { const r = await api('GET', '/modules/' + D + '/records?page=1&per_page=5&filters=' + encodeURIComponent(JSON.stringify(flt))); return r.s + ' total=' + (r.j && r.j.meta && r.j.meta.total_count) + (r.s >= 400 ? ' ' + r.t.slice(0, 200) : ''); };
+out.all = await tot([]);
+for (const v of [-1, '-1', -5, -1.5, 0, 15000, 1]) out['equals ' + JSON.stringify(v)] = await tot([{ field: 'amount', operator: 'equals', value: v }]);
+out['less_than 0'] = await tot([{ field: 'amount', operator: 'less_than', value: 0 }]);
+out['greater_than -1'] = await tot([{ field: 'amount', operator: 'greater_than', value: -1 }]);
+out['not_equal -1'] = await tot([{ field: 'amount', operator: 'not_equal', value: -1 }]);
+const g = await api('GET', '/modules/' + D + '/views/68ba22c0-50f1-48e0-8ff9-0b51242bb312'); out.storedView = JSON.stringify(g.j.data.settings.criteria);
+const vr = await api('GET', '/modules/' + D + '/records?view_id=68ba22c0-50f1-48e0-8ff9-0b51242bb312&page=1&per_page=5'); out.viewTotal = vr.j.meta && vr.j.meta.total_count;
+return done(out);

@@ -1,0 +1,13 @@
+{ "out": "NDC-2100-retest-PASS.png", "ticket": "NDC-2100", "title": "Custom Views | View API accepts non-numeric Amount values and stores them as raw strings", "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · API + Edge · account ndc-staging-owner", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-2100-api.png", "caption": "POST /modules/{Deals}/views with Amount equals <value>: separators and exponents are normalised to numbers; anything that is not a number is refused with 422.", "crop": [0, 0, 1600, 400], "boxes": [ { "b": [36, 99, 1564, 136], "n": 1, "kind": "PASS" }, { "b": [36, 146, 1564, 183], "n": 2, "kind": "PASS" }, { "b": [36, 193, 1564, 324], "n": 3, "kind": "PASS" }, { "b": [36, 334, 1564, 371], "n": 4, "kind": "PASS" } ] },
+  { "img": "NDC-2100-view-15000-grid.png", "caption": "Deals view \"QA RT amt 15,000\" (stored as 15000) returns the deal with Amount 15,000.", "crop": [262, 120, 800, 400], "boxes": [ { "b": [300, 214, 440, 242], "n": 1, "kind": "INFO" }, { "b": [300, 360, 560, 474], "n": 1, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "\"15,000\" (thousands separator)", "Stored as 15000 and returns the 15000 deal, or rejected", "201, stored 15000; returns \"QA RT amt 15000\"", "PASS"],
+  ["2", "\"1e9\"", "1000000000 or rejected", "201, stored 1000000000; returns \"QA RT amt 1e9\"", "PASS"],
+  ["3", "\"abc\", Arabic-Indic \"١٥٠٠٠\", \"15 000\", \"1.2.3\"", "Rejected with 400/422, no view created", "422 \"That value is not a number.\" on settings.criteria.conditions[0].value", "PASS"],
+  ["4", "\"-1\" and \"15000\"", "Accepted", "201, stored as numbers", "PASS"],
+  ["—", "Seed deals D01…D08 from 5 Oct", "—", "No longer exist; two QA RT deals created to prove the match", "INFO"]
+ ] }

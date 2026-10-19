@@ -1,0 +1,16 @@
+{ "out": "NDC-2095-retest-PASS.png", "ticket": "NDC-2095", "title": "Custom Views | Date-time today/yesterday/tomorrow use the UTC day instead of the tenant time zone", "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account ndc-staging-owner (CRM Admin)", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-2095-company-settings-after.png", "caption": "Developer's precondition: Company Settings → Locale Information was UTC (Default); set to Africa/Cairo (PUT /iam/tenant/company-profile → 200, Org value now \"Africa/Cairo\").", "crop": [270, 60, 1330, 840], "boxes": [ { "b": [600, 665, 800, 705], "n": 1, "kind": "INFO" }, { "b": [1300, 822, 1572, 870], "n": 2, "kind": "PASS" } ] },
+  { "img": "NDC-2095-view-today-after-reload.png", "caption": "View \"QA RT tz-day\" = Date Time is Today: L3 (18 Oct 23:50) and L2 (18 Oct 00:10).", "crop": [262, 60, 1338, 400], "boxes": [ { "b": [288, 150, 392, 180], "n": 3, "kind": "INFO" }, { "b": [266, 278, 1596, 386], "n": 4, "kind": "PASS" } ] },
+  { "img": "NDC-2095-view-yesterday.png", "caption": "Same view with Yesterday: only L1 (17 Oct 23:50 Cairo).", "crop": [262, 60, 1338, 400], "boxes": [ { "b": [270, 276, 1580, 318], "n": 5, "kind": "PASS" } ] },
+  { "img": "NDC-2095-view-tomorrow.png", "caption": "Same view with Tomorrow: only L4 (19 Oct 00:10 Cairo).", "crop": [262, 60, 1338, 400], "boxes": [ { "b": [270, 282, 1580, 322], "n": 6, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Developer's claim: Org time zone still UTC", "general.company.locale.timezone should be Africa/Cairo", "Was \"UTC\" (resolved_from Default) — claim verified; changed to Africa/Cairo and kept", "INFO"],
+  ["2", "Test data", "Leads at 17 Oct 23:50, 18 Oct 00:10, 18 Oct 23:50, 19 Oct 00:10 (Cairo)", "QA RT tz L1–L4 created with +03:00 offsets, stored as sent", "INFO"],
+  ["3–4", "Today", "18 Oct 00:10 and 18 Oct 23:50", "L2 + L3 — view grid, GET records?view_id=… and filters=[date_time today]", "PASS"],
+  ["5", "Yesterday", "17 Oct 23:50 only", "L1 only (UI + API)", "PASS"],
+  ["6", "Tomorrow", "19 Oct 00:10 only", "L4 only (UI + API)", "PASS"],
+  ["—", "Day boundary follows Cairo, not UTC", "Never the UTC date", "L2 (17 Oct 21:10 UTC) counted as Today and L1 (17 Oct 20:50 UTC) as Yesterday — Cairo boundary", "PASS"]
+ ] }

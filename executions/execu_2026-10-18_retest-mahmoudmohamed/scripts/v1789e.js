@@ -1,0 +1,12 @@
+const T = 'a9d87b62-b704-4c2e-b2d5-1b745d7c2065'; const out = { puts: [], steps: [] };
+const pref = async () => { const r = await api('GET', '/modules/' + T + '/list-preferences'); const m = r.t.match(/"[a-zA-Z]*[Ff]ilter[a-zA-Z]*":(\[[^\]]*\]|\{[^}]*\})/g); return m ? m.slice(0, 4).join(' ; ').slice(0, 400) : 'none'; };
+const fr = async r => { const m = r.request().method(); if (m !== 'GET' && /list-preferences/.test(r.url())) out.puts.push(r.status() + ' ' + m + ' ' + r.url().replace(API, '').slice(0, 70) + ' ' + (r.request().postData() || '').match(/"[a-zA-Z]*[Ff]ilter[a-zA-Z]*":[^\]}]{0,160}/g)); }; page.on('response', fr);
+const step = async (label) => { let b = ''; for (let i = 0; i < 20; i++) { b = await badge(); if (/applied/.test(b)) break; await sleep(1000); } out.steps.push(label + ' => badge=' + b + ' | url=' + page.url().replace(H, '') + ' | pref=' + await pref()); };
+const reload = async () => { await page.goto(page.url(), { waitUntil: 'commit', timeout: 120000 }); for (let i = 0; i < 40 && !(await page.getByRole('button', { name: /^Tasks, / }).count()); i++) await sleep(1000); };
+await openWQ(); await pick(/^Tasks, /); await step('S0 tasks');
+await reload(); await step('S1 reload');
+await pick(/^Calls, /); await sleep(2000); out.steps.push('on Calls badge=' + await badge() + ' pref=' + await pref());
+await pick(/^Tasks, /); await step('S2 back to tasks');
+await reload(); await step('S3 reload after calls');
+await reload(); await step('S4 reload again');
+page.off('response', fr); return done(out);

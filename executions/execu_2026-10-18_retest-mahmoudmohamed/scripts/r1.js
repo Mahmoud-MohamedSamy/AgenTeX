@@ -1,0 +1,10 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; const out = {};
+const v = await api('GET', '/modules/' + L + '/views?kind=list'); const vl = arr(v.j && v.j.data);
+const mine = vl.find(x => x.settings && x.settings.criteria) || vl[0]; out.viewsStatus = v.s; out.viewShape = String(JSON.stringify(mine) || v.t).slice(0, 900);
+const rec = await api('GET', '/modules/' + L + '/records?page=1&per_page=20'); const rl = arr(rec.j && rec.j.data);
+out.visible = rl.length; out.total = rec.j && rec.j.meta;
+out.reviewInPayload = rl.slice(0, 20).map(r => { const d = (r.data || []).find(f => /review/.test(f.field)); return d ? d.field + '=' + JSON.stringify(d.value.value) : 'none'; });
+out.topLevelReview = rl[0] && Object.keys(rl[0]).filter(k => /review/i.test(k));
+const fr = await api('GET', '/modules/' + L + '/records?page=1&per_page=50&filters=' + encodeURIComponent(JSON.stringify([{ field: 'review_status', operator: 'equals', value: 'approved' }])));
+out.filterApproved = fr.s + ' n=' + arr(fr.j && fr.j.data).length + ' ' + (fr.s >= 400 ? fr.t.slice(0, 300) : '');
+return done(out);

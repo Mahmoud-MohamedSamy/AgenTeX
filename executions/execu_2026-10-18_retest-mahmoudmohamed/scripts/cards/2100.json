@@ -1,0 +1,7 @@
+{ "out": "NDC-2100-api.png", "title": "NDC-2100 — Deals view criteria: Amount equals <value>", "rows": [
+ ["\"15,000\"", "POST /modules/{Deals}/views  amount equals \"15,000\"", "201 — stored as 15000; view returns \"QA RT amt 15000\"", "ok"],
+ ["\"1e9\"", "POST …/views  amount equals \"1e9\"", "201 — stored as 1000000000; view returns \"QA RT amt 1e9\"", "ok"],
+ ["\"abc\"", "POST …/views  amount equals \"abc\"", "422 settings.criteria.conditions[0].value — \"That value is not a number.\"", "ok"],
+ ["Arabic-Indic \"١٥٠٠٠\"", "POST …/views  amount equals \"١٥٠٠٠\"", "422 — \"That value is not a number.\"", "ok"],
+ ["\"15 000\" / \"1.2.3\"", "POST …/views  amount equals …", "422 — \"That value is not a number.\" (both)", "ok"],
+ ["\"-1\" / \"15000\"", "POST …/views  amount equals …", "201 — stored as -1 / 15000 (numbers)", "ok"] ] }

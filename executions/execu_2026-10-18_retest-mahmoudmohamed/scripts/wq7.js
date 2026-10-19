@@ -1,0 +1,21 @@
+const out = {};
+const tb = async () => (await page.locator('main').first().innerText()).slice(0, 260).replace(/\s+/g, ' ');
+const toolbar = async () => { const b = await page.$$('main button[aria-label]'); const t = []; for (const e of b.slice(0, 6)) t.push(await e.getAttribute('aria-label')); return t; };
+const opt = () => page.locator('[role=listbox] [role=option]');
+await go('/workqueue', 15000);
+await page.getByRole('button', { name: /^My Leads/ }).first().click(); await sleep(7000);
+out.myLeadsHead = await tb(); out.myLeadsToolbar = await toolbar(); await shot('NDC-1787-my-leads-before');
+if (await page.getByRole('button', { name: 'Clear filters' }).count()) out.note = 'filter already applied on My Leads';
+const stop = capOn();
+if (!(await page.getByRole('button', { name: 'Criteria field' }).count())) { await page.locator('main button[aria-label*="ilter"]').first().click(); await sleep(1500); }
+await page.getByRole('button', { name: 'Criteria field' }).first().click(); await sleep(1000);
+out.leadFields = await opt().allInnerTexts();
+await page.getByPlaceholder('Search fields').fill('Lead Status'); await sleep(800);
+await opt().filter({ hasText: /^Lead Status$/ }).first().click(); await sleep(1500);
+await page.locator('button[aria-label^="Operator for"]').first().click(); await sleep(800); await opt().filter({ hasText: /^Equals$/ }).click(); await sleep(1000);
+await page.locator('button[aria-label^="Value for"]').first().click(); await sleep(1000);
+out.leadStatusValues = await opt().allInnerTexts();
+await opt().first().click(); await sleep(800); await page.keyboard.press('Escape'); await sleep(6000);
+out.afterFilterHead = await tb(); await shot('NDC-1787-my-leads-filtered');
+stop(); out.calls = cap.filter(c => /records|workqueue/.test(c)).map(c => decodeURIComponent(c)).slice(-3);
+return done(out);

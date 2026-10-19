@@ -1,0 +1,25 @@
+{ "out": "NDC-1819-retest-PARTIAL.png", "ticket": "NDC-1819", "title": "Workqueue Missings (Zoho-parity list, 13 items) — retested twice", "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account ndc-staging-owner (CRM Admin)", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-1819-08-table-settings.png", "caption": "Item 8 — Table settings: Manage Columns, Reset Column Size, records per page, Wrap / Clip Text.", "crop": [1000, 60, 600, 520], "boxes": [ { "b": [1340, 160, 1552, 548], "n": 8, "kind": "PASS" } ] },
+  { "img": "NDC-1819-07-column-menu.png", "caption": "Item 7 — column header menu: Sort ascending / descending / Hide column — no Pin Column.", "crop": [560, 240, 600, 220], "boxes": [ { "b": [605, 290, 805, 410], "n": 7, "kind": "PARTIAL" } ] },
+  { "img": "NDC-1819-10-task-row-menu.png", "caption": "Item 10 — Tasks row menu still lists \"Mark as completed\" next to the same checkbox on the left.", "crop": [400, 240, 600, 220], "boxes": [ { "b": [415, 300, 620, 445], "n": 10, "kind": "PARTIAL" }, { "b": [640, 268, 692, 302], "n": 10, "kind": "INFO" } ] },
+  { "img": "NDC-1819-12-staged-one-list.png", "caption": "Item 12 — \"As one list\" staged inside the dialog (no LEADS header) while the side panel still shows the Leads group; Cancel discards, Save applies.", "crop": [270, 220, 800, 450], "boxes": [ { "b": [740, 338, 862, 372], "n": 12, "kind": "PASS" }, { "b": [574, 400, 1024, 560], "n": 12, "kind": "PASS" } ] },
+  { "img": "NDC-1819-13-create-queue-on-leads.png", "caption": "Item 13 — \"Create a queue on Leads\" opens Create Queue with Module = Leads, but still on step 1 (layout to pick). Toast \"The server took too long to respond\" seen once.", "crop": [440, 240, 1160, 660], "boxes": [ { "b": [480, 285, 640, 315], "n": 13, "kind": "PARTIAL" }, { "b": [480, 405, 1115, 450], "n": 13, "kind": "PASS" }, { "b": [1154, 812, 1576, 876], "n": 13, "kind": "INFO" } ] },
+  { "img": "NDC-1819-11-date-options.png", "caption": "Item 11 — My Open Activities period list (scrolls on to This month, Next month, On a specific date).", "crop": [270, 100, 800, 420], "boxes": [ { "b": [294, 210, 542, 500], "n": 11, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Filter panel design like Zoho", "Zoho side panel with checkboxes", "Criteria-row bar (field / operator / value)", "FAIL"],
+  ["2", "Categories System Defined / By Fields / Related Modules", "Three Zoho categories", "\"Filter By Fields\" + \"System Fields\"; no Locked / Touched / Untouched, no related modules", "FAIL"],
+  ["3", "Options per field type", "Conditions that fit each type", "Date 27 operators; text, lookup and tags each type-specific", "PASS"],
+  ["4", "Search in filter panel + clear (×)", "Search bar with × once filled", "Search present; no × after typing", "PARTIAL"],
+  ["5", "Alphabet filter Leads / Contacts", "A–Z rail; All clears", "Not present", "FAIL"],
+  ["6", "Alphabet + normal filters together", "Both apply together", "Not testable — item 5 missing", "FAIL"],
+  ["7", "Column header menu", "Asc, Desc, Pin Column, Hide Column", "Asc, Desc, Hide — no Pin", "PARTIAL"],
+  ["8", "Table settings + resize + Reset Column Size", "Zoho's 4 options; drag-resize; reset disabled until resized", "All present; Phone 142 → 257 px by drag; reset disabled before, enabled after, restores width", "PASS"],
+  ["9", "Manage Columns search / clear / pin", "Search, ×, pin / unpin", "Search + \"Clear search\" present; no pin", "PARTIAL"],
+  ["10", "Row actions on the left + Add Note; no redundant Mark as Completed", "⋮ (Edit, Delete) + Add Note on the left", "⋮ and Add Note on the left (Leads); Tasks menu still has \"Mark as completed\"", "PARTIAL"],
+  ["11", "Date filter options", "Zoho's 9 options incl. On a Specific Date", "All present + \"Next 7 days\"", "PASS"],
+  ["12", "Category View staged until Save", "Regroup in dialog; apply only on Save; Cancel discards", "As expected (restored to Grouped by module afterwards)", "PASS"],
+  ["13", "Create Queue + per module, skipping step 1", "Opens creation for that module, step 1 skipped", "Module preselected, but step 1 still shown (layout required)", "PARTIAL"]
+ ] }

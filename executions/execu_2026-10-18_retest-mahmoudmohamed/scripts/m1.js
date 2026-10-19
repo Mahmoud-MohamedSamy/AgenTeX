@@ -1,0 +1,11 @@
+await go('/workqueue', 15000);
+const out = {};
+const menu = async () => { await sleep(1000); return (await page.locator('[role=menu], [role=listbox], [role=dialog]').last().innerText().catch(() => '')).replace(/\n+/g, ' | ').slice(0, 600); };
+await page.getByRole('button', { name: /^My Leads/ }).first().click(); await sleep(6000);
+await page.getByRole('button', { name: 'Column options: Full Name' }).click(); out.colMenu = await menu(); await shot('NDC-1819-07-column-menu'); await page.keyboard.press('Escape'); await sleep(600);
+await page.getByRole('button', { name: 'Table settings' }).click(); out.tableSettings = await menu(); await shot('NDC-1819-08-table-settings'); await page.keyboard.press('Escape'); await sleep(600);
+const rb = page.locator('main button[aria-label*="ow actions"], main tbody tr button').first(); await page.locator('main tbody tr').first().hover(); await sleep(800);
+out.rowButtons = []; for (const e of await page.$$('main tbody tr:first-child button, main tbody tr:first-child [role=button]')) out.rowButtons.push((await e.getAttribute('aria-label')) || (await e.innerText()).trim());
+await shot('NDC-1819-10-row-hover');
+await page.locator('main tbody tr:first-child button').first().click(); out.rowMenu = await menu(); await shot('NDC-1819-10-row-menu'); await page.keyboard.press('Escape');
+return done(out);

@@ -1,0 +1,21 @@
+{
+ "out": "NDC-1821-retest-PASS.png",
+ "ticket": "NDC-1821",
+ "title": "Work Queue | Deleted records from Workqueue don't move to the recycle bin",
+ "verdict": "PASS",
+ "date": "18 Oct 2026",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account ndc-staging-owner (CRM Admin)",
+ "panels": [
+  { "img": "NDC-1821-wq-delete-confirm.png", "caption": "Work Queue → My Work Queues → My Leads: row ⋮ → Delete on \"QA RT del-list 1821\" (the filter text was typed but not yet applied). DELETE /modules/{Leads}/records/154f23c9… → 204.",
+    "crop": [280, 120, 1320, 440], "boxes": [ { "b": [297, 415, 543, 451], "n": 1, "kind": "INFO" }, { "b": [578, 369, 1022, 531], "n": 2, "kind": "PASS" } ] },
+  { "img": "NDC-1821-recycle-bin-after.png", "caption": "Settings → Data Administration → Recycle Bin, 2 minutes later: both test leads are listed (CRM / Leads, Expires in 60 days).",
+    "crop": [268, 60, 1332, 440], "boxes": [ { "b": [294, 236, 1574, 290], "n": 3, "kind": "PASS" }, { "b": [294, 291, 1574, 346], "n": 4, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Delete is offered on a Work Queue row", "A record can be deleted from a Work Queue list", "Row ⋮ menu on My Leads offers Delete; confirm text says the record \"moves to the Recycle Bin and leaves this queue\"", "PASS"],
+  ["2", "Delete from the Work Queue", "Record leaves the queue", "204 No Content; the row left My Leads", "PASS"],
+  ["3", "Work Queue delete reaches the Recycle Bin", "Record appears in Settings → Recycle Bin", "\"QA RT del-list 1821\" listed: App CRM, Module Leads, deleted by ndc-staging-owner 18/10/2026 2:28 PM", "PASS"],
+  ["4", "Control (developer's request): delete from the Leads list page", "Same Recycle Bin behaviour", "Module actions → Delete Selected → 204 (DELETE …/records/bulk); \"QA RT del-wq 1821\" listed at 2:33 PM", "PASS"],
+  ["5", "Restore / permanent delete possible", "Both available from the bin", "Each row has the ⋮ actions menu, \"Expires in 60 days\"; restore itself not exercised (test leads are purged at cleanup)", "INFO"]
+ ]
+}

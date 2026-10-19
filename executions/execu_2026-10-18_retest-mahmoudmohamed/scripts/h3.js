@@ -1,0 +1,13 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; const V = '8dceae79-4e80-459c-801b-5291dd0714f0'; const out = {};
+const g = await api('GET', '/modules/' + L + '/views/' + V);
+out.viewApi = g.s + ' ' + JSON.stringify(g.j && g.j.data && g.j.data.settings && g.j.data.settings.criteria);
+out.valueTestInBody = /"value":"test"/.test(g.t);
+const r = await api('GET', '/modules/' + L + '/records?view_id=' + V + '&page=1&per_page=20');
+out.gridRecords = arr(r.j && r.j.data).map(x => ((x.data || []).find(f => f.field === 'first_name') || { value: {} }).value.value);
+out.companyInRecord = /"field":"company"/.test(r.t);
+await go('/modules/' + L + '?view=' + V, 9000); await shot('NDC-2097-user1-grid');
+out.grid = (await page.locator('main').last().innerText()).replace(/\s+/g, ' ').slice(0, 300);
+await go('/modules/' + L + '/views/' + V + '/edit', 9000);
+out.editorUrl = page.url(); out.editor = (await page.locator('main').last().innerText()).replace(/\s+/g, ' ').slice(0, 900);
+await shot('NDC-2097-user1-editor');
+return done(out);

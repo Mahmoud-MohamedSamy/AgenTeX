@@ -1,0 +1,11 @@
+{ "out": "NDC-2096-retest-NOT-A-BUG.png", "ticket": "NDC-2096", "title": "Custom Views | A user without the review permission can filter by review_status through the views API", "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · test user 1 (User profile, no workflow:review:view)", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-2096-user1-field-list-review.png", "caption": "Test user 1 → Leads → New custom view → criteria field search \"Review\": \"No fields match your search\" — UI gate holds.", "crop": [262, 60, 1338, 640], "boxes": [ { "b": [345, 465, 750, 565], "n": 1, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "UI gate", "Review Status not offered to a user without the review permission", "Not offered to test user 1; offered to the owner (System Fields → Review Status)", "PASS"],
+  ["2", "API accepts review_status from test user 1", "Refused, or ignored — record which", "Accepted: POST view \"QA RT review-gate\" → 201, stored as sent; view and records filter return 6 of 28 visible leads (same as 5 Oct)", "INFO"],
+  ["3", "Developer's claim: the filter exposes nothing the user cannot already read", "Test user 1 never gets review data through a view", "Verified twice: every record returned to test user 1 already carries __review_state__ (\"approved\" on exactly the same 6 leads); pending / rejected / not_submitted / in_review → 0 visible", "PASS"],
+  ["—", "Verdict", "—", "Not a confidentiality issue as filed. Optional hardening (API mirrors the UI gate) offered by the developer as a separate task", "INFO"]
+ ] }

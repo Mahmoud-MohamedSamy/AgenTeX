@@ -1,0 +1,11 @@
+{ "out": "NDC-2102-retest-PASS.png", "ticket": "NDC-2102", "title": "Custom Views | View API accepts an operator that does not fit the field type (Amount 'contains' → 201)", "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · API · account ndc-staging-owner", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-2102-api.png", "caption": "POST /modules/{Deals}/views on Amount (currency): text operators refused with 422, numeric operators still save.", "crop": [0, 0, 1600, 380], "boxes": [ { "b": [36, 99, 1564, 204], "n": 1, "kind": "PASS" }, { "b": [36, 214, 1564, 345], "n": 2, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Operator that does not fit the type (contains, starts_with on Amount)", "400/422, no view created", "422 \"That operator cannot be used on this field.\" on conditions[0].operator", "PASS"],
+  ["2", "Valid operators (equals, greater_than, is_empty)", "Still save", "201 each; greater_than 100 returns the matching deals", "PASS"],
+  ["—", "Editor shows an empty Operator box", "Never — such a view cannot exist now", "Not reproducible: the mismatched view can no longer be saved", "PASS"],
+  ["—", "Unknown field / unknown operator", "422", "Unchanged from 5 Oct (already 422)", "INFO"]
+ ] }

@@ -1,0 +1,20 @@
+const out = {};
+const apply = async () => { await panel(); if (await page.getByRole('button', { name: 'Clear filters' }).count()) { await page.getByRole('button', { name: 'Clear filters' }).click(); await sleep(2500); await panel(); }
+  await page.getByRole('button', { name: 'Criteria field' }).first().click(); await sleep(900);
+  await page.getByPlaceholder('Search fields').fill('Priority'); await sleep(600); await opt().filter({ hasText: /^Priority$/ }).first().click(); await sleep(1200);
+  await page.locator('button[aria-label^="Operator for"]').first().click(); await sleep(700); await opt().filter({ hasText: /^Equals$/ }).click(); await sleep(800);
+  await page.locator('button[aria-label^="Value for"]').first().click(); await sleep(900); await opt().filter({ hasText: /^high$/ }).click(); await sleep(800); await page.keyboard.press('Escape'); await sleep(6000); };
+const reload = async () => { await page.goto(page.url(), { waitUntil: 'commit', timeout: 120000 }); for (let i = 0; i < 40 && !(await page.getByRole('button', { name: /^Tasks, / }).count()); i++) await sleep(1000); await sleep(7000); };
+const f = async () => (await badge());
+await openWQ(); await pick(/^Tasks, /);
+await apply(); out.A0_applied = await f();
+await pick(/^Calls, /); await pick(/^Tasks, /); out.A1_afterCallsAndBack = await f();
+await reload(); out.A2_reloadAfterCalls = await f();
+await page.getByRole('button', { name: 'Which open activities to count and list' }).click(); await sleep(900); await page.getByText('Overdue', { exact: true }).last().click(); await sleep(6000);
+out.B1_overdue = await f();
+await reload(); out.B2_reloadOnOverdue = await f(); out.B2_period = (await page.getByRole('button', { name: 'Which open activities to count and list' }).innerText().catch(() => '')).trim();
+await page.getByRole('button', { name: 'Which open activities to count and list' }).click(); await sleep(900); await page.getByText('All open', { exact: true }).last().click(); await sleep(6000);
+out.B3_backAllOpen = await f(); await reload(); out.B4_reloadAllOpen = await f();
+await pick(/^My Leads/); await pick(/^Tasks, /); out.C1_afterLeadsQueue = await f(); await reload(); out.C2_reload = await f();
+await shot('NDC-1789-isolate-end');
+return done(out);

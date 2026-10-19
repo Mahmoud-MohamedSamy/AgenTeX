@@ -1,0 +1,199 @@
+{
+ "changes": [
+  {
+   "id": "NDC-1819",
+   "title": "Workqueue Missings (Zoho-parity list, 13 items)",
+   "to": "Bug",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-1819-retest-PARTIAL.png",
+    "NDC-1819-functional-PARTIAL.png",
+    "NDC-1819-columns-PARTIAL.png"
+   ],
+   "comment": "<p><b>Retest — PARTIAL → moved to Bug.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18–19 Oct 2026.</p><p><b>Developer's note checked first (14 Oct):</b> Category View fixed; filter items through NDC-1787/1788; items 3–11 listed as not done. Several of those have shipped since (table settings, resize, column menu, date periods, row actions).</p><h3>1. The 13-item checklist (retested twice, same result): 4 pass · 5 partial · 4 missing</h3><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>Filter panel design like Zoho</p></td><td><p>Zoho side panel with checkboxes</p></td><td><p>Criteria-row bar (field / operator / value)</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>2</p></td><td><p>Categories System Defined / By Fields / Related Modules</p></td><td><p>Three Zoho categories</p></td><td><p>\"Filter By Fields\" + \"System Fields\"; no Locked / Touched / Untouched, no related modules</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>3</p></td><td><p>Options per field type</p></td><td><p>Conditions that fit each type</p></td><td><p>Date 27 operators; text, lookup and tags each type-specific</p></td><td><p>PASS</p></td></tr><tr><td><p>4</p></td><td><p>Search in filter panel + clear (×)</p></td><td><p>Search bar with × once filled</p></td><td><p>Search present; no × after typing</p></td><td><p><b>PARTIAL</b></p></td></tr><tr><td><p>5</p></td><td><p>Alphabet filter Leads / Contacts</p></td><td><p>A–Z rail; All clears</p></td><td><p>Not present</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>6</p></td><td><p>Alphabet + normal filters together</p></td><td><p>Both apply together</p></td><td><p>Not testable — item 5 missing</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>7</p></td><td><p>Column header menu</p></td><td><p>Asc, Desc, Pin Column, Hide Column</p></td><td><p>Asc, Desc, Hide — no Pin</p></td><td><p><b>PARTIAL</b></p></td></tr><tr><td><p>8</p></td><td><p>Table settings + resize + Reset Column Size</p></td><td><p>Zoho's 4 options; drag-resize; reset disabled until resized</p></td><td><p>All present; Phone 142 → 257 px by drag; reset disabled before, enabled after, restores width</p></td><td><p>PASS</p></td></tr><tr><td><p>9</p></td><td><p>Manage Columns search / clear / pin</p></td><td><p>Search, ×, pin / unpin</p></td><td><p>Search + \"Clear search\" present; no pin</p></td><td><p><b>PARTIAL</b></p></td></tr><tr><td><p>10</p></td><td><p>Row actions on the left + Add Note; no redundant Mark as Completed</p></td><td><p>⋮ (Edit, Delete) + Add Note on the left</p></td><td><p>⋮ and Add Note on the left (Leads); Tasks menu still has \"Mark as completed\"</p></td><td><p><b>PARTIAL</b></p></td></tr><tr><td><p>11</p></td><td><p>Date filter options</p></td><td><p>Zoho's 9 options incl. On a Specific Date</p></td><td><p>All present + \"Next 7 days\"</p></td><td><p>PASS</p></td></tr><tr><td><p>12</p></td><td><p>Category View staged until Save</p></td><td><p>Regroup in dialog; apply only on Save; Cancel discards</p></td><td><p>As expected (restored to Grouped by module afterwards)</p></td><td><p>PASS</p></td></tr><tr><td><p>13</p></td><td><p>Create Queue + per module, skipping step 1</p></td><td><p>Opens creation for that module, step 1 skipped</p></td><td><p>Module preselected, but step 1 still shown (layout required)</p></td><td><p><b>PARTIAL</b></p></td></tr></tbody></table><h3>2. Functional test of the newly delivered features (19 Oct)</h3><p>Works: sort from the column menu, Hide column (kept after reload), records per page (kept), drag-resize (kept) and Reset Column Size, Manage Columns search / Show / Hide, filter field search, row Edit / Delete / Add Note, and the periods Due today, Tomorrow, Next 7 days, This / Next week, This / Next month, On a specific date.</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>Sort from the column menu (item 7)</p></td><td><p>Asc / Desc order the rows</p></td><td><p>Full Name natural order 1, 2, 3 … 813 and back; Created At ascending — sort not kept after reload</p></td><td><p>PASS</p></td></tr><tr><td><p>2</p></td><td><p>Hide column from the menu (item 7)</p></td><td><p>Column hidden, kept</p></td><td><p>Hidden and still hidden after reload</p></td><td><p>PASS</p></td></tr><tr><td><p>3</p></td><td><p>Hide a locked column (Full Name / Phone)</p></td><td><p>Not offered, or Show brings it back</p></td><td><p>Header menu hides Phone; Manage Columns then shows Show disabled — only Reset to default restores it (Company is dropped by the reset)</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>4</p></td><td><p>Records per page, resize, Reset Column Size (item 8)</p></td><td><p>Applied and kept</p></td><td><p>25 rows kept after reload; 183 → 278 px kept after reload; Reset restores</p></td><td><p>PASS</p></td></tr><tr><td><p>5</p></td><td><p>Wrap Text / Clip Text (item 8)</p></td><td><p>Clip keeps one line per cell</p></td><td><p>Text cells change, but date cells still wrap mid-number in Clip mode</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>6</p></td><td><p>Manage Columns search / Show / Hide; filter field search (items 4, 9)</p></td><td><p>Narrow, apply, clear</p></td><td><p>\"pho\" → Phone; Show Email applied and kept; Clear search empties; \"ph\" → Phone in the filter (still no ×)</p></td><td><p>PASS</p></td></tr><tr><td><p>7</p></td><td><p>Period Overdue (item 11)</p></td><td><p>Every open task past due</p></td><td><p>2 tasks — only ISO-dated ones; 87 open imported tasks with text due dates are skipped</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>8</p></td><td><p>Today &amp; Overdue / All open (item 11)</p></td><td><p>Open tasks only; = Today + Overdue</p></td><td><p>110 / 112, incl. 20 Completed; Today (1) + Overdue (2) ≠ 110</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>9</p></td><td><p>Due today, Tomorrow, Next 7 days, This/Next week, This/Next month, On a specific date</p></td><td><p>Match the data</p></td><td><p>1, 0, 0, 1, 0, 2, 0; 17 Oct → 0 (its task is Completed), 19 Oct → 1. Side counts blank for some periods</p></td><td><p>PASS</p></td></tr><tr><td><p>10</p></td><td><p>Row ⋮ actions + Add Note (item 10)</p></td><td><p>Work from the left</p></td><td><p>Edit opens the record; Delete asks to confirm (Cancel keeps it); Add Note saves (201)</p></td><td><p>PASS</p></td></tr></tbody></table><h3>3. Utility-column menus and column width limits (19 Oct)</h3><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>Menu on the ⋮ row-options column and the Add Note column (My Leads)</p></td><td><p>No menu on utility columns, or a working option</p></td><td><p>≡ menu with only \"Hide column\"; clicking it does nothing (also after reload); button has an empty name \"Column options: \"</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>2</p></td><td><p>Menu on the ⋮ row-options column and the Mark as completed column (Tasks)</p></td><td><p>Same</p></td><td><p>Same no-op \"Hide column\" on both</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>3</p></td><td><p>Minimum width, Clip Text</p></td><td><p>Value readable or ellipsis + full value on hover</p></td><td><p>Floor 105 px; values truncated with \"…\" (\"QA RT …\", \"ndc-st…\"); full value shown as a native hover tooltip</p></td><td><p><b>PARTIAL</b></p></td></tr><tr><td><p>4</p></td><td><p>Header label at minimum width</p></td><td><p>Label and ≡ icon do not collide</p></td><td><p>≡ icon overlaps \"Full Name\", \"Lead Status\", \"Lead Owner\", \"Created At\", \"Company\"</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>5</p></td><td><p>Minimum width, Wrap Text</p></td><td><p>Text wraps and stays readable</p></td><td><p>Names wrap to 2 lines, \"ndc-staging-owner\" to 3, phone numbers split over 2 lines</p></td><td><p>INFO</p></td></tr><tr><td><p>6</p></td><td><p>Maximum width</p></td><td><p>A sensible maximum</p></td><td><p>No limit: 2708 px, then 5204 px; table 3707 px in a 1002 px viewport</p></td><td><p><b>FAIL</b></p></td></tr><tr><td><p>—</p></td><td><p>Reset Column Size after the extremes</p></td><td><p>Default widths</p></td><td><p>Restored (212, 153, 183, 171, 130, 130, 112 px)</p></td><td><p>PASS</p></td></tr></tbody></table><h3>4. New defects found</h3><ol><li><b>Locked column can be hidden but not shown again.</b> Full Name and Phone are locked in Manage Columns (Hide disabled), but their header menu still offers \"Hide column\". After hiding Phone that way, Show is disabled — only \"Reset to default columns\" brings it back, and the reset also hides Company.</li><li><b>Clip Text does not clip date cells.</b> In a narrowed Created At column the date breaks over 5 lines (\"18/1 / 0/20 / 26 / 3:31 / PM\") and the header overlaps the next one.</li><li><b>Activity periods disagree.</b> Overdue = 2, Today = 1, but Today &amp; Overdue = 110 (20 of them Completed); All open = 112, also with Completed tasks. Cause seen in the data: 110 of 118 tasks came from an Excel import and store due_date as text (\"09/21/2026 11:00 AM\"); bucket=overdue only reads ISO dates, the other buckets count the text ones and do not exclude Completed. The side-panel counts are blank for some periods.</li><li><b>Sort is not kept after a reload.</b></li><li><b>Utility columns have a no-op \"Hide column\" menu.</b> The ⋮ row-options column and Add Note (My Leads), and the ⋮ row-options column and Mark as completed (Tasks), each show a ≡ menu whose only option, Hide column, does nothing; the menu button has an empty name (\"Column options: \"). These columns should have no menu.</li><li><b>Header label collides with the ≡ icon at minimum width.</b> At the 105 px floor the icon overlaps \"Full Name\", \"Lead Status\", \"Lead Owner\", \"Created At\", \"Company\". Cell values are cut to \"QA RT …\" / \"ndc-st…\" (the full value is in the hover tooltip).</li><li><b>No maximum column width.</b> Full Name could be dragged to 2708 px and then 5204 px, pushing every other column off-screen (table 3707 px in a 1002 px viewport).</li></ol><p><b>Still open from the checklist:</b> items 1, 2, 5, 6 (missing) and the Pin / × / \"Mark as completed\" / step-1 parts of items 4, 7, 9, 10, 13. Suggest splitting these and the 7 defects above into child tickets.</p><p>Evidence (annotated): NDC-1819-retest-PARTIAL.png, NDC-1819-functional-PARTIAL.png, NDC-1819-columns-PARTIAL.png</p>"
+  },
+  {
+   "id": "NDC-2098",
+   "title": "?view= with a deleted or foreign view ID falls back to the last-used view instead of All Leads",
+   "to": "Bug",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-2098-retest-DECISION.png"
+   ],
+   "comment": null,
+   "note": "State change only. The decision comment (\"fall back to All Records of the selected module\") was posted on 19 Oct 10:03; it already says \"moved to Bug\". The evidence image will be attached."
+  },
+  {
+   "id": "NDC-2104",
+   "title": "Custom Views | 'Last Activity' (kept label) follows the record's modified time — retested with the agreed behaviour",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-2104-retest-PASS.png",
+    "NDC-2104-retest-DECISION.png"
+   ],
+   "comment": "<p><b>Decision + retest — PASS → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 19 Oct 2026.</p><p><b>Decision (19 Oct):</b> keep the label <b>\"Last Activity\"</b>; its value is the record's last modified time. No rename, and the Zoho-style activity stamp is not part of this ticket (NDC-1868 P1-5).</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>Last Activity criteria before any edit</p></td><td><p>Today → no QA RT tz lead (all modified 18 Oct)</p></td><td><p>0 records</p></td><td><p>PASS</p></td></tr><tr><td><p>2</p></td><td><p>Editing a field moves Last Activity</p></td><td><p>Becomes the edit time</p></td><td><p>L2 → 19/10/2026 10:07 AM (last_modified_at 07:07:16Z)</p></td><td><p>PASS</p></td></tr><tr><td><p>3</p></td><td><p>Criteria follow the new value</p></td><td><p>Today → L2 only</p></td><td><p>1 record: QA RT tz L2 (API and view grid agree)</p></td><td><p>PASS</p></td></tr><tr><td><p>4</p></td><td><p>Label kept</p></td><td><p>\"Last Activity\" (your decision 19 Oct)</p></td><td><p>Column and criteria labelled Last Activity</p></td><td><p>PASS</p></td></tr><tr><td><p>5</p></td><td><p>A note alone</p></td><td><p>Does not move it (agreed: modified time)</p></td><td><p>L1 still 18/10/2026 3:31 PM after its note</p></td><td><p>PASS</p></td></tr></tbody></table><p>Evidence (annotated): NDC-2104-retest-PASS.png, NDC-2104-retest-DECISION.png</p>"
+  },
+  {
+   "id": "NDC-2095",
+   "title": "Date-time today/yesterday/tomorrow use the UTC day instead of the tenant time zone",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-2095-retest-PASS.png"
+   ],
+   "comment": "<p><b>Retest — PASS → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18 Oct 2026.</p><p><b>Developer's note checked first:</b> Not a code defect: the Org time zone was still UTC.</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>Developer's claim: Org time zone still UTC</p></td><td><p>general.company.locale.timezone should be Africa/Cairo</p></td><td><p>Was \"UTC\" (resolved_from Default) — claim verified; changed to Africa/Cairo and kept</p></td><td><p>INFO</p></td></tr><tr><td><p>2</p></td><td><p>Test data</p></td><td><p>Leads at 17 Oct 23:50, 18 Oct 00:10, 18 Oct 23:50, 19 Oct 00:10 (Cairo)</p></td><td><p>QA RT tz L1–L4 created with +03:00 offsets, stored as sent</p></td><td><p>INFO</p></td></tr><tr><td><p>3–4</p></td><td><p>Today</p></td><td><p>18 Oct 00:10 and 18 Oct 23:50</p></td><td><p>L2 + L3 — view grid, GET records?view_id=… and filters=[date_time today]</p></td><td><p>PASS</p></td></tr><tr><td><p>5</p></td><td><p>Yesterday</p></td><td><p>17 Oct 23:50 only</p></td><td><p>L1 only (UI + API)</p></td><td><p>PASS</p></td></tr><tr><td><p>6</p></td><td><p>Tomorrow</p></td><td><p>19 Oct 00:10 only</p></td><td><p>L4 only (UI + API)</p></td><td><p>PASS</p></td></tr><tr><td><p>—</p></td><td><p>Day boundary follows Cairo, not UTC</p></td><td><p>Never the UTC date</p></td><td><p>L2 (17 Oct 21:10 UTC) counted as Today and L1 (17 Oct 20:50 UTC) as Yesterday — Cairo boundary</p></td><td><p>PASS</p></td></tr></tbody></table><p>Org time zone changed UTC → Africa/Cairo in Company Settings and kept (agreed).</p><p>Evidence (annotated): NDC-2095-retest-PASS.png</p>"
+  },
+  {
+   "id": "NDC-2096",
+   "title": "A user without the review permission can filter by review_status through the views API",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-2096-retest-NOT-A-BUG.png"
+   ],
+   "comment": "<p><b>Retest — NOT A BUG (verified) → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18 Oct 2026.</p><p><b>Developer's note checked first:</b> The review state is already on every record payload the user may read; the UI gate only controls the filter list.</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>UI gate</p></td><td><p>Review Status not offered to a user without the review permission</p></td><td><p>Not offered to test user 1; offered to the owner (System Fields → Review Status)</p></td><td><p>PASS</p></td></tr><tr><td><p>2</p></td><td><p>API accepts review_status from test user 1</p></td><td><p>Refused, or ignored — record which</p></td><td><p>Accepted: POST view \"QA RT review-gate\" → 201, stored as sent; view and records filter return 6 of 28 visible leads (same as 5 Oct)</p></td><td><p>INFO</p></td></tr><tr><td><p>3</p></td><td><p>Developer's claim: the filter exposes nothing the user cannot already read</p></td><td><p>Test user 1 never gets review data through a view</p></td><td><p>Verified twice: every record returned to test user 1 already carries __review_state__ (\"approved\" on exactly the same 6 leads); pending / rejected / not_submitted / in_review → 0 visible</p></td><td><p>PASS</p></td></tr><tr><td><p>—</p></td><td><p>Verdict</p></td><td><p>—</p></td><td><p>Not a confidentiality issue as filed. Optional hardening (API mirrors the UI gate) offered by the developer as a separate task</p></td><td><p>INFO</p></td></tr></tbody></table><p>Retested twice. Optional hardening (reject the criterion server-side for users without review permission) is left to the developer.</p><p>Evidence (annotated): NDC-2096-retest-NOT-A-BUG.png</p>"
+  },
+  {
+   "id": "NDC-2097",
+   "title": "A criterion on a field hidden from the viewer exposes its value in the view editor and the view API",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-2097-retest-PASS.png"
+   ],
+   "comment": "<p><b>Retest — PASS → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18 Oct 2026.</p><p><b>Developer's note checked first:</b> Hidden-field values are withheld on read; the masked document cannot be saved back.</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>Banner for hidden criterion</p></td><td><p>\"Some fields in this view's criteria are deleted or hidden from you: …\"</p></td><td><p>Shown: \"… hidden from you: company. The view still filters on them.\"</p></td><td><p>PASS</p></td></tr><tr><td><p>2</p></td><td><p>Editor never shows the hidden value</p></td><td><p>Value masked / not shown</p></td><td><p>Criterion row empty (Select a field / Operator / Value) — \"test\" appears nowhere</p></td><td><p>PASS</p></td></tr><tr><td><p>3</p></td><td><p>View API never returns the value</p></td><td><p>settings.criteria value withheld</p></td><td><p>GET /modules/{Leads}/views/{k7} as test user 1 → {\"field\":\"company\",\"value\":null,\"operator\":\"equals\"}</p></td><td><p>PASS</p></td></tr><tr><td><p>4</p></td><td><p>Masked view cannot be saved back</p></td><td><p>Owner's criteria intact</p></td><td><p>Save blocked client-side (\"Complete this row…\", no request sent); owner GET still company = \"test\"</p></td><td><p>PASS</p></td></tr><tr><td><p>—</p></td><td><p>Inference from results (by design)</p></td><td><p>Product call (Q13)</p></td><td><p>Grid still returns \"Test Workqueue\" to test user 1, so the value can be inferred — developer flagged this as a product decision</p></td><td><p>INFO</p></td></tr><tr><td><p>—</p></td><td><p>Observation</p></td><td><p>—</p></td><td><p>First editor load hung on \"Loading fields…\" &gt; 15 s; reload worked</p></td><td><p>INFO</p></td></tr></tbody></table><p>Note: the value can still be inferred from the results — flagged by the developer as a product call.</p><p>Evidence (annotated): NDC-2097-retest-PASS.png</p>"
+  },
+  {
+   "id": "NDC-1787",
+   "title": "Filter control is rendered only for My Open Activities",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-1787-retest-PASS.png"
+   ],
+   "comment": "<p><b>Retest — PASS → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18 Oct 2026.</p><p><b>Developer's note checked first:</b> Shared filter seam; My Jobs excluded (needs its own design).</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1–2</p></td><td><p>Filter on a saved queue</p></td><td><p>Filter control on every Work Queue grid</p></td><td><p>Funnel present on My Leads, All Leads and EveryLeadWithNoAnswerStatus</p></td><td><p>PASS</p></td></tr><tr><td><p>3</p></td><td><p>Filters on the grid's own fields</p></td><td><p>Columns of that grid (e.g. Lead Status for Leads)</p></td><td><p>Leads fields offered (Lead Status, Phone, Full Name…, plus System Fields)</p></td><td><p>PASS</p></td></tr><tr><td><p>4</p></td><td><p>Applies on top of the queue's criteria</p></td><td><p>Narrows, never replaces the queue definition</p></td><td><p>45 → 1; request keeps owner = $me, then adds lead_status</p></td><td><p>PASS</p></td></tr><tr><td><p>5</p></td><td><p>Consistent toolbar</p></td><td><p>Refresh / Filter / Column chooser on all queues</p></td><td><p>Refresh / Filter / Table settings / Queue actions on every queue</p></td><td><p>PASS</p></td></tr><tr><td><p>6</p></td><td><p>My Jobs (Blueprint / Approvals / Reviews)</p></td><td><p>Filter available there too</p></td><td><p>No filter — explicitly excluded by the developer; follow-up needs a spec</p></td><td><p>INFO</p></td></tr></tbody></table><p>My Jobs still has no filter, as stated by the developer.</p><p>Evidence (annotated): NDC-1787-retest-PASS.png</p>"
+  },
+  {
+   "id": "NDC-1821",
+   "title": "Deleted records from Workqueue don't move to the recycle bin",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-1821-retest-PASS.png"
+   ],
+   "comment": "<p><b>Retest — PASS → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18 Oct 2026.</p><p><b>Developer's note checked first:</b> Same delete endpoint as the module list; retest both paths.</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>Delete is offered on a Work Queue row</p></td><td><p>A record can be deleted from a Work Queue list</p></td><td><p>Row ⋮ menu on My Leads offers Delete; confirm text says the record \"moves to the Recycle Bin and leaves this queue\"</p></td><td><p>PASS</p></td></tr><tr><td><p>2</p></td><td><p>Delete from the Work Queue</p></td><td><p>Record leaves the queue</p></td><td><p>204 No Content; the row left My Leads</p></td><td><p>PASS</p></td></tr><tr><td><p>3</p></td><td><p>Work Queue delete reaches the Recycle Bin</p></td><td><p>Record appears in Settings → Recycle Bin</p></td><td><p>\"QA RT del-list 1821\" listed: App CRM, Module Leads, deleted by ndc-staging-owner 18/10/2026 2:28 PM</p></td><td><p>PASS</p></td></tr><tr><td><p>4</p></td><td><p>Control (developer's request): delete from the Leads list page</p></td><td><p>Same Recycle Bin behaviour</p></td><td><p>Module actions → Delete Selected → 204 (DELETE …/records/bulk); \"QA RT del-wq 1821\" listed at 2:33 PM</p></td><td><p>PASS</p></td></tr><tr><td><p>5</p></td><td><p>Restore / permanent delete possible</p></td><td><p>Both available from the bin</p></td><td><p>Each row has the ⋮ actions menu, \"Expires in 60 days\"; restore itself not exercised (test leads are purged at cleanup)</p></td><td><p>INFO</p></td></tr></tbody></table><p>Evidence (annotated): NDC-1821-retest-PASS.png</p>"
+  },
+  {
+   "id": "NDC-1234",
+   "title": "[Epic] Approval Process — prevent endless re-entry & post-approval edits of sensitive fields",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-1234-retest-PASS.png"
+   ],
+   "comment": "<p><b>Retest — PASS → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18 Oct 2026.</p><p><b>Developer's note checked first:</b> Held in Ready For Test only for 5 linked bugs (NDC-1645, 1646, 1652, 1672, 1697).</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>—</p></td><td><p>Linked bugs NDC-1645, 1646, 1652, 1672, 1697 (reason for the hold on 24 Sep)</p></td><td><p>Resolved</p></td><td><p>All five are Done</p></td><td><p>PASS</p></td></tr><tr><td><p>1</p></td><td><p>US-A1/A2 Approval Status field</p></td><td><p>Read-only, 4 values, not editable in the builder</p></td><td><p>read_only pick_list, system-managed, canEditProperties false</p></td><td><p>PASS</p></td></tr><tr><td><p>2</p></td><td><p>US-B1 entry guard auto-injected</p></td><td><p>Approval Status = Not Submitted</p></td><td><p>Added by the server to the new process (system: true)</p></td><td><p>PASS</p></td></tr><tr><td><p>3</p></td><td><p>US-A4 status maintained</p></td><td><p>Pending on entry, Approved on approval</p></td><td><p>pending_approval on create → approved after Approve (204)</p></td><td><p>PASS</p></td></tr><tr><td><p>4</p></td><td><p>US-B2 no re-entry on edit</p></td><td><p>Allowed edit keeps Approved, no new approval</p></td><td><p>Next Step edit 200, still approved; timeline \"re-entry blocked\"</p></td><td><p>PASS</p></td></tr><tr><td><p>5</p></td><td><p>US-C2 field lock (non-owner)</p></td><td><p>Amount 2,000 refused after approval</p></td><td><p>test user 1: 422 APPROVAL_LOCKED \"the field(s) amount cannot be edited\"</p></td><td><p>PASS</p></td></tr><tr><td><p>6</p></td><td><p>US-C3 owner override</p></td><td><p>Owner may edit locked fields, logged</p></td><td><p>Owner edit 200, timeline \"locked field(s) overridden\"</p></td><td><p>INFO</p></td></tr><tr><td><p>7</p></td><td><p>US-A3 status not writable</p></td><td><p>Direct write refused</p></td><td><p>422 APPROVAL_STATUS_READ_ONLY (owner) / APPROVAL_LOCKED (test user 1)</p></td><td><p>PASS</p></td></tr><tr><td><p>—</p></td><td><p>Not covered</p></td><td><p>—</p></td><td><p>Reset approval status, reject → resubmit, multi-stage, import / mass update; 13 child stories still in Backlog (housekeeping)</p></td><td><p>INFO</p></td></tr></tbody></table><p>All five linked bugs are Done; smoke-tested with a temporary process \"QA RT ap\" (removed after the run). Its 13 child stories are still in Backlog — housekeeping for the epic owner.</p><p>Evidence (annotated): NDC-1234-retest-PASS.png</p>"
+  },
+  {
+   "id": "NDC-1947",
+   "title": "A user without \"Manage Shared Views\" cannot save a private view (only me view)",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-1947-retest-NOT-A-BUG.png"
+   ],
+   "comment": "<p><b>Retest — NOT A BUG (verified) → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18 Oct 2026.</p><p><b>Developer's note checked first:</b> Only-me views need no permission; system views have no \"Save to view\" by design.</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>—</p></td><td><p>Permission check</p></td><td><p>User without Manage Shared Views</p></td><td><p>test user 2: metadata.views.manage not granted</p></td><td><p>INFO</p></td></tr><tr><td><p>1</p></td><td><p>Save a private (Only me) view</p></td><td><p>Any user can</p></td><td><p>New custom view → Share this with: Only me → Save → 201</p></td><td><p>PASS</p></td></tr><tr><td><p>2</p></td><td><p>Keep column changes on own private view</p></td><td><p>Option to save them</p></td><td><p>Banner offers \"Save to view\" → PATCH 200 \"Columns saved to the view.\"</p></td><td><p>PASS</p></td></tr><tr><td><p>—</p></td><td><p>Column change on a system view (All Leads)</p></td><td><p>Option to save as a new private view</p></td><td><p>Only \"Use the view's columns\" — developer: system views are not editable by design; no \"save as new view\" shortcut (product call)</p></td><td><p>INFO</p></td></tr></tbody></table><p>A \"save as new view\" shortcut on All Leads would be a product decision, not part of this ticket.</p><p>Evidence (annotated): NDC-1947-retest-NOT-A-BUG.png</p>"
+  },
+  {
+   "id": "NDC-2100",
+   "title": "View API accepts non-numeric Amount values and stores them as raw strings",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-2100-retest-PASS.png"
+   ],
+   "comment": "<p><b>Retest — PASS → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18 Oct 2026.</p><p><b>Developer's note checked first:</b> Numeric criteria parsed and rewritten as numbers; anything else refused with 422.</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>\"15,000\" (thousands separator)</p></td><td><p>Stored as 15000 and returns the 15000 deal, or rejected</p></td><td><p>201, stored 15000; returns \"QA RT amt 15000\"</p></td><td><p>PASS</p></td></tr><tr><td><p>2</p></td><td><p>\"1e9\"</p></td><td><p>1000000000 or rejected</p></td><td><p>201, stored 1000000000; returns \"QA RT amt 1e9\"</p></td><td><p>PASS</p></td></tr><tr><td><p>3</p></td><td><p>\"abc\", Arabic-Indic \"١٥٠٠٠\", \"15 000\", \"1.2.3\"</p></td><td><p>Rejected with 400/422, no view created</p></td><td><p>422 \"That value is not a number.\" on settings.criteria.conditions[0].value</p></td><td><p>PASS</p></td></tr><tr><td><p>4</p></td><td><p>\"-1\" and \"15000\"</p></td><td><p>Accepted</p></td><td><p>201, stored as numbers</p></td><td><p>PASS</p></td></tr><tr><td><p>—</p></td><td><p>Seed deals D01…D08 from 5 Oct</p></td><td><p>—</p></td><td><p>No longer exist; two QA RT deals created to prove the match</p></td><td><p>INFO</p></td></tr></tbody></table><p>Evidence (annotated): NDC-2100-retest-PASS.png</p>"
+  },
+  {
+   "id": "NDC-2102",
+   "title": "View API accepts an operator that does not fit the field type (Amount \"contains\" → 201)",
+   "to": "Done",
+   "from": "Ready For Test",
+   "imgs": [
+    "NDC-2102-retest-PASS.png"
+   ],
+   "comment": "<p><b>Retest — PASS → Done.</b> staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge · 18 Oct 2026.</p><p><b>Developer's note checked first:</b> Server-side operators-per-datatype table; mismatch refused with 422.</p><table><tbody><tr><th><p>#</p></th><th><p>Check</p></th><th><p>Expected</p></th><th><p>Now</p></th><th><p>Result</p></th></tr><tr><td><p>1</p></td><td><p>Operator that does not fit the type (contains, starts_with on Amount)</p></td><td><p>400/422, no view created</p></td><td><p>422 \"That operator cannot be used on this field.\" on conditions[0].operator</p></td><td><p>PASS</p></td></tr><tr><td><p>2</p></td><td><p>Valid operators (equals, greater_than, is_empty)</p></td><td><p>Still save</p></td><td><p>201 each; greater_than 100 returns the matching deals</p></td><td><p>PASS</p></td></tr><tr><td><p>—</p></td><td><p>Editor shows an empty Operator box</p></td><td><p>Never — such a view cannot exist now</p></td><td><p>Not reproducible: the mismatched view can no longer be saved</p></td><td><p>PASS</p></td></tr><tr><td><p>—</p></td><td><p>Unknown field / unknown operator</p></td><td><p>422</p></td><td><p>Unchanged from 5 Oct (already 422)</p></td><td><p>INFO</p></td></tr></tbody></table><p>Evidence (annotated): NDC-2102-retest-PASS.png</p>"
+  }
+ ],
+ "attachOnly": [
+  [
+   "NDC-1788",
+   "NDC-1788-retest-PARTIAL.png"
+  ],
+  [
+   "NDC-1789",
+   "NDC-1789-retest-FAIL.png"
+  ],
+  [
+   "NDC-2124",
+   "NDC-2124-retest-FAIL.png"
+  ]
+ ],
+ "cleanup": [
+  [
+   "Leads \"QA RT del-list 1821\", \"QA RT del-wq 1821\"",
+   "Recycle Bin",
+   "Purge from the bin"
+  ],
+  [
+   "Leads \"QA RT tz L1–L4\" (L1 has a QA RT note, L2 an edited description)",
+   "Active",
+   "Delete, then purge"
+  ],
+  [
+   "Deals \"QA RT amt 15000\", \"QA RT amt 1e9\", \"QA RT ap 1\" (Approved, owned by test user 1)",
+   "Active",
+   "Delete, then purge"
+  ],
+  [
+   "Approval process \"QA RT ap\" (Deals)",
+   "Active",
+   "Deactivate, then delete"
+  ],
+  [
+   "Views: \"QA RT review-gate\" (test user 1), \"QA RT k7\", \"QA RT tz-day\", \"QA RT private-user2\" (test user 2), 7 × \"QA RT amt / op …\" (Deals), 51 × \"QA RT ov-01…51\"",
+   "Active",
+   "Delete, then purge"
+  ],
+  [
+   "ndc-staging-owner Leads list-preferences (51 column overrides)",
+   "Changed",
+   "Restore the backup in v2124-setup.json (viewColumns empty)"
+  ],
+  [
+   "Test user 2 Leads list-preferences (column hidden on All Leads)",
+   "Changed",
+   "\"Use the view's columns\""
+  ],
+  [
+   "Work Queue → Tasks filter \"Priority equals highest\" (existed before the run)",
+   "Cleared",
+   "Restore"
+  ],
+  [
+   "My Leads columns / rows per page / widths / Wrap-Clip (1819 functional pass)",
+   "Already restored 19 Oct",
+   "—"
+  ],
+  [
+   "Company time zone",
+   "UTC → Africa/Cairo",
+   "Keep Cairo (your instruction)"
+  ],
+  [
+   "Session state / scratch files",
+   "Local",
+   "Delete the saved browser state files; keep scripts and evidence"
+  ]
+ ]
+}

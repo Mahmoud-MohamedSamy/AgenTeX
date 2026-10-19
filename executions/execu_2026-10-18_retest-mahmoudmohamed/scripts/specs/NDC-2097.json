@@ -1,0 +1,13 @@
+{ "out": "NDC-2097-retest-PASS.png", "ticket": "NDC-2097", "title": "Custom Views | A criterion on a field hidden from the viewer exposes its value in the view editor and the view API", "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · ndc-staging-owner (view author), test user 1 (User profile, Company hidden)", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-2097-user1-editor.png", "caption": "Test user 1 opens Edit on the owner's shared view \"QA RT k7\" (Company equals \"test\"): banner names the hidden field, the criterion row shows no value.", "crop": [262, 60, 1338, 600], "boxes": [ { "b": [286, 138, 1576, 172], "n": 1, "kind": "INFO" }, { "b": [340, 482, 1520, 532], "n": 2, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Banner for hidden criterion", "\"Some fields in this view's criteria are deleted or hidden from you: …\"", "Shown: \"… hidden from you: company. The view still filters on them.\"", "PASS"],
+  ["2", "Editor never shows the hidden value", "Value masked / not shown", "Criterion row empty (Select a field / Operator / Value) — \"test\" appears nowhere", "PASS"],
+  ["3", "View API never returns the value", "settings.criteria value withheld", "GET /modules/{Leads}/views/{k7} as test user 1 → {\"field\":\"company\",\"value\":null,\"operator\":\"equals\"}", "PASS"],
+  ["4", "Masked view cannot be saved back", "Owner's criteria intact", "Save blocked client-side (\"Complete this row…\", no request sent); owner GET still company = \"test\"", "PASS"],
+  ["—", "Inference from results (by design)", "Product call (Q13)", "Grid still returns \"Test Workqueue\" to test user 1, so the value can be inferred — developer flagged this as a product decision", "INFO"],
+  ["—", "Observation", "—", "First editor load hung on \"Loading fields…\" > 15 s; reload worked", "INFO"]
+ ] }

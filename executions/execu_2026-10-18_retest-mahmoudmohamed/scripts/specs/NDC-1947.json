@@ -1,0 +1,11 @@
+{ "out": "NDC-1947-retest-NOT-A-BUG.png", "ticket": "NDC-1947", "title": "Custom Views | A user without \"Manage Shared Views\" cannot save a private view (only me view)", "verdict": "PASS", "label": "NOT A BUG (VERIFIED)",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge · test user 2 (profile \"test\", no metadata.views.manage)", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-1947-user2-own-view-columns.png", "caption": "Test user 2 saved \"QA RT private-user2\" (Only me, POST /views 201); after a column change on it the banner offers \"Save to view\" → \"Columns saved to the view.\"", "crop": [262, 120, 1338, 380], "boxes": [ { "b": [290, 150, 430, 178], "n": 1, "kind": "PASS" }, { "b": [268, 196, 1598, 232], "n": 2, "kind": "INFO" }, { "b": [1328, 198, 1430, 230], "n": 2, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["—", "Permission check", "User without Manage Shared Views", "test user 2: metadata.views.manage not granted", "INFO"],
+  ["1", "Save a private (Only me) view", "Any user can", "New custom view → Share this with: Only me → Save → 201", "PASS"],
+  ["2", "Keep column changes on own private view", "Option to save them", "Banner offers \"Save to view\" → PATCH 200 \"Columns saved to the view.\"", "PASS"],
+  ["—", "Column change on a system view (All Leads)", "Option to save as a new private view", "Only \"Use the view's columns\" — developer: system views are not editable by design; no \"save as new view\" shortcut (product call)", "INFO"]
+ ] }

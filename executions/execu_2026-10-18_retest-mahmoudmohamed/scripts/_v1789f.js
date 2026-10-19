@@ -1,0 +1,15 @@
+const opt = () => page.locator('[role=listbox] [role=option]');
+const rowTxt = async () => (await page.locator('[role=group][aria-label="Filter these records"]').innerText().catch(() => '(no panel)')).replace(/\s+/g, ' ').trim();
+const total = async () => ((await page.locator('main').last().innerText().catch(() => '')).match(/Total Records\s*\d+/) || ['?'])[0];
+const badge = async () => { const b = page.locator('main button[aria-label*="ilter"]').first(); return (await b.getAttribute('aria-label').catch(() => '')) || ''; };
+const openWQ = async () => { await page.goto(H + '/workqueue', { waitUntil: 'commit', timeout: 120000 }); for (let i = 0; i < 40 && !(await page.getByRole('button', { name: /^Tasks, / }).count()); i++) await sleep(1000); await sleep(1500); };
+const pick = async (re) => { await page.getByRole('button', { name: re }).first().click(); await sleep(5000); };
+const panel = async () => { if (!(await page.getByRole('button', { name: 'Criteria field' }).count())) { const b = page.locator('main button[aria-label*="ilter"]').first(); if (await b.count()) { await b.click(); await sleep(1500); } } };
+const state = async () => { await panel(); return { row: await rowTxt(), total: await total(), funnel: await badge() }; };
+const out = {};
+await page.goto(H + '/workqueue/activities/tasks', { waitUntil: 'commit', timeout: 120000 });
+for (let i = 0; i < 40 && !(await page.getByRole('button', { name: /^Tasks, / }).count()); i++) await sleep(1000); await sleep(15000);
+out.deepReload = { badge: await badge(), total: await total() }; await shot('NDC-1789-deep-reload-lost');
+await pick(/^Calls, /); await pick(/^Tasks, /); await sleep(3000); await panel();
+out.afterSectionClick = { badge: await badge(), total: await total(), row: await rowTxt() }; await shot('NDC-1789-section-click-restored');
+return done(out);

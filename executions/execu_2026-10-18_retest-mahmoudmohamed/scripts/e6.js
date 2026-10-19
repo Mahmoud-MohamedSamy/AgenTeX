@@ -1,0 +1,10 @@
+const D = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430'; const out = { calls: [] }; const S = v => ({ kind: 'string', value: v });
+const st = async id => { const g = await api('GET', '/modules/' + D + '/records/' + id); const v = f => ((g.j.data.data || []).find(x => x.field === f) || { value: {} }).value.value; return { approval: v('approval_status'), amount: v('amount') }; };
+const c = await api('POST', '/modules/' + D + '/records', { data: [{ field: 'name', value: S('QA RT ap 1') }, { field: 'deal_name', value: S('QA RT ap 1') }, { field: 'amount', value: { kind: 'number', value: 20000 } }] });
+out.create = c.s; out.id = c.j.data.id; await sleep(4000); out.afterCreate = await st(out.id);
+const fr = r => { const u = r.url(); if (/approv/i.test(u)) out.calls.push(r.request().method() + ' ' + u.replace(API, '').slice(0, 140)); }; page.on('request', fr);
+await page.goto(H + '/workqueue', { waitUntil: 'commit', timeout: 120000 }); for (let i = 0; i < 40 && !(await page.getByRole('button', { name: /^Approvals/ }).count()); i++) await sleep(1000);
+await page.getByRole('button', { name: /^Approvals/ }).first().click(); await sleep(8000);
+const row = page.locator('main tbody tr', { hasText: 'QA RT ap 1' }).first(); out.rowFound = await row.count(); out.row = (await row.innerText().catch(() => '')).replace(/\s+/g, ' ');
+await shot('NDC-1234-approvals-queue');
+page.off('request', fr); out.calls = [...new Set(out.calls)].slice(0, 8); return done(out);

@@ -1,0 +1,17 @@
+{ "out": "NDC-1819-columns-PARTIAL.png", "ticket": "NDC-1819", "title": "Work Queue — utility-column menus and column width limits (19 Oct 2026)", "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge 1600×900 · account ndc-staging-owner (CRM Admin)", "date": "19 Oct 2026",
+ "panels": [
+  { "img": "NDC-1819-f-util-col2-menu.png", "caption": "My Leads → ≡ on the Add Note column: the only option is \"Hide column\", and it does nothing (the column stays, also after reload).", "crop": [440, 250, 700, 200], "boxes": [ { "b": [652, 260, 682, 286], "n": 1, "kind": "FAIL" }, { "b": [480, 292, 676, 328], "n": 1, "kind": "FAIL" } ] },
+  { "img": "NDC-1819-f-util-tasks-col2-menu.png", "caption": "Tasks → ≡ on the Mark as completed column: same no-op \"Hide column\" (also on Row actions).", "crop": [440, 210, 700, 200], "boxes": [ { "b": [652, 220, 682, 246], "n": 2, "kind": "FAIL" }, { "b": [480, 252, 676, 288], "n": 2, "kind": "FAIL" } ] },
+  { "img": "NDC-1819-f-width-min-clip.png", "caption": "Every column dragged to its minimum (105 px, Clip Text): values cut to \"QA RT …\", \"01000…\", \"ndc-st…\"; the ≡ icon overlaps header labels; dates still take 2 lines.", "crop": [572, 250, 1004, 330], "boxes": [ { "b": [846, 306, 1150, 566], "n": 3, "kind": "PARTIAL" }, { "b": [1060, 260, 1350, 288], "n": 4, "kind": "FAIL" }, { "b": [1268, 300, 1360, 350], "n": 5, "kind": "INFO" } ] },
+  { "img": "NDC-1819-f-width-max.png", "caption": "Full Name dragged to the right: no maximum — 2708 px, then 5204 px on a second drag; all other columns pushed off-screen.", "crop": [572, 250, 1004, 260], "boxes": [ { "b": [700, 256, 1574, 290], "n": 6, "kind": "FAIL" } ] }
+ ],
+ "rows": [
+  ["1", "Menu on the ⋮ row-options column and the Add Note column (My Leads)", "No menu on utility columns, or a working option", "≡ menu with only \"Hide column\"; clicking it does nothing (also after reload); button has an empty name \"Column options: \"", "FAIL"],
+  ["2", "Menu on the ⋮ row-options column and the Mark as completed column (Tasks)", "Same", "Same no-op \"Hide column\" on both", "FAIL"],
+  ["3", "Minimum width, Clip Text", "Value readable or ellipsis + full value on hover", "Floor 105 px; values truncated with \"…\" (\"QA RT …\", \"ndc-st…\"); full value shown as a native hover tooltip", "PARTIAL"],
+  ["4", "Header label at minimum width", "Label and ≡ icon do not collide", "≡ icon overlaps \"Full Name\", \"Lead Status\", \"Lead Owner\", \"Created At\", \"Company\"", "FAIL"],
+  ["5", "Minimum width, Wrap Text", "Text wraps and stays readable", "Names wrap to 2 lines, \"ndc-staging-owner\" to 3, phone numbers split over 2 lines", "INFO"],
+  ["6", "Maximum width", "A sensible maximum", "No limit: 2708 px, then 5204 px; table 3707 px in a 1002 px viewport", "FAIL"],
+  ["—", "Reset Column Size after the extremes", "Default widths", "Restored (212, 153, 183, 171, 130, 130, 112 px)", "PASS"]
+ ] }

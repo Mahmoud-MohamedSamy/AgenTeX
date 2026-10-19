@@ -1,0 +1,15 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; const out = {};
+await go('/modules/' + L, 9000);
+await page.getByRole('button', { name: 'Custom views' }).click(); await sleep(1500);
+out.cvMenu = (await page.locator('[role=menu], [role=dialog], [role=listbox]').last().innerText().catch(() => '')).replace(/\n+/g, ' | ').slice(0, 300);
+const nb = page.getByText(/New (custom )?view/i).first(); await nb.click(); await sleep(4000);
+out.url = page.url();
+const fb = page.getByRole('button', { name: /Criteria field|Select a field/ }).first(); await fb.click(); await sleep(1200);
+const sf = page.getByPlaceholder(/Search fields/i).first(); await sf.fill('Review'); await sleep(900);
+out.reviewOptions = await page.locator('[role=listbox] [role=option]').allInnerTexts();
+await shot('NDC-2096-user1-field-list-review');
+await sf.fill('Approval'); await sleep(900); out.approvalOptions = await page.locator('[role=listbox] [role=option]').allInnerTexts();
+await page.keyboard.press('Escape'); await sleep(500);
+const p = await api('POST', '/modules/' + L + '/views', { name: 'QA RT review-gate', kind: 'list', visibility: 'private', settings: { criteria: { pattern: '1', conditions: [{ field: 'review_status', operator: 'equals', value: 'approved' }] } } });
+out.post = p.s + ' ' + p.t.slice(0, 400);
+return done(out);

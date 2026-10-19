@@ -1,0 +1,11 @@
+{ "out": "NDC-2098-retest-DECISION.png", "ticket": "NDC-2098", "title": "Custom Views | ?view= with a deleted or foreign view ID falls back to the last-used view instead of All Leads", "verdict": "DECISION", "label": "AS DESIGNED — NEEDS DECISION",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge · account ndc-staging-owner", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-2098-deleted-toast.png", "caption": "?view=<deleted view id>: toast \"That view is no longer available. Showing your default view.\", ?view= removed, page lands on the last-used view \"QA RT k7\" (not All Leads).", "crop": [262, 40, 1338, 860], "boxes": [ { "b": [296, 140, 380, 170], "n": 2, "kind": "DECISION" }, { "b": [1150, 810, 1576, 878], "n": 1, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["—", "Own view", "Opens", "?view=QA RT k7 opens it", "PASS"],
+  ["1", "Deleted id / another user's private id", "Safe fallback, no crash, nothing of the foreign view shown", "Toast shown, ?view= removed, no 5xx on the view, foreign name/criteria never shown (GET → 404)", "PASS"],
+  ["2", "Which view it falls back to", "All Leads (ticket)", "Last-used view — the developer says this is the specified precedence (?view= → last view → All)", "DECISION"],
+  ["—", "Decision needed", "—", "Keep as designed (close), or change request: fall back to All Leads (developer: one-line change)", "DECISION"]
+ ] }

@@ -1,0 +1,17 @@
+{ "out": "NDC-1234-retest-PASS.png", "ticket": "NDC-1234", "title": "[Epic] Approval Process — prevent endless re-entry & post-approval edits of sensitive fields", "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · API + Edge · ndc-staging-owner (tenant owner) and test user 1 · temporary process \"QA RT ap\" on Deals", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-1234-api.png", "caption": "Smoke test of the epic's claims (the 24 Sep retest passed; the ticket was held only for 5 linked bugs, all Done now).", "crop": [0, 0, 1600, 520], "boxes": [ { "b": [36, 99, 1564, 157], "n": 1, "kind": "PASS" }, { "b": [36, 167, 1564, 225], "n": 2, "kind": "PASS" }, { "b": [36, 235, 1564, 293], "n": 3, "kind": "PASS" }, { "b": [36, 303, 1564, 340], "n": 4, "kind": "PASS" }, { "b": [36, 350, 1564, 387], "n": 5, "kind": "PASS" }, { "b": [36, 397, 1564, 455], "n": 6, "kind": "INFO" }, { "b": [36, 465, 1564, 502], "n": 7, "kind": "PASS" } ] },
+  { "img": "NDC-1234-owner-timeline.png", "w": 1280, "h": 720, "caption": "Deal \"QA RT ap 1\" Timeline: Approved; owner override logged; re-entry blocked after the allowed edit.", "crop": [300, 120, 980, 600], "boxes": [ { "b": [550, 150, 640, 172], "n": 3, "kind": "PASS" }, { "b": [420, 385, 1040, 410], "n": 6, "kind": "INFO" }, { "b": [420, 600, 1190, 625], "n": 4, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["—", "Linked bugs NDC-1645, 1646, 1652, 1672, 1697 (reason for the hold on 24 Sep)", "Resolved", "All five are Done", "PASS"],
+  ["1", "US-A1/A2 Approval Status field", "Read-only, 4 values, not editable in the builder", "read_only pick_list, system-managed, canEditProperties false", "PASS"],
+  ["2", "US-B1 entry guard auto-injected", "Approval Status = Not Submitted", "Added by the server to the new process (system: true)", "PASS"],
+  ["3", "US-A4 status maintained", "Pending on entry, Approved on approval", "pending_approval on create → approved after Approve (204)", "PASS"],
+  ["4", "US-B2 no re-entry on edit", "Allowed edit keeps Approved, no new approval", "Next Step edit 200, still approved; timeline \"re-entry blocked\"", "PASS"],
+  ["5", "US-C2 field lock (non-owner)", "Amount 2,000 refused after approval", "test user 1: 422 APPROVAL_LOCKED \"the field(s) amount cannot be edited\"", "PASS"],
+  ["6", "US-C3 owner override", "Owner may edit locked fields, logged", "Owner edit 200, timeline \"locked field(s) overridden\"", "INFO"],
+  ["7", "US-A3 status not writable", "Direct write refused", "422 APPROVAL_STATUS_READ_ONLY (owner) / APPROVAL_LOCKED (test user 1)", "PASS"],
+  ["—", "Not covered", "—", "Reset approval status, reject → resubmit, multi-stage, import / mass update; 13 child stories still in Backlog (housekeeping)", "INFO"]
+ ] }

@@ -1,0 +1,11 @@
+await go('/workqueue', 15000); await page.getByRole('button', { name: /^My Leads/ }).first().click(); await sleep(6000);
+const out = {};
+const opts = async () => { await sleep(1000); return (await page.locator('[role=listbox], [role=menu]').last().innerText().catch(() => '')).replace(/\n+/g, ' | '); };
+out.alphabet = await page.locator('main').last().getByRole('button', { name: /^[A-Z]$/ }).count();
+await page.getByRole('button', { name: 'Which open activities to count and list' }).click(); out.dateOptions = await opts(); await shot('NDC-1819-11-date-options'); await page.keyboard.press('Escape'); await sleep(600);
+await page.getByRole('button', { name: /^Tasks, / }).click(); await sleep(6000);
+await page.locator('main tbody tr').first().hover(); await sleep(600);
+out.taskRowButtons = []; for (const e of await page.$$('main tbody tr:first-child button')) out.taskRowButtons.push(await e.getAttribute('aria-label'));
+await page.getByRole('button', { name: 'Row actions' }).first().click().catch(async () => { await page.locator('main tbody tr:first-child button').first().click(); });
+out.taskRowMenu = await opts(); await shot('NDC-1819-10-task-row-menu'); await page.keyboard.press('Escape');
+return done(out);

@@ -1,0 +1,11 @@
+{ "out": "NDC-2104-retest-DECISION.png", "ticket": "NDC-2104", "title": "Custom Views | 'Last Activity' in view criteria is the record's modified time; adding a note does not update it", "verdict": "DECISION", "label": "AS DESIGNED — NEEDS DECISION",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge · account ndc-staging-owner", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-2104-add-note.png", "caption": "Work Queue → My Leads → \"QA RT tz L1\" → Add Note → POST …/records/{id}/notes 201.", "crop": [540, 260, 520, 380], "boxes": [ { "b": [570, 300, 1028, 604], "n": 1, "kind": "PASS" } ] },
+  { "img": "NDC-2104-after-note.png", "caption": "Toast \"Note added\"; Last Activity of QA RT tz L1 still 18/10/2026 3:31 PM; last_modified_at unchanged (12:31:44Z).", "crop": [560, 440, 1040, 440], "boxes": [ { "b": [580, 476, 1596, 510], "n": 2, "kind": "DECISION" }, { "b": [1386, 476, 1496, 510], "n": 2, "kind": "DECISION" }, { "b": [1306, 826, 1574, 872], "n": 1, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Add a note", "Note saved", "201 (note on the timeline)", "PASS"],
+  ["2", "Last Activity follows activity", "Note moves Last Activity (Zoho behaviour)", "Unchanged — \"Last Activity\" is the label for last_modified_at; a note does not touch the record row (developer's explanation verified)", "DECISION"],
+  ["—", "Decision needed", "—", "(1) rename the label to \"Last Modified Time\" (small), or (2) build a real Last Activity Time field (NDC-1868 P1-5)", "DECISION"]
+ ] }

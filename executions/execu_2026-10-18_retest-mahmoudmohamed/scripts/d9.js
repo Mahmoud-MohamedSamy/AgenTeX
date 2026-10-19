@@ -1,0 +1,10 @@
+const out = {}; const resp = [];
+const fr = async r => { const m = r.request().method(); if (m === 'DELETE' || (m === 'POST' && /delete|bulk|mass/i.test(r.url()))) { let b = ''; try { b = (await r.text()).slice(0, 200); } catch (e) { } resp.push(r.status() + ' ' + m + ' ' + r.url().replace(API, '') + ' ' + (r.request().postData() || '').slice(0, 200) + ' -> ' + b); } };
+page.on('response', fr);
+await page.getByRole('button', { name: 'Module actions' }).click(); await sleep(1000);
+await page.getByRole('menuitem', { name: 'Delete Selected' }).click(); await sleep(1500);
+out.confirm = (await page.locator('[role=alertdialog], [role=dialog]').last().innerText().catch(() => '')).replace(/\n+/g, ' | ');
+await shot('NDC-1821-leads-list-confirm');
+await page.locator('[role=alertdialog], [role=dialog]').last().getByRole('button', { name: /^Delete/ }).click(); await sleep(6000);
+await shot('NDC-1821-leads-list-after-delete');
+page.off('response', fr); out.resp = resp; return done(out);

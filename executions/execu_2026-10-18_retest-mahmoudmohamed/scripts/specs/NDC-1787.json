@@ -1,0 +1,14 @@
+{ "out": "NDC-1787-retest-PASS.png", "ticket": "NDC-1787", "title": "Work Queue | Filter control is rendered only for My Open Activities", "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account ndc-staging-owner (CRM Admin)", "date": "18 Oct 2026",
+ "panels": [
+  { "img": "NDC-1787-my-leads-filtered.png", "caption": "Saved queue My Leads: funnel present; Lead Status = No Answer narrows 45 → 1. Request: filters=[{owner equals $me},{lead_status equals No Answer}] — queue scope kept first.", "crop": [280, 120, 1320, 440], "boxes": [ { "b": [297, 415, 543, 451], "n": 1, "kind": "INFO" }, { "b": [1484, 126, 1514, 160], "n": 2, "kind": "PASS" }, { "b": [584, 208, 1520, 244], "n": 3, "kind": "PASS" }, { "b": [1456, 342, 1564, 368], "n": 4, "kind": "PASS" } ] },
+  { "img": "NDC-1787-criteria-queue.png", "caption": "Criteria-based queue EveryLeadWithNoAnswerStatus: toolbar Refresh / Filter / Table settings / Queue actions.", "crop": [280, 120, 1320, 440], "boxes": [ { "b": [1480, 128, 1512, 160], "n": 5, "kind": "PASS" } ] },
+  { "img": "NDC-1787-my-jobs-approvals.png", "caption": "My Jobs → Approvals: still no filter control (excluded by the developer — not module records; needs its own design).", "crop": [280, 120, 1320, 440], "boxes": [ { "b": [565, 130, 1580, 200], "n": 6, "kind": "INFO" } ] }
+ ],
+ "rows": [
+  ["1–2", "Filter on a saved queue", "Filter control on every Work Queue grid", "Funnel present on My Leads, All Leads and EveryLeadWithNoAnswerStatus", "PASS"],
+  ["3", "Filters on the grid's own fields", "Columns of that grid (e.g. Lead Status for Leads)", "Leads fields offered (Lead Status, Phone, Full Name…, plus System Fields)", "PASS"],
+  ["4", "Applies on top of the queue's criteria", "Narrows, never replaces the queue definition", "45 → 1; request keeps owner = $me, then adds lead_status", "PASS"],
+  ["5", "Consistent toolbar", "Refresh / Filter / Column chooser on all queues", "Refresh / Filter / Table settings / Queue actions on every queue", "PASS"],
+  ["6", "My Jobs (Blueprint / Approvals / Reviews)", "Filter available there too", "No filter — explicitly excluded by the developer; follow-up needs a spec", "INFO"]
+ ] }
