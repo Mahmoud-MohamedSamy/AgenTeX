@@ -436,6 +436,67 @@ public class WorkflowHijTest extends BaseTest {
         assertTrue(found != null, "assignee got no in-app notification for the task. Executions: " + api.executionsText(t));
     }
 
+    // ---------------- QA config objects (approved by the user 14 Oct 2026; deleted in finally) ----------------
+
+    @Test(groups = {"settings", "execution"}, description = "A macro that edits a ticket: do Edit rules run? (record)")
+    @CaseId("WFR-H16")
+    public void macroEditRunsEditRules() {
+        String r = rule(Rules.named("H16 on edit -> A").onEdit().addTags("append", tagA));
+        String t = ticket("H16", Map.of());
+        Map<String, Object> macro = new LinkedHashMap<>();
+        macro.put("name", "QA WF H16 macro");
+        macro.put("description", "QA test macro, deleted after the test");
+        macro.put("department_id", DeskWorkflowRulesFeature.QA_DEPARTMENT_ID);
+        macro.put("is_active", true);
+        macro.put("actions", List.of(Map.of("kind", "set_priority", "value", "high")));
+        Response c = api.post("/desk/macros", macro);
+        System.out.println("[H16] create macro -> " + c.statusCode() + " " + c.asString().substring(0, Math.min(200, c.asString().length())));
+        String mid = DeskWorkflowRulesApi.ok(c, "create macro").jsonPath().getString("data.id");
+        try {
+            Response a = api.post("/desk/tickets/" + t + "/apply-macro", Map.of("macro_id", mid));
+            System.out.println("[H16] apply macro -> " + a.statusCode() + " " + a.asString().substring(0, Math.min(200, a.asString().length())));
+            DeskWorkflowRulesApi.ok(a, "apply macro");
+            assertTrue(api.waitTicket(t, x -> "high".equals(x.get("priority")), 60), "macro did not set priority high");
+            boolean ran = waitTag(t, tagA, 60);
+            record("WFR-H16", "ticket edited by a macro: Edit rule ran=" + ran + " (runs=" + runs(t, r) + ")");
+        } finally {
+            System.out.println("[H16] delete macro -> " + api.delete("/desk/macros/" + mid).statusCode());
+        }
+    }
+
+    @Test(groups = {"settings", "execution"}, description = "Owner workflow vs an assignment rule on the same ticket: which wins? (record)")
+    @CaseId("WFR-I10")
+    public void ownerWorkflowVsAssignmentRule() {
+        String byAssignment = "23f0f9d7-2fc0-429b-9334-9933fe5c429b", byWorkflow = "876ce871-2b02-4854-89a7-68050391c62b"; // Tech agents
+        Map<String, Object> ar = new LinkedHashMap<>();
+        ar.put("department_id", DeskWorkflowRulesFeature.QA_DEPARTMENT_ID);
+        ar.put("name", "QA WF I10 assignment rule");
+        ar.put("description", "QA test rule, deleted after the test");
+        ar.put("is_active", true);
+        ar.put("criteria", Map.of("conditions", List.of(Map.of("field_key", "subject", "operator", "contains", "value", "QA WF I10"))));
+        Map<String, Object> action = new LinkedHashMap<>();
+        action.put("kind", "agent"); // assignment-rule action kinds: agent / agents / team / round_robin / system
+        action.put("user_id", byAssignment);
+        action.put("team_id", null);
+        action.put("use_backlog", false);
+        ar.put("action", action);
+        Response c = api.post("/desk/assignment-rules", ar);
+        System.out.println("[I10] create assignment rule -> " + c.statusCode() + " " + c.asString().substring(0, Math.min(250, c.asString().length())));
+        String aid = DeskWorkflowRulesApi.ok(c, "create assignment rule").jsonPath().getString("data.id");
+        try {
+            rule(Rules.named("I10 owner workflow").onCreate().owner("SpecificUser", byWorkflow).addTags("append", tagC));
+            String t = ticket("I10", Map.of());
+            awaitControl(t);
+            Waits.sleep(15000);
+            String owner = api.ticket(t).get("owner");
+            String who = byAssignment.equals(owner) ? "assignment rule" : byWorkflow.equals(owner) ? "workflow" : "neither (" + owner + ")";
+            record("WFR-I10", "final owner set by: " + who);
+            assertTrue(byAssignment.equals(owner) || byWorkflow.equals(owner), "neither the assignment rule nor the workflow set the owner: " + owner);
+        } finally {
+            System.out.println("[I10] delete assignment rule -> " + api.delete("/desk/assignment-rules/" + aid).statusCode());
+        }
+    }
+
     // ---------------- QA layout cases (run WorkflowDiagTest#qaLayoutSetup first; user rule: changes only on the QA layout) ----------------
 
     private String qaLayoutId() {

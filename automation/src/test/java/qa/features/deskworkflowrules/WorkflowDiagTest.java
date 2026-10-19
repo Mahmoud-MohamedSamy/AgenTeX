@@ -140,6 +140,21 @@ public class WorkflowDiagTest extends BaseTest {
         return ls == null ? "?" : ls.stream().map(x -> x.get("name") + "=" + x.get("id")).toList().toString();
     }
 
+    /** Read-only: one assignment rule's full shape, Tech assignment settings, business hours now. */
+    @Test(groups = {"diag"})
+    public void settingsFacts() {
+        new WorkflowRulesListPage().openForApi();
+        DeskWorkflowRulesApi api = new DeskWorkflowRulesApi().requireAuth();
+        for (String p : List.of("/desk/assignment-rules?department_id=" + DeskWorkflowRulesFeature.DEFAULT_DEPARTMENT_ID,
+                "/desk/assignment-rules?department_id=" + DeskWorkflowRulesFeature.QA_DEPARTMENT_ID,
+                "/desk/departments/" + DeskWorkflowRulesFeature.QA_DEPARTMENT_ID + "/team-assignment",
+                "/iam/tenant/business-hours", "/iam/tenant/business-hours/profiles")) {
+            Response r = api.get(p);
+            String b = r.asString().replaceAll("\\s+", " ");
+            System.out.println("[facts " + p + "] " + r.statusCode() + " " + b.substring(0, Math.min(1400, b.length())));
+        }
+    }
+
     // ---------- QA layout + QA fields (approved by the user 14 Oct 2026: changes only on a separate QA layout) ----------
 
     static final String QA_LAYOUT = "QA WF Layout";

@@ -112,7 +112,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
       <span><b>Host</b> staging-desk.taviportal.com</span>
       <span><b>Account</b> owner</span>
       <span><b>Browser</b> Edge 154</span>
-      <span><b>Result</b> 85 passed · 9 app bugs · 12 known gaps vs Zoho · 5 cases wait for a settings OK</span>
+      <span><b>Result</b> 87 passed · 9 app bugs · 12 known gaps vs Zoho</span>
     </div>
     <div class="tally">
       <span class="pill bug">9 bugs</span>
@@ -342,7 +342,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
       <li><b>The Execution History page loads</b> (M2). It renders a few seconds after it opens; the earlier blank screenshots were taken too early.</li>
       <li><b>A Field Changed rule can't be saved without a watch field</b> (D2). The editor now pre-selects one.</li>
       <li><b>Date-only and address Field Updates are correct in Desk</b> (I3, I4). A date-only field stores just the date, and changing one address part keeps the others. The CRM bugs NDC-1438 and NDC-1436 do not appear here. Tested on a temporary QA layout and fields, deleted afterwards; the Standard layout was never changed.</li>
-      <li><b>Rule engine behaviour checked and correct:</b> rules run in list order; layout scope; bulk edit runs Edit rules once per ticket; no edit loops; a workflow's own update is not an edit; On Delete sends the deleted ticket's values; date rules fire on time and reschedule when the date moves; deleting or deactivating the rule, or deleting the ticket, cancels queued actions.</li>
+      <li><b>Rule engine behaviour checked and correct:</b> rules run in list order; layout scope; bulk edit runs Edit rules once per ticket; no edit loops; a workflow's own update is not an edit; On Delete sends the deleted ticket's values; date rules fire on time and reschedule when the date moves; deleting or deactivating the rule, or deleting the ticket, cancels queued actions; a macro edit runs Edit rules; when an assignment rule and an Owner Assignment workflow both apply, the workflow's owner wins (as in Zoho).</li>
       <li><b>"Ticket without department gives 500"</b> and <b>"ticket create 500 in Customer Support"</b> were both bug B-1.</li>
       <li><b>Email service:</b> the workflow Email action to an agent succeeded on the first attempt. Inbox delivery was not checked.</li>
       <li><b>Webhooks:</b> POST and PUT arrive with merge fields filled in. A 500 is retried, a slow receiver is not reported as succeeded, a scheduled webhook runs after its delay, and a failing webhook does not stop the rule's other actions.</li>
@@ -381,6 +381,15 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
         <figure><img src="screenshots/annotated/WFR-Z23_WFR-Z24_WFR-Z25_WFR-Z26_WFR-Z27-vs-zoho.png" alt="Extra action types: TAVI vs Zoho" loading="lazy"><figcaption>Custom functions, chat, instant messaging, skills and AI actions.</figcaption></figure>
       </div>
     </details>
+  </section>
+
+  <section aria-labelledby="not-tested">
+    <h2 id="not-tested">Not tested yet</h2>
+    <ul class="plain">
+      <li><b>Emails and Customer Happiness</b> (I19–I21, I28–I30): skipped on request.</li>
+      <li><b>Owner Assignment to a suspended agent</b> (I9) and <b>business-hours counting</b> (J5, J6): they need an agent to be suspended for a few minutes and the company business hours changed for a few minutes. The automated run was not allowed to make those changes, so they are waiting for a manual run or for that permission.</li>
+      <li><b>Other spec groups</b> (A–G, K–O, E2E journeys): not automated yet. Group A needs a second account with limited permissions.</li>
+    </ul>
   </section>
 
   <footer>

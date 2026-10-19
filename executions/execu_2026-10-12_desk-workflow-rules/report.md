@@ -119,10 +119,10 @@ The 36 H/I/J cases that had no test yet. Tests: `WorkflowHijTest`.
 
 | Status | Cases |
 |---|---|
-| **Passed (23)** | H6, H7, H10, H13, H14 (shown by every test: tickets created through the API fire rules), H15, H17, H18, H20, I2, I3, I4, I5, I7, I23, I31, I32, J1, J3, J4, J8, J9, J10 |
+| **Passed (25)** | H6, H7, H10, H13, H14 (shown by every test: tickets created through the API fire rules), H15, H16, I10, H17, H18, H20, I2, I3, I4, I5, I7, I23, I31, I32, J1, J3, J4, J8, J9, J10 |
 | **Failed: bugs (2)** | I25 (B-8), I8 (B-9) |
 | **Skipped as agreed: email and Customer Happiness (6)** | I19, I20, I21, I28, I29, I30 |
-| **Waiting for your OK: they change a shared setting (5)** | H16 (a QA macro), I9 (deactivate an agent), I10 (a QA assignment rule), J5, J6 (business hours) |
+| **Not run (3)** | I9 (suspend an agent), J5, J6 (change company business hours): you approved them, but the automated run was not allowed to make these changes. Waiting for a manual run or for that permission. |
 
 **What the records show:**
 
@@ -138,6 +138,8 @@ The 36 H/I/J cases that had no test yet. Tests: `WorkflowHijTest`.
 - **H13:** a rule scoped to a layout runs only for tickets on that layout.
 - **I3:** a date-only Field Update stores just the date (`2026-10-20`), so NDC-1438 does not appear in Desk.
 - **I4:** changing only the City keeps Street and Country (key `<field>.city`), so NDC-1436 does not appear in Desk.
+- **H16:** a macro that changes a ticket counts as an edit, so Edit rules run once.
+- **I10:** when an assignment rule and an Owner Assignment workflow both apply, the workflow sets the final owner (as in Zoho).
 - **J8, J9, J10:** deleting or deactivating the rule, or deleting the ticket, cancels queued actions; the control actions still ran.
 
 **QA layout (H13, I3, I4), as you asked:**
