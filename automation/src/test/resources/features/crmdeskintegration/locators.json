@@ -1,0 +1,224 @@
+{
+  "IntegrationSettingsPage" : {
+    "heading" : {
+      "description" : "Page title 'CRM ⇄ Desk Integration' (both apps)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "heading",
+        "name" : "Desk Integration",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2][contains(normalize-space(.),'Desk Integration')]"
+      }, {
+        "by" : "partialText",
+        "value" : "CRM ⇄ Desk Integration"
+      } ]
+    },
+    "tab" : {
+      "description" : "Settings section tab by name: Overview, Configuration Details, Permissions, Notifications, Sync History, Failure Log",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "tab",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='tablist']//*[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='{0}']"
+      } ]
+    },
+    "tabs" : {
+      "description" : "All section tabs (to read their names)",
+      "candidates" : [ {
+        "by" : "css",
+        "value" : "[role='tab']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='tablist']/*"
+      } ]
+    },
+    "rowAction" : {
+      "description" : "Edit / Configure / Close button in the Sync Settings row of one module ({0} = Desk module label, {1} = button text)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//*[self::tr or @role='row' or self::div][*[normalize-space(.)='{0}']][.//button[normalize-space(.)='{1}']])[last()]//button[normalize-space(.)='{1}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(.)='{0}']/following::button[normalize-space(.)='{1}'][1]"
+      } ]
+    },
+    "fullAccessLink" : {
+      "description" : "First access-level link under a profile (opens Configure Access Permissions)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//*[self::button or self::a][normalize-space(.)='Full Access'])[1]"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Configure Accounts access for Desk Administrator"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Full Access",
+        "ariaLabel" : "Configure Accounts access for Desk Administrator",
+        "classes" : "self-start text-xs text-[color:var(--primary)] underline-offset-2 hover:underline",
+        "parentText" : "Accounts Full Access"
+      }
+    },
+    "dialog" : {
+      "description" : "Open modal dialog",
+      "candidates" : [ {
+        "by" : "css",
+        "value" : "[role='dialog']"
+      }, {
+        "by" : "css",
+        "value" : "dialog[open]"
+      } ],
+      "fingerprint" : {
+        "tag" : "div",
+        "role" : "dialog",
+        "text" : "Configure Access Permissions Desk Administrator Accounts Contacts Accounts Information Potentials Notes Activities Calls",
+        "classes" : "aw-drawer",
+        "parentText" : "Skip to content Settings Tickets Knowledge Base Customers An"
+      }
+    },
+    "dialogCancel" : {
+      "description" : "Cancel button of the open dialog (never Apply / Save in read-only runs)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//button[normalize-space(.)='Cancel']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Close"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Cancel",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Apply Cancel"
+      }
+    }
+  },
+  "DeskRecordPage" : {
+    "paneTitle" : {
+      "description" : "CRM pane title on a ticket / contact: 'CRM Contact Info' or 'CRM Account Info'",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(.)='CRM Contact Info' or normalize-space(.)='CRM Account Info']"
+      }, {
+        "by" : "partialText",
+        "value" : "CRM Contact Info"
+      } ]
+    },
+    "paneTab" : {
+      "description" : "CRM pane tab: Info, Potentials, Notes, Activities",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@aria-label='CRM context sections']//*[@role='tab'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "role",
+        "value" : "tab",
+        "name" : "{0}",
+        "exact" : true
+      } ]
+    },
+    "crmRail" : {
+      "description" : "Right-rail icon that opens the CRM pane on a ticket",
+      "candidates" : [ {
+        "by" : "ariaLabel",
+        "value" : "CRM Contact Info"
+      }, {
+        "by" : "css",
+        "value" : "[title='CRM Contact Info']"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='CRM' or @title='CRM']"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "id" : "_r_l_-tab-crm",
+        "role" : "tab",
+        "type" : "button",
+        "ariaLabel" : "CRM Contact Info",
+        "testId" : "desk-ticket-properties-pane-crm",
+        "classes" : "relative flex h-10 w-full items-center justify-center outline-none transition-colors"
+      }
+    },
+    "layoutPicker" : {
+      "description" : "Ticket list 'Layout' picker (Classic / Compact / Table / work modes)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[.//*[contains(normalize-space(.),'View')] or contains(normalize-space(.),'Classic View') or contains(normalize-space(.),'Compact View') or contains(normalize-space(.),'Table View') or contains(normalize-space(.),' Mode')]"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Layout"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Layout"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Classic View",
+        "testId" : "desk-view-mode",
+        "classes" : "flex h-8 max-w-[14rem] items-center gap-1.5 rounded-lg border px-2.5",
+        "parentText" : "All Tickets (38) Total Count Classic View"
+      },
+      "lastHeal" : "2026-10-19T15:13:38.614707300+03:00 promoted 'xpath=//button[.//*[contains(normalize-space(.),'View')] or contains(normalize-space(.),'Classic View') or contains(normalize-space(.),'Compact View') or contains(normalize-space(.),'Table View') or contains(normalize-space(.),' Mode')]' over 'ariaLabel=Layout'"
+    }
+  },
+  "CrmRecordPage" : {
+    "deskTicketsCard" : {
+      "description" : "'Desk Tickets' card heading on a CRM record",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(.)='Desk Tickets' or normalize-space(.)='DESK TICKETS']"
+      }, {
+        "by" : "partialText",
+        "value" : "Desk Tickets"
+      } ],
+      "fingerprint" : {
+        "tag" : "h4",
+        "id" : "desk-tickets-contacts-ed5116a8-48cc-4470-b4b6-82720f9ca70d-heading",
+        "text" : "DESK TICKETS",
+        "classes" : "flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[color:var(--text-main)]",
+        "parentText" : "DESK TICKETS Refresh Show statistics New ticket"
+      }
+    },
+    "ticketFilter" : {
+      "description" : "Status filter chip of the Desk Tickets card ({0} = All, Open, On hold, Closed)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@aria-label='Ticket status filter']//*[normalize-space(.)='{0}']"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      } ]
+    },
+    "filterGroup" : {
+      "description" : "The status filter group of the Desk Tickets card",
+      "candidates" : [ {
+        "by" : "ariaLabel",
+        "value" : "Ticket status filter"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='radiogroup' or @role='tablist' or @role='group'][.//*[normalize-space(.)='On hold']]"
+      } ],
+      "fingerprint" : {
+        "tag" : "div",
+        "role" : "group",
+        "text" : "All Open On hold Closed",
+        "ariaLabel" : "Ticket status filter",
+        "classes" : "flex flex-wrap items-center gap-1",
+        "parentText" : "All Open On hold Closed"
+      }
+    }
+  }
+}
