@@ -5,13 +5,13 @@
 | Apps | TAVI CRM `https://staging-crm.taviportal.com` and TAVI Desk `https://staging-desk.taviportal.com` (tenant NDC-Staging, same accounts on both) |
 | Feature | CRM → Settings → **CRM ⇄ Desk Integration** (`/settings/integrations/desk`) and Desk → Settings → **CRM ⇄ Desk Integration** (`/settings/integrations/crm`): Overview, Configuration Details, Permissions, Notifications (CRM only), Sync History, Failure Log. Also what the integration puts on records: the CRM pane on Desk tickets / contacts / accounts, badges and mapped views, Handshake Mode, and the Desk Tickets / Desk Contracts cards on CRM records |
 | Focus | Functional · API (the important endpoints) · UI / UX. Security, i18n, accessibility and performance are covered by a short Group O |
-| Plane | PRD **NDC-1669** "CRM Integration — Contacts, Accounts and Products Sync" (Backlog). Related: NDC-1981 (Light agents), NDC-1783 (Customers module). Gap item: **not filed yet** (the user files it later) |
-| Missing list | `docs/crm-desk-integration/crm-desk-integration-missing-list.md` (9 items = Z1–Z9) |
-| Gap evidence | `docs/crm-desk-integration/evidence/01…09-*-vs-zoho.png` |
+| Plane | PRD **NDC-1669** "CRM Integration — Contacts, Accounts and Products Sync" (Backlog). Related: NDC-1981 (Light agents), NDC-1783 (Customers module). Gap item and bugs: **not filed yet** (the user decides when) |
+| Missing list | `docs/crm-desk-integration/crm-desk-integration-missing-list.md` and `missing-report.html` (19 items = Z1–Z19) · full Zoho comparison: `zoho-parity-matrix.md` (all 153 Zoho items) |
+| Gap evidence | `docs/crm-desk-integration/evidence/01…19-*-vs-zoho.png` (16, 17 have no image: out of NDC-1669 scope) |
 | Expected behaviour | NDC-1669 + the user's description of the feature (19 Oct 2026, in the missing list). **User decision: TAVI must match how Zoho handles sync settings, delete preferences, related lists and permissions** — where TAVI differs, Zoho is the expected result |
 | Reference | `reference/zoho-docs-inventory.md` (153 Zoho items) · `reference/tavi-api-routes.txt` · `reference/tavi-baseline-config-2026-10-18.json` (row_version 35570115) · live Zoho pair: Zoho Desk `taviportal` + Zoho CRM org943261092, integrated 18 Oct 2026 |
 | Written | 18 Oct 2026, from the Desk and CRM bundles, the locale `crm-desk-integration` (same file in both apps), the live API (GET only) and the UI, as the owner |
-| Status | **Draft for review — do not run until the user says so** |
+| Status | **Executed 18–21 Oct 2026** (Run 1 read-only, Run 2 writes, Run 3 connection, parity pass, remaining rows). Results: `executions/execu_2026-10-20_crm-desk-integration/report.md` (verdict per row) and `bug-report.html` (18 bugs, CD-01 … CD-18). Rows still without a verdict need what staging lacks: B12, D13–D15, A11, O2, Firefox (O11); G17 inconclusive |
 
 ---
 
@@ -32,9 +32,9 @@
 - **Notifications and mentions** — 7 CRM signals, "Notify the CRM contact owner", mentionable CRM users. Covered by M1–M10.
 
 ### Missing (Group Z)
-- 9 items: sync settings Z1–Z4, agent view Z5, CRM side Z6–Z7, automation Z8, permissions Z9.
-- In NDC-1669: Z1 (§3, Phase 4), Z2 and Z3 (§2, Phase 1), Z4 (§5, Phase 2), Z5 (§7, Phase 3, field set not specified), Z9 (§6, Phase 3, default not stated).
-- Not in NDC-1669: Z6, Z7, Z8.
+- 19 items: sync settings Z1–Z4, agent view Z5, CRM side Z6–Z7, automation Z8, permissions Z9 (gap analysis, 18 Oct); Z10–Z19 (parity pass, 21 Oct).
+- In NDC-1669: Z1 (§3, Phase 4), Z2 and Z3 (§2, Phase 1), Z4 (§5, Phase 2), Z5 (§7, Phase 3, field set not specified), Z9 (§6, Phase 3, default not stated), Z10 and Z18 (§4), Z11 (§2), Z12 and Z13 (§9), Z19 (§8).
+- Not in NDC-1669: Z6, Z7, Z8, Z14, Z15; out of scope (separate Zoho products): Z16, Z17.
 
 ### Not a gap
 - Zoho's per-profile "Full Access" dialog (TAVI has Custom Access).
@@ -42,12 +42,12 @@
 - Lead sync, custom-module sync, ticket sync into CRM, attachment sync — NDC-1669 non-goals.
 - CRM Related Lists for Products, Vendors and Cases: Zoho offers them, but TAVI CRM has no such modules (`GET /modules`, 19 Oct 2026). E10 checks the list follows the CRM's modules.
 
-### Not yet confirmed (tested here, verdict unknown)
-- The 12-month lookback on the first sync (B12). Needs CRM records older than 12 months.
-- Progress and the "sync finished" notice on the first connect (B9–B11). Needs a fresh Connect.
-- Light Agents and delivery of mentions to the CRM bell (M5–M9).
-- Profile permissions enforced by the API, not only the UI (J7–J9). Needs a lower-profile Desk account.
-- What happens to changes made while paused (B6, B7) — NDC-1669 asks that they sync on resume, or that the UI say so before pausing. TAVI's dialog says "Events keep queuing while paused and drain when you resume."
+### Confirmed by the runs (were "not yet confirmed" when the spec was written)
+- 12-month lookback (B12): still **not testable** — staging has no CRM records older than 12 months. TAVI does not state the window (Z18).
+- First connect (B9–B11): checked twice (20 and 21 Oct). Imports run and finish in seconds; **no notice** to the admin (CD-07, Z10).
+- Light Agents and mentions (M5–M9): an @mention of a CRM user reaches the CRM bell; CRM users are **not** added as Light Agents and cannot comment (Z12); no @CRM Contact Owner (Z13).
+- Permissions enforced by the API (J7–J9): **enforced** (403 per section and module).
+- Changes made while paused (B5, B6): held while paused and **delivered on resume**.
 
 ---
 
@@ -485,6 +485,16 @@ Each row: look for the capability in the UI and the API. **Still missing** = the
 | Z7 | Mutual Users + Invite to Desk | CRM integration Permissions; `GET /invite` | Mutual users list; invite as Agent / Light Agent / Admin | 07 |
 | Z8 | CRM Contact Type in SLA / assignment rules | SLA, Direct Assignment, Round Robin criteria pickers | "CRM Contact Type" is / is not Customer, Potential, Contact, Lead | 08 |
 | Z9 | Permission defaults and level names | Desk Permissions tab after connecting; `panel.profile_access` | Only the Administrator profile has access by default; others no access until ticked; levels named No / Restricted / Full Access | 09 |
+| Z10 | Report when the initial sync finishes | Connect; watch the admin's email / bell | Email or notice with added / updated / ignored counts and skip reasons | 10 |
+| Z11 | CRM Leads considered when a Desk contact is created | CRM Lead with email E; create a Desk contact with E | No new CRM contact for a person who is a CRM Lead (Zoho community) | 11 |
+| Z12 | CRM users as Light Agents; CRM-only users comment | `/iam/me` of a CRM-only user; comment on a ticket as that user | Added to Desk as Light Agents; comment allowed | 12 |
+| Z13 | @CRM Contact Owner mention | Mentionable users; comment with the mention | Mention offered; the contact's owner is notified | 13 |
+| Z14 | Act from the CRM notification | Desk event in the CRM bell | Reply / comment / update from the notification | 14 |
+| Z15 | Integrated user becomes inactive | (not testable without deactivating the owner) | Prompt to re-point the integration | 15 |
+| Z16 | CRM Voice of the Customer from Desk tickets | — (Zia, Enterprise) | Out of NDC-1669 scope | — |
+| Z17 | Cross-app analytics joining CRM and Desk | — (Zoho Analytics) | Out of NDC-1669 scope | — |
+| Z18 | 12-month window stated before the first sync | Connect dialog / configuration | "Only records created or modified in the last year are synced" shown | 18 |
+| Z19 | Empty Handshake columns hidden | Handshake Mode with an empty bucket | Empty columns are not shown | 19 |
 
 ---
 
@@ -510,7 +520,7 @@ Each row: look for the capability in the UI and the API. **Still missing** = the
 | NDC-1669 §10 | History 7 days with failed counts, Failure Log reasons + Try Again, Pause / Resume, delete integration consequences | H1–H14, B3–B8 |
 | NDC-1669 §10 P1 | Retry all; longer / filterable history | H12; history filters not built (note) |
 | Build extras | Contracts from deals, Calls, Ticket Visibility, CRM notifications, CRM Desk Tickets card and workspace | D1–D15, J12, M1–M4, L1–L22 |
-| Missing list | 9 gaps | Z1–Z9 |
+| Missing list | 19 gaps | Z1–Z19 |
 | User description, 19 Oct 2026 | sync settings, sync type, products, preferences, related lists, permissions — match Zoho | C, E, G, J, Z1–Z4, Z9 |
 | Possible bugs (missing-list notes) | raw sync-status labels, UUIDs in failure reasons, deals stuck in needs attention | I16, G19 / H10, D12 |
 

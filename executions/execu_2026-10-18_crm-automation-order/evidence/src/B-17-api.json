@@ -1,0 +1,37 @@
+{
+ "out": "B-17-api.png",
+ "title": "B-17 · A-17 · TAVI screen + API (21 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "Assignment rule \"QA AEO UI A-17 AR\" (Leads, channel Import): entry members = [test user 2]; fallback = Default user: Mahmoud Samy (Supervisor)",
+   "lines": [
+    "GET /iam/users?app_key=crm -> test user 2 status: active"
+   ]
+  },
+  {
+   "head": "Settings → Users → test user 2 → ⋮ → Suspend",
+   "lines": [
+    {
+     "t": "GET /iam/users?app_key=crm -> test user 2 status: suspended",
+     "box": "user suspended"
+    }
+   ]
+  },
+  {
+   "head": "Import 1 lead (Settings → Import, assignment rule = QA AEO UI A-17 AR)",
+   "lines": [
+    {
+     "t": "lead 07bae50b: Lead Owner = test user 2",
+     "box": "assigned to the suspended user"
+    },
+    "expected: Lead Owner = Mahmoud Samy (fallback)"
+   ]
+  },
+  {
+   "head": "Cleanup: Users → test user 2 → ⋮ → Reactivate",
+   "lines": [
+    "GET /iam/users?app_key=crm -> test user 2 status: active"
+   ]
+  }
+ ]
+}

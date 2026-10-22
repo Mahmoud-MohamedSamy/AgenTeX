@@ -1,0 +1,45 @@
+[Z17-19] /iam/roles 404; /iam/hierarchy 404; /iam/sharing-rules 404; /settings/data-sharing 404; /iam/users/45ffbc5b-7859-4c21-be9e-7b5f30747ca2/subordinates 404; 
+[F7/F8] self -> 422 cycle_detected 'A user cannot report to themselves.'; malformed -> 400 VALIDATION_ERROR 'One or more validation errors occurred.'; unknown -> 400 VALIDATION_ERROR 'reporting_manager_id does not match a user in this tenant.'; script -> 400 VALIDATION_ERROR 'One or more validation errors occurred.'; number -> 400 VALIDATION_ERROR 'One or more validation errors occurred.'; 
+[E7d] Desk Administrator (app desk) grants metadata.records.view_all=true; the CRM Supervisor who also holds it has view_all=true
+[D1/D2] 8 rows; newest reporting -> role at 2026-10-21T16:07:28.386978+00:00 by 97be04b6-0a08-4883-aa51-e1650b11cab7
+[C8] "manager" -> 422; "" -> 422; "ROLE" -> 422; 123 -> 422; ["role"] -> 422; null -> 422; {"mode":"role"} -> 422; mode after: role v8 (was v8)
+[F5/F6] loop of 2 (V -> N while N -> V) -> 422 cycle_detected 'Reporting chain would form a cycle.'; loop of 3 (S -> N while N -> V -> S) -> 422 cycle_detected 'Reporting chain would form a cycle.'
+[L1] /settings/resolved 401; /settings/history 401; /iam/me/subordinates 401; /iam/users 401; /iam/profiles 401; PUT /settings/values 401
+[A7] iam.personal.reporting_hierarchy: owner=false, User profile (nameb56175)=false; no CRM profile grants it (profiles read 21 Oct 2026)
+[E1/E7] rank conflicts: none | profiles granting metadata.records.view_all (bypasses the hierarchy): CRM Admin (crm); Desk Administrator (desk); Owner (null); test (crm); 
+[G6/G7] owner self-service: self -> 422 stored=null; malformed -> 400 stored=null; unknown -> 400 stored=null; spaces -> 400 stored=null; 
+[F3/F4] N -> V: listed in V's subordinates=true; cleared -> null
+[A8] nameb56175 PATCH valafo's manager -> 403 FORBIDDEN 'Cannot assign a reporting manager for this user.'; changed=false
+[G9] nameb56175 (no iam.personal.reporting_hierarchy) PUT /iam/me/profile reporting_manager_id -> 200; manager changed=true
+[A4] nameb56175 PUT reporting -> 403 permission_denied 'Permission 'iam.company.hierarchy_preference.manage' is required to write 'general.company.hierarchy.preference'.'; mode now role v8
+[A5] nameb56175 GET preference -> 403
+[C9/D5] stale version -> 409 version_conflict 'Setting was modified by another writer (expected version 7, current 8).'; no version -> 409 version_conflict 'Setting was modified by another writer (expected version 0, current 8).'; version now v8 (was v8)
+[Z16] recordVisibility values in use: {hierarchy=1, public=7}
+[revert-api] restored: no difference from the baseline
+[F9/Z7] Supervisor -> manager = User (rank 100): 204 (allowed: gap still open)
+[L2] expected_version 'abc' -> 400; value_json not JSON (reporting) -> 400 validation_failed 'Invalid value JSON: 'r' is an invalid start of a value. LineNumber: 0 | BytePositionInLine: 0.'; mode role
+[revert-api] restored: no difference from the baseline
+[baseline] mode role, users 16
+[I1/I5] role: N sees own=true, self-created=true, superior V's lead=false
+[I2] role, V=User@HR and N=User@Sales: V sees N=false, N sees V=false
+[I3] role, V=Supervisor(300)@Sales, N=User(100)@Sales: V sees N's leads: owner-set=false, N-created=false
+[I3b] role, V=Manager(500)@Sales: V sees N's leads: owner-set=false, N-created=false
+[I4] role, V=Supervisor@HR, N=User@Sales: V sees N's lead=false (preview text says yes, record-visibility hint says no, Zoho: yes for the branch)
+[I6] role, N reports to V (both User): V sees N=false
+[J1/J3] reporting, N reports to V (listed in /iam/me/subordinates=true), both rank 100: V sees N's leads: owner-set=false, N-created=false
+[J1s] reporting, N reports to V, V=Supervisor@Sales (same department, higher rank): V sees N's leads: owner-set=false, N-created=false
+[J2] reporting, N reports to V: N sees V's lead=false
+[J5] reporting, N reports to someone else, V=Supervisor@Sales: V sees N=false
+[J8/C11] after reporting -> role: N's manager still V=true; V sees N=false
+[restore] profile of test user 2 -> test
+[restore] manager of test user 1 -> 204
+[revert] restored: no difference from the baseline
+[A1/B1/B2/B4] texts missing: none; Role checked=true, Reporting checked=false; preview text on page=false; raw keys=false; saved mode line=false
+[B5/D2] history section=true; newest change by 'ndc-staging-owner' shown on page=false
+[C1/C7] dialog text ok=true; after Cancel Role checked=true, mode role, version unchanged=true; dialog on the active card=false
+[C3/C4/C5/G2] toast=true; API mode reporting v11 (was v10); after reload Reporting checked=true; personal page shown=true placeholder='Paste a user ID, or leave empty for no manager'
+[C6/G1/D1] back to role: toast=true, API mode role; personal page shown in Role mode=false; history rows 10 -> 10 (limit 10)
+[F1/F2/Z7] list rows=9, API users=16; select options=9 (first 'No manager (clear)'), selected 'Ahmed Hegazy NDC (maahmed14785@gmail.com)', self listed=false; options are not limited to higher roles (Z7)
+[revert-ui] restored: no difference from the baseline
+[F1/F2/Z7] list rows=9, API users=16; select options=9 (first 'No manager (clear)'), selected 'Ahmed Hegazy NDC (maahmed14785@gmail.com)', self listed=false; options are not limited to higher roles (Z7)
+[revert-ui] restored: no difference from the baseline

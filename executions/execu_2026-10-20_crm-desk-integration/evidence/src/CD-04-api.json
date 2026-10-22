@@ -1,0 +1,28 @@
+{
+ "out": "CD-04-api.png",
+ "title": "CD-04 · C17 · TAVI request/response (staging, 19–20 Oct 2026)",
+ "blocks": [
+  {
+   "head": "PUT /desk/integrations/crm/config (owner, fresh row_version) — one change each",
+   "lines": [
+    {
+     "t": "contacts.mappings += {crm_field:\"no_such_field_qa\", desk_field:\"description\"}  -> 200",
+     "box": "accepted"
+    },
+    {
+     "t": "contacts.mappings += {crm_field:\"description\", desk_field:\"no_such_field_qa\"}  -> 200",
+     "box": "accepted"
+    },
+    {
+     "t": "contacts.mappings += {crm_field:\"account_id\" (lookup), desk_field:\"description\"}  -> 200",
+     "box": "accepted"
+    },
+    {
+     "t": "contacts.mappings += {crm_field:\"\", desk_field:\"description\"}  -> 200",
+     "box": "accepted"
+    },
+    "duplicate desk field / read-only desk field / one-way pair with two-way rows / direction=5 / on_crm_delete=\"maybe\"  -> 422 CRM_SYNC_MAPPING_INVALID (correct)"
+   ]
+  }
+ ]
+}

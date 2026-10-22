@@ -1,0 +1,13 @@
+{ "out": "NDC-1302-retest-PARTIAL.png", "ticket": "NDC-1302", "title": "Deals | Selecting a stage fails with \"Validation failed\" or switches the deal to the default pipeline", "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)", "date": "21 Oct 2026",
+ "panels": [
+  { "img": "1302-04-on-pipeline1.png", "w": 1280, "h": 720, "caption": "Deal created with Pipeline = \"1\" and then \"Change pipeline\" to \"1\": record still shows Standard (Default).", "crop": [296, 255, 950, 130], "boxes": [ { "b": [372, 272, 596, 304], "n": 1, "kind": "FAIL" } ] },
+  { "img": "1302-09-after-stage-clicks.png", "w": 1280, "h": 720, "caption": "Deal on pipeline \"1\" (via import): stage clicks apply and the deal stays on \"1\".", "crop": [296, 255, 950, 130], "boxes": [ { "b": [372, 272, 596, 304], "n": 2, "kind": "PASS" }, { "b": [720, 334, 812, 366], "n": 3, "kind": "PASS" } ] },
+  { "img": "NDC-1302-api.png", "caption": "API proof: the server ignores the pipeline on create/change; stage rules work once a deal is on a pipeline.", "crop": [0, 0, 1600, 470], "boxes": [ { "b": [32, 95, 1568, 302], "n": 4, "kind": "FAIL" }, { "b": [32, 304, 1568, 443], "n": 5, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Deal keeps the pipeline it was created on / moved to", "Deal stays on \"1\" (Test-Pipeline in the ticket)", "Create and Change pipeline return 200/201 but the server stores the default pipeline — record shows Standard (Default)", "FAIL"],
+  ["2", "Stage selection keeps the pipeline", "Never moved by a stage selection", "Deal already on \"1\": qualification, negotiation, test-01 applied, pipeline unchanged", "PASS"],
+  ["3", "Stages offered = deal's own pipeline", "Pipeline \"1\" stages, all selectable", "test-01 … identify_decision_makers shown and selectable", "PASS"],
+  ["4–5", "Clear message when a stage is refused", "Names field and rule", "422: \"Stage 'qualification' is not part of the 'Test-Pipeline copy' pipeline. Choose one of: …\"", "PASS"]
+ ] }

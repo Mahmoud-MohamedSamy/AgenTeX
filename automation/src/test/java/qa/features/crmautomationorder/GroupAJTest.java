@@ -528,9 +528,14 @@ public class GroupAJTest extends OrderTestBase {
                 + "/fields?mode=update&layout_id=" + layout(LEADS)).jsonPath().getList("data");
         String match = null;
         for (Map<String, Object> f : fields) if (Boolean.TRUE.equals(f.get("unique"))) { match = String.valueOf(f.get("field_name")); break; }
+        List<String> offered = new java.util.ArrayList<>();
+        for (Map<String, Object> f : fields) offered.add(f.get("field_name") + (Boolean.TRUE.equals(f.get("unique")) ? "*" : "") + (f.containsKey("match") ? "(match=" + f.get("match") + ")" : ""));
+        System.out.println("[A-13] update-mode fields (* = unique): " + offered + " | first keys " + (fields.isEmpty() ? "-" : fields.get(0).keySet()));
+        // Zoho matches an update import on the record id too; use it when the import offers it
+        if (match == null) for (Map<String, Object> f : fields) if (List.of("id", "record_id", "crm_id").contains(String.valueOf(f.get("field_name")))) match = String.valueOf(f.get("field_name"));
         System.out.println("[A-13] unique fields for update match: " + match);
         if (match == null) inconclusive("Leads has no unique field, so an update-mode import cannot match an existing lead");
-        String mv = api.field(importer(), LEADS, id, match);
+        String mv = List.of("id", "record_id", "crm_id").contains(match) ? id : api.field(importer(), LEADS, id, match);
         if (mv == null) inconclusive("existing lead has no value in the unique field " + match);
         Map<String, Object> row = new LinkedHashMap<>();
         row.put(match, mv);

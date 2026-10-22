@@ -1,0 +1,52 @@
+<!-- DRAFT ONLY. Not filed in Plane. Title: "Hierarchy Preference: features Zoho CRM has that CRM is missing" -->
+<p><strong>Summary</strong></p>
+<p>We compared CRM's Hierarchy Preference (Company Settings, Role-based / Reporting-based) with Zoho CRM. This ticket lists what Zoho has and CRM does not have yet. There is no PRD for this feature in Plane, so items are not mapped to phases.</p>
+<p><strong>Already done in CRM</strong></p>
+<ul><li><p>Hierarchy Preference tab with Role-based and Reporting-based modes and a confirm dialog.</p></li>
+<li><p>The setting is versioned; a second admin saving at the same time gets "Hierarchy preference was changed elsewhere".</p></li>
+<li><p>Role-based follows profile rank (CRM Admin 700, Manager 500, Supervisor 300, User 100).</p></li>
+<li><p>Reporting manager can be set by an admin in the Users window; loops are rejected.</p></li>
+<li><p>Users can see their direct reports on Personal Settings → Reporting Hierarchy (Reporting mode only).</p></li>
+<li><p>Record visibility per module: Public or Hierarchy.</p></li>
+<li><p>Approvals can go to the "Manager" or the "submitter's manager"; assignment rules can use "Reporting Manager".</p></li>
+<li><p>CRM also has Change history and a Live preview on the tab, which Zoho does not have.</p></li></ul>
+<p><strong>Missing — settings page</strong></p>
+<ol><li>Choice of who manages the records of users with no manager ("Any user higher up in the hierarchy" or "Super admin and Administrators"). Reporting mode only.</li>
+<li>Warning when switching back to Role that lists where "Reporting To" is used (reports, criteria, filters, merge fields), with keep or remove for each. Today the same generic dialog shows both ways.</li></ol>
+<p><strong>Missing — role hierarchy</strong></p>
+<ol start="3"><li>Roles tree separate from profiles. Today Role-based uses profile rank, so a permission profile also decides who sees what.</li>
+<li>A superior sees only their own branch. Today the preview says "a Manager sees every User in the tenant" and the visibility hint says "lower-ranked users in their department".</li>
+<li>Share Data with Peers per role.</li>
+<li>Move users and sub-roles to another role before deleting a role ("Transfer &amp; Delete").</li></ol>
+<p><strong>Missing — reporting hierarchy</strong></p>
+<ol start="7"><li>Only users in a higher role can be chosen as manager. Today every user except self is offered.</li>
+<li>User picker for the manager on the Personal Settings page. Today it is a free-text "Paste a user ID" field.</li>
+<li>Reporting Hierarchy section on the user's details (manager and direct reports), and a Reports To column and filter on the Users list.</li>
+<li>When a manager is deleted or deactivated, ask where to move their reports.</li>
+<li>When a manager's role changes and breaks the chain, ask to change the reporting manager.</li></ol>
+<p><strong>Missing — where the hierarchy is used</strong></p>
+<ol start="12"><li>"Reporting To" in reports, custom view criteria, list filters and merge fields. Today only assignment-rule criteria have it.</li>
+<li>Workflow email alert to the record owner's manager or subordinates.</li>
+<li>"Reporting Manager" as a blueprint transition owner.</li>
+<li>Approval levels up the hierarchy (1st, 2nd, 3rd level, or all up to level 2 or 3), and a fallback when the owner has no manager.</li></ol>
+<p><strong>Missing — data sharing</strong></p>
+<ol start="16"><li>Default access options per module: Private, Public Read Only, Public Read/Write, Public Read/Write/Delete. Today CRM has Public or Hierarchy only.</li>
+<li>Sharing rules (owner-based or criteria-based, from / to role, role and subordinates, group, "Superiors Allowed"). /iam/sharing-rules and /settings/data-sharing return 404.</li></ol>
+<p><strong>Missing — API</strong></p>
+<ol start="18"><li>Roles API (list, create, update, delete with transfer). Today /iam/roles and /iam/hierarchy return 404; only profiles are served.</li>
+<li>Read any user's subordinates. Today only /iam/me/subordinates exists; /iam/users/{id}/subordinates returns 404.</li></ol>
+<p><strong>Could not be checked</strong></p>
+<ul><li><p>Whether switching the mode changes what users see. This needs a mode switch and a second signed-in user; it is covered in the test run. Please confirm a Supervisor-rank test account so we can test what a superior sees.</p></li>
+<li><p>Zoho's Reporting-mode screens (items 1, 2, 7, 9) are based on Zoho's help pages. Please approve switching the Zoho reference org to Reporting Hierarchy and back so we can capture them.</p></li>
+<li><p>Items 6, 10, 11 and 15 need write actions on QA data. They are covered in the test run.</p></li></ul>
+<p><strong>Additional notes</strong></p>
+<ul><li><p>Not gaps: forecast hierarchy and territories (CRM has no Forecasts or Territories module).</p></li>
+<li><p>Possible bug to check separately: the Live preview text and the Hierarchy visibility hint describe Role mode differently.</p></li>
+<li><p>Possible bug to check separately: any user can set their own manager by pasting any user ID on the Personal page.</p></li>
+<li><p>Possible bug to check separately: the Reporting manager field works in Role mode, but the Personal page disappears.</p></li>
+<li><p>Possible bug to check separately: Change history does not show who made the change, though the API has it.</p></li>
+<li><p>Test run 21 Oct 2026 found that switching the mode changes nothing users can see (superiors and reporting managers get 403 on their team's leads). These are bugs, to be filed separately: executions/execu_2026-10-21_crm-hierarchy-preference/report.md.</p></li>
+<li><p>Test spec: docs/crm-hierarchy-preference/spec-crm-hierarchy-preference.md in the QA repository.</p></li>
+<li><p>Nothing was changed on the tenant during this check.</p></li></ul>
+<p><strong>Environment</strong></p>
+<p>staging-crm.taviportal.com, Chromium and Edge, 21 October 2026, admin account.</p>

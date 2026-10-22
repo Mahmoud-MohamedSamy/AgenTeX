@@ -1,0 +1,145 @@
+[BASE] run tag ru6z; baseline row_version 37444452; status {enabled=true, paused=false, paused_reason=null, paused_at=null, connected_at=2026-10-18T08:27:09.860544+00:00, last_customer_import_at=2026-10-19T12:32:48.770232+00:00, last_contract_import_at=2026-10-19T12:32:51.122427+00:00, queue={queued=0, processing=0, failed=0, parked=2}, health={metadata_reachable=true, catalog_ready=true, deal_support_fields_present=false, last_checked_at=2026-10-20T15:10:51.9120673+00:00}, integrated_user={user_id=97be04b6-0a08-4883-aa51-e1650b11cab7, name=ndc-staging-owner}}
+[BASE] links contact=38 account=4 contract=4
+[A4] agent PUT /config -> 403 forbidden
+[A4] agent POST /pause -> 403 forbidden
+[A4] agent POST /imports/customers -> 403 forbidden
+[A4] agent POST /failures/retry-all -> 403 forbidden
+[A4] agent POST /failures/{rnd}/discard -> 404 NOT_FOUND
+[A4] agent POST /links -> 403 forbidden
+[A4] agent DELETE /links/{rnd} -> 403 forbidden
+[A4] agent POST /connect -> 403 forbidden
+[A4] row_version 37444452 -> 37444452
+[F1] PUT notifications.rating=false -> 200
+[F1] desk rating=false rv=39604542 | crm rating=false rv=39604542
+[F5] stale row_version -> 409 CONFLICT 'The integration settings were changed by someone else. Reload and try again.'; no row_version -> 200 ''; row_version 39604606 -> 39604613
+[F6] PUT {notifications,row_version} -> 400 VALIDATION_ERROR 'Enter a value for Panel.'; contacts mappings after = 8 (baseline 8)
+[C17] F7 direction=5 -> 400 VALIDATION_ERROR 'contacts.direction has a value of the wrong type.' [{field=contacts.direction, issue=invalid_type}]
+[C17] F7 direction=sideways -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.*.*, issue=direction_invalid}, {field=contacts.first_name.first_name, issue=direction_not_allowed}, {field=contacts.last_name.last_name, issue=direction_not_allowed}, {field=contacts.email.email, issue=direction_not_allowed}, {field=
+[C17] F7 mappings as object -> 400 VALIDATION_ERROR 'contacts.mappings has a value of the wrong type.' [{field=contacts.mappings, issue=invalid_type}]
+[C17] F7 on_crm_delete=maybe -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=on_crm_delete.*.*, issue=value_invalid}]
+[C17] C17 duplicate desk field -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.mobile.first_name, issue=duplicate_target}]
+[C17] C17 unknown crm field -> 200 '' null
+[RESTORE] after accepted C17 unknown crm field -> 200 
+[C17] C17 unknown desk field -> 200 '' null
+[RESTORE] after accepted C17 unknown desk field -> 200 
+[C17] C17 read-only desk field -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.description.crm_sync_status, issue=protected_target}]
+[C17] C17 lookup not mappable -> 200 '' null
+[RESTORE] after accepted C17 lookup not mappable -> 200 
+[C17] C17 one-way with two-way field -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.first_name.first_name, issue=direction_not_allowed}, {field=contacts.last_name.last_name, issue=direction_not_allowed}, {field=contacts.email.email, issue=direction_not_allowed}, {field=contacts.secondary_email.secondary_email, issue
+[C17] C17 incomplete row -> 200 '' null
+[RESTORE] after accepted C17 incomplete row -> 200 
+[C17] Z4 delete_if_no_associates -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=on_crm_delete.*.*, issue=value_invalid}]
+[C17] row_version 39604617 -> 39604830; accepted: [C17 unknown crm field, C17 unknown desk field, C17 lookup not mappable, C17 incomplete row]
+[G1] CRM e6bd9f9a-483e-4702-9b70-76da611194c2 -> Desk 1a21e0bf-6ce4-452b-8b39-f28d7e1ecbe4 in 5 s; desk: first_name=QA CD last_name=G1 ru6z email=qa.cd.g1.ru6z@example.com phone=01000007782 title=G1 title owner=97be04b6-0a08-4883-aa51-e1650b11cab7 crm_sync_status=synced
+[G20] G1 latency 5 s
+[G2] Desk 1e4fa020-4ba2-4e1a-b792-ec78fcabab33 -> CRM f820d08f-df8d-4676-9b55-813652e7bcc0 in 4 s; crm: first_name=QA CD last_name=G2 ru6z email=qa.cd.g2.ru6z@example.com title=G2 title owner=97be04b6-0a08-4883-aa51-e1650b11cab7
+[G3] CRM account 21076a8f-22ab-46dd-a4ca-2ecffa472d09 -> Desk 1730c2ec-23f7-4ef5-89a6-236c85d16a72 account_name=QA CD G3 crm ru6z website=https://qa-cd.example.com phone=0123456 | Desk account 53d52634-f4a1-4bfe-acbf-8c7132448764 -> CRM 8531647f-3819-4a55-a234-562c1d9a91be account_name=QA CD G3 desk ru6z website=https://qa-cd2.example.com
+[G4] CRM->Desk title arrived=true; Desk->CRM title arrived=true
+[G5] Desk owner -> agent: 200
+[G5] control (two-way title) arrived=true; CRM owner=97be04b6-0a08-4883-aa51-e1650b11cab7
+[G11] CRM contact without email 13b126c4-367d-404f-ac4f-57dabce24cf6 -> Desk 67bd107d-0e41-4955-9d97-9b6f6dab3e4a
+[G12] mass-update 3 CRM contacts -> 200
+[G12] Desk titles after: [G12 mass, G12 mass, G12 mass]
+[G15] CRM contact account_id -> QA account: 200
+[G15] Desk contact account_id=1730c2ec-23f7-4ef5-89a6-236c85d16a72 (expected 1730c2ec-23f7-4ef5-89a6-236c85d16a72)
+[G16] sent 53 chars, Desk has 53 chars, equal=true
+[B4] pause with a 1206-char reason -> 500 INTERNAL 'An unexpected error occurred.'
+[B3] pause -> 200
+[B3] status paused=true reason='QA CD pause ru6z <b>x</b>' paused_at=2026-10-20T15:12:29.858128+00:00
+[B5] after 45 s paused: Desk title='G5 control' (held=true); G7 CRM link=false; queue {queued=8, processing=0, failed=0, parked=2}
+[B6] resume -> 200 ''
+[B6] paused edit arrived after resume=true; paused=false queue {queued=0, processing=0, failed=0, parked=3}
+[G7] CRM 91ee86e8-3655-48b8-a5e9-d565ccf7f9c7 link={crm 91ee86e8-3655-48b8-a5e9-d565ccf7f9c7, desk 324b0e40-a637-47b8-bfce-865cba85617f, synced, match_existing} | Desk 324b0e40-a637-47b8-bfce-865cba85617f link={crm 91ee86e8-3655-48b8-a5e9-d565ccf7f9c7, desk 324b0e40-a637-47b8-bfce-865cba85617f, synced, match_existing}
+[G8] CRM (UPPER) {crm 469bad8a-e3a1-452d-a155-f3fad002e824, desk 4c20f659-880a-4328-95a8-27e6eb3d21c8, synced, match_existing} | Desk (lower) {crm 469bad8a-e3a1-452d-a155-f3fad002e824, desk 4c20f659-880a-4328-95a8-27e6eb3d21c8, synced, match_existing}
+[G9] CRM {crm 28a0e226-f661-4d78-8030-d1829d412960, desk a647cc32-bfe8-4dd8-8b67-c35b9f82b850, synced, match_existing} | Desk A none | Desk B {crm 28a0e226-f661-4d78-8030-d1829d412960, desk a647cc32-bfe8-4dd8-8b67-c35b9f82b850, synced, match_existing}
+[G19] failure for the second Desk contact: crm_record_already_linked / 'The CRM contacts record 28a0e226-f661-4d78-8030-d1829d412960 with the same email is already paired with Desk record a647cc32-bfe8-4dd8-8b67-c35b9f82b850.' / record_name=QA CD G9 desk A ru6z
+[H13] discard 692 -> 200; gone from the log=true
+[I9] DELETE /links/{id} -> 204
+[I9] after unlink + CRM edit: Desk title='I9 after unlink' crm_sync_status=synced link={crm f820d08f-df8d-4676-9b55-813652e7bcc0, desk 1e4fa020-4ba2-4e1a-b792-ec78fcabab33, synced, match_existing}
+[I10] candidates for nonsense -> 200 rows=0
+[I8] candidates for the email -> 200 rows=1
+[I8] POST /links -> 409 CONFLICT 'The crm record is already linked.'
+[I8] link now {crm f820d08f-df8d-4676-9b55-813652e7bcc0, desk 1e4fa020-4ba2-4e1a-b792-ec78fcabab33, synced, match_existing}
+[I11] refresh -> 200 {"success":true,"data":{"outcome":"updated","changed_fields":["title"],"queued":false},"error":null,"meta":null}; Desk title updated=true
+[K] ticket a992cdd6-7920-4277-8c67-e34098e1b9f0 #null contact_id=1a21e0bf-6ce4-452b-8b39-f28d7e1ecbe4 account_id=null
+[M2] CRM bell entry for the contact owner (owner account) after ticket create: false []
+[K7] no deal -> crm_contact_or_lead
+[K6] open deal -> open_prospect
+[I3] potentials -> 200 {"success":true,"data":[{"id":"97956d46-b261-4080-ab38-8dc3931e30ec","deal_name":"QA CD K6 open ru6z","stage":"qualification","stage_label":"qualification","category":"open","amount":1000,"currency":null,"closing_date":"2026-11-19","url":"https://staging-crm.taviportal.com/modules/f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430/records/97956d46-b261-4080-ab38-8dc3931e30ec","linked_ticket_count":0}],"error":null,"meta":{"page":null,"page_size":null,"total_count":null,"total_pages":null,"sort_by":null,"sort_…
+[I15] link deal -> 200; GET deal -> 200 {"success":true,"data":{"deal_id":"97956d46-b261-4080-ab38-8dc3931e30ec","deal_name":"QA CD K6 open ru6z","stage":"qualification","category":"open","amount":1000,"closing_date":"2026-11-19","url":"https://staging-crm.taviportal.com/modules/f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430/records/97956d46-b261-4…
+[I15] unlink -> 204; GET deal -> 204 
+[K9] deal won -> won_customer
+[D1] contract for the won deal: {id=3ac64bb4-7d3a-4e31-8acd-59ba959572dc, kind=contract, crm_module_key=deals, crm_record_id=97956d46-b261-4080-ab38-8dc3931e30ec, crm_display=QA CD K6 open ru6z, desk_module_key=desk_contracts, desk_record_id=af6d6e87-b15a-461f-ad47-6510b3b6be3b, desk_display=QA CD K6 open ru6z, sync_status=needs_attention, needs_attention=true, missing_fields=[end_date], last_synced_at=2026-10-20T15:16:40.139653+00:00, match_source=event, crm_url=https://staging-crm.taviportal.com/modules/f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430/records/97956d46-b261-4080-ab38-8dc3931e30ec, desk_url=https://staging-desk.taviportal.com/modules/0924eb24-e42a-4eab-8efd-e3428f19e882/records/af6d6e87-b15a-461f-ad47-6510b3b6be3b}
+[D2] missing_fields=[end_date] sync_status=needs_attention
+[K5] won + open -> won_customer
+[D4] after reopen (keep): link=needs_attention contract status=draft
+[L1] contact card -> 200 has ticket=true
+[L4] account card -> 200 has ticket=true
+[L2] contact stats -> 200 {"success":true,"data":{"total":0,"open":0,"on_hold":0,"closed":0,"overdue":0,"avg_first_response_seconds":null,"avg_resolution_seconds":null,"happiness_rating":null,"window_months":6,"happiness_good":0,"happiness_okay":0,"happiness_bad":0},"error":null,"meta":null}
+[M4] ticket null with the signal off -> bell entries []
+[L5] prefill -> 400 VALIDATION_ERROR {"success":false,"data":null,"error":{"code":"VALIDATION_ERROR","message":"crm_module_key and crm_record_id are required.","details":[{"field":"crm_record_id","issue":"required"}]},"meta":null}
+[L5] create -> 400 VALIDATION_ERROR 'crm_module_key and crm_record_id are required.' {"success":false,"data":null,"error":{"code":"VALIDATION_ERROR","message":"crm_module_key and crm_record_id are required.","details":[{"field":"crm_record_id","issue":"required"}]},"meta":null}
+[L5] INCONCLUSIVE: request body not accepted (crm_module_key and crm_record_id are required.) — body shape unknown, check in the UI
+[J] agent before change: info 200, potentials 200, account info 200
+[J3] stored profile_access for Desk Agent: {profile_id=44444444-4444-4444-4444-444444444402, enabled=true, contacts={enabled=true, info=true, potentials=false, notes=true, activities=[meetings, tasks]}, accounts={enabled=false, info=false, potentials=false, notes=false, activities=[]}}
+[J7] Custom(info,notes,meetings+tasks; no potentials): info 200, potentials 403 FORBIDDEN {"success":false,"data":null,"error":{"code":"FORBIDDEN","message":"Your profile may not open the potentials tab of the CRM panel.","details":[{"field":"tab","issue":"CRM_PANEL_TAB_FORBIDDEN"}]},"meta…, activities 200, notes-target 200; account (no access): info 403 FORBIDDEN, potentials 403 FORBIDDEN
+[J11] owner potentials -> 200
+[J4] Contacts No access: info 403 FORBIDDEN, notes-target 403 FORBIDDEN, activities 403 FORBIDDEN
+[E2] keep: Desk contact gone=false link={crm 909df997-eb96-49e4-a329-14b962db6c6f, desk 3274d741-031e-46f6-b473-7d0f3a6260e9, needs_attention, event}
+[E3] unlink: Desk contact gone=false link={crm b18ed788-83cc-4c02-8fc5-069073c93e58, desk ba4607af-dafc-40e4-94ff-1e64e71bba9c, unlinked, event} crm_sync_status=unlinked
+[E4] delete: Desk contact deleted=true; its ticket deleted=true
+[E5] account delete: Desk account deleted=true
+[E6] Desk delete with keep: CRM contact gone=false link={crm 9626a8a7-cf72-4e95-ad0e-0968b5d36c75, desk cf7ced0c-cdd7-4a34-b278-62b4700a0e42, needs_attention, event}
+[E6] Desk delete with delete: CRM contact deleted=true
+[E7] Desk account delete with delete: CRM account deleted=true
+[H2] history today -> {"success":true,"data":[{"date":"2026-10-20","direction":"desk_to_crm","module":"accounts","added":2,"updated":0},{"date":"2026-10-20","direction":"desk_to_crm","module":"contacts","added":3,"updated":3},{"date":"2026-10-20","direction":"crm_to_desk","module":"accounts","added":2,"updated":0},{"date":"2026-10-20","direction":"crm_to_desk","module":"contacts","added":9,"updated":10}],"error":null,"meta":{"page":null,"page_size":null,"total_count":null,"total_pages":null,"sort_by":null,"sort_order":null,"more_records":null,"next_cursor":null,"total_in_scope":null}}
+[H6] Sync all customers -> 202 {"success":true,"data":{"run_id":"f32f456b-2307-431f-b780-6e381aedf311"},"error":null,"meta":null}
+[H7] again at once -> 409 CONFLICT 'A initial_customers run is already queued or running.'
+[H8] run f32f456b-2307-431f-b780-6e381aedf311 kind=initial_customers status=partially_completed requested=30 created=0 updated=1 skipped=25 failed=0 needs_attention=4; progress seen [partially_completed:{phase=draining, page=0}]; items -> 200
+[H6] contact links before 53 after 53
+[RESTORE] end of run -> 200 
+[CLEAN] delete desk 88e8ea44 76456575-902a-46c3-b03f-05296a16317b -> 204
+[CLEAN] delete desk 88e8ea44 c0f89245-7be1-42cc-9e1b-21edc2bc4d94 -> 204
+[CLEAN] delete desk 88e8ea44 a992cdd6-7920-4277-8c67-e34098e1b9f0 -> 204
+[CLEAN] delete crm f42cbafd 85d7e0f7-b016-46b2-a21d-a363cbea9b9d -> 204
+[CLEAN] delete desk 0924eb24 af6d6e87-b15a-461f-ad47-6510b3b6be3b -> 204
+[CLEAN] delete crm f42cbafd 97956d46-b261-4080-ab38-8dc3931e30ec -> 204
+[CLEAN] delete crm 6f553963 3fb6127d-52b6-43f2-83c4-2456cfe9da96 -> 204
+[CLEAN] delete desk 43004ce2 b19f994b-df67-4fcb-87c6-208a80be72ea -> 204
+[CLEAN] delete crm 6f553963 9626a8a7-cf72-4e95-ad0e-0968b5d36c75 -> 204
+[CLEAN] delete desk 43004ce2 cf7ced0c-cdd7-4a34-b278-62b4700a0e42 -> 204
+[CLEAN] delete desk 43004ce2 c663e46e-7df3-454a-a0f3-2f0551072229 -> 204
+[CLEAN] delete crm 6f553963 6dfa2fbe-45a3-4599-aa19-0e42c6fca689 -> 204
+[CLEAN] delete desk 43004ce2 ba4607af-dafc-40e4-94ff-1e64e71bba9c -> 204
+[CLEAN] delete crm 6f553963 b18ed788-83cc-4c02-8fc5-069073c93e58 -> 204
+[CLEAN] delete desk 43004ce2 3274d741-031e-46f6-b473-7d0f3a6260e9 -> 204
+[CLEAN] delete crm 6f553963 909df997-eb96-49e4-a329-14b962db6c6f -> 204
+[CLEAN] delete desk 43004ce2 a647cc32-bfe8-4dd8-8b67-c35b9f82b850 -> 204
+[CLEAN] delete desk 43004ce2 62f23a7f-c814-4ada-988b-d35535337078 -> 204
+[CLEAN] delete crm 6f553963 28a0e226-f661-4d78-8030-d1829d412960 -> 204
+[CLEAN] delete desk 43004ce2 4c20f659-880a-4328-95a8-27e6eb3d21c8 -> 204
+[CLEAN] delete crm 6f553963 469bad8a-e3a1-452d-a155-f3fad002e824 -> 204
+[CLEAN] delete desk 43004ce2 324b0e40-a637-47b8-bfce-865cba85617f -> 204
+[CLEAN] delete crm 6f553963 91ee86e8-3655-48b8-a5e9-d565ccf7f9c7 -> 204
+[CLEAN] delete desk 43004ce2 c06147b4-6981-446f-9f2d-395b2afef99e -> 204
+[CLEAN] delete crm 6f553963 b8a61837-7e33-48be-9c4f-245b38014782 -> 204
+[CLEAN] delete desk 43004ce2 908062d3-7986-4f0e-88a7-b898a84b4263 -> 204
+[CLEAN] delete desk 43004ce2 c47499cf-39f9-4462-bb5f-49dcf6e2bb60 -> 204
+[CLEAN] delete desk 43004ce2 a35db186-5543-4afd-8fd9-be33a62dfdce -> 204
+[CLEAN] delete crm 6f553963 604447dc-6b8a-4fdb-a545-8bb4fc5c7b21 -> 204
+[CLEAN] delete crm 6f553963 c956d5df-f07e-413f-b97c-5cede6d19dcb -> 204
+[CLEAN] delete crm 6f553963 c1155e8b-2668-4282-bc3f-b3360a78f192 -> 204
+[CLEAN] delete desk 43004ce2 67bd107d-0e41-4955-9d97-9b6f6dab3e4a -> 204
+[CLEAN] delete crm 6f553963 13b126c4-367d-404f-ac4f-57dabce24cf6 -> 204
+[CLEAN] delete crm 6f553963 f820d08f-df8d-4676-9b55-813652e7bcc0 -> 204
+[CLEAN] delete desk 43004ce2 1e4fa020-4ba2-4e1a-b792-ec78fcabab33 -> 204
+[CLEAN] delete desk 43004ce2 1a21e0bf-6ce4-452b-8b39-f28d7e1ecbe4 -> 204
+[CLEAN] delete crm 6f553963 e6bd9f9a-483e-4702-9b70-76da611194c2 -> 204
+[CLEAN] delete crm b2398920 36ea13bc-83e2-4db5-976d-32b6fde9758a -> 204
+[CLEAN] delete desk 784400e1 ef1757cf-c3bd-4585-9720-dad8c6a296df -> 204
+[CLEAN] delete desk 784400e1 1effe1e4-15eb-4ea0-b54e-7f209985ee85 -> 204
+[CLEAN] delete crm b2398920 ba741abb-921a-4179-890e-2a2594d3d0e5 -> 204
+[CLEAN] delete crm b2398920 8531647f-3819-4a55-a234-562c1d9a91be -> 204
+[CLEAN] delete desk 784400e1 1730c2ec-23f7-4ef5-89a6-236c85d16a72 -> 204
+[CLEAN] delete desk 784400e1 53d52634-f4a1-4bfe-acbf-8c7132448764 -> 204
+[CLEAN] delete crm b2398920 21076a8f-22ab-46dd-a4ca-2ecffa472d09 -> 204

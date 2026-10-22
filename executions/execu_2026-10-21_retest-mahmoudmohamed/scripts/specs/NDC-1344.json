@@ -1,0 +1,133 @@
+{
+ "out": "NDC-1344-retest-PARTIAL.png",
+ "ticket": "NDC-1344",
+ "title": "Audit Log | The entity filter is incomplete and does not cover all system entities",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "img": "1344-02-scroll-1.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Entity filter: the module list contains raw entity types (Mail template, Module view) between the modules.",
+   "crop": [
+    292,
+    280,
+    300,
+    390
+   ],
+   "boxes": [
+    {
+     "b": [
+      304,
+      474,
+      556,
+      600
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "1344-02-scroll-6.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "End of the list: modules appear a second time (23c1a6s8d46a, Accounts, Blueprint, Calls, Contacts…).",
+   "crop": [
+    292,
+    280,
+    300,
+    390
+   ],
+   "boxes": [
+    {
+     "b": [
+      304,
+      430,
+      556,
+      656
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "1344-02-scroll-1.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Activity feed shows a raw key: \"restored a audit.entity.leads named QA RT imp p50\".",
+   "crop": [
+    360,
+    380,
+    600,
+    40
+   ],
+   "boxes": [
+    {
+     "b": [
+      372,
+      386,
+      900,
+      412
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "—",
+   "Missing entities added",
+   "Review Process, Assignment Rule, Action, Blueprint, Export, Recycle Bin, module configuration…",
+   "All present: Review Process, Assignment Rule, Action, Custom Action, Blueprint, Web Form, Customer Portal, Import, Export, Mass Delete, Recycle Bin, SMS, Skill…",
+   "PASS"
+  ],
+  [
+   "—",
+   "Grouping",
+   "Module Configuration, Email, Security and System, Company as single filters",
+   "Present as single options; selecting Module Configuration sends the grouped entity types",
+   "PASS"
+  ],
+  [
+   "—",
+   "User-facing labels",
+   "No internal names",
+   "\"Audit Log Entry\" labelled",
+   "PASS"
+  ],
+  [
+   "1",
+   "Consistent list",
+   "Each entity once",
+   "Duplicates: Workflow rule / Workflow Rule, Approval process / Approval Process, Blueprint ×3, Profile ×2; raw types Mail template, Module view among the modules",
+   "FAIL"
+  ],
+  [
+   "2",
+   "No repeated module block",
+   "Each module once",
+   "Modules block repeated at the end of the list",
+   "FAIL"
+  ],
+  [
+   "3",
+   "Feed labels",
+   "Readable entity names",
+   "\"restored a audit.entity.leads\" — raw i18n key",
+   "FAIL"
+  ],
+  [
+   "—",
+   "New finding",
+   "—",
+   "Audit Log recorded nothing between 20 Oct 21:33 UTC and 21 Oct 11:14 UTC (pipelines, imports, records, settings changed today) — see observations",
+   "INFO"
+  ]
+ ]
+}

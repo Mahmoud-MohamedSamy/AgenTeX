@@ -1,0 +1,213 @@
+<title>Automation Follow-up Findings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~860px). Bug entries are the only boxed objects; tickets and gaps are plain tables and figures. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1c2330;
+  --muted: #5b6577;
+  --line: #dde1e8;
+  --accent: #2456c9;
+  --code-bg: #eef1f6;
+  --bug: #b4232a;      --bug-bg: #fbe9ea;
+  --warn: #8a5a00;     --warn-bg: #fdf1d8;
+  --ok: #19703e;       --ok-bg: #e3f4ea;
+  --info: #3d4a63;     --info-bg: #e8ecf3;
+  --font-display: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+    --accent: #7ea2ff; --code-bg: #222a36;
+    --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+    --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+  --accent: #7ea2ff; --code-bg: #222a36;
+  --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+  --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--font-body); }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 48px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.25; }
+h1 { font-size: 2rem; font-weight: 700; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, pre { font-family: var(--font-mono); font-size: 0.85em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 600 0.75rem/1 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 12px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 20px; color: var(--muted); font-size: 0.9rem; }
+.meta b { color: var(--fg); font-weight: 600; }
+section { display: grid; gap: 16px; }
+section > p.lead { color: var(--muted); }
+
+.tally { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font: 600 0.78rem/1.6 var(--font-body); white-space: nowrap; }
+.pill.bug { color: var(--bug); background: var(--bug-bg); }
+.pill.warn { color: var(--warn); background: var(--warn-bg); }
+.pill.ok { color: var(--ok); background: var(--ok-bg); }
+.pill.info { color: var(--info); background: var(--info-bg); }
+
+.bug-entry { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; display: grid; gap: 14px; min-width: 0; }
+.bug-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.bug-id { font: 600 0.85rem/1 var(--font-mono); color: var(--muted); }
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; }
+dl.facts dt { font-weight: 600; color: var(--muted); font-size: 0.9rem; }
+dl.facts dd { margin: 0; min-width: 0; }
+.callout { border: 1px solid #d0d7de; border-left: 4px solid #1f5fbf; padding: 8px 14px; margin: 12px 0 20px; border-radius: 4px; }
+.callout ul { margin: 4px 0 0; padding-left: 1.2em; }
+.steps-h { margin: 10px 0 4px; }
+ol.steps { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pair > div { min-width: 0; display: grid; gap: 6px; }
+pre { background: var(--code-bg); border-radius: 8px; padding: 12px 14px; margin: 0; overflow-x: auto; line-height: 1.5; }
+pre .k { color: var(--bug); font-weight: 600; }
+pre .g { color: var(--ok); font-weight: 600; }
+figure { margin: 0; display: grid; gap: 6px; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+figcaption { font-size: 0.85rem; color: var(--muted); }
+
+.table-box { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+th { font: 600 0.75rem/1.4 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td.mono { font-family: var(--font-mono); font-size: 0.85rem; white-space: nowrap; }
+
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.gallery { display: grid; gap: 28px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; }
+details[open] { padding-bottom: 18px; }
+summary { cursor: pointer; font-weight: 600; }
+details > .gallery { margin-top: 16px; }
+footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
+
+@media (max-width: 640px) {
+  .wrap { padding-inline: 16px; padding-block: 28px 48px; gap: 36px; }
+  h1 { font-size: 1.6rem; }
+  .pair { grid-template-columns: 1fr; }
+  dl.facts { grid-template-columns: 1fr; gap: 2px; }
+  dl.facts dd { margin-bottom: 8px; }
+  .bug-entry { padding: 18px 16px; }
+}
+</style>
+<style>
+table.dec { margin: 0; }
+table.dec th, table.dec td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+table.dec th { color: var(--muted); font-weight: 600; }
+td.q { font-weight: 600; }
+</style>
+
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">TAVI CRM · QA follow-up · 21 Oct 2026</span>
+    <h1>CRM automation: follow-up findings and open decisions</h1>
+    <p>Follow-up to the CRM automation execution-order run (<a href="bug-report.html">bug report</a>). On 21 Oct 2026 every case that was still open was re-run on staging. This page holds the two new findings from that round and everything that needs a decision before go-live. B-17 is published as NDC-2411.</p>
+    <div class="meta">
+      <span><b>Host</b> staging-crm.taviportal.com (tenant NDC-Staging)</span>
+      <span><b>Method</b> Selenium (Owner) + API (CRM Admin), each case with a control</span>
+      <span><b>Date</b> 21 Oct 2026</span>
+    </div>
+    <div class="tally">
+      <span class="pill bug">1 bug (NDC-2411)</span>
+      <span class="pill warn">1 possible bug (inconclusive)</span>
+      <span class="pill info">7 decisions needed</span>
+    </div>
+  </header>
+
+  <section aria-labelledby="findings">
+    <h2 id="findings">Findings</h2>
+    <div class="callout"><p><strong>Before you start</strong></p><ul><li>Assignment rules run only on Import, API and Web Form records, not on records created by hand. Both cases use an import.</li><li>Use a test user you can suspend and reactivate. These runs used "test user 2" (valafo4080), and it was reactivated afterwards.</li></ul></div>
+
+    <article class="bug-entry" id="B-17">
+      <div class="bug-head">
+        <span class="bug-id">B-17 · A-17</span>
+        <span class="pill ok plane">Published · NDC-2411</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Assignment Rules</span>
+      </div>
+      <h3>An assignment rule still assigns records to a suspended user</h3>
+      <p>A rule whose only member was suspended still made that user the owner of an imported lead. The rule's fallback user was not used. In Zoho, deactivated users are skipped and the default user gets the record.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Settings → Assignment Rules → create a rule on <b>Leads</b>, channel <b>Import</b>. One entry: all records → user <b>A</b>. Fallback: <b>Default user</b> = user <b>B</b>. Activate it.</li>
+        <li>Settings → Users → user A → ⋮ → <b>Suspend</b>.</li>
+        <li>Import one lead and choose this assignment rule.</li>
+        <li>Open the lead and check <b>Lead Owner</b>. Then reactivate user A (⋮ → Reactivate).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected (Zoho)</dt><dd>The suspended user is skipped and the default user B becomes the owner.</dd>
+        <dt>Actual (TAVI)</dt><dd>The fallback is never used. On screen (22 Oct, two Jams, workflows off and on) the lead got <b>no owner</b>; in the 21 Oct API run it was assigned to the suspended user.</dd>
+        <dt>Jams</dt><dd><a href="https://jam.dev/c/d0b413bd-a31a-4c0a-8b05-99a9e1aefe08">workflows off</a> (lead <code>4ec5a331</code>) · <a href="https://jam.dev/c/275e7847-2e0b-4278-83e7-2df44c7a4226">workflows on</a> (lead <code>df497579</code>)</dd>
+        <dt>Records</dt><dd>Lead <code>07bae50b</code>; user test user 2 (suspended, then reactivated) (21 Oct)</dd>
+      </dl>
+      <figure><img src="evidence/B-17-suspended-user-still-assigned-vs-zoho.png" alt="B-17: TAVI screen and API next to Zoho's documented behaviour" loading="lazy"><figcaption>B-17: TAVI (left, annotated) vs Zoho CRM documentation (right). Source: <a href="https://help.zoho.com/portal/en/kb/crm/automate-business-processes/assignment-rules/articles/set-assignment-rules">Zoho CRM: Setting up Assignment Rules</a>.</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="A-10">
+      <div class="bug-head">
+        <span class="bug-id">A-10 · possible bug</span>
+        <span class="pill ok plane">Published · NDC-2422 (child of NDC-2418)</span>
+        <span class="pill info">Assignment Rules</span>
+      </div>
+      <h3>Assignment rule "Online status" did not skip a member with no session</h3>
+      <p>With "Check availability based on: Online status" ticked, the lead still went to the first member, test user 2, who had no session open. A control rule without the availability check gave the same owner. TAVI shows nobody's online status, so it can't be proven that test user 2 was offline. Another session may have been signed in as that user.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Make sure user A is signed out everywhere for at least 10 minutes, and user B is signed in.</li>
+        <li>Create a rule on Leads, channel Import, one entry with members <b>[A, B]</b> in that order, <b>Online status</b> ticked, fallback Default user C.</li>
+        <li>Import one lead with the rule and check Lead Owner.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected (Zoho)</dt><dd>A is skipped (not logged in on the web), so B gets the lead. Zoho notes up to 5 minutes delay in online status.</dd>
+        <dt>Actual (TAVI)</dt><dd>A got the lead (lead <code>fa16208a</code>); control <code>c68cf3d7</code> also went to A.</dd>
+        <dt>Cause (22 Oct)</dt><dd>Login History keeps sessions "Active" after they expire: 255 active sessions, 245 past their expiry, back to 30 Aug, so every user looks online (NDC-2418). Import/API assignment also stopped setting owners on 22 Oct (NDC-2419).</dd>
+        <dt>Needed</dt><dd>From dev: how TAVI decides "online", and a way to see it (none of the API or screens show it). Then re-run with a user known to be signed out.</dd>
+      </dl>
+      <figure><img src="evidence/A-10-online-status-not-applied-vs-zoho.png" alt="A-10: TAVI API next to Zoho's documented behaviour" loading="lazy"><figcaption>A-10: TAVI (left, annotated) vs Zoho CRM documentation (right). Same Zoho source as B-17.</figcaption></figure>
+    </article>
+  </section>
+
+  <section aria-labelledby="decisions">
+    <h2 id="decisions">Decisions needed</h2>
+    <div class="table-box"><table class="dec">
+      <thead><tr><th>#</th><th>Decision</th><th>Why it matters</th><th>Options</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="q">Publish B-17: done</td><td>Published 22 Oct as NDC-2411 with both Jams.</td><td>–</td></tr>
+        <tr><td>2</td><td class="q">A-10: ask dev how "online" is decided</td><td>Without it, Online status availability can't be tested and may not work at all.</td><td>Ask dev / file as a question; re-run once answered.</td></tr>
+        <tr><td>3</td><td class="q">API channel for B-19, G-02, G-12, G-15, G-18</td><td>These cases need records created through the real API channel. Settings → API Integration can create an integration client, but creating credentials wasn't permitted in this run.</td><td>(a) You create a QA client and share access, (b) allow me to create one and delete it afterwards, or (c) leave these 5 cases untested.</td></tr>
+        <tr><td>4</td><td class="q">Lead → Deal conversion (H-01, H-07)</td><td>Lead Conversion Mapping has <b>no field mappings for Deals</b>, so converting never creates a Deal and the Deal chain after conversion can't be tested.</td><td>(a) The team sets up the Deals mapping, or (b) I add one temporarily and restore it right after. It's tenant-wide, so teammates' conversions would create Deals during the test.</td></tr>
+        <tr><td>5</td><td class="q">Public web forms (A-02 web form, G-08, E2E-1)</td><td>The public web-form session still returns 404 on staging (re-checked 21 Oct), so the Web Form channel can't be tested.</td><td>Ask the team to enable the public web-form endpoint or share a working form URL.</td></tr>
+        <tr><td>6</td><td class="q">H-04: decided</td><td>Same as Zoho: Convert stays available on a lead in a blueprint (Zoho can only hide it for everyone through profile permission).</td><td>Not a bug.</td></tr>
+        <tr><td>7</td><td class="q">E-04: done</td><td>The email arrived ("QA AEO V6 E-04 after-transition email 18:29:16").</td><td>Pass. The B-13 review SLA also emailed the reviewer ("Review SLA breached").</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="also">
+    <h2 id="also">Also from this round</h2>
+    <ul>
+      <li><b>Passed:</b> A-13 and G-05 (update import: no reassignment; workflow → approval → blueprint in order), J-04 (task completion), E-16 (NDC-1328), K-09 (NDC-1645 / 1652), B-13 (review SLA escalation), K-10 (NDC-1672), and the Selenium UI smoke tests UI-01 to UI-06.</li>
+      <li><b>Published:</b> B-16 → NDC-2391 (a workflow condition on Lead Owner never matches).</li>
+      <li><b>Observation:</b> an update import still requires every required field (for example Phone) in the file.</li>
+      <li><b>Cleanup:</b> everything the tests created was removed; test user 2 is active again.</li>
+    </ul>
+  </section>
+</div>
+
+</html>

@@ -11,6 +11,9 @@ public final class CrmOrderFeature {
     private CrmOrderFeature() {
     }
 
+    /** Feature folder under src/test/resources/features (locators.json of the UI page objects). */
+    public static final String NAME = "crmautomationorder";
+
     public static final String BASE = Config.get("crm.baseUrl", "https://staging-crm.taviportal.com");
     public static final String API = BASE + "/api/v1";
     /** NDC-Staging tenant (not a secret; sent as x-tenant-id on sign-in). */

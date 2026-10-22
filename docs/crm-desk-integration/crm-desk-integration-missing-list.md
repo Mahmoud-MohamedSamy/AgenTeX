@@ -73,12 +73,28 @@
    - The rest matches: Accounts and Contacts set separately; Information, Potentials, Notes, and Activities with activity types.
    - NDC-1669 §6, Phase 3; the PRD does not state the default. — `evidence/09-permission-defaults-vs-zoho.png`
 
+## Missing — found in the parity pass (21 Oct 2026)
+
+All 153 Zoho inventory items now have a verdict: see `zoho-parity-matrix.md`. Evidence images are `evidence/10…18-*-vs-zoho.png`.
+
+10. **Report when the initial sync finishes.** Zoho emails the admin added / updated / ignored counts and why records were skipped. TAVI sends nothing (also bug CD-07). NDC-1669 §4.
+11. **CRM Leads are not considered.** A Desk contact whose email belongs to a CRM Lead is created as a new CRM contact; Zoho does not create it (source: Zoho community).
+12. **CRM users as Light Agents.** Zoho adds CRM users to Desk as Light Agents, and CRM-only users can comment. In TAVI they get no Desk profile, and a comment is refused (403). NDC-1669 §9.
+13. **"@CRM Contact Owner" mention.** Not offered; mentioning a named CRM user works. NDC-1669 §9.
+14. **Act from the CRM notification.** Zoho Signals let a CRM user reply, comment or update from the notification; TAVI's bell entry only opens the record.
+15. **Integrated user becomes inactive.** Zoho prompts to re-point the integration; TAVI has no handling or message (not testable without deactivating the owner).
+16. **CRM Voice of the Customer from Desk tickets** (Zia, Enterprise). Not in NDC-1669.
+17. **Cross-app analytics joining CRM and Desk data** (Zoho Analytics). Separate product, not in NDC-1669.
+18. **The 12-month window of the first sync is not stated** on the screen (Zoho states it). The behaviour can't be tested on staging (no records older than 12 months).
+19. **Empty Handshake columns are shown.** TAVI shows an empty Customers column ("No tickets in this Queue"); Zoho hides empty columns. Checked 21 Oct with the user's OK.
+
 ## Could not be checked (needs data or tenant changes; for Phase 3)
 
 - **12-month lookback** on the first sync (NDC-1669 §4). Zoho states it on the configuration screen ("Only the records created or modified in the last year will be synced"); TAVI says nothing about it. Testing it needs CRM records older than 12 months. Please confirm whether staging has such records, so we can test whether TAVI excludes them.
-- **Initial-sync progress and the "sync finished" notice to the admin** (NDC-1669 §4). Testing needs a fresh Connect. The integration on staging was connected today by a teammate. Please tell us when we may disconnect and reconnect.
-- **Light Agents** (NDC-1669 §9): whether CRM users are added automatically without using a paid seat, and whether @mentions reach the CRM bell. Testing needs a mention on a real ticket.
-- **Profile permissions enforced by the API** (NDC-1669 §6 AC, "disabling Deals blocks it at the API"). Testing needs a lower-profile Desk account with Custom access.
+- **Initial-sync progress and notice:** checked on 20 Oct (approved reconnect). The imports finished in about 3 s; no notice (gap 10, bug CD-07).
+- **Light Agents and mentions:** checked on 21 Oct. CRM users are not Light Agents (gap 12); an @mention of a CRM user reaches their CRM bell.
+- **Profile permissions enforced by the API:** checked on 20 Oct — enforced (403 per section).
+- **Checked 21 Oct with the user's OK:** while disconnected, CRM hides the Desk Tickets card and the Desk menu (as Zoho); the ticket–deal link survives a disconnect (Zoho deletes it; TAVI keeps it as its dialog says — not a gap).
 
 ## Additional notes
 
@@ -106,7 +122,7 @@
   - From CRM to Desk: 10 accounts and 10 contacts.
   - From Desk to CRM: 1 account and 2 contacts.
 - The Desk ticket list was switched to Handshake Mode for one screenshot, then set back to Classic View.
-- The integration is **still active**, so Phase 3 can compare live. Deleting it later stops the sync, but the copied records stay in both orgs.
+- **Deleted on 21 Oct 2026** (user decision), via Zoho Desk → Setup → Zoho → Zoho CRM → ··· → Delete Integration. The page now offers "Integrate" again. The records copied by the first sync stay in both orgs.
 
 ## Environment
 

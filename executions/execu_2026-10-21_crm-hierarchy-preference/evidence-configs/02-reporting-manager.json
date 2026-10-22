@@ -1,0 +1,28 @@
+{
+ "out": "../screenshots/annotated/HP-02-reporting-manager-vs-zoho.png",
+ "id": "HP-02 (J1, J3, J1s)",
+ "title": "Reporting mode: a manager cannot open the leads of their direct report",
+ "verdict": "FAILED",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "As valafo4080 (manager of nameb56175), mode = reporting: opening nameb56175's lead",
+   "img": "../screenshots/originals/tavi-manager-opens-report-lead.png",
+   "boxes": [ { "n": 1, "x": 640, "y": 100, "w": 420, "h": 110 }, { "n": 1, "x": 1137, "y": 818, "w": 280, "h": 58 } ],
+   "text": [ "GET /iam/me/subordinates as valafo4080 lists nameb56175 (direct report), yet GET the lead returns 403 'Permission denied.' Same with valafo4080 as Supervisor in the same department." ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Hierarchy Preference → Reporting Hierarchy (live, not saved)",
+   "img": "../screenshots/originals/zoho-z10-reporting-unsaved.png",
+   "boxes": [ { "n": 2, "x": 287, "y": 310, "w": 842, "h": 190 } ],
+   "text": [ "'Share your organization's data according to the reporting hierarchy': a manager sees the records of everyone who reports to them, at all levels below." ]
+  }
+ ],
+ "rows": [
+  { "n": 1, "b": "Manager opens a direct report's lead", "zoho": "Allowed", "tavi": "Record not found / Permission denied", "match": "Bug" },
+  { "n": 2, "b": "Who manages users with no manager", "zoho": "Any higher user / CEO and Administrators", "tavi": "No option", "match": "Gap Z1" }
+ ],
+ "notes": [ "Switching the mode changed nothing users can see: in both modes a Hierarchy module shows each user only their own records. Mode, managers and profiles were restored after the capture (diff clean)." ]
+}

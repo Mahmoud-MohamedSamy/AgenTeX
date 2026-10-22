@@ -1,0 +1,57 @@
+{
+ "out": "../B-EM2-n04-field-update-lost-under-concurrent-saves.png",
+ "id": "B-EM2",
+ "title": "Workflow field update silently lost when several records are saved at the same moment",
+ "verdict": "Bug",
+ "date": "found 21 Oct 2026, 15:36 UTC; re-tried 22 Oct 2026",
+ "sub": "TAVI CRM crm.taviportal.com, Education First tenant (Ebhar Misr) · intermittent: 1 of 5 parallel batches so far · Zoho side not applicable",
+ "noShot": {"Zoho": "Not comparable. A rule logged as \"Fired\" whose field update is silently not applied is a reliability defect whatever Zoho does. (Whether Zoho lets a workflow rule update the blueprint field at all was not checked.)"},
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Rule N04: on edit, link not empty AND link changed AND status in (Registration Approved, Profile Accessed, Action Required) → Field Update + email",
+   "img": "../originals/em2-a-rule.png",
+   "boxes": [
+    {"n": 1, "x": 150, "y": 337, "w": 1005, "h": 200},
+    {"n": 2, "x": 162, "y": 626, "w": 470, "h": 253}
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "Run 1, 21 Oct 15:36:38–40 UTC — 9 links saved in parallel (EM-00074 … EM-00082): Settings → Execution History + record values",
+   "flag": "FROM THE EXECUTION LOG AND RECORD API — records deleted after the run",
+   "text": [
+    "3. EM-00081 · N04 15:36:40.343 Fired · email Succeeded · status stayed Registration Approved · video_submitted_at empty",
+    "3. EM-00079 · N04 15:36:40.272 Fired · email Succeeded · status stayed Registration Approved · video_submitted_at empty",
+    "3. EM-00075 · N04 15:36:40.303 Fired · email Succeeded · status stayed Registration Approved · video_submitted_at empty",
+    "3. EM-00076 · N04 15:36:40.450 Fired · email Succeeded · status stayed Registration Approved · video_submitted_at empty",
+    "3. EM-00077 · N04 15:36:40.496 Fired · email Succeeded · status stayed Registration Approved · video_submitted_at empty",
+    "4. EM-00074 / 78 / 80 / 82 · N04 Fired · → Video Submitted → owner rule → Assessment Assigned (correct)",
+    "5. The 5 stuck records: no run of «مالك الفئة: الفنون» or «إسناد التقييم»; errorMessage null; the Field Update leaves no entry in dispatches",
+    "6. Re-saving the link on each stuck record one at a time → Assessment Assigned straight away"
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "Reproduction attempts",
+   "flag": "SUMMARY",
+   "text": [
+    "21 Oct 15:36 · 9 parallel saves · 5 stuck (EM-00075, 76, 77, 79, 81)",
+    "21 Oct 16:01 · 9 parallel saves · 0 stuck (EM-00083 … 91, kept)",
+    "22 Oct 08:12 / 08:14 / 08:16 · 3 × 9 parallel saves · 0 stuck (EM-00095 … 121, deleted)",
+    "Intermittent: 5 lost updates in 45 parallel saves, all in one batch."
+   ]
+  }
+ ],
+ "rows": [
+  {"n": "1, 2", "b": "Saving the video link makes N04 set Video Submitted + time stamp (blueprint-governed field, applied through automatic transition t-sys-video-1)", "zoho": "—", "tavi": "Works when saves are one at a time", "match": "Not comparable"},
+  {"n": "3", "b": "Same, when several records are saved within ~2 s", "zoho": "—", "tavi": "Sometimes the update is not applied, while the rule is logged as Fired and its email is sent", "match": "Not comparable"},
+  {"n": "5", "b": "Failure visible anywhere (outcome, errorMessage, dispatches)", "zoho": "—", "tavi": "No: outcome Fired, errorMessage null, Field Update has no dispatch row", "match": "Not comparable"},
+  {"n": "6", "b": "Impact", "zoho": "—", "tavi": "Application stays at Registration Approved with a link saved; no assessor is assigned; nobody is alerted", "match": "Not comparable"}
+ ],
+ "notes": [
+  "Request to the developers: check the server logs for EM-00075 / 76 / 77 / 79 / 81 around 15:36:40 UTC on 21 Oct. Likely a row-version / lock conflict on the governed field that is swallowed.",
+  "Expected: the update is applied reliably (retry on conflict), or the execution is logged as failed with the error — never reported as Fired when part of it did not run.",
+  "The rule's own hint says the Field Update 'updates fields on the current record before it's saved' — relevant to how concurrent saves are merged."
+ ]
+}

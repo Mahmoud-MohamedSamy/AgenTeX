@@ -1,0 +1,8 @@
+{ "out": "NEW-audit-log-not-recording.png", "title": "Audit Log — no events recorded after 20 Oct 2026 21:41 UTC (staging-crm, NDC-Staging)", "date": "21 Oct 2026", "rows": [
+ ["Probe create", "13:37:48 UTC POST /modules/{Deals}/records  deal_name \"QA RT audit probe\"", "201 Created (ff180cca…)", "info"],
+ ["Probe update", "PATCH same record amount = 2", "200 OK", "info"],
+ ["Audit after 2 min", "GET /audit/events?app_key=crm (polled every 10 s for 2 min)", "no event for the probe", "bad"],
+ ["Newest crm event", "GET /audit/events?app_key=crm", "20 Oct 21:42 UTC \"created record\" (only later: 21 Oct 11:14 \"restored leads\")", "bad"],
+ ["Newest metadata event", "GET /audit/events?app_key=metadata-engine", "20 Oct 21:41 UTC blueprint_definition_row", "bad"],
+ ["Newest iam event", "GET /audit/events?app_key=iam", "20 Oct 21:34 UTC login session (many sign-ins on 21 Oct are missing)", "bad"],
+ ["Still written", "Recycle Bin restore / purge", "21 Oct 09:40 desk purged…, 11:14 crm restored — audit-service-internal actions only", "info"] ] }

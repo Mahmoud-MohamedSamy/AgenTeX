@@ -1,0 +1,8 @@
+{ "out": "NEW-pipeline-not-writable.png", "title": "Deals — pipeline is ignored by the record API (Standard layout, pipelines Standard (default) and \"1\")", "date": "21 Oct 2026", "rows": [
+ ["Field list", "GET /modules/{Deals}/fields", "no \"pipeline\" field (stage, amount… only)", "info"],
+ ["Create, UI shape", "POST records data[] {field:\"pipeline\", value:\"1\"}", "201 — stored on Standard", "bad"],
+ ["Create, pipeline_id", "POST records + top-level pipeline_id \"1\"", "201 — stored on Standard", "bad"],
+ ["Create, pipelineId", "POST records + top-level pipelineId \"1\"", "201 — stored on Standard", "bad"],
+ ["Create, data pipeline_id", "POST records data[] {field:\"pipeline_id\"}", "201 — stored on Standard", "bad"],
+ ["Update", "PATCH imported deal on \"1\": pipeline = Standard, stage = proposal", "200 — still on \"1\"", "bad"],
+ ["Only working path", "Import with a Pipeline column / pipeline delete with transfer", "sets the pipeline", "info"] ] }

@@ -1,0 +1,10 @@
+const d = page.locator('[role=dialog]').last();
+const ins = d.locator('input');
+await ins.nth(0).fill('QA RT partners'); await sleep(800);
+const keyVal = await ins.nth(1).inputValue();
+if (!keyVal) await ins.nth(1).fill('qa_rt_partners');
+const resp = []; const f = async r => { const q = r.request(); if (q.method() === 'POST' && /modules/.test(q.url())) resp.push(q.url().replace(H + '/api/v1', '') + ' → ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 300)); }; page.on('response', f);
+await d.getByRole('button', { name: 'Create' }).click(); await sleep(6000);
+page.off('response', f);
+await shot('1229-02-created');
+return done({ keyVal: keyVal || 'typed', url: page.url(), resp, t: (await txt()).split('Storage Requests')[1]?.slice(0, 800) });

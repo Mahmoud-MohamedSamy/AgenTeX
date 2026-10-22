@@ -1,0 +1,14 @@
+const id = '6efdaee1-c891-4b6e-bc97-8db54f607138';
+const list = arr((await api('GET', '/teamspaces')).j.data).map(t => t.name);
+const one = await api('GET', `/teamspaces/${id}`); const fol = await api('GET', `/teamspaces/${id}/folders`); const mods = await api('GET', `/teamspaces/${id}/modules`);
+const st = await api('GET', '/settings/teamspaces');
+const stNames = arr(st.j?.data).map(t => (t.name || t.teamspace?.name) + (t.role || t.myRole || t.isAdmin !== undefined ? ' role=' + (t.role || t.myRole || t.isAdmin) : ''));
+await go('/', 8000);
+await page.getByRole('button', { name: /CRM Teamspace/ }).first().click().catch(() => {}); await sleep(1500);
+const sw = await page.locator('[role=menu], [role=listbox], [role=dialog]').allInnerTexts();
+await shot('1172-04-switcher-crm-admin');
+await page.keyboard.press('Escape');
+await go('/settings', 7000); await page.getByText('Teamspace', { exact: true }).first().click(); await sleep(6000);
+const sp = (await txt()).split('Storage Requests')[1]?.slice(0, 600);
+await shot('1172-05-settings-crm-admin');
+return done({ list, one: one.s + ' ' + one.t.slice(0, 160), folders: fol.s, modules: mods.s, settingsList: st.s + ' ' + JSON.stringify(stNames), switcher: sw.map(x => x.slice(0, 300)), settingsPage: sp });

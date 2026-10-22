@@ -1,0 +1,41 @@
+{
+ "out": "B-16-api.png",
+ "title": "B-16 · F-02 · TAVI request/response (21 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "Three On Create workflow rules on Leads, each limited to its own name prefix, Field Update Description = marker",
+   "lines": [
+    "A  no owner condition (control)",
+    "B  criteria owner Equal {kind:string, stringValue:<mahmoud.mahamed1515 id>}",
+    "C  criteria owner is one of [<mahmoud.mahamed1515 id>]"
+   ]
+  },
+  {
+   "head": "POST /modules/{leads}/records as mahmoud.mahamed1515 (Lead Owner = mahmoud.mahamed1515)",
+   "lines": [
+    {
+     "t": "lead 01879074 (rule A): Description = marker  -> fired",
+     "box": "control fires"
+    },
+    {
+     "t": "lead 5331182e (rule B): Description empty       -> NOT fired",
+     "box": "owner condition never matches"
+    },
+    {
+     "t": "lead a3511a73 (rule C): Description empty       -> NOT fired",
+     "box": "owner condition never matches"
+    }
+   ]
+  },
+  {
+   "head": "Rule built on the screen: Lead Owner is mahmoud.mahamed1515 (+ Name starts with), Field Update Comment",
+   "lines": [
+    "saved criteria: {kind:Comparison, field:owner, operator:Equal, value:{kind:string, stringValue:3445ec4a-…}}",
+    {
+     "t": "lead owned by 3445ec4a (mahmoud.mahamed1515) -> NOT fired",
+     "box": "same result from the screen"
+    }
+   ]
+  }
+ ]
+}

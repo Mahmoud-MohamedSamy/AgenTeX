@@ -1,0 +1,337 @@
+{
+ "states": [
+  {
+   "blueprintDefinitionId": "7ded7469-e027-4b70-b196-6b37b596f061",
+   "blueprintName": "إبهار مصر — مراحل الطلب",
+   "targetField": "application_status",
+   "activeStates": [
+    "Pending Verification"
+   ],
+   "isTerminal": false,
+   "allStates": [
+    {
+     "id": "Pending Verification",
+     "name": "Pending Verification",
+     "isTerminal": false
+    },
+    {
+     "id": "Registration Approved",
+     "name": "Registration Approved",
+     "isTerminal": false
+    },
+    {
+     "id": "Registration Rejected",
+     "name": "Registration Rejected",
+     "isTerminal": true
+    },
+    {
+     "id": "Profile Accessed",
+     "name": "Profile Accessed",
+     "isTerminal": false
+    },
+    {
+     "id": "Video Submitted",
+     "name": "Video Submitted",
+     "isTerminal": false
+    },
+    {
+     "id": "Assessment Assigned",
+     "name": "Assessment Assigned",
+     "isTerminal": false
+    },
+    {
+     "id": "Action Required",
+     "name": "Action Required",
+     "isTerminal": false
+    },
+    {
+     "id": "Assessment Complete",
+     "name": "Assessment Complete",
+     "isTerminal": false
+    },
+    {
+     "id": "Finalist Accepted",
+     "name": "Finalist Accepted",
+     "isTerminal": false
+    },
+    {
+     "id": "Finalist Rejected",
+     "name": "Finalist Rejected",
+     "isTerminal": true
+    }
+   ],
+   "allTransitions": [
+    {
+     "id": "t-approve-registration",
+     "name": "قبول التسجيل",
+     "fromStateId": "Pending Verification",
+     "toStateId": "Registration Approved",
+     "isCommon": false,
+     "criteria": null,
+     "subTransitions": []
+    },
+    {
+     "id": "t-reject-registration",
+     "name": "رفض التسجيل",
+     "fromStateId": "Pending Verification",
+     "toStateId": "Registration Rejected",
+     "isCommon": false,
+     "criteria": null,
+     "subTransitions": []
+    },
+    {
+     "id": "t-approve-video-math",
+     "name": "اعتماد الفيديو — الرياضيات",
+     "fromStateId": "Assessment Assigned",
+     "toStateId": "Assessment Complete",
+     "isCommon": false,
+     "criteria": {
+      "op": "eq",
+      "field": "category",
+      "value": "الرياضيات"
+     },
+     "subTransitions": []
+    },
+    {
+     "id": "t-correction-math",
+     "name": "طلب تصحيح الفيديو — الرياضيات",
+     "fromStateId": "Assessment Assigned",
+     "toStateId": "Action Required",
+     "isCommon": false,
+     "criteria": {
+      "op": "eq",
+      "field": "category",
+      "value": "الرياضيات"
+     },
+     "subTransitions": []
+    },
+    {
+     "id": "t-approve-video-science",
+     "name": "اعتماد الفيديو — العلوم",
+     "fromStateId": "Assessment Assigned",
+     "toStateId": "Assessment Complete",
+     "isCommon": false,
+     "criteria": {
+      "op": "eq",
+      "field": "category",
+      "value": "العلوم"
+     },
+     "subTransitions": []
+    },
+    {
+     "id": "t-correction-science",
+     "name": "طلب تصحيح الفيديو — العلوم",
+     "fromStateId": "Assessment Assigned",
+     "toStateId": "Action Required",
+     "isCommon": false,
+     "criteria": {
+      "op": "eq",
+      "field": "category",
+      "value": "العلوم"
+     },
+     "subTransitions": []
+    },
+    {
+     "id": "t-approve-video-technology",
+     "name": "اعتماد الفيديو — التكنولوجيا",
+     "fromStateId": "Assessment Assigned",
+     "toStateId": "Assessment Complete",
+     "isCommon": false,
+     "criteria": {
+      "op": "eq",
+      "field": "category",
+      "value": "التكنولوجيا"
+     },
+     "subTransitions": []
+    },
+    {
+     "id": "t-correction-technology",
+     "name": "طلب تصحيح الفيديو — التكنولوجيا",
+     "fromStateId": "Assessment Assigned",
+     "toStateId": "Action Required",
+     "isCommon": false,
+     "criteria": {
+      "op": "eq",
+      "field": "category",
+      "value": "التكنولوجيا"
+     },
+     "subTransitions": []
+    },
+    {
+     "id": "t-approve-video-arts",
+     "name": "اعتماد الفيديو — الفنون",
+     "fromStateId": "Assessment Assigned",
+     "toStateId": "Assessment Complete",
+     "isCommon": false,
+     "criteria": {
+      "op": "eq",
+      "field": "category",
+      "value": "الفنون"
+     },
+     "subTransitions": []
+    },
+    {
+     "id": "t-correction-arts",
+     "name": "طلب تصحيح الفيديو — الفنون",
+     "fromStateId": "Assessment Assigned",
+     "toStateId": "Action Required",
+     "isCommon": false,
+     "criteria": {
+      "op": "eq",
+      "field": "category",
+      "value": "الفنون"
+     },
+     "subTransitions": []
+    },
+    {
+     "id": "t-finalist",
+     "name": "قبول في التصفيات النهائية",
+     "fromStateId": "Assessment Complete",
+     "toStateId": "Finalist Accepted",
+     "isCommon": false,
+     "criteria": null,
+     "subTransitions": []
+    },
+    {
+     "id": "t-not-selected",
+     "name": "عدم الاختيار للتصفيات",
+     "fromStateId": "Assessment Complete",
+     "toStateId": "Finalist Rejected",
+     "isCommon": false,
+     "criteria": null,
+     "subTransitions": []
+    },
+    {
+     "id": "t-sys-accessed",
+     "name": "دخول الملف (تلقائي)",
+     "fromStateId": "Registration Approved",
+     "toStateId": "Profile Accessed",
+     "isCommon": false,
+     "criteria": null,
+     "subTransitions": []
+    },
+    {
+     "id": "t-sys-video-1",
+     "name": "تقديم الفيديو (تلقائي)",
+     "fromStateId": "Registration Approved",
+     "toStateId": "Video Submitted",
+     "isCommon": false,
+     "criteria": null,
+     "subTransitions": []
+    },
+    {
+     "id": "t-sys-video-2",
+     "name": "تقديم الفيديو (تلقائي)",
+     "fromStateId": "Profile Accessed",
+     "toStateId": "Video Submitted",
+     "isCommon": false,
+     "criteria": null,
+     "subTransitions": []
+    },
+    {
+     "id": "t-sys-video-3",
+     "name": "إعادة تقديم الفيديو (تلقائي)",
+     "fromStateId": "Action Required",
+     "toStateId": "Video Submitted",
+     "isCommon": false,
+     "criteria": null,
+     "subTransitions": []
+    },
+    {
+     "id": "t-sys-assign",
+     "name": "إسناد التقييم (تلقائي)",
+     "fromStateId": "Video Submitted",
+     "toStateId": "Assessment Assigned",
+     "isCommon": false,
+     "criteria": null,
+     "subTransitions": []
+    }
+   ],
+   "enteredAt": null,
+   "slaDueAt": null,
+   "autoTransitionPending": false,
+   "autoTransitionAt": null
+  }
+ ],
+ "transitions": [
+  {
+   "blueprintDefinitionId": "7ded7469-e027-4b70-b196-6b37b596f061",
+   "blueprintName": "إبهار مصر — مراحل الطلب",
+   "targetField": "application_status",
+   "transitionId": "t-approve-registration",
+   "transitionName": "قبول التسجيل",
+   "toStateId": "Registration Approved",
+   "toStateIsTerminal": false,
+   "color": "#1F9E9A",
+   "afterActionCount": 0,
+   "after": [],
+   "during": {
+    "requiredFields": [],
+    "checklist": [],
+    "requireNote": false,
+    "requireAttachment": false,
+    "instructionalMessage": "راجع بيانات المتقدم وصورة بطاقة الرقم القومي. عند القبول تُرسل بيانات الدخول إلى المنصة (N02).",
+    "fieldValidations": [],
+    "requiredAssociatedItems": []
+   },
+   "requiredFields": [],
+   "parentTransitionId": null,
+   "parentTransitionName": null,
+   "groupCompleted": null,
+   "groupTotal": null,
+   "subCompleted": null
+  },
+  {
+   "blueprintDefinitionId": "7ded7469-e027-4b70-b196-6b37b596f061",
+   "blueprintName": "إبهار مصر — مراحل الطلب",
+   "targetField": "application_status",
+   "transitionId": "t-reject-registration",
+   "transitionName": "رفض التسجيل",
+   "toStateId": "Registration Rejected",
+   "toStateIsTerminal": true,
+   "color": "#C0392B",
+   "afterActionCount": 1,
+   "after": [
+    {
+     "kind": "sendEmail",
+     "count": 1
+    }
+   ],
+   "during": {
+    "requiredFields": [
+     {
+      "name": "rejection_reason",
+      "required": true,
+      "via": null,
+      "datatype": {
+       "key": "multi_line",
+       "options": {}
+      }
+     }
+    ],
+    "checklist": [],
+    "requireNote": false,
+    "requireAttachment": false,
+    "instructionalMessage": "اكتب سبب عدم القبول؛ يُرسل إلى المتقدم في رسالة N03.",
+    "fieldValidations": [],
+    "requiredAssociatedItems": []
+   },
+   "requiredFields": [
+    {
+     "name": "rejection_reason",
+     "required": true,
+     "via": null,
+     "datatype": {
+      "key": "multi_line",
+      "options": {}
+     }
+    }
+   ],
+   "parentTransitionId": null,
+   "parentTransitionName": null,
+   "groupCompleted": null,
+   "groupTotal": null,
+   "subCompleted": null
+  }
+ ]
+}

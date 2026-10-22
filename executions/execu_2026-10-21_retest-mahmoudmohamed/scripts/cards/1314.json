@@ -1,0 +1,7 @@
+{ "out": "NDC-1314-api.png", "title": "NDC-1314 — Mass Update of derived Deal fields", "rows": [
+ ["UI field list", "Deals › select 2 › ⋯ › Mass Update › Choose a field", "Name, Deal name, Stage, Amount, … Pipeline — no Probability (%), no Expected Revenue", "ok"],
+ ["Probability", "POST /modules/{Deals}/records/mass-update  record_ids=[2 QA RT deals], probability=50", "422 DERIVED_FIELD_READ_ONLY \"Field 'probability' is derived from the deal's stage…\"", "ok"],
+ ["Expected Revenue", "POST …/mass-update  expected_revenue=5000", "422 DERIVED_FIELD_READ_ONLY", "ok"],
+ ["Control field", "POST …/mass-update  next_step=\"QA RT 1314 control\"", "200 {total:2, updated:2, failed:0}", "ok"],
+ ["Values unchanged", "GET both deals", "probability 10, expected_revenue 500 (stage/amount based)", "ok"],
+ ["Note", "PATCH single record with probability=50", "200 but value ignored (stays 10) — silently dropped, no error", "info"] ] }

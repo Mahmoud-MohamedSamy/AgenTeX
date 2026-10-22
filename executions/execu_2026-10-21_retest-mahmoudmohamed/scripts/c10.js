@@ -1,0 +1,13 @@
+await page.keyboard.press('Escape'); await sleep(300);
+const btns = page.locator('[role=dialog] button[aria-haspopup=listbox]');
+const labels = await btns.evaluateAll(es => es.map(e => (e.getAttribute('aria-label')||'') + '=' + e.innerText));
+await btns.nth(1).click(); await sleep(1000);
+const pipes = await page.locator('[role=listbox] [role=option]').allInnerTexts();
+await page.locator('[role=listbox] [role=option]').filter({ hasText: /^\s*1\s*$/ }).first().click(); await sleep(1200);
+const labels2 = await btns.evaluateAll(es => es.map(e => (e.getAttribute('aria-label')||'') + '=' + e.innerText + (e.disabled ? ' (disabled)' : '')));
+await btns.nth(2).click(); await sleep(1000);
+const stages = await page.locator('[role=listbox] [role=option]').allInnerTexts();
+await shot('1316-06-stage-list');
+await page.locator('[role=listbox] [role=option]').filter({ hasText: /^\s*test-02\s*$/ }).first().click(); await sleep(800);
+await shot('1316-07-ready');
+return done({ labels, pipes, labels2, stages, dlg: await page.locator('[role=dialog]').innerText() });

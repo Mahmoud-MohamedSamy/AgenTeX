@@ -1,0 +1,194 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< qa:ui-automation >--------------------------
+[INFO] Building UI automation (Selenium + TestNG + Allure, self-healing locators) 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ui-automation ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ ui-automation ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ui-automation ---
+[INFO] Copying 41 resources from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ ui-automation ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ ui-automation ---
+[INFO] Using auto detected provider org.apache.maven.surefire.testng.TestNGProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running qa.features.crmdeskintegration.ConnectionRunTest
+[B3] pause dialog + page: Pause syncing? Events keep queuing while paused and drain when you resume. Reason (optional) Cancel Pause sync || Skip to content Settings Tickets Knowledge Base Customers Analytics Activities Contracts EN Search or jump to… Ctrl K 21 ND Setup Home Set up your Desk GENERAL Company Products Departments Business Hours Holidays Customer Happiness Rebranding USER MANAGEMENT Agents Teams Data Sharing Roles Profiles Ticket Access Team Feeds CHANNELS CUSTOMIZATION Modules and Fields Data Types Capabilities Organize Tabs Email Templates Notifications Ticket Number Ticket Templates AUTOMATION DATA ADMI…
+[K10] layout picker while paused: Skip to content Views Tickets Knowledge Base Customers Analytics Activities EN Search or jump to… Ctrl K 21 ND Desk Headquarters Team Feeds Views STARRED VIEWS All Tickets 38 ALL VIEWS All Tickets 38 My Tickets 30 My Open Tickets 0 My On Hold Tickets 0 My Overdue Tickets 0 My Response Overdue Ticket…
+[B6] resume on screen -> connected shown=true; status paused=false
+[B7] pause before disconnect -> 200
+[B8] disconnect dialog + page: Disconnect the integration? Syncing stops. Existing links between CRM and Desk records are kept and can be resumed by reconnecting. Cancel Disconnect || Skip to content Settings Tickets Knowledge Base Customers Analytics Activities Contracts EN Search or jump to… Ctrl K 21 ND Setup Home Set up your Desk GENERAL Company Products Departments Business Hours Holidays Customer Happiness Rebranding USER MANAGEMENT Agents Teams Data Sharing Roles Profiles Ticket Access Team Feeds CHANNELS CUSTOMIZATION Modules and Fields Data Types Capabilities Organize Tabs Email Templates Notifications Ticket Numbe…
+[B7] after disconnect: enabled=false paused=true queue {queued=0, processing=0, failed=0, parked=2}
+[B8] contact links 53 -> 53; account links 8
+[B8] CRM contact created while disconnected linked after 40 s=false
+[K10] layout picker while disconnected: Skip to content Views Tickets Knowledge Base Customers Analytics Activities EN Search or jump to… Ctrl K 21 ND Desk Headquarters Team Feeds Views STARRED VIEWS All Tickets 38 ALL VIEWS All Tickets 38 My Tickets 30 My Open Tickets 0 My On Hold Tickets 0 My Overdue Tickets 0 My Response Overdue Ticket…
+[I7] ticket #298 while disconnected: pane shown=false text=Skip to content Views Tickets Knowledge Base Customers Analytics Activities Contracts EN Search or jump to… Ctrl K 21 ND All Tickets (38) Mail => Ticket => Contact => Sync #300 · Mahmoud 32 hours ago Open qwr121 CE #299 · Mahmoud 32 hours ago Closed testdvscvsdf CE #298 · Mahmoud 32 hours ago Open t…
+[B8] context info while disconnected -> 200 {"success":true,"data":{"record_id":"ed5116a8-48cc-4470-b4b6-82720f9ca70d","module_key":"contacts","module_id":"6f553963-01d6-4b68-9fb3-143d23044c41","url":"https://staging-crm.taviportal.com/modules/…
+[L17] CRM contact card while disconnected: Skip to content Contacts EN Search or jump to… Ctrl K 99+ 5 ND CRM New Home Work Queue Dashboards Reports My Requests My Reviews CRM Teamspace Sales Activities Upload image MM Mahmoud MohamedSamy ACTIVE CLIENT • • Not submitted Add Tags Edit Send Email Overview Timeline N Contact Owner ndc-staging-owner Change Owner Customer Information Contact Information CONTACT OWNER NS ndc-staging-owner ndc-staging-owner@taviportal.com LEAD SOURCE — SALUTATION — FIRST NAME Mahmoud LAST NAME MohamedSamy ACCOU…
+[B9] connect dialog + page: Connect CRM and Desk? Connecting seeds the default field mappings and starts the initial customer import, followed by the contract import. Cancel Connect || Skip to content Settings Tickets Knowledge Base Customers Analytics Activities Contracts EN Search or jump to… Ctrl K 21 ND Setup Home Set up your Desk GENERAL Company Products Departments Business Hours Holidays Customer Happiness Rebranding USER MANAGEMENT Agents Teams Data Sharing Roles Profiles Ticket Access Team Feeds CHANNELS CUSTOMIZATION Modules and Fields Data Types Capabilities Organize Tabs Email Templates Notifications Ticket N…
+[B10] runs after connect: [initial_contracts:partially_completed{phase=draining, page=0} initial_customers:partially_completed{phase=draining, page=0}]
+[B10] Sync History during import shows progress=false 
+[B11] owner bell entries since connect: []
+[B14] contact links 53 -> 54; account links 8 -> 8; contact created while disconnected linked by the import=true
+[J1a] profile_access right after connect: [] (empty = every profile Full Access)
+[B9] connected_at 2026-10-18T08:27:09.860544+00:00 -> 2026-10-20T15:32:54.650094+00:00; paused=false
+[CLEAN] leaveConnected error: GET /desk/integrations/crm/links?page_size=200&page=1 returned 401: {"success":false,"data":null,"error":{"code":"TOKEN_MISSING","message":"Authorization token is required."},"meta":null}
+[ERROR] Tests run: 4, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 274.9 s <<< FAILURE! -- in qa.features.crmdeskintegration.ConnectionRunTest
+[ERROR] qa.features.crmdeskintegration.ConnectionRunTest.pauseAndResumeOnScreen -- Time elapsed: 44.29 s <<< FAILURE!
+java.lang.AssertionError: K10: Handshake Mode still offered while sync is paused (NDC-1669 §8) expected [false] but found [true]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertFalse(Assert.java:79)
+	at qa.features.crmdeskintegration.ConnectionRunTest.pauseAndResumeOnScreen(ConnectionRunTest.java:80)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeSingleClass(TestNGDirectoryTestSuite.java:102)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:91)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmdeskintegration.ConnectionRunTest.connectOnScreen -- Time elapsed: 10.15 s <<< FAILURE!
+java.lang.AssertionError: B11: no notice to the admin that the initial sync finished expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at qa.features.crmdeskintegration.ConnectionRunTest.connectOnScreen(ConnectionRunTest.java:209)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeSingleClass(TestNGDirectoryTestSuite.java:102)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:91)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmdeskintegration.ConnectionRunTest.defaultAccessAfterConnect -- Time elapsed: 4.629 s <<< FAILURE!
+java.lang.AssertionError: Z9: after Connect every Desk profile has Full Access to CRM data (Zoho: only Administrator) expected [false] but found [true]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertFalse(Assert.java:79)
+	at qa.features.crmdeskintegration.ConnectionRunTest.defaultAccessAfterConnect(ConnectionRunTest.java:218)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeSingleClass(TestNGDirectoryTestSuite.java:102)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:91)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   ConnectionRunTest.connectOnScreen:209 B11: no notice to the admin that the initial sync finished expected [true] but found [false]
+[ERROR]   ConnectionRunTest.defaultAccessAfterConnect:218 Z9: after Connect every Desk profile has Full Access to CRM data (Zoho: only Administrator) expected [false] but found [true]
+[ERROR]   ConnectionRunTest.pauseAndResumeOnScreen:80 K10: Handshake Mode still offered while sync is paused (NDC-1669 §8) expected [false] but found [true]
+[INFO] 
+[ERROR] Tests run: 4, Failures: 3, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  04:40 min
+[INFO] Finished at: 2026-10-20T18:33:17+03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project ui-automation: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Software Testing\Automation\Agentex Installation\Agentex Installation\automation\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

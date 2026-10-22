@@ -1,0 +1,11 @@
+{ "out": "NDC-1295-retest-PASS.png", "ticket": "NDC-1295", "title": "Pipelines | A stage deleted from the module's layout still appears in the pipeline's available stages and fails with 422", "verdict": "PASS", "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)", "date": "21 Oct 2026",
+ "panels": [
+  { "img": "1295-04-after-create.png", "w": 1280, "h": 720, "caption": "Step 1: stage qa_rt_1295 created from pipeline \"1\" (Add Stages › Create New Stage).", "crop": [596, 216, 300, 450], "boxes": [ { "b": [608, 574, 872, 610], "n": 1, "kind": "INFO" } ] },
+  { "img": "1295-05-addstages-after-delete.png", "w": 1280, "h": 720, "caption": "After removing qa_rt_1295 from the Deals Stage field: pipeline shows 7 stages and Add Stages finds nothing.", "crop": [596, 216, 300, 450], "boxes": [ { "b": [608, 224, 872, 258], "n": 2, "kind": "PASS" }, { "b": [612, 436, 868, 520], "n": 3, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Create a stage from the pipeline", "Added to pipeline and Stage field", "qa_rt_1295 added (POST …/stages/new → 201)", "INFO"],
+  ["2", "Delete it from the module's Stage field", "Pruned from the pipeline", "Pipeline \"1\" back to 7 stages; stage-probability list no longer has it", "PASS"],
+  ["3", "Add Stages list", "Only stages the module still knows", "Search \"qa_rt\" → no match (empty-state text says \"No pipelines available.\" — wrong noun)", "PASS"],
+  ["—", "Adding it directly", "Refused cleanly", "POST …/stages → 422 \"These stages are not in the module's stage list: qa_rt_1295.\"", "PASS"]
+ ] }

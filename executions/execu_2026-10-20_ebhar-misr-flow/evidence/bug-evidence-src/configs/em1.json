@@ -1,0 +1,142 @@
+{
+ "out": "../B-EM1-blueprint-transition-workflow-inconsistent.png",
+ "id": "B-EM1",
+ "title": "Workflow rules run after some blueprint transitions but not others",
+ "verdict": "Differs",
+ "date": "22 Oct 2026 (times on screen are local, UTC+3)",
+ "sub": "TAVI CRM crm.taviportal.com, Education First tenant (Ebhar Misr), record EM-00094 · Zoho side = Zoho help docs only, not checked on a live Zoho org",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "pool-science presses «اعتماد الفيديو — العلوم» (score + comments are required during-fields) → Execute at 10:59",
+   "img": "../originals/em1-a-dialog.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 25,
+     "y": 170,
+     "w": 462,
+     "h": 64
+    },
+    {
+     "n": 2,
+     "x": 406,
+     "y": 567,
+     "w": 82,
+     "h": 37
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "1 min later: status Assessment Complete, owner still Pool — العلوم (hand-over rule did not run)",
+   "img": "../originals/em1-b-record.png",
+   "boxes": [
+    {
+     "n": 3,
+     "x": 16,
+     "y": 16,
+     "w": 210,
+     "h": 84
+    },
+    {
+     "n": 4,
+     "x": 132,
+     "y": 206,
+     "w": 296,
+     "h": 34
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "Settings → Execution History, filtered by this record: N02 ran after «قبول التسجيل»; nothing after the 10:59 transition",
+   "img": "../originals/em1-c-executions.png",
+   "boxes": [
+    {
+     "n": 5,
+     "x": 13,
+     "y": 457,
+     "w": 1102,
+     "h": 84
+    },
+    {
+     "n": 6,
+     "x": 13,
+     "y": 201,
+     "w": 1102,
+     "h": 84
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "The rule that should have run: On edit · Application Status = Assessment Complete AND Application Status changed · owner round robin to Committee profile",
+   "img": "../originals/em1-d-rule.png",
+   "boxes": [
+    {
+     "n": 7,
+     "x": 150,
+     "y": 337,
+     "w": 1005,
+     "h": 115
+    },
+    {
+     "n": 8,
+     "x": 162,
+     "y": 543,
+     "w": 470,
+     "h": 275
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho CRM help: Troubleshooting Workflows",
+   "flag": "DOCS ONLY — not checked on a live Zoho org",
+   "text": [
+    "“Workflow rules do not trigger when the fields are transitioned from a blueprint.”",
+    "“Workflows are not triggered when a record moves from one transition to another. This is because the record is already being processed in one automation (the blueprint)…”",
+    "“Solution: The actions that were configured in the blueprint can be scheduled in the After part of the blueprint … Then the workflow will be triggered when the record moves through the last transition.”"
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/crm/troubleshooting/articles/troubleshooting-workflows"
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "5",
+   "b": "On-edit workflow rule after a transition WITHOUT during-fields («قبول التسجيل» → N02, status = Registration Approved AND changed)",
+   "zoho": "Not triggered (docs)",
+   "tavi": "Triggered — N02 Fired 10:58, portal access sent",
+   "match": "Differs"
+  },
+  {
+   "n": "1, 2, 6",
+   "b": "On-edit workflow rule after a transition WITH required during-fields («اعتماد الفيديو», score + comments)",
+   "zoho": "Not triggered (docs)",
+   "tavi": "Not triggered — no execution after 10:59",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "3, 4, 7, 8",
+   "b": "Same rule shape (status = X AND status changed) gives a different result depending on the button",
+   "zoho": "Consistent: never triggered",
+   "tavi": "Inconsistent: runs for buttons without fields, not for buttons with fields",
+   "match": "Differs"
+  },
+  {
+   "n": "—",
+   "b": "Zoho's way to act after a transition: actions in the blueprint After section",
+   "zoho": "Recommended (docs)",
+   "tavi": "After offers field update, email, webhook, notify owner — no owner assignment / round robin",
+   "match": "Not checked"
+  }
+ ],
+ "notes": [
+  "Request to the developers: pick ONE rule for whether workflow rules run after blueprint transitions, apply it to every transition, and document it.",
+  "Warning: the Ebhar flow depends on the current behaviour — N02 (portal access) runs only because rules fire after «قبول التسجيل». If transitions stop triggering rules, portal access must move into the blueprint (After) first.",
+  "Reproduced 3 times on 21 Oct (EM-00065, EM-00066, probe) and again on 22 Oct in the UI (EM-00094, kept for the developers)."
+ ]
+}

@@ -1,0 +1,10 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+await page.getByPlaceholder('Label in English').fill('QA RT rollup'); await sleep(500);
+await page.getByRole('button', { name: 'Apply', exact: true }).last().click(); await sleep(1500);
+const resp = []; const f = async r => { const q = r.request(); if (q.method() !== 'GET' && q.url().includes('/modules/')) resp.push(q.method() + ' ' + q.url().replace(H + '/api/v1', '').slice(0, 120) + ' → ' + r.status() + ' ' + (r.status() >= 300 ? (await r.text().catch(() => '')).slice(0, 300) : '')); }; page.on('response', f);
+await page.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(6000);
+page.off('response', f);
+const toasts = await page.locator('[data-sonner-toast]').allInnerTexts();
+await shot('1444-04-saved');
+const fl = arr((await api('GET', `/modules/${L}/fields`)).j.data).filter(f => /rollup/.test(f.datatypeKey)).map(f => ({ id: f.id, name: f.fieldName, label: f.labels?.en, cfg: JSON.stringify(f.config || f.datatypeOptions).slice(0, 300) }));
+return done({ resp, toasts, fl });

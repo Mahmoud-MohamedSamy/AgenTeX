@@ -1,0 +1,10 @@
+{ "out": "NDC-1314-retest-PASS.png", "ticket": "NDC-1314", "title": "Deals - Mass Update | Probability and Expected Revenue are offered for mass update although they are derived values", "verdict": "PASS", "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)", "date": "21 Oct 2026",
+ "panels": [
+  { "img": "NDC-1314-api.png", "caption": "Field list in the UI and the mass-update API.", "crop": [0, 0, 1600, 430], "boxes": [ { "b": [32, 95, 1568, 161], "n": 1, "kind": "PASS" }, { "b": [32, 163, 1568, 276], "n": 2, "kind": "PASS" }, { "b": [32, 278, 1568, 370], "n": 3, "kind": "PASS" }, { "b": [32, 372, 1568, 417], "n": 4, "kind": "INFO" } ] }
+ ],
+ "rows": [
+  ["1", "Probability / Expected Revenue not offered", "Not in the Mass Update field list", "Not listed (19 fields incl. Pipeline)", "PASS"],
+  ["2", "Server refuses them", "Rejected", "mass-update with probability or expected_revenue → 422 DERIVED_FIELD_READ_ONLY", "PASS"],
+  ["3", "Other fields still update", "Control works", "next_step on 2 deals → 200, values of derived fields unchanged", "PASS"],
+  ["4", "Single-record PATCH", "—", "probability=50 → 200 but silently ignored (no error) — minor", "INFO"]
+ ] }

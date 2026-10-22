@@ -1,0 +1,197 @@
+[ {
+  "test" : "WriteRunTest.a4AgentWritesRefused",
+  "cases" : [ "A4" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Agent without desk:integration:manage cannot change anything",
+  "status" : "PASSED",
+  "seconds" : 9.213
+}, {
+  "test" : "WriteRunTest.f1SaveAndShared",
+  "cases" : [ "F1", "A7" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Save one setting; both apps read the same value and row_version",
+  "status" : "PASSED",
+  "seconds" : 4.231
+}, {
+  "test" : "WriteRunTest.f5StaleRowVersion",
+  "cases" : [ "F5" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "PUT with an old or missing row_version is refused",
+  "status" : "FAILED",
+  "seconds" : 1.98,
+  "error" : "write without row_version accepted: 200 expected [true] but found [false]"
+}, {
+  "test" : "WriteRunTest.f6PartialBody",
+  "cases" : [ "F6" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Partial body never wipes the mappings",
+  "status" : "PASSED",
+  "seconds" : 1.955
+}, {
+  "test" : "WriteRunTest.f7c17InvalidBodies",
+  "cases" : [ "F7", "C17", "Z4" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Invalid settings bodies are refused with a code and change nothing",
+  "status" : "FAILED",
+  "seconds" : 16.195,
+  "error" : "invalid settings accepted: [C17 unknown crm field, C17 unknown desk field, C17 lookup not mappable, C17 incomplete row] expected [true] but found [false]"
+}, {
+  "test" : "WriteRunTest.g1CrmContactToDesk",
+  "cases" : [ "G1", "G20" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "CRM contact created -> Desk contact with mapped fields",
+  "status" : "PASSED",
+  "seconds" : 6.501
+}, {
+  "test" : "WriteRunTest.g2DeskContactToCrm",
+  "cases" : [ "G2" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Desk contact created -> CRM contact (two-way)",
+  "status" : "PASSED",
+  "seconds" : 4.982
+}, {
+  "test" : "WriteRunTest.g3Accounts",
+  "cases" : [ "G3" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Accounts both ways",
+  "status" : "PASSED",
+  "seconds" : 6.839
+}, {
+  "test" : "WriteRunTest.g4UpdateBothWays",
+  "cases" : [ "G4" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Updates arrive both ways",
+  "status" : "PASSED",
+  "seconds" : 5.239
+}, {
+  "test" : "WriteRunTest.g5PerFieldDirection",
+  "cases" : [ "G5" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "A CRM -> Desk field edited in Desk is not written to CRM",
+  "status" : "PASSED",
+  "seconds" : 5.906
+}, {
+  "test" : "WriteRunTest.g11NoEmail",
+  "cases" : [ "G11" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "CRM contact without an email still syncs",
+  "status" : "PASSED",
+  "seconds" : 5.41
+}, {
+  "test" : "WriteRunTest.g12MassUpdate",
+  "cases" : [ "G12" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Mass update of CRM contacts arrives for every record",
+  "status" : "PASSED",
+  "seconds" : 14.494
+}, {
+  "test" : "WriteRunTest.g15AccountLink",
+  "cases" : [ "G15" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Changing a CRM contact's account moves the Desk contact to the linked Desk account",
+  "status" : "PASSED",
+  "seconds" : 4.479
+}, {
+  "test" : "WriteRunTest.g16DataClasses",
+  "cases" : [ "G16", "O1" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Arabic, emoji, quotes and markup arrive byte for byte",
+  "status" : "PASSED",
+  "seconds" : 5.024
+}, {
+  "test" : "WriteRunTest.b3PauseAndQueue",
+  "cases" : [ "B3", "B4", "B5" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Pause with a reason; changes made while paused do not move",
+  "status" : "PASSED",
+  "seconds" : 55.73
+}, {
+  "test" : "WriteRunTest.b6ArriveOnResume",
+  "cases" : [ "B6" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Changes made while paused arrive after resume",
+  "status" : "PASSED",
+  "seconds" : 5.182
+}, {
+  "test" : "WriteRunTest.g7MatchOnEmail",
+  "cases" : [ "G7" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Desk and CRM contacts with the same email are linked, not duplicated",
+  "status" : "PASSED",
+  "seconds" : 2.12
+}, {
+  "test" : "WriteRunTest.g8EmailCase",
+  "cases" : [ "G8", "D21" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Email case: UPPER in CRM vs lower in Desk",
+  "status" : "PASSED",
+  "seconds" : 3.029
+}, {
+  "test" : "WriteRunTest.g9DuplicateEmail",
+  "cases" : [ "G9", "G19", "H9", "H10" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Two Desk contacts with one CRM email: one link, one readable failure",
+  "status" : "FAILED",
+  "seconds" : 4.391,
+  "error" : "H10: failure reason shows raw record ids: The CRM contacts record 28a0e226-f661-4d78-8030-d1829d412960 with the same email is already paired with Desk record a647cc32-bfe8-4dd8-8b67-c35b9f82b850. expected [false] but found [true]"
+}, {
+  "test" : "WriteRunTest.h13Discard",
+  "cases" : [ "H13" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Discard our own failure",
+  "status" : "PASSED",
+  "seconds" : 1.375
+}, {
+  "test" : "WriteRunTest.i8i9i11Links",
+  "cases" : [ "I9", "I8", "I10", "I11" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Unlink stops sync; manual link; Update from CRM; search with no result",
+  "status" : "FAILED",
+  "seconds" : 49.225,
+  "error" : "I9: sync continued after unlink expected [true] but found [false]"
+}, {
+  "test" : "WriteRunTest.dealsHandshakeContracts",
+  "cases" : [ "K7", "K6", "I3", "I15", "K9", "K5", "D1", "D2", "D4", "L1", "L2", "L4", "M2" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Ticket of a QA contact through deal states; contracts; CRM card; notification",
+  "status" : "FAILED",
+  "seconds" : 245.687,
+  "error" : "M2 no CRM bell entry for the contact owner expected [true] but found [false]"
+}, {
+  "test" : "WriteRunTest.m4SignalOff",
+  "cases" : [ "M4" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Signal off: no CRM bell entry",
+  "status" : "PASSED",
+  "seconds" : 42.977
+}, {
+  "test" : "WriteRunTest.l5NewTicketFromCrm",
+  "cases" : [ "L5" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "New ticket from the CRM contact",
+  "status" : "SKIPPED",
+  "seconds" : 0.638,
+  "error" : "INCONCLUSIVE: request body not accepted (crm_module_key and crm_record_id are required.) — body shape unknown, check in the UI"
+}, {
+  "test" : "WriteRunTest.jPermissions",
+  "cases" : [ "J3", "J4", "J5", "J6", "J7", "J8", "J9", "J10", "J11" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Desk Agent profile limited: API enforces each section",
+  "status" : "PASSED",
+  "seconds" : 8.174
+}, {
+  "test" : "WriteRunTest.eDeletePreferences",
+  "cases" : [ "E2", "E3", "E4", "E5", "E6", "E7" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Delete preferences in both directions",
+  "status" : "FAILED",
+  "seconds" : 184.291,
+  "error" : "E3 link kept with unlink ({crm b18ed788-83cc-4c02-8fc5-069073c93e58, desk ba4607af-dafc-40e4-94ff-1e64e71bba9c, unlinked, event}) expected [true] but found [false]"
+}, {
+  "test" : "WriteRunTest.hHistoryAndRuns",
+  "cases" : [ "H2", "H6", "H7", "H8" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "History counts; Sync all customers; already running; run detail; no duplicates",
+  "status" : "PASSED",
+  "seconds" : 6.16
+} ]

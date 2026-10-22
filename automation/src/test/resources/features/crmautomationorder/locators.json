@@ -1,0 +1,2205 @@
+{
+  "AssignmentRulesPage" : {
+    "heading" : {
+      "description" : "Page or editor heading by text",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "heading",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2 or self::h3][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "heading1" : {
+      "description" : "Editor title (level-1 heading inside main)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//h1"
+      }, {
+        "by" : "css",
+        "value" : "main h1"
+      } ]
+    },
+    "button" : {
+      "description" : "Button by its text or aria-label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@aria-label='{0}']"
+      } ]
+    },
+    "exactButton" : {
+      "description" : "First button whose aria-label or text is exactly {0} (e.g. Module, Select)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[normalize-space(text())='{0}'][not(self::button)]/following::button[1])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[contains(@aria-labelledby,'')][@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialogButton" : {
+      "description" : "Button inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or self::dialog]//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='alertdialog']//button[normalize-space(.)='{0}']"
+      } ]
+    },
+    "dialogLastButton" : {
+      "description" : "Last dialog button with this text (workflow wizard: trigger Create vs footer Create)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[last()]"
+      } ]
+    },
+    "triggerButton" : {
+      "description" : "Workflow wizard: trigger choice inside the Execute based on group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Execute based on']//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialog" : {
+      "description" : "The open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or @role='alertdialog' or self::dialog]"
+      } ],
+      "fingerprint" : {
+        "tag" : "div",
+        "role" : "dialog",
+        "text" : "Delete assignment rule Delete assignment rule \"QA AEO UI UI-01 AR\"? This can't be undone. Cancel Delete",
+        "classes" : "w-full max-w-sm rounded-xl bg-card p-6 shadow-xl ring-1 ring-black/5",
+        "parentText" : "Delete assignment rule Delete assignment rule \"QA AEO UI UI-"
+      }
+    },
+    "textbox" : {
+      "description" : "Text box by label / aria-label / placeholder (contains)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "textbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//*[self::input or self::textarea]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[contains(normalize-space(text()),'{0}')]/following::*[self::input or self::textarea][1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//input[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]|//textarea[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@id=//label[contains(normalize-space(.),'{0}')]/@for]|//textarea[@id=//label[contains(normalize-space(.),'{0}')]/@for]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::input[1]"
+      } ],
+      "lastHeal" : "2026-10-21T16:56:07.547230400+03:00 promoted 'role=textbox [{0}] (contains)' over 'xpath=//label[contains(normalize-space(.),'Rule Name')]//*[self::input or self::textarea]'"
+    },
+    "option" : {
+      "description" : "Option of the open custom listbox (text equals or starts with {0})",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='option'][contains(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='listbox']//*[@role='option'][normalize-space(.)='{0}' or starts-with(normalize-space(.),'{0} ')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//li[@role='option'][starts-with(normalize-space(.),'{0}')]"
+      } ],
+      "lastHeal" : "2026-10-21T13:29:36.813866500+03:00 promoted 'xpath=//*[@role='option'][contains(normalize-space(.),'{0}')]' over 'xpath=//*[@role='listbox']//*[@role='option'][normalize-space(.)='mahmoud.mahamed1515' or starts-with(normalize-space(.),'mahmoud.mahamed1515 ')]'"
+    },
+    "select" : {
+      "description" : "Native select by label / aria-label (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(text())='{0}']/following::select[1]"
+      } ]
+    },
+    "checkbox" : {
+      "description" : "Checkbox by label (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      }, {
+        "by" : "role",
+        "value" : "checkbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='checkbox'][contains(@aria-label,'{0}')]"
+      } ],
+      "lastHeal" : "2026-10-21T13:29:22.319394500+03:00 promoted 'xpath=//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']' over 'role=checkbox [API] (contains)'"
+    },
+    "radio" : {
+      "description" : "Radio by label",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='radio']"
+      }, {
+        "by" : "role",
+        "value" : "radio",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='radio'][contains(@aria-label,'{0}')]"
+      } ],
+      "lastHeal" : "2026-10-21T13:29:26.706718500+03:00 promoted 'xpath=//label[contains(normalize-space(.),'{0}')]//input[@type='radio']' over 'role=radio [Records matching certain conditions] (contains)'"
+    },
+    "emptyFieldPicker" : {
+      "description" : "Condition builder: field picker not chosen yet",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='— select field —']"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[contains(normalize-space(.),'select field')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='— select field —'][normalize-space(.)='' or contains(normalize-space(.),'select field')]"
+      } ]
+    },
+    "operator" : {
+      "description" : "Condition builder: operator buttons",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-label='Operator']"
+      } ]
+    },
+    "conditionValue" : {
+      "description" : "Condition builder: value boxes (input after an Operator button)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following::input[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following-sibling::input"
+      } ]
+    },
+    "row" : {
+      "description" : "List row containing a cell with the exact name",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='row'][.//*[@role='cell'][normalize-space(.)='{0}']]"
+      } ]
+    },
+    "rowCell" : {
+      "description" : "Name cell of a row (Blueprint names are buttons)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//td//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//td[normalize-space(.)='{0}']"
+      } ]
+    },
+    "rowActions" : {
+      "description" : "Row menu button Actions for <name>",
+      "candidates" : [ {
+        "by" : "ariaLabel",
+        "value" : "Actions for {0}"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Actions for {0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}']]//button[last()]"
+      } ]
+    },
+    "menuItem" : {
+      "description" : "Item of the open row menu",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='menu']//*[@role='menuitem'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='menuitem'][normalize-space(.)='{0}']"
+      } ]
+    },
+    "toggle" : {
+      "description" : "Status switch of a row",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='switch'][@aria-label='Toggle {0}' or @aria-label='Toggle status for {0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]//*[@role='switch']"
+      } ]
+    },
+    "actionTile" : {
+      "description" : "Workflow editor: action type tile in the Add action menu (text starts with the type)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0} ')])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0}')])[1]"
+      } ]
+    },
+    "ruleName" : {
+      "description" : "Workflow editor: rule name button in the header",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Edit rule name']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edit rule name"
+      } ]
+    },
+    "edge" : {
+      "description" : "Blueprint canvas edge group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Edge from {0} to {1}']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edge from {0} to {1}"
+      } ]
+    },
+    "formInput" : {
+      "description" : "Record form inputs",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//input[not(@type='hidden') and not(@type='checkbox') and not(@type='search')]|//main//textarea"
+      }, {
+        "by" : "css",
+        "value" : "main input, main textarea"
+      } ]
+    },
+    "pickerCheckbox" : {
+      "description" : "User/role picker dialog: checkbox of the row whose name equals {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/ancestor::*[.//input[@type='checkbox']][1]//input[@type='checkbox']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "dialogSearch" : {
+      "description" : "Search box inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[@placeholder='Search' or @type='search']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[contains(@placeholder,'Search')]"
+      } ]
+    },
+    "section" : {
+      "description" : "Accordion section header button containing {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-expanded][contains(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-expanded][contains(normalize-space(.),'{0}')]"
+      } ]
+    }
+  },
+  "ReviewProcessesPage" : {
+    "heading" : {
+      "description" : "Page or editor heading by text",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "heading",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2 or self::h3][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "heading1" : {
+      "description" : "Editor title (level-1 heading inside main)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//h1"
+      }, {
+        "by" : "css",
+        "value" : "main h1"
+      } ]
+    },
+    "button" : {
+      "description" : "Button by its text or aria-label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@aria-label='{0}']"
+      } ]
+    },
+    "exactButton" : {
+      "description" : "First button whose aria-label or text is exactly {0} (e.g. Module, Select)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[normalize-space(text())='{0}'][not(self::button)]/following::button[1])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[contains(@aria-labelledby,'')][@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialogButton" : {
+      "description" : "Button inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or self::dialog]//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='alertdialog']//button[normalize-space(.)='{0}']"
+      } ]
+    },
+    "dialogLastButton" : {
+      "description" : "Last dialog button with this text (workflow wizard: trigger Create vs footer Create)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[last()]"
+      } ]
+    },
+    "triggerButton" : {
+      "description" : "Workflow wizard: trigger choice inside the Execute based on group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Execute based on']//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialog" : {
+      "description" : "The open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or @role='alertdialog' or self::dialog]"
+      } ],
+      "fingerprint" : {
+        "tag" : "div",
+        "role" : "dialog",
+        "text" : "Delete this review process? \"QA AEO UI UI-02 RP\" will be removed. Records it already reviewed keep their history. Cancel",
+        "classes" : "rounded-2xl shadow-2xl w-full max-w-md",
+        "parentText" : "Delete this review process? \"QA AEO UI UI-02 RP\" will be rem"
+      }
+    },
+    "textbox" : {
+      "description" : "Text box by label / aria-label / placeholder (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//*[self::input or self::textarea]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[contains(normalize-space(text()),'{0}')]/following::*[self::input or self::textarea][1]"
+      }, {
+        "by" : "role",
+        "value" : "textbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]|//textarea[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@id=//label[contains(normalize-space(.),'{0}')]/@for]|//textarea[@id=//label[contains(normalize-space(.),'{0}')]/@for]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::input[1]"
+      } ],
+      "lastHeal" : "2026-10-21T13:33:39.434206100+03:00 promoted 'xpath=//*[@role='dialog']//*[contains(normalize-space(text()),'{0}')]/following::*[self::input or self::textarea][1]' over 'role=textbox [Process Name] (contains)'"
+    },
+    "option" : {
+      "description" : "Option of the open custom listbox (text equals or starts with {0})",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='listbox']//*[@role='option'][normalize-space(.)='{0}' or starts-with(normalize-space(.),'{0} ')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//li[@role='option'][starts-with(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='option'][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "select" : {
+      "description" : "Native select by label / aria-label (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(text())='{0}']/following::select[1]"
+      } ]
+    },
+    "checkbox" : {
+      "description" : "Checkbox by label (contains)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "checkbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='checkbox'][contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "radio" : {
+      "description" : "Radio by label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "radio",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='radio'][contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='radio']"
+      } ]
+    },
+    "emptyFieldPicker" : {
+      "description" : "Condition builder: field picker not chosen yet",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='— select field —']"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[contains(normalize-space(.),'select field')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='— select field —'][normalize-space(.)='' or contains(normalize-space(.),'select field')]"
+      } ]
+    },
+    "operator" : {
+      "description" : "Condition builder: operator buttons",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-label='Operator']"
+      } ]
+    },
+    "conditionValue" : {
+      "description" : "Condition builder: value boxes (input after an Operator button)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following::input[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following-sibling::input"
+      } ]
+    },
+    "row" : {
+      "description" : "List row containing a cell with the exact name",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='row'][.//*[@role='cell'][normalize-space(.)='{0}']]"
+      } ]
+    },
+    "rowCell" : {
+      "description" : "Name cell of a row (Blueprint names are buttons)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//td//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//td[normalize-space(.)='{0}']"
+      } ]
+    },
+    "rowActions" : {
+      "description" : "Row menu button Actions for <name>",
+      "candidates" : [ {
+        "by" : "ariaLabel",
+        "value" : "Actions for {0}"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Actions for {0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}']]//button[last()]"
+      } ]
+    },
+    "menuItem" : {
+      "description" : "Item of the open row menu",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='menu']//*[@role='menuitem'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='menuitem'][normalize-space(.)='{0}']"
+      } ]
+    },
+    "toggle" : {
+      "description" : "Status switch of a row",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='switch'][@aria-label='Toggle {0}' or @aria-label='Toggle status for {0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]//*[@role='switch']"
+      } ]
+    },
+    "actionTile" : {
+      "description" : "Workflow editor: action type tile in the Add action menu (text starts with the type)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0} ')])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0}')])[1]"
+      } ]
+    },
+    "ruleName" : {
+      "description" : "Workflow editor: rule name button in the header",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Edit rule name']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edit rule name"
+      } ]
+    },
+    "edge" : {
+      "description" : "Blueprint canvas edge group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Edge from {0} to {1}']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edge from {0} to {1}"
+      } ]
+    },
+    "formInput" : {
+      "description" : "Record form inputs",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//input[not(@type='hidden') and not(@type='checkbox') and not(@type='search')]|//main//textarea"
+      }, {
+        "by" : "css",
+        "value" : "main input, main textarea"
+      } ]
+    },
+    "pickerCheckbox" : {
+      "description" : "User/role picker dialog: checkbox of the row whose name equals {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/ancestor::*[.//input[@type='checkbox']][1]//input[@type='checkbox']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "dialogSearch" : {
+      "description" : "Search box inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[@placeholder='Search' or @type='search']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[contains(@placeholder,'Search')]"
+      } ],
+      "fingerprint" : {
+        "tag" : "input",
+        "ariaLabel" : "Search",
+        "placeholder" : "Search",
+        "classes" : "h-8 w-full rounded-md border ps-8 pe-2 text-xs"
+      }
+    },
+    "section" : {
+      "description" : "Accordion section header button containing {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-expanded][contains(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-expanded][contains(normalize-space(.),'{0}')]"
+      } ]
+    }
+  },
+  "WorkflowRulesPage" : {
+    "heading" : {
+      "description" : "Page or editor heading by text",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "heading",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2 or self::h3][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "heading1" : {
+      "description" : "Editor title (level-1 heading inside main)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//h1"
+      }, {
+        "by" : "css",
+        "value" : "main h1"
+      } ]
+    },
+    "button" : {
+      "description" : "Button by its text or aria-label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@aria-label='{0}']"
+      } ]
+    },
+    "exactButton" : {
+      "description" : "First button whose aria-label or text is exactly {0} (e.g. Module, Select)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[normalize-space(text())='{0}'][not(self::button)]/following::button[1])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[contains(@aria-labelledby,'')][@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialogButton" : {
+      "description" : "Button inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or self::dialog]//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='alertdialog']//button[normalize-space(.)='{0}']"
+      } ]
+    },
+    "dialogLastButton" : {
+      "description" : "Last dialog button with this text (workflow wizard: trigger Create vs footer Create)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[last()]"
+      } ]
+    },
+    "triggerButton" : {
+      "description" : "Workflow wizard: trigger choice inside the Execute based on group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Execute based on']//button[normalize-space(.)='{0}']"
+      } ],
+      "lastHeal" : "2026-10-21T14:05:06.348221600+03:00 promoted 'xpath=(//*[@role='dialog']//button[normalize-space(.)='{0}'])[1]' over 'xpath=//*[@role='group'][@aria-label='Execute based on']//button[normalize-space(.)='Create']'"
+    },
+    "dialog" : {
+      "description" : "The open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or @role='alertdialog' or self::dialog]"
+      } ],
+      "fingerprint" : {
+        "tag" : "div",
+        "role" : "dialog",
+        "text" : "Delete rule? Delete workflow rule \"QA AEO UI UI-03 WF\"? This cannot be undone. Cancel Delete",
+        "classes" : "w-full max-w-sm rounded-xl bg-card p-6 shadow-xl ring-1 ring-black/5",
+        "parentText" : "Delete rule? Delete workflow rule \"QA AEO UI UI-03 WF\"? This"
+      }
+    },
+    "textbox" : {
+      "description" : "Text box by label / aria-label / placeholder (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//*[self::input or self::textarea]"
+      }, {
+        "by" : "role",
+        "value" : "textbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]|//textarea[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@id=//label[contains(normalize-space(.),'{0}')]/@for]|//textarea[@id=//label[contains(normalize-space(.),'{0}')]/@for]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[contains(normalize-space(text()),'{0}')]/following::*[self::input or self::textarea][1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::input[1]"
+      } ]
+    },
+    "option" : {
+      "description" : "Option of the open custom listbox (text equals or starts with {0})",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//li[@role='option'][starts-with(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='listbox']//*[@role='option'][normalize-space(.)='{0}' or starts-with(normalize-space(.),'{0} ')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='option'][contains(normalize-space(.),'{0}')]"
+      } ],
+      "lastHeal" : "2026-10-21T14:47:04.847922400+03:00 promoted 'xpath=//li[@role='option'][starts-with(normalize-space(.),'{0}')]' over 'xpath=//*[@role='listbox']//*[@role='option'][normalize-space(.)='Comment' or starts-with(normalize-space(.),'Comment ')]'"
+    },
+    "select" : {
+      "description" : "Native select by label / aria-label (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(text())='{0}']/following::select[1]"
+      } ]
+    },
+    "checkbox" : {
+      "description" : "Checkbox by label (contains)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "checkbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='checkbox'][contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "radio" : {
+      "description" : "Radio by label",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='radio']"
+      }, {
+        "by" : "role",
+        "value" : "radio",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='radio'][contains(@aria-label,'{0}')]"
+      } ],
+      "lastHeal" : "2026-10-21T14:05:21.159508300+03:00 promoted 'xpath=//label[contains(normalize-space(.),'{0}')]//input[@type='radio']' over 'role=radio [Leads matching certain conditions] (contains)'"
+    },
+    "emptyFieldPicker" : {
+      "description" : "Condition builder: field picker not chosen yet",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='— select field —']"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[contains(normalize-space(.),'select field')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='— select field —'][normalize-space(.)='' or contains(normalize-space(.),'select field')]"
+      } ]
+    },
+    "operator" : {
+      "description" : "Condition builder: operator buttons",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-label='Operator']"
+      } ]
+    },
+    "conditionValue" : {
+      "description" : "Condition builder: value boxes (input after an Operator button)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following::input[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following-sibling::input"
+      } ]
+    },
+    "row" : {
+      "description" : "List row containing a cell with the exact name",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='row'][.//*[@role='cell'][normalize-space(.)='{0}']]"
+      } ]
+    },
+    "rowCell" : {
+      "description" : "Name cell of a row (Blueprint names are buttons)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//td//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//td[normalize-space(.)='{0}']"
+      } ]
+    },
+    "rowActions" : {
+      "description" : "Row menu button Actions for <name>",
+      "candidates" : [ {
+        "by" : "ariaLabel",
+        "value" : "Actions for {0}"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Actions for {0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}']]//button[last()]"
+      } ]
+    },
+    "menuItem" : {
+      "description" : "Item of the open row menu",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='menu']//*[@role='menuitem'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='menuitem'][normalize-space(.)='{0}']"
+      } ]
+    },
+    "toggle" : {
+      "description" : "Status switch of a row",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='switch'][@aria-label='Toggle {0}' or @aria-label='Toggle status for {0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]//*[@role='switch']"
+      } ]
+    },
+    "actionTile" : {
+      "description" : "Workflow editor: action type tile in the Add action menu (text starts with the type)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0}')])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0} ')])[1]"
+      } ],
+      "lastHeal" : "2026-10-21T14:05:30.668607500+03:00 promoted 'xpath=(//button[starts-with(normalize-space(.),'{0}')])[1]' over 'xpath=(//button[starts-with(normalize-space(.),'Field Update ')])[1]'"
+    },
+    "ruleName" : {
+      "description" : "Workflow editor: rule name button in the header",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Edit rule name']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edit rule name"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "QA AEO UI UI-03 WF",
+        "ariaLabel" : "Edit rule name",
+        "classes" : "min-w-0 max-w-full truncate text-start px-2 py-0.5 rounded-md transition-colors",
+        "parentText" : "QA AEO UI UI-03 WF"
+      }
+    },
+    "edge" : {
+      "description" : "Blueprint canvas edge group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Edge from {0} to {1}']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edge from {0} to {1}"
+      } ]
+    },
+    "formInput" : {
+      "description" : "Record form inputs",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//input[not(@type='hidden') and not(@type='checkbox') and not(@type='search')]|//main//textarea"
+      }, {
+        "by" : "css",
+        "value" : "main input, main textarea"
+      } ]
+    },
+    "pickerCheckbox" : {
+      "description" : "User/role picker dialog: checkbox of the row whose name equals {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/ancestor::*[.//input[@type='checkbox']][1]//input[@type='checkbox']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "dialogSearch" : {
+      "description" : "Search box inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[@placeholder='Search' or @type='search']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[contains(@placeholder,'Search')]"
+      } ]
+    },
+    "fieldUpdateValue" : {
+      "description" : "Inline Field Update card: value input of the last field row",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[normalize-space(.)='Add field']/ancestor::*[.//input[@type='radio']][1]//*[self::input[not(@type='radio') and not(@type='checkbox')] or self::textarea])[last()]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[normalize-space(.)='Add field']/preceding::*[self::input[not(@type='radio')] or self::textarea][1])"
+      } ],
+      "fingerprint" : {
+        "tag" : "input",
+        "type" : "text",
+        "classes" : "h-10 w-full px-3 text-sm rounded-lg border bg-white focus:outline-none"
+      }
+    },
+    "fieldUpdateSelect" : {
+      "description" : "Inline Field Update card: field chooser of the last row (native select)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[normalize-space(.)='Add field']/ancestor::*[.//input[@type='radio']][1]//select)[last()]"
+      } ]
+    },
+    "fieldUpdateButton" : {
+      "description" : "Inline Field Update card: field chooser of the last row (custom dropdown button)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[normalize-space(.)='Add field']/ancestor::*[.//input[@type='radio']][1]//button[@aria-label='— select field —'])[last()]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[normalize-space(.)='Add field']/ancestor::*[.//input[@type='radio']][1]//button[not(normalize-space(.)='Add field') and not(@aria-label)])[last()]"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "Name",
+        "ariaLabel" : "— select field —",
+        "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
+        "parentText" : "Name"
+      }
+    },
+    "conditionCard" : {
+      "description" : "Workflow editor: the CONDITION card (click to edit)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@aria-label='Edit conditions']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[contains(normalize-space(.),'No conditions')][not(*[contains(normalize-space(.),'No conditions')])]"
+      } ],
+      "fingerprint" : {
+        "tag" : "button",
+        "type" : "button",
+        "text" : "No conditions — actions run on every event of this trigger.",
+        "ariaLabel" : "Edit conditions",
+        "classes" : "w-full text-start group",
+        "parentText" : "No conditions — actions run on every event of this trigger."
+      }
+    },
+    "section" : {
+      "description" : "Accordion section header button containing {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-expanded][contains(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-expanded][contains(normalize-space(.),'{0}')]"
+      } ]
+    }
+  },
+  "ApprovalProcessesPage" : {
+    "heading" : {
+      "description" : "Page or editor heading by text",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "heading",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2 or self::h3][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "heading1" : {
+      "description" : "Editor title (level-1 heading inside main)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//h1"
+      }, {
+        "by" : "css",
+        "value" : "main h1"
+      } ]
+    },
+    "button" : {
+      "description" : "Button by its text or aria-label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@aria-label='{0}']"
+      } ]
+    },
+    "exactButton" : {
+      "description" : "First button whose aria-label or text is exactly {0} (e.g. Module, Select)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[normalize-space(text())='{0}'][not(self::button)]/following::button[1])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[contains(@aria-labelledby,'')][@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialogButton" : {
+      "description" : "Button inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or self::dialog]//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='alertdialog']//button[normalize-space(.)='{0}']"
+      } ]
+    },
+    "dialogLastButton" : {
+      "description" : "Last dialog button with this text (workflow wizard: trigger Create vs footer Create)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[last()]"
+      } ]
+    },
+    "triggerButton" : {
+      "description" : "Workflow wizard: trigger choice inside the Execute based on group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Execute based on']//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialog" : {
+      "description" : "The open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or @role='alertdialog' or self::dialog]"
+      } ],
+      "fingerprint" : {
+        "tag" : "div",
+        "role" : "dialog",
+        "text" : "Delete approval process? \"QA AEO UI UI-04 appr\" will be permanently removed. Records currently in this process are unaff",
+        "classes" : "rounded-2xl shadow-2xl w-full max-w-md",
+        "parentText" : "Delete approval process? \"QA AEO UI UI-04 appr\" will be perm"
+      }
+    },
+    "textbox" : {
+      "description" : "Text box by label / aria-label / placeholder (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//*[self::input or self::textarea]"
+      }, {
+        "by" : "role",
+        "value" : "textbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]|//textarea[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@id=//label[contains(normalize-space(.),'{0}')]/@for]|//textarea[@id=//label[contains(normalize-space(.),'{0}')]/@for]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[contains(normalize-space(text()),'{0}')]/following::*[self::input or self::textarea][1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::input[1]"
+      } ],
+      "lastHeal" : "2026-10-21T19:17:51.420738600+03:00 promoted 'xpath=//label[contains(normalize-space(.),'{0}')]//*[self::input or self::textarea]' over 'role=textbox [Name] (contains)'"
+    },
+    "option" : {
+      "description" : "Option of the open custom listbox (text equals or starts with {0})",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='listbox']//*[@role='option'][normalize-space(.)='{0}' or starts-with(normalize-space(.),'{0} ')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//li[@role='option'][starts-with(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='option'][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "select" : {
+      "description" : "Native select by label / aria-label (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(text())='{0}']/following::select[1]"
+      } ]
+    },
+    "checkbox" : {
+      "description" : "Checkbox by label (contains)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "checkbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='checkbox'][contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "radio" : {
+      "description" : "Radio by label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "radio",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='radio'][contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='radio']"
+      } ]
+    },
+    "emptyFieldPicker" : {
+      "description" : "Condition builder: field picker not chosen yet",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='— select field —']"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[contains(normalize-space(.),'select field')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='— select field —'][normalize-space(.)='' or contains(normalize-space(.),'select field')]"
+      } ]
+    },
+    "operator" : {
+      "description" : "Condition builder: operator buttons",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-label='Operator']"
+      } ]
+    },
+    "conditionValue" : {
+      "description" : "Condition builder: value boxes (input after an Operator button)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following::input[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following-sibling::input"
+      } ]
+    },
+    "row" : {
+      "description" : "List row containing a cell with the exact name",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='row'][.//*[@role='cell'][normalize-space(.)='{0}']]"
+      } ]
+    },
+    "rowCell" : {
+      "description" : "Name cell of a row (Blueprint names are buttons)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//td//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//td[normalize-space(.)='{0}']"
+      } ]
+    },
+    "rowActions" : {
+      "description" : "Row menu button Actions for <name>",
+      "candidates" : [ {
+        "by" : "ariaLabel",
+        "value" : "Actions for {0}"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Actions for {0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}']]//button[last()]"
+      } ]
+    },
+    "menuItem" : {
+      "description" : "Item of the open row menu",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='menu']//*[@role='menuitem'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='menuitem'][normalize-space(.)='{0}']"
+      } ]
+    },
+    "toggle" : {
+      "description" : "Status switch of a row",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='switch'][@aria-label='Toggle {0}' or @aria-label='Toggle status for {0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]//*[@role='switch']"
+      } ]
+    },
+    "actionTile" : {
+      "description" : "Workflow editor: action type tile in the Add action menu (text starts with the type)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0} ')])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0}')])[1]"
+      } ]
+    },
+    "ruleName" : {
+      "description" : "Workflow editor: rule name button in the header",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Edit rule name']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edit rule name"
+      } ]
+    },
+    "edge" : {
+      "description" : "Blueprint canvas edge group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Edge from {0} to {1}']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edge from {0} to {1}"
+      } ]
+    },
+    "formInput" : {
+      "description" : "Record form inputs",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//input[not(@type='hidden') and not(@type='checkbox') and not(@type='search')]|//main//textarea"
+      }, {
+        "by" : "css",
+        "value" : "main input, main textarea"
+      } ]
+    },
+    "pickerCheckbox" : {
+      "description" : "User/role picker dialog: checkbox of the row whose name equals {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/ancestor::*[.//input[@type='checkbox']][1]//input[@type='checkbox']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "dialogSearch" : {
+      "description" : "Search box inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[@placeholder='Search' or @type='search']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[contains(@placeholder,'Search')]"
+      } ]
+    },
+    "section" : {
+      "description" : "Accordion section header button containing {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-expanded][contains(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-expanded][contains(normalize-space(.),'{0}')]"
+      } ]
+    }
+  },
+  "BlueprintsPage" : {
+    "heading" : {
+      "description" : "Page or editor heading by text",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "heading",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2 or self::h3][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "heading1" : {
+      "description" : "Editor title (level-1 heading inside main)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//h1"
+      }, {
+        "by" : "css",
+        "value" : "main h1"
+      } ]
+    },
+    "button" : {
+      "description" : "Button by its text or aria-label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@aria-label='{0}']"
+      } ]
+    },
+    "exactButton" : {
+      "description" : "First button whose aria-label or text is exactly {0} (e.g. Module, Select)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[normalize-space(text())='{0}'][not(self::button)]/following::button[1])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[contains(@aria-labelledby,'')][@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialogButton" : {
+      "description" : "Button inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or self::dialog]//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='alertdialog']//button[normalize-space(.)='{0}']"
+      } ]
+    },
+    "dialogLastButton" : {
+      "description" : "Last dialog button with this text (workflow wizard: trigger Create vs footer Create)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[last()]"
+      } ]
+    },
+    "triggerButton" : {
+      "description" : "Workflow wizard: trigger choice inside the Execute based on group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Execute based on']//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialog" : {
+      "description" : "The open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or @role='alertdialog' or self::dialog]"
+      } ],
+      "fingerprint" : {
+        "tag" : "div",
+        "role" : "dialog",
+        "text" : "Delete blueprint Permanently delete the blueprint \"QA AEO UI UI-05 BP\" and its version history? Records keep their curre",
+        "classes" : "w-full max-w-sm rounded-xl bg-card p-6 shadow-xl ring-1 ring-black/5",
+        "parentText" : "Delete blueprint Permanently delete the blueprint \"QA AEO UI"
+      }
+    },
+    "textbox" : {
+      "description" : "Text box by label / aria-label / placeholder (contains)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "textbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//*[self::input or self::textarea]"
+      }, {
+        "by" : "xpath",
+        "value" : "//input[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]|//textarea[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@id=//label[contains(normalize-space(.),'{0}')]/@for]|//textarea[@id=//label[contains(normalize-space(.),'{0}')]/@for]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[contains(normalize-space(text()),'{0}')]/following::*[self::input or self::textarea][1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::input[1]"
+      } ],
+      "lastHeal" : "2026-10-21T17:12:41.835887+03:00 promoted 'role=textbox [{0}] (contains)' over 'xpath=//label[contains(normalize-space(.),'Transition name')]//*[self::input or self::textarea]'"
+    },
+    "option" : {
+      "description" : "Option of the open custom listbox (text equals or starts with {0})",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='listbox']//*[@role='option'][normalize-space(.)='{0}' or starts-with(normalize-space(.),'{0} ')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//li[@role='option'][starts-with(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='option'][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "select" : {
+      "description" : "Native select by label / aria-label (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(text())='{0}']/following::select[1]"
+      } ],
+      "lastHeal" : "2026-10-21T15:12:52.865930500+03:00 promoted 'xpath=//*[@role='dialog']//*[normalize-space(text())='{0}']/following::select[1]' over 'xpath=//*[@role='dialog']//select[contains(@aria-label,'Module')]'"
+    },
+    "checkbox" : {
+      "description" : "Checkbox by label (contains)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "checkbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='checkbox'][contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "radio" : {
+      "description" : "Radio by label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "radio",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='radio'][contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='radio']"
+      } ]
+    },
+    "emptyFieldPicker" : {
+      "description" : "Condition builder: field picker not chosen yet",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='— select field —']"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[contains(normalize-space(.),'select field')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='— select field —'][normalize-space(.)='' or contains(normalize-space(.),'select field')]"
+      } ]
+    },
+    "operator" : {
+      "description" : "Condition builder: operator buttons",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-label='Operator']"
+      } ]
+    },
+    "conditionValue" : {
+      "description" : "Condition builder: value boxes (input after an Operator button)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following::input[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following-sibling::input"
+      } ]
+    },
+    "row" : {
+      "description" : "List row containing a cell with the exact name",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='row'][.//*[@role='cell'][normalize-space(.)='{0}']]"
+      } ]
+    },
+    "rowCell" : {
+      "description" : "Name cell of a row (Blueprint names are buttons)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//td//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//td[normalize-space(.)='{0}']"
+      } ]
+    },
+    "rowActions" : {
+      "description" : "Row menu button Actions for <name>",
+      "candidates" : [ {
+        "by" : "ariaLabel",
+        "value" : "Actions for {0}"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Actions for {0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}']]//button[last()]"
+      } ]
+    },
+    "menuItem" : {
+      "description" : "Item of the open row menu",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='menu']//*[@role='menuitem'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='menuitem'][normalize-space(.)='{0}']"
+      } ]
+    },
+    "toggle" : {
+      "description" : "Status switch of a row",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='switch'][@aria-label='Toggle {0}' or @aria-label='Toggle status for {0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]//*[@role='switch']"
+      } ]
+    },
+    "actionTile" : {
+      "description" : "Workflow editor: action type tile in the Add action menu (text starts with the type)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0} ')])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0}')])[1]"
+      } ]
+    },
+    "ruleName" : {
+      "description" : "Workflow editor: rule name button in the header",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Edit rule name']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edit rule name"
+      } ]
+    },
+    "edge" : {
+      "description" : "Blueprint canvas edge group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Edge from {0} to {1}']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edge from {0} to {1}"
+      } ]
+    },
+    "formInput" : {
+      "description" : "Record form inputs",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//input[not(@type='hidden') and not(@type='checkbox') and not(@type='search')]|//main//textarea"
+      }, {
+        "by" : "css",
+        "value" : "main input, main textarea"
+      } ]
+    },
+    "pickerCheckbox" : {
+      "description" : "User/role picker dialog: checkbox of the row whose name equals {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/ancestor::*[.//input[@type='checkbox']][1]//input[@type='checkbox']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "dialogSearch" : {
+      "description" : "Search box inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[@placeholder='Search' or @type='search']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[contains(@placeholder,'Search')]"
+      } ]
+    },
+    "section" : {
+      "description" : "Accordion section header button containing {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-expanded][contains(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-expanded][contains(normalize-space(.),'{0}')]"
+      } ]
+    }
+  },
+  "LeadRecordPage" : {
+    "heading" : {
+      "description" : "Page or editor heading by text",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "heading",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[self::h1 or self::h2 or self::h3][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "heading1" : {
+      "description" : "Editor title (level-1 heading inside main)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//h1"
+      }, {
+        "by" : "css",
+        "value" : "main h1"
+      } ]
+    },
+    "button" : {
+      "description" : "Button by its text or aria-label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@aria-label='{0}']"
+      } ]
+    },
+    "exactButton" : {
+      "description" : "First button whose aria-label or text is exactly {0} (e.g. Module, Select)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[normalize-space(text())='{0}'][not(self::button)]/following::button[1])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[contains(@aria-labelledby,'')][@aria-label='{0}' or normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialogButton" : {
+      "description" : "Button inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or self::dialog]//button[normalize-space(.)='{0}' or @aria-label='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='alertdialog']//button[normalize-space(.)='{0}']"
+      } ]
+    },
+    "dialogLastButton" : {
+      "description" : "Last dialog button with this text (workflow wizard: trigger Create vs footer Create)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[last()]"
+      } ]
+    },
+    "triggerButton" : {
+      "description" : "Workflow wizard: trigger choice inside the Execute based on group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Execute based on']//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[@role='dialog']//button[normalize-space(.)='{0}'])[1]"
+      } ]
+    },
+    "dialog" : {
+      "description" : "The open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog' or @role='alertdialog' or self::dialog]"
+      } ]
+    },
+    "textbox" : {
+      "description" : "Text box by label / aria-label / placeholder (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//*[self::input or self::textarea]"
+      }, {
+        "by" : "role",
+        "value" : "textbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]|//textarea[contains(@aria-label,'{0}') or contains(@placeholder,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@id=//label[contains(normalize-space(.),'{0}')]/@for]|//textarea[@id=//label[contains(normalize-space(.),'{0}')]/@for]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[contains(normalize-space(text()),'{0}')]/following::*[self::input or self::textarea][1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::input[1]"
+      } ]
+    },
+    "option" : {
+      "description" : "Option of the open custom listbox (text equals or starts with {0})",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='listbox']//*[@role='option'][normalize-space(.)='{0}' or starts-with(normalize-space(.),'{0} ')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//li[@role='option'][starts-with(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='option'][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "select" : {
+      "description" : "Native select by label / aria-label (contains)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//select[contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]/following::select[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[normalize-space(text())='{0}']/following::select[1]"
+      } ]
+    },
+    "checkbox" : {
+      "description" : "Checkbox by label (contains)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "checkbox",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='checkbox'][contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "radio" : {
+      "description" : "Radio by label",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "radio",
+        "name" : "{0}",
+        "exact" : false
+      }, {
+        "by" : "xpath",
+        "value" : "//input[@type='radio'][contains(@aria-label,'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//label[contains(normalize-space(.),'{0}')]//input[@type='radio']"
+      } ]
+    },
+    "emptyFieldPicker" : {
+      "description" : "Condition builder: field picker not chosen yet",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='— select field —']"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[contains(normalize-space(.),'select field')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='— select field —'][normalize-space(.)='' or contains(normalize-space(.),'select field')]"
+      } ]
+    },
+    "operator" : {
+      "description" : "Condition builder: operator buttons",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-label='Operator']"
+      } ]
+    },
+    "conditionValue" : {
+      "description" : "Condition builder: value boxes (input after an Operator button)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following::input[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Operator']/following-sibling::input"
+      } ]
+    },
+    "row" : {
+      "description" : "List row containing a cell with the exact name",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='row'][.//*[@role='cell'][normalize-space(.)='{0}']]"
+      } ]
+    },
+    "rowCell" : {
+      "description" : "Name cell of a row (Blueprint names are buttons)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//td//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//td[normalize-space(.)='{0}']"
+      } ]
+    },
+    "rowActions" : {
+      "description" : "Row menu button Actions for <name>",
+      "candidates" : [ {
+        "by" : "ariaLabel",
+        "value" : "Actions for {0}"
+      }, {
+        "by" : "role",
+        "value" : "button",
+        "name" : "Actions for {0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}']]//button[last()]"
+      } ]
+    },
+    "menuItem" : {
+      "description" : "Item of the open row menu",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='menu']//*[@role='menuitem'][normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='menuitem'][normalize-space(.)='{0}']"
+      } ]
+    },
+    "toggle" : {
+      "description" : "Status switch of a row",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='switch'][@aria-label='Toggle {0}' or @aria-label='Toggle status for {0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//tr[./td[normalize-space(.)='{0}'] or ./td//*[normalize-space(.)='{0}']]//*[@role='switch']"
+      } ]
+    },
+    "actionTile" : {
+      "description" : "Workflow editor: action type tile in the Add action menu (text starts with the type)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0} ')])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//button[starts-with(normalize-space(.),'{0}')])[1]"
+      } ]
+    },
+    "ruleName" : {
+      "description" : "Workflow editor: rule name button in the header",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-label='Edit rule name']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edit rule name"
+      } ]
+    },
+    "edge" : {
+      "description" : "Blueprint canvas edge group",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='group'][@aria-label='Edge from {0} to {1}']"
+      }, {
+        "by" : "ariaLabel",
+        "value" : "Edge from {0} to {1}"
+      } ]
+    },
+    "formInput" : {
+      "description" : "Record form inputs",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//main//input[not(@type='hidden') and not(@type='checkbox') and not(@type='search')]|//main//textarea"
+      }, {
+        "by" : "css",
+        "value" : "main input, main textarea"
+      } ]
+    },
+    "pickerCheckbox" : {
+      "description" : "User/role picker dialog: checkbox of the row whose name equals {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[normalize-space(text())='{0}']/ancestor::*[.//input[@type='checkbox']][1]//input[@type='checkbox']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//label[contains(normalize-space(.),'{0}')]//input[@type='checkbox']"
+      } ]
+    },
+    "dialogSearch" : {
+      "description" : "Search box inside the open dialog",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[@placeholder='Search' or @type='search']"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//input[contains(@placeholder,'Search')]"
+      } ]
+    },
+    "section" : {
+      "description" : "Accordion section header button containing {0}",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//button[@aria-expanded][contains(normalize-space(.),'{0}')]"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='button'][@aria-expanded][contains(normalize-space(.),'{0}')]"
+      } ]
+    },
+    "textItem" : {
+      "description" : "Element whose own text equals {0} (tabs, list items, edge labels)",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "(//main//*[normalize-space(text())='{0}'])[1]"
+      }, {
+        "by" : "xpath",
+        "value" : "(//*[normalize-space(text())='{0}'])[last()]"
+      } ]
+    },
+    "placeholderBox" : {
+      "description" : "Input by placeholder",
+      "candidates" : [ {
+        "by" : "placeholder",
+        "value" : "{0}"
+      }, {
+        "by" : "xpath",
+        "value" : "//input[contains(@placeholder,'{0}')]"
+      } ]
+    }
+  }
+}

@@ -1,0 +1,282 @@
+{
+ "id": "2f841480-8269-4398-9235-e34a2b3db569",
+ "moduleId": "ffb6202e-9ac2-49ba-a335-ef86c542450e",
+ "name": "إبهار مصر — المرحلة 1: مراجعة الأهلية",
+ "description": "Stage 1 (eligibility): one registration admin, in turns, checks the data and the ID document. Approve → Registration Approved + portal access (N02). Reject (reason required) → Registration Rejected + N03. [kit 7974bca8f0]",
+ "executeOnCreate": true,
+ "executeOnEdit": false,
+ "followsPreviousStage": false,
+ "isActive": false,
+ "priority": 0,
+ "admins": {
+  "adminUserIds": [
+   "1e4510e3-911a-4ebd-b943-de8cd86e649f"
+  ],
+  "adminRoleIds": [
+   "e069456c-d000-4daf-b851-689cddb1418f"
+  ],
+  "allowEdit": false,
+  "editScope": "all_fields",
+  "notifyOriginalApproversEmail": false,
+  "notifyOriginalApproversInApp": false
+ },
+ "rules": [
+  {
+   "criteria": {
+    "kind": "Comparison",
+    "field": "application_status",
+    "operator": "Equal",
+    "negate": null,
+    "caseInsensitive": null,
+    "stringValue": null,
+    "value": {
+     "kind": "string",
+     "stringValue": "Pending Verification",
+     "intValue": null,
+     "doubleValue": null,
+     "boolValue": null,
+     "timestampValue": null,
+     "listValue": null
+    },
+    "values": null,
+    "operands": null
+   },
+   "levels": [
+    {
+     "approver": {
+      "kind": "record_owner",
+      "values": []
+     },
+     "waitingFieldAccess": {
+      "mode": "all",
+      "fields": [],
+      "resetFields": []
+     },
+     "afterStageUpdateFields": null,
+     "assignTask": null,
+     "assignToSubmitterManager": false,
+     "distribution": "round_robin",
+     "assigneeField": "s1_reviewer",
+     "decisionFields": []
+    }
+   ],
+   "finalActions": [
+    {
+     "id": "9a39562f-65df-4892-8eb6-8c1ddb62c8d7",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Registration Approved",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    },
+    {
+     "id": "a7fe35b0-9776-4ddf-bb13-9bf3fd7207de",
+     "type": "SendPortalAccess",
+     "order": 2,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": null,
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": "9b21cf61-04cf-4201-8f3c-928247b97384",
+     "resend": false
+    }
+   ],
+   "rejectionActions": [
+    {
+     "id": "7903b98b-fb01-419c-b7cc-0995e9abee36",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "rejection_reason": {
+       "kind": "string",
+       "stringValue": "${approval_comment}",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Registration Rejected",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    },
+    {
+     "id": "e9d36cbe-8270-4913-8195-587169869a57",
+     "type": "Email",
+     "order": 2,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": null,
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": [
+      {
+       "kind": "RecordEmailField",
+       "value": "email"
+      }
+     ],
+     "emailSubject": "إبهار مصر – نتيجة مراجعة طلب التسجيل",
+     "emailBody": "<!DOCTYPE html><html lang=\"ar\" dir=\"rtl\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head><body style=\"margin:0;padding:0;background:#F3F4F6;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#F3F4F6;\"><tr><td align=\"center\" style=\"padding:24px 12px;\"><table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" dir=\"rtl\" style=\"width:100%;max-width:600px;background:#FFFFFF;font-family:Tahoma,Arial,sans-serif;text-align:right;\"><tr><td style=\"padding:24px 32px;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"right\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/education-first-logo.png\" alt=\"التعليم أولاً — Education First\" width=\"110\" style=\"display:block;border:0;height:auto;\"></td><td align=\"left\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/ebhar-misr-logo.png\" alt=\"إبهار مصر — Ebhar Misr\" width=\"190\" style=\"display:block;border:0;height:auto;\"></td></tr></table></td></tr><tr><td style=\"height:5px;background:#1F9E9A;font-size:0;line-height:0;\">&nbsp;</td></tr><tr><td style=\"padding:32px 32px 8px;\"><h1 style=\"margin:0 0 24px;font-size:26px;color:#1F9E9A;font-weight:bold;\">نتيجة مراجعة طلب التسجيل</h1><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">عزيزي/عزيزتي <strong>{{name}}</strong>،</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نشكرك على اهتمامك بالمشاركة في برنامج <strong>إبهار مصر</strong> لعام 2026.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نود إبلاغك بأنه بعد مراجعة بياناتك والتحقق من استيفائك لشروط التقديم، نأسف لإبلاغك بأنه لم يتم قبول طلبك للانتقال إلى المرحلة التالية من البرنامج.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نقدّر اهتمامك ونتمنى لك دوام التوفيق والنجاح في مسيرتك المستقبلية. ويسعدنا مشاركتك مجددًا العام المقبل حال استيفائك لشروط المسابقة.</p><p style=\"margin:24px 0 4px;font-size:16px;color:#1F2937;\">مع أطيب التمنيات بالتوفيق والنجاح،</p><p style=\"margin:0 0 24px;font-size:17px;font-weight:bold;color:#1F2937;\">إدارة برنامج إبهار مصر</p></td></tr><tr><td style=\"height:5px;background:#E2354B;font-size:0;line-height:0;\">&nbsp;</td></tr></table></td></tr></table></body></html>",
+     "emailTemplateId": "d851a44a-1dfb-4b27-a559-d99bdf12cb50",
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    }
+   ],
+   "rejectedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   },
+   "approvedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   }
+  }
+ ],
+ "rulesCount": 1,
+ "createdAt": "2026-10-20T00:03:53.730843+00:00",
+ "updatedAt": "2026-10-21T09:30:16.835591+00:00",
+ "entryGuard": {
+  "field": "approval_status",
+  "operator": "equals",
+  "value": "not_submitted",
+  "system": true
+ }
+}

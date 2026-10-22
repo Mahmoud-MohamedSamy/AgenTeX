@@ -1,0 +1,11 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+const def = async () => (await api('GET', `/modules/${L}/layouts`)).j.data.filter(l => l.isDefault).map(l => l.name).join(',');
+const setDef = async name => { await page.keyboard.press('Escape'); await sleep(300); await page.getByRole('button', { name: 'Open menu for ' + name, exact: true }).click(); await sleep(900); await page.getByText('Set as default', { exact: true }).last().click(); await sleep(3000); };
+const badgeRow = async () => (await page.locator('tr').filter({ has: page.getByText('Default', { exact: true }) }).allInnerTexts()).map(x => x.split('\n')[0]);
+await setDef('Test Layout 1');
+const api1 = await def(); const ui1 = await badgeRow(); await shot('1588-05-after-set-no-reload');
+await page.reload({ waitUntil: 'commit' }); for (let i = 0; i < 20 && !(await page.getByRole('button', { name: /Open menu for/ }).count()); i++) await sleep(1000); await sleep(1500);
+const ui2 = await badgeRow(); await shot('1588-06-after-reload');
+await setDef('Standard');
+const api3 = await def(); const ui3 = await badgeRow();
+return done({ api1, ui1, ui2, api3, ui3 });

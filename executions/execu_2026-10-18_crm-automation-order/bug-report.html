@@ -110,29 +110,31 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
   <header>
     <span class="eyebrow">TAVI CRM · QA run · 18–19 Oct 2026</span>
     <h1>CRM automation execution order: confirmed bugs</h1>
-    <p>Results of the CRM automation execution-order run (Assignment → Review → Workflow → Approval → Blueprint) on staging, after every candidate bug of 18 Oct was re-run alone on 19 Oct and compared with Zoho CRM. Only confirmed bugs are listed. Nothing here is filed in Plane.</p>
+    <p>Results of the CRM automation execution-order run (Assignment → Review → Workflow → Approval → Blueprint) on staging, after every candidate bug of 18 Oct was re-run alone on 19 Oct and compared with Zoho CRM. Only confirmed bugs are listed. Published in Plane (19–20 Oct 2026): B-01 (NDC-2296), B-02 (NDC-2297), B-04 (NDC-2308), B-05 (NDC-2309), B-06 (NDC-2302), B-07 (NDC-2298), B-10 (NDC-2321), B-11 (NDC-2322), B-13 (NDC-2323), B-14 (NDC-2334), B-16 (NDC-2391). All confirmed bugs are published.</p>
     <div class="meta">
       <span><b>Host</b> staging-crm.taviportal.com (tenant NDC-Staging)</span>
       <span><b>Accounts</b> Owner, CRM Admin ×2, Supervisor, User, "test" profile</span>
       <span><b>Method</b> API (Java + RestAssured), every bug re-run alone with a control</span>
-      <span><b>Result</b> 129 passed · 35 failed · 20 inconclusive · 3 not run (18 Oct) → 14 confirmed bugs after re-verification (B-03 withdrawn)</span>
+      <span><b>Result</b> 129 passed · 35 failed · 20 inconclusive · 3 not run (18 Oct) → 11 confirmed bugs after re-verification (B-03, B-08, B-12 and B-15 withdrawn, B-09 deferred; B-16 found 21 Oct)</span>
     </div>
     <div class="tally">
-      <span class="pill bug">4 high</span>
-      <span class="pill warn">7 medium</span>
+      <span class="pill bug">3 high</span>
+      <span class="pill warn">5 medium</span>
       <span class="pill info">3 low</span>
+      <span class="pill ok">11 published in Plane</span>
       <span class="pill ok">15 suspected bugs cleared on re-verification</span>
     </div>
   </header>
 
   <section aria-labelledby="bugs">
     <h2 id="bugs">Confirmed bugs</h2>
-    <p class="lead">Each one was reproduced on 19 Oct 2026 in isolation: one process of each type on a fresh restricted QA layout, a control record next to it, results read through the API with explicit 2xx checks. The evidence images show the real request and response on the left and Zoho's documented behaviour on the right. Nothing is filed in Plane.</p>
+    <p class="lead">Each one was reproduced on 19 Oct 2026 in isolation: one process of each type on a fresh restricted QA layout, a control record next to it, results read through the API with explicit 2xx checks. The evidence images show the real request and response on the left and Zoho's documented behaviour on the right. Published in Plane (19–20 Oct 2026): B-01 (NDC-2296), B-02 (NDC-2297), B-04 (NDC-2308), B-05 (NDC-2309), B-06 (NDC-2302), B-07 (NDC-2298), B-10 (NDC-2321), B-11 (NDC-2322), B-13 (NDC-2323), B-14 (NDC-2334), B-16 (NDC-2391). All confirmed bugs are published.</p>
     <div class="callout"><p><strong>Before you start</strong></p><ul><li>Staging (staging-crm.taviportal.com, tenant NDC-Staging). Leads module unless the bug says otherwise.</li><li>Avoid Lead Status "Interested", Tasks Status "Completed", and names containing "AP" or "AEX-01": teammates' active rules fire on them.</li><li>Only one review process is allowed per module + layout. If the Standard layout already has one, use a separate layout.</li><li>Steps name the screen first. Where the screen does not expose a setting or a result, the API call is given in brackets.</li></ul></div>
 
     <article class="bug-entry" id="B-01">
       <div class="bug-head">
         <span class="bug-id">B-01 · D-21 / H-03</span>
+        <span class="pill ok plane">Published · NDC-2296</span>
         <span class="pill bug">High (suggested)</span>
         <span class="pill info">Approval</span>
       </div>
@@ -157,6 +159,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
     <article class="bug-entry" id="B-02">
       <div class="bug-head">
         <span class="bug-id">B-02 · H-02</span>
+        <span class="pill ok plane">Published · NDC-2297</span>
         <span class="pill bug">High (suggested)</span>
         <span class="pill info">Review</span>
       </div>
@@ -181,6 +184,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
     <article class="bug-entry" id="B-04">
       <div class="bug-head">
         <span class="bug-id">B-04 · F-03</span>
+        <span class="pill ok plane">Published · NDC-2308</span>
         <span class="pill warn">Medium (suggested)</span>
         <span class="pill info">Assignment → Approval</span>
       </div>
@@ -190,7 +194,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
       <ol class="steps">
         <li>Create an assignment rule on Leads: channel <b>Import</b>, criteria Last Name starts with "B04", assign to user X (a CRM Admin).</li>
         <li>Create an approval process on Leads: <b>On Create</b>, same criteria, approver = <b>Record Owner</b>, process admin = a different user Y.</li>
-        <li>As a third user, import a CSV with one lead "B04 test" and choose the rule from step 1. The lead's owner becomes X.</li>
+        <li>As a third user, import a CSV with one lead "B04 test". In the <b>Assign</b> step choose the rule from step 1 <b>and switch on "Trigger workflow rules"</b>; the Review step must show "Workflow rules: Triggered" (API: <code>options.trigger_automation=true</code>). With it off, the import skips the approval process too, so the lead stays "Not submitted" and the bug cannot show. The lead's owner becomes X.</li>
         <li>Log in as X and open the lead (API: <code>GET /workflow/approvals/records/{leads}/{id}</code>).</li>
         <li>Control: create a lead with the owner set to X directly; X is the approver.</li>
       </ol>
@@ -205,6 +209,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
     <article class="bug-entry" id="B-05">
       <div class="bug-head">
         <span class="bug-id">B-05 · F-01</span>
+        <span class="pill ok plane">Published · NDC-2309</span>
         <span class="pill warn">Medium (suggested)</span>
         <span class="pill info">Assignment → Review</span>
       </div>
@@ -229,6 +234,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
     <article class="bug-entry" id="B-06">
       <div class="bug-head">
         <span class="bug-id">B-06 · G-04</span>
+        <span class="pill ok plane">Published · NDC-2302</span>
         <span class="pill warn">Medium (suggested)</span>
         <span class="pill info">Import</span>
       </div>
@@ -254,6 +260,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
     <article class="bug-entry" id="B-07">
       <div class="bug-head">
         <span class="bug-id">B-07 · A-04</span>
+        <span class="pill ok plane">Published · NDC-2298</span>
         <span class="pill info">Low (suggested)</span>
         <span class="pill info">Assignment</span>
       </div>
@@ -273,56 +280,10 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
       <figure><img src="evidence/B-07-assignment-channel-ignored-vs-zoho.png" alt="B-07: TAVI request and response next to Zoho's documented behaviour" loading="lazy"><figcaption>B-07: TAVI (left, annotated request/response) vs Zoho CRM documentation (right).</figcaption></figure>
     </article>
 
-    <article class="bug-entry" id="B-08">
-      <div class="bug-head">
-        <span class="bug-id">B-08 · C-12</span>
-        <span class="pill warn">Medium (suggested)</span>
-        <span class="pill info">Workflow</span>
-      </div>
-      <h3>A workflow field update does not trigger On Edit workflow rules</h3>
-      <p>Rule A's field update makes the record match On Edit rule B, but B never runs. B does run after a user edit. Zoho chains rules ("you can trigger one workflow with another workflow") with a loop guard of three runs.</p>
-      <p class="steps-h"><strong>Steps to reproduce</strong></p>
-      <ol class="steps">
-        <li>Create workflow rule A on Leads: <b>On Create</b>, action Field Update Lead Source = Referral.</li>
-        <li>Create workflow rule B on Leads: <b>On Edit</b>, criteria Lead Source = Referral, action Field Update Description = "WF B08".</li>
-        <li>Create a lead with Lead Source = Chat.</li>
-        <li>Check the lead and the execution history of both rules.</li>
-        <li>Control: a user edit of Lead Source to Referral does fire rule B.</li>
-      </ol>
-      <dl class="facts">
-        <dt>Expected (Zoho)</dt><dd>B runs after A's update (Zoho FAQ Q10, loop stops after A→B→A).</dd>
-        <dt>Actual (TAVI)</dt><dd>A fired, B fired 0 times.</dd>
-        <dt>Records</dt><dd>Lead <code>23c906c8</code>, control <code>dec908d9</code> (19 Oct); <code>d99b23d6</code> (18 Oct)</dd>
-      </dl>
-      <figure><img src="evidence/B-08-field-update-no-chain-vs-zoho.png" alt="B-08: TAVI request and response next to Zoho's documented behaviour" loading="lazy"><figcaption>B-08: TAVI (left, annotated request/response) vs Zoho CRM documentation (right).</figcaption></figure>
-    </article>
-
-    <article class="bug-entry" id="B-09">
-      <div class="bug-head">
-        <span class="bug-id">B-09 · E-13</span>
-        <span class="pill warn">Medium (suggested)</span>
-        <span class="pill info">Blueprint</span>
-      </div>
-      <h3>A record excluded from a blueprint keeps its blueprint field locked</h3>
-      <p>After <code>mass-exclude</code> the record has no blueprint state, but editing Lead Source is still refused with BLUEPRINT_GOVERNED_FIELD — for the owner and for a CRM Admin. With no transitions offered either, the field is stuck.</p>
-      <p class="steps-h"><strong>Steps to reproduce</strong></p>
-      <ol class="steps">
-        <li>Create a blueprint on Leads on the <b>Lead Source</b> field with at least one transition; get two leads into it.</li>
-        <li>Exclude lead 1 from the blueprint (API: <code>POST /modules/{leads}/blueprints/{id}/mass-exclude</code> with <code>{"record_ids":[lead1]}</code>).</li>
-        <li>Open lead 1: it no longer shows a blueprint state or transitions.</li>
-        <li>Edit Lead Source on lead 1 as the owner, then as a CRM Admin.</li>
-      </ol>
-      <dl class="facts">
-        <dt>Expected (Zoho)</dt><dd>Field editable once the record is out of the process.</dd>
-        <dt>Actual (TAVI)</dt><dd>422 "This field is controlled by a blueprint."</dd>
-        <dt>Records</dt><dd>Lead <code>bb67fa6e</code> (19 Oct); <code>66c008ba</code> (18 Oct)</dd>
-      </dl>
-      <figure><img src="evidence/B-09-excluded-record-still-locked-vs-zoho.png" alt="B-09: TAVI request and response next to Zoho's documented behaviour" loading="lazy"><figcaption>B-09: TAVI (left, annotated request/response) vs Zoho CRM documentation (right).</figcaption></figure>
-    </article>
-
     <article class="bug-entry" id="B-10">
       <div class="bug-head">
         <span class="bug-id">B-10 · G-16</span>
+        <span class="pill ok plane">Published · NDC-2321</span>
         <span class="pill info">Low (suggested)</span>
         <span class="pill info">Timeline</span>
       </div>
@@ -347,6 +308,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
     <article class="bug-entry" id="B-11">
       <div class="bug-head">
         <span class="bug-id">B-11 · C-14</span>
+        <span class="pill ok plane">Published · NDC-2322</span>
         <span class="pill info">Low (suggested)</span>
         <span class="pill info">Workflow</span>
       </div>
@@ -365,32 +327,10 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
       <figure><img src="evidence/B-11-condition-limit-off-by-one-vs-zoho.png" alt="B-11: TAVI request and response next to Zoho's documented behaviour" loading="lazy"><figcaption>B-11: TAVI (left, annotated request/response) vs Zoho CRM documentation (right).</figcaption></figure>
     </article>
 
-    <article class="bug-entry" id="B-12">
-      <div class="bug-head">
-        <span class="bug-id">B-12 · C-11 / H-05 / C-15</span>
-        <span class="pill bug">High (suggested)</span>
-        <span class="pill info">Workflow</span>
-      </div>
-      <h3>A scheduled (delayed) Field Update runs immediately</h3>
-      <p>The rule stores <code>delaySeconds: 300</code> but the field is updated within 3 seconds of create. Delayed webhooks wait correctly and are cancelled when the record stops matching, so only Field Update ignores the delay. This also explains the 18 Oct failures of C-11, H-05 and C-15.</p>
-      <p class="steps-h"><strong>Steps to reproduce</strong></p>
-      <ol class="steps">
-        <li>Create a workflow rule on Leads: <b>On Create</b>, with a <b>scheduled action</b> Field Update (Description = "WF B12") <b>after 5 minutes</b>.</li>
-        <li>Create a matching lead.</li>
-        <li>Open the lead after ~5 seconds, then after 1 minute, then after 5 minutes.</li>
-        <li>Note: delayed webhooks wait correctly; only the Field Update ignores the delay.</li>
-      </ol>
-      <dl class="facts">
-        <dt>Expected (Zoho)</dt><dd>The update happens after 5 minutes (and is dropped if the record stops matching, is converted, or the rule is deactivated with delete).</dd>
-        <dt>Actual (TAVI)</dt><dd>Applied at +3 s.</dd>
-        <dt>Records</dt><dd>Lead created 07:25:47 (C-11d, 19 Oct); 18 Oct <code>3e3fcd8a</code>, <code>ba12d70d</code>, <code>ce1972c8</code></dd>
-      </dl>
-      <figure><img src="evidence/B-12-scheduled-field-update-runs-at-once-vs-zoho.png" alt="B-12: TAVI request and response next to Zoho's documented behaviour" loading="lazy"><figcaption>B-12: TAVI (left, annotated request/response) vs Zoho CRM documentation (right).</figcaption></figure>
-    </article>
-
     <article class="bug-entry" id="B-13">
       <div class="bug-head">
         <span class="bug-id">B-13 · H-05</span>
+        <span class="pill ok plane">Published · NDC-2323</span>
         <span class="pill warn">Medium (suggested)</span>
         <span class="pill info">Workflow / Conversion</span>
       </div>
@@ -413,6 +353,7 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
     <article class="bug-entry" id="B-14">
       <div class="bug-head">
         <span class="bug-id">B-14 · F-20</span>
+        <span class="pill ok plane">Published · NDC-2334</span>
         <span class="pill bug">High (suggested)</span>
         <span class="pill info">Approval / Blueprint</span>
       </div>
@@ -433,33 +374,38 @@ footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
       </dl>
       <figure><img src="evidence/B-14-approval-on-blueprint-record-vs-zoho.png" alt="B-14: TAVI request and response next to Zoho's documented behaviour" loading="lazy"><figcaption>B-14: TAVI (left, annotated request/response) vs Zoho CRM documentation (right).</figcaption></figure>
     </article>
-
-    <article class="bug-entry" id="B-15">
+    <article class="bug-entry" id="B-16">
       <div class="bug-head">
-        <span class="bug-id">B-15 · E-09</span>
+        <span class="bug-id">B-16 · F-02</span>
+        <span class="pill ok plane">Published · NDC-2391</span>
         <span class="pill warn">Medium (suggested)</span>
-        <span class="pill info">Blueprint</span>
+        <span class="pill info">Workflow</span>
       </div>
-      <h3>A blueprint state SLA never escalates</h3>
-      <p>A state with a 1-minute SLA and a Set Field escalation shows <code>slaDueAt</code> one minute after entry, but nothing ran in 25 minutes and <code>slaDueAt</code> was then cleared.</p>
+      <h3>A workflow condition on Lead Owner never matches</h3>
+      <p>A rule with "Lead Owner is &lt;user&gt;" never runs, even on a lead owned by that user; the same rule without the owner condition runs. Same result for a rule built on the screen and one saved through the API (found 21 Oct while re-running F-02).</p>
       <p class="steps-h"><strong>Steps to reproduce</strong></p>
       <ol class="steps">
-        <li>Create a blueprint on Leads on Lead Source; on the first state set the SLA to <b>1 minute</b> with escalation action Field Update Description = "SLA B15".</li>
-        <li>Create a lead that enters the blueprint; the SLA due time shows entry + 1 minute.</li>
-        <li>Watch the lead for ~25 minutes: check Description and the SLA due time.</li>
+        <li>Workflow Rules → New Rule on Leads, trigger <b>Create</b>, condition <b>Lead Owner is user A</b>, action Field Update Comment.</li>
+        <li>Signed in as user A, create a matching lead (Lead Owner = user A).</li>
+        <li>Control: the same rule without the owner condition, another lead.</li>
       </ol>
       <dl class="facts">
-        <dt>Expected (Zoho)</dt><dd>Escalation actions run when the SLA is breached.</dd>
-        <dt>Actual (TAVI)</dt><dd>Nothing ran (also 10-minute watches on 18 Oct).</dd>
-        <dt>Records</dt><dd>Lead <code>76d0f582</code> (19 Oct); <code>eb276a1a</code>, <code>c38ff8fb</code> (18 Oct)</dd>
+        <dt>Expected (Zoho)</dt><dd>Lead Owner is a normal workflow condition; the rule runs on the lead owned by user A.</dd>
+        <dt>Actual (TAVI)</dt><dd>Never runs; the control rule runs. The screen saves {Comparison, owner, Equal, string user id}.</dd>
+        <dt>Records</dt><dd>Leads <code>5331182e</code>, <code>a3511a73</code>, control <code>01879074</code> (21 Oct)</dd>
       </dl>
-      <figure><img src="evidence/B-15-blueprint-sla-never-escalates-vs-zoho.png" alt="B-15: TAVI request and response next to Zoho's documented behaviour" loading="lazy"><figcaption>B-15: TAVI (left, annotated request/response) vs Zoho CRM documentation (right).</figcaption></figure>
+      <figure><img src="evidence/B-16-owner-condition-never-matches-vs-zoho.png" alt="B-16: TAVI request and response next to Zoho's documented behaviour" loading="lazy"><figcaption>B-16: TAVI (left, annotated request/response) vs Zoho CRM documentation (right).</figcaption></figure>
     </article>
   </section>
 
   <section aria-labelledby="not-bugs">
     <h2 id="not-bugs">Not filed</h2>
+    <p class="lead"><b>Follow-up (21 Oct):</b> B-17 (a suspended user still gets records from an assignment rule, not published yet), A-10 (Online status availability, possible bug) and the open decisions are in <a href="follow-up-report.html">follow-up-report.html</a>.</p>
     <p class="lead"><b>B-03 withdrawn (19 Oct, user):</b> a review process should never run on edit, so the defect is that an edit sent existing leads into review, not that the On Edit workflow was skipped after approval. The user files that as a separate ticket.</p>
+    <p class="lead"><b>B-15 withdrawn (21 Oct, user), fixed on staging before filing:</b> "A blueprint state SLA never escalates" (E-09). On 19–20 Oct the SLA did escalate (Task, Meeting, Call, Create Record and Notification ran 10–20 s after the deadline) but the Field Update action never ran (API runs 19–20 Oct, 8-action sweep 20 Oct in two orders, Jams 6a36e379 and 4f846299). Re-run on 21 Oct (lead 700a7441 and the 8-action sweep in two orders, leads 66616ede and 580da107): every action ran, Field Update included, and the Email action reached a real inbox at the expected time. Webhook was not checked (needs an external request catcher).</p>
+    <p class="lead"><b>B-12 withdrawn (20 Oct, user):</b> "A scheduled (delayed) Field Update runs immediately" (C-11, H-05, C-15). The workflow rule screen does not offer Field Update as a scheduled action (only Webhook, Email, Task, Create Record, Send portal access), so the case cannot be set up on screen; it was reached only through the API, which accepts delaySeconds on a Field Update and runs it at once. Moved to NDC-2294 item 11 (scheduled Field Update, Assign Owner, Tags), which also asks for the delay to be honoured. Retest when scheduled Field Update is on the screen.</p>
+    <p class="lead"><b>B-09 deferred (20 Oct, user):</b> "A record excluded from a blueprint keeps its blueprint field locked" (E-13). Mass include / mass exclude has no screen in TAVI CRM (only the API; the Desk tickets list is the only caller), so it is out of scope until it is implemented in TAVI CRM. Retest then. Zoho has it under Setup → Blueprint → Filters → Include / Exclude.</p>
+    <p class="lead"><b>B-08 withdrawn (20 Oct, user), not a bug:</b> "A workflow field update does not trigger On Edit workflow rules". Zoho chains workflow rules only when the first rule is triggered On Edit (Zoho FAQ "Can the result of an automation trigger another automation?"); our C-12 used rule A On Create, which Zoho does not chain either (user check on Zoho, Jam 0ffa6a59). With rule A On Edit, TAVI does chain: rule A's Lead Status update fired rule B, which created lead 88c02afb (Jam d4fdf053).</p>
     <p class="lead">Fifteen other candidates were cleared on 19 Oct: they were expected behaviour, matched Zoho, were test defects, or did not reproduce (A-08, C-09, C-10/I-10, D-05, D-06, D-17, E-15/J-01/E2E-5, E-18, G-13, K-09, list sorting, required Phone, isProcessAdmin, one Field Update per rule). Z2–Z9 are known gaps already filed as NDC-2294. H-04 and the remaining inconclusive cases are listed in report.md with what is needed to finish them.</p>
   </section>
 

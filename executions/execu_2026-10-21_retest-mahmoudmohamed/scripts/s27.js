@@ -1,0 +1,11 @@
+const MID = 'd08b353d-3634-4290-8785-fc6b6ecec00f', lid = '6d39b5d2-bafc-40a0-bfc9-64255323ca10';
+await ensureAuth();
+const F = await fieldsOf(MID); const lay = await getLayout(MID, lid);
+const put = async n => { const L = JSON.parse(JSON.stringify(lay)); const col = L.views.CREATE.layout.sections[0].columns[0]; const have = new Set(col.fields.map(f => f.id));
+  for (const f of F.filter(f => /^qa_rt_f\d+$/.test(f.fieldName)).slice(0, n)) if (!have.has(f.id)) col.fields.push(JSON.parse(JSON.stringify(f)));
+  const total = L.views.CREATE.layout.sections.flatMap(s => s.columns.flatMap(c => c.fields)).length; delete L.id;
+  const t0 = Date.now(); const r = await page.context().request.fetch(API + `/modules/${MID}/layouts/${lid}`, { method: 'PUT', headers: { ...hdr, 'content-type': 'application/json' }, data: JSON.stringify(L), timeout: 150000, failOnStatusCode: false });
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch (e) {} return `${total} fields → ${r.status()} in ${Math.round((Date.now() - t0) / 1000)}s ${r.status() >= 300 ? (j?.error?.code || '') + ' ' + (j?.error?.message || '').slice(0, 160) : ''}`; };
+const a = await put(520);
+const after = await getLayout(MID, lid); const stored = after.views.CREATE.layout.sections.flatMap(s => s.columns.flatMap(c => c.fields)).length;
+return done({ put520: a, stored });

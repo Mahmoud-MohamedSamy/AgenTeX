@@ -1,0 +1,11 @@
+{ "out": "NDC-1325-retest-PASS.png", "ticket": "NDC-1325", "title": "Pipelines | Deleting a pipeline with closed deals does not transfer them", "verdict": "PASS", "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)", "date": "21 Oct 2026",
+ "panels": [
+  { "img": "1325-06-delete-modal.png", "w": 1280, "h": 720, "caption": "QA RT 1325 pipeline holds 3 deals (open, closed_won, closed_lost). First dialog does not mention them.", "crop": [400, 220, 800, 230], "boxes": [ { "b": [440, 306, 720, 352], "n": 1, "kind": "INFO" } ] },
+  { "img": "1325-08-transfer-mapped.png", "w": 1280, "h": 720, "caption": "Delete → \"Transfer deals (open and closed)\": target pipeline + map every stage, then Transfer and Delete → 200 {transferred:3, retained:0}.", "crop": [352, 156, 576, 410], "boxes": [ { "b": [376, 176, 870, 230], "n": 2, "kind": "PASS" }, { "b": [376, 362, 904, 484], "n": 3, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "First confirmation", "—", "\"Delete pipeline? This pipeline will be permanently removed.\" — no hint that deals exist; the transfer step appears after Delete is clicked (server 422 asks for a target)", "INFO"],
+  ["2", "Transfer offered for open and closed deals", "Prompt does not depend on status", "\"This pipeline still has deals (open and closed)…\"", "PASS"],
+  ["3", "All deals transferred", "No deal left on a deleted pipeline", "closed_won → Standard/closed_won, closed_lost → Standard/closed_lost, open → Standard/needs_analysis; deleted pipeline GET → 404", "PASS"],
+  ["—", "Pipeline column", "Name, never a raw id", "Deals list shows Standard for all three", "PASS"]
+ ] }

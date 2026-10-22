@@ -1,0 +1,112 @@
+{
+ "out": "NDC-1590-retest-PASS.png",
+ "ticket": "NDC-1590",
+ "title": "Import | A percent field accepts values above 100 % on import",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "img": "1590-imp-4-review.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Review: 8 rows, 5 will import, 3 with errors (p150, p-5 and the unknown multi-select option).",
+   "crop": [
+    256,
+    260,
+    768,
+    364
+   ],
+   "boxes": [
+    {
+     "b": [
+      280,
+      548,
+      1000,
+      604
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1590-02-review-after-clear.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Review › All errors: the table stays empty (No errors match your filters, even after Clear) while it counts 1–3 of 3.",
+   "crop": [
+    256,
+    200,
+    768,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      258,
+      340,
+      1022,
+      536
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "1589-03-view-details.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "After import, Import details names the allowed range for rows 4 (150) and 5 (-5).",
+   "crop": [
+    304,
+    330,
+    672,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      326,
+      408,
+      956,
+      520
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Percent 150 / -5 rejected at validation",
+   "Error rows, no record",
+   "Review: 5 will import, 3 errors; p150 and p-5 not created; p50 and p100 imported",
+   "PASS"
+  ],
+  [
+   "3",
+   "Reason names the allowed range",
+   "between 0 and 100",
+   "Import details and error file: \"Percent value must be between 0 and 100\"",
+   "PASS"
+  ],
+  [
+   "—",
+   "Review breakdown wording",
+   "—",
+   "Breakdown type says \"Invalid format\" for 150",
+   "INFO"
+  ],
+  [
+   "2",
+   "Review \"All errors\" table",
+   "Lists the error rows",
+   "Empty with \"No errors match your filters\" even after Clear — new UI defect (the validate API returns all 3 issues)",
+   "FAIL"
+  ]
+ ]
+}

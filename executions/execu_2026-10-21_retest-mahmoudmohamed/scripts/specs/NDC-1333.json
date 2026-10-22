@@ -1,0 +1,11 @@
+{ "out": "NDC-1333-retest-FAIL.png", "ticket": "NDC-1333", "title": "Activity Reminders | The settings page has two scroll bars, causing unpredictable scrolling", "verdict": "FAIL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)", "date": "21 Oct 2026",
+ "panels": [
+  { "img": "1333-04-users-area.png", "w": 1280, "h": 720, "caption": "Inner principal lists no longer scroll on their own (0 nested scroll areas) — the settings column scrolls.", "crop": [268, 56, 1012, 664], "boxes": [ { "b": [312, 238, 686, 686], "n": 1, "kind": "PASS" } ] },
+  { "img": "1333-05-chained.png", "w": 1280, "h": 720, "caption": "Keep scrolling past the end of the settings column: the window scrolls too (scrollY 2007 px) and the whole page content leaves the viewport.", "crop": [0, 0, 1280, 720], "boxes": [ { "b": [270, 70, 1270, 700], "n": 2, "kind": "FAIL" } ] }
+ ],
+ "rows": [
+  ["1", "No scroll area inside the users / profiles lists", "Single scroll area", "Additional users / profiles lists have no own overflow — fixed", "PASS"],
+  ["2", "Only one scroll bar on the page", "Consistent scrolling wherever the pointer is", "Two scroll layers remain: the settings column (scrollHeight 2733 / 664) and the window itself (document 2727 / 720). Wheel past the column's end scrolls the window 2007 px and leaves a blank page", "FAIL"],
+  ["—", "Clicking a checkbox never scrolls the page", "Click hits the item under the pointer", "No mis-click seen in this run (headless)", "INFO"]
+ ] }

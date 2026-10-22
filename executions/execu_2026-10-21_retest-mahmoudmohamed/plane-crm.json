@@ -1,0 +1,198 @@
+[
+ {
+  "id": "NDC-1302",
+  "uuid": "2610d4f4-1d79-4d2b-80d1-e70ac05915c7",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held for deals that are already on a non-default pipeline. Not covered: the deal cannot get onto a non-default pipeline in the first place.</p><p>Stage selection on a deal already on pipeline \"1\" works in the UI and API (3 stage clicks applied, pipeline kept) and an outside stage gets a clear 422. But a deal created on pipeline \"1\" (UI and API), or moved with Change pipeline, is stored on the default pipeline — 201/200 with the pipeline silently replaced, and a stage of the chosen pipeline is rejected (\"not part of the 'Standard' pipeline\"). Same on the Test layout. Only an import puts a deal on a non-default pipeline.</p><p><b>Checked:</b></p><ul><li>Deal keeps the pipeline it was created on / moved to → Create and Change pipeline return 200/201 but the server stores the default pipeline — record shows Standard (Default) <b>[FAIL]</b></li><li>Stage selection keeps the pipeline → Deal already on \"1\": qualification, negotiation, test-01 applied, pipeline unchanged <b>[PASS]</b></li><li>Stages offered = deal's own pipeline → test-01 … identify_decision_makers shown and selectable <b>[PASS]</b></li><li>Clear message when a stage is refused → 422: \"Stage 'qualification' is not part of the 'Test-Pipeline copy' pipeline. Choose one of: …\" <b>[PASS]</b></li></ul><p><b>Still failing:</b></p><ul><li>Step 3: create on Test-Pipeline/\"1\" → expected deal on that pipeline; actual stored on Standard (Default) (POST 201, pipeline replaced).</li><li>Step 10: Change pipeline → PATCH 200 but pipeline unchanged (Standard).</li></ul><p>Evidence: NDC-1302-retest-PARTIAL.png</p>"
+ },
+ {
+  "id": "NDC-1332",
+  "uuid": "edf694eb-7174-4d5c-9b31-8bf12cc9f7e1",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held, and extended: Call and Meeting also fire; the due-time reminder exists in the feed.</p><p>QA RT Task, Call and Meeting due 11:27 UTC, reminder 5 min, overdue after 2 min: before at 11:22, due at 11:27, overdue at 11:29 for all three (owner). Additional recipient ndc-staging-owner received the three overdue reminders only. The panel shows one card per activity with its latest stage. Org-unit lead not verified.</p><p><b>Checked:</b></p><ul><li>Before reminder at the configured interval → 11:22 for task, call and meeting <b>[PASS]</b></li><li>Due-time reminder → 11:27 for all three <b>[PASS]</b></li><li>Overdue reminder → 11:29 (overdue after 2 min) to the owner and to ndc-staging-owner <b>[PASS]</b></li><li>Each notification identifies the activity and due time → Card shows the activity name and 14:27 (Cairo) <b>[PASS]</b></li><li>Panel history → Each stage replaces the previous card, so before/due are not visible once overdue fires (feed keeps all 9); Call card shows a bare \"15\" (call duration without label) <b>[INFO]</b></li><li>Org-unit lead → Not verified in this run <b>[INFO]</b></li></ul><p>Evidence: NDC-1332-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1308",
+  "uuid": "1c246961-6535-4806-a8c2-6ac5c62d87c2",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Standard pipeline qualification 10 % → 15 % / Best Case saved; pipeline \"1\" kept 10 % / Pipeline (UI + API); modal names the pipeline being edited. Restored afterwards.</p><p><b>Checked:</b></p><ul><li>Modal says which pipeline is edited → Pipeline selector and \"Editing the stages of \"Standard\"\" <b>[PASS]</b></li><li>Change one pipeline's stage → Standard qualification 10 → 15 %, Pipeline → Best Case; API confirms <b>[PASS]</b></li><li>Other pipeline unaffected → qualification 10 % / Pipeline in \"1\" (API and UI) <b>[PASS]</b></li><li>Restore → Standard qualification restored to 10 % / Pipeline <b>[INFO]</b></li></ul><p>Evidence: NDC-1308-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1323",
+  "uuid": "0224a274-9b0f-49b7-97f9-ffbffe83df10",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>QA-RT-1323-deals.xlsx: Pipeline auto-mapped, derived fields not offered; 3 deals imported onto pipeline \"1\"; blank stage defaulted to the pipeline's first stage (test-01). Minor: Deal name column not auto-mapped.</p><p><b>Checked:</b></p><ul><li>Pipeline available as a target field → Pipeline listed and auto-mapped <b>[PASS]</b></li><li>Probability / Expected Revenue not offered → Not in the picker (left as \"Do not import\") <b>[PASS]</b></li><li>Stage established with the pipeline → test-02 / proposal kept; blank → test-01 (first stage of \"1\") <b>[PASS]</b></li><li>Auto-map → Deal name column not auto-mapped (minor) <b>[INFO]</b></li></ul><p>Evidence: NDC-1323-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1325",
+  "uuid": "e6f69ff9-9466-4dfd-8253-88b2856f4d42",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>QA RT 1325 pipeline with closed_won, closed_lost and open deals (imported): Delete → Transfer deals (open and closed) with target pipeline + stage mapping → {transferred:3, retained:0}; deals on Standard with mapped stages; deleted pipeline 404. UX note: the first \"Delete pipeline?\" dialog does not mention the deals; the transfer step appears after Delete fails with 422.</p><p><b>Checked:</b></p><ul><li>First confirmation → \"Delete pipeline? This pipeline will be permanently removed.\" — no hint that deals exist; the transfer step appears after Delete is clicked (server 422 asks for a target) <b>[INFO]</b></li><li>Transfer offered for open and closed deals → \"This pipeline still has deals (open and closed)…\" <b>[PASS]</b></li><li>All deals transferred → closed_won → Standard/closed_won, closed_lost → Standard/closed_lost, open → Standard/needs_analysis; deleted pipeline GET → 404 <b>[PASS]</b></li><li>Pipeline column → Deals list shows Standard for all three <b>[PASS]</b></li></ul><p>Evidence: NDC-1325-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1172",
+  "uuid": "244331d7-49dc-4f9d-9fba-947440bb2433",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held for the switcher/API (all three options, real CRM Admin login). The 22 Aug QA follow-up (b) is still open.</p><p>Restricted teamspace QA RT 1172 (admin ndc-staging-owner): a CRM Admin not covered by the rule gets no switcher entry and 403 for the teamspace, folders and modules — for selected users, profile and org unit. Covered users and the creator keep access. But Settings › Teamspace still lists it to the CRM Admin and opens Edit Teamspace with the logged-in user shown as Admin.</p><p><b>Checked:</b></p><ul><li>Restricted teamspace hidden from a CRM Admin not covered by the rule → Selected users / profile User / org unit: GET /teamspaces omits it; GET /teamspaces/{id}, /folders, /modules → 403 PERMISSION_DENIED <b>[PASS]</b></li><li>Users covered by the rule → test user 1 (listed user, profile User, org unit) → listed, 200 <b>[PASS]</b></li><li>Creator / admin keeps access (QA 22 Aug item 2) → ndc-staging-owner (creator, admin) → listed, 200 <b>[PASS]</b></li><li>Settings › Teamspace (QA 22 Aug item b) → Listed for the CRM Admin; Edit Teamspace opens and shows the logged-in user as Admin; \"Permission denied\" toast on load <b>[FAIL]</b></li><li>Modules section after save (QA 22 Aug item a) → Not re-checked (teamspace had no modules) <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>QA 22 Aug item (b): Settings › Teamspace lists a teamspace the user cannot access, and its Edit page shows the logged-in user as Teamspace Admin.</li></ul><p>Evidence: NDC-1172-retest-PARTIAL.png</p>"
+ },
+ {
+  "id": "NDC-1333",
+  "uuid": "de47141e-6067-44f5-9bd0-e0520030ecf7",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "html": "<p><b>Retest FAIL — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Partly: the inner list no longer scrolls, but the page still has two scroll layers.</p><p>The users/profiles lists no longer have their own scroll area, but the settings column (scrollHeight 2733 in 664) and the window (document 2727 in 720) both scroll. Wheeling past the column's end scrolls the window 2007 px and the page content disappears (blank page).</p><p><b>Checked:</b></p><ul><li>No scroll area inside the users / profiles lists → Additional users / profiles lists have no own overflow — fixed <b>[PASS]</b></li><li>Only one scroll bar on the page → Two scroll layers remain: the settings column (scrollHeight 2733 / 664) and the window itself (document 2727 / 720). Wheel past the column's end scrolls the window 2007 px and leaves a blank page <b>[FAIL]</b></li><li>Clicking a checkbox never scrolls the page → No mis-click seen in this run (headless) <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Step 1/5: expected a single scroll bar; actual two scroll layers — the window scrolls once the settings column reaches its end.</li></ul><p>Evidence: NDC-1333-retest-FAIL.png</p>"
+ },
+ {
+  "id": "NDC-1344",
+  "uuid": "6caaf05c-1eaf-4935-837e-43e983976444",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Missing entities and groups: held. Duplicates/raw names: not fixed.</p><p>All missing entities are now in the filter and grouped as asked, and \"Audit Log Entry\" is labelled. But the list repeats entries (Workflow rule / Workflow Rule, Approval process / Approval Process, Blueprint ×3, Profile ×2), shows raw types (Mail template, Module view) among modules, and repeats the module block at the end. The feed prints \"restored a audit.entity.leads\". Separately, the Audit Log recorded no events between 20 Oct 21:33 UTC and 21 Oct 11:14 UTC.</p><p><b>Checked:</b></p><ul><li>Missing entities added → All present: Review Process, Assignment Rule, Action, Custom Action, Blueprint, Web Form, Customer Portal, Import, Export, Mass Delete, Recycle Bin, SMS, Skill… <b>[PASS]</b></li><li>Grouping → Present as single options; selecting Module Configuration sends the grouped entity types <b>[PASS]</b></li><li>User-facing labels → \"Audit Log Entry\" labelled <b>[PASS]</b></li><li>Consistent list → Duplicates: Workflow rule / Workflow Rule, Approval process / Approval Process, Blueprint ×3, Profile ×2; raw types Mail template, Module view among the modules <b>[FAIL]</b></li><li>No repeated module block → Modules block repeated at the end of the list <b>[FAIL]</b></li><li>Feed labels → \"restored a audit.entity.leads\" — raw i18n key <b>[FAIL]</b></li><li>New finding → Audit Log recorded nothing between 20 Oct 21:33 UTC and 21 Oct 11:14 UTC (pipelines, imports, records, settings changed today) — see observations <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Entity list: duplicates and raw types (see image).</li><li>Feed: raw key audit.entity.leads instead of Lead.</li></ul><p>Evidence: NDC-1344-retest-PARTIAL.png</p>"
+ },
+ {
+  "id": "NDC-1444",
+  "uuid": "40563a1b-3839-45ab-bc3e-2ee2e7f10945",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Lookup detection held; end-to-end save does not.</p><p>Rollup on Leads › FieldPermissions: Deals offers Connected To, Lookup, Multi-Select Lookup; Contacts, Accounts, Tasks offer theirs; no false warning. Configured Deals › Connected To › Amount › Sum and saved: the field was created, a success toast showed, but the layout did not save (field ends in Unused Fields; later Saves send no request).</p><p><b>Checked:</b></p><ul><li>Related list offers lookups pointing at Leads → Deals: Connected To, Lookup, Multi-Select Lookup; Contacts: Connected To, Lookup; Accounts: Connected To; Tasks: Related To <b>[PASS]</b></li><li>Warning only when there is no lookup → No warning for Deals, Contacts, Accounts, Tasks <b>[PASS]</b></li><li>Rollup saves with the layout → Field qa_rt_rollup created (sum of amount via connected_to), but the FieldPermissions layout is unchanged (last modified 1 Sep); after reload the field is in Unused Fields. Later Saves send no request <b>[FAIL]</b></li><li>Save feedback → \"Field updated successfully\" toast while the layout save did not persist <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Expected \"once relation, field and function are chosen, the rollup saves with the layout\" — actual: layout not saved, field left unplaced.</li></ul><p>Evidence: NDC-1444-retest-PARTIAL.png</p>"
+ },
+ {
+  "id": "NDC-1518",
+  "uuid": "91be14ee-9c6c-439b-942d-96505d2d80ec",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held (Leads and Deals).</p><p>Target layout shown for Add, Update existing only (own hint) and Add and update, on Leads and Deals.</p><p><b>Checked:</b></p><ul><li>Target layout for Update existing only → Shown, with hint \"Matched records keep the layout they were created with…\" <b>[PASS]</b></li><li>Add new records / Add and update → Shown for both (Leads and Deals) <b>[PASS]</b></li><li>Consistency → Duplicate handling for Add; Match records on for Update / Add and update <b>[PASS]</b></li></ul><p>Evidence: NDC-1518-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1587",
+  "uuid": "736ec092-bd74-481f-a9c0-47107c5b14d1",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held (shown one row per record, not one group).</p><p>Undo of QA-RT-leads-imp.xlsx (5 leads): status Undone, all 5 in the Recycle Bin with 60-day expiry; Restore on one brings it back (GET 200).</p><p><b>Checked:</b></p><ul><li>Undone records in the Recycle Bin → All 5 (QA RT imp …) listed, deleted 21/10/2026 14:10 by mahmoud.mahamed1515 <b>[PASS]</b></li><li>Retention → Expires in 60 days (20 Dec 2026) <b>[PASS]</b></li><li>Restorable → Restore on QA RT imp p50 → record live again (GET 200) <b>[PASS]</b></li><li>Grouped per import → One row per record (same deletion time) — no group row <b>[INFO]</b></li></ul><p>Evidence: NDC-1587-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1588",
+  "uuid": "264f81b0-684d-49ac-82e7-5e49bf262ad3",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held; deactivation is also blocked.</p><p>Default badge on Standard; its toggle and Delete disabled; Set as default on Test Layout 1 moves the flag (API) and back. The badge can lag a few seconds after a change.</p><p><b>Checked:</b></p><ul><li>Default marked in the table → Default badge on Standard <b>[PASS]</b></li><li>Set as default in the row menu → Set Test Layout 1 as default → API isDefault moved; set Standard back → restored (badge can lag a few seconds) <b>[PASS]</b></li><li>Default cannot be deleted or deactivated → Status toggle disabled (info icon), Delete disabled <b>[PASS]</b></li></ul><p>Evidence: NDC-1588-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1229",
+  "uuid": "a4403d79-8ac7-45fa-a6dc-a663dcf34362",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>New module QA RT partners: picker offers Name and a hand-added field, excludes system fields. The UI Create module dialog itself fails (400 pluralForm required) — module created by API for the test; and a new module is auto-enabled as a conversion target (\"Always create\").</p><p><b>Checked:</b></p><ul><li>Auto-created Name offered → Name listed <b>[PASS]</b></li><li>Hand-added fields → QA RT note listed (marked * custom) <b>[PASS]</b></li><li>System-populated fields excluded → created_at, created_by, modified_at, modified_by, approval_status not offered <b>[PASS]</b></li><li>Step 1 (create the module in the UI) → Create module dialog fails: 400 \"Module plural form is required\" — the dialog has no plural field (module created by API for this test). New defect <b>[INFO]</b></li><li>Side effect → A new module is switched on as a lead-conversion target with \"Always create\" automatically (module deleted after the test) <b>[INFO]</b></li></ul><p>Evidence: NDC-1229-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1230",
+  "uuid": "3b6dccbb-bebd-43d1-8133-ae46e4f28168",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Phone Permission on FieldPermissions: 26 layout fields offered, itself excluded, other layouts' fields not offered; rule configurable (nothing saved).</p><p><b>Checked:</b></p><ul><li>Dropdown lists the layout's fields → 26 fields of the layout (Name, Single Line Permission … New Address) <b>[PASS]</b></li><li>Field being configured excluded → Not listed <b>[PASS]</b></li><li>Other layouts' fields not offered → Full Name, Lead Status etc. not listed <b>[PASS]</b></li><li>Rule can be configured → \"Show when the controlling field has any value\", \"Required while visible\" (cancelled, nothing saved) <b>[PASS]</b></li></ul><p>Evidence: NDC-1230-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1295",
+  "uuid": "a496cc10-a256-4eb5-9cde-b551b8ad67f4",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>qa_rt_1295 created from pipeline \"1\", removed from the Deals Stage field → pruned from the pipeline and Add Stages; direct add refused with a clear 422. Minor copy: empty search says \"No pipelines available.\"</p><p><b>Checked:</b></p><ul><li>Create a stage from the pipeline → qa_rt_1295 added (POST …/stages/new → 201) <b>[INFO]</b></li><li>Delete it from the module's Stage field → Pipeline \"1\" back to 7 stages; stage-probability list no longer has it <b>[PASS]</b></li><li>Add Stages list → Search \"qa_rt\" → no match (empty-state text says \"No pipelines available.\" — wrong noun) <b>[PASS]</b></li><li>Adding it directly → POST …/stages → 422 \"These stages are not in the module's stage list: qa_rt_1295.\" <b>[PASS]</b></li></ul><p>Evidence: NDC-1295-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1312",
+  "uuid": "ce5dac3d-cf36-417f-afb0-ad599be28017",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "html": "<p><b>Retest FAIL — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> UI part held; the change itself fails.</p><p>The modal now asks for \"Stage in the new pipeline\" (destination stages, first stage by default). Confirming fails: the server validates the stage against the old/default pipeline (422 \"not part of the 'Standard Pipeline' pipeline\") or returns 200 without moving the deal.</p><p><b>Checked:</b></p><ul><li>Modal asks for the stage in the new pipeline → \"Stage in the new pipeline\" — test-01, test-02 for \"Test-Pipeline copy\"; defaults to first stage with a hint <b>[PASS]</b></li><li>Deal ends on a stage of its new pipeline → PATCH pipeline=Test-Pipeline copy + stage=test-02 → 422 \"Stage 'test-02' is not part of the 'Standard Pipeline' pipeline\"; deal stays on Standard Pipeline / value_proposition <b>[FAIL]</b></li><li>Same on the Standard layout → PATCH → 200 but stored pipeline stays Standard (see NDC-1302) <b>[FAIL]</b></li></ul><p><b>Still failing:</b></p><ul><li>Step 2–4: expected deal moved to the new pipeline at the chosen stage; actual 422 / pipeline unchanged.</li></ul><p>Evidence: NDC-1312-retest-FAIL.png</p>"
+ },
+ {
+  "id": "NDC-1314",
+  "uuid": "971d3df7-5307-4e35-ae22-8834da0cdc20",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Not in the Mass Update field list; mass-update API refuses both with 422; other fields update. Minor: single-record PATCH silently ignores probability.</p><p><b>Checked:</b></p><ul><li>Probability / Expected Revenue not offered → Not listed (19 fields incl. Pipeline) <b>[PASS]</b></li><li>Server refuses them → mass-update with probability or expected_revenue → 422 DERIVED_FIELD_READ_ONLY <b>[PASS]</b></li><li>Other fields still update → next_step on 2 deals → 200, values of derived fields unchanged <b>[PASS]</b></li><li>Single-record PATCH → probability=50 → 200 but silently ignored (no error) — minor <b>[INFO]</b></li></ul><p>Evidence: NDC-1314-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1316",
+  "uuid": "4c9b218f-b4a4-4a43-b279-92042723719d",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "html": "<p><b>Retest FAIL — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> UI part held; the update fails.</p><p>Mass Update offers Pipeline with the destination stage (first stage default). Update records → \"Updated 0. 2 could not be updated\" — stage validated against Standard. Failures listed by record UUID.</p><p><b>Checked:</b></p><ul><li>Pipeline available in Mass Update → Pipeline listed (search \"pipe\" finds it) <b>[PASS]</b></li><li>Stage prompted from the destination pipeline → \"Stage in the new pipeline\": test-01 (default) … identify_decision_makers <b>[PASS]</b></li><li>Deals moved in bulk → \"Updated 0. 2 could not be updated\": Stage 'test-02' is not part of the 'Standard' pipeline <b>[FAIL]</b></li><li>Failure list readable → Rows identified by record UUID only <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Step 3: expected 2 deals moved to pipeline \"1\" / test-02; actual Updated 0, 2 failed.</li></ul><p>Evidence: NDC-1316-retest-FAIL.png</p>"
+ },
+ {
+  "id": "NDC-1324",
+  "uuid": "b983cc0e-7117-4929-a173-f81dd841000b",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "html": "<p><b>Retest FAIL — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> UI part held; the change does not apply.</p><p>Inline edit opens the change-pipeline modal listing pipelines and the stage. Change pipeline → PATCH 200 but the deal stays on Standard (same root cause as NDC-1302).</p><p><b>Checked:</b></p><ul><li>Inline Pipeline field lists the module's pipelines → Modal lists the other pipeline (\"1\"); the empty combobox is gone <b>[PASS]</b></li><li>Changing pipeline here also sets the stage → \"Stage in the new pipeline\" shown (qualification kept, exists in both) <b>[PASS]</b></li><li>Selecting a pipeline applies it → PATCH 200 but stored pipeline is still Standard; list and record show Standard (same root cause as NDC-1302) <b>[FAIL]</b></li></ul><p><b>Still failing:</b></p><ul><li>Expected \"Selecting a pipeline applies it to the deal\" — actual pipeline unchanged.</li></ul><p>Evidence: NDC-1324-retest-FAIL.png</p>"
+ },
+ {
+  "id": "NDC-1586",
+  "uuid": "e8f73d93-38b9-486e-91d0-5638e6ac581d",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>New Formula on FieldPermissions: 26 layout fields listed (API names); clicking inserts into the expression. Not saved.</p><p><b>Checked:</b></p><ul><li>\"Insert a field\" lists the layout's fields → 26 fields (by API name) — no \"No other fields\" message <b>[PASS]</b></li><li>Insert works → Click percent_8_9 → expression \"percent_8_9\" <b>[PASS]</b></li><li>Cleanup → Formula not saved (left without saving; no formula field on Leads) <b>[INFO]</b></li></ul><p>Evidence: NDC-1586-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1589",
+  "uuid": "512965dd-0d39-46c3-9743-12871d0af880",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held, plus View details exists.</p><p>Row menu: View details · Download error rows · Undo import. Details list the 3 errors with reasons; the xlsx holds the 3 rows + reason column (raw header __error_reason).</p><p><b>Checked:</b></p><ul><li>View details → \"View details\" opens Import details with the error rows and reasons <b>[PASS]</b></li><li>Download error rows after the wizard closed → QA-RT-leads-imp-errors.xlsx: the 3 failed rows + a reason column (header shows the raw name \"__error_reason\" — minor) <b>[PASS]</b></li><li>Menu → View details · Download error rows · Undo import <b>[PASS]</b></li></ul><p>Evidence: NDC-1589-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1592",
+  "uuid": "f021226a-adbc-4eb1-8370-57ffe3eb0804",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>\"1,2\", \"1;2\" and \"1, 2\" stored as [1, 2]; \"1,9\" rejected naming '9'.</p><p><b>Checked:</b></p><ul><li>Comma separated 1,2 → Stored [1, 2] <b>[PASS]</b></li><li>Semicolon separated 1;2 → Stored [1, 2] <b>[PASS]</b></li><li>Comma + space 1, 2 → Stored [1, 2] <b>[PASS]</b></li><li>Unknown option 1,9 → '9' is not one of the allowed multi-select values; row not created <b>[PASS]</b></li></ul><p>Evidence: NDC-1592-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1232",
+  "uuid": "59cf8a69-473d-489a-96ab-d264d1679be6",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Sticky: yes; readable: no.</p><p>Header stays on screen but is transparent — rows scroll visibly under and through the labels. Table 1432 px in a 954 px area; right-most column cut with no hint. Values no longer wrap; rows 44 px.</p><p><b>Checked:</b></p><ul><li>Header fixed while scrolling → Header is sticky but has no background: row text overlaps the labels <b>[FAIL]</b></li><li>Table fits or shows more columns exist → Table 1432 px in a 954 px area; \"Permanently Delete\" cut off at the edge, no hint of more columns <b>[FAIL]</b></li><li>Values on one line, compact rows → Labels no longer wrap (name + API key on two lines by design); rows 44 px <b>[PASS]</b></li><li>Capability columns identifiable → Headings complete (Create Layout Rule … Set Unique) <b>[PASS]</b></li></ul><p><b>Still failing:</b></p><ul><li>Header must have a background so it stays readable while scrolling.</li><li>Columns still overflow without an affordance (Permanently Delete cut off).</li></ul><p>Evidence: NDC-1232-retest-PARTIAL.png</p>"
+ },
+ {
+  "id": "NDC-1311",
+  "uuid": "4a98471d-0c0e-403e-8a5f-91ed1c9b2971",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>closed_lost → Verify details: picklist with the five values; saved no_budget; API free text → 422 naming the allowed values.</p><p><b>Checked:</b></p><ul><li>Reason for loss presented as a picklist → price, lost_to_competitor, no_budget, no_decision, other <b>[PASS]</b></li><li>Choose an option and save → closed_lost + no_budget saved <b>[PASS]</b></li><li>Free text refused → API PATCH \"test\" → 422 naming the allowed values <b>[PASS]</b></li></ul><p>Evidence: NDC-1311-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1422",
+  "uuid": "dcf8a3c2-b39c-47ae-988d-b8bc3304df5b",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>test user 1 signed in with an iPhone Safari UA → iOS · Safari · Mobile · Web; desktop rows Desktop · Web.</p><p><b>Checked:</b></p><ul><li>Phone-browser session → iOS · Safari · Mobile · Web (test user 1, 14:21) <b>[PASS]</b></li><li>Desktop session → Windows · Edge · Desktop · Web <b>[PASS]</b></li><li>Mobile-app channel label → Locale accessType.mobile = \"Mobile app\" (no app session available to show) <b>[PASS]</b></li><li>API sessions → Sessions from a Java HTTP client show \"—\" for device (no OS/browser) — expected for API clients <b>[INFO]</b></li></ul><p>Evidence: NDC-1422-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1517",
+  "uuid": "6d8fdb42-0477-4df3-afaa-3cf76da9ff33",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held, and the step is now labelled \"Upload\".</p><p>QA-RT-leads.csv (2 rows, one quoted value with a comma) imported on Leads.</p><p><b>Checked:</b></p><ul><li>Step label names every format → Step is \"Upload\" <b>[PASS]</b></li><li>Dropzone / hint text → \"Choose an Excel (.xlsx, .xls) or CSV (.csv) file\"; \"Excel (.xlsx, .xls) or CSV (.csv) · up to 25 MB\" <b>[PASS]</b></li><li>.csv accepted and imported → 2 rows, 0 errors, Import complete 2 added; quoted value \"QA RT csv 2, quoted\" kept whole <b>[PASS]</b></li><li>Record source label → CSV-imported records show source \"Excel Import\" (minor) <b>[INFO]</b></li></ul><p>Evidence: NDC-1517-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1519",
+  "uuid": "eaf20f6c-8298-4d1c-9bf1-1344e34e0156",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Target layout first; Match records on follows the selected layout (FieldPermissions → Name); warning names the layout.</p><p><b>Checked:</b></p><ul><li>Target layout before Match records on → Target layout is the first panel <b>[PASS]</b></li><li>Match field follows the layout → FieldPermissions → Unique field: Name; Standard / Test → warning <b>[PASS]</b></li><li>Warning names the layout → The \"Standard\" layout has no unique field… / The \"Test\" layout… <b>[PASS]</b></li><li>\"Default layout\" option → The pseudo-option is quoted as if it were a layout: The \"Default layout\" layout has no unique field (minor) <b>[INFO]</b></li></ul><p>Evidence: NDC-1519-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-1590",
+  "uuid": "ad40253a-f054-4ae5-991e-e992ffc99b4b",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); helpers: ndc-staging-owner, test user 1 (nameb56175), mahmoud.mmohamedsamy<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>150 and -5 rejected, 50 and 100 imported; reason names the range in Import details and the error file. The Review step's \"All errors\" table stays empty — new defect (see observations).</p><p><b>Checked:</b></p><ul><li>Percent 150 / -5 rejected at validation → Review: 5 will import, 3 errors; p150 and p-5 not created; p50 and p100 imported <b>[PASS]</b></li><li>Reason names the allowed range → Import details and error file: \"Percent value must be between 0 and 100\" <b>[PASS]</b></li><li>Review breakdown wording → Breakdown type says \"Invalid format\" for 150 <b>[INFO]</b></li><li>Review \"All errors\" table → Empty with \"No errors match your filters\" even after Clear — new UI defect (the validate API returns all 3 issues) <b>[FAIL]</b></li></ul><p>Evidence: NDC-1590-retest-PASS.png</p>"
+ }
+]

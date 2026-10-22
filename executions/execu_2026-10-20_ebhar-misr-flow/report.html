@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ebhar Misr Test Report</title>
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f0f2f5; --text:#1b1f24; --muted:#5b6470; --border:#dfe3e8;
+  --accent:#1f7a76; --accent-soft:#e3f2f1;
+  --ok:#1a7f37; --ok-soft:#e6f4ea; --bad:#b42318; --bad-soft:#fdecea; --warn:#9a6700; --warn-soft:#fff4d6; --info:#0b5cad; --info-soft:#e7f0fb;
+  --code:#eef1f4;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111418; --surface:#181c21; --surface-2:#1f242a; --text:#e6e9ed; --muted:#9aa4b0; --border:#2c333b;
+    --accent:#4fc1ba; --accent-soft:#163331;
+    --ok:#4ac26b; --ok-soft:#14301d; --bad:#ff7b72; --bad-soft:#3a1715; --warn:#e3b341; --warn-soft:#352a0c; --info:#6cb6ff; --info-soft:#132a44;
+    --code:#232930;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111418; --surface:#181c21; --surface-2:#1f242a; --text:#e6e9ed; --muted:#9aa4b0; --border:#2c333b;
+  --accent:#4fc1ba; --accent-soft:#163331;
+  --ok:#4ac26b; --ok-soft:#14301d; --bad:#ff7b72; --bad-soft:#3a1715; --warn:#e3b341; --warn-soft:#352a0c; --info:#6cb6ff; --info-soft:#132a44;
+  --code:#232930;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Arabic",Tahoma,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 64px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px}
+nav.toc{position:sticky;top:16px;align-self:start;font-size:13.5px}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:5px 10px;border-left:2px solid var(--border)}
+nav.toc a:hover{color:var(--accent);border-left-color:var(--accent)}
+nav.toc .t{font-weight:600;color:var(--text);margin:0 0 8px 10px}
+main{min-width:0}
+header.top{margin-bottom:24px}
+h1{font-size:26px;line-height:1.25;margin:0 0 6px}
+.sub{color:var(--muted);margin:0}
+h2{font-size:20px;margin:40px 0 12px;padding-top:8px;border-top:1px solid var(--border)}
+h3{font-size:16.5px;margin:24px 0 8px}
+h4{font-size:14.5px;margin:18px 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+p{margin:8px 0}
+ul,ol{margin:6px 0 10px;padding-left:22px}
+li{margin:3px 0}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font:12.5px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;word-break:break-word}
+bdi{font-family:"Noto Sans Arabic",Tahoma,system-ui,sans-serif}
+.meta{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-size:14px}
+.meta dt{color:var(--muted)} .meta dd{margin:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:14px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.card .n{font-size:24px;font-weight:700;line-height:1.1}
+.card .l{color:var(--muted);font-size:13px;margin-top:4px}
+.card.ok .n{color:var(--ok)} .card.bad .n{color:var(--bad)} .card.warn .n{color:var(--warn)}
+.callout{border:1px solid var(--border);border-left:4px solid var(--info);background:var(--surface);border-radius:8px;padding:12px 14px;margin:12px 0}
+.callout.bad{border-left-color:var(--bad)} .callout.ok{border-left-color:var(--ok)} .callout.warn{border-left-color:var(--warn)}
+.callout b.h{display:block;margin-bottom:4px}
+.tw{overflow-x:auto;margin:10px 0;border:1px solid var(--border);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:8px 12px;border-bottom:1px solid var(--border)}
+th{background:var(--surface-2);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.chip.ok{background:var(--ok-soft);color:var(--ok)} .chip.bad{background:var(--bad-soft);color:var(--bad)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)} .chip.info{background:var(--info-soft);color:var(--info)}
+.chip.mut{background:var(--surface-2);color:var(--muted)}
+.flow{display:grid;gap:10px;margin:12px 0}
+.step{display:grid;grid-template-columns:34px 1fr;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.step .num{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;display:grid;place-items:center}
+.step .who{color:var(--muted);font-size:13px}
+.step .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;margin-top:8px}
+.opt{border:1px dashed var(--border);border-radius:8px;padding:8px 10px;font-size:14px}
+.status{font-weight:600}
+details{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:8px}
+.bug{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--bad);border-radius:10px;padding:4px 18px 14px;margin:16px 0}
+.small{font-size:13px;color:var(--muted)}
+.themebtn{float:right;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:13px;cursor:pointer}
+@media (max-width:860px){
+  .wrap{grid-template-columns:1fr;gap:0}
+  nav.toc{position:static;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:4px}
+  nav.toc .t{width:100%;margin-left:0}
+  nav.toc a{border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+  .meta{grid-template-columns:1fr} .meta dt{margin-top:6px}
+}
+@media print{nav.toc,.themebtn{display:none}.wrap{display:block}details{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <div class="t">Contents</div>
+  <a href="#status">Current status</a>
+  <a href="#flow">The flow today</a>
+  <a href="#bugs">Bugs for developers</a>
+  <a href="#open">Open items</a>
+  <a href="#tests">Test runs</a>
+  <a href="#roles">Role test</a>
+  <a href="#changes">Changes made</a>
+  <a href="#questions">Client questions</a>
+  <a href="#evidence">Evidence</a>
+</nav>
+
+<main>
+<header class="top">
+  <button class="themebtn" type="button" id="themeBtn">Theme</button>
+  <h1>Ebhar Misr — candidate flow in TAVI CRM: test report</h1>
+  <p class="sub">Education First · <bdi>إبهار مصر</bdi> competition · tested 20–21 Oct 2026 · state as of 21 Oct, end of day</p>
+</header>
+
+<dl class="meta">
+  <dt>CRM</dt><dd>https://crm.taviportal.com — tenant of <code>moaazdly89+edufirst@gmail.com</code> (Owner)</dd>
+  <dt>Website</dt><dd>https://competition.102-206-132-183.sslip.io/#apply</dd>
+  <dt>Requirements</dt><dd><code>Ebhar_Misr workflow.pdf</code> (journey, statuses, roles, N01–N07) and <code>الفورم.pdf</code> (17 registration fields)</dd>
+  <dt>Module</dt><dd>Competition Applications <code>ffb6202e-9ac2-49ba-a335-ef86c542450e</code></dd>
+  <dt>Active blueprint</dt><dd><bdi>إبهار مصر — مراحل الطلب</bdi> <code>cda430d9-4c70-42fa-923f-a5a3d2f5fa5c</code> (governs <code>application_status</code>)</dd>
+  <dt>Tested by</dt><dd>QA, through the API and the browser, logged in as the Owner and as each of the 9 role users</dd>
+</dl>
+
+<!-- ============ STATUS ============ -->
+<h2 id="status">Current status</h2>
+<div class="cards">
+  <div class="card ok"><div class="n">34/34</div><div class="l">Full journey with real user logins</div></div>
+  <div class="card ok"><div class="n">62/62</div><div class="l">Role checks (who sees and does what)</div></div>
+  <div class="card ok"><div class="n">3 / 3 / 3</div><div class="l">Arts round robin over 3 assessors</div></div>
+  <div class="card ok"><div class="n">14/14</div><div class="l">Assessor privacy checks</div></div>
+  <div class="card bad"><div class="n">2</div><div class="l">Bugs for the developers</div></div>
+</div>
+
+<div class="callout ok"><b class="h">Working</b>
+<ul>
+  <li><b>Blueprint:</b> the flow runs on the blueprint, and the old approval stages are deleted.</li>
+  <li><b>Registration review:</b> only the record owner can approve or reject a registration.</li>
+  <li><b>Video assessment:</b> buttons go by category assessor profile, and each category's owner rule hands videos out round robin.</li>
+  <li><b>Committee decision:</b> buttons go by the Committee profile.</li>
+  <li><b>Score lock:</b> score and comments can't be edited after approval.</li>
+  <li><b>Privacy:</b> assessors can't see applicants' personal data, except national ID, email and phone. Those are required fields, so they are read-only instead of hidden.</li>
+</ul></div>
+
+<div class="callout bad"><b class="h">Blocking go-live</b>
+<ul>
+  <li><b>B-EM1</b> — workflow rules don't run after <bdi>«اعتماد الفيديو»</bdi>, so the hand-over to the Committee never happens. <a href="#b1">Details</a></li>
+  <li><b>B-EM2</b> — the N04 status update is sometimes lost when several videos are saved at the same moment, and the application then gets stuck. <a href="#b2">Details</a></li>
+  <li><b>Student portal not tested with a real student login.</b> EM-00068 reached Assessment Assigned without N04 running. If its link was saved from the portal, portal saves don't trigger the rules. See <a href="#m3">M3</a>.</li>
+</ul></div>
+
+<div class="callout warn"><b class="h">Also open</b>
+<ul>
+  <li><code>age</code> is empty on every web-form record.</li>
+  <li>Staffing: only 2 Registration Admins (reviewer1, reviewer2) and 1 Committee user.</li>
+  <li>Email delivery is intermittent (HTTP 422).</li>
+  <li>Client decisions are pending — see <a href="#questions">questions</a>.</li>
+</ul></div>
+
+<!-- ============ FLOW ============ -->
+<h2 id="flow">The flow today</h2>
+<p class="small">This is the setup as it runs now, on the blueprint. The 20 Oct setup used approval stages, which have since been deleted.</p>
+<div class="flow">
+  <div class="step"><div class="num">1</div><div>
+    <b>Applicant submits the website form</b>
+    <div class="who">Website → CRM (source <code>web_form</code>)</div>
+    <p>A record is created with status <span class="status">Pending Verification</span>, and N01 is emailed to the applicant. The assignment rule makes it the next Registration Admin's record, round robin over reviewer1 and reviewer2.</p>
+  </div></div>
+  <div class="step"><div class="num">2</div><div>
+    <b>Registration review</b>
+    <div class="who">Record owner only (Registration Admin); the Owner account is a backup</div>
+    <div class="opts">
+      <div class="opt"><bdi>قبول التسجيل</bdi> → <span class="status">Registration Approved</span>. Rule N02 then gives portal access and sends the access email.</div>
+      <div class="opt"><bdi>رفض التسجيل</bdi> (reason required) → <span class="status">Registration Rejected</span> + N03. End.</div>
+    </div>
+  </div></div>
+  <div class="step"><div class="num">3</div><div>
+    <b>Student saves the video link in the portal</b>
+    <div class="who">Student (portal) · workflow rules</div>
+    <p>N04 sets <span class="status">Video Submitted</span>, fills in the time stamp and sends the N04 email. The category owner rule then gives the record to the next assessor in that category's profile (round robin), and <bdi>«إسناد التقييم»</bdi> moves it to <span class="status">Assessment Assigned</span>. <span class="chip bad">B-EM2</span> <span class="chip warn">portal untested</span></p>
+  </div></div>
+  <div class="step"><div class="num">4</div><div>
+    <b>Video assessment</b>
+    <div class="who">That category's assessor profile; buttons show only on records of that category</div>
+    <div class="opts">
+      <div class="opt"><bdi>طلب تصحيح الفيديو</bdi> (correction note required) → <span class="status">Action Required</span> + N05. The student keeps portal access, uploads again, and the record goes back to step 3.</div>
+      <div class="opt"><bdi>اعتماد الفيديو</bdi> (score 0–100 and comments required) → <span class="status">Assessment Complete</span>. The hand-over rule to the Committee exists but doesn't run. <span class="chip bad">B-EM1</span></div>
+    </div>
+  </div></div>
+  <div class="step"><div class="num">5</div><div>
+    <b>Committee decision</b>
+    <div class="who">Ebhar — Assessment Lead/Committee profile</div>
+    <div class="opts">
+      <div class="opt"><bdi>قبول في التصفيات النهائية</bdi> → <span class="status">Finalist Accepted</span> + N06. End. N08 is sent once the finals date and location are filled in.</div>
+      <div class="opt"><bdi>عدم الاختيار للتصفيات</bdi> → <span class="status">Finalist Rejected</span> + N07. End.</div>
+    </div>
+  </div></div>
+</div>
+<p class="small">The status can only change through the blueprint buttons or the workflow rules; direct edits are refused with <code>BLUEPRINT_GOVERNED_FIELD</code>. The rules move the status through automatic transitions that only the Owner account may use, so keep those transitions as they are.</p>
+
+<!-- ============ BUGS ============ -->
+<h2 id="bugs">Bugs for the developers</h2>
+<div class="callout"><b class="h">Filed in Plane on 22 Oct 2026</b>
+<ul>
+  <li><b>B-EM1 → NDC-2420</b> <span class="chip warn">Medium</span> Filed as an <b>inconsistency</b>. Zoho's help says workflow rules never run after blueprint transitions (<a href="https://help.zoho.com/portal/en/kb/crm/troubleshooting/articles/troubleshooting-workflows">Troubleshooting Workflows</a>, docs only). TAVI runs them after some transitions and not others. Re-reproduced in the UI on 22 Oct on EM-00094 (kept).</li>
+  <li><b>B-EM2 → NDC-2421</b> <span class="chip bad">High</span> Not reproduced on 22 Oct: 0 of 27 in 3 parallel batches. So far 5 lost updates in 45 parallel saves, all in one batch.</li>
+</ul>
+<p class="small">Both are in Sprint 12 and the CRM module, assigned to Mahmoud Mohamed and Hegazy. Annotated images: <code>evidence/B-EM1-…png</code> and <code>evidence/B-EM2-…png</code> (they need to be dragged into Plane).</p></div>
+<p>Environment: crm.taviportal.com, tenant <code>moaazdly89+edufirst@gmail.com</code> · module <code>ffb6202e-9ac2-49ba-a335-ef86c542450e</code> · blueprint <code>cda430d9-4c70-42fa-923f-a5a3d2f5fa5c</code> · governed field <code>application_status</code>.</p>
+
+<div class="bug" id="b1">
+<h3>B-EM1 — Workflow rules don't run after a blueprint transition that saves fields <span class="chip bad">High</span></h3>
+<p><b>Impact:</b> the Committee hand-over never happens, and any rule that reacts to these transitions is silently skipped.</p>
+<h4>What happens</h4>
+<p>A rule with trigger <b>RecordUpdated</b> and criteria <code>application_status = "Assessment Complete" AND application_status CHANGED</code> is never evaluated when the status reaches Assessment Complete through the transition <bdi>«اعتماد الفيديو»</bdi>. <code>GET /workflow/executions</code> has no entry for that event, for this rule or any other, and the owner stays unchanged.</p>
+<p>The same rule shape <b>does</b> run after a transition with <b>no</b> required fields. After <bdi>«قبول التسجيل»</bdi> (Pending Verification → Registration Approved), N02 (<code>application_status = "Registration Approved" AND CHANGED</code>) runs every time and is logged as <code>RecordUpdated … Fired</code>.</p>
+<h4>Rule and transitions involved</h4>
+<div class="tw"><table>
+<tr><th>Item</th><th>Definition</th></tr>
+<tr><td>Rule <code>4e51785b-9efe-4174-97bd-eed125f5c5dd</code><br><bdi>إبهار مصر — نقل الملكية للجنة بعد اعتماد الفيديو</bdi></td><td>trigger <code>RecordUpdated</code>; criteria <code>application_status Equal "Assessment Complete" AND application_status CHANGED</code>; action <code>OwnerAssignment</code> / <code>RoleRoundRobin</code> / profile <code>53ece662-fefc-4ae5-8be9-920d7d5ea620</code> (Assessment Lead/Committee)</td></tr>
+<tr><td>Transitions <code>t-approve-video-science</code> / <code>-math</code> / <code>-technology</code> / <code>-arts</code></td><td>Assessment Assigned → Assessment Complete; required during-fields <code>assessment_score</code>, <code>assessment_comments</code>; validation <code>0 ≤ assessment_score ≤ 100</code>; no after-actions</td></tr>
+<tr><td>Control: <code>t-approve-registration</code></td><td>Pending Verification → Registration Approved; no required fields. Rule N02 <code>12057f81-9263-423a-a0dd-261ff5e6d1fa</code> fires.</td></tr>
+</table></div>
+<h4>Steps to reproduce</h4>
+<ol>
+  <li>Create a Competition Applications record with <code>category = العلوم</code> and status Pending Verification.</li>
+  <li><code>POST /modules/{M}/records/{id}/blueprint-transitions/t-approve-registration</code> with body <code>{}</code> → N02 fires.</li>
+  <li>Set <code>submission_link</code> → N04, <bdi>«مالك الفئة: العلوم»</bdi> and <bdi>«إسناد التقييم»</bdi> move it to Assessment Assigned, with a Science assessor as owner.</li>
+  <li>As the assessor (or the Owner account): <code>POST …/blueprint-transitions/t-approve-video-science</code> with <code>{"assessment_score":77,"assessment_comments":"test"}</code> → HTTP 200, Assessment Complete, score saved.</li>
+  <li>Wait 15–30 s. <b>Expected:</b> rule <code>4e51785b…</code> runs and the owner becomes the Committee user. <b>Actual:</b> the owner is unchanged and the record has no execution entry.</li>
+</ol>
+<h4>Evidence (21 Oct 2026, UTC)</h4>
+<div class="tw"><table>
+<tr><th>Run</th><th>Record</th><th>Pressed by</th><th>Result</th></tr>
+<tr><td>C1</td><td>EM-00065 (Science), just after 15:06:31</td><td>pool-science</td><td>owner stayed pool-science, no rule run</td></tr>
+<tr><td>C2</td><td>EM-00066 (Math), just after 15:14:22</td><td>pool-math</td><td>owner stayed pool-math, no rule run</td></tr>
+<tr><td>Probe</td><td>Arts record, ~15:21</td><td>Owner account</td><td>owner stayed pool-arts, no rule run</td></tr>
+</table></div>
+<p><b>Proof that the rule itself works:</b> on the probe record, still at Assessment Complete:</p>
+<ol>
+  <li>The <code>CHANGED</code> condition was removed temporarily.</li>
+  <li>A harmless field (<code>school</code>) was edited.</li>
+  <li>The rule fired at <b>15:22:03.672</b> (RecordUpdated, criteriaMatched = true, Fired), and the owner moved to <code>pool-registration</code>.</li>
+</ol>
+<p>The rule was then restored. So the rule and the RoleRoundRobin action are fine; what's missing is the RecordUpdated event from the transition.</p>
+<h4>Likely area (to confirm)</h4>
+<p>The transition path that receives field values in its payload probably writes the record without emitting the workflow event, or emits it without the <code>application_status</code> change. Please also check <code>t-reject-registration</code> (<code>rejection_reason</code>) and <code>t-correction-*</code> (<code>correction_request</code>). No rule depends on those today, so they weren't tested.</p>
+<h4>Expected behaviour</h4>
+<p>Every blueprint transition that changes <code>application_status</code> triggers RecordUpdated workflow rules with all the changed fields, as already happens for transitions without fields.</p>
+</div>
+
+<div class="bug" id="b2">
+<h3>B-EM2 — Workflow field update is sometimes lost when several records update at the same moment <span class="chip bad">High</span></h3>
+<p><b>Impact:</b> an application can stay at "Registration Approved" with its video link saved. No assessor is assigned, no error is shown, and nobody notices.</p>
+<h4>What happens</h4>
+<p>Rule N04 runs when the video link is saved. Its log entry shows <b>Fired</b> and its <b>email dispatch Succeeded</b>, but for some records its <b>FieldUpdate</b> (status → Video Submitted, <code>video_submitted_at</code> → now) is not applied:</p>
+<ul>
+  <li>The status stays Registration Approved and <code>video_submitted_at</code> stays empty.</li>
+  <li><code>errorMessage</code> is null, and the FieldUpdate leaves no trace in <code>dispatches</code>.</li>
+  <li>The next rules (category owner and <bdi>«إسناد التقييم»</bdi>) never run.</li>
+</ul>
+<p>It happened only when 9 records were updated within the same few seconds, and not every time.</p>
+<h4>Rule involved</h4>
+<p>Rule <code>7f6fe481-e4d2-4a74-85e4-280a42c35e35</code> <bdi>إبهار مصر — تقديم رابط الفيديو (N04)</bdi>:</p>
+<ul>
+  <li><b>Trigger:</b> <code>RecordUpdated</code></li>
+  <li><b>Criteria:</b> <code>submission_link IsNotNull AND submission_link CHANGED AND application_status IN (Registration Approved, Profile Accessed, Action Required)</code></li>
+  <li><b>Action 1:</b> FieldUpdate <code>application_status = "Video Submitted"</code>, <code>video_submitted_at = ${now}</code>. The status is governed by the blueprint, so this runs as the automatic transition <code>t-sys-video-1</code>.</li>
+  <li><b>Action 2:</b> Email, template <code>eea43ccc-f3cd-460d-9dda-511d32728d25</code>.</li>
+</ul>
+<h4>Steps to reproduce</h4>
+<ol>
+  <li>Create 9 records with <code>category = الفنون</code>, status Pending Verification.</li>
+  <li>Run <code>t-approve-registration</code> on all 9 and wait until each has portal access.</li>
+  <li>Send 9 <code>PATCH /modules/{M}/records/{id}</code> with <code>{"data":[{"field":"submission_link","value":{"kind":"string","value":"https://youtu.be/x-N"}}]}</code> <b>in parallel</b>, within about 3–5 s.</li>
+  <li>After 60–90 s. <b>Expected:</b> all 9 at Assessment Assigned, with an Arts assessor as owner. <b>Actual:</b> some stay at Registration Approved.</li>
+</ol>
+<h4>Evidence (21 Oct 2026, UTC) — run 1, 15:36:38–40, 5 of 9 lost</h4>
+<div class="tw"><table>
+<tr><th>Record</th><th>N04 evaluated</th><th>N04 outcome</th><th>Email</th><th>Status afterwards</th><th><code>video_submitted_at</code></th></tr>
+<tr><td>EM-00081</td><td>15:36:40.343</td><td>Fired</td><td>Succeeded</td><td><span class="chip bad">Registration Approved</span></td><td>empty</td></tr>
+<tr><td>EM-00079</td><td>15:36:40.272</td><td>Fired</td><td>Succeeded</td><td><span class="chip bad">Registration Approved</span></td><td>empty</td></tr>
+<tr><td>EM-00075</td><td>15:36:40.303</td><td>Fired</td><td>Succeeded</td><td><span class="chip bad">Registration Approved</span></td><td>empty</td></tr>
+<tr><td>EM-00076</td><td>15:36:40.450</td><td>Fired</td><td>Succeeded</td><td><span class="chip bad">Registration Approved</span></td><td>empty</td></tr>
+<tr><td>EM-00077</td><td>15:36:40.496</td><td>Fired</td><td>Succeeded</td><td><span class="chip bad">Registration Approved</span></td><td>empty</td></tr>
+<tr><td>EM-00074</td><td>15:36:38.988</td><td>Fired</td><td>Succeeded</td><td><span class="chip ok">Assessment Assigned</span></td><td>15:36:38.988</td></tr>
+<tr><td>EM-00078</td><td>15:36:40.222</td><td>Fired</td><td>Succeeded</td><td><span class="chip ok">Assessment Assigned</span></td><td>15:36:40.222</td></tr>
+<tr><td>EM-00080</td><td>15:36:40.241</td><td>Fired</td><td>mail 422</td><td><span class="chip ok">Assessment Assigned</span></td><td>15:36:40.241</td></tr>
+<tr><td>EM-00082</td><td>15:36:40.584</td><td>Fired</td><td>mail 422</td><td><span class="chip ok">Assessment Assigned</span></td><td>15:36:40.584</td></tr>
+</table></div>
+<ul>
+  <li><b>Recovery:</b> re-saving the link on the 5 failed records one at a time worked straight away, with the correct round-robin owner.</li>
+  <li><b>Run 2</b> (~16:01:50, EM-00083 … EM-00091): all 9 updated correctly, so the bug is <b>intermittent</b>. Run 2's records are still in the tenant; run 1's were deleted.</li>
+</ul>
+<h4>Likely area (to confirm)</h4>
+<p>The FieldUpdate on the governed field runs as an automatic blueprint transition. Under concurrent load that write seems to fail (for example a row-version or lock conflict, or a state check against a stale snapshot), and the failure is swallowed: the rule is still logged as Fired and the email still goes. Please check the server logs for EM-00075 / 76 / 77 / 79 / 81 around 15:36:40 UTC.</p>
+<h4>Expected behaviour</h4>
+<ol><li>The update is applied reliably under concurrent updates, retrying on a conflict.</li><li>If it really fails, the execution is logged as failed with the error, and the rule doesn't report success.</li></ol>
+</div>
+
+<!-- ============ OPEN ITEMS ============ -->
+<h2 id="open">Open items and their status</h2>
+<p class="small">The list was first written on 20 Oct. Its status column shows the state on 21 Oct, end of day.</p>
+<div class="tw"><table>
+<tr><th>#</th><th>Item</th><th>Status</th><th>What's left / how to fix</th></tr>
+<tr><td>M1</td><td>Emails not delivered</td><td><span class="chip warn">Intermittent</span></td><td>It worked at 13:25 and failed again at 15:36 and 16:01 (HTTP 422). Likely cause: bounces from fake test addresses (<code>name1…6@example.com</code>) and the shared <code>no-reply-reset@anyware.software</code> sender. Use real or plus-addressed test emails, ask the mail admin to unblock, and use a dedicated sender for live.</td></tr>
+<tr><td>M2</td><td>Registration web form</td><td><span class="chip warn">Partly done</span></td><td>The website now creates records (source <code>web_form</code>), N01 fires and round robin works. But <code>age</code> is empty on every record, and the form isn't registered under CRM Web Forms (the list is empty).</td></tr>
+<tr id="m3"><td>M3</td><td>Student portal end to end</td><td><span class="chip bad">Open</span></td><td>Sign in as a real student, save a link from the portal, and check that N04 and the owner rule run. EM-00068 is at Assessment Assigned with owner reviewer1 and no N04 run, which points to portal saves not triggering rules.</td></tr>
+<tr><td>M4</td><td>Assessors see too much</td><td><span class="chip ok">Done</span> <span class="chip warn">3 fields</span></td><td>10 personal fields hidden and 19 read-only (D7). National ID, email and phone can't be hidden because they're required: make them not required in the CRM and keep them required on the form.</td></tr>
+<tr><td>M5</td><td>Real assessors and committee</td><td><span class="chip warn">Partly done</span></td><td>Round robin by profile is in place, and Arts has 3 assessors. The other categories have 1 each, the Committee has 1 user, and only 2 Registration Admins are left. Add the real staff.</td></tr>
+<tr><td>M6</td><td>Rubric is a single score</td><td><span class="chip mut">Client</span></td><td>Get the criteria per category, then add score fields per criterion to the <bdi>«اعتماد الفيديو»</bdi> buttons.</td></tr>
+<tr><td>M7</td><td>Missing form fields</td><td><span class="chip mut">Client</span></td><td>Grade (picklist), team partner (Science/Technology), guardian consent.</td></tr>
+<tr><td>M8</td><td>Role logins</td><td><span class="chip ok">Done</span></td><td>All 9 users tested with their own logins (62/62, then 34/34).</td></tr>
+<tr><td>M9</td><td>Age rule vs website "18+"</td><td><span class="chip mut">Client</span></td><td>Decide the range. Note that age is currently empty from the form.</td></tr>
+<tr><td>M10</td><td>Email not unique</td><td><span class="chip bad">Open</span></td><td>Mark Email as unique; the portal signs in by email.</td></tr>
+<tr><td>M11</td><td>No assessor alert</td><td><span class="chip bad">Open</span></td><td>Add an alert or email action to the category owner rules.</td></tr>
+<tr><td>M12</td><td>No deadline reminder</td><td><span class="chip mut">Client</span></td><td>Set the deadline, then add a scheduled reminder while the link is empty.</td></tr>
+<tr><td>M13</td><td>Student can't see status after submitting</td><td><span class="chip mut">Design choice</span></td><td>Keep as is (it locks the submission); the student follows the status by email.</td></tr>
+<tr><td>M14</td><td>Risky leftover rules</td><td><span class="chip ok">Done</span></td><td>Deleted in the clean-up (backups kept).</td></tr>
+<tr><td>M15</td><td>Website wording</td><td><span class="chip mut">Client</span></td><td>"Education First Competition" or <bdi>«إبهار مصر»</bdi>?</td></tr>
+<tr><td>M16</td><td>Several people editing the setup</td><td><span class="chip info">Process</span></td><td>One owner for configuration changes until go-live, plus a short change log.</td></tr>
+<tr><td>R1</td><td>Assessor could change the score after approval</td><td><span class="chip ok">Fixed</span></td><td>Score and comments are read-only for every profile (D5); the approve button still saves them.</td></tr>
+<tr><td>R2</td><td>EM-00036 visible to all users</td><td><span class="chip ok">Gone</span></td><td>Deleted with the old test records.</td></tr>
+<tr><td>R3</td><td>Committee sees every record</td><td><span class="chip info">Info</span></td><td>Fine for an Assessment Lead; restrict it if the client wants finalists only.</td></tr>
+<tr><td>R4</td><td>Settings lists readable by all profiles</td><td><span class="chip warn">Low</span></td><td>All profiles can read the user list, and Registration Admins can also read profiles and portal settings. Consider removing "view settings".</td></tr>
+<tr><td>R5</td><td>Assessors and Committee land on another module</td><td><span class="chip warn">Low</span></td><td>Set their home page to Competition Applications.</td></tr>
+</table></div>
+
+<!-- ============ TESTS ============ -->
+<h2 id="tests">Test runs</h2>
+<div class="tw"><table>
+<tr><th>When (UTC)</th><th>Run</th><th>Setup tested</th><th>Records</th><th>Result</th></tr>
+<tr><td>20 Oct</td><td>First E2E (T01–T16)</td><td>Approval stages (since deleted); Owner used Takeover</td><td>EM-00040 … 42 (deleted)</td><td><span class="chip ok">16/16</span> <span class="chip mut">superseded</span></td></tr>
+<tr><td>21 Oct 09:40</td><td>Blueprint E2E (B01–B26)</td><td>Original blueprint, owner-only registration buttons</td><td>EM-00043 … 46 (deleted)</td><td><span class="chip ok">all pass</span></td></tr>
+<tr><td>21 Oct 11:17</td><td>Re-test on the (copy) blueprint</td><td>Blueprint now active; profile-based video buttons</td><td>EM-00048 … 51 (deleted)</td><td><span class="chip ok">27/27</span></td></tr>
+<tr><td>21 Oct ~12:30</td><td>Role test, 9 logins</td><td>Who sees which record and button</td><td>EM-00052 … 55 (deleted)</td><td><span class="chip ok">62/62</span></td></tr>
+<tr><td>21 Oct 13:25</td><td>Final E2E with real users (F1–F5)</td><td>Every decision by its own role; score lock</td><td>EM-00060 … 64 (deleted)</td><td><span class="chip ok">34/34</span></td></tr>
+<tr><td>21 Oct 15:05</td><td>Committee hand-over (C1, C2)</td><td>New hand-over rule</td><td>EM-00065 … 66 (deleted)</td><td><span class="chip bad">15/18</span> 3 failures = B-EM1</td></tr>
+<tr><td>21 Oct 15:36</td><td>Arts round robin, run 1</td><td>9 saves at once</td><td>EM-00074 … 82 (deleted)</td><td><span class="chip ok">3/3/3</span> <span class="chip bad">5 stuck = B-EM2</span></td></tr>
+<tr><td>21 Oct 16:01</td><td>Arts round robin, run 2</td><td>9 saves at once</td><td><b>EM-00083 … 91 (kept)</b></td><td><span class="chip ok">3/3/3, all 9</span></td></tr>
+<tr><td>21 Oct 19:15</td><td>Privacy (P1, P2)</td><td>Hidden and read-only fields for assessors</td><td>EM-00092 (deleted)</td><td><span class="chip ok">14/14</span></td></tr>
+</table></div>
+
+<details open><summary>Final E2E with real users — the 5 paths (34/34)</summary>
+<p>The Owner simulated only the web form (create and assign to a reviewer) and the student's portal step (saving the video link). Every decision was made by the user of that role.</p>
+<div class="tw"><table>
+<tr><th>#</th><th>Path</th><th>Users</th><th>End</th></tr>
+<tr><td>F1</td><td>Science: approve → video → send back → resubmit → approve 88 → finalist</td><td>reviewer1, pool-science, Committee</td><td>Finalist Accepted</td></tr>
+<tr><td>F2</td><td>Arts: reject (refused without a reason, then with one)</td><td>reviewer2</td><td>Registration Rejected</td></tr>
+<tr><td>F3</td><td>Technology: approve → video → approve 61 → not selected</td><td>reviewer3, pool-technology, Committee</td><td>Finalist Rejected</td></tr>
+<tr><td>F4</td><td>Math: approve → video → approve 92 → finalist (pool-science sees no buttons)</td><td>reviewer4, pool-math, Committee</td><td>Finalist Accepted</td></tr>
+<tr><td>F5</td><td>Arts: approve → video → approve 79 → finalist</td><td>reviewer4, pool-arts, Committee</td><td>Finalist Accepted</td></tr>
+</table></div>
+<ul>
+  <li>reviewer2 saw no buttons on reviewer1's application. Each assessor saw only their own category's buttons.</li>
+  <li><b>Score lock:</b> pool-science and the Committee got <code>FIELD_PERMISSION_DENIED</code>, and reviewer1 got <code>PERMISSION_DENIED</code>. The score stayed 88.</li>
+  <li><b>N02 cancelled on F3–F5:</b> a test artifact, not a defect. The test saved the link before the access job ran, about 10 s after approval.</li>
+</ul>
+</details>
+
+<details><summary>Arts round robin, run 2 — the order the assessors were picked</summary>
+<p>The assessor is picked when the video link is saved, not when the record is created. The 9 links were saved at once, so the CRM processed them in arrival order, not in EM-number order. The rule's own log shows a strict rotation:</p>
+<div class="tw"><table>
+<tr><th>#</th><th>Time</th><th>Record</th><th>Assessor</th></tr>
+<tr><td>1</td><td>16:01:52.084</td><td>EM-00086</td><td>pool-arts</td></tr>
+<tr><td>2</td><td>16:01:52.140</td><td>EM-00084</td><td>reviewer3</td></tr>
+<tr><td>3</td><td>16:01:52.165</td><td>EM-00088</td><td>reviewer4</td></tr>
+<tr><td>4</td><td>16:01:52.244</td><td>EM-00085</td><td>pool-arts</td></tr>
+<tr><td>5</td><td>16:01:52.533</td><td>EM-00087</td><td>reviewer3</td></tr>
+<tr><td>6</td><td>16:01:52.589</td><td>EM-00083</td><td>reviewer4</td></tr>
+<tr><td>7</td><td>16:01:53.243</td><td>EM-00090</td><td>pool-arts</td></tr>
+<tr><td>8</td><td>16:01:53.450</td><td>EM-00091</td><td>reviewer3</td></tr>
+<tr><td>9</td><td>16:01:54.065</td><td>EM-00089</td><td>reviewer4</td></tr>
+</table></div>
+</details>
+
+<details><summary>Blueprint checks B01–B26</summary>
+<div class="tw"><table>
+<tr><th>ID</th><th>Check</th><th>Result</th></tr>
+<tr><td>B00</td><td>A new record enters the active blueprint</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B01</td><td>New record → Pending Verification, ref EM-000xx</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B02</td><td>At Pending only <bdi>«قبول التسجيل»</bdi> / <bdi>«رفض التسجيل»</bdi> are offered</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B03</td><td>No approval request starts</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B04</td><td>A video button can't be used at Pending</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B05–06</td><td>Approve → Registration Approved; N02 creates portal access</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B07–08</td><td>Video link → Video Submitted → Assessment Assigned; owner → category assessor</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B09–10</td><td>Only the record's category buttons show; the Math button is refused on a Science record</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B11–12</td><td>Send back without a note refused; with a note → Action Required</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B13–14</td><td>Portal access kept at Action Required; new link → Assessment Assigned</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B15–17</td><td>Approve video: no score refused, 120 refused, 85 → Assessment Complete with score and comments</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B18</td><td>Committee accept → Finalist Accepted</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B19–20</td><td>Reject without a reason refused; with one → Registration Rejected</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B21–22</td><td>After rejection: no buttons left, no portal access</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B23–25</td><td>Technology: owner → Technology assessor, score 55, not selected → Finalist Rejected, no buttons left</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>B26</td><td>Status can't be edited directly (<code>BLUEPRINT_GOVERNED_FIELD</code>)</td><td><span class="chip ok">pass</span></td></tr>
+</table></div>
+</details>
+
+<details><summary>Privacy checks (14/14)</summary>
+<ul>
+  <li>pool-arts opening EM-00085: none of the 10 hidden fields came back. Name, category, school and the video link are still visible.</li>
+  <li>pool-science on a new Science record: no hidden fields. National ID, email and phone are visible but read-only; edits to email, national ID and name were refused with <code>FIELD_PERMISSION_DENIED</code>.</li>
+  <li>Send back, resubmit, approve with score and the Committee finalist still work after the change.</li>
+</ul>
+</details>
+
+<details><summary>Web-form records submitted by the team (EM-00057 … EM-00073)</summary>
+<ul>
+  <li>Created with source <code>web_form</code>. N01 fired, and the assignment rule alternated reviewer1 / reviewer2.</li>
+  <li><code>age</code> is empty on every one.</li>
+  <li>Addresses <code>name1…6@example.com</code> bounce, which hurts the sender's reputation.</li>
+  <li>EM-00068: Assessment Assigned, owner reviewer1, no N04 run, no <code>video_submitted_at</code> → see M3.</li>
+</ul>
+</details>
+
+<!-- ============ ROLES ============ -->
+<h2 id="roles">Role test — what each user can see and do</h2>
+<p class="small">Run with test records RA (Science, Pending, owned by reviewer1), RB (Science, Assessment Assigned), RC (Math, Assessment Assigned) and RD (Science, Assessment Complete). reviewer3 and reviewer4 were Registration Admins at the time; they're Arts assessors now.</p>
+<div class="tw"><table>
+<tr><th>User (profile)</th><th>Can open</th><th>Buttons</th><th>Refused (tested)</th><th>Did successfully</th></tr>
+<tr><td>reviewer1 (Registration Admin)</td><td>RA only (own record)</td><td>RA: approve / reject registration</td><td>video approve on RB, finalist on RD</td><td>approved RA</td></tr>
+<tr><td>reviewer2–4 (Registration Admin)</td><td>none of the test records</td><td>none</td><td>reviewer2: approve / reject RA</td><td>—</td></tr>
+<tr><td>pool-science (Assessor Science)</td><td>RB, RD (own records)</td><td>RB: Science approve / send back</td><td>approve on RA, Math approve on RC, finalist on RD</td><td>approved RB with score 80</td></tr>
+<tr><td>pool-math (Assessor Math)</td><td>RC only</td><td>RC: Math approve / send back</td><td>Science buttons on RB</td><td>sent RC back</td></tr>
+<tr><td>pool-technology, pool-arts</td><td>none</td><td>none</td><td>Science approve on RB, Math send back on RC</td><td>—</td></tr>
+<tr><td>pool-registration (Committee)</td><td>all records</td><td>RD only: finalist / not selected</td><td>approve on RA, video approve on RB</td><td>finalist on RD</td></tr>
+</table></div>
+
+<!-- ============ CHANGES ============ -->
+<h2 id="changes">Changes made</h2>
+<h3>20 Oct 2026</h3>
+<div class="tw"><table>
+<tr><th>#</th><th>Change</th><th>Now</th></tr>
+<tr><td>C1</td><td>Approval Stage 1: one rule for Pending Verification, approver = record owner</td><td><span class="chip mut">removed</span> stages deleted</td></tr>
+<tr><td>C2</td><td>Portal access for Registration Approved, Profile Accessed and <b>Action Required</b>, so a student can fix a link</td><td><span class="chip ok">in place</span></td></tr>
+<tr><td>C3</td><td>Duplicate review process "Eligibility Reviewers" switched off</td><td><span class="chip ok">in place</span></td></tr>
+<tr><td>C4</td><td>New rule N01 (on create → N01 email)</td><td><span class="chip ok">in place</span></td></tr>
+<tr><td>C5</td><td>Category owner rules: on edit, only when the status becomes Video Submitted</td><td><span class="chip ok">in place</span> (team later switched them to round robin)</td></tr>
+<tr><td>C6</td><td>Approval stages switched back on</td><td><span class="chip mut">undone</span> by D2</td></tr>
+<tr><td>C7</td><td>N02 rule switched off</td><td><span class="chip mut">undone</span> by D3</td></tr>
+</table></div>
+<h3>21 Oct 2026</h3>
+<div class="tw"><table>
+<tr><th>#</th><th>Change</th><th>By</th><th>Now</th></tr>
+<tr><td>D1</td><td>Backup clone of the original blueprint (inactive)</td><td>QA</td><td><span class="chip mut">gone</span> backup JSON kept</td></tr>
+<tr><td>D2</td><td>Approval Stages 1–3 switched off</td><td>QA</td><td><span class="chip mut">deleted</span> in the clean-up</td></tr>
+<tr><td>D3</td><td>N02 rule switched back on (the blueprint can't give portal access)</td><td>QA</td><td><span class="chip ok">in place</span></td></tr>
+<tr><td>D4</td><td>Registration buttons: record owner only (+ Owner account)</td><td>QA</td><td><span class="chip ok">in place</span></td></tr>
+<tr><td>—</td><td>"(copy)" blueprint made active and renamed <bdi>«إبهار مصر — مراحل الطلب»</bdi>; video buttons by category profile</td><td>Team</td><td><span class="chip ok">in place</span></td></tr>
+<tr><td>—</td><td>4 category owner rules → round robin over their category profile; reviewer3 and reviewer4 moved to the Arts profile</td><td>Team</td><td><span class="chip ok">in place</span></td></tr>
+<tr><td>D5</td><td>Score and comments read-only for the 4 category assessor profiles</td><td>QA</td><td><span class="chip ok">in place</span></td></tr>
+<tr><td>D6</td><td>New rule: hand-over to the Committee (round robin) when the status becomes Assessment Complete</td><td>QA</td><td><span class="chip bad">on, blocked by B-EM1</span></td></tr>
+<tr><td>—</td><td>Clean-up: 13 old test records (EM-00027 … 39), approval Stages 1–3 and 3 unused rules deleted; the 3 inactive blueprints were already gone</td><td>QA (confirmed)</td><td><span class="chip ok">done</span> 22 backups kept</td></tr>
+<tr><td>D7</td><td>Assessor privacy: 10 personal fields hidden, 19 read-only; national ID, email and phone read-only</td><td>QA</td><td><span class="chip ok">in place</span></td></tr>
+</table></div>
+
+<!-- ============ QUESTIONS ============ -->
+<h2 id="questions">Questions for the client</h2>
+<ol>
+  <li>Age range: school students (14–18) or 18+? The form doesn't send an age today.</li>
+  <li>Rubric criteria per category, including Mathematics.</li>
+  <li>The real assessors per category, and who sits on the committee?</li>
+  <li>Grade, team-project partner and guardian consent: required on the form?</li>
+  <li>Submission deadline and time zone (for N02 and the reminders).</li>
+  <li>Naming on the site and in emails: "Education First Competition" or <bdi>«إبهار مصر»</bdi>?</li>
+</ol>
+
+<!-- ============ EVIDENCE ============ -->
+<h2 id="evidence">Evidence</h2>
+<p class="small">All files are in the <code>evidence/</code> folder next to this report.</p>
+<div class="tw"><table>
+<tr><th>Run</th><th>Files</th></tr>
+<tr><td>20 Oct E2E</td><td><code>run-e2e.log</code>, <code>run-e2e3.log</code>, <code>e2e-results.json</code>, <code>e2e3-results.json</code>, <code>stage2-approve-dialog-score.png</code>, <code>email-dispatches-2026-10-20.json</code></td></tr>
+<tr><td>Blueprint switch + E2E</td><td><code>run-apply5.log</code>, <code>run-e2e4.log</code>, <code>run-e2e4b.log</code>, <code>e2e4-results.json</code>, <code>e2e4b-results.json</code>, <code>pre-apply5-blueprint.json</code>, <code>e2e4-bpstate-sample.json</code></td></tr>
+<tr><td>Re-test on the (copy)</td><td><code>run-e2e5.log</code>, <code>e2e5-results.json</code>, <code>blueprint-copy-cda430d9-tested.json</code></td></tr>
+<tr><td>Role test</td><td><code>run-rbac.log</code>, <code>rbac-results.json</code></td></tr>
+<tr><td>Final E2E + score lock</td><td><code>run-final.log</code>, <code>final-results.json</code>, <code>run-pafail.log</code>, <code>run-fpapply.log</code>, <code>fieldperms-before.json</code></td></tr>
+<tr><td>Committee hand-over (B-EM1)</td><td><code>run-committee.log</code>, <code>run-rrprobe.log</code></td></tr>
+<tr><td>Arts round robin (B-EM2)</td><td><code>run-arts9.log</code>, <code>run-arts9b.log</code>, <code>run-arts9c.log</code>, <code>run-arts9r2.log</code>, <code>run-arts9r2pa.log</code></td></tr>
+<tr><td>Clean-up + web form</td><td><code>run-cleanup-final.log</code>, <code>run-wfcheck.log</code>, <code>backup-cleanup-2026-10-21/</code></td></tr>
+<tr><td>Privacy</td><td><code>run-privacy.log</code>, <code>privacy-results.json</code>, <code>fieldperms-before-privacy.json</code></td></tr>
+</table></div>
+<p class="small">The full written history is in <code>report.md</code> in the same folder.</p>
+</main>
+</div>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeBtn'), key='ebhar-report-theme';
+  try{var s=localStorage.getItem(key); if(s) root.setAttribute('data-theme',s);}catch(e){}
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    var next=cur==='dark'?'light':'dark'; root.setAttribute('data-theme',next);
+    try{localStorage.setItem(key,next);}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

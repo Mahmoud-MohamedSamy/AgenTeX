@@ -85,3 +85,18 @@ Run: `./mvnw test -Dfeature=crmdeskintegration -Dtags=crmdesk-read` (Run 1, read
 - Settings tabs and the CRM pane load after the switch ("Loading…"): page objects wait until it disappears before reading.
 - `@ZohoRef` paths are relative to the feature folder: `zoho/<file>.png`.
 - The access-level names show on screen only when a profile is restricted; Z9 reads them from `/locales/en/crm-desk-integration.json`.
+
+## Write runs (20 Oct 2026, user-approved)
+- Classes: `WriteBase` (helpers, facts → target/crmdesk-write-facts.txt), `WriteRunTest` (Run 2), `ConnectionRunTest` (Run 3, screen), `RecheckTest`, `K10CheckTest`, `ProbeTest` (GET-only explorer: lines in target/probe-in.txt, one sign-in).
+- Run: `./mvnw test -Dtest=WriteRunTest` (API only) · Run 3 needs `-Dheadless=true` + the credentials flags above.
+- Ids: CRM accounts `b2398920-…`, deals `f42cbafd-…`; Desk accounts `784400e1-…`, contracts `0924eb24-…`. Layouts: CRM contact Standard `92269f8a-…`, CRM account `d817ff75-…` (account_name required), Desk contact `bcac166e-…` (last_name required), Desk account `3e687db9-…`, Desk ticket `1b55c25d-…` (subject, status required). Desk Agent profile `44444444-…-402`.
+- API shapes: `profile_access` = `[{profile_id, enabled, contacts:{enabled, info, potentials, notes, activities:[calls,meetings,tasks]}, accounts:{…}}]`; links POST `{kind, crm_record_id, desk_record_id}`; ticket deal PUT `{deal_id}`; pause `{reason}`; CRM new ticket `POST /tickets/prefill|/tickets` with `crm_module_key` + `crm_record_id`; `/customers/{kind}/{id}/stats` wants the DESK id (CRM card uses `/stats?module_key=&record_id=`).
+- Sync is fast (~5 s). Settings PUT validates direction/enums but NOT unknown fields (CD-04) and accepts a missing row_version (CD-05).
+
+| Date | Scope | Passed | Failed | Notes |
+|---|---|---|---|---|
+| 20 Oct 2026 | Run 1 re-run of B1/B2, I1/I2, I7 | 3 | 0 | after the 429 cleared |
+| 20 Oct 2026 | Run 2 writes (WriteRunTest + RecheckTest) | 23 | 4 | + M2 inconclusive; E3/L5 first failures were test defects (fixed) |
+| 20 Oct 2026 | Run 3 connection (ConnectionRunTest + K10CheckTest) | 1 | 4 | disconnect + reconnect done; connected_at now 2026-10-20 15:32:54 UTC |
+
+Traps (20 Oct): the Maven shell can be reaped on low memory but the surefire JVM keeps running and still cleans up — wait for the PID to exit, don't kill it mid-run. `@AfterClass` of a BaseTest class runs after the browser closed: use the API user (not `IntegrationApi.browser()`) there.

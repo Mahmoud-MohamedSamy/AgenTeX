@@ -1,0 +1,33 @@
+{
+ "out": "../screenshots/annotated/HP-01-role-superior-vs-zoho.png",
+ "id": "HP-01 (I3, I3b, I4)",
+ "title": "Role mode: a higher-ranked user sees none of a lower-ranked user's leads",
+ "verdict": "FAILED",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "API, Leads (record visibility = Hierarchy), mode = role",
+   "flag": "API RESULT — automated run 21 Oct 2026",
+   "text": [
+    "valafo4080 as Supervisor (rank 300) in Sales, nameb56175 = User (rank 100) in Sales.",
+    "valafo4080 opens nameb56175's leads: 403 / 403 (owner-set and self-created). Own lead: 200 (control).",
+    "Same with valafo4080 as Manager (rank 500, the parent profile of User): 403 / 403.",
+    "Supervisor in HR (other department): 403.",
+    "The tab says 'Visibility follows the profile rank hierarchy' and the preview says 'A Manager sees every User in the tenant'. The module hint says 'Users see their own records and those of lower-ranked users in their department.' Neither happens."
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Setup → Roles and Sharing (Role Hierarchy)",
+   "img": "../screenshots/originals/zoho-z02-roles.png",
+   "boxes": [ { "n": 1, "x": 280, "y": 200, "w": 600, "h": 220 } ],
+   "text": [ "Users in a superior role see the records of users in the roles below them (help.zoho.com, Roles)." ]
+  }
+ ],
+ "rows": [
+  { "n": 1, "b": "Superior sees a subordinate's records (same department)", "zoho": "Yes", "tavi": "No (403)", "match": "Bug" },
+  { "n": 2, "b": "Own records / peers / subordinate sees superior", "zoho": "Own yes, peers no, up no", "tavi": "Own yes, peers no, up no", "match": "Match" }
+ ],
+ "notes": [ "Users with metadata.records.view_all (profiles CRM Admin, Owner, test, Desk Administrator) see everything and hide the bug. The run used User / Supervisor / Manager, which do not have it. All changes were set back (diff clean)." ]
+}

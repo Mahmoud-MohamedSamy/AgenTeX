@@ -1,0 +1,32 @@
+owner session true
+PASS C1 apply - EM-00065 العلوم, status Pending Verification, owner reviewer1
+  login reviewer1 ok
+PASS C1 approve-reg - reviewer1 saw [t-approve-registration,t-reject-registration] -> t-approve-registration 200 ok -> Registration Approved
+PASS C1 portal - portal access created (N02)
+PASS C1 video - student saves https://youtu.be/qafinal-c1 -> Assessment Assigned, owner pool-science, video_submitted_at 2026-10-21T15:06:31.351Z
+  login pool-science ok
+PASS C1 approve-video - pool-science saw [t-approve-video-science,t-correction-science] -> t-approve-video-science 200 ok -> Assessment Complete
+FAIL C1 owner-committee - owner after video approval = pool-science (expect pool-registration, Committee profile)
+  info: pool-science opens the record after hand-over: HTTP 200
+  login pool-registration ok
+PASS C1 committee-buttons - Committee (now owner) sees [t-finalist,t-not-selected]
+PASS C1 finalist - pool-registration saw [t-finalist,t-not-selected] -> t-finalist 200 ok -> Finalist Accepted
+FAIL C1 owner-kept - owner after finalist = pool-science
+PASS C2 apply - EM-00066 الرياضيات, status Pending Verification, owner reviewer2
+  login reviewer2 ok
+PASS C2 approve-reg - reviewer2 saw [t-approve-registration,t-reject-registration] -> t-approve-registration 200 ok -> Registration Approved
+PASS C2 video-1 - student saves https://youtu.be/qafinal-c2-v1 -> Assessment Assigned, owner pool-math, video_submitted_at 2026-10-21T15:13:28.793Z
+  login pool-math ok
+PASS C2 send-back - pool-math saw [t-approve-video-math,t-correction-math] -> t-correction-math 200 ok -> Action Required
+PASS C2 owner-after-sendback - owner after send back = pool-math (expect pool-math)
+PASS C2 video-2 - student saves https://youtu.be/qafinal-c2-v2 -> Assessment Assigned, owner pool-math, video_submitted_at 2026-10-21T15:14:22.723Z
+PASS C2 approve-video - pool-math saw [t-approve-video-math,t-correction-math] -> t-approve-video-math 200 ok -> Assessment Complete
+FAIL C2 owner-committee - owner after video approval = pool-math
+PASS C2 not-selected - pool-registration saw [t-finalist,t-not-selected] -> t-not-selected 200 ok -> Finalist Rejected
+DISPATCH 2x C1 Email Succeeded
+DISPATCH 1x C1 SendPortalAccess Succeeded
+DISPATCH 3x C2 Email Succeeded
+DISPATCH 1x C2 SendPortalAccess Succeeded
+FINAL C1 EM-00065 العلوم Finalist Accepted owner pool-science score 77 reason  correction 
+FINAL C2 EM-00066 الرياضيات Finalist Rejected owner pool-math score 58 reason  correction يرجى رفع فيديو أوضح
+TOTAL 15 / 18 pass

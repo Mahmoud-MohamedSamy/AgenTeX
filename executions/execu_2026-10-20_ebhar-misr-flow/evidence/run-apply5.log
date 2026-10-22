@@ -1,0 +1,32 @@
+blueprint إبهار مصر — مراحل الطلب active true updatedAt 2026-10-20T15:24:58.396095+00:00 hasDraft false
+transition ids t-approve-registration(Pending Verification->Registration Approved) | t-reject-registration(Pending Verification->Registration Rejected) | t-approve-video-math(Assessment Assigned->Assessment Complete) | t-correction-math(Assessment Assigned->Action Required) | t-approve-video-science(Assessment Assigned->Assessment Complete) | t-correction-science(Assessment Assigned->Action Required) | t-approve-video-technology(Assessment Assigned->Assessment Complete) | t-correction-technology(Assessment Assigned->Action Required) | t-approve-video-arts(Assessment Assigned->Assessment Complete) | t-correction-arts(Assessment Assigned->Action Required) | t-finalist(Assessment Complete->Finalist Accepted) | t-not-selected(Assessment Complete->Finalist Rejected) | t-sys-accessed(Registration Approved->Profile Accessed) | t-sys-video-1(Registration Approved->Video Submitted) | t-sys-video-2(Profile Accessed->Video Submitted) | t-sys-video-3(Action Required->Video Submitted) | t-sys-assign(Video Submitted->Assessment Assigned)
+clone create 201 ok
+clone check: id 9fe778e7-00f1-4be4-89c3-48379a8f1a38 active false transitions 17 identical to original true
+  set owner-only: t-approve-registration قبول التسجيل -> Registration Approved users ["1e4510e3-911a-4ebd-b943-de8cd86e649f"]
+  set owner-only: t-reject-registration رفض التسجيل -> Registration Rejected users ["1e4510e3-911a-4ebd-b943-de8cd86e649f"]
+registration transitions changed 2
+save draft 200 ok
+publish 200 ok
+  now t-approve-registration {"allowOwner":true,"allowedRoles":[],"allowedUserIds":["1e4510e3-911a-4ebd-b943-de8cd86e649f"]}
+  now t-reject-registration {"allowOwner":true,"allowedRoles":[],"allowedUserIds":["1e4510e3-911a-4ebd-b943-de8cd86e649f"]}
+blueprint now active true hasDraft false updatedAt 2026-10-21T09:30:15.078072+00:00
+AP off 2f841480 200 ok
+AP off daee30d3 200 ok
+AP off f778092d 200 ok
+  AP إبهار مصر — المرحلة 1: مراجعة الأهلية active false
+  AP إبهار مصر — المرحلة 2: تقييم الفيديو active false
+  AP إبهار مصر — المرحلة 3: القرار النهائي active false
+N02 WF إبهار مصر — دخول البوابة عند قبول التسجيل (N02) active false trigger {"kind":"RecordUpdated","fieldName":null,"fieldNames":null,"fieldMatch":null,"dateFieldName":null,"offsetSeconds":null,"offsetMode":null} criteria {"kind":"Logical","field":null,"operator":"And","negate":null,"caseInsensitive":null,"stringValue":null,"value":null,"values":null,"operands":[{"kind":"Comparison","field":"application_status","operator":"Equal","negate":null,"caseInsensitive":null,"stringValue":null,"value":{"kind":"string","stringValue":"Registration Approved","intValue":null,"doubleValue":null,"boolValue":null,"timestampValue":null,"listValue":null},"values":null,"operands":null},{"kind":"Changed","field":"application_status","operator":null,"negate":null,"caseInsensitive":null,"stringValue":null,"value":null,"values":null,"operands":null}]} actions [{"type":"SendPortalAccess","tpl":null,"portal":"9b21cf61-04cf-4201-8f3c-928247b97384"}]
+N02 activate 204 
+  WF Reject under-18 applicants active false
+  WF Send portal access when approved active false
+  WF إبهار مصر — تقديم رابط الفيديو (N04) active true
+  WF إبهار مصر — تحديد موعد التصفيات (N08) active true
+  WF إبهار مصر — مالك الفئة: الرياضيات active true
+  WF إبهار مصر — مالك الفئة: العلوم active true
+  WF إبهار مصر — مالك الفئة: التكنولوجيا active true
+  WF إبهار مصر — مالك الفئة: الفنون active true
+  WF إبهار مصر — مالك الطلبات بدون فئة active false
+  WF إبهار مصر — إسناد التقييم active true
+  WF إبهار مصر — دخول البوابة عند قبول التسجيل (N02) active true
+  WF إبهار مصر — تأكيد استلام طلب التسجيل (N01) active true

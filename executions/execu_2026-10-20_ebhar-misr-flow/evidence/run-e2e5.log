@@ -1,0 +1,78 @@
+create B1 accepted 201 ok
+PASS B01 - on create: status Pending Verification, ref EM-00048, owner {"kind":"string","value":"1e4510e3-911a-4ebd-b943-de8cd86e649f"}
+PASS B00 - new record is in blueprint إبهار مصر — مراحل الطلب (copy) (cda430d9-4c70-42fa-923f-a5a3d2f5fa5c)
+  available t-approve-registration,t-reject-registration
+PASS B02 - blueprint buttons at Pending = t-approve-registration,t-reject-registration
+PASS B03 - no approval request started (stages off): {"instanceId":null,"state":"none","currentStage":0,"totalStages":0,"totalLevels":0,"currentApprovers":[],"decisionFields
+  transition t-approve-video-science {"assessment_score":90} 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Unknown or invalid transition for the current blueprint state.","details":[{"path":"transitionId","type":"BLUEPRINT_FIELD_INVALID","message":"No matching transition from the current state."}]}
+PASS B04 - video-approve not allowed from Pending: 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Unknown or invalid transition for the current blueprint state.","details":[{"path":"transitionId","type":"BLUEPRINT_FIELD_INVALID","message":"No matching transition from the current state."}]}
+  transition t-approve-registration {} 200 ok
+PASS B05 - قبول التسجيل -> Registration Approved
+PASS B06 - N02 portal access created after approve: {"status":200,"has":true,"raw":"{\"portals\":[{\"portal\":{\"id\":\"9b21cf61-04cf-4201-8f3c-928247b97384\",\"name\":\"بوابة المتقدمين\",\"is_enabled\":true,\"require_approval\":false},\"layout_mismatch\":false,\"email\":\"moaazdly89+qaem511@gmail.com\",\""}
+  update {"submission_link":"https://youtu.be/qaem-b1-v1"} 200 ok
+PASS B07 - video link saved -> Assessment Assigned (expect Assessment Assigned), video_submitted_at 2026-10-21T11:17:58.327Z
+PASS B08 - owner after video = {"kind":"string","value":"eafadc3f-b548-49a7-b9eb-5af9de793ba6"} (expect Pool Science)
+  available t-approve-video-science,t-correction-science
+PASS B09 - only Science video buttons shown: t-approve-video-science,t-correction-science
+  transition t-approve-video-math {"assessment_score":90} 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition is not allowed for this user or visibility rules.","details":[{"path":"transitionId","type":"BLUEPRINT_FIELD_INVALID","message":"Transition not permitted."}]}
+PASS B10 - Math button refused on a Science record: 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition is not allowed for this user or visibility rules.","details":[{"path":"transitionId","type":"BLUEPRINT_FIELD_INVALID","message":"Transition not permitted."}]}
+  transition t-correction-science {} 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition payload validation failed.","details":[{"path":"correction_request","type":"BLUEPRINT_FIELD_INVALID","message":"Field is required."}]}
+PASS B11 - send-back without correction note refused: 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition payload validation failed.","details":[{"path":"correction_request","type":"BLUEPRINT_FIELD_INVALID","message":"Field is required."}]}
+  transition t-correction-science {"correction_request":"QA EM video unclear - please re-upload"} 200 ok
+PASS B12 - طلب تصحيح الفيديو -> Action Required (N05)
+PASS B13 - portal access kept at Action Required
+  update {"submission_link":"https://youtu.be/qaem-b1-v2"} 200 ok
+PASS B14 - re-upload -> Assessment Assigned (expect Assessment Assigned)
+  transition t-approve-video-science {} 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition payload validation failed.","details":[{"path":"assessment_score","type":"BLUEPRINT_FIELD_INVALID","message":"Field is required."}]}
+PASS B15 - video-approve without score refused: 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition payload validation failed.","details":[{"path":"assessment_score","type":"BLUEPRINT_FIELD_INVALID","message":"Field is required."}]}
+  transition t-approve-video-science {"assessment_score":120} 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition field validation failed.","details":[{"path":"assessment_score","type":"BLUEPRINT_FIELD_INVALID","message":"الدرجة من 0 إلى 100."}]}
+PASS B16 - score 120 refused (0-100): 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition field validation failed.","details":[{"path":"assessment_score","type":"BLUEPRINT_FIELD_INVALID","message":"الدرجة من 0 إلى 100."}]}
+  transition t-approve-video-science {"assessment_score":85,"assessment_comments":"QA EM clear video"} 200 ok
+PASS B17 - اعتماد الفيديو -> Assessment Complete, score 85, comments QA EM clear video
+  available t-finalist,t-not-selected
+  transition t-finalist {} 200 ok
+PASS B18 - committee accept -> Finalist Accepted (N06)
+create B2 rejected 201 ok
+  transition t-reject-registration {} 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition payload validation failed.","details":[{"path":"rejection_reason","type":"BLUEPRINT_FIELD_INVALID","message":"Field is required."}]}
+PASS B19 - reject without reason refused: 422 {"code":"BLUEPRINT_VALIDATION_FAILED","message":"Transition payload validation failed.","details":[{"path":"rejection_reason","type":"BLUEPRINT_FIELD_INVALID","message":"Field is required."}]}
+  transition t-reject-registration {"rejection_reason":"QA EM incomplete data"} 200 ok
+PASS B20 - رفض التسجيل -> Registration Rejected, reason QA EM incomplete data (N03)
+PASS B21 - no buttons after Registration Rejected (end state): 
+PASS B22 - no portal access for rejected applicant
+create B3 not selected 201 ok
+  transition t-approve-registration {} 200 ok
+  update {"submission_link":"https://youtu.be/qaem-b3-v1"} 200 ok
+PASS B23 - Tech video -> Assessment Assigned, owner {"kind":"string","value":"bd05af1a-7ada-4ac6-a457-00e29f6d8a47"}
+  transition t-approve-video-technology {"assessment_score":55} 200 ok
+  transition t-not-selected {} 200 ok
+PASS B24 - committee reject -> Finalist Rejected (N07)
+PASS B25 - no buttons after Finalist Rejected
+create B4 bypass 201 ok
+  update {"application_status":"Finalist Accepted"} 422 {"code":"RECORD_VALIDATION_FAILED","message":"Governed picklist field can only change via blueprint transition execution.","details":[{"path":"application_status","type":"BLUEPRINT_GOVERNED_FIELD","message":"This field is controlled by a blueprint."}]}
+PASS B26 - direct edit Pending -> Finalist Accepted blocked? now Pending Verification (422 {"code":"RECORD_VALIDATION_FAILED","message":"Governed picklist field can only change via blueprint transition execution.","details":[{"path":"application_status","type":"BLUEPRINT_GOVERNED_FIELD","message":"This field is controlled by a blueprint."}]})
+executions for test records 15
+  EXEC B4  |  | [{"id":"9e99b0db-75c3-45ec-b781-08b1ee3551aa","executionId":"97e9912c-a895-402f-b456-824d049b06ad","ruleActionId":"4a9549f9-3500-4440-9df1-3f6403b5f6c2","actionType":"Email","target":"RecordEmailField:email","status":"Cancelled","attempts":1,"lastAttemptAt":"2026-10-21T11:18:52.217023+00:00","nextAt
+  EXEC B3  |  | []
+  EXEC B3  |  | []
+  EXEC B3  |  | [{"id":"fdbc3628-6eb0-4321-84fa-dac77cca757a","executionId":"0f377eff-bcae-4a57-a933-651323560296","ruleActionId":"49c599ff-406c-41e1-a9a5-e335a2d94f17","actionType":"Email","target":"RecordEmailField:email","status":"Cancelled","attempts":1,"lastAttemptAt":"2026-10-21T11:18:38.068762+00:00","nextAt
+  EXEC B3  |  | [{"id":"d07d62cf-d74f-47ae-9bab-71e3df28a85a","executionId":"6561e28a-5769-4071-b8e9-86e4ae821cc4","ruleActionId":"f1f735f4-a18c-4f1e-8747-78280519f53d","actionType":"SendPortalAccess","target":"portal:9b21cf61-04cf-4201-8f3c-928247b97384","status":"Cancelled","attempts":1,"lastAttemptAt":"2026-10-2
+  EXEC B3  |  | [{"id":"469b1da4-69a4-48f7-a4e5-e105d9eba049","executionId":"a1a70321-403b-45cd-a80e-e97f0e857e45","ruleActionId":"4a9549f9-3500-4440-9df1-3f6403b5f6c2","actionType":"Email","target":"RecordEmailField:email","status":"Cancelled","attempts":1,"lastAttemptAt":"2026-10-21T11:18:30.160136+00:00","nextAt
+  EXEC B2  |  | [{"id":"2d79089c-6173-4ec7-8867-5b1f29176305","executionId":"9c787254-1830-4854-bd54-0fe5e490f7c0","ruleActionId":"4a9549f9-3500-4440-9df1-3f6403b5f6c2","actionType":"Email","target":"RecordEmailField:email","status":"Cancelled","attempts":1,"lastAttemptAt":"2026-10-21T11:18:21.071028+00:00","nextAt
+  EXEC B1  |  | []
+  EXEC B1  |  | []
+  EXEC B1  |  | [{"id":"e7bf6e56-9a52-4d94-8e19-4324dba8c883","executionId":"585ff764-42e3-4685-92c0-38b3b489c100","ruleActionId":"49c599ff-406c-41e1-a9a5-e335a2d94f17","actionType":"Email","target":"RecordEmailField:email","status":"Cancelled","attempts":1,"lastAttemptAt":"2026-10-21T11:18:10.784458+00:00","nextAt
+  EXEC B1  |  | []
+  EXEC B1  |  | []
+  EXEC B1  |  | [{"id":"540e2c27-8b48-4ba4-8721-db15c7564b50","executionId":"1a1da902-3061-4d5c-9a82-75c42cb5521a","ruleActionId":"49c599ff-406c-41e1-a9a5-e335a2d94f17","actionType":"Email","target":"RecordEmailField:email","status":"Cancelled","attempts":1,"lastAttemptAt":"2026-10-21T11:18:01.976903+00:00","nextAt
+  EXEC B1  |  | [{"id":"1168e554-98a9-43e4-be77-9af518574ddb","executionId":"8045e88b-e549-4797-a595-2f4eb878d732","ruleActionId":"f1f735f4-a18c-4f1e-8747-78280519f53d","actionType":"SendPortalAccess","target":"portal:9b21cf61-04cf-4201-8f3c-928247b97384","status":"Succeeded","attempts":1,"lastAttemptAt":"2026-10-2
+  EXEC B1  |  | [{"id":"5827fe70-ab02-4f13-b6fc-dd7d5171bd52","executionId":"886757cc-e428-4739-af54-8efce3091519","ruleActionId":"4a9549f9-3500-4440-9df1-3f6403b5f6c2","actionType":"Email","target":"RecordEmailField:email","status":"Cancelled","attempts":1,"lastAttemptAt":"2026-10-21T11:17:39.699696+00:00","nextAt
+EMAILS B1 0 []
+EMAILS B2 0 []
+EMAILS B3 0 []
+EMAILS B4 0 []
+FINAL B1 EM-00048 Finalist Accepted owner {"kind":"string","value":"eafadc3f-b548-49a7-b9eb-5af9de793ba6"} score 85 reason  correction QA EM video unclear - please re-upload
+FINAL B2 EM-00049 Registration Rejected owner {"kind":"string","value":"1e4510e3-911a-4ebd-b943-de8cd86e649f"} score  reason QA EM incomplete data correction 
+FINAL B3 EM-00050 Finalist Rejected owner {"kind":"string","value":"bd05af1a-7ada-4ac6-a457-00e29f6d8a47"} score 55 reason  correction 
+FINAL B4 EM-00051 Pending Verification owner {"kind":"string","value":"1e4510e3-911a-4ebd-b943-de8cd86e649f"} score  reason  correction 
+config unchanged by others during run: true
+TOTAL 27 / 27 pass

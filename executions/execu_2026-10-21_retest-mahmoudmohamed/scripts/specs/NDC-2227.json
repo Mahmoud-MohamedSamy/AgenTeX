@@ -1,0 +1,92 @@
+{
+ "out": "NDC-2227-retest-PASS.png",
+ "ticket": "NDC-2227",
+ "title": "Modules and Fields | Field regex is saved but not enforced",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (Desk Administrator); QA module QA RT MF",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2227-api.png",
+   "caption": "API / UI checks",
+   "crop": [
+    0,
+    0,
+    1600,
+    314
+   ],
+   "boxes": [
+    {
+     "b": [
+      32,
+      95,
+      1568,
+      140
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      142,
+      1568,
+      187
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      189,
+      1568,
+      234
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      236,
+      1568,
+      302
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Builder",
+   "qa_rx › Edit Properties › VALIDATION › ^[A-Z]{2}[0-9]{4}$ › Apply › Save",
+   "PUT field datatypeOptions.regex_pattern saved",
+   "PASS"
+  ],
+  [
+   "2",
+   "Create",
+   "qa_rx = ab12 / AB1234",
+   "422 \"Field 'qa_rx' does not match the required pattern.\" / 201",
+   "PASS"
+  ],
+  [
+   "3",
+   "Update",
+   "PATCH qa_rx = ab12 / ZZ9999",
+   "422 / 200",
+   "PASS"
+  ],
+  [
+   "4",
+   "Note",
+   "Regex set only on the layout entry (old API path)",
+   "Not enforced — the builder now stores it on the field, so the UI path works",
+   "INFO"
+  ]
+ ]
+}

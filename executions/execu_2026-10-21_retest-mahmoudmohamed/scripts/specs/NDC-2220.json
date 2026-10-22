@@ -1,0 +1,92 @@
+{
+ "out": "NDC-2220-retest-PARTIAL.png",
+ "ticket": "NDC-2220",
+ "title": "Modules and Fields | Profiles chosen in the Create Module dialog are not applied",
+ "verdict": "PARTIAL",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (Desk Administrator); QA module QA RT MF",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "img": "2220-05-samy-plus.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "As the non-listed admin, the \"+\" menu still offers the QA RT modules (QA RT Closed1 further down the list).",
+   "crop": [
+    276,
+    40,
+    440,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      440,
+      350,
+      690,
+      410
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2220-api.png",
+   "caption": "API / UI checks",
+   "crop": [
+    0,
+    0,
+    1600,
+    309
+   ],
+   "boxes": [
+    {
+     "b": [
+      32,
+      95,
+      1568,
+      161
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      163,
+      1568,
+      229
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      231,
+      1568,
+      297
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Profiles chosen in the dialog are applied",
+   "Only the chosen profiles get access",
+   "PUT permissions 200; ACL selected; API refuses others (403)",
+   "PASS"
+  ],
+  [
+   "2",
+   "User outside the permission does not see the module",
+   "Not in the sidebar / \"+\" menu",
+   "Still offered in the \"+\" menu and listed by GET /modules — clicking leads to 403",
+   "FAIL"
+  ]
+ ]
+}

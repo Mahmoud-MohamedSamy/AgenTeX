@@ -170,6 +170,16 @@ public final class AppUser {
         public Response delete(String path) {
             return call(() -> req().delete(path));
         }
+
+        public Response patch(String path, Object body) {
+            return call(() -> req().body(body).patch(path));
+        }
+
+        /** PUT without the 5xx retry (a retried write could apply twice). */
+        public Response putOnce(String path, Object body) {
+            if (rateLimited != null) throw new SkipException("INCONCLUSIVE: HTTP 429 earlier in this run (" + rateLimited + ") - stopped");
+            return req().body(body).put(path);
+        }
     }
 
     static void sleep(long ms) {

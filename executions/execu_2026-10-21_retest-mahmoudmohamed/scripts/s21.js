@@ -1,0 +1,11 @@
+const MID = 'c0394292-52a2-446d-a326-06733fe289ba';
+await page.keyboard.press('Escape'); await sleep(500);
+await page.getByRole('button', { name: 'Cancel', exact: true }).first().click().catch(() => {}); await sleep(1000);
+await go(`/settings/modules-and-fields/${MID}`, 10000);
+await page.getByRole('button', { name: /^EN/ }).first().click(); await sleep(1000);
+const langs = await page.locator('[role=menu],[role=listbox]').allInnerTexts();
+await page.getByText('العربية').first().click(); await sleep(6000);
+const lt = page.getByRole('tab').first(); await lt.click().catch(() => {}); await sleep(2500);
+const t = (await txt()).split('\n').filter(l => /[A-Za-z]{3,}/.test(l) && !/QA RT|QA MF|MA$|Ctrl|Default|L2|EN/.test(l)).slice(0, 40);
+await shot('2249-01-arabic-layouts');
+return done({ langs, englishLines: t });

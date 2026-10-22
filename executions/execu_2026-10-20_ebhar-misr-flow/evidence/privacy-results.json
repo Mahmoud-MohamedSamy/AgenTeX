@@ -1,0 +1,86 @@
+[
+ {
+  "scenario": "P1",
+  "id": "hidden",
+  "pass": true,
+  "msg": "pool-arts opens EM-00085 (HTTP 200); hidden fields returned: []; fields it sees: application_number,application_status,approval_status,category,educational_administration,email,gender,governorate,name,national_id,owner,phone,school,submission_link,video_submitted_at"
+ },
+ {
+  "scenario": "P1",
+  "id": "still-visible",
+  "pass": true,
+  "msg": "name, category, video link and school still visible"
+ },
+ {
+  "scenario": "P2",
+  "id": "apply",
+  "pass": true,
+  "msg": "EM-00092 العلوم, status Pending Verification, owner reviewer1"
+ },
+ {
+  "scenario": "P2",
+  "id": "approve-reg",
+  "pass": true,
+  "msg": "reviewer1 saw [t-approve-registration,t-reject-registration] -> t-approve-registration 200 ok -> Registration Approved"
+ },
+ {
+  "scenario": "P2",
+  "id": "video-1",
+  "pass": true,
+  "msg": "student saves https://youtu.be/qapriv-v1 -> Assessment Assigned, owner pool-science, video_submitted_at 2026-10-21T19:17:36.284Z"
+ },
+ {
+  "scenario": "P2",
+  "id": "hidden",
+  "pass": true,
+  "msg": "pool-science sees: hidden fields returned []; national_id/email/phone visible (required, read-only): true"
+ },
+ {
+  "scenario": "P2",
+  "id": "edit-email",
+  "pass": true,
+  "msg": "pool-science edits email: 422 FIELD_PERMISSION_DENIED: Field 'email' is read-only for your profile and cannot be written."
+ },
+ {
+  "scenario": "P2",
+  "id": "edit-national_id",
+  "pass": true,
+  "msg": "pool-science edits national_id: 422 FIELD_PERMISSION_DENIED: Field 'national_id' is read-only for your profile and cannot be written."
+ },
+ {
+  "scenario": "P2",
+  "id": "edit-name",
+  "pass": true,
+  "msg": "pool-science edits name: 422 FIELD_PERMISSION_DENIED: Field 'name' is read-only for your profile and cannot be written."
+ },
+ {
+  "scenario": "P2",
+  "id": "send-back",
+  "pass": true,
+  "msg": "pool-science saw [t-approve-video-science,t-correction-science] -> t-correction-science 200 ok -> Action Required"
+ },
+ {
+  "scenario": "P2",
+  "id": "video-2",
+  "pass": true,
+  "msg": "student saves https://youtu.be/qapriv-v2 -> Assessment Assigned, owner pool-science, video_submitted_at 2026-10-21T19:18:10.443Z"
+ },
+ {
+  "scenario": "P2",
+  "id": "approve-video",
+  "pass": true,
+  "msg": "pool-science saw [t-approve-video-science,t-correction-science] -> t-approve-video-science 200 ok -> Assessment Complete"
+ },
+ {
+  "scenario": "P2",
+  "id": "data-intact",
+  "pass": true,
+  "msg": "email unchanged (moaazdly89+qafinal51@gmail.com), score 81"
+ },
+ {
+  "scenario": "P2",
+  "id": "finalist",
+  "pass": true,
+  "msg": "pool-registration saw [t-finalist,t-not-selected] -> t-finalist 200 ok -> Finalist Accepted"
+ }
+]

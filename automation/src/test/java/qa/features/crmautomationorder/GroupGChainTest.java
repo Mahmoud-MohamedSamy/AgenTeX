@@ -789,7 +789,11 @@ public class GroupGChainTest extends OrderTestBase {
         wf(r, "createOrEdit", null);
         ap(r, true, true, null, adminB());
         bp(r, null, null, null);
+        // Leads' only unique field "name" is on no layout: put it on this session's QA layout (21 Oct 2026)
+        CrmApi.placeFieldOnLayout(adminB(), LEADS, layout(LEADS), "name");
         create(r, userN(), "existing"); // before activation: the existing lead has no holds
+        String unique = "QA-AEO-G05-" + (System.currentTimeMillis() % 1_000_000);
+        api.update(adminA(), LEADS, r.id, Map.of("name", unique));
         activate(r);
         Response up = ok(adminB().req().contentType("multipart/form-data")
                 .multiPart("file", "qa-aeo-sg.csv", "first_name\nx\n".getBytes(StandardCharsets.UTF_8), "text/csv")
@@ -803,6 +807,10 @@ public class GroupGChainTest extends OrderTestBase {
         if (mv == null) inconclusive("existing lead has no value in the unique field " + match);
         Map<String, Object> row = new LinkedHashMap<>();
         row.put(match, mv);
+        // update mode still asks for every required field (21 Oct 2026): send the existing values
+        row.put("first_name", api.field(adminA(), LEADS, r.id, "first_name"));
+        row.put("phone", api.field(adminA(), LEADS, r.id, "phone"));
+        row.put("single_line_3_9", "QA AEO");
         row.put("lead_status", "Busy");
         JsonPath st = importRows(adminB(), LEADS, "update", match, List.of(row), r.ar, true);
         note(c, "update import on " + match + ": updated " + st.getString("data.updated_count"));
@@ -1134,12 +1142,15 @@ public class GroupGChainTest extends OrderTestBase {
     public void g18ApiEmptyTrigger() {
         String c = "G-18";
         Run r = new Run(c, LEADS);
-        allFive(r, userV(), List.of("api"), adminB()); // review only on the API channel: manual creates are not held
+        // review only on the Web Form channel: since 22 Oct 2026 records-API creates are source=api, and holding them
+        // in review would hide what the empty trigger list skips (workflow, approval, blueprint)
+        allFive(r, userV(), List.of("web_form"), adminB());
         activate(r);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("layout_id", layout(LEADS));
         body.put("data", CrmApi.data(fields(LEADS, nm(c, "empty trigger"))));
         body.put("trigger", List.of());
+        body.put("source", "api"); // API channel declared (honoured since 22 Oct 2026)
         Response x = userN().post("/modules/" + LEADS + "/records", body);
         note(c, "create with trigger [] -> " + cut(x));
         if (x.statusCode() / 100 != 2) inconclusive("records API refused a 'trigger' list: " + cut(x));

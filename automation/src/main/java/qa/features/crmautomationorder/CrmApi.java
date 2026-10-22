@@ -118,6 +118,36 @@ public class CrmApi {
         return id;
     }
 
+    /**
+     * Puts a module field on every view of a (QA) layout, first section, first column. Used to make Leads' only unique
+     * field ("name", on no layout) available to update-mode imports (21 Oct 2026).
+     */
+    @SuppressWarnings("unchecked")
+    public static void placeFieldOnLayout(CrmUser admin, String module, String layoutId, String apiName) {
+        Map<String, Object> field = null;
+        for (Object o : ok(admin.get("/modules/" + module + "/fields"), "fields").jsonPath().getList("data"))
+            if (apiName.equals(((Map<String, Object>) o).get("apiName"))) field = (Map<String, Object>) o;
+        if (field == null) throw new IllegalStateException("no field " + apiName);
+        Map<String, Object> fo = new LinkedHashMap<>();
+        for (String k : List.of("id", "apiName", "fieldName", "labels", "datatypeKey", "config", "datatypeOptions")) fo.put(k, field.get(k));
+        fo.put("fieldOrder", 99);
+        Map<String, Object> cur = ok(admin.get("/modules/" + module + "/layouts/" + layoutId), "layout").jsonPath().getMap("data");
+        Map<String, Object> views = (Map<String, Object>) cur.get("views");
+        for (Object v : views.values()) {
+            Map<String, Object> sec = ((List<Map<String, Object>>) ((Map<String, Object>) ((Map<String, Object>) v).get("layout")).get("sections")).get(0);
+            List<Object> fields = (List<Object>) ((List<Map<String, Object>>) sec.get("columns")).get(0).get("fields");
+            if (fields.stream().noneMatch(x -> apiName.equals(((Map<String, Object>) x).get("apiName")))) fields.add(fo);
+        }
+        Map<String, Object> put = new LinkedHashMap<>();
+        put.put("name", cur.get("name"));
+        put.put("views", views);
+        put.put("assignedProfiles", List.of());
+        put.put("accessMode", cur.get("accessMode"));
+        put.put("status", cur.get("status"));
+        put.put("rowVersion", cur.get("rowVersion"));
+        ok(admin.put("/modules/" + module + "/layouts/" + layoutId, put), "place " + apiName + " on layout");
+    }
+
     /** Deals pipelines are per layout (a new layout gets its own "Standard" pipeline): layout id → default pipeline id. */
     private static final Map<String, String> PIPELINES = new java.util.concurrent.ConcurrentHashMap<>(
             Map.of(CrmOrderFeature.DEALS_STANDARD, CrmOrderFeature.DEALS_PIPELINE));

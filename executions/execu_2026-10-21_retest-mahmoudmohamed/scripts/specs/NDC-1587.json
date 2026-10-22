@@ -1,0 +1,64 @@
+{
+ "out": "NDC-1587-retest-PASS.png",
+ "ticket": "NDC-1587",
+ "title": "Import + Recycle Bin | Undo Import doesn't move the undone records to the Recycle Bin",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "img": "1587-04-recycle-bin.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "After Undo import (POST …/undo → 204, history status Undone): the 5 imported leads are in the Recycle Bin, 60-day expiry.",
+   "crop": [
+    268,
+    60,
+    1012,
+    460
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      238,
+      1250,
+      514
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Undone records in the Recycle Bin",
+   "As the dialog promises",
+   "All 5 (QA RT imp …) listed, deleted 21/10/2026 14:10 by mahmoud.mahamed1515",
+   "PASS"
+  ],
+  [
+   "—",
+   "Retention",
+   "60 days",
+   "Expires in 60 days (20 Dec 2026)",
+   "PASS"
+  ],
+  [
+   "—",
+   "Restorable",
+   "Can be restored",
+   "Restore on QA RT imp p50 → record live again (GET 200)",
+   "PASS"
+  ],
+  [
+   "—",
+   "Grouped per import",
+   "Ideally one group",
+   "One row per record (same deletion time) — no group row",
+   "INFO"
+  ]
+ ]
+}

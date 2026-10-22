@@ -1,0 +1,11 @@
+if (!(await page.getByText(/^Select principals for/).count())) return done({ err: 'picker closed' });
+await page.mouse.click(189, 175); await sleep(1000);
+const opts = await page.locator('[role=option],[role=menuitem],[role=listbox] li').allInnerTexts();
+await page.getByText('Profiles', { exact: true }).last().click(); await sleep(2000);
+const prof = (await txt()).match(/AVAILABLE[\s\S]{0,500}/)?.[0];
+await shot('2229-04-picker-profiles');
+await page.mouse.click(189, 175); await sleep(800); await page.getByText(/Org units|Org Units|Departments/).last().click().catch(() => {}); await sleep(2000);
+const ou = (await txt()).match(/AVAILABLE[\s\S]{0,400}/)?.[0];
+await shot('2229-05-picker-orgunits');
+await page.getByRole('button', { name: 'Cancel', exact: true }).last().click().catch(() => {});
+return done({ opts, prof, ou });

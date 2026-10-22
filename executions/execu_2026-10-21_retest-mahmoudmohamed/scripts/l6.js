@@ -1,0 +1,11 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+const def = async () => (await api('GET', `/modules/${L}/layouts`)).j.data.filter(l => l.isDefault).map(l => l.name).join(',');
+const setDef = async name => { await page.getByRole('button', { name: 'Open menu for ' + name, exact: true }).click(); await sleep(900); await page.keyboard.press('Escape'); await sleep(300); await page.getByRole('button', { name: 'Open menu for ' + name, exact: true }).click(); await sleep(900); await page.getByText('Set as default', { exact: true }).last().click(); await sleep(1500); const d = page.locator('[role=dialog],[role=alertdialog]'); let dt = null; if (await d.count()) { dt = await d.last().innerText(); await d.last().getByRole('button', { name: /Set as default|Confirm|Yes|Set default/i }).last().click(); await sleep(2500); } return dt; };
+const before = await def();
+const dlg = await setDef('Test Layout 1');
+const mid = await def(); await sleep(1000);
+const badge = (await page.locator('tr').filter({ hasText: 'Test Layout 1' }).first().innerText());
+await shot('1588-04-test-layout-1-default');
+const dlg2 = await setDef('Standard');
+const after = await def();
+return done({ before, dlg, mid, badge, dlg2, after });

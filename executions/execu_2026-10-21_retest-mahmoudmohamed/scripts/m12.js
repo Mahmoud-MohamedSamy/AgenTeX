@@ -1,0 +1,11 @@
+const P = 'e51b6c77-bbf2-4a71-876c-78b99ec8d128';
+await page.keyboard.press('Escape');
+const add = await api('POST', `/modules/${P}/fields`, { fields: [{ fieldName: 'qa_rt_note', apiName: 'qa_rt_note', labels: { en: 'QA RT note' }, datatypeKey: 'single_line', config: { required: false } }] });
+await page.reload({ waitUntil: 'commit' }); await sleep(9000);
+await page.getByText('Lead Conversion Mapping', { exact: true }).first().click(); await sleep(5000);
+const pick = page.getByRole('button', { name: 'Map Name to a QA RT partners field' });
+await pick.scrollIntoViewIfNeeded(); await pick.click(); await sleep(1500);
+const opts = await page.locator('[role=listbox] [role=option]').allInnerTexts();
+await shot('1229-05-picker-with-added-field');
+await page.keyboard.press('Escape');
+return done({ add: add.s + ' ' + add.t.slice(0, 200), opts });

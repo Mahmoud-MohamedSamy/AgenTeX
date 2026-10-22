@@ -1,0 +1,100 @@
+{
+ "id": "Item 12",
+ "title": "Workflow rules: one rule cannot hold several conditions, each with its own actions",
+ "verdict": "Gap",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Workflow rule editor (Leads): one CONDITION and one set of actions, no way to add another condition",
+   "img": "../originals/tavi-workflow-single-condition.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 215,
+     "y": 395,
+     "w": 1145,
+     "h": 97
+    },
+    {
+     "n": 2,
+     "x": 345,
+     "y": 530,
+     "w": 1015,
+     "h": 140
+    },
+    {
+     "n": 3,
+     "x": 20,
+     "y": 690,
+     "w": 330,
+     "h": 60
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Workflow rule (Deals, Big Deal Rule): Condition 1 with its own actions, + Add another condition",
+   "img": "../originals/zoho-workflow-multiple-conditions.png",
+   "boxes": [
+    {
+     "n": 4,
+     "x": 20,
+     "y": 418,
+     "w": 680,
+     "h": 172
+    },
+    {
+     "n": 5,
+     "x": 28,
+     "y": 598,
+     "w": 112,
+     "h": 40
+    },
+    {
+     "n": 6,
+     "x": 192,
+     "y": 660,
+     "w": 376,
+     "h": 152
+    }
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "1, 4",
+   "b": "Conditions per rule",
+   "zoho": "Up to 10, checked in order (first match wins; \"records not meeting any of the above\" from the 2nd on)",
+   "tavi": "One criteria per rule",
+   "match": "Gap"
+  },
+  {
+   "n": "2, 6",
+   "b": "Actions per condition",
+   "zoho": "Each condition has its own instant and scheduled actions",
+   "tavi": "One action list for the whole rule",
+   "match": "Gap"
+  },
+  {
+   "n": "3, 5",
+   "b": "Add another condition",
+   "zoho": "+ Add another condition",
+   "tavi": "Not offered",
+   "match": "Gap"
+  },
+  {
+   "n": "-",
+   "b": "Same criteria in two conditions of one rule",
+   "zoho": "Refused (AMBIGUITY_DURING_PROCESSING: the criteria is part of another condition)",
+   "tavi": "Not applicable (one condition per rule)",
+   "match": "Gap"
+  }
+ ],
+ "notes": [
+  "TAVI stores a rule as one criteria + one actions list (GET /workflow/rules/{id}: keys trigger, criteria, mode, actions; read 22 Oct 2026).",
+  "Workaround today: several separate rules, but they all fire when their criteria match, so there is no first-match-wins or \"else\".",
+  "Zoho sources: Update Workflow Rule API (up to 10 conditions, unique criteria per condition, no duplicate action inside a condition) and Troubleshooting Workflows (conditions run like a nested if)."
+ ],
+ "out": "../12-workflow-multiple-conditions-vs-zoho.png",
+ "date": "22 Oct 2026"
+}

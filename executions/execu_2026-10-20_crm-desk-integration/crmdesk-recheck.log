@@ -1,0 +1,115 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< qa:ui-automation >--------------------------
+[INFO] Building UI automation (Selenium + TestNG + Allure, self-healing locators) 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ui-automation ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ ui-automation ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ui-automation ---
+[INFO] Copying 41 resources from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ ui-automation ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ ui-automation ---
+[INFO] Using auto detected provider org.apache.maven.surefire.testng.TestNGProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running qa.features.crmdeskintegration.RecheckTest
+[CLEAN] Run 3 leftover QA CD B8 r2nqd: CRM 204, Desk 204
+[DIFF] contacts same as baseline
+[DIFF] accounts same as baseline
+[DIFF] contracts same as baseline
+[DIFF] on_crm_delete same as baseline
+[DIFF] on_crm_account_delete same as baseline
+[DIFF] on_desk_contact_delete same as baseline
+[DIFF] on_desk_account_delete same as baseline
+[DIFF] panel same as baseline
+[DIFF] notifications same as baseline
+[DIFF] ticket_related_lists same as baseline
+[DIFF] ticket_visibility same as baseline
+[DIFF] calls_enabled same as baseline
+[DIFF] status {enabled=true, paused=false, paused_reason=null, paused_at=null, connected_at=2026-10-20T15:32:54.650094+00:00, last_customer_import_at=2026-10-20T15:32:56.744542+00:00, last_contract_import_at=2026-10-20T15:32:58.423076+00:00, queue={queued=2, processing=0, failed=0, parked=2}, health={metadata_reachable=true, catalog_ready=true, deal_support_fields_present=false, last_checked_at=2026-10-20T15:37:06.3617573+00:00}, integrated_user={user_id=97be04b6-0a08-4883-aa51-e1650b11cab7, name=ndc-staging-owner}}
+[RC] CRM e888f035-be12-4f67-b2cd-1675587af2ed -> Desk fa4f5a6e-c267-431e-bce3-67e5bac828f8
+[L5] prefill -> 200 {"success":true,"data":{"contact_id":"fa4f5a6e-c267-431e-bce3-67e5bac828f8","account_id":null,"email":"qa.cd.rc.rd3t9@example.com","phone":null,"status":"Open"},"error":null,"meta":null}
+[L5] create -> 201 '' {"success":true,"data":{"id":"279f6ea8-c430-4dec-b032-f36f46c8180d","ticket_number":317,"status":"Open","department_id":"7e1ac409-58b0-41ab-97e1-0e7d5c8c5158","closed_at":null,"closed_by":null,"resolution":null,"counts":{"replies":0,"comments":0,"attachments":0,"time_entries":0},"total_time_seconds":0,"active_timer":null,"engine_deleted_at":null,"created_at":"2026-10-20T15:37:11.904867+00:00","updated_at":"2026-10-20T15:37:11.904867+00:00","following":false,"followers_count":0,"unread":false,"spam":null,"shares":[],"viewer_access":"native","merged_into_ticket_id":null,"can_edit":true,"in_backl…
+[L5] Desk ticket 279f6ea8-c430-4dec-b032-f36f46c8180d #317 contact_id=fa4f5a6e-c267-431e-bce3-67e5bac828f8 (expected fa4f5a6e-c267-431e-bce3-67e5bac828f8)
+[L2] card lists the ticket=true; customers/contact stats after up to 120 s: {"success":true,"data":{"total":0,"open":0,"on_hold":0,"closed":0,"overdue":0,"avg_first_response_seconds":null,"avg_resolution_seconds":null,"happiness_rating":null,"window_months":6,"happiness_good":0,"happiness_okay":0,"happiness_bad":0},"error":null,"meta":null}; /stats -> {"success":true,"data":{"total":2,"open":2,"on_hold":0,"closed":0,"overdue":0,"avg_first_response_seconds":null,"avg_resolution_seconds":null,"happiness_rating":null,"window_months":6,"happiness_good":0,"happiness_okay":0,"happiness_bad":0},"error":null,"meta":null}
+[CLEAN] delete desk eac2173b-ce18-43b2-92c2-19051dceccc0 -> 204
+[CLEAN] delete desk 279f6ea8-c430-4dec-b032-f36f46c8180d -> 204
+[CLEAN] delete desk fa4f5a6e-c267-431e-bce3-67e5bac828f8 -> 204
+[CLEAN] delete crm e888f035-be12-4f67-b2cd-1675587af2ed -> 204
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 152.5 s <<< FAILURE! -- in qa.features.crmdeskintegration.RecheckTest
+[ERROR] qa.features.crmdeskintegration.RecheckTest.l2StatsCountTickets -- Time elapsed: 126.6 s <<< FAILURE!
+java.lang.AssertionError: statistics show 0 tickets while the card lists the ticket expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at qa.features.crmdeskintegration.RecheckTest.l2StatsCountTickets(RecheckTest.java:96)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeSingleClass(TestNGDirectoryTestSuite.java:102)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:91)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   RecheckTest.l2StatsCountTickets:96 statistics show 0 tickets while the card lists the ticket expected [true] but found [false]
+[INFO] 
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:39 min
+[INFO] Finished at: 2026-10-20T18:39:20+03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project ui-automation: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Software Testing\Automation\Agentex Installation\Agentex Installation\automation\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

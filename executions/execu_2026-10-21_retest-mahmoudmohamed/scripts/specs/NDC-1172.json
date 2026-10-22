@@ -1,0 +1,113 @@
+{
+ "out": "NDC-1172-retest-PARTIAL.png",
+ "ticket": "NDC-1172",
+ "title": "Teamspace | A CRM Admin can open any teamspace they are not on the access list of, whatever accessibility option is set",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · teamspace QA RT 1172 created by ndc-staging-owner · checked as mahmoud.mahamed1515 (CRM Admin, not on the list), test user 1 (on the list), mahmoud.mmohamedsamy (Supervisor)",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-1172-api.png",
+   "caption": "Access by API for each accessibility option.",
+   "crop": [
+    0,
+    0,
+    1600,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      32,
+      95,
+      1568,
+      417
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      419,
+      1568,
+      485
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "1172-06-open-from-settings.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Settings › Teamspace still lists QA RT 1172 to the CRM Admin and opens Edit Teamspace showing them as Admin (real admin: ndc-staging-owner).",
+   "crop": [
+    292,
+    60,
+    730,
+    660
+   ],
+   "boxes": [
+    {
+     "b": [
+      312,
+      586,
+      634,
+      620
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      312,
+      640,
+      600,
+      690
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Restricted teamspace hidden from a CRM Admin not covered by the rule",
+   "Not in the switcher; access refused",
+   "Selected users / profile User / org unit: GET /teamspaces omits it; GET /teamspaces/{id}, /folders, /modules → 403 PERMISSION_DENIED",
+   "PASS"
+  ],
+  [
+   "1",
+   "Users covered by the rule",
+   "Keep access",
+   "test user 1 (listed user, profile User, org unit) → listed, 200",
+   "PASS"
+  ],
+  [
+   "1",
+   "Creator / admin keeps access (QA 22 Aug item 2)",
+   "Admin sees own teamspace",
+   "ndc-staging-owner (creator, admin) → listed, 200",
+   "PASS"
+  ],
+  [
+   "2–3",
+   "Settings › Teamspace (QA 22 Aug item b)",
+   "Not listed / not editable for non-members",
+   "Listed for the CRM Admin; Edit Teamspace opens and shows the logged-in user as Admin; \"Permission denied\" toast on load",
+   "FAIL"
+  ],
+  [
+   "4",
+   "Modules section after save (QA 22 Aug item a)",
+   "—",
+   "Not re-checked (teamspace had no modules)",
+   "INFO"
+  ]
+ ]
+}

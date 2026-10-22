@@ -1,0 +1,527 @@
+<title>CRM Desk Integration Bugs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~860px). Bug entries are the only boxed objects; tickets and gaps are plain tables and figures. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1c2330;
+  --muted: #5b6577;
+  --line: #dde1e8;
+  --accent: #2456c9;
+  --code-bg: #eef1f6;
+  --bug: #b4232a;      --bug-bg: #fbe9ea;
+  --warn: #8a5a00;     --warn-bg: #fdf1d8;
+  --ok: #19703e;       --ok-bg: #e3f4ea;
+  --info: #3d4a63;     --info-bg: #e8ecf3;
+  --font-display: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+    --accent: #7ea2ff; --code-bg: #222a36;
+    --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+    --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+  --accent: #7ea2ff; --code-bg: #222a36;
+  --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+  --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--font-body); }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 48px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.25; }
+h1 { font-size: 2rem; font-weight: 700; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, pre { font-family: var(--font-mono); font-size: 0.85em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 600 0.75rem/1 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 12px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 20px; color: var(--muted); font-size: 0.9rem; }
+.meta b { color: var(--fg); font-weight: 600; }
+section { display: grid; gap: 16px; }
+section > p.lead { color: var(--muted); }
+
+.tally { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font: 600 0.78rem/1.6 var(--font-body); white-space: nowrap; }
+.pill.bug { color: var(--bug); background: var(--bug-bg); }
+.pill.warn { color: var(--warn); background: var(--warn-bg); }
+.pill.ok { color: var(--ok); background: var(--ok-bg); }
+.pill.info { color: var(--info); background: var(--info-bg); }
+
+.bug-entry { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; display: grid; gap: 14px; min-width: 0; }
+.bug-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.bug-id { font: 600 0.85rem/1 var(--font-mono); color: var(--muted); }
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; }
+dl.facts dt { font-weight: 600; color: var(--muted); font-size: 0.9rem; }
+dl.facts dd { margin: 0; min-width: 0; }
+.callout { border: 1px solid #d0d7de; border-left: 4px solid #1f5fbf; padding: 8px 14px; margin: 12px 0 20px; border-radius: 4px; }
+.callout ul { margin: 4px 0 0; padding-left: 1.2em; }
+.steps-h { margin: 10px 0 4px; }
+ol.steps { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pair > div { min-width: 0; display: grid; gap: 6px; }
+pre { background: var(--code-bg); border-radius: 8px; padding: 12px 14px; margin: 0; overflow-x: auto; line-height: 1.5; }
+pre .k { color: var(--bug); font-weight: 600; }
+pre .g { color: var(--ok); font-weight: 600; }
+figure { margin: 0; display: grid; gap: 6px; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+figcaption { font-size: 0.85rem; color: var(--muted); }
+
+.table-box { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+th { font: 600 0.75rem/1.4 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td.mono { font-family: var(--font-mono); font-size: 0.85rem; white-space: nowrap; }
+
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.gallery { display: grid; gap: 28px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; }
+details[open] { padding-bottom: 18px; }
+summary { cursor: pointer; font-weight: 600; }
+details > .gallery { margin-top: 16px; }
+footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
+
+@media (max-width: 640px) {
+  .wrap { padding-inline: 16px; padding-block: 28px 48px; gap: 36px; }
+  h1 { font-size: 1.6rem; }
+  .pair { grid-template-columns: 1fr; }
+  dl.facts { grid-template-columns: 1fr; gap: 2px; }
+  dl.facts dd { margin-bottom: 8px; }
+  .bug-entry { padding: 18px 16px; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">TAVI CRM ⇄ Desk · QA run · 19–20 Oct 2026</span>
+    <h1>CRM ⇄ Desk Integration: bugs found by executing the spec</h1>
+    <p>Results of executing spec-crm-desk-integration.md on staging (Run 1 read-only 19 Oct, Run 2 writes and Run 3 connection 20 Oct, approved by the user). Expected behaviour = Zoho CRM + Desk and NDC-1669 (user decision: match Zoho). Only confirmed bugs are listed; the 9 missing features are in docs/crm-desk-integration/missing-report.html. Nothing here is filed in Plane.</p>
+    <div class="meta">
+      <span><b>Hosts</b> staging-crm / staging-desk.taviportal.com (tenant NDC-Staging)</span>
+      <span><b>Accounts</b> Owner (integrated user), Desk Agent fedelav803</span>
+      <span><b>Method</b> Selenium + API (Java, TestNG), automation feature crmdeskintegration</span>
+      <span><b>Result</b> Spec executed 18–21 Oct (Runs 1–3, parity pass, remaining rows) → 18 bugs; 153 Zoho items classified (docs/crm-desk-integration/zoho-parity-matrix.md)</span>
+    </div>
+    <div class="tally">
+      <span class="pill bug">2 high</span>
+      <span class="pill warn">9 medium</span>
+      <span class="pill info">7 low</span>
+      <span class="pill ok">Gaps Z1–Z7, Z4, Z9 confirmed (missing report)</span>
+    </div>
+  </header>
+
+  <section aria-labelledby="bugs">
+    <h2 id="bugs">Confirmed bugs</h2>
+    <p class="lead">Each bug was seen through the API and, where it has a screen, on the screen. Test records were prefixed "QA CD" and deleted after the run; the settings were restored from the baseline and checked field by field.</p>
+
+    <article class="bug-entry" id="CD-01">
+      <div class="bug-head">
+        <span class="bug-id">CD-01 · I9 / I8</span>
+        <span class="pill bug">High (suggested)</span>
+        <span class="pill info">Links</span>
+      </div>
+      <h3>Unlink does not stop the sync: the next change links the pair again by email</h3>
+      <p>After Unlink, TAVI's own dialog says "Syncing stops for this record until it is linked again." In practice the very next change on the CRM record matches the Desk contact again by email (<code>match_source: match_existing</code>) and the change is written to Desk. An agent cannot keep a Desk contact apart from its CRM record.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Take a linked contact pair (Desk contact ↔ CRM contact, same email).</li>
+        <li>Desk contact → CRM pane → Unlink → confirm (API <code>DELETE /desk/integrations/crm/links/{id}</code> → 204).</li>
+        <li>In CRM, change the contact's Title.</li>
+        <li>Wait 40 s and open the Desk contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The record stays unlinked and the CRM change is not written to Desk, as TAVI's Unlink dialog promises ("Syncing stops for this record until it is linked again.").</dd>
+        <dt>Actual (TAVI)</dt><dd>Link back as <code>synced / match_existing</code>; Desk Title = the CRM value; a manual Link afterwards answers 409 "The crm record is already linked."</dd>
+        <dt>Records</dt><dd>Desk contact <code>1e4fa020</code> ↔ CRM contact <code>f820d08f</code> (20 Oct, deleted after the run)</dd>
+      </dl>
+      <figure><img src="evidence/CD-01-unlink-does-not-stop-sync-vs-zoho.png" alt="CD-01: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-01: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-02">
+      <div class="bug-head">
+        <span class="bug-id">CD-02 · K10</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Handshake Mode</span>
+      </div>
+      <h3>Handshake Mode is still offered while the sync is paused</h3>
+      <p>With the integration paused, the ticket list Layout picker still lists Handshake Mode under Work Modes, so agents keep sorting tickets by CRM deal data that is no longer updated. When disconnected, the option is hidden correctly.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk → Settings → CRM ⇄ Desk Integration → Pause sync (any reason).</li>
+        <li>Desk → Tickets → All Tickets → open the Layout picker ("Classic View ▾").</li>
+        <li>Control: Disconnect, open the picker again.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Handshake Mode is removed from the picker with an explanation while paused or disconnected (NDC-1669 §8 AC). Zoho: Handshake needs the integration; pausing stops all data exchange.</dd>
+        <dt>Actual (TAVI)</dt><dd>Paused: Handshake Mode listed and selectable. Disconnected: hidden (correct).</dd>
+        <dt>Records</dt><dd>Checked twice on 20 Oct (ConnectionRunTest, K10CheckTest); status <code>paused=true</code> at the screenshot</dd>
+      </dl>
+      <figure><img src="evidence/CD-02-handshake-offered-while-paused-vs-zoho.png" alt="CD-02: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-02: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-03">
+      <div class="bug-head">
+        <span class="bug-id">CD-03 · H10 / G19</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Failure Log</span>
+      </div>
+      <h3>Failure Log reasons show raw record ids instead of record names</h3>
+      <p>Every "already paired" failure reads "The CRM contacts record <code>514badee-c11a-…</code> with the same email is already paired with Desk record <code>cf51f6b3-cc88-…</code>." An admin cannot tell which contacts are involved. Reproduced on 20 Oct with two Desk contacts sharing one CRM email.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Create two Desk contacts with the same email while a CRM contact with that email exists (or pause, create, resume).</li>
+        <li>Desk → Settings → CRM ⇄ Desk Integration → Failure Log.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The reason names the records (e.g. "already paired with Desk contact Mahmoud Mohamed") so the admin can act (NDC-1669 §10; Zoho Failure Log shows the record and the reason).</dd>
+        <dt>Actual (TAVI)</dt><dd>Two full UUIDs in the sentence; same text in <code>GET /failures</code> <code>last_error</code>.</dd>
+        <dt>Records</dt><dd>Failures of 18 Oct (Desk <code>183dc191</code>, <code>db172f38</code>); 20 Oct Desk <code>62f23a7f</code> (QA, discarded)</dd>
+      </dl>
+      <figure><img src="evidence/CD-03-failure-reason-raw-ids-vs-zoho.png" alt="CD-03: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-03: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-04">
+      <div class="bug-head">
+        <span class="bug-id">CD-04 · C17</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Field mapping</span>
+      </div>
+      <h3>The settings API saves invalid field mappings</h3>
+      <p>The mapping editor validates its rows, but <code>PUT /desk/integrations/crm/config</code> accepts a mapping to a CRM field that does not exist, to a Desk field that does not exist, a lookup field, and a row with an empty CRM field — all 200. Other checks (direction, enums, read-only target, one-way pair) are refused correctly with 422 <code>CRM_SYNC_MAPPING_INVALID</code>.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>GET the config, add one contact mapping row, PUT with the fresh row_version:</li>
+        <li><code>{crm_field:"no_such_field_qa", desk_field:"description"}</code> / <code>{crm_field:"description", desk_field:"no_such_field_qa"}</code> / <code>{crm_field:"account_id", desk_field:"description"}</code> / <code>{crm_field:"", desk_field:"description"}</code>.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>422 with the matching codes the UI already knows: crm_field_unknown, desk_field_unknown, lookup_not_mappable, incomplete ("Pick a CRM field or clear this mapping.").</dd>
+        <dt>Actual (TAVI)</dt><dd>200 for all four; the row is stored (restored right after by the test).</dd>
+        <dt>Records</dt><dd>row_version 39604617 → 39604830 (20 Oct 15:10 UTC), restored from the baseline</dd>
+      </dl>
+      <figure><img src="evidence/CD-04-invalid-mappings-saved-vs-zoho.png" alt="CD-04: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-04: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-05">
+      <div class="bug-head">
+        <span class="bug-id">CD-05 · F5</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Save / concurrency</span>
+      </div>
+      <h3>Settings are saved without a row_version, so the lost-update check can be skipped</h3>
+      <p>A stale <code>row_version</code> is refused with 409 (correct), but a PUT that simply leaves <code>row_version</code> out is accepted and overwrites whatever another admin saved in between.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>GET /desk/integrations/crm/config.</li>
+        <li>PUT the same body without the <code>row_version</code> key (one harmless change).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>400/409/428: the version is required, like the stale case ("Another administrator saved these settings while you were editing…").</dd>
+        <dt>Actual (TAVI)</dt><dd>200, change stored, row_version moved.</dd>
+        <dt>Records</dt><dd>20 Oct, restored right after</dd>
+      </dl>
+      <figure><img src="evidence/CD-05-save-without-row-version-vs-zoho.png" alt="CD-05: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-05: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-06">
+      <div class="bug-head">
+        <span class="bug-id">CD-06 · H3</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Sync History</span>
+      </div>
+      <h3>Sync History has no "failed" count</h3>
+      <p>Each Sync History row has only Added and Updated. Failed records are missing even when the Failure Log has entries for that day.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Have at least one failed sync on a day (Failure Log not empty).</li>
+        <li>Desk → Settings → CRM ⇄ Desk Integration → Sync History (API <code>GET /history?days=7</code>).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Per day, direction and record type: added, updated and failed counts (Zoho docs; NDC-1669 §10).</dd>
+        <dt>Actual (TAVI)</dt><dd>Rows <code>{date, direction, module, added, updated}</code> only.</dd>
+        <dt>Records</dt><dd>19 Oct (2 failures in the log) and 20 Oct (1 failure, G19)</dd>
+      </dl>
+      <figure><img src="evidence/CD-06-history-no-failed-count-vs-zoho.png" alt="CD-06: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-06: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-07">
+      <div class="bug-head">
+        <span class="bug-id">CD-07 · B11</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Connection</span>
+      </div>
+      <h3>No notice to the admin when the initial sync finishes</h3>
+      <p>After Connect, the initial customer and contract imports ran and finished, but the admin got no bell entry or other notice that the sync was complete.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk → Settings → CRM ⇄ Desk Integration → Disconnect, then Connect.</li>
+        <li>Wait for the initial imports (Sync History / runs).</li>
+        <li>Check the admin's notifications.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The admin is told when the initial sync is done (NDC-1669 §4).</dd>
+        <dt>Actual (TAVI)</dt><dd>Runs <code>initial_customers</code> and <code>initial_contracts</code> finished within seconds; no notification since the connect.</dd>
+        <dt>Records</dt><dd>Connect at 2026-10-20 15:32:54 UTC (approved reconnect)</dd>
+      </dl>
+      <figure><img src="evidence/CD-07-no-initial-sync-notice-vs-zoho.png" alt="CD-07: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-07: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-08">
+      <div class="bug-head">
+        <span class="bug-id">CD-08 · I16</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Desk contacts list</span>
+      </div>
+      <h3>Desk contact list shows raw sync values "synced" / "needs_attention"</h3>
+      <p>Under each contact name the list shows the raw values <code>synced</code> and <code>needs_attention</code>. The app already has the labels "Synced" and "Needs attention" (used on the contact page).</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk → Customers → All Contacts.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Labels "Synced" / "Needs attention" / "Unlinked" (TAVI's own strings, as on the contact page).</dd>
+        <dt>Actual (TAVI)</dt><dd>Raw snake_case values.</dd>
+        <dt>Records</dt><dd>Seen 19 and 20 Oct</dd>
+      </dl>
+      <figure><img src="evidence/CD-08-raw-sync-status-labels-vs-zoho.png" alt="CD-08: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-08: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-09">
+      <div class="bug-head">
+        <span class="bug-id">CD-09 · B4</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Pause</span>
+      </div>
+      <h3>Pause with a long reason fails with a server error</h3>
+      <p>A pause reason of 1,206 characters returns HTTP 500 "An unexpected error occurred." instead of a validation message.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li><code>POST /desk/integrations/crm/pause</code> with <code>{reason: "QA CD " + 1200×"x"}</code>.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>400 with the maximum length (and the UI limits the field).</dd>
+        <dt>Actual (TAVI)</dt><dd>500 INTERNAL; integration not paused.</dd>
+        <dt>Records</dt><dd>20 Oct 15:12 UTC</dd>
+      </dl>
+      <figure><img src="evidence/CD-09-long-pause-reason-500-vs-zoho.png" alt="CD-09: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-09: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-10">
+      <div class="bug-head">
+        <span class="bug-id">CD-10 · O3</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">API</span>
+      </div>
+      <h3>Customer statistics answer 200 for a contact that does not exist</h3>
+      <p><code>GET /desk/integrations/crm/customers/contact/{random id}/stats</code> answers 200 with zero counts. The other record endpoints answer 404 for unknown ids.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>GET the stats endpoint with a random UUID.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>404 for a record that does not exist.</dd>
+        <dt>Actual (TAVI)</dt><dd>200 with all counts 0.</dd>
+        <dt>Records</dt><dd>19 Oct (Run 1)</dd>
+      </dl>
+      <figure><img src="evidence/CD-10-stats-missing-record-200-vs-zoho.png" alt="CD-10: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-10: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-11">
+      <div class="bug-head">
+        <span class="bug-id">CD-11 · G18</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Sync</span>
+      </div>
+      <h3>Sync creates a Desk contact without its mandatory Last name</h3>
+      <p>The Desk contact layout requires Last name. A CRM contact without a Last name is still copied to Desk, and the Desk contact is stored with Last name empty. Zoho reports a "Mandatory field missing" failure instead, so required fields stay valid.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk contact layout: Last name is required (it is on staging).</li>
+        <li>Create a CRM contact with First name and Email only.</li>
+        <li>Wait for the sync; open the Desk contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The record fails with a readable "mandatory field missing" reason in the Failure Log (Zoho), or Desk fills a placeholder the admin chose. A required field is never left empty.</dd>
+        <dt>Actual (TAVI)</dt><dd>Desk contact created with <code>last_name = null</code>; no failure.</dd>
+        <dt>Records</dt><dd>CRM <code>e3109613</code> → Desk <code>2562f0bf</code> (21 Oct, deleted after the run)</dd>
+      </dl>
+      <figure><img src="evidence/CD-11-mandatory-field-skipped-vs-zoho.png" alt="CD-11: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-11: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-12">
+      <div class="bug-head">
+        <span class="bug-id">CD-12 · K4</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Handshake Mode</span>
+      </div>
+      <h3>Handshake Mode does not match requesters by phone</h3>
+      <p>A ticket whose requester matches a CRM contact only by phone is put in New (not in CRM). NDC-1669 §8 requires phone matching, and Zoho classifies by CRM email or phone.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Create a CRM contact with a phone and no email.</li>
+        <li>Pause the sync so it is not linked by email. Create a Desk contact with the same phone and a ticket for it.</li>
+        <li>Classify the ticket (Handshake Mode / <code>POST /tickets/classify</code>).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Contacts/Leads, matched by phone (NDC-1669 §8 AC; Zoho: "Classification uses the CRM email or phone").</dd>
+        <dt>Actual (TAVI)</dt><dd><code>not_in_crm</code> (New), both for a ticket with only the phone and for the Desk contact with that phone.</dd>
+        <dt>Records</dt><dd>21 Oct, QA records deleted after the run</dd>
+      </dl>
+      <figure><img src="evidence/CD-12-handshake-ignores-phone-vs-zoho.png" alt="CD-12: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-12: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-13">
+      <div class="bug-head">
+        <span class="bug-id">CD-13 · E8</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Delete preferences</span>
+      </div>
+      <h3>Changing the delete preference applies to a delete made earlier</h3>
+      <p>A CRM contact is deleted while "Keep the Desk contact and flag its link" is set. If the preference is changed to "Delete the corresponding Desk contact" before that delete has synced, the Desk contact is deleted. NDC-1669 §5 requires preference changes not to be retroactive. Reproduced twice (21 Oct).</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Settings → Preferences: "On deleting a CRM contact" = Keep (default).</li>
+        <li>Pause sync (or have a busy queue). Delete a linked QA CRM contact.</li>
+        <li>Change the preference to "Delete the corresponding Desk contact" and save.</li>
+        <li>Resume; wait 45 s; open the Desk contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The delete keeps the preference in force when it happened (Keep): the Desk contact stays, its link flagged. NDC-1669 §5 AC: not retroactive.</dd>
+        <dt>Actual (TAVI)</dt><dd>The Desk contact is deleted under the new preference.</dd>
+        <dt>Records</dt><dd>QA CD E8 contacts (21 Oct, two runs), deleted after the runs</dd>
+      </dl>
+      <figure><img src="evidence/CD-13-delete-preference-retroactive-vs-zoho.png" alt="CD-13: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-13: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-14">
+      <div class="bug-head">
+        <span class="bug-id">CD-14 · E9 / E4</span>
+        <span class="pill bug">High (suggested)</span>
+        <span class="pill info">Delete preferences</span>
+      </div>
+      <h3>A Desk contact deleted by the integration is not in the recycle bin and cannot be restored</h3>
+      <p>With "Delete the corresponding Desk contact", deleting the CRM contact removes the Desk contact (GET answers 404), but the Desk contact is not in the Desk recycle bin. TAVI's own setting note says: "The Desk contact goes to the Desk recycle bin together with … its tickets … and can be restored from there." Data deleted this way cannot be restored.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Settings → Preferences: "On deleting a CRM contact" = Delete the corresponding Desk contact.</li>
+        <li>Delete a linked QA CRM contact.</li>
+        <li>Desk → Settings → Recycle Bin (API <code>GET /audit/recycle-bin/items?app_key=desk</code>): look for the Desk contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The Desk contact (and its tickets) is in the Desk recycle bin and can be restored, as the setting promises (Zoho: "the record and its associates go to the Desk recycle bin").</dd>
+        <dt>Actual (TAVI)</dt><dd>Desk contact 404; no recycle-bin entry for it (200 newest Desk items checked); restore impossible.</dd>
+        <dt>Records</dt><dd>Desk contacts <code>94ce79a7</code>, <code>9fc88446</code> (21 Oct)</dd>
+      </dl>
+      <figure><img src="evidence/CD-14-cross-delete-not-in-recycle-bin-vs-zoho.png" alt="CD-14: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-14: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-15">
+      <div class="bug-head">
+        <span class="bug-id">CD-15 · J4</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Profile permissions</span>
+      </div>
+      <h3>With "No access" the CRM pane is still offered and hangs on "Loading…"</h3>
+      <p>An agent whose profile has No access to CRM contact data still sees the CRM rail icon and the "CRM Contact Info" pane; the pane stays on "Loading…" because the data calls are refused (403). No CRM data leaks, but NDC-1669 §6 says no CRM pane is shown.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk → CRM ⇄ Desk Integration → Permissions: Desk Agent → Contacts = No access.</li>
+        <li>Sign in as an agent with that profile; open a ticket of a linked contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>No CRM pane or rail icon (NDC-1669 §6 AC), or a clear "Your profile cannot open this tab." state.</dd>
+        <dt>Actual (TAVI)</dt><dd>Pane offered; spinner "Loading…" never ends.</dd>
+        <dt>Records</dt><dd>Ticket #298 as fedelav803 (21 Oct); profile access restored after the check</dd>
+      </dl>
+      <figure><img src="evidence/CD-15-no-access-pane-loading-vs-zoho.png" alt="CD-15: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-15: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-16">
+      <div class="bug-head">
+        <span class="bug-id">CD-16 · I18</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">CRM pane</span>
+      </div>
+      <h3>The CRM pane error has no Retry</h3>
+      <p>When the pane's CRM data cannot be loaded, it shows "Could not load this section." but offers no Retry; the agent has to reload the whole ticket. The app already has the "Retry" string.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Block or fail the pane's <code>/desk/integrations/crm/context/…</code> calls (DevTools → block request URL).</li>
+        <li>Open a ticket of a linked contact and the CRM pane.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>"Could not load this section." with a Retry button (spec I18).</dd>
+        <dt>Actual (TAVI)</dt><dd>Message only; no Retry.</dd>
+        <dt>Records</dt><dd>Ticket #298 (21 Oct)</dd>
+      </dl>
+      <figure><img src="evidence/CD-16-pane-error-no-retry-vs-zoho.png" alt="CD-16: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-16: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-17">
+      <div class="bug-head">
+        <span class="bug-id">CD-17 · F8</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Audit</span>
+      </div>
+      <h3>Integration settings changes are not in the Audit Log</h3>
+      <p>Many integration settings changes were saved on 20–21 Oct (pause, mappings, delete preferences, permissions, connect/disconnect), but the tenant Audit Log has no entry about the integration.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Save any change on Desk → CRM ⇄ Desk Integration (e.g. a delete preference).</li>
+        <li>Open the tenant Audit Log (API <code>GET /audit/events</code>).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Who changed which integration setting and when (spec F8).</dd>
+        <dt>Actual (TAVI)</dt><dd>Events exist for other areas; none for the integration.</dd>
+        <dt>Records</dt><dd>21 Oct, 100 newest events checked</dd>
+      </dl>
+      <figure><img src="evidence/CD-17-no-audit-for-settings-vs-zoho.png" alt="CD-17: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-17: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="CD-18">
+      <div class="bug-head">
+        <span class="bug-id">CD-18 · D6</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Contracts</span>
+      </div>
+      <h3>"Lock CRM-owned fields on the contract" does not stop edits in Desk</h3>
+      <p>With the lock on (the default), the contract name — which comes from the CRM deal name — can be changed in Desk and is saved. The next deal update then overwrites or conflicts with it. The setting exists precisely to stop that.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Configuration → Contracts: "Lock CRM-owned fields on the contract" = on (default).</li>
+        <li>Win a QA deal so a Desk contract is created; give the contract a support plan, account and dates so it is valid.</li>
+        <li>Change the contract name in Desk (API <code>PATCH /modules/{desk contracts}/records/{id}</code> {contract_name}).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>CRM-owned contract fields (contract name, value, owner, description, start date) are read-only in Desk while the lock is on: refused with a clear message.</dd>
+        <dt>Actual (TAVI)</dt><dd>200; the contract name is changed in Desk. With the lock off the edit also works (same result).</dd>
+        <dt>Records</dt><dd>Contract <code>3e021f5c</code> of a QA deal (21 Oct, deleted after the run)</dd>
+      </dl>
+      <figure><img src="evidence/CD-18-contract-lock-not-enforced-vs-zoho.png" alt="CD-18: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-18: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+  </section>
+
+  <section aria-labelledby="not-bugs">
+    <h2 id="not-bugs">Not filed as bugs</h2>
+    <ul class="plain"><li>Missing features: gaps 1–18 (9 from the gap analysis + 9 from the 21 Oct parity pass) — docs/crm-desk-integration/missing-report.html and zoho-parity-matrix.md.</li><li>Missing features Z1–Z9 (Products sync, list-view scope, secondary-email match, delete if no associates, all CRM fields in the pane, CRM ticket filters, mutual users / invite, CRM Contact Type rule condition, permission defaults and level names) — see docs/crm-desk-integration/missing-report.html. Z4 and Z9 were confirmed again by this run ("delete_if_no_associates" refused; every profile has Full Access right after Connect).</li><li>L2: <code>/customers/contact/{id}/stats</code> answers 0 for a CRM contact id — it expects the Desk id; the CRM card uses <code>/stats</code>, which counted the tickets correctly.</li><li>E3: with "Keep but unlink" the link stays listed with status "unlinked" and the Desk badge says Unlinked — correct (first reading was a test mistake).</li><li>L5: New ticket from CRM works with <code>crm_module_key</code> / <code>crm_record_id</code> (first attempt used wrong keys — test mistake).</li><li>B10 (inconclusive): the initial imports finished in about 3 s, too fast to see the progress text.</li><li>Minor wording: the API message for a second Sync all is "A initial_customers run is already queued or running." (raw run kind).</li></ul>
+  </section>
+
+  <footer>
+    <span>Settings restored from the 20 Oct baseline and compared field by field (all same); integration Connected and not paused; connected_at is new (2026-10-20 15:32:54 UTC) because of the approved reconnect. All "QA CD" records of the runs were deleted in both apps (some sit in the Recycle Bins).</span>
+    <span>Every row with its verdict: report.md in this folder.</span>
+  </footer>
+</div>

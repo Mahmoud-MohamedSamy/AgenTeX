@@ -1,0 +1,37 @@
+create R1 accepted 201 ok
+PASS T01 - status on create = Pending Verification, ref EM-00040, owner {"field":"owner","value":{"kind":"string","value":"1e4510e3-911a-4ebd-b943-de8cd86e649f"}}
+PASS T02 - Stage 1 started on create: {"instanceId":"3bf96567-c346-4624-8326-4d84374127cd","state":"pending_approval","currentStage":0,"totalStages":1,"totalLevels":1,"currentApprovers":["1e4510e3-911a-4ebd-b943-de8cd86e649f"],"decisionFields":[],"history":[{"eventKind":"submitted","actorUserId":"1e4510e3-911a-4ebd-b943-de8cd86e649f","l
+probe /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/records/aea6bb25-27e1-4be0-bd27-cf6f1e36e223/timeline 404 
+probe /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/records/aea6bb25-27e1-4be0-bd27-cf6f1e36e223/activity 404 
+probe /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/records/aea6bb25-27e1-4be0-bd27-cf6f1e36e223/history 404 
+probe /workflow/rules/executions?recordId=aea6bb25-27e1-4be0-bd27-cf6f1e36e223 404 
+  approve 204 
+PASS T03 - Stage 1 approve -> Registration Approved (N02 portal access)
+  update 200 ok
+PASS T04 - video link saved -> Assessment Assigned (expect Assessment Assigned), video_submitted_at=2026-10-20T15:38:57.293Z
+PASS T05 - owner after video -> {"field":"owner","value":{"kind":"string","value":"eafadc3f-b548-49a7-b9eb-5af9de793ba6"}} (expect Pool Science)
+PASS T06 - Stage 2 started: {"instanceId":"4b7d21c6-428b-4b58-999b-70836faeca9b","state":"pending_approval","currentStage":0,"totalStages":1,"totalLevels":1,"currentApprovers":["eafadc3f-b548-49a7-b9eb-5af9de793ba6"],"decisionFields":[{"field":"assessment_score","required":true,"on":"approve"},{"field":"assessment_comments","r
+  takeover reject 204 
+PASS T07 - Stage 2 send back -> Action Required, correction_request=QA EM video unclear - please re-upload
+  update 200 ok
+PASS T08 - resubmitted link -> Assessment Assigned (expect Assessment Assigned)
+PASS T09 - Stage 2 restarted after correction: {"instanceId":"7a0aaf8b-61f7-4ad3-9924-ac1bc7de3d09","state":"pending_approval","currentStage":0,"totalStages":1,"totalLevels":1,"currentApprovers":["eafadc3f-b548-49a7-b9eb-5af9de793ba6"],"decisionFi
+  takeover approve 400 {"code":"APPROVAL_DECISION_FIELD_REQUIRED","message":"Fill in 'assessment_score' to approve.","details":[{"field":"assessment_score","issue":"required"}]}
+FAIL T10 - Stage 2 approve -> Assessment Complete
+PASS T11 - Stage 3 (committee) started: {"instanceId":"7a0aaf8b-61f7-4ad3-9924-ac1bc7de3d09","state":"pending_approval","currentStage":0,"totalStages":1,"totalLevels":1,"currentApprovers":["eafadc3f-b548-49a7-b9eb-5af9de793ba6"],"decisionFi
+  takeover approve 400 {"code":"APPROVAL_DECISION_FIELD_REQUIRED","message":"Fill in 'assessment_score' to approve.","details":[{"field":"assessment_score","issue":"required"}]}
+FAIL T12 - Stage 3 approve -> Finalist Accepted (N06)
+create R2 reg-rejected 201 ok
+  reject 204 
+PASS T13 - Stage 1 reject -> Registration Rejected, rejection_reason=QA EM incomplete data
+create R3 finalist-rejected 201 ok
+  approve 204 
+  update 200 ok
+PASS T14 - R3 video -> Assessment Assigned, owner {"field":"owner","value":{"kind":"string","value":"bd05af1a-7ada-4ac6-a457-00e29f6d8a47"}} (expect Pool Technology)
+  takeover approve 400 {"code":"APPROVAL_DECISION_FIELD_REQUIRED","message":"Fill in 'assessment_score' to approve.","details":[{"field":"assessment_score","issue":"required"}]}
+  takeover reject 204 
+FAIL T15 - Stage 3 reject -> Finalist Rejected (N07)
+FINAL R1 aea6bb25-27e1-4be0-bd27-cf6f1e36e223 EM-00040 Assessment Assigned owner {"field":"owner","value":{"kind":"string","value":"eafadc3f-b548-49a7-b9eb-5af9de793ba6"}}
+FINAL R2 7eb50fcf-5871-4f41-ba10-022dde906e25 EM-00041 Registration Rejected owner {"field":"owner","value":{"kind":"string","value":"1e4510e3-911a-4ebd-b943-de8cd86e649f"}}
+FINAL R3 54cdf892-185b-4ff9-b28d-8a0f54f3fa02 EM-00042 Action Required owner {"field":"owner","value":{"kind":"string","value":"bd05af1a-7ada-4ac6-a457-00e29f6d8a47"}}
+NO config changes by others during the run

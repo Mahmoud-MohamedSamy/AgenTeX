@@ -218,7 +218,7 @@ Active: one QA blueprint per module (Leads: Lead Status; Deals: Stage; Tasks: St
 | E-10 | Common transition from any state | Available from every state | [pos] |
 | E-11 | Parallel transition | Record must finish every branch before moving | [edge] |
 | E-12 | Draft edit of a published blueprint | Records follow the published version until Publish | [edge] |
-| E-13 | Mass exclude one record | Leaves the blueprint | [pos] |
+| E-13 | Mass exclude one record | Leaves the blueprint; its field becomes editable. **Deferred (20 Oct 2026): mass include / exclude has no TAVI CRM screen yet; run when it is implemented.** | [pos] |
 | E-14 | Deals blueprint on Stage with a pipeline | Asks which pipeline (NDC-1326) | [pos] |
 | E-15 | Tasks blueprint on Status | Works on Tasks (Zoho: blueprint on Tasks, seen live) | [pos] |
 | E-16 | After-transition Task/Call/Meeting | Contact Name / Related To show names, not ids (NDC-1328) | [pos] |
@@ -340,6 +340,18 @@ All five QA processes active on the module. Expected each time: **AR → RP (hol
 | E2E-4 | Deal pipeline | UI deal → review → WF field update qualifies it for AP → approved → Stage blueprint to Closed Won |
 | E2E-5 | Task approval | WF on Leads creates a task → Tasks AP → BP on Status |
 | E2E-6 | Negative recovery | Admin deactivates the review process mid-flight (Release unreviewed) → records continue in order with no duplicates |
+
+## U Setup screens and record page (UI layer, added 21 Oct 2026)
+Selenium, browser = Owner; automated in `automation/.../crmautomationorder/UiSmokeTest.java` (groups crm-ui, smoke). Every process is named "QA AEO UI …" and restricted to names starting with that prefix; whatever a case creates is deleted on screen, with an API safety net.
+| ID | Case | Expected | Tags |
+|---|---|---|---|
+| UI-01 | Assignment rule created on screen (Leads, Web Form only, one entry "Name starts with …" → a user) | Saved, listed, reopens with its name, Delete removes it | [pos] |
+| UI-02 | Review process created on screen on a dedicated layout (one field, one reviewer) | Saved, listed, reopens, Delete removes it. Saving without a field shows "Pick at least one field to review." | [pos] |
+| UI-03 | Workflow rule created on screen (On Create, condition, inline Field Update) | "Save & Activate" lists it Active; Deactivate from the list makes it Inactive; reopens; Delete removes it | [pos] |
+| UI-04 | Approval process created on screen (criteria, level-1 approver, process admin) | Saved, listed, reopens, Delete removes it | [pos] |
+| UI-05 | Blueprint designed on screen (two states, named transition) and saved as draft | No open issues once the transition is named; draft listed, reopens, Delete removes it | [pos] |
+| UI-06 | Record page while review, approval and blueprint all apply to a lead | In review: review panel, "Frozen while under review", no approval, no transition. After review: "Pending approval", no transition. After approval: blueprint panel with current state and transition | [pos] |
+| K-10 (UI) | Lead pending approval opened by a user who is not the approver (NDC-1672) | "Locked while awaiting approval", no editable field, Save disabled | [neg] |
 
 ## Z Gaps from the missing list
 | ID | Item | How to test | Expected (Zoho) |

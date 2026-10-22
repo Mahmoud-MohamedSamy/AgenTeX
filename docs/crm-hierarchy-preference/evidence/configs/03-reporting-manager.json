@@ -1,0 +1,88 @@
+{
+ "out": "../03-reporting-manager-vs-zoho.png",
+ "id": "Items 7–11",
+ "title": "Reporting manager — any user can be picked, self page takes a pasted ID, no hierarchy view",
+ "verdict": "Gap",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Users → user modal → Reporting manager (lists all users except self)",
+   "img": "../originals/tavi-t07-user-edit.png",
+   "boxes": [
+    {
+     "n": 7,
+     "x": 409,
+     "y": 385,
+     "w": 622,
+     "h": 100
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "Personal Settings → Reporting Hierarchy (bundle strings; page only exists in Reporting mode)",
+   "flag": "FROM BUILD — page hidden while mode is Role",
+   "text": [
+    "Reporting manager (user ID)",
+    "Paste a user ID, or leave empty for no manager",
+    "Your direct reports — You don’t have any direct reports yet."
+   ],
+   "sources": [
+    "/locales/en/iam.json personalSettings.reportingHierarchy.*"
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Reporting Hierarchy on users (docs)",
+   "flag": "DOCS ONLY — needs Zoho switched to Reporting",
+   "text": [
+    "The reporting manager is chosen from a list that only shows users in a higher role.",
+    "The user details page has a \"Reporting Hierarchy\" section with the manager and the direct reports.",
+    "Deleting a user with subordinates asks to move them to an equal/higher-role user or leave them non-reporting.",
+    "Demoting a manager opens \"Change of Reporting manager\"."
+   ],
+   "sources": [
+    "reference/zoho-docs-inventory.md §3"
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": 7,
+   "b": "Who can be a manager",
+   "zoho": "Users in a higher role only",
+   "tavi": "Any user except self",
+   "match": "Gap"
+  },
+  {
+   "n": 8,
+   "b": "Self-service manager field",
+   "zoho": "Admin picks from a list",
+   "tavi": "Free-text user ID",
+   "match": "Gap"
+  },
+  {
+   "n": 9,
+   "b": "Hierarchy view",
+   "zoho": "Manager + direct reports on user details",
+   "tavi": "Manager select only; no Reports To column",
+   "match": "Gap"
+  },
+  {
+   "n": 10,
+   "b": "Delete/deactivate a manager",
+   "zoho": "Move subordinates",
+   "tavi": "Not confirmed — Phase 3",
+   "match": "Not checked"
+  },
+  {
+   "n": 11,
+   "b": "Role change breaks the chain",
+   "zoho": "Change of Reporting manager popup",
+   "tavi": "No rank check, so no prompt",
+   "match": "Gap"
+  }
+ ],
+ "notes": []
+}

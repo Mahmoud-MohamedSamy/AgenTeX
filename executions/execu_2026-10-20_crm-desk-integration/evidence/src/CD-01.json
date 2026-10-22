@@ -1,0 +1,44 @@
+{
+ "out": "../CD-01-unlink-does-not-stop-sync-vs-zoho.png",
+ "id": "CD-01 (I9 / I8)",
+ "title": "Unlink does not stop the sync: the next change links the pair again by email",
+ "subtitle": "TAVI CRM / Desk (staging, tenant NDC-Staging) vs Zoho help docs / NDC-1669",
+ "verdict": "Differs",
+ "date": "20 Oct 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Unlink 204, then the CRM edit re-links the pair and syncs",
+   "img": "CD-01-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: the link is the mapping; only matching on create",
+   "text": [
+    "Zoho has no per-record Unlink button; a mapping is removed only by the delete preferences (\"only the mapping is removed\").",
+    "Expected here: TAVI's own promise — syncing stops for the unlinked record until it is linked again."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/desk/integrations-and-marketplace/sales-and-marketing/articles/integrating-zoho-desk-with-zoho-crm"
+   ],
+   "flag": "ZOHO DOCS / PRD — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Unlink a linked contact",
+   "zoho": "No per-record unlink (mapping removed only by delete preferences)",
+   "tavi": "204, link removed",
+   "match": "TAVI extra"
+  },
+  {
+   "n": "2",
+   "b": "CRM change after unlink",
+   "zoho": "—",
+   "tavi": "Pair re-linked by email; change written to Desk",
+   "match": "Differs"
+  }
+ ],
+ "notes": []
+}

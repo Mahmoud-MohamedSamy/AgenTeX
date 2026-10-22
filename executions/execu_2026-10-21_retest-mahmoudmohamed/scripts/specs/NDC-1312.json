@@ -1,0 +1,9 @@
+{ "out": "NDC-1312-retest-FAIL.png", "ticket": "NDC-1312", "title": "Pipelines | Changing a deal's pipeline does not ask which stage the deal should move to", "verdict": "FAIL", "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)", "date": "21 Oct 2026",
+ "panels": [
+  { "img": "1312-04-after-change.png", "w": 1280, "h": 720, "caption": "Modal now asks for the stage (list = destination stages, defaults to first). Change pipeline → 422 and the deal stays put.", "crop": [296, 180, 984, 520], "boxes": [ { "b": [408, 290, 872, 410], "n": 1, "kind": "PASS" }, { "b": [836, 570, 1256, 696], "n": 2, "kind": "FAIL" } ] }
+ ],
+ "rows": [
+  ["1", "Modal asks for the stage in the new pipeline", "Stage list of the destination pipeline", "\"Stage in the new pipeline\" — test-01, test-02 for \"Test-Pipeline copy\"; defaults to first stage with a hint", "PASS"],
+  ["2", "Deal ends on a stage of its new pipeline", "Deal moved to Test-Pipeline copy / test-02", "PATCH pipeline=Test-Pipeline copy + stage=test-02 → 422 \"Stage 'test-02' is not part of the 'Standard Pipeline' pipeline\"; deal stays on Standard Pipeline / value_proposition", "FAIL"],
+  ["—", "Same on the Standard layout", "Deal moved to pipeline \"1\"", "PATCH → 200 but stored pipeline stays Standard (see NDC-1302)", "FAIL"]
+ ] }

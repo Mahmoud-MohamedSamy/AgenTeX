@@ -1,0 +1,55 @@
+{
+ "out": "../04-data-sharing-vs-zoho.png",
+ "id": "Items 16–17",
+ "title": "Data sharing — CRM has only Public / Hierarchy per module and no sharing rules",
+ "verdict": "Gap",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Module permission modal → Record visibility (API + strings)",
+   "flag": "FROM BUILD + LIVE API",
+   "text": [
+    "Options for CRM: Public, Hierarchy (Desk also offers Public Read Only).",
+    "Hierarchy: \"Users see their own records and those of lower-ranked users in their department. Unassigned records are visible to everyone. Admins see all.\"",
+    "Live today: Leads = hierarchy; Contacts, Deals, Accounts, Tasks, Calls, Meetings, Subscriptions = public.",
+    "No sharing rules: /iam/sharing-rules and /settings/data-sharing return 404."
+   ],
+   "sources": [
+    "GET /api/v1/modules (21 Oct 2026)",
+    "/locales/en/crm-modules.json permissionModal.recordVisibility.*"
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Roles and Sharing → Data Sharing Settings → Default Organization Permissions",
+   "img": "../originals/zoho-z05-data-sharing.png",
+   "boxes": [
+    {
+     "n": 16,
+     "x": 287,
+     "y": 110,
+     "w": 900,
+     "h": 560
+    }
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": 16,
+   "b": "Default access per module",
+   "zoho": "Private / Public Read Only / Public Read/Write / Public Read/Write/Delete",
+   "tavi": "Public / Hierarchy",
+   "match": "Gap"
+  },
+  {
+   "n": 17,
+   "b": "Sharing rules",
+   "zoho": "Owner- or criteria-based, to role / role+subordinates / group, Superiors Allowed",
+   "tavi": "None",
+   "match": "Gap"
+  }
+ ],
+ "notes": []
+}

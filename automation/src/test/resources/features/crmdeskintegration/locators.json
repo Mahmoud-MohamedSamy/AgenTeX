@@ -101,6 +101,44 @@
         "classes" : "relative inline-flex items-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none",
         "parentText" : "Apply Cancel"
       }
+    },
+    "pageButton" : {
+      "description" : "Page button by exact text outside dialogs ({0} = Pause sync, Resume sync, Disconnect, Connect)",
+      "candidates" : [ {
+        "by" : "role",
+        "value" : "button",
+        "name" : "{0}",
+        "exact" : true
+      }, {
+        "by" : "xpath",
+        "value" : "//button[normalize-space(.)='{0}'][not(ancestor::*[@role='dialog'])]"
+      } ]
+    },
+    "dialogButton" : {
+      "description" : "Button in the open dialog by exact text ({0})",
+      "candidates" : [ {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//button[normalize-space(.)='{0}']"
+      }, {
+        "by" : "xpath",
+        "value" : "//dialog[@open]//button[normalize-space(.)='{0}']"
+      } ]
+    },
+    "dialogInput" : {
+      "description" : "Text input or textarea in the open dialog (pause reason)",
+      "candidates" : [ {
+        "by" : "css",
+        "value" : "[role='dialog'] textarea, [role='dialog'] input[type='text'], [role='dialog'] input:not([type])"
+      }, {
+        "by" : "xpath",
+        "value" : "//*[@role='dialog']//*[self::textarea or self::input]"
+      } ],
+      "fingerprint" : {
+        "tag" : "input",
+        "placeholder" : "e.g. CRM data cleanup in progress",
+        "classes" : "h-9 w-full rounded-md border border-[color:var(--border)] bg-[color:var(--bg-surface)] px-3 text-sm",
+        "parentText" : "Reason (optional)"
+      }
     }
   },
   "DeskRecordPage" : {

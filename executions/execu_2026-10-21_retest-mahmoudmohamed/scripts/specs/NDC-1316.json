@@ -1,0 +1,11 @@
+{ "out": "NDC-1316-retest-FAIL.png", "ticket": "NDC-1316", "title": "Deals - Mass Update | Pipeline is not offered as a field, so deals cannot be moved between pipelines in bulk", "verdict": "FAIL", "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)", "date": "21 Oct 2026",
+ "panels": [
+  { "img": "1316-07-ready.png", "w": 1280, "h": 720, "caption": "Mass Update now offers Pipeline with the destination stage (defaults to first stage).", "crop": [352, 100, 576, 320], "boxes": [ { "b": [390, 210, 482, 240], "n": 1, "kind": "PASS" }, { "b": [390, 268, 890, 372], "n": 2, "kind": "PASS" } ] },
+  { "img": "1316-08-after-update.png", "w": 1280, "h": 720, "caption": "Update records → \"Updated 0. 2 could not be updated\" — the server validates the stage against Standard; rows are listed by UUID.", "crop": [352, 174, 576, 372], "boxes": [ { "b": [378, 270, 902, 316], "n": 3, "kind": "FAIL" }, { "b": [386, 336, 610, 354], "n": 4, "kind": "INFO" } ] }
+ ],
+ "rows": [
+  ["1", "Pipeline available in Mass Update", "Offered as a field", "Pipeline listed (search \"pipe\" finds it)", "PASS"],
+  ["2", "Stage prompted from the destination pipeline", "Destination stages, default first stage", "\"Stage in the new pipeline\": test-01 (default) … identify_decision_makers", "PASS"],
+  ["3", "Deals moved in bulk", "2 deals on pipeline \"1\" / test-02", "\"Updated 0. 2 could not be updated\": Stage 'test-02' is not part of the 'Standard' pipeline", "FAIL"],
+  ["4", "Failure list readable", "Record names", "Rows identified by record UUID only", "INFO"]
+ ] }

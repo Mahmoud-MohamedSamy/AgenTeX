@@ -1,0 +1,212 @@
+[
+ {
+  "id": "NDC-2220",
+  "uuid": "982c0bb5-01f3-4514-a010-15bc162f30de",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held for applying and enforcing; the module is still shown to users who are not allowed.</p><p>Create Module dialog with Module Permission = Desk Administrator → POST 201 + PUT permissions 200, ACL selected. With a module restricted to Desk Agent, a Desk Administrator not on the list gets 403 on reading and creating records, but the module is still in GET /modules and in the \"+\" create menu.</p><p><b>Checked:</b></p><ul><li>Profiles chosen in the dialog are applied → PUT permissions 200; ACL selected; API refuses others (403) <b>[PASS]</b></li><li>User outside the permission does not see the module → Still offered in the \"+\" menu and listed by GET /modules — clicking leads to 403 <b>[FAIL]</b></li></ul><p><b>Still failing:</b></p><ul><li>Expected the user outside the permission not to see the module — it is still offered in the \"+\" menu (clicking leads to 403).</li></ul><p>Evidence: NDC-2220-retest-PARTIAL.png</p>"
+ },
+ {
+  "id": "NDC-2218",
+  "uuid": "be0ec661-bc3f-4746-820c-a2e310f8dbe2",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held (the directory now returns 10 Desk users, not 4).</p><p>Ticket Owner filter: Unassigned, Me and the 10 Desk users; no CRM-only users.</p><p><b>Checked:</b></p><ul><li>Only Desk agents listed → 10 Desk users + Unassigned / Me; no CRM-only users <b>[PASS]</b></li></ul><p>Evidence: NDC-2218-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2221",
+  "uuid": "3c192118-26b6-4a2d-8e79-1a13b31c8bd4",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>No name, empty name (POST and PATCH) → 422 Name is required.</p><p><b>Checked:</b></p><ul><li>No name (with layout) → 422 Name is required. <b>[PASS]</b></li><li>No name (no layout) → 422 Name is required. <b>[PASS]</b></li><li>Empty name → 422 Name is required. <b>[PASS]</b></li><li>PATCH empty name → 422 Name is required. <b>[PASS]</b></li><li>Control → 201 <b>[PASS]</b></li></ul><p>Evidence: NDC-2221-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2223",
+  "uuid": "e3eb50f0-1058-4fb7-8c03-2d9a749c2ea0",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>11 characters in a max-10 field → 422 with a clear message; 10 accepted.</p><p><b>Checked:</b></p><ul><li>10 characters → 201 stored <b>[PASS]</b></li><li>11 characters → 422 \"QA MF sl10 is too long: 11 characters, the maximum is 10.\" <b>[PASS]</b></li></ul><p>Evidence: NDC-2223-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2224",
+  "uuid": "723d4065-92fd-4f56-9f26-5d08bac1ecdc",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>101, -1, \"abc\", \"15,000\" → 422 (POST and PATCH); 50 accepted.</p><p><b>Checked:</b></p><ul><li>In range → 201 <b>[PASS]</b></li><li>Above max → 422 \"Value must be less than or equal to 100.\" <b>[PASS]</b></li><li>Below min → 422 \"Value must be greater than or equal to 0.\" <b>[PASS]</b></li><li>Text → 422 \"Expected number value for datatype 'number'.\" <b>[PASS]</b></li><li>Grouped text → 422 (parsed to 15000, above max) <b>[PASS]</b></li></ul><p>Evidence: NDC-2224-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2225",
+  "uuid": "cb1959bb-561c-412f-b74b-dae832b15947",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Invalid email/phone → 422; javascript:, mixed-case javascript: and data: URLs → 422 (POST and PATCH); valid values accepted.</p><p><b>Checked:</b></p><ul><li>Email → 422 \"Email value is invalid.\" / 201 <b>[PASS]</b></li><li>Phone → 422 \"Phone value is invalid.\" / 201 <b>[PASS]</b></li><li>URL javascript: → 422 \"URL value must be an absolute HTTP or HTTPS URL.\" <b>[PASS]</b></li><li>URL data: → 422 <b>[PASS]</b></li><li>URL valid → 201 <b>[PASS]</b></li></ul><p>Evidence: NDC-2225-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2226",
+  "uuid": "49ec0317-b98c-4524-9b61-04b6e52df892",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Delta → 422 naming the allowed values (POST and PATCH); \"beta\" normalised to Beta.</p><p><b>Checked:</b></p><ul><li>Valid → 201 <b>[PASS]</b></li><li>Not in list → 422 \"QA MF pl: 'Delta' is not one of the allowed values (Alpha, Beta, Gamma).\" <b>[PASS]</b></li><li>Case → 201 stored as \"Beta\" (normalised) <b>[INFO]</b></li></ul><p>Evidence: NDC-2226-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2227",
+  "uuid": "2145cf59-76ec-42fd-b574-cbd0e22a4ebe",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held through the builder (regex stored on the field).</p><p>Regex set in the builder → ab12 refused (422) on create and update, AB1234 accepted. A regex placed only on the layout entry (old API path) is not enforced.</p><p><b>Checked:</b></p><ul><li>Builder → PUT field datatypeOptions.regex_pattern saved <b>[PASS]</b></li><li>Create → 422 \"Field 'qa_rx' does not match the required pattern.\" / 201 <b>[PASS]</b></li><li>Update → 422 / 200 <b>[PASS]</b></li><li>Note → Not enforced — the builder now stores it on the field, so the UI path works <b>[INFO]</b></li></ul><p>Evidence: NDC-2227-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2228",
+  "uuid": "059b40f8-9674-452e-b862-844837006312",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Hidden on a required field → 422 with a clear reason; optional field still hideable. Read-only on the required field is still accepted (same effect for agents) — logged as an observation.</p><p><b>Checked:</b></p><ul><li>Required → hidden → 422 FIELD_REQUIRED_HIDDEN_CONFLICT \"…the profile's users could never create a record.\" <b>[PASS]</b></li><li>Optional → hidden → 200 <b>[PASS]</b></li><li>Required → read-only → 200 — same trap (agents cannot fill a required field); see observations <b>[INFO]</b></li></ul><p>Evidence: NDC-2228-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2229",
+  "uuid": "a3db0128-5927-422f-8c61-c88f7469a79c",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Layout Permissions picker: 10 Desk users; profiles Desk Administrator / Agent / Light Agent / Reviewer / Supervisor.</p><p><b>Checked:</b></p><ul><li>Desk users in the picker → 10 Desk users (incl. mahmoud.mohamed1 / 2) <b>[PASS]</b></li><li>Desk profiles → Administrator, Agent, Light Agent, Reviewer, Supervisor <b>[PASS]</b></li></ul><p>Evidence: NDC-2229-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2234",
+  "uuid": "67d5c47a-eb92-44e6-93c9-311863a3bf9e",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>R9 and Closed → 422; valid values accepted.</p><p><b>Checked:</b></p><ul><li>Radio → 201 / 422 \"'R9' is not one of the allowed values (R1, R2).\" <b>[PASS]</b></li><li>Status → 201 / 422 \"'Closed' is not one of the allowed values (New, Doing, Done).\" <b>[PASS]</b></li></ul><p>Evidence: NDC-2234-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2236",
+  "uuid": "f15502f4-5498-4a27-b536-bac2b52a2485",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held (limit 50, not Zoho's 25).</p><p>Blank → 400 MODULE_NAME_REQUIRED; 120 chars → 400 MODULE_NAME_TOO_LONG (max 50).</p><p><b>Checked:</b></p><ul><li>Blank → 400 MODULE_NAME_REQUIRED <b>[PASS]</b></li><li>120 characters → 400 MODULE_NAME_TOO_LONG \"cannot exceed 50 characters\" <b>[PASS]</b></li><li>26 characters → 201 (limit is 50, not Zoho's 25) <b>[INFO]</b></li></ul><p>Evidence: NDC-2236-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2237",
+  "uuid": "c0856958-edf5-4e98-8bdd-3aafba6227a3",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Empty → 400; \"Tickets\" → 409 MODULE_NAME_TAKEN; name unchanged.</p><p><b>Checked:</b></p><ul><li>Empty → 400 MODULE_NAME_REQUIRED <b>[PASS]</b></li><li>Existing name → 409 MODULE_NAME_TAKEN <b>[PASS]</b></li><li>Unchanged → QA RT MF <b>[PASS]</b></li></ul><p>Evidence: NDC-2237-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2239",
+  "uuid": "e16c375a-691f-47d2-8be6-b363aa15a85c",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held in the UI.</p><p>Tickets › Layout settings › Rename Module opens the dialog with values filled; no crash.</p><p><b>Checked:</b></p><ul><li>Rename dialog opens → Opens with values filled (cancelled) <b>[PASS]</b></li></ul><p>Evidence: NDC-2239-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2240",
+  "uuid": "310f758c-859e-4ec2-a757-e36b1aacbd35",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>Layout with 6 records → set-default 200, and back 200.</p><p><b>Checked:</b></p><ul><li>Setup → created <b>[INFO]</b></li><li>Set default → 200 — default = QA RT L2 <b>[PASS]</b></li><li>Back → 200 — default = Default <b>[PASS]</b></li></ul><p>Evidence: NDC-2240-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2242",
+  "uuid": "c8eef918-a201-4e80-8061-a38868320430",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>2026-02-29, 2026-13-01, \"not a date\", \"yesterday\", 2026-02-30T10:00Z → 422; 2028-02-29 accepted.</p><p><b>Checked:</b></p><ul><li>Valid → 201 <b>[PASS]</b></li><li>Invalid date → 422 \"…is not a valid date (expected yyyy-MM-dd).\" <b>[PASS]</b></li><li>Invalid date-time → 422 \"…is not a valid ISO-8601 date/time\" <b>[PASS]</b></li></ul><p>Evidence: NDC-2242-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2243",
+  "uuid": "331505f8-fd4c-41ed-9ae1-84e357a30095",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>3 items with max 2 → 422; unknown option → 422.</p><p><b>Checked:</b></p><ul><li>Within max → 201 <b>[PASS]</b></li><li>Over max → 422 \"Value contains more than 2 selected items.\" <b>[PASS]</b></li><li>Unknown option → 422 \"'Z' is not one of the allowed values\" <b>[PASS]</b></li></ul><p>Evidence: NDC-2243-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2244",
+  "uuid": "cf23b24f-db5b-4a1b-ad7f-150a72a5f95d",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>New lookup QA RT MF → Contacts; Contacts related-modules lists QA RT MF.</p><p><b>Checked:</b></p><ul><li>Lookup → 201 <b>[PASS]</b></li><li>Related modules → QA RT MF listed with its link field <b>[PASS]</b></li></ul><p>Evidence: NDC-2244-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2245",
+  "uuid": "5f233b5b-8cde-4ec5-8f45-4a52430a0075",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held in the UI.</p><p>Deleted both rules in the builder → layout stores [] and reload shows \"No dependency rules yet\".</p><p><b>Checked:</b></p><ul><li>Deleted rules stay deleted → dependencies [] after Save and after reload (deleting one of two also persisted) <b>[PASS]</b></li></ul><p>Evidence: NDC-2245-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2246",
+  "uuid": "da48cfe4-52d7-4307-9ad4-b53e8ac47451",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> —</p><p>A field with a custom data type is now accepted (201, was 400), but it is stored with the base type single_line — the custom type is not kept, so nothing ties the field to it.</p><p><b>Checked:</b></p><ul><li>Field created with the custom type → Created, but stored as the base type single_line; nothing on the field refers to the custom type (blocks \"delete a type in use\", spec J4) <b>[FAIL]</b></li></ul><p><b>Still failing:</b></p><ul><li>Expected the field to be created with the custom type (qa_rt_dt); actual datatypeKey \"single_line\".</li></ul><p>Evidence: NDC-2246-retest-PARTIAL.png</p>"
+ },
+ {
+  "id": "NDC-2249",
+  "uuid": "09342bb6-1402-4317-ada4-efd876ce0615",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> —</p><p>In Arabic the button and description are translated; the Layouts table header \"Last Modified\" is still English.</p><p><b>Checked:</b></p><ul><li>Create New Layout + description in Arabic → إنشاء تخطيط جديد / description translated <b>[PASS]</b></li><li>All text in Arabic → \"Last Modified\" column header in English <b>[FAIL]</b></li></ul><p><b>Still failing:</b></p><ul><li>\"Last Modified\" column header not translated.</li></ul><p>Evidence: NDC-2249-retest-PARTIAL.png</p>"
+ },
+ {
+  "id": "NDC-2250",
+  "uuid": "b32c95c3-9569-4976-abd9-df8611470a39",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Over-corrected: every row shows System.</p><p>\"UN\" is gone, but the list shows \"System\" on every module, including Tickets (API: ndc-staging-owner) and QA RT MF (API: mahmoud.mahamed1515).</p><p><b>Checked:</b></p><ul><li>Real name or System → \"UN\" gone, but \"System\" is shown for every module, hiding real names <b>[FAIL]</b></li></ul><p><b>Still failing:</b></p><ul><li>Last Modified must show the real modifier when there is one.</li></ul><p>Evidence: NDC-2250-retest-PARTIAL.png</p>"
+ },
+ {
+  "id": "NDC-2252",
+  "uuid": "e3793154-15f4-48de-a805-1a25208891f7",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> —</p><p>Sidebar shows \"Set up your Desk\".</p><p><b>Checked:</b></p><ul><li>Desk wording → \"Set up your Desk\" <b>[PASS]</b></li></ul><p>Evidence: NDC-2252-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2253",
+  "uuid": "36213223-fac3-45ac-9ab4-f0055440521b",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> —</p><p>Same display name with another key → 409 MODULE_NAME_TAKEN (also for \"Tickets\").</p><p><b>Checked:</b></p><ul><li>Same name, new key → 409 MODULE_NAME_TAKEN <b>[PASS]</b></li><li>Seeded name → 409 MODULE_NAME_TAKEN <b>[PASS]</b></li></ul><p>Evidence: NDC-2253-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2254",
+  "uuid": "e8b14280-bf43-4f2b-ac47-b1fbb86deedd",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> —</p><p>Inline \"A layout with this name already exists\" while typing; Save disabled.</p><p><b>Checked:</b></p><ul><li>Inline duplicate-name warning → Shown under the name field; Save stays disabled <b>[PASS]</b></li></ul><p>Evidence: NDC-2254-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2255",
+  "uuid": "e7dc0c23-3a90-47b4-9723-e00a603c1495",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> —</p><p>51 characters → 400 FIELD_LABEL_TOO_LONG; 50 accepted.</p><p><b>Checked:</b></p><ul><li>50 characters → 201 <b>[PASS]</b></li><li>51 characters → 400 FIELD_LABEL_TOO_LONG <b>[PASS]</b></li></ul><p>Evidence: NDC-2255-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2256",
+  "uuid": "c9fc5bc6-9507-4eb0-b66c-af1b8f0c9843",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held; the original payload used a different key.</p><p>Second lookup with the same related_list_title → 409.</p><p><b>Checked:</b></p><ul><li>First → 201 <b>[PASS]</b></li><li>Second, same title → 409 RELATED_LIST_TITLE_NOT_UNIQUE <b>[PASS]</b></li><li>Report payload → 201 — that key is a different property (developer's note holds) <b>[INFO]</b></li></ul><p>Evidence: NDC-2256-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2257",
+  "uuid": "fea6ae62-df6c-4637-9eb9-253db289ba63",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held.</p><p>target_modules [] → 400 LOOKUP_TARGET_MODULES_REQUIRED.</p><p><b>Checked:</b></p><ul><li>Empty targets → 400 LOOKUP_TARGET_MODULES_REQUIRED <b>[PASS]</b></li></ul><p>Evidence: NDC-2257-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2258",
+  "uuid": "fbf8ef83-c3b1-4d9b-8f55-4bb375bcfb92",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> Held in the UI.</p><p>Module Image switch labelled; 56 icon-only buttons, none without a name.</p><p><b>Checked:</b></p><ul><li>Module Image switch → aria-label \"Show the Module image on the record\" <b>[PASS]</b></li><li>Icon-only buttons → 0 without an accessible name <b>[PASS]</b></li></ul><p>Evidence: NDC-2258-retest-PASS.png</p>"
+ },
+ {
+  "id": "NDC-2259",
+  "uuid": "bc52c392-44a7-427f-a861-e27d7bad5b89",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 21 Oct 2026</b><br>Environment: staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless, playwright) · main account mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy (Desk Administrator) for the permission check; QA modules QA RT MF / QA RT Closed / QA RT Closed UI / QA RT xxxx (26 chars)<br>Method: manual browser + API (retest round 21 Oct)</p><p><b>Developer's note checked:</b> —</p><p>Layout PUT with 525 fields → 400 LAYOUT_FIELD_LIMIT_EXCEEDED (answer took 55 s).</p><p><b>Checked:</b></p><ul><li>Fields → 201 × 11 (550 fields) <b>[INFO]</b></li><li>Layout over limit → 400 LAYOUT_FIELD_LIMIT_EXCEEDED \"…at most 512 distinct fields.\"; layout unchanged <b>[PASS]</b></li><li>Speed → answered after 55 s (first attempt timed out at 30 s) <b>[INFO]</b></li></ul><p>Evidence: NDC-2259-retest-PASS.png</p>"
+ }
+]

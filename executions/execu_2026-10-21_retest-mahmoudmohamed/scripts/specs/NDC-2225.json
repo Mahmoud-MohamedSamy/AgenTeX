@@ -1,0 +1,109 @@
+{
+ "out": "NDC-2225-retest-PASS.png",
+ "ticket": "NDC-2225",
+ "title": "Modules and Fields | Record API accepts invalid email, phone and javascript: URLs",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (Desk Administrator); QA module QA RT MF",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2225-api.png",
+   "caption": "API / UI checks",
+   "crop": [
+    0,
+    0,
+    1600,
+    340
+   ],
+   "boxes": [
+    {
+     "b": [
+      32,
+      95,
+      1568,
+      140
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      142,
+      1568,
+      187
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      189,
+      1568,
+      234
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      236,
+      1568,
+      281
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      283,
+      1568,
+      328
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Email",
+   "not-an-email / qa@example.com",
+   "422 \"Email value is invalid.\" / 201",
+   "PASS"
+  ],
+  [
+   "2",
+   "Phone",
+   "call me / +201001234567",
+   "422 \"Phone value is invalid.\" / 201",
+   "PASS"
+  ],
+  [
+   "3",
+   "URL javascript:",
+   "javascript:alert(1), \" JaVaScRiPt:alert(1)\" (POST and PATCH)",
+   "422 \"URL value must be an absolute HTTP or HTTPS URL.\"",
+   "PASS"
+  ],
+  [
+   "4",
+   "URL data:",
+   "data:text/html,<script>…",
+   "422",
+   "PASS"
+  ],
+  [
+   "5",
+   "URL valid",
+   "https://example.com",
+   "201",
+   "PASS"
+  ]
+ ]
+}

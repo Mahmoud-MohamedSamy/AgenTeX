@@ -1,0 +1,10 @@
+const M = { calls: 'e72e608a-a5d3-45cf-888a-dfadc6e8b456', meetings: 'f13e02be-03d3-46c3-a74e-22c7770823ca' };
+const mv = arr((await api('GET', `/modules/${M.meetings}/fields`)).j.data).find(x => x.fieldName === 'meeting_venue');
+const s = v => ({ kind: 'string', value: v });
+const due = new Date('2026-10-21T11:27:00Z'); const iso = d => d.toISOString().replace(/\.\d+Z$/, 'Z');
+const me = '3445ec4a-020e-4f12-b156-dd2de7610164';
+const mk = async (k, data) => { const r = await api('POST', `/modules/${M[k]}/records`, { data }); return { s: r.s, id: r.j?.data?.id, err: r.s >= 300 ? r.t.slice(0, 400) : undefined }; };
+const call = await mk('calls', [{ field: 'name', value: s('QA RT 1332 call') }, { field: 'subject', value: s('QA RT 1332 call') }, { field: 'call_type', value: s('outbound') }, { field: 'outgoing_call_status', value: s('scheduled') }, { field: 'call_start_time', value: s(iso(due)) }, { field: 'call_duration', value: s('15') }, { field: 'reminder_offset_minutes', value: s('5') }, { field: 'call_owner', value: s(me) }]);
+const venue = (mv.config?.allowed_values || [])[0] || 'Online';
+const meeting = await mk('meetings', [{ field: 'title', value: s('QA RT 1332 meeting') }, { field: 'meeting_venue', value: s(venue) }, { field: 'from_time', value: s(iso(due)) }, { field: 'to_time', value: s(iso(new Date(due.getTime() + 30 * 60000))) }, { field: 'reminder_offset_minutes', value: s('5') }, { field: 'host', value: s(me) }]);
+return done({ venueType: mv.datatypeKey, venue, call, meeting, now: new Date().toISOString() });

@@ -1,0 +1,48 @@
+{
+ "out": "../B-16-owner-condition-never-matches-vs-zoho.png",
+ "id": "B-16 (F-02)",
+ "title": "A workflow condition on Lead Owner never matches",
+ "verdict": "Differs",
+ "date": "21 Oct 2026",
+ "zohoSource": "Zoho CRM help (documentation)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Lead Owner is <user> never fires; the same rule without it fires",
+   "img": "B-16-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: Lead Owner is a normal workflow condition",
+   "text": [
+    "Zoho FAQ: \"Select Records Matching the Condition. Select Lead Owner and enter the lead owner's name\" — then add the action (task / email).",
+    "Zoho developer guide, workflow rule criteria example: \"Lead Owner is Current User\" combined with other conditions."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/crm/faqs/record-management/articles/faqs-record-management",
+    "https://www.zoho.com/developer/help/extensions/automation/workflow-rules.html"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Rule without an owner condition",
+   "zoho": "Fires",
+   "tavi": "Fires",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "Rule with Lead Owner is <user>, lead owned by that user",
+   "zoho": "Fires",
+   "tavi": "Never fires (API and screen)",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Value kinds uuid / user are refused (400); owner_id is an unknown field. The screen saves the same criteria the API test used.",
+  "Consequence: F-02 (assignment rule sets the owner, then a workflow on Owner) cannot be checked until this works."
+ ]
+}

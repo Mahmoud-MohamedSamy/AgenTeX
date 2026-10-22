@@ -1,0 +1,34 @@
+{
+ "out": "A-10-api.png",
+ "title": "A-10 · TAVI API (21 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "Two assignment rules (Leads, Import), entry members in order [test user 2, ndc-staging-owner], fallback Default user = Supervisor",
+   "lines": [
+    "control: availability requireOnline = false",
+    "test:    availability requireOnline = true (\"Online status\")",
+    "test user 2: no session opened by the test; ndc-staging-owner: signed in in the test browser"
+   ]
+  },
+  {
+   "head": "Import 1 lead with each rule",
+   "lines": [
+    "control lead c68cf3d7 -> Lead Owner = test user 2 (first member, expected)",
+    {
+     "t": "test lead fa16208a -> Lead Owner = test user 2",
+     "box": "not skipped"
+    }
+   ]
+  },
+  {
+   "head": "GET /workflow/executions?recordId=fa16208a",
+   "lines": [
+    "assignment rule outcome = Fired, criteriaMatched = true (no availability reason recorded)",
+    {
+     "t": "no endpoint shows who TAVI counts as online",
+     "box": "cannot confirm offline"
+    }
+   ]
+  }
+ ]
+}

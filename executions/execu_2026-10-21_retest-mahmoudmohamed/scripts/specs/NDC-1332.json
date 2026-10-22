@@ -1,0 +1,130 @@
+{
+ "out": "NDC-1332-retest-PASS.png",
+ "ticket": "NDC-1332",
+ "title": "Activity Reminders | Before, due-time and overdue reminders all fail to fire at the specified time",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin, activity owner)",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-1332-api.png",
+   "caption": "All three reminder stages fired on time for Task, Call and Meeting; the additional recipient got the overdue ones.",
+   "crop": [
+    0,
+    0,
+    1600,
+    410
+   ],
+   "boxes": [
+    {
+     "b": [
+      32,
+      95,
+      1568,
+      234
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      236,
+      1568,
+      349
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      351,
+      1568,
+      396
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "1332-panel-112905.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Reminders panel at 11:29 UTC (14:29 Cairo): one card per activity showing its latest stage (Overdue).",
+   "crop": [
+    832,
+    0,
+    448,
+    400
+   ],
+   "boxes": [
+    {
+     "b": [
+      846,
+      132,
+      1268,
+      390
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      906,
+      194,
+      926,
+      212
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Before reminder at the configured interval",
+   "5 min before due, to the owner",
+   "11:22 for task, call and meeting",
+   "PASS"
+  ],
+  [
+   "1",
+   "Due-time reminder",
+   "At due time, to the owner",
+   "11:27 for all three",
+   "PASS"
+  ],
+  [
+   "2",
+   "Overdue reminder",
+   "After due time, to owner + additional recipients",
+   "11:29 (overdue after 2 min) to the owner and to ndc-staging-owner",
+   "PASS"
+  ],
+  [
+   "4",
+   "Each notification identifies the activity and due time",
+   "Name + time",
+   "Card shows the activity name and 14:27 (Cairo)",
+   "PASS"
+  ],
+  [
+   "5",
+   "Panel history",
+   "—",
+   "Each stage replaces the previous card, so before/due are not visible once overdue fires (feed keeps all 9); Call card shows a bare \"15\" (call duration without label)",
+   "INFO"
+  ],
+  [
+   "3",
+   "Org-unit lead",
+   "Gets overdue",
+   "Not verified in this run",
+   "INFO"
+  ]
+ ]
+}

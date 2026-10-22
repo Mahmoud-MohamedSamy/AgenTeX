@@ -1,0 +1,1103 @@
+<title>CRM Desk Integration Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~860px). Bug entries are the only boxed objects; tickets and gaps are plain tables and figures. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1c2330;
+  --muted: #5b6577;
+  --line: #dde1e8;
+  --accent: #2456c9;
+  --code-bg: #eef1f6;
+  --bug: #b4232a;      --bug-bg: #fbe9ea;
+  --warn: #8a5a00;     --warn-bg: #fdf1d8;
+  --ok: #19703e;       --ok-bg: #e3f4ea;
+  --info: #3d4a63;     --info-bg: #e8ecf3;
+  --font-display: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+    --accent: #7ea2ff; --code-bg: #222a36;
+    --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+    --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+  --accent: #7ea2ff; --code-bg: #222a36;
+  --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+  --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--font-body); }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 48px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.25; }
+h1 { font-size: 2rem; font-weight: 700; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, pre { font-family: var(--font-mono); font-size: 0.85em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 600 0.75rem/1 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 12px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 20px; color: var(--muted); font-size: 0.9rem; }
+.meta b { color: var(--fg); font-weight: 600; }
+section { display: grid; gap: 16px; }
+section > p.lead { color: var(--muted); }
+
+.tally { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font: 600 0.78rem/1.6 var(--font-body); white-space: nowrap; }
+.pill.bug { color: var(--bug); background: var(--bug-bg); }
+.pill.warn { color: var(--warn); background: var(--warn-bg); }
+.pill.ok { color: var(--ok); background: var(--ok-bg); }
+.pill.info { color: var(--info); background: var(--info-bg); }
+
+.bug-entry { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; display: grid; gap: 14px; min-width: 0; }
+.bug-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.bug-id { font: 600 0.85rem/1 var(--font-mono); color: var(--muted); }
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; }
+dl.facts dt { font-weight: 600; color: var(--muted); font-size: 0.9rem; }
+dl.facts dd { margin: 0; min-width: 0; }
+.callout { border: 1px solid #d0d7de; border-left: 4px solid #1f5fbf; padding: 8px 14px; margin: 12px 0 20px; border-radius: 4px; }
+.callout ul { margin: 4px 0 0; padding-left: 1.2em; }
+.steps-h { margin: 10px 0 4px; }
+ol.steps { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pair > div { min-width: 0; display: grid; gap: 6px; }
+pre { background: var(--code-bg); border-radius: 8px; padding: 12px 14px; margin: 0; overflow-x: auto; line-height: 1.5; }
+pre .k { color: var(--bug); font-weight: 600; }
+pre .g { color: var(--ok); font-weight: 600; }
+figure { margin: 0; display: grid; gap: 6px; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+figcaption { font-size: 0.85rem; color: var(--muted); }
+
+.table-box { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+th { font: 600 0.75rem/1.4 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td.mono { font-family: var(--font-mono); font-size: 0.85rem; white-space: nowrap; }
+
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.gallery { display: grid; gap: 28px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; }
+details[open] { padding-bottom: 18px; }
+summary { cursor: pointer; font-weight: 600; }
+details > .gallery { margin-top: 16px; }
+footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
+
+@media (max-width: 640px) {
+  .wrap { padding-inline: 16px; padding-block: 28px 48px; gap: 36px; }
+  h1 { font-size: 1.6rem; }
+  .pair { grid-template-columns: 1fr; }
+  dl.facts { grid-template-columns: 1fr; gap: 2px; }
+  dl.facts dd { margin-bottom: 8px; }
+  .bug-entry { padding: 18px 16px; }
+}
+
+.toc { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.9rem; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filters input, .filters select { font: inherit; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--fg); }
+.stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.stat b { display: block; font: 700 1.5rem/1.2 var(--font-display); }
+td.v { white-space: nowrap; }
+tr.hidden { display: none; }
+h3.grp { margin-top: 10px; font-size: 1rem; }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">TAVI CRM ⇄ Desk Integration · QA report · 18–21 Oct 2026</span>
+    <h1>CRM ⇄ Desk Integration: full test report</h1>
+    <p>Everything done for NDC-1669 in one page: what is missing compared with Zoho CRM + Desk, the bugs found, the verdict of every spec row, the comparison of all 153 Zoho behaviours, and what was changed on the way. Expected behaviour = Zoho (user decision) and NDC-1669. Nothing here is filed in Plane.</p>
+    <div class="meta">
+      <span><b>TAVI</b> staging-crm / staging-desk.taviportal.com (tenant NDC-Staging)</span>
+      <span><b>Zoho</b> Zoho Desk taviportal + Zoho CRM org943261092</span>
+      <span><b>PRD</b> NDC-1669</span>
+      <span><b>Method</b> Selenium + API automation (Java, TestNG), feature crmdeskintegration</span>
+    </div>
+    <nav class="toc"><a href="#summary">Summary</a><a href="#gaps">Missing features (19)</a><a href="#bugs">Bugs (18)</a><a href="#rows">Spec rows (221)</a><a href="#parity">Zoho parity (153)</a><a href="#notcovered">Not covered</a><a href="#changes">Changes made</a><a href="#files">Files</a></nav>
+  </header>
+
+  <section aria-labelledby="summary">
+    <h2 id="summary">Summary</h2>
+    <div class="stat">
+      <div><b>221</b>spec rows</div>
+      <div><b>147</b>pass</div>
+      <div><b>20</b>fail (bugs)</div>
+      <div><b>24</b>gap rows</div>
+      <div><b>10</b>partial / inconclusive / recorded</div>
+      <div><b>20</b>blocked / not run / skipped</div>
+      <div><b>19</b>missing features</div>
+      <div><b>18</b>bugs</div>
+      <div><b>153</b>Zoho behaviours classified</div>
+    </div>
+    <ul class="plain">
+      <li><b>Works well:</b> sync both ways in ~5 s (email and account-name matching, mass update, custom fields, Arabic/emoji text), pause and resume, every delete preference except the missing "if no associates", API-enforced profile permissions, Handshake buckets, contracts from won deals, the CRM Desk Tickets card and ticket workspace, disconnect/reconnect without duplicates, 500 contacts synced in about a minute, Arabic UI.</li>
+      <li><b>Biggest problems:</b> CD-14 (records deleted by the integration cannot be restored), CD-01 (Unlink does not stop the sync), CD-13 (delete preference applied retroactively), CD-18 (contract lock not enforced), CD-04 / CD-05 (settings API saves invalid mappings and skips the version check).</li>
+      <li><b>Biggest gaps vs Zoho:</b> products sync, list-view scope, secondary-email matching, "delete if no associates", permission defaults, Light Agents, initial-sync report.</li>
+      <li><b>Staging afterwards:</b> settings identical to the 20 Oct baseline, integration connected and not paused, every QA record deleted; the Zoho Desk ↔ Zoho CRM comparison integration was deleted on 21 Oct (user decision).</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="gaps">
+    <h2 id="gaps">Missing features (19)</h2>
+    <p class="lead">Zoho behaviours that TAVI does not have. Images: TAVI on the left, Zoho on the right.</p>
+    <div class="table-box"><table>
+      <thead><tr><th>#</th><th>Area</th><th>Missing in TAVI</th><th>NDC-1669</th><th>Automated check</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Sync settings</td><td>Products sync (departments, customer associations, field mapping)</td><td>§3, Phase 4</td><td>Z1 — still missing</td></tr>
+        <tr><td>2</td><td>Sync settings</td><td>Limit the sync to chosen CRM list views</td><td>§2, Phase 1</td><td>Z2 — still missing</td></tr>
+        <tr><td>3</td><td>Sync settings</td><td>Match contacts on the Secondary Email</td><td>§2, Phase 1</td><td>Z3 — still missing</td></tr>
+        <tr><td>4</td><td>Sync settings</td><td>"Delete in Desk only if there are no associates"</td><td>§5, Phase 2</td><td>Z4 — confirmed (E1)</td></tr>
+        <tr><td>5</td><td>Agent view</td><td>All CRM fields in the CRM pane (TAVI shows 8 fixed fields)</td><td>§7, Phase 3</td><td>Z5 — still missing</td></tr>
+        <tr><td>6</td><td>CRM side</td><td>Ticket filters Escalated / Overdue / High Priority on the CRM record</td><td>Not mentioned</td><td>Z6 — still missing</td></tr>
+        <tr><td>7</td><td>CRM side</td><td>Mutual Users list and "Invite users to Desk"</td><td>§9 (no invite flow)</td><td>Z7 — still missing</td></tr>
+        <tr><td>8</td><td>Automation</td><td>"CRM Contact Type" condition in SLA and assignment rules</td><td>Not mentioned</td><td>Z8 — from Zoho docs</td></tr>
+        <tr><td>9</td><td>Permissions</td><td>Default access = admin only; middle level named "Restricted Access"</td><td>§6, Phase 3</td><td>Z9 — confirmed (J1, J1a)</td></tr>
+        <tr><td>10</td><td>Setup</td><td>Report when the initial sync finishes (counts, skip reasons)</td><td>§4</td><td>Parity pass — missing (also bug CD-07)</td></tr>
+        <tr><td>11</td><td>Sync</td><td>CRM Leads not considered: a Desk contact with a lead's email becomes a new CRM contact</td><td>§2</td><td>Parity pass — missing</td></tr>
+        <tr><td>12</td><td>Users</td><td>CRM users as Light Agents; CRM-only users can comment</td><td>§9</td><td>Parity pass — missing</td></tr>
+        <tr><td>13</td><td>Mentions</td><td>@CRM Contact Owner mention</td><td>§9</td><td>Parity pass — missing</td></tr>
+        <tr><td>14</td><td>Notifications</td><td>Reply / comment / update from the CRM notification</td><td>Not mentioned</td><td>Parity pass — missing</td></tr>
+        <tr><td>15</td><td>Setup</td><td>Handling when the integrated user becomes inactive</td><td>Not mentioned</td><td>Parity pass — missing (from UI text)</td></tr>
+        <tr><td>16</td><td>CRM side</td><td>Voice of the Customer from Desk tickets (Zia, Enterprise)</td><td>Not mentioned</td><td>Out of NDC-1669 scope</td></tr>
+        <tr><td>17</td><td>Reporting</td><td>Cross-app analytics joining CRM and Desk (Zoho Analytics)</td><td>Not mentioned</td><td>Separate product</td></tr>
+        <tr><td>18</td><td>Setup</td><td>12-month window of the first sync not stated</td><td>§4</td><td>Parity pass — missing statement</td></tr>
+        <tr><td>19</td><td>Handshake Mode</td><td>Empty columns are shown (Zoho hides them)</td><td>§8</td><td>Checked 21 Oct — missing</td></tr>
+      </tbody>
+    </table></div>
+    <article class="bug-entry" id="gap-1">
+      <div class="bug-head"><span class="bug-id">Gap 1 · Z1</span><span class="pill info">Sync settings</span><span class="pill warn">NDC-1669 §3, Phase 4</span></div>
+      <h3>Products sync</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Pick which departments' products sync, "Also sync the product's customer (contact and account) associations", product field mapping.</dd><dt>TAVI</dt><dd>No Products row; <code>/desk/integrations/crm/products</code> returns 404. TAVI CRM has no Products module yet.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/01-products-sync-vs-zoho.png" alt="Gap 1: TAVI vs Zoho" loading="lazy"><figcaption>Gap 1: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-2">
+      <div class="bug-head"><span class="bug-id">Gap 2 · Z2</span><span class="pill info">Sync settings</span><span class="pill warn">NDC-1669 §2, Phase 1</span></div>
+      <h3>Limit the sync to chosen CRM list views</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>"All Accounts ▾" and "All Contacts ▾" pickers list any CRM view.</dd><dt>TAVI</dt><dd>Always syncs every record; <code>/list-views</code> returns 404.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/02-crm-list-view-scope-vs-zoho.png" alt="Gap 2: TAVI vs Zoho" loading="lazy"><figcaption>Gap 2: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-3">
+      <div class="bug-head"><span class="bug-id">Gap 3 · Z3</span><span class="pill info">Sync settings</span><span class="pill warn">NDC-1669 §2, Phase 1</span></div>
+      <h3>Match contacts on the Secondary Email</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>"Email (Primary)" and "Secondary Email" tick boxes, with an overwrite warning.</dd><dt>TAVI</dt><dd>Always matches on the primary email; secondary email is only a mapped field.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/03-secondary-email-match-vs-zoho.png" alt="Gap 3: TAVI vs Zoho" loading="lazy"><figcaption>Gap 3: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-4">
+      <div class="bug-head"><span class="bug-id">Gap 4 · Z4</span><span class="pill info">Sync settings</span><span class="pill warn">NDC-1669 §5, Phase 2</span></div>
+      <h3>"Delete in Desk only if there are no associates"</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>CRM side: Always delete · Delete if there are no associates · Never delete.</dd><dt>TAVI</dt><dd>Keep and flag / Keep but unlink / Delete — no "if no associates" option. The Desk-side options already match Zoho.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/04-delete-if-no-associates-vs-zoho.png" alt="Gap 4: TAVI vs Zoho" loading="lazy"><figcaption>Gap 4: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-5">
+      <div class="bug-head"><span class="bug-id">Gap 5 · Z5</span><span class="pill info">Agent view</span><span class="pill warn">NDC-1669 §7, Phase 3</span></div>
+      <h3>All CRM fields in the CRM pane</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Every field of the CRM record, custom fields included.</dd><dt>TAVI</dt><dd>8 fixed fields. The list is stored in config (<code>panel.info_fields</code>) but there is no screen to change it.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/05-crm-pane-fields-vs-zoho.png" alt="Gap 5: TAVI vs Zoho" loading="lazy"><figcaption>Gap 5: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-6">
+      <div class="bug-head"><span class="bug-id">Gap 6 · Z6</span><span class="pill info">CRM side</span><span class="pill warn">Not in NDC-1669</span></div>
+      <h3>More ticket filters on the CRM record</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>All, Open, On hold, Closed, Escalated, Overdue, High Priority.</dd><dt>TAVI</dt><dd>All / Open / On hold / Closed.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/06-crm-ticket-filters-vs-zoho.png" alt="Gap 6: TAVI vs Zoho" loading="lazy"><figcaption>Gap 6: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-7">
+      <div class="bug-head"><span class="bug-id">Gap 7 · Z7</span><span class="pill info">CRM side</span><span class="pill warn">NDC-1669 §9 (no invite flow)</span></div>
+      <h3>Mutual Users list and "Invite users to Desk"</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Lists mutual users and invites CRM users to Desk as Agent / Light Agent / Admin.</dd><dt>TAVI</dt><dd>The Permissions tab only has Ticket Visibility; <code>/invite</code> and <code>/light-agents</code> return 404.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/07-mutual-users-invite-vs-zoho.png" alt="Gap 7: TAVI vs Zoho" loading="lazy"><figcaption>Gap 7: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-8">
+      <div class="bug-head"><span class="bug-id">Gap 8 · Z8</span><span class="pill info">Automation</span><span class="pill warn">Not in NDC-1669</span></div>
+      <h3>"CRM Contact Type" condition in SLA and assignment rules</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Customer / Potential / Contact / Lead usable as a rule condition (Zoho API docs).</dd><dt>TAVI</dt><dd>The classification is only used by the Handshake Mode columns.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/08-crm-contact-type-criteria-vs-zoho.png" alt="Gap 8: TAVI vs Zoho" loading="lazy"><figcaption>Gap 8: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-9">
+      <div class="bug-head"><span class="bug-id">Gap 9 · Z9</span><span class="pill info">Permissions</span><span class="pill warn">NDC-1669 §6, Phase 3</span></div>
+      <h3>Default CRM data access and level names</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>After connecting, only the Administrator profile sees CRM data; levels are No / Restricted / Full Access.</dd><dt>TAVI</dt><dd>Every profile starts at Full Access (<code>panel.profile_access</code> empty); the middle level is called "Custom Access".</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/09-permission-defaults-vs-zoho.png" alt="Gap 9: TAVI vs Zoho" loading="lazy"><figcaption>Gap 9: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-10">
+      <div class="bug-head"><span class="bug-id">Gap 10</span><span class="pill info">Setup</span><span class="pill warn">NDC-1669 §4</span></div>
+      <h3>No report when the initial sync finishes</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Admins get an email with counts of added, updated and ignored records and the reasons records were skipped.</dd><dt>TAVI</dt><dd>Nothing: no email seen, no bell entry, no text for it in the app.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/10-initial-sync-report-vs-zoho.png" alt="Gap 10: TAVI vs Zoho" loading="lazy"><figcaption>Gap 10: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-11">
+      <div class="bug-head"><span class="bug-id">Gap 11</span><span class="pill info">Sync</span><span class="pill warn">NDC-1669 §2</span></div>
+      <h3>A Desk contact with a CRM Lead's email becomes a new CRM contact</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>A Desk contact is not created as a CRM contact if the same person exists as a CRM Lead (community answer).</dd><dt>TAVI</dt><dd>A second CRM record (a contact) is created for the lead's email.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/11-lead-duplicated-as-contact-vs-zoho.png" alt="Gap 11: TAVI vs Zoho" loading="lazy"><figcaption>Gap 11: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-12">
+      <div class="bug-head"><span class="bug-id">Gap 12</span><span class="pill info">Users</span><span class="pill warn">NDC-1669 §9</span></div>
+      <h3>CRM users are not Light Agents and cannot comment</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>CRM users are auto-added to Desk as Light Agents; CRM-only users can view tickets and comment.</dd><dt>TAVI</dt><dd>CRM-only users have no Desk profile; viewing works, a comment gets 403.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/12-crm-users-light-agents-vs-zoho.png" alt="Gap 12: TAVI vs Zoho" loading="lazy"><figcaption>Gap 12: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-13">
+      <div class="bug-head"><span class="bug-id">Gap 13</span><span class="pill info">Mentions</span><span class="pill warn">NDC-1669 §9</span></div>
+      <h3>No @CRM Contact Owner mention</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Mentioning @CRM Contact Owner notifies that contact's owner in CRM.</dd><dt>TAVI</dt><dd>Not offered (a named CRM user can be mentioned and is notified).</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/13-crm-contact-owner-mention-vs-zoho.png" alt="Gap 13: TAVI vs Zoho" loading="lazy"><figcaption>Gap 13: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-14">
+      <div class="bug-head"><span class="bug-id">Gap 14</span><span class="pill info">Notifications</span><span class="pill warn">Not in NDC-1669</span></div>
+      <h3>Desk notifications in CRM only open the record</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Users can reply, comment or update from the signal.</dd><dt>TAVI</dt><dd>The bell entry opens the record; no actions in the notification.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/14-act-from-notification-vs-zoho.png" alt="Gap 14: TAVI vs Zoho" loading="lazy"><figcaption>Gap 14: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-15">
+      <div class="bug-head"><span class="bug-id">Gap 15</span><span class="pill info">Setup</span><span class="pill warn">Not in NDC-1669</span></div>
+      <h3>No handling when the integrated user becomes inactive</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Desk prompts the other admins to re-point the integration or recreate it.</dd><dt>TAVI</dt><dd>No message or action for it in the app (not testable without deactivating the owner).</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/15-integrated-user-inactive-vs-zoho.png" alt="Gap 15: TAVI vs Zoho" loading="lazy"><figcaption>Gap 15: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-18">
+      <div class="bug-head"><span class="bug-id">Gap 18</span><span class="pill info">Setup</span><span class="pill warn">NDC-1669 §4</span></div>
+      <h3>The 12-month window of the first sync is not stated</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Only records created or modified in the last year are synced; stated on the configuration screen.</dd><dt>TAVI</dt><dd>Not stated; the behaviour cannot be tested on staging.</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/18-twelve-month-window-vs-zoho.png" alt="Gap 18: TAVI vs Zoho" loading="lazy"><figcaption>Gap 18: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-19">
+      <div class="bug-head"><span class="bug-id">Gap 19</span><span class="pill info">Handshake Mode</span><span class="pill warn">NDC-1669 §8</span></div>
+      <h3>Empty Handshake columns are shown</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Columns are system-defined; empty columns are hidden.</dd><dt>TAVI</dt><dd>An empty Customers column is shown with 0 and "No tickets in this Queue".</dd></dl>
+      <figure><img src="../../docs/crm-desk-integration/evidence/19-empty-handshake-columns-vs-zoho.png" alt="Gap 19: TAVI vs Zoho" loading="lazy"><figcaption>Gap 19: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="gap-16-17">
+      <div class="bug-head"><span class="bug-id">Gaps 16 · 17</span><span class="pill info">Out of NDC-1669 scope</span></div>
+      <h3>Zia Voice of the Customer and cross-app analytics</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>CRM Zia uses Desk tickets as a Voice-of-the-Customer source (Enterprise). Zoho Analytics joins CRM and Desk tables automatically.</dd><dt>TAVI</dt><dd>Neither exists as part of the integration. Both are separate products in Zoho; listed so the comparison is complete.</dd></dl>
+    </article>
+  </section>
+
+  <section aria-labelledby="bugs">
+    <h2 id="bugs">Bugs (18)</h2>
+    <div class="table-box"><table><thead><tr><th>Bug</th><th>Case</th><th>Severity</th><th>Title</th></tr></thead><tbody>
+      <tr><td class="mono"><a href="#CD-01">CD-01</a></td><td>I9 / I8</td><td>High</td><td>Unlink does not stop the sync: the next change links the pair again by email</td></tr>
+      <tr><td class="mono"><a href="#CD-02">CD-02</a></td><td>K10</td><td>Medium</td><td>Handshake Mode is still offered while the sync is paused</td></tr>
+      <tr><td class="mono"><a href="#CD-03">CD-03</a></td><td>H10 / G19</td><td>Medium</td><td>Failure Log reasons show raw record ids instead of record names</td></tr>
+      <tr><td class="mono"><a href="#CD-04">CD-04</a></td><td>C17</td><td>Medium</td><td>The settings API saves invalid field mappings</td></tr>
+      <tr><td class="mono"><a href="#CD-05">CD-05</a></td><td>F5</td><td>Medium</td><td>Settings are saved without a row_version, so the lost-update check can be skipped</td></tr>
+      <tr><td class="mono"><a href="#CD-06">CD-06</a></td><td>H3</td><td>Medium</td><td>Sync History has no "failed" count</td></tr>
+      <tr><td class="mono"><a href="#CD-07">CD-07</a></td><td>B11</td><td>Low</td><td>No notice to the admin when the initial sync finishes</td></tr>
+      <tr><td class="mono"><a href="#CD-08">CD-08</a></td><td>I16</td><td>Low</td><td>Desk contact list shows raw sync values "synced" / "needs_attention"</td></tr>
+      <tr><td class="mono"><a href="#CD-09">CD-09</a></td><td>B4</td><td>Low</td><td>Pause with a long reason fails with a server error</td></tr>
+      <tr><td class="mono"><a href="#CD-10">CD-10</a></td><td>O3</td><td>Low</td><td>Customer statistics answer 200 for a contact that does not exist</td></tr>
+      <tr><td class="mono"><a href="#CD-11">CD-11</a></td><td>G18</td><td>Medium</td><td>Sync creates a Desk contact without its mandatory Last name</td></tr>
+      <tr><td class="mono"><a href="#CD-12">CD-12</a></td><td>K4</td><td>Medium</td><td>Handshake Mode does not match requesters by phone</td></tr>
+      <tr><td class="mono"><a href="#CD-13">CD-13</a></td><td>E8</td><td>Medium</td><td>Changing the delete preference applies to a delete made earlier</td></tr>
+      <tr><td class="mono"><a href="#CD-14">CD-14</a></td><td>E9 / E4</td><td>High</td><td>A Desk contact deleted by the integration is not in the recycle bin and cannot be restored</td></tr>
+      <tr><td class="mono"><a href="#CD-15">CD-15</a></td><td>J4</td><td>Low</td><td>With "No access" the CRM pane is still offered and hangs on "Loading…"</td></tr>
+      <tr><td class="mono"><a href="#CD-16">CD-16</a></td><td>I18</td><td>Low</td><td>The CRM pane error has no Retry</td></tr>
+      <tr><td class="mono"><a href="#CD-17">CD-17</a></td><td>F8</td><td>Low</td><td>Integration settings changes are not in the Audit Log</td></tr>
+      <tr><td class="mono"><a href="#CD-18">CD-18</a></td><td>D6</td><td>Medium</td><td>"Lock CRM-owned fields on the contract" does not stop edits in Desk</td></tr>
+    </tbody></table></div>
+    <article class="bug-entry" id="CD-01">
+      <div class="bug-head">
+        <span class="bug-id">CD-01 · I9 / I8</span>
+        <span class="pill bug">High (suggested)</span>
+        <span class="pill info">Links</span>
+      </div>
+      <h3>Unlink does not stop the sync: the next change links the pair again by email</h3>
+      <p>After Unlink, TAVI's own dialog says "Syncing stops for this record until it is linked again." In practice the very next change on the CRM record matches the Desk contact again by email (<code>match_source: match_existing</code>) and the change is written to Desk. An agent cannot keep a Desk contact apart from its CRM record.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Take a linked contact pair (Desk contact ↔ CRM contact, same email).</li>
+        <li>Desk contact → CRM pane → Unlink → confirm (API <code>DELETE /desk/integrations/crm/links/{id}</code> → 204).</li>
+        <li>In CRM, change the contact's Title.</li>
+        <li>Wait 40 s and open the Desk contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The record stays unlinked and the CRM change is not written to Desk, as TAVI's Unlink dialog promises ("Syncing stops for this record until it is linked again.").</dd>
+        <dt>Actual (TAVI)</dt><dd>Link back as <code>synced / match_existing</code>; Desk Title = the CRM value; a manual Link afterwards answers 409 "The crm record is already linked."</dd>
+        <dt>Records</dt><dd>Desk contact <code>1e4fa020</code> ↔ CRM contact <code>f820d08f</code> (20 Oct, deleted after the run)</dd>
+      </dl>
+      <figure><img src="evidence/CD-01-unlink-does-not-stop-sync-vs-zoho.png" alt="CD-01: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-01: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-02">
+      <div class="bug-head">
+        <span class="bug-id">CD-02 · K10</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Handshake Mode</span>
+      </div>
+      <h3>Handshake Mode is still offered while the sync is paused</h3>
+      <p>With the integration paused, the ticket list Layout picker still lists Handshake Mode under Work Modes, so agents keep sorting tickets by CRM deal data that is no longer updated. When disconnected, the option is hidden correctly.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk → Settings → CRM ⇄ Desk Integration → Pause sync (any reason).</li>
+        <li>Desk → Tickets → All Tickets → open the Layout picker ("Classic View ▾").</li>
+        <li>Control: Disconnect, open the picker again.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Handshake Mode is removed from the picker with an explanation while paused or disconnected (NDC-1669 §8 AC). Zoho: Handshake needs the integration; pausing stops all data exchange.</dd>
+        <dt>Actual (TAVI)</dt><dd>Paused: Handshake Mode listed and selectable. Disconnected: hidden (correct).</dd>
+        <dt>Records</dt><dd>Checked twice on 20 Oct (ConnectionRunTest, K10CheckTest); status <code>paused=true</code> at the screenshot</dd>
+      </dl>
+      <figure><img src="evidence/CD-02-handshake-offered-while-paused-vs-zoho.png" alt="CD-02: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-02: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-03">
+      <div class="bug-head">
+        <span class="bug-id">CD-03 · H10 / G19</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Failure Log</span>
+      </div>
+      <h3>Failure Log reasons show raw record ids instead of record names</h3>
+      <p>Every "already paired" failure reads "The CRM contacts record <code>514badee-c11a-…</code> with the same email is already paired with Desk record <code>cf51f6b3-cc88-…</code>." An admin cannot tell which contacts are involved. Reproduced on 20 Oct with two Desk contacts sharing one CRM email.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Create two Desk contacts with the same email while a CRM contact with that email exists (or pause, create, resume).</li>
+        <li>Desk → Settings → CRM ⇄ Desk Integration → Failure Log.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The reason names the records (e.g. "already paired with Desk contact Mahmoud Mohamed") so the admin can act (NDC-1669 §10; Zoho Failure Log shows the record and the reason).</dd>
+        <dt>Actual (TAVI)</dt><dd>Two full UUIDs in the sentence; same text in <code>GET /failures</code> <code>last_error</code>.</dd>
+        <dt>Records</dt><dd>Failures of 18 Oct (Desk <code>183dc191</code>, <code>db172f38</code>); 20 Oct Desk <code>62f23a7f</code> (QA, discarded)</dd>
+      </dl>
+      <figure><img src="evidence/CD-03-failure-reason-raw-ids-vs-zoho.png" alt="CD-03: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-03: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-04">
+      <div class="bug-head">
+        <span class="bug-id">CD-04 · C17</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Field mapping</span>
+      </div>
+      <h3>The settings API saves invalid field mappings</h3>
+      <p>The mapping editor validates its rows, but <code>PUT /desk/integrations/crm/config</code> accepts a mapping to a CRM field that does not exist, to a Desk field that does not exist, a lookup field, and a row with an empty CRM field — all 200. Other checks (direction, enums, read-only target, one-way pair) are refused correctly with 422 <code>CRM_SYNC_MAPPING_INVALID</code>.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>GET the config, add one contact mapping row, PUT with the fresh row_version:</li>
+        <li><code>{crm_field:"no_such_field_qa", desk_field:"description"}</code> / <code>{crm_field:"description", desk_field:"no_such_field_qa"}</code> / <code>{crm_field:"account_id", desk_field:"description"}</code> / <code>{crm_field:"", desk_field:"description"}</code>.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>422 with the matching codes the UI already knows: crm_field_unknown, desk_field_unknown, lookup_not_mappable, incomplete ("Pick a CRM field or clear this mapping.").</dd>
+        <dt>Actual (TAVI)</dt><dd>200 for all four; the row is stored (restored right after by the test).</dd>
+        <dt>Records</dt><dd>row_version 39604617 → 39604830 (20 Oct 15:10 UTC), restored from the baseline</dd>
+      </dl>
+      <figure><img src="evidence/CD-04-invalid-mappings-saved-vs-zoho.png" alt="CD-04: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-04: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-05">
+      <div class="bug-head">
+        <span class="bug-id">CD-05 · F5</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Save / concurrency</span>
+      </div>
+      <h3>Settings are saved without a row_version, so the lost-update check can be skipped</h3>
+      <p>A stale <code>row_version</code> is refused with 409 (correct), but a PUT that simply leaves <code>row_version</code> out is accepted and overwrites whatever another admin saved in between.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>GET /desk/integrations/crm/config.</li>
+        <li>PUT the same body without the <code>row_version</code> key (one harmless change).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>400/409/428: the version is required, like the stale case ("Another administrator saved these settings while you were editing…").</dd>
+        <dt>Actual (TAVI)</dt><dd>200, change stored, row_version moved.</dd>
+        <dt>Records</dt><dd>20 Oct, restored right after</dd>
+      </dl>
+      <figure><img src="evidence/CD-05-save-without-row-version-vs-zoho.png" alt="CD-05: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-05: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-06">
+      <div class="bug-head">
+        <span class="bug-id">CD-06 · H3</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Sync History</span>
+      </div>
+      <h3>Sync History has no "failed" count</h3>
+      <p>Each Sync History row has only Added and Updated. Failed records are missing even when the Failure Log has entries for that day.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Have at least one failed sync on a day (Failure Log not empty).</li>
+        <li>Desk → Settings → CRM ⇄ Desk Integration → Sync History (API <code>GET /history?days=7</code>).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Per day, direction and record type: added, updated and failed counts (Zoho docs; NDC-1669 §10).</dd>
+        <dt>Actual (TAVI)</dt><dd>Rows <code>{date, direction, module, added, updated}</code> only.</dd>
+        <dt>Records</dt><dd>19 Oct (2 failures in the log) and 20 Oct (1 failure, G19)</dd>
+      </dl>
+      <figure><img src="evidence/CD-06-history-no-failed-count-vs-zoho.png" alt="CD-06: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-06: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-07">
+      <div class="bug-head">
+        <span class="bug-id">CD-07 · B11</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Connection</span>
+      </div>
+      <h3>No notice to the admin when the initial sync finishes</h3>
+      <p>After Connect, the initial customer and contract imports ran and finished, but the admin got no bell entry or other notice that the sync was complete.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk → Settings → CRM ⇄ Desk Integration → Disconnect, then Connect.</li>
+        <li>Wait for the initial imports (Sync History / runs).</li>
+        <li>Check the admin's notifications.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The admin is told when the initial sync is done (NDC-1669 §4).</dd>
+        <dt>Actual (TAVI)</dt><dd>Runs <code>initial_customers</code> and <code>initial_contracts</code> finished within seconds; no notification since the connect.</dd>
+        <dt>Records</dt><dd>Connect at 2026-10-20 15:32:54 UTC (approved reconnect)</dd>
+      </dl>
+      <figure><img src="evidence/CD-07-no-initial-sync-notice-vs-zoho.png" alt="CD-07: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-07: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-08">
+      <div class="bug-head">
+        <span class="bug-id">CD-08 · I16</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Desk contacts list</span>
+      </div>
+      <h3>Desk contact list shows raw sync values "synced" / "needs_attention"</h3>
+      <p>Under each contact name the list shows the raw values <code>synced</code> and <code>needs_attention</code>. The app already has the labels "Synced" and "Needs attention" (used on the contact page).</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk → Customers → All Contacts.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Labels "Synced" / "Needs attention" / "Unlinked" (TAVI's own strings, as on the contact page).</dd>
+        <dt>Actual (TAVI)</dt><dd>Raw snake_case values.</dd>
+        <dt>Records</dt><dd>Seen 19 and 20 Oct</dd>
+      </dl>
+      <figure><img src="evidence/CD-08-raw-sync-status-labels-vs-zoho.png" alt="CD-08: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-08: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-09">
+      <div class="bug-head">
+        <span class="bug-id">CD-09 · B4</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Pause</span>
+      </div>
+      <h3>Pause with a long reason fails with a server error</h3>
+      <p>A pause reason of 1,206 characters returns HTTP 500 "An unexpected error occurred." instead of a validation message.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li><code>POST /desk/integrations/crm/pause</code> with <code>{reason: "QA CD " + 1200×"x"}</code>.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>400 with the maximum length (and the UI limits the field).</dd>
+        <dt>Actual (TAVI)</dt><dd>500 INTERNAL; integration not paused.</dd>
+        <dt>Records</dt><dd>20 Oct 15:12 UTC</dd>
+      </dl>
+      <figure><img src="evidence/CD-09-long-pause-reason-500-vs-zoho.png" alt="CD-09: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-09: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-10">
+      <div class="bug-head">
+        <span class="bug-id">CD-10 · O3</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">API</span>
+      </div>
+      <h3>Customer statistics answer 200 for a contact that does not exist</h3>
+      <p><code>GET /desk/integrations/crm/customers/contact/{random id}/stats</code> answers 200 with zero counts. The other record endpoints answer 404 for unknown ids.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>GET the stats endpoint with a random UUID.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>404 for a record that does not exist.</dd>
+        <dt>Actual (TAVI)</dt><dd>200 with all counts 0.</dd>
+        <dt>Records</dt><dd>19 Oct (Run 1)</dd>
+      </dl>
+      <figure><img src="evidence/CD-10-stats-missing-record-200-vs-zoho.png" alt="CD-10: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-10: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-11">
+      <div class="bug-head">
+        <span class="bug-id">CD-11 · G18</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Sync</span>
+      </div>
+      <h3>Sync creates a Desk contact without its mandatory Last name</h3>
+      <p>The Desk contact layout requires Last name. A CRM contact without a Last name is still copied to Desk, and the Desk contact is stored with Last name empty. Zoho reports a "Mandatory field missing" failure instead, so required fields stay valid.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk contact layout: Last name is required (it is on staging).</li>
+        <li>Create a CRM contact with First name and Email only.</li>
+        <li>Wait for the sync; open the Desk contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The record fails with a readable "mandatory field missing" reason in the Failure Log (Zoho), or Desk fills a placeholder the admin chose. A required field is never left empty.</dd>
+        <dt>Actual (TAVI)</dt><dd>Desk contact created with <code>last_name = null</code>; no failure.</dd>
+        <dt>Records</dt><dd>CRM <code>e3109613</code> → Desk <code>2562f0bf</code> (21 Oct, deleted after the run)</dd>
+      </dl>
+      <figure><img src="evidence/CD-11-mandatory-field-skipped-vs-zoho.png" alt="CD-11: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-11: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-12">
+      <div class="bug-head">
+        <span class="bug-id">CD-12 · K4</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Handshake Mode</span>
+      </div>
+      <h3>Handshake Mode does not match requesters by phone</h3>
+      <p>A ticket whose requester matches a CRM contact only by phone is put in New (not in CRM). NDC-1669 §8 requires phone matching, and Zoho classifies by CRM email or phone.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Create a CRM contact with a phone and no email.</li>
+        <li>Pause the sync so it is not linked by email. Create a Desk contact with the same phone and a ticket for it.</li>
+        <li>Classify the ticket (Handshake Mode / <code>POST /tickets/classify</code>).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Contacts/Leads, matched by phone (NDC-1669 §8 AC; Zoho: "Classification uses the CRM email or phone").</dd>
+        <dt>Actual (TAVI)</dt><dd><code>not_in_crm</code> (New), both for a ticket with only the phone and for the Desk contact with that phone.</dd>
+        <dt>Records</dt><dd>21 Oct, QA records deleted after the run</dd>
+      </dl>
+      <figure><img src="evidence/CD-12-handshake-ignores-phone-vs-zoho.png" alt="CD-12: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-12: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-13">
+      <div class="bug-head">
+        <span class="bug-id">CD-13 · E8</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Delete preferences</span>
+      </div>
+      <h3>Changing the delete preference applies to a delete made earlier</h3>
+      <p>A CRM contact is deleted while "Keep the Desk contact and flag its link" is set. If the preference is changed to "Delete the corresponding Desk contact" before that delete has synced, the Desk contact is deleted. NDC-1669 §5 requires preference changes not to be retroactive. Reproduced twice (21 Oct).</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Settings → Preferences: "On deleting a CRM contact" = Keep (default).</li>
+        <li>Pause sync (or have a busy queue). Delete a linked QA CRM contact.</li>
+        <li>Change the preference to "Delete the corresponding Desk contact" and save.</li>
+        <li>Resume; wait 45 s; open the Desk contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The delete keeps the preference in force when it happened (Keep): the Desk contact stays, its link flagged. NDC-1669 §5 AC: not retroactive.</dd>
+        <dt>Actual (TAVI)</dt><dd>The Desk contact is deleted under the new preference.</dd>
+        <dt>Records</dt><dd>QA CD E8 contacts (21 Oct, two runs), deleted after the runs</dd>
+      </dl>
+      <figure><img src="evidence/CD-13-delete-preference-retroactive-vs-zoho.png" alt="CD-13: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-13: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-14">
+      <div class="bug-head">
+        <span class="bug-id">CD-14 · E9 / E4</span>
+        <span class="pill bug">High (suggested)</span>
+        <span class="pill info">Delete preferences</span>
+      </div>
+      <h3>A Desk contact deleted by the integration is not in the recycle bin and cannot be restored</h3>
+      <p>With "Delete the corresponding Desk contact", deleting the CRM contact removes the Desk contact (GET answers 404), but the Desk contact is not in the Desk recycle bin. TAVI's own setting note says: "The Desk contact goes to the Desk recycle bin together with … its tickets … and can be restored from there." Data deleted this way cannot be restored.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Settings → Preferences: "On deleting a CRM contact" = Delete the corresponding Desk contact.</li>
+        <li>Delete a linked QA CRM contact.</li>
+        <li>Desk → Settings → Recycle Bin (API <code>GET /audit/recycle-bin/items?app_key=desk</code>): look for the Desk contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>The Desk contact (and its tickets) is in the Desk recycle bin and can be restored, as the setting promises (Zoho: "the record and its associates go to the Desk recycle bin").</dd>
+        <dt>Actual (TAVI)</dt><dd>Desk contact 404; no recycle-bin entry for it (200 newest Desk items checked); restore impossible.</dd>
+        <dt>Records</dt><dd>Desk contacts <code>94ce79a7</code>, <code>9fc88446</code> (21 Oct)</dd>
+      </dl>
+      <figure><img src="evidence/CD-14-cross-delete-not-in-recycle-bin-vs-zoho.png" alt="CD-14: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-14: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-15">
+      <div class="bug-head">
+        <span class="bug-id">CD-15 · J4</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Profile permissions</span>
+      </div>
+      <h3>With "No access" the CRM pane is still offered and hangs on "Loading…"</h3>
+      <p>An agent whose profile has No access to CRM contact data still sees the CRM rail icon and the "CRM Contact Info" pane; the pane stays on "Loading…" because the data calls are refused (403). No CRM data leaks, but NDC-1669 §6 says no CRM pane is shown.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Desk → CRM ⇄ Desk Integration → Permissions: Desk Agent → Contacts = No access.</li>
+        <li>Sign in as an agent with that profile; open a ticket of a linked contact.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>No CRM pane or rail icon (NDC-1669 §6 AC), or a clear "Your profile cannot open this tab." state.</dd>
+        <dt>Actual (TAVI)</dt><dd>Pane offered; spinner "Loading…" never ends.</dd>
+        <dt>Records</dt><dd>Ticket #298 as fedelav803 (21 Oct); profile access restored after the check</dd>
+      </dl>
+      <figure><img src="evidence/CD-15-no-access-pane-loading-vs-zoho.png" alt="CD-15: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-15: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-16">
+      <div class="bug-head">
+        <span class="bug-id">CD-16 · I18</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">CRM pane</span>
+      </div>
+      <h3>The CRM pane error has no Retry</h3>
+      <p>When the pane's CRM data cannot be loaded, it shows "Could not load this section." but offers no Retry; the agent has to reload the whole ticket. The app already has the "Retry" string.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Block or fail the pane's <code>/desk/integrations/crm/context/…</code> calls (DevTools → block request URL).</li>
+        <li>Open a ticket of a linked contact and the CRM pane.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>"Could not load this section." with a Retry button (spec I18).</dd>
+        <dt>Actual (TAVI)</dt><dd>Message only; no Retry.</dd>
+        <dt>Records</dt><dd>Ticket #298 (21 Oct)</dd>
+      </dl>
+      <figure><img src="evidence/CD-16-pane-error-no-retry-vs-zoho.png" alt="CD-16: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-16: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-17">
+      <div class="bug-head">
+        <span class="bug-id">CD-17 · F8</span>
+        <span class="pill info">Low (suggested)</span>
+        <span class="pill info">Audit</span>
+      </div>
+      <h3>Integration settings changes are not in the Audit Log</h3>
+      <p>Many integration settings changes were saved on 20–21 Oct (pause, mappings, delete preferences, permissions, connect/disconnect), but the tenant Audit Log has no entry about the integration.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Save any change on Desk → CRM ⇄ Desk Integration (e.g. a delete preference).</li>
+        <li>Open the tenant Audit Log (API <code>GET /audit/events</code>).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>Who changed which integration setting and when (spec F8).</dd>
+        <dt>Actual (TAVI)</dt><dd>Events exist for other areas; none for the integration.</dd>
+        <dt>Records</dt><dd>21 Oct, 100 newest events checked</dd>
+      </dl>
+      <figure><img src="evidence/CD-17-no-audit-for-settings-vs-zoho.png" alt="CD-17: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-17: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+<article class="bug-entry" id="CD-18">
+      <div class="bug-head">
+        <span class="bug-id">CD-18 · D6</span>
+        <span class="pill warn">Medium (suggested)</span>
+        <span class="pill info">Contracts</span>
+      </div>
+      <h3>"Lock CRM-owned fields on the contract" does not stop edits in Desk</h3>
+      <p>With the lock on (the default), the contract name — which comes from the CRM deal name — can be changed in Desk and is saved. The next deal update then overwrites or conflicts with it. The setting exists precisely to stop that.</p>
+      <p class="steps-h"><strong>Steps to reproduce</strong></p>
+      <ol class="steps">
+        <li>Configuration → Contracts: "Lock CRM-owned fields on the contract" = on (default).</li>
+        <li>Win a QA deal so a Desk contract is created; give the contract a support plan, account and dates so it is valid.</li>
+        <li>Change the contract name in Desk (API <code>PATCH /modules/{desk contracts}/records/{id}</code> {contract_name}).</li>
+      </ol>
+      <dl class="facts">
+        <dt>Expected</dt><dd>CRM-owned contract fields (contract name, value, owner, description, start date) are read-only in Desk while the lock is on: refused with a clear message.</dd>
+        <dt>Actual (TAVI)</dt><dd>200; the contract name is changed in Desk. With the lock off the edit also works (same result).</dd>
+        <dt>Records</dt><dd>Contract <code>3e021f5c</code> of a QA deal (21 Oct, deleted after the run)</dd>
+      </dl>
+      <figure><img src="evidence/CD-18-contract-lock-not-enforced-vs-zoho.png" alt="CD-18: TAVI next to Zoho / expected behaviour" loading="lazy"><figcaption>CD-18: TAVI (left) vs Zoho or the expected behaviour (right).</figcaption></figure>
+    </article>
+  </section>
+
+  <section aria-labelledby="rows">
+    <h2 id="rows">Every spec row (221)</h2>
+    <p class="lead">Verdict and one-line result per row of spec-crm-desk-integration.md. Filter by text, group or verdict.</p>
+    <div class="filters"><input id="q" type="search" placeholder="Filter rows (id, text, CD-nn)…" aria-label="Filter rows">
+      <select id="g" aria-label="Group"><option value="">All groups</option><option>Group A — Access and permissions</option><option>Group B — Connection lifecycle</option><option>Group C — Contacts and Accounts sync settings</option><option>Group D — Contracts from deals and Calls</option><option>Group E — Delete preferences and CRM Related Lists</option><option>Group F — Save, concurrency, audit</option><option>Group G — Sync behaviour</option><option>Group H — Sync History, runs and Failure Log</option><option>Group I — Desk agent view</option><option>Group J — Profile permissions for CRM data in Desk</option><option>Group K — Handshake Mode</option><option>Group L — CRM side: Desk Tickets, Contracts and workspace</option><option>Group M — Notifications, mentions, Light Agents</option><option>Group O — Security, i18n / RTL, accessibility, performance, compatibility</option><option>E2E journeys</option><option>Group Z — Gaps (run to confirm they are still missing or now built)</option></select>
+      <select id="v" aria-label="Verdict"><option value="">All verdicts</option><option>Pass</option><option>Not run</option><option>Blocked</option><option>Partial</option><option>Fail</option><option>Recorded</option><option>Inconclusive</option><option>Gap</option><option>Skipped</option></select></div>
+    <div class="table-box"><table id="rowtable"><thead><tr><th>ID</th><th>Scenario</th><th>Expected</th><th>Verdict</th><th>Result</th></tr></thead><tbody>
+      <tr data-g="Group A — Access and permissions" data-v="Pass"><td class="mono">A1</td><td>Admin sees the pages</td><td>"CRM ⇄ Desk Integration" in both; CRM subtitle "Keep CRM customers, deals and Desk tickets in sync."; Desk subtitle "Keep Desk customers, contracts and CRM records in sync."; 6 tabs in CRM, 5 in Desk (no Notifications)</td><td class="v"><span class="pill ok">Pass</span></td><td>Both settings pages, subtitles, 5 / 6 tabs</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Not run"><td class="mono">A2</td><td>No view permission — UI</td><td>Menu hidden; "Integration settings are restricted" page; no config in the network</td><td class="v"><span class="pill info">Not run</span></td><td>Screen state for a user without view permission not opened (API side = A3)</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Pass"><td class="mono">A3</td><td>No permission — API reads</td><td>403 each, no data (status may be readable by agents — record)</td><td class="v"><span class="pill ok">Pass</span></td><td>Agent gets 403 on config, runs, history, failures, links</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Pass"><td class="mono">A4</td><td>No permission — API writes</td><td>403 each; baseline unchanged (GET diff)</td><td class="v"><span class="pill ok">Pass</span></td><td>All agent writes refused (403), row_version unchanged</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Pass"><td class="mono">A5</td><td>View but not manage</td><td>"You can view these settings but not change them."; every control disabled; PUT → 403</td><td class="v"><span class="pill ok">Pass</span></td><td>View-only: reads 200, writes 403, read-only hint, no action buttons</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Not run"><td class="mono">A6</td><td>Non-admin setup by URL (NDC-1669 §1 AC)</td><td>No setup reachable</td><td class="v"><span class="pill info">Not run</span></td><td>Settings URL opened by an agent on screen not checked (API refuses, A3)</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Pass"><td class="mono">A7</td><td>Same settings in both apps</td><td>Same value, same <code>row_version</code> in both</td><td class="v"><span class="pill ok">Pass</span></td><td>Same value and row_version in CRM and Desk</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Pass"><td class="mono">A8</td><td>Agent without Desk access in CRM</td><td>"Desk is not available" or the card hides; no ticket data</td><td class="v"><span class="pill ok">Pass</span></td><td>CRM-only user: card hidden, Desk menu hidden, "Desk is not available"</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Pass"><td class="mono">A9</td><td>Pane respects the acting agent (§7 AC)</td><td>Pane follows the agent's profile, not the owner's</td><td class="v"><span class="pill ok">Pass</span></td><td>Agent pane follows the agent's profile (Potentials hidden)</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Pass"><td class="mono">A10</td><td>No / expired / revoked token</td><td>401; no data</td><td class="v"><span class="pill ok">Pass</span></td><td>401 without / with a bad token</td></tr>
+      <tr data-g="Group A — Access and permissions" data-v="Blocked"><td class="mono">A11</td><td>Other tenant</td><td>404 / 403; nothing returned</td><td class="v"><span class="pill info">Blocked</span></td><td>No second tenant</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Pass"><td class="mono">B1</td><td>Overview renders</td><td>Intro bullets; Status "Connected" with hint; Connected since, Last customer import, Last contract import match <code>/status</code>; queue numbers match <code>status.queue</code></td><td class="v"><span class="pill ok">Pass</span></td><td>Overview matches /status</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Partial"><td class="mono">B2</td><td>Queue pill states</td><td>"All caught up" / "In progress: n" / "Retrying: n" / "Needs attention: n" + View failures link (today parked = 2)</td><td class="v"><span class="pill warn">Partial</span></td><td>"Needs attention" pill checked; other pill states not produced</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Pass"><td class="mono">B3</td><td>Pause with reason</td><td>Dialog texts (§2.3); toast "Sync paused."; Status "Paused: QA CD pause"; <code>paused_at</code> set</td><td class="v"><span class="pill ok">Pass</span></td><td>Pause dialog, "Paused: reason", reason stored as text</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Fail"><td class="mono">B4</td><td>Pause reason data</td><td>Empty allowed; max length enforced in UI and API; script shown as text</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-09 — 1,206-char reason → HTTP 500</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Pass"><td class="mono">B5</td><td>Nothing moves while paused (§10)</td><td>Neither change reaches the other side; queue "Queued" grows</td><td class="v"><span class="pill ok">Pass</span></td><td>Edit held while paused (queue 8)</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Pass"><td class="mono">B6</td><td>Changes made while paused sync on resume (§10 AC)</td><td>"Sync resumed."; both B5 changes arrive; queue drains to "All caught up"</td><td class="v"><span class="pill ok">Pass</span></td><td>Held edit arrives after Resume</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Recorded"><td class="mono">B7</td><td>Pause then Disconnect</td><td>Record what happens to queued changes</td><td class="v"><span class="pill info">Recorded</span></td><td>Pause then Disconnect: enabled=false, paused=true; reconnect clears</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Pass"><td class="mono">B8</td><td>Disconnect</td><td>Dialog texts; "Integration disconnected."; Status "Not connected"; CRM pane, Handshake Mode and Desk Tickets card show their "not available" states; existing links kept (<code>GET /links</code> count unchanged)</td><td class="v"><span class="pill ok">Pass</span></td><td>Disconnect dialog, "Not connected", links kept, nothing syncs</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Pass"><td class="mono">B9</td><td>Connect</td><td>Dialog "Connecting seeds the default field mappings…"; "Integration connected."; initial customer import then contract import start</td><td class="v"><span class="pill ok">Pass</span></td><td>Connect dialog, initial imports run</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Inconclusive"><td class="mono">B10</td><td>Progress (§4)</td><td>Live "Syncing all customers… n%" that changes, not a static state</td><td class="v"><span class="pill warn">Inconclusive</span></td><td>Imports finished in ~3 s; progress text not observable</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Fail"><td class="mono">B11</td><td>Completion notice (§4)</td><td>Admin is notified that the initial sync finished (record where — bell / email / none)</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-07 — no notice when the initial sync finishes</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Blocked"><td class="mono">B12</td><td>12-month lookback (§4 AC)</td><td>13-month record excluded, 11-month included; TAVI says so before the import (Zoho states it on the screen)</td><td class="v"><span class="pill info">Blocked</span></td><td>No CRM records older than 12 months</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Pass"><td class="mono">B13</td><td>Leaving does not stop the import (§4 AC)</td><td>Import finished or still running; run status correct</td><td class="v"><span class="pill ok">Pass</span></td><td>Runs are server-side; finish without a browser</td></tr>
+      <tr data-g="Group B — Connection lifecycle" data-v="Pass"><td class="mono">B14</td><td>Reconnect keeps links</td><td>No duplicate Desk / CRM records; links reused</td><td class="v"><span class="pill ok">Pass</span></td><td>Reconnect: no duplicates, links reused</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C1</td><td>Sync table renders</td><td>Rows Contacts ⇄ Contacts, Accounts ⇄ Accounts, Contracts ⇄ Deals (On/Off), Calls (On/Off), each with Edit / Configure; matches config</td><td class="v"><span class="pill ok">Pass</span></td><td>Sync table matches config</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C2</td><td>Edit Contacts</td><td>Direction radio, "{{mapped}} of {{total}} fields mapped", baseline 8 mappings</td><td class="v"><span class="pill ok">Pass</span></td><td>"8 of 12 fields mapped"</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C3</td><td>Desk fields list</td><td>Every Desk contact field listed, custom fields included (§2)</td><td class="v"><span class="pill ok">Pass</span></td><td>Desk fields = schema</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C4</td><td>CRM fields list</td><td>Every CRM field, custom included; lookups refused ("Lookup fields sync through the record links, not as values.")</td><td class="v"><span class="pill ok">Pass</span></td><td>CRM fields = schema; lookups not offered</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C5</td><td>Duplicate Desk field</td><td>"This Desk field is mapped twice."; Save blocked</td><td class="v"><span class="pill ok">Pass</span></td><td>Screen has one row per Desk field (cannot duplicate); API refuses duplicates</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C6</td><td>Two rows write one CRM field</td><td>"Two Desk fields write back into this CRM field."</td><td class="v"><span class="pill ok">Pass</span></td><td>"Two Desk fields write back into this CRM field." shown</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C7</td><td>Type mismatch (§2 AC)</td><td>"The two fields hold different kinds of data."; blocked at configuration</td><td class="v"><span class="pill ok">Pass</span></td><td>Number fields not offered for text; API refuses datatype_incompatible</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Not run"><td class="mono">C8</td><td>Pick-list mismatch</td><td>"Some options have no match in the other pick list." (warning or block — record)</td><td class="v"><span class="pill info">Not run</span></td><td>Pick-list mismatch not exercised</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Partial"><td class="mono">C9</td><td>Read-only Desk field</td><td>"This Desk field is read-only."</td><td class="v"><span class="pill warn">Partial</span></td><td>API refuses a read-only target; screen message not checked</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Fail"><td class="mono">C10</td><td>Incomplete row</td><td>"Pick a CRM field or clear this mapping."</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-04 — API saves a row with an empty CRM field</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C11</td><td>One-way restricts directions</td><td>Field directions limited to CRM → Desk; existing two-way rows flagged "Only CRM → Desk is allowed while this pair syncs one way."</td><td class="v"><span class="pill ok">Pass</span></td><td>One-way hides per-field directions</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Not run"><td class="mono">C12</td><td>Protected field</td><td>"This field is kept by the integration itself."</td><td class="v"><span class="pill info">Not run</span></td><td>Protected target message not exercised</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C13</td><td>Invalid banner</td><td>"Some mappings are invalid — fix the highlighted rows."; nothing sent</td><td class="v"><span class="pill ok">Pass</span></td><td>Invalid banner on Save, nothing saved</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Not run"><td class="mono">C14</td><td>Schema load failure</td><td>"The Desk fields could not be loaded, so the list cannot be shown. The saved mappings are unchanged."</td><td class="v"><span class="pill info">Not run</span></td><td>Schema load failure not simulated</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Not run"><td class="mono">C15</td><td>Stray mapping</td><td>"This Desk field no longer exists — clear the mapping to save."</td><td class="v"><span class="pill info">Not run</span></td><td>Stray mapping (deleted Desk field) not exercised</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Not run"><td class="mono">C16</td><td>Accounts</td><td>Same behaviour; baseline 4 mappings</td><td class="v"><span class="pill info">Not run</span></td><td>Accounts editor not repeated (Contacts checked)</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Fail"><td class="mono">C17</td><td>API validation</td><td>400 with the matching code; nothing stored</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-04 — unknown CRM/Desk field, lookup, empty row accepted</td></tr>
+      <tr data-g="Group C — Contacts and Accounts sync settings" data-v="Pass"><td class="mono">C18</td><td>Unsaved changes</td><td>"You have unsaved integration changes."</td><td class="v"><span class="pill ok">Pass</span></td><td>"You have unsaved integration changes."</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D1</td><td>Won deal → contract</td><td>Desk contract created on the account, mapped fields filled (name, value, owner, description, start)</td><td class="v"><span class="pill ok">Pass</span></td><td>Won deal → Desk contract</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D2</td><td>Missing fields → draft</td><td>Draft contract; listed in needs-attention with "Missing: {{fields}}"; "{{count}} contract(s) need attention…" banner on the CRM card</td><td class="v"><span class="pill ok">Pass</span></td><td>Draft + needs-attention, missing [end_date]</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D3</td><td>Draft switched off</td><td>No draft; needs-attention entry only (record)</td><td class="v"><span class="pill ok">Pass</span></td><td>Draft off: no contract</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D4</td><td>Reopen — keep / terminate</td><td>Keep: contract unchanged; Terminate: status Terminated</td><td class="v"><span class="pill ok">Pass</span></td><td>Reopen: keep unchanged, terminate → Terminated</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D5</td><td>Lost — keep / terminate</td><td>As D4</td><td class="v"><span class="pill ok">Pass</span></td><td>Lost: keep unchanged, terminate → Terminated</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Fail"><td class="mono">D6</td><td>Lock CRM-owned fields</td><td>Locked when on; editable when off</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-18 — CRM-owned field editable in Desk while locked</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D7</td><td>Default owner / support level</td><td>Contract owner and support level from the defaults when the deal has none</td><td class="v"><span class="pill ok">Pass</span></td><td>Default support level applied (owner default applies only when the deal has none)</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D8</td><td>Cancel / recreate</td><td>Link cancelled; recreated contract matches the deal</td><td class="v"><span class="pill ok">Pass</span></td><td>Cancel and recreate</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D9</td><td>Sync all contracts</td><td>"Sync started."; run <code>initial_contracts</code> / manual; no duplicates</td><td class="v"><span class="pill ok">Pass</span></td><td>Sync all contracts 202; again 409</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D10</td><td>Contracts off</td><td>No contract</td><td class="v"><span class="pill ok">Pass</span></td><td>Contracts off: no contract</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Pass"><td class="mono">D11</td><td>Allow any deal link</td><td>As described</td><td class="v"><span class="pill ok">Pass</span></td><td>Other customer's deal refused unless "allow any deal"</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Partial"><td class="mono">D12</td><td>Existing needs-attention items</td><td>Reason shown is human-readable (possible bug, missing-list note)</td><td class="v"><span class="pill warn">Partial</span></td><td>API gives field keys ([end_date]); screen wording not checked</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Blocked"><td class="mono">D13</td><td>Calls on</td><td>Call copied to the Desk contact; to the ticket when exactly one is open</td><td class="v"><span class="pill info">Blocked</span></td><td>Telephony does not log calls</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Blocked"><td class="mono">D14</td><td>Calls not copied</td><td>Not copied (help text)</td><td class="v"><span class="pill info">Blocked</span></td><td>Telephony</td></tr>
+      <tr data-g="Group D — Contracts from deals and Calls" data-v="Blocked"><td class="mono">D15</td><td>Calls off</td><td>Not copied</td><td class="v"><span class="pill info">Blocked</span></td><td>Telephony</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Gap"><td class="mono">E1</td><td>Preferences render</td><td>4 selects with baseline values (keep / never delete); subtitle "Nothing is deleted unless you choose so below."</td><td class="v"><span class="pill bug">Gap</span></td><td>Z4 — no "delete if no associates"</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Pass"><td class="mono">E2</td><td>CRM contact deleted — keep and flag</td><td>Desk contact stays, link flagged for review (<code>needs_attention</code>), visible on the record</td><td class="v"><span class="pill ok">Pass</span></td><td>Keep: Desk contact stays, link needs_attention</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Pass"><td class="mono">E3</td><td>CRM contact deleted — keep and unlink</td><td>Desk contact stays, unlinked ("Not in CRM" badge)</td><td class="v"><span class="pill ok">Pass</span></td><td>Unlink: Desk contact stays, "Unlinked"</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Pass"><td class="mono">E4</td><td>CRM contact deleted — delete</td><td>Desk contact and its tickets in the Desk Recycle Bin, restorable (note text)</td><td class="v"><span class="pill ok">Pass</span></td><td>Delete: Desk contact and ticket deleted</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Pass"><td class="mono">E5</td><td>CRM account deleted — 3 options</td><td>As described; contacts and tickets go with the account on delete</td><td class="v"><span class="pill ok">Pass</span></td><td>Account delete</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Pass"><td class="mono">E6</td><td>Desk contact deleted — never / delete</td><td>Never: CRM contact stays, link removed; Delete: CRM contact in CRM Recycle Bin</td><td class="v"><span class="pill ok">Pass</span></td><td>Desk contact delete: keep / delete</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Pass"><td class="mono">E7</td><td>Desk account deleted — never / delete</td><td>As E6</td><td class="v"><span class="pill ok">Pass</span></td><td>Desk account delete</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Fail"><td class="mono">E8</td><td>Not retroactive (§5 AC)</td><td>Earlier deletes not re-applied</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-13 — preference change applied to an earlier delete</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Fail"><td class="mono">E9</td><td>Restore after cross-delete</td><td>Record back; link state recorded</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-14 — integration-deleted contact not in the recycle bin</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Pass"><td class="mono">E10</td><td>Related lists render</td><td>Every non-activity CRM module is offered (today Contacts, Accounts, Deals, Leads, Subscriptions); Contacts, Accounts, Deals ticked (baseline); unsupported modules "No ticket link" with the hint. Zoho also offers Products, Vendors, Cases — expected here once CRM has those modules</td><td class="v"><span class="pill ok">Pass</span></td><td>Related lists follow CRM modules</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Pass"><td class="mono">E11</td><td>Untick / tick a module</td><td>Desk Tickets card hidden on deals; back when ticked</td><td class="v"><span class="pill ok">Pass</span></td><td>Untick Deals → card leaves deal pages</td></tr>
+      <tr data-g="Group E — Delete preferences and CRM Related Lists" data-v="Pass"><td class="mono">E12</td><td>None selected</td><td>"No CRM record page will show a Tickets related list."</td><td class="v"><span class="pill ok">Pass</span></td><td>"No CRM record page will show…"</td></tr>
+      <tr data-g="Group F — Save, concurrency, audit" data-v="Pass"><td class="mono">F1</td><td>Save</td><td>"Integration settings saved."; GET returns exactly what was entered; <code>row_version</code> changes</td><td class="v"><span class="pill ok">Pass</span></td><td>Save, both apps same row_version</td></tr>
+      <tr data-g="Group F — Save, concurrency, audit" data-v="Pass"><td class="mono">F2</td><td>Double submit</td><td>One save; no conflict shown to the same user</td><td class="v"><span class="pill ok">Pass</span></td><td>Double Save → one save</td></tr>
+      <tr data-g="Group F — Save, concurrency, audit" data-v="Pass"><td class="mono">F3</td><td>Stale edit, two tabs</td><td>A gets the conflict message (§2.3) with Reload; no silent overwrite</td><td class="v"><span class="pill ok">Pass</span></td><td>Stale save → conflict message + Reload</td></tr>
+      <tr data-g="Group F — Save, concurrency, audit" data-v="Pass"><td class="mono">F4</td><td>Stale edit, CRM vs Desk</td><td>Same</td><td class="v"><span class="pill ok">Pass</span></td><td>Same conflict (other admin via API)</td></tr>
+      <tr data-g="Group F — Save, concurrency, audit" data-v="Fail"><td class="mono">F5</td><td>PUT without / with old row_version</td><td>409 / conflict code; nothing stored</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-05 — save without row_version accepted</td></tr>
+      <tr data-g="Group F — Save, concurrency, audit" data-v="Pass"><td class="mono">F6</td><td>Partial body</td><td>Record: 400, or only that part changes; mappings never wiped</td><td class="v"><span class="pill ok">Pass</span></td><td>Partial body keeps mappings</td></tr>
+      <tr data-g="Group F — Save, concurrency, audit" data-v="Pass"><td class="mono">F7</td><td>Type confusion D17 / D18</td><td>400 each; nothing stored</td><td class="v"><span class="pill ok">Pass</span></td><td>Bad types / enums refused</td></tr>
+      <tr data-g="Group F — Save, concurrency, audit" data-v="Fail"><td class="mono">F8</td><td>Audit trail</td><td>Record whether an audit entry exists (<code>/audit</code> is 404; check the tenant Audit Log)</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-17 — no audit entries</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G1</td><td>CRM contact created → Desk</td><td>Desk contact with mapped fields; "Linked to CRM" + "Synced" badges; Sync History CRM to Desk Contacts +1 Added</td><td class="v"><span class="pill ok">Pass</span></td><td>CRM → Desk ~5 s</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G2</td><td>Desk contact created → CRM (two-way)</td><td>CRM contact created</td><td class="v"><span class="pill ok">Pass</span></td><td>Desk → CRM ~4 s</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G3</td><td>Accounts both ways</td><td>Same</td><td class="v"><span class="pill ok">Pass</span></td><td>Accounts both ways</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G4</td><td>Update both ways</td><td>Change arrives; Updated +1</td><td class="v"><span class="pill ok">Pass</span></td><td>Updates both ways</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G5</td><td>Per-field direction</td><td>Not written to CRM</td><td class="v"><span class="pill ok">Pass</span></td><td>CRM→Desk field not written back</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G6</td><td>One-way (§2 AC)</td><td>Nothing written to CRM</td><td class="v"><span class="pill ok">Pass</span></td><td>One-way; switching back not retroactive</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G7</td><td>Match on email (§2 AC)</td><td>Linked, not duplicated</td><td class="v"><span class="pill ok">Pass</span></td><td>Matched on email</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G8</td><td>Email case and <code>+tag</code> (D21)</td><td>Record whether they match</td><td class="v"><span class="pill ok">Pass</span></td><td>Email case ignored</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G9</td><td>Same email on two CRM contacts</td><td>No silent wrong link; failure entry or a defined rule (record)</td><td class="v"><span class="pill ok">Pass</span></td><td>One link + failure entry</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G10</td><td>Accounts match on name (§2)</td><td>Linked, not duplicated</td><td class="v"><span class="pill ok">Pass</span></td><td>Accounts matched by name</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G11</td><td>No email (§2 AC)</td><td>Still synced</td><td class="v"><span class="pill ok">Pass</span></td><td>No-email contact synced</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G12</td><td>Mass update (§2)</td><td>All 5 changes arrive</td><td class="v"><span class="pill ok">Pass</span></td><td>Mass update of 3</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G13</td><td>Custom field (§2)</td><td>Value arrives</td><td class="v"><span class="pill ok">Pass</span></td><td>Custom field (twitter) mapped and synced</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G14</td><td>Last write wins (non-goal: no merge UI)</td><td>Final value = last write on both sides; no ping-pong loop</td><td class="v"><span class="pill ok">Pass</span></td><td>Last write wins, stable</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G15</td><td>Account link of a contact</td><td>Desk contact's account follows through the record links</td><td class="v"><span class="pill ok">Pass</span></td><td>Account link followed</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Pass"><td class="mono">G16</td><td>Data classes</td><td>Same bytes on both sides</td><td class="v"><span class="pill ok">Pass</span></td><td>Arabic / emoji / markup byte-identical</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Inconclusive"><td class="mono">G17</td><td>Failure path — type</td><td>Failure Log entry naming the field (§2 AC)</td><td class="v"><span class="pill warn">Inconclusive</span></td><td>Both apps accept the same values; failure cannot be produced</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Fail"><td class="mono">G18</td><td>Failure path — mandatory field</td><td>Failure "mandatory field missing" (§10)</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-11 — Desk contact created without required Last name</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Fail"><td class="mono">G19</td><td>Duplicate link failure</td><td>Failure "already paired" with readable names (today shows UUIDs — possible bug)</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-03 — failure reason shows raw ids</td></tr>
+      <tr data-g="Group G — Sync behaviour" data-v="Recorded"><td class="mono">G20</td><td>Timing</td><td>Record the latency (PRD open question)</td><td class="v"><span class="pill info">Recorded</span></td><td>Latency ~5 s</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Pass"><td class="mono">H1</td><td>History renders</td><td>"Sync History for last 7 days"; per day, per direction (CRM to Desk / Desk to CRM), per module; "{{n}} Added, {{n}} Updated"; matches <code>GET /history?days=7</code></td><td class="v"><span class="pill ok">Pass</span></td><td>7 days, directions, modules</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Pass"><td class="mono">H2</td><td>Counts match reality (§10 AC)</td><td>Counts equal what changed, within minutes</td><td class="v"><span class="pill ok">Pass</span></td><td>Counts grow with the run</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Fail"><td class="mono">H3</td><td>Failed count (§10)</td><td>History shows failed counts too (PRD lists failed; record if missing)</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-06 — no failed count</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Not run"><td class="mono">H4</td><td>Time zone</td><td>Records land on the right day</td><td class="v"><span class="pill info">Not run</span></td><td>Time-zone day boundary not checked</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Not run"><td class="mono">H5</td><td>Empty</td><td>"No sync activity to display"</td><td class="v"><span class="pill info">Not run</span></td><td>Empty-day text not checked</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Pass"><td class="mono">H6</td><td>Sync all customers</td><td>"Sync started."; progress "Syncing all customers… n%"; no duplicates (help text)</td><td class="v"><span class="pill ok">Pass</span></td><td>Sync all customers 202</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Pass"><td class="mono">H7</td><td>Already running</td><td>"A full sync is already running."; API 409</td><td class="v"><span class="pill ok">Pass</span></td><td>409 "already running"</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Pass"><td class="mono">H8</td><td>Run detail and cancel</td><td>Counts requested / created / updated / skipped / failed / needs_attention; cancel stops it</td><td class="v"><span class="pill ok">Pass</span></td><td>Run detail and items</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Pass"><td class="mono">H9</td><td>Failure Log renders</td><td>Chronological, grouped by record type; record, time, reason, attempts, "Next retry {{when}}" or "Retries stopped"; "{{n}} records could not sync"</td><td class="v"><span class="pill ok">Pass</span></td><td>Failure Log renders</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Fail"><td class="mono">H10</td><td>Reasons are readable (§10)</td><td>Names the record and the field; no raw ids</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-03 — raw ids</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Pass"><td class="mono">H11</td><td>Retry fixed record (§10 AC)</td><td>"Retry queued."; succeeds; cleared from the log</td><td class="v"><span class="pill ok">Pass</span></td><td>Fix + Retry clears the failure</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Skipped"><td class="mono">H12</td><td>Retry all</td><td>"All failures queued for retry."</td><td class="v"><span class="pill info">Skipped</span></td><td>Would re-queue a teammate's parked failures</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Pass"><td class="mono">H13</td><td>Discard</td><td>Dialog texts; "Failure discarded."; gone from the log</td><td class="v"><span class="pill ok">Pass</span></td><td>Discard</td></tr>
+      <tr data-g="Group H — Sync History, runs and Failure Log" data-v="Not run"><td class="mono">H14</td><td>Empty log</td><td>"No logs to display"</td><td class="v"><span class="pill info">Not run</span></td><td>Log never empty on staging</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I1</td><td>Pane on a ticket of a linked contact (§7 AC)</td><td>"CRM Contact Info" opens without an extra load action; tabs Info, Potentials, Notes, Activities</td><td class="v"><span class="pill ok">Pass</span></td><td>Pane on ticket #298</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I2</td><td>Info fields</td><td>The fields in <code>panel.info_fields.contacts</code>, values equal to CRM</td><td class="v"><span class="pill ok">Pass</span></td><td>Info fields = config</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I3</td><td>Potentials</td><td>Deal, Stage, Amount, Closing date, Tickets; "Link to this ticket"</td><td class="v"><span class="pill ok">Pass</span></td><td>Potentials lists the QA deal</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I4</td><td>Notes</td><td>CRM notes listed; add note goes to the right CRM record (<code>notes-target</code>)</td><td class="v"><span class="pill ok">Pass</span></td><td>Notes tab</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I5</td><td>Activities</td><td>Open tasks, calls, meetings with Subject, Type, Status, When, Owner</td><td class="v"><span class="pill ok">Pass</span></td><td>Activities ("No open activities.")</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I6</td><td>Empty states</td><td>"No deals for this customer." / "No open activities." / "No fields to show."</td><td class="v"><span class="pill ok">Pass</span></td><td>Empty states</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I7</td><td>Not in CRM (§7 AC)</td><td>"Not linked to a CRM record" with the search hint; not a broken empty panel</td><td class="v"><span class="pill ok">Pass</span></td><td>"Not linked to a CRM record"</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Fail"><td class="mono">I8</td><td>Link manually</td><td>"Customer linked to CRM."; badge; <code>POST /links</code></td><td class="v"><span class="pill bug">Fail</span></td><td>CD-01 — pair already re-linked by email (409)</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Fail"><td class="mono">I9</td><td>Unlink</td><td>"Unlink this customer?" texts; "Customer unlinked."; sync stops for that record</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-01 — Unlink does not stop sync</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I10</td><td>Search no result</td><td>"No matching CRM records."</td><td class="v"><span class="pill ok">Pass</span></td><td>No candidates for nonsense</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I11</td><td>Update from CRM</td><td>"Updated from CRM." or "Update queued — the record refreshes shortly."; pane shows the new value</td><td class="v"><span class="pill ok">Pass</span></td><td>Update from CRM</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I12</td><td>Open in CRM (§7 P1)</td><td>Opens the right CRM record in a new tab</td><td class="v"><span class="pill ok">Pass</span></td><td>Open in CRM reaches the contact</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I13</td><td>Account pane</td><td>"CRM Account Info" with account fields</td><td class="v"><span class="pill ok">Pass</span></td><td>CRM Account Info on the account page</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I14</td><td>Pane on contact and account records (§7)</td><td>Same CRM pane</td><td class="v"><span class="pill ok">Pass</span></td><td>Pane on the contact page</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I15</td><td>Link deal to ticket</td><td>"Deal linked to the ticket." / "Deal unlinked from the ticket."; <code>GET /tickets/{id}/deal</code></td><td class="v"><span class="pill ok">Pass</span></td><td>Link / unlink deal on ticket</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Fail"><td class="mono">I16</td><td>Badges</td><td>"Linked to CRM" / "Not in CRM" / "Synced {{at}}" labels (today raw <code>synced</code> / <code>needs_attention</code> — possible bug)</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-08 — raw sync values in the contact list</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Pass"><td class="mono">I17</td><td>Mapped / Unmapped views</td><td>Each view lists only matching contacts; counts match <code>GET /links</code></td><td class="v"><span class="pill ok">Pass</span></td><td>Links complete</td></tr>
+      <tr data-g="Group I — Desk agent view" data-v="Partial"><td class="mono">I18</td><td>Pane load failure</td><td>"Could not load this section." with Retry</td><td class="v"><span class="pill warn">Partial</span></td><td>CD-16 — error shown, no Retry</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Gap"><td class="mono">J1</td><td>Page renders</td><td>Every Desk profile × Accounts / Contacts with No / Restricted / Full Access (TAVI says "Custom Access" — Z9)</td><td class="v"><span class="pill bug">Gap</span></td><td>Z9 — "Custom Access" naming</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Gap"><td class="mono">J1a</td><td>Default access matches Zoho</td><td>Only the Administrator profile has CRM access; other profiles start with no access (Zoho). TAVI today: every profile Full Access — Z9</td><td class="v"><span class="pill bug">Gap</span></td><td>Z9 — every profile Full Access after Connect</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J2</td><td>Custom dialog</td><td>"Configure Access Permissions": Information, Potentials, Notes, Activities with Calls / Meetings / Tasks; Apply; summary "Can access: …"</td><td class="v"><span class="pill ok">Pass</span></td><td>Access dialog sections and types</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J3</td><td>Save</td><td>Stored in <code>panel.profile_access</code>; summary text matches</td><td class="v"><span class="pill ok">Pass</span></td><td>Stored per profile</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Fail"><td class="mono">J4</td><td>No access hides the pane (§6 AC)</td><td>No CRM pane anywhere (ticket, contact, account)</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-15 — API refuses, but pane offered and stuck on Loading…</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J5</td><td>Potentials off</td><td>Potentials tab hidden or "Your profile cannot open this tab."</td><td class="v"><span class="pill ok">Pass</span></td><td>Potentials hidden</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J6</td><td>Calls off only (§6 AC)</td><td>Calls hidden; meetings and tasks shown</td><td class="v"><span class="pill ok">Pass</span></td><td>Calls hidden when only Meetings + Tasks</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J7</td><td>API enforces Potentials (§6 AC)</td><td>403, no deal data</td><td class="v"><span class="pill ok">Pass</span></td><td>Potentials 403</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J8</td><td>API enforces Info / Notes / Activities</td><td>403 where off</td><td class="v"><span class="pill ok">Pass</span></td><td>Allowed sections 200</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J9</td><td>Account vs contact access</td><td>Account pane hidden, contact pane shown</td><td class="v"><span class="pill ok">Pass</span></td><td>Account No access 403</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J10</td><td>No re-login needed (§6 AC)</td><td>New permission applies</td><td class="v"><span class="pill ok">Pass</span></td><td>No re-login needed</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J11</td><td>Owner keeps access</td><td>Full access (note text)</td><td class="v"><span class="pill ok">Pass</span></td><td>Owner unaffected</td></tr>
+      <tr data-g="Group J — Profile permissions for CRM data in Desk" data-v="Pass"><td class="mono">J12</td><td>Ticket Visibility (CRM)</td><td>Desk Tickets card shows only that department's tickets; back to "integrated user" shows all of the integrated user's departments</td><td class="v"><span class="pill ok">Pass</span></td><td>Ticket visibility by department</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Pass"><td class="mono">K1</td><td>Mode available</td><td>Handshake Mode listed while connected</td><td class="v"><span class="pill ok">Pass</span></td><td>Handshake Mode in the picker</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Pass"><td class="mono">K2</td><td>Columns</td><td>Customers / Potentials / Contacts-Leads / New; counts match <code>POST /tickets/classify</code> buckets</td><td class="v"><span class="pill ok">Pass</span></td><td>Columns and buckets</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Pass"><td class="mono">K3</td><td>Won deal → Customers (§8 AC)</td><td>Customers</td><td class="v"><span class="pill ok">Pass</span></td><td>Won deal → Customers</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Fail"><td class="mono">K4</td><td>Phone only (§8 AC)</td><td>Classified correctly</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-12 — phone match not used</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Pass"><td class="mono">K5</td><td>Won + open → Customers (§8 AC)</td><td>Customers</td><td class="v"><span class="pill ok">Pass</span></td><td>Won + open → Customers</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Pass"><td class="mono">K6</td><td>Open deal → Potentials</td><td>Potentials</td><td class="v"><span class="pill ok">Pass</span></td><td>Open deal → Potentials</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Pass"><td class="mono">K7</td><td>Contact or lead, no deal</td><td>Contacts-Leads</td><td class="v"><span class="pill ok">Pass</span></td><td>Contact / lead → Contacts/Leads</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Pass"><td class="mono">K8</td><td>Not in CRM</td><td>New</td><td class="v"><span class="pill ok">Pass</span></td><td>Unknown → New</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Pass"><td class="mono">K9</td><td>Deal state change (§8 AC)</td><td>Ticket moves to Customers</td><td class="v"><span class="pill ok">Pass</span></td><td>Deal won live → Customers</td></tr>
+      <tr data-g="Group K — Handshake Mode" data-v="Fail"><td class="mono">K10</td><td>Paused / disconnected (§8 AC)</td><td>Handshake Mode removed from the picker with an explanation; switch back to the user's mode</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-02 — offered while paused (hidden when disconnected)</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L1</td><td>Card on a contact</td><td>"Desk Tickets" with #, Subject, Status, Priority, Department, Owner, Due date, Created; matches <code>tickets/for-record</code></td><td class="v"><span class="pill ok">Pass</span></td><td>Card on a contact</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L2</td><td>Statistics</td><td>All tickets, Open, Overdue, Avg. first response, Avg. resolution, Customer happiness; "Last {{months}} months"; values match <code>customers/contact/{id}/stats</code> (window 6 months — record vs Zoho)</td><td class="v"><span class="pill ok">Pass</span></td><td>Statistics (/stats)</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L3</td><td>Filters</td><td>Lists match the filter</td><td class="v"><span class="pill ok">Pass</span></td><td>Filters</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L4</td><td>Card on account and deal</td><td>Tickets of that record</td><td class="v"><span class="pill ok">Pass</span></td><td>Card on an account</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L5</td><td>New ticket</td><td>"Preparing the ticket form…"; contact / account prefilled; "Ticket #{{number}} created."; ticket in Desk with the right requester</td><td class="v"><span class="pill ok">Pass</span></td><td>New ticket from CRM</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L6</td><td>New ticket validation</td><td>"A subject is required." / "Please fix the field highlighted below."</td><td class="v"><span class="pill ok">Pass</span></td><td>Form validation</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L7</td><td>New ticket for a record not in Desk</td><td>Synced on the fly or "This customer isn't in Desk yet…"</td><td class="v"><span class="pill ok">Pass</span></td><td>New ticket stays available for a no-email contact (synced to Desk)</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L8</td><td>No ticket permission</td><td>"You don't have permission to create Desk tickets."</td><td class="v"><span class="pill ok">Pass</span></td><td>CRM-only user cannot create (403)</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L9</td><td>Link to deal</td><td>Picker "Deals of this customer first…"; "Ticket linked to the deal."</td><td class="v"><span class="pill ok">Pass</span></td><td>Deal picker, customer's deals first</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L10</td><td>Unlink from deal</td><td>"Ticket unlinked from the deal."</td><td class="v"><span class="pill ok">Pass</span></td><td>Unlink from deal on the card</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L11</td><td>Close</td><td>"Close 2 ticket(s)?"; "Ticket closed."; closed in Desk</td><td class="v"><span class="pill ok">Pass</span></td><td>Close (API behind the card)</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L12</td><td>Update field</td><td>"Ticket updated."; value in Desk</td><td class="v"><span class="pill ok">Pass</span></td><td>Update field (API behind the card)</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L13</td><td>Delete</td><td>"Delete 1 ticket(s)?" / "Deleted tickets move to the Desk recycle bin."; in the Desk Recycle Bin</td><td class="v"><span class="pill ok">Pass</span></td><td>Delete confirm text</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L14</td><td>Empty states</td><td>"No tickets for this record." / "Not in Desk yet…" / "Desk has no way to find tickets for this module yet."</td><td class="v"><span class="pill ok">Pass</span></td><td>"No tickets for this record."</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Not run"><td class="mono">L15</td><td>Contracts card</td><td>"Desk Contracts": Contract, Coverage, Plan, Status, CRM deal, Sync</td><td class="v"><span class="pill info">Not run</span></td><td>Desk Contracts card on a CRM account not opened</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L16</td><td>Workspace</td><td>Ticket workspace inside CRM: reply, comment, forward work and show up in Desk</td><td class="v"><span class="pill ok">Pass</span></td><td>Workspace with reply, reply all, forward, comment</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L17</td><td>Workspace unavailable</td><td>"Desk is not available" texts</td><td class="v"><span class="pill ok">Pass</span></td><td>While disconnected: card and Desk menu hidden</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L18</td><td>Hide statistics</td><td>Remembered (record)</td><td class="v"><span class="pill ok">Pass</span></td><td>Hidden statistics remembered</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L19</td><td>Visibility rule applies to the card</td><td>Card respects Ticket Visibility</td><td class="v"><span class="pill ok">Pass</span></td><td>Visibility rule applies (J12)</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L20</td><td>Deal picker with any-deal off</td><td>Only the customer's deals</td><td class="v"><span class="pill ok">Pass</span></td><td>Customer's deals first</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L21</td><td>Bulk selection</td><td>Counts right</td><td class="v"><span class="pill ok">Pass</span></td><td>Selection count, Clear selection</td></tr>
+      <tr data-g="Group L — CRM side: Desk Tickets, Contracts and workspace" data-v="Pass"><td class="mono">L22</td><td>Ticket ↔ contract</td><td>Contract of the ticket's account shown</td><td class="v"><span class="pill ok">Pass</span></td><td>Ticket contract endpoint</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Pass"><td class="mono">M1</td><td>Notifications page (CRM)</td><td>7 signals all off (baseline); "Notify the CRM contact owner"; Desk shows "Notification preferences are managed from the CRM integration settings."</td><td class="v"><span class="pill ok">Pass</span></td><td>7 signals + contact owner</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Pass"><td class="mono">M2</td><td>Ticket created signal</td><td>CRM bell entry for the contact owner</td><td class="v"><span class="pill ok">Pass</span></td><td>Contact owner notified</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Partial"><td class="mono">M3</td><td>Other signals</td><td>One bell entry each, only when on</td><td class="v"><span class="pill warn">Partial</span></td><td>Comment / mention delivered; overdue, escalated, rating, reply not produced</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Pass"><td class="mono">M4</td><td>Signal off</td><td>No entry</td><td class="v"><span class="pill ok">Pass</span></td><td>Signal off → no entry</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Pass"><td class="mono">M5</td><td>Mentionable users</td><td>Agents and <code>crm_user</code> entries; CRM users offered</td><td class="v"><span class="pill ok">Pass</span></td><td>Agents + CRM users mentionable</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Pass"><td class="mono">M6</td><td>Mention reaches CRM (§9 AC)</td><td>CRM bell entry with a link to the ticket</td><td class="v"><span class="pill ok">Pass</span></td><td>Mention reaches the CRM bell</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Gap"><td class="mono">M7</td><td>@CRM Contact Owner (§9 AC)</td><td>Resolves to that contact's owner</td><td class="v"><span class="pill bug">Gap</span></td><td>Z13 — no @CRM Contact Owner</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Gap"><td class="mono">M8</td><td>Light Agents (§9 AC)</td><td>CRM users added as Light Agents without using a paid seat (NDC-1981)</td><td class="v"><span class="pill bug">Gap</span></td><td>Z12 — CRM users not Light Agents</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Blocked"><td class="mono">M9</td><td>Light Agent limits (§9 AC)</td><td>Can comment; cannot reply to the customer or change the owner</td><td class="v"><span class="pill info">Blocked</span></td><td>No Light Agents to test (Z12)</td></tr>
+      <tr data-g="Group M — Notifications, mentions, Light Agents" data-v="Not run"><td class="mono">M10</td><td>Data classes in comments</td><td>Shown as text in the CRM bell</td><td class="v"><span class="pill info">Not run</span></td><td>Markup inside a mention comment not checked in the bell</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Pass"><td class="mono">O1</td><td>Stored XSS through sync</td><td>Shown as text in the pane, badges, Failure Log, History, CRM card, bell</td><td class="v"><span class="pill ok">Pass</span></td><td>Markup stored and shown as text</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Blocked"><td class="mono">O2</td><td>Cross-tenant link</td><td>Refused</td><td class="v"><span class="pill info">Blocked</span></td><td>No second tenant</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Fail"><td class="mono">O3</td><td>Enumeration</td><td>404 without detail</td><td class="v"><span class="pill bug">Fail</span></td><td>CD-10 — stats for a missing contact = 200</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Pass"><td class="mono">O4</td><td>Token leakage</td><td>No CRM OAuth token or secret in responses</td><td class="v"><span class="pill ok">Pass</span></td><td>No secrets in responses</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Pass"><td class="mono">O5</td><td>Arabic UI</td><td>Labels translated; RTL; arrows (⇄, →) flipped correctly</td><td class="v"><span class="pill ok">Pass</span></td><td>Arabic 450/450, right-to-left</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Pass"><td class="mono">O6</td><td>Keyboard</td><td>Reachable; focus visible; Escape closes dialogs; tabs have "Integration settings sections" / "CRM context sections" names</td><td class="v"><span class="pill ok">Pass</span></td><td>Labels, Tab focus, Escape closes dialogs</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Pass"><td class="mono">O7</td><td>Screen-reader names</td><td>"CRM field for {{field}}", "Sync direction for {{field}}", "Configure {{module}} access for {{profile}}"</td><td class="v"><span class="pill ok">Pass</span></td><td>Screen-reader names on mapping selects</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Pass"><td class="mono">O8</td><td>Narrow screens</td><td>Settings, pane and card usable; no cut-off Save</td><td class="v"><span class="pill ok">Pass</span></td><td>No overflow at 1280 / 1024 / 768</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Pass"><td class="mono">O9</td><td>Bulk sync</td><td>Queue drains; History counts right; record time</td><td class="v"><span class="pill ok">Pass</span></td><td>500 contacts: imported 78 s, synced 62 s</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Partial"><td class="mono">O10</td><td>Pane speed</td><td>Pane &lt; 2 s each</td><td class="v"><span class="pill warn">Partial</span></td><td>Typical 0.6–1.6 s; 3 of 15 calls over 2 s</td></tr>
+      <tr data-g="Group O — Security, i18n / RTL, accessibility, performance, compatibility" data-v="Pass"><td class="mono">O11</td><td>Browsers</td><td>Same behaviour</td><td class="v"><span class="pill ok">Pass</span></td><td>Edge + Chrome; Firefox not installed</td></tr>
+      <tr data-g="E2E journeys" data-v="Pass"><td class="mono">E2E-1</td><td>New customer from sales to support</td><td>Create QA account + contact in CRM, win a deal → customer emails support → agent opens the ticket</td><td class="v"><span class="pill ok">Pass</span></td><td>Chained in Run 2</td></tr>
+      <tr data-g="E2E journeys" data-v="Pass"><td class="mono">E2E-2</td><td>Support adds a customer</td><td>Agent creates a Desk contact with a new email → edits phone → sales edits title in CRM</td><td class="v"><span class="pill ok">Pass</span></td><td>Chained in Run 2</td></tr>
+      <tr data-g="E2E journeys" data-v="Pass"><td class="mono">E2E-3</td><td>Sales pulled in</td><td>Agent @mentions the CRM owner on the ticket → sales replies from the CRM workspace</td><td class="v"><span class="pill ok">Pass</span></td><td>Mention + reply</td></tr>
+      <tr data-g="E2E journeys" data-v="Pass"><td class="mono">E2E-4</td><td>Restricted agent</td><td>Profile Custom (Info + Notes only) → agent works a ticket of a customer with deals</td><td class="v"><span class="pill ok">Pass</span></td><td>Restricted agent</td></tr>
+      <tr data-g="E2E journeys" data-v="Pass"><td class="mono">E2E-5</td><td>Negative recovery</td><td>Map a field that fails → record fails → fix the data → Retry</td><td class="v"><span class="pill ok">Pass</span></td><td>Failure → fix → retry</td></tr>
+      <tr data-g="E2E journeys" data-v="Pass"><td class="mono">E2E-6</td><td>Clean-up</td><td>Delete all QA records with "keep" preferences, purge, restore settings from the baseline</td><td class="v"><span class="pill ok">Pass</span></td><td>Cleanup + restore verified</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z1</td><td>Products sync</td><td>Products row with department scope, "Also sync the product's customer associations" (disabled with a reason unless both are two-way), product field mapping, match on product name (§3)</td><td class="v"><span class="pill bug">Gap</span></td><td>Still missing</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z2</td><td>CRM list-view scoping</td><td>Pick CRM views for Accounts and Contacts; only records in those views sync (§2)</td><td class="v"><span class="pill bug">Gap</span></td><td>Still missing</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z3</td><td>Secondary-email matching</td><td>Email (Primary) / Secondary Email choice; overwrite warning needing confirmation (§2 AC)</td><td class="v"><span class="pill bug">Gap</span></td><td>Still missing</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z4</td><td>Delete only if no associates</td><td>Third option; contact with open tickets is kept and unlinked (§5 AC)</td><td class="v"><span class="pill bug">Gap</span></td><td>Confirmed (E1)</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z5</td><td>All CRM fields in the pane</td><td>Every CRM field incl. custom, or an admin screen to choose them</td><td class="v"><span class="pill bug">Gap</span></td><td>Still missing</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z6</td><td>Escalated / Overdue / High Priority filters</td><td>7 filters</td><td class="v"><span class="pill bug">Gap</span></td><td>Still missing</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z7</td><td>Mutual Users + Invite to Desk</td><td>Mutual users list; invite as Agent / Light Agent / Admin</td><td class="v"><span class="pill bug">Gap</span></td><td>Still missing</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z8</td><td>CRM Contact Type in SLA / assignment rules</td><td>"CRM Contact Type" is / is not Customer, Potential, Contact, Lead</td><td class="v"><span class="pill bug">Gap</span></td><td>From Zoho docs</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z9</td><td>Permission defaults and level names</td><td>Only the Administrator profile has access by default; others no access until ticked; levels named No / Restricted / Full Access</td><td class="v"><span class="pill bug">Gap</span></td><td>Confirmed (J1, J1a)</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z10</td><td>Report when the initial sync finishes</td><td>Email or notice with added / updated / ignored counts and skip reasons</td><td class="v"><span class="pill bug">Gap</span></td><td>Parity pass</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z11</td><td>CRM Leads considered when a Desk contact is created</td><td>No new CRM contact for a person who is a CRM Lead (Zoho community)</td><td class="v"><span class="pill bug">Gap</span></td><td>Parity pass</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z12</td><td>CRM users as Light Agents; CRM-only users comment</td><td>Added to Desk as Light Agents; comment allowed</td><td class="v"><span class="pill bug">Gap</span></td><td>Parity pass</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z13</td><td>@CRM Contact Owner mention</td><td>Mention offered; the contact's owner is notified</td><td class="v"><span class="pill bug">Gap</span></td><td>Parity pass</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z14</td><td>Act from the CRM notification</td><td>Reply / comment / update from the notification</td><td class="v"><span class="pill bug">Gap</span></td><td>Parity pass</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z15</td><td>Integrated user becomes inactive</td><td>Prompt to re-point the integration</td><td class="v"><span class="pill bug">Gap</span></td><td>From UI text; not testable</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z16</td><td>CRM Voice of the Customer from Desk tickets</td><td>Out of NDC-1669 scope</td><td class="v"><span class="pill bug">Gap</span></td><td>Out of NDC-1669 scope</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z17</td><td>Cross-app analytics joining CRM and Desk</td><td>Out of NDC-1669 scope</td><td class="v"><span class="pill bug">Gap</span></td><td>Out of NDC-1669 scope</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z18</td><td>12-month window stated before the first sync</td><td>"Only records created or modified in the last year are synced" shown</td><td class="v"><span class="pill bug">Gap</span></td><td>Parity pass</td></tr>
+      <tr data-g="Group Z — Gaps (run to confirm they are still missing or now built)" data-v="Gap"><td class="mono">Z19</td><td>Empty Handshake columns hidden</td><td>Empty columns are not shown</td><td class="v"><span class="pill bug">Gap</span></td><td>Checked 21 Oct</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section aria-labelledby="parity">
+    <h2 id="parity">Zoho parity: all 153 behaviours</h2>
+    <div class="filters"><input id="pq" type="search" placeholder="Filter Zoho items…" aria-label="Filter Zoho items">
+      <select id="pv" aria-label="Verdict"><option value="">All verdicts</option><option>Implemented</option><option>N/A</option><option>Missing</option><option>Bug</option><option>Not testable</option><option>See other row</option></select></div>
+    <div class="table-box"><table id="paritytable"><thead><tr><th>#</th><th>Area</th><th>Zoho</th><th>TAVI</th><th>Verdict</th><th>Evidence</th></tr></thead><tbody>
+      <tr data-v="Implemented"><td class="mono">1</td><td>Setup and enablement</td><td>Entry point in Desk settings</td><td>Desk → Settings → CRM ⇄ Desk Integration</td><td><span class="pill ok">Implemented</span> </td><td>R1 A1</td></tr>
+      <tr data-v="Implemented"><td class="mono">2</td><td>Setup and enablement</td><td>Paid plan, Desk admin, CRM admin to authorise</td><td>One tenant; admin-only settings (desk:integration:view/manage)</td><td><span class="pill ok">Implemented</span> differently</td><td>R1 A3, R2 A4</td></tr>
+      <tr data-v="N/A"><td class="mono">3</td><td>Setup and enablement</td><td>Path 1A: pick the CRM company, Authorize</td><td>Single Connect button (first-party)</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">4</td><td>Setup and enablement</td><td>Path 1B: request access from another CRM admin</td><td>Same tenant, no request flow needed</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">5</td><td>Setup and enablement</td><td>Entry point in CRM settings</td><td>CRM → Settings → CRM ⇄ Desk Integration</td><td><span class="pill ok">Implemented</span> </td><td>R1 A1</td></tr>
+      <tr data-v="Implemented"><td class="mono">6</td><td>Setup and enablement</td><td>CRM-side 3-step wizard (portal, sync, users &amp; permissions)</td><td>Same content as tabs, no wizard. Products (gap 1) and mutual users (gap 7) missing</td><td><span class="pill ok">Implemented</span> differently</td><td>R1 A1, C1</td></tr>
+      <tr data-v="N/A"><td class="mono">7</td><td>Setup and enablement</td><td>Create a Desk portal from CRM</td><td>Desk always exists in the tenant</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">8</td><td>Setup and enablement</td><td>Use another user's portal (ZSC key)</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">9</td><td>Setup and enablement</td><td>CRM profile permission "Zoho Desk Integration"</td><td>CRM users need <code>desk:integration:view</code>; a CRM-only user gets 403 "Missing required permission"</td><td><span class="pill ok">Implemented</span> </td><td>P crmOnlyUserLimits</td></tr>
+      <tr data-v="N/A"><td class="mono">10</td><td>Setup and enablement</td><td>Paid CRM edition only</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">11</td><td>Setup and enablement</td><td>Paid Desk edition (Handshake in Standard)</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">12</td><td>Setup and enablement</td><td>One portal per CRM org</td><td>One Desk per tenant</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">13</td><td>Setup and enablement</td><td>Accounts module and Contacts &gt; Account Name required</td><td>Health check (<code>metadata_reachable</code>, <code>catalog_ready</code>, <code>deal_support_fields_present</code>) on the Overview</td><td><span class="pill ok">Implemented</span> differently</td><td>R1 B1</td></tr>
+      <tr data-v="Missing"><td class="mono">14</td><td>Setup and enablement</td><td>Disabled integrating user → API key disabled, re-enable</td><td>No handling or message for an inactive integrated user (no UI text)</td><td><span class="pill bug">Missing</span> (gap 15)</td><td>L, not testable without deactivating the owner</td></tr>
+      <tr data-v="Missing"><td class="mono">15</td><td>Setup and enablement</td><td>Integrating admin leaves → prompt to re-point the integration</td><td>Same as 14</td><td><span class="pill bug">Missing</span> (gap 15)</td><td>L</td></tr>
+      <tr data-v="N/A"><td class="mono">16</td><td>Setup and enablement</td><td>Changing portal removes ticket links</td><td>One tenant</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Missing"><td class="mono">17</td><td>Setup and enablement</td><td>Completion email after setup with added / updated / ignored counts and reasons</td><td>No email seen and no in-app notice</td><td><span class="pill bug">Missing</span> (gap 10), also bug CD-07</td><td>R3 B11</td></tr>
+      <tr data-v="Implemented"><td class="mono">18</td><td>Setup and enablement</td><td>Org scope; products by department</td><td>Org-wide contacts and accounts; products missing</td><td><span class="pill ok">Implemented</span> (products = gap 1)</td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">19</td><td>Sync configuration</td><td>Accounts, Contacts, Products sync with custom fields</td><td>Contacts and Accounts, custom fields mappable</td><td><span class="pill ok">Implemented</span> ; Products missing (gap 1)</td><td>R2 G1–G4, P G13</td></tr>
+      <tr data-v="Implemented"><td class="mono">20</td><td>Sync configuration</td><td>Leads, Deals, Notes, Activities not synced as records; shown live</td><td>Same. Deals also become Desk contracts (TAVI extra)</td><td><span class="pill ok">Implemented</span> </td><td>R2 I3, D1</td></tr>
+      <tr data-v="Implemented"><td class="mono">21</td><td>Sync configuration</td><td>Custom modules can't sync</td><td>Same</td><td><span class="pill ok">Implemented</span> (same limit)</td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">22</td><td>Sync configuration</td><td>Two-way default; CRM → Desk one-way; no Desk → CRM one-way</td><td>Same choices</td><td><span class="pill ok">Implemented</span> </td><td>P oneWay</td></tr>
+      <tr data-v="Missing"><td class="mono">23</td><td>Sync configuration</td><td>Products direction</td><td>—</td><td><span class="pill bug">Missing</span> (gap 1)</td><td>Z1</td></tr>
+      <tr data-v="Implemented"><td class="mono">24</td><td>Sync configuration</td><td>Switching one-way → two-way affects only later changes</td><td>Same: the one-way Desk edit was not pushed after switching back</td><td><span class="pill ok">Implemented</span> </td><td>P oneWay</td></tr>
+      <tr data-v="Missing"><td class="mono">25</td><td>Sync configuration</td><td>Limit to CRM list views</td><td>—</td><td><span class="pill bug">Missing</span> (gap 2)</td><td>Z2</td></tr>
+      <tr data-v="Missing"><td class="mono">26</td><td>Sync configuration</td><td>Product department scope</td><td>—</td><td><span class="pill bug">Missing</span> (gap 1)</td><td>Z1</td></tr>
+      <tr data-v="Missing"><td class="mono">27</td><td>Sync configuration</td><td>Product customer associations</td><td>—</td><td><span class="pill bug">Missing</span> (gap 1)</td><td>Z1</td></tr>
+      <tr data-v="Missing"><td class="mono">28</td><td>Sync configuration</td><td>Match on primary or secondary email</td><td>Primary only</td><td><span class="pill bug">Missing</span> (gap 3)</td><td>Z3</td></tr>
+      <tr data-v="Missing"><td class="mono">29</td><td>Sync configuration</td><td>Secondary-email overwrite warning</td><td>—</td><td><span class="pill bug">Missing</span> (gap 3)</td><td>Z3</td></tr>
+      <tr data-v="Implemented"><td class="mono">30</td><td>Sync configuration</td><td>Duplicates: contacts by email, accounts by name, products by name</td><td>Contacts by email (case ignored); accounts by name</td><td><span class="pill ok">Implemented</span> </td><td>R2 G7, G8; P G10</td></tr>
+      <tr data-v="Implemented"><td class="mono">31</td><td>Sync configuration</td><td>Contacts without email sync</td><td>Yes</td><td><span class="pill ok">Implemented</span> </td><td>R2 G11</td></tr>
+      <tr data-v="Implemented"><td class="mono">32</td><td>Sync configuration</td><td>Field mapping, editable later, custom fields</td><td>Yes, per-field direction (TAVI extra)</td><td><span class="pill ok">Implemented</span> </td><td>R1 C2–C4, P G13</td></tr>
+      <tr data-v="Implemented"><td class="mono">33</td><td>Sync configuration</td><td>Type mismatch causes failures</td><td>Blocked at configuration ("datatype_incompatible")</td><td><span class="pill ok">Implemented</span> (better)</td><td>P C7</td></tr>
+      <tr data-v="Bug"><td class="mono">34</td><td>Sync configuration</td><td>Mandatory field missing → failure</td><td>The Desk contact is created <b>without</b> its required Last name; no failure</td><td><span class="pill bug">Bug</span> CD-11</td><td>P G18</td></tr>
+      <tr data-v="Implemented"><td class="mono">35</td><td>Sync configuration</td><td>Mapping changes not retroactive</td><td>Same</td><td><span class="pill ok">Implemented</span> </td><td>P G13</td></tr>
+      <tr data-v="Implemented"><td class="mono">36</td><td>Sync configuration</td><td>Initial bulk import</td><td>Initial customer and contract runs</td><td><span class="pill ok">Implemented</span> </td><td>R3 B9</td></tr>
+      <tr data-v="Missing"><td class="mono">37</td><td>Sync configuration</td><td>Only last 12 months imported; stated on screen</td><td>Not stated; behaviour can't be tested (no records older than 12 months)</td><td><span class="pill bug">Missing</span> statement (gap 18); behaviour not testable</td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">38</td><td>Sync configuration</td><td>Event-driven, near-instant</td><td>About 5 s</td><td><span class="pill ok">Implemented</span> </td><td>R2 G20</td></tr>
+      <tr data-v="Implemented"><td class="mono">39</td><td>Sync configuration</td><td>Pause / Resume</td><td>Yes, with reason; queue drains on resume</td><td><span class="pill ok">Implemented</span> </td><td>R2 B3–B6, R3</td></tr>
+      <tr data-v="Implemented"><td class="mono">40</td><td>Sync configuration</td><td>CRM delete: always / if no associates / never</td><td>Delete / keep and flag / keep and unlink; no "if no associates"</td><td><span class="pill ok">Implemented</span> ; one option missing (gap 4)</td><td>R2 E2–E5</td></tr>
+      <tr data-v="Implemented"><td class="mono">41</td><td>Sync configuration</td><td>Desk delete: always / never</td><td>Same</td><td><span class="pill ok">Implemented</span> </td><td>R2 E6, E7</td></tr>
+      <tr data-v="Missing"><td class="mono">42</td><td>Sync configuration</td><td>Associates definition</td><td>(part of gap 4)</td><td><span class="pill bug">Missing</span> (gap 4)</td><td>Z4</td></tr>
+      <tr data-v="Implemented"><td class="mono">43</td><td>Sync configuration</td><td>Preferences per module</td><td>Yes</td><td><span class="pill ok">Implemented</span> </td><td>R1 E1</td></tr>
+      <tr data-v="N/A"><td class="mono">44</td><td>Sync configuration</td><td>FAQ's simplified delete rule</td><td>Configurable instead</td><td><span class="pill info">N/A</span> (Zoho doc conflict)</td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">45</td><td>Sync configuration</td><td>Attachments and product tickets not synced</td><td>Attachments not synced</td><td><span class="pill ok">Implemented</span> (same)</td><td>—</td></tr>
+      <tr data-v="Bug"><td class="mono">46</td><td>Sync configuration</td><td>Sync History 7 days with added / updated / <b>failed</b></td><td>7 days, added and updated only</td><td><span class="pill bug">Bug</span> CD-06</td><td>R1 H3</td></tr>
+      <tr data-v="Implemented"><td class="mono">47</td><td>Sync configuration</td><td>Failure Log per record with Try Again</td><td>Retry, Retry all, Discard. A fixed record syncs on Retry</td><td><span class="pill ok">Implemented</span> </td><td>P H11, R2 H13</td></tr>
+      <tr data-v="Bug"><td class="mono">48</td><td>Sync configuration</td><td>Readable failure reasons</td><td>Raw record IDs</td><td><span class="pill bug">Bug</span> CD-03</td><td>R2 G19</td></tr>
+      <tr data-v="Missing"><td class="mono">49</td><td>Sync configuration</td><td>A Desk contact isn't created in CRM when the person is a CRM Lead (community)</td><td>TAVI creates a second CRM <b>contact</b> for the lead's email</td><td><span class="pill bug">Missing</span> (gap 11)</td><td>P leadHandling</td></tr>
+      <tr data-v="Implemented"><td class="mono">50</td><td>Sync configuration</td><td>Map a Lead Source for Desk-created contacts</td><td>Any field can be mapped</td><td><span class="pill ok">Implemented</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">51</td><td>Desk-side surfaces</td><td>CRM info on the ticket</td><td>CRM pane: Info, Potentials, Notes, Activities</td><td><span class="pill ok">Implemented</span> </td><td>R1 I1, I2</td></tr>
+      <tr data-v="Implemented"><td class="mono">52</td><td>Desk-side surfaces</td><td>Panel navigation, View in CRM</td><td>Open in CRM, Update from CRM, account pane</td><td><span class="pill ok">Implemented</span> </td><td>R2 I11, P I13</td></tr>
+      <tr data-v="Implemented"><td class="mono">53</td><td>Desk-side surfaces</td><td>Info, Potentials, Notes, Activities (calls, events, tasks)</td><td>Same (calls, meetings, tasks)</td><td><span class="pill ok">Implemented</span> </td><td>R1 I2, R2 I3</td></tr>
+      <tr data-v="Implemented"><td class="mono">54</td><td>Desk-side surfaces</td><td>Matching by sender email</td><td>Yes; unlinked → "Not linked to a CRM record"</td><td><span class="pill ok">Implemented</span> </td><td>R1 I7</td></tr>
+      <tr data-v="Implemented"><td class="mono">55</td><td>Desk-side surfaces</td><td>CRM info on the Desk contact and account pages</td><td>Contact: pane. Account: "CRM Account Info" rail</td><td><span class="pill ok">Implemented</span> </td><td>P I14, I13</td></tr>
+      <tr data-v="Implemented"><td class="mono">56</td><td>Desk-side surfaces</td><td>"Contacts Mapped / Unmapped with CRM" views</td><td>System views <code>crm-mapped</code> / <code>crm-unmapped</code></td><td><span class="pill ok">Implemented</span> </td><td>B</td></tr>
+      <tr data-v="Implemented"><td class="mono">57</td><td>Desk-side surfaces</td><td>Account mapped / unmapped views</td><td>Same views on accounts (the module has the CRM link field)</td><td><span class="pill ok">Implemented</span> </td><td>B</td></tr>
+      <tr data-v="Not testable"><td class="mono">58</td><td>Desk-side surfaces</td><td>CRM info tab in the mobile app</td><td>—</td><td><span class="pill warn">Not testable</span> here (no mobile build)</td><td>—</td></tr>
+      <tr data-v="Bug"><td class="mono">59</td><td>Desk-side surfaces</td><td>Handshake columns; empty ones hidden; email <b>or phone</b></td><td>Columns present; email works; <b>phone match not used</b>; empty columns are <b>shown</b> ("No tickets in this Queue")</td><td><span class="pill bug">Bug</span> CD-12 (phone); gap 19 (empty columns)</td><td>R1 K1, K2; P K4, P Z-59</td></tr>
+      <tr data-v="Implemented"><td class="mono">60</td><td>Desk-side surfaces</td><td>Handshake removed when the integration is deleted</td><td>Hidden when disconnected; still offered while paused</td><td><span class="pill ok">Implemented</span> ; bug CD-02 (paused)</td><td>R3 K10</td></tr>
+      <tr data-v="Missing"><td class="mono">61</td><td>Desk-side surfaces</td><td>CRM users auto-added to Desk as Light Agents</td><td>CRM-only users have no Desk profile</td><td><span class="pill bug">Missing</span> (gap 12)</td><td>P (<code>/iam/me</code>)</td></tr>
+      <tr data-v="Missing"><td class="mono">62</td><td>Desk-side surfaces</td><td>@CRM Contact Owner mention</td><td>No such entry among mentionable users</td><td><span class="pill bug">Missing</span> (gap 13)</td><td>P M7</td></tr>
+      <tr data-v="Implemented"><td class="mono">63</td><td>Desk-side surfaces</td><td>Light Agent capabilities</td><td>Desk Light Agent profile exists (NDC-1981)</td><td><span class="pill ok">Implemented</span> (separate feature)</td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">64</td><td>Desk-side surfaces</td><td>Hide CRM data per profile ("Visible")</td><td>No access per module</td><td><span class="pill ok">Implemented</span> </td><td>R2 J4</td></tr>
+      <tr data-v="Implemented"><td class="mono">65</td><td>Desk-side surfaces</td><td>Accounts / Contacts per profile</td><td>Yes</td><td><span class="pill ok">Implemented</span> </td><td>R2 J9</td></tr>
+      <tr data-v="Implemented"><td class="mono">66</td><td>Desk-side surfaces</td><td>Full / Restricted per section and activity type</td><td>Yes; named "Custom Access"; default Full for everyone</td><td><span class="pill ok">Implemented</span> ; naming and default = gap 9</td><td>R2 J3–J8</td></tr>
+      <tr data-v="Implemented"><td class="mono">67</td><td>Desk-side surfaces</td><td>12 permission flags in the API</td><td><code>panel.profile_access</code> in the settings API</td><td><span class="pill ok">Implemented</span> </td><td>R2 J3</td></tr>
+      <tr data-v="N/A"><td class="mono">68</td><td>Desk-side surfaces</td><td>No native lead / deal / task from Desk</td><td>Same</td><td><span class="pill info">N/A</span> (same as Zoho)</td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">69</td><td>Desk-side surfaces</td><td>CRM contact created via Desk contact</td><td>Yes</td><td><span class="pill ok">Implemented</span> </td><td>R2 G2</td></tr>
+      <tr data-v="Implemented"><td class="mono">70</td><td>Desk-side surfaces</td><td>Ticket for a lead creates a Desk contact</td><td>Yes; Handshake shows Contacts/Leads</td><td><span class="pill ok">Implemented</span> (see 49)</td><td>P K7</td></tr>
+      <tr data-v="Implemented"><td class="mono">71</td><td>Desk-side surfaces</td><td>Notes / activities view-only in Desk</td><td>Notes can be added to CRM (notes-target)</td><td><span class="pill ok">Implemented</span> (TAVI extra)</td><td>R2 J8</td></tr>
+      <tr data-v="Implemented"><td class="mono">72</td><td>Desk-side surfaces</td><td>Only deal names in Desk</td><td>Stage, amount, closing date, link to ticket</td><td><span class="pill ok">Implemented</span> (TAVI extra)</td><td>R2 I3</td></tr>
+      <tr data-v="Missing"><td class="mono">73</td><td>Desk-side surfaces</td><td>"CRM Contact Type" in SLA and assignment criteria</td><td>—</td><td><span class="pill bug">Missing</span> (gap 8)</td><td>Z8</td></tr>
+      <tr data-v="Implemented"><td class="mono">74</td><td>CRM-side surfaces</td><td>Related list on Accounts, Contacts, Deals; enable on others</td><td>CRM Related Lists setting</td><td><span class="pill ok">Implemented</span> </td><td>R1 E10</td></tr>
+      <tr data-v="Implemented"><td class="mono">75</td><td>CRM-side surfaces</td><td>Only modules with an email field are eligible</td><td>Unsupported modules show "No ticket link"</td><td><span class="pill ok">Implemented</span> differently</td><td>R1 E10</td></tr>
+      <tr data-v="N/A"><td class="mono">76</td><td>CRM-side surfaces</td><td>Custom module related list</td><td>No custom modules on staging</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">77</td><td>CRM-side surfaces</td><td>Leads, Contacts, Deals, Accounts, Products, Vendors, Cases</td><td>TAVI CRM has no Products, Vendors or Cases modules</td><td><span class="pill info">N/A</span> (no such modules)</td><td>missing list note</td></tr>
+      <tr data-v="Implemented"><td class="mono">78</td><td>CRM-side surfaces</td><td>Auto-linking by sender email; Refresh</td><td>Yes; Refresh button</td><td><span class="pill ok">Implemented</span> </td><td>R1 L1, L</td></tr>
+      <tr data-v="Implemented"><td class="mono">79</td><td>CRM-side surfaces</td><td>Ticket visibility: integrated user's departments or the user's own</td><td>Both; enforced (user in no Desk department sees none)</td><td><span class="pill ok">Implemented</span> </td><td>P J12</td></tr>
+      <tr data-v="Implemented"><td class="mono">80</td><td>CRM-side surfaces</td><td>"No ticket found" when not in the department</td><td>Same behaviour</td><td><span class="pill ok">Implemented</span> </td><td>P J12</td></tr>
+      <tr data-v="Missing"><td class="mono">81</td><td>CRM-side surfaces</td><td>Filters Overdue, Closed, Escalated, High priority</td><td>All / Open / On hold / Closed</td><td><span class="pill bug">Missing</span> (gap 6)</td><td>Z6</td></tr>
+      <tr data-v="Implemented"><td class="mono">82</td><td>CRM-side surfaces</td><td>New ticket from CRM</td><td>Desk ticket form, prefilled; lands on the linked contact</td><td><span class="pill ok">Implemented</span> </td><td>P L5</td></tr>
+      <tr data-v="Implemented"><td class="mono">83</td><td>CRM-side surfaces</td><td>"+ New" missing when the contact has no email</td><td>New ticket stays enabled (the contact syncs without email, so Desk can take the ticket)</td><td><span class="pill ok">Implemented</span> differently</td><td>P Z-83</td></tr>
+      <tr data-v="Implemented"><td class="mono">84</td><td>CRM-side surfaces</td><td>Reply / comment / forward from CRM</td><td>CRM → Desk ticket workspace (reply, reply all, forward, comment)</td><td><span class="pill ok">Implemented</span> </td><td>P, B</td></tr>
+      <tr data-v="Implemented"><td class="mono">85</td><td>CRM-side surfaces</td><td>Update ticket fields from CRM</td><td>Update field: status, priority, owner, due date</td><td><span class="pill ok">Implemented</span> </td><td>P L12</td></tr>
+      <tr data-v="Implemented"><td class="mono">86</td><td>CRM-side surfaces</td><td>Close / delete from CRM</td><td>Yes</td><td><span class="pill ok">Implemented</span> </td><td>P L12</td></tr>
+      <tr data-v="Implemented"><td class="mono">87</td><td>CRM-side surfaces</td><td>CRM-only users view and comment only</td><td>View: yes. Create, close, edit: refused (403). <b>Comment also refused</b></td><td><span class="pill ok">Implemented</span> ; comment differs (part of gap 12)</td><td>P crmOnlyUserLimits</td></tr>
+      <tr data-v="Implemented"><td class="mono">88</td><td>CRM-side surfaces</td><td>Link / unlink tickets to deals</td><td>Yes</td><td><span class="pill ok">Implemented</span> </td><td>R2 I15</td></tr>
+      <tr data-v="Implemented"><td class="mono">89</td><td>CRM-side surfaces</td><td>Statistics on the record</td><td>Yes</td><td><span class="pill ok">Implemented</span> </td><td>R1 L2, R2 L2</td></tr>
+      <tr data-v="Implemented"><td class="mono">90</td><td>CRM-side surfaces</td><td>Happiness in CRM</td><td>Statistics + rating signal</td><td><span class="pill ok">Implemented</span> </td><td>R1 M1</td></tr>
+      <tr data-v="Implemented"><td class="mono">91</td><td>CRM-side surfaces</td><td>Signals for Desk events; reply / comment / update from the signal</td><td>Bell entries arrive (ticket created, mention); only open the record, no actions</td><td><span class="pill ok">Implemented</span> ; acting from the notification missing (gap 14)</td><td>P M2, M6, Z-91</td></tr>
+      <tr data-v="Implemented"><td class="mono">92</td><td>CRM-side surfaces</td><td>Desk tab in CRM</td><td>"Desk" in the CRM menu</td><td><span class="pill ok">Implemented</span> </td><td>P Z-92</td></tr>
+      <tr data-v="N/A"><td class="mono">93</td><td>CRM-side surfaces</td><td>Intermittent missing module</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Missing"><td class="mono">94</td><td>CRM-side surfaces</td><td>Invite CRM users to Desk; mutual users</td><td>—</td><td><span class="pill bug">Missing</span> (gap 7)</td><td>Z7</td></tr>
+      <tr data-v="N/A"><td class="mono">95</td><td>CRM-side surfaces</td><td>Licence use per role</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">96</td><td>CRM-side surfaces</td><td>CRM dashboard component (not in Zoho)</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Missing"><td class="mono">97</td><td>CRM-side surfaces</td><td>CRM Zia Voice of the Customer from Desk tickets</td><td>—</td><td><span class="pill bug">Missing</span> (gap 16; Enterprise-only AI feature, not in NDC-1669)</td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">98</td><td>CRM-side surfaces</td><td>Unified client portal (not in Zoho)</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">99–102</td><td>Automation</td><td>Deluge custom functions and zoho.desk / zoho.crm tasks</td><td>Platform automation, not part of this integration</td><td><span class="pill info">N/A</span> (out of scope)</td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">103–104</td><td>Automation</td><td>CRM workflow → Desk ticket via custom function</td><td>Same</td><td><span class="pill info">N/A</span> (out of scope)</td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">105</td><td>Automation</td><td>Assignment by CRM contact owner (not in Zoho)</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Missing"><td class="mono">106</td><td>Automation</td><td>CRM Contact Type in SLA / round robin</td><td>—</td><td><span class="pill bug">Missing</span> (gap 8)</td><td>Z8</td></tr>
+      <tr data-v="N/A"><td class="mono">107–110</td><td>Automation</td><td>CRM fields in workflow criteria, blueprint, webhooks, Zia routing (not in Zoho)</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">111</td><td>Reporting</td><td>In-CRM ticket statistics</td><td>Yes</td><td><span class="pill ok">Implemented</span> </td><td>R1 L2</td></tr>
+      <tr data-v="Missing"><td class="mono">112–114</td><td>Reporting</td><td>Zoho Analytics joins CRM and Desk tables</td><td>Separate Analytics product</td><td><span class="pill bug">Missing</span> (gap 17; separate product, not in NDC-1669)</td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">115</td><td>Reporting</td><td>Native Desk reports with CRM fields (not in Zoho)</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">116</td><td>Deactivate, delete, reconfigure</td><td>Pause</td><td>Yes</td><td><span class="pill ok">Implemented</span> </td><td>R2, R3</td></tr>
+      <tr data-v="Implemented"><td class="mono">117</td><td>Deactivate, delete, reconfigure</td><td>Delete from Desk: sync stops, CRM info gone, Handshake gone; admins only</td><td>Disconnect: sync stops, pane gone, Handshake hidden; admin only</td><td><span class="pill ok">Implemented</span> </td><td>R3 B8, R2 A4</td></tr>
+      <tr data-v="Implemented"><td class="mono">118</td><td>Deactivate, delete, reconfigure</td><td>Deactivate from CRM</td><td>Pause / Disconnect on the CRM page too</td><td><span class="pill ok">Implemented</span> </td><td>P Z-118</td></tr>
+      <tr data-v="Implemented"><td class="mono">119</td><td>Deactivate, delete, reconfigure</td><td>CRM side after deactivation: related lists removed, deal-ticket links deleted, Desk tab removed</td><td>While disconnected: Desk Tickets card hidden on the CRM record, "Desk" gone from the CRM menu, workspace says "Desk is not available"</td><td><span class="pill ok">Implemented</span> </td><td>P Z-119 (21 Oct, user-approved disconnect)</td></tr>
+      <tr data-v="Implemented"><td class="mono">120</td><td>Deactivate, delete, reconfigure</td><td>Synced records stay</td><td>Links and records kept</td><td><span class="pill ok">Implemented</span> </td><td>R3 B8, B14</td></tr>
+      <tr data-v="N/A"><td class="mono">121</td><td>Deactivate, delete, reconfigure</td><td>Trial expiry pauses sync</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">122</td><td>Deactivate, delete, reconfigure</td><td>Re-integration through support</td><td>Reconnect without duplicates</td><td><span class="pill ok">Implemented</span> differently</td><td>R3 B14</td></tr>
+      <tr data-v="N/A"><td class="mono">123</td><td>Deactivate, delete, reconfigure</td><td>Zoho One delete vs deactivate</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">124</td><td>API</td><td>Contact's CRM link and type in the API</td><td><code>crm_record_id</code>, <code>crm_sync_status</code>; type via <code>/tickets/classify</code></td><td><span class="pill ok">Implemented</span> differently</td><td>R1 K2</td></tr>
+      <tr data-v="Implemented"><td class="mono">125</td><td>API</td><td>Account's CRM link</td><td>Same</td><td><span class="pill ok">Implemented</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">126</td><td>API</td><td>Link can't be set via API (Zoho)</td><td><code>POST /links</code> (TAVI extra)</td><td><span class="pill ok">Implemented</span> (extra)</td><td>R2 I8</td></tr>
+      <tr data-v="Implemented"><td class="mono">127</td><td>API</td><td>Customer happiness on contacts / accounts</td><td>In the statistics</td><td><span class="pill ok">Implemented</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">128</td><td>API</td><td>Profile permission API</td><td>Settings API</td><td><span class="pill ok">Implemented</span> </td><td>R2 J3</td></tr>
+      <tr data-v="Missing"><td class="mono">129</td><td>API</td><td>Criteria-field APIs with CRM Contact Type</td><td>—</td><td><span class="pill bug">Missing</span> (gap 8)</td><td>Z8</td></tr>
+      <tr data-v="N/A"><td class="mono">130</td><td>API</td><td>API credit limits</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="Implemented"><td class="mono">131</td><td>API</td><td>No integration config API in Zoho</td><td>Full settings API (TAVI extra)</td><td><span class="pill ok">Implemented</span> (extra)</td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">132–133</td><td>API</td><td>Deluge / CRM function budgets</td><td>—</td><td><span class="pill info">N/A</span> </td><td>—</td></tr>
+      <tr data-v="N/A"><td class="mono">134</td><td>Limits and FAQs (repeats of the above)</td><td>One portal per org</td><td></td><td><span class="pill info">N/A</span> </td><td></td></tr>
+      <tr data-v="See other row"><td class="mono">135</td><td>Limits and FAQs (repeats of the above)</td><td>12-month initial window</td><td></td><td><span class="pill warn">See other row</span> see 37</td><td></td></tr>
+      <tr data-v="Implemented"><td class="mono">136</td><td>Limits and FAQs (repeats of the above)</td><td>History kept 7 days</td><td></td><td><span class="pill ok">Implemented</span> </td><td></td></tr>
+      <tr data-v="Implemented"><td class="mono">137</td><td>Limits and FAQs (repeats of the above)</td><td>Ticket shows in CRM only on email match; phone for Handshake</td><td></td><td><span class="pill ok">Implemented</span> ; phone = bug CD-12</td><td></td></tr>
+      <tr data-v="Implemented"><td class="mono">138</td><td>Limits and FAQs (repeats of the above)</td><td>Department visibility</td><td></td><td><span class="pill ok">Implemented</span> (79)</td><td></td></tr>
+      <tr data-v="See other row"><td class="mono">139</td><td>Limits and FAQs (repeats of the above)</td><td>No-email contacts sync, "+ New" hidden</td><td></td><td><span class="pill warn">See other row</span> see 31, 83</td><td></td></tr>
+      <tr data-v="Implemented"><td class="mono">140</td><td>Limits and FAQs (repeats of the above)</td><td>Mass updates sync</td><td></td><td><span class="pill ok">Implemented</span> (R2 G12)</td><td></td></tr>
+      <tr data-v="Missing"><td class="mono">141</td><td>Limits and FAQs (repeats of the above)</td><td>Secondary email overwrites primary</td><td></td><td><span class="pill bug">Missing</span> (gap 3)</td><td></td></tr>
+      <tr data-v="Implemented"><td class="mono">142</td><td>Limits and FAQs (repeats of the above)</td><td>Mappings not retroactive</td><td></td><td><span class="pill ok">Implemented</span> (35)</td><td></td></tr>
+      <tr data-v="Implemented"><td class="mono">143</td><td>Limits and FAQs (repeats of the above)</td><td>Deactivation deletes deal-ticket links</td><td></td><td><span class="pill ok">Implemented</span> differently: TAVI keeps the link through disconnect + reconnect, as its Disconnect dialog says ("Existing links … are kept"). Not a gap</td><td></td></tr>
+      <tr data-v="Implemented"><td class="mono">144</td><td>Limits and FAQs (repeats of the above)</td><td>Custom modules can't sync</td><td></td><td><span class="pill ok">Implemented</span> (same)</td><td></td></tr>
+      <tr data-v="N/A"><td class="mono">145</td><td>Limits and FAQs (repeats of the above)</td><td>Ticket to lead / task not native</td><td></td><td><span class="pill info">N/A</span> </td><td></td></tr>
+      <tr data-v="N/A"><td class="mono">146</td><td>Limits and FAQs (repeats of the above)</td><td>Related list can't be renamed or filtered by department</td><td></td><td><span class="pill info">N/A</span> </td><td></td></tr>
+      <tr data-v="Missing"><td class="mono">147</td><td>Limits and FAQs (repeats of the above)</td><td>Integrating admin dependency</td><td></td><td><span class="pill bug">Missing</span> (gap 15)</td><td></td></tr>
+      <tr data-v="N/A"><td class="mono">148</td><td>Limits and FAQs (repeats of the above)</td><td>Doc inconsistency</td><td></td><td><span class="pill info">N/A</span> </td><td></td></tr>
+      <tr data-v="N/A"><td class="mono">149–153</td><td>Zoho One admin guide</td><td>Zoho One admin panel, pending actions, deactivate vs delete, doc link, API credits</td><td></td><td><span class="pill info">N/A</span> </td><td></td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section aria-labelledby="notcovered">
+    <h2 id="notcovered">Not covered</h2>
+    <ul class="plain">
+      <li><b>Blocked by staging:</b> A11 (No second tenant), B12 (No CRM records older than 12 months), D13 (Telephony does not log calls), D14 (Telephony), D15 (Telephony), M9 (No Light Agents to test (Z12)), O2 (No second tenant).</li>
+      <li><b>Not run:</b> A2 (Screen state for a user without view permission not opened (API side = A3)), A6 (Settings URL opened by an agent on screen not checked (API refuses, A3)), C8 (Pick-list mismatch not exercised), C12 (Protected target message not exercised), C14 (Schema load failure not simulated), C15 (Stray mapping (deleted Desk field) not exercised), C16 (Accounts editor not repeated (Contacts checked)), H4 (Time-zone day boundary not checked), H5 (Empty-day text not checked), H14 (Log never empty on staging), L15 (Desk Contracts card on a CRM account not opened), M10 (Markup inside a mention comment not checked in the bell).</li>
+      <li><b>Inconclusive / partial:</b> B2, B10, C9, D12, G17, I18, M3, O10.</li>
+      <li><b>Skipped on purpose:</b> H12 (Would re-queue a teammate's parked failures).</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="changes">
+    <h2 id="changes">Changes made during testing</h2>
+    <ul class="plain">
+      <li><b>TAVI settings:</b> changed one at a time in Runs 2–3 and the later passes, each restored straight away; a final field-by-field comparison with the 20 Oct baseline shows every section identical.</li>
+      <li><b>Connection:</b> two user-approved Disconnect/Connect cycles (20 Oct 15:32 UTC, 21 Oct 11:18 UTC). The integration is connected and not paused; "connected since" is now 21 Oct 11:18 UTC.</li>
+      <li><b>Records:</b> every "QA CD" record was deleted in both apps (including 1,000 from the 500-contact test); deleted records sit in the recycle bins. Links and Sync History rows of the test records remain.</li>
+      <li><b>Users and profiles:</b> the Desk Agent profile's CRM access was changed briefly for permission tests and restored; the QA agent got a temporary view-only override for A5, removed afterwards. No profile was created or deleted.</li>
+      <li><b>Owner's view:</b> the ticket list was switched to Handshake Mode once and back to Classic View; the automation session's language was switched to Arabic and back (stored only in that session).</li>
+      <li><b>Zoho:</b> the Zoho Desk ↔ Zoho CRM integration created on 18 Oct for the comparison was deleted on 21 Oct (user decision); records it copied stay in both Zoho orgs.</li>
+      <li><b>Plane:</b> nothing filed.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="files">
+    <h2 id="files">Files</h2>
+    <ul class="plain">
+      <li>Missing list: docs/crm-desk-integration/crm-desk-integration-missing-list.md and missing-report.html</li>
+      <li>Zoho parity matrix: docs/crm-desk-integration/zoho-parity-matrix.md</li>
+      <li>Spec: docs/crm-desk-integration/spec-crm-desk-integration.md / .html</li>
+      <li>Run log with every detail: executions/execu_2026-10-20_crm-desk-integration/report.md, run2-facts.txt</li>
+      <li>Bug report: executions/execu_2026-10-20_crm-desk-integration/bug-report.html</li>
+      <li>Automation: automation/src/test/java/qa/features/crmdeskintegration/ (feature map in automation/src/test/resources/features/crmdeskintegration/feature-map.md)</li>
+    </ul>
+  </section>
+</div>
+<script>
+function wire(qId, sel, tableId, gId) {
+  const q = document.getElementById(qId), v = document.getElementById(sel), g = gId ? document.getElementById(gId) : null;
+  const run = () => { const t = q.value.toLowerCase(); for (const r of document.querySelectorAll('#' + tableId + ' tbody tr')) {
+    const ok = (!t || r.textContent.toLowerCase().includes(t)) && (!v.value || r.dataset.v === v.value) && (!g || !g.value || r.dataset.g === g.value);
+    r.classList.toggle('hidden', !ok); } };
+  [q, v, g].filter(Boolean).forEach(e => e.addEventListener('input', run));
+}
+wire('q', 'v', 'rowtable', 'g'); wire('pq', 'pv', 'paritytable');
+</script>

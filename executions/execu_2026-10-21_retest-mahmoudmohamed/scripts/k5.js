@@ -1,0 +1,6 @@
+const box = page.getByPlaceholder('Search').last();
+const pop = box.locator('xpath=ancestor::div[contains(@class,"absolute") or contains(@class,"fixed") or @role="dialog" or @role="listbox"][1]');
+const list = await page.evaluate(() => { const inp = [...document.querySelectorAll('input[placeholder="Search"]')].pop(); let p = inp; for (let i = 0; i < 6 && p; i++) { p = p.parentElement; if (p && p.scrollHeight > 300) break; } const sc = p && [...p.querySelectorAll('*')].find(e => e.scrollHeight > e.clientHeight + 5 && /(auto|scroll)/.test(getComputedStyle(e).overflowY)); return { text: (p || {}).innerText, sh: sc && sc.scrollHeight, ch: sc && sc.clientHeight }; });
+const shots = [];
+for (let i = 1; i <= 6; i++) { const done1 = await page.evaluate(k => { const inp = [...document.querySelectorAll('input[placeholder="Search"]')].pop(); let p = inp; for (let j = 0; j < 6 && p; j++) { p = p.parentElement; if (p && p.scrollHeight > 300) break; } const sc = [...p.querySelectorAll('*')].find(e => e.scrollHeight > e.clientHeight + 5 && /(auto|scroll)/.test(getComputedStyle(e).overflowY)); if (!sc) return true; sc.scrollTop = k * (sc.clientHeight - 30); return sc.scrollTop + sc.clientHeight >= sc.scrollHeight; }, i); await sleep(400); shots.push(await shot('1344-02-scroll-' + i)); if (done1) break; }
+return done({ text: list.text, sh: list.sh, ch: list.ch, shots });

@@ -100,6 +100,29 @@ public class IntegrationSettingsPage extends BasePage {
         return t;
     }
 
+    // ---------------- connection actions (write runs only, user-approved) ----------------
+
+    public boolean hasButton(String label) {
+        return isShown("pageButton", 5, label);
+    }
+
+    /**
+     * Clicks a connection button (Pause sync, Resume sync, Disconnect, Connect), types the optional reason, reads the
+     * dialog and confirms with the dialog's own button. Returns "dialog text || page text after" for the verdict.
+     */
+    public String connectionAction(String label, String reason) {
+        click("pageButton", label);
+        String dialog = isShown("dialog", 10) ? el("dialog").getText() : "(no dialog)";
+        if (reason != null && isShown("dialogInput", 3)) type("dialogInput", reason);
+        if (isShown("dialogButton", 3, label)) click("dialogButton", label);
+        else {
+            List<WebElement> bs = driver.findElements(By.xpath("//*[@role='dialog']//button[not(normalize-space(.)='Cancel')][last()]"));
+            if (!bs.isEmpty()) bs.get(bs.size() - 1).click();
+        }
+        Waits.sleep(2500);
+        return dialog + " || " + bodyText();
+    }
+
     public void scrollAll() {
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
         Waits.sleep(500);

@@ -1,0 +1,12 @@
+await page.locator('[role=dialog]').last().getByRole('button', { name: 'Close' }).first().click(); await sleep(800);
+const row = page.locator('tr').filter({ hasText: 'QA-RT-leads-imp.xlsx' }).first();
+await row.locator('button').last().click(); await sleep(1000);
+await page.getByRole('menuitem', { name: 'Undo import' }).click(); await sleep(2000);
+const d = (await page.locator('[role=dialog],[role=alertdialog]').allInnerTexts()).pop();
+await shot('1587-01-undo-dialog');
+const resp = []; const f = async r => { const q = r.request(); if (q.method() !== 'GET' && q.url().includes('/api/')) resp.push(q.method() + ' ' + q.url().replace(H + '/api/v1', '') + ' → ' + r.status()); }; page.on('response', f);
+await page.locator('[role=dialog],[role=alertdialog]').last().getByRole('button', { name: /Undo import/ }).click(); await sleep(5000);
+page.off('response', f);
+await shot('1587-02-undone');
+const rowNow = await page.locator('tr').filter({ hasText: 'QA-RT-leads-imp.xlsx' }).first().innerText();
+return done({ d, resp, toasts: await page.locator('[data-sonner-toast]').allInnerTexts(), rowNow });

@@ -40,8 +40,8 @@ Nothing was saved in TAVI or Zoho. Forms were opened and cancelled. In Zoho, thr
   - states and transitions with Before (owners, criteria), During (fields, validations, checklist, message, tags, note, attachment) and After (field update, email, notification, task, meeting, call, webhook)
   - common, automatic and parallel transitions
   - SLA per state
-  - mass include/exclude
   - versions
+- Out of scope until implemented in TAVI CRM: mass include / mass exclude of records (Zoho: Setup → Blueprint → Filters → Include / Exclude). TAVI has only the API (`/mass-include`, `/mass-exclude`) with no CRM screen. Not tested or reported until a screen exists (user, 20 Oct 2026).
 - TAVI also has things Zoho does not:
   - Review on Tasks (Zoho has no review on Tasks; confirmed live).
   - Review delegation (Zoho has none).
@@ -51,7 +51,7 @@ Nothing was saved in TAVI or Zoho. Forms were opened and cancelled. In Zoho, thr
 
 ## Missing: execution order and entry points
 
-1. Import can start only workflow rules (*"Trigger workflow rules"*). Zoho's single option *"Trigger automation and process management"* also runs Review, Approval, Blueprint and CommandCenter on imported records. Spec case Z1 checks whether TAVI's import starts approval and blueprint anyway. Evidence `01`.
+1. The import option *"Trigger workflow rules"* has a misleading name. It actually controls whether workflow rules, the approval process and the blueprint run on imported records (verified 19 Oct 2026: G-03, G-04, Z1). Rename it to Zoho's *"Trigger automation and process management"*, then retest import with the option on and off. Evidence `01`.
 2. Manual approval of imported records (Zoho *"Enable Manual Lead Approval"*) shows *"Coming soon"* in TAVI. Evidence `01`.
 
 ## Missing: workflow rules
@@ -75,6 +75,14 @@ Nothing was saved in TAVI or Zoho. Forms were opened and cancelled. In Zoho, thr
 ## Missing: review process (added 19 Oct 2026)
 
 10. Rejection reasons for each review process. TAVI has one list for all review processes (*"Configure Rejection Reasons"* on the Review Process list page, `GET /workflow/review-rejection-reasons`, at most 10 active for the whole org), so changing a reason changes every process. In Zoho the reasons are set inside each process (Actions → *"Configure Reasons For Record Rejection"*) and saved with it. Defaults and "reason required" are the same. Zoho was checked read-only (help pages + the dialog of the existing process); a definitive two-process check would need saving in Zoho. Evidence `09`.
+
+## Missing: workflow scheduled actions (added 20 Oct 2026)
+
+11. Field Update, Assign Owner and Tags as **scheduled** actions. TAVI offers only Webhook, Email, Task, Create Record and Send portal access (TAVI extra). Zoho also offers Field Update, Assign Owner, Tags, Activities (Task, Meeting, Call), Create Connected Record and Function; Meeting, Call, Function and Create Connected Record are already item 4. The API accepts `delaySeconds` on a Field Update but runs it at once (was B-12, withdrawn 20 Oct), so the delay must be honoured once the screen offers it. Screenshots by the user (TAVI staging, Zoho org943261092 read-only). Evidence `10`.
+
+## Missing: workflow conditions (added 22 Oct 2026)
+
+12. Several **conditions in one workflow rule**, each with its own instant and scheduled actions. Zoho: up to 10 conditions per rule, checked in order (first match runs, the rest are skipped; "records not meeting any of the above" from the 2nd condition on); two conditions with the same criteria in one rule are refused (`AMBIGUITY_DURING_PROCESSING`), and the same action twice in one condition is refused (`DUPLICATE_DATA`). TAVI stores one `criteria` and one `actions` list per rule (`GET /workflow/rules/{id}`) and the editor offers no "+ Add another condition". Workaround: separate rules, which all fire (no first-match-wins, no else). Evidence `12`. Added to NDC-2294 on 22 Oct 2026.
 
 ## Could not be checked yet (these are tested in the spec, not gaps)
 

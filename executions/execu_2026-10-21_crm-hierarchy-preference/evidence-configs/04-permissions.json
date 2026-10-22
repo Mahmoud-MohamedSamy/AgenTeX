@@ -1,0 +1,38 @@
+{
+ "out": "../screenshots/annotated/HP-03-05-permissions.png",
+ "id": "HP-03 (E7d) · HP-05 (G9)",
+ "title": "Permission leaks: a Desk profile grants CRM view-all; a user can set their own manager without permission",
+ "verdict": "FAILED",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "HP-03 — API",
+   "flag": "API RESULT",
+   "text": [
+    "GET /iam/profiles/{Desk Administrator}/permissions contains metadata.records.view_all (profile app = desk).",
+    "mahmoud.mmohamedsamy holds CRM Supervisor + Desk Administrator: GET /iam/me/permissions has metadata.records.view_all, and the user opens every CRM lead (10,848), so the CRM hierarchy never applies to them."
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "HP-05 — API",
+   "flag": "API RESULT",
+   "text": [
+    "nameb56175 (User profile) does not have iam.personal.reporting_hierarchy; the Personal Reporting Hierarchy page is hidden for them.",
+    "PUT /iam/me/profile {reporting_manager_id: <valafo4080>} as nameb56175 -> 200, and GET /iam/users shows the new manager. The admin route PATCH /iam/users/{id}/reporting-manager correctly returns 403 for the same user.",
+    "The test set the manager back right away."
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Reference (docs)",
+   "flag": "DOCS ONLY",
+   "text": [ "Zoho: only an administrator sets a user's Reports To (Users → user details). Profiles are per product; a Zoho Desk profile does not change Zoho CRM data sharing." ]
+  }
+ ],
+ "rows": [
+  { "n": 1, "b": "Desk profile affects CRM record access", "zoho": "No", "tavi": "Yes (view-all)", "match": "Bug" },
+  { "n": 2, "b": "User without permission changes own manager", "zoho": "Not possible", "tavi": "Possible through /iam/me/profile", "match": "Bug" }
+ ]
+}

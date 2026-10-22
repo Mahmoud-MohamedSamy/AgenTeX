@@ -1,0 +1,8 @@
+{ "out": "NDC-1302-api.png", "title": "NDC-1302 — Deals: pipeline vs stage (staging-crm, 21 Oct 2026, account mahmoud.mahamed1515 · CRM Admin)", "rows": [
+ ["Create on pipeline \"1\"", "POST /modules/{Deals}/records  pipeline=640e…(\"1\"), deal_name, amount   (no stage)", "201 — stored pipeline = 5170…(Standard), stage = qualification", "bad"],
+ ["Create with a pipeline-1 stage", "POST …/records  pipeline=\"1\", stage=test-01", "422 \"Stage 'test-01' is not part of the 'Standard' pipeline\"", "bad"],
+ ["Change pipeline (UI modal)", "PATCH …/records/{QA RT 1302 deal}  pipeline=\"1\", stage=qualification", "200 — stored pipeline still Standard", "bad"],
+ ["Same on Test layout", "POST/PATCH on layout Test with pipeline \"Test-Pipeline copy\"", "200 — stored on \"Standard Pipeline\" (layout default)", "bad"],
+ ["Stage on a non-default deal", "PATCH stage=test-02 on a deal already on \"Test-Pipeline copy\"", "200 — pipeline unchanged (restored afterwards)", "ok"],
+ ["Stage outside the pipeline", "PATCH stage=qualification on that deal", "422 names stage, pipeline and allowed stages", "ok"],
+ ["UI stage clicks", "Deal imported onto pipeline \"1\": click qualification, negotiation, test-01", "each applied, deal stays on \"1\"", "ok"] ] }

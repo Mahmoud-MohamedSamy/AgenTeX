@@ -1,0 +1,326 @@
+<title>CRM Desk Missing Features</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~860px). Bug entries are the only boxed objects; tickets and gaps are plain tables and figures. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1c2330;
+  --muted: #5b6577;
+  --line: #dde1e8;
+  --accent: #2456c9;
+  --code-bg: #eef1f6;
+  --bug: #b4232a;      --bug-bg: #fbe9ea;
+  --warn: #8a5a00;     --warn-bg: #fdf1d8;
+  --ok: #19703e;       --ok-bg: #e3f4ea;
+  --info: #3d4a63;     --info-bg: #e8ecf3;
+  --font-display: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+    --accent: #7ea2ff; --code-bg: #222a36;
+    --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+    --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3442;
+  --accent: #7ea2ff; --code-bg: #222a36;
+  --bug: #ff8a8f; --bug-bg: #3a1d21; --warn: #f2c35b; --warn-bg: #362a12;
+  --ok: #6fd69a; --ok-bg: #16301f; --info: #b7c3da; --info-bg: #252e3d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--font-body); }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 48px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.25; }
+h1 { font-size: 2rem; font-weight: 700; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, pre { font-family: var(--font-mono); font-size: 0.85em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font: 600 0.75rem/1 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 12px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 20px; color: var(--muted); font-size: 0.9rem; }
+.meta b { color: var(--fg); font-weight: 600; }
+section { display: grid; gap: 16px; }
+section > p.lead { color: var(--muted); }
+
+.tally { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font: 600 0.78rem/1.6 var(--font-body); white-space: nowrap; }
+.pill.bug { color: var(--bug); background: var(--bug-bg); }
+.pill.warn { color: var(--warn); background: var(--warn-bg); }
+.pill.ok { color: var(--ok); background: var(--ok-bg); }
+.pill.info { color: var(--info); background: var(--info-bg); }
+
+.bug-entry { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; display: grid; gap: 14px; min-width: 0; }
+.bug-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.bug-id { font: 600 0.85rem/1 var(--font-mono); color: var(--muted); }
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; }
+dl.facts dt { font-weight: 600; color: var(--muted); font-size: 0.9rem; }
+dl.facts dd { margin: 0; min-width: 0; }
+.callout { border: 1px solid #d0d7de; border-left: 4px solid #1f5fbf; padding: 8px 14px; margin: 12px 0 20px; border-radius: 4px; }
+.callout ul { margin: 4px 0 0; padding-left: 1.2em; }
+.steps-h { margin: 10px 0 4px; }
+ol.steps { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pair > div { min-width: 0; display: grid; gap: 6px; }
+pre { background: var(--code-bg); border-radius: 8px; padding: 12px 14px; margin: 0; overflow-x: auto; line-height: 1.5; }
+pre .k { color: var(--bug); font-weight: 600; }
+pre .g { color: var(--ok); font-weight: 600; }
+figure { margin: 0; display: grid; gap: 6px; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+figcaption { font-size: 0.85rem; color: var(--muted); }
+
+.table-box { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+th { font: 600 0.75rem/1.4 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td.mono { font-family: var(--font-mono); font-size: 0.85rem; white-space: nowrap; }
+
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.gallery { display: grid; gap: 28px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; }
+details[open] { padding-bottom: 18px; }
+summary { cursor: pointer; font-weight: 600; }
+details > .gallery { margin-top: 16px; }
+footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
+
+@media (max-width: 640px) {
+  .wrap { padding-inline: 16px; padding-block: 28px 48px; gap: 36px; }
+  h1 { font-size: 1.6rem; }
+  .pair { grid-template-columns: 1fr; }
+  dl.facts { grid-template-columns: 1fr; gap: 2px; }
+  dl.facts dd { margin-bottom: 8px; }
+  .bug-entry { padding: 18px 16px; }
+}
+</style>
+
+<div class="wrap">
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">TAVI CRM ⇄ Desk Integration · gap analysis · 18–20 Oct 2026</span>
+    <h1>Features Zoho CRM + Desk has that TAVI is missing</h1>
+    <p>We compared the TAVI CRM ⇄ Desk integration (PRD NDC-1669) with a live Zoho Desk + Zoho CRM integration and the Zoho help docs. The user decided TAVI should match Zoho, permissions included. Each gap has an annotated image: TAVI on the left, Zoho on the right. Nothing here is filed in Plane.</p>
+    <div class="meta">
+      <span><b>TAVI</b> staging-crm / staging-desk.taviportal.com (tenant NDC-Staging)</span>
+      <span><b>Zoho</b> Desk <code>taviportal</code> + CRM org943261092, integrated 18 Oct 2026</span>
+      <span><b>PRD</b> NDC-1669</span>
+      <span><b>Spec</b> spec-crm-desk-integration.md / .html (Z1–Z9)</span>
+    </div>
+    <div class="tally">
+      <span class="pill bug">19 missing</span>
+      <span class="pill warn">4 sync settings</span>
+      <span class="pill info">1 agent view · 2 CRM side · 1 automation · 1 permissions</span>
+      <span class="pill ok">All 153 Zoho items classified (21 Oct)</span>
+    </div>
+  </header>
+
+  <section aria-labelledby="how">
+    <h2 id="how">How the feature should work</h2>
+    <p class="lead">As described by the user on 19 Oct 2026.</p>
+    <ul class="plain">
+      <li><b>Sync settings:</b> Accounts and Contacts sync between CRM and Desk. Email (Primary) matches contacts; Secondary Email can also be used for duplicate checks.</li>
+      <li><b>Sync type:</b> Two-way, or CRM to Desk, with field mapping for Accounts and Contacts. Sync can be paused and resumed.</li>
+      <li><b>Products:</b> same sync types and mapping, plus choosing the departments and syncing the product's contact/account associations.</li>
+      <li><b>Delete preferences:</b> CRM side — Always delete / Delete if no associates / Never delete. Desk side — Always delete / Never delete.</li>
+      <li><b>CRM Related Lists:</b> which CRM modules show support tickets.</li>
+      <li><b>Permissions:</b> per Desk profile, Accounts and Contacts each No / Restricted / Full Access, covering Information, Potentials, Notes and Activities.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="gaps">
+    <h2 id="gaps">Missing</h2>
+    <div class="table-box"><table>
+      <thead><tr><th>#</th><th>Area</th><th>Missing in TAVI</th><th>NDC-1669</th><th>Automated check</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Sync settings</td><td>Products sync (departments, customer associations, field mapping)</td><td>§3, Phase 4</td><td>Z1 — still missing</td></tr>
+        <tr><td>2</td><td>Sync settings</td><td>Limit the sync to chosen CRM list views</td><td>§2, Phase 1</td><td>Z2 — still missing</td></tr>
+        <tr><td>3</td><td>Sync settings</td><td>Match contacts on the Secondary Email</td><td>§2, Phase 1</td><td>Z3 — still missing</td></tr>
+        <tr><td>4</td><td>Sync settings</td><td>"Delete in Desk only if there are no associates"</td><td>§5, Phase 2</td><td>Z4 — confirmed (E1)</td></tr>
+        <tr><td>5</td><td>Agent view</td><td>All CRM fields in the CRM pane (TAVI shows 8 fixed fields)</td><td>§7, Phase 3</td><td>Z5 — still missing</td></tr>
+        <tr><td>6</td><td>CRM side</td><td>Ticket filters Escalated / Overdue / High Priority on the CRM record</td><td>Not mentioned</td><td>Z6 — still missing</td></tr>
+        <tr><td>7</td><td>CRM side</td><td>Mutual Users list and "Invite users to Desk"</td><td>§9 (no invite flow)</td><td>Z7 — still missing</td></tr>
+        <tr><td>8</td><td>Automation</td><td>"CRM Contact Type" condition in SLA and assignment rules</td><td>Not mentioned</td><td>Z8 — from Zoho docs</td></tr>
+        <tr><td>9</td><td>Permissions</td><td>Default access = admin only; middle level named "Restricted Access"</td><td>§6, Phase 3</td><td>Z9 — confirmed (J1, J1a)</td></tr>
+        <tr><td>10</td><td>Setup</td><td>Report when the initial sync finishes (counts, skip reasons)</td><td>§4</td><td>Parity pass — missing (also bug CD-07)</td></tr>
+        <tr><td>11</td><td>Sync</td><td>CRM Leads not considered: a Desk contact with a lead's email becomes a new CRM contact</td><td>§2</td><td>Parity pass — missing</td></tr>
+        <tr><td>12</td><td>Users</td><td>CRM users as Light Agents; CRM-only users can comment</td><td>§9</td><td>Parity pass — missing</td></tr>
+        <tr><td>13</td><td>Mentions</td><td>@CRM Contact Owner mention</td><td>§9</td><td>Parity pass — missing</td></tr>
+        <tr><td>14</td><td>Notifications</td><td>Reply / comment / update from the CRM notification</td><td>Not mentioned</td><td>Parity pass — missing</td></tr>
+        <tr><td>15</td><td>Setup</td><td>Handling when the integrated user becomes inactive</td><td>Not mentioned</td><td>Parity pass — missing (from UI text)</td></tr>
+        <tr><td>16</td><td>CRM side</td><td>Voice of the Customer from Desk tickets (Zia, Enterprise)</td><td>Not mentioned</td><td>Out of NDC-1669 scope</td></tr>
+        <tr><td>17</td><td>Reporting</td><td>Cross-app analytics joining CRM and Desk (Zoho Analytics)</td><td>Not mentioned</td><td>Separate product</td></tr>
+        <tr><td>18</td><td>Setup</td><td>12-month window of the first sync not stated</td><td>§4</td><td>Parity pass — missing statement</td></tr>
+        <tr><td>19</td><td>Handshake Mode</td><td>Empty columns are shown (Zoho hides them)</td><td>§8</td><td>Checked 21 Oct — missing</td></tr>
+      </tbody>
+    </table></div>
+    <p class="lead">Every one of the 153 Zoho items has a verdict (implemented, missing, bug, not applicable, not testable, pending): zoho-parity-matrix.md in this folder.</p>
+  </section>
+
+  <section aria-labelledby="detail">
+    <h2 id="detail">Each gap with evidence</h2>
+
+    <article class="bug-entry" id="gap-1">
+      <div class="bug-head"><span class="bug-id">Gap 1 · Z1</span><span class="pill info">Sync settings</span><span class="pill warn">NDC-1669 §3, Phase 4</span></div>
+      <h3>Products sync</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Pick which departments' products sync, "Also sync the product's customer (contact and account) associations", product field mapping.</dd><dt>TAVI</dt><dd>No Products row; <code>/desk/integrations/crm/products</code> returns 404. TAVI CRM has no Products module yet.</dd></dl>
+      <figure><img src="evidence/01-products-sync-vs-zoho.png" alt="Gap 1: TAVI vs Zoho" loading="lazy"><figcaption>Gap 1: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-2">
+      <div class="bug-head"><span class="bug-id">Gap 2 · Z2</span><span class="pill info">Sync settings</span><span class="pill warn">NDC-1669 §2, Phase 1</span></div>
+      <h3>Limit the sync to chosen CRM list views</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>"All Accounts ▾" and "All Contacts ▾" pickers list any CRM view.</dd><dt>TAVI</dt><dd>Always syncs every record; <code>/list-views</code> returns 404.</dd></dl>
+      <figure><img src="evidence/02-crm-list-view-scope-vs-zoho.png" alt="Gap 2: TAVI vs Zoho" loading="lazy"><figcaption>Gap 2: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-3">
+      <div class="bug-head"><span class="bug-id">Gap 3 · Z3</span><span class="pill info">Sync settings</span><span class="pill warn">NDC-1669 §2, Phase 1</span></div>
+      <h3>Match contacts on the Secondary Email</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>"Email (Primary)" and "Secondary Email" tick boxes, with an overwrite warning.</dd><dt>TAVI</dt><dd>Always matches on the primary email; secondary email is only a mapped field.</dd></dl>
+      <figure><img src="evidence/03-secondary-email-match-vs-zoho.png" alt="Gap 3: TAVI vs Zoho" loading="lazy"><figcaption>Gap 3: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-4">
+      <div class="bug-head"><span class="bug-id">Gap 4 · Z4</span><span class="pill info">Sync settings</span><span class="pill warn">NDC-1669 §5, Phase 2</span></div>
+      <h3>"Delete in Desk only if there are no associates"</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>CRM side: Always delete · Delete if there are no associates · Never delete.</dd><dt>TAVI</dt><dd>Keep and flag / Keep but unlink / Delete — no "if no associates" option. The Desk-side options already match Zoho.</dd></dl>
+      <figure><img src="evidence/04-delete-if-no-associates-vs-zoho.png" alt="Gap 4: TAVI vs Zoho" loading="lazy"><figcaption>Gap 4: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-5">
+      <div class="bug-head"><span class="bug-id">Gap 5 · Z5</span><span class="pill info">Agent view</span><span class="pill warn">NDC-1669 §7, Phase 3</span></div>
+      <h3>All CRM fields in the CRM pane</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Every field of the CRM record, custom fields included.</dd><dt>TAVI</dt><dd>8 fixed fields. The list is stored in config (<code>panel.info_fields</code>) but there is no screen to change it.</dd></dl>
+      <figure><img src="evidence/05-crm-pane-fields-vs-zoho.png" alt="Gap 5: TAVI vs Zoho" loading="lazy"><figcaption>Gap 5: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-6">
+      <div class="bug-head"><span class="bug-id">Gap 6 · Z6</span><span class="pill info">CRM side</span><span class="pill warn">Not in NDC-1669</span></div>
+      <h3>More ticket filters on the CRM record</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>All, Open, On hold, Closed, Escalated, Overdue, High Priority.</dd><dt>TAVI</dt><dd>All / Open / On hold / Closed.</dd></dl>
+      <figure><img src="evidence/06-crm-ticket-filters-vs-zoho.png" alt="Gap 6: TAVI vs Zoho" loading="lazy"><figcaption>Gap 6: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-7">
+      <div class="bug-head"><span class="bug-id">Gap 7 · Z7</span><span class="pill info">CRM side</span><span class="pill warn">NDC-1669 §9 (no invite flow)</span></div>
+      <h3>Mutual Users list and "Invite users to Desk"</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Lists mutual users and invites CRM users to Desk as Agent / Light Agent / Admin.</dd><dt>TAVI</dt><dd>The Permissions tab only has Ticket Visibility; <code>/invite</code> and <code>/light-agents</code> return 404.</dd></dl>
+      <figure><img src="evidence/07-mutual-users-invite-vs-zoho.png" alt="Gap 7: TAVI vs Zoho" loading="lazy"><figcaption>Gap 7: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-8">
+      <div class="bug-head"><span class="bug-id">Gap 8 · Z8</span><span class="pill info">Automation</span><span class="pill warn">Not in NDC-1669</span></div>
+      <h3>"CRM Contact Type" condition in SLA and assignment rules</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Customer / Potential / Contact / Lead usable as a rule condition (Zoho API docs).</dd><dt>TAVI</dt><dd>The classification is only used by the Handshake Mode columns.</dd></dl>
+      <figure><img src="evidence/08-crm-contact-type-criteria-vs-zoho.png" alt="Gap 8: TAVI vs Zoho" loading="lazy"><figcaption>Gap 8: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-9">
+      <div class="bug-head"><span class="bug-id">Gap 9 · Z9</span><span class="pill info">Permissions</span><span class="pill warn">NDC-1669 §6, Phase 3</span></div>
+      <h3>Default CRM data access and level names</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>After connecting, only the Administrator profile sees CRM data; levels are No / Restricted / Full Access.</dd><dt>TAVI</dt><dd>Every profile starts at Full Access (<code>panel.profile_access</code> empty); the middle level is called "Custom Access".</dd></dl>
+      <figure><img src="evidence/09-permission-defaults-vs-zoho.png" alt="Gap 9: TAVI vs Zoho" loading="lazy"><figcaption>Gap 9: TAVI (left) vs Zoho (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-10">
+      <div class="bug-head"><span class="bug-id">Gap 10</span><span class="pill info">Setup</span><span class="pill warn">NDC-1669 §4</span></div>
+      <h3>No report when the initial sync finishes</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Admins get an email with counts of added, updated and ignored records and the reasons records were skipped.</dd><dt>TAVI</dt><dd>Nothing: no email seen, no bell entry, no text for it in the app.</dd></dl>
+      <figure><img src="evidence/10-initial-sync-report-vs-zoho.png" alt="Gap 10: TAVI vs Zoho" loading="lazy"><figcaption>Gap 10: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-11">
+      <div class="bug-head"><span class="bug-id">Gap 11</span><span class="pill info">Sync</span><span class="pill warn">NDC-1669 §2</span></div>
+      <h3>A Desk contact with a CRM Lead's email becomes a new CRM contact</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>A Desk contact is not created as a CRM contact if the same person exists as a CRM Lead (community answer).</dd><dt>TAVI</dt><dd>A second CRM record (a contact) is created for the lead's email.</dd></dl>
+      <figure><img src="evidence/11-lead-duplicated-as-contact-vs-zoho.png" alt="Gap 11: TAVI vs Zoho" loading="lazy"><figcaption>Gap 11: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-12">
+      <div class="bug-head"><span class="bug-id">Gap 12</span><span class="pill info">Users</span><span class="pill warn">NDC-1669 §9</span></div>
+      <h3>CRM users are not Light Agents and cannot comment</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>CRM users are auto-added to Desk as Light Agents; CRM-only users can view tickets and comment.</dd><dt>TAVI</dt><dd>CRM-only users have no Desk profile; viewing works, a comment gets 403.</dd></dl>
+      <figure><img src="evidence/12-crm-users-light-agents-vs-zoho.png" alt="Gap 12: TAVI vs Zoho" loading="lazy"><figcaption>Gap 12: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-13">
+      <div class="bug-head"><span class="bug-id">Gap 13</span><span class="pill info">Mentions</span><span class="pill warn">NDC-1669 §9</span></div>
+      <h3>No @CRM Contact Owner mention</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Mentioning @CRM Contact Owner notifies that contact's owner in CRM.</dd><dt>TAVI</dt><dd>Not offered (a named CRM user can be mentioned and is notified).</dd></dl>
+      <figure><img src="evidence/13-crm-contact-owner-mention-vs-zoho.png" alt="Gap 13: TAVI vs Zoho" loading="lazy"><figcaption>Gap 13: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-14">
+      <div class="bug-head"><span class="bug-id">Gap 14</span><span class="pill info">Notifications</span><span class="pill warn">Not in NDC-1669</span></div>
+      <h3>Desk notifications in CRM only open the record</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Users can reply, comment or update from the signal.</dd><dt>TAVI</dt><dd>The bell entry opens the record; no actions in the notification.</dd></dl>
+      <figure><img src="evidence/14-act-from-notification-vs-zoho.png" alt="Gap 14: TAVI vs Zoho" loading="lazy"><figcaption>Gap 14: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-15">
+      <div class="bug-head"><span class="bug-id">Gap 15</span><span class="pill info">Setup</span><span class="pill warn">Not in NDC-1669</span></div>
+      <h3>No handling when the integrated user becomes inactive</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Desk prompts the other admins to re-point the integration or recreate it.</dd><dt>TAVI</dt><dd>No message or action for it in the app (not testable without deactivating the owner).</dd></dl>
+      <figure><img src="evidence/15-integrated-user-inactive-vs-zoho.png" alt="Gap 15: TAVI vs Zoho" loading="lazy"><figcaption>Gap 15: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+
+    <article class="bug-entry" id="gap-18">
+      <div class="bug-head"><span class="bug-id">Gap 18</span><span class="pill info">Setup</span><span class="pill warn">NDC-1669 §4</span></div>
+      <h3>The 12-month window of the first sync is not stated</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Only records created or modified in the last year are synced; stated on the configuration screen.</dd><dt>TAVI</dt><dd>Not stated; the behaviour cannot be tested on staging.</dd></dl>
+      <figure><img src="evidence/18-twelve-month-window-vs-zoho.png" alt="Gap 18: TAVI vs Zoho" loading="lazy"><figcaption>Gap 18: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+    <article class="bug-entry" id="gap-19">
+      <div class="bug-head"><span class="bug-id">Gap 19</span><span class="pill info">Handshake Mode</span><span class="pill warn">NDC-1669 §8</span></div>
+      <h3>Empty Handshake columns are shown</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>Columns are system-defined; empty columns are hidden.</dd><dt>TAVI</dt><dd>An empty Customers column is shown with 0 and "No tickets in this Queue".</dd></dl>
+      <figure><img src="evidence/19-empty-handshake-columns-vs-zoho.png" alt="Gap 19: TAVI vs Zoho" loading="lazy"><figcaption>Gap 19: TAVI (left) vs Zoho docs (right).</figcaption></figure>
+    </article>
+    <article class="bug-entry" id="gap-16-17">
+      <div class="bug-head"><span class="bug-id">Gaps 16 · 17</span><span class="pill info">Out of NDC-1669 scope</span></div>
+      <h3>Zia Voice of the Customer and cross-app analytics</h3>
+      <dl class="facts"><dt>Zoho</dt><dd>CRM Zia uses Desk tickets as a Voice-of-the-Customer source (Enterprise). Zoho Analytics joins CRM and Desk tables automatically.</dd><dt>TAVI</dt><dd>Neither exists as part of the integration. Both are separate products in Zoho; listed so the comparison is complete.</dd></dl>
+    </article>
+  </section>
+
+  <section aria-labelledby="done">
+    <h2 id="done">Already done in TAVI</h2>
+    <ul class="plain">
+      <li>Connect / Disconnect, Pause with a reason, Resume; Overview with status and a live sync queue.</li>
+      <li>Contacts and Accounts sync, Two-way or CRM → Desk, with validated per-field mapping.</li>
+      <li>Delete preferences in both directions (the Desk side matches Zoho).</li>
+      <li>CRM Related Lists: Contacts, Accounts, Deals, Leads. TAVI CRM has no Products, Vendors or Cases modules, so that part is not an integration gap.</li>
+      <li>Sync History, Failure Log with Retry / Discard, Ticket Visibility, CRM notifications.</li>
+      <li>CRM pane on Desk tickets, contacts and accounts (Info / Potentials / Notes / Activities, Link / Unlink); Handshake Mode; Desk Tickets card and ticket workspace inside CRM.</li>
+      <li>TAVI extras Zoho does not have: Closed-Won deals become Desk contracts, phone calls copied to Desk, per-field sync direction, "keep and flag" delete option, discard a failure.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="unchecked">
+    <h2 id="unchecked">Could not be checked from the gap analysis</h2>
+    <ul class="plain">
+      <li><b>12-month lookback</b> on the first sync: needs CRM records older than 12 months. Please confirm whether staging has any.</li>
+      <li><b>First-sync progress and notice:</b> checked 20 Oct; no notice (gap 10).</li>
+      <li><b>Light Agents:</b> checked 21 Oct; not added (gap 12).</li>
+      <li><b>Permission enforcement by the API:</b> checked 20 Oct; enforced.</li><li><b>Checked 21 Oct with your OK:</b> while disconnected, CRM hides the Desk card and menu (as Zoho); the ticket–deal link survives a disconnect (TAVI keeps it, not a gap).</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Source: crm-desk-integration-missing-list.md (same folder). Bugs found while testing are reported separately in executions/execu_2026-10-20_crm-desk-integration/.</span>
+    <span>Zoho was integrated on 18 Oct 2026 with default settings (user-approved) and is still connected.</span>
+  </footer>
+</div>

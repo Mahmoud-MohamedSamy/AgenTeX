@@ -475,13 +475,25 @@ public class GroupBReviewTest extends OrderTestBase {
     public void apiChannel() {
         String rp = activeRp("B19", List.of("api"));
         JsonPath p = CrmUser.ok(adminA().get("/workflow/review-processes/" + rp), "process").jsonPath();
-        String id = lead("B19", "lead");
+        // records API with the channel declared ("source":"api" is honoured since 22 Oct 2026; ignored on 18 Oct)
+        Map<String, Object> body = new java.util.LinkedHashMap<>();
+        body.put("layout_id", layout(LEADS));
+        body.put("data", CrmApi.data(leadFields("B19", "lead")));
+        body.put("source", "api");
+        Response cr = userN().post("/modules/" + LEADS + "/records", body);
+        Assert.assertEquals(cr.statusCode() / 100, 2, "create through the records API: " + cut(cr));
+        String id = cr.jsonPath().getString("data.id");
+        api.track(LEADS, id);
+        CrmApi.waitFor(30, () -> CrmApi.reviewPending(status(id)));
         String st = status(id);
         String src = api.record(adminA(), LEADS, id).getString("data.source");
         System.out.println("[B-19] legacyApiWarning=" + p.getString("data.legacyApiWarning") + " token-created source=" + src + " review=" + st);
         traceOf("B-19", LEADS, id);
-        inconclusive("no real API channel (API key / integration) available: a user-token create is source=" + src + ", review=" + st
-                + "; process with the api channel shows legacyApiWarning=" + p.getString("data.legacyApiWarning"));
+        // since 22 Oct 2026 a records-API create is source=api, so the API channel can be judged
+        if (!"api".equals(src))
+            inconclusive("no real API channel (API key / integration) available: a user-token create is source=" + src + ", review=" + st
+                    + "; process with the api channel shows legacyApiWarning=" + p.getString("data.legacyApiWarning"));
+        Assert.assertTrue(CrmApi.reviewPending(st), "API-channel process must hold an API-created lead (source=api), review status " + st);
     }
 
     @CaseId("B-20")

@@ -1,0 +1,10 @@
+const M = { tasks: 'a9d87b62-b704-4c2e-b2d5-1b745d7c2065', calls: 'e72e608a-a5d3-45cf-888a-dfadc6e8b456', meetings: 'f13e02be-03d3-46c3-a74e-22c7770823ca' };
+const s = v => ({ kind: 'string', value: v });
+const now = Date.now(); const due = new Date(Math.ceil((now + 8 * 60000) / 60000) * 60000); const iso = d => d.toISOString().replace(/\.\d+Z$/, 'Z');
+const me = '3445ec4a-020e-4f12-b156-dd2de7610164';
+const out = { now: new Date(now).toISOString(), due: iso(due) };
+const mk = async (k, data) => { const r = await api('POST', `/modules/${M[k]}/records`, { data }); return { s: r.s, id: r.j?.data?.id, err: r.s >= 300 ? r.t.slice(0, 400) : undefined }; };
+out.task = await mk('tasks', [{ field: 'subject', value: s('QA RT 1332 task') }, { field: 'due_date', value: s(iso(due)) }, { field: 'reminder_offset_minutes', value: s('5') }, { field: 'owner', value: s(me) }, { field: 'status', value: s('Not Started') }]);
+out.call = await mk('calls', [{ field: 'subject', value: s('QA RT 1332 call') }, { field: 'call_type', value: s('outbound') }, { field: 'outgoing_call_status', value: s('scheduled') }, { field: 'call_start_time', value: s(iso(due)) }, { field: 'call_duration', value: s('15') }, { field: 'reminder_offset_minutes', value: s('5') }, { field: 'call_owner', value: s(me) }]);
+out.meeting = await mk('meetings', [{ field: 'title', value: s('QA RT 1332 meeting') }, { field: 'from_time', value: s(iso(due)) }, { field: 'to_time', value: s(iso(new Date(due.getTime() + 30 * 60000))) }, { field: 'reminder_offset_minutes', value: s('5') }, { field: 'host', value: s(me) }]);
+return done(out);

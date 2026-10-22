@@ -1,0 +1,1046 @@
+{
+ "id": "daee30d3-02d1-4d21-826e-72409feab258",
+ "moduleId": "ffb6202e-9ac2-49ba-a335-ef86c542450e",
+ "name": "إبهار مصر — المرحلة 2: تقييم الفيديو",
+ "description": "Stage 2 (video assessment): starts when the submitted video is Assessment Assigned. Approve → Assessment Complete (then stage 3). Send back (reason required) → Action Required + N05; a new link restarts this stage. [kit 5cbd1f8dc0]",
+ "executeOnCreate": false,
+ "executeOnEdit": true,
+ "followsPreviousStage": true,
+ "isActive": false,
+ "priority": 1,
+ "admins": {
+  "adminUserIds": [
+   "1e4510e3-911a-4ebd-b943-de8cd86e649f"
+  ],
+  "adminRoleIds": [
+   "e069456c-d000-4daf-b851-689cddb1418f"
+  ],
+  "allowEdit": false,
+  "editScope": "all_fields",
+  "notifyOriginalApproversEmail": false,
+  "notifyOriginalApproversInApp": false
+ },
+ "rules": [
+  {
+   "criteria": {
+    "kind": "Logical",
+    "field": null,
+    "operator": "And",
+    "negate": null,
+    "caseInsensitive": null,
+    "stringValue": null,
+    "value": null,
+    "values": null,
+    "operands": [
+     {
+      "kind": "Comparison",
+      "field": "category",
+      "operator": "Equal",
+      "negate": null,
+      "caseInsensitive": null,
+      "stringValue": null,
+      "value": {
+       "kind": "string",
+       "stringValue": "الرياضيات",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "values": null,
+      "operands": null
+     },
+     {
+      "kind": "Comparison",
+      "field": "application_status",
+      "operator": "Equal",
+      "negate": null,
+      "caseInsensitive": null,
+      "stringValue": null,
+      "value": {
+       "kind": "string",
+       "stringValue": "Assessment Assigned",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "values": null,
+      "operands": null
+     }
+    ]
+   },
+   "levels": [
+    {
+     "approver": {
+      "kind": "group",
+      "values": [
+       "d7d2b901-1253-4370-8c3b-23d6870c740f",
+       "a57bc0cb-d214-4da2-a161-ad79d001a9bc"
+      ]
+     },
+     "waitingFieldAccess": {
+      "mode": "all",
+      "fields": [],
+      "resetFields": []
+     },
+     "afterStageUpdateFields": null,
+     "assignTask": null,
+     "assignToSubmitterManager": false,
+     "distribution": "round_robin",
+     "assigneeField": "s2_assessor",
+     "decisionFields": [
+      {
+       "field": "assessment_score",
+       "required": true,
+       "on": "approve"
+      },
+      {
+       "field": "assessment_comments",
+       "required": false,
+       "on": "approve"
+      }
+     ]
+    }
+   ],
+   "finalActions": [
+    {
+     "id": "57d1348d-0bf2-46fe-875e-fe201a301a25",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Assessment Complete",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    }
+   ],
+   "rejectionActions": [
+    {
+     "id": "872f739e-f243-4c8f-a85d-e6e44cf13b81",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Action Required",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "correction_request": {
+       "kind": "string",
+       "stringValue": "${approval_comment}",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    },
+    {
+     "id": "3c8ac7d4-4b61-4e89-9c65-1ae6230cc0d6",
+     "type": "Email",
+     "order": 2,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": null,
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": [
+      {
+       "kind": "RecordEmailField",
+       "value": "email"
+      }
+     ],
+     "emailSubject": "إبهار مصر – مطلوب استكمال بعض إجراءات المشاركة",
+     "emailBody": "<!DOCTYPE html><html lang=\"ar\" dir=\"rtl\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head><body style=\"margin:0;padding:0;background:#F3F4F6;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#F3F4F6;\"><tr><td align=\"center\" style=\"padding:24px 12px;\"><table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" dir=\"rtl\" style=\"width:100%;max-width:600px;background:#FFFFFF;font-family:Tahoma,Arial,sans-serif;text-align:right;\"><tr><td style=\"padding:24px 32px;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"right\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/education-first-logo.png\" alt=\"التعليم أولاً — Education First\" width=\"110\" style=\"display:block;border:0;height:auto;\"></td><td align=\"left\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/ebhar-misr-logo.png\" alt=\"إبهار مصر — Ebhar Misr\" width=\"190\" style=\"display:block;border:0;height:auto;\"></td></tr></table></td></tr><tr><td style=\"height:5px;background:#1F9E9A;font-size:0;line-height:0;\">&nbsp;</td></tr><tr><td style=\"padding:32px 32px 8px;\"><h1 style=\"margin:0 0 24px;font-size:26px;color:#1F9E9A;font-weight:bold;\">مطلوب استكمال بعض إجراءات المشاركة</h1><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">عزيزي/عزيزتي <strong>{{name}}</strong>،</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نشكرك على مشاركتك في برنامج إبهار مصر لعام 2026.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">أثناء مراجعة مشاركتك، تبيّن وجود خطأ تقني في تحميل الفيديو، برجاء إعادة التحميل وإرسال الرابط من جديد حتى نتمكن من متابعة إجراءات التقييم.</p><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:8px 0 24px;\"><tr><td style=\"background:#EAF4F4;border-right:4px solid #1F9E9A;padding:16px 20px;font-size:16px;color:#1F2937;\"><strong style=\"color:#1F9E9A;\">الإجراء المطلوب:</strong> <strong>{{correction_request}}</strong></td></tr></table><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">يُرجى الدخول إلى ملفك الشخصي عبر <a href=\"https://crm.taviportal.com/portal/rp1.b542ffa6e6b5462a86b41afdc7ffeb9f.9vEZNxFh_hPBfgJvX5R-J6ORAJtEYRBZelcajso3vmQ\" style=\"color:#1F9E9A;\">منصة إبهار مصر</a>، واستكمال الإجراء المطلوب في أقرب وقت ممكن وقبل الموعد النهائي المعلن.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نشكرك على تعاونك، ونتمنى لك التوفيق.</p><p style=\"margin:24px 0 4px;font-size:16px;color:#1F2937;\">مع أطيب التمنيات بالتوفيق والنجاح،</p><p style=\"margin:0 0 24px;font-size:17px;font-weight:bold;color:#1F2937;\">إدارة برنامج إبهار مصر</p></td></tr><tr><td style=\"height:5px;background:#E2354B;font-size:0;line-height:0;\">&nbsp;</td></tr></table></td></tr></table></body></html>",
+     "emailTemplateId": "c9df30e2-da19-4f40-a605-4bdf86b38716",
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    }
+   ],
+   "rejectedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   },
+   "approvedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   }
+  },
+  {
+   "criteria": {
+    "kind": "Logical",
+    "field": null,
+    "operator": "And",
+    "negate": null,
+    "caseInsensitive": null,
+    "stringValue": null,
+    "value": null,
+    "values": null,
+    "operands": [
+     {
+      "kind": "Comparison",
+      "field": "category",
+      "operator": "Equal",
+      "negate": null,
+      "caseInsensitive": null,
+      "stringValue": null,
+      "value": {
+       "kind": "string",
+       "stringValue": "العلوم",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "values": null,
+      "operands": null
+     },
+     {
+      "kind": "Comparison",
+      "field": "application_status",
+      "operator": "Equal",
+      "negate": null,
+      "caseInsensitive": null,
+      "stringValue": null,
+      "value": {
+       "kind": "string",
+       "stringValue": "Assessment Assigned",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "values": null,
+      "operands": null
+     }
+    ]
+   },
+   "levels": [
+    {
+     "approver": {
+      "kind": "group",
+      "values": [
+       "d7bbd67e-fe1d-4225-9f9d-fe857e565d7f",
+       "a57bc0cb-d214-4da2-a161-ad79d001a9bc"
+      ]
+     },
+     "waitingFieldAccess": {
+      "mode": "all",
+      "fields": [],
+      "resetFields": []
+     },
+     "afterStageUpdateFields": null,
+     "assignTask": null,
+     "assignToSubmitterManager": false,
+     "distribution": "round_robin",
+     "assigneeField": "s2_assessor",
+     "decisionFields": [
+      {
+       "field": "assessment_score",
+       "required": true,
+       "on": "approve"
+      },
+      {
+       "field": "assessment_comments",
+       "required": false,
+       "on": "approve"
+      }
+     ]
+    }
+   ],
+   "finalActions": [
+    {
+     "id": "4400ab10-eec0-446f-8a40-4c538a92149e",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Assessment Complete",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    }
+   ],
+   "rejectionActions": [
+    {
+     "id": "45fc6c06-ba05-4210-8289-63b77a85eade",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Action Required",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "correction_request": {
+       "kind": "string",
+       "stringValue": "${approval_comment}",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    },
+    {
+     "id": "60004003-60c9-417e-9c48-5b9f571004c4",
+     "type": "Email",
+     "order": 2,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": null,
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": [
+      {
+       "kind": "RecordEmailField",
+       "value": "email"
+      }
+     ],
+     "emailSubject": "إبهار مصر – مطلوب استكمال بعض إجراءات المشاركة",
+     "emailBody": "<!DOCTYPE html><html lang=\"ar\" dir=\"rtl\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head><body style=\"margin:0;padding:0;background:#F3F4F6;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#F3F4F6;\"><tr><td align=\"center\" style=\"padding:24px 12px;\"><table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" dir=\"rtl\" style=\"width:100%;max-width:600px;background:#FFFFFF;font-family:Tahoma,Arial,sans-serif;text-align:right;\"><tr><td style=\"padding:24px 32px;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"right\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/education-first-logo.png\" alt=\"التعليم أولاً — Education First\" width=\"110\" style=\"display:block;border:0;height:auto;\"></td><td align=\"left\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/ebhar-misr-logo.png\" alt=\"إبهار مصر — Ebhar Misr\" width=\"190\" style=\"display:block;border:0;height:auto;\"></td></tr></table></td></tr><tr><td style=\"height:5px;background:#1F9E9A;font-size:0;line-height:0;\">&nbsp;</td></tr><tr><td style=\"padding:32px 32px 8px;\"><h1 style=\"margin:0 0 24px;font-size:26px;color:#1F9E9A;font-weight:bold;\">مطلوب استكمال بعض إجراءات المشاركة</h1><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">عزيزي/عزيزتي <strong>{{name}}</strong>،</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نشكرك على مشاركتك في برنامج إبهار مصر لعام 2026.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">أثناء مراجعة مشاركتك، تبيّن وجود خطأ تقني في تحميل الفيديو، برجاء إعادة التحميل وإرسال الرابط من جديد حتى نتمكن من متابعة إجراءات التقييم.</p><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:8px 0 24px;\"><tr><td style=\"background:#EAF4F4;border-right:4px solid #1F9E9A;padding:16px 20px;font-size:16px;color:#1F2937;\"><strong style=\"color:#1F9E9A;\">الإجراء المطلوب:</strong> <strong>{{correction_request}}</strong></td></tr></table><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">يُرجى الدخول إلى ملفك الشخصي عبر <a href=\"https://crm.taviportal.com/portal/rp1.b542ffa6e6b5462a86b41afdc7ffeb9f.9vEZNxFh_hPBfgJvX5R-J6ORAJtEYRBZelcajso3vmQ\" style=\"color:#1F9E9A;\">منصة إبهار مصر</a>، واستكمال الإجراء المطلوب في أقرب وقت ممكن وقبل الموعد النهائي المعلن.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نشكرك على تعاونك، ونتمنى لك التوفيق.</p><p style=\"margin:24px 0 4px;font-size:16px;color:#1F2937;\">مع أطيب التمنيات بالتوفيق والنجاح،</p><p style=\"margin:0 0 24px;font-size:17px;font-weight:bold;color:#1F2937;\">إدارة برنامج إبهار مصر</p></td></tr><tr><td style=\"height:5px;background:#E2354B;font-size:0;line-height:0;\">&nbsp;</td></tr></table></td></tr></table></body></html>",
+     "emailTemplateId": "c9df30e2-da19-4f40-a605-4bdf86b38716",
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    }
+   ],
+   "rejectedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   },
+   "approvedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   }
+  },
+  {
+   "criteria": {
+    "kind": "Logical",
+    "field": null,
+    "operator": "And",
+    "negate": null,
+    "caseInsensitive": null,
+    "stringValue": null,
+    "value": null,
+    "values": null,
+    "operands": [
+     {
+      "kind": "Comparison",
+      "field": "category",
+      "operator": "Equal",
+      "negate": null,
+      "caseInsensitive": null,
+      "stringValue": null,
+      "value": {
+       "kind": "string",
+       "stringValue": "التكنولوجيا",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "values": null,
+      "operands": null
+     },
+     {
+      "kind": "Comparison",
+      "field": "application_status",
+      "operator": "Equal",
+      "negate": null,
+      "caseInsensitive": null,
+      "stringValue": null,
+      "value": {
+       "kind": "string",
+       "stringValue": "Assessment Assigned",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "values": null,
+      "operands": null
+     }
+    ]
+   },
+   "levels": [
+    {
+     "approver": {
+      "kind": "group",
+      "values": [
+       "2ba89a58-79bf-4774-9359-769d5b14641e",
+       "a57bc0cb-d214-4da2-a161-ad79d001a9bc"
+      ]
+     },
+     "waitingFieldAccess": {
+      "mode": "all",
+      "fields": [],
+      "resetFields": []
+     },
+     "afterStageUpdateFields": null,
+     "assignTask": null,
+     "assignToSubmitterManager": false,
+     "distribution": "round_robin",
+     "assigneeField": "s2_assessor",
+     "decisionFields": [
+      {
+       "field": "assessment_score",
+       "required": true,
+       "on": "approve"
+      },
+      {
+       "field": "assessment_comments",
+       "required": false,
+       "on": "approve"
+      }
+     ]
+    }
+   ],
+   "finalActions": [
+    {
+     "id": "6cc5c13d-2203-43f5-b843-e2b7de39d022",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Assessment Complete",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    }
+   ],
+   "rejectionActions": [
+    {
+     "id": "a41ce70a-72e2-4ada-a426-dc9e189f1625",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Action Required",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "correction_request": {
+       "kind": "string",
+       "stringValue": "${approval_comment}",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    },
+    {
+     "id": "ca4571ff-4293-4528-a1e3-a7625a24f22d",
+     "type": "Email",
+     "order": 2,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": null,
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": [
+      {
+       "kind": "RecordEmailField",
+       "value": "email"
+      }
+     ],
+     "emailSubject": "إبهار مصر – مطلوب استكمال بعض إجراءات المشاركة",
+     "emailBody": "<!DOCTYPE html><html lang=\"ar\" dir=\"rtl\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head><body style=\"margin:0;padding:0;background:#F3F4F6;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#F3F4F6;\"><tr><td align=\"center\" style=\"padding:24px 12px;\"><table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" dir=\"rtl\" style=\"width:100%;max-width:600px;background:#FFFFFF;font-family:Tahoma,Arial,sans-serif;text-align:right;\"><tr><td style=\"padding:24px 32px;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"right\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/education-first-logo.png\" alt=\"التعليم أولاً — Education First\" width=\"110\" style=\"display:block;border:0;height:auto;\"></td><td align=\"left\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/ebhar-misr-logo.png\" alt=\"إبهار مصر — Ebhar Misr\" width=\"190\" style=\"display:block;border:0;height:auto;\"></td></tr></table></td></tr><tr><td style=\"height:5px;background:#1F9E9A;font-size:0;line-height:0;\">&nbsp;</td></tr><tr><td style=\"padding:32px 32px 8px;\"><h1 style=\"margin:0 0 24px;font-size:26px;color:#1F9E9A;font-weight:bold;\">مطلوب استكمال بعض إجراءات المشاركة</h1><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">عزيزي/عزيزتي <strong>{{name}}</strong>،</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نشكرك على مشاركتك في برنامج إبهار مصر لعام 2026.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">أثناء مراجعة مشاركتك، تبيّن وجود خطأ تقني في تحميل الفيديو، برجاء إعادة التحميل وإرسال الرابط من جديد حتى نتمكن من متابعة إجراءات التقييم.</p><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:8px 0 24px;\"><tr><td style=\"background:#EAF4F4;border-right:4px solid #1F9E9A;padding:16px 20px;font-size:16px;color:#1F2937;\"><strong style=\"color:#1F9E9A;\">الإجراء المطلوب:</strong> <strong>{{correction_request}}</strong></td></tr></table><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">يُرجى الدخول إلى ملفك الشخصي عبر <a href=\"https://crm.taviportal.com/portal/rp1.b542ffa6e6b5462a86b41afdc7ffeb9f.9vEZNxFh_hPBfgJvX5R-J6ORAJtEYRBZelcajso3vmQ\" style=\"color:#1F9E9A;\">منصة إبهار مصر</a>، واستكمال الإجراء المطلوب في أقرب وقت ممكن وقبل الموعد النهائي المعلن.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نشكرك على تعاونك، ونتمنى لك التوفيق.</p><p style=\"margin:24px 0 4px;font-size:16px;color:#1F2937;\">مع أطيب التمنيات بالتوفيق والنجاح،</p><p style=\"margin:0 0 24px;font-size:17px;font-weight:bold;color:#1F2937;\">إدارة برنامج إبهار مصر</p></td></tr><tr><td style=\"height:5px;background:#E2354B;font-size:0;line-height:0;\">&nbsp;</td></tr></table></td></tr></table></body></html>",
+     "emailTemplateId": "c9df30e2-da19-4f40-a605-4bdf86b38716",
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    }
+   ],
+   "rejectedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   },
+   "approvedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   }
+  },
+  {
+   "criteria": {
+    "kind": "Logical",
+    "field": null,
+    "operator": "And",
+    "negate": null,
+    "caseInsensitive": null,
+    "stringValue": null,
+    "value": null,
+    "values": null,
+    "operands": [
+     {
+      "kind": "Comparison",
+      "field": "category",
+      "operator": "Equal",
+      "negate": null,
+      "caseInsensitive": null,
+      "stringValue": null,
+      "value": {
+       "kind": "string",
+       "stringValue": "الفنون",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "values": null,
+      "operands": null
+     },
+     {
+      "kind": "Comparison",
+      "field": "application_status",
+      "operator": "Equal",
+      "negate": null,
+      "caseInsensitive": null,
+      "stringValue": null,
+      "value": {
+       "kind": "string",
+       "stringValue": "Assessment Assigned",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "values": null,
+      "operands": null
+     }
+    ]
+   },
+   "levels": [
+    {
+     "approver": {
+      "kind": "group",
+      "values": [
+       "9a2f3020-e6cd-43dd-9b1b-355601d70740",
+       "a57bc0cb-d214-4da2-a161-ad79d001a9bc"
+      ]
+     },
+     "waitingFieldAccess": {
+      "mode": "all",
+      "fields": [],
+      "resetFields": []
+     },
+     "afterStageUpdateFields": null,
+     "assignTask": null,
+     "assignToSubmitterManager": false,
+     "distribution": "round_robin",
+     "assigneeField": "s2_assessor",
+     "decisionFields": [
+      {
+       "field": "assessment_score",
+       "required": true,
+       "on": "approve"
+      },
+      {
+       "field": "assessment_comments",
+       "required": false,
+       "on": "approve"
+      }
+     ]
+    }
+   ],
+   "finalActions": [
+    {
+     "id": "a813bf20-9947-4994-be0f-087176ce15be",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Assessment Complete",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    }
+   ],
+   "rejectionActions": [
+    {
+     "id": "b1f22d4a-6a4c-4394-8d7e-5860a4d9267e",
+     "type": "FieldUpdate",
+     "order": 1,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": {
+      "application_status": {
+       "kind": "string",
+       "stringValue": "Action Required",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      },
+      "correction_request": {
+       "kind": "string",
+       "stringValue": "${approval_comment}",
+       "intValue": null,
+       "doubleValue": null,
+       "boolValue": null,
+       "timestampValue": null,
+       "listValue": null
+      }
+     },
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": null,
+     "emailSubject": null,
+     "emailBody": null,
+     "emailTemplateId": null,
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    },
+    {
+     "id": "4db769ce-4b96-42e4-86e7-a5a42d666315",
+     "type": "Email",
+     "order": 2,
+     "delaySeconds": 0,
+     "standaloneActionId": null,
+     "fieldUpdates": null,
+     "ownerTargetKind": null,
+     "ownerValue": null,
+     "url": null,
+     "method": null,
+     "bodyTemplate": null,
+     "headers": null,
+     "timeoutSeconds": null,
+     "emailRecipients": [
+      {
+       "kind": "RecordEmailField",
+       "value": "email"
+      }
+     ],
+     "emailSubject": "إبهار مصر – مطلوب استكمال بعض إجراءات المشاركة",
+     "emailBody": "<!DOCTYPE html><html lang=\"ar\" dir=\"rtl\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head><body style=\"margin:0;padding:0;background:#F3F4F6;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#F3F4F6;\"><tr><td align=\"center\" style=\"padding:24px 12px;\"><table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" dir=\"rtl\" style=\"width:100%;max-width:600px;background:#FFFFFF;font-family:Tahoma,Arial,sans-serif;text-align:right;\"><tr><td style=\"padding:24px 32px;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"right\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/education-first-logo.png\" alt=\"التعليم أولاً — Education First\" width=\"110\" style=\"display:block;border:0;height:auto;\"></td><td align=\"left\" style=\"vertical-align:middle;\"><img src=\"https://competition.102-206-132-183.sslip.io/assets/brand/ebhar-misr-logo.png\" alt=\"إبهار مصر — Ebhar Misr\" width=\"190\" style=\"display:block;border:0;height:auto;\"></td></tr></table></td></tr><tr><td style=\"height:5px;background:#1F9E9A;font-size:0;line-height:0;\">&nbsp;</td></tr><tr><td style=\"padding:32px 32px 8px;\"><h1 style=\"margin:0 0 24px;font-size:26px;color:#1F9E9A;font-weight:bold;\">مطلوب استكمال بعض إجراءات المشاركة</h1><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">عزيزي/عزيزتي <strong>{{name}}</strong>،</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نشكرك على مشاركتك في برنامج إبهار مصر لعام 2026.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">أثناء مراجعة مشاركتك، تبيّن وجود خطأ تقني في تحميل الفيديو، برجاء إعادة التحميل وإرسال الرابط من جديد حتى نتمكن من متابعة إجراءات التقييم.</p><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:8px 0 24px;\"><tr><td style=\"background:#EAF4F4;border-right:4px solid #1F9E9A;padding:16px 20px;font-size:16px;color:#1F2937;\"><strong style=\"color:#1F9E9A;\">الإجراء المطلوب:</strong> <strong>{{correction_request}}</strong></td></tr></table><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">يُرجى الدخول إلى ملفك الشخصي عبر <a href=\"https://crm.taviportal.com/portal/rp1.b542ffa6e6b5462a86b41afdc7ffeb9f.9vEZNxFh_hPBfgJvX5R-J6ORAJtEYRBZelcajso3vmQ\" style=\"color:#1F9E9A;\">منصة إبهار مصر</a>، واستكمال الإجراء المطلوب في أقرب وقت ممكن وقبل الموعد النهائي المعلن.</p><p style=\"margin:0 0 16px;font-size:16px;line-height:1.9;color:#1F2937;\">نشكرك على تعاونك، ونتمنى لك التوفيق.</p><p style=\"margin:24px 0 4px;font-size:16px;color:#1F2937;\">مع أطيب التمنيات بالتوفيق والنجاح،</p><p style=\"margin:0 0 24px;font-size:17px;font-weight:bold;color:#1F2937;\">إدارة برنامج إبهار مصر</p></td></tr><tr><td style=\"height:5px;background:#E2354B;font-size:0;line-height:0;\">&nbsp;</td></tr></table></td></tr></table></body></html>",
+     "emailTemplateId": "c9df30e2-da19-4f40-a605-4bdf86b38716",
+     "taskTitle": null,
+     "taskDescription": null,
+     "taskAssigneeUserId": null,
+     "taskDueAt": null,
+     "taskDueOffsetDays": null,
+     "taskStatus": null,
+     "taskPriority": null,
+     "taskReminderOffsetMinutes": null,
+     "taskNotifyAssignee": null,
+     "alertRecipients": null,
+     "alertTitle": null,
+     "alertBody": null,
+     "targetModuleId": null,
+     "fieldMappings": null,
+     "targetLayoutId": null,
+     "tagIds": null,
+     "mode": null,
+     "functionName": null,
+     "functionParams": null,
+     "portalId": null,
+     "resend": null
+    }
+   ],
+   "rejectedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   },
+   "approvedFieldAccess": {
+    "mode": "all",
+    "fields": [],
+    "resetFields": []
+   }
+  }
+ ],
+ "rulesCount": 4,
+ "createdAt": "2026-10-20T00:03:55.383392+00:00",
+ "updatedAt": "2026-10-21T09:30:17.278217+00:00",
+ "entryGuard": {
+  "field": "approval_status",
+  "operator": "equals",
+  "value": "not_submitted",
+  "system": true
+ }
+}

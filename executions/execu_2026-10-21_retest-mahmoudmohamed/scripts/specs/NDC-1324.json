@@ -1,0 +1,10 @@
+{ "out": "NDC-1324-retest-FAIL.png", "ticket": "NDC-1324", "title": "Deals Listing Page | Editing the Pipeline field inline shows an empty pipeline list", "verdict": "FAIL", "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)", "date": "21 Oct 2026",
+ "panels": [
+  { "img": "1324-02-modal.png", "w": 1280, "h": 720, "caption": "Inline edit on the Pipeline cell now opens the change-pipeline modal (pipelines listed, stage asked).", "crop": [380, 196, 520, 330], "boxes": [ { "b": [408, 316, 872, 350], "n": 1, "kind": "PASS" }, { "b": [408, 384, 872, 418], "n": 2, "kind": "PASS" } ] },
+  { "img": "1324-03-after.png", "w": 1280, "h": 720, "caption": "After \"Change pipeline\" (PATCH 200) the row still shows Standard.", "crop": [262, 230, 1018, 160], "boxes": [ { "b": [1140, 340, 1270, 376], "n": 3, "kind": "FAIL" } ] }
+ ],
+ "rows": [
+  ["1", "Inline Pipeline field lists the module's pipelines", "Pipelines of the deal's layout", "Modal lists the other pipeline (\"1\"); the empty combobox is gone", "PASS"],
+  ["2", "Changing pipeline here also sets the stage", "Stage asked", "\"Stage in the new pipeline\" shown (qualification kept, exists in both)", "PASS"],
+  ["3", "Selecting a pipeline applies it", "Deal now on \"1\"", "PATCH 200 but stored pipeline is still Standard; list and record show Standard (same root cause as NDC-1302)", "FAIL"]
+ ] }

@@ -1,0 +1,62 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retest Findings Investigation</title><style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#111827;--mute:#6b7280;--line:#e5e7eb;--hi:#dc2626;--md:#d97706;--lo:#2563eb}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1020;--card:#121a2e;--ink:#e5e7eb;--mute:#9ca3af;--line:#243049}}
+:root[data-theme="dark"]{--bg:#0b1020;--card:#121a2e;--ink:#e5e7eb;--mute:#9ca3af;--line:#243049}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 64px}h1{font-size:25px;margin:0 0 4px}.sub{color:var(--mute);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}.card h2{font-size:18px;margin:0 0 6px}
+.sev{display:inline-block;color:#fff;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600;margin-right:6px}.hi{background:var(--hi)}.md{background:var(--md)}.lo{background:var(--lo)}
+dl{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;margin:10px 0 0}dt{color:var(--mute);font-size:13px}dd{margin:0}code{font-size:13px;word-break:break-word}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line)}th,td{padding:8px;border-bottom:1px solid var(--line);text-align:left;font-size:14px;vertical-align:top}
+</style></head><body><main>
+<h1>Investigation of new findings — CRM and Desk</h1>
+<p class="sub">21 Oct 2026 · staging-crm / staging-desk, tenant NDC-Staging · account mahmoud.mahamed1515 · each finding reproduced on QA RT data; nothing filed in Plane yet.</p>
+
+<div class="card"><h2><span class="sev hi">High</span>Audit Log stopped recording (CRM, metadata, IAM)</h2>
+<dl><dt>What</dt><dd>No audit events after <b>20 Oct 2026 ~21:41 UTC</b> for record changes, metadata changes or sign-ins. Only Recycle Bin restore/purge events (written by the audit service itself) still appear.</dd>
+<dt>Repro</dt><dd>Create a deal (POST 201) and update it (PATCH 200) at 13:37 UTC → <code>GET /audit/events?app_key=crm</code> after 2 minutes: no event. Newest per source: crm record created 20 Oct 21:42, metadata-engine 21:41, iam login 21:34, although many sign-ins and changes happened on 21 Oct.</dd>
+<dt>Impact</dt><dd>No audit trail for a whole day of activity; the Audit Log page looks frozen. Likely the event consumer / outbox processing has stopped — needs a backend check.</dd></dl></div>
+
+<div class="card"><h2><span class="sev hi">High</span>Deal pipeline cannot be set or changed through the record API (root cause of NDC-1302, 1312, 1316, 1324)</h2>
+<dl><dt>What</dt><dd>"pipeline" is not a field of the Deals module (absent from <code>GET /modules/{Deals}/fields</code>) and the record write path ignores it: creates always land on the layout's default pipeline; updates never move a deal.</dd>
+<dt>Repro</dt><dd>POST deal with pipeline "1" as <code>data[].pipeline</code> (UI shape), top-level <code>pipeline_id</code>, top-level <code>pipelineId</code>, or <code>data[].pipeline_id</code> → all 201, stored on Standard. PATCH a deal imported onto "1" with pipeline = Standard → 200, still on "1". Stage validation then runs against the stored pipeline, giving "Stage … is not part of the 'Standard' pipeline".</dd>
+<dt>Works</dt><dd>Import (pipeline column) and pipeline delete-with-transfer are the only paths that set a deal's pipeline.</dd></dl></div>
+
+<div class="card"><h2><span class="sev hi">High</span>CRM layout builder: Save is silently lost when the layout save is slow (NDC-1444)</h2>
+<dl><dt>What</dt><dd>On Leads layouts a layout PUT takes <b>14–18 s</b>. When a Rollup Summary is added, the builder sends <code>PUT /modules/{Leads}/layouts/{id}</code>, the request never completes in the browser, no error is shown, and the layout is unchanged (field left in Unused Fields).</dd>
+<dt>Repro</dt><dd>Own copy "QA RT layout": (A) add a Single Line field → POST field 201, layout PUT 200, saved. (B) add Rollup Deals › Connected To › Amount › Sum → POST field 201, layout PUT sent, no response, layout lastModifiedAt unchanged. Replaying B's PUT by API with a 3-minute timeout → 200 after 14 s and the rollup is placed.</dd>
+<dt>Likely cause</dt><dd>Client gives up on (or cancels) slow layout saves without an error; the server accepts the same payload when given time. Also slow: a 525-field layout PUT on Desk needed 55 s.</dd>
+<dt>Side note</dt><dd>Every builder Save (CRM and Desk) also re-PUTs 2–4 untouched fields (lookups) before the layout PUT.</dd></dl></div>
+
+<div class="card"><h2><span class="sev hi">High</span>CRM "Create module" dialog cannot create a module</h2>
+<dl><dt>What</dt><dd>Settings › Modules and Fields › Create New Module (and sidebar ⋯ › Create Module): the dialog has Teamspace, Display name, Module key, Description — no plural/singular. Create → <code>400 MODULE_NAME_REQUIRED "Module plural form is required and cannot be blank."</code></dd>
+<dt>Contrast</dt><dd>The Desk dialog has "Module name (plural)" and "(singular)" and creates fine.</dd>
+<dt>Also</dt><dd>A module created by API was switched on automatically as a lead-conversion target with "Always create" (every lead conversion would create a record in it).</dd></dl></div>
+
+<div class="card"><h2><span class="sev md">Medium</span>Import review: "All errors" table always empty</h2>
+<dl><dt>What</dt><dd>Review step shows "N errors" and "1–N of N", but the table says "No errors match your filters" — no filter is active (Filters panel has nothing selected), Clear does nothing.</dd>
+<dt>Repro</dt><dd>Leads import of QA-RT-inv.csv (percent 250) → <code>POST …/import/{s}/validate</code> returns <code>issues:[{row:3, field:"percent_8_9", reason:"…between 0 and 100.", value:"250", kind:"datatype"}]</code>; breakdown renders it, the row table does not. 3/3 reproductions.</dd>
+<dt>Likely cause</dt><dd>Row table expects other keys (e.g. a column label) than the validate response provides. Reasons are visible after import in Import details and the error file.</dd></dl></div>
+
+<div class="card"><h2><span class="sev md">Medium</span>Pipelines settings hang on direct load</h2>
+<dl><dt>What</dt><dd>Opening <code>/settings/pipelines</code> directly (or reloading it) stays on "Loading board…": 3 of 3 attempts. Only <code>GET /modules</code> is called; the board's stage-probability / layouts / pipelines calls never start. Reaching it in-app after Modules and Fields works.</dd>
+<dt>Related</dt><dd>The layout builder (CRM and Desk) first shows an empty "Standard Layout" placeholder for several seconds on direct load. The Leads import URL showed "You don't have access to CRM" twice earlier but loaded 3/3 now (intermittent).</dd></dl></div>
+
+<div class="card"><h2><span class="sev md">Medium</span>Desk: a restricted module is still offered to profiles that cannot open it (NDC-2220)</h2>
+<dl><dt>What</dt><dd>Module restricted to Desk Agent; a Desk Administrator not on the list gets 403 on records, but the module is still in <code>GET /modules</code> and in the "+" create menu.</dd></dl></div>
+
+<div class="card"><h2><span class="sev md">Medium</span>Desk: a required field can still be made read-only for a profile</h2>
+<dl><dt>What</dt><dd><code>POST /modules/{id}/field-permissions</code> name / Desk Agent / <code>read_only</code> → 200 (hidden is now refused with FIELD_REQUIRED_HIDDEN_CONFLICT). Agents then cannot fill a required field — same trap NDC-2228 closed for "hidden".</dd></dl></div>
+
+<div class="card"><h2><span class="sev lo">Low</span>Smaller findings</h2>
+<table><thead><tr><th>App</th><th>Finding</th><th>Detail</th></tr></thead><tbody>
+<tr><td>Desk</td><td>Module list shows "System" for everyone (NDC-2250)</td><td>API returns real names (Tickets: ndc-staging-owner, QA RT MF: mahmoud.mahamed1515); UI prints "System" on every row.</td></tr>
+<tr><td>Desk</td><td>Custom data type not kept on the field (NDC-2246)</td><td>Field created with qa_rt_dt is stored as single_line.</td></tr>
+<tr><td>Desk</td><td>Arabic "Last Modified" header (NDC-2249)</td><td>Only remaining English string on the Layouts tab.</td></tr>
+<tr><td>CRM</td><td>Audit feed raw key</td><td>"restored a audit.entity.leads named …".</td></tr>
+<tr><td>CRM</td><td>Teamspace settings list (NDC-1172)</td><td>Restricted teamspace listed and editable-looking for a non-member admin; shows the viewer as Admin.</td></tr>
+<tr><td>CRM</td><td>Data Types sticky header transparent (NDC-1232)</td><td>Rows show through the header labels.</td></tr>
+<tr><td>CRM</td><td>Copy / UX</td><td>"No pipelines available." in stage search; Mass Update failures listed by UUID; error file column "__error_reason"; delete-pipeline dialog does not mention deals; layout row menu opens far from its button; call reminder card shows bare "15".</td></tr>
+</tbody></table></div>
+</main></body></html>

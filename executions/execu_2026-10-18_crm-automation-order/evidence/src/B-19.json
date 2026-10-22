@@ -1,0 +1,90 @@
+{
+ "out": "../B-19-login-history-sessions-never-expire-vs-zoho.png",
+ "id": "B-19",
+ "title": "Login History keeps sessions \"Active\" after they expire",
+ "verdict": "Differs",
+ "date": "22 Oct 2026",
+ "zohoSource": "Zoho help (documentation)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Login History → status Active: 255 sessions, many weeks old",
+   "img": "B-19-login-history-active.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 1253,
+     "y": 76,
+     "w": 90,
+     "h": 26
+    },
+    {
+     "n": 2,
+     "x": 404,
+     "y": 152,
+     "w": 80,
+     "h": 32
+    },
+    {
+     "n": 3,
+     "x": 1330,
+     "y": 270,
+     "w": 90,
+     "h": 600
+    },
+    {
+     "n": 4,
+     "x": 296,
+     "y": 832,
+     "w": 1225,
+     "h": 36
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "API behind the page: 245 of 249 Active sessions are past expires_at",
+   "img": "B-19-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: Active Sessions are current sign-ins; online = active on the web now",
+   "text": [
+    "Zoho Accounts → Sessions → Active Sessions lists the sessions that are currently signed in (device, browser, location); a session can be ended from there.",
+    "Zoho CRM assignment rules: \"An online user is one that is online on web. There will be maximum of 5 mins delay in fetching online users status.\""
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/accounts/manage-your-zoho-account/articles/sessions-zohoaccounts",
+    "https://help.zoho.com/portal/en/kb/crm/automate-business-processes/assignment-rules/articles/set-assignment-rules"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1, 2",
+   "b": "Status filter Active",
+   "zoho": "Only sessions signed in now",
+   "tavi": "255 sessions, back to 30 Aug",
+   "match": "Differs"
+  },
+  {
+   "n": "3",
+   "b": "Session past its expiry time",
+   "zoho": "Ended / not active",
+   "tavi": "Still shows Active (245 of 249)",
+   "match": "Differs"
+  },
+  {
+   "n": "4",
+   "b": "Owner session from 29 Sep",
+   "zoho": "Expired",
+   "tavi": "Active, no logout time",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Assignment rule availability \"Online status\" cannot skip anyone while expired sessions count as active (A-10, possible bug in the follow-up report).",
+  "Sessions are 12 hours (expires_at = login_at + 12 h)."
+ ]
+}

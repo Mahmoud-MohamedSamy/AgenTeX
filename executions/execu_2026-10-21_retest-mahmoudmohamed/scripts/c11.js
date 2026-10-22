@@ -1,0 +1,10 @@
+const D = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430';
+const resp = []; const f = async r => { const q = r.request(); if (q.method() !== 'GET' && !/auth|notif|hubs/.test(q.url())) resp.push({ m: q.method(), u: q.url().replace(H + '/api/v1', ''), body: (q.postData() || '').slice(0, 700), s: r.status(), res: (await r.text().catch(() => '')).slice(0, 900) }); }; page.on('response', f);
+const b = page.locator('[role=dialog]').getByRole('button', { name: 'Update records' });
+const dis = await b.isDisabled();
+await b.click({ force: true }); await sleep(7000);
+page.off('response', f);
+const toasts = await page.locator('[data-sonner-toast]').allInnerTexts();
+await shot('1316-08-after-update');
+const now = {}; for (const id of ['8e8227b2-a494-47e3-a368-4e2880e49c39', '2f41b135-71ad-42ad-be80-1674a0d50169']) now[id] = Object.fromEntries((await api('GET', `/modules/${D}/records/${id}`)).j.data.data.filter(x => /pipeline|stage/.test(x.field)).map(x => [x.field, x.value.value]));
+return done({ dis, resp, toasts, now, dlg: await page.locator('[role=dialog]').allInnerTexts() });

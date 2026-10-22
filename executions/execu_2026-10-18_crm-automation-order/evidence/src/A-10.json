@@ -1,0 +1,47 @@
+{
+ "out": "../A-10-online-status-not-applied-vs-zoho.png",
+ "id": "A-10",
+ "title": "Assignment rule \"Online status\" did not skip a member with no session",
+ "verdict": "Differs",
+ "date": "21 Oct 2026",
+ "zohoSource": "Zoho CRM help (documentation)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "With Online status required, the member with no session still got the lead",
+   "img": "A-10-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: only users logged in on the web count as online",
+   "text": [
+    "Zoho CRM, Setting up Assignment Rules: availability is checked on online status (logged in to CRM) and/or shift timing; a user who is not logged in is unavailable and the default user gets the record.",
+    "\"An online user is one that is online on web. There will be maximum of 5 mins delay in fetching online users status.\""
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/crm/automate-business-processes/assignment-rules/articles/set-assignment-rules"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Online status off (control)",
+   "zoho": "First member",
+   "tavi": "First member (test user 2)",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "Online status on, first member not signed in",
+   "zoho": "Member skipped",
+   "tavi": "Not skipped (test user 2)",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Likely cause NDC-2418: Login History keeps sessions Active after they expire (255 active, back to 30 Aug), and the test itself signed test user 2 in through the API, so every member looks online.",
+  "Re-run with a member that has no session at all after NDC-2418 and NDC-2419 (assignment sets no owner since 22 Oct) are fixed."
+ ]
+}

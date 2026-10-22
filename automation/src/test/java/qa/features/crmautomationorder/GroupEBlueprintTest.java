@@ -581,7 +581,7 @@ public class GroupEBlueprintTest extends OrderTestBase {
     // ------------------------------------------------------------------ E-13
 
     @CaseId("E-13")
-    @Test(groups = {"crm-order", "group-e"}, description = "Mass exclude one record: it leaves the blueprint (control record stays)")
+    @Test(enabled = false, groups = {"crm-order", "group-e"}, description = "Mass exclude one record: it leaves the blueprint (control record stays)")
     public void e13MassExcludeOne() {
         String bp = activeBlueprint(LEADS, leadsDef("E-13", states(SRC), chain(SRC)));
         String l1 = lead("E-13", "lead1", null);

@@ -1,0 +1,10 @@
+await go('/modules/f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430', 6000);
+await go('/settings/pipelines', 12000);
+for (let i = 0; i < 20 && !(await page.getByText('QA RT 1325 pipeline').count()); i++) await sleep(1000);
+const card = page.locator('div').filter({ has: page.getByText('QA RT 1325 pipeline', { exact: true }) }).filter({ has: page.getByRole('button', { name: 'Add Stages' }) }).last();
+await card.locator('button:has(svg.lucide-ellipsis-vertical)').first().click(); await sleep(1200);
+const menu = await page.locator('[role=menu]').allInnerTexts();
+await page.getByRole('menuitem', { name: /Delete/ }).click(); await sleep(2500);
+const dlg = await page.locator('[role=dialog]').allInnerTexts();
+await shot('1325-05-delete-modal');
+return done({ menu, dlg });

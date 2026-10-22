@@ -1,0 +1,108 @@
+{
+ "out": "NDC-1444-retest-PARTIAL.png",
+ "ticket": "NDC-1444",
+ "title": "Modules and Fields | Rollup Summary says the related module has no lookup pointing at this module, when it does",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "img": "1444-02-deals-relations.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Leads › FieldPermissions › new Rollup Summary › ADVANCED: Related Module = Deals, no \"no lookup field\" warning; relation list offers Connected To, Lookup, Multi-Select Lookup.",
+   "crop": [
+    820,
+    120,
+    460,
+    390
+   ],
+   "boxes": [
+    {
+     "b": [
+      840,
+      210,
+      1260,
+      246
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      840,
+      283,
+      1260,
+      318
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1444-11-after-save.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Configured Deals › Connected To › Amount › Sum, Save: \"Field updated successfully\" and the field on the canvas — but the layout is not saved.",
+   "crop": [
+    356,
+    60,
+    924,
+    660
+   ],
+   "boxes": [
+    {
+     "b": [
+      366,
+      418,
+      798,
+      466
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      976,
+      640,
+      1256,
+      696
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Related list offers lookups pointing at Leads",
+   "Connected To on Deals",
+   "Deals: Connected To, Lookup, Multi-Select Lookup; Contacts: Connected To, Lookup; Accounts: Connected To; Tasks: Related To",
+   "PASS"
+  ],
+  [
+   "2",
+   "Warning only when there is no lookup",
+   "No false warning",
+   "No warning for Deals, Contacts, Accounts, Tasks",
+   "PASS"
+  ],
+  [
+   "3",
+   "Rollup saves with the layout",
+   "Field placed on the layout",
+   "Field qa_rt_rollup created (sum of amount via connected_to), but the FieldPermissions layout is unchanged (last modified 1 Sep); after reload the field is in Unused Fields. Later Saves send no request",
+   "FAIL"
+  ],
+  [
+   "4",
+   "Save feedback",
+   "Error when the save fails",
+   "\"Field updated successfully\" toast while the layout save did not persist",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,11 @@
+{ "out": "NDC-1308-retest-PASS.png", "ticket": "NDC-1308", "title": "Pipelines | Stage Probability is shared across all layouts rather than being set per layout", "verdict": "PASS", "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)", "date": "21 Oct 2026",
+ "panels": [
+  { "img": "1308-02-std-15-bestcase.png", "w": 1280, "h": 720, "caption": "Standard pipeline: qualification set to 15 % / Best Case and saved (PUT …/stage-probability?pipeline_id=Standard → 200).", "crop": [352, 40, 576, 400], "boxes": [ { "b": [376, 172, 666, 232], "n": 1, "kind": "PASS" }, { "b": [500, 318, 884, 354], "n": 2, "kind": "PASS" } ] },
+  { "img": "1308-03-modal-pipeline1.png", "w": 1280, "h": 720, "caption": "Switching the modal to pipeline \"1\": qualification keeps its own 10 % / Pipeline.", "crop": [352, 40, 576, 400], "boxes": [ { "b": [376, 168, 666, 228], "n": 3, "kind": "PASS" }, { "b": [552, 412, 900, 448], "n": 4, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1", "Modal says which pipeline is edited", "Pipeline selector + name", "Pipeline selector and \"Editing the stages of \"Standard\"\"", "PASS"],
+  ["2", "Change one pipeline's stage", "Saved for that pipeline only", "Standard qualification 10 → 15 %, Pipeline → Best Case; API confirms", "PASS"],
+  ["3–4", "Other pipeline unaffected", "Pipeline \"1\" keeps its own values", "qualification 10 % / Pipeline in \"1\" (API and UI)", "PASS"],
+  ["—", "Restore", "Original values back", "Standard qualification restored to 10 % / Pipeline", "INFO"]
+ ] }

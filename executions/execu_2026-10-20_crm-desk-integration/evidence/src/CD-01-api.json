@@ -1,0 +1,31 @@
+{
+ "out": "CD-01-api.png",
+ "title": "CD-01 · I9 / I8 · TAVI request/response (staging, 19–20 Oct 2026)",
+ "blocks": [
+  {
+   "head": "Linked pair: Desk 1e4fa020-… ↔ CRM f820d08f-… (QA CD G2)",
+   "lines": [
+    "DELETE /desk/integrations/crm/links/{link id}  -> 204",
+    "PATCH  /modules/{crm contacts}/records/f820d08f-…  {title: \"I9 after unlink\"}  -> 200",
+    {
+     "t": "after 40 s: Desk title = \"I9 after unlink\", crm_sync_status = synced",
+     "box": "change still synced"
+    },
+    {
+     "t": "GET /links -> {crm f820d08f, desk 1e4fa020, synced, match_source: match_existing}",
+     "box": "linked again"
+    },
+    "POST /desk/integrations/crm/links {kind:contact, crm_record_id, desk_record_id} -> 409 \"The crm record is already linked.\""
+   ]
+  },
+  {
+   "head": "TAVI Unlink dialog text (locale crm-desk-integration, panel.unlinkBody)",
+   "lines": [
+    {
+     "t": "\"The CRM markers are cleared. Syncing stops for this record until it is linked again.\"",
+     "box": "promise broken"
+    }
+   ]
+  }
+ ]
+}

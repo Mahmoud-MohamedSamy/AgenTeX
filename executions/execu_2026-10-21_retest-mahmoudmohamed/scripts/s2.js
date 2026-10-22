@@ -1,0 +1,12 @@
+const d = page.locator('[role=dialog]').last();
+const ins = d.locator('input[type=text], input:not([type])');
+await ins.nth(0).fill('QA RT Closed UI'); await ins.nth(1).fill('QA RT Closed UI item'); await sleep(400);
+await d.getByText('Desk Administrator', { exact: true }).click(); await sleep(400);
+await shot('2220-02-filled');
+const c = capOn(); const resp = []; const f = async r => { const q = r.request(); if (q.method() !== 'GET' && q.url().includes('/api/v1/')) resp.push(q.method() + ' ' + q.url().replace(API, '').slice(0, 100) + ' → ' + r.status() + ' ' + (r.status() >= 300 ? (await r.text().catch(() => '')).slice(0, 200) : '')); }; page.on('response', f);
+await d.getByRole('button', { name: 'Create', exact: true }).click(); await sleep(6000);
+page.off('response', f); c();
+const m = (await mods()).find(x => /QA RT Closed UI/.test(x.labels?.en || ''));
+const acl = m ? (await api('GET', `/modules/${m.id}/acl`)).j?.data : null;
+await shot('2220-03-after-create');
+return done({ resp, cap: cap.map(x => x.slice(0, 300)), mod: m && m.id, acl: acl && { mode: acl.access_mode, rows: acl.rows.map(r => r.principal_kind + ':' + r.principal_id.slice(0, 8) + ':' + r.access_level) }, toasts: await page.locator('[data-sonner-toast]').allInnerTexts() });

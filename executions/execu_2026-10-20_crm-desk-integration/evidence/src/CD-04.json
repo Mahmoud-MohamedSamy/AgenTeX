@@ -1,0 +1,44 @@
+{
+ "out": "../CD-04-invalid-mappings-saved-vs-zoho.png",
+ "id": "CD-04 (C17)",
+ "title": "The settings API saves invalid field mappings",
+ "subtitle": "TAVI CRM / Desk (staging, tenant NDC-Staging) vs Zoho help docs / NDC-1669",
+ "verdict": "Differs",
+ "date": "20 Oct 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "4 invalid bodies accepted, 6 refused",
+   "img": "CD-04-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Expected validation",
+   "text": [
+    "Zoho maps fields through dropdowns of existing fields only; no free-form field keys can be saved.",
+    "TAVI's own error codes for these cases exist in the app: crm_field_unknown, desk_field_unknown, lookup_not_mappable, incomplete."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/desk/integrations-and-marketplace/sales-and-marketing/articles/integrating-zoho-desk-with-zoho-crm"
+   ],
+   "flag": "ZOHO DOCS / PRD — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Unknown CRM / Desk field",
+   "zoho": "Not possible",
+   "tavi": "Saved (200)",
+   "match": "Differs"
+  },
+  {
+   "n": "2",
+   "b": "Lookup field / empty row",
+   "zoho": "Not possible",
+   "tavi": "Saved (200)",
+   "match": "Differs"
+  }
+ ],
+ "notes": []
+}

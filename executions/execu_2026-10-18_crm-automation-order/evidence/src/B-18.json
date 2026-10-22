@@ -1,0 +1,46 @@
+{
+ "out": "../B-18-assignment-rule-sets-no-owner-vs-zoho.png",
+ "id": "B-18 (A-01, A-02)",
+ "title": "Assignment rules fire but no longer set the owner (import and API)",
+ "verdict": "Differs",
+ "date": "22 Oct 2026",
+ "zohoSource": "Zoho CRM help (documentation)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "The rule fires (outcome Fired) but the record has no owner / keeps the creator",
+   "img": "B-18-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: the rule assigns the owner of records from import, web forms and API",
+   "text": [
+    "Zoho CRM, Setting up Assignment Rules: assignment rules apply to records created through import, web forms and the API, and assign the record to the selected user(s); if they cannot be assigned, the default user gets the record."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/crm/automate-business-processes/assignment-rules/articles/set-assignment-rules"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Import with the rule, member active",
+   "zoho": "Owner = the member",
+   "tavi": "Owner empty (21 Oct: worked)",
+   "match": "Differs"
+  },
+  {
+   "n": "2",
+   "b": "API create with the rule",
+   "zoho": "Owner = the member",
+   "tavi": "Owner stays the creator",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Regression: the same automated tests passed on 21 Oct.",
+  "Also new on 22 Oct: a record created with a user token now has source = api (was manual)."
+ ]
+}

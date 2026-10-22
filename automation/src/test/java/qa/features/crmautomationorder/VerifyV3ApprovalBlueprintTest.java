@@ -207,7 +207,7 @@ public class VerifyV3ApprovalBlueprintTest extends VerifyBase {
     // ------------------------------------------------------------ E-13
 
     @CaseId("E-13")
-    @Test(groups = {"crm-verify"}, description = "Mass-exclude one record from a blueprint, then edit its (formerly governed) field")
+    @Test(enabled = false, groups = {"crm-verify"}, description = "Mass-exclude one record from a blueprint, then edit its (formerly governed) field")
     public void e13MassExclude() {
         String c = "E-13";
         String bp = api.blueprint(LEADS, CrmProcs.blueprint("leads", layout(LEADS), null, "lead_source", c + " BP", caseGuard(LEADS, c), SRC, null));

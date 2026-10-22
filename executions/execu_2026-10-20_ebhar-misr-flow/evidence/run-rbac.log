@@ -1,0 +1,162 @@
+owner session auth true
+SETUP RA EM-00052 Pending Verification owner reviewer1
+SETUP RB EM-00053 Assessment Assigned owner pool-science
+SETUP RC EM-00054 Assessment Assigned owner pool-math
+SETUP RD EM-00055 Assessment Complete owner pool-science
+==== USER reviewer1 (Ebhar — Registration Admin)
+PASS reviewer1 login - login ok, /iam/me 200 moaazdly89+reviewer1@gmail.com, url https://crm.taviportal.com/
+  list 200 total visible 4 | test records visible RA | all EM-00052,EM-00036,EM-00032,EM-00030
+PASS reviewer1 RA buttons - record GET 200, buttons [t-approve-registration,t-reject-registration] expected [t-approve-registration,t-reject-registration]
+PASS reviewer1 RB buttons - record GET 403, buttons [] expected []
+PASS reviewer1 RC buttons - record GET 403, buttons [] expected []
+PASS reviewer1 RD buttons - record GET 403, buttons [] expected []
+PASS reviewer1 deny RB t-approve-video-science - 403 PERMISSION_DENIED: Permission denied.
+PASS reviewer1 deny RD t-finalist - 403 PERMISSION_DENIED: Permission denied.
+  admin GET /workflow/rules 403
+  admin GET /workflow/approval-processes 200
+  admin GET /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/blueprints?includeInactive=true 403
+  admin GET /iam/users?take=5 200
+  admin GET /iam/profiles 200
+  admin GET /mail/connections 403
+  admin GET /record-portals/9b21cf61-04cf-4201-8f3c-928247b97384 200
+  direct edit RD.assessment_score=99 403 PERMISSION_DENIED: Permission denied.
+==== USER reviewer2 (Ebhar — Registration Admin)
+PASS reviewer2 login - login ok, /iam/me 200 moaazdly89+reviewer2@gmail.com, url https://crm.taviportal.com/
+  list 200 total visible 4 | test records visible none | all EM-00047,EM-00037,EM-00036,EM-00033
+PASS reviewer2 RA buttons - record GET 403, buttons [] expected []
+PASS reviewer2 RB buttons - record GET 403, buttons [] expected []
+PASS reviewer2 RC buttons - record GET 403, buttons [] expected []
+PASS reviewer2 RD buttons - record GET 403, buttons [] expected []
+PASS reviewer2 deny RA t-approve-registration - 403 PERMISSION_DENIED: Permission denied.
+PASS reviewer2 deny RA t-reject-registration - 403 PERMISSION_DENIED: Permission denied.
+  admin GET /workflow/rules 403
+  admin GET /workflow/approval-processes 200
+  admin GET /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/blueprints?includeInactive=true 403
+  admin GET /iam/users?take=5 200
+  admin GET /iam/profiles 200
+  admin GET /mail/connections 403
+  admin GET /record-portals/9b21cf61-04cf-4201-8f3c-928247b97384 200
+  direct edit RD.assessment_score=99 403 PERMISSION_DENIED: Permission denied.
+==== USER reviewer3 (Ebhar — Registration Admin)
+PASS reviewer3 login - login ok, /iam/me 200 moaazdly89+reviewer3@gmail.com, url https://crm.taviportal.com/
+  list 200 total visible 3 | test records visible none | all EM-00038,EM-00036,EM-00034
+PASS reviewer3 RA buttons - record GET 403, buttons [] expected []
+PASS reviewer3 RB buttons - record GET 403, buttons [] expected []
+PASS reviewer3 RC buttons - record GET 403, buttons [] expected []
+PASS reviewer3 RD buttons - record GET 403, buttons [] expected []
+  admin GET /workflow/rules 403
+  admin GET /workflow/approval-processes 200
+  admin GET /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/blueprints?includeInactive=true 403
+  admin GET /iam/users?take=5 200
+  admin GET /iam/profiles 200
+  admin GET /mail/connections 403
+  admin GET /record-portals/9b21cf61-04cf-4201-8f3c-928247b97384 200
+  direct edit RD.assessment_score=99 403 PERMISSION_DENIED: Permission denied.
+==== USER reviewer4 (Ebhar — Registration Admin)
+PASS reviewer4 login - login ok, /iam/me 200 moaazdly89+reviewer4@gmail.com, url https://crm.taviportal.com/
+  list 200 total visible 4 | test records visible none | all EM-00039,EM-00036,EM-00035,EM-00031
+PASS reviewer4 RA buttons - record GET 403, buttons [] expected []
+PASS reviewer4 RB buttons - record GET 403, buttons [] expected []
+PASS reviewer4 RC buttons - record GET 403, buttons [] expected []
+PASS reviewer4 RD buttons - record GET 403, buttons [] expected []
+  admin GET /workflow/rules 403
+  admin GET /workflow/approval-processes 200
+  admin GET /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/blueprints?includeInactive=true 403
+  admin GET /iam/users?take=5 200
+  admin GET /iam/profiles 200
+  admin GET /mail/connections 403
+  admin GET /record-portals/9b21cf61-04cf-4201-8f3c-928247b97384 200
+  direct edit RD.assessment_score=99 403 PERMISSION_DENIED: Permission denied.
+==== USER pool-science (Ebhar - Category Assessor (Science))
+PASS pool-science login - login ok, /iam/me 200 moaazdly89+pool-science@gmail.com, url https://crm.taviportal.com/modules/8c6e2e72-6b13-4125-9c1b-f454948e3ab0
+  list 200 total visible 3 | test records visible RB,RD | all EM-00055,EM-00053,EM-00036
+PASS pool-science RA buttons - record GET 403, buttons [] expected []
+PASS pool-science RB buttons - record GET 200, buttons [t-approve-video-science,t-correction-science] expected [t-approve-video-science,t-correction-science]
+PASS pool-science RC buttons - record GET 403, buttons [] expected []
+PASS pool-science RD buttons - record GET 200, buttons [] expected []
+PASS pool-science deny RA t-approve-registration - 403 PERMISSION_DENIED: Permission denied.
+PASS pool-science deny RC t-approve-video-math - 403 PERMISSION_DENIED: Permission denied.
+PASS pool-science deny RD t-finalist - 422 BLUEPRINT_VALIDATION_FAILED: Transition not permitted.
+  admin GET /workflow/rules 403
+  admin GET /workflow/approval-processes 200
+  admin GET /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/blueprints?includeInactive=true 403
+  admin GET /iam/users?take=5 200
+  admin GET /iam/profiles 403
+  admin GET /mail/connections 403
+  admin GET /record-portals/9b21cf61-04cf-4201-8f3c-928247b97384 403
+  direct edit RD.assessment_score=99 200 ok
+==== USER pool-math (Ebhar - Category Assessor (Mathematics))
+PASS pool-math login - login ok, /iam/me 200 moaazdly89+pool-math@gmail.com, url https://crm.taviportal.com/modules/8c6e2e72-6b13-4125-9c1b-f454948e3ab0
+  list 200 total visible 2 | test records visible RC | all EM-00054,EM-00036
+PASS pool-math RA buttons - record GET 403, buttons [] expected []
+PASS pool-math RB buttons - record GET 403, buttons [] expected []
+PASS pool-math RC buttons - record GET 200, buttons [t-approve-video-math,t-correction-math] expected [t-approve-video-math,t-correction-math]
+PASS pool-math RD buttons - record GET 403, buttons [] expected []
+PASS pool-math deny RB t-approve-video-science - 403 PERMISSION_DENIED: Permission denied.
+PASS pool-math deny RB t-correction-science - 403 PERMISSION_DENIED: Permission denied.
+  admin GET /workflow/rules 403
+  admin GET /workflow/approval-processes 200
+  admin GET /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/blueprints?includeInactive=true 403
+  admin GET /iam/users?take=5 200
+  admin GET /iam/profiles 403
+  admin GET /mail/connections 403
+  admin GET /record-portals/9b21cf61-04cf-4201-8f3c-928247b97384 403
+  direct edit RD.assessment_score=99 403 PERMISSION_DENIED: Permission denied.
+==== USER pool-technology (Ebhar - Category Assessor (Technology))
+PASS pool-technology login - login ok, /iam/me 200 moaazdly89+pool-technology@gmail.com, url https://crm.taviportal.com/modules/8c6e2e72-6b13-4125-9c1b-f454948e3ab0
+  list 200 total visible 1 | test records visible none | all EM-00036
+PASS pool-technology RA buttons - record GET 403, buttons [] expected []
+PASS pool-technology RB buttons - record GET 403, buttons [] expected []
+PASS pool-technology RC buttons - record GET 403, buttons [] expected []
+PASS pool-technology RD buttons - record GET 403, buttons [] expected []
+PASS pool-technology deny RB t-approve-video-science - 403 PERMISSION_DENIED: Permission denied.
+  admin GET /workflow/rules 403
+  admin GET /workflow/approval-processes 200
+  admin GET /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/blueprints?includeInactive=true 403
+  admin GET /iam/users?take=5 200
+  admin GET /iam/profiles 403
+  admin GET /mail/connections 403
+  admin GET /record-portals/9b21cf61-04cf-4201-8f3c-928247b97384 403
+  direct edit RD.assessment_score=99 403 PERMISSION_DENIED: Permission denied.
+==== USER pool-arts (Ebhar - Category Assessor (Arts))
+PASS pool-arts login - login ok, /iam/me 200 moaazdly89+pool-arts@gmail.com, url https://crm.taviportal.com/modules/8c6e2e72-6b13-4125-9c1b-f454948e3ab0
+  list 200 total visible 4 | test records visible none | all EM-00036,EM-00029,EM-00028,EM-00027
+PASS pool-arts RA buttons - record GET 403, buttons [] expected []
+PASS pool-arts RB buttons - record GET 403, buttons [] expected []
+PASS pool-arts RC buttons - record GET 403, buttons [] expected []
+PASS pool-arts RD buttons - record GET 403, buttons [] expected []
+PASS pool-arts deny RC t-correction-math - 403 PERMISSION_DENIED: Permission denied.
+  admin GET /workflow/rules 403
+  admin GET /workflow/approval-processes 200
+  admin GET /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/blueprints?includeInactive=true 403
+  admin GET /iam/users?take=5 200
+  admin GET /iam/profiles 403
+  admin GET /mail/connections 403
+  admin GET /record-portals/9b21cf61-04cf-4201-8f3c-928247b97384 403
+  direct edit RD.assessment_score=99 403 PERMISSION_DENIED: Permission denied.
+==== USER pool-registration (Ebhar — Assessment Lead/Committee)
+PASS pool-registration login - login ok, /iam/me 200 moaazdly89+pool-registration@gmail.com, url https://crm.taviportal.com/modules/8c6e2e72-6b13-4125-9c1b-f454948e3ab0
+  list 200 total visible 18 | test records visible RA,RB,RC,RD | all EM-00055,EM-00054,EM-00053,EM-00052,EM-00047,EM-00039,EM-00038,EM-00037,EM-00036,EM-00035,EM-00034,EM-00033,EM-00032,EM-00031,EM-00030,EM-00029,EM-00028,EM-00027
+PASS pool-registration RA buttons - record GET 200, buttons [] expected []
+PASS pool-registration RB buttons - record GET 200, buttons [] expected []
+PASS pool-registration RC buttons - record GET 200, buttons [] expected []
+PASS pool-registration RD buttons - record GET 200, buttons [t-finalist,t-not-selected] expected [t-finalist,t-not-selected]
+PASS pool-registration deny RA t-approve-registration - 422 BLUEPRINT_VALIDATION_FAILED: Transition not permitted.
+PASS pool-registration deny RB t-approve-video-science - 422 BLUEPRINT_VALIDATION_FAILED: Transition not permitted.
+  admin GET /workflow/rules 403
+  admin GET /workflow/approval-processes 200
+  admin GET /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/blueprints?includeInactive=true 403
+  admin GET /iam/users?take=5 200
+  admin GET /iam/profiles 403
+  admin GET /mail/connections 403
+  admin GET /record-portals/9b21cf61-04cf-4201-8f3c-928247b97384 403
+  direct edit RD.assessment_score=99 200 ok
+PASS reviewer1 do RA t-approve-registration - 200 ok -> Registration Approved
+PASS pool-math do RC t-correction-math - 200 ok -> Action Required
+PASS pool-science do RB t-approve-video-science - 200 ok -> Assessment Complete
+PASS pool-registration do RD t-finalist - 200 ok -> Finalist Accepted
+FINAL RA EM-00052 Registration Approved score  owner reviewer1
+FINAL RB EM-00053 Assessment Complete score 80 owner pool-science
+FINAL RC EM-00054 Action Required score  owner pool-math
+FINAL RD EM-00055 Finalist Accepted score 99 owner pool-science
+TOTAL 62 / 62 pass

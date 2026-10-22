@@ -1,0 +1,80 @@
+{
+ "out": "../02-role-tree-vs-zoho.png",
+ "id": "Items 3–6",
+ "title": "Role-based mode uses profile rank — no role tree, no branch rule, no Share Data with Peers",
+ "verdict": "Gap",
+ "date": "21 Oct 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Security Control → Profiles (rank + parent)",
+   "img": "../originals/tavi-t03-profiles.png"
+  },
+  {
+   "side": "TAVI",
+   "caption": "Security Control → Org Units (separate tree, used for scope)",
+   "img": "../originals/tavi-t04-org-units.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Security Control → Roles and Sharing → Roles (CEO → Manager)",
+   "img": "../originals/zoho-z02-roles.png",
+   "boxes": [
+    {
+     "n": 3,
+     "x": 287,
+     "y": 290,
+     "w": 170,
+     "h": 115
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Role rules (docs)",
+   "flag": "DOCS",
+   "text": [
+    "Roles are separate from Profiles: profiles give permissions, roles decide whose data you see.",
+    "A superior sees the records of their own branch (all levels below), not the whole tenant.",
+    "Each role has \"Share Data with Peers\" (off by default). It is hidden in Reporting mode.",
+    "A role with users or sub-roles is removed with Transfer & Delete."
+   ],
+   "sources": [
+    "reference/zoho-docs-inventory.md §2"
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": 3,
+   "b": "What Role-based follows",
+   "zoho": "Role tree, separate from profiles",
+   "tavi": "Profile rank (CRM Admin 700 › Manager 500 › Supervisor 300 › User 100)",
+   "match": "Differs"
+  },
+  {
+   "n": 4,
+   "b": "Who a superior sees",
+   "zoho": "Own branch only",
+   "tavi": "Preview: \"every User in the tenant\"; module hint: \"lower-ranked users in their department\"",
+   "match": "Differs"
+  },
+  {
+   "n": 5,
+   "b": "Share Data with Peers",
+   "zoho": "Per role",
+   "tavi": "Not in CRM",
+   "match": "Gap"
+  },
+  {
+   "n": 6,
+   "b": "Delete role with users",
+   "zoho": "Transfer & Delete",
+   "tavi": "Not confirmed — Phase 3",
+   "match": "Not checked"
+  }
+ ],
+ "notes": [
+  "Users with two profiles (e.g. CRM Admin + Desk Administrator) have no single rank."
+ ]
+}

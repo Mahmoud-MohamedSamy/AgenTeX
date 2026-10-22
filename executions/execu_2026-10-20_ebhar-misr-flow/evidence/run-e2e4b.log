@@ -1,0 +1,16 @@
+B1 state ["Finalist Accepted"] terminal false buttons 
+B1 portal {"portals":[{"portal":{"id":"9b21cf61-04cf-4201-8f3c-928247b97384","name":"بوابة المتقدمين","is_enabled":true,"require_approval":false},"layout_mismatch":false,"email":"moaazdly89+qaem11@gmail.com","access":{"id":"dea21aa8-97b6-4a5c-b744-43a5c4de4a86","portal_id":"9b21cf61-04cf-4201-8f3c-928247b97384","record_id":"07e3dc63-c7ce-44a4-a723-2b3388d9b6e5","username":"utb55g1vd","email":"moaazdly89+qae
+B2 state ["Registration Rejected"] terminal true buttons 
+B2 portal {"portals":[{"portal":{"id":"9b21cf61-04cf-4201-8f3c-928247b97384","name":"بوابة المتقدمين","is_enabled":true,"require_approval":false},"layout_mismatch":false,"email":"moaazdly89+qaem12@gmail.com","access":null,"pending_change":null,"can_grant":false,"grant_blocked_reason":"condition_unmet","access_condition":{"field_key":"application_status","field_label":"Application Status","datatype_key":"pic
+B3 state ["Finalist Rejected"] terminal true buttons 
+B3 portal {"portals":[{"portal":{"id":"9b21cf61-04cf-4201-8f3c-928247b97384","name":"بوابة المتقدمين","is_enabled":true,"require_approval":false},"layout_mismatch":false,"email":"moaazdly89+qaem13@gmail.com","access":null,"pending_change":null,"can_grant":false,"grant_blocked_reason":"condition_unmet","access_condition":{"field_key":"application_status","field_label":"Application Status","datatype_key":"pic
+B4 state ["Pending Verification"] terminal false buttons t-approve-registration,t-reject-registration
+B4 portal {"portals":[{"portal":{"id":"9b21cf61-04cf-4201-8f3c-928247b97384","name":"بوابة المتقدمين","is_enabled":true,"require_approval":false},"layout_mismatch":false,"email":"moaazdly89+qaem14@gmail.com","access":null,"pending_change":null,"can_grant":false,"grant_blocked_reason":"condition_unmet","access_condition":{"field_key":"application_status","field_label":"Application Status","datatype_key":"pic
+PASS B02 - buttons at Pending (B4) = t-approve-registration,t-reject-registration
+PASS B22 - rejected applicant portal access: {"portals":[{"portal":{"id":"9b21cf61-04cf-4201-8f3c-928247b97384","name":"بوابة المتقدمين","is_enabled":true,"require_approval":false},"layout_mismatch":false,"email":"moaazdly89+qaem12@gmail.com","access":null,"pending_change":null,"can_grant":false,"grant_blocked_reason":"condition_unmet","access
+PASS B21 - buttons after Registration Rejected = []
+PASS B25 - buttons after Finalist Rejected = []
+PASS B25b - buttons after Finalist Accepted = [] (not an end state in the design)
+probe /audit/events?recordId=07e3dc63-c7ce-44a4-a723-2b3388d9b6e5&take=100 400 0
+probe /audit/events?entityId=07e3dc63-c7ce-44a4-a723-2b3388d9b6e5&take=100 400 0
+probe /modules/ffb6202e-9ac2-49ba-a335-ef86c542450e/records/07e3dc63-c7ce-44a4-a723-2b3388d9b6e5/activities 404 0
