@@ -1,0 +1,122 @@
+[
+ {
+  "id": "NDC-1819",
+  "uuid": "2b58d6ec-e6e0-4eb1-9fd9-febc541c2d08",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Mostly held; Pin Column, minimum width in Clip mode and rail counts for new periods not done.</p><p>Most items now work (locked Subject, utility columns, sort persists, max 800 px + reset, search clear, A–Z rail with filter, row menu without Mark as completed, 11 periods). Still open: no Pin Column anywhere; the 48 px minimum hides the header label and in Clip Text dates spill into the next column; the rail shows Tasks/Calls/Meetings counts only for All open, Due today and Overdue; items 1, 2, 13 declined by the developer.</p><p><b>Checked:</b></p><ul><li>Locked Subject / utility columns / sort persists / max 800 px / Reset Column Size → All work <b>[PASS]</b></li><li>Search \"Clear\" in filter and Manage Columns; A–Z rail; letter + filter; row menu Edit/Reschedule/Delete; 11 periods → All work (L = 1, All = 4; Full Name contains Lead → L 1, X 0) <b>[PASS]</b></li><li>Pin Column → Absent everywhere <b>[FAIL]</b></li><li>Minimum column width (Clip Text) → 48 px: label disappears; dates spill into the next column <b>[FAIL]</b></li><li>Rail counts for the 6 new periods → Only All open / Due today / Overdue show counts <b>[FAIL]</b></li><li>Items 1, 2, 13 → Not done (developer declined) <b>[FAIL]</b></li></ul><p><b>Still failing:</b></p><ul><li>Pin Column: absent from every column menu and Manage Columns.</li><li>Min width (Clip Text): Due date at 48 px → header label gone, \"Late by …\" overlaps Status.</li><li>Rail counts: missing for Today &amp; Overdue, Tomorrow, Next 7 days, This week, This month, Next month (API today_and_overdue = 5).</li><li>Items 1, 2, 13: not done.</li></ul><p>Evidence: NDC-1819-retest-PARTIAL.png</p>",
+  "img": "NDC-1819-retest-PARTIAL.png"
+ },
+ {
+  "id": "NDC-1788",
+  "uuid": "a8fe8f52-bdfc-4948-9950-9e4f44020352",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Priority values read Low / Normal / High / Highest; High returns exactly t01, t03, t06. Created By and Modified By are in the field list and work (me → 8, ndc-staging-owner → 0).</p><p><b>Checked:</b></p><ul><li>Priority values → Low / Normal / High / Highest <b>[PASS]</b></li><li>Priority = High → Total 3: t01, t03, t06 (matches seed data) <b>[PASS]</b></li><li>Created By / Modified By in the field list → Created By = me → 8; = ndc-staging-owner → 0; Modified Time = Last Activity <b>[PASS]</b></li></ul><p>Evidence: NDC-1788-retest-PASS.png</p>",
+  "img": "NDC-1788-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1837",
+  "uuid": "a38cffdb-4bb9-4879-8d06-0056efc98fe0",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Lookup gives a single-record picker, Multi-Select Lookup takes several records; no overlap with − / + at 1280 or 1024 px. Operators are Equals / Not equal / empty / not empty (lookup) and Contains any of / none of / empty / not empty (multi) — the ticket also listed contains/starts/ends (INFO).</p><p><b>Checked:</b></p><ul><li>Lookup value control → \"Choose a record\" → one chip + \"Change record\" <b>[PASS]</b></li><li>Multi-Select Lookup → 2 chips + \"Add another record\" <b>[PASS]</b></li><li>Overlap with − / + (QA 15 Oct) → None at 1280 and 1024 px <b>[PASS]</b></li><li>Operators → Lookup: Equals / Not equal / empty / not empty; Multi: Contains any of / none of / empty / not empty (ticket also listed contains/starts/ends) <b>[INFO]</b></li></ul><p>Evidence: NDC-1837-retest-PASS.png</p>",
+  "img": "NDC-1837-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2098",
+  "uuid": "d1ef2976-b984-4e8e-b2a2-376c480c8d32",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "html": "<p><b>Retest FAIL — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Only when the last-used view is not applicable; otherwise the last-used view opens under a toast that says All Leads.</p><p>With the last-used view \"QA RT 2098 last\", ?view=&lt;deleted id&gt; and ?view=&lt;test user 2 private view&gt; show the toast \"That view is no longer available. Showing All Leads.\" and remove ?view, but the page opens QA RT 2098 last (2 records), not All Leads. With a last-used view from another layout it lands on All Leads. Nothing of the foreign view leaks.</p><p><b>Checked:</b></p><ul><li>Deleted / foreign id, last-used = a normal view → Toast \"That view is no longer available. Showing All Leads.\" but QA RT 2098 last (2 records) is shown <b>[FAIL]</b></li><li>Same, last-used = view of another layout → All Leads + toast, ?view removed <b>[PASS]</b></li><li>Own view by URL / foreign view leak → Own view opens; foreign name never shown <b>[PASS]</b></li><li>Leads page load → 35–73 s to load in this run <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>?view=&lt;deleted ff0a79b9…&gt; with last-used QA RT 2098 last → shows QA RT 2098 last (2 records); expected All Leads.</li><li>?view=&lt;foreign 1cb2da03…&gt; → same.</li><li>Toast text says \"Showing All Leads.\" while another view is shown.</li></ul><p>Evidence: NDC-2098-retest-FAIL.png</p>",
+  "img": "NDC-2098-retest-FAIL.png"
+ },
+ {
+  "id": "NDC-2101",
+  "uuid": "88fbaf01-b5b7-4769-ac82-c84744340e32",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>View editor lookup rows use a module picker + record picker (single keeps one record, multi keeps several); nothing overlaps − / + at 1280, 1024 or 800 px. Saved criteria store \"&lt;module&gt;:&lt;record id&gt;\", and equals / not equal / empty / not empty / any-of return exactly the seeded leads.</p><p><b>Checked:</b></p><ul><li>Record picker for lookup / multi-lookup → Module picker + Choose a record; single keeps 1 record; multi keeps 2 <b>[PASS]</b></li><li>Overlap (QA 15 Oct) → None at 1280 / 1024 / 800 px <b>[PASS]</b></li><li>Saved value → \"&lt;module&gt;:&lt;record id&gt;\"; view returns Q2 only (X AND any of Y) <b>[PASS]</b></li><li>Operators → Exactly that; multi any-of Y → Q2, Q3 <b>[PASS]</b></li></ul><p>Evidence: NDC-2101-retest-PASS.png</p>",
+  "img": "NDC-2101-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2106",
+  "uuid": "25fec70c-812b-40a4-93fe-32328ae5aadc",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Layout builder dialog lists \"QA RT 2106 crit\" and disables Delete Permanently; API DELETE → 409 naming the view; a column-only view does not block. After the condition was changed the delete returned 204. INFO: wording points to Automation / Process Management and the code is FIELD_IN_USE_BY_WORKFLOW.</p><p><b>Checked:</b></p><ul><li>Delete a field used in a view's criteria (UI) → Dialog lists \"QA RT 2106 crit\"; Delete Permanently disabled; column-only view not listed <b>[PASS]</b></li><li>Same by API → 409 \"…used by custom view(s): QA RT 2106 crit…\" <b>[PASS]</b></li><li>After removing the condition → 204, field gone <b>[PASS]</b></li><li>Wording → Hint \"(Settings → Automation / Process Management)\" and code FIELD_IN_USE_BY_WORKFLOW although a view blocks it <b>[INFO]</b></li></ul><p>Evidence: NDC-2106-retest-PASS.png</p>",
+  "img": "NDC-2106-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2113",
+  "uuid": "ea78170c-40c3-420f-96b8-1bcfa7b17bfe",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Drag out held; drag in refused except the first drop after load.</p><p>Dragging from Unaccounted to Proposal moves the deal and sets stage = proposal. Dragging into Unaccounted dims the column and is refused — but the first drop after the board loads (while Unaccounted holds a card) lands the card in the neighbouring Closed_lost column and opens \"Verify details — before closing this deal\" (3/3 runs). Cancel restores it.</p><p><b>Checked:</b></p><ul><li>Drag out of Unaccounted to a stage → Moved to Proposal; API stage = proposal <b>[PASS]</b></li><li>Drag into Unaccounted → Column dims (opacity 0.5); 2nd and later drops refused, stage unchanged <b>[PASS]</b></li><li>First drop after load while Unaccounted has a card → Card placed in Closed_lost + \"Verify details — before closing this deal\" dialog (3/3 runs); Cancel restores <b>[FAIL]</b></li></ul><p><b>Still failing:</b></p><ul><li>First drop on Unaccounted after load: card shown in Closed_lost + close-deal dialog; expected refused with no move.</li></ul><p>Evidence: NDC-2113-retest-PARTIAL.png</p>",
+  "img": "NDC-2113-retest-PARTIAL.png"
+ },
+ {
+  "id": "NDC-1789",
+  "uuid": "18b5bfd4-763f-40de-8e6a-9d7e606fc26b",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Priority = High survives 4 reloads and a fresh sign-in; period switches keep it and return the expected rows; Clear filters stays cleared after reload.</p><p><b>Checked:</b></p><ul><li>Filter after 4 reloads and a new login → Priority = High kept, Total 3 each time <b>[PASS]</b></li><li>Period switch with the filter on → All 3 · Today&amp;Overdue t01,t03 · Due today t03 · Tomorrow 0 · Overdue t01 · Next month t06 <b>[PASS]</b></li><li>Clear filters → workqueueFilters = {} after reload <b>[PASS]</b></li></ul><p>Evidence: NDC-1789-retest-PASS.png</p>",
+  "img": "NDC-1789-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2117",
+  "uuid": "6822e8d1-2c35-41cb-a022-045644b5f390",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Empty / spaces-only → \"Enter a name for the view.\" with Save disabled; 120 chars → limit message, 121st char cut; duplicate → \"You already have a view with this name.\"; API 409 / 422. INFO: uniqueness is per layout, so an API view without layout and a UI view can share a name.</p><p><b>Checked:</b></p><ul><li>Empty / spaces-only name → Shown; Save disabled <b>[PASS]</b></li><li>120 / 121 characters → \"A view name can be at most 120 characters.\" at 120; 121st char cut (typed and pasted) <b>[PASS]</b></li><li>Duplicate name → Shown in the editor <b>[PASS]</b></li><li>API → Duplicate (any case, trailing space) 409; empty / 121 → 422 <b>[PASS]</b></li><li>Scope of uniqueness → Per layout: API view (layout null) and UI view (Standard) with the same name coexist in one picker <b>[INFO]</b></li></ul><p>Evidence: NDC-2117-retest-PASS.png</p>",
+  "img": "NDC-2117-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2120",
+  "uuid": "1aa74ef3-cf9b-4bce-97c2-42cba6a577c2",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Removing or renaming an option a view filters on (any case, single value or any-of list) → 409 naming the views, in the API and as a toast in the layout builder; an unused option and the option after the view changed are removed (200). INFO: a green \"Field updated successfully\" toast shows next to the error.</p><p><b>Checked:</b></p><ul><li>Remove an option used by views (UI) → \"Couldn't save … QA RT opt A … used by custom view(s): QA RT 2120 anyof, QA RT 2120 pick\" <b>[PASS]</b></li><li>Same by API, view value in other case; rename → 409 PICKLIST_OPTION_IN_USE for remove and rename <b>[PASS]</b></li><li>Unused option / any-of list → C removed 200; A (any-of) 409 <b>[PASS]</b></li><li>After the view changed → 200 <b>[PASS]</b></li><li>Toasts → A green \"Field updated successfully\" shows next to the error (another field re-saved) <b>[INFO]</b></li></ul><p>Evidence: NDC-2120-retest-PASS.png</p>",
+  "img": "NDC-2120-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2122",
+  "uuid": "5d893ed7-7e5a-49c0-8810-94471cb82d12",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "html": "<p><b>Retest FAIL — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Editor part held. API still accepts and stores upper/mixed case; summary shows it as stored.</p><p>Editor: typing AND/OR becomes and/or and saves lower case. API: \"1 And 2\", \"1 OR 2\", \"1 AND 2\" → 201 and stored as sent; results identical to lower case. The ticket expected the API to reject upper case. Product decision (25 Oct): the criteria pattern must not be editable by typing — and/or should only be switched by clicking the AND/OR toggle between rows.</p><p><b>Checked:</b></p><ul><li>Editor → Lower-cased while typing; saved \"(1 and 2)\" <b>[PASS]</b></li><li>API (ticket expectation: reject) → 201 — \"1 And 2\", \"1 OR 2\", \"1 AND 2\" accepted and stored as sent <b>[FAIL]</b></li><li>Pattern editing (product decision 25 Oct) → Pattern is still a free-text box <b>[FAIL]</b></li><li>API view opened in editor (dev: opens lower-cased) → Summary \"( 1 And 2 )\"; Edit Pattern box \"1 and 2\" <b>[INFO]</b></li><li>Evaluation → OR 64 = 64; AND 1 = 1 <b>[PASS]</b></li></ul><p><b>Still failing:</b></p><ul><li>API accepts upper/mixed case (201) — ticket expected 400/422.</li><li>Requested change: disable typing in the criteria pattern; switch and/or only by clicking the AND/OR button.</li></ul><p>Evidence: NDC-2122-retest-FAIL.png</p>",
+  "img": "NDC-2122-retest-FAIL.png"
+ },
+ {
+  "id": "NDC-2124",
+  "uuid": "b19d5e73-e018-4129-8f4e-b19160b9f7ed",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Through Manage columns on Contacts: after ov-01…ov-51, 50 kept and only ov-01 dropped; after re-saving ov-02 and saving ov-52, ov-03 dropped and ov-02 kept.</p><p><b>Checked:</b></p><ul><li>51 overrides in order → 50 kept; missing ov-01 only <b>[PASS]</b></li><li>Re-save ov-02, then ov-52 → Missing ov-01, ov-03; ov-02 kept <b>[PASS]</b></li><li>Override metadata → Each override has updatedAt <b>[PASS]</b></li></ul><p>Evidence: NDC-2124-retest-PASS.png</p>",
+  "img": "NDC-2124-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2130",
+  "uuid": "70d9fdf5-db85-48c6-a7d1-26450bde9486",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held for every count checked.</p><p>Arabic counts: لا توجد سجلات (0), سجل واحد (1), سجلان (2), ٣ سجلات (3), ٥ سجلات (5), ٥٤ سجلاً (54), ١٤٣ سجلاً (143), ١٧١ سجلاً (171); no English \"records\". The \"other\" form (100–102…) not checked.</p><p><b>Checked:</b></p><ul><li>Count in Arabic → 0 لا توجد سجلات · 1 سجل واحد · 2 سجلان · 3 ٣ سجلات · 5 ٥ سجلات · 54 ٥٤ سجلاً · 143 ١٤٣ سجلاً · 171 ١٧١ سجلاً <b>[PASS]</b></li><li>\"other\" form (100–102, 200–202…) → Not checked: no list with such a total <b>[INFO]</b></li></ul><p>Evidence: NDC-2130-retest-PASS.png</p>",
+  "img": "NDC-2130-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2131",
+  "uuid": "9c14289d-752d-4553-b67a-2399e2aa94d2",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Layout picker accessible name is \"التخطيط\" on the Leads list and the Create Lead page; count translated.</p><p><b>Checked:</b></p><ul><li>Create Lead layout picker name → \"التخطيط\" <b>[PASS]</b></li><li>Leads list layout picker name → \"التخطيط\"; no aria-label \"Layout\" left <b>[PASS]</b></li><li>Record count → \"١٧١ سجلاً\" (see NDC-2130) <b>[PASS]</b></li></ul><p>Evidence: NDC-2131-retest-PASS.png</p>",
+  "img": "NDC-2131-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2280",
+  "uuid": "cae95c37-bdf5-4d58-ac0f-adbac851d0fa",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "html": "<p><b>Retest FAIL — 25 Oct 2026</b><br>Environment: staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view<br>Method: manual browser + API (retest round 25 Oct 2026)</p><p><b>Developer's note checked:</b> Column capped and no scrollbar; name still not cut.</p><p>At 1280 px the column is capped and all headers fit, but a 116-character name is not cut: the text runs to x=1116 over Shared To, Created By and Last Modified By (overprinting \"Only me\"). Full name only in a title attribute.</p><p><b>Checked:</b></p><ul><li>Long name (116 chars, no spaces) → Not cut: text 815 px wide, ends at x=1116; full name only in title attribute <b>[FAIL]</b></li><li>Sharing column → Header visible, but its cell is overprinted by the name (\"Only me\") <b>[FAIL]</b></li><li>Table width → No scrollbar; all headers inside 1280 px <b>[PASS]</b></li></ul><p><b>Still failing:</b></p><ul><li>Name not truncated with \"…\"; overlaps the Shared To / Created By / Last Modified By cells.</li></ul><p>Evidence: NDC-2280-retest-FAIL.png</p>",
+  "img": "NDC-2280-retest-FAIL.png"
+ }
+]

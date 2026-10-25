@@ -480,6 +480,94 @@ public class VerifyV7WebhooksTest extends VerifyBase {
         get(c, adminB(), "/timeline/records/leads/" + id + "/feed");
     }
 
+    // ------------------------------------------------------------ follow-ups (25 Oct, after publishing NDC-2537..2540)
+
+    @CaseId("WH-15")
+    @Test(groups = {"crm-webhooks"}, description = "NDC-2539 re-check: lead owner read before approval vs ${owner} in the approval webhook (lead kept until the end)")
+    public void wh15ApprovalOwnerRecheck() {
+        String c = "WH-15";
+        WebhookSite h = hook(c, 200, 0);
+        approvalWith(c, "finalActions", wfHook(c, h.url(), "Post", 10, null));
+        WebhookSite w = hook(c + "w", 200, 0);
+        rule(c, CrmProcs.workflow(LEADS, c + " WF").guardCase(c).onCreate().rawAction(wfHook(c + "w", w.url(), "Post", 10, null)));
+        String id = lead(c, "lead");
+        approvalHeld.add(new String[]{LEADS, id});
+        CrmApi.waitFor(45, () -> "pending_approval".equals(api.approvalState(LEADS, id)));
+        String ownerBefore = owner(LEADS, id);
+        Response a = api.approve(supervisor(), LEADS, id);
+        List<Map<String, Object>> got = h.await(1, 90);
+        fact(c, "RESULT lead " + id + " owner on the record=" + ownerBefore + " (after approve " + owner(LEADS, id) + "); approve -> " + a.statusCode()
+                + "; approval webhook " + seen(got) + "; workflow webhook (same lead) " + seen(w.await(1, 30)));
+    }
+
+    @CaseId("WH-16")
+    @Test(groups = {"crm-webhooks"}, description = "Approval Call Webhook to a receiver answering 500: retried like workflow webhooks?")
+    public void wh16ApprovalWebhookFailure() {
+        String c = "WH-16";
+        WebhookSite h = hook(c, 500, 0);
+        approvalWith(c, "finalActions", wfHook(c, h.url(), "Post", 10, null));
+        String id = lead(c, "lead");
+        approvalHeld.add(new String[]{LEADS, id});
+        CrmApi.waitFor(45, () -> "pending_approval".equals(api.approvalState(LEADS, id)));
+        fact(c, "approve -> " + api.approve(supervisor(), LEADS, id).statusCode());
+        long t0 = System.currentTimeMillis();
+        for (int i = 0; i < 4; i++) {
+            CrmUser.sleep(60_000);
+            fact(c, "+" + (System.currentTimeMillis() - t0) / 1000 + "s requests=" + h.requests().size());
+        }
+        fact(c, "RESULT lead " + id + " requests=" + h.requests().size() + "; executions " + dispatches(id));
+        get(c, adminB(), "/timeline/records/leads/" + id + "/feed");
+    }
+
+    @CaseId("WH-17")
+    @Test(groups = {"crm-webhooks"}, description = "Read-only: what happened to the pending retry to 169.254.169.254 (WH-14, lead 473dc083)")
+    @SuppressWarnings("unchecked")
+    public void wh17MetadataRetryStatus() {
+        String c = "WH-17";
+        String lead = "473dc083-9af1-4042-b659-9f9644071627";
+        Response r = adminB().get("/workflow/executions?recordId=" + lead + "&take=50");
+        fact(c, "executions for lead -> " + r.statusCode());
+        List<Map<String, Object>> ex = r.statusCode() == 200 ? r.jsonPath().getList("data") : List.of();
+        for (Map<String, Object> e : ex) {
+            if (!lead.equals(e.get("recordId"))) continue;
+            List<Map<String, Object>> ds = adminB().get("/workflow/executions/" + e.get("id")).jsonPath().getList("data.dispatches");
+            if (ds != null) for (Map<String, Object> d : ds)
+                fact(c, "RESULT dispatch target=" + d.get("target") + " status=" + d.get("status") + " attempts=" + d.get("attempts") + " lastError=" + d.get("lastError")
+                        + " lastAttemptAt=" + d.get("lastAttemptAt") + " nextAttemptAt=" + d.get("nextAttemptAt") + " responseStatus=" + d.get("responseStatus")
+                        + " responseBody length=" + (d.get("responseBodyTruncated") == null ? "null" : String.valueOf(d.get("responseBodyTruncated")).length()));
+        }
+    }
+
+    /** I-09 follow-up: a lead whose review is COMPLETE is deleted and restored; which automations run again? */
+    @CaseId("I-09b")
+    @Test(groups = {"crm-webhooks"}, description = "Delete a lead after its review is approved, restore it, and record what runs again")
+    public void i09bRestoreAfterReview() {
+        String c = "I-09b";
+        WebhookSite w = hook(c, 200, 0);
+        Map<String, Object> body = CrmProcs.reviewProcess(LEADS, layout(LEADS), c + " RP", caseGuard(LEADS, c), List.of("manual"),
+                Map.of("email", "email"), List.of(adminA().id()), List.of(adminA().id()));
+        String rp = api.reviewProcess(body);
+        on(c, "review " + rp, api.setReviewActive(rp, true, null));
+        rule(c, CrmProcs.workflow(LEADS, c + " WF").guardCase(c).onCreate().rawAction(wfHook(c, w.url(), "Post", 10, null)));
+        String id = createLogged(c, userN(), LEADS, leadFields(c, "lead"));
+        CrmApi.waitFor(60, () -> CrmApi.reviewPending(api.reviewStatus(LEADS, id)));
+        api.reviewApproveAll(adminA(), api.reviewRequestId(LEADS, id), "email");
+        CrmApi.waitFor(60, () -> "approved".equals(api.reviewStatus(LEADS, id)));
+        int before = w.await(1, 60).size();
+        fact(c, "review " + api.reviewStatus(LEADS, id) + "; workflow webhook calls after review approval=" + before);
+        Response d = del(c, adminA(), "/modules/" + LEADS + "/records/" + id);
+        CrmUser.sleep(5000);
+        Response rs = post(c, adminA(), "/modules/" + LEADS + "/records/" + id + "/restore", Map.of());
+        CrmUser.sleep(45_000);
+        Response g = adminA().get("/modules/" + LEADS + "/records/" + id);
+        fact(c, "RESULT lead " + id + " delete -> " + d.statusCode() + "; restore -> " + rs.statusCode() + " " + cut(rs.asString(), 200)
+                + "; readable -> " + g.statusCode() + "; review status " + api.reviewStatus(LEADS, id) + " cycles=" + api.reviewHistory(adminA(), LEADS, id).getList("data.cycles").size()
+                + "; workflow webhook calls now=" + w.requests().size() + " (before delete " + before + "); executions " + dispatches(id));
+        Response e = api.update(userN(), LEADS, id, Map.of("description", "QA I-09b edit after restore"));
+        CrmUser.sleep(15_000);
+        fact(c, "edit after restore -> " + e.statusCode() + "; review status " + api.reviewStatus(LEADS, id));
+    }
+
     /** Read-only: other webhook settings in the tenant (SMS delivery webhook). */
     @Test(groups = {"crm-webhooks"}, description = "Read-only: SMS / messaging webhook configuration")
     public void whOtherSurfaces() {

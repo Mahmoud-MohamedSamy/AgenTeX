@@ -1,0 +1,256 @@
+{
+ "batch": "CRM",
+ "title": "Retest round 3 — Mahmoud Mohamed · NDC · 15 CRM tickets",
+ "date": "25 Oct 2026",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge headless · account mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test user 2 for the foreign view",
+ "devNote": "Deploy 25 Oct 04:29 UTC — CRM SPA c907b2e12, metadata-engine 12390a74 (1819, 2106, 2120).",
+ "tickets": [
+  {
+   "id": "NDC-1819",
+   "uuid": "2b58d6ec-e6e0-4eb1-9fd9-febc541c2d08",
+   "pri": "Urgent",
+   "feat": "Work Queue",
+   "title": "Workqueue Missings",
+   "v": "PARTIAL",
+   "dev": "Gap list: new periods, A–Z rail, row menu, column min/max widths, search clear, sort persistence.",
+   "devHeld": "Mostly held; Pin Column, minimum width in Clip mode and rail counts for new periods not done.",
+   "summary": "Most items now work (locked Subject, utility columns, sort persists, max 800 px + reset, search clear, A–Z rail with filter, row menu without Mark as completed, 11 periods). Still open: no Pin Column anywhere; the 48 px minimum hides the header label and in Clip Text dates spill into the next column; the rail shows Tasks/Calls/Meetings counts only for All open, Due today and Overdue; items 1, 2, 13 declined by the developer.",
+   "still": [
+    "Pin Column: absent from every column menu and Manage Columns.",
+    "Min width (Clip Text): Due date at 48 px → header label gone, \"Late by …\" overlaps Status.",
+    "Rail counts: missing for Today & Overdue, Tomorrow, Next 7 days, This week, This month, Next month (API today_and_overdue = 5).",
+    "Items 1, 2, 13: not done."
+   ],
+   "img": [
+    "NDC-1819-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-1788",
+   "uuid": "a8fe8f52-bdfc-4948-9950-9e4f44020352",
+   "pri": "High",
+   "feat": "Work Queue",
+   "title": "Work Queue | Filter offers only Status and Priority — every other layout field is unavailable",
+   "v": "PASS",
+   "dev": "Priority labels mapped to Low/Normal/High/Highest; Created By / Modified By added.",
+   "devHeld": "Held.",
+   "summary": "Priority values read Low / Normal / High / Highest; High returns exactly t01, t03, t06. Created By and Modified By are in the field list and work (me → 8, ndc-staging-owner → 0).",
+   "still": [],
+   "img": [
+    "NDC-1788-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1837",
+   "uuid": "a38cffdb-4bb9-4879-8d06-0056efc98fe0",
+   "pri": "High",
+   "feat": "Work Queue",
+   "title": "Workqueue | Lookup and Multi-Select Lookup fields offer a plain text field in Create Queue › Categorization",
+   "v": "PASS",
+   "dev": "Record picker; module picker on its own line so nothing overlaps − / +.",
+   "devHeld": "Held.",
+   "summary": "Lookup gives a single-record picker, Multi-Select Lookup takes several records; no overlap with − / + at 1280 or 1024 px. Operators are Equals / Not equal / empty / not empty (lookup) and Contains any of / none of / empty / not empty (multi) — the ticket also listed contains/starts/ends (INFO).",
+   "still": [],
+   "img": [
+    "NDC-1837-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2098",
+   "uuid": "d1ef2976-b984-4e8e-b2a2-376c480c8d32",
+   "pri": "Medium",
+   "feat": "Custom Views",
+   "title": "Custom Views | ?view= with a deleted or foreign view ID falls back to the last-used view instead of All Leads",
+   "v": "FAIL",
+   "dev": "Deleted / foreign / other-layout ?view now opens All <Module> with the toast \"That view is no longer available. Showing All Leads.\"",
+   "devHeld": "Only when the last-used view is not applicable; otherwise the last-used view opens under a toast that says All Leads.",
+   "summary": "With the last-used view \"QA RT 2098 last\", ?view=<deleted id> and ?view=<test user 2 private view> show the toast \"That view is no longer available. Showing All Leads.\" and remove ?view, but the page opens QA RT 2098 last (2 records), not All Leads. With a last-used view from another layout it lands on All Leads. Nothing of the foreign view leaks.",
+   "still": [
+    "?view=<deleted ff0a79b9…> with last-used QA RT 2098 last → shows QA RT 2098 last (2 records); expected All Leads.",
+    "?view=<foreign 1cb2da03…> → same.",
+    "Toast text says \"Showing All Leads.\" while another view is shown."
+   ],
+   "img": [
+    "NDC-2098-retest-FAIL.png"
+   ]
+  },
+  {
+   "id": "NDC-2101",
+   "uuid": "88fbaf01-b5b7-4769-ac82-c84744340e32",
+   "pri": "Medium",
+   "feat": "Custom Views",
+   "title": "Custom Views | Lookup criteria in the view editor take free text only (no record picker)",
+   "v": "PASS",
+   "dev": "Overlap fixed — same change as NDC-1837.",
+   "devHeld": "Held.",
+   "summary": "View editor lookup rows use a module picker + record picker (single keeps one record, multi keeps several); nothing overlaps − / + at 1280, 1024 or 800 px. Saved criteria store \"<module>:<record id>\", and equals / not equal / empty / not empty / any-of return exactly the seeded leads.",
+   "still": [],
+   "img": [
+    "NDC-2101-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2106",
+   "uuid": "25fec70c-812b-40a4-93fe-32328ae5aadc",
+   "pri": "Medium",
+   "feat": "Custom Views",
+   "title": "Custom Views | Deleted criteria field: field used by a view can be deleted",
+   "v": "PASS",
+   "dev": "A field used in a view's criteria can no longer be deleted; the refusal names the views.",
+   "devHeld": "Held.",
+   "summary": "Layout builder dialog lists \"QA RT 2106 crit\" and disables Delete Permanently; API DELETE → 409 naming the view; a column-only view does not block. After the condition was changed the delete returned 204. INFO: wording points to Automation / Process Management and the code is FIELD_IN_USE_BY_WORKFLOW.",
+   "still": [],
+   "img": [
+    "NDC-2106-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2113",
+   "uuid": "ea78170c-40c3-420f-96b8-1bcfa7b17bfe",
+   "pri": "Medium",
+   "feat": "Custom Views",
+   "title": "Custom Views | Kanban \"Unaccounted\" — cards can be moved into it",
+   "v": "PARTIAL",
+   "dev": "\"Unaccounted\" is source-only: drag out allowed, drag in refused.",
+   "devHeld": "Drag out held; drag in refused except the first drop after load.",
+   "summary": "Dragging from Unaccounted to Proposal moves the deal and sets stage = proposal. Dragging into Unaccounted dims the column and is refused — but the first drop after the board loads (while Unaccounted holds a card) lands the card in the neighbouring Closed_lost column and opens \"Verify details — before closing this deal\" (3/3 runs). Cancel restores it.",
+   "still": [
+    "First drop on Unaccounted after load: card shown in Closed_lost + close-deal dialog; expected refused with no move."
+   ],
+   "img": [
+    "NDC-2113-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-1789",
+   "uuid": "18b5bfd4-763f-40de-8e6a-9d7e606fc26b",
+   "pri": "Low",
+   "feat": "Work Queue",
+   "title": "Workqueue | Applied filters don't persist on refresh/next session (new login)",
+   "v": "PASS",
+   "dev": "Saved filter restored after the full field list loads.",
+   "devHeld": "Held.",
+   "summary": "Priority = High survives 4 reloads and a fresh sign-in; period switches keep it and return the expected rows; Clear filters stays cleared after reload.",
+   "still": [],
+   "img": [
+    "NDC-1789-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2117",
+   "uuid": "6822e8d1-2c35-41cb-a022-045644b5f390",
+   "pri": "Low",
+   "feat": "Custom Views",
+   "title": "Custom Views | View name validation messages are never shown",
+   "v": "PASS",
+   "dev": "Messages for empty name, 120-character limit and duplicate.",
+   "devHeld": "Held.",
+   "summary": "Empty / spaces-only → \"Enter a name for the view.\" with Save disabled; 120 chars → limit message, 121st char cut; duplicate → \"You already have a view with this name.\"; API 409 / 422. INFO: uniqueness is per layout, so an API view without layout and a UI view can share a name.",
+   "still": [],
+   "img": [
+    "NDC-2117-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2120",
+   "uuid": "1aa74ef3-cf9b-4bce-97c2-42cba6a577c2",
+   "pri": "Low",
+   "feat": "Custom Views",
+   "title": "Custom Views | Pick list value used by a view can be removed",
+   "v": "PASS",
+   "dev": "Removing a pick-list option used by a view is refused, naming the views (server).",
+   "devHeld": "Held.",
+   "summary": "Removing or renaming an option a view filters on (any case, single value or any-of list) → 409 naming the views, in the API and as a toast in the layout builder; an unused option and the option after the view changed are removed (200). INFO: a green \"Field updated successfully\" toast shows next to the error.",
+   "still": [],
+   "img": [
+    "NDC-2120-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2122",
+   "uuid": "5d893ed7-7e5a-49c0-8810-94471cb82d12",
+   "pri": "Low",
+   "feat": "Custom Views",
+   "title": "Custom Views | Upper-case 'AND' pattern is accepted by the editor and the API",
+   "v": "FAIL",
+   "dev": "Edit Pattern lower-cases as you type; API-saved upper case opens lower-cased; per-row toggle declined.",
+   "devHeld": "Editor part held. API still accepts and stores upper/mixed case; summary shows it as stored.",
+   "summary": "Editor: typing AND/OR becomes and/or and saves lower case. API: \"1 And 2\", \"1 OR 2\", \"1 AND 2\" → 201 and stored as sent; results identical to lower case. The ticket expected the API to reject upper case. Product decision (25 Oct): the criteria pattern must not be editable by typing — and/or should only be switched by clicking the AND/OR toggle between rows.",
+   "still": [
+    "API accepts upper/mixed case (201) — ticket expected 400/422.",
+    "Requested change: disable typing in the criteria pattern; switch and/or only by clicking the AND/OR button."
+   ],
+   "img": [
+    "NDC-2122-retest-FAIL.png"
+   ]
+  },
+  {
+   "id": "NDC-2124",
+   "uuid": "b19d5e73-e018-4129-8f4e-b19160b9f7ed",
+   "pri": "Low",
+   "feat": "Custom Views",
+   "title": "Custom Views | List preferences accept more than 50 column overrides",
+   "v": "PASS",
+   "dev": "Each override carries its write time; above 50 the least recently written is dropped.",
+   "devHeld": "Held.",
+   "summary": "Through Manage columns on Contacts: after ov-01…ov-51, 50 kept and only ov-01 dropped; after re-saving ov-02 and saving ov-52, ov-03 dropped and ov-02 kept.",
+   "still": [],
+   "img": [
+    "NDC-2124-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2130",
+   "uuid": "70d9fdf5-db85-48c6-a7d1-26450bde9486",
+   "pri": "Low",
+   "feat": "Custom Views",
+   "title": "Custom Views | Arabic UI: 'records' in the record count is not translated",
+   "v": "PASS",
+   "dev": "All six Arabic plural forms added.",
+   "devHeld": "Held for every count checked.",
+   "summary": "Arabic counts: لا توجد سجلات (0), سجل واحد (1), سجلان (2), ٣ سجلات (3), ٥ سجلات (5), ٥٤ سجلاً (54), ١٤٣ سجلاً (143), ١٧١ سجلاً (171); no English \"records\". The \"other\" form (100–102…) not checked.",
+   "still": [],
+   "img": [
+    "NDC-2130-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2131",
+   "uuid": "9c14289d-752d-4553-b67a-2399e2aa94d2",
+   "pri": "Low",
+   "feat": "Custom Views",
+   "title": "Custom Views | Arabic: header layout picker accessible name stays 'Layout'",
+   "v": "PASS",
+   "dev": "Create page layout picker translated; plurals as NDC-2130.",
+   "devHeld": "Held.",
+   "summary": "Layout picker accessible name is \"التخطيط\" on the Leads list and the Create Lead page; count translated.",
+   "still": [],
+   "img": [
+    "NDC-2131-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2280",
+   "uuid": "cae95c37-bdf5-4d58-ac0f-adbac851d0fa",
+   "pri": "Low",
+   "feat": "Custom Views",
+   "title": "Custom Views | Long custom view name is not truncated and pushes the Sharing column out of view",
+   "v": "FAIL",
+   "dev": "View Name column capped; long name cut with \"…\" and full name on hover.",
+   "devHeld": "Column capped and no scrollbar; name still not cut.",
+   "summary": "At 1280 px the column is capped and all headers fit, but a 116-character name is not cut: the text runs to x=1116 over Shared To, Created By and Last Modified By (overprinting \"Only me\"). Full name only in a title attribute.",
+   "still": [
+    "Name not truncated with \"…\"; overlaps the Shared To / Created By / Last Modified By cells."
+   ],
+   "img": [
+    "NDC-2280-retest-FAIL.png"
+   ]
+  }
+ ],
+ "observations": [
+  "Leads list page loads slowly (35–73 s) in this run.",
+  "Two new tickets entered Ready For Test during the round (NDC-2420, NDC-2421 — Blueprint / Workflow Rules); not part of this round.",
+  "Deals Kanban: Unaccounted header shown struck through and keeps a Create footer.",
+  "Layout builder Save re-saves unrelated fields (single_line_2 PUT)."
+ ]
+}

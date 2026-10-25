@@ -1,0 +1,36 @@
+{
+ "out": "NDC-2120-api.png",
+ "title": "NDC-2120 · removing a pick-list option used by a view",
+ "rows": [
+  [
+   "remove B",
+   "PUT field qa_rt_pick [A, C] — view \"QA RT 2120 pick\" equals \"qa rt OPT b\"",
+   "409 PICKLIST_OPTION_IN_USE \"…used by custom view(s): QA RT 2120 pick. Change or remove it in those views first.\"",
+   "ok"
+  ],
+  [
+   "rename B",
+   "PUT field [A, B2]",
+   "409 — same message",
+   "ok"
+  ],
+  [
+   "remove unused C",
+   "PUT field [A, B]",
+   "200",
+   "ok"
+  ],
+  [
+   "remove A (any-of list)",
+   "PUT field [B] — view \"QA RT 2120 anyof\" contains_any_of [A]",
+   "409 — names QA RT 2120 anyof",
+   "ok"
+  ],
+  [
+   "after view change",
+   "PATCH view → equals A; PUT field [A]",
+   "200 — B removed",
+   "ok"
+  ]
+ ]
+}

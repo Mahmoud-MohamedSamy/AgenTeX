@@ -1,0 +1,36 @@
+{
+ "out": "NDC-2122-api.png",
+ "title": "NDC-2122 · criteria pattern case — API accepts and stores mixed case; results identical",
+ "rows": [
+  [
+   "UI save",
+   "Edit Pattern: typed \"(1 AND 2)\" → box shows \"(1 and 2)\"",
+   "POST body pattern \"(1 and 2)\" → 201, stored \"(1 and 2)\"",
+   "ok"
+  ],
+  [
+   "API mixed case",
+   "POST /api/v1/modules/{Leads}/views pattern \"1 And 2\"",
+   "201 — stored \"1 And 2\"; editor summary shows \"( 1 And 2 )\", Edit Pattern box \"1 and 2\"",
+   "info"
+  ],
+  [
+   "API upper case",
+   "POST /api/v1/modules/{Leads}/views pattern \"1 OR 2\" / \"1 AND 2\"",
+   "201 / 201 — accepted",
+   "info"
+  ],
+  [
+   "evaluation OR",
+   "first_name contains QA, lead_source not empty",
+   "\"1 or 2\" = 64 records · \"1 OR 2\" = 64 records",
+   "ok"
+  ],
+  [
+   "evaluation AND",
+   "same rows",
+   "\"1 and 2\" = 1 record · \"1 AND 2\" = 1 record",
+   "ok"
+  ]
+ ]
+}

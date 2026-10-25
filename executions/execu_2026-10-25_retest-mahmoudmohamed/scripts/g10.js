@@ -1,0 +1,14 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3', F = 'daf30263-27bf-484d-8ddf-0ba2133b8f4e';
+await page.getByPlaceholder('New option label…').fill('QA RT opt D'); await page.getByRole('button', { name: 'Add', exact: true }).first().click(); await sleep(600);
+await page.mouse.click(1237, 189); await sleep(1000);
+const afterX = await page.evaluate(() => [...document.querySelectorAll('input')].filter(i => i.getBoundingClientRect().left > 820 && i.type === 'text').map(i => i.value));
+const dlg1 = await page.evaluate(() => [...document.querySelectorAll('[role=dialog],[role=alertdialog]')].map(d => d.innerText.slice(0, 300)));
+await shot('2120-03-removed-A');
+await page.getByRole('button', { name: 'Apply', exact: true }).click(); await sleep(1500);
+const resp = []; const f = async r => { const q = r.request(); if (/\/fields|\/layouts/.test(q.url()) && q.method() !== 'GET') resp.push(q.method() + ' ' + q.url().replace(H + '/api/v1', '').slice(0, 90) + ' ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 250)); }; page.on('response', f);
+await page.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(5000);
+page.off('response', f);
+const toasts = await page.evaluate(() => [...document.querySelectorAll('[data-sonner-toast], [role=alert], [role=status]')].map(t => t.innerText.trim()).filter(Boolean));
+await shot('2120-04-save-refused');
+const opts = arr((await api('GET', `/modules/${L}/fields`)).j?.data).find(x => x.id === F)?.datatypeOptions?.allowed_values;
+return done({ afterX, dlg1, resp, toasts, opts });

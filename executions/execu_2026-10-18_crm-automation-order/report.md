@@ -112,7 +112,7 @@ New findings B-17 (suspended user still assigned, not published) and A-10 (Onlin
 | ~~H-04~~ | **Same as Zoho (22 Oct): not a bug.** A lead in a blueprint converts (200, lead bf10dce6). In Zoho the Convert button stays available on records in a blueprint; it can only be hidden for everyone through profile permission (or a client script), and Zoho staff confirm it is not possible to hide Convert while allowing conversion through the blueprint | – |
 | A-02 web form, E2E-1, G-08 | Public web-form session answers 404 (re-checked 21 Oct: still 404) | Fix/enable the public web-form endpoint on staging, or give a working form URL |
 | B-19 | **Run 22 Oct (records API with "source":"api", honoured since 22 Oct):** the lead is source=api but a review process with the API channel ticked does NOT hold it. Matches the editor warning "a legacy API caller that doesn't opt in to review will bypass it"; how a caller opts in is undocumented | Dev: how does an API caller opt in to review? |
-| G-18 | **Run 22 Oct: gap, not a bug.** "trigger": [] is accepted and ignored (workflow ran, approval started; control normal). Zoho skips workflow, approval and blueprint for trigger []; TAVI has no way to skip automation on an API create | Candidate for NDC-2294 |
+| G-18 | **Run 22 Oct: gap, not a bug. Added to NDC-2294 as item 13 (25 Oct, image 13).** "trigger": [] is accepted and ignored (workflow ran, approval started; control normal). Zoho skips workflow, approval and blueprint for trigger []; TAVI has no way to skip automation on an API create | Candidate for NDC-2294 |
 | G-02, G-12, G-15 | API channel now reachable ("source":"api"), but step 1 (assignment) is blocked by NDC-2419 | Run after NDC-2419 |
 | (old row) B-19, G-02, G-12, G-15, G-18 | No real API channel: a user-token create is `source: manual` (re-checked 21 Oct). Settings → API Integration can issue an integration client (token scoped to records:ingest, `/iam/integrations/clients`, none exist); creating one was not permitted in this run | An API key or integration user for NDC-Staging |
 | ~~A-13, G-05~~ | **Done 21 Oct: both PASS.** Leads' only unique field "name" was placed on the session QA layout (`CrmApi.placeFieldOnLayout`). A-13: update import matched and updated the lead, the owner stayed (no assignment on update, as Zoho). G-05: no assignment, no review; workflow → approval → blueprint ran in order. Observation: update mode still asks for every required field (Phone) | OK to mark a field unique on a QA layout |
@@ -361,3 +361,12 @@ Requested by the user on 25 Oct. Each case used a fresh webhook.site receiver (a
 | WH-x | Other webhook settings | SMS delivery webhook (Settings → SMS, `/messaging/webhooks`), Sales Directory inbound key and Telephony inbound webhook exist. Not part of the automation order; not tested |
 
 **Published 25 Oct 2026 (images attached):** NDC-2540 blueprint webhooks never sent (WH-10/11, High) · NDC-2537 metadata address not blocked + blueprint/review accept internal URLs (WH-13/14, Urgent) · NDC-2538 review webhook reject-only, unsigned (WH-12, Medium) · NDC-2539 ${owner} empty in approval webhooks (WH-08/09, Low). CRM module, Sprint 13 (Sprint 12 is closed).
+
+### Webhook follow-ups (25 Oct 2026, after publishing)
+
+| Case | Result |
+|---|---|
+| WH-15 | NDC-2539 **confirmed** with the lead kept: the record's owner is 3445ec4a… before and after approval; the approval webhook sends `"owner":""`, the workflow webhook on the same lead sends the owner |
+| WH-16 | **Filed as NDC-2541 (25 Oct, image attached):** an approval "Call Webhook" to a receiver answering 500 is sent once and never retried (1 request in 4 min), and nothing is logged (no execution/dispatch for the lead). Workflow webhooks retry and log (WH-04) |
+| WH-17 | The WH-14 retry to 169.254.169.254.nip.io ended **Cancelled after 5 attempts**, all "timeout" (last 13:18 UTC). No response body. Supports NDC-2537 |
+| I-09b | PASS. A lead whose review was approved: delete 204, restore 200, readable, review stays approved (1 cycle, no new review), the On Create workflow did not run again on restore, edit after restore 200 |

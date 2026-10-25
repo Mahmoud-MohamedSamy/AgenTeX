@@ -1,0 +1,37 @@
+{
+ "out": "G-18-api.png",
+ "title": "TAVI: API create with \"trigger\": [] (22 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "POST /api/v1/modules/{leads}/records   (case G-18, a workflow rule, an approval process and a blueprint all match the lead)",
+   "lines": [
+    {
+     "t": "body: {\"layout_id\":\"…\",\"source\":\"api\",\"trigger\":[],\"data\":[…]}",
+     "box": "trigger []"
+    },
+    "-> 201  lead c480174c-2d02-4656-95a0-b21c9adb8604, source = api"
+   ]
+  },
+  {
+   "head": "What ran on that lead",
+   "lines": [
+    {
+     "t": "workflow rule: ran (its marker field was written)",
+     "box": "ran"
+    },
+    {
+     "t": "approval_status = pending_approval   (approval started)",
+     "box": "ran"
+    },
+    "blueprint: not entered (approval is pending)",
+    "control lead without \"trigger\": same result"
+   ]
+  },
+  {
+   "head": "Result",
+   "lines": [
+    "\"trigger\" is accepted and ignored: there is no way to create a record through the API without running automation"
+   ]
+  }
+ ]
+}

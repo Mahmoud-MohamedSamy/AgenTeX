@@ -230,12 +230,11 @@ public final class CrmAccessApi {
         List<Map<String, Object>> all = new ArrayList<>();
         String cursor = null;
         for (int i = 0; i < pages; i++) {
-            JsonPath j = CrmUser.ok(owner().get("/audit/login-history?status=active&limit=100" + (cursor != null ? "&cursor=" + java.net.URLEncoder.encode(cursor, java.nio.charset.StandardCharsets.UTF_8) : "")), "GET login history").jsonPath();
-            List<Map<String, Object>> items = j.getList("data.items");
-            if (items == null) items = j.getList("data");
+            JsonPath j = CrmUser.ok(owner().get("/audit/login-history?status=active&limit=100" + (cursor != null ? "&cursor=" + cursor : "")), "GET login history").jsonPath();
+            List<Map<String, Object>> items = j.getList("data");   // data is a plain array; the cursor is in meta
             if (items == null) break;
             items.stream().filter(java.util.Objects::nonNull).forEach(all::add);   // the feed can contain null rows (the UI filters them too)
-            cursor = j.getString("data.next_cursor") != null ? j.getString("data.next_cursor") : j.getString("meta.next_cursor");
+            cursor = j.getString("meta.next_cursor");
             if (cursor == null || items.isEmpty()) break;
         }
         return all;

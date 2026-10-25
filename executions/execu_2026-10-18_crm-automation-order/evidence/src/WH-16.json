@@ -1,0 +1,25 @@
+{
+ "out": "../WH-16-approval-webhook-no-retry-no-log.png",
+ "id": "WH-16",
+ "title": "Approval Call Webhook: a failed call is not retried and not logged",
+ "verdict": "Differs",
+ "date": "25 Oct 2026",
+ "zohoSource": "TAVI workflow webhooks (expected behaviour)",
+ "refColumn": "Expected",
+ "panels": [
+  { "side": "TAVI", "caption": "Approval webhook: one attempt, no retry, no record of the failure", "img": "WH-16-api.png" },
+  { "side": "Zoho", "caption": "Expected: the same delivery handling as TAVI workflow webhooks",
+    "text": [
+     "TAVI workflow webhooks retry a failed call (about +30 s, +2.5 min, +10 min) and log every attempt with its status and error in the rule execution.",
+     "The approval Call Webhook uses the same action shape (type Webhook, url, method, body, headers, timeout), so the same retries and the same log are expected.",
+     "Without a log an admin cannot see that the call after approval failed."
+    ],
+    "sources": ["Observed on staging-crm, cases WH-04 and WH-16, 25 Oct 2026"],
+    "flag": "EXPECTED — TAVI workflow webhooks" }
+ ],
+ "rows": [
+  { "n": "1", "b": "Workflow webhook, receiver answers 500", "zoho": "Retried, logged", "tavi": "Retried, logged", "match": "Same as Zoho" },
+  { "n": "2", "b": "Approval Call Webhook, receiver answers 500", "zoho": "Retried, logged", "tavi": "One attempt, nothing logged", "match": "Differs" }
+ ],
+ "notes": ["Receiver: a fresh webhook.site URL set to answer 500.", "Related: NDC-2539 (owner empty in approval webhooks)."]
+}

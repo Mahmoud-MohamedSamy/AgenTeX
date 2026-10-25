@@ -15,7 +15,7 @@ h1{font:600 20px "Segoe UI",sans-serif;margin:0 0 6px}p{margin:0 0 18px;color:#9
 .lab{font-family:"Segoe UI",sans-serif;font-weight:600;color:#f8fafc;padding:8px 0}
 .req,.res{background:#1e293b;border-radius:6px;padding:8px 10px;word-break:break-all;white-space:pre-wrap}
 .res{border-left:5px solid}
-</style></head><body><h1>${esc(spec.title)}</h1><p>API evidence captured during the retest — ${esc(spec.host || 'staging-crm.taviportal.com')}, ${esc(spec.who || 'mahmoud.mahamed1515')}, ${esc(spec.date || '21 Oct 2026')}. Tokens omitted.</p>${rows}</body></html>`;
+</style></head><body><h1>${esc(spec.title)}</h1><p>API evidence captured during the retest — ${esc(spec.host || 'staging-crm.taviportal.com')}, ${esc(spec.who || 'mahmoud.mahamed1515')}, ${esc(spec.date || '25 Oct 2026')}. Tokens omitted.</p>${rows}</body></html>`;
 (async () => {
   const b = await chromium.launch({ headless: true, channel: 'msedge', args: ['--disable-gpu'] });
   const pg = await b.newPage({ viewport: { width: 1600, height: 900 } }); await pg.setContent(html);

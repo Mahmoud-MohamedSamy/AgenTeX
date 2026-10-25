@@ -1,0 +1,101 @@
+{
+ "out": "NDC-1789-retest-PASS.png",
+ "ticket": "NDC-1789",
+ "title": "Workqueue | Applied filters don't persist on refresh/next session (new login)",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin) · deploy 25 Oct 04:29 UTC",
+ "date": "25 Oct 2026",
+ "panels": [
+  {
+   "img": "1789-04-new-login.png",
+   "caption": "After a fresh sign-in the High filter is still applied (Total 3).",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      620,
+      188,
+      1200,
+      318
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      573,
+      400,
+      700,
+      435
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1789-03-overdue.png",
+   "caption": "Period switch keeps the filter: Overdue + High → t01 only.",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      300,
+      170,
+      540,
+      203
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      573,
+      400,
+      1255,
+      540
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Filter after 4 reloads and a new login",
+   "Still applied",
+   "Priority = High kept, Total 3 each time",
+   "PASS"
+  ],
+  [
+   "3–4",
+   "Period switch with the filter on",
+   "Filter kept, rows match data",
+   "All 3 · Today&Overdue t01,t03 · Due today t03 · Tomorrow 0 · Overdue t01 · Next month t06",
+   "PASS"
+  ],
+  [
+   "—",
+   "Clear filters",
+   "Prefs emptied, stays cleared after reload",
+   "workqueueFilters = {} after reload",
+   "PASS"
+  ]
+ ]
+}

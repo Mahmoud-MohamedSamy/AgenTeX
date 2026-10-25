@@ -46,3 +46,33 @@
 - Still failing: the FIRST drop on Unaccounted after the board loads, while Unaccounted holds a card, puts the card into the neighbouring Closed_lost column and opens "Verify details — Fill in the required details before closing this deal." (reproduced 3/3: runs d8, d9, d14). Cancel puts it back in Qualification (2113-02). A user who fills the dialog would be closing the deal by accident. With Unaccounted empty, 3/3 drops refused cleanly.
 - Unaccounted header is shown struck through and keeps a "Create Transactions" footer (observation).
 - Cleanup: Kanban view c6fcd43b; deals a, b.
+
+## NDC-2120 — PASS (25 Oct)
+- Temp pick list qa_rt_pick (daf30263) on Leads, options A/B/C; view 58e91b86 "QA RT 2120 pick" equals "qa rt OPT b" (other case), view 13cd94c5 "QA RT 2120 anyof" contains_any_of [A].
+- API PUT field removing B → 409 PICKLIST_OPTION_IN_USE "\"QA RT opt B\" cannot be removed from \"qa_rt_pick\": it is used by custom view(s): QA RT 2120 pick. Change or remove it in those views first." (case-insensitive match holds). Renaming B → B2 refused the same way. Removing unused C → 200. Removing A (any-of list) → 409 naming "QA RT 2120 anyof".
+- After the view condition was changed (PATCH 200) → removing B → 200.
+- UI: layout builder (layout "test") → QA RT Pick → Edit Properties → Advanced → remove A, add D → Apply → Save → toast "Couldn't save the settings for "QA RT Pick": "QA RT opt A" cannot be removed … used by custom view(s): QA RT 2120 anyof, QA RT 2120 pick. Change or remove it in those views first."; A kept (2120-04). Builder changes discarded.
+- INFO: the same Save also shows a green "Field updated successfully" toast, because the builder re-saved an unrelated field (single_line_2 PUT 200).
+- Cleanup: views 58e91b86, 13cd94c5; field daf30263 (placed on layout "test").
+
+## NDC-2124 — PASS (25 Oct)
+- Run on Contacts (fast page; cap logic is the shared list-view helper). Contacts prefs before: null, version 0.
+- Views QA RT ov-01…ov-52 (ids in ov-views.json). UI: each view → Manage columns → Hide first hideable column → Apply, in order.
+- Overrides now carry updatedAt. After ov-01…ov-51: 50 stored, only ov-01 missing (ov-02 and ov-51 kept).
+- Re-saved ov-02, then ov-52 → 50 stored, missing ov-01 and ov-03 (ov-02 kept as newest). Matches the developer's rule.
+- Cleanup: 52 Contacts views; Contacts list-preferences → restore to empty (baseline null/v0).
+
+## NDC-2130 — PASS (25 Oct)
+- Language switched to Arabic (header EN → العربية; dir=rtl, lang=ar). Record count read on: 0 → "لا توجد سجلات"; 1 → "سجل واحد"; 2 → "سجلان"; 3 → "٣ سجلات"; 5 → "٥ سجلات"; 54 → "٥٤ سجلاً"; 143 → "١٤٣ سجلاً"; 171 → "١٧١ سجلاً". No English "records" anywhere (2130-count-*).
+- Not covered: the "other" form (totals like 100–102, 200–202); no list with such a total was available. (Dev note lists "150 سجل", but by CLDR 150 falls in "many" → "سجلاً".)
+- Language restored to English.
+
+## NDC-2131 — PASS (25 Oct)
+- Arabic: Leads list header layout picker accessible name "التخطيط"; Create Lead page (/records/new) header layout picker accessible name "التخطيط"; no aria-label containing "Layout" left (2131-01, 2131-02).
+- Leads count "١٧١ سجلاً" (FieldPermissions layout list).
+
+## NDC-2098 — FAIL (recheck 25 Oct, toast captured with a MutationObserver)
+- Last-used = "QA RT 2098 last" (13996de8, every layout): ?view=<deleted ff0a79b9> → toast "That view is no longer available. Showing All Leads.", ?view removed, but the page shows "QA RT 2098 last" (2 records), not All Leads. Same for ?view=<test user 2's private 1cb2da03>. Nothing of the foreign view shown (2098-z-deleted2, 2098-z-foreign2).
+- Last-used = a FieldPermissions-layout view (042efe3a): same URLs → All Leads (171 on that layout) + same toast (2098-z-deleted, 2098-z-foreign). So the fallback only reaches All Leads when the last-used view is not applicable.
+- The toast text contradicts the view shown in the failing case.
+- Earlier shots (2098-L-*) were taken while loading; replaced by 2098-z-*.

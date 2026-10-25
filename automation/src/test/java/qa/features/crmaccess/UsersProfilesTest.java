@@ -59,7 +59,7 @@ public class UsersProfilesTest {
         List<Map<String, Object>> src = CrmUser.ok(owner().get("/iam/profiles/" + P_USER + "/permissions"), "GET User permissions").jsonPath().getList("data");
         String cloned = CrmUser.ok(owner().get("/iam/profiles/" + profileId + "/permissions"), "GET QA permissions").asString();
         long copied = src == null ? 0 : src.stream().filter(p -> cloned.contains(String.valueOf(p.get("permission_key") != null ? p.get("permission_key") : p.get("permissionKey")))).count();
-        Response add = owner().post("/iam/profiles/" + profileId + "/permissions", m("permission_key", LH_VIEW_TEAM, "effect", "allow"));
+        Response add = owner().post("/iam/profiles/" + profileId + "/permissions", m("permission_key", LH_VIEW_TEAM, "effect", "GRANT"));
         boolean listed = CrmUser.ok(owner().get("/iam/profiles/" + profileId + "/permissions"), "GET QA permissions").asString().contains(LH_VIEW_TEAM);
         String newName = QA + "Profile renamed " + System.currentTimeMillis() % 100000;
         Response ren = owner().patch("/iam/profiles/" + profileId, m("name", newName));

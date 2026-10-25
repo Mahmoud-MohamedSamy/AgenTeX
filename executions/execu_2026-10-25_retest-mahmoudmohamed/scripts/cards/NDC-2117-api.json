@@ -1,0 +1,42 @@
+{
+ "out": "NDC-2117-api.png",
+ "title": "NDC-2117 · POST /views name validation (Leads)",
+ "rows": [
+  [
+   "exact duplicate",
+   "POST /api/v1/modules/{Leads}/views {name:\"QA RT 2098 last\"}",
+   "409 VIEW_NAME_TAKEN \"You already have a view with that name on this module.\"",
+   "ok"
+  ],
+  [
+   "other case",
+   "POST /api/v1/modules/{Leads}/views {name:\"QA RT 2098 LAST\"}",
+   "409 VIEW_NAME_TAKEN",
+   "ok"
+  ],
+  [
+   "trailing space",
+   "POST /api/v1/modules/{Leads}/views {name:\"QA RT 2098 last \"}",
+   "409 VIEW_NAME_TAKEN",
+   "ok"
+  ],
+  [
+   "spaces only",
+   "POST /api/v1/modules/{Leads}/views {name:\"   \"}",
+   "422 INVALID_VIEW · name required \"A view name is required.\"",
+   "ok"
+  ],
+  [
+   "121 characters",
+   "POST /api/v1/modules/{Leads}/views {name:\"QA RT \"+115×z}",
+   "422 INVALID_VIEW · too_long \"A view name may be at most 120 characters.\"",
+   "ok"
+  ],
+  [
+   "INFO: scope",
+   "existing: \"QA RT 2098 last\" (layout null, API) + UI save \"qa rt 2098 LAST\" (Standard layout)",
+   "201 — uniqueness is per layout_id; both now in the same Leads picker",
+   "info"
+  ]
+ ]
+}

@@ -1,0 +1,108 @@
+{
+ "out": "NDC-2098-retest-FAIL.png",
+ "ticket": "NDC-2098",
+ "title": "Custom Views | ?view= with a deleted or foreign view ID falls back to the last-used view instead of All Leads",
+ "verdict": "FAIL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin) · deploy 25 Oct 04:29 UTC",
+ "date": "25 Oct 2026",
+ "panels": [
+  {
+   "img": "2098-z-deleted2.png",
+   "caption": "Last-used = QA RT 2098 last → ?view=<deleted id>: toast says \"Showing All Leads.\" but the page shows QA RT 2098 last (2 records).",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      285,
+      150,
+      410,
+      180
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      284,
+      100,
+      345,
+      122
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2098-log.png",
+   "caption": "Toast log (MutationObserver) and the view shown, per case.",
+   "crop": [
+    0,
+    0,
+    1600,
+    360
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      246
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      256,
+      1564,
+      340
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–3",
+   "Deleted / foreign id, last-used = a normal view",
+   "All Leads + toast",
+   "Toast \"That view is no longer available. Showing All Leads.\" but QA RT 2098 last (2 records) is shown",
+   "FAIL"
+  ],
+  [
+   "4",
+   "Same, last-used = view of another layout",
+   "All Leads",
+   "All Leads + toast, ?view removed",
+   "PASS"
+  ],
+  [
+   "—",
+   "Own view by URL / foreign view leak",
+   "Opens / nothing leaks",
+   "Own view opens; foreign name never shown",
+   "PASS"
+  ],
+  [
+   "—",
+   "Leads page load",
+   "—",
+   "35–73 s to load in this run",
+   "INFO"
+  ]
+ ]
+}

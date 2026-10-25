@@ -1,0 +1,17 @@
+{
+ "out": "WH-16-api.png",
+ "title": "TAVI: webhook to a receiver that answers 500 (25 Oct 2026, staging-crm)",
+ "blocks": [
+  { "head": "Approval process, After final approval -> Call Webhook (POST, timeout 10 s)   case WH-16, lead 52bc953e…",
+    "lines": [
+     "POST /workflow/approvals/{instance}/approve -> 204   (approval_status approved)",
+     { "t": "receiver requests: +60 s 1 · +121 s 1 · +181 s 1 · +242 s 1", "box": "no retry" },
+     { "t": "GET /workflow/executions?recordId=52bc953e… -> []   (nothing logged)", "box": "no log" }
+    ] },
+  { "head": "Same receiver type from a workflow rule webhook   case WH-04, lead 7f22c1d3…",
+    "lines": [
+     "receiver requests at 0 s, +32 s, +2.5 min; next attempt booked +10 min",
+     "dispatch: status Pending, attempts 3, lastError \"HTTP 500\", responseStatus 500"
+    ] }
+ ]
+}

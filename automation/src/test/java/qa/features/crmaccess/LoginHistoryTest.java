@@ -77,7 +77,7 @@ public class LoginHistoryTest {
         if (s.status != 200) throw new SkipException("INCONCLUSIVE: test user 1 cannot sign in (" + s.status + ")");
         int beforeRevoke = s.get("/iam/me").statusCode();
         List<Map<String, Object>> mine = CrmUser.ok(owner().get("/audit/login-history?user_id=" + N_ID + "&status=active&limit=20"), "GET N sessions")
-                .jsonPath().getList("data.items");
+                .jsonPath().getList("data");
         if (mine == null) mine = List.of();
         Map<String, Object> newest = mine.stream().filter(java.util.Objects::nonNull).filter(x -> String.valueOf(x.get("login_at")).compareTo(since.substring(0, 19)) >= 0)
                 .max((a, b) -> String.valueOf(a.get("login_at")).compareTo(String.valueOf(b.get("login_at")))).orElse(null);

@@ -1,0 +1,139 @@
+{
+ "out": "NDC-2117-retest-PASS.png",
+ "ticket": "NDC-2117",
+ "title": "Custom Views | View name validation messages are never shown",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin) · deploy 25 Oct 04:29 UTC",
+ "date": "25 Oct 2026",
+ "panels": [
+  {
+   "img": "2117-01-empty.png",
+   "caption": "Empty name: message shown, Save disabled.",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      305,
+      236,
+      450,
+      254
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1195,
+      672,
+      1256,
+      708
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2117-05-duplicate-exact.png",
+   "caption": "Existing name: \"You already have a view with this name.\"",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      305,
+      236,
+      520,
+      254
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2117-api.png",
+   "caption": "API: duplicates 409, empty / 121 chars 422; INFO: uniqueness is per layout.",
+   "crop": [
+    0,
+    0,
+    1600,
+    430
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      345
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      355,
+      1564,
+      413
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Empty / spaces-only name",
+   "\"Enter a name for the view.\"",
+   "Shown; Save disabled",
+   "PASS"
+  ],
+  [
+   "—",
+   "120 / 121 characters",
+   "Limit message",
+   "\"A view name can be at most 120 characters.\" at 120; 121st char cut (typed and pasted)",
+   "PASS"
+  ],
+  [
+   "3",
+   "Duplicate name",
+   "\"You already have a view with this name.\"",
+   "Shown in the editor",
+   "PASS"
+  ],
+  [
+   "4",
+   "API",
+   "Rejected",
+   "Duplicate (any case, trailing space) 409; empty / 121 → 422",
+   "PASS"
+  ],
+  [
+   "5",
+   "Scope of uniqueness",
+   "—",
+   "Per layout: API view (layout null) and UI view (Standard) with the same name coexist in one picker",
+   "INFO"
+  ]
+ ]
+}

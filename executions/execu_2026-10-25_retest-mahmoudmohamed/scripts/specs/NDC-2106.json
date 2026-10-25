@@ -1,0 +1,128 @@
+{
+ "out": "NDC-2106-retest-PASS.png",
+ "ticket": "NDC-2106",
+ "title": "Custom Views | Deleted criteria field — field used by a view's criteria can be deleted",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin) · deploy 25 Oct 04:29 UTC",
+ "date": "25 Oct 2026",
+ "panels": [
+  {
+   "img": "2106-03-delete-dialog.png",
+   "caption": "Layout builder: the field is in use by QA RT 2106 crit; Delete Permanently disabled.",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      440,
+      307,
+      840,
+      472
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      709,
+      493,
+      840,
+      525
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      452,
+      425,
+      840,
+      465
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2106-api.png",
+   "caption": "API: refused while used; allowed after the condition is changed.",
+   "crop": [
+    0,
+    0,
+    1600,
+    400
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      319
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      329,
+      1564,
+      387
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Delete a field used in a view's criteria (UI)",
+   "Refused, names the views",
+   "Dialog lists \"QA RT 2106 crit\"; Delete Permanently disabled; column-only view not listed",
+   "PASS"
+  ],
+  [
+   "4",
+   "Same by API",
+   "Refused",
+   "409 \"…used by custom view(s): QA RT 2106 crit…\"",
+   "PASS"
+  ],
+  [
+   "5",
+   "After removing the condition",
+   "Delete succeeds",
+   "204, field gone",
+   "PASS"
+  ],
+  [
+   "3, 6",
+   "Wording",
+   "—",
+   "Hint \"(Settings → Automation / Process Management)\" and code FIELD_IN_USE_BY_WORKFLOW although a view blocks it",
+   "INFO"
+  ]
+ ]
+}

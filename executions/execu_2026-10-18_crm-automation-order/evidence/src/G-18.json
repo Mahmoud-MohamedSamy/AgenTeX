@@ -1,0 +1,49 @@
+{
+ "out": "../../../../docs/crm-automation-execution-order/evidence/13-api-trigger-empty-vs-zoho.png",
+ "id": "Item 13",
+ "title": "API create cannot skip automation: \"trigger\": [] is ignored",
+ "verdict": "Gap",
+ "date": "22 Oct 2026",
+ "zohoSource": "Zoho CRM API documentation (Insert Records)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "trigger [] accepted; workflow and approval still run",
+   "img": "G-18-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: the trigger list decides which automations an API create runs",
+   "text": [
+    "Insert Records API, key \"trigger\": \"The trigger input can be workflow, approval, blueprint, pathfinder, or orchestration.\"",
+    "\"If trigger is not mentioned, the automation actions related to the API will get executed.\"",
+    "\"Enter the trigger value as [] to not execute the workflows.\"",
+    "Assignment rules are separate: \"lar_id\" is \"the unique ID of the assignment rule you want to trigger while inserting a record\"."
+   ],
+   "sources": [
+    "https://www.zoho.com/crm/developer/docs/api/v8/insert-records.html"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "API create without \"trigger\"",
+   "zoho": "All related automation runs",
+   "tavi": "All related automation runs",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "API create with \"trigger\": [\"approval\"] or []",
+   "zoho": "Only the listed automations run ([] = no workflows)",
+   "tavi": "Ignored: workflow and approval run",
+   "match": "Gap"
+  }
+ ],
+ "notes": [
+  "Used for bulk loads and data migrations through the API, so imported records do not fire emails, tasks and webhooks.",
+  "Choosing the assignment rule per API call (Zoho lar_id) is not tested yet: blocked by NDC-2419."
+ ]
+}

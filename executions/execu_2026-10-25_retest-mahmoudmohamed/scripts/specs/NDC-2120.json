@@ -1,0 +1,125 @@
+{
+ "out": "NDC-2120-retest-PASS.png",
+ "ticket": "NDC-2120",
+ "title": "Custom Views | Pick list value used by a view can be removed from the field",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin) · deploy 25 Oct 04:29 UTC",
+ "date": "25 Oct 2026",
+ "panels": [
+  {
+   "img": "2120-04-save-refused.png",
+   "caption": "Layout builder: removing option A (used by 2 views) is refused with the views named.",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      320,
+      616,
+      960,
+      694
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      978,
+      640,
+      1256,
+      694
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2120-api.png",
+   "caption": "API: refusals and the save after the view changed.",
+   "crop": [
+    0,
+    0,
+    1600,
+    360
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      204
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      298
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      308,
+      1564,
+      345
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Remove an option used by views (UI)",
+   "Refused, names views",
+   "\"Couldn't save … QA RT opt A … used by custom view(s): QA RT 2120 anyof, QA RT 2120 pick\"",
+   "PASS"
+  ],
+  [
+   "3",
+   "Same by API, view value in other case; rename",
+   "Refused",
+   "409 PICKLIST_OPTION_IN_USE for remove and rename",
+   "PASS"
+  ],
+  [
+   "4",
+   "Unused option / any-of list",
+   "Allowed / refused",
+   "C removed 200; A (any-of) 409",
+   "PASS"
+  ],
+  [
+   "5",
+   "After the view changed",
+   "Removal saves",
+   "200",
+   "PASS"
+  ],
+  [
+   "2",
+   "Toasts",
+   "—",
+   "A green \"Field updated successfully\" shows next to the error (another field re-saved)",
+   "INFO"
+  ]
+ ]
+}

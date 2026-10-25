@@ -1,0 +1,36 @@
+{
+ "out": "NDC-2106-api.png",
+ "title": "NDC-2106 · deleting a field used by a view’s criteria",
+ "rows": [
+  [
+   "setup",
+   "number field qa_rt_temp_num; view \"QA RT 2106 crit\" (> 1); view \"QA RT 2106 col\" (column only)",
+   "201 / 201 / 201",
+   "info"
+  ],
+  [
+   "delete refused",
+   "DELETE /modules/{Leads}/fields/4d61be96…",
+   "409 \"\\\"qa_rt_temp_num\\\" is used by custom view(s): QA RT 2106 crit. Remove the field from those before deleting it.\"",
+   "ok"
+  ],
+  [
+   "condition changed",
+   "PUT /modules/{Leads}/views/e7e994ff… (criteria → first_name contains)",
+   "200",
+   "ok"
+  ],
+  [
+   "delete allowed",
+   "DELETE /modules/{Leads}/fields/4d61be96…",
+   "204 — field gone; column-only view did not block",
+   "ok"
+  ],
+  [
+   "INFO",
+   "error code / dialog hint",
+   "code FIELD_IN_USE_BY_WORKFLOW; dialog also says \"(Settings → Automation / Process Management)\"",
+   "info"
+  ]
+ ]
+}

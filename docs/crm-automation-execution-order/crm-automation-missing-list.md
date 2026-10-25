@@ -84,6 +84,10 @@ Nothing was saved in TAVI or Zoho. Forms were opened and cancelled. In Zoho, thr
 
 12. Several **conditions in one workflow rule**, each with its own instant and scheduled actions. Zoho: up to 10 conditions per rule, checked in order (first match runs, the rest are skipped; "records not meeting any of the above" from the 2nd condition on); two conditions with the same criteria in one rule are refused (`AMBIGUITY_DURING_PROCESSING`), and the same action twice in one condition is refused (`DUPLICATE_DATA`). TAVI stores one `criteria` and one `actions` list per rule (`GET /workflow/rules/{id}`) and the editor offers no "+ Add another condition". Workaround: separate rules, which all fire (no first-match-wins, no else). Evidence `12`. Added to NDC-2294 on 22 Oct 2026.
 
+## Missing: API (added 25 Oct 2026)
+
+13. Choosing which automations run on an **API create** (Zoho `trigger` list: workflow, approval, blueprint; omitted = all related automation runs; `[]` = no workflows; assignment rules are chosen separately with `lar_id`). TAVI accepts `"trigger": []` and ignores it: workflow and approval still ran (case G-18, lead c480174c, 22 Oct). Used for bulk loads and migrations. Evidence `13`. Added to NDC-2294 on 25 Oct 2026.
+
 ## Could not be checked yet (these are tested in the spec, not gaps)
 
 - The real order at run time (R1–R15 in the plan): whether review holds workflow, approval and blueprint, and whether blueprint waits for approval. Only a functional run can show this. Spec groups F–I.

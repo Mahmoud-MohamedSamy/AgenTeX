@@ -6,9 +6,9 @@ const STATE = { PASS: 'Done', 'NOT A BUG': 'Done', FAIL: 'Bug', PARTIAL: 'Bug' }
 const list = R.tickets.map(t => {
   const spec = JSON.parse(fs.readFileSync(path.join(__dirname, 'specs', t.id + '.json'), 'utf8'));
   const checked = spec.rows.map(r => `<li>${esc(r[1])} → ${esc(r[3])} <b>[${r[4]}]</b></li>`).join('');
-  const html = `<p><b>Retest ${t.v} — ${R.date}</b><br>Environment: ${esc(R.env)}<br>Method: manual browser + API (retest round 21 Oct)</p>`
+  const html = `<p><b>Retest ${t.v} — ${R.date}</b><br>Environment: ${esc(R.env)}<br>Method: manual browser + API (retest round ${R.date})</p>`
     + `<p><b>Developer's note checked:</b> ${esc(t.devHeld)}</p><p>${esc(t.summary)}</p><p><b>Checked:</b></p><ul>${checked}</ul>`
-    + (t.still ? `<p><b>Still failing:</b></p><ul>${t.still.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : '')
+    + (t.still && t.still.length ? `<p><b>Still failing:</b></p><ul>${t.still.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : '')
     + `<p>Evidence: ${t.img.map(esc).join(', ')}</p>`;
   return { id: t.id, uuid: t.uuid, verdict: t.v, state: STATE[t.v], html };
 });

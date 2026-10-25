@@ -2,11 +2,11 @@ const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3', F = 'daf30263-27bf-484d-8ddf-0
 const cur = async () => arr((await api('GET', `/modules/${L}/fields`)).j?.data).find(x => x.id === F);
 const put = async vals => { const c = await cur(); const body = { fieldName: c.fieldName, labels: c.labels, datatypeKey: c.datatypeKey, datatypeOptions: { ...c.datatypeOptions, allowed_values: vals }, required: false, unique: false, uniquePeerModuleIds: [], rowVersion: c.rowVersion }; const r = await api('PUT', `/modules/${L}/fields/${F}`, body); return r.s + ' ' + (r.s >= 300 ? (r.j?.error?.message || r.t).slice(0, 200) : ''); };
 const out = {};
-out.removeC = await put(['QA RT opt A', 'QA RT opt B']); out.optsC = (await cur()).datatypeOptions.allowed_values;
-out.renameB = await put(['QA RT opt A', 'QA RT opt B2']);
-const v2 = await api('POST', `/modules/${L}/views`, { name: 'QA RT 2120 anyof', kind: 'list', visibility: 'private', layout_id: LT, settings: { criteria: { conditions: [{ field: 'qa_rt_pick', operator: 'contains_any_of', value: ['QA RT opt A'] }] } } }); out.v2 = v2.s + ' ' + v2.j?.data?.id;
-out.removeA = await put(['QA RT opt B']);
+
+
+
+
 const v = (await api('GET', `/modules/${L}/views/${V}`)).j.data;
-const up = await api('PUT', `/modules/${L}/views/${V}`, { name: v.name, kind: v.kind, visibility: v.visibility, layout_id: v.layout_id, settings: { ...v.settings, criteria: { conditions: [{ field: 'qa_rt_pick', operator: 'equals', value: 'QA RT opt A' }] } } }); out.viewChanged = up.s;
+const up = await api('PATCH', `/modules/${L}/views/${V}`, { name: v.name, kind: v.kind, visibility: v.visibility, layout_id: v.layout_id, settings: { ...v.settings, criteria: { conditions: [{ field: 'qa_rt_pick', operator: 'equals', value: 'QA RT opt A' }] } } }); out.viewChanged = up.s;
 out.removeBafter = await put(['QA RT opt A']); out.optsEnd = (await cur()).datatypeOptions.allowed_values;
 return done(out);
