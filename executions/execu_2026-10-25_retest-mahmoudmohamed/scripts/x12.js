@@ -1,0 +1,12 @@
+const tot = async () => { await sleep(3500); return (await txt()).match(/Total Records (\d+)/)?.[1]; };
+const val = page.locator('#main-content input[type=text], #main-content input:not([type])').filter({ hasNot: page.locator('x') });
+const inputs = await page.locator('#main-content input').evaluateAll(es => es.map(e => e.type + ':' + (e.placeholder || e.getAttribute('aria-label') || '')));
+const vi = page.locator('#main-content input[placeholder*="alue" i], #main-content input[aria-label*="alue" i]').first();
+const target = (await vi.count()) ? vi : page.locator('#main-content input:not([type=checkbox]):not([placeholder*="earch" i])').last();
+await target.fill('Lead'); await page.keyboard.press('Enter'); const out = { inputs };
+out.filterOnlyAll = await tot();
+await page.locator('button, [role=tab], a').filter({ hasText: /^L$/ }).first().click(); out.filterPlusL = await tot(); await shot('1819-12-az-plus-filter');
+await page.locator('button, [role=tab], a').filter({ hasText: /^X$/ }).first().click(); out.filterPlusX = await tot();
+await page.locator('button, [role=tab], a').filter({ hasText: /^All$/ }).first().click(); out.filterPlusAll = await tot();
+const grp = page.getByRole('group', { name: 'Filter these records' }); if (await grp.count()) { await grp.getByRole('button', { name: 'Clear filters' }).click().catch(() => {}); } out.cleared = await tot();
+return done(out);

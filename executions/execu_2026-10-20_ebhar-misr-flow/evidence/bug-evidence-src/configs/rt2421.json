@@ -1,0 +1,24 @@
+{
+ "out": "../NDC-2421-retest-2026-10-25.png",
+ "id": "NDC-2421 retest",
+ "title": "Workflow updates no longer lost under simultaneous saves",
+ "verdict": "Retest: PASS",
+ "date": "25 Oct 2026, 11:22–11:31 UTC",
+ "sub": "TAVI CRM crm.taviportal.com, Education First tenant (Ebhar Misr) · 27 parallel saves/creates, 0 lost · records deleted after the run",
+ "noShot": {"Zoho": "Not comparable — reliability defect (see the original report)."},
+ "panels": [
+  {"side": "TAVI", "caption": "Rule N04 (unchanged): link saved → Field Update status = Video Submitted + time stamp → category owner rule (round robin) → «إسناد التقييم»", "img": "../originals/em2-a-rule.png", "boxes": [{"n": 1, "x": 150, "y": 337, "w": 1005, "h": 200}, {"n": 2, "x": 162, "y": 626, "w": 470, "h": 253}]},
+  {"side": "TAVI", "caption": "Results (record API + Settings → Execution History)", "flag": "FROM THE EXECUTION LOG AND RECORD API", "text": [
+    "3. Batch 1 — 11:22:04 UTC, 9 Arts links saved at once (EM-00126 … 134): 9/9 Assessment Assigned, video_submitted_at filled, N04 + owner rule + «إسناد التقييم» all Fired; owners 3 pool-arts / 3 reviewer3 / 3 reviewer4",
+    "4. Batch 2 — 11:29:58 UTC, 9 Arts links saved at once (EM-00135 … 143): 9/9 Assessment Assigned, all three rules Fired; owners 3 / 3 / 3",
+    "5. New round-robin cursor — 11:31:26 UTC: temporary QA rule (on create, school = QA RR 2421 → owner round robin over the Arts profile) hit by 9 records created at once (EM-00144 … 152): 9/9 got an Arts owner (3 / 3 / 3), every run Fired, errorMessage null. Temp rule deleted.",
+    "Original failure (21 Oct): 5 of 9 lost the N04 Field Update while logged as Fired."
+  ]}
+ ],
+ "rows": [
+  {"n": "1, 2, 3, 4", "b": "N04 Field Update applied when 9 links are saved at the same moment", "zoho": "—", "tavi": "18/18 applied, chain continues to Assessment Assigned", "match": "PASS"},
+  {"n": "5", "b": "First use of a round-robin cursor by 9 concurrent saves (the race named in the fix)", "zoho": "—", "tavi": "9/9 owners set, no failed runs", "match": "PASS"},
+  {"n": "3–5", "b": "Execution log honest (no 'Fired' without its actions)", "zoho": "—", "tavi": "All runs Fired and all effects present", "match": "PASS"}
+ ],
+ "notes": ["The concurrency window cannot be forced on demand; 27/27 under the same pattern that failed on 21 Oct, plus a fresh-cursor test aimed at the fixed race."]
+}

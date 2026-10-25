@@ -1,0 +1,12 @@
+const d = page.getByRole('dialog');
+await d.getByLabel('Select QA CD K4 desk r3529').click(); await sleep(400);
+const typeX = await d.getByLabel('Select QA CD K4 desk r3529').getAttribute('type');
+await d.getByLabel('Select test365 123').click(); await sleep(400);
+const checked = { X: await d.getByLabel('Select QA CD K4 desk r3529').isChecked(), Y: await d.getByLabel('Select test365 123').isChecked() };
+await shot('2101-04-single-pick');
+await d.getByLabel('Select QA CD K4 desk r3529').click(); await sleep(300);
+const checked2 = { X: await d.getByLabel('Select QA CD K4 desk r3529').isChecked(), Y: await d.getByLabel('Select test365 123').isChecked() };
+await d.getByRole('button', { name: 'Select', exact: true }).click(); await sleep(1200);
+const row = await page.evaluate(() => [...document.querySelectorAll('#main-content button')].filter(b => /Lookup Permission|criteria row/.test(b.getAttribute('aria-label') || '')).map(b => (b.getAttribute('aria-label') + ' | ' + b.innerText.trim()).slice(0, 90)));
+await shot('2101-05-lookup-chip');
+return done({ typeX, checked, checked2, row });

@@ -1,0 +1,56 @@
+{
+ "out": "../WH-10-blueprint-webhooks-never-sent-vs-zoho.png",
+ "id": "WH-10 / WH-11",
+ "title": "Blueprint webhooks are never sent (After transition and SLA escalation)",
+ "verdict": "Differs",
+ "date": "25 Oct 2026",
+ "zohoSource": "Zoho CRM API documentation",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Transition and SLA run, other actions run, the webhook never arrives",
+   "img": "WH-10-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: webhooks are valid After-transition and SLA-escalation actions",
+   "text": [
+    "Create Blueprint API, after-transition actions: \"List of actions configured to be triggered after the transition is completed\"; the types include \"convert, webhooks, functions\".",
+    "State escalation trigger actions: \"sla, email_notifications, tasks, field_updates, webhooks, functions, circuits, whatsapp, sms\".",
+    "Blueprint help: a maximum of 5 webhooks can be added to a blueprint transition."
+   ],
+   "sources": [
+    "https://www.zoho.com/crm/developer/docs/api/v8/create-blueprint.html",
+    "https://help.zoho.com/portal/en/kb/crm/process-management/blueprint/articles/execute-blueprint"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Workflow rule webhook",
+   "zoho": "Sent",
+   "tavi": "Sent (~1 s)",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "Blueprint After-transition webhook",
+   "zoho": "Sent after the transition",
+   "tavi": "Never sent",
+   "match": "Differs"
+  },
+  {
+   "n": "3",
+   "b": "Blueprint SLA escalation webhook",
+   "zoho": "Sent on escalation",
+   "tavi": "Never sent (Field Update in the same escalation runs)",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Receiver: a fresh webhook.site URL per case; it received the workflow webhooks normally.",
+  "The designer offers the Webhook action in both places, so admins can set it up and nothing happens."
+ ]
+}

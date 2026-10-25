@@ -1,0 +1,10 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+const post = async n => { const r = await api('POST', `/modules/${L}/views`, { name: n, kind: 'list', visibility: 'private', settings: { criteria: { conditions: [{ field: 'lead_source', operator: 'equals', value: 'web' }] } } }); return r.s + ' ' + (r.j?.data?.id ? 'CREATED ' + r.j.data.id : r.t.slice(0, 220)); };
+const out = {};
+out.exact = await post('QA RT 2098 last');
+out.upper = await post('QA RT 2098 LAST');
+out.trail = await post('QA RT 2098 last ');
+out.empty = await post('   ');
+out.n121 = await post('QA RT ' + 'z'.repeat(115));
+out.ui = page.url().replace(/.*\/modules\/[^/?]+/, '') + ' msg=' + (await txt()).includes('You already have a view with this name.');
+return done(out);

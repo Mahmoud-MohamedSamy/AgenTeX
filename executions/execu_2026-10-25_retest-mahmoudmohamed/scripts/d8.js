@@ -1,0 +1,15 @@
+const D = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430', A = '95503f26-c7b3-4564-91a1-aca6b497fb1a', B = 'dbd0c426-8f33-4726-b74f-44d44b396b65';
+const stage = async id => ((await api('GET', `/modules/${D}/records/${id}`)).j?.data?.data || []).find(d => d.field === 'stage')?.value?.value ?? null;
+await page.setViewportSize({ width: 2200, height: 900 }); await sleep(1500);
+const col = name => page.evaluate(n => { const h = [...document.querySelectorAll('*')].find(e => e.childElementCount === 0 && e.textContent.trim() === n); let c = h; for (let k = 0; k < 8; k++) { c = c.parentElement; if (c.getBoundingClientRect().height > 300) break; } const r = c.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + 200, op: getComputedStyle(c).opacity, cls: c.className.slice(0, 80) }; }, name);
+const card = name => page.getByText(name, { exact: true }).first();
+const drag = async (cardName, toCol, shotName) => { const b = await card(cardName).boundingBox(); const t = await col(toCol); await page.mouse.move(b.x + 20, b.y + 10); await page.mouse.down(); for (let i = 1; i <= 25; i++) { await page.mouse.move(b.x + 20 + (t.x - b.x - 20) * i / 25, b.y + 10 + (t.y - b.y - 10) * i / 25); await sleep(30); } await sleep(500); const during = await col(toCol); await shot(shotName); await page.mouse.up(); await sleep(2500); return during; };
+const out = { before: { a: await stage(A), b: await stage(B) } };
+out.dragBtoUnacc = await drag('QA RT 2113 b', 'Unaccounted', '2113-02-drag-into-unaccounted');
+out.afterB = await stage(B);
+out.toast1 = await page.evaluate(() => [...document.querySelectorAll('[data-sonner-toast]')].map(t => t.innerText).join(' | '));
+out.dragAtoProposal = await drag('QA RT 2113 a', 'Proposal', '2113-03-drag-out-of-unaccounted');
+out.afterA = await stage(A);
+await sleep(1000); await shot('2113-04-after');
+await page.setViewportSize({ width: 1280, height: 720 });
+return done(out);

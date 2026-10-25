@@ -1,0 +1,62 @@
+{
+ "out": "../WH-12-review-webhook-reject-only-unsigned.png",
+ "id": "WH-12",
+ "title": "Review process webhook only sends the reject event and is unsigned",
+ "verdict": "Differs",
+ "date": "25 Oct 2026",
+ "zohoSource": "Not in Zoho (TAVI extra)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Submit and approve send nothing; reject sends an unsigned request",
+   "img": "WH-12-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho's review process has no webhook; judged against TAVI's own design",
+   "text": [
+    "Zoho CRM Review Process has no webhook setting, so this is a TAVI extra.",
+    "The payload has an \"event\" field and an x-anyware-event header, which implies more than one event (submitted, approved, rejected).",
+    "A timestamp header without a signature does not let the receiver prove the request came from TAVI (TAVI telephony and SMS webhooks use a secret)."
+   ],
+   "sources": [
+    "Observed on staging-crm, 25 Oct 2026"
+   ],
+   "flag": "NOT IN ZOHO — TAVI extra"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Record submitted for review",
+   "zoho": "—",
+   "tavi": "Nothing sent",
+   "match": "Not comparable"
+  },
+  {
+   "n": "2",
+   "b": "Review approved",
+   "zoho": "—",
+   "tavi": "Nothing sent",
+   "match": "Not comparable"
+  },
+  {
+   "n": "3",
+   "b": "Review rejected",
+   "zoho": "—",
+   "tavi": "review.rejected sent",
+   "match": "TAVI extra"
+  },
+  {
+   "n": "4",
+   "b": "Signature to verify the sender",
+   "zoho": "—",
+   "tavi": "None (timestamp only)",
+   "match": "Not comparable"
+  }
+ ],
+ "notes": [
+  "webhookUrl can only be set through the API; there is no field on the review process screen."
+ ],
+ "refColumn": "Zoho CRM / expected"
+}

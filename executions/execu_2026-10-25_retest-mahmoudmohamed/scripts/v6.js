@@ -1,0 +1,3 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+const t = async p => { const t0 = Date.now(); const r = await api('GET', p); return r.s + ' in ' + ((Date.now() - t0) / 1000).toFixed(1) + 's ' + r.t.slice(0, 90); };
+return done({ viewsList: await t(`/modules/${L}/views?kind=list`), records: await t(`/modules/${L}/records?page=1&per_page=25`), fields: await t(`/modules/${L}/fields`), layouts: await t(`/modules/${L}/layouts`), viewLast: await t(`/modules/${L}/views/13996de8-93e5-4437-b546-03d1caca1194`), viewGone: await t(`/modules/${L}/views/ff0a79b9-c822-4fd0-96ab-00c60a88c920`), viewForeign: await t(`/modules/${L}/views/1cb2da03-3a80-4720-9ca6-07c5a3758b85`) });

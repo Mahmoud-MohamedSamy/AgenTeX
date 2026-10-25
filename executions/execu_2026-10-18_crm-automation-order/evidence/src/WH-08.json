@@ -1,0 +1,46 @@
+{
+ "out": "../WH-08-approval-webhook-owner-empty-vs-zoho.png",
+ "id": "WH-08 / WH-09",
+ "title": "${owner} is empty in approval webhooks (filled in workflow webhooks)",
+ "verdict": "Differs",
+ "date": "25 Oct 2026",
+ "zohoSource": "Zoho CRM help (documentation)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Workflow webhook sends the owner; approval webhook sends \"\"",
+   "img": "WH-08-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho: webhooks send the record's field values as configured",
+   "text": [
+    "Zoho CRM webhooks: parameters can be module fields, including the record owner; the value on the record is sent.",
+    "Zoho approval processes call the same webhooks as workflow rules, so the same parameter gives the same value."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/crm/automate-business-processes/actions/articles/webhooks-workflow"
+   ],
+   "flag": "ZOHO DOCS — not seen on screen"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "${owner} in a workflow webhook",
+   "zoho": "Owner value",
+   "tavi": "Owner id",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "${owner} in an approval webhook",
+   "zoho": "Owner value",
+   "tavi": "Empty",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "recordId, moduleId and first_name are filled in both."
+ ]
+}

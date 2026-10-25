@@ -1,0 +1,3 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+const q = async f => { const r = await api('GET', `/modules/${L}/records?page=1&per_page=50&filters=${encodeURIComponent(JSON.stringify(f))}`); return { s: r.s, total: r.j?.meta?.total_count, rows: arr(r.j?.data).map(x => (x.first_name || x.full_name || x.name || x.id) + ' L=' + JSON.stringify(x.lookup_3_9 ?? x.data?.lookup_3_9) + ' M=' + JSON.stringify(x.multi_select_lookup_8_9 ?? x.data?.multi_select_lookup_8_9)).slice(0, 15), err: r.s >= 400 ? r.t.slice(0, 200) : undefined }; };
+return done({ l: await q({ conditions: [{ field: 'lookup_3_9', operator: 'is_not_empty' }] }), m: await q({ conditions: [{ field: 'multi_select_lookup_8_9', operator: 'is_not_empty' }] }) });

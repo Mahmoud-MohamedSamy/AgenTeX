@@ -117,13 +117,13 @@ New findings B-17 (suspended user still assigned, not published) and A-10 (Onlin
 | (old row) B-19, G-02, G-12, G-15, G-18 | No real API channel: a user-token create is `source: manual` (re-checked 21 Oct). Settings → API Integration can issue an integration client (token scoped to records:ingest, `/iam/integrations/clients`, none exist); creating one was not permitted in this run | An API key or integration user for NDC-Staging |
 | ~~A-13, G-05~~ | **Done 21 Oct: both PASS.** Leads' only unique field "name" was placed on the session QA layout (`CrmApi.placeFieldOnLayout`). A-13: update import matched and updated the lead, the owner stayed (no assignment on update, as Zoho). G-05: no assignment, no review; workflow → approval → blueprint ran in order. Observation: update mode still asks for every required field (Phone) | OK to mark a field unique on a QA layout |
 | ~~B-13 (review SLA)~~ | **Done 21 Oct: PASS.** 60-minute SLA (the minimum); after the due time the recipient (CRM Admin B) had a `workflow.review_escalated` notification for the lead, and the reviewer (mmohamed@anyware.software) received the email "Review SLA breached: QA AEO V6 B-13 lead" at the due time (16:58:52 UTC) | – |
-| B-22 | Only one review process per module + layout, so first-match ordering cannot be observed | None (design) |
+| ~~B-22~~ | **Not applicable (user, 25 Oct).** TAVI allows only one review process per layout, so there is no order between processes to test | – |
 | ~~E-04~~ | **PASS (22 Oct): the user received the email "QA AEO V6 E-04 after-transition email 18:29:16" at mmohamed@anyware.software.** Re-run 21 Oct: transition, After Field Update and Task ran; the After email ("QA AEO V6 E-04 after-transition email 18:29:16") was sent to mmohamed@anyware.software at 18:29 Cairo | – |
 | ~~E-16~~ | **Done 21 Oct: PASS (UI).** The task made by the After action shows "RELATED TO: <lead name>", and the designer shows no ids (NDC-1328 fixed) | – |
 | F-02 | **Re-run 21 Oct: bug B-16, published NDC-2391.** A workflow condition on Lead Owner never matches: "Lead Owner is <user>" did not fire on a lead owned by that user, whether the rule was saved through the API or built on screen (the screen saves the same criteria: Comparison owner Equal "<user id>"), while the same rule without the owner condition fired. The assignment → workflow handoff cannot be judged until this works | Retest with the B-16 fix |
 | G-10 | Blueprint "Create record" after-action not offered (NDC-2294 #9) | – |
 | H-01, H-07 | Conversion made no Deal: `GET /modules/{leads}/conversion/config` shows the Deals target with **no field mappings** (21 Oct); no mass-convert endpoint | Lead conversion mapping with a Deal, and the mass-convert route |
-| I-09 | Held records cannot be deleted by anyone | Expected; restore part untestable |
+| I-09 | Held records cannot be deleted by anyone. **Retest 25 Oct: same.** userN, adminA and the Owner all get 422 `REVIEW_LOCKED` ("This record is under review and cannot be deleted until the review is complete"). Zoho's docs say nothing about deleting a record under review, so this is a design choice, not a bug. The restore step can't be reached | Expected; restore part untestable |
 | ~~K-09 (layout)~~ | **Done 21 Oct: PASS (UI).** Fields lists Approval Status as a system field (not custom); it is not offered on the Standard layout builder; the approval criteria picker does not offer it (85 fields listed) | – |
 | A-10 | **Published NDC-2422 (child of NDC-2418), 22 Oct.** Run 21 Oct: Entry with "Online status" required, members [test user 2 (no session), Owner (signed in)]: the lead still went to test user 2, same as the control without availability. TAVI exposes no online/offline status to confirm test user 2 was offline | How TAVI decides "online" (dev answer) |
 | A-17 | **B-17, published NDC-2411 (22 Oct, with Jams d0b413bd and 275e7847: on screen the lead gets no owner at all).** test user 2 suspended on screen (status "suspended"); an import with a rule whose only member is test user 2 still assigned the lead to the suspended user instead of the fallback (Supervisor). test user 2 reactivated in the same run (status "active") | Retest with the NDC-2411 fix |
@@ -338,3 +338,26 @@ Z2 import manual approval, Z3 score/notes triggers, Z4 meeting/call/function/con
 | Z7 | z7ApproverAnyoneEveryone | FAIL | GAP NDC-2294 #7 | d23fb4e0-248d-41f6-af60-d28885a7007e |  |
 | Z8 | z8ApprovalCallFunctionRuns | FAIL | GAP NDC-2294 #8 |  |  |
 | Z9 | z9BlueprintAfterActions | FAIL | GAP NDC-2294 #9 |  |  |
+
+## Webhooks: every place a webhook can be set (25 Oct 2026)
+
+Requested by the user on 25 Oct. Each case used a fresh webhook.site receiver (allowed by the user) and compared what arrived with TAVI's own dispatch log. Code: `VerifyV7WebhooksTest` (group `crm-webhooks`, cases WH-01…WH-13). Everything was created with the `QA AEO V7` prefix and deleted afterwards.
+
+| Case | Where | Result |
+|---|---|---|
+| WH-01 | Workflow, instant | PASS. POST arrived in ~1 s with the custom header; dispatch Succeeded (200). Merge fields render: `${recordId}`, `${moduleId}`, `${first_name}`, `${lead_source}`, `${owner}` (`${id}` is not a merge field) |
+| WH-02 | Workflow, PUT / PATCH | PASS. Both methods used as configured |
+| WH-03 | Workflow, scheduled 2 min | PASS. Nothing at 60 s; arrived at ~2 min 13 s |
+| WH-04 | Receiver answers 500 | PASS. Retried at +32 s and +2.5 min, next try booked 10 min later; dispatch Pending, attempts 3, lastError "HTTP 500" |
+| WH-05 | Slow receiver (10 s), timeout 3 s | PASS. lastError "timeout", retried |
+| WH-06 | Secret header | PASS. Headers read back as `********`; the receiver got the real value |
+| WH-07 | Actions library (saved Webhook action used by a rule) | PASS. Fired, dispatch Succeeded |
+| WH-08 | Approval: Call Webhook after final approval | PASS. Nothing while pending; one call after approve. Note: `${owner}` rendered empty here (filled in workflow webhooks) |
+| WH-09 | Approval: Call Webhook after rejection | PASS. One call after reject. Same empty `${owner}` |
+| WH-10 | Blueprint transition After webhook | **FAIL (candidate bug).** The transition succeeded (lead moved chat → web) but no request ever arrived. Re-run with exactly the designer's shape `{kind, url, verb}`: same. Other After actions (field update, task, email) work (E-04) |
+| WH-11 | Blueprint state SLA escalation webhook | **FAIL (candidate bug).** The 1-minute SLA ran: the Field Update in the same escalation applied at ~1.5 min, but no request arrived in 9 minutes. Same with the webhook placed first or last |
+| WH-12 | Review process `webhookUrl` (API only, no screen) | Partly. Only the reject event calls it (`x-anyware-event: review.rejected`, JSON with process, record, rejected fields and reasons). Submit and approve send nothing. The request carries a timestamp header but no signature, so a receiver cannot verify it came from TAVI |
+| WH-13 | URL safety | **Candidate security bug.** Workflow and approval webhooks refuse ftp, localhost, 127.0.0.1, 10.x and 169.254.169.254 ("must be a public http(s) endpoint"). The blueprint After webhook and the review process `webhookUrl` save 127.0.0.1 and 169.254.169.254 without complaint. **Run time (WH-14, user OK 25 Oct):** a workflow webhook to a host name resolving to 127.0.0.1 (127.0.0.1.nip.io, localtest.me) is Cancelled by the egress policy ("custom-actions-egress-blocked"), but one resolving to 169.254.169.254 (169.254.169.254.nip.io) is NOT blocked: dispatch Pending, lastError "timeout", retry booked. Review webhook to internal IPs: delivery not observable (no log). Blueprint: not testable (blueprint webhooks never send, WH-10). Drafts: `plane-drafts-webhooks.md`; evidence `evidence/WH-*.png`. Also: plain http accepted (as Zoho), a 2,100-character URL accepted |
+| WH-x | Other webhook settings | SMS delivery webhook (Settings → SMS, `/messaging/webhooks`), Sales Directory inbound key and Telephony inbound webhook exist. Not part of the automation order; not tested |
+
+**Published 25 Oct 2026 (images attached):** NDC-2540 blueprint webhooks never sent (WH-10/11, High) · NDC-2537 metadata address not blocked + blueprint/review accept internal URLs (WH-13/14, Urgent) · NDC-2538 review webhook reject-only, unsigned (WH-12, Medium) · NDC-2539 ${owner} empty in approval webhooks (WH-08/09, Low). CRM module, Sprint 13 (Sprint 12 is closed).

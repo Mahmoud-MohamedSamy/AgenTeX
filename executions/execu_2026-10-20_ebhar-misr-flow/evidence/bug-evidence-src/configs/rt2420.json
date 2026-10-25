@@ -1,0 +1,20 @@
+{
+ "out": "../NDC-2420-retest-2026-10-25.png",
+ "id": "NDC-2420 retest",
+ "title": "Owner hand-over rule now runs after «اعتماد الفيديو»",
+ "verdict": "Retest: PASS",
+ "date": "25 Oct 2026 (times on screen are local, UTC+3)",
+ "sub": "TAVI CRM crm.taviportal.com, Education First tenant (Ebhar Misr), record EM-00125 (kept) · pool-science pressed the button in the browser",
+ "panels": [
+  {"side": "TAVI", "caption": "pool-science fills the required score + comments in «اعتماد الفيديو — العلوم» and presses Execute", "img": "../originals/rt2420-a-dialog.png", "boxes": [{"n": 1, "x": 25, "y": 170, "w": 462, "h": 64}, {"n": 2, "x": 406, "y": 567, "w": 82, "h": 37}]},
+  {"side": "TAVI", "caption": "1 min later: Assessment Complete and the owner is now Pool — التسجيل (Committee profile)", "img": "../originals/rt2420-b-record.png", "boxes": [{"n": 3, "x": 16, "y": 16, "w": 210, "h": 84}, {"n": 4, "x": 132, "y": 206, "w": 296, "h": 34}]},
+  {"side": "TAVI", "caption": "Execution History for EM-00125: «نقل الملكية للجنة بعد اعتماد الفيديو» Fired at 14:12, 1 action run", "img": "../originals/rt2420-c-executions.png", "boxes": [{"n": 5, "x": 13, "y": 201, "w": 1102, "h": 84}, {"n": 6, "x": 13, "y": 541, "w": 1102, "h": 84}]},
+  {"side": "Zoho", "caption": "Zoho CRM help: Troubleshooting Workflows", "flag": "DOCS ONLY — not checked on a live Zoho org", "text": ["“Workflow rules do not trigger when the fields are transitioned from a blueprint.”", "TAVI now runs matching rules after every transition (with or without fields) — consistent, but different from Zoho by design (fix chosen by the developers, see NDC-2420 comment)."], "sources": ["https://help.zoho.com/portal/en/kb/crm/troubleshooting/articles/troubleshooting-workflows"]}
+ ],
+ "rows": [
+  {"n": "1–4", "b": "Owner round robin to the Committee after «اعتماد الفيديو» (transition with required fields)", "zoho": "Not triggered (docs)", "tavi": "Runs — owner Pool — التسجيل (EM-00125, UI); also EM-00124 via the assessor's session", "match": "PASS"},
+  {"n": "5", "b": "Run recorded in Execution History", "zoho": "—", "tavi": "Fired · Actions run 1 (before the fix: no entry at all)", "match": "PASS"},
+  {"n": "6", "b": "Rules after a transition without fields (N02 after «قبول التسجيل»)", "zoho": "Not triggered (docs)", "tavi": "Still runs (portal access) — no regression", "match": "PASS"}
+ ],
+ "notes": ["Fix note from the developers: after every blueprint transition, matching rules now also run their save actions (Field Update, Owner Assignment, tags). Rules that silently did nothing after transitions will now act — covered by the full E2E run that follows."]
+}

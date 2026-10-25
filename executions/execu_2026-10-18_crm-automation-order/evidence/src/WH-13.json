@@ -1,0 +1,70 @@
+{
+ "out": "../WH-13-internal-webhook-addresses-vs-expected.png",
+ "id": "WH-13 / WH-14",
+ "title": "Webhooks can target the cloud metadata address; blueprint and review webhooks skip the URL check",
+ "verdict": "Differs",
+ "date": "25 Oct 2026",
+ "zohoSource": "TAVI's own workflow rule check (expected behaviour)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Blueprint / review save internal URLs; the egress policy lets 169.254.169.254 through",
+   "img": "WH-13-api.png"
+  },
+  {
+   "side": "Zoho",
+   "caption": "Expected: the check TAVI already applies to workflow rules, everywhere",
+   "text": [
+    "TAVI workflow rules already refuse these URLs: \"Webhook Url must be a public http(s) endpoint; loopback, private, link-local, and internal addresses are not allowed\".",
+    "The outbound egress policy already cancels host names that resolve to 127.0.0.1 (\"custom-actions-egress-blocked\").",
+    "Expected: the same save-time check for blueprint After / SLA webhooks and the review process webhookUrl, and the egress policy also blocking link-local 169.254.0.0/16 (cloud metadata)."
+   ],
+   "sources": [
+    "https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html"
+   ],
+   "flag": "EXPECTED — TAVI's own rule (OWASP SSRF guidance)"
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Workflow webhook to 127.0.0.1 / 169.254.169.254",
+   "zoho": "Refused at save",
+   "tavi": "Refused at save",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "Blueprint After webhook to 127.0.0.1 / 169.254.169.254",
+   "zoho": "Refused at save",
+   "tavi": "Saved (201)",
+   "match": "Differs"
+  },
+  {
+   "n": "3",
+   "b": "Review process webhookUrl to 169.254.169.254",
+   "zoho": "Refused at save",
+   "tavi": "Saved (201)",
+   "match": "Differs"
+  },
+  {
+   "n": "4",
+   "b": "Host name resolving to 127.0.0.1 (run time)",
+   "zoho": "Blocked",
+   "tavi": "Blocked (egress policy)",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "5",
+   "b": "Host name resolving to 169.254.169.254 (run time)",
+   "zoho": "Blocked",
+   "tavi": "Connection attempted (timeout, retried)",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Run-time test approved by the user (25 Oct). No response body came back; only the status was recorded.",
+  "Blueprint webhooks are not sent at all today (WH-10), so their missing save check becomes live once that is fixed."
+ ],
+ "refColumn": "Expected"
+}

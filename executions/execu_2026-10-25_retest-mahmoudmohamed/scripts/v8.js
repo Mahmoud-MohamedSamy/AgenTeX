@@ -1,0 +1,10 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3', LAST = '13996de8-93e5-4437-b546-03d1caca1194';
+await page.goto(H + `/modules/${L}?view=${LAST}`, { waitUntil: 'commit' });
+for (let k = 0; k < 90; k++) { await sleep(1000); const t = await txt().catch(() => ''); if (/\d+ records/.test(t) && !/Loading Leads/.test(t)) break; } await sleep(8000);
+const out = { count: (await txt()).match(/(\d+) records/)?.[1], query: page.url().split('?')[1] || '(none)' };
+await page.getByText('Choose a view').first().click().catch(() => {}); await sleep(2000);
+out.picker = (await page.locator('[role=menu],[role=listbox],[role=dialog]').allInnerTexts()).join(' | ').slice(0, 600);
+out.selected = await page.locator('[aria-selected=true],[aria-checked=true],[data-state=checked]').allInnerTexts();
+await shot('2098-05-own-picker'); await page.keyboard.press('Escape');
+const rec = await api('GET', `/modules/${L}/records?page=1&per_page=5`); out.allLeadsApiTotal = rec.j?.meta?.total_count;
+return done(out);

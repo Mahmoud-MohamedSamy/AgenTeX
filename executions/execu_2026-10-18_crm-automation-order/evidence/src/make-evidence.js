@@ -63,7 +63,7 @@ const MATCH_COLOR = { 'Same as Zoho': '#1a7f37', 'Differs': '#b35900', 'Gap': '#
     <h1>${esc(cfg.id)} — ${esc(cfg.title)}<span class="verdict">${esc(cfg.verdict)}</span></h1>
     <div class="sub">TAVI CRM (staging-crm.taviportal.com) vs ${esc(cfg.zohoSource || "live Zoho CRM (org943261092, full edition; read-only)")} · ${esc(cfg.date)} · numbers on the images match the # column</div>
     <div class="cols"><div class="col">${col('TAVI')}</div><div class="col">${col('Zoho')}</div></div>
-    <table><tr><th>#</th><th>Behaviour</th><th>Zoho CRM</th><th>TAVI CRM</th><th>Match</th></tr>
+    <table><tr><th>#</th><th>Behaviour</th><th>${esc(cfg.refColumn || "Zoho CRM")}</th><th>TAVI CRM</th><th>Match</th></tr>
     ${cfg.rows.map(r => `<tr><td>${esc(r.n || '')}</td><td>${esc(r.b)}</td><td>${esc(r.zoho)}</td><td>${esc(r.tavi)}</td><td class="m" style="color:${MATCH_COLOR[r.match] || '#333'}">${esc(r.match)}</td></tr>`).join('')}
     </table>
     ${cfg.notes && cfg.notes.length ? `<ul class="notes">${cfg.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}

@@ -1,0 +1,42 @@
+{
+ "out": "WH-10-api.png",
+ "title": "TAVI: blueprint webhooks are never sent (25 Oct 2026, staging-crm)",
+ "blocks": [
+  {
+   "head": "WH-10  Blueprint \"QA chat to web\" transition, After action = Webhook (exact designer shape)",
+   "lines": [
+    "GET /modules/leads/blueprints/3f5fa764…  -> 200",
+    "  \"after\":{\"actions\":[{\"url\":\"https://webhook.site/0fe51061-…\",\"kind\":\"webhook\",\"verb\":\"POST\"}]}",
+    "POST /modules/leads/records/66b725b9…/blueprint-transitions/t_qa_0  -> 200",
+    {
+     "t": "lead_source after transition = web   (transition ran)",
+     "box": "transition OK"
+    },
+    {
+     "t": "webhook.site requests received: 0   (watched 105 s; same with headers/body set: 0)",
+     "box": "no webhook"
+    }
+   ]
+  },
+  {
+   "head": "WH-11  Blueprint state \"chat\": SLA 1 minute, escalation = [Field Update, Webhook]",
+   "lines": [
+    "lead 46bbe8bb…  slaDueAt 2026-10-25T11:36:07Z",
+    {
+     "t": "+84 s   description = \"QA WH-11 SLA escalated\"   (Field Update in the same escalation ran)",
+     "box": "SLA fired"
+    },
+    {
+     "t": "+535 s  webhook.site requests received: 0   (also 0 with the webhook listed first)",
+     "box": "no webhook"
+    }
+   ]
+  },
+  {
+   "head": "Control: a workflow rule webhook to the same kind of receiver (WH-01)",
+   "lines": [
+    "POST arrived in ~1 s, dispatch status Succeeded, responseStatus 200"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "out": "WH-13-api.png",
+ "title": "TAVI: webhook URLs pointing at internal / cloud-metadata addresses (25 Oct 2026)",
+ "blocks": [
+  {
+   "head": "Save time: workflow rule (checked) vs blueprint and review process (not checked)",
+   "lines": [
+    "POST /workflow/rules  url http://169.254.169.254/latest/meta-data/  -> 400 \"Webhook Url must be a public http(s) endpoint; loopback, private, link-local …\"",
+    "POST /workflow/rules  url http://127.0.0.1/qa  -> 400 (same)",
+    {
+     "t": "POST /modules/leads/blueprints  After webhook http://169.254.169.254/latest/meta-data/  -> 201",
+     "box": "accepted"
+    },
+    {
+     "t": "POST /modules/leads/blueprints  After webhook http://127.0.0.1/qa  -> 201",
+     "box": "accepted"
+    },
+    {
+     "t": "POST /workflow/review-processes  webhookUrl http://169.254.169.254/latest/meta-data/  -> 201",
+     "box": "accepted"
+    }
+   ]
+  },
+  {
+   "head": "Run time: workflow webhook to host names that resolve to internal addresses (each saved: 201)",
+   "lines": [
+    "http://127.0.0.1.nip.io/  -> dispatch Cancelled: [custom-actions-egress-blocked] resolves only to addresses blocked by the outbound egress policy",
+    "http://localtest.me/      -> dispatch Cancelled: [custom-actions-egress-blocked] (same)",
+    {
+     "t": "http://169.254.169.254.nip.io/latest/meta-data/  -> dispatch Pending, attempts 1, lastError \"timeout\" (connection attempted, retry booked)",
+     "box": "NOT blocked"
+    }
+   ]
+  }
+ ]
+}
