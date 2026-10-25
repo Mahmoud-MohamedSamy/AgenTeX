@@ -57,6 +57,19 @@ public class LeadRecordPage extends BasePage {
         return this;
     }
 
+    /** Types into the input whose aria-label, label or placeholder is {@code label} (e.g. the designer's "Webhook URL"). */
+    public LeadRecordPage typeLabeled(String label, String text) {
+        type("labeledBox", text, label);
+        Waits.sleep(1000);
+        return this;
+    }
+
+    public LeadRecordPage clickButton(String name) {
+        click("button", name);
+        Waits.sleep(2500);
+        return this;
+    }
+
     public String text() {
         return bodyText();
     }

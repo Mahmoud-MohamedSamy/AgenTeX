@@ -1,0 +1,57 @@
+owner session true
+PASS W2 video - student saves https://youtu.be/qa-web-w2 -> Assessment Assigned, owner pool-math, video_submitted_at 2026-10-25T13:33:53.253Z
+PASS W3 video - student saves https://youtu.be/qa-web-w3 -> Assessment Assigned, owner pool-technology, video_submitted_at 2026-10-25T13:40:09.256Z
+PASS W4 video - student saves https://youtu.be/qa-web-w4 -> Assessment Assigned, owner reviewer3, video_submitted_at 2026-10-25T13:32:10.518Z
+PASS W4 arts-owner - Arts record owner = reviewer3 (round robin over the Arts profile)
+  login pool-math ok
+PASS W1 other-assessor - pool-math sees no buttons on the Science record
+PASS W2 send-back - pool-math saw [t-approve-video-math,t-correction-math] -> t-correction-math 200 ok -> Action Required
+PASS W2 owner-kept - owner after send back = pool-math
+PASS W2 portal-kept - portal access kept at Action Required
+PASS W2 resubmit - student saves https://youtu.be/qa-web-w2-v2 -> Assessment Assigned, owner pool-math, video_submitted_at 2026-10-25T14:23:37.505Z
+  login pool-science ok
+PASS W1 approve-video - pool-science saw [t-approve-video-science,t-correction-science] -> t-approve-video-science 200 ok -> Assessment Complete
+PASS W1 handover - owner after approval = pool-registration (expect pool-registration, NDC-2420 fix)
+PASS W1 score-lock - pool-science edits the score after approval: 403 PERMISSION_DENIED: Permission denied.
+PASS W2 approve-video - pool-math saw [t-approve-video-math,t-correction-math] -> t-approve-video-math 200 ok -> Assessment Complete
+PASS W2 handover - owner after approval = pool-registration (expect pool-registration, NDC-2420 fix)
+PASS W2 score-lock - pool-math edits the score after approval: 403 PERMISSION_DENIED: Permission denied.
+  login pool-technology ok
+PASS W3 approve-video - pool-technology saw [t-approve-video-technology,t-correction-technology] -> t-approve-video-technology 200 ok -> Assessment Complete
+PASS W3 handover - owner after approval = pool-registration (expect pool-registration, NDC-2420 fix)
+PASS W3 score-lock - pool-technology edits the score after approval: 403 PERMISSION_DENIED: Permission denied.
+  login reviewer3 FAILED
+FAIL W4 approve-video - reviewer3 saw [] -> t-approve-video-arts 401 TOKEN_MISSING: Authorization token is required. -> Assessment Assigned
+FAIL W4 handover - owner after approval = reviewer3 (expect pool-registration, NDC-2420 fix)
+FAIL W4 score-lock - reviewer3 edits the score after approval: 422 FIELD_PERMISSION_DENIED: Field 'assessment_score' is read-only for your profile and cannot be written.
+  login pool-registration ok
+PASS W1 finalist - pool-registration saw [t-finalist,t-not-selected] -> t-finalist 200 ok -> Finalist Accepted
+PASS W2 finalist - pool-registration saw [t-finalist,t-not-selected] -> t-finalist 200 ok -> Finalist Accepted
+PASS W3 not-selected - pool-registration saw [t-finalist,t-not-selected] -> t-not-selected 200 ok -> Finalist Rejected
+FAIL W4 finalist - pool-registration saw [] -> t-finalist 422 BLUEPRINT_VALIDATION_FAILED: No matching transition from the current state. -> Assessment Assigned
+PASS W1 end-state - no buttons left at Finalist Accepted
+PASS W2 end-state - no buttons left at Finalist Accepted
+PASS W3 end-state - no buttons left at Finalist Rejected
+FAIL W4 end-state - no buttons left at Assessment Assigned
+PASS W5 end-state - no buttons left at Registration Rejected
+DISPATCH 2x W1 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+DISPATCH 1x W1 OwnerAssignment Succeeded
+DISPATCH 1x W1 SendPortalAccess Succeeded
+DISPATCH 1x W2 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+DISPATCH 2x W2 Email Succeeded
+DISPATCH 1x W2 OwnerAssignment Succeeded
+DISPATCH 1x W2 SendPortalAccess Succeeded
+DISPATCH 1x W3 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+DISPATCH 1x W3 Email Succeeded
+DISPATCH 1x W3 OwnerAssignment Succeeded
+DISPATCH 1x W3 SendPortalAccess Succeeded
+DISPATCH 1x W4 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+DISPATCH 1x W4 Email Succeeded
+DISPATCH 1x W4 SendPortalAccess Succeeded
+DISPATCH 1x W5 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+FINAL W5 EM-00157 الفنون Registration Rejected owner reviewer2 score  reason QA web test: ID photo not readable correction 
+FINAL W4 EM-00156 الفنون Assessment Assigned owner reviewer3 score  reason  correction 
+FINAL W3 EM-00155 التكنولوجيا Finalist Rejected owner pool-registration score 58 reason  correction 
+FINAL W2 EM-00154 الرياضيات Finalist Accepted owner pool-registration score 72 reason  correction QA web test: please re-record with clearer sound
+FINAL W1 EM-00153 العلوم Finalist Accepted owner pool-registration score 85 reason  correction 
+TOTAL 25 / 30 pass

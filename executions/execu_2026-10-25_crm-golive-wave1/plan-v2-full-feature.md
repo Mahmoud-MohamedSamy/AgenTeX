@@ -144,3 +144,4 @@ One owner sign-in per JVM run, all classes in one suite, so the owner account is
 - Invitations (US-03..05): use a REAL inbox the user will name (not yet given) — run last, after the address arrives.
 - Security policy enforcement (SP-03/04): change the tenant session limits briefly and restore; team has been told; run today as the last short block.
 - Irreversible actions (US-13 remove/delete/anonymise, PS-06 real password change): skipped, listed as not tested (need a disposable user).
+- Invitation inbox (user, 25 Oct 2026): hmohamed@anyware.software — at most 3 emails (invite, resend, bulk), all invitations cancelled after.

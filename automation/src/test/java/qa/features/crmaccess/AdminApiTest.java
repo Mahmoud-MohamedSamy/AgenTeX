@@ -89,10 +89,13 @@ public class AdminApiTest {
     @CaseId("US-07")
     @Test(groups = {"crmaccess", "wave1", "api"}, description = "Change a user's profile and org unit, and back")
     public void changeProfileAndOrgUnit() {
-        CrmHierarchyApi.setProfile(N_ID, qa.features.crmhierarchy.CrmHierarchyFeature.P_SUPERVISOR, OU_HR);
+        // the profile scope is not the user's org unit: the org unit is changed with PATCH /iam/users/{id} {org_unit_id}
+        CrmHierarchyApi.setProfile(N_ID, qa.features.crmhierarchy.CrmHierarchyFeature.P_SUPERVISOR, OU_SALES);
+        CrmUser.ok(owner().patch("/iam/users/" + N_ID, m("org_unit_id", OU_HR)), "move to HR");
         Map<String, Object> u = CrmHierarchyApi.user(N_ID);
         String prof = String.valueOf(u.get("profileNames")), ou = String.valueOf(u.get("orgUnitId"));
         CrmHierarchyApi.setProfile(N_ID, P_USER, OU_SALES);
+        CrmUser.ok(owner().patch("/iam/users/" + N_ID, m("org_unit_id", OU_SALES)), "move back to Sales");
         Map<String, Object> back = CrmHierarchyApi.user(N_ID);
         fact("US-07", "after change: profile " + prof + ", org unit HR=" + OU_HR.equals(ou) + "; after revert: " + back.get("profileNames") + ", Sales=" + OU_SALES.equals(back.get("orgUnitId")));
         Assert.assertEquals(prof, "Supervisor");
@@ -214,9 +217,17 @@ public class AdminApiTest {
         List<String> stillOpen = new ArrayList<>();
         StringBuilder f = new StringBuilder();
         usable.forEach((k, p) -> {
-            int s = fresh.get(p).statusCode();
+            Response r = fresh.get(p);
+            int s = r.statusCode();
             f.append(k).append(' ').append(s).append("; ");
-            if (s == 200) stillOpen.add(k);
+            if (s != 200) return;
+            if (k.endsWith("audit.view_all")) {
+                // "view own" still answers 200: the deny is applied when no other user's events come back
+                List<Map<String, Object>> evs = r.jsonPath().getList("data");
+                long others = evs == null ? 0 : evs.stream().filter(e -> e != null && !V_ID.equals(e.get("actor_id"))).count();
+                f.append("(others' events ").append(others).append(") ");
+                if (others > 0) stillOpen.add(k);
+            } else stillOpen.add(k);
         });
         fact("PE-05", "after DENY overrides (fresh sign-in): " + f);
         Assert.assertTrue(stillOpen.isEmpty(), "denied but still allowed: " + stillOpen);

@@ -35,6 +35,35 @@ Other open points:
 
 The sections below keep the full history from 20 Oct onwards.
 
+## Update 25 Oct 2026 — retests + full E2E from the real website
+
+**Retests (moved to Done in Plane with the user's OK):**
+- **NDC-2420 — PASS.** EM-00125 in the UI and EM-00124: after «اعتماد الفيديو» the owner moves to the Committee user, and the hand-over rule is logged as Fired. N02 still works.
+- **NDC-2421 — PASS, 27/27.** Two batches of 9 parallel link saves, plus 9 parallel creates against a brand-new round-robin counter (temporary QA rule, deleted after).
+- Evidence: `evidence/NDC-2420-retest-2026-10-25.png`, `evidence/NDC-2421-retest-2026-10-25.png`.
+
+**Full E2E with the real website form** (https://educationfirst.anyware.software/en/ebhar-misr#register):
+- **Form:** a CRM embedded web form behind Cloudflare Turnstile. Automated browsers always fail the check, even with a human tick, so the user submitted the 5 applications by hand.
+- **Records:** EM-00153 W1 Science, EM-00154 W2 Math, EM-00155 W3 Technology, EM-00156 W4 Arts, EM-00157 W5 Arts (rejected). All have source `web_form`, status Pending Verification and the ID photo saved, and the round robin alternated reviewer2 / reviewer1.
+
+| Step | Result |
+|---|---|
+| Registration review by the owner reviewer (other reviewer sees no buttons; reject needs a reason) | ✅ 21/21 |
+| N02 portal access granted (W1–W4), none for W5 | ✅ |
+| **Student portal (M3)**: W2/W3/W4 students received the access email at @anyware.software, logged in (13:31–13:39 UTC), changed password and saved their video link → N04 + category owner round robin + «إسناد التقييم» ran | ✅ **M3 closed** |
+| W1 video saved in the CRM (portal email to Gmail could not be delivered) | ✅ |
+| Assessors (pool-science, pool-math, pool-technology, reviewer3 for Arts): other category sees no buttons; W2 send-back → resubmit → approve; score locked after approval | ✅ |
+| Hand-over to Committee after each approval (NDC-2420 fix), 4/4 | ✅ |
+| Committee: W1, W2, W4 Finalist Accepted; W3 Finalist Rejected; no buttons left in any end state | ✅ |
+
+Totals: 21/21 (review), 25/30 + 7/7 (assessment and Committee). The 5 failures in the first assessment run were a test-side login failure for reviewer3; they passed on the re-run.
+
+**New findings:**
+- **Email to external addresses fails.** The CRM's Zoho SMTP account (`no-reply-reset@anyware.software`) delivers to @anyware.software but fails for Gmail (`MAIL_SEND_FAILED` / HTTP 422), every time. That's the root cause of all the "emails failing" results. Real applicants (Gmail, Yahoo…) will receive no N01–N07 emails and **no portal password** until external sending is enabled on that Zoho account, or the CRM uses a proper transactional sender. **Blocker for go-live.**
+- **Birth date:** all 5 web records saved birth date 2008-12-12, whatever the user entered. To confirm with the user whether the form changed it. `age` is still empty.
+- My test script overwrote the W2–W4 video links that the students had saved in the portal with QA links. The flow is unaffected, but the records show the QA links.
+
+
 ## 1. Summary
 
 The candidate journey runs end to end in the CRM: **16 of 16 status, owner and approval checks passed**.

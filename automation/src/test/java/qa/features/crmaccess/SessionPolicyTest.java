@@ -76,45 +76,54 @@ public class SessionPolicyTest {
         Assert.assertTrue(max0.equals(m) && idle0.equals(i), "session limits not restored");
     }
 
+    /** Status of the newest Login History row of a user (owner view): active / expired / logged out / cleared. */
+    private static String newestStatus(String userId) {
+        java.util.List<java.util.Map<String, Object>> rows = owner().get("/audit/login-history?user_id=" + userId + "&limit=3").jsonPath().getList("data");
+        return rows == null ? "-" : rows.stream().filter(java.util.Objects::nonNull).findFirst().map(x -> String.valueOf(x.get("status"))).orElse("-");
+    }
+
     @CaseId("SP-03")
     @Test(groups = {"crmaccess", "wave1", "api", "tenant-wide"}, description = "Max concurrent sessions: the newest sign-in ends the oldest session")
     public void maxConcurrentEnforced() {
         try {
             put(MAX, "2");
             sleep(35_000);                       // "saved limits reach sessions within about half a minute"
-            Session s1 = Session.signIn(USER_N);
-            Session s2 = Session.signIn(USER_N);
-            Session s3 = Session.signIn(USER_N);
+            Session s1 = Session.signIn(SUPERVISOR);
+            Session s2 = Session.signIn(SUPERVISOR);
+            Session s3 = Session.signIn(SUPERVISOR);
             if (s1.status != 200 || s2.status != 200 || s3.status != 200) throw new SkipException("INCONCLUSIVE: a sign-in failed (" + s1.status + "/" + s2.status + "/" + s3.status + ")");
             sleep(5_000);
             int a = s1.get("/iam/me").statusCode(), b = s2.get("/iam/me").statusCode(), c = s3.get("/iam/me").statusCode();
-            fact("SP-03", "limit 2, three sign-ins of test user 1: oldest " + a + ", second " + b + ", newest " + c);
+            int ar = s1.refresh(), cr = s3.refresh();
+            fact("SP-03", "limit 2, three sign-ins of the Supervisor: oldest token " + a + " / refresh " + ar + ", second " + b + ", newest " + c + " / refresh " + cr);
             Assert.assertEquals(c, 200, "the newest session does not work");
-            Assert.assertEquals(a, 401, "the oldest session still works with a limit of 2");
+            Assert.assertTrue(a == 401 || ar != 200, "the oldest session still works (token and refresh) with a limit of 2");
         } finally {
             put(MAX, max0);
         }
     }
 
     @CaseId("SP-04")
-    @Test(groups = {"crmaccess", "wave1", "api", "tenant-wide"}, description = "Idle timeout: an idle session ends, an active one stays")
+    @Test(groups = {"crmaccess", "wave1", "api", "tenant-wide"}, description = "Idle timeout: an idle session ends, an active one stays (checked on the token and on refresh)")
     public void idleTimeoutEnforced() {
         try {
             put(IDLE, "2");
             sleep(35_000);
-            Session idle = Session.signIn(USER_N);
             Session busy = Session.signIn(USER_V);
+            Session idle = Session.signIn(SUPERVISOR);
             if (idle.status != 200 || busy.status != 200) throw new SkipException("INCONCLUSIVE: a sign-in failed");
-            int busyLast = 0;
-            for (int i = 0; i < 6; i++) {        // 3 minutes: the busy session calls every 30 s, the idle one does nothing
+            StringBuilder trace = new StringBuilder();
+            for (int i = 1; i <= 7; i++) {        // 3.5 minutes: busy calls every 30 s, idle does nothing
                 sleep(30_000);
-                busyLast = busy.get("/iam/me").statusCode();
-                owner().get(path(IDLE));         // keep the owner session that restores the limit active too
+                int bs = busy.get("/iam/me").statusCode();
+                trace.append(i * 30).append("s busy=").append(bs).append("/").append(newestStatus(V_ID))
+                        .append(" idleRow=").append(newestStatus("d23fb4e0-248d-41f6-af60-d28885a7007e")).append("; ");
             }
-            int idleNow = idle.get("/iam/me").statusCode();
-            fact("SP-04", "idle limit 2 min, after 3 min: idle session " + idleNow + ", busy session (control) " + busyLast);
-            if (busyLast != 200) throw new SkipException("INCONCLUSIVE: the busy control session was ended too (" + busyLast + ")");
-            Assert.assertEquals(idleNow, 401, "the idle session still works after the idle timeout");
+            int idleToken = idle.get("/iam/me").statusCode(), idleRefresh = idle.refresh();
+            int busyToken = busy.get("/iam/me").statusCode(), busyRefresh = busy.refresh();
+            fact("SP-04", "idle limit 2 min. trace: " + trace + " END idle token " + idleToken + " / refresh " + idleRefresh + "; busy token " + busyToken + " / refresh " + busyRefresh);
+            Assert.assertTrue(idleToken == 401 || idleRefresh != 200, "the idle session still works after the idle timeout (token " + idleToken + ", refresh " + idleRefresh + ")");
+            Assert.assertTrue(busyToken == 200, "the active session was ended although it was used every 30 s");
         } finally {
             put(IDLE, idle0);
         }

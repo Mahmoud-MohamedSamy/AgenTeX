@@ -1,0 +1,18 @@
+owner session true
+W4 owner now reviewer3 Assessment Assigned
+  login reviewer3 ok
+PASS W4 login - reviewer3 signed in
+  login pool-science ok
+PASS W4 other-assessor - pool-science sees no buttons on the Arts record
+PASS W4 approve-video - reviewer3 saw [t-approve-video-arts,t-correction-arts] -> t-approve-video-arts 200 ok -> Assessment Complete
+PASS W4 handover - owner after approval = pool-registration
+PASS W4 score-lock - reviewer3 edits the score after approval: 403 PERMISSION_DENIED: Permission denied.
+  login pool-registration ok
+PASS W4 finalist - pool-registration saw [t-finalist,t-not-selected] -> t-finalist 200 ok -> Finalist Accepted
+PASS W4 end-state - no buttons left at Finalist Accepted
+DISPATCH 1x W4 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+DISPATCH 1x W4 Email Succeeded
+DISPATCH 1x W4 OwnerAssignment Succeeded
+DISPATCH 1x W4 SendPortalAccess Succeeded
+FINAL W4 EM-00156 الفنون Finalist Accepted owner pool-registration score 90 reason  correction 
+TOTAL 7 / 7 pass

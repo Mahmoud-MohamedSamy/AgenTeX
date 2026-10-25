@@ -343,6 +343,48 @@ public class UiSmokeTest extends BaseTest {
         assertTrue(problems.isEmpty(), "Related To shows names (NDC-1328): " + problems);
     }
 
+    // ---------------- WH-22 (NDC-2540): blueprint webhook added on the designer screen ----------------
+
+    @CaseId("WH-22")
+    @Test(groups = {"crm-ui", "NDC-2540"}, description = "Blueprint After webhook added on the designer screen: what is saved, and does it send on the transition?")
+    @SuppressWarnings("unchecked")
+    public void wh22BlueprintWebhookFromScreen() {
+        String c = "WH-22";
+        qa.features.deskworkflowrules.WebhookSite h = qa.features.deskworkflowrules.WebhookSite.create(200, 0);
+        try {
+            String bp = api.blueprint(LEADS, CrmProcs.blueprint("leads", layoutId, null, "lead_source", c + " BP", CrmProcs.guard(LEADS, prefix() + c + " "),
+                    List.of("chat", "web", "referral"), null));
+            LeadRecordPage page = new LeadRecordPage().openPath("/settings/blueprints/" + LEADS + "/" + bp, "QA chat to web");
+            page.clickText("QA chat to web").clickText("After");
+            note("WH-22 After tab before: " + page.text());
+            page.clickText("Webhook");
+            note("WH-22 after clicking Webhook: " + page.text());
+            page.typeLabeled("Webhook URL", h.url());
+            page.clickButton("Publish");
+            note("WH-22 after Publish: " + page.text());
+            Map<String, Object> saved = CrmUser.ok(adminB().get("/modules/" + LEADS + "/blueprints/" + bp), "GET blueprint").jsonPath().getMap("data");
+            Object after = null;
+            for (Map<String, Object> t : (List<Map<String, Object>>) ((Map<String, Object>) saved.get("definition")).get("transitions"))
+                if (String.valueOf(t.get("name")).contains("chat to web")) after = t.get("after");
+            note("WH-22 saved from screen: isActive=" + saved.get("isActive") + " hasDraft=" + saved.get("hasDraft") + " after=" + after);
+            assertTrue(String.valueOf(after).contains(h.uuid), "the screen saved the webhook URL on the After actions: " + after);
+            api.setBlueprintActive(LEADS, bp, true);
+            Map<String, Object> f = new LinkedHashMap<>(CrmApi.minimal(LEADS, nm(c, "lead")));
+            f.put("lead_source", "chat");
+            String lead = api.createRecord(adminB(), LEADS, layoutId, f);
+            assertTrue(CrmApi.waitFor(45, () -> api.governed(LEADS, lead)), "control: lead governed");
+            String tid = null;
+            for (Map<String, Object> t : (List<Map<String, Object>>) (List<?>) api.blueprintState(adminB(), LEADS, lead).getList("data.transitions"))
+                if (String.valueOf(t.get("transitionName")).contains("chat to web")) tid = String.valueOf(t.get("transitionId"));
+            CrmUser.ok(api.transition(adminB(), LEADS, lead, tid, Map.of()), "transition");
+            int n = h.await(1, 90).size();
+            note("WH-22 RESULT lead " + lead + " state=" + api.field(adminB(), LEADS, lead, "lead_source") + " webhook requests=" + n);
+            assertTrue(n > 0, "the webhook saved from the designer screen is sent after the transition (NDC-2540)");
+        } finally {
+            h.delete();
+        }
+    }
+
     // ---------------- K-09 (NDC-1645 / NDC-1652) ----------------
 
     @CaseId("K-09")

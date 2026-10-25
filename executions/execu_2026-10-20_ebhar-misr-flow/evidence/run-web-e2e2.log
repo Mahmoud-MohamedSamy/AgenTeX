@@ -1,0 +1,39 @@
+owner session true
+  login reviewer1 ok
+PASS W1 other-reviewer - reviewer1 (not owner) sees no buttons on EM-00153
+  login reviewer2 ok
+PASS W1 owner-buttons - reviewer2 (owner) sees [t-approve-registration,t-reject-registration]
+PASS W1 approve - reviewer2 saw [t-approve-registration,t-reject-registration] -> t-approve-registration 200 ok -> Registration Approved
+PASS W2 other-reviewer - reviewer2 (not owner) sees no buttons on EM-00154
+PASS W2 owner-buttons - reviewer1 (owner) sees [t-approve-registration,t-reject-registration]
+PASS W2 approve - reviewer1 saw [t-approve-registration,t-reject-registration] -> t-approve-registration 200 ok -> Registration Approved
+PASS W3 other-reviewer - reviewer1 (not owner) sees no buttons on EM-00155
+PASS W3 owner-buttons - reviewer2 (owner) sees [t-approve-registration,t-reject-registration]
+PASS W3 approve - reviewer2 saw [t-approve-registration,t-reject-registration] -> t-approve-registration 200 ok -> Registration Approved
+PASS W4 other-reviewer - reviewer2 (not owner) sees no buttons on EM-00156
+PASS W4 owner-buttons - reviewer1 (owner) sees [t-approve-registration,t-reject-registration]
+PASS W4 approve - reviewer1 saw [t-approve-registration,t-reject-registration] -> t-approve-registration 200 ok -> Registration Approved
+PASS W5 other-reviewer - reviewer1 (not owner) sees no buttons on EM-00157
+PASS W5 owner-buttons - reviewer2 (owner) sees [t-approve-registration,t-reject-registration]
+PASS W5 reason-required - reject without reason: 422 BLUEPRINT_VALIDATION_FAILED: Field is required.
+PASS W5 reject - reviewer2 saw [t-approve-registration,t-reject-registration] -> t-reject-registration 200 ok -> Registration Rejected
+PASS W1 portal - portal access created, username u01nr77ht · N02 dispatch SendPortalAccess Succeeded
+PASS W2 portal - portal access created, username ud55rkyt7 · N02 dispatch SendPortalAccess Succeeded
+PASS W3 portal - portal access created, username u5x04h6df · N02 dispatch SendPortalAccess Succeeded
+PASS W4 portal - portal access created, username ucfhqx4p3 · N02 dispatch SendPortalAccess Succeeded
+PASS W5 portal - portal access none · N02 dispatch none
+DISPATCH 1x W1 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+DISPATCH 1x W1 SendPortalAccess Succeeded
+DISPATCH 1x W2 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+DISPATCH 1x W2 SendPortalAccess Succeeded
+DISPATCH 1x W3 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+DISPATCH 1x W3 SendPortalAccess Succeeded
+DISPATCH 1x W4 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+DISPATCH 1x W4 SendPortalAccess Succeeded
+DISPATCH 1x W5 Email Cancelled (1/1 recipient send(s) failed (last: HTTP 422))
+FINAL W1 EM-00153 العلوم Registration Approved owner reviewer2 score  reason  correction 
+FINAL W2 EM-00154 الرياضيات Registration Approved owner reviewer1 score  reason  correction 
+FINAL W3 EM-00155 التكنولوجيا Registration Approved owner reviewer2 score  reason  correction 
+FINAL W4 EM-00156 الفنون Registration Approved owner reviewer1 score  reason  correction 
+FINAL W5 EM-00157 الفنون Registration Rejected owner reviewer2 score  reason QA web test: ID photo not readable correction 
+TOTAL 21 / 21 pass

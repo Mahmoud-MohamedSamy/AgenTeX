@@ -370,3 +370,15 @@ Requested by the user on 25 Oct. Each case used a fresh webhook.site receiver (a
 | WH-16 | **Filed as NDC-2541 (25 Oct, image attached):** an approval "Call Webhook" to a receiver answering 500 is sent once and never retried (1 request in 4 min), and nothing is logged (no execution/dispatch for the lead). Workflow webhooks retry and log (WH-04) |
 | WH-17 | The WH-14 retry to 169.254.169.254.nip.io ended **Cancelled after 5 attempts**, all "timeout" (last 13:18 UTC). No response body. Supports NDC-2537 |
 | I-09b | PASS. A lead whose review was approved: delete 204, restore 200, readable, review stays approved (1 cycle, no new review), the On Create workflow did not run again on restore, edit after restore 200 |
+
+### Webhook checks, round 3 (25 Oct 2026)
+
+| Case | Result |
+|---|---|
+| WH-18 | PASS. Merge values with quotes, backslash, new line, `<b>` tags and Arabic are escaped: the body is valid JSON, values arrive intact, no injected keys |
+| WH-19 | Same as NDC-2541 for the **after-rejection** Call Webhook: receiver answering 500 gets 1 request in 4 min, nothing logged (lead b7a36ee8) |
+| WH-20 | PASS. Other field types render: date-time ISO 8601, user → id, picklist → stored value, email, phone; empty fields render as "". System fields created_at / created_by / modified_at work; last_modified_at and source are not merge fields (empty) |
+| WH-21 | PASS. Workflow webhook on Tasks: sent with recordId, moduleId, subject, status |
+| WH-22 (UI) | **NDC-2540 confirmed from the designer screen.** Blueprint → transition → After → Webhook → URL → Publish saves `{"url":…,"kind":"webhook","verb":"POST"}` (same as the API tests); after the transition, 0 requests (lead 42c21ab2) |
+
+Posted as comments on 25 Oct: WH-19 on NDC-2541, WH-22 on NDC-2540 (NDC-2540 evidence replaced with v2, live Zoho panel). Full suite re-run is on hold until the known test-side defects are fixed (user decision, 25 Oct).

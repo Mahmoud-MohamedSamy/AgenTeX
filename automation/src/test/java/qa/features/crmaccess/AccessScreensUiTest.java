@@ -24,7 +24,8 @@ public class AccessScreensUiTest extends BaseTest {
 
     private static List<String> missing(String body, String... expected) {
         List<String> m = new ArrayList<>();
-        for (String e : expected) if (!body.contains(e)) m.add(e);
+        String b = body.toLowerCase(Locale.ROOT);   // headings and badges are shown in capitals (CSS), so compare case-insensitively
+        for (String e : expected) if (!b.contains(e.toLowerCase(Locale.ROOT))) m.add(e);
         return m;
     }
 
@@ -32,12 +33,13 @@ public class AccessScreensUiTest extends BaseTest {
     @Test(groups = {"crmaccess", "wave1", "ui"}, description = "Users: views, columns, search narrows the list")
     public void usersList() {
         AccessScreensPage p = new AccessScreensPage().open("/settings/general/users", "Invite user", 40);
-        List<String> miss = missing(p.text(), "Users", "Invite user", "Active Users", "All Users", "test user 1");
+        List<String> miss = missing(p.text(), "Users", "Invite user", "Filters", "Invitation Status", "Profile", "Org unit", "Referral code", "Status", "test user 1");
+        boolean views = p.text().contains("Active Users") && p.text().contains("All Users");   // in the locale file, not on screen (25 Oct)
         int all = p.tableRows();
-        p.search("test user");
+        p.search("airhemp");   // the list searches by email
         int filtered = p.tableRows();
         boolean onlyMatches = p.text().contains("test user 1") && !p.text().contains("ndc-staging-owner@");
-        fact("US-01/02", "missing on screen: " + miss + "; rows " + all + " -> after search 'test user' " + filtered + ", only matches=" + onlyMatches);
+        fact("US-01/02", "missing on screen: " + miss + "; Active/All Users views shown=" + views + "; rows " + all + " -> after search 'airhemp' " + filtered + ", only matches=" + onlyMatches);
         Assert.assertTrue(miss.isEmpty(), "Users screen lacks " + miss);
         Assert.assertTrue(filtered > 0 && filtered < all, "search did not narrow the list (" + all + " -> " + filtered + ")");
     }
@@ -57,13 +59,15 @@ public class AccessScreensUiTest extends BaseTest {
     @Test(groups = {"crmaccess", "wave1", "ui"}, description = "Profiles list with badges; Permissions matrix with Grant / Deny / Inherit")
     public void profilesAndPermissions() {
         AccessScreensPage p = new AccessScreensPage().open("/settings/security/profiles", "Create profile", 40);
-        List<String> miss1 = missing(p.text(), "Profiles", "Create profile", "System", "Custom", "CRM Admin", "User");
+        List<String> miss1 = missing(p.text(), "Profiles", "Create profile", "CRM Admin", "User");
+        boolean systemBadge = p.text().toLowerCase(Locale.ROOT).contains("system");
         p.open("/settings/security/permissions", "Permissions", 40);
         boolean picked = p.has("User", 10);
         if (picked) p.clickText("User");
-        p.waitForText("Inherit", 20);
-        List<String> miss2 = missing(p.text(), "Grant", "Deny", "Inherit");
-        fact("PR-01/PE-01", "profiles screen missing: " + miss1 + "; permissions matrix missing: " + miss2 + " (profile 'User' picked=" + picked + ")");
+        p.waitForText("GRANT", 20);
+        List<String> miss2 = missing(p.text(), "Grant", "Deny", "Create permission");
+        boolean inherit = p.text().toLowerCase(Locale.ROOT).contains("inherit");   // an Inherit column exists in the locale file
+        fact("PR-01/PE-01", "profiles screen missing: " + miss1 + " (System badge on the list=" + systemBadge + ")" + "; permissions matrix missing: " + miss2 + " (profile 'User' picked=" + picked + "); Inherit column shown=" + inherit);
         Assert.assertTrue(miss1.isEmpty(), "Profiles screen lacks " + miss1);
         Assert.assertTrue(miss2.isEmpty(), "Permissions matrix lacks " + miss2);
     }
@@ -72,7 +76,7 @@ public class AccessScreensUiTest extends BaseTest {
     @Test(groups = {"crmaccess", "wave1", "ui"}, description = "Org units: tree, search, create root / child actions")
     public void orgUnits() {
         AccessScreensPage p = new AccessScreensPage().open("/settings/security/org-units", "Org Units", 40);
-        List<String> miss = missing(p.text(), "Org Units", "Create root unit", "Sales");
+        List<String> miss = missing(p.text(), "Org Units", "Create unit", "Organization", "Expand all");
         fact("OU-01", "missing: " + miss);
         Assert.assertTrue(miss.isEmpty(), "Org Units screen lacks " + miss);
     }
@@ -143,6 +147,17 @@ public class AccessScreensUiTest extends BaseTest {
         List<String> miss = missing(p.text(), "Referral Code Integration", "Connection", "Team mapping", "Schedule", "Sync runs", "Webhook");
         fact("RC-01", "missing: " + miss + "; last run line shown=" + p.text().contains("Last run"));
         Assert.assertTrue(miss.isEmpty(), "Referral Code page lacks " + miss);
+    }
+
+    @CaseId("FP-control")
+    @Test(groups = {"crmaccess", "wave1", "ui"}, description = "Control for FP-04/05: the owner (no field restriction) sees Company and Comment on the Leads create form")
+    public void ownerSeesRestrictedFields() {
+        AccessScreensPage p = new AccessScreensPage().open("/modules/" + CrmAccessFeature.LEADS + "/records/new", "Last Name", 40);
+        boolean company = p.labelShown("Company"), comment = p.labelShown("Comment");
+        org.openqa.selenium.WebElement c = p.controlFor("Comment");
+        fact("FP-control", "owner create form: Company shown=" + company + ", Comment shown=" + comment + ", Comment editable=" + AccessScreensPage.editable(c)
+                + "; layout text has 'Lead Status'=" + p.text().contains("Lead Status"));
+        Assert.assertTrue(company && comment, "the owner does not see Company and Comment either, so FP-04/05 prove nothing");
     }
 
     @CaseId("HP-new")

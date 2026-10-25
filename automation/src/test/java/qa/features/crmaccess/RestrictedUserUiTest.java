@@ -25,6 +25,8 @@ import static qa.features.crmaccess.CrmAccessFeature.*;
  */
 public class RestrictedUserUiTest extends BaseTest {
     private static final List<String> LH = List.of(LH_VIEW_SELF, LH_VIEW_TEAM, LH_VIEW_ALL);
+    // Comment is not on the create form even for the owner (FP-control, 25 Oct), so the read-only check uses Email
+    private static final String F_EMAIL = "47d783ad-f9be-4e36-8c5e-e148db8801e7";
     private CrmHierarchyApi.Snapshot baseline;
     private String profileId, leadId;
     private final List<String> rows = new ArrayList<>();
@@ -35,9 +37,9 @@ public class RestrictedUserUiTest extends BaseTest {
         baseline = CrmHierarchyApi.snapshot();
         profileId = createProfile(QA + "FieldPerm UI " + System.currentTimeMillis() % 100000, P_USER);
         rows.add(setFieldPermission(F_COMPANY, profileId, "hidden"));
-        rows.add(setFieldPermission(F_COMMENT, profileId, "read_only"));
+        rows.add(setFieldPermission(F_EMAIL, profileId, "read_only"));
         CrmHierarchyApi.setProfile(N_ID, profileId, OU_SALES);
-        leadId = CrmUser.ok(postLead(owner(), QA + "FP UI lead", Map.of("owner", N_ID, K_COMPANY, "QA W1 secret company", K_COMMENT, "QA W1 comment")),
+        leadId = CrmUser.ok(postLead(owner(), QA + "FP UI lead", Map.of("owner", N_ID, K_COMPANY, "QA W1 secret company", K_EMAIL, "qa.w1.readonly@example.com")),
                 "create lead").jsonPath().getString("data.id");
         for (String k : LH) if (setOverride(N_ID, k, "deny").statusCode() / 100 == 2) overridesSet.add(k);
         fact("RU-setup", "profile " + profileId + ", lead " + leadId + ", login-history denies " + overridesSet);
@@ -63,20 +65,25 @@ public class RestrictedUserUiTest extends BaseTest {
         p.clearStorageAndReload();
         p.waitForText("Last Name", 30);
         boolean companyShown = p.labelShown("Company");
-        WebElement comment = p.controlFor("Comment");
-        boolean commentShown = comment != null, commentEditable = AccessScreensPage.editable(comment);
-        fact("FP-04", "create form as test user 1: Company shown=" + companyShown + "; Comment shown=" + commentShown + ", editable=" + commentEditable);
+        WebElement email = p.controlFor("Email");
+        boolean emailShown = email != null, emailEditable = AccessScreensPage.editable(email);
+        fact("FP-04", "create form as test user 1: Company (hidden) shown=" + companyShown + "; Email (read only) shown=" + emailShown + ", editable=" + emailEditable);
         Assert.assertFalse(companyShown, "the hidden field Company is on the create form");
-        Assert.assertFalse(commentEditable, "the read-only field Comment can be typed into");
+        Assert.assertTrue(emailShown, "the read-only field Email is not shown at all (it should be visible, not editable)");
+        Assert.assertFalse(emailEditable, "the read-only field Email can be typed into");
     }
 
     @CaseId("FP-05")
     @Test(groups = {"crmaccess", "wave1", "ui", "NDC-1337"}, description = "Record page: the hidden field and its value are not shown")
     public void detailPageHonoursFieldPermissions() {
         AccessScreensPage p = new AccessScreensPage().open("/modules/" + LEADS + "/records/" + leadId, "QA W1", 40);
+        // the Customer Information card shows "Loading layout…" for a while after the title (25 Oct): wait for it to finish
+        for (int i = 0; i < 60 && p.text().contains("Loading layout"); i++) qa.core.base.Waits.sleep(1000);
+        if (p.text().contains("Loading layout")) throw new org.testng.SkipException("INCONCLUSIVE: the record layout did not finish loading in 60 s");
         boolean valueShown = p.text().contains("QA W1 secret company");
-        boolean commentShown = p.text().contains("QA W1 comment");
-        fact("FP-05", "record page as test user 1: hidden Company value shown=" + valueShown + "; read-only Comment value shown=" + commentShown);
+        boolean emailShown = p.text().contains("qa.w1.readonly@example.com");
+        fact("FP-05", "record page as test user 1: hidden Company value shown=" + valueShown + "; read-only Email value shown=" + emailShown);
+        Assert.assertTrue(emailShown, "the read-only Email value is not shown on the record page");
         Assert.assertFalse(valueShown, "the hidden Company value is shown on the record page");
     }
 

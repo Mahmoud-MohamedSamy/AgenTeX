@@ -65,12 +65,20 @@ public final class CrmAccessApi {
         public final String email;
         public final int status;
         public final String token;
+        private final String refreshToken;
         public final long at = System.currentTimeMillis();
 
-        private Session(String email, int status, String token) {
+        private Session(String email, int status, String token, String refreshToken) {
             this.email = email;
             this.status = status;
             this.token = token;
+            this.refreshToken = refreshToken;
+        }
+
+        /** HTTP status of exchanging this session's refresh token (200 = the session is still alive on the server). */
+        public int refresh() {
+            if (refreshToken == null) return -1;
+            return base().header("x-tenant-id", CrmOrderFeature.TENANT).body(Map.of("refresh_token", refreshToken)).post("/iam/auth/refresh").statusCode();
         }
 
         public static Session signIn(String email) {
@@ -80,7 +88,8 @@ public final class CrmAccessApi {
                     .post("/iam/auth/login");
             if (r.statusCode() == 429) throw new org.testng.SkipException("INCONCLUSIVE: sign-in rate-limited (429) for " + email + " - stop, do not retry");
             String t = r.statusCode() == 200 ? r.jsonPath().getString("data.access_token") : null;
-            return new Session(email, r.statusCode(), t);
+            String rt = r.statusCode() == 200 ? r.jsonPath().getString("data.refresh_token") : null;
+            return new Session(email, r.statusCode(), t, rt);
         }
 
         public Response get(String path) {
@@ -174,8 +183,11 @@ public final class CrmAccessApi {
     private static Object find(Object node, String key) {
         if (node instanceof Map<?, ?> mp) {
             Map<String, Object> m = (Map<String, Object>) mp;
-            if (key.equals(m.get("key")) || key.equals(m.get("field_key")) || key.equals(m.get("apiName")) || key.equals(m.get("api_name")))
-                return m.containsKey("value") ? m.get("value") : m.get("values");
+            if (key.equals(m.get("field")) || key.equals(m.get("key")) || key.equals(m.get("field_key")) || key.equals(m.get("apiName")) || key.equals(m.get("api_name"))) {
+                Object v = m.containsKey("value") ? m.get("value") : m.get("values");
+                // records carry {"field": key, "value": {"kind": "string", "value": …}}
+                return v instanceof Map<?, ?> vm && vm.containsKey("kind") ? vm.get("value") : v;
+            }
             if (m.containsKey(key) && !(m.get(key) instanceof Map)) return m.get(key);
             for (Object v : m.values()) {
                 Object f = find(v, key);

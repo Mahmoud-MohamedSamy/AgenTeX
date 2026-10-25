@@ -568,6 +568,108 @@ public class VerifyV7WebhooksTest extends VerifyBase {
         fact(c, "edit after restore -> " + e.statusCode() + "; review status " + api.reviewStatus(LEADS, id));
     }
 
+    // ------------------------------------------------------------ more webhook checks (25 Oct, round 3)
+
+    private static final com.fasterxml.jackson.databind.ObjectMapper JSONM = new com.fasterxml.jackson.databind.ObjectMapper();
+
+    /** Parses the body a receiver got; null when it is not valid JSON. */
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> parse(Object content) {
+        try {
+            return JSONM.readValue(String.valueOf(content), Map.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @CaseId("WH-18")
+    @Test(groups = {"crm-webhooks"}, description = "Merge field values with quotes, backslash, new line, <tag> and Arabic: is the webhook body still valid JSON and are the values intact?")
+    public void wh18SpecialCharacters() {
+        String c = "WH-18";
+        WebhookSite h = hook(c, 200, 0);
+        Map<String, Object> a = wfHook(c, h.url(), "Post", 10, null);
+        a.put("bodyTemplate", "{\"case\":\"" + c + "\",\"first_name\":\"${first_name}\",\"description\":\"${description}\",\"x\":\"after\"}");
+        rule(c, CrmProcs.workflow(LEADS, c + " WF").guardCase(c).onCreate().rawAction(a));
+        String name = nm(c, "q\"uote \\back <b>tag</b> عربي");
+        String desc = "line1\nline2 \"x\":\"injected\" \\ end";
+        Map<String, Object> f = new LinkedHashMap<>(CrmApi.minimal(LEADS, name));
+        f.put("description", desc);
+        String id = createLogged(c, adminB(), LEADS, f);
+        List<Map<String, Object>> got = h.await(1, 90);
+        if (got.isEmpty()) { fact(c, "RESULT no request; dispatches " + dispatches(id)); return; }
+        Object raw = got.get(0).get("content");
+        Map<String, Object> p = parse(raw);
+        fact(c, "RESULT lead " + id + " raw body=" + cut(String.valueOf(raw), 600));
+        fact(c, "RESULT valid JSON=" + (p != null) + (p == null ? "" : "; first_name intact=" + name.equals(p.get("first_name"))
+                + "; description intact=" + desc.equals(p.get("description")) + "; keys=" + p.keySet() + "; x=" + p.get("x")));
+        fact(c, "stored on the record: first_name=" + val(LEADS, id, "first_name") + " description=" + val(LEADS, id, "description"));
+    }
+
+    @CaseId("WH-19")
+    @Test(groups = {"crm-webhooks"}, description = "NDC-2541 counterpart: approval Call Webhook after REJECTION to a receiver answering 500")
+    public void wh19ApprovalRejectWebhookFailure() {
+        String c = "WH-19";
+        WebhookSite h = hook(c, 500, 0);
+        approvalWith(c, "rejectionActions", wfHook(c, h.url(), "Post", 10, null));
+        String id = lead(c, "lead");
+        approvalHeld.add(new String[]{LEADS, id});
+        CrmApi.waitFor(45, () -> "pending_approval".equals(api.approvalState(LEADS, id)));
+        fact(c, "reject -> " + api.reject(supervisor(), LEADS, id).statusCode() + "; state " + api.approvalState(LEADS, id));
+        long t0 = System.currentTimeMillis();
+        for (int i = 0; i < 4; i++) {
+            CrmUser.sleep(60_000);
+            fact(c, "+" + (System.currentTimeMillis() - t0) / 1000 + "s requests=" + h.requests().size());
+        }
+        fact(c, "RESULT lead " + id + " requests=" + h.requests().size() + "; executions " + dispatches(id));
+    }
+
+    @CaseId("WH-20")
+    @Test(groups = {"crm-webhooks"}, description = "Merge fields of other types (date, number, picklist, lookup, boolean, email, phone …) and system fields in a webhook body")
+    @SuppressWarnings("unchecked")
+    public void wh20FieldTypes() {
+        String c = "WH-20";
+        WebhookSite h = hook(c, 200, 0);
+        List<Map<String, Object>> fields = CrmUser.ok(adminB().get("/modules/" + LEADS + "/fields"), "fields").jsonPath().getList("data");
+        Map<String, String> pick = new LinkedHashMap<>();
+        for (Map<String, Object> fd : fields) {
+            String t = String.valueOf(fd.getOrDefault("datatypeKey", fd.getOrDefault("datatype", fd.get("type"))));
+            String key = String.valueOf(fd.getOrDefault("apiName", fd.getOrDefault("key", fd.get("fieldKey"))));
+            if (!pick.containsKey(t) && pick.size() < 14 && !"null".equals(key)) pick.put(t, key);
+        }
+        fact(c, "one field per type: " + pick);
+        StringBuilder tpl = new StringBuilder("{\"case\":\"" + c + "\"");
+        for (Map.Entry<String, String> e : pick.entrySet()) tpl.append(",\"").append(e.getKey()).append("\":\"${").append(e.getValue()).append("}\"");
+        for (String sys : List.of("created_at", "created_by", "modified_at", "last_modified_at", "approval_status", "source"))
+            tpl.append(",\"sys_").append(sys).append("\":\"${").append(sys).append("}\"");
+        tpl.append("}");
+        Map<String, Object> a = wfHook(c, h.url(), "Post", 10, null);
+        a.put("bodyTemplate", tpl.toString());
+        rule(c, CrmProcs.workflow(LEADS, c + " WF").guardCase(c).onCreate().rawAction(a));
+        Map<String, Object> f = new LinkedHashMap<>(CrmApi.minimal(LEADS, nm(c, "lead")));
+        f.put("email", "qa.aeo.wh20@qa.test");
+        f.put("lead_source", "web");
+        f.put("description", "QA WH-20");
+        String id = createLogged(c, adminB(), LEADS, f);
+        List<Map<String, Object>> got = h.await(1, 90);
+        Object raw = got.isEmpty() ? null : got.get(0).get("content");
+        fact(c, "RESULT lead " + id + " valid JSON=" + (parse(raw) != null) + " body=" + cut(String.valueOf(raw), 1500));
+        get(c, adminB(), "/modules/" + LEADS + "/records/" + id);
+    }
+
+    @CaseId("WH-21")
+    @Test(groups = {"crm-webhooks"}, description = "Workflow webhook on the Tasks module")
+    public void wh21TasksModule() {
+        String c = "WH-21";
+        WebhookSite h = hook(c, 200, 0);
+        String tasks = CrmOrderFeature.TASKS;
+        Map<String, Object> a = wfHook(c, h.url(), "Post", 10, null);
+        a.put("bodyTemplate", "{\"case\":\"" + c + "\",\"recordId\":\"${recordId}\",\"moduleId\":\"${moduleId}\",\"subject\":\"${subject}\",\"status\":\"${status}\"}");
+        rule(c, CrmProcs.workflow(tasks, c + " WF").guardCase(c).onCreate().rawAction(a));
+        String id = createLogged(c, adminB(), tasks, CrmApi.minimal(tasks, nm(c, "task")));
+        List<Map<String, Object>> got = h.await(1, 90);
+        fact(c, "RESULT task " + id + " requests=" + got.size() + " " + seen(got));
+    }
+
     /** Read-only: other webhook settings in the tenant (SMS delivery webhook). */
     @Test(groups = {"crm-webhooks"}, description = "Read-only: SMS / messaging webhook configuration")
     public void whOtherSurfaces() {

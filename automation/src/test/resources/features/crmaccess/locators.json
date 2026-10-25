@@ -1,32 +1,51 @@
 {
-  "AccessScreensPage" : {
-    "byText" : {
-      "description" : "Visible button, tab, link or menu item with the exact text {0}",
-      "candidates" : [ {
-        "by" : "xpath",
-        "value" : "//*[self::button or @role='tab' or @role='menuitem' or @role='option' or self::a][normalize-space(.)='{0}']"
-      }, {
-        "by" : "role",
-        "value" : "button",
-        "name" : "{0}",
-        "exact" : true
-      }, {
-        "by" : "xpath",
-        "value" : "//*[normalize-space(text())='{0}']"
-      } ]
+  "AccessScreensPage": {
+    "byText": {
+      "description": "Visible button, tab, link or menu item with the exact text {0}",
+      "candidates": [
+        {
+          "by": "xpath",
+          "value": "//*[normalize-space(text())='{0}']"
+        },
+        {
+          "by": "xpath",
+          "value": "//*[self::button or @role='tab' or @role='menuitem' or @role='option' or self::a][normalize-space(.)='{0}']"
+        },
+        {
+          "by": "role",
+          "value": "button",
+          "name": "{0}",
+          "exact": true
+        }
+      ],
+      "lastHeal": "2026-10-25T16:46:38.671871500+03:00 promoted 'xpath=//*[normalize-space(text())='{0}']' over 'xpath=//*[self::button or @role='tab' or @role='menuitem' or @role='option' or self::a][normalize-space(.)='User']'"
     },
-    "searchBox" : {
-      "description" : "First visible search input of the screen (placeholder starts with Search)",
-      "candidates" : [ {
-        "by" : "css",
-        "value" : "main input[placeholder^='Search']"
-      }, {
-        "by" : "css",
-        "value" : "input[type='search']"
-      }, {
-        "by" : "xpath",
-        "value" : "//input[contains(@placeholder,'Search') and not(ancestor::nav)]"
-      } ]
+    "searchBox": {
+      "description": "Search box of the screen's own list (Users: Search by email…), not the Setup sidebar search",
+      "candidates": [
+        {
+          "by": "css",
+          "value": "input[placeholder^='Search by email']"
+        },
+        {
+          "by": "css",
+          "value": "main input[placeholder^='Search']"
+        },
+        {
+          "by": "css",
+          "value": "input[type='search']"
+        },
+        {
+          "by": "xpath",
+          "value": "//input[contains(@placeholder,'Search') and not(ancestor::nav)]"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "type": "search",
+        "placeholder": "Search",
+        "classes": "w-full ps-7 pe-2 py-1.5 text-xs rounded-lg border focus:outline-none"
+      }
     }
   }
 }
