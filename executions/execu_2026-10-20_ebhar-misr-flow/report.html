@@ -92,6 +92,8 @@ details[open] summary{margin-bottom:8px}
 <nav class="toc" aria-label="Contents">
   <div class="t">Contents</div>
   <a href="#status">Current status</a>
+  <a href="#golive">Go-live readiness</a>
+  <a href="#e2e25">25 Oct: website E2E</a>
   <a href="#flow">The flow today</a>
   <a href="#bugs">Bugs for developers</a>
   <a href="#open">Open items</a>
@@ -106,12 +108,13 @@ details[open] summary{margin-bottom:8px}
 <header class="top">
   <button class="themebtn" type="button" id="themeBtn">Theme</button>
   <h1>Ebhar Misr — candidate flow in TAVI CRM: test report</h1>
-  <p class="sub">Education First · <bdi>إبهار مصر</bdi> competition · tested 20–21 Oct 2026 · state as of 21 Oct, end of day</p>
+  <p class="sub">Education First · <bdi>إبهار مصر</bdi> competition · tested 20–25 Oct 2026 · state as of 25 Oct 2026</p>
 </header>
 
 <dl class="meta">
   <dt>CRM</dt><dd>https://crm.taviportal.com — tenant of <code>moaazdly89+edufirst@gmail.com</code> (Owner)</dd>
-  <dt>Website</dt><dd>https://competition.102-206-132-183.sslip.io/#apply</dd>
+  <dt>Website</dt><dd>https://educationfirst.anyware.software/en/ebhar-misr#register (25 Oct) · earlier https://competition.102-206-132-183.sslip.io/#apply</dd>
+  <dt>Student portal</dt><dd>https://educationfirst.anyware.software/en/ebhar-misr/login</dd>
   <dt>Requirements</dt><dd><code>Ebhar_Misr workflow.pdf</code> (journey, statuses, roles, N01–N07) and <code>الفورم.pdf</code> (17 registration fields)</dd>
   <dt>Module</dt><dd>Competition Applications <code>ffb6202e-9ac2-49ba-a335-ef86c542450e</code></dd>
   <dt>Active blueprint</dt><dd><bdi>إبهار مصر — مراحل الطلب</bdi> <code>cda430d9-4c70-42fa-923f-a5a3d2f5fa5c</code> (governs <code>application_status</code>)</dd>
@@ -121,15 +124,20 @@ details[open] summary{margin-bottom:8px}
 <!-- ============ STATUS ============ -->
 <h2 id="status">Current status</h2>
 <div class="cards">
-  <div class="card ok"><div class="n">34/34</div><div class="l">Full journey with real user logins</div></div>
-  <div class="card ok"><div class="n">62/62</div><div class="l">Role checks (who sees and does what)</div></div>
-  <div class="card ok"><div class="n">3 / 3 / 3</div><div class="l">Arts round robin over 3 assessors</div></div>
-  <div class="card ok"><div class="n">14/14</div><div class="l">Assessor privacy checks</div></div>
-  <div class="card bad"><div class="n">2</div><div class="l">Bugs for the developers</div></div>
+  <div class="card ok"><div class="n">5/5</div><div class="l">Website applications reached their end state (25 Oct)</div></div>
+  <div class="card ok"><div class="n">21/21</div><div class="l">Registration review checks (25 Oct)</div></div>
+  <div class="card ok"><div class="n">4/4</div><div class="l">Hand-overs to the Committee (NDC-2420 fix)</div></div>
+  <div class="card ok"><div class="n">27/27</div><div class="l">Parallel saves, no lost update (NDC-2421 fix)</div></div>
+  <div class="card ok"><div class="n">0</div><div class="l">Open bugs: NDC-2420 and NDC-2421 are Done</div></div>
+  <div class="card bad"><div class="n">1</div><div class="l">Go-live blocker: email to outside addresses (on hold)</div></div>
 </div>
 
 <div class="callout ok"><b class="h">Working</b>
 <ul>
+  <li><b>Website form → CRM:</b> real applications from the live website arrive as <code>web_form</code> records with the ID photo, and the round robin alternates the Registration Admins.</li>
+  <li><b>Student portal:</b> real students got the access email, logged in, changed their password and saved their video link; the rules ran as expected (M3 closed).</li>
+  <li><b>Committee hand-over:</b> every video approval moves the record to the Committee (NDC-2420 fixed).</li>
+  <li><b>Parallel saves:</b> no lost status updates in 27 parallel saves (NDC-2421 fixed).</li>
   <li><b>Blueprint:</b> the flow runs on the blueprint, and the old approval stages are deleted.</li>
   <li><b>Registration review:</b> only the record owner can approve or reject a registration.</li>
   <li><b>Video assessment:</b> buttons go by category assessor profile, and each category's owner rule hands videos out round robin.</li>
@@ -140,18 +148,63 @@ details[open] summary{margin-bottom:8px}
 
 <div class="callout bad"><b class="h">Blocking go-live</b>
 <ul>
-  <li><b>B-EM1</b> — workflow rules don't run after <bdi>«اعتماد الفيديو»</bdi>, so the hand-over to the Committee never happens. <a href="#b1">Details</a></li>
-  <li><b>B-EM2</b> — the N04 status update is sometimes lost when several videos are saved at the same moment, and the application then gets stuck. <a href="#b2">Details</a></li>
-  <li><b>Student portal not tested with a real student login.</b> EM-00068 reached Assessment Assigned without N04 running. If its link was saved from the portal, portal saves don't trigger the rules. See <a href="#m3">M3</a>.</li>
+  <li><b>Email to outside addresses fails</b> <span class="chip warn">on hold</span> — the CRM's sender <code>no-reply-reset@anyware.software</code> (Zoho SMTP) delivers to @anyware.software only. Every Gmail send fails (<code>MAIL_SEND_FAILED</code> / HTTP 422), so real applicants would get no N01–N07 emails and <b>no portal password</b>. Put on hold by the user on 25 Oct. See <a href="#m1">M1</a>.</li>
 </ul></div>
 
-<div class="callout warn"><b class="h">Also open</b>
+<div class="callout warn"><b class="h">Also open (not blocking the flow)</b>
 <ul>
   <li><code>age</code> is empty on every web-form record.</li>
   <li>Staffing: only 2 Registration Admins (reviewer1, reviewer2) and 1 Committee user.</li>
-  <li>Email delivery is intermittent (HTTP 422).</li>
   <li>Client decisions are pending — see <a href="#questions">questions</a>.</li>
+  <li>Resolved on 25 Oct: B-EM1 (NDC-2420), B-EM2 (NDC-2421), student portal (M3). The birth date 12/12/2008 on the 5 website records was entered by the tester — not a defect.</li>
 </ul></div>
+
+<!-- ============ GO-LIVE ============ -->
+<h2 id="golive">Go-live readiness — 25 Oct 2026</h2>
+<div class="callout warn"><b class="h">Verdict: the flow is ready; go-live waits on email</b>
+<p>Every step of the journey works with real users, the real website and the real student portal, and both developer bugs are fixed. Email is the one blocker: applicants outside anyware.software would not receive their portal password, so they could not upload a video.</p></div>
+<div class="tw"><table>
+<tr><th>Area</th><th>State</th><th>Needed before go-live</th></tr>
+<tr><td>Website form → CRM record, ID photo, round robin</td><td><span class="chip ok">Ready</span></td><td>—</td></tr>
+<tr><td>Registration review (owner only, reject needs a reason)</td><td><span class="chip ok">Ready</span></td><td>—</td></tr>
+<tr><td>Portal access (N02), student login, video upload (N04)</td><td><span class="chip ok">Ready</span></td><td>Works only where the access email arrives — see email</td></tr>
+<tr><td>Assessment by category, send back, score lock</td><td><span class="chip ok">Ready</span></td><td>—</td></tr>
+<tr><td>Hand-over to Committee, finalist decision</td><td><span class="chip ok">Ready</span></td><td>—</td></tr>
+<tr><td>Permissions and privacy</td><td><span class="chip ok">Ready</span></td><td>—</td></tr>
+<tr><td><b>Email to applicants (N01–N07, portal password)</b></td><td><span class="chip bad">Blocker</span> <span class="chip warn">on hold</span></td><td>Allow external sending on the Zoho account, or use a transactional sender</td></tr>
+<tr><td>Real staff in the profiles</td><td><span class="chip warn">Setup</span></td><td>Add the real Registration Admins, assessors per category and Committee</td></tr>
+<tr><td><code>age</code> from the form, age rule</td><td><span class="chip warn">Client</span></td><td>Decide the age range (M9); map age or compute it from the birth date</td></tr>
+<tr><td>Rubric, extra form fields, deadline reminder, assessor alert</td><td><span class="chip mut">Client / nice to have</span></td><td>M6, M7, M11, M12 — client decisions</td></tr>
+</table></div>
+
+<!-- ============ 25 OCT E2E ============ -->
+<h2 id="e2e25">25 Oct 2026 — retests and full E2E from the real website</h2>
+<h3>Retests (moved to Done in Plane)</h3>
+<ul>
+  <li><b>NDC-2420 (B-EM1) — <span class="chip ok">PASS</span></b>: on EM-00125 (UI) and EM-00124, after <bdi>«اعتماد الفيديو»</bdi> the owner moves to the Committee user and the hand-over rule is logged as Fired. N02 still works. <code>evidence/NDC-2420-retest-2026-10-25.png</code></li>
+  <li><b>NDC-2421 (B-EM2) — <span class="chip ok">PASS 27/27</span></b>: two batches of 9 parallel link saves, plus 9 parallel creates against a brand-new round-robin counter (temporary QA rule, deleted after). <code>evidence/NDC-2421-retest-2026-10-25.png</code></li>
+</ul>
+<h3>Full E2E — 5 applications submitted on the website</h3>
+<p class="small">The form is a CRM embedded web form behind Cloudflare Turnstile. Automated browsers always fail the check, so the tester submitted the 5 applications by hand; every later step used each role's own login. Three of the students' emails were real @anyware.software inboxes.</p>
+<div class="tw"><table>
+<tr><th>#</th><th>Record</th><th>Category</th><th>Path</th><th>End state</th></tr>
+<tr><td>W1</td><td>EM-00153</td><td>Science</td><td>reviewer2 approved → video link saved in the CRM (access email to Gmail failed) → pool-science approved 85 → Committee</td><td><span class="chip ok">Finalist Accepted</span></td></tr>
+<tr><td>W2</td><td>EM-00154</td><td>Math</td><td>reviewer1 approved → <b>student saved the video in the portal</b> → pool-math sent it back → resubmitted → approved 72 → Committee</td><td><span class="chip ok">Finalist Accepted</span></td></tr>
+<tr><td>W3</td><td>EM-00155</td><td>Technology</td><td>reviewer2 approved → <b>video saved in the portal</b> → pool-technology approved 58 → Committee</td><td><span class="chip info">Finalist Rejected</span></td></tr>
+<tr><td>W4</td><td>EM-00156</td><td>Arts</td><td>reviewer1 approved → <b>video saved in the portal</b> → reviewer3 (Arts round robin) approved 90 → Committee</td><td><span class="chip ok">Finalist Accepted</span></td></tr>
+<tr><td>W5</td><td>EM-00157</td><td>Arts</td><td>reviewer2 rejected (refused without a reason, accepted with one)</td><td><span class="chip info">Registration Rejected</span></td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Step</th><th>Result</th></tr>
+<tr><td>Records arrive as <code>web_form</code>, Pending Verification, ID photo saved; round robin reviewer2 / reviewer1</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>Registration review by the owner reviewer; the other reviewer sees no buttons; reject needs a reason</td><td><span class="chip ok">21/21</span></td></tr>
+<tr><td>N02 portal access for W1–W4, none for W5</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td><b>Student portal (M3):</b> W2–W4 got the access email, logged in (13:31–13:39 UTC), changed the password and saved the video → N04, category owner round robin and <bdi>«إسناد التقييم»</bdi> ran</td><td><span class="chip ok">pass — M3 closed</span></td></tr>
+<tr><td>Assessors: other categories see no buttons; send back → resubmit → approve; score locked after approval</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>Hand-over to the Committee after each approval</td><td><span class="chip ok">4/4</span></td></tr>
+<tr><td>Committee decisions; no buttons left in any end state</td><td><span class="chip ok">pass</span></td></tr>
+</table></div>
+<p class="small">Assessment and Committee: 25/30 on the first run, then 7/7 on the W4 re-run. The 5 failures were a test-side login failure for reviewer3, not a CRM defect. The test script overwrote the W2–W4 video links that the students had saved with QA links; the flow was not affected.</p>
 
 <!-- ============ FLOW ============ -->
 <h2 id="flow">The flow today</h2>
@@ -173,14 +226,14 @@ details[open] summary{margin-bottom:8px}
   <div class="step"><div class="num">3</div><div>
     <b>Student saves the video link in the portal</b>
     <div class="who">Student (portal) · workflow rules</div>
-    <p>N04 sets <span class="status">Video Submitted</span>, fills in the time stamp and sends the N04 email. The category owner rule then gives the record to the next assessor in that category's profile (round robin), and <bdi>«إسناد التقييم»</bdi> moves it to <span class="status">Assessment Assigned</span>. <span class="chip bad">B-EM2</span> <span class="chip warn">portal untested</span></p>
+    <p>N04 sets <span class="status">Video Submitted</span>, fills in the time stamp and sends the N04 email. The category owner rule then gives the record to the next assessor in that category's profile (round robin), and <bdi>«إسناد التقييم»</bdi> moves it to <span class="status">Assessment Assigned</span>. <span class="chip ok">portal tested 25 Oct</span> <span class="chip ok">B-EM2 fixed</span></p>
   </div></div>
   <div class="step"><div class="num">4</div><div>
     <b>Video assessment</b>
     <div class="who">That category's assessor profile; buttons show only on records of that category</div>
     <div class="opts">
       <div class="opt"><bdi>طلب تصحيح الفيديو</bdi> (correction note required) → <span class="status">Action Required</span> + N05. The student keeps portal access, uploads again, and the record goes back to step 3.</div>
-      <div class="opt"><bdi>اعتماد الفيديو</bdi> (score 0–100 and comments required) → <span class="status">Assessment Complete</span>. The hand-over rule to the Committee exists but doesn't run. <span class="chip bad">B-EM1</span></div>
+      <div class="opt"><bdi>اعتماد الفيديو</bdi> (score 0–100 and comments required) → <span class="status">Assessment Complete</span>. The hand-over rule then gives the record to the Committee. <span class="chip ok">B-EM1 fixed</span></div>
     </div>
   </div></div>
   <div class="step"><div class="num">5</div><div>
@@ -196,6 +249,8 @@ details[open] summary{margin-bottom:8px}
 
 <!-- ============ BUGS ============ -->
 <h2 id="bugs">Bugs for the developers</h2>
+<div class="callout ok"><b class="h">25 Oct 2026: both fixed, retested and moved to Done</b>
+<p>NDC-2420: the hand-over now runs after <bdi>«اعتماد الفيديو»</bdi> (EM-00124, EM-00125, and 4/4 in the website E2E). NDC-2421: 27/27 parallel saves with no lost update. The details below are kept as history.</p></div>
 <div class="callout"><b class="h">Filed in Plane on 22 Oct 2026</b>
 <ul>
   <li><b>B-EM1 → NDC-2420</b> <span class="chip warn">Medium</span> Filed as an <b>inconsistency</b>. Zoho's help says workflow rules never run after blueprint transitions (<a href="https://help.zoho.com/portal/en/kb/crm/troubleshooting/articles/troubleshooting-workflows">Troubleshooting Workflows</a>, docs only). TAVI runs them after some transitions and not others. Re-reproduced in the UI on 22 Oct on EM-00094 (kept).</li>
@@ -296,12 +351,12 @@ details[open] summary{margin-bottom:8px}
 
 <!-- ============ OPEN ITEMS ============ -->
 <h2 id="open">Open items and their status</h2>
-<p class="small">The list was first written on 20 Oct. Its status column shows the state on 21 Oct, end of day.</p>
+<p class="small">The list was first written on 20 Oct. Its status column shows the state on 25 Oct 2026.</p>
 <div class="tw"><table>
 <tr><th>#</th><th>Item</th><th>Status</th><th>What's left / how to fix</th></tr>
-<tr><td>M1</td><td>Emails not delivered</td><td><span class="chip warn">Intermittent</span></td><td>It worked at 13:25 and failed again at 15:36 and 16:01 (HTTP 422). Likely cause: bounces from fake test addresses (<code>name1…6@example.com</code>) and the shared <code>no-reply-reset@anyware.software</code> sender. Use real or plus-addressed test emails, ask the mail admin to unblock, and use a dedicated sender for live.</td></tr>
-<tr><td>M2</td><td>Registration web form</td><td><span class="chip warn">Partly done</span></td><td>The website now creates records (source <code>web_form</code>), N01 fires and round robin works. But <code>age</code> is empty on every record, and the form isn't registered under CRM Web Forms (the list is empty).</td></tr>
-<tr id="m3"><td>M3</td><td>Student portal end to end</td><td><span class="chip bad">Open</span></td><td>Sign in as a real student, save a link from the portal, and check that N04 and the owner rule run. EM-00068 is at Assessment Assigned with owner reviewer1 and no N04 run, which points to portal saves not triggering rules.</td></tr>
+<tr id="m1"><td>M1</td><td>Emails not delivered</td><td><span class="chip bad">Blocker</span> <span class="chip warn">on hold</span></td><td><b>Root cause found 25 Oct:</b> the Zoho SMTP sender <code>no-reply-reset@anyware.software</code> delivers to @anyware.software but every send to Gmail fails (<code>MAIL_SEND_FAILED</code> / HTTP 422). Enable external sending on that account or use a transactional sender. On hold at the user's request.</td></tr>
+<tr><td>M2</td><td>Registration web form</td><td><span class="chip ok">Done</span> <span class="chip warn">age</span></td><td>The live website form (https://educationfirst.anyware.software/en/ebhar-misr#register) creates <code>web_form</code> records with the ID photo, N01 fires and round robin works (25 Oct). <code>age</code> is still empty.</td></tr>
+<tr id="m3"><td>M3</td><td>Student portal end to end</td><td><span class="chip ok">Done</span></td><td>25 Oct: 3 real students (W2–W4) logged in to the portal, changed the password and saved their video link; N04, the category owner rule and <bdi>«إسناد التقييم»</bdi> all ran.</td></tr>
 <tr><td>M4</td><td>Assessors see too much</td><td><span class="chip ok">Done</span> <span class="chip warn">3 fields</span></td><td>10 personal fields hidden and 19 read-only (D7). National ID, email and phone can't be hidden because they're required: make them not required in the CRM and keep them required on the form.</td></tr>
 <tr><td>M5</td><td>Real assessors and committee</td><td><span class="chip warn">Partly done</span></td><td>Round robin by profile is in place, and Arts has 3 assessors. The other categories have 1 each, the Committee has 1 user, and only 2 Registration Admins are left. Add the real staff.</td></tr>
 <tr><td>M6</td><td>Rubric is a single score</td><td><span class="chip mut">Client</span></td><td>Get the criteria per category, then add score fields per criterion to the <bdi>«اعتماد الفيديو»</bdi> buttons.</td></tr>
@@ -335,6 +390,9 @@ details[open] summary{margin-bottom:8px}
 <tr><td>21 Oct 15:36</td><td>Arts round robin, run 1</td><td>9 saves at once</td><td>EM-00074 … 82 (deleted)</td><td><span class="chip ok">3/3/3</span> <span class="chip bad">5 stuck = B-EM2</span></td></tr>
 <tr><td>21 Oct 16:01</td><td>Arts round robin, run 2</td><td>9 saves at once</td><td><b>EM-00083 … 91 (kept)</b></td><td><span class="chip ok">3/3/3, all 9</span></td></tr>
 <tr><td>21 Oct 19:15</td><td>Privacy (P1, P2)</td><td>Hidden and read-only fields for assessors</td><td>EM-00092 (deleted)</td><td><span class="chip ok">14/14</span></td></tr>
+<tr><td>25 Oct</td><td>Retest NDC-2420</td><td>Hand-over after <bdi>«اعتماد الفيديو»</bdi>, UI and API</td><td>EM-00124, EM-00125 (kept)</td><td><span class="chip ok">pass</span></td></tr>
+<tr><td>25 Oct</td><td>Retest NDC-2421</td><td>2 × 9 parallel saves + 9 parallel creates on a new round-robin counter</td><td>27 QA records</td><td><span class="chip ok">27/27</span></td></tr>
+<tr><td>25 Oct 13:00–15:00</td><td><a href="#e2e25">Full E2E from the real website (W1–W5)</a></td><td>Live website form, real student portal, every role's own login</td><td><b>EM-00153 … 157 (kept)</b></td><td><span class="chip ok">21/21</span> <span class="chip ok">5/5 end states</span></td></tr>
 </table></div>
 
 <details open><summary>Final E2E with real users — the 5 paths (34/34)</summary>
@@ -445,7 +503,7 @@ details[open] summary{margin-bottom:8px}
 <tr><td>—</td><td>"(copy)" blueprint made active and renamed <bdi>«إبهار مصر — مراحل الطلب»</bdi>; video buttons by category profile</td><td>Team</td><td><span class="chip ok">in place</span></td></tr>
 <tr><td>—</td><td>4 category owner rules → round robin over their category profile; reviewer3 and reviewer4 moved to the Arts profile</td><td>Team</td><td><span class="chip ok">in place</span></td></tr>
 <tr><td>D5</td><td>Score and comments read-only for the 4 category assessor profiles</td><td>QA</td><td><span class="chip ok">in place</span></td></tr>
-<tr><td>D6</td><td>New rule: hand-over to the Committee (round robin) when the status becomes Assessment Complete</td><td>QA</td><td><span class="chip bad">on, blocked by B-EM1</span></td></tr>
+<tr><td>D6</td><td>New rule: hand-over to the Committee (round robin) when the status becomes Assessment Complete</td><td>QA</td><td><span class="chip ok">in place, works since the NDC-2420 fix</span></td></tr>
 <tr><td>—</td><td>Clean-up: 13 old test records (EM-00027 … 39), approval Stages 1–3 and 3 unused rules deleted; the 3 inactive blueprints were already gone</td><td>QA (confirmed)</td><td><span class="chip ok">done</span> 22 backups kept</td></tr>
 <tr><td>D7</td><td>Assessor privacy: 10 personal fields hidden, 19 read-only; national ID, email and phone read-only</td><td>QA</td><td><span class="chip ok">in place</span></td></tr>
 </table></div>
@@ -475,6 +533,8 @@ details[open] summary{margin-bottom:8px}
 <tr><td>Arts round robin (B-EM2)</td><td><code>run-arts9.log</code>, <code>run-arts9b.log</code>, <code>run-arts9c.log</code>, <code>run-arts9r2.log</code>, <code>run-arts9r2pa.log</code></td></tr>
 <tr><td>Clean-up + web form</td><td><code>run-cleanup-final.log</code>, <code>run-wfcheck.log</code>, <code>backup-cleanup-2026-10-21/</code></td></tr>
 <tr><td>Privacy</td><td><code>run-privacy.log</code>, <code>privacy-results.json</code>, <code>fieldperms-before-privacy.json</code></td></tr>
+<tr><td>25 Oct retests</td><td><code>NDC-2420-retest-2026-10-25.png</code>, <code>NDC-2421-retest-2026-10-25.png</code>, <code>rt2421-stdout.txt</code>, <code>rt2421-stdout2.txt</code></td></tr>
+<tr><td>25 Oct website E2E</td><td><code>run-web-e2e2.log</code> (registration review), <code>run-web-e2e3.log</code> (assessment, Committee), <code>run-web-e2e4.log</code> (W4 re-run), <code>run-portalcheck.log</code>, <code>run-webcheck2.log</code>, <code>run-mailstat.log</code> (email delivery)</td></tr>
 </table></div>
 <p class="small">The full written history is in <code>report.md</code> in the same folder.</p>
 </main>

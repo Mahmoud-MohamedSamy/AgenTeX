@@ -60,7 +60,10 @@ Totals: 21/21 (review), 25/30 + 7/7 (assessment and Committee). The 5 failures i
 
 **New findings:**
 - **Email to external addresses fails.** The CRM's Zoho SMTP account (`no-reply-reset@anyware.software`) delivers to @anyware.software but fails for Gmail (`MAIL_SEND_FAILED` / HTTP 422), every time. That's the root cause of all the "emails failing" results. Real applicants (Gmail, Yahoo…) will receive no N01–N07 emails and **no portal password** until external sending is enabled on that Zoho account, or the CRM uses a proper transactional sender. **Blocker for go-live.**
-- **Birth date:** all 5 web records saved birth date 2008-12-12, whatever the user entered. To confirm with the user whether the form changed it. `age` is still empty.
+- **Birth date:** all 5 web records have birth date 2008-12-12. The user confirmed they entered that date, so it's not a defect. `age` is still empty.
+- **Email blocker is on hold** at the user's request (25 Oct).
+
+**Go-live readiness (25 Oct):** the flow is ready end to end (website form, review, portal, assessment, Committee, permissions; both bugs fixed). Go-live waits on the external-email blocker (on hold), plus setup and client items: real staff in the profiles, the age range and age mapping, and the M6/M7/M11/M12 decisions.
 - My test script overwrote the W2–W4 video links that the students had saved in the portal with QA links. The flow is unaffected, but the records show the QA links.
 
 
