@@ -1,0 +1,12 @@
+{ "out": "api-b4-trace.png", "title": "TAVI API — profile rank above the parent's rank (re-checked 25 Oct 2026 on a QA profile)",
+  "lines": [
+    ["QA profile \"QA W1 Rank evidence\": parent Supervisor (rank 300), own rank 100", "info"],
+    ["PATCH /iam/profiles/{id}  {\"rank\": 600}", ""],
+    ["  -> 204 No Content   (no error)", "bad"],
+    ["GET /iam/profiles  -> rank is still 100   (the change was silently dropped)", "bad"],
+    ["", ""],
+    ["POST /iam/profiles  {parent: Supervisor, rank: 600}   (same rule, on create)", ""],
+    ["  -> 400 VALIDATION_ERROR \"Profile rank (600) must be lower than parent profile's rank (300).\"", "ok"],
+    ["", ""],
+    ["QA profile deleted afterwards (204); no QA profiles left", "info"]
+  ] }

@@ -1,0 +1,18 @@
+{ "out": "NDC-2542-vs-zoho.png", "ticket": "NDC-2542", "verdict": "FAIL", "label": "BUG",
+  "title": "Users | Invitation lifetime is not validated: 0 becomes 7 days, 10000 days is accepted",
+  "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)", "date": "25 Oct 2026",
+  "panels": [
+    { "img": "tavi-2542-dialog.png", "caption": "TAVI — typed 0 in Invitation lifetime (days): the field silently changed to 7, no message; the invite was sent with lifetime_days 7.", "crop": [288, 298, 1312, 603],
+      "boxes": [ { "b": [1150, 460, 1286, 525], "n": 1 } ] },
+    { "img": "z-newuser.png", "caption": "Zoho — Add New User: First/Last name, Email, Role, Profile. There is no invitation lifetime field to set.", "crop": [521, 0, 1080, 442],
+      "boxes": [ { "b": [552, 75, 1050, 333], "n": 3, "color": "#16a34a" } ] },
+    { "img": "tavi-2542-10000.png", "caption": "TAVI — 10000 days: the field's own limit is 1–90, yet there is no message and Send stays enabled. Sent: accepted, invitation expires 12 Mar 2054.", "crop": [288, 298, 1312, 603],
+      "boxes": [ { "b": [1150, 479, 1286, 525], "n": 2 }, { "b": [1130, 550, 1291, 594], "n": 4 } ] }
+  ],
+  "rows": [
+    ["1", "Lifetime 0 days", "No lifetime field (not settable)", "Silently replaced by 7 days, no message (screen and API: POST /iam/users/invite lifetime_days 0 and −1 → 7 days)", "DIFFERS"],
+    ["2", "Lifetime 10000 days", "No lifetime field (not settable)", "Accepted; invitation expires 2054-03-12 (screen and API)", "DIFFERS"],
+    ["3", "Invite form fields", "Name, Email, Role, Profile", "Email, Name, Profile, Org unit + Invitation lifetime (days) — TAVI extra", "INFO"],
+    ["4", "Out-of-range value refused with a message", "n/a", "Field declares min 1 / max 90 but nothing enforces it; Send stays enabled", "DIFFERS"],
+    ["5", "How long a Zoho invitation link stays valid", "Not checked (no invite was sent in Zoho)", "Default 7 days", "INFO"]
+  ] }

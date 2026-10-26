@@ -1,0 +1,18 @@
+{ "out": "NDC-2543-vs-zoho.png", "ticket": "NDC-2543", "verdict": "FAIL", "label": "BUG",
+  "title": "Profiles | The built-in \"User\" profile can be renamed",
+  "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)", "date": "25 Oct 2026",
+  "panels": [
+    { "img": "tavi-2543-edit.png", "caption": "TAVI — Edit profile on the built-in \"User\" profile: the Name field is editable and Save changes is enabled (typed a new name, then Cancel — nothing saved).", "crop": [520, 225, 1080, 675],
+      "boxes": [ { "b": [565, 349, 1035, 395], "n": 1 }, { "b": [910, 610, 1035, 654], "n": 2 } ] },
+    { "img": "zoho-standard-profile.png", "w": 1600, "h": 1000, "caption": "Zoho — built-in \"Standard\" profile: only Clone and View Users; no rename, no delete.", "crop": [0, 50, 1600, 470],
+      "boxes": [ { "b": [1388, 56, 1578, 97], "n": 3, "color": "#16a34a" } ] },
+    { "img": "tavi-2543-row.png", "caption": "TAVI — Profiles list: the built-in \"User\" row has Edit and Delete like any custom profile.", "crop": [292, 460, 1268, 640],
+      "boxes": [ { "b": [1160, 530, 1260, 571], "n": 4 } ] }
+  ],
+  "rows": [
+    ["1", "Rename a built-in profile", "Not possible — built-in profiles have no edit option", "Name field editable; PATCH /iam/profiles/{User} answers 204 and the name changes (renamed back at once in the test run)", "DIFFERS"],
+    ["2", "Save the new name", "No Save path", "Save changes is enabled with the new name", "DIFFERS"],
+    ["3", "Actions on a built-in profile", "Clone · View Users only", "View permissions · Edit · Delete", "DIFFERS"],
+    ["4", "Built-in marked as protected in the list", "Built-in profiles are fixed", "\"User\" row looks like any custom profile (Edit + Delete icons)", "DIFFERS"],
+    ["5", "Delete the built-in profile", "Not possible", "Not checked — delete was not clicked (irreversible)", "INFO"]
+  ] }

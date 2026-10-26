@@ -1,0 +1,193 @@
+<title>CRM Go-Live Wave 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live retest · Wave 2 of 5</div>
+  <h1>Daily record work</h1>
+  <p class="meta">25–26 Oct 2026 · staging-crm.taviportal.com (NDC-Staging) · checked against Zoho CRM Enterprise (org943261092, read-only) · accounts: owner and test user 1</p>
+  <p>Everything people do with records every day was retested in all 15 modules: create, edit, delete and restore, list and kanban, custom views, filters, tags, notes, attachments, timeline, conversion, pipelines, mass actions, recycle bin, import, export, global search, activities and work queues.</p>
+</header>
+
+<div class="strip">
+  <div class="stat pass"><b>~95</b><span>cases with a result</span></div>
+  <div class="stat pass"><b>16</b><span>tickets now pass</span></div>
+  <div class="stat fail"><b>16</b><span>tickets still fail</span></div>
+  <div class="stat fail"><b>8</b><span>new bug candidates</span></div>
+  <div class="stat"><b>0</b><span>filed in Plane yet</span></div>
+</div>
+
+<div class="note"><b>Biggest risk for go-live:</b> a deal can't be moved to another pipeline, from the record page, Mass Update or the API. Every attempt fails with 422 and the screen shows no message (W2-B4). The Settings › Pipelines page also doesn't load at all now (NDC-2386).</div>
+
+<section>
+  <h2>Tickets that now pass</h2>
+  <div class="tbl"><table>
+    <tr><th>Ticket</th><th>What we saw</th></tr>
+    <tr><td class="id">NDC-1832</td><td>Editing a record keeps its owner.</td></tr>
+    <tr><td class="id">NDC-1197</td><td>Every list action does something: it opens a page, a dialog, or says "Coming soon". Export works.</td></tr>
+    <tr><td class="id">NDC-1302</td><td>Changing the stage keeps the pipeline; Stage History records it.</td></tr>
+    <tr><td class="id">NDC-2282</td><td>Kanban toolbar has one Layout and one labelled Pipeline picker.</td></tr>
+    <tr><td class="id">NDC-1597 · 1600 · 1601</td><td>Recycle bin filters: all modules and all users are listed, and options stay after choosing one.</td></tr>
+    <tr><td class="id">NDC-1795</td><td>After deleting forever, the bin list fills with the next items by itself.</td></tr>
+    <tr><td class="id">NDC-1603</td><td>Restoring a record whose unique name is now taken is refused with a clear message.</td></tr>
+    <tr><td class="id">NDC-1554</td><td>Import tag delimiter is shown as helper text, not a picklist.</td></tr>
+    <tr><td class="id">NDC-1593 · 1599</td><td>Import respects field permissions on screen and on the server.</td></tr>
+    <tr><td class="id">NDC-2302</td><td>Import with "Trigger workflow rules" off runs no workflow.</td></tr>
+    <tr><td class="id">NDC-1216</td><td>Mass delete by criteria removed exactly 120 matching records.</td></tr>
+    <tr><td class="id">NDC-1602</td><td>Empty Bin no longer times out (about 4 minutes, 3,080 → 1,217 items).</td></tr>
+    <tr><td class="id">NDC-1484</td><td>All 15 modules: create, read, edit, delete and restore work.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Tickets that still fail</h2>
+  <div class="tbl"><table>
+    <tr><th>Ticket</th><th>Now</th></tr>
+    <tr><td class="id">NDC-2382</td><td>The API accepts only the literal "Standard (Standard)" as a pipeline; a deal can't be moved.</td></tr>
+    <tr><td class="id">NDC-1312</td><td>The change-pipeline dialog now asks for the stage, but saving fails (422).</td></tr>
+    <tr><td class="id">NDC-1316</td><td>Pipeline is offered in Mass Update, but applying it fails (422) with no message.</td></tr>
+    <tr><td class="id">NDC-1324</td><td>The inline Pipeline editor offers only "Standard (Standard)".</td></tr>
+    <tr><td class="id">NDC-2386</td><td>Settings › Pipelines stays on "Loading board…", now also when opened from the menu. Worse than before.</td></tr>
+    <tr><td class="id">NDC-1193</td><td>A blank record is refused in 14 modules but still accepted in Customers.</td></tr>
+    <tr><td class="id">NDC-2136</td><td>Leads list shows rows after 13–25 s (target 1.5 s, was 9.1 s).</td></tr>
+    <tr><td class="id">NDC-2137</td><td>Kanban first cards after 3.0–4.5 s (target 2 s, was 5.1 s). Better, not there yet.</td></tr>
+    <tr><td class="id">NDC-2122</td><td>Criteria pattern "1 AND 2" (upper case) is still accepted.</td></tr>
+    <tr><td class="id">NDC-2098</td><td>A deleted view id in the URL opens the last-used view instead of All.</td></tr>
+    <tr><td class="id">NDC-2280</td><td>A long view name overlaps the other columns.</td></tr>
+    <tr><td class="id">NDC-2388</td><td>New modules are switched on as conversion targets without anyone choosing it.</td></tr>
+    <tr><td class="id">NDC-1823</td><td>Probability, Expected Revenue and 3 duration fields can be edited at conversion.</td></tr>
+    <tr><td class="id">NDC-1797</td><td>16 bin items from deleted modules can't be deleted or restored, even by the Owner.</td></tr>
+    <tr><td class="id">NDC-2385</td><td>Import review says "All errors 1" but the table says "No errors match your filters".</td></tr>
+    <tr><td class="id">NDC-1819</td><td>Partly done. Still missing Zoho's filter panel, column Pin / Hide, pin in Manage Columns and the row Add Note.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>New bug candidates</h2>
+  <p class="meta">Not in Plane yet. They wait for approval at Gate 2.</p>
+  <div class="bugs">
+    <div class="bug"><div class="top"><span class="id">W2-B4</span><span class="chip fail">High</span></div>
+      <h3>A deal can't be moved to another pipeline</h3>
+      <p>Record page, Mass Update and API all fail with 422 "Invalid value for: Pipeline". The Pipeline field only allows "Standard (Standard)". No error on screen and the dialog stays open.</p></div>
+    <div class="bug"><div class="top"><span class="id">W2-B6</span><span class="chip warn">Medium</span></div>
+      <h3>Users on the "User" profile can't search</h3>
+      <p>Global search says "You don't have access to search" (403). The built-in profile has no search permission; Zoho's Standard profile has it.</p></div>
+    <div class="bug"><div class="top"><span class="id">W2-B7</span><span class="chip warn">Medium</span></div>
+      <h3>"+ Task" on a record has no form</h3>
+      <p>First open hangs on "Loading form…", then "No quick-create form is available for this activity". Call and Meeting work.</p></div>
+    <div class="bug"><div class="top"><span class="id">W2-B8</span><span class="chip warn">Medium</span></div>
+      <h3>Recurring tasks are never created</h3>
+      <p>"Weekly, 3 times" is saved, but only the first task exists, even after completing it.</p></div>
+    <div class="bug"><div class="top"><span class="id">W2-B1</span><span class="chip warn">Medium</span></div>
+      <h3>Timeline misses deletes and attachments</h3>
+      <p>Only created, field changed, restored and note entries appear. Record deleted and attachment added or removed are not logged.</p></div>
+    <div class="bug"><div class="top"><span class="id">W2-B3</span><span class="chip info">Low</span></div>
+      <h3>A record can hold more than 10 tags</h3>
+      <p>The tag API accepted an 11th tag. The limit is 10 (as in Zoho).</p></div>
+    <div class="bug"><div class="top"><span class="id">W2-B5</span><span class="chip info">Low</span></div>
+      <h3>Pipeline shown as a raw id</h3>
+      <p>Record page, list column and inline editor show the pipeline id; stages show keys like needs_analysis.</p></div>
+    <div class="bug"><div class="top"><span class="id">W2-B2</span><span class="chip info">Low</span></div>
+      <h3>Timeline says "leads created"</h3>
+      <p>The create entry uses the module key instead of "Lead created".</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>What passed</h2>
+  <ul>
+    <li>Create form checks (required fields, phone format), Save and New, inline edit with validation, change owner, delete with its warning, record not found page.</li>
+    <li>Custom views: create with criteria, rename, clone, pin, shared views, duplicate names and bad patterns refused.</li>
+    <li>Field filters with all operators; export to .xlsx / .xls / .csv keeps the filters (file had exactly the filtered rows).</li>
+    <li>Tags: create, rename, merge, delete, bulk tag (append and overwrite).</li>
+    <li>Notes (Arabic and emoji) and attachments: upload, preview, download, remove.</li>
+    <li>Lead conversion: targets listed, record created, lead marked converted, tags and history carried over.</li>
+    <li>Kanban drag between stages updates the stage and the totals.</li>
+    <li>Import: file checks, mapping, layout choice, result counts, error rows download, history and undo.</li>
+    <li>Global search for the owner: grouped results, deleted records left out. Activities from a record (call, meeting with guest), My Open Activities, My Work Queues.</li>
+    <li>Test user 1 can create and delete their own lead, but not the owner's (403).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Differences from Zoho (for the gap list)</h2>
+  <ul>
+    <li>No Clone on records; notes can't be edited or deleted.</li>
+    <li>Attachments refuse .txt and other types (Zoho takes any type).</li>
+    <li>"Coming soon": system-defined filters, Sheet and Print views, Drafts, Approve Leads, Deduplicate, Client Script, import manual approval.</li>
+    <li>Global search doesn't find notes or tags. The meeting popup has no Repeat. No "Save as view" from the filter panel.</li>
+  </ul>
+  <p class="meta">Small notes, no ticket proposed: "Conversion failed. Please try again." doesn't name the field; owner change logs two timeline entries; "Sort: created_at" label; bin labels use module keys; import status "partially_completed" when nothing was created; Mass Update offers system fields; search matches any word and doesn't rank an exact name first.</p>
+</section>
+
+<section>
+  <h2>Not run</h2>
+  <div class="tbl"><table>
+    <tr><th>Case</th><th>Why</th></tr>
+    <tr><td class="id">NDC-1948</td><td>Needs a tenant-wide Timeline Visibility rule. Next round, with approval.</td></tr>
+    <tr><td class="id">NDC-2296 · 2297 · 2321</td><td>Converting a lead held for approval or review; covered by the automation-order suite in Wave 3.</td></tr>
+    <tr><td class="id">NDC-2113</td><td>Needs removing a pick-list value from a live field (schema change).</td></tr>
+    <tr><td class="id">Pipeline settings</td><td>Create, clone, default and delete pipelines: blocked because the page doesn't load (NDC-2386).</td></tr>
+    <tr><td class="id">NDC-1224 · 2135 · 1950</td><td>Needs thousands of records; Firefox only; a Backlog idea.</td></tr>
+    <tr><td class="id">Others</td><td>Regression of Done tickets NDC-2124, 1837, 1788, 1789; special field types; previous / next record; split view create; kanban settings; tag limit on screen.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Test data</h2>
+  <p>Empty Bin was run on request: 3,080 → 1,217 items (CRM screen scope; Desk items not touched). The full list from before is saved in <code>baseline/recycle-bin-before-empty.json</code>. Every QA record, view, tag, workflow rule, profile and field permission was removed, and test user 1 is back on User / Sales. The only differences from the morning baseline are records from another team session ("QA RT").</p>
+</section>
+
+<section>
+  <h2>Automation</h2>
+  <p>This wave was run in the browser with small API scripts (<code>scripts/</code> in the execution folder). It is being turned into the Java automation feature <code>crmrecords</code> so it can be rerun like Wave 1.</p>
+</section>
+</div>

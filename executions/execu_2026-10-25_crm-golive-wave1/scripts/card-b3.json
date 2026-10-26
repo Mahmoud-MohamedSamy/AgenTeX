@@ -1,0 +1,15 @@
+{ "out": "api-b3-trace.png", "title": "TAVI API trace — idle timeout 2 min (SessionPolicyTest SP-04, 25 Oct 2026, 2nd run)",
+  "lines": [
+    ["PUT /settings/values  iam.security.session.idle_timeout_minutes = 2   -> 200", "info"],
+    ["Two fresh sign-ins: BUSY session calls GET /iam/me every 30 s; IDLE session makes no calls", ""],
+    [" 30 s   busy GET /iam/me -> 200   Login History: busy=active  idle=active", "ok"],
+    [" 60 s   busy -> 200               busy=active  idle=active", "ok"],
+    [" 90 s   busy -> 200               busy=active  idle=active", "ok"],
+    ["120 s   busy -> 200               busy=active  idle=active", "ok"],
+    ["150 s   busy -> 200               busy=active  idle=active", "ok"],
+    ["180 s   busy -> 401               busy=active  idle=active   <- the busy session is signed out", "bad"],
+    ["210 s   busy -> 401               busy=active  idle=active", "bad"],
+    ["END     idle token 401 / refresh 401;  busy token 401 / refresh 401", "bad"],
+    ["Login History still lists both sessions as \"active\" after they stopped working", "bad"],
+    ["PUT idle_timeout_minutes = 60 -> 200   (restored; same result in the 1st run)", "info"]
+  ] }

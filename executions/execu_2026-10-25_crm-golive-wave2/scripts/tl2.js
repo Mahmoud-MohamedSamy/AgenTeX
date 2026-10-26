@@ -1,0 +1,5 @@
+const IDS = {"leads":"9207f81e-cd86-4911-b5c9-5dddeec174c1","contacts":"67191bc4-7ce7-4c22-84ae-1019b9c453a4","deals":"8e29ae79-be26-45ca-99d1-0cf125d68710","accounts":"44468681-52e0-4155-b0ec-4012a1a91f18","tasks":"728e8691-2156-467a-a2be-8ad71f3e1f8c","meetings":"76c15890-c07d-4e5e-890f-9e483d342db2","subscriptions":"39091b6c-ccd5-425d-aeb3-85ab3046e935","agency":"03786dcb-3f4c-45ad-b654-0aef9198eef1","services":"c5e240c6-39f2-41cb-b62b-ae2726324273","dailymove":"1fcfb0fe-2dc6-422d-82ff-41550255c384","cases":"48d59544-4535-4b0e-a0cc-9f0a265a165d","po":"aed1ac90-1c50-49c8-b2f3-cf6d3addbb5c","so":"0718eb3d-c6d0-4739-a40a-0bf6ff51d191","ndcagencies":"2603b7d8-8a61-49c9-9b4b-19f41cdbab63","calls":"c7985f66-36fe-4eee-b804-e2eef0c6a2e6"};
+const tl = await call('GET', `/timeline/records/leads/${IDS.leads}/feed`);
+const e = (tl.j.data.data || []);
+const notes = await call('GET', `/modules/${MODS.leads}/records/${IDS.leads}/notes`);
+return { types: e.map(x => x.entry_type + (x.field_key ? ':' + x.field_key : '')), sample: JSON.stringify(e.find(x => /Attach|Note/.test(x.entry_type)) || {}).slice(0, 500), notes: notes.s + ' ' + notes.t.slice(0, 400) };

@@ -1,0 +1,17 @@
+{ "out": "NDC-2546-vs-zoho.png", "ticket": "NDC-2546", "verdict": "FAIL", "label": "BUG",
+  "title": "Profiles | API: rank edit above the parent's rank answers 204 but is silently ignored",
+  "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)", "date": "25 Oct 2026",
+  "panels": [
+    { "img": "tavi-b4-edit.png", "caption": "TAVI screen — the guard works: rank 600 under Supervisor (300) shows a warning and Save changes is disabled.", "crop": [544, 219, 1056, 682],
+      "boxes": [ { "b": [566, 438, 1034, 508], "n": 1, "color": "#16a34a" }, { "b": [910, 629, 1035, 673], "n": 2, "color": "#16a34a" } ] },
+    { "img": "z-roles.png", "caption": "Zoho — Roles and Sharing: hierarchy by \"Reports To\"; Zoho profiles have no rank, so there is no direct equivalent.", "crop": [256, 60, 1585, 420],
+      "boxes": [ { "b": [285, 270, 440, 385], "n": 5, "color": "#6b7280" } ] },
+    { "img": "api-b4-trace.png", "w": 1600, "h": 455, "caption": "TAVI API — the same rule: PATCH answers 204 and drops the change; POST refuses with a clear 400.", "crop": [0, 0, 1600, 455],
+      "boxes": [ { "b": [20, 180, 1200, 274], "n": 3 }, { "b": [20, 340, 1580, 386], "n": 4, "color": "#16a34a" } ] }
+  ],
+  "rows": [
+    ["1–2", "Screen: rank above the parent's", "n/a (no rank)", "Blocked with a warning, Save disabled", "PASS"],
+    ["3", "API PATCH rank 600 under a rank-300 parent", "n/a", "204 No Content, rank stays 100, no error", "FAIL"],
+    ["4", "API POST with the same values", "n/a", "400 \"Profile rank (600) must be lower than parent profile's rank (300).\"", "PASS"],
+    ["5", "Zoho equivalent", "Role hierarchy (Reports To), no rank", "Profile rank (TAVI extra)", "INFO"]
+  ] }

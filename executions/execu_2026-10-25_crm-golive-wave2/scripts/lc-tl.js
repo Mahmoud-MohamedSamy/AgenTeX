@@ -1,0 +1,2 @@
+const f = async (k, id) => ((await call('GET', `/timeline/records/${k}/${id}/feed`)).j.data.data || []).map(e => [e.entry_type, e.record_type, (e.record_id || '').slice(0, 8), e.field_key || '', String(e.new_value ?? e.description ?? '').slice(0, 40), e.occurred_at.slice(11, 19)].join(' '));
+return { contact: await f('contacts', 'f5b35982-86ef-4bf9-8905-3c2acc0b6355'), deal: await f('deals', '81ef9091-f11c-4c1a-afef-28adb3fb0087'), lead: await f('leads', '2f937b0e-82a4-4e40-ae43-17a6c78d4788') };

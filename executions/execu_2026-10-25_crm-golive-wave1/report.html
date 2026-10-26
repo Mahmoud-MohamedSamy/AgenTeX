@@ -1,0 +1,174 @@
+<title>CRM Go-Live Wave 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live retest · Wave 1 of 5</div>
+  <h1>Access and security</h1>
+  <p class="meta">25 Oct 2026 · staging-crm.taviportal.com (NDC-Staging) · checked against Zoho CRM Enterprise (org943261092, read-only) · accounts: owner, CRM Admin, Supervisor, test user 1, test user 2</p>
+  <p>The whole access and security area was retested: users, invitations, profiles, permissions, field permissions, org units, teamspaces, hierarchy, session policy, login history and the audit log. Old tickets were rechecked inside that full run.</p>
+</header>
+
+<div class="strip">
+  <div class="stat pass"><b>73</b><span>cases passed</span></div>
+  <div class="stat pass"><b>8</b><span>tickets now pass</span></div>
+  <div class="stat fail"><b>6</b><span>tickets still fail</span></div>
+  <div class="stat fail"><b>5</b><span>new bugs filed</span></div>
+  <div class="stat warn"><b>3</b><span>inconclusive</span></div>
+  <div class="stat"><b>5</b><span>not run (reason given)</span></div>
+</div>
+
+<section>
+  <h2>Tickets that now pass</h2>
+  <p class="meta">Retest comments are posted on each ticket. States were left for the team to move.</p>
+  <div class="tbl"><table>
+    <tr><th>Ticket</th><th>Problem</th><th>What we saw</th></tr>
+    <tr><td class="id">NDC-1337</td><td>Field permissions not enforced</td><td>Hidden and read-only writes refused (422). Hidden Company missing from the form, record page and list; read-only Email shown but locked.</td></tr>
+    <tr><td class="id">NDC-2381</td><td>Audit log stopped recording</td><td>Create, edit and delete of a lead logged within 3 s, with who and what changed.</td></tr>
+    <tr><td class="id">NDC-1343</td><td>Most entities not logged</td><td>Records, profiles, field permissions, user overrides and org units are logged; every sign-out names the user.</td></tr>
+    <tr><td class="id">NDC-2293</td><td>Entities filter has duplicates</td><td>56 options on screen, no duplicate names.</td></tr>
+    <tr><td class="id">NDC-613</td><td>Denied user can export login history</td><td>List and export refused (403) and the Setup link is gone.</td></tr>
+    <tr><td class="id">NDC-1172</td><td>CRM Admin opens any teamspace</td><td>Not listed and can't be opened.</td></tr>
+    <tr><td class="id">NDC-1699</td><td>Other profile opens a teamspace</td><td>Supervisor not on the list can't see or open it.</td></tr>
+    <tr><td class="id">NDC-1701</td><td>Any member acts as admin</td><td>Rename and self-promotion by a member refused (403).</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Tickets that still fail</h2>
+  <div class="tbl"><table>
+    <tr><th>Ticket</th><th>Problem</th><th>What we saw</th></tr>
+    <tr><td class="id">NDC-2412</td><td>Role hierarchy: superior sees nothing</td><td>A superior still can't see a subordinate's records (3 tests).</td></tr>
+    <tr><td class="id">NDC-2413</td><td>Reporting hierarchy: manager sees nothing</td><td>A manager still can't see a direct report's records (2 tests).</td></tr>
+    <tr><td class="id">NDC-2414</td><td>Desk Administrator gives CRM view-all</td><td>A Desk Administrator still sees all CRM records.</td></tr>
+    <tr><td class="id">NDC-2415</td><td>History doesn't show who</td><td>The API has the user who made the change; the screen doesn't show it.</td></tr>
+    <tr><td class="id">NDC-2416</td><td>User changes own manager</td><td>Test user 1 changed their own reporting manager without the permission (set back).</td></tr>
+    <tr><td class="id">NDC-2418</td><td>Expired sessions shown Active</td><td>306 of 346 "Active" sessions are past their expiry; the oldest sign-in is from 16 Aug.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>New bugs filed</h2>
+  <p class="meta">All in Plane: state Bug, CRM module, Sprint 13, label Access Control. Each has a TAVI-vs-Zoho image in <code>evidence/annotated/</code>.</p>
+  <div class="bugs">
+    <div class="bug"><div class="top"><span class="id">NDC-2545</span><span class="chip warn">Medium</span></div>
+      <h3>Idle timeout also signs out active sessions</h3>
+      <p>With a 2-minute idle limit, a session used every 30 seconds was ended at about 3 minutes, together with the idle one. Login History still showed both as active. Seen in 2 runs.</p></div>
+    <div class="bug"><div class="top"><span class="id">NDC-2543</span><span class="chip warn">Medium</span></div>
+      <h3>The built-in "User" profile can be renamed</h3>
+      <p>Edit profile on "User" has an editable name and Save works (204). Zoho's built-in Standard profile only offers Clone and View Users.</p></div>
+    <div class="bug"><div class="top"><span class="id">NDC-2542</span><span class="chip info">Low</span></div>
+      <h3>Invitation lifetime is not checked</h3>
+      <p>0 silently becomes 7 days, and 10000 is accepted (expires in 2054), although the field says 1 to 90.</p></div>
+    <div class="bug"><div class="top"><span class="id">NDC-2546</span><span class="chip info">Low</span></div>
+      <h3>Profile rank above the parent is ignored (API)</h3>
+      <p>Editing the rank above the parent returns 204 but nothing is stored. Creating with the same rank gives a clear 400. The screen blocks it correctly.</p></div>
+    <div class="bug"><div class="top"><span class="id">NDC-2547</span><span class="chip info">Low</span></div>
+      <h3>"Create permission" opens "Create profile"</h3>
+      <p>The button label doesn't match the dialog it opens.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>What passed</h2>
+  <ul>
+    <li>Users list, search and the user dialog (profile, org unit, reporting manager, read-only referral code, overrides).</li>
+    <li>Invite one user, Invited status, resend and cancel; bulk invite with a result per row; bad email and missing profile refused.</li>
+    <li>Suspend: sign-in refused and the open session cut. Reactivate: sign-in works again.</li>
+    <li>Permission overrides (grant and deny) with history that names who did it. A CRM Admin can't grant a permission they don't hold.</li>
+    <li>Profiles: clone copies all 29 permissions, add, rename, delete. A profile in use can't be deleted; a rank above your own is refused.</li>
+    <li>Denied permissions really block: users, workflow rules, actions, approvals, reviews and audit view-all.</li>
+    <li>Permissions matrix: "1 pending change", Discard keeps the old value, Save stores it, Owner-only rows are marked.</li>
+    <li>Field permissions set from the Field Permissions tab are stored; hidden fields stay out of list results.</li>
+    <li>Org units: create, rename, move; cycles refused; a unit with children or users can't be deleted; creation is audited.</li>
+    <li>Security policy values out of range are refused. Login history: columns, CSV export, revoke one session, clear all sessions of a user.</li>
+    <li>Audit log filters; "view own" users see only their own events and sessions.</li>
+    <li>Personal pages, account info edit, same-password change refused. Setup hides links and admin pages refuse a direct URL without permission.</li>
+    <li>Hierarchy suite: 27 regression tests.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Inconclusive and not run</h2>
+  <div class="tbl"><table>
+    <tr><th>Case</th><th>Status</th><th>Why</th></tr>
+    <tr><td class="id">SP-03</td><td><span class="chip warn">Inconclusive</span></td><td>Max concurrent sessions: the sign-in was rate-limited (429) twice. We stopped, as agreed, without retrying.</td></tr>
+    <tr><td class="id">FP-08</td><td><span class="chip warn">Inconclusive</span></td><td>Transactions field permissions: a test deal couldn't be created (422 Invalid Pipeline). Explained in Wave 2 (W2-B4).</td></tr>
+    <tr><td class="id">J4</td><td><span class="chip warn">Inconclusive</span></td><td>Indirect report in reporting mode needs a third user without view-all.</td></tr>
+    <tr><td class="id">US-08</td><td><span class="chip info">Not run</span></td><td>Unsafe: if the warning failed, the owner's own profile would really change.</td></tr>
+    <tr><td class="id">US-13 · PS-06</td><td><span class="chip info">Not run</span></td><td>Irreversible user actions; need a disposable user.</td></tr>
+    <tr><td class="id">FP-02</td><td><span class="chip info">Not run</span></td><td>Layout builder dialog; covered by FP-01 and the API, and layout saves have open bugs (NDC-2383, NDC-2423).</td></tr>
+    <tr><td class="id">PE-06</td><td><span class="chip info">Not run</span></td><td>Needs a user who can view but not manage profiles.</td></tr>
+    <tr><td class="id">FP-07</td><td><span class="chip pass">Moved</span></td><td>Import into a read-only field: run in Wave 2 and passed (NDC-1593, NDC-1599).</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Differences from Zoho (for the gap list)</h2>
+  <ul>
+    <li>The Users screen has no Active / Inactive views.</li>
+    <li>Security Policies has only the session policy; Zoho also has password, lockout and MFA policies.</li>
+    <li>The permissions matrix has an Inherit column; Zoho profiles are flat.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Automation</h2>
+  <p>Wave 1 is automated as the <code>crmaccess</code> feature: 12 test classes plus the existing hierarchy suite. It can be rerun at any time:</p>
+  <p><code>./mvnw test -Dfeature=crmaccess -Dbase.url=https://staging-crm.taviportal.com</code> · one bug: <code>-Dtags=NDC-2545</code></p>
+</section>
+
+<section>
+  <h2>Test data</h2>
+  <p>Everything changed for the tests was set back: hierarchy mode, profiles, overrides, field permissions, org units, teamspaces, invitations and session limits (60 / 20). The final check matched the morning baseline. Invitations went to hmohamed@anyware.software.</p>
+  <div class="note">Evidence images aren't attached in Plane yet: the upload to a temporary file host was blocked. They are in <code>evidence/annotated/</code> in the QA repository.</div>
+</section>
+</div>

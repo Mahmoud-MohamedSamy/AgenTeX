@@ -1,0 +1,17 @@
+{ "out": "NDC-2545-vs-zoho.png", "ticket": "NDC-2545", "verdict": "FAIL", "label": "BUG",
+  "title": "Security Policies | Idle timeout also signs out sessions that are in active use",
+  "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)", "date": "25 Oct 2026",
+  "panels": [
+    { "img": "tavi-b3-tip.png", "caption": "TAVI — Security Policies › Idle timeout help: \"the clock resets on every request\".", "crop": [292, 140, 1012, 440],
+      "boxes": [ { "b": [446, 312, 878, 376], "n": 1 } ] },
+    { "img": "z-security-policies.png", "caption": "Zoho — Setup › Security Policies opens Zoho Directory, which is not enabled in our org. Not enabled (it would change the org), so Zoho's session behaviour was not checked live.", "crop": [247, 50, 1355, 700],
+      "boxes": [ { "b": [840, 330, 1260, 400], "n": 3, "color": "#6b7280" } ] },
+    { "img": "api-b3-trace.png", "w": 1600, "h": 661, "caption": "TAVI — request trace with the idle limit at 2 min: the busy session (a request every 30 s) is signed out at 180 s; Login History still says active.", "crop": [0, 0, 1600, 661],
+      "boxes": [ { "b": [20, 420, 1190, 462], "n": 2 }, { "b": [20, 560, 990, 600], "n": 4 } ] }
+  ],
+  "rows": [
+    ["1", "Idle clock resets on every request", "Not checked (Zoho Directory not enabled)", "Help text says it does", "INFO"],
+    ["2", "Session used every 30 s with a 2-min idle limit", "Not checked", "Signed out at ~180 s (token 401, refresh 401) — same as the idle session; seen in 2 runs", "FAIL"],
+    ["3", "Session that is really idle", "Not checked", "Signed out (expected)", "PASS"],
+    ["4", "Login History after the sessions end", "Not checked", "Both still listed as \"active\"", "FAIL"]
+  ] }

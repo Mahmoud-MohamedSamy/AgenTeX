@@ -1,0 +1,14 @@
+{ "out": "NDC-2386-retest.png", "ticket": "NDC-2386", "verdict": "FAIL", "label": "STILL FAILS",
+  "title": "Settings › Pipelines never loads (stuck on \"Loading board…\")",
+  "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)", "date": "26 Oct 2026",
+  "panels": [
+    { "img": "tavi-pl02-ui-test-2026-10-26.png", "w": 1276, "h": 808, "caption": "TAVI — Settings › Pipelines opened from the Setup menu (automated test RecordScreensUiTest.pipelinesPageLoads): still \"Loading board…\" after 30 s. Reloads and the manual run (41 s) show the same.", "crop": [0, 0, 1276, 808],
+      "boxes": [ { "b": [292, 145, 1252, 290], "n": 1 }, { "b": [72, 733, 240, 770], "n": 2, "color": "#2563eb" } ] },
+    { "img": "z-pipelines.png", "w": 1600, "h": 950, "caption": "Zoho — Setup › Customization › Pipelines opens at once: the page (here with no extra pipelines) offers \"Create New Pipeline\".", "crop": [0, 0, 1600, 950],
+      "boxes": [ { "b": [258, 170, 1584, 640], "n": 3, "color": "#16a34a" } ] }
+  ],
+  "rows": [
+    ["1", "Pipelines page shows the pipelines and stages", "Opens at once; list of pipelines or \"Create New Pipeline\"", "Stays on \"Loading board…\" (30 s in the test, 41 s by hand); all its API calls answer 200, no console error", "FAIL"],
+    ["2", "Open from the Setup menu (not only on reload)", "Works", "Also stuck from the menu — worse than when the ticket was raised (reload only)", "FAIL"],
+    ["3", "Create / clone / set default / delete a pipeline", "Available on the page", "Not testable while the page doesn't load (Wave 2 cases PL-01 / PL-03 blocked)", "BLOCKED"]
+  ] }

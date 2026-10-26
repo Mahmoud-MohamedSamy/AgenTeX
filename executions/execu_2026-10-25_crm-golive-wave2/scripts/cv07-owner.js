@@ -1,0 +1,2 @@
+const r = await call('POST', `/modules/${MODS.leads}/views`, { name: 'QA W2 CV shared u1', kind: 'list', layout_id: 'bf971461-2edc-45f2-b6e4-6e180aa64288', visibility: 'selected', shared_user_ids: ['45ffbc5b-7859-4c21-be9e-7b5f30747ca2'], settings: { columns: ['first_name'], sort: null, criteria: { pattern: null, conditions: [{ field: 'first_name', operator: 'starts_with', value: 'QA W2' }] }, related_criteria: [] } });
+return { s: r.s, id: r.s < 300 ? r.j.data.id : r.t.slice(0, 300) };

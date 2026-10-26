@@ -93,3 +93,15 @@ Hierarchy mode role → reporting → role (several times); test user 2 profile 
 New candidates (not in Plane yet): **W1-B3** idle timeout ends active sessions (medium), **W1-B4** profile rank edit above the parent is silently ignored (low), **W1-B5** "Create permission" button opens "Create profile" (low).
 
 Final check (`after2/diff.txt`): users, mode, 42 profiles and their permissions, overrides, field permissions, teamspaces, org units (62), session limits 60 / 20 — identical to the morning baseline.
+
+## Evidence images for NDC-2542 / NDC-2543 — 25 Oct 2026
+- `evidence/annotated/NDC-2542-vs-zoho.png` and `evidence/annotated/NDC-2543-vs-zoho.png` (TAVI left, Zoho right, raw shots in `evidence/raw/`, builder `scripts/annotate-vs-zoho.js` + `scripts/spec-NDC-*.json`).
+- NDC-2542, seen on the screen this time: typing 0 in "Invitation lifetime (days)" silently turns into 7 (the invite goes out with 7, no message); 10000 is sent and accepted (expires 2054-03-12) although the field declares min 1 / max 90. Zoho's Add New User has no lifetime field. Two QA invitations to @example.com were created and cancelled (204, none left).
+- NDC-2543: Edit profile on the built-in "User" has an editable Name and an enabled Save (typed a name, then Cancel — nothing saved; name still "User"). Zoho's Standard profile offers only Clone / View Users.
+- Not yet attached to Plane: the upload to a temporary public host was blocked by the permission check.
+
+## Filed after the leftovers round — 25 Oct 2026
+- **W1-B3 = NDC-2545** (Medium) idle timeout signs out sessions in active use · **W1-B4 = NDC-2546** (Low) API rank edit above parent → 204, ignored (the screen blocks it correctly) · **W1-B5 = NDC-2547** (Low) "Create permission" opens "Create profile". State Bug, Hegazy + Mahmoud + Moaz + Eslam, label Access Control, CRM module, Sprint 13 (read back).
+- Evidence: `evidence/annotated/NDC-2545..2547-vs-zoho.png` (+ NDC-2542/2543). Zoho Security Policies live in Zoho Directory (not enabled in org943261092; not enabled by us) — Zoho session behaviour marked "not checked".
+- Re-check 25 Oct: QA profile "QA W1 Rank evidence" created → PATCH rank 600 → 204, stays 100; POST rank 600 → 400; profile deleted (204), no QA profiles left. Idle timeout still 60.
+- Plane attachments pending: upload to a public host is blocked by the permission check; `scripts/upload-evidence.sh` prints the links for the user to run.
