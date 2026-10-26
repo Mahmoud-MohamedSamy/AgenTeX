@@ -1,0 +1,135 @@
+{
+ "out": "NDC-2220-retest-PASS.png",
+ "ticket": "NDC-2220",
+ "title": "Modules and Fields | Profiles chosen in the Create Module dialog are not applied",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com (+ staging-crm for the integration) · tenant NDC-Staging · Edge (headless) · mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy, Desk Agent fedelav803, CRM test user 1 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "2220-02-created.png",
+   "caption": "Create Module \"QA RT Agents Only\", Module Permission = Desk Agent only → \"Module permissions updated successfully\".",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      886,
+      640,
+      1256,
+      694
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2220-03-other-admin-plus.png",
+   "caption": "mahmoud.mmohamedsamy (Desk Administrator + Supervisor, not allowed): \"+\" menu and sidebar have no QA RT Agent Only.",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      438,
+      96,
+      692,
+      352
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      8,
+      66,
+      252,
+      366
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2220-api.png",
+   "caption": "API: permission saved (200, was 404), records refused for the other user (403); metadata still listed.",
+   "crop": [
+    0,
+    0,
+    1600,
+    403
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      95,
+      1570,
+      208
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      210,
+      1570,
+      344
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      346,
+      1570,
+      391
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1, 4",
+   "Profiles chosen in the dialog applied",
+   "Saved; no silent failure",
+   "POST module 201 + PUT /permissions {Desk Agent} 200; toast shown; ACL access_mode \"selected\"",
+   "PASS"
+  ],
+  [
+   "2–3, 5",
+   "User outside the permission",
+   "Does not see the module, cannot read records",
+   "\"+\" menu: Ticket…Contract only; not in sidebar; GET records 403",
+   "PASS"
+  ],
+  [
+   "6",
+   "Module metadata for that user",
+   "—",
+   "GET /modules still returns the module (no records)",
+   "INFO"
+  ]
+ ]
+}

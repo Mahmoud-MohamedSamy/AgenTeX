@@ -1,0 +1,118 @@
+{
+ "out": "NDC-1324-retest-BLOCKED.png",
+ "ticket": "NDC-1324",
+ "title": "Deals Listing Page | Editing the Pipeline field inline shows an empty pipeline list",
+ "verdict": "BLOCKED",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1324-04-inline-dropdown.png",
+   "caption": "Deals list: Pipeline column shows the raw id 5170500c-… for every deal; inline edit is a plain picker (raw id chip) offering only \"Standard (Standard)\" — pipeline \"1\" missing, the 21 Oct change-pipeline dialog is gone.",
+   "crop": [
+    260,
+    180,
+    1020,
+    450
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      1056,
+      284,
+      1250,
+      430
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      936,
+      474,
+      1204,
+      502
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      926,
+      572,
+      1258,
+      606
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "NDC-pipeline-blocker.png",
+   "caption": "Shared staging blocker card: the Deals Pipeline pick-list field allows only \"Standard (Standard)\", so every deal write that sends a pipeline — \"1\" or even the default Standard — is refused with 422.",
+   "crop": [
+    0,
+    0,
+    1600,
+    610
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      923,
+      99,
+      1562,
+      157
+     ],
+     "n": 4,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      923,
+      371,
+      1562,
+      523
+     ],
+     "n": 5,
+     "kind": "BLOCKED"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Pipeline column value",
+   "Pipeline name (\"Standard\")",
+   "Raw id \"5170500c-b335-479c-96d1-ed138965c345\" on every deal (probably a side effect of the corrupted field)",
+   "FAIL"
+  ],
+  [
+   "2–3",
+   "Inline edit lists the module's pipelines",
+   "Standard and \"1\", change-pipeline dialog with stage",
+   "Plain picker: chip shows the raw id; only \"Standard (Standard)\"; no change-pipeline dialog (seen on 21 Oct)",
+   "FAIL"
+  ],
+  [
+   "—",
+   "Selecting a pipeline applies it",
+   "Deal moved",
+   "Cannot be tried — \"1\" not offered and every pipeline write is refused (422)",
+   "BLOCKED"
+  ],
+  [
+   "4–5",
+   "Cause",
+   "—",
+   "Staging Pipeline field allows only \"Standard (Standard)\"; recheck after the field is repaired",
+   "INFO"
+  ]
+ ]
+}

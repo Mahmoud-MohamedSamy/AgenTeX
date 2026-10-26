@@ -1,0 +1,1 @@
+await page.getByRole('button', { name: 'Cancel', exact: true }).click().catch(() => {}); await sleep(1200); const d = page.getByRole('button', { name: /Yes, Leave|Leave|Discard/ }).first(); if (await d.count()) await d.click(); await sleep(800); return done({ url: page.url().replace(H, '') });

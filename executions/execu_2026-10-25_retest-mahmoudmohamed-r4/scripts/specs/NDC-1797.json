@@ -1,0 +1,94 @@
+{
+ "out": "NDC-1797-retest-PASS.png",
+ "ticket": "NDC-1797",
+ "title": "Recycle Bin | Some records can't be deleted forever in a bulk delete and stay in the Recycle Bin.",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "1795-02-after-delete-forever.png",
+   "caption": "After bulk Delete forever of 50: only the 10 unselected records (bulk 10 … 01) remain.",
+   "crop": [
+    270,
+    60,
+    1000,
+    806
+   ],
+   "w": 1280,
+   "h": 866,
+   "boxes": [
+    {
+     "b": [
+      1010,
+      77,
+      1077,
+      100
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      300,
+      305,
+      1255,
+      860
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1797-api.png",
+   "caption": "POST /recycle-bin/delete with 50 ids: all succeeded; 60 → 10 items.",
+   "crop": [
+    0,
+    80,
+    1600,
+    300
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      251
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      366
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "3",
+   "Bulk Delete forever (50 ids)",
+   "All 50 deleted",
+   "POST /recycle-bin/delete 200 — all 50 succeeded",
+   "PASS"
+  ],
+  [
+   "1, 2, 4",
+   "Bin after the delete",
+   "None of the 50 left behind",
+   "60 → 10 items; the 10 left are the unselected bulk 01–10",
+   "PASS"
+  ]
+ ]
+}

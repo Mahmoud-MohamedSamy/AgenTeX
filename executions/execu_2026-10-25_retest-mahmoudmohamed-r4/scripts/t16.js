@@ -1,0 +1,1 @@
+await shot('1700-03a-admin-picker'); return done({ pop: await page.evaluate(() => [...document.querySelectorAll('[data-radix-popper-content-wrapper],[role=listbox],[role=dialog]')].map(e => e.innerText.slice(0, 400))) });

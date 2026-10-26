@@ -1,0 +1,10 @@
+const open = async () => { await page.goto(H + '/settings/teamspace', { waitUntil: 'commit', timeout: 90000 }); for (let k = 0; k < 40; k++) { await sleep(1000); if (/QA RT TS/.test(await txt().catch(() => ''))) break; } await sleep(800); await page.getByText('QA RT TS', { exact: true }).first().click(); await sleep(3000); };
+await page.getByText('ndc-staging-owner@taviportal.com', { exact: true }).click(); await sleep(600);
+const selected = (await page.evaluate(() => document.body.innerText.split('SELECTED')[1]?.slice(0, 120)));
+await page.getByRole('button', { name: 'Save', exact: true }).last().click(); await sleep(1200);
+const shownBefore = (await txt()).split('Admin')[1]?.split('\n').filter(Boolean).slice(0, 2).join(' ');
+const resp = []; const fr = async r => { const q = r.request(); if (q.method() !== 'GET' && /teamspace/.test(q.url())) resp.push(q.method() + ' ' + q.url().replace(H + '/api/v1', '').slice(0, 60) + ' ' + r.status() + ' body=' + (q.postData() || '').slice(0, 220)); }; page.on('response', fr);
+await page.getByRole('button', { name: 'Save', exact: true }).last().click(); await sleep(3500); page.off('response', fr);
+await open(); const shownAfter = (await txt()).split('Admin')[1]?.split('\n').filter(Boolean).slice(0, 2).join(' ');
+await shot('1700-03-admin-after-reload');
+return done({ selected, shownBefore, resp, shownAfter });

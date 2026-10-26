@@ -1,0 +1,1 @@
+const c = (await api('GET', '/desk/integrations/crm/config')).j.data; const p = await api('POST', '/desk/integrations/crm/pause', { reason: 'QA RT retest 2405' }); return done({ on_crm_delete: c.on_crm_delete, paused: p.s, at: new Date().toISOString() });

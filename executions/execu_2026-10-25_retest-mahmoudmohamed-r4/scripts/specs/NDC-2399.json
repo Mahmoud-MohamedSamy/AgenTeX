@@ -1,0 +1,166 @@
+{
+ "out": "NDC-2399-retest-PARTIAL.png",
+ "ticket": "NDC-2399",
+ "title": "CRM - Desk Integration | No notice to the admin when the initial sync finishes",
+ "verdict": "PARTIAL",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (Desk Administrator)",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "2399-r2-05-bell.png",
+   "caption": "After Disconnect + Connect the admin's bell has two \"CRM SYNC RUN\" notices for the initial imports.",
+   "crop": [
+    832,
+    0,
+    448,
+    340
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      848,
+      172,
+      1270,
+      326
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2399-r2-api.png",
+   "caption": "The notice has added / updated / could-not-sync counts, but not the 14 skipped, and the Failure Log it points to has none of the records.",
+   "crop": [
+    0,
+    0,
+    1600,
+    565
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      189,
+      1570,
+      344
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      346,
+      1570,
+      391
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      393,
+      1570,
+      459
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      508,
+      1570,
+      553
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2399-r2-07-failure-log.png",
+   "caption": "Failure Log after the reconnect (11:05 local): still 19 entries, the newest from 10:30 — the 7 records of this run are not listed.",
+   "crop": [
+    268,
+    56,
+    1012,
+    664
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      292,
+      225,
+      1256,
+      255
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      292,
+      296,
+      1256,
+      430
+     ],
+     "n": 7,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Admin told when initial sync is done",
+   "Notice in bell / email",
+   "2 bell notices (\"CRM customer/contract sync finished: …\") within seconds of the runs",
+   "PASS"
+  ],
+  [
+   "2",
+   "Counts",
+   "Added / updated / ignored",
+   "\"0 added, 0 updated, 5 could not sync\" — 14 skipped (ignored) customers missing",
+   "FAIL"
+  ],
+  [
+   "3–7",
+   "Skip / failure reasons",
+   "Reasons per record",
+   "Notice says \"The Failure Log lists the records that could not sync\" — none of the 7 are there; no reasons anywhere",
+   "FAIL"
+  ],
+  [
+   "—",
+   "Bell title",
+   "Readable",
+   "Truncated to \"…finished: 0 added, …\" in the list",
+   "INFO"
+  ],
+  [
+   "—",
+   "Email",
+   "Email to the admin (Zoho)",
+   "Not checked — no access to the admin mailbox",
+   "INFO"
+  ],
+  [
+   "5",
+   "Settings after reconnect",
+   "Unchanged",
+   "Config identical to the backup except import timestamps",
+   "PASS"
+  ]
+ ]
+}

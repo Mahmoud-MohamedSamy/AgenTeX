@@ -1,0 +1,10 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+await page.getByPlaceholder('Name', { exact: true }).fill('QA RT 1231 fill'); await page.keyboard.press('Tab'); await sleep(1500);
+const onForm = await page.getByPlaceholder('Fill From Name').inputValue();
+await shot('1231-01-form-after-name');
+const resp = []; const fr = async r => { const q = r.request(); if (q.method() === 'POST' && /\/records$/.test(q.url().split('?')[0])) resp.push({ s: r.status(), sent: (q.postData() || '').match(/"fill_from_phone"[^}]*}/)?.[0] || 'not sent', res: (await r.text().catch(() => '')).slice(0, 200) }); }; page.on('response', fr);
+await page.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(5000); page.off('response', fr);
+const id = resp[0]?.res?.match(/"id":"([0-9a-f-]{36})"/)?.[1]; let stored = null;
+if (id) stored = Object.fromEntries(((await api('GET', `/modules/${L}/records/${id}`)).j?.data?.data || []).filter(x => /^(name|fill_from_phone)$/.test(x.field)).map(x => [x.field, x.value?.value]));
+await shot('1231-02-after-save');
+return done({ onForm, resp, id, stored });

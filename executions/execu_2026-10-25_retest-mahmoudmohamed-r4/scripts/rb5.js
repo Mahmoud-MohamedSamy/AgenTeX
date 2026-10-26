@@ -1,0 +1,1 @@
+await shot('rb-02-state'); return done({ url: page.url().replace(H,''), inputs: await page.evaluate(() => [...document.querySelectorAll('input')].filter(i => i.offsetParent).map(i => i.placeholder)) });

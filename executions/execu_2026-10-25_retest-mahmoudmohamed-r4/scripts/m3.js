@@ -1,0 +1,10 @@
+await page.getByRole('button', { name: /Create New Module/ }).first().click(); await sleep(1500);
+const d = page.locator('[role=dialog]').last();
+await d.getByRole('button', { name: 'Teamspace' }).click(); await sleep(800);
+const opts = await page.evaluate(() => [...document.querySelectorAll('[role=option]')].map(e => e.innerText.trim()));
+await page.getByRole('option', { name: 'New Teamspace' }).click(); await sleep(500);
+await d.locator('#module-label-input').fill('QA RT Module 1693 b'); await sleep(500);
+const resp = []; const fr = async r => { const q = r.request(); if (q.method() === 'POST' && /modules/.test(q.url())) resp.push(q.url().replace(H + '/api/v1', '') + ' ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 160)); }; page.on('response', fr);
+await d.getByRole('button', { name: 'Create', exact: true }).click(); for (let k = 0; k < 30 && !resp.length; k++) await sleep(1000); await sleep(2500); page.off('response', fr);
+await shot('1693-03-second-teamspace');
+return done({ opts, resp, listed: (await txt()).includes('QA RT Module 1693 b') });

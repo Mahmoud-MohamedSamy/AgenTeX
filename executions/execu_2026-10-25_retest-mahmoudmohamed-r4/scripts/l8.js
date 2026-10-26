@@ -1,0 +1,1 @@
+const L='841043e1-c078-41f9-8d6e-dfd61bee45c3'; const f=arr((await api('GET','/modules/'+L+'/fields')).j?.data).find(x=>x.id==='5dd25be0-49fa-4e97-b41c-48ae5b71a45d'); return done(f && { name: f.fieldName, label: f.labels, type: f.datatypeKey, layouts: (f.layouts||[]).map(l=>l.layoutName), sub: (f.subFields||[]).length, created: f.createdAt, by: f.createdByName });

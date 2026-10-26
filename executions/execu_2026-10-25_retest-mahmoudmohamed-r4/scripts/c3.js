@@ -1,0 +1,1 @@
+const s = v => ({ kind: 'string', value: v }); const r = await api('POST', '/modules/6f553963-01d6-4b68-9fb3-143d23044c41/records', { data: [{ field: 'first_name', value: s('QA RT') }, { field: 'last_name', value: s('2404 Phone') }, { field: 'phone', value: s('+201005552404') }] }); return { s: r.s, id: r.j?.data?.id || r.t.slice(0, 200) };

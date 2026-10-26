@@ -1,0 +1,43 @@
+{
+ "out": "NDC-1337-api.png",
+ "date": "25–26 Oct 2026",
+ "title": "NDC-1337 · field permissions — automation run + restricted-user write checks",
+ "rows": [
+  [
+   "automation -Dtags=NDC-1337",
+   "FieldPermissionTest (25 Oct ~23:45)",
+   "PASS hiddenFieldNotReturned · hiddenFieldNotWritable · listHidesHiddenField · readOnlyFieldNotWritable",
+   "ok"
+  ],
+  [
+   "automation",
+   "FieldPermissionTest.transactionsFieldPermissions",
+   "FAIL — creating its test deal hits the Pipeline-field 422 (staging blocker), not a permission defect",
+   "info"
+  ],
+  [
+   "automation",
+   "RestrictedUserUiTest",
+   "2 SKIP + 2 config failures — credentials CSV missing (environment)",
+   "info"
+  ],
+  [
+   "layout-builder route",
+   "Leads layout \"test\" → QA RT FP → Set Permission → profile \"test\" Read cleared → Apply → Save",
+   "field-permissions: profile 64d4aae0 (\"test\") hidden for qa_rt_fp",
+   "ok"
+  ],
+  [
+   "test user 2: hidden write",
+   "POST /modules/{Leads}/records {…, qa_rt_fp:\"x\"}",
+   "422 FIELD_PERMISSION_DENIED \"Field 'qa_rt_fp' is hidden for your profile and cannot be written.\"",
+   "ok"
+  ],
+  [
+   "test user 2: control",
+   "POST /modules/{Leads}/records (without qa_rt_fp)",
+   "201 — lead \"QA RT 1337 u2 plain\" created",
+   "ok"
+  ]
+ ]
+}

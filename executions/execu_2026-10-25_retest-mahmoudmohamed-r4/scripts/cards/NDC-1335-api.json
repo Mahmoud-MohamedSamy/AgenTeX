@@ -1,0 +1,31 @@
+{
+ "out": "NDC-1335-api.png",
+ "date": "25–26 Oct 2026",
+ "title": "NDC-1335 · layout save requests (Leads)",
+ "rows": [
+  [
+   "existing layout \"test\"",
+   "Module Image off → Save",
+   "PUT /fields/… ×5 → 200 · PUT /layouts/6261fa51 → 200 · toasts \"Field updated successfully\", \"Layout updated successfully\" · no Subform error (save took 46 s)",
+   "ok"
+  ],
+  [
+   "after save",
+   "Cancel",
+   "no unsaved-changes prompt · moduleImageEnabled false stored",
+   "ok"
+  ],
+  [
+   "new layout (predefined only)",
+   "Create New Layout → Basic Information (Name, Created By, Modified By) → Save",
+   "PUT /fields/5dd25be0 (\"Subform\", 0 subfields, only on layout \"فاتورة\") → 422 DATATYPE_SUBFORM_NO_SUBFIELDS · layout not created",
+   "bad"
+  ],
+  [
+   "observation",
+   "Save before the builder finished loading \"test\"",
+   "created a NEW layout \"Standard Layout\" dff47b4e instead of updating \"test\" (deleted in cleanup)",
+   "info"
+  ]
+ ]
+}

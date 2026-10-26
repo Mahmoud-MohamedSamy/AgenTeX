@@ -1,0 +1,10 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3', LT = '6261fa51-b6e7-4c73-a83d-f6ecbd6260d1';
+await page.goto(H + `/settings/modules-and-fields/${L}/layouts/${LT}`, { waitUntil: 'commit', timeout: 90000 });
+for (let k = 0; k < 90; k++) { await sleep(1000); if ((await txt().catch(() => '')).includes('QA RT FP')) break; } await sleep(1500);
+const lab = page.getByText('QA RT FP', { exact: true }).first(); await lab.scrollIntoViewIfNeeded(); await lab.hover(); await sleep(600);
+const r = await page.evaluate(() => { const el = [...document.querySelectorAll('*')].find(e => e.childElementCount === 0 && e.textContent.trim() === 'QA RT FP'); let c = el; for (let k = 0; k < 6; k++) { c = c.parentElement; const b = c.querySelector('button[aria-label="Field options"]'); if (b) { const x = b.getBoundingClientRect(); return { x: x.x + x.width / 2, y: x.y + x.height / 2 }; } } });
+await page.mouse.move(r.x, r.y); await page.mouse.click(r.x, r.y); await sleep(1000);
+await page.getByText('Set Permission', { exact: true }).first().click(); await sleep(1500);
+const pane = await page.evaluate(() => { const h = [...document.querySelectorAll('*')].find(e => e.childElementCount === 0 && /Field Properties|Permission/.test(e.textContent.trim()) && e.getBoundingClientRect().left > 700); let c = h; for (let k = 0; k < 6 && c; k++) c = c.parentElement; return c ? c.innerText.slice(0, 900) : null; });
+await shot('1337-01-set-permission');
+return done({ pane });

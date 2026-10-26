@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2393-api.png",
+ "date": "25–26 Oct 2026",
+ "host": "staging-desk.taviportal.com + staging-crm.taviportal.com",
+ "title": "NDC-2393 · unlink a contact pair, change it in CRM, then link again",
+ "rows": [
+  [
+   "unlink",
+   "DELETE /api/v1/desk/integrations/crm/links/61f4a99c…",
+   "204",
+   "ok"
+  ],
+  [
+   "CRM change",
+   "PATCH /api/v1/modules/{crm contacts}/records/d9a7b0fa… {title:\"QA RT after unlink\"}",
+   "200",
+   "info"
+  ],
+  [
+   "after 50 s",
+   "GET /api/v1/desk/integrations/crm/links?kind=contact · Desk contact f0de6428…",
+   "no link for the pair (not re-linked); Desk Title still empty (not synced)",
+   "ok"
+  ],
+  [
+   "manual link",
+   "POST /api/v1/desk/integrations/crm/links {kind:\"contact\", crm_record_id, desk_record_id}",
+   "201 — link f2e7a3dd (was 409 \"already linked\")",
+   "ok"
+  ]
+ ]
+}

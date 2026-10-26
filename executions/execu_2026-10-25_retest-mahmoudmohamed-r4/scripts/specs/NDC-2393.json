@@ -1,0 +1,77 @@
+{
+ "out": "NDC-2393-retest-PASS.png",
+ "ticket": "NDC-2393",
+ "title": "CRM - Desk Integration | Unlink does not stop the sync: the next change links the pair again by email",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com (+ staging-crm for the integration) · tenant NDC-Staging · Edge (headless) · mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy, Desk Agent fedelav803, CRM test user 1 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2393-api.png",
+   "caption": "API: after unlink a CRM change neither re-links nor syncs the pair; manual link works.",
+   "crop": [
+    0,
+    0,
+    1600,
+    356
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      95,
+      1570,
+      140
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      210,
+      1570,
+      276
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      278,
+      1570,
+      344
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Unlink",
+   "204",
+   "204",
+   "PASS"
+  ],
+  [
+   "2",
+   "CRM Title changed, wait 50 s",
+   "Stays unlinked; change not written to Desk",
+   "No link for the pair; Desk Title still empty",
+   "PASS"
+  ],
+  [
+   "3",
+   "Manual link afterwards",
+   "Allowed",
+   "201 (was 409 \"already linked\")",
+   "PASS"
+  ]
+ ]
+}

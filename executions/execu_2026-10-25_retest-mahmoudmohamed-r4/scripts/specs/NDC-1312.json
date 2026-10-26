@@ -1,0 +1,125 @@
+{
+ "out": "NDC-1312-retest-BLOCKED.png",
+ "ticket": "NDC-1312",
+ "title": "Pipelines | Changing a deal's pipeline does not ask which stage the deal should move to",
+ "verdict": "BLOCKED",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1312-03-stage-question.png",
+   "caption": "Deal → Pipeline → \"1\": the dialog asks \"Stage in the new pipeline\" (qualification, kept because \"1\" has it too).",
+   "crop": [
+    370,
+    190,
+    540,
+    340
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      405,
+      365,
+      875,
+      440
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1312-04-after-confirm.png",
+   "caption": "Change pipeline → PATCH 422 toast with the raw pipeline id; deal stays Standard / qualification.",
+   "crop": [
+    380,
+    190,
+    900,
+    520
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      836,
+      610,
+      1256,
+      694
+     ],
+     "n": 2,
+     "kind": "BLOCKED"
+    }
+   ]
+  },
+  {
+   "img": "NDC-pipeline-blocker.png",
+   "caption": "Shared staging blocker card: the Deals Pipeline pick-list field allows only \"Standard (Standard)\", so every deal write that sends a pipeline — \"1\" or even the default Standard — is refused with 422.",
+   "crop": [
+    0,
+    0,
+    1600,
+    610
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      923,
+      99,
+      1562,
+      157
+     ],
+     "n": 4,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      923,
+      371,
+      1562,
+      523
+     ],
+     "n": 5,
+     "kind": "BLOCKED"
+    },
+    {
+     "b": [
+      923,
+      235,
+      1562,
+      293
+     ],
+     "n": 3,
+     "kind": "BLOCKED"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Dialog asks for the stage in the new pipeline",
+   "Stage picker from destination pipeline",
+   "\"Stage in the new pipeline: qualification — The deal keeps its current stage — the new pipeline has it too.\"",
+   "PASS"
+  ],
+  [
+   "2–3",
+   "Change pipeline → deal moves at the chosen stage",
+   "Deal on \"1\" at the chosen stage",
+   "PATCH 422 \"Pipeline: '640e03a4-…' is not one of the allowed values (Standard (Standard)).\"; deal stays Standard / qualification",
+   "BLOCKED"
+  ],
+  [
+   "4–5",
+   "Cause",
+   "—",
+   "Staging Pipeline field allows only \"Standard (Standard)\" — not judgeable on staging now",
+   "INFO"
+  ]
+ ]
+}

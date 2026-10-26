@@ -1,0 +1,1 @@
+await shot('ts-04-target'); const sel = await page.evaluate(() => [...document.querySelectorAll('select')].map(s => [...s.options].map(o => o.text).join('|'))); return done({ sel, checked: await page.locator('input[type=checkbox]:checked').count() });

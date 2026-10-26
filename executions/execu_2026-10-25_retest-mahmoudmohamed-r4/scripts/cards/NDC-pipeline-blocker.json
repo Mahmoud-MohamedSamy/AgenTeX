@@ -1,0 +1,55 @@
+{
+ "out": "NDC-pipeline-blocker.png",
+ "date": "25–26 Oct 2026",
+ "title": "Staging blocker · Deals Pipeline field only allows \"Standard (Standard)\" — every pipeline write is refused (NDC-1302 / 1312 / 1316 / 1324)",
+ "rows": [
+  [
+   "field definition",
+   "GET /api/v1/modules/{Deals}/fields → pipeline",
+   "datatypeKey pick_list · datatypeOptions {\"allowed_values\":[\"Standard (Standard)\"]} · lastModified 2026-10-24T15:54:43Z by ndc-staging-owner",
+   "info"
+  ],
+  [
+   "create on \"1\" / test-01",
+   "POST /api/v1/modules/{Deals}/records {pipeline:\"640e03a4…\" (pipeline \"1\"), stage:\"test-01\"}",
+   "422 PICKLIST_VALUE_INVALID \"Pipeline: '640e03a4-…' is not one of the allowed values (Standard (Standard)).\"",
+   "bad"
+  ],
+  [
+   "move existing deal to \"1\"",
+   "PATCH /api/v1/modules/{Deals}/records/{id} {pipeline:\"640e03a4…\", stage:\"test-01\"}",
+   "422 — same message; deal stays on Standard",
+   "bad"
+  ],
+  [
+   "mass update 2 deals → \"1\"",
+   "POST /api/v1/modules/{Deals}/records/mass-update {2 ids, pipeline:\"640e03a4…\", stage:\"test-02\"}",
+   "422 — same message; dialog stays open with no message or toast; both deals still Standard / qualification",
+   "bad"
+  ],
+  [
+   "create on default Standard (id)",
+   "POST /api/v1/modules/{Deals}/records {pipeline:\"5170500c…\" (Standard)}",
+   "422 \"…'5170500c-…' is not one of the allowed values (Standard (Standard))\"",
+   "bad"
+  ],
+  [
+   "create with \"Standard\" text",
+   "POST /api/v1/modules/{Deals}/records {pipeline:\"Standard\"}",
+   "422 — refused as well",
+   "bad"
+  ],
+  [
+   "UI create, default Standard",
+   "Create Transactions → Pipeline Standard (Default) → Save",
+   "POST 422 — same message under the Pipeline field (deal-ui-default-save.png)",
+   "bad"
+  ],
+  [
+   "create without pipeline",
+   "POST /api/v1/modules/{Deals}/records (no pipeline key)",
+   "only way a deal can be created now — pipeline fixes cannot be judged until the field is repaired",
+   "info"
+  ]
+ ]
+}

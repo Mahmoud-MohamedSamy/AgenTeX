@@ -1,0 +1,12 @@
+const d = page.locator('[role=dialog]').last(); const out = {};
+await d.locator('#module-label-input').fill('QA RT Module 1693'); await sleep(600);
+out.key = await d.locator('#module-key-input').inputValue();
+const resp = []; const fr = async r => { const q = r.request(); if (q.method() === 'POST' && /modules/.test(q.url())) resp.push(q.url().replace(H + '/api/v1', '') + ' ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 260)); }; page.on('response', fr);
+const t0 = Date.now(); await d.getByRole('button', { name: 'Create', exact: true }).click();
+for (let k = 0; k < 40 && !resp.length; k++) await sleep(1000); await sleep(3000);
+page.off('response', fr); out.secs = Math.round((Date.now() - t0) / 1000); out.resp = resp;
+out.toasts = await page.evaluate(() => [...document.querySelectorAll('[data-sonner-toast]')].map(t => t.innerText.trim()));
+out.dialogOpen = await page.locator('[role=dialog]').count(); out.url = page.url().replace(H, '');
+out.listed = (await txt()).includes('QA RT Module 1693');
+await shot('1693-02-after-create');
+return done(out);

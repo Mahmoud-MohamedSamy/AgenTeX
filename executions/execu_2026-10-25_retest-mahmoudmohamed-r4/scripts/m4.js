@@ -1,0 +1,10 @@
+const mods = arr((await api('GET', '/modules')).j?.data).filter(m => /qa_rt_module_1693/.test(m.moduleKey || '')).map(m => m.id + ' ' + m.moduleKey + ' ts=' + (m.teamspaceId || '').slice(0, 8));
+const dup = await api('POST', '/teamspaces/5ea90671-4df5-4642-939d-49494f8e4d6e/modules', { moduleKey: 'qa_rt_module_1693', labels: { en: 'QA RT dup' } });
+await page.getByRole('button', { name: /Create New Module/ }).first().click(); await sleep(1500);
+const d = page.locator('[role=dialog]').last(); await d.locator('#module-label-input').fill('QA RT Module 1693'); await sleep(400);
+await d.getByRole('button', { name: 'Create', exact: true }).click(); await sleep(3500);
+const uiMsg = ((await d.innerText().catch(() => '')) || '').split('\n').filter(l => /taken|exists|already|error|unique/i.test(l));
+const toasts = await page.evaluate(() => [...document.querySelectorAll('[data-sonner-toast]')].map(t => t.innerText.trim()));
+await shot('1693-04-duplicate');
+await d.getByRole('button', { name: 'Cancel' }).click().catch(() => {});
+return done({ mods, dup: dup.s + ' ' + dup.t.slice(0, 220), uiMsg, toasts });

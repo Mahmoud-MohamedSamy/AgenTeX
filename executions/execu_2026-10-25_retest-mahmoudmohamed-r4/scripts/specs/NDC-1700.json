@@ -1,0 +1,101 @@
+{
+ "out": "NDC-1700-retest-PASS.png",
+ "ticket": "NDC-1700",
+ "title": "Teamspace | Teamspace admin displays the current logged in user instead of the actual user set as teamspace admin.",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1700-02-New-Teamspace.png",
+   "caption": "Signed in as mahmoud.mahamed1515 (MA): New Teamspace shows its own admin ndc-staging-owner, not the viewer.",
+   "crop": [
+    280,
+    0,
+    1000,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      313,
+      586,
+      589,
+      620
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1218,
+      6,
+      1266,
+      50
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "1700-03-admin-after-reload.png",
+   "caption": "QA RT TS admin changed to ndc-staging-owner → Save → reload: still ndc-staging-owner while MA is signed in.",
+   "crop": [
+    280,
+    0,
+    1000,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      313,
+      636,
+      589,
+      670
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1218,
+      6,
+      1266,
+      50
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Admin shown = stored admin, not the viewer",
+   "Stored admin",
+   "New Teamspace → ndc-staging-owner; CRM Teamspace → \"—\" (system creator); QA RT TS → me (its creator) — viewer is mahmoud.mahamed1515",
+   "PASS"
+  ],
+  [
+   "3–4",
+   "Change admin and reload",
+   "New admin kept for every viewer",
+   "Picker \"Select the teamspace admin\" → ndc-staging-owner → Save (PUT /acl 200) → reload shows ndc-staging-owner",
+   "PASS"
+  ],
+  [
+   "—",
+   "Where it is stored",
+   "—",
+   "No admin field in /teamspaces; admin kept in the ACL",
+   "INFO"
+  ]
+ ]
+}

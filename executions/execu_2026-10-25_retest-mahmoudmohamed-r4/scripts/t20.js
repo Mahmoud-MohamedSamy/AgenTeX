@@ -1,0 +1,1 @@
+await shot('1695-02a-switcher'); return done({ pop: await page.evaluate(() => [...document.querySelectorAll('[data-radix-popper-content-wrapper],[role=menu],[role=listbox],[role=dialog]')].map(e => e.innerText.slice(0, 300))) });

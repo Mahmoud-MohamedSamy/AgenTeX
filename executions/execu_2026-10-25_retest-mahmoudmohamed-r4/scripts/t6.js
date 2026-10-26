@@ -1,0 +1,1 @@
+await shot('ts-03-add-modules'); const pop = await page.evaluate(() => [...document.querySelectorAll('[data-radix-popper-content-wrapper], [role=listbox], [role=menu]')].map(e => e.innerText.slice(0, 600))); return done({ pop });

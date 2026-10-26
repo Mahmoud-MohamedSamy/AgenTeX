@@ -1,0 +1,841 @@
+{
+ "batch": "CRM + Desk",
+ "title": "Retest round 4 — Mahmoud Mohamed · NDC · 50 tickets (29 CRM, 21 Desk)",
+ "date": "25–26 Oct 2026",
+ "env": "staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803",
+ "devNote": "No developer comments since 21 Oct on any of the 50; 34 tickets have no comments at all.",
+ "tickets": [
+  {
+   "id": "NDC-1302",
+   "uuid": "2610d4f4-1d79-4d2b-80d1-e70ac05915c7",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Deals",
+   "title": "Deals | Selecting a stage on a deal either fails with \"Validation failed\" or applies the stage but switches the deal to the default pipeline",
+   "v": "BLOCKED",
+   "dev": "No new developer note since our 21 Oct PARTIAL.",
+   "devHeld": "Cannot be judged: staging Deals Pipeline field was changed on 24 Oct to a pick list allowing only \"Standard (Standard)\".",
+   "summary": "Every deal write that sends a pipeline is refused — API create/PATCH on pipeline \"1\" and even on the default Standard id → 422 \"Pipeline: '…' is not one of the allowed values (Standard (Standard)).\"; UI Create Transactions offers \"1\" and its 7 stages but Save is refused with the raw id message. No deal can be created or moved on staging, so the stage/pipeline fix cannot be verified.",
+   "still": [
+    "Blocked by staging config: Deals field \"pipeline\" = pick_list, allowed_values [\"Standard (Standard)\"] (modified 24 Oct 15:54 UTC by ndc-staging-owner)."
+   ],
+   "img": [
+    "NDC-1302-retest-BLOCKED.png"
+   ]
+  },
+  {
+   "id": "NDC-1337",
+   "uuid": "7bebac68-d7df-4c90-8b90-73e985d0d539",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Field Permissions",
+   "title": "Field Permissions | Permissions are not enforced from either the Field Permissions tab or the layout builder — every field stays readable and writable",
+   "v": "PASS",
+   "dev": "Go-live retest (25 Oct) passed API + screens; open item: layout-builder route.",
+   "devHeld": "Held, including the layout-builder route.",
+   "summary": "Permission set from the layout builder (Set Permission → profile \"test\" Read cleared) is saved as hidden and enforced: test user 2 gets 422 FIELD_PERMISSION_DENIED writing the field and the field is not on the create form. Automation: 4 API checks pass; 1 failure only from the Pipeline blocker; UI tests not run (credentials file missing).",
+   "still": [],
+   "img": [
+    "NDC-1337-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1335",
+   "uuid": "7e7ab4ed-955a-4bcd-a947-a70c1cd04ac2",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Saving a layout fails with \"Failed to update options for Subform\" when the layout has no subform — a 404 on a non-existent field",
+   "v": "PARTIAL",
+   "dev": "No developer note.",
+   "devHeld": "Existing layout fixed; new layout still fails on an unrelated Subform field.",
+   "summary": "Saving a change to an existing layout works (\"Layout updated successfully\", no Subform error). Saving a NEW layout with only predefined fields fails: the builder also PUTs the module's \"Subform\" field (no subfields, only on layout فاتورة) → 422 \"A subform needs at least one subfield before it can be saved\"; layout not created.",
+   "still": [
+    "Step 4: new predefined-only layout → PUT /fields/5dd25be0 (Subform) 422 DATATYPE_SUBFORM_NO_SUBFIELDS; layout not created.",
+    "Observation: saving before the builder finished loading created a duplicate \"Standard Layout\" instead of updating \"test\"."
+   ],
+   "img": [
+    "NDC-1335-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-1693",
+   "uuid": "272041ae-50ce-44b2-8b53-874a7e5fa60c",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Creating a new module returns 500 Internal Server Error.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Create New Module works in both teamspaces (201, listed); a duplicate key gives 409 \"Module key already exists in this organization.\" — no 500.",
+   "still": [],
+   "img": [
+    "NDC-1693-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1344",
+   "uuid": "6caaf05c-1eaf-4935-837e-43e983976444",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Audit Log",
+   "title": "Audit Log | The entity filter is incomplete and does not cover all system entities",
+   "v": "PARTIAL",
+   "dev": "FIXED (21 Oct); QA PARTIAL 21 Oct.",
+   "devHeld": "Duplicates and the feed key fixed; labels for new modules not.",
+   "summary": "Entity filter: no duplicates, no repeated module block; feed reads \"restored a Lead named …\". Still: new modules listed by key (qa_rt_module_1693) although they have labels; \"23c1a6s8d46a\" and \"Test\" listed but not CRM modules; internal names \"Mail agent signature row\", \"Module view pin\".",
+   "still": [
+    "New modules shown by API key instead of label.",
+    "Unknown entries \"23c1a6s8d46a\", \"Test\"; internal names \"Mail agent signature row\", \"Module view pin\"."
+   ],
+   "img": [
+    "NDC-1344-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-1333",
+   "uuid": "de47141e-6067-44f5-9bd0-e0520030ecf7",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Activity Reminders",
+   "title": "Activity Reminders | The settings page has two scroll bars, causing unpredictable scrolling",
+   "v": "PASS",
+   "dev": "FIXED (21 Oct); QA FAIL 21 Oct (window still scrolled).",
+   "devHeld": "Held.",
+   "summary": "Only the settings column scrolls (window 720 = viewport); wheeling past the end leaves content visible; a checkbox click ticks the item under the pointer and the column compensates for the unsaved bar.",
+   "still": [],
+   "img": [
+    "NDC-1333-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1695",
+   "uuid": "1f8d297e-3c5b-45ea-8a02-23a627a07b05",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | Renaming a folder returns success but doesn't actually change the folder name.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Folder rename saved; after reload the card, API and left navigation show \"QA RT Folder A2\".",
+   "still": [],
+   "img": [
+    "NDC-1695-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1698",
+   "uuid": "58b2cbc1-4ad2-4936-8131-d9155f75ebf8",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | There is no delete button/icon for modules that belongs to folders unlike Root modules that has a delete icon.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Modules inside folders have the same × as root modules; removing one keeps the folder and siblings.",
+   "still": [],
+   "img": [
+    "NDC-1698-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1231",
+   "uuid": "be737169-4caf-48c5-8b8f-20b3894b2bbe",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Modules and Fields: Field Properties",
+   "title": "Modules and Fields: Field Properties | Selecting \"another field on the same form\" in Auto-fill reverts to \"Don't auto-fill\"",
+   "v": "PASS",
+   "dev": "QA 13 Sep: config fixed, value never copied.",
+   "devHeld": "Held.",
+   "summary": "Fill From Name (auto-fill from Name) fills on the form and is saved; a value typed by hand is not overwritten.",
+   "still": [],
+   "img": [
+    "NDC-1231-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1312",
+   "uuid": "ce5dac3d-cf36-417f-afb0-ad599be28017",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Pipelines",
+   "title": "Pipelines | Changing a deal's pipeline does not ask which stage the deal should move to",
+   "v": "BLOCKED",
+   "dev": "FIXED (21 Oct); QA FAIL 21 Oct.",
+   "devHeld": "Dialog part held; the move cannot be verified (Pipeline field blocker).",
+   "summary": "Change pipeline dialog asks \"Stage in the new pipeline\" (keeps current stage when it exists). Confirm → 422 \"Pipeline … is not one of the allowed values (Standard (Standard))\" toast with raw id; deal unchanged — caused by the staging Pipeline field config.",
+   "still": [
+    "Blocked by staging Pipeline field config (see NDC-1302)."
+   ],
+   "img": [
+    "NDC-1312-retest-BLOCKED.png"
+   ]
+  },
+  {
+   "id": "NDC-1316",
+   "uuid": "4c9b218f-b4a4-4a43-b279-92042723719d",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Deals - Mass Update",
+   "title": "Deals - Mass Update | Pipeline is not offered as a field, so deals cannot be moved between pipelines in bulk",
+   "v": "BLOCKED",
+   "dev": "FIXED (21 Oct); QA FAIL 21 Oct.",
+   "devHeld": "Mass Update UI held; the update cannot be verified.",
+   "summary": "Mass Update offers Pipeline + \"Stage in the new pipeline\" (7 stages of \"1\", default first). Update records → POST mass-update 422 (same Pipeline message); the dialog stays open with no message — caused by the staging Pipeline field config.",
+   "still": [
+    "Blocked by staging Pipeline field config.",
+    "Also: the refused Mass Update shows no message to the user."
+   ],
+   "img": [
+    "NDC-1316-retest-BLOCKED.png"
+   ]
+  },
+  {
+   "id": "NDC-1324",
+   "uuid": "b983cc0e-7117-4929-a173-f81dd841000b",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Deals Listing Page",
+   "title": "Deals Listing Page | Editing the Pipeline field inline shows an empty pipeline list",
+   "v": "BLOCKED",
+   "dev": "FIXED (21 Oct); QA FAIL 21 Oct.",
+   "devHeld": "Regressed on staging: inline editor is a plain picker.",
+   "summary": "Deals list Pipeline column shows the raw id \"5170500c-…\" for every deal; inline edit opens a plain picker (raw-id chip) offering only \"Standard (Standard)\" — the change-pipeline modal of 21 Oct is gone. Likely a consequence of the Pipeline field now being a plain pick list.",
+   "still": [
+    "Blocked/regressed by staging Pipeline field config: raw ids in the list, no pipeline choice inline."
+   ],
+   "img": [
+    "NDC-1324-retest-BLOCKED.png"
+   ]
+  },
+  {
+   "id": "NDC-1593",
+   "uuid": "dea744ef-8c6a-465c-aa95-08d79d675299",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Import",
+   "title": "Import | Field-level permissions are not enforced, and a user can insert value into fields he doesn't have access to (Read/ Read and Edit) through import",
+   "v": "PASS",
+   "dev": "NOT TESTED by dev (needs restricted user); fix deployed.",
+   "devHeld": "Held.",
+   "summary": "Importing as test user 2: the hidden field is not offered in Map fields; the read-only field is listed as \"(read-only for your profile)\" and disabled.",
+   "still": [],
+   "img": [
+    "NDC-1593-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1599",
+   "uuid": "a1ce40d2-7034-4ca9-8229-992adb312dd3",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Import",
+   "title": "Import | Importing to a field with Profile Visibility set to \"Read\" fills the field successfully with no problems ignoring the profile visibility.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Read-only (profile \"test\") field cannot be chosen as an import target: \"QA RT RO (read-only for your profile)\" disabled.",
+   "still": [],
+   "img": [
+    "NDC-1599-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1692",
+   "uuid": "852a67cc-74a1-4abd-94b3-c54a3e8fbdf0",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | Modules added to teamspace under a created folder (not Root) appears right away in the left pane as Root modules until the changes are saved. Also, deleting a folder that contains modules doesn't ask the user about associated modules behavior.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Modules added to a folder are saved at once and nested under the folder in the sidebar; deleting a folder with modules asks Move (to Root/another folder) or Remove, names the count, button \"Move & Delete\" — result matches.",
+   "still": [],
+   "img": [
+    "NDC-1692-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1232",
+   "uuid": "59cf8a69-473d-489a-96ab-d264d1679be6",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "[Enhancement] Data Types",
+   "title": "[Enhancement] Data Types | The header row scrolls out of view and columns are too narrow, wrapping values across multiple lines",
+   "v": "PASS",
+   "dev": "DONE (21 Oct); QA PARTIAL 21 Oct.",
+   "devHeld": "Held.",
+   "summary": "Sticky header with solid background; the overflowing table shows fades for more columns and scrolls to Set Unique; rows compact. INFO: Label column scrolls away when scrolled right.",
+   "still": [],
+   "img": [
+    "NDC-1232-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1554",
+   "uuid": "424a4cb2-e177-407c-8c0f-b613e8629e7b",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "[Enhancement] Import",
+   "title": "[Enhancement] Import | Tag delimiter should be static helper text rather than a picklist, since both comma and semicolon are accepted",
+   "v": "PASS",
+   "dev": "Not exercised by dev (could not upload).",
+   "devHeld": "—",
+   "summary": "Tag delimiter is now static chips \", ;\" with the exact helper text; comma and semicolon both split; a mixed cell is refused \"Tags · Invalid format · Row 4\". INFO: the error table under \"All errors 1\" is empty.",
+   "still": [],
+   "img": [
+    "NDC-1554-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1598",
+   "uuid": "1afec5d6-f4a0-4295-bf3c-aa5f85fe2f79",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "[Enhancement] Modules and Fields",
+   "title": "[Enhancement] Modules and Fields | Field Listing page is missing a layout filter",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Field Listing has a Layout filter (All Layouts, every layout, Not on any layout); \"test\" shows exactly the 18 fields on that layout.",
+   "still": [],
+   "img": [
+    "NDC-1598-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1689",
+   "uuid": "6eb261d3-b747-400e-a2d5-80ee6ec6efe8",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | The delete icon on the Edit Teamspace page does nothing",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Edit-page trash icon works: with modules it explains \"Can't delete … still contains 4 modules\"; when empty it asks \"Delete … permanently\" and deletes (204).",
+   "still": [],
+   "img": [
+    "NDC-1689-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1691",
+   "uuid": "c538e788-a842-4fe4-8a8a-6812baf3f876",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | Modules cannot be dragged and dropped between folders or out to the teamspace root on the Edit Teamspace page",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Modules drag between folders and out to the root; saved and confirmed by the API.",
+   "still": [],
+   "img": [
+    "NDC-1691-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1694",
+   "uuid": "1ad3dd03-65db-49ef-9ee4-955bf051191f",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | A teamspace can be saved with zero modules.",
+   "v": "PARTIAL",
+   "dev": "No developer note.",
+   "devHeld": "UI fixed; API still allows it.",
+   "summary": "UI: Save disabled with \"Add at least one module to save this teamspace.\" API: POST /teamspaces with no modules → 201, and the empty teamspace is offered in the sidebar switcher.",
+   "still": [
+    "API creates an empty teamspace (201) and it is offered in the teamspace switcher."
+   ],
+   "img": [
+    "NDC-1694-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-1700",
+   "uuid": "7c105508-5990-481f-898a-31c4d3c12773",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | Teamspace admin displays the current logged in user instead of the actual user set as teamspace admin.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Admin field shows the stored admin, not the viewer; changing the admin persists after reload.",
+   "still": [],
+   "img": [
+    "NDC-1700-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2220",
+   "uuid": "982c0bb5-01f3-4514-a010-15bc162f30de",
+   "pri": "Urgent",
+   "mod": "Desk",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Profiles chosen in the Create Module dialog are not applied",
+   "v": "PASS",
+   "dev": "FIXED (21 Oct); QA PARTIAL 21 Oct (module still listed).",
+   "devHeld": "Held in the UI.",
+   "summary": "Module restricted to Desk Agent: an excluded Desk Administrator does not see it in the \"+\" menu or sidebar and gets 403 on records. INFO: GET /modules still returns it.",
+   "still": [],
+   "img": [
+    "NDC-2220-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2233",
+   "uuid": "54c2b73e-047a-44b8-a50f-8a2586e6ced3",
+   "pri": "High",
+   "mod": "Desk",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | File and image upload restrictions are not enforced",
+   "v": "PASS",
+   "dev": "PARTLY FIXED (21 Oct): API done, form not.",
+   "devHeld": "Held: form now done too.",
+   "summary": "Form shows \"File type not allowed. Allowed: pdf/png\" and \"File is too large. Maximum size is 1 MB.\"; a valid PDF is accepted; API 422 for both.",
+   "still": [],
+   "img": [
+    "NDC-2233-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2246",
+   "uuid": "da48cfe4-52d7-4307-9ad4-b53e8ac47451",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Custom data types are listed but cannot be used to create a field (API)",
+   "v": "PASS",
+   "dev": "QA PARTIAL 21 Oct (stored as single_line).",
+   "devHeld": "—",
+   "summary": "Field keeps custom_datatype_key qa_rt_dt4 (on the single_line base); deleting the in-use type → 409 DATATYPE_IN_USE.",
+   "still": [],
+   "img": [
+    "NDC-2246-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2249",
+   "uuid": "09342bb6-1402-4317-ada4-efd876ce0615",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Arabic UI leaves \"Create New Layout\" and the layouts description in English",
+   "v": "PASS",
+   "dev": "QA PARTIAL 21 Oct (\"Last Modified\" English).",
+   "devHeld": "—",
+   "summary": "Arabic Layouts page fully translated (آخر تعديل).",
+   "still": [],
+   "img": [
+    "NDC-2249-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2250",
+   "uuid": "b32c95c3-9569-4976-abd9-df8611470a39",
+   "pri": "Low",
+   "mod": "Desk",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Module list shows \"UN\" as last modifier of every seeded module",
+   "v": "PASS",
+   "dev": "FIXED (21 Oct); QA PARTIAL 21 Oct (System everywhere).",
+   "devHeld": "Held.",
+   "summary": "Real last modifier shown (Tickets: ndc-staging-owner; new module: mahmoud.mahamed1515); \"System\" only for untouched seeded modules.",
+   "still": [],
+   "img": [
+    "NDC-2250-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2393",
+   "uuid": "345ef0c3-275c-40bb-b107-a3d69efda0cb",
+   "pri": "High",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Unlink does not stop the sync: the next change links the pair again by email",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Unlinked pair stays unlinked after a CRM change (50 s); Desk not updated; manual re-link 201.",
+   "still": [],
+   "img": [
+    "NDC-2393-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2394",
+   "uuid": "30db2da2-741f-4669-b918-ad23f2743d45",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Handshake Mode is still offered while the sync is paused",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "While paused the layout picker shows \"Handshake Mode is unavailable while the CRM sync is paused.\"",
+   "still": [],
+   "img": [
+    "NDC-2394-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2395",
+   "uuid": "6528401a-da40-4376-841f-25c90fab83b7",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Failure Log reasons show raw record ids instead of record names",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Failure reason names both records (\"…record \"QA RT 2393 Pair\" … already paired with Desk record \"QA RT 2393 Pair\".\"). INFO: older account failures show an id for a Desk account that no longer exists.",
+   "still": [],
+   "img": [
+    "NDC-2395-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2396",
+   "uuid": "896468cb-2eef-4543-8f13-734357f05737",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | The settings API saves invalid field mappings",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Invalid mappings refused 422 (crm_field_unknown, desk_field_unknown, incomplete). INFO: lookup case reports desk_field_unknown instead of lookup_not_mappable.",
+   "still": [],
+   "img": [
+    "NDC-2396-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2397",
+   "uuid": "26fdc768-743c-48bb-8037-7e18a6cef006",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Settings save without row_version is accepted, so the lost-update check can be skipped",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Save without row_version → 400 \"row_version is required…\".",
+   "still": [],
+   "img": [
+    "NDC-2397-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2398",
+   "uuid": "a30030d3-c2ec-4d10-ae59-04713b3a7791",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Sync History has no \"failed\" count",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Sync History rows include a \"failed\" count.",
+   "still": [],
+   "img": [
+    "NDC-2398-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2399",
+   "uuid": "ba8e7ade-fce1-47b5-8a0d-bfffde52ad95",
+   "pri": "Low",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | No notice to the admin when the initial sync finishes",
+   "v": "PARTIAL",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Second retest 26 Oct (user asked): Disconnect + Connect → 2 bell notices \"CRM customer/contract sync finished: 0 added, 0 updated, 5 / 2 could not sync\". Missing: the 14 skipped customers, and the reasons — the Failure Log the notice points to has none of the 7 records. Settings unchanged after reconnect.",
+   "still": [
+    "Notice omits the skipped (ignored) count.",
+    "No reasons for the records that could not sync; they are not in the Failure Log."
+   ],
+   "img": [
+    "NDC-2399-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-2400",
+   "uuid": "a25ec87f-08fe-4f23-aa0f-9917be10ae5f",
+   "pri": "Low",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Desk contact list shows raw sync values \"synced\" / \"needs_attention\"",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Contact list chips read \"Synced\" / \"Needs attention\" (no raw values). INFO: \"Synced\" chips are drawn red with an empty circle (error style) for a healthy state.",
+   "still": [],
+   "img": [
+    "NDC-2400-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2401",
+   "uuid": "71e613a6-f2c4-41ea-b4d7-828409e32e83",
+   "pri": "Low",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Pause with a long reason fails with a server error (HTTP 500)",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Pause reason over 500 characters → 400 \"The pause reason can be at most 500 characters.\" (no 500).",
+   "still": [],
+   "img": [
+    "NDC-2401-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2402",
+   "uuid": "4eb61add-499a-43ba-b97f-8f52b8e9dba5",
+   "pri": "Low",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Customer statistics answer 200 for a contact that does not exist",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Stats for a non-existent contact → 404.",
+   "still": [],
+   "img": [
+    "NDC-2402-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2403",
+   "uuid": "39742df1-1a69-4323-be5d-14b7477bbf2e",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Sync creates a Desk contact without its mandatory Last name",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "CRM contact without Last name is not created in Desk; Failure Log: \"Mandatory field missing: Last Name is required in Desk…\".",
+   "still": [],
+   "img": [
+    "NDC-2403-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2404",
+   "uuid": "e052bf37-a420-42a2-950f-42aa4284c8ae",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Handshake Mode does not match requesters by phone",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Tickets for a phone-matched contact and a phone-only ticket classify as Contacts/Leads (crm_contact_or_lead).",
+   "still": [],
+   "img": [
+    "NDC-2404-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2405",
+   "uuid": "daedede5-6b6e-4a03-86f4-2e8b5701ffb5",
+   "pri": "Medium",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Changing the delete preference applies to a delete made earlier",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Delete made under \"Keep\" keeps the Desk contact (link needs_attention) even after the preference is changed to Delete before resume.",
+   "still": [],
+   "img": [
+    "NDC-2405-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2407",
+   "uuid": "d9be6bbe-3b08-4b46-96fa-d3bb74439f5b",
+   "pri": "Low",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | With \"No access\" the CRM pane is still offered and hangs on \"Loading…\"",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Desk Agent with No access: no CRM rail icon or pane; with default access the pane is back.",
+   "still": [],
+   "img": [
+    "NDC-2407-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2408",
+   "uuid": "9172815a-4166-4c5b-bf49-d6577fa56987",
+   "pri": "Low",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | The CRM pane error \"Could not load this section.\" has no Retry",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "\"Could not load this section.\" now has Retry, which reloads the pane.",
+   "still": [],
+   "img": [
+    "NDC-2408-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2409",
+   "uuid": "e5df6fb8-650d-4056-ab6b-3323587c4151",
+   "pri": "Low",
+   "mod": "Desk",
+   "feat": "CRM - Desk Integration",
+   "title": "CRM - Desk Integration | Integration settings changes are not in the Audit Log",
+   "v": "PARTIAL",
+   "dev": "No developer note.",
+   "devHeld": "Event logged; content not useful.",
+   "summary": "A settings save now creates an audit event, but the log reads \"…updated CRM ⇄ Desk integration settings' action from blank value to config.updated\" — raw value and no indication of which setting changed.",
+   "still": [
+    "Audit entry does not say which integration setting changed; shows raw \"config.updated\"."
+   ],
+   "img": [
+    "NDC-2409-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-1597",
+   "uuid": "e9d8afc7-7498-4ad9-8109-6b80db724105",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Recycle Bin",
+   "title": "Recycle Bin | The module filter is incomplete and does not cover all system modules",
+   "v": "PARTIAL",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Module filter lists 40 modules with counts and proper labels (Blueprint added). Still not offered: Pipeline, Review Process, Assignment Rule, Action (search → \"No results found\"); odd entry \"23c1a6s8d46a\".",
+   "still": [
+    "Pipeline, Review Process, Assignment Rule, Action missing from the Module filter."
+   ],
+   "img": [
+    "NDC-1597-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-1600",
+   "uuid": "db49fd3d-7a18-4bb0-97c3-e8ba362f0bab",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Recycle Bin",
+   "title": "Recycle Bin | The Deleted by filter only lists users who currently have items in the bin, so most of the tenant's users cannot be selected",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Deleted by lists all 16 users with counts, including 0.",
+   "still": [],
+   "img": [
+    "NDC-1600-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1601",
+   "uuid": "d2251673-ef41-4f52-88fe-4f6872081379",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Recycle Bin",
+   "title": "Recycle Bin | Selecting a Module or Deleted by option removes other options from the same dropdown, so the filter cannot be changed without clearing it first",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Choosing a module keeps all options in the dropdown.",
+   "still": [],
+   "img": [
+    "NDC-1601-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1795",
+   "uuid": "9055774f-badf-4ed9-95d4-5079f8855547",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Recycle Bin",
+   "title": "Recycle Bin | Mass deleting records doesn't fetch the next list of records automatically and require the user to load them manually by clicking on Load More.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "After Delete forever (50) the list refreshes itself and shows the remaining 10.",
+   "still": [],
+   "img": [
+    "NDC-1795-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1797",
+   "uuid": "2d00ee7f-5f93-4dee-b959-161486a97919",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Recycle Bin",
+   "title": "Recycle Bin | Some records can't be deleted forever in a bulk delete and stay in the Recycle Bin.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "All 50 selected items deleted forever (API 60 → 10); none left behind.",
+   "still": [],
+   "img": [
+    "NDC-1797-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1603",
+   "uuid": "aca8f04a-d1bf-4291-8add-987a7a7cd59d",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Recycle Bin",
+   "title": "Recycle Bin | Restoring a record with duplicate data to a unique field is accepted without validation.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Restore of a record whose unique value is in use is refused per item: \"QA RT 1603 B: QA RT Uniq is already in use by another record.\" INFO: no rename-on-restore option.",
+   "still": [],
+   "img": [
+    "NDC-1603-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1602",
+   "uuid": "7f0cd60b-84ae-488e-9fd0-6a1447121c33",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Recycle Bin",
+   "title": "Recycle Bin | Empty Bin returns 504 Gateway Timeout.",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Second retest 26 Oct (user asked): Empty Bin on 281 items ran in the background (\"Deleting… 100 of 281 items done\"), 6 delete calls of ≤50 ids, all 200 in 1.4–5.6 s, no 504; all 281 ids sent; 264 removed. 16 old owner items of deleted/test modules refused as forbidden and reported per item. INFO: no final removed/failed summary; header showed 17 while 16 were left.",
+   "still": [],
+   "img": [
+    "NDC-1602-retest-PASS.png"
+   ]
+  }
+ ],
+ "observations": [
+  "Staging Deals \"pipeline\" field is a pick list allowing only \"Standard (Standard)\" (changed 24 Oct 15:54 UTC by ndc-staging-owner): no deal can be created or moved in UI or API — blocks NDC-1302/1312/1316/1324 and the crmaccess automation.",
+  "List pages crash (\"Something went wrong\", TypeError in useResolvedLayout) when list-preferences exist without visibleKeys/hiddenKeys — triggered by our round-3 cleanup on Contacts/Tasks/Deals; fixed during this round.",
+  "Layout builder: saving before the layout finished loading creates a new \"Standard Layout\" instead of updating the open layout.",
+  "Teamspace edit: adding/removing modules applies immediately, while rename/admin/drag wait for Save.",
+  "Import review: \"All errors 1\" but the error table says \"No errors match your filters\".",
+  "Empty Bin (NDC-1602) and integration Disconnect + Connect (NDC-2399) were first refused by the agent's safety check; run on 26 Oct after the user asked again (1602 PASS → Done, 2399 PARTIAL → Bug)."
+ ]
+}

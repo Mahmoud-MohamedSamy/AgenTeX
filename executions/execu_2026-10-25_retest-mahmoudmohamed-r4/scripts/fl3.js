@@ -1,0 +1,12 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+const sel = page.locator('select[aria-label="Layout"]');
+const opts = await sel.locator('option').allInnerTexts();
+const fs = arr((await api('GET', `/modules/${L}/fields`)).j?.data);
+const apiTest = fs.filter(f => (f.layouts || []).some(l => l.layoutName === 'test')).length, apiAll = fs.length;
+await sel.selectOption({ label: 'test' }); await sleep(2500);
+const rowsTest = await page.locator('tbody tr').count(); const names = await page.locator('tbody tr td:first-child').allInnerTexts();
+const hasQaRo = names.some(n => /QA RT RO/.test(n)); const hasUnrelated = names.some(n => /Fill From Name/.test(n));
+await shot('1598-02-filter-test');
+await sel.selectOption({ label: 'All Layouts' }); await sleep(2500); const rowsAll = await page.locator('tbody tr').count();
+await page.reload({ waitUntil: 'commit' }); await sleep(6000);
+return done({ opts, apiAll, apiTest, rowsTest, hasQaRo, hasUnrelated, rowsAll });

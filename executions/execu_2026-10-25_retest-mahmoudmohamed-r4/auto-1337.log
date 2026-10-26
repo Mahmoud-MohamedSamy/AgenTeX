@@ -1,0 +1,122 @@
+[B-setup] profile d1efb170-095f-4db5-93a5-9ae94a44db2d rows {company=hidden, lead_status_comment=read_only}; test user 1 moved to it
+[B-3c] owner stored Company; test user 1 GET -> 200, value in response=false
+[B-3a] create with the hidden field refused: 422 FIELD_PERMISSION_DENIED 'One or more fields in the payload are not writable for your profile.'
+[B-3b] update with the read-only field refused: 422 FIELD_PERMISSION_DENIED 'One or more fields in the payload are not writable for your profile.'
+[cleanup] delete field permission acc57a1b-12f0-4738-bd60-184ca7614d77 -> 204
+[cleanup] delete field permission 5f475f39-2be5-40d9-8f3e-2e18e19041d8 -> 204
+[cleanup] delete profile d1efb170-095f-4db5-93a5-9ae94a44db2d -> 204
+[B-revert] users and mode as before; QA profile deleted=true
+[FP-06] test user 1 list: own lead present=true, hidden Company value present=false
+[cleanup] delete field permission 9e396be9-a7d9-46d6-9145-b34a311653d7 -> 204
+[cleanup] delete deal FP 22b57f5f-98f4-4a68-9184-926dc51834b1 -> 204
+[cleanup] delete deal FP e3cef117-dde2-4f6a-8ecd-50658bc08112 -> 204
+[cleanup] delete profile 504794c7-85a2-4923-9832-453d0c76f8a2 -> 204
+[LO-revert] users and mode as before
+[RU-setup] profile 43050933-2f51-428f-af64-8e6e9de52cd5, lead 697900e5-62bb-4977-8876-967184ebfb03, login-history denies [iam.security.loginhistory.view_self, iam.security.loginhistory.view_team, iam.security.loginhistory.view_all]
+[cleanup] clear override iam.security.loginhistory.view_self -> 204
+[cleanup] clear override iam.security.loginhistory.view_team -> 204
+[cleanup] clear override iam.security.loginhistory.view_all -> 204
+[cleanup] delete field permission c4a2efb0-5625-4eed-9ed4-9eda2b0b75dd -> 204
+[cleanup] delete field permission dfa4c523-bfb4-410b-b778-40639005548b -> 204
+[cleanup] delete profile 43050933-2f51-428f-af64-8e6e9de52cd5 -> 204
+[RU-revert] users as before; overrides left=false
+[ERROR] Tests run: 9, Failures: 3, Errors: 0, Skipped: 2, Time elapsed: 152.5 s <<< FAILURE! -- in TestSuite
+[ERROR] qa.features.crmaccess.LeftoversApiTest.transactionsFieldPermissions -- Time elapsed: 24.95 s <<< FAILURE!
+java.lang.IllegalStateException: deal as owner returned 422: {"success":false,"data":null,"error":{"code":"RECORD_VALIDATION_FAILED","message":"Invalid value for: Pipeline.","details":[{"path":"pipeline","type":"PICKLIST_VALUE_INVALID","message":"Pipeline: '5170500c-b335-479c-96d1-ed138965c345' is not one of the allowed values (Standard (Standard))."}]},"meta":null}
+	at qa.features.crmautomationorder.CrmUser.ok(CrmUser.java:152)
+	at qa.features.crmaccess.LeftoversApiTest.transactionsFieldPermissions(LeftoversApiTest.java:124)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+[ERROR] qa.features.crmaccess.RestrictedUserUiTest.startBrowser[public void qa.features.crmaccess.RestrictedUserUiTest.createFormHonoursFieldPermissions()](0) -- Time elapsed: 58.78 s <<< FAILURE!
+java.lang.IllegalStateException: Cannot read credentials file D:\Software Testing\Automation\Agentex Installation\Agentex Installation\docs\Credentials\TAVI Staging Desk Credentials.csv: D:\Software Testing\Automation\Agentex Installation\Agentex Installation\docs\Credentials\TAVI Staging Desk Credentials.csv
+	at qa.core.auth.Credentials.find(Credentials.java:68)
+	at qa.core.auth.Credentials.find(Credentials.java:48)
+	at qa.core.auth.Credentials.load(Credentials.java:40)
+	at qa.core.auth.AuthManager.signIn(AuthManager.java:43)
+	at qa.core.base.BaseTest.startBrowser(BaseTest.java:27)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:600)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+[ERROR] qa.features.crmaccess.RestrictedUserUiTest.startBrowser[public void qa.features.crmaccess.RestrictedUserUiTest.detailPageHonoursFieldPermissions()](0) -- Time elapsed: 1.997 s <<< FAILURE!
+java.lang.IllegalStateException: Cannot read credentials file D:\Software Testing\Automation\Agentex Installation\Agentex Installation\docs\Credentials\TAVI Staging Desk Credentials.csv: D:\Software Testing\Automation\Agentex Installation\Agentex Installation\docs\Credentials\TAVI Staging Desk Credentials.csv
+	at qa.core.auth.Credentials.find(Credentials.java:68)
+	at qa.core.auth.Credentials.find(Credentials.java:48)
+	at qa.core.auth.Credentials.load(Credentials.java:40)
+	at qa.core.auth.AuthManager.signIn(AuthManager.java:43)
+	at qa.core.base.BaseTest.startBrowser(BaseTest.java:27)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
+	at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
+	at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:600)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.testng.internal.thread.graph.TestNGFutureTask.run(TestNGFutureTask.java:22)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+[ERROR] Failures: 
+[ERROR]   LeftoversApiTest.transactionsFieldPermissions:124 » IllegalState deal as owner returned 422: {"success":false,"data":null,"error":{"code":"RECORD_VALIDATION_FAILED","message":"Invalid value for: Pipeline.","details":[{"path":"pipeline","type":"PICKLIST_VALUE_INVALID","message":"Pipeline: '5170500c-b335-479c-96d1-ed138965c345' is not one of the allowed values (Standard (Standard))."}]},"meta":null}
+[ERROR]   RestrictedUserUiTest>BaseTest.startBrowser:27 » IllegalState Cannot read credentials file D:\Software Testing\Automation\Agentex Installation\Agentex Installation\docs\Credentials\TAVI Staging Desk Credentials.csv: D:\Software Testing\Automation\Agentex Installation\Agentex Installation\docs\Credentials\TAVI Staging Desk Credentials.csv
+[ERROR]   RestrictedUserUiTest>BaseTest.startBrowser:27 » IllegalState Cannot read credentials file D:\Software Testing\Automation\Agentex Installation\Agentex Installation\docs\Credentials\TAVI Staging Desk Credentials.csv: D:\Software Testing\Automation\Agentex Installation\Agentex Installation\docs\Credentials\TAVI Staging Desk Credentials.csv
+[ERROR] Tests run: 9, Failures: 3, Errors: 0, Skipped: 2
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project ui-automation: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Software Testing\Automation\Agentex Installation\Agentex Installation\automation\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

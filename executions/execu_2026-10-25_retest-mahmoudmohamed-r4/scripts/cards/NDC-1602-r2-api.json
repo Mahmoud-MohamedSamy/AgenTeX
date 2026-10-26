@@ -1,0 +1,51 @@
+{
+ "out": "NDC-1602-r2-api.png",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin)",
+ "date": "26 Oct 2026",
+ "title": "NDC-1602 · Empty Bin on a 281-item bin — calls the page made",
+ "rows": [
+  [
+   "bin size",
+   "GET /api/v1/audit/recycle-bin/items (all pages)",
+   "281 items before Empty Bin",
+   "info"
+  ],
+  [
+   "batches 1–5",
+   "POST /api/v1/audit/recycle-bin/delete {ids: 50} ×5",
+   "200 each, 3.4–5.6 s per call — no 504, no timeout",
+   "ok"
+  ],
+  [
+   "batch 6",
+   "POST /api/v1/audit/recycle-bin/delete {ids: 31}",
+   "200 in 1.4 s — 281 ids sent in total (the whole bin, not only the loaded rows)",
+   "ok"
+  ],
+  [
+   "progress",
+   "Banner while running",
+   "\"Working on it…\" → \"Deleting… 100 of 281 items done. You can keep using the page.\"",
+   "ok"
+  ],
+  [
+   "left after",
+   "GET /audit/recycle-bin/items",
+   "16 items left — all failed with recyclebin.error.forbidden (records of deleted/test modules from 14 Sep–18 Oct, deleted by ndc-staging-owner)",
+   "info"
+  ],
+  [
+   "2nd Empty Bin",
+   "POST /recycle-bin/delete {ids: 17}",
+   "0 succeeded, 17 failed: 16 forbidden + 1 not_found_or_out_of_scope (\"QA W2 UI 50121\", already purged, still listed on the page)",
+   "info"
+  ],
+  [
+   "messages",
+   "Toasts",
+   "\"(no name): You don't have permission to do this. (8 items)\", \"zxcaqwe23: …\", \"QA W2 UI 50121: Item no longer exists or is outside your access.\" — no final \"n removed, n failed\" summary",
+   "info"
+  ]
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "out": "NDC-2396-api.png",
+ "date": "25–26 Oct 2026",
+ "host": "staging-desk.taviportal.com",
+ "title": "NDC-2396 · PUT /config with invalid contact mappings (fresh row_version each time)",
+ "rows": [
+  [
+   "unknown CRM field",
+   "PUT /api/v1/desk/integrations/crm/config  contacts.mappings += {crm_field:\"no_such_field_qa\", desk_field:\"description\"}",
+   "422 crm_field_unknown",
+   "ok"
+  ],
+  [
+   "unknown Desk field",
+   "PUT /api/v1/desk/integrations/crm/config  += {crm_field:\"description\", desk_field:\"no_such_field_qa\"}",
+   "422 desk_field_unknown",
+   "ok"
+  ],
+  [
+   "empty CRM field",
+   "PUT /api/v1/desk/integrations/crm/config  += {crm_field:\"\", desk_field:\"description\"}",
+   "422 incomplete",
+   "ok"
+  ],
+  [
+   "lookup field",
+   "PUT /api/v1/desk/integrations/crm/config  += {crm_field:\"account_id\", desk_field:\"description\"}",
+   "422 — refused, but reason desk_field_unknown (expected lookup_not_mappable)",
+   "info"
+  ],
+  [
+   "stored config",
+   "GET /api/v1/desk/integrations/crm/config",
+   "nothing stored from the four cases",
+   "ok"
+  ]
+ ]
+}

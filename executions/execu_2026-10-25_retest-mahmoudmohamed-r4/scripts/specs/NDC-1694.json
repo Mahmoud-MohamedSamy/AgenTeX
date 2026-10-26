@@ -1,0 +1,156 @@
+{
+ "out": "NDC-1694-retest-PARTIAL.png",
+ "ticket": "NDC-1694",
+ "title": "Teamspace | A teamspace can be saved with zero modules.",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1694-02-empty-save.png",
+   "caption": "Create New Teamspace with no modules: Save disabled, \"Add at least one module to save this teamspace.\"",
+   "crop": [
+    280,
+    140,
+    740,
+    540
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      313,
+      276,
+      991,
+      362
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      290,
+      626,
+      714,
+      666
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1694-04-switcher.png",
+   "caption": "Sidebar teamspace switcher offers \"QA RT TS empty\" (created by API with 0 modules).",
+   "crop": [
+    0,
+    420,
+    520,
+    300
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      11,
+      588,
+      507,
+      624
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "1689-04-deleted.png",
+   "caption": "Teamspace list: \"QA RT TS empty — 0 modules\".",
+   "crop": [
+    280,
+    130,
+    880,
+    300
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      292,
+      330,
+      1140,
+      412
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1694-api.png",
+   "caption": "UI vs API behaviour.",
+   "crop": [
+    0,
+    0,
+    1600,
+    320
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      923,
+      99,
+      1562,
+      136
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      923,
+      146,
+      1562,
+      251
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2, 5",
+   "Save with no modules (UI)",
+   "Save disabled with the reason",
+   "Save disabled; hint \"Add at least one module to save this teamspace.\"",
+   "PASS"
+  ],
+  [
+   "4, 6",
+   "Server rule",
+   "Not saveable without a module",
+   "POST /teamspaces {modules: []} → 201; listed with 0 modules",
+   "FAIL"
+  ],
+  [
+   "3",
+   "If allowed, not offered in the switcher",
+   "Not offered",
+   "\"QA RT TS empty\" (0 modules) offered in the sidebar switcher",
+   "FAIL"
+  ],
+  [
+   "—",
+   "Cleanup",
+   "—",
+   "Teamspace a1a9bba3 deleted; sidebar back to CRM Teamspace",
+   "INFO"
+  ]
+ ]
+}

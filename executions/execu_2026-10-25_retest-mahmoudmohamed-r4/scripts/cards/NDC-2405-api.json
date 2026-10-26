@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2405-api.png",
+ "date": "25–26 Oct 2026",
+ "host": "staging-desk.taviportal.com + staging-crm.taviportal.com",
+ "who": "CRM test user 1 + mahmoud.mahamed1515",
+ "title": "NDC-2405 · delete preference is not applied retroactively",
+ "rows": [
+  [
+   "preference",
+   "GET /api/v1/desk/integrations/crm/config  on_crm_delete",
+   "\"keep\"",
+   "info"
+  ],
+  [
+   "delete while paused",
+   "POST /api/v1/desk/integrations/crm/pause · DELETE CRM contact d9a7b0fa…",
+   "200 · 204",
+   "info"
+  ],
+  [
+   "change preference",
+   "PUT /api/v1/desk/integrations/crm/config  on_crm_delete = \"delete\"",
+   "200",
+   "info"
+  ],
+  [
+   "resume, after 50 s",
+   "POST /api/v1/desk/integrations/crm/resume · GET Desk contact f0de6428…",
+   "Desk contact still there (not deleted); link needs_attention",
+   "ok"
+  ],
+  [
+   "restore",
+   "PUT /api/v1/desk/integrations/crm/config  on_crm_delete = \"keep\"",
+   "200 — config equal to the backup",
+   "info"
+  ]
+ ]
+}

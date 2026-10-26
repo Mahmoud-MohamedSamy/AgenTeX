@@ -1,0 +1,166 @@
+{
+ "out": "NDC-1693-retest-PASS.png",
+ "ticket": "NDC-1693",
+ "title": "Modules and Fields | Creating a new module returns 500 Internal Server Error.",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1693-01-dialog.png",
+   "caption": "Create New Module dialog (Teamspace, Display name, Module key with uniqueness hint).",
+   "crop": [
+    380,
+    80,
+    520,
+    560
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      441,
+      188,
+      839,
+      244
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      766,
+      564,
+      839,
+      600
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1693-02-after-create.png",
+   "caption": "Create → \"Module saved successfully\"; dialog closed.",
+   "crop": [
+    520,
+    380,
+    760,
+    340
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      976,
+      638,
+      1256,
+      696
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1693-04-duplicate.png",
+   "caption": "Same name again: clear message \"A module named 'QA RT Module 1693' already exists in this app…\" — no 500.",
+   "crop": [
+    380,
+    60,
+    900,
+    660
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      437,
+      522,
+      843,
+      566
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      836,
+      630,
+      1256,
+      694
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1693-api.png",
+   "caption": "Create requests in two teamspaces and the duplicate-key check.",
+   "crop": [
+    0,
+    0,
+    1600,
+    340
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      923,
+      99,
+      1562,
+      204
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      923,
+      214,
+      1562,
+      272
+     ],
+     "n": 7,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–3, 6",
+   "Create a module in CRM Teamspace and in New Teamspace",
+   "Created and listed",
+   "POST /teamspaces/…/modules 201 both; dialog closes, \"Module saved successfully\", module listed",
+   "PASS"
+  ],
+  [
+   "4–5",
+   "Duplicate name (UI)",
+   "Explanatory message",
+   "\"A module named 'QA RT Module 1693' already exists in this app. Module names must be unique.\"",
+   "PASS"
+  ],
+  [
+   "7",
+   "Duplicate key (API)",
+   "No server error",
+   "409 MODULE_ALREADY_EXISTS \"Module key already exists in this organization.\"",
+   "PASS"
+  ],
+  [
+   "—",
+   "Developer comment",
+   "—",
+   "None; cleanup: modules ef70c152, c56f2e10 deleted",
+   "INFO"
+  ]
+ ]
+}

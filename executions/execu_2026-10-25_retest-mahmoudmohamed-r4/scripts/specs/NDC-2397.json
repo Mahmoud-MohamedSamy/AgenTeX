@@ -1,0 +1,60 @@
+{
+ "out": "NDC-2397-retest-PASS.png",
+ "ticket": "NDC-2397",
+ "title": "CRM - Desk Integration | Settings save without row_version is accepted, so the lost-update check can be skipped",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com (+ staging-crm for the integration) · tenant NDC-Staging · Edge (headless) · mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy, Desk Agent fedelav803, CRM test user 1 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2397-api.png",
+   "caption": "API: a save without row_version is refused with a clear message.",
+   "crop": [
+    0,
+    0,
+    1600,
+    262
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      95,
+      1570,
+      182
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      184,
+      1570,
+      250
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "PUT /config without row_version",
+   "400/409/428",
+   "400 \"\"row_version\" is required: send the row_version these settings were read at…\" (was 200)",
+   "PASS"
+  ],
+  [
+   "2",
+   "Settings afterwards",
+   "Unchanged",
+   "Config diffed equal to the backup",
+   "PASS"
+  ]
+ ]
+}

@@ -1,0 +1,16 @@
+const binCount = async () => { let n = 0, cur = ''; for (let i = 0; i < 20; i++) { const r = await api('GET', `/audit/recycle-bin/items?app_key=crm&limit=200${cur ? '&cursor=' + encodeURIComponent(cur) : ''}`); const a = arr(r.j?.data); n += a.filter(x => /QA RT 1795 bulk/.test(x.record_label || '')).length; cur = r.j?.meta?.next_cursor; if (!cur || !a.length) break; } return n; };
+await page.goto(H + '/settings/data/recycle-bin', { waitUntil: 'commit', timeout: 90000 }); for (let k = 0; k < 60; k++) { await sleep(1000); if (/\d+ items/.test(await txt().catch(() => ''))) break; } await sleep(1500);
+await page.getByRole('button', { name: 'Filters', exact: true }).click(); await sleep(800);
+await page.getByPlaceholder('Starts with…').fill('QA RT 1795'); await page.getByRole('button', { name: 'Search', exact: true }).click(); await sleep(3000);
+const out = { apiBefore: await binCount(), rowsBefore: await page.locator('tbody tr').count(), header: (await txt()).match(/\d+ items/)?.[0] };
+await page.locator('thead input[type=checkbox]').first().check({ force: true }); await sleep(800);
+const bar = (await txt()).split('\n').filter(l => /selected|Delete \(|Restore \(/.test(l)).slice(0, 4); out.bar = bar;
+await shot('1795-01-selected');
+await page.getByRole('button', { name: /^Delete/ }).first().click(); await sleep(1200);
+const dlg = await page.evaluate(() => (document.querySelector('[role=alertdialog],[role=dialog]') || {}).innerText?.slice(0, 300) || null); out.dlg = dlg;
+const resp = []; const fr = async r => { const q = r.request(); if (/recycle-bin\/(delete|items)/.test(q.url())) resp.push(q.method() + ' ' + q.url().replace(H + '/api/v1', '').slice(0, 60) + ' ' + r.status() + (q.method() === 'POST' ? ' ids=' + ((q.postData() || '').match(/[0-9a-f-]{36}/g) || []).length + ' res=' + (await r.text().catch(() => '')).slice(0, 160) : '')); }; page.on('response', fr);
+await page.getByRole('button', { name: /Delete forever/ }).last().click(); await sleep(7000); page.off('response', fr);
+out.resp = resp; out.rowsAfter = await page.locator('tbody tr').count(); out.rowsTextAfter = (await page.locator('tbody tr').allInnerTexts()).map(t => t.split('\n')[0]).slice(0, 12); out.toasts = await page.evaluate(() => [...document.querySelectorAll('[data-sonner-toast]')].map(t => t.innerText.trim()));
+out.apiAfter = await binCount();
+await shot('1795-02-after-delete-forever');
+return done(out);

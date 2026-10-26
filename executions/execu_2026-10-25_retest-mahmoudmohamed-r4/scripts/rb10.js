@@ -1,0 +1,4 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3', LT = '6261fa51-b6e7-4c73-a83d-f6ecbd6260d1'; const s = v => ({ kind: 'string', value: v });
+let c = 0, d = 0; for (let i = 1; i <= 200; i++) { const r = await api('POST', `/modules/${L}/records`, { layout_id: LT, data: [{ field: 'first_name', value: s('QA RT 1602 fill ' + String(i).padStart(3, '0')) }] }); const id = r.j?.data?.id; if (id) { c++; if ((await api('DELETE', `/modules/${L}/records/${id}`)).s === 204) d++; } }
+let n = 0, cur = ''; for (let i = 0; i < 60; i++) { const r = await api('GET', `/audit/recycle-bin/items?app_key=crm&app_key=iam&app_key=files&app_key=reporting&app_key=workflow&app_key=mail&limit=200${cur ? '&cursor=' + encodeURIComponent(cur) : ''}`); const a = arr(r.j?.data); n += a.length; cur = r.j?.meta?.next_cursor; if (!cur || !a.length) break; }
+return done({ created: c, deleted: d, binTotal: n });

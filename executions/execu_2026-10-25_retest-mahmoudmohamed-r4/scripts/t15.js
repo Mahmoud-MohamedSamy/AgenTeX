@@ -1,0 +1,10 @@
+const open = async () => { await page.goto(H + '/settings/teamspace', { waitUntil: 'commit', timeout: 90000 }); for (let k = 0; k < 40; k++) { await sleep(1000); if (/QA RT TS/.test(await txt().catch(() => ''))) break; } await sleep(800); await page.getByText('QA RT TS', { exact: true }).first().click(); await sleep(3000); };
+await open();
+const adminBtn = page.locator('button, [role=combobox]').filter({ hasText: 'mahmoud.mahamed1515' }).first(); await adminBtn.click(); await sleep(1000);
+const opts = await page.evaluate(() => [...document.querySelectorAll('[role=option]')].map(e => e.innerText.trim()).slice(0, 10));
+await page.getByRole('option', { name: /ndc-staging-owner/ }).first().click(); await sleep(800);
+const resp = []; const fr = async r => { const q = r.request(); if (q.method() !== 'GET' && /teamspace/.test(q.url())) resp.push(q.method() + ' ' + r.status() + ' body=' + (q.postData() || '').slice(0, 200)); }; page.on('response', fr);
+await page.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(3500); page.off('response', fr);
+await open(); const shown = (await txt()).split('Admin')[1]?.split('\n').filter(Boolean).slice(0, 2).join(' ');
+await shot('1700-03-admin-after-reload');
+return done({ opts, resp, shown });

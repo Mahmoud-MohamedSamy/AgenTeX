@@ -1,0 +1,38 @@
+{
+ "out": "NDC-1593-api.png",
+ "date": "25–26 Oct 2026",
+ "title": "NDC-1593 · import as restricted user (test user 2, profile \"test\") — mapping list and server checks",
+ "who": "test user 2 (profile \"test\" 64d4aae0)",
+ "rows": [
+  [
+   "permissions set",
+   "qa_rt_fp hidden (layout builder) · qa_rt_ro (d65bacbf) read_only (POST /field-permissions 200)",
+   "profile \"test\" restricted on both fields",
+   "info"
+  ],
+  [
+   "hidden field in mapping",
+   "Import Leads → imp1593.xlsx → layout \"test\" → Map fields → Field list",
+   "\"QA RT FP\" not offered in any column's list",
+   "ok"
+  ],
+  [
+   "read-only in mapping",
+   "same list",
+   "\"QA RT RO (read-only for your profile)\" listed but disabled — cannot be chosen",
+   "ok"
+  ],
+  [
+   "server: hidden write",
+   "POST /modules/{Leads}/records {qa_rt_fp:…} as test user 2",
+   "422 FIELD_PERMISSION_DENIED \"Field 'qa_rt_fp' is hidden for your profile and cannot be written.\"",
+   "ok"
+  ],
+  [
+   "not done",
+   "Submit import",
+   "wizard left at mapping (restricted fields cannot be mapped, nothing to submit)",
+   "info"
+  ]
+ ]
+}

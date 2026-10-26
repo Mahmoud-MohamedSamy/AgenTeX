@@ -1,0 +1,13 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3', LT = '6261fa51-b6e7-4c73-a83d-f6ecbd6260d1'; const s = v => ({ kind: 'string', value: v }); const out = {};
+out.add = (await api('POST', `/modules/${L}/fields`, { fields: [{ fieldName: 'qa_rt_uniq', labels: { en: 'QA RT Uniq' }, datatypeKey: 'single_line', required: false, unique: true, uniquePeerModuleIds: [] }] })).s;
+const f = arr((await api('GET', `/modules/${L}/fields`)).j?.data).find(x => x.fieldName === 'qa_rt_uniq'); out.fid = f?.id; out.unique = f?.unique;
+const lay = (await api('GET', `/modules/${L}/layouts/${LT}`)).j.data; for (const v of ['CREATE', 'QUICK_CREATE', 'DETAIL']) { const ss = lay.views?.[v]?.layout?.sections; if (!ss || !ss[0]) continue; const col = ss[0].columns[ss[0].columns.length - 1]; if (!ss.some(x => x.columns.some(c => c.fields.some(e => e.id === f.id)))) col.fields.push(JSON.parse(JSON.stringify(f))); } const b = { ...lay }; delete b.id; out.place = (await api('PUT', `/modules/${L}/layouts/${LT}`, b)).s;
+const mk = async n => { const r = await api('POST', `/modules/${L}/records`, { layout_id: LT, data: [{ field: 'first_name', value: s(n) }, { field: 'qa_rt_uniq', value: s('QA-RT-U1') }] }); return r.s + ' ' + (r.j?.data?.id || r.j?.error?.details?.[0]?.message || r.t.slice(0, 120)); };
+out.B = await mk('QA RT 1603 B'); const bid = out.B.split(' ')[1];
+out.dupWhileBLive = await mk('QA RT 1603 dup');
+out.delB = (await api('DELETE', `/modules/${L}/records/${bid}`)).s;
+out.A = await mk('QA RT 1603 A');
+await sleep(1500);
+const item = arr((await api('GET', '/audit/recycle-bin/items?app_key=crm&limit=200')).j?.data).find(x => /QA RT 1603 B/.test(x.record_label || ''));
+out.binItem = item?.id;
+return done(out);

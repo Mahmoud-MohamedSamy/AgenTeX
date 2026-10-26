@@ -1,0 +1,12 @@
+const ID = '01727195-e2d5-41c5-821b-a30d5a965976';
+const out = {};
+const me = await api('GET', '/iam/me'); out.me = JSON.stringify((me.j?.data?.profiles || []).map(p => p.name));
+out.inList = arr((await api('GET', '/modules')).j?.data).some(m => m.id === ID);
+out.read = (await api('GET', `/modules/${ID}/records?page=1&per_page=1`)).s;
+await page.goto(H + '/hq', { waitUntil: 'commit', timeout: 120000 }); await page.waitForTimeout(8000);
+const plus = page.getByRole('button', { name: /^New$|Create|\+/ }).first(); await plus.click().catch(() => {}); await page.waitForTimeout(1500);
+const menu = await page.evaluate(() => [...document.querySelectorAll('[role=menuitem],[role=option],[data-radix-popper-content-wrapper] *')].filter(e => e.childElementCount === 0).map(e => e.textContent.trim()).filter(Boolean));
+out.plusHasModule = menu.some(x => /QA RT Agent/.test(x)); out.menu = [...new Set(menu)].slice(0, 25);
+out.navHasModule = (await page.evaluate(() => document.body.innerText)).includes('QA RT Agents Only');
+await page.screenshot({ path: 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-25_retest-mahmoudmohamed-r4/screenshots/raw/2220-03-other-admin-plus.png' });
+return out;

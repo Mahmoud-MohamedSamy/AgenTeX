@@ -1,0 +1,400 @@
+[
+ {
+  "id": "NDC-1302",
+  "uuid": "2610d4f4-1d79-4d2b-80d1-e70ac05915c7",
+  "verdict": "BLOCKED",
+  "state": "Bug",
+  "html": "<p><b>Retest BLOCKED — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Cannot be judged: staging Deals Pipeline field was changed on 24 Oct to a pick list allowing only \"Standard (Standard)\".</p><p>Every deal write that sends a pipeline is refused — API create/PATCH on pipeline \"1\" and even on the default Standard id → 422 \"Pipeline: '…' is not one of the allowed values (Standard (Standard)).\"; UI Create Transactions offers \"1\" and its 7 stages but Save is refused with the raw id message. No deal can be created or moved on staging, so the stage/pipeline fix cannot be verified.</p><p><b>Checked:</b></p><ul><li>Stages offered = the chosen pipeline's stages → Pipeline \"1\" → its 7 stages offered (test-01, test-02, qualification, needs_analysis, negotiation, proposal, identify_decision_makers) <b>[PASS]</b></li><li>Create a deal on pipeline \"1\" (UI) → Save → POST 422 \"Pipeline: '640e03a4-…' is not one of the allowed values (Standard (Standard)).\" shown with the raw pipeline id <b>[BLOCKED]</b></li><li>API create on \"1\"/test-01 and PATCH an existing deal to \"1\" → Both 422 PICKLIST_VALUE_INVALID; deal stays on Standard (21 Oct: 201 + silent switch to Standard) <b>[BLOCKED]</b></li><li>Cause → Staging Deals Pipeline field allows only \"Standard (Standard)\" (changed 24 Oct by ndc-staging-owner); even the default Standard is refused, so the fix cannot be judged until the field is repaired <b>[INFO]</b></li><li>Developer reply since our 21 Oct PARTIAL → None <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Blocked by staging config: Deals field \"pipeline\" = pick_list, allowed_values [\"Standard (Standard)\"] (modified 24 Oct 15:54 UTC by ndc-staging-owner).</li></ul><p><b>Moved to Bug (QA lead decision, 26 Oct):</b> the fix cannot be confirmed on staging. The Deals \"pipeline\" field is a pick list that allows only \"Standard (Standard)\" (changed 24 Oct 15:54 UTC by ndc-staging-owner), so no deal can be created or moved with any pipeline in the UI or the API. Please restore the field (pipeline lookup with all pipelines of the layout) and move this ticket back to Ready For Test.</p><p>Evidence: NDC-1302-retest-BLOCKED.png</p>",
+  "img": "NDC-1302-retest-BLOCKED.png"
+ },
+ {
+  "id": "NDC-1337",
+  "uuid": "7bebac68-d7df-4c90-8b90-73e985d0d539",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Held, including the layout-builder route.</p><p>Permission set from the layout builder (Set Permission → profile \"test\" Read cleared) is saved as hidden and enforced: test user 2 gets 422 FIELD_PERMISSION_DENIED writing the field and the field is not on the create form. Automation: 4 API checks pass; 1 failure only from the Pipeline blocker; UI tests not run (credentials file missing).</p><p><b>Checked:</b></p><ul><li>Permission set from the layout builder → Profile \"test\" Read cleared → Apply → Save → field-permissions shows 64d4aae0 (\"test\") hidden <b>[PASS]</b></li><li>Hidden field on the restricted user's form → Create Lead (layout \"test\") as test user 2 has no \"QA RT FP\" <b>[PASS]</b></li><li>Automation -Dtags=NDC-1337 → hiddenFieldNotReturned, hiddenFieldNotWritable, listHidesHiddenField, readOnlyFieldNotWritable — PASS <b>[PASS]</b></li><li>transactionsFieldPermissions / RestrictedUserUiTest → FAIL only because the test deal hits the Pipeline-field 422 (staging blocker); UI test not run — credentials CSV missing <b>[INFO]</b></li><li>Server rejects a hidden-field write → Test user 2 POST with qa_rt_fp → 422 FIELD_PERMISSION_DENIED; without it → 201 <b>[PASS]</b></li><li>Field Permissions tab route + restricted-user screens → Passed in the go-live retest earlier on 25 Oct (QA comment 16:27) <b>[PASS]</b></li></ul><p>Evidence: NDC-1337-retest-PASS.png</p>",
+  "img": "NDC-1337-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1335",
+  "uuid": "7e7ab4ed-955a-4bcd-a947-a70c1cd04ac2",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Existing layout fixed; new layout still fails on an unrelated Subform field.</p><p>Saving a change to an existing layout works (\"Layout updated successfully\", no Subform error). Saving a NEW layout with only predefined fields fails: the builder also PUTs the module's \"Subform\" field (no subfields, only on layout فاتورة) → 422 \"A subform needs at least one subfield before it can be saved\"; layout not created.</p><p><b>Checked:</b></p><ul><li>Edit an existing layout and Save → PUT /fields ×5 200 + PUT /layouts/6261fa51 200, \"Layout updated successfully\"; no Subform error (save took 46 s) <b>[PASS]</b></li><li>Cancel after the save → No prompt; moduleImageEnabled false stored <b>[PASS]</b></li><li>New layout with predefined fields only → Save → PUT /fields/5dd25be0 (\"Subform\", 0 subfields, only on layout \"فاتورة\") → 422 DATATYPE_SUBFORM_NO_SUBFIELDS; layout not created (was 404, same failure class) <b>[FAIL]</b></li><li>Failing field named with the reason → \"Couldn't save the settings for \"Subform\": A subform needs at least one subfield…\" <b>[PASS]</b></li><li>Save before the builder finished loading → Created a new layout \"Standard Layout\" (dff47b4e) instead of updating \"test\" — deleted in cleanup <b>[INFO]</b></li><li>Ticket layout \"New Layout 2\" → No longer exists; Leads layout \"test\" used <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Step 4: new predefined-only layout → PUT /fields/5dd25be0 (Subform) 422 DATATYPE_SUBFORM_NO_SUBFIELDS; layout not created.</li><li>Observation: saving before the builder finished loading created a duplicate \"Standard Layout\" instead of updating \"test\".</li></ul><p>Evidence: NDC-1335-retest-PARTIAL.png</p>",
+  "img": "NDC-1335-retest-PARTIAL.png"
+ },
+ {
+  "id": "NDC-1693",
+  "uuid": "272041ae-50ce-44b2-8b53-874a7e5fa60c",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Create New Module works in both teamspaces (201, listed); a duplicate key gives 409 \"Module key already exists in this organization.\" — no 500.</p><p><b>Checked:</b></p><ul><li>Create a module in CRM Teamspace and in New Teamspace → POST /teamspaces/…/modules 201 both; dialog closes, \"Module saved successfully\", module listed <b>[PASS]</b></li><li>Duplicate name (UI) → \"A module named 'QA RT Module 1693' already exists in this app. Module names must be unique.\" <b>[PASS]</b></li><li>Duplicate key (API) → 409 MODULE_ALREADY_EXISTS \"Module key already exists in this organization.\" <b>[PASS]</b></li><li>Developer comment → None; cleanup: modules ef70c152, c56f2e10 deleted <b>[INFO]</b></li></ul><p>Evidence: NDC-1693-retest-PASS.png</p>",
+  "img": "NDC-1693-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1344",
+  "uuid": "6caaf05c-1eaf-4935-837e-43e983976444",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Duplicates and the feed key fixed; labels for new modules not.</p><p>Entity filter: no duplicates, no repeated module block; feed reads \"restored a Lead named …\". Still: new modules listed by key (qa_rt_module_1693) although they have labels; \"23c1a6s8d46a\" and \"Test\" listed but not CRM modules; internal names \"Mail agent signature row\", \"Module view pin\".</p><p><b>Checked:</b></p><ul><li>No duplicate entries, no repeated module block → 58 options, no duplicates (Workflow rule/Rule, Approval process/Process, Blueprint ×3, Profile ×2 gone); module block once <b>[PASS]</b></li><li>User-facing labels only → New modules listed by key \"qa_rt_module_1693\", \"qa_rt_module_1693_b\"; \"23c1a6s8d46a\" and \"Test\" listed but not modules of this CRM; \"Mail agent signature row\", \"Module view pin\" <b>[FAIL]</b></li><li>Feed label for restore → \"restored a Lead named QA RT 1337 u2 plain\" — audit.entity.leads gone <b>[PASS]</b></li><li>Automation → Tag NDC-1344 exists only in an AuditLogTest javadoc — nothing ran; checked by hand <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>New modules shown by API key instead of label.</li><li>Unknown entries \"23c1a6s8d46a\", \"Test\"; internal names \"Mail agent signature row\", \"Module view pin\".</li></ul><p>Evidence: NDC-1344-retest-PARTIAL.png</p>",
+  "img": "NDC-1344-retest-PARTIAL.png"
+ },
+ {
+  "id": "NDC-1333",
+  "uuid": "de47141e-6067-44f5-9bd0-e0520030ecf7",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Only the settings column scrolls (window 720 = viewport); wheeling past the end leaves content visible; a checkbox click ticks the item under the pointer and the column compensates for the unsaved bar.</p><p><b>Checked:</b></p><ul><li>Single scroll area → Document 720 = viewport (window does not scroll); only the settings column scrolls (overflow-y auto, 664 px); Setup menu scrolls separately as navigation <b>[PASS]</b></li><li>Wheel past the end → Window stays at 0, content visible; column scrollHeight grows 2127 → 5797 as lists load, no jump <b>[PASS]</b></li><li>Checkbox click hits the item shown → Quality ticked; \"You have unsaved activity-reminder changes\" bar; column shifts 53 px to keep the row in place; unticking restores; nothing saved <b>[PASS]</b></li></ul><p>Evidence: NDC-1333-retest-PASS.png</p>",
+  "img": "NDC-1333-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1695",
+  "uuid": "1f8d297e-3c5b-45ea-8a02-23a627a07b05",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Folder rename saved; after reload the card, API and left navigation show \"QA RT Folder A2\".</p><p><b>Checked:</b></p><ul><li>Rename \"QA RT Folder A\" → \"QA RT Folder A2\", Save, reload → PUT 200; after reload the card shows A2; GET folders returns A2 <b>[PASS]</b></li><li>Left navigation → \"QA RT Folder A2\" (with Tasks, Calls) under QA RT TS <b>[PASS]</b></li><li>Developer comment → None (test teamspace \"QA RT TS\" c7bb126d, deleted at the end via NDC-1689) <b>[INFO]</b></li></ul><p>Evidence: NDC-1695-retest-PASS.png</p>",
+  "img": "NDC-1695-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1698",
+  "uuid": "58b2cbc1-4ad2-4936-8131-d9155f75ebf8",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Modules inside folders have the same × as root modules; removing one keeps the folder and siblings.</p><p><b>Checked:</b></p><ul><li>Delete icon on an in-folder module → × on tasks and calls inside the folder, same as subscriptions at root <b>[PASS]</b></li><li>Remove one module from a folder → calls removed; tasks stays in the folder (API: tasks → folder 72da143f) <b>[PASS]</b></li><li>Other folders / root unaffected → Folder B and subscriptions unchanged <b>[PASS]</b></li></ul><p>Evidence: NDC-1698-retest-PASS.png</p>",
+  "img": "NDC-1698-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1231",
+  "uuid": "be737169-4caf-48c5-8b8f-20b3894b2bbe",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Fill From Name (auto-fill from Name) fills on the form and is saved; a value typed by hand is not overwritten.</p><p><b>Checked:</b></p><ul><li>Field fills from the chosen same-form field → Fill From Name shows \"QA RT 1231 fill\" as Name is typed <b>[PASS]</b></li><li>Saved record → POST sends it, 201; stored name and fill_from_phone both \"QA RT 1231 fill\" (lead 816c0c4e, deleted) <b>[PASS]</b></li><li>A value already entered is never overwritten → Stays \"manual value\" <b>[PASS]</b></li><li>Configuration (13 Sep fix) → Field 9eff6424 auto_fill {source: record_field, key: name} still stored <b>[PASS]</b></li></ul><p>Evidence: NDC-1231-retest-PASS.png</p>",
+  "img": "NDC-1231-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1312",
+  "uuid": "ce5dac3d-cf36-417f-afb0-ad599be28017",
+  "verdict": "BLOCKED",
+  "state": "Bug",
+  "html": "<p><b>Retest BLOCKED — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Dialog part held; the move cannot be verified (Pipeline field blocker).</p><p>Change pipeline dialog asks \"Stage in the new pipeline\" (keeps current stage when it exists). Confirm → 422 \"Pipeline … is not one of the allowed values (Standard (Standard))\" toast with raw id; deal unchanged — caused by the staging Pipeline field config.</p><p><b>Checked:</b></p><ul><li>Dialog asks for the stage in the new pipeline → \"Stage in the new pipeline: qualification — The deal keeps its current stage — the new pipeline has it too.\" <b>[PASS]</b></li><li>Change pipeline → deal moves at the chosen stage → PATCH 422 \"Pipeline: '640e03a4-…' is not one of the allowed values (Standard (Standard)).\"; deal stays Standard / qualification <b>[BLOCKED]</b></li><li>Cause → Staging Pipeline field allows only \"Standard (Standard)\" — not judgeable on staging now <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Blocked by staging Pipeline field config (see NDC-1302).</li></ul><p><b>Moved to Bug (QA lead decision, 26 Oct):</b> the fix cannot be confirmed on staging. The Deals \"pipeline\" field is a pick list that allows only \"Standard (Standard)\" (changed 24 Oct 15:54 UTC by ndc-staging-owner), so no deal can be created or moved with any pipeline in the UI or the API. Please restore the field (pipeline lookup with all pipelines of the layout) and move this ticket back to Ready For Test.</p><p>Evidence: NDC-1312-retest-BLOCKED.png</p>",
+  "img": "NDC-1312-retest-BLOCKED.png"
+ },
+ {
+  "id": "NDC-1316",
+  "uuid": "4c9b218f-b4a4-4a43-b279-92042723719d",
+  "verdict": "BLOCKED",
+  "state": "Bug",
+  "html": "<p><b>Retest BLOCKED — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Mass Update UI held; the update cannot be verified.</p><p>Mass Update offers Pipeline + \"Stage in the new pipeline\" (7 stages of \"1\", default first). Update records → POST mass-update 422 (same Pipeline message); the dialog stays open with no message — caused by the staging Pipeline field config.</p><p><b>Checked:</b></p><ul><li>Pipeline offered in Mass Update → \"Pipeline\" field with New pipeline (Standard (Default), 1) <b>[PASS]</b></li><li>Stage of the destination pipeline, first by default → \"Stage in the new pipeline\": 7 stages of \"1\", hint \"Defaults to the first stage of the new pipeline…\" <b>[PASS]</b></li><li>Update records moves both deals → POST 422 \"Pipeline: '640e03a4-…' is not one of the allowed values…\"; dialog stays open with no message; both still Standard / qualification <b>[BLOCKED]</b></li><li>Failure shown to the user → Nothing shown (no toast, no inline message) <b>[INFO]</b></li><li>Cause → Staging Pipeline field allows only \"Standard (Standard)\" — not judgeable on staging now <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Blocked by staging Pipeline field config.</li><li>Also: the refused Mass Update shows no message to the user.</li></ul><p><b>Moved to Bug (QA lead decision, 26 Oct):</b> the fix cannot be confirmed on staging. The Deals \"pipeline\" field is a pick list that allows only \"Standard (Standard)\" (changed 24 Oct 15:54 UTC by ndc-staging-owner), so no deal can be created or moved with any pipeline in the UI or the API. Please restore the field (pipeline lookup with all pipelines of the layout) and move this ticket back to Ready For Test.</p><p>Evidence: NDC-1316-retest-BLOCKED.png</p>",
+  "img": "NDC-1316-retest-BLOCKED.png"
+ },
+ {
+  "id": "NDC-1324",
+  "uuid": "b983cc0e-7117-4929-a173-f81dd841000b",
+  "verdict": "BLOCKED",
+  "state": "Bug",
+  "html": "<p><b>Retest BLOCKED — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Regressed on staging: inline editor is a plain picker.</p><p>Deals list Pipeline column shows the raw id \"5170500c-…\" for every deal; inline edit opens a plain picker (raw-id chip) offering only \"Standard (Standard)\" — the change-pipeline modal of 21 Oct is gone. Likely a consequence of the Pipeline field now being a plain pick list.</p><p><b>Checked:</b></p><ul><li>Pipeline column value → Raw id \"5170500c-b335-479c-96d1-ed138965c345\" on every deal (probably a side effect of the corrupted field) <b>[FAIL]</b></li><li>Inline edit lists the module's pipelines → Plain picker: chip shows the raw id; only \"Standard (Standard)\"; no change-pipeline dialog (seen on 21 Oct) <b>[FAIL]</b></li><li>Selecting a pipeline applies it → Cannot be tried — \"1\" not offered and every pipeline write is refused (422) <b>[BLOCKED]</b></li><li>Cause → Staging Pipeline field allows only \"Standard (Standard)\"; recheck after the field is repaired <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Blocked/regressed by staging Pipeline field config: raw ids in the list, no pipeline choice inline.</li></ul><p><b>Moved to Bug (QA lead decision, 26 Oct):</b> the fix cannot be confirmed on staging. The Deals \"pipeline\" field is a pick list that allows only \"Standard (Standard)\" (changed 24 Oct 15:54 UTC by ndc-staging-owner), so no deal can be created or moved with any pipeline in the UI or the API. Please restore the field (pipeline lookup with all pipelines of the layout) and move this ticket back to Ready For Test.</p><p>Evidence: NDC-1324-retest-BLOCKED.png</p>",
+  "img": "NDC-1324-retest-BLOCKED.png"
+ },
+ {
+  "id": "NDC-1593",
+  "uuid": "dea744ef-8c6a-465c-aa95-08d79d675299",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Importing as test user 2: the hidden field is not offered in Map fields; the read-only field is listed as \"(read-only for your profile)\" and disabled.</p><p><b>Checked:</b></p><ul><li>Hidden field in the mapping list → \"QA RT FP\" absent from every column's Field list <b>[PASS]</b></li><li>Read-only field as a target → \"QA RT RO (read-only for your profile)\" listed but disabled <b>[PASS]</b></li><li>Hidden write refused server-side → 422 FIELD_PERMISSION_DENIED \"Field 'qa_rt_fp' is hidden for your profile and cannot be written.\" (record API, NDC-1337) <b>[PASS]</b></li><li>Import submitted → Not submitted — wizard left at mapping (nothing restricted could be mapped) <b>[INFO]</b></li></ul><p>Evidence: NDC-1593-retest-PASS.png</p>",
+  "img": "NDC-1593-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1599",
+  "uuid": "a1ce40d2-7034-4ca9-8229-992adb312dd3",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Read-only (profile \"test\") field cannot be chosen as an import target: \"QA RT RO (read-only for your profile)\" disabled.</p><p><b>Checked:</b></p><ul><li>Field set to Read for the user's profile → qa_rt_ro read_only for profile \"test\" (POST /field-permissions 200) <b>[PASS]</b></li><li>Read field offered as an import target → \"QA RT RO (read-only for your profile)\" shown disabled in every column's list <b>[PASS]</b></li><li>Import submitted → Not submitted — field cannot be chosen <b>[INFO]</b></li></ul><p>Evidence: NDC-1599-retest-PASS.png</p>",
+  "img": "NDC-1599-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1692",
+  "uuid": "852a67cc-74a1-4abd-94b3-c54a3e8fbdf0",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Modules added to a folder are saved at once and nested under the folder in the sidebar; deleting a folder with modules asks Move (to Root/another folder) or Remove, names the count, button \"Move &amp; Delete\" — result matches.</p><p><b>Checked:</b></p><ul><li>Left pane before / after adding to a folder → Add Modules links immediately (\"Modules linked successfully\"); sidebar nests leads under Folder B — never shown flat at root <b>[PASS]</b></li><li>Dialog states the number of modules → \"The \"QA RT Folder B\" folder has 2 modules.\" <b>[PASS]</b></li><li>Choice: move (folder / root) or remove; button names the outcome → \"Move modules and delete folder\" (Root / QA RT Folder A2) or \"Remove modules and delete folder\"; \"Move &amp; Delete\" <b>[PASS]</b></li><li>Outcome matches the dialog → Folder deleted; tasks and leads at root; 4 modules kept <b>[PASS]</b></li></ul><p>Evidence: NDC-1692-retest-PASS.png</p>",
+  "img": "NDC-1692-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1232",
+  "uuid": "59cf8a69-473d-489a-96ab-d264d1679be6",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Sticky header with solid background; the overflowing table shows fades for more columns and scrolls to Set Unique; rows compact. INFO: Label column scrolls away when scrolled right.</p><p><b>Checked:</b></p><ul><li>Header fixed and readable → thead/th rgb(255,255,255); rows pass under an opaque header (was transparent on 21 Oct) <b>[PASS]</b></li><li>Table fits or shows more columns → Table 1432 px in 962 px, overflow-x auto; right fade, then left fade when scrolled; all 11 headings complete up to Set Unique <b>[PASS]</b></li><li>Values on one line, compact rows → Labels on one line; rows 44 px <b>[PASS]</b></li><li>Observation → Scrolled right, the Label column scrolls away — rows lose their names <b>[INFO]</b></li></ul><p>Evidence: NDC-1232-retest-PASS.png</p>",
+  "img": "NDC-1232-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1554",
+  "uuid": "424a4cb2-e177-407c-8c0f-b613e8629e7b",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Tag delimiter is now static chips \", ;\" with the exact helper text; comma and semicolon both split; a mixed cell is refused \"Tags · Invalid format · Row 4\". INFO: the error table under \"All errors 1\" is empty.</p><p><b>Checked:</b></p><ul><li>Dropdown removed, exact helper text → \", \" and \"; \" chips; \"Use , or ; as tag delimiters. Use one or the other within a field — mixing both in the same field is not accepted. Any other delimiter is not accepted.\" <b>[PASS]</b></li><li>Either delimiter splits tags → \"qart1,qart2\" and \"qart3;qart4\" → 2 leads with 2 tags each <b>[PASS]</b></li><li>Mixed delimiters reported naming row and field → Tags · Invalid format · \"Row 4: qart5,qart6;qart7\"; row not imported <b>[PASS]</b></li><li>Observation → \"All errors 1\" table says \"No errors match your filters\" (empty) — same as NDC-2385 <b>[INFO]</b></li></ul><p>Evidence: NDC-1554-retest-PASS.png</p>",
+  "img": "NDC-1554-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1598",
+  "uuid": "1afec5d6-f4a0-4295-bf3c-aa5f85fe2f79",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Field Listing has a Layout filter (All Layouts, every layout, Not on any layout); \"test\" shows exactly the 18 fields on that layout.</p><p><b>Checked:</b></p><ul><li>Layout control in the toolbar → Select with All Layouts, every layout (incl. Standard Layout, فاتورة) and \"Not on any layout\" <b>[PASS]</b></li><li>Selecting a layout filters to its fields → \"test\" → 18 rows = API fields on layout \"test\" (incl. QA RT RO; excludes Test Layout 1-only \"Fill From Name\") <b>[PASS]</b></li><li>All Layouts restores the full list → All Layouts → 569 rows <b>[PASS]</b></li></ul><p>Evidence: NDC-1598-retest-PASS.png</p>",
+  "img": "NDC-1598-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1689",
+  "uuid": "6eb261d3-b747-400e-a2d5-80ee6ec6efe8",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Edit-page trash icon works: with modules it explains \"Can't delete … still contains 4 modules\"; when empty it asks \"Delete … permanently\" and deletes (204).</p><p><b>Checked:</b></p><ul><li>Trash icon with modules → Explains why it cannot delete (4 modules) and what to do first <b>[PASS]</b></li><li>Trash icon on an empty teamspace → \"Delete \"QA RT TS\"?\" with Delete teamspace <b>[PASS]</b></li><li>Deletes → DELETE ?cascade=true 204; toast; QA RT TS gone from the list <b>[PASS]</b></li><li>Observation → Module add/remove on Edit Teamspace applies immediately, while rename/admin/drag wait for Save <b>[INFO]</b></li></ul><p>Evidence: NDC-1689-retest-PASS.png</p>",
+  "img": "NDC-1689-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1691",
+  "uuid": "c538e788-a842-4fe4-8a8a-6812baf3f876",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Modules drag between folders and out to the root; saved and confirmed by the API.</p><p><b>Checked:</b></p><ul><li>Visible pick-up and drop target → Drag handles on rows; target folder outlined; root drop zone shown while dragging <b>[PASS]</b></li><li>Drag a module folder → folder → tasks A2 → Folder B; after Save API tasks folder = 80520ced (B) <b>[PASS]</b></li><li>Drag a module out to the root → meetings Folder B → root; after Save API meetings folder = – (root) <b>[PASS]</b></li><li>Folders kept → Both folders kept (A2 shows \"No modules in this folder\") <b>[PASS]</b></li></ul><p>Evidence: NDC-1691-retest-PASS.png</p>",
+  "img": "NDC-1691-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1694",
+  "uuid": "1ad3dd03-65db-49ef-9ee4-955bf051191f",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> UI fixed; API still allows it.</p><p>UI: Save disabled with \"Add at least one module to save this teamspace.\" API: POST /teamspaces with no modules → 201, and the empty teamspace is offered in the sidebar switcher.</p><p><b>Checked:</b></p><ul><li>Save with no modules (UI) → Save disabled; hint \"Add at least one module to save this teamspace.\" <b>[PASS]</b></li><li>Server rule → POST /teamspaces {modules: []} → 201; listed with 0 modules <b>[FAIL]</b></li><li>If allowed, not offered in the switcher → \"QA RT TS empty\" (0 modules) offered in the sidebar switcher <b>[FAIL]</b></li><li>Cleanup → Teamspace a1a9bba3 deleted; sidebar back to CRM Teamspace <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>API creates an empty teamspace (201) and it is offered in the teamspace switcher.</li></ul><p>Evidence: NDC-1694-retest-PARTIAL.png</p>",
+  "img": "NDC-1694-retest-PARTIAL.png"
+ },
+ {
+  "id": "NDC-1700",
+  "uuid": "7c105508-5990-481f-898a-31c4d3c12773",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Admin field shows the stored admin, not the viewer; changing the admin persists after reload.</p><p><b>Checked:</b></p><ul><li>Admin shown = stored admin, not the viewer → New Teamspace → ndc-staging-owner; CRM Teamspace → \"—\" (system creator); QA RT TS → me (its creator) — viewer is mahmoud.mahamed1515 <b>[PASS]</b></li><li>Change admin and reload → Picker \"Select the teamspace admin\" → ndc-staging-owner → Save (PUT /acl 200) → reload shows ndc-staging-owner <b>[PASS]</b></li><li>Where it is stored → No admin field in /teamspaces; admin kept in the ACL <b>[INFO]</b></li></ul><p>Evidence: NDC-1700-retest-PASS.png</p>",
+  "img": "NDC-1700-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2220",
+  "uuid": "982c0bb5-01f3-4514-a010-15bc162f30de",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Held in the UI.</p><p>Module restricted to Desk Agent: an excluded Desk Administrator does not see it in the \"+\" menu or sidebar and gets 403 on records. INFO: GET /modules still returns it.</p><p><b>Checked:</b></p><ul><li>Profiles chosen in the dialog applied → POST module 201 + PUT /permissions {Desk Agent} 200; toast shown; ACL access_mode \"selected\" <b>[PASS]</b></li><li>User outside the permission → \"+\" menu: Ticket…Contract only; not in sidebar; GET records 403 <b>[PASS]</b></li><li>Module metadata for that user → GET /modules still returns the module (no records) <b>[INFO]</b></li></ul><p>Evidence: NDC-2220-retest-PASS.png</p>",
+  "img": "NDC-2220-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2233",
+  "uuid": "54c2b73e-047a-44b8-a50f-8a2586e6ced3",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Held: form now done too.</p><p>Form shows \"File type not allowed. Allowed: pdf/png\" and \"File is too large. Maximum size is 1 MB.\"; a valid PDF is accepted; API 422 for both.</p><p><b>Checked:</b></p><ul><li>Wrong type on the form (file [pdf]) → \"File type not allowed. Allowed: pdf\"; input accept=\".pdf\" <b>[PASS]</b></li><li>Too large on the form (2.2 MB, max 1 MB) → \"File is too large. Maximum size is 1 MB.\" <b>[PASS]</b></li><li>Wrong type on the image field [png] → \"File type not allowed. Allowed: png\"; accept=\".png\" <b>[PASS]</b></li><li>Valid pdf (control) → qa-rt-ok.pdf · 33 B shown with Replace <b>[PASS]</b></li><li>API → 422 \"File type is not allowed; allowed types: pdf.\" / 422 \"File upload exceeds maximum size of 1 MB.\" <b>[PASS]</b></li><li>File value shape → Value now uses filename / size_bytes keys <b>[INFO]</b></li></ul><p>Evidence: NDC-2233-retest-PASS.png</p>",
+  "img": "NDC-2233-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2246",
+  "uuid": "da48cfe4-52d7-4307-9ad4-b53e8ac47451",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Field keeps custom_datatype_key qa_rt_dt4 (on the single_line base); deleting the in-use type → 409 DATATYPE_IN_USE.</p><p><b>Checked:</b></p><ul><li>Custom data type created and listed → 201; in GET /fields/datatypes <b>[PASS]</b></li><li>Field with the custom type → 201 (was 400 DATATYPE_KEY_UNKNOWN) <b>[PASS]</b></li><li>Field refers to the custom type (21 Oct: plain single_line) → datatypeKey single_line + datatypeOptions.custom_datatype_key \"qa_rt_dt4\" <b>[PASS]</b></li><li>Delete a type in use (spec J4, was blocked) → 409 DATATYPE_IN_USE \"Datatype is in use by at least one field draft.\" <b>[PASS]</b></li></ul><p>Evidence: NDC-2246-retest-PASS.png</p>",
+  "img": "NDC-2246-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2249",
+  "uuid": "09342bb6-1402-4317-ada4-efd876ce0615",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Arabic Layouts page fully translated (آخر تعديل).</p><p><b>Checked:</b></p><ul><li>\"Last Modified\" header (open on 21 Oct) → \"آخر تعديل\" <b>[PASS]</b></li><li>Create New Layout + description → \"إنشاء تخطيط جديد\" + Arabic description <b>[PASS]</b></li><li>Other headers → الاسم / مشارك مع / آخر تعديل / الحالة <b>[PASS]</b></li><li>Remaining English → Only the \"Ctrl K\" keyboard shortcut <b>[INFO]</b></li></ul><p>Evidence: NDC-2249-retest-PASS.png</p>",
+  "img": "NDC-2249-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2250",
+  "uuid": "b32c95c3-9569-4976-abd9-df8611470a39",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Held.</p><p>Real last modifier shown (Tickets: ndc-staging-owner; new module: mahmoud.mahamed1515); \"System\" only for untouched seeded modules.</p><p><b>Checked:</b></p><ul><li>Module changed by a person → Tickets: \"NS ndc-staging-owner 19/10/2026\" (API lastModifiedByName ndc-staging-owner) <b>[PASS]</b></li><li>Seeded modules never changed → \"System 06/09/2026\" (no \"UN\") <b>[PASS]</b></li><li>New module → QA RT Agents Only → \"mahmoud.mahamed1515\" (21 Oct showed \"System\" for all) <b>[PASS]</b></li></ul><p>Evidence: NDC-2250-retest-PASS.png</p>",
+  "img": "NDC-2250-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2393",
+  "uuid": "345ef0c3-275c-40bb-b107-a3d69efda0cb",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Unlinked pair stays unlinked after a CRM change (50 s); Desk not updated; manual re-link 201.</p><p><b>Checked:</b></p><ul><li>Unlink → 204 <b>[PASS]</b></li><li>CRM Title changed, wait 50 s → No link for the pair; Desk Title still empty <b>[PASS]</b></li><li>Manual link afterwards → 201 (was 409 \"already linked\") <b>[PASS]</b></li></ul><p>Evidence: NDC-2393-retest-PASS.png</p>",
+  "img": "NDC-2393-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2394",
+  "uuid": "30db2da2-741f-4669-b918-ad23f2743d45",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>While paused the layout picker shows \"Handshake Mode is unavailable while the CRM sync is paused.\"</p><p><b>Checked:</b></p><ul><li>Layout picker while paused → Work Modes: \"Handshake Mode is unavailable while the CRM sync is paused.\" — no option <b>[PASS]</b></li><li>Disconnected (control) → Not repeated (would need Disconnect of the shared integration); hidden on 21 Oct <b>[INFO]</b></li></ul><p>Evidence: NDC-2394-retest-PASS.png</p>",
+  "img": "NDC-2394-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2395",
+  "uuid": "6528401a-da40-4376-841f-25c90fab83b7",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Failure reason names both records (\"…record \"QA RT 2393 Pair\" … already paired with Desk record \"QA RT 2393 Pair\".\"). INFO: older account failures show an id for a Desk account that no longer exists.</p><p><b>Checked:</b></p><ul><li>Reason for the duplicate-email pair → \"The CRM contacts record \"QA RT 2393 Pair\" with the same email is already paired with Desk record \"QA RT 2393 Pair\".\" (UI and API last_error) <b>[PASS]</b></li><li>Older failures → Older account failures still read \"…Desk record e94d9d81-…\"; that Desk account no longer exists (404), so no name is available <b>[INFO]</b></li></ul><p>Evidence: NDC-2395-retest-PASS.png</p>",
+  "img": "NDC-2395-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2396",
+  "uuid": "896468cb-2eef-4543-8f13-734357f05737",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Invalid mappings refused 422 (crm_field_unknown, desk_field_unknown, incomplete). INFO: lookup case reports desk_field_unknown instead of lookup_not_mappable.</p><p><b>Checked:</b></p><ul><li>Unknown CRM field / unknown Desk field / empty CRM field → Exactly these codes <b>[PASS]</b></li><li>Lookup CRM field (account_id) → 422 refused, but reason desk_field_unknown <b>[INFO]</b></li><li>Stored config → Nothing stored <b>[PASS]</b></li></ul><p>Evidence: NDC-2396-retest-PASS.png</p>",
+  "img": "NDC-2396-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2397",
+  "uuid": "26fdc768-743c-48bb-8037-7e18a6cef006",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Save without row_version → 400 \"row_version is required…\".</p><p><b>Checked:</b></p><ul><li>PUT /config without row_version → 400 \"\"row_version\" is required: send the row_version these settings were read at…\" (was 200) <b>[PASS]</b></li><li>Settings afterwards → Config diffed equal to the backup <b>[PASS]</b></li></ul><p>Evidence: NDC-2397-retest-PASS.png</p>",
+  "img": "NDC-2397-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2398",
+  "uuid": "a30030d3-c2ec-4d10-ae59-04713b3a7791",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Sync History rows include a \"failed\" count.</p><p><b>Checked:</b></p><ul><li>Row fields → {date, direction, module, added, updated, failed} <b>[PASS]</b></li><li>Day with a failure → 2026-10-25 desk_to_crm accounts: added 1, updated 0, failed 1 <b>[PASS]</b></li></ul><p>Evidence: NDC-2398-retest-PASS.png</p>",
+  "img": "NDC-2398-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2399",
+  "uuid": "ba8e7ade-fce1-47b5-8a0d-bfffde52ad95",
+  "verdict": "BLOCKED",
+  "html": "<p><b>Retest BLOCKED — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Needs Disconnect + Connect of the shared staging integration to see the initial-sync notice; not run without explicit OK.</p><p><b>Checked:</b></p><ul><li>Disconnect + Connect, wait for the initial imports → Not run — needs approval to reconnect the shared integration (approval covered pause/resume/settings only) <b>[BLOCKED]</b></li><li>Next step → Ask at Gate 2; run once approved <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Not run — needs approval to disconnect/reconnect the integration.</li></ul><p><b>Not run:</b> needs Disconnect + Connect of the shared staging CRM ⇄ Desk integration; the test agent safety check refused it. State left in Ready For Test.</p><p>Evidence: NDC-2399-retest-BLOCKED.png</p>",
+  "img": "NDC-2399-retest-BLOCKED.png"
+ },
+ {
+  "id": "NDC-2400",
+  "uuid": "a25ec87f-08fe-4f23-aa0f-9917be10ae5f",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Contact list chips read \"Synced\" / \"Needs attention\" (no raw values). INFO: \"Synced\" chips are drawn red with an empty circle (error style) for a healthy state.</p><p><b>Checked:</b></p><ul><li>Chip text → \"Synced\" and \"Needs attention\" (19 contacts); no raw synced / needs_attention <b>[PASS]</b></li><li>This capture → Only \"Synced\" chips are in view; the \"Needs attention\" chips (19) are not in this capture <b>[INFO]</b></li></ul><p>Evidence: NDC-2400-retest-PASS.png</p>",
+  "img": "NDC-2400-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2401",
+  "uuid": "71e613a6-f2c4-41ea-b4d7-828409e32e83",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Pause reason over 500 characters → 400 \"The pause reason can be at most 500 characters.\" (no 500).</p><p><b>Checked:</b></p><ul><li>Pause, reason 1206 characters → 400 VALIDATION_ERROR \"The pause reason can be at most 500 characters.\" (was 500) <b>[PASS]</b></li><li>Integration state → Not paused <b>[PASS]</b></li></ul><p>Evidence: NDC-2401-retest-PASS.png</p>",
+  "img": "NDC-2401-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2402",
+  "uuid": "4eb61add-499a-43ba-b97f-8f52b8e9dba5",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Stats for a non-existent contact → 404.</p><p><b>Checked:</b></p><ul><li>Stats for a non-existent contact → 404 (was 200) <b>[PASS]</b></li><li>Context info (control) → 404 <b>[PASS]</b></li></ul><p>Evidence: NDC-2402-retest-PASS.png</p>",
+  "img": "NDC-2402-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2403",
+  "uuid": "39742df1-1a69-4323-be5d-14b7477bbf2e",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>CRM contact without Last name is not created in Desk; Failure Log: \"Mandatory field missing: Last Name is required in Desk…\".</p><p><b>Checked:</b></p><ul><li>Failure reason → \"Mandatory field missing: Last Name is required in Desk, but the CRM record has no value for it…\" <b>[PASS]</b></li><li>Desk contact → No Desk contact after 45 s <b>[PASS]</b></li><li>Control (with last name) → Desk contact f0de6428 created, link synced <b>[PASS]</b></li></ul><p>Evidence: NDC-2403-retest-PASS.png</p>",
+  "img": "NDC-2403-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2404",
+  "uuid": "e052bf37-a420-42a2-950f-42aa4284c8ae",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Tickets for a phone-matched contact and a phone-only ticket classify as Contacts/Leads (crm_contact_or_lead).</p><p><b>Checked:</b></p><ul><li>Classify: ticket of the Desk contact with the CRM phone, and the phone-only ticket → Both crm_contact_or_lead (was not_in_crm) <b>[PASS]</b></li><li>Setup → CRM contact phone only; Desk contact + 2 tickets created while paused, then resumed <b>[INFO]</b></li><li>Pane for the same ticket → CRM Contact Info: QA RT 2404 desk · Synced · +201005552404 <b>[INFO]</b></li></ul><p>Evidence: NDC-2404-retest-PASS.png</p>",
+  "img": "NDC-2404-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2405",
+  "uuid": "daedede5-6b6e-4a03-86f4-2e8b5701ffb5",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Delete made under \"Keep\" keeps the Desk contact (link needs_attention) even after the preference is changed to Delete before resume.</p><p><b>Checked:</b></p><ul><li>Desk contact after resume → f0de6428 still there; link needs_attention <b>[PASS]</b></li><li>Steps → Paused; CRM contact deleted (204); preference → delete (200); resume; 50 s <b>[INFO]</b></li><li>Cleanup → Preference restored to keep <b>[INFO]</b></li></ul><p>Evidence: NDC-2405-retest-PASS.png</p>",
+  "img": "NDC-2405-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2407",
+  "uuid": "d9be6bbe-3b08-4b46-96fa-d3bb74439f5b",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Desk Agent with No access: no CRM rail icon or pane; with default access the pane is back.</p><p><b>Checked:</b></p><ul><li>Agent with No access → Only Ticket Properties; no rail, no pane, no \"Loading…\" <b>[PASS]</b></li><li>Control (access restored) → Rail with CRM Contact Info icon shown <b>[PASS]</b></li><li>Setup → panel.profile_access: Desk Agent contacts + accounts none (PUT 200); restored to [] afterwards <b>[INFO]</b></li></ul><p>Evidence: NDC-2407-retest-PASS.png</p>",
+  "img": "NDC-2407-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2408",
+  "uuid": "9172815a-4166-4c5b-bf49-d6577fa56987",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>\"Could not load this section.\" now has Retry, which reloads the pane.</p><p><b>Checked:</b></p><ul><li>Normal pane → CRM Contact Info shown <b>[INFO]</b></li><li>Error state → \"Could not load this section.\" + Retry button <b>[PASS]</b></li><li>Retry after the network is back → Loaded: QA RT 2404 desk · Synced, Info tab <b>[PASS]</b></li></ul><p>Evidence: NDC-2408-retest-PASS.png</p>",
+  "img": "NDC-2408-retest-PASS.png"
+ },
+ {
+  "id": "NDC-2409",
+  "uuid": "e5df6fb8-650d-4056-ab6b-3323587c4151",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> Event logged; content not useful.</p><p>A settings save now creates an audit event, but the log reads \"…updated CRM ⇄ Desk integration settings' action from blank value to config.updated\" — raw value and no indication of which setting changed.</p><p><b>Checked:</b></p><ul><li>Entry for an integration settings save → mahmoud.mahamed1515 · 00:57 · \"CRM ⇄ Desk integration settings\" · config.updated <b>[PASS]</b></li><li>Which setting changed → \"…settings' action from blank value to config.updated\" — raw value, setting not named <b>[FAIL]</b></li></ul><p><b>Still failing:</b></p><ul><li>Audit entry does not say which integration setting changed; shows raw \"config.updated\".</li></ul><p>Evidence: NDC-2409-retest-PARTIAL.png</p>",
+  "img": "NDC-2409-retest-PARTIAL.png"
+ },
+ {
+  "id": "NDC-1597",
+  "uuid": "e9d8afc7-7498-4ad9-8109-6b80db724105",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "html": "<p><b>Retest PARTIAL — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Module filter lists 40 modules with counts and proper labels (Blueprint added). Still not offered: Pipeline, Review Process, Assignment Rule, Action (search → \"No results found\"); odd entry \"23c1a6s8d46a\".</p><p><b>Checked:</b></p><ul><li>Module list → 40 modules with counts, no raw lowercase names; Workflow Rule, Saved View, Org Unit, Profile, Approval Process, Blueprint offered <b>[PASS]</b></li><li>Search \"pipeline\" / \"review\" / \"assignment\" / \"action\" → \"No results found\" for all four <b>[FAIL]</b></li><li>Entry \"23c1a6s8d46a (1)\" → Id-like label shown as a module <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Pipeline, Review Process, Assignment Rule, Action missing from the Module filter.</li></ul><p>Evidence: NDC-1597-retest-PARTIAL.png</p>",
+  "img": "NDC-1597-retest-PARTIAL.png"
+ },
+ {
+  "id": "NDC-1600",
+  "uuid": "db49fd3d-7a18-4bb0-97c3-e8ba362f0bab",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Deleted by lists all 16 users with counts, including 0.</p><p><b>Checked:</b></p><ul><li>Users offered → All 16 users listed with counts <b>[PASS]</b></li><li>Users with no items in the bin → Listed with (0), e.g. Ahmed Hegazy NDC, Dev Team 2, Mahmoud Samy, test user 2 <b>[PASS]</b></li><li>Users with items → ndc-staging-owner (34), test user 1 (1) <b>[PASS]</b></li></ul><p>Evidence: NDC-1600-retest-PASS.png</p>",
+  "img": "NDC-1600-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1601",
+  "uuid": "d2251673-ef41-4f52-88fe-4f6872081379",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Choosing a module keeps all options in the dropdown.</p><p><b>Checked:</b></p><ul><li>Select Module = Leads → Chip \"Leads (7)\", list shows 7 items <b>[PASS]</b></li><li>Reopen the Module dropdown → Leads ticked; all 41 options still listed <b>[PASS]</b></li></ul><p>Evidence: NDC-1601-retest-PASS.png</p>",
+  "img": "NDC-1601-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1795",
+  "uuid": "9055774f-badf-4ed9-95d4-5079f8855547",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>After Delete forever (50) the list refreshes itself and shows the remaining 10.</p><p><b>Checked:</b></p><ul><li>Select all on page → Delete (50) → Delete forever → \"Permanently delete 50 records? This can't be undone.\" → POST /recycle-bin/delete 200 <b>[PASS]</b></li><li>List after the delete → GET items ×2 fired by the page; remaining 10 shown without Load More or refresh <b>[PASS]</b></li></ul><p>Evidence: NDC-1795-retest-PASS.png</p>",
+  "img": "NDC-1795-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1797",
+  "uuid": "2d00ee7f-5f93-4dee-b959-161486a97919",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>All 50 selected items deleted forever (API 60 → 10); none left behind.</p><p><b>Checked:</b></p><ul><li>Bulk Delete forever (50 ids) → POST /recycle-bin/delete 200 — all 50 succeeded <b>[PASS]</b></li><li>Bin after the delete → 60 → 10 items; the 10 left are the unselected bulk 01–10 <b>[PASS]</b></li></ul><p>Evidence: NDC-1797-retest-PASS.png</p>",
+  "img": "NDC-1797-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1603",
+  "uuid": "aca8f04a-d1bf-4291-8add-987a7a7cd59d",
+  "verdict": "PASS",
+  "state": "Done",
+  "html": "<p><b>Retest PASS — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Restore of a record whose unique value is in use is refused per item: \"QA RT 1603 B: QA RT Uniq is already in use by another record.\" INFO: no rename-on-restore option.</p><p><b>Checked:</b></p><ul><li>Duplicate unique value while the record is live → 422 \"QA RT Uniq is already in use by another record.\" <b>[PASS]</b></li><li>Restore B after A took the value → POST /recycle-bin/restore 200 · succeeded [] · failed [reason_key recyclebin.error.name_conflict] <b>[PASS]</b></li><li>UI after restore → Toast \"QA RT 1603 B: QA RT Uniq is already in use by another record.\"; B stays in bin; only A holds QA-RT-U1 <b>[PASS]</b></li><li>Rename on restore → Not offered; conflicting record is skipped <b>[INFO]</b></li></ul><p>Evidence: NDC-1603-retest-PASS.png</p>",
+  "img": "NDC-1603-retest-PASS.png"
+ },
+ {
+  "id": "NDC-1602",
+  "uuid": "7f0cd60b-84ae-488e-9fd0-6a1447121c33",
+  "verdict": "BLOCKED",
+  "html": "<p><b>Retest BLOCKED — 25–26 Oct 2026</b><br>Environment: staging-crm.taviportal.com + staging-desk.taviportal.com · tenant NDC-Staging · Edge headless · mahmoud.mahamed1515 (CRM Admin + Desk Administrator); test users 1/2, mahmoud.mmohamedsamy, Desk Agent fedelav803<br>Method: manual browser + API (retest round 25–26 Oct 2026)</p><p><b>Developer's note checked:</b> —</p><p>Bin filled to 244 items; the Empty Bin click was refused by the agent's safety check (irreversible deletion). Not run.</p><p><b>Checked:</b></p><ul><li>Large bin → 244 items (200 \"QA RT 1602 fill\" leads + others) <b>[INFO]</b></li><li>Empty Bin › confirm → Not run — click refused by the agent's safety check (irreversible) <b>[BLOCKED]</b></li><li>Next step → User to run Empty Bin (or allow it); 200 QA RT fill items stay in the bin until then <b>[INFO]</b></li></ul><p><b>Still failing:</b></p><ul><li>Not run — Empty Bin needs the user to allow it (or run it).</li></ul><p><b>Not run:</b> the Empty Bin click was refused by the test agent safety check (irreversible deletion of the shared bin). The bin was prepared with 244 items. State left in Ready For Test until Empty Bin is run (manually or with permission).</p><p>Evidence: NDC-1602-retest-BLOCKED.png</p>",
+  "img": "NDC-1602-retest-BLOCKED.png"
+ }
+]

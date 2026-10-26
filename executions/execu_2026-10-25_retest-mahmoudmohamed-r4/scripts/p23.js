@@ -1,0 +1,17 @@
+const D = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430';
+const d = page.locator('[role=dialog]').last();
+await d.getByRole('button', { name: 'New pipeline', exact: true }).click(); await sleep(900);
+const popts = await page.evaluate(() => [...document.querySelectorAll('[role=option]')].filter(e => e.offsetParent).map(e => e.innerText.trim()));
+await page.locator('[role=option]:visible').filter({ hasText: /^1$/ }).first().click(); await sleep(900);
+await d.getByRole('button', { name: 'Stage in the new pipeline', exact: true }).click(); await sleep(900);
+const sopts = await page.evaluate(() => [...document.querySelectorAll('[role=option]')].filter(e => e.offsetParent).map(e => e.innerText.trim()));
+await page.locator('[role=option]:visible').filter({ hasText: /^test-02$/ }).first().click(); await sleep(900);
+await shot('1316-05-filled');
+const resp = []; const f = async r => { const q = r.request(); if (/records|mass|bulk/.test(q.url()) && !['GET'].includes(q.method())) resp.push(q.method() + ' ' + q.url().replace(H + '/api/v1', '').slice(0, 80) + ' ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 300)); }; page.on('response', f);
+await d.getByRole('button', { name: 'Update records' }).click(); await sleep(5000);
+page.off('response', f);
+const result = await page.evaluate(() => (document.querySelector('[role=dialog]')?.innerText || '').slice(0, 500));
+const toasts = await page.evaluate(() => [...document.querySelectorAll('[data-sonner-toast]')].map(t => t.innerText.trim()));
+await shot('1316-06-result');
+const st = {}; for (const id of ['ebfc151f-1072-4f62-a564-e30261178870', '5712b381-59ee-4cb4-b025-b7a834d74d86']) st[id.slice(0, 8)] = Object.fromEntries(((await api('GET', `/modules/${D}/records/${id}`)).j?.data?.data || []).filter(x => /^(pipeline|stage)$/.test(x.field)).map(x => [x.field, x.value.value]));
+return done({ popts, sopts, resp, result, toasts, st });

@@ -1,0 +1,4 @@
+const M = { deals: 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430', contacts: '6f553963-01d6-4b68-9fb3-143d23044c41', tasks: 'a9d87b62-b704-4c2e-b2d5-1b745d7c2065' };
+const out = {}; const txt = () => page.evaluate(() => document.body.innerText);
+for (const [k, id] of Object.entries(M)) { await page.goto(H + `/modules/${id}`, { waitUntil: 'commit', timeout: 120000 }); let t = ''; for (let i = 0; i < 90; i++) { await sleep(1000); t = await txt().catch(() => ''); if (/\d[\d,]* records|Something went wrong|don't have access/.test(t)) break; } out[k] = { result: /Something went wrong/.test(t) ? 'CRASH' : /don't have access/.test(t) ? 'NO ACCESS' : (t.match(/\d[\d,]* records/) || ['?'])[0], prefs: JSON.stringify((await api('GET', `/modules/${id}/list-preferences`)).j?.data).slice(0, 100) }; }
+return out;

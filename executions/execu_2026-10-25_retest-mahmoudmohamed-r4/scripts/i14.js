@@ -1,0 +1,10 @@
+const B = '/desk/integrations/crm', DC = '43004ce2-577f-4eda-b00a-0750fe40c3d4', D = 'f0de6428-14f4-414a-b333-5f27fa6b0f7a';
+const strip = c => { const b = JSON.parse(JSON.stringify(c)); delete b.status; return b; };
+const cur = (await api('GET', `${B}/config`)).j.data; const b = strip(cur); const opts = { before: cur.on_crm_delete }; b.on_crm_delete = 'delete';
+const put = await api('PUT', `${B}/config`, b); opts.putDelete = put.s + ' ' + (put.s >= 300 ? put.t.slice(0, 200) : '') + ' now=' + (await api('GET', `${B}/config`)).j.data.on_crm_delete;
+opts.resume = (await api('POST', `${B}/resume`, {})).s; await sleep(50000);
+const rec = await api('GET', `/modules/${DC}/records/${D}`); opts.deskContact = rec.s + ' deleted=' + rec.j?.data?.is_deleted;
+const link = arr((await api('GET', `${B}/links?kind=contact&limit=200`)).j?.data).filter(l => l.desk_record_id === D).map(l => l.sync_status + ' ' + (l.needs_attention_reason || l.status_reason || ''));
+opts.link = link;
+const c2 = (await api('GET', `${B}/config`)).j.data; const b2 = strip(c2); b2.on_crm_delete = 'keep'; opts.restorePref = (await api('PUT', `${B}/config`, b2)).s + ' now=' + (await api('GET', `${B}/config`)).j.data.on_crm_delete;
+return done(opts);

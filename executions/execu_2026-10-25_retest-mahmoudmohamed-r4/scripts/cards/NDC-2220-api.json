@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2220-api.png",
+ "date": "25–26 Oct 2026",
+ "host": "staging-desk.taviportal.com",
+ "who": "mahmoud.mahamed1515 + mahmoud.mmohamedsamy",
+ "title": "NDC-2220 · Create Module with Module Permission = Desk Agent only",
+ "rows": [
+  [
+   "create (dialog)",
+   "POST /api/v1/teamspaces/a641f1df…/modules  \"QA RT Agents Only\"",
+   "201 — module 01727195…",
+   "ok"
+  ],
+  [
+   "permission (dialog)",
+   "PUT /api/v1/modules/01727195…/permissions {profileIds:[…402 Desk Agent]}",
+   "200 (was 404) — toast \"Module permissions updated successfully\"; ACL access_mode \"selected\"",
+   "ok"
+  ],
+  [
+   "other user: records",
+   "mahmoud.mmohamedsamy (Desk Administrator + Supervisor) GET /modules/01727195…/records",
+   "403 — not allowed",
+   "ok"
+  ],
+  [
+   "other user: UI",
+   "\"+\" create menu and sidebar",
+   "Ticket, Contact, Account, Task, Call, Event, Contract — QA RT Agent Only not listed; not in sidebar",
+   "ok"
+  ],
+  [
+   "INFO",
+   "mahmoud.mmohamedsamy GET /api/v1/modules",
+   "still returns the module metadata (no records)",
+   "info"
+  ]
+ ]
+}

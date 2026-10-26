@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2246-api.png",
+ "date": "25–26 Oct 2026",
+ "host": "staging-desk.taviportal.com",
+ "title": "NDC-2246 · custom data type used to create a field, then delete while in use",
+ "rows": [
+  [
+   "create type",
+   "POST /api/v1/custom-datatypes {key:\"qa_rt_dt4\", base_datatype_key:\"single_line\"}",
+   "201 — listed in GET /fields/datatypes",
+   "ok"
+  ],
+  [
+   "create field",
+   "POST /modules/{QA RT Agents Only}/fields  qa_rt_cdt datatypeKey \"qa_rt_dt4\"",
+   "201 (was 400 DATATYPE_KEY_UNKNOWN)",
+   "ok"
+  ],
+  [
+   "stored field",
+   "GET field qa_rt_cdt",
+   "datatypeKey \"single_line\" + datatypeOptions.custom_datatype_key \"qa_rt_dt4\" — custom type kept as a reference",
+   "ok"
+  ],
+  [
+   "delete in use (J4)",
+   "DELETE /api/v1/custom-datatypes/qa_rt_dt4",
+   "409 DATATYPE_IN_USE \"Datatype is in use by at least one field draft.\"",
+   "ok"
+  ]
+ ]
+}

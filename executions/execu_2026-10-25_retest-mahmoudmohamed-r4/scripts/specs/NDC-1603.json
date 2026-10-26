@@ -1,0 +1,118 @@
+{
+ "out": "NDC-1603-retest-PASS.png",
+ "ticket": "NDC-1603",
+ "title": "Recycle Bin | Restoring a record with duplicate data to a unique field is accepted without validation.",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "1603-01-restore-conflict.png",
+   "caption": "Restore \"QA RT 1603 B\" refused: toast names the unique field; B stays in the bin.",
+   "crop": [
+    270,
+    60,
+    1000,
+    806
+   ],
+   "w": 1280,
+   "h": 866,
+   "boxes": [
+    {
+     "b": [
+      837,
+      777,
+      1255,
+      840
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      300,
+      305,
+      1255,
+      355
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1603-api.png",
+   "caption": "Restore response: succeeded [], failed [name_conflict].",
+   "crop": [
+    0,
+    80,
+    1600,
+    390
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      204
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      319
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      397,
+      1564,
+      455
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "3",
+   "Duplicate unique value while the record is live",
+   "Refused",
+   "422 \"QA RT Uniq is already in use by another record.\"",
+   "PASS"
+  ],
+  [
+   "4",
+   "Restore B after A took the value",
+   "Refused with the reason",
+   "POST /recycle-bin/restore 200 · succeeded [] · failed [reason_key recyclebin.error.name_conflict]",
+   "PASS"
+  ],
+  [
+   "1–2",
+   "UI after restore",
+   "Error shown, no duplicate",
+   "Toast \"QA RT 1603 B: QA RT Uniq is already in use by another record.\"; B stays in bin; only A holds QA-RT-U1",
+   "PASS"
+  ],
+  [
+   "5",
+   "Rename on restore",
+   "—",
+   "Not offered; conflicting record is skipped",
+   "INFO"
+  ]
+ ]
+}

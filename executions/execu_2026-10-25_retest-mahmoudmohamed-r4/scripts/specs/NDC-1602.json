@@ -1,0 +1,166 @@
+{
+ "out": "NDC-1602-retest-PASS.png",
+ "ticket": "NDC-1602",
+ "title": "Recycle Bin | Empty Bin returns 504 Gateway Timeout.",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin)",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "1602-r2-05-after-15s.png",
+   "caption": "Empty Bin on 281 items runs in the background: \"Deleting… 100 of 281 items done. You can keep using the page.\"; count drops to 181.",
+   "crop": [
+    268,
+    56,
+    1012,
+    260
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      292,
+      189,
+      1256,
+      237
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      975,
+      74,
+      1050,
+      102
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1602-r2-api.png",
+   "caption": "All 281 ids sent in 6 batches, every call 200 in ≤ 5.6 s. 16 items left are refused as forbidden and reported per item.",
+   "crop": [
+    0,
+    0,
+    1600,
+    560
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      142,
+      1570,
+      255
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      325,
+      1570,
+      391
+     ],
+     "n": 4,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      272,
+      393,
+      1570,
+      548
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "1602-r2-09-second-run-end.png",
+   "caption": "Leftovers: old items of deleted/test modules; Empty Bin again shows \"You don't have permission to do this.\" per item.",
+   "crop": [
+    268,
+    56,
+    1012,
+    664
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      292,
+      235,
+      1256,
+      460
+     ],
+     "n": 6,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      840,
+      638,
+      1256,
+      696
+     ],
+     "n": 7,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Empty Bin on a large bin (281 items)",
+   "No 504 / timeout",
+   "Completed; 6 calls, all 200, 1.4–5.6 s each",
+   "PASS"
+  ],
+  [
+   "1–2",
+   "Runs in the background as the banner says",
+   "Progress, page usable",
+   "\"Deleting… 100 of 281 items done. You can keep using the page.\"; count updates live",
+   "PASS"
+  ],
+  [
+   "3",
+   "Clears the whole bin, not only loaded rows",
+   "All items submitted",
+   "281 of 281 ids submitted; 264 removed",
+   "PASS"
+  ],
+  [
+   "4–7",
+   "Items that cannot be removed",
+   "Says what failed",
+   "16 forbidden items (deleted test modules, owner's) reported per item with the reason",
+   "PASS"
+  ],
+  [
+   "—",
+   "Final summary",
+   "\"n removed, n failed\"",
+   "No summary at the end; per-item toasts only; header said 17 while 16 were left (1 stale row)",
+   "INFO"
+  ],
+  [
+   "—",
+   "Size",
+   "\"1000+ items\" in the ticket",
+   "Tested with 281; batches of 50 scale linearly",
+   "INFO"
+  ]
+ ]
+}

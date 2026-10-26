@@ -1,0 +1,43 @@
+{
+ "out": "NDC-1603-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-1603 · restoring a record whose unique value is now taken",
+ "rows": [
+  [
+   "setup",
+   "unique field qa_rt_uniq (1ef504b5) on Leads layout \"test\"; lead \"QA RT 1603 B\" = QA-RT-U1",
+   "saved",
+   "info"
+  ],
+  [
+   "duplicate while live",
+   "create another lead with qa_rt_uniq = QA-RT-U1",
+   "422 \"QA RT Uniq is already in use by another record.\"",
+   "ok"
+  ],
+  [
+   "take the value",
+   "delete B; create \"QA RT 1603 A\" with QA-RT-U1",
+   "A saved — holds QA-RT-U1",
+   "info"
+  ],
+  [
+   "restore B",
+   "POST /recycle-bin/restore  (B)",
+   "200 {succeeded: [], failed: [{reason_key: \"recyclebin.error.name_conflict\", detail: \"QA RT Uniq is already in use by another record.\"}]}",
+   "ok"
+  ],
+  [
+   "UI result",
+   "toast + bin + Leads",
+   "toast \"QA RT 1603 B: QA RT Uniq is already in use by another record.\"; B stays in the bin; only A holds QA-RT-U1",
+   "ok"
+  ],
+  [
+   "INFO",
+   "rename on restore",
+   "not offered — the conflicting record is skipped (ticket suggested rename or skip)",
+   "info"
+  ]
+ ]
+}

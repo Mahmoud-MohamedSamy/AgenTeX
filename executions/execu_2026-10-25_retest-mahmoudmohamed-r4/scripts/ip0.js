@@ -1,0 +1,1 @@
+const L='841043e1-c078-41f9-8d6e-dfd61bee45c3'; const a = arr((await api('GET','/modules/'+L+'/field-permissions')).j?.data); return done({ perms: [...new Set(a.map(x=>x.permission))], sample: JSON.stringify(a[0]).slice(0,300) });

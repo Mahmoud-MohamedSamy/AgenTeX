@@ -1,0 +1,1 @@
+const out = {}; for (const t of arr((await api('GET', '/teamspaces')).j?.data)) { const d = (await api('GET', '/teamspaces/' + t.id)).j?.data || {}; out[t.name] = JSON.stringify(Object.fromEntries(Object.entries(d).filter(([k]) => /admin|created|owner/i.test(k)))).slice(0, 300); } return done(out);

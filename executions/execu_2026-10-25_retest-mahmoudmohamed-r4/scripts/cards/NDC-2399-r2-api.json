@@ -1,0 +1,57 @@
+{
+ "out": "NDC-2399-r2-api.png",
+ "host": "staging-desk.taviportal.com",
+ "who": "mahmoud.mahamed1515 (Desk Administrator)",
+ "date": "26 Oct 2026",
+ "title": "NDC-2399 · Disconnect + Connect — initial sync and the admin notice",
+ "rows": [
+  [
+   "disconnect",
+   "Settings › CRM ⇄ Desk Integration › Disconnect › confirm (08:04:19 UTC)",
+   "Disconnected",
+   "info"
+  ],
+  [
+   "connect",
+   "Connect › confirm (08:05:03 UTC)",
+   "Toast \"Integration connected.\"; enabled true, paused false",
+   "ok"
+  ],
+  [
+   "runs",
+   "GET /api/v1/desk/integrations/crm/runs",
+   "initial_customers: requested 19, created 0, updated 0, skipped 14, needs_attention 5 · initial_contracts: requested 2, needs_attention 2",
+   "info"
+  ],
+  [
+   "bell",
+   "GET /api/v1/notifications",
+   "2 new: \"CRM customer sync finished: 0 added, 0 updated, 5 could not sync\" / \"CRM contract sync finished: 0 added, 0 updated, 2 could not sync\" — \"The Failure Log lists the records that could not sync.\"",
+   "ok"
+  ],
+  [
+   "skipped count",
+   "Notice text vs run",
+   "The 14 skipped (ignored) customers are not in the notice",
+   "bad"
+  ],
+  [
+   "reasons",
+   "GET /api/v1/desk/integrations/crm/failures + Failure Log tab",
+   "Still 19 entries, newest 07:30 UTC — none of the 7 records from this run; no skip/failure reasons anywhere",
+   "bad"
+  ],
+  [
+   "email",
+   "Admin mailbox",
+   "Not checked (no access to the admin inbox)",
+   "info"
+  ],
+  [
+   "settings",
+   "GET /api/v1/desk/integrations/crm/config before/after",
+   "Identical except import timestamps — nothing reset by Connect",
+   "ok"
+  ]
+ ]
+}

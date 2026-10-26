@@ -1,0 +1,77 @@
+{
+ "out": "NDC-2396-retest-PASS.png",
+ "ticket": "NDC-2396",
+ "title": "CRM - Desk Integration | The settings API saves invalid field mappings",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com (+ staging-crm for the integration) · tenant NDC-Staging · Edge (headless) · mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy, Desk Agent fedelav803, CRM test user 1 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2396-api.png",
+   "caption": "API: all four invalid mappings refused with 422; nothing stored. Lookup case gives another reason code.",
+   "crop": [
+    0,
+    0,
+    1600,
+    424
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      95,
+      1570,
+      297
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      299,
+      1570,
+      365
+     ],
+     "n": 2,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      272,
+      367,
+      1570,
+      412
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Unknown CRM field / unknown Desk field / empty CRM field",
+   "422 crm_field_unknown / desk_field_unknown / incomplete",
+   "Exactly these codes",
+   "PASS"
+  ],
+  [
+   "2",
+   "Lookup CRM field (account_id)",
+   "422 lookup_not_mappable",
+   "422 refused, but reason desk_field_unknown",
+   "INFO"
+  ],
+  [
+   "3",
+   "Stored config",
+   "Invalid rows not saved",
+   "Nothing stored",
+   "PASS"
+  ]
+ ]
+}

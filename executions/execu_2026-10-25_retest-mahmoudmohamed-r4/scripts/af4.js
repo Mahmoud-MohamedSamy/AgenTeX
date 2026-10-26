@@ -1,0 +1,10 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3', LT1 = '114a5fb6-0a30-4b2c-ac9c-e8c3e51a21f1';
+await page.goto(H + `/modules/${L}/records/new?layout=${LT1}`, { waitUntil: 'commit', timeout: 90000 });
+for (let k = 0; k < 60; k++) { await sleep(1000); if (/Fill From Name/.test(await txt().catch(() => ''))) break; } await sleep(2500);
+await page.getByPlaceholder('Fill From Name').fill('manual value'); await sleep(400);
+await page.getByPlaceholder('Name', { exact: true }).fill('QA RT 1231 keep'); await page.keyboard.press('Tab'); await sleep(1500);
+const v = await page.getByPlaceholder('Fill From Name').inputValue();
+await shot('1231-03-manual-kept');
+await page.getByRole('button', { name: 'Cancel' }).click().catch(() => {}); await sleep(800);
+const d = page.getByRole('button', { name: /Yes, Leave|Leave|Discard/ }).first(); if (await d.count()) await d.click();
+return done({ fillFromAfterName: v });

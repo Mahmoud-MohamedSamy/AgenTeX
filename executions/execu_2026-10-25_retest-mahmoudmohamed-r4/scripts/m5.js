@@ -1,0 +1,1 @@
+await page.goto(H + '/settings/modules-and-fields', { waitUntil: 'commit', timeout: 90000 }); for (let k = 0; k < 60; k++) { await sleep(1000); if (/Create New Module/.test(await txt().catch(() => ''))) break; } await sleep(1000); return done({ url: page.url().replace(H, '') });

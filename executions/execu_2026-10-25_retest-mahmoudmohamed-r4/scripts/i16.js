@@ -1,0 +1,14 @@
+const T = '88e8ea44-1658-4df3-9930-d0902b91073d', TID = 'fd913c6d-eaa9-4f11-8b7f-4c886dac0a58';
+const open = async () => { await page.goto(H + `/modules/${T}/records/${TID}`, { waitUntil: 'commit', timeout: 90000 }); for (let k = 0; k < 40; k++) { await sleep(1000); if (/QA RT 2404 contact ticket/.test(await txt().catch(() => ''))) break; } await sleep(2500); };
+await open();
+const rail = await page.evaluate(() => [...document.querySelectorAll('button[aria-label], [role=tab]')].map(b => b.getAttribute('aria-label') || b.innerText.trim()).filter(t => /crm/i.test(t)));
+const crm = page.getByRole('button', { name: /CRM/ }).or(page.getByRole('tab', { name: /CRM/ })).first(); await crm.click().catch(() => {}); await sleep(3000);
+const normal = (await txt()).split('\n').filter(l => /CRM Contact|Could not load|Retry|Loading/.test(l)).slice(0, 5);
+await shot('2408-01-pane-normal');
+await page.route(/\/desk\/integrations\/crm\/context/, r => r.abort());
+await open(); await crm.click().catch(() => {}); await sleep(4000);
+const blocked = (await txt()).split('\n').filter(l => /Could not load|Retry|Loading|Try again/.test(l)).slice(0, 5);
+const retryBtn = await page.getByRole('button', { name: /Retry|Try again/ }).count();
+await shot('2408-02-pane-error');
+let afterRetry = null; if (retryBtn) { await page.unroute(/\/desk\/integrations\/crm\/context/); await page.getByRole('button', { name: /Retry|Try again/ }).first().click(); await sleep(4000); afterRetry = (await txt()).split('\n').filter(l => /CRM Contact|Could not load|QA RT/.test(l)).slice(0, 5); await shot('2408-03-after-retry'); } else await page.unroute(/\/desk\/integrations\/crm\/context/);
+return done({ rail, normal, blocked, retryBtn, afterRetry });

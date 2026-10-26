@@ -1,0 +1,2 @@
+const ev = arr((await api('GET', '/audit/events?limit=100')).j?.data).filter(e => /integration|crm_sync/i.test(JSON.stringify(e)));
+return done(ev.slice(0, 6).map(e => ({ at: e.occurred_at, actor: e.actor_name || e.actor_id, action: e.action || e.event_type, entity: e.entity_type || e.target_type, label: e.entity_label || e.target_label || e.summary, changes: JSON.stringify(e.changes || e.diff || e.metadata || '').slice(0, 200) })));

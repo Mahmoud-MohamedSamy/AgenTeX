@@ -1,0 +1,176 @@
+{
+ "out": "NDC-1335-retest-PARTIAL.png",
+ "ticket": "NDC-1335",
+ "title": "Modules and Fields | Saving a layout fails with \"Failed to update options for Subform\" when the layout has no subform — a 404 on a non-existent field",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1335-02-after-save-loaded.png",
+   "caption": "Existing Leads layout \"test\": Module Image switched off and saved — no Subform error, Save greyed (nothing unsaved).",
+   "crop": [
+    330,
+    55,
+    950,
+    420
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      357,
+      183,
+      1256,
+      225
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1100,
+      64,
+      1266,
+      100
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1335-05-new-saved.png",
+   "caption": "New layout with predefined Basic Information fields only → Save: \"Couldn't save the settings for \"Subform\"…\" — layout not created.",
+   "crop": [
+    320,
+    330,
+    960,
+    390
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      357,
+      347,
+      1256,
+      567
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      322,
+      636,
+      838,
+      694
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      836,
+      610,
+      1256,
+      694
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1335-api.png",
+   "caption": "Save requests for both cases.",
+   "crop": [
+    0,
+    0,
+    1600,
+    380
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      923,
+      99,
+      1562,
+      225
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      923,
+      235,
+      1562,
+      293
+     ],
+     "n": 7,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      923,
+      303,
+      1562,
+      361
+     ],
+     "n": 8,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Edit an existing layout and Save",
+   "Saves with confirmation, no Subform error",
+   "PUT /fields ×5 200 + PUT /layouts/6261fa51 200, \"Layout updated successfully\"; no Subform error (save took 46 s)",
+   "PASS"
+  ],
+  [
+   "6",
+   "Cancel after the save",
+   "No unsaved-changes prompt",
+   "No prompt; moduleImageEnabled false stored",
+   "PASS"
+  ],
+  [
+   "3–5, 7",
+   "New layout with predefined fields only → Save",
+   "Saves",
+   "PUT /fields/5dd25be0 (\"Subform\", 0 subfields, only on layout \"فاتورة\") → 422 DATATYPE_SUBFORM_NO_SUBFIELDS; layout not created (was 404, same failure class)",
+   "FAIL"
+  ],
+  [
+   "4",
+   "Failing field named with the reason",
+   "Named",
+   "\"Couldn't save the settings for \"Subform\": A subform needs at least one subfield…\"",
+   "PASS"
+  ],
+  [
+   "8",
+   "Save before the builder finished loading",
+   "—",
+   "Created a new layout \"Standard Layout\" (dff47b4e) instead of updating \"test\" — deleted in cleanup",
+   "INFO"
+  ],
+  [
+   "—",
+   "Ticket layout \"New Layout 2\"",
+   "—",
+   "No longer exists; Leads layout \"test\" used",
+   "INFO"
+  ]
+ ]
+}

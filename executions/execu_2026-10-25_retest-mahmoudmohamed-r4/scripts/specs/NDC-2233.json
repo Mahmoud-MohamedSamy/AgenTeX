@@ -1,0 +1,190 @@
+{
+ "out": "NDC-2233-retest-PASS.png",
+ "ticket": "NDC-2233",
+ "title": "Modules and Fields | File and image upload restrictions are not enforced",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com (+ staging-crm for the integration) · tenant NDC-Staging · Edge (headless) · mahmoud.mahamed1515 (Desk Administrator + CRM Admin); mahmoud.mmohamedsamy, Desk Agent fedelav803, CRM test user 1 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "2233-file_txt.png",
+   "caption": "File field [pdf]: .txt → \"File type not allowed. Allowed: pdf\" under the field and as a toast.",
+   "crop": [
+    284,
+    100,
+    996,
+    620
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      942,
+      470,
+      1145,
+      490
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      922,
+      640,
+      1256,
+      694
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2233-img_txt.png",
+   "caption": "2.2 MB pdf → \"File is too large. Maximum size is 1 MB.\"; image field [png]: .txt → \"File type not allowed. Allowed: png\".",
+   "crop": [
+    284,
+    100,
+    996,
+    620
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      942,
+      470,
+      1165,
+      490
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      465,
+      538,
+      668,
+      558
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2233-file_ok.png",
+   "caption": "33 B pdf accepted: qa-rt-o… · 33 B · Replace.",
+   "crop": [
+    284,
+    100,
+    996,
+    620
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      946,
+      436,
+      1223,
+      494
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2233-api.png",
+   "caption": "API: wrong type and too-large file refused with 422.",
+   "crop": [
+    0,
+    0,
+    1600,
+    293
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      142,
+      1570,
+      187
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      189,
+      1570,
+      234
+     ],
+     "n": 7,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      236,
+      1570,
+      281
+     ],
+     "n": 8,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Wrong type on the form (file [pdf])",
+   "Refused with a message",
+   "\"File type not allowed. Allowed: pdf\"; input accept=\".pdf\"",
+   "PASS"
+  ],
+  [
+   "3",
+   "Too large on the form (2.2 MB, max 1 MB)",
+   "Refused with a message",
+   "\"File is too large. Maximum size is 1 MB.\"",
+   "PASS"
+  ],
+  [
+   "4",
+   "Wrong type on the image field [png]",
+   "Refused with a message",
+   "\"File type not allowed. Allowed: png\"; accept=\".png\"",
+   "PASS"
+  ],
+  [
+   "5",
+   "Valid pdf (control)",
+   "Accepted",
+   "qa-rt-ok.pdf · 33 B shown with Replace",
+   "PASS"
+  ],
+  [
+   "6–7",
+   "API",
+   "Refused",
+   "422 \"File type is not allowed; allowed types: pdf.\" / 422 \"File upload exceeds maximum size of 1 MB.\"",
+   "PASS"
+  ],
+  [
+   "8",
+   "File value shape",
+   "—",
+   "Value now uses filename / size_bytes keys",
+   "INFO"
+  ]
+ ]
+}

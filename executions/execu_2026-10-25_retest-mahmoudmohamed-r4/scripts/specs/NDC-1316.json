@@ -1,0 +1,149 @@
+{
+ "out": "NDC-1316-retest-BLOCKED.png",
+ "ticket": "NDC-1316",
+ "title": "Deals - Mass Update | Pipeline is not offered as a field, so deals cannot be moved between pipelines in bulk",
+ "verdict": "BLOCKED",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1316-05-filled.png",
+   "caption": "Mass Update (2 deals): Pipeline field → New pipeline \"1\" + Stage in the new pipeline (test-02), hint \"Defaults to the first stage…\".",
+   "crop": [
+    350,
+    120,
+    590,
+    480
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      386,
+      236,
+      894,
+      332
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      386,
+      344,
+      894,
+      420
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1316-06-result.png",
+   "caption": "After Update records: POST /records/mass-update 422 — the dialog stays open, no message, no toast.",
+   "crop": [
+    350,
+    120,
+    590,
+    480
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      770,
+      539,
+      907,
+      583
+     ],
+     "n": 3,
+     "kind": "BLOCKED"
+    }
+   ]
+  },
+  {
+   "img": "NDC-pipeline-blocker.png",
+   "caption": "Shared staging blocker card: the Deals Pipeline pick-list field allows only \"Standard (Standard)\", so every deal write that sends a pipeline — \"1\" or even the default Standard — is refused with 422.",
+   "crop": [
+    0,
+    0,
+    1600,
+    610
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      923,
+      99,
+      1562,
+      157
+     ],
+     "n": 5,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      923,
+      371,
+      1562,
+      523
+     ],
+     "n": 6,
+     "kind": "BLOCKED"
+    },
+    {
+     "b": [
+      923,
+      303,
+      1562,
+      361
+     ],
+     "n": 4,
+     "kind": "BLOCKED"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Pipeline offered in Mass Update",
+   "Available",
+   "\"Pipeline\" field with New pipeline (Standard (Default), 1)",
+   "PASS"
+  ],
+  [
+   "2",
+   "Stage of the destination pipeline, first by default",
+   "Destination stages",
+   "\"Stage in the new pipeline\": 7 stages of \"1\", hint \"Defaults to the first stage of the new pipeline…\"",
+   "PASS"
+  ],
+  [
+   "3–4",
+   "Update records moves both deals",
+   "Both on \"1\" / test-02",
+   "POST 422 \"Pipeline: '640e03a4-…' is not one of the allowed values…\"; dialog stays open with no message; both still Standard / qualification",
+   "BLOCKED"
+  ],
+  [
+   "—",
+   "Failure shown to the user",
+   "Message",
+   "Nothing shown (no toast, no inline message)",
+   "INFO"
+  ],
+  [
+   "5–6",
+   "Cause",
+   "—",
+   "Staging Pipeline field allows only \"Standard (Standard)\" — not judgeable on staging now",
+   "INFO"
+  ]
+ ]
+}

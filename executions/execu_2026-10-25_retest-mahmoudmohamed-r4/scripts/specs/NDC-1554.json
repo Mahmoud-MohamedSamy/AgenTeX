@@ -1,0 +1,166 @@
+{
+ "out": "NDC-1554-retest-PASS.png",
+ "ticket": "NDC-1554",
+ "title": "[Enhancement] Import | Tag delimiter should be static helper text rather than a picklist, since both comma and semicolon are accepted",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1554-imp-3-map.png",
+   "caption": "Map fields: Tag delimiter is two static chips \", \" and \"; \" with the exact helper text — no picker.",
+   "crop": [
+    180,
+    90,
+    920,
+    440
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      624,
+      236,
+      992,
+      342
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1554-imp-4-review.png",
+   "caption": "Review: Rows with errors 1 — \"1 of 3 rows have errors and won't be imported\".",
+   "crop": [
+    240,
+    90,
+    800,
+    540
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      300,
+      490,
+      470,
+      514
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      254,
+      554,
+      1000,
+      604
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1554-imp-5-result.png",
+   "caption": "Submit → Import complete: Added 2, Errors 1.",
+   "crop": [
+    240,
+    90,
+    800,
+    400
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      256,
+      203,
+      1024,
+      289
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1554-api.png",
+   "caption": "Per-row results of imp1554.xlsx.",
+   "crop": [
+    0,
+    0,
+    1600,
+    360
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      923,
+      99,
+      1562,
+      183
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      923,
+      193,
+      1562,
+      251
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      923,
+      308,
+      1562,
+      345
+     ],
+     "n": 7,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Dropdown removed, exact helper text",
+   "Static text",
+   "\", \" and \"; \" chips; \"Use , or ; as tag delimiters. Use one or the other within a field — mixing both in the same field is not accepted. Any other delimiter is not accepted.\"",
+   "PASS"
+  ],
+  [
+   "4–5",
+   "Either delimiter splits tags",
+   "Split, no config",
+   "\"qart1,qart2\" and \"qart3;qart4\" → 2 leads with 2 tags each",
+   "PASS"
+  ],
+  [
+   "2–3, 6",
+   "Mixed delimiters reported naming row and field",
+   "Error with row + field",
+   "Tags · Invalid format · \"Row 4: qart5,qart6;qart7\"; row not imported",
+   "PASS"
+  ],
+  [
+   "7",
+   "Observation",
+   "—",
+   "\"All errors 1\" table says \"No errors match your filters\" (empty) — same as NDC-2385",
+   "INFO"
+  ]
+ ]
+}

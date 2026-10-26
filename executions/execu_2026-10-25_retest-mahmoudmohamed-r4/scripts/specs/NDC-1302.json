@@ -1,0 +1,149 @@
+{
+ "out": "NDC-1302-retest-BLOCKED.png",
+ "ticket": "NDC-1302",
+ "title": "Deals | Selecting a stage on a deal either fails with \"Validation failed\" or applies the stage but switches the deal to the default pipeline",
+ "verdict": "BLOCKED",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1302-03c-stage-options.png",
+   "caption": "Create Transactions, pipeline \"1\" picked: the Stage list offers the 7 stages of \"1\" (test-01 … identify_decision_makers).",
+   "crop": [
+    260,
+    60,
+    760,
+    420
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      470,
+      180,
+      746,
+      414
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1302-05-error-top.png",
+   "caption": "Save → POST 422; the form shows the raw message with the pipeline id under Pipeline \"1\".",
+   "crop": [
+    440,
+    90,
+    840,
+    430
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      469,
+      436,
+      1223,
+      474
+     ],
+     "n": 2,
+     "kind": "BLOCKED"
+    },
+    {
+     "b": [
+      455,
+      482,
+      1040,
+      500
+     ],
+     "n": 3,
+     "kind": "BLOCKED"
+    }
+   ]
+  },
+  {
+   "img": "NDC-pipeline-blocker.png",
+   "caption": "Shared staging blocker card: the Deals Pipeline pick-list field allows only \"Standard (Standard)\", so every deal write that sends a pipeline — \"1\" or even the default Standard — is refused with 422.",
+   "crop": [
+    0,
+    0,
+    1600,
+    610
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      923,
+      99,
+      1562,
+      157
+     ],
+     "n": 5,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      923,
+      371,
+      1562,
+      523
+     ],
+     "n": 6,
+     "kind": "BLOCKED"
+    },
+    {
+     "b": [
+      923,
+      167,
+      1562,
+      293
+     ],
+     "n": 4,
+     "kind": "BLOCKED"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Stages offered = the chosen pipeline's stages",
+   "Own pipeline stages, all selectable",
+   "Pipeline \"1\" → its 7 stages offered (test-01, test-02, qualification, needs_analysis, negotiation, proposal, identify_decision_makers)",
+   "PASS"
+  ],
+  [
+   "2–3",
+   "Create a deal on pipeline \"1\" (UI)",
+   "Saved and kept on \"1\"",
+   "Save → POST 422 \"Pipeline: '640e03a4-…' is not one of the allowed values (Standard (Standard)).\" shown with the raw pipeline id",
+   "BLOCKED"
+  ],
+  [
+   "4",
+   "API create on \"1\"/test-01 and PATCH an existing deal to \"1\"",
+   "Deal on \"1\"",
+   "Both 422 PICKLIST_VALUE_INVALID; deal stays on Standard (21 Oct: 201 + silent switch to Standard)",
+   "BLOCKED"
+  ],
+  [
+   "5–6",
+   "Cause",
+   "—",
+   "Staging Deals Pipeline field allows only \"Standard (Standard)\" (changed 24 Oct by ndc-staging-owner); even the default Standard is refused, so the fix cannot be judged until the field is repaired",
+   "INFO"
+  ],
+  [
+   "—",
+   "Developer reply since our 21 Oct PARTIAL",
+   "—",
+   "None",
+   "INFO"
+  ]
+ ]
+}

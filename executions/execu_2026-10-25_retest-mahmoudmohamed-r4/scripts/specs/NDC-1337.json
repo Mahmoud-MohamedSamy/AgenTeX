@@ -1,0 +1,166 @@
+{
+ "out": "NDC-1337-retest-PASS.png",
+ "ticket": "NDC-1337",
+ "title": "Field Permissions | Permissions are not enforced from either the Field Permissions tab or the layout builder — every field stays readable and writable",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1337-02-test-profile-unchecked.png",
+   "caption": "Layout builder → QA RT FP → Set Permission → PERMISSIONS: profile \"test\" Read cleared (saving).",
+   "crop": [
+    700,
+    60,
+    580,
+    600
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      838,
+      466,
+      1258,
+      508
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1337-04-u2-create-form.png",
+   "caption": "Test user 2 (TU, profile \"test\") → Create Lead on layout \"test\": no \"QA RT FP\" on the form.",
+   "crop": [
+    260,
+    0,
+    1020,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      391,
+      110,
+      578,
+      142
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1218,
+      6,
+      1266,
+      50
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1337-api.png",
+   "caption": "Automation run and the restricted-user write checks.",
+   "crop": [
+    0,
+    0,
+    1600,
+    470
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      923,
+      99,
+      1562,
+      157
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      923,
+      167,
+      1562,
+      272
+     ],
+     "n": 5,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      923,
+      282,
+      1562,
+      340
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      923,
+      350,
+      1562,
+      408
+     ],
+     "n": 7,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Permission set from the layout builder",
+   "Saved and enforced",
+   "Profile \"test\" Read cleared → Apply → Save → field-permissions shows 64d4aae0 (\"test\") hidden",
+   "PASS"
+  ],
+  [
+   "2–3",
+   "Hidden field on the restricted user's form",
+   "Not shown",
+   "Create Lead (layout \"test\") as test user 2 has no \"QA RT FP\"",
+   "PASS"
+  ],
+  [
+   "4",
+   "Automation -Dtags=NDC-1337",
+   "API checks pass",
+   "hiddenFieldNotReturned, hiddenFieldNotWritable, listHidesHiddenField, readOnlyFieldNotWritable — PASS",
+   "PASS"
+  ],
+  [
+   "5",
+   "transactionsFieldPermissions / RestrictedUserUiTest",
+   "—",
+   "FAIL only because the test deal hits the Pipeline-field 422 (staging blocker); UI test not run — credentials CSV missing",
+   "INFO"
+  ],
+  [
+   "6–7",
+   "Server rejects a hidden-field write",
+   "422",
+   "Test user 2 POST with qa_rt_fp → 422 FIELD_PERMISSION_DENIED; without it → 201",
+   "PASS"
+  ],
+  [
+   "—",
+   "Field Permissions tab route + restricted-user screens",
+   "—",
+   "Passed in the go-live retest earlier on 25 Oct (QA comment 16:27)",
+   "PASS"
+  ]
+ ]
+}

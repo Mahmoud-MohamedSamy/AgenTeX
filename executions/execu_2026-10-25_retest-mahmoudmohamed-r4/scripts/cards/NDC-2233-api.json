@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2233-api.png",
+ "date": "25–26 Oct 2026",
+ "host": "staging-desk.taviportal.com",
+ "title": "NDC-2233 · upload restrictions on the API (QA RT Agents Only)",
+ "rows": [
+  [
+   "fields",
+   "qa_rt_file file_upload [pdf] 1 MB · qa_rt_img image_upload [png] 1 MB",
+   "inputs carry accept=\".pdf\" / \".png\"",
+   "info"
+  ],
+  [
+   "wrong type",
+   "POST /modules/01727195…/records  qa_rt_file = .txt",
+   "422 \"File type is not allowed; allowed types: pdf.\"",
+   "ok"
+  ],
+  [
+   "too large",
+   "POST /modules/01727195…/records  qa_rt_file = 2.2 MB pdf",
+   "422 \"File upload exceeds maximum size of 1 MB.\"",
+   "ok"
+  ],
+  [
+   "note",
+   "file value shape",
+   "value now uses filename / size_bytes keys",
+   "info"
+  ]
+ ]
+}

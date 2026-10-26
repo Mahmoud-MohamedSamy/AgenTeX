@@ -1,0 +1,108 @@
+{
+ "out": "NDC-1231-retest-PASS.png",
+ "ticket": "NDC-1231",
+ "title": "Modules and Fields: Field Properties | Selecting \"another field on the same form\" in Auto-fill reverts to \"Don't auto-fill\"",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · account mahmoud.mahamed1515 (CRM Admin); test user 1 / test user 2 where noted",
+ "date": "25–26 Oct 2026",
+ "panels": [
+  {
+   "img": "1231-01-form-after-name.png",
+   "caption": "Create Lead (Test Layout 1): typing Name \"QA RT 1231 fill\" fills \"Fill From Name\" (auto_fill source record_field, key name).",
+   "crop": [
+    290,
+    100,
+    960,
+    600
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      469,
+      436,
+      746,
+      474
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      469,
+      630,
+      746,
+      668
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1231-03-manual-kept.png",
+   "caption": "\"manual value\" typed into Fill From Name first, then Name \"QA RT 1231 keep\": the manual value is not overwritten.",
+   "crop": [
+    290,
+    100,
+    960,
+    600
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      469,
+      436,
+      746,
+      474
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      469,
+      630,
+      746,
+      668
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Field fills from the chosen same-form field",
+   "Takes Name's value while empty",
+   "Fill From Name shows \"QA RT 1231 fill\" as Name is typed",
+   "PASS"
+  ],
+  [
+   "—",
+   "Saved record",
+   "Value stored",
+   "POST sends it, 201; stored name and fill_from_phone both \"QA RT 1231 fill\" (lead 816c0c4e, deleted)",
+   "PASS"
+  ],
+  [
+   "3–4",
+   "A value already entered is never overwritten",
+   "Kept",
+   "Stays \"manual value\"",
+   "PASS"
+  ],
+  [
+   "—",
+   "Configuration (13 Sep fix)",
+   "—",
+   "Field 9eff6424 auto_fill {source: record_field, key: name} still stored",
+   "PASS"
+  ]
+ ]
+}
