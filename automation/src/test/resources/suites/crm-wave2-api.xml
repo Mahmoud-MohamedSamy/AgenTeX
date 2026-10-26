@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- CRM go-live Wave 2 (daily record work), API part: ONE JVM, one API sign-in per account (owner, test user 1),
+     classes one after another. The 120-record mass delete (group "volume") is left out: run it on purpose with
+     mvnw test -Dtest=MassActionTest. ImportTest moves test user 1 to a QA profile for a minute and back.
+     mvnw test -Dsuite=crm-wave2-api -->
+<suite name="CRM go-live wave 2 API" verbose="1" preserve-order="true">
+    <test name="wave2-api" preserve-order="true">
+        <groups>
+            <run><exclude name="volume"/></run>
+        </groups>
+        <classes>
+            <class name="qa.features.crmrecords.RecordLifecycleTest"/>
+            <class name="qa.features.crmrecords.TimelineTest"/>
+            <class name="qa.features.crmrecords.CustomViewTest"/>
+            <class name="qa.features.crmrecords.TagsTest"/>
+            <class name="qa.features.crmrecords.RecycleBinTest"/>
+            <class name="qa.features.crmrecords.PipelineTest"/>
+            <class name="qa.features.crmrecords.SearchActivitiesTest"/>
+            <class name="qa.features.crmrecords.ImportTest"/>
+        </classes>
+    </test>
+</suite>
