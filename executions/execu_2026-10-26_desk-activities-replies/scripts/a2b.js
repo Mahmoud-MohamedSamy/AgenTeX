@@ -1,0 +1,12 @@
+const id = (await (async () => { const L = await api('GET', `/modules/${M.tasks}/records?page=1&per_page=20&sort_by=created_at&sort_dir=desc`); return ((L.j.data.records || L.j.data.items || L.j.data) || []).map(fl).find(x => x.subject === 'QA ACT UI task').id; })());
+const calls = []; const f = r => { const u = r.url(); if (u.includes('/api/v1/') && r.method() !== 'GET' && !/heartbeat|presence|summaries|resolved-batch|lookups|realtime|iam\//.test(u)) calls.push(r.method() + ' ' + u.replace(API, '')); }; page.on('request', f);
+const resp = []; page.on('response', async r => { if (r.url().includes('comment') && r.request().method() !== 'GET') resp.push(r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 200)); });
+await go(`/modules/${M.tasks}/records/${id}`, 9000);
+const before = (await txt()).match(/Comments[\s\S]{0,300}/)[0];
+const box = page.getByPlaceholder('Write a comment…'); await box.click(); await box.type('QA ACT comment 2'); await sleep(500);
+const btns = await page.$$eval('button', bs => bs.filter(b => /^Comment$/.test(b.innerText.trim())).map(b => ({ dis: b.disabled, t: b.innerText })));
+await page.locator('button').filter({ hasText: /^Comment$/ }).last().click(); await sleep(4000);
+const after = (await txt()).match(/Comments[\s\S]{0,500}/)[0];
+const s1 = await shot('ACT-I2-tavi');
+page.off('request', f);
+return JSON.stringify({ id, btns, calls, resp, before: before.replace(/\n/g, ' / '), after: after.replace(/\n/g, ' / '), s1 });

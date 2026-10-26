@@ -1,0 +1,14 @@
+{
+ "out": "card-A-B1.png",
+ "title": "TAVI — request sent by Reschedule (\"log a missed call\" ticked), agent fedelav803, build index-7qe5X0Gd.js",
+ "lines": [
+  ["POST /api/v1/modules/f7e488b5-…(Calls)/records", "info"],
+  ["  subject = \"QA ACT EV A-B1\", call_type = missed, call_status = missed, owner = <agent>,", ""],
+  ["  approval_status = \"not_submitted\", created_at = …   ← read-only fields copied from the call", "bad"],
+  ["→ 422 FIELD_PERMISSION_DENIED  \"One or more fields in the payload are read-only.\"", "bad"],
+  ["   details: data.approval_status — \"Field 'approval_status' is read-only and cannot be changed.\"", "bad"],
+  ["No missed-call record is created and the PATCH that moves the call is never sent:", ""],
+  ["  call_start_time before 2026-10-26T12:21:18Z  →  after 2026-10-26T12:21:18Z (unchanged)", "bad"],
+  ["Same dialog without the tick: PATCH call_start_time → 200, call moved (works).", "ok"]
+ ]
+}

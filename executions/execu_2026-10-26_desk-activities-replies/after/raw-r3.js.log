@@ -1,0 +1,139 @@
+### Result
+"{\"R\":[{\"id\":\"RPL-D1\",\"verdict\":\"PASS\",\"note\":\"is_public=false net=POST /comments {\\\"body_html\\\":\\\"QA RPL D1 private\\\"} -> 201 {\\\"success\\\":true,\\\"data\\\":{\\\"id\\\":\\\"af777744-8b6d-4a5d-b712-1445fc2a3e19\\\",\\\"ticket_id\\\":\\\"4df60527-2c5c-4943-bae7-c4ce5967042c\\\",\\\"body_html\\\":\\\"QA RPL D1 private\\\",\\\"author_u\"},{\"id\":\"RPL-D2\",\"verdict\":\"PASS\",\"note\":\"visibility menu=Private/Public is_public=true\"},{\"id\":\"RPL-D3/D5\",\"verdict\":\"PASS\",\"note\":\"edit 200 {\\\"success\\\":true,\\\"data\\\":{\\\"id\\\":\\\"af777744-8b6d-4a5d-b712-1445fc2a3e19\\\",\\\"ticket_id\\\":\\\"4df60527-2c5c-4943-bae7-c4ce5967042c\\\",\\\" | pin 200 {\\\"success\\\":true,\\\"data\\\":{\\\"id\\\":\\\"af777744-8b6d-4a5d-b712-1445fc2a3e19\\\",\\\"ticket_id\\\":\\\"4df60527-2c5c-4943-bae7-c4ce5967042c\\\",\\\"body_html\\\":\\\"<p>QA RPL D1 private edited<\"},{\"id\":\"RPL-D4\",\"verdict\":\"PASS\",\"note\":\"delete 204\"},{\"id\":\"RPL-I5-comments\",\"verdict\":\"INFO\",\"note\":\"feed actions: reply.sent, reply.queued, comment.deleted, thread.pinned, comment.edited, comment.added, ticket.department_changed, ticket.created\"},{\"id\":\"script-error\",\"verdict\":\"BLOCKED\",\"note\":\"locator.fill: Timeout 30000ms exceeded.\\nCall log:\\n\\u001b[2m  - waiting for locator('main input[placeholder=\\\"Cc\\\"], main [aria-label=\\\"Cc\\\"] input, main input[aria-label=\\\"Cc\\\"]').first()\\u001b[22m\\n\"}],\"CREATED\":[]}"
+### Ran Playwright code
+```js
+await (async page => { // Shared helpers for every group script. Never put secrets here (run-code may echo code into logs).
+const H = 'https://staging-desk.taviportal.com'; const API = H + '/api/v1';
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_desk-activities-replies';
+const SHOT = RUN + '/evidence/raw';
+const M = { tickets: '88e8ea44-1658-4df3-9930-d0902b91073d', contacts: '43004ce2-577f-4eda-b00a-0750fe40c3d4', accounts: '784400e1-4a2a-42c2-b4f3-7ca56e79828a', products: '95b45992-5beb-4f23-b619-e3ae0e304933', calls: 'f7e488b5-0232-42fd-811c-1f24356af653', events: '6fb19115-9356-40f0-b064-840d8f1fad93', tasks: 'd120a6c2-2596-4254-968b-a1bcd3a000bf', contracts: '0924eb24-e42a-4eab-8efd-e3428f19e882' };
+const TL = '1b55c25d-eb27-4046-afd1-b292398b435b';
+let hdr = null;
+page.on('request', onReq);
+const sleep = ms => page.waitForTimeout(ms);
+const ensureAuth = async () => { if (!hdr) { await page.goto(H + '/hq', { waitUntil: 'domcontentloaded', timeout: 90000 }); for (let i = 0; i < 40 && !hdr; i++) await sleep(500); if (!hdr) throw new Error('SIGNED_OUT: no authorised request on /hq (' + ((await txt()).includes('Sign in') ? 'sign-in page shown' : 'unknown') + ')'); } };
+const api = async (m, p, body, extra) => {
+  await ensureAuth();
+  const doit = () => page.context().request.fetch(API + p, { method: m, headers: { ...hdr, ...(body !== undefined ? { 'content-type': 'application/json' } : {}), ...(extra || {}) }, data: body !== undefined ? (typeof body === 'string' ? body : JSON.stringify(body)) : undefined, failOnStatusCode: false });
+  let r = await doit();
+  if (r.status() === 401) { hdr = null; await page.goto(H + '/hq', { waitUntil: 'domcontentloaded', timeout: 90000 }); await ensureAuth(); r = await doit(); }
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch (e) { }
+  return { s: r.status(), j, t: t.slice(0, 600) };
+};
+const R = []; const rec = (id, verdict, note, extra) => R.push({ id, verdict, note, ...(extra || {}) });
+const go = async (u, w) => { await page.goto(H + u, { waitUntil: 'domcontentloaded', timeout: 90000 }); await sleep(w || 6000); };
+const txt = async () => (await page.innerText('body'));
+const shot = async n => { try { await page.screenshot({ path: SHOT + '/' + n + '.png', timeout: 15000 }); return n + '.png'; } catch (e) { return 'screenshot failed: ' + String(e.message).slice(0, 40); } };
+const arr = x => Array.isArray(x) ? x : (x && (x.items || x.data || x.fields || x.layouts)) || [];
+const step = async (id, fn) => { try { await fn(); } catch (e) { rec(id, 'BLOCKED', 'script error: ' + String(e.message).slice(0, 200)); } try { await page.keyboard.press('Escape'); } catch (e) { } };
+const done = o => { page.off('request', onReq); return JSON.stringify(o === undefined ? R : o); };
+// ---- run-2 helpers (setup via API, checks via UI where the row is about the screen)
+const TS = 'a641f1df-f2c6-450e-a881-857776dacf70';
+const enc = v => v === null ? { kind: 'null' } : typeof v === 'number' ? { kind: 'number', value: v } : typeof v === 'boolean' ? { kind: 'boolean', value: v } : Array.isArray(v) ? { kind: 'array', items: v.map(enc) } : (v && typeof v === 'object') ? { kind: 'object', properties: Object.fromEntries(Object.entries(v).map(([k, x]) => [k, enc(x)])) } : { kind: 'string', value: String(v) };
+const mods = async () => arr((await api('GET', '/modules')).j.data);
+const mkModule = async (key, plural, scope) => { let m = (await mods()).find(x => x.moduleKey === key || x.moduleKey === 'desk_' + key); if (!m) { const r = await api('POST', `/teamspaces/${TS}/modules`, { moduleKey: key, labels: { en: plural }, pluralForm: plural, singularForm: plural + '1', storageScope: scope || 'organization' }); m = r.j && r.j.data; } return m; };
+const fieldsOf = async mid => arr((await api('GET', `/modules/${mid}/fields`)).j.data);
+const defLayout = async mid => arr((await api('GET', `/modules/${mid}/layouts`)).j.data).find(x => x.isDefault);
+const getLayout = async (mid, lid) => (await api('GET', `/modules/${mid}/layouts/${lid}`)).j.data;
+const initLayout = async (mid) => { const d = await defLayout(mid); const l = await getLayout(mid, d.id); if (l.views && l.views.CREATE && l.views.CREATE.layout && (l.views.CREATE.layout.sections || []).length) return d.id;
+  await go(`/settings/modules-and-fields/${mid}/layouts/${d.id}`, 9000); await page.locator('button', { hasText: 'NEW SECTION' }).last().click(); await sleep(800); await page.getByRole('button', { name: /^Save$/ }).click(); await sleep(4000); return d.id; };
+const addFields = async (mid, defs) => { const have = new Set((await fieldsOf(mid)).map(f => f.fieldName)); const nw = defs.filter(d => !have.has(d.fieldName)).map(d => ({ labels: { en: 'QA MF ' + d.fieldName.replace(/^qa_/, '') }, required: false, unique: false, uniquePeerModuleIds: [], ...d })); return nw.length ? await api('POST', `/modules/${mid}/fields`, { fields: nw }) : { s: 'exists' }; };
+const placeOnLayout = async (mid, lid, names, cfg) => { cfg = cfg || {}; const lay = await getLayout(mid, lid); const F = (await fieldsOf(mid)).filter(f => names.includes(f.fieldName));
+  for (const v of ['CREATE', 'QUICK_CREATE', 'DETAIL']) { const ss = lay.views[v] && lay.views[v].layout && lay.views[v].layout.sections; if (!ss || !ss[0]) continue; const col = ss[0].columns[ss[0].columns.length - 1]; const have = new Set(ss.flatMap(s => s.columns.flatMap(c => c.fields.map(f => f.id))));
+    for (const f of F) if (!have.has(f.id)) col.fields.push(JSON.parse(JSON.stringify(f)));
+    for (const s of ss) for (const c of s.columns) for (const e of c.fields) if (cfg[e.fieldName]) e.config = { ...(e.config || {}), ...cfg[e.fieldName] }; }
+  const b = { ...lay }; delete b.id; return await api('PUT', `/modules/${mid}/layouts/${lid}`, b); };
+const mkRec = async (mid, vals, lid) => { const r = await api('POST', `/modules/${mid}/records`, { data: Object.entries(vals).map(([k, v]) => ({ field: k, value: enc(v) })), ...(lid ? { layout_id: lid } : {}) }); return { s: r.s, id: r.j && r.j.data && r.j.data.id, err: ((r.j && r.j.error && (r.j.error.code + ' ' + r.j.error.message)) || '').slice(0, 160), j: r.j }; };
+const getRec = async (mid, id) => { const g = (await api('GET', `/modules/${mid}/records/${id}`)).j; const d = (g && g.data && g.data.data) || []; const o = {}; for (const x of d) o[x.field] = x.value; return o; };
+const val = v => !v ? undefined : v.kind === 'array' ? (v.items || []).map(val) : v.kind === 'object' ? v.properties : v.value;
+const fieldMenu = async label => { const c = page.getByText(label, { exact: true }); const n = await c.count(); let lab = null;
+  for (let i = 0; i < n; i++) { const bb = await c.nth(i).boundingBox().catch(() => null); if (bb && bb.x > 340) { await c.nth(i).scrollIntoViewIfNeeded(); await c.nth(i).hover(); lab = await c.nth(i).boundingBox(); break; } }
+  if (!lab) throw new Error('label not on canvas: ' + label); await sleep(600);
+  const btns = page.locator('[title="Field options"], [aria-label="Field options"]'); const bn = await btns.count(); let best = null, bd = 1e9;
+  for (let i = 0; i < bn; i++) { const bb = await btns.nth(i).boundingBox().catch(() => null); if (!bb) continue; const dy = Math.abs((bb.y + bb.height / 2) - (lab.y + lab.height / 2)); if (bb.x > lab.x && dy < 30 && bb.x - lab.x < 1100 && dy < bd) { bd = dy; best = btns.nth(i); } }
+  if (!best) throw new Error('no field options for ' + label); await best.click(); await sleep(700); };
+const props = async tab => { await page.getByText('Edit Properties', { exact: true }).first().click(); await sleep(1500); if (tab) { await page.getByText(tab, { exact: true }).first().click(); await sleep(1000); } };
+const builder = async (mid, lid) => { await go(`/settings/modules-and-fields/${mid}/layouts/${lid}`, 10000); };
+const cap = []; const capOn = () => { const f = r => { const u = r.url(); if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(r.method()) && u.includes('/api/v1/') && !/heartbeat|resolved-batch|presence|\/iam\/auth/.test(u)) cap.push(r.method() + ' ' + u.replace(API, '') + ' ' + (r.postData() || '').slice(0, 400)); }; page.on('request', f); return () => page.off('request', f); };
+// ---- activities/replies run helpers (26 Oct 2026). Every created id is returned in CREATED so the caller writes the ledger.
+const CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158'; const QA_EMAIL = 'mmohamed@anyware.software'; const QA_CC = 'mahmoud.mmohamedsamy@gmail.com';
+const CREATED = [];
+const fl = r => { const o = { id: r.id }; for (const x of (r.data || [])) o[x.field] = x.value && x.value.kind === 'array' ? (x.value.items || []).map(i => i.value) : (x.value && x.value.value !== undefined ? x.value.value : x.value); return o; };
+const recOf = async (k, id) => { const r = await api('GET', `/modules/${M[k]}/records/${id}`); return { s: r.s, o: r.j && r.j.data ? fl(r.j.data) : null, raw: r }; };
+const mk = async (k, vals, tag) => { const r = await mkRec(M[k], vals); if (r.id) CREATED.push({ k, id: r.id, tag }); return r; };
+const patch = async (k, id, vals) => api('PATCH', `/modules/${M[k]}/records/${id}`, { data: Object.entries(vals).map(([f, v]) => ({ field: f, value: enc(v) })) });
+const iso = ms => new Date(Date.now() + ms).toISOString();
+const H1 = 3600e3, D1 = 86400e3;
+const fin = extra => done({ R, CREATED, ...(extra || {}) });
+// RPL batch 3 (UI + API checks): comments, Cc, forward privacy, reply-all after forward, drafts, send-as-private
+const tk = '4df60527-2c5c-4943-bae7-c4ce5967042c';
+const net = []; const onR = async r => { const q = r.request(); if (q.method() !== 'GET' && r.url().includes('/api/v1/desk/tickets') && !/viewers|read$|summaries/.test(r.url())) net.push(q.method() + ' ' + r.url().replace(API + '/desk/tickets/' + tk, '') + ' ' + (q.postData() || '').slice(0, 400) + ' -> ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 160)); }; page.on('response', onR);
+const reload = async () => { await go(`/modules/${M.tickets}/records/${tk}`, 10000); };
+const typeBody = async t => { const ed = page.locator('[contenteditable=true]').last(); await ed.click(); await page.keyboard.press('Control+Home'); await page.keyboard.type(t); await sleep(600); };
+const replies = async () => ((await api('GET', `/desk/tickets/${tk}/replies`)).j.data || []);
+const comments = async () => ((await api('GET', `/desk/tickets/${tk}/comments`)).j.data || []);
+const sendMenu = async item => { await page.locator('button[aria-label="More send options"]').last().click(); await sleep(1200); await page.getByRole('menuitem', { name: item }).click(); await sleep(5000); };
+try {
+  // D1 private comment (default)
+  await reload(); await page.getByRole('button', { name: /Comment \(Shift \+ C\)/ }).click(); await sleep(2500);
+  await typeBody('QA RPL D1 private'); net.length = 0;
+  await page.getByRole('button', { name: /^Comment ?Private$/ }).last().click(); await sleep(4000);
+  let cs = await comments(); const d1 = cs.find(c => /QA RPL D1/.test(c.body_html || c.body || ''));
+  rec('RPL-D1', d1 && d1.is_public === false ? 'PASS' : 'FAIL', 'is_public=' + (d1 && d1.is_public) + ' net=' + net.join(' || ').slice(0, 300));
+  // D2 public comment
+  await page.getByRole('button', { name: /Comment \(Shift \+ C\)/ }).click(); await sleep(2500); await typeBody('QA RPL D2 public');
+  await page.getByRole('button', { name: 'Comment visibility' }).click(); await sleep(1000);
+  const vis = await page.$$eval('[role=menuitem], [role=menuitemradio], [role=option]', ms => ms.map(m => (m.textContent || '').trim()));
+  await page.getByRole('menuitemradio', { name: /Public/ }).or(page.getByRole('menuitem', { name: /Public/ })).first().click(); await sleep(800);
+  await page.getByRole('button', { name: /^Comment ?(Public|Private)$/ }).last().click(); await sleep(4000);
+  cs = await comments(); const d2 = cs.find(c => /QA RPL D2/.test(c.body_html || c.body || ''));
+  rec('RPL-D2', d2 && d2.is_public === true ? 'PASS' : 'FAIL', 'visibility menu=' + vis.join('/') + ' is_public=' + (d2 && d2.is_public));
+  // D3 edit + D4 delete via API (own comment), D5 pin
+  if (d1) { const e = await api('PUT', `/desk/tickets/${tk}/comments/${d1.id}`, { body_html: '<p>QA RPL D1 private edited</p>', is_public: false }); const p = await api('PUT', `/desk/tickets/${tk}/comments/${d1.id}/pin`, {}); rec('RPL-D3/D5', e.s < 300 && p.s < 300 ? 'PASS' : 'FAIL', `edit ${e.s} ${e.t.slice(0, 120)} | pin ${p.s} ${p.t.slice(0, 160)}`); }
+  if (d2) { const dd = await api('DELETE', `/desk/tickets/${tk}/comments/${d2.id}`); rec('RPL-D4', dd.s < 300 ? 'PASS' : 'FAIL', 'delete ' + dd.s); }
+  const feed = await api('GET', `/desk/tickets/${tk}/activity`); rec('RPL-I5-comments', 'INFO', 'feed actions: ' + [...new Set(((feed.j && feed.j.data) || []).map(a => a.action))].join(', '));
+  // C3 Reply All with Cc
+  await reload(); await page.locator('main button').filter({ hasText: /^Reply All$/ }).first().click(); await sleep(4000);
+  const ccIn = page.locator('main input[placeholder="Cc"], main [aria-label="Cc"] input, main input[aria-label="Cc"]').first();
+  await ccIn.fill(QA_CC); await page.keyboard.press('Enter'); await sleep(600);
+  await typeBody('QA RPL C3 with cc. '); net.length = 0; await page.getByRole('button', { name: 'Send', exact: true }).last().click(); await sleep(5000);
+  let rs = await replies(); const c3 = rs.find(r => /QA RPL C3/.test(r.body_html || ''));
+  const ccList = await api('GET', `/desk/tickets/${tk}/cc`);
+  rec('RPL-C3', c3 && (c3.cc || []).includes(QA_CC) ? 'PASS' : 'FAIL', `reply cc=${JSON.stringify(c3 && c3.cc)}; ticket CC list after: ${ccList.t.slice(0, 200)}`);
+  // C4 Reply All removing the Cc chip -> ticket CC list unchanged
+  await reload(); await page.locator('main button').filter({ hasText: /^Reply All$/ }).first().click(); await sleep(4000);
+  const ccChips = await page.$$eval('[aria-label^="Remove "]', bs => bs.map(b => b.getAttribute('aria-label')));
+  const rm = page.locator(`[aria-label="Remove ${QA_CC}"]`); const hadChip = await rm.count(); if (hadChip) await rm.first().click(); await sleep(500);
+  await typeBody('QA RPL C4 cc removed. '); await page.getByRole('button', { name: 'Send', exact: true }).last().click(); await sleep(5000);
+  rs = await replies(); const c4 = rs.find(r => /QA RPL C4/.test(r.body_html || '')); const cc2 = await api('GET', `/desk/tickets/${tk}/cc`);
+  rec('RPL-C4', c4 && !(c4.cc || []).includes(QA_CC) && cc2.t.includes(QA_CC) ? 'PASS' : 'FAIL', `chips on Reply All: ${ccChips.join(', ')}; reply cc=${JSON.stringify(c4 && c4.cc)}; ticket CC still has it: ${cc2.t.includes(QA_CC)}`);
+  // C6 Forward to QA_CC -> private
+  await reload(); await page.getByRole('button', { name: 'More ways to reply' }).click(); await sleep(1000); await page.getByRole('menuitem', { name: 'Forward' }).click(); await sleep(4000);
+  const toIn = page.locator('main input[placeholder*="ecipient" i], main input[aria-label*="ecipient" i], main input[placeholder="To"]').first(); await toIn.fill(QA_CC); await page.keyboard.press('Enter'); await sleep(500);
+  await typeBody('QA RPL C6 forward. '); await page.getByRole('button', { name: 'Send', exact: true }).last().click(); await sleep(5000);
+  rs = await replies(); const c6 = rs.find(r => /QA RPL C6/.test(r.body_html || ''));
+  rec('RPL-C6', c6 && c6.is_public === false && c6.mode === 'forward' ? 'PASS' : 'FAIL', `mode=${c6 && c6.mode} is_public=${c6 && c6.is_public} to=${JSON.stringify(c6 && c6.to)}`);
+  // C7 Reply All after forward (regression NDC-1838)
+  await reload(); await page.locator('main button').filter({ hasText: /^Reply All$/ }).first().click(); await sleep(4000);
+  const chips7 = await page.$$eval('[aria-label^="Remove "]', bs => bs.map(b => b.getAttribute('aria-label').replace('Remove ', '')));
+  const body7 = await page.locator('[contenteditable=true]').last().innerText();
+  rec('RPL-C7', !/QA RPL C6/.test(body7) ? 'PASS' : 'FAIL', `recipients on Reply All after forward: ${chips7.join(', ')}; quotes forward: ${/QA RPL C6/.test(body7)}`);
+  await page.getByRole('button', { name: 'Cancel', exact: true }).last().click().catch(() => {}); await sleep(800); const dsc = page.getByRole('button', { name: /Discard/ }); if (await dsc.count()) await dsc.first().click();
+  // F: Send as private
+  await reload(); await page.locator('main button').filter({ hasText: /^Reply All$/ }).first().click(); await sleep(4000); await typeBody('QA RPL F send as private. ');
+  await sendMenu('Send as private'); rs = await replies(); const fp = rs.find(r => /send as private/.test(r.body_html || ''));
+  rec('RPL-F-private', fp && fp.is_public === false ? 'PASS' : 'FAIL', 'is_public=' + (fp && fp.is_public) + ' status=' + (fp && fp.status));
+  // E1/E2/E4 drafts
+  await reload(); await page.locator('main button').filter({ hasText: /^Reply All$/ }).first().click(); await sleep(4000); await typeBody('QA RPL E1 draft text. ');
+  await page.getByRole('button', { name: 'Save draft' }).click(); await sleep(3000); const dr = await api('GET', `/desk/tickets/${tk}/drafts`);
+  rec('RPL-E1', /QA RPL E1 draft/.test(dr.t) ? 'PASS' : 'FAIL', 'drafts after Save draft: ' + dr.t.slice(0, 250));
+  await reload(); const ind = (await txt()).match(/[Dd]raft[^\n]{0,60}/g); await page.locator('main button').filter({ hasText: /^Reply All$/ }).first().click(); await sleep(4000);
+  const resumed = await page.locator('[contenteditable=true]').last().innerText(); const resumeDlg = (await txt()).match(/Resume[^\n]{0,80}/);
+  rec('RPL-E2', /QA RPL E1 draft/.test(resumed) ? 'PASS' : 'FAIL', `indicator on ticket: ${JSON.stringify(ind)}; composer restored draft: ${/QA RPL E1 draft/.test(resumed)}; prompt: ${JSON.stringify(resumeDlg)}`, { shot: await shot('RPL-E2-resume') });
+  await page.getByRole('button', { name: 'Cancel', exact: true }).last().click().catch(() => {}); await sleep(1000);
+  const dbtn = await page.$$eval('[role=dialog] button, [role=alertdialog] button', bs => bs.map(b => b.innerText.trim())); const dsc2 = page.locator('[role=dialog] button, [role=alertdialog] button').filter({ hasText: /Discard/ }); if (await dsc2.count()) { await dsc2.first().click(); await sleep(2500); }
+  const dr2 = await api('GET', `/desk/tickets/${tk}/drafts`); rec('RPL-E4', !/QA RPL E1 draft/.test(dr2.t) ? 'PASS' : 'INFO', `cancel dialog buttons: ${dbtn.join('/')}; drafts after discard: ${dr2.t.slice(0, 150)}`);
+} catch (e) { rec('script-error', 'BLOCKED', String(e.message).slice(0, 300)); await shot('r3-error'); }
+page.off('response', onR);
+return fin(); })(page);
+```

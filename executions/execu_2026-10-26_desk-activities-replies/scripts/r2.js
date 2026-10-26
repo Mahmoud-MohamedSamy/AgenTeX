@@ -1,0 +1,31 @@
+// RPL batch 2 (API): C9 recipients, C10 body classes, L1 XSS stored, C11 double send, M2 types, M3 unknown ticket, A5 no token, I5 activity feed
+const tk = (await mk('tickets', { subject: 'QA RPL ticket 2', status: 'Open', department: CS, email: QA_EMAIL, channel: 'email' }, 'rpl-ticket-2')).id;
+const send = b => api('POST', `/desk/tickets/${tk}/replies`, { mode: 'reply', to: [QA_EMAIL], subject: 'Re: QA RPL ticket 2', body_html: '<p>QA RPL body</p>', ...b });
+const short = r => r.s + ' ' + (r.j && r.j.error ? (r.j.error.code + ' ' + r.j.error.message) : (r.j && r.j.data && r.j.data.reply ? 'SENT ' + r.j.data.reply.status : r.t.slice(0, 80))).slice(0, 120);
+const c9 = {};
+c9['to a@b'] = short(await send({ to: ['a@b'] }));
+c9['to "a b@c.com"'] = short(await send({ to: ['a b@c.com'] }));
+c9['to empty'] = short(await send({ to: [] }));
+c9['dup To+Cc'] = short(await send({ cc: [QA_EMAIL] }));
+c9['cc 21 invalid-domain'] = short(await send({ cc: Array.from({ length: 21 }, (_, i) => `qa${i}@example.invalid`) }));
+rec('RPL-C9', /SENT/.test(c9['to a@b'] + c9['to "a b@c.com"'] + c9['to empty']) ? 'FAIL' : 'PASS', JSON.stringify(c9));
+const c10 = {};
+c10.D1 = short(await send({ body_html: '' })); c10.D2 = short(await send({ body_html: '   ' })); c10.D3 = short(await send({ body_html: '<p></p>' })); c10['D3b <p><br></p>'] = short(await send({ body_html: '<p><br></p>' }));
+c10.D4_100k = short(await send({ body_html: '<p>' + 'y'.repeat(100000) + '</p>' }));
+rec('RPL-C10', /SENT/.test(c10.D1 + c10.D2 + c10.D3 + c10['D3b <p><br></p>']) ? 'FAIL' : 'PASS', JSON.stringify(c10));
+const xss = await send({ body_html: '<p>QA RPL xss</p><script>alert(1)</script><img src=x onerror="alert(2)"><a href="javascript:alert(3)">click</a>' });
+const xb = xss.j && xss.j.data && xss.j.data.reply ? xss.j.data.reply.body_html : '';
+rec('RPL-L1', xb && !/<script|onerror|javascript:/i.test(xb) ? 'PASS' : (xb ? 'FAIL' : 'INFO'), short(xss) + ' stored body: ' + xb.slice(0, 200));
+// C11 double send (two POSTs at once)
+const before = ((await api('GET', `/desk/tickets/${tk}/replies`)).j.data || []).length;
+await Promise.all([send({ body_html: '<p>QA RPL double</p>' }), send({ body_html: '<p>QA RPL double</p>' })]);
+const after = ((await api('GET', `/desk/tickets/${tk}/replies`)).j.data || []).filter(r => /QA RPL double/.test(r.body_html || '')).length;
+rec('RPL-C11-api', after === 1 ? 'PASS' : 'INFO', `two identical POSTs at once -> ${after} replies (UI guards the button; API has no idempotency key — cf. NDC-2612 for omnichannel)`);
+const m2 = {}; m2['to as string'] = short(await send({ to: QA_EMAIL })); m2['no body'] = short(await api('POST', `/desk/tickets/${tk}/replies`, { mode: 'reply', to: [QA_EMAIL] })); m2['mode bad'] = short(await send({ mode: 'shout' })); m2['unknown field'] = short(await send({ hack: 1, body_html: '<p>QA RPL unknown</p>' }));
+rec('RPL-M2', /SENT/.test(m2['to as string'] + m2['no body'] + m2['mode bad']) ? 'FAIL' : 'PASS', JSON.stringify(m2));
+rec('RPL-M3', 'INFO', 'random ticket -> ' + short(await api('POST', `/desk/tickets/00000000-0000-0000-0000-000000000000/replies`, { mode: 'reply', to: [QA_EMAIL], subject: 'x', body_html: '<p>x</p>' })));
+const a5 = await page.context().request.fetch(API + `/desk/tickets/${tk}/replies`, { method: 'POST', headers: { 'x-app-key': 'desk', 'content-type': 'application/json' }, data: JSON.stringify({ mode: 'reply', to: [QA_EMAIL], subject: 'x', body_html: '<p>x</p>' }), failOnStatusCode: false });
+rec('RPL-A5', a5.status() === 401 ? 'PASS' : 'FAIL', 'no bearer -> ' + a5.status());
+const feed = await api('GET', `/desk/tickets/${tk}/activity`); const acts = ((feed.j && feed.j.data) || []).map(a => a.action);
+rec('RPL-I5', acts.some(a => /repl/i.test(a)) ? 'PASS' : 'FAIL', 'activity feed actions: ' + [...new Set(acts)].join(', '));
+return fin({ tk });

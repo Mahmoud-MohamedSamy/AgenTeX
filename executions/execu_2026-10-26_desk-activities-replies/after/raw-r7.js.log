@@ -1,0 +1,119 @@
+### Result
+"{\"R\":[{\"id\":\"RPL-C-ticketCC\",\"verdict\":\"PASS\",\"note\":\"side panel add: POST /lookups/resolve {\\\"requests\\\":[{\\\"entity\\\":\\\"desk_tickets\\\",\\\"field\\\":\\\"contact_id\\\",\\\"target_ids\\\":[\\\"183dc191-e233-4dba-a828-d1945358863d\\\",\\\"30ff06b1-a2c9-4332-a29a-ff06dd77e794\\\",\\\"56805105-d512-40df-8d95-a882b4760d58\\\",\\\"88fe4c79-a53d-40aa-a210-619e996e0149\\\",\\\"c12ebef3-0701-47bb-8d24-a36c7250ab02\\\",\\\"f93b8553-f7ed-468b-9e78-0550302 -> 200 {\\\"success\\\":true,\\\"data\\\":{\\\"results\\\":[]},\\\"error\\\":null,\\\"meta\\\":null} || POS\"},{\"id\":\"RPL-B3\",\"verdict\":\"FAIL\",\"note\":\"Reply All pre-fills: mmohamed@anyware.software\"},{\"id\":\"RPL-C4\",\"verdict\":\"PASS\",\"note\":\"ticket CC still has it: true; sent: POST /desk/tickets/60e81b1b-e8ae-4a5d-aad9-70b69d9624b9/replies {\\\"mode\\\":\\\"reply_all\\\",\\\"to\\\":[\\\"mmohamed@anyware.software\\\"],\\\"subject\\\":\\\"Re: QA RPL ticket 3\\\",\\\"body_html\\\":\\\"<p>QA RPL C4d cc removed.&nbsp;</p><!--desk-quote--><p>On 26/10/2026 12:55, Customer E\"},{\"id\":\"RPL-F2\",\"verdict\":\"PASS\",\"note\":\"status after Send and Close: Closed; net=POST /desk/tickets/60e81b1b-e8ae-4a5d-aad9-70b69d9624b9/replies {\\\"mode\\\":\\\"reply_all\\\",\\\"to\\\":[\\\"mmohamed@anyware.software\\\"],\\\"\"},{\"id\":\"RPL-F3\",\"verdict\":\"FAIL\",\"note\":\"reply is_public=undefined mode=undefined; net=POST /desk/tickets/60e81b1b-e8ae-4a5d-aad9-70b69d9624b9/replies {\\\"mode\\\":\\\"reply_all\\\",\\\"to\\\":[\\\"mmohamed@anyware.software\\\"],\\\"subject\\\":\\\"Re: QA RPL ticket 3\\\",\\\"body_htm\"},{\"id\":\"RPL-G4\",\"verdict\":\"PASS\",\"note\":\"create 201 ok\"},{\"id\":\"RPL-G5\",\"verdict\":\"PASS\",\"note\":\"{\\\"duplicate\\\":\\\"409 CONFLICT You already have a snippet named 'qa_rpl_snip'.\\\",\\\"25601 chars\\\":\\\"400 VALIDATION_ERROR A snippet can hold at most 25,600 characters.\\\",\\\"51-char name\\\":\\\"400 VALIDATION_ERROR A snippet name must be a single word of up to 50 letters, digits, '_', '-' or '.', with no spaces.\\\"}\"},{\"id\":\"RPL-G6\",\"verdict\":\"PASS\",\"note\":\"resolve 200 ok {\\\"success\\\":true,\\\"data\\\":{\\\"snippet_id\\\":\\\"b701d1de-1d84-458f-9acd-04d680e83a24\\\",\\\"name\\\":\\\"qa_rpl_snip\\\",\\\"content_html\\\":\\\"<p>Hello mmohamed@anyware.software, ticket #507.</p>\\\",\\\"owner_user_id\\\":\\\"9d182dfa-05f3-4af7-9685-8615a2fbe537\"},{\"id\":\"RPL-K5\",\"verdict\":\"FAIL\",\"note\":\"agent approves own pending draft -> 200 ok\"}],\"CREATED\":[],\"tk\":\"60e81b1b-e8ae-4a5d-aad9-70b69d9624b9\"}"
+### Ran Playwright code
+```js
+await (async page => { // Shared helpers for every group script. Never put secrets here (run-code may echo code into logs).
+const H = 'https://staging-desk.taviportal.com'; const API = H + '/api/v1';
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_desk-activities-replies';
+const SHOT = RUN + '/evidence/raw';
+const M = { tickets: '88e8ea44-1658-4df3-9930-d0902b91073d', contacts: '43004ce2-577f-4eda-b00a-0750fe40c3d4', accounts: '784400e1-4a2a-42c2-b4f3-7ca56e79828a', products: '95b45992-5beb-4f23-b619-e3ae0e304933', calls: 'f7e488b5-0232-42fd-811c-1f24356af653', events: '6fb19115-9356-40f0-b064-840d8f1fad93', tasks: 'd120a6c2-2596-4254-968b-a1bcd3a000bf', contracts: '0924eb24-e42a-4eab-8efd-e3428f19e882' };
+const TL = '1b55c25d-eb27-4046-afd1-b292398b435b';
+let hdr = null;
+page.on('request', onReq);
+const sleep = ms => page.waitForTimeout(ms);
+const ensureAuth = async () => { if (!hdr) { await page.goto(H + '/hq', { waitUntil: 'domcontentloaded', timeout: 90000 }); for (let i = 0; i < 40 && !hdr; i++) await sleep(500); if (!hdr) throw new Error('SIGNED_OUT: no authorised request on /hq (' + ((await txt()).includes('Sign in') ? 'sign-in page shown' : 'unknown') + ')'); } };
+const api = async (m, p, body, extra) => {
+  await ensureAuth();
+  const doit = () => page.context().request.fetch(API + p, { method: m, headers: { ...hdr, ...(body !== undefined ? { 'content-type': 'application/json' } : {}), ...(extra || {}) }, data: body !== undefined ? (typeof body === 'string' ? body : JSON.stringify(body)) : undefined, failOnStatusCode: false });
+  let r = await doit();
+  if (r.status() === 401) { hdr = null; await page.goto(H + '/hq', { waitUntil: 'domcontentloaded', timeout: 90000 }); await ensureAuth(); r = await doit(); }
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch (e) { }
+  return { s: r.status(), j, t: t.slice(0, 600) };
+};
+const R = []; const rec = (id, verdict, note, extra) => R.push({ id, verdict, note, ...(extra || {}) });
+const go = async (u, w) => { await page.goto(H + u, { waitUntil: 'domcontentloaded', timeout: 90000 }); await sleep(w || 6000); };
+const txt = async () => (await page.innerText('body'));
+const shot = async n => { try { await page.screenshot({ path: SHOT + '/' + n + '.png', timeout: 15000 }); return n + '.png'; } catch (e) { return 'screenshot failed: ' + String(e.message).slice(0, 40); } };
+const arr = x => Array.isArray(x) ? x : (x && (x.items || x.data || x.fields || x.layouts)) || [];
+const step = async (id, fn) => { try { await fn(); } catch (e) { rec(id, 'BLOCKED', 'script error: ' + String(e.message).slice(0, 200)); } try { await page.keyboard.press('Escape'); } catch (e) { } };
+const done = o => { page.off('request', onReq); return JSON.stringify(o === undefined ? R : o); };
+// ---- run-2 helpers (setup via API, checks via UI where the row is about the screen)
+const TS = 'a641f1df-f2c6-450e-a881-857776dacf70';
+const enc = v => v === null ? { kind: 'null' } : typeof v === 'number' ? { kind: 'number', value: v } : typeof v === 'boolean' ? { kind: 'boolean', value: v } : Array.isArray(v) ? { kind: 'array', items: v.map(enc) } : (v && typeof v === 'object') ? { kind: 'object', properties: Object.fromEntries(Object.entries(v).map(([k, x]) => [k, enc(x)])) } : { kind: 'string', value: String(v) };
+const mods = async () => arr((await api('GET', '/modules')).j.data);
+const mkModule = async (key, plural, scope) => { let m = (await mods()).find(x => x.moduleKey === key || x.moduleKey === 'desk_' + key); if (!m) { const r = await api('POST', `/teamspaces/${TS}/modules`, { moduleKey: key, labels: { en: plural }, pluralForm: plural, singularForm: plural + '1', storageScope: scope || 'organization' }); m = r.j && r.j.data; } return m; };
+const fieldsOf = async mid => arr((await api('GET', `/modules/${mid}/fields`)).j.data);
+const defLayout = async mid => arr((await api('GET', `/modules/${mid}/layouts`)).j.data).find(x => x.isDefault);
+const getLayout = async (mid, lid) => (await api('GET', `/modules/${mid}/layouts/${lid}`)).j.data;
+const initLayout = async (mid) => { const d = await defLayout(mid); const l = await getLayout(mid, d.id); if (l.views && l.views.CREATE && l.views.CREATE.layout && (l.views.CREATE.layout.sections || []).length) return d.id;
+  await go(`/settings/modules-and-fields/${mid}/layouts/${d.id}`, 9000); await page.locator('button', { hasText: 'NEW SECTION' }).last().click(); await sleep(800); await page.getByRole('button', { name: /^Save$/ }).click(); await sleep(4000); return d.id; };
+const addFields = async (mid, defs) => { const have = new Set((await fieldsOf(mid)).map(f => f.fieldName)); const nw = defs.filter(d => !have.has(d.fieldName)).map(d => ({ labels: { en: 'QA MF ' + d.fieldName.replace(/^qa_/, '') }, required: false, unique: false, uniquePeerModuleIds: [], ...d })); return nw.length ? await api('POST', `/modules/${mid}/fields`, { fields: nw }) : { s: 'exists' }; };
+const placeOnLayout = async (mid, lid, names, cfg) => { cfg = cfg || {}; const lay = await getLayout(mid, lid); const F = (await fieldsOf(mid)).filter(f => names.includes(f.fieldName));
+  for (const v of ['CREATE', 'QUICK_CREATE', 'DETAIL']) { const ss = lay.views[v] && lay.views[v].layout && lay.views[v].layout.sections; if (!ss || !ss[0]) continue; const col = ss[0].columns[ss[0].columns.length - 1]; const have = new Set(ss.flatMap(s => s.columns.flatMap(c => c.fields.map(f => f.id))));
+    for (const f of F) if (!have.has(f.id)) col.fields.push(JSON.parse(JSON.stringify(f)));
+    for (const s of ss) for (const c of s.columns) for (const e of c.fields) if (cfg[e.fieldName]) e.config = { ...(e.config || {}), ...cfg[e.fieldName] }; }
+  const b = { ...lay }; delete b.id; return await api('PUT', `/modules/${mid}/layouts/${lid}`, b); };
+const mkRec = async (mid, vals, lid) => { const r = await api('POST', `/modules/${mid}/records`, { data: Object.entries(vals).map(([k, v]) => ({ field: k, value: enc(v) })), ...(lid ? { layout_id: lid } : {}) }); return { s: r.s, id: r.j && r.j.data && r.j.data.id, err: ((r.j && r.j.error && (r.j.error.code + ' ' + r.j.error.message)) || '').slice(0, 160), j: r.j }; };
+const getRec = async (mid, id) => { const g = (await api('GET', `/modules/${mid}/records/${id}`)).j; const d = (g && g.data && g.data.data) || []; const o = {}; for (const x of d) o[x.field] = x.value; return o; };
+const val = v => !v ? undefined : v.kind === 'array' ? (v.items || []).map(val) : v.kind === 'object' ? v.properties : v.value;
+const fieldMenu = async label => { const c = page.getByText(label, { exact: true }); const n = await c.count(); let lab = null;
+  for (let i = 0; i < n; i++) { const bb = await c.nth(i).boundingBox().catch(() => null); if (bb && bb.x > 340) { await c.nth(i).scrollIntoViewIfNeeded(); await c.nth(i).hover(); lab = await c.nth(i).boundingBox(); break; } }
+  if (!lab) throw new Error('label not on canvas: ' + label); await sleep(600);
+  const btns = page.locator('[title="Field options"], [aria-label="Field options"]'); const bn = await btns.count(); let best = null, bd = 1e9;
+  for (let i = 0; i < bn; i++) { const bb = await btns.nth(i).boundingBox().catch(() => null); if (!bb) continue; const dy = Math.abs((bb.y + bb.height / 2) - (lab.y + lab.height / 2)); if (bb.x > lab.x && dy < 30 && bb.x - lab.x < 1100 && dy < bd) { bd = dy; best = btns.nth(i); } }
+  if (!best) throw new Error('no field options for ' + label); await best.click(); await sleep(700); };
+const props = async tab => { await page.getByText('Edit Properties', { exact: true }).first().click(); await sleep(1500); if (tab) { await page.getByText(tab, { exact: true }).first().click(); await sleep(1000); } };
+const builder = async (mid, lid) => { await go(`/settings/modules-and-fields/${mid}/layouts/${lid}`, 10000); };
+const cap = []; const capOn = () => { const f = r => { const u = r.url(); if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(r.method()) && u.includes('/api/v1/') && !/heartbeat|resolved-batch|presence|\/iam\/auth/.test(u)) cap.push(r.method() + ' ' + u.replace(API, '') + ' ' + (r.postData() || '').slice(0, 400)); }; page.on('request', f); return () => page.off('request', f); };
+// ---- activities/replies run helpers (26 Oct 2026). Every created id is returned in CREATED so the caller writes the ledger.
+const CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158'; const QA_EMAIL = 'mmohamed@anyware.software'; const QA_CC = 'mahmoud.mmohamedsamy@gmail.com';
+const CREATED = [];
+const fl = r => { const o = { id: r.id }; for (const x of (r.data || [])) o[x.field] = x.value && x.value.kind === 'array' ? (x.value.items || []).map(i => i.value) : (x.value && x.value.value !== undefined ? x.value.value : x.value); return o; };
+const recOf = async (k, id) => { const r = await api('GET', `/modules/${M[k]}/records/${id}`); return { s: r.s, o: r.j && r.j.data ? fl(r.j.data) : null, raw: r }; };
+const mk = async (k, vals, tag) => { const r = await mkRec(M[k], vals); if (r.id) CREATED.push({ k, id: r.id, tag }); return r; };
+const patch = async (k, id, vals) => api('PATCH', `/modules/${M[k]}/records/${id}`, { data: Object.entries(vals).map(([f, v]) => ({ field: f, value: enc(v) })) });
+const iso = ms => new Date(Date.now() + ms).toISOString();
+const H1 = 3600e3, D1 = 86400e3;
+const fin = extra => done({ R, CREATED, ...(extra || {}) });
+// RPL batch 7: ticket CC via side panel (capture), C4 via UI chip removal, snippets G4-G8, K5 approve own pending draft, F2 Send and Close + Send as private via UI
+const CCX = 'qa.rpl.cc@example.com';
+const L = await api('GET', `/modules/${M.tickets}/records?page=1&per_page=20&sort_by=created_at&sort_dir=desc`); const tk = ((L.j.data.records || L.j.data.items || L.j.data) || []).map(fl).find(x => x.subject === 'QA RPL ticket 3').id;
+const net = []; const onR = async r => { const q = r.request(); if (q.method() !== 'GET' && r.url().includes('/api/v1/') && !/viewers|read$|summaries|heartbeat|presence|resolved|realtime|iam\//.test(r.url())) net.push(q.method() + ' ' + r.url().replace(API, '') + ' ' + (q.postData() || '').slice(0, 300) + ' -> ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 160)); }; page.on('response', onR);
+const s = r => r.s + ' ' + (r.j && r.j.error ? r.j.error.code + ' ' + r.j.error.message : 'ok').slice(0, 160);
+const typeBody = async t => { const ed = page.locator('[aria-label="Reply body"]'); await ed.click(); await page.keyboard.press('Control+Home'); await page.keyboard.type(t); await sleep(600); };
+try {
+  await go(`/modules/${M.tickets}/records/${tk}`, 10000);
+  net.length = 0; await page.getByPlaceholder('Add an email address').fill(CCX); await page.getByRole('button', { name: 'Add', exact: true }).click(); await sleep(3000);
+  const ccAdd = net.slice(0, 3); const cc1 = await api('GET', `/desk/tickets/${tk}/cc`);
+  rec('RPL-C-ticketCC', cc1.t.includes(CCX) ? 'PASS' : 'FAIL', 'side panel add: ' + ccAdd.join(' || ').slice(0, 400));
+  await go(`/modules/${M.tickets}/records/${tk}`, 9000);
+  await page.locator('main button').filter({ hasText: /^Reply All/ }).first().click(); await sleep(4000);
+  const chips = await page.$$eval('[aria-label^="Remove "]', bs => bs.map(b => b.getAttribute('aria-label').replace('Remove ', '')));
+  rec('RPL-B3', chips.includes(CCX) ? 'PASS' : 'FAIL', 'Reply All pre-fills: ' + chips.join(', '));
+  const rm = page.locator(`[aria-label="Remove ${CCX}"]`); if (await rm.count()) await rm.first().click(); await sleep(400);
+  await typeBody('QA RPL C4d cc removed. '); net.length = 0; await page.getByRole('button', { name: 'Send', exact: true }).last().click(); await sleep(5000);
+  const cc2 = await api('GET', `/desk/tickets/${tk}/cc`); const sent = net.find(x => /replies/.test(x)) || 'no POST';
+  rec('RPL-C4', cc2.t.includes(CCX) && !/qa\.rpl\.cc@example\.com"\]/.test(sent.split('->')[0]) ? 'PASS' : 'FAIL', `ticket CC still has it: ${cc2.t.includes(CCX)}; sent: ${sent.slice(0, 250)}`);
+  // F2 Send and Close via UI
+  await go(`/modules/${M.tickets}/records/${tk}`, 9000); await page.locator('main button').filter({ hasText: /^Reply/ }).first().click(); await sleep(4000); await typeBody('QA RPL F2 send and close. ');
+  net.length = 0; await page.locator('button[aria-label="More send options"]').last().click(); await sleep(1000); await page.getByRole('menuitem', { name: 'Send and Close' }).click(); await sleep(6000);
+  const st = await api('GET', `/desk/tickets/${tk}`); rec('RPL-F2', st.j.data.status === 'Closed' ? 'PASS' : 'FAIL', `status after Send and Close: ${st.j.data.status}; net=${net.map(x => x.slice(0, 120)).join(' || ')}`);
+  await api('POST', `/desk/tickets/${tk}/reopen`, {}); await sleep(1500);
+  // Send as private via UI
+  await go(`/modules/${M.tickets}/records/${tk}`, 9000); await page.locator('main button').filter({ hasText: /^Reply/ }).first().click(); await sleep(4000); await typeBody('QA RPL F3 send as private. ');
+  net.length = 0; await page.locator('button[aria-label="More send options"]').last().click(); await sleep(1000); await page.getByRole('menuitem', { name: 'Send as private' }).click(); await sleep(6000);
+  const rr = ((await api('GET', `/desk/tickets/${tk}/replies`)).j.data || []).find(r => /F3 send as private/.test(r.body_html || ''));
+  rec('RPL-F3', rr && rr.is_public === false ? 'PASS' : 'FAIL', `reply is_public=${rr && rr.is_public} mode=${rr && rr.mode}; net=${net.map(x => x.slice(0, 160)).join(' || ')}`);
+} catch (e) { rec('script-error', 'BLOCKED', String(e.message).slice(0, 300)); await shot('r7-error'); }
+// snippets
+const g4 = await api('POST', '/desk/snippets', { name: 'qa_rpl_snip', content_html: '<p>Hello {{customer_name}}, ticket {{ticket_number}}.</p>', is_shared: false });
+const sid = g4.j && g4.j.data && (g4.j.data.id || (g4.j.data.snippet && g4.j.data.snippet.id));
+rec('RPL-G4', g4.s === 201 ? 'PASS' : 'FAIL', `create ${s(g4)}`);
+const g5 = {}; g5['duplicate'] = s(await api('POST', '/desk/snippets', { name: 'qa_rpl_snip', content_html: '<p>x</p>', is_shared: false })); g5['25601 chars'] = s(await api('POST', '/desk/snippets', { name: 'qa_rpl_long', content_html: 'z'.repeat(25601), is_shared: false })); g5['51-char name'] = s(await api('POST', '/desk/snippets', { name: 'q'.repeat(51), content_html: '<p>x</p>', is_shared: false }));
+rec('RPL-G5', Object.values(g5).some(v => /^201/.test(v)) ? 'FAIL' : 'PASS', JSON.stringify(g5));
+const rs = await api('POST', `/desk/tickets/${tk}/snippets/resolve`, { snippet_id: sid }); rec('RPL-G6', rs.s === 200 && !/\{\{/.test(rs.t) ? 'PASS' : 'FAIL', `resolve ${s(rs)} ${rs.t.slice(0, 220)}`);
+// K5: approve own pending draft
+await api('PUT', `/desk/tickets/${tk}/drafts/mine`, { mode: 'reply_all', to: [QA_EMAIL], subject: 'Re: QA RPL ticket 3', body_html: '<p>QA RPL K5 review</p>' });
+await api('POST', `/desk/tickets/${tk}/drafts/mine/submit-review`, {}); const dl = await api('GET', `/desk/tickets/${tk}/drafts`); const did = ((dl.j && dl.j.data) || [])[0] && dl.j.data[0].id;
+const ap = await api('POST', `/desk/tickets/${tk}/drafts/${did}/approve`, {}); rec('RPL-K5', ap.s === 403 ? 'PASS' : (ap.s < 300 ? 'FAIL' : 'INFO'), `agent approves own pending draft -> ${s(ap)}`);
+if (ap.s >= 300) { await api('POST', `/desk/tickets/${tk}/drafts/mine/withdraw-review`, {}); await api('DELETE', `/desk/tickets/${tk}/drafts/mine`); }
+const all = await api('GET', '/desk/snippets'); for (const x of ((all.j && all.j.data && all.j.data.snippets) || [])) if (/^qa_rpl/.test(x.name)) await api('DELETE', `/desk/snippets/${x.id}`);
+page.off('response', onR);
+return fin({ tk }); })(page);
+```
+### Page
+- Page URL: https://staging-desk.taviportal.com/views/all/tickets/60e81b1b-e8ae-4a5d-aad9-70b69d9624b9
+- Page Title: Desk
+- Console: 7 errors, 0 warnings
+### Events
+- New console entries: .playwright-cli\console-2026-10-26T08-23-27-170Z.log#L446-L476

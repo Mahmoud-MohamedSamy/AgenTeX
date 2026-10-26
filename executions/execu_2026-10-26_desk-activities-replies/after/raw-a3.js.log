@@ -1,0 +1,137 @@
+### Result
+"{\"R\":[{\"id\":\"ACT-E-buttons\",\"verdict\":\"INFO\",\"note\":\"scheduled call buttons: Call Status: scheduled, Collapse Call Information, Cancel Call, Mark as missed, Reschedule, Start Call\"},{\"id\":\"ACT-E1\",\"verdict\":\"PASS\",\"note\":\"status=in_progress start=2026-10-26T08:55:04.488Z\"},{\"id\":\"ACT-E2\",\"verdict\":\"PASS\",\"note\":\"dialog=\\\"End Call Outcome Answered Unanswered Call notes The notes are added to the ticket as a private comment. Cancel End Call\\\" status=completed outcome=answered duration=00:00:10 end=2026-10-26T08:55:15.222Z\"},{\"id\":\"ACT-E3\",\"verdict\":\"PASS\",\"note\":\"ticket comment is_public=false text=\\\"<p><strong>Call notes:</strong></p><p>QA ACT notes E3</p>\\\"\"},{\"id\":\"ACT-E8\",\"verdict\":\"FAIL\",\"note\":\"UI message shown=true; API PATCH subject 200 -> subject now \\\"QA ACT E1 call edited\\\"\"},{\"id\":\"ACT-E10\",\"verdict\":\"PASS\",\"note\":\"after reopen status=scheduled\"},{\"id\":\"ACT-E4\",\"verdict\":\"INFO\",\"note\":\"unanswered end -> status=missed outcome=unanswered type=outbound\"},{\"id\":\"ACT-E5\",\"verdict\":\"PASS\",\"note\":\"dialog=\\\"\\\" status=missed\"},{\"id\":\"ACT-E6\",\"verdict\":\"FAIL\",\"note\":\"dialog=\\\"Reschedule New date and time The call went unanswered — log a missed call A missed-call entry is kept for this attempt; the call itself moves to the new time. C\\\" call now status=scheduled start=2026-10-26T09:56:35.617Z; missed-log rows=\"},{\"id\":\"ACT-E9\",\"verdict\":\"PASS\",\"note\":\"dialog=\\\"\\\" status=cancelled\"},{\"id\":\"ACT-E12\",\"verdict\":\"PASS\",\"note\":\"cancelled call buttons: Reopen Call\"},{\"id\":\"script-error\",\"verdict\":\"BLOCKED\",\"note\":\"locator.fill: Timeout 30000ms exceeded.\\nCall log:\\n\\u001b[2m  - waiting for getByRole('searchbox').or(getByPlaceholder(/Search in this view/)).first()\\u001b[22m\\n\"}],\"CREATED\":[{\"k\":\"calls\",\"id\":\"db07f2c4-b40f-4cb1-8cc3-684d19748e17\",\"tag\":\"E1 call\"},{\"k\":\"calls\",\"id\":\"7690c809-264f-4f32-a611-dea70860c7c5\",\"tag\":\"E4 call\"},{\"k\":\"calls\",\"id\":\"99fc6a3d-0bb8-453b-920c-80b17c2b5529\",\"tag\":\"E5 call\"},{\"k\":\"calls\",\"id\":\"3a433199-eb82-4671-9222-eacdf789f8ac\",\"tag\":\"E6 call\"},{\"k\":\"calls\",\"id\":\"e50c6797-bc69-40e6-b7a4-c3c3c10a7d14\",\"tag\":\"E9 call\"},{\"k\":\"calls\",\"id\":\"e7a5c886-e4b0-4c05-b854-767bb40930e7\",\"tag\":\"E11 call\"}]}"
+### Ran Playwright code
+```js
+await (async page => { // Shared helpers for every group script. Never put secrets here (run-code may echo code into logs).
+const H = 'https://staging-desk.taviportal.com'; const API = H + '/api/v1';
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_desk-activities-replies';
+const SHOT = RUN + '/evidence/raw';
+const M = { tickets: '88e8ea44-1658-4df3-9930-d0902b91073d', contacts: '43004ce2-577f-4eda-b00a-0750fe40c3d4', accounts: '784400e1-4a2a-42c2-b4f3-7ca56e79828a', products: '95b45992-5beb-4f23-b619-e3ae0e304933', calls: 'f7e488b5-0232-42fd-811c-1f24356af653', events: '6fb19115-9356-40f0-b064-840d8f1fad93', tasks: 'd120a6c2-2596-4254-968b-a1bcd3a000bf', contracts: '0924eb24-e42a-4eab-8efd-e3428f19e882' };
+const TL = '1b55c25d-eb27-4046-afd1-b292398b435b';
+let hdr = null;
+page.on('request', onReq);
+const sleep = ms => page.waitForTimeout(ms);
+const ensureAuth = async () => { if (!hdr) { await page.goto(H + '/hq', { waitUntil: 'domcontentloaded', timeout: 90000 }); for (let i = 0; i < 40 && !hdr; i++) await sleep(500); if (!hdr) throw new Error('SIGNED_OUT: no authorised request on /hq (' + ((await txt()).includes('Sign in') ? 'sign-in page shown' : 'unknown') + ')'); } };
+const api = async (m, p, body, extra) => {
+  await ensureAuth();
+  const doit = () => page.context().request.fetch(API + p, { method: m, headers: { ...hdr, ...(body !== undefined ? { 'content-type': 'application/json' } : {}), ...(extra || {}) }, data: body !== undefined ? (typeof body === 'string' ? body : JSON.stringify(body)) : undefined, failOnStatusCode: false });
+  let r = await doit();
+  if (r.status() === 401) { hdr = null; await page.goto(H + '/hq', { waitUntil: 'domcontentloaded', timeout: 90000 }); await ensureAuth(); r = await doit(); }
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch (e) { }
+  return { s: r.status(), j, t: t.slice(0, 600) };
+};
+const R = []; const rec = (id, verdict, note, extra) => R.push({ id, verdict, note, ...(extra || {}) });
+const go = async (u, w) => { await page.goto(H + u, { waitUntil: 'domcontentloaded', timeout: 90000 }); await sleep(w || 6000); };
+const txt = async () => (await page.innerText('body'));
+const shot = async n => { try { await page.screenshot({ path: SHOT + '/' + n + '.png', timeout: 15000 }); return n + '.png'; } catch (e) { return 'screenshot failed: ' + String(e.message).slice(0, 40); } };
+const arr = x => Array.isArray(x) ? x : (x && (x.items || x.data || x.fields || x.layouts)) || [];
+const step = async (id, fn) => { try { await fn(); } catch (e) { rec(id, 'BLOCKED', 'script error: ' + String(e.message).slice(0, 200)); } try { await page.keyboard.press('Escape'); } catch (e) { } };
+const done = o => { page.off('request', onReq); return JSON.stringify(o === undefined ? R : o); };
+// ---- run-2 helpers (setup via API, checks via UI where the row is about the screen)
+const TS = 'a641f1df-f2c6-450e-a881-857776dacf70';
+const enc = v => v === null ? { kind: 'null' } : typeof v === 'number' ? { kind: 'number', value: v } : typeof v === 'boolean' ? { kind: 'boolean', value: v } : Array.isArray(v) ? { kind: 'array', items: v.map(enc) } : (v && typeof v === 'object') ? { kind: 'object', properties: Object.fromEntries(Object.entries(v).map(([k, x]) => [k, enc(x)])) } : { kind: 'string', value: String(v) };
+const mods = async () => arr((await api('GET', '/modules')).j.data);
+const mkModule = async (key, plural, scope) => { let m = (await mods()).find(x => x.moduleKey === key || x.moduleKey === 'desk_' + key); if (!m) { const r = await api('POST', `/teamspaces/${TS}/modules`, { moduleKey: key, labels: { en: plural }, pluralForm: plural, singularForm: plural + '1', storageScope: scope || 'organization' }); m = r.j && r.j.data; } return m; };
+const fieldsOf = async mid => arr((await api('GET', `/modules/${mid}/fields`)).j.data);
+const defLayout = async mid => arr((await api('GET', `/modules/${mid}/layouts`)).j.data).find(x => x.isDefault);
+const getLayout = async (mid, lid) => (await api('GET', `/modules/${mid}/layouts/${lid}`)).j.data;
+const initLayout = async (mid) => { const d = await defLayout(mid); const l = await getLayout(mid, d.id); if (l.views && l.views.CREATE && l.views.CREATE.layout && (l.views.CREATE.layout.sections || []).length) return d.id;
+  await go(`/settings/modules-and-fields/${mid}/layouts/${d.id}`, 9000); await page.locator('button', { hasText: 'NEW SECTION' }).last().click(); await sleep(800); await page.getByRole('button', { name: /^Save$/ }).click(); await sleep(4000); return d.id; };
+const addFields = async (mid, defs) => { const have = new Set((await fieldsOf(mid)).map(f => f.fieldName)); const nw = defs.filter(d => !have.has(d.fieldName)).map(d => ({ labels: { en: 'QA MF ' + d.fieldName.replace(/^qa_/, '') }, required: false, unique: false, uniquePeerModuleIds: [], ...d })); return nw.length ? await api('POST', `/modules/${mid}/fields`, { fields: nw }) : { s: 'exists' }; };
+const placeOnLayout = async (mid, lid, names, cfg) => { cfg = cfg || {}; const lay = await getLayout(mid, lid); const F = (await fieldsOf(mid)).filter(f => names.includes(f.fieldName));
+  for (const v of ['CREATE', 'QUICK_CREATE', 'DETAIL']) { const ss = lay.views[v] && lay.views[v].layout && lay.views[v].layout.sections; if (!ss || !ss[0]) continue; const col = ss[0].columns[ss[0].columns.length - 1]; const have = new Set(ss.flatMap(s => s.columns.flatMap(c => c.fields.map(f => f.id))));
+    for (const f of F) if (!have.has(f.id)) col.fields.push(JSON.parse(JSON.stringify(f)));
+    for (const s of ss) for (const c of s.columns) for (const e of c.fields) if (cfg[e.fieldName]) e.config = { ...(e.config || {}), ...cfg[e.fieldName] }; }
+  const b = { ...lay }; delete b.id; return await api('PUT', `/modules/${mid}/layouts/${lid}`, b); };
+const mkRec = async (mid, vals, lid) => { const r = await api('POST', `/modules/${mid}/records`, { data: Object.entries(vals).map(([k, v]) => ({ field: k, value: enc(v) })), ...(lid ? { layout_id: lid } : {}) }); return { s: r.s, id: r.j && r.j.data && r.j.data.id, err: ((r.j && r.j.error && (r.j.error.code + ' ' + r.j.error.message)) || '').slice(0, 160), j: r.j }; };
+const getRec = async (mid, id) => { const g = (await api('GET', `/modules/${mid}/records/${id}`)).j; const d = (g && g.data && g.data.data) || []; const o = {}; for (const x of d) o[x.field] = x.value; return o; };
+const val = v => !v ? undefined : v.kind === 'array' ? (v.items || []).map(val) : v.kind === 'object' ? v.properties : v.value;
+const fieldMenu = async label => { const c = page.getByText(label, { exact: true }); const n = await c.count(); let lab = null;
+  for (let i = 0; i < n; i++) { const bb = await c.nth(i).boundingBox().catch(() => null); if (bb && bb.x > 340) { await c.nth(i).scrollIntoViewIfNeeded(); await c.nth(i).hover(); lab = await c.nth(i).boundingBox(); break; } }
+  if (!lab) throw new Error('label not on canvas: ' + label); await sleep(600);
+  const btns = page.locator('[title="Field options"], [aria-label="Field options"]'); const bn = await btns.count(); let best = null, bd = 1e9;
+  for (let i = 0; i < bn; i++) { const bb = await btns.nth(i).boundingBox().catch(() => null); if (!bb) continue; const dy = Math.abs((bb.y + bb.height / 2) - (lab.y + lab.height / 2)); if (bb.x > lab.x && dy < 30 && bb.x - lab.x < 1100 && dy < bd) { bd = dy; best = btns.nth(i); } }
+  if (!best) throw new Error('no field options for ' + label); await best.click(); await sleep(700); };
+const props = async tab => { await page.getByText('Edit Properties', { exact: true }).first().click(); await sleep(1500); if (tab) { await page.getByText(tab, { exact: true }).first().click(); await sleep(1000); } };
+const builder = async (mid, lid) => { await go(`/settings/modules-and-fields/${mid}/layouts/${lid}`, 10000); };
+const cap = []; const capOn = () => { const f = r => { const u = r.url(); if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(r.method()) && u.includes('/api/v1/') && !/heartbeat|resolved-batch|presence|\/iam\/auth/.test(u)) cap.push(r.method() + ' ' + u.replace(API, '') + ' ' + (r.postData() || '').slice(0, 400)); }; page.on('request', f); return () => page.off('request', f); };
+// ---- activities/replies run helpers (26 Oct 2026). Every created id is returned in CREATED so the caller writes the ledger.
+const CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158'; const QA_EMAIL = 'mmohamed@anyware.software'; const QA_CC = 'mahmoud.mmohamedsamy@gmail.com';
+const CREATED = [];
+const fl = r => { const o = { id: r.id }; for (const x of (r.data || [])) o[x.field] = x.value && x.value.kind === 'array' ? (x.value.items || []).map(i => i.value) : (x.value && x.value.value !== undefined ? x.value.value : x.value); return o; };
+const recOf = async (k, id) => { const r = await api('GET', `/modules/${M[k]}/records/${id}`); return { s: r.s, o: r.j && r.j.data ? fl(r.j.data) : null, raw: r }; };
+const mk = async (k, vals, tag) => { const r = await mkRec(M[k], vals); if (r.id) CREATED.push({ k, id: r.id, tag }); return r; };
+const patch = async (k, id, vals) => api('PATCH', `/modules/${M[k]}/records/${id}`, { data: Object.entries(vals).map(([f, v]) => ({ field: f, value: enc(v) })) });
+const iso = ms => new Date(Date.now() + ms).toISOString();
+const H1 = 3600e3, D1 = 86400e3;
+const fin = extra => done({ R, CREATED, ...(extra || {}) });
+// ACT batch 3: call life cycle through the detail page (calls created by API, linked to the QA ticket)
+const TK = 'fa2de237-92ec-4944-8b5a-a05e1e1343e8';
+const pageText = async () => (await txt());
+const btn = n => page.getByRole('button', { name: n, exact: true });
+const dlgText = async () => (await page.$$eval('[role=dialog], [role=alertdialog]', ds => ds.map(d => d.innerText.replace(/\s+/g, ' ')).join(' | ')).catch(() => ''));
+const mkCall = async (tag, extra) => { const r = await mk('calls', { subject: 'QA ACT ' + tag, call_start_time: iso(H1), call_status: 'scheduled', call_type: 'outbound', ticket_id: TK, ...(extra || {}) }, tag); return r.id; };
+const st = async id => (await recOf('calls', id)).o;
+try {
+  // E1 + E2 + E3 start / end answered with notes
+  const c1 = await mkCall('E1 call');
+  await go(`/modules/${M.calls}/records/${c1}`, 9000);
+  const b0 = await page.$$eval('main button', bs => [...new Set(bs.map(b => (b.getAttribute('aria-label') || b.innerText).trim()).filter(Boolean))]);
+  rec('ACT-E-buttons', 'INFO', 'scheduled call buttons: ' + b0.filter(x => /Call|missed|Reschedule|Cancel|Reopen|Complete/i.test(x)).join(', '));
+  await btn('Start Call').click(); await sleep(3000);
+  let o = await st(c1); rec('ACT-E1', o.call_status === 'in_progress' ? 'PASS' : 'FAIL', `status=${o.call_status} start=${o.call_start_time}`);
+  await btn('End Call').first().click(); await sleep(1500);
+  const endDlg = await dlgText();
+  await page.getByRole('radio', { name: 'Answered' }).check().catch(() => page.getByText('Answered', { exact: true }).click());
+  await page.locator('[role=dialog] textarea').first().fill('QA ACT notes E3'); await sleep(300);
+  await page.locator('[role=dialog] button').filter({ hasText: /^End Call$/ }).last().click(); await sleep(3500);
+  o = await st(c1); rec('ACT-E2', o.call_status === 'completed' && o.call_outcome === 'answered' ? 'PASS' : 'FAIL', `dialog="${endDlg.slice(0, 200)}" status=${o.call_status} outcome=${o.call_outcome} duration=${o.call_duration} end=${o.call_end_time}`);
+  const cm = await api('GET', `/desk/tickets/${TK}/comments`); const cms = (cm.j && cm.j.data) || [];
+  const note = cms.find(c => /QA ACT notes E3/.test(c.body_html || c.body || c.body_text || ''));
+  rec('ACT-E3', note && note.is_public === false ? 'PASS' : 'FAIL', note ? 'ticket comment is_public=' + note.is_public + ' text=' + JSON.stringify((note.body_text || note.body_html || '').slice(0, 80)) : 'no ticket comment with the notes; comments=' + cms.length);
+  // E8 completed read-only (UI + API)
+  await go(`/modules/${M.calls}/records/${c1}`, 8000); const t8 = await pageText();
+  const p8 = await patch('calls', c1, { subject: 'QA ACT E1 call edited' }); const o8 = await st(c1);
+  rec('ACT-E8', /Completed calls cannot be edited/.test(t8) && o8.subject !== 'QA ACT E1 call edited' ? 'PASS' : 'FAIL', `UI message shown=${/Completed calls cannot be edited/.test(t8)}; API PATCH subject ${p8.s} -> subject now "${o8.subject}"`);
+  // E10 reopen
+  await btn('Reopen Call').click().catch(e => rec('ACT-E10', 'FAIL', 'no Reopen Call button')); await sleep(3000);
+  o = await st(c1); rec('ACT-E10', o.call_status === 'scheduled' || o.call_status === 'in_progress' ? 'PASS' : 'FAIL', 'after reopen status=' + o.call_status);
+  // E4 end unanswered
+  const c4 = await mkCall('E4 call'); await go(`/modules/${M.calls}/records/${c4}`, 8000);
+  await btn('Start Call').click(); await sleep(2500); await btn('End Call').first().click(); await sleep(1200);
+  await page.getByRole('radio', { name: 'Unanswered' }).check().catch(() => page.getByText('Unanswered', { exact: true }).click());
+  await page.locator('[role=dialog] button').filter({ hasText: /^End Call$/ }).last().click(); await sleep(3000);
+  o = await st(c4); rec('ACT-E4', 'INFO', `unanswered end -> status=${o.call_status} outcome=${o.call_outcome} type=${o.call_type}`);
+  // E5 mark as missed
+  const c5 = await mkCall('E5 call'); await go(`/modules/${M.calls}/records/${c5}`, 8000);
+  await btn('Mark as missed').click(); await sleep(1500); const d5 = await dlgText(); if (d5) { await page.locator('[role=dialog] button, [role=alertdialog] button').filter({ hasText: /missed|Confirm|Yes/i }).last().click().catch(() => {}); await sleep(2500); }
+  o = await st(c5); rec('ACT-E5', o.call_status === 'missed' ? 'PASS' : 'FAIL', `dialog="${d5.slice(0, 120)}" status=${o.call_status}`);
+  // E6 reschedule with missed log
+  const c6 = await mkCall('E6 call'); await go(`/modules/${M.calls}/records/${c6}`, 8000);
+  await btn('Reschedule').click(); await sleep(1500); const d6 = await dlgText();
+  const dt = new Date(Date.now() + D1); const pad = n => String(n).padStart(2, '0'); const loc = `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}T10:00`;
+  await page.locator('[role=dialog] input[type=datetime-local]').first().fill(loc);
+  const cb = page.locator('[role=dialog] input[type=checkbox]'); if (await cb.count()) await cb.first().check();
+  await page.locator('[role=dialog] button').filter({ hasText: /^Reschedule$/ }).last().click(); await sleep(3500);
+  o = await st(c6);
+  const L = await api('GET', `/modules/${M.calls}/records?page=1&per_page=30&sort_by=created_at&sort_dir=desc`); const recent = ((L.j.data.records || L.j.data.items || L.j.data) || []).map(fl);
+  const missedLog = recent.filter(x => x.id !== c6 && /E6/.test(x.subject || '') ); for (const m of missedLog) CREATED.push({ k: 'calls', id: m.id, tag: 'E6-missed-log' });
+  rec('ACT-E6', missedLog.length && o.call_status === 'scheduled' ? 'PASS' : 'FAIL', `dialog="${d6.slice(0, 160)}" call now status=${o.call_status} start=${o.call_start_time}; missed-log rows=${missedLog.map(m => m.call_status + '/' + m.call_type).join(',')}`);
+  // E9 cancel
+  const c9 = await mkCall('E9 call'); await go(`/modules/${M.calls}/records/${c9}`, 8000);
+  await btn('Cancel Call').click(); await sleep(1500); const d9 = await dlgText(); if (d9) { await page.locator('[role=dialog] button, [role=alertdialog] button').filter({ hasText: /Cancel Call|Confirm|Yes/i }).last().click().catch(() => {}); await sleep(2500); }
+  o = await st(c9); rec('ACT-E9', o.call_status === 'cancelled' ? 'PASS' : 'FAIL', `dialog="${d9.slice(0, 120)}" status=${o.call_status}`);
+  await go(`/modules/${M.calls}/records/${c9}`, 7000); const b9 = await page.$$eval('main button', bs => bs.map(b => b.innerText.trim()));
+  rec('ACT-E12', !b9.includes('Start Call') ? 'PASS' : 'FAIL', 'cancelled call buttons: ' + b9.filter(x => /Call|Reopen/.test(x)).join(', '));
+  // E11 overdue scheduled call
+  const c11 = await mkCall('E11 call', { call_start_time: iso(-H1) }); await go('/activities', 6000); for (let i = 0; i < 30 && !(await txt()).includes('Total Count'); i++) await sleep(1000);
+  await page.getByRole('searchbox').or(page.getByPlaceholder(/Search in this view/)).first().fill('QA ACT E11'); await sleep(3000);
+  const t11 = await txt(); rec('ACT-E11', /QA ACT E11 call[\s\S]{0,60}Overdue/.test(t11) ? 'PASS' : 'FAIL', 'row: ' + ((t11.match(/QA ACT E11 call[\s\S]{0,60}/) || [''])[0]).replace(/\n/g, ' / '));
+} catch (e) { rec('script-error', 'BLOCKED', String(e.message).slice(0, 300)); await shot('a3-error'); }
+return fin(); })(page);
+```
+### Page
+- Page URL: https://staging-desk.taviportal.com/activities
+- Page Title: Desk
+### Events
+- New console entries: .playwright-cli\console-2026-10-26T08-23-27-170Z.log#L54-L63

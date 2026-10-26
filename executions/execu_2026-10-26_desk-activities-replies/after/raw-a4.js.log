@@ -1,0 +1,120 @@
+### Result
+"{\"R\":[{\"id\":\"ACT-E6c\",\"verdict\":\"PASS\",\"note\":\"without missed log: start now 2026-10-27T08:59:00.000Z net=PATCH /modules/f7e488b5-0232-42fd-811c-1f24356af653/records/25bb54f5-d155-4885-859f-ea4d2c66a7ea {\\\"data\\\":[{\\\"field\\\":\\\"subject\\\",\\\"value\\\":{\\\"kind\\\":\\\"string\\\",\\\"value\\\":\\\"QA ACT E6c call\\\"}},{\\\"field\\\":\\\"call_type\\\",\\\"value\\\":{\\\"kind\\\":\\\"string\\\",\\\"value\\\":\\\"outbound\\\"}},{\\\"field\\\":\\\"call_start_time\\\",\\\"value\\\":{\\\"kind\\\":\\\"string\\\",\\\"value\\\":\\\"2026-10-27T08:59:00.000Z\\\"}},{\\\"field\\\":\\\"call_status\\\",\\\"value\\\":{\\\"kind\\\":\\\"string\\\",\\\"value\\\":\\\"scheduled\"},{\"id\":\"ACT-E11\",\"verdict\":\"PASS\",\"note\":\"row: QA ACT E11 call / Call / · / #501 / · / 26/10/2026 10:57 / Overdue / scheduled / CE / QA ACT E11 call / Call / · / 26/1\"},{\"id\":\"ACT-B11\",\"verdict\":\"PASS\",\"note\":\"search filters rows\"},{\"id\":\"ACT-F-buttons\",\"verdict\":\"INFO\",\"note\":\"Status: scheduled, Collapse Invitees, Invite, Cancel, Mark as Completed\"},{\"id\":\"ACT-F1\",\"verdict\":\"PASS\",\"note\":\"status=completed\"},{\"id\":\"ACT-F3\",\"verdict\":\"PASS\",\"note\":\"after reopen status=scheduled\"},{\"id\":\"ACT-F2\",\"verdict\":\"PASS\",\"note\":\"dialog=\\\"\\\" status=cancelled\"},{\"id\":\"ACT-F4\",\"verdict\":\"PASS\",\"note\":\"ended event status=scheduled (stays open)\"},{\"id\":\"script-error\",\"verdict\":\"BLOCKED\",\"note\":\"locator.innerText: Timeout 30000ms exceeded.\\nCall log:\\n\\u001b[2m  - waiting for locator('[role=dialog]').last()\\u001b[22m\\n\"}],\"CREATED\":[{\"k\":\"calls\",\"id\":\"25bb54f5-d155-4885-859f-ea4d2c66a7ea\",\"tag\":\"E6c\"},{\"k\":\"calls\",\"id\":\"4960e163-8d98-4baf-8ef5-bb98988e2962\",\"tag\":\"E11\"},{\"k\":\"events\",\"id\":\"d002f85f-2529-4ec9-8cbf-3e48181bba1f\",\"tag\":\"F1 event\"},{\"k\":\"events\",\"id\":\"e7a8d267-24b4-4924-8cd9-5d567f38b453\",\"tag\":\"F4 event past\"},{\"k\":\"tasks\",\"id\":\"3171930d-dc8f-4687-ba11-978efc3293b1\",\"tag\":\"G\"}]}"
+### Ran Playwright code
+```js
+await (async page => { // Shared helpers for every group script. Never put secrets here (run-code may echo code into logs).
+const H = 'https://staging-desk.taviportal.com'; const API = H + '/api/v1';
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_desk-activities-replies';
+const SHOT = RUN + '/evidence/raw';
+const M = { tickets: '88e8ea44-1658-4df3-9930-d0902b91073d', contacts: '43004ce2-577f-4eda-b00a-0750fe40c3d4', accounts: '784400e1-4a2a-42c2-b4f3-7ca56e79828a', products: '95b45992-5beb-4f23-b619-e3ae0e304933', calls: 'f7e488b5-0232-42fd-811c-1f24356af653', events: '6fb19115-9356-40f0-b064-840d8f1fad93', tasks: 'd120a6c2-2596-4254-968b-a1bcd3a000bf', contracts: '0924eb24-e42a-4eab-8efd-e3428f19e882' };
+const TL = '1b55c25d-eb27-4046-afd1-b292398b435b';
+let hdr = null;
+page.on('request', onReq);
+const sleep = ms => page.waitForTimeout(ms);
+const ensureAuth = async () => { if (!hdr) { await page.goto(H + '/hq', { waitUntil: 'domcontentloaded', timeout: 90000 }); for (let i = 0; i < 40 && !hdr; i++) await sleep(500); if (!hdr) throw new Error('SIGNED_OUT: no authorised request on /hq (' + ((await txt()).includes('Sign in') ? 'sign-in page shown' : 'unknown') + ')'); } };
+const api = async (m, p, body, extra) => {
+  await ensureAuth();
+  const doit = () => page.context().request.fetch(API + p, { method: m, headers: { ...hdr, ...(body !== undefined ? { 'content-type': 'application/json' } : {}), ...(extra || {}) }, data: body !== undefined ? (typeof body === 'string' ? body : JSON.stringify(body)) : undefined, failOnStatusCode: false });
+  let r = await doit();
+  if (r.status() === 401) { hdr = null; await page.goto(H + '/hq', { waitUntil: 'domcontentloaded', timeout: 90000 }); await ensureAuth(); r = await doit(); }
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch (e) { }
+  return { s: r.status(), j, t: t.slice(0, 600) };
+};
+const R = []; const rec = (id, verdict, note, extra) => R.push({ id, verdict, note, ...(extra || {}) });
+const go = async (u, w) => { await page.goto(H + u, { waitUntil: 'domcontentloaded', timeout: 90000 }); await sleep(w || 6000); };
+const txt = async () => (await page.innerText('body'));
+const shot = async n => { try { await page.screenshot({ path: SHOT + '/' + n + '.png', timeout: 15000 }); return n + '.png'; } catch (e) { return 'screenshot failed: ' + String(e.message).slice(0, 40); } };
+const arr = x => Array.isArray(x) ? x : (x && (x.items || x.data || x.fields || x.layouts)) || [];
+const step = async (id, fn) => { try { await fn(); } catch (e) { rec(id, 'BLOCKED', 'script error: ' + String(e.message).slice(0, 200)); } try { await page.keyboard.press('Escape'); } catch (e) { } };
+const done = o => { page.off('request', onReq); return JSON.stringify(o === undefined ? R : o); };
+// ---- run-2 helpers (setup via API, checks via UI where the row is about the screen)
+const TS = 'a641f1df-f2c6-450e-a881-857776dacf70';
+const enc = v => v === null ? { kind: 'null' } : typeof v === 'number' ? { kind: 'number', value: v } : typeof v === 'boolean' ? { kind: 'boolean', value: v } : Array.isArray(v) ? { kind: 'array', items: v.map(enc) } : (v && typeof v === 'object') ? { kind: 'object', properties: Object.fromEntries(Object.entries(v).map(([k, x]) => [k, enc(x)])) } : { kind: 'string', value: String(v) };
+const mods = async () => arr((await api('GET', '/modules')).j.data);
+const mkModule = async (key, plural, scope) => { let m = (await mods()).find(x => x.moduleKey === key || x.moduleKey === 'desk_' + key); if (!m) { const r = await api('POST', `/teamspaces/${TS}/modules`, { moduleKey: key, labels: { en: plural }, pluralForm: plural, singularForm: plural + '1', storageScope: scope || 'organization' }); m = r.j && r.j.data; } return m; };
+const fieldsOf = async mid => arr((await api('GET', `/modules/${mid}/fields`)).j.data);
+const defLayout = async mid => arr((await api('GET', `/modules/${mid}/layouts`)).j.data).find(x => x.isDefault);
+const getLayout = async (mid, lid) => (await api('GET', `/modules/${mid}/layouts/${lid}`)).j.data;
+const initLayout = async (mid) => { const d = await defLayout(mid); const l = await getLayout(mid, d.id); if (l.views && l.views.CREATE && l.views.CREATE.layout && (l.views.CREATE.layout.sections || []).length) return d.id;
+  await go(`/settings/modules-and-fields/${mid}/layouts/${d.id}`, 9000); await page.locator('button', { hasText: 'NEW SECTION' }).last().click(); await sleep(800); await page.getByRole('button', { name: /^Save$/ }).click(); await sleep(4000); return d.id; };
+const addFields = async (mid, defs) => { const have = new Set((await fieldsOf(mid)).map(f => f.fieldName)); const nw = defs.filter(d => !have.has(d.fieldName)).map(d => ({ labels: { en: 'QA MF ' + d.fieldName.replace(/^qa_/, '') }, required: false, unique: false, uniquePeerModuleIds: [], ...d })); return nw.length ? await api('POST', `/modules/${mid}/fields`, { fields: nw }) : { s: 'exists' }; };
+const placeOnLayout = async (mid, lid, names, cfg) => { cfg = cfg || {}; const lay = await getLayout(mid, lid); const F = (await fieldsOf(mid)).filter(f => names.includes(f.fieldName));
+  for (const v of ['CREATE', 'QUICK_CREATE', 'DETAIL']) { const ss = lay.views[v] && lay.views[v].layout && lay.views[v].layout.sections; if (!ss || !ss[0]) continue; const col = ss[0].columns[ss[0].columns.length - 1]; const have = new Set(ss.flatMap(s => s.columns.flatMap(c => c.fields.map(f => f.id))));
+    for (const f of F) if (!have.has(f.id)) col.fields.push(JSON.parse(JSON.stringify(f)));
+    for (const s of ss) for (const c of s.columns) for (const e of c.fields) if (cfg[e.fieldName]) e.config = { ...(e.config || {}), ...cfg[e.fieldName] }; }
+  const b = { ...lay }; delete b.id; return await api('PUT', `/modules/${mid}/layouts/${lid}`, b); };
+const mkRec = async (mid, vals, lid) => { const r = await api('POST', `/modules/${mid}/records`, { data: Object.entries(vals).map(([k, v]) => ({ field: k, value: enc(v) })), ...(lid ? { layout_id: lid } : {}) }); return { s: r.s, id: r.j && r.j.data && r.j.data.id, err: ((r.j && r.j.error && (r.j.error.code + ' ' + r.j.error.message)) || '').slice(0, 160), j: r.j }; };
+const getRec = async (mid, id) => { const g = (await api('GET', `/modules/${mid}/records/${id}`)).j; const d = (g && g.data && g.data.data) || []; const o = {}; for (const x of d) o[x.field] = x.value; return o; };
+const val = v => !v ? undefined : v.kind === 'array' ? (v.items || []).map(val) : v.kind === 'object' ? v.properties : v.value;
+const fieldMenu = async label => { const c = page.getByText(label, { exact: true }); const n = await c.count(); let lab = null;
+  for (let i = 0; i < n; i++) { const bb = await c.nth(i).boundingBox().catch(() => null); if (bb && bb.x > 340) { await c.nth(i).scrollIntoViewIfNeeded(); await c.nth(i).hover(); lab = await c.nth(i).boundingBox(); break; } }
+  if (!lab) throw new Error('label not on canvas: ' + label); await sleep(600);
+  const btns = page.locator('[title="Field options"], [aria-label="Field options"]'); const bn = await btns.count(); let best = null, bd = 1e9;
+  for (let i = 0; i < bn; i++) { const bb = await btns.nth(i).boundingBox().catch(() => null); if (!bb) continue; const dy = Math.abs((bb.y + bb.height / 2) - (lab.y + lab.height / 2)); if (bb.x > lab.x && dy < 30 && bb.x - lab.x < 1100 && dy < bd) { bd = dy; best = btns.nth(i); } }
+  if (!best) throw new Error('no field options for ' + label); await best.click(); await sleep(700); };
+const props = async tab => { await page.getByText('Edit Properties', { exact: true }).first().click(); await sleep(1500); if (tab) { await page.getByText(tab, { exact: true }).first().click(); await sleep(1000); } };
+const builder = async (mid, lid) => { await go(`/settings/modules-and-fields/${mid}/layouts/${lid}`, 10000); };
+const cap = []; const capOn = () => { const f = r => { const u = r.url(); if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(r.method()) && u.includes('/api/v1/') && !/heartbeat|resolved-batch|presence|\/iam\/auth/.test(u)) cap.push(r.method() + ' ' + u.replace(API, '') + ' ' + (r.postData() || '').slice(0, 400)); }; page.on('request', f); return () => page.off('request', f); };
+// ---- activities/replies run helpers (26 Oct 2026). Every created id is returned in CREATED so the caller writes the ledger.
+const CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158'; const QA_EMAIL = 'mmohamed@anyware.software'; const QA_CC = 'mahmoud.mmohamedsamy@gmail.com';
+const CREATED = [];
+const fl = r => { const o = { id: r.id }; for (const x of (r.data || [])) o[x.field] = x.value && x.value.kind === 'array' ? (x.value.items || []).map(i => i.value) : (x.value && x.value.value !== undefined ? x.value.value : x.value); return o; };
+const recOf = async (k, id) => { const r = await api('GET', `/modules/${M[k]}/records/${id}`); return { s: r.s, o: r.j && r.j.data ? fl(r.j.data) : null, raw: r }; };
+const mk = async (k, vals, tag) => { const r = await mkRec(M[k], vals); if (r.id) CREATED.push({ k, id: r.id, tag }); return r; };
+const patch = async (k, id, vals) => api('PATCH', `/modules/${M[k]}/records/${id}`, { data: Object.entries(vals).map(([f, v]) => ({ field: f, value: enc(v) })) });
+const iso = ms => new Date(Date.now() + ms).toISOString();
+const H1 = 3600e3, D1 = 86400e3;
+const fin = extra => done({ R, CREATED, ...(extra || {}) });
+// ACT batch 4: E6c reschedule without missed log, E11 overdue badge, events F1-F4, reminders G (UI first, capture shape, then API)
+const TK = 'fa2de237-92ec-4944-8b5a-a05e1e1343e8';
+const btn = n => page.getByRole('button', { name: n, exact: true });
+const net = []; const onR = async r => { const q = r.request(); if (q.method() !== 'GET' && r.url().includes('/api/v1/') && !/heartbeat|presence|summaries|resolved|realtime|iam\//.test(r.url())) net.push(q.method() + ' ' + r.url().replace(API, '') + ' ' + (q.postData() || '').slice(0, 400) + ' -> ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 250)); }; page.on('response', onR);
+const loc = ms => { const d = new Date(Date.now() + ms); const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; };
+try {
+  // E6c
+  const c = (await mk('calls', { subject: 'QA ACT E6c call', call_start_time: iso(H1), call_status: 'scheduled', call_type: 'outbound', ticket_id: TK }, 'E6c')).id;
+  await go(`/modules/${M.calls}/records/${c}`, 8000); await btn('Reschedule').click(); await sleep(1200);
+  const dlg = page.locator('[role=dialog]').last(); await dlg.locator('input[type=datetime-local]').fill(loc(D1)); await dlg.locator('input[type=checkbox]').uncheck({ force: true }).catch(() => {});
+  net.length = 0; await dlg.locator('button').filter({ hasText: /^Reschedule$/ }).click(); await sleep(3500);
+  const o = (await recOf('calls', c)).o; rec('ACT-E6c', Math.abs(new Date(o.call_start_time) - (Date.now() + D1)) < 3 * H1 ? 'PASS' : 'FAIL', 'without missed log: start now ' + o.call_start_time + ' net=' + net.join(' || ').slice(0, 400));
+  // E11 overdue badge (search box by role textbox in the list header)
+  await mk('calls', { subject: 'QA ACT E11 call', call_start_time: iso(-H1), call_status: 'scheduled', call_type: 'outbound' }, 'E11');
+  await go('/activities', 6000); for (let i = 0; i < 30 && !(await txt()).includes('Total Count'); i++) await sleep(1000);
+  await page.getByRole('button', { name: 'Search in this view' }).click().catch(() => {}); await sleep(600);
+  const sb = page.locator('main input[type=search], main input[placeholder*="Search" i]').first(); await sb.fill('QA ACT E11'); await sleep(3500);
+  const t11 = await txt(); rec('ACT-E11', /QA ACT E11 call[\s\S]{0,80}Overdue/.test(t11) ? 'PASS' : 'FAIL', 'row: ' + ((t11.match(/QA ACT E11 call[\s\S]{0,80}/) || ['not found'])[0]).replace(/\n/g, ' / '));
+  rec('ACT-B11', /QA ACT E11/.test(t11) && !/test call from workflow/.test(t11) ? 'PASS' : 'FAIL', 'search filters rows');
+  // Events
+  const ev = async (tag, from, to) => (await mk('events', { title: 'QA ACT ' + tag, from_time: iso(from), to_time: iso(to), status: 'scheduled', ticket_id: TK }, tag)).id;
+  const e1 = await ev('F1 event', D1, D1 + H1); await go(`/modules/${M.events}/records/${e1}`, 8000);
+  const eb = await page.$$eval('main button', bs => [...new Set(bs.map(b => (b.getAttribute('aria-label') || b.innerText).trim()).filter(Boolean))]);
+  rec('ACT-F-buttons', 'INFO', eb.filter(x => /Complete|Cancel|Reopen|Invite|Status/i.test(x)).join(', '));
+  await btn('Mark as Completed').click(); await sleep(3000); let eo = (await recOf('events', e1)).o; rec('ACT-F1', eo.status === 'completed' ? 'PASS' : 'FAIL', 'status=' + eo.status);
+  await btn('Reopen Event').click().catch(() => {}); await sleep(3000); eo = (await recOf('events', e1)).o; rec('ACT-F3', eo.status === 'scheduled' ? 'PASS' : 'FAIL', 'after reopen status=' + eo.status);
+  await btn('Cancel').last().click().catch(() => {}); await sleep(1200); const cd = await page.$$eval('[role=dialog], [role=alertdialog]', ds => ds.map(d => d.innerText.replace(/\s+/g, ' ')).join('|')); if (cd) { await page.locator('[role=dialog] button, [role=alertdialog] button').filter({ hasText: /Cancel event|Confirm|Yes/i }).last().click().catch(() => {}); await sleep(2500); }
+  eo = (await recOf('events', e1)).o; rec('ACT-F2', eo.status === 'cancelled' ? 'PASS' : 'FAIL', 'dialog="' + cd.slice(0, 100) + '" status=' + eo.status);
+  const e4 = await ev('F4 event past', -3 * H1, -2 * H1); const e4o = (await recOf('events', e4)).o; rec('ACT-F4', e4o.status === 'scheduled' ? 'PASS' : 'FAIL', 'ended event status=' + e4o.status + ' (stays open)');
+  // Reminders: UI on a task due +20 min, "5 minutes before", pop-up
+  const t = (await mk('tasks', { subject: 'QA ACT G task', status: 'Not Started', due_date: iso(20 * 60e3) }, 'G')).id;
+  await go(`/modules/${M.tasks}/records/${t}`, 8000); net.length = 0;
+  await btn('Set Reminder').click(); await sleep(1500);
+  const rd = page.locator('[role=dialog]').last(); const rdt = (await rd.innerText()).replace(/\s+/g, ' ');
+  const rds = await shot('ACT-G-dialog');
+  rec('ACT-G-dialog', 'INFO', rdt.slice(0, 500) + ' ' + rds);
+  // try: pick "Before", 5 minutes, pop-up
+  const sel = rd.locator('select'); const ns = await sel.count(); const opts = []; for (let i = 0; i < ns; i++) opts.push(await sel.nth(i).evaluate(s => [...s.options].map(o => o.value + '=' + o.text).join(';')));
+  rec('ACT-G-selects', 'INFO', opts.join(' || '));
+  await rd.getByText('Before', { exact: true }).click().catch(() => {}); await sleep(400);
+  const num = rd.locator('input[type=number]'); if (await num.count()) await num.first().fill('5');
+  await rd.getByText('Pop-up', { exact: true }).click().catch(() => {});
+  await rd.getByRole('button', { name: /^Save$/ }).click().catch(() => {}); await sleep(3000);
+  const rl = await api('GET', `/desk/activities/${t}/reminders`); rec('ACT-G2/G3', rl.s === 200 && /reminders|items|data/.test(rl.t) ? 'INFO' : 'FAIL', 'reminders GET ' + rl.s + ' ' + rl.t.slice(0, 500) + ' | net=' + net.join(' || ').slice(0, 600));
+} catch (e) { rec('script-error', 'BLOCKED', String(e.message).slice(0, 300)); await shot('a4-error'); }
+page.off('response', onR);
+return fin(); })(page);
+```
+### Page
+- Page URL: https://staging-desk.taviportal.com/modules/d120a6c2-2596-4254-968b-a1bcd3a000bf/records/3171930d-dc8f-4687-ba11-978efc3293b1
+- Page Title: Desk
+### Events
+- New console entries: .playwright-cli\console-2026-10-26T08-23-27-170Z.log#L68

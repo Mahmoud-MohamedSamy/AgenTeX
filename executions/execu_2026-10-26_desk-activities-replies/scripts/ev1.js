@@ -1,0 +1,22 @@
+// Evidence A-B1 on the new build: reschedule with missed-call log, screenshot right after confirming (toast visible), then delete the QA call
+await page.setViewportSize({ width: 1600, height: 900 });
+const net = []; page.on('response', async r => { const q = r.request(); if (q.method() !== 'GET' && r.url().includes('/records')) net.push(q.method() + ' ' + r.url().replace(API, '') + ' ' + (q.postData() || '').slice(0, 500) + ' -> ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 300)); });
+const id = (await mk('calls', { subject: 'QA ACT EV A-B1', call_start_time: iso(H1), call_status: 'scheduled', call_type: 'outbound' }, 'ev')).id;
+await go(`/modules/${M.calls}/records/${id}`, 9000);
+await page.getByRole('button', { name: 'Reschedule', exact: true }).click(); await sleep(1500);
+const dlg = page.locator('[role=dialog]').last();
+const d = new Date(Date.now() + D1); const p = n => String(n).padStart(2, '0');
+await dlg.locator('input[type=datetime-local]').fill(`${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T10:00`);
+await dlg.locator('input[type=checkbox]').check({ force: true });
+await dlg.locator('button').filter({ hasText: /^Reschedule$/ }).click();
+await page.locator('[data-sonner-toast]').first().waitFor({ timeout: 15000 }).catch(() => {});
+await sleep(4000);
+const s = await shot('ev-A-B1-tavi');
+const boxes = await page.evaluate(() => { const r = e => { if (!e) return null; const b = e.getBoundingClientRect(); return [Math.round(b.left), Math.round(b.top), Math.round(b.right), Math.round(b.bottom)]; };
+  const cb = document.querySelector('[role=dialog] input[type=checkbox]'); const lab = cb && cb.closest('label');
+  const toast = document.querySelector('[data-sonner-toast]');
+  const st = [...document.querySelectorAll('*')].find(e => e.children.length === 0 && /^Start Time$/.test((e.textContent || '').trim()));
+  return { cb: r(lab || cb), toast: r(toast), toastText: toast && toast.textContent, start: st ? r(st.parentElement) : null }; });
+const after = (await recOf('calls', id)).o.call_start_time;
+await api('DELETE', `/modules/${M.calls}/records/${id}`);
+return JSON.stringify({ s, boxes, after, net });

@@ -1,0 +1,121 @@
+{
+ "out": "A-B1-vs-zoho.png",
+ "ticket": "A-B1",
+ "label": "BUG",
+ "verdict": "FAIL",
+ "env": "staging-desk.taviportal.com (build index-7qe5X0Gd.js, agent fedelav803) vs Zoho Desk portal taviportal (read-only)",
+ "date": "26 Oct 2026",
+ "title": "Activities | Rescheduling a call with \"log a missed call\" fails: \"One or more fields in the payload are read-only.\"",
+ "panels": [
+  {
+   "img": "ev-A-B1-tavi.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "TAVI — scheduled call \"QA ACT EV A-B1\" (start 26/10 15:20): Reschedule to 27/10 10:00 with \"The call went unanswered — log a missed call\" ticked, then Reschedule. The call keeps 15:20 and no missed call appears.",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      562,
+      460,
+      1038,
+      522
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      280,
+      586,
+      540,
+      640
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "img": "zoho-add-calls.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Zoho — Calls › Add Call (live, opened and cancelled): call statuses and Start Time / Duration. Our Zoho org has no calls, so rescheduling was not tried live; the behaviour comes from the Calls help article.",
+   "crop": [
+    0,
+    100,
+    960,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      62,
+      340,
+      440,
+      392
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      62,
+      422,
+      724,
+      474
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "img": "card-A-B1.png",
+   "w": 1600,
+   "h": 477,
+   "caption": "TAVI — the request the dialog sends and the server answer (captured in the browser).",
+   "crop": [
+    0,
+    0,
+    1600,
+    477
+   ],
+   "boxes": [
+    {
+     "b": [
+      20,
+      96,
+      1580,
+      300
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Reschedule an unanswered call and log the missed attempt",
+   "Help docs (Calls article): if a scheduled call is unanswered you can reschedule it; a missed-call activity is logged and the call moves to the new time. Not tried live: our Zoho org has no calls.",
+   "The dialog offers exactly this option (\"A missed-call entry is kept for this attempt; the call itself moves to the new time\").",
+   "SAME"
+  ],
+  [
+   2,
+   "Result of confirming",
+   "Missed call logged, call moved.",
+   "The dialog sends a missed-call record that includes read-only fields (approval_status, created_at); the server refuses it with 422 FIELD_PERMISSION_DENIED \"One or more fields in the payload are read-only.\" (shown as an error toast).",
+   "BUG"
+  ],
+  [
+   3,
+   "Call start time afterwards",
+   "New date and time.",
+   "Unchanged (26/10/2026 15:20) and no missed call logged. The same dialog without the tick moves the call.",
+   "BUG"
+  ]
+ ]
+}

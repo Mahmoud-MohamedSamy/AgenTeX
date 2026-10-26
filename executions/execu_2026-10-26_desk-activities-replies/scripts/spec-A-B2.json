@@ -1,0 +1,144 @@
+{
+ "out": "A-B2-vs-zoho.png",
+ "ticket": "A-B2",
+ "label": "BUG",
+ "verdict": "FAIL",
+ "env": "staging-desk.taviportal.com (build index-7qe5X0Gd.js, agent fedelav803) vs Zoho Desk portal taviportal (read-only)",
+ "date": "26 Oct 2026",
+ "title": "Activities | A task saved without a status has no status and never shows in Open, My Open or Overdue",
+ "panels": [
+  {
+   "img": "ev-A-B2-addtask.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "TAVI — Add Task drawer: Status starts empty (\"Select\"); Save is allowed without it.",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      1116,
+      545,
+      1584,
+      606
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "zoho-add-tasks.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "Zoho — Tasks › Add Task (live, opened and cancelled): Status starts as \"Not Started\".",
+   "crop": [
+    0,
+    100,
+    960,
+    620
+   ],
+   "boxes": [
+    {
+     "b": [
+      452,
+      432,
+      724,
+      490
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "ev-A-B2-view-open.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "TAVI — Tasks › Open, search \"QA ACT EV\": only the task with status Not Started (1). The overdue task saved without status is missing.",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      304,
+      62,
+      405,
+      106
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      272,
+      118,
+      1592,
+      178
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "ev-A-B2-view-all.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "TAVI — Tasks › All Tasks, same search: both tasks exist (2).",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      304,
+      62,
+      436,
+      106
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      272,
+      118,
+      1592,
+      250
+     ],
+     "n": 3
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Status of a new task",
+   "Defaults to \"Not Started\".",
+   "No default; the task is saved with no status at all (API create without status: status = null).",
+   "BUG"
+  ],
+  [
+   2,
+   "Open / My Open / Overdue views",
+   "Help docs: Open and Overdue views list every open task (not checked live: our Zoho org has no tasks).",
+   "The task without status is in none of them, so it is invisible in every working view.",
+   "BUG"
+  ],
+  [
+   3,
+   "All Tasks",
+   "Help docs: All Tasks lists it.",
+   "Listed — the task exists.",
+   "SAME"
+  ]
+ ]
+}

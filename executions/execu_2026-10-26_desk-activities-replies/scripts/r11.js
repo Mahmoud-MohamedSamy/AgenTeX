@@ -1,0 +1,10 @@
+const tk = '60e81b1b-e8ae-4a5d-aad9-70b69d9624b9';
+const net = []; const onR = async r => { const q = r.request(); if (q.method() === 'POST' && /replies/.test(r.url())) net.push({ body: (q.postData() || '').replace(/<!--desk-quote-->[\s\S]*$/, '…').slice(0, 300), status: r.status(), resp: (await r.text().catch(() => '')).slice(0, 300) }); }; page.on('response', onR);
+await go(`/modules/${M.tickets}/records/${tk}`, 9000); await page.locator('main button').filter({ hasText: /^Reply/ }).first().click(); await sleep(4000);
+const ed = page.locator('[aria-label="Reply body"]'); await ed.click(); await page.keyboard.press('Control+Home'); await page.keyboard.type('QA RPL F3c private. '); await sleep(600);
+await page.locator('button[aria-label="More send options"]').last().click(); await sleep(1000);
+const items = await page.$$eval('[role=menuitem], [role=menuitemcheckbox], [role=menuitemradio]', ms => ms.map(m => (m.textContent || '').trim() + '|' + m.getAttribute('role') + '|' + (m.getAttribute('aria-checked') || '')));
+const it = page.getByRole('menuitem', { name: 'Send as private' }).or(page.getByRole('menuitemcheckbox', { name: 'Send as private' })); await it.first().click(); await sleep(3000);
+const after1 = { net: net.length, buttons: await page.$$eval('main button', bs => bs.map(b => b.innerText.trim()).filter(t => /Send|Private/i.test(t))), dialog: await page.$$eval('[role=dialog], [role=alertdialog]', ds => ds.map(d => d.innerText.replace(/\s+/g, ' ')).join('|')) };
+const s1 = await shot('RPL-F3-after-menu');
+return JSON.stringify({ items, after1, net, s1 });

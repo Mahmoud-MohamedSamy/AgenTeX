@@ -1,0 +1,21 @@
+// E6 re-check: reschedule a scheduled call with "log a missed call" ticked; capture request/response
+const TK = 'fa2de237-92ec-4944-8b5a-a05e1e1343e8';
+const r0 = await mk('calls', { subject: 'QA ACT E6b call', call_start_time: iso(H1), call_status: 'scheduled', call_type: 'outbound', ticket_id: TK }, 'E6b'); const id = r0.id;
+const before = (await recOf('calls', id)).o;
+const net = []; page.on('response', async r => { const q = r.request(); if (q.method() !== 'GET' && r.url().includes('/api/v1/') && !/heartbeat|presence|summaries|resolved|realtime|iam\//.test(r.url())) net.push(q.method() + ' ' + r.url().replace(API, '') + ' ' + (q.postData() || '').slice(0, 300) + ' -> ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 200)); });
+await go(`/modules/${M.calls}/records/${id}`, 9000);
+await page.getByRole('button', { name: 'Reschedule', exact: true }).click(); await sleep(1500);
+const dlg = page.locator('[role=dialog]').last();
+const inputs = await dlg.locator('input').evaluateAll(es => es.map(e => e.type + ':' + e.value));
+const dt = new Date(Date.now() + 86400e3); const pad = n => String(n).padStart(2, '0'); const loc = `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}T10:00`;
+await dlg.locator('input[type=datetime-local]').first().fill(loc); await sleep(300);
+const cb = dlg.locator('input[type=checkbox]'); const cbn = await cb.count(); if (cbn) await cb.first().check({ force: true });
+const filled = await dlg.locator('input').evaluateAll(es => es.map(e => e.type + ':' + (e.type === 'checkbox' ? e.checked : e.value)));
+const s1 = await shot('ACT-E6-dialog');
+const buttons = await dlg.locator('button').evaluateAll(bs => bs.map(b => b.innerText.trim() + (b.disabled ? '(disabled)' : '')));
+await dlg.locator('button').filter({ hasText: /^Reschedule$/ }).last().click(); await sleep(4000);
+const after = (await recOf('calls', id)).o; const s2 = await shot('ACT-E6-after');
+const L = await api('GET', `/modules/${M.calls}/records?page=1&per_page=40&sort_by=created_at&sort_dir=desc`); const recent = ((L.j.data.records || L.j.data.items || L.j.data) || []).map(fl).filter(x => x.id !== id && /E6b/.test(x.subject || ''));
+for (const m of recent) CREATED.push({ k: 'calls', id: m.id, tag: 'E6b-log' });
+rec('ACT-E6b', 'INFO', JSON.stringify({ before: before.call_start_time, inputs, filled, buttons, after: { st: after.call_status, start: after.call_start_time }, logs: recent.map(m => m.subject + '/' + m.call_status), net, s1, s2 }));
+return fin();

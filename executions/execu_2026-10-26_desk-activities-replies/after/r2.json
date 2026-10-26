@@ -1,0 +1,52 @@
+{
+ "R": [
+  {
+   "id": "RPL-C9",
+   "verdict": "PASS",
+   "note": "{\"to a@b\":\"400 VALIDATION_ERROR Enter an email address like name@example.com. The part before the @ can have up to 64 characters, with \",\"to \\\"a b@c.com\\\"\":\"400 VALIDATION_ERROR Enter an email address like name@example.com. The part before the @ can have up to 64 characters, with \",\"to empty\":\"400 VALIDATION_ERROR At least one recipient is required.\",\"dup To+Cc\":\"201 SENT sent\",\"cc 21 invalid-domain\":\"422 UNPROCESSABLE This reply would go to 22 addresses and the limit is 20. Remove some recipients, or take an address off th\"}"
+  },
+  {
+   "id": "RPL-C10",
+   "verdict": "PASS",
+   "note": "{\"D1\":\"400 VALIDATION_ERROR Reply body is required.\",\"D2\":\"400 VALIDATION_ERROR Reply body is required.\",\"D3\":\"400 VALIDATION_ERROR Reply body is required.\",\"D3b <p><br></p>\":\"400 VALIDATION_ERROR Reply body is required.\",\"D4_100k\":\"400 VALIDATION_ERROR Reply body must be 65535 characters or fewer.\"}"
+  },
+  {
+   "id": "RPL-L1",
+   "verdict": "PASS",
+   "note": "201 SENT sent stored body: <p>QA RPL xss</p><img src=\"x\"><a>click</a>"
+  },
+  {
+   "id": "RPL-C11-api",
+   "verdict": "INFO",
+   "note": "two identical POSTs at once -> 2 replies (UI guards the button; API has no idempotency key — cf. NDC-2612 for omnichannel)"
+  },
+  {
+   "id": "RPL-M2",
+   "verdict": "PASS",
+   "note": "{\"to as string\":\"400 VALIDATION_ERROR to has a value of the wrong type.\",\"no body\":\"400 VALIDATION_ERROR Subject is required.\",\"mode bad\":\"400 VALIDATION_ERROR Mode must be one of reply, reply_all, forward.\",\"unknown field\":\"201 SENT sent\"}"
+  },
+  {
+   "id": "RPL-M3",
+   "verdict": "INFO",
+   "note": "random ticket -> 404 NOT_FOUND Ticket 00000000-0000-0000-0000-000000000000 was not found."
+  },
+  {
+   "id": "RPL-A5",
+   "verdict": "PASS",
+   "note": "no bearer -> 401"
+  },
+  {
+   "id": "RPL-I5",
+   "verdict": "PASS",
+   "note": "activity feed actions: reply.sent, reply.queued, ticket.created, ticket.department_changed"
+  }
+ ],
+ "CREATED": [
+  {
+   "k": "tickets",
+   "id": "3bd2c641-de5c-4360-844b-eea9430922b7",
+   "tag": "rpl-ticket-2"
+  }
+ ],
+ "tk": "3bd2c641-de5c-4360-844b-eea9430922b7"
+}
