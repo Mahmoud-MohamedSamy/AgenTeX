@@ -1,0 +1,1586 @@
+{
+ "taken": "2026-11-01",
+ "host": "https://staging-desk.taviportal.com",
+ "org": "Anyware",
+ "ticketsModule": "e8e5e302-3873-4e32-b945-c9cd25c7659d",
+ "blueprints": [
+  {
+   "id": "d47c2195-6eb5-4c81-847d-afe20a4028eb",
+   "moduleId": "e8e5e302-3873-4e32-b945-c9cd25c7659d",
+   "isActive": true,
+   "definition": {
+    "id": "d47c2195-6eb5-4c81-847d-afe20a4028eb",
+    "name": "Demo · Refund approval",
+    "states": [
+     {
+      "id": "Open",
+      "name": "Open",
+      "position": {
+       "x": 0,
+       "y": 260
+      },
+      "slaClock": "business",
+      "slaMinutes": 120
+     },
+     {
+      "id": "Escalated",
+      "name": "Escalated",
+      "position": {
+       "x": 420,
+       "y": 260
+      },
+      "slaClock": "business",
+      "slaMinutes": 480,
+      "slaPreExpiryMinutes": 60
+     },
+     {
+      "id": "On Hold",
+      "name": "On Hold",
+      "position": {
+       "x": 860,
+       "y": 40
+      },
+      "slaClock": "business",
+      "autoTransitionId": "auto-close",
+      "onReplyTransitionId": "customer-replied",
+      "autoTransitionAfterMinutes": 4320
+     },
+     {
+      "id": "Closed",
+      "name": "Closed",
+      "position": {
+       "x": 860,
+       "y": 520
+      },
+      "slaClock": "business",
+      "isTerminal": true
+     }
+    ],
+    "moduleKey": "desk_tickets",
+    "description": "A refund request needs a manager before money goes back. Shows checklists, a required field, a mandatory internal comment, SLAs on business hours, a customer-reply trigger, an auto-close timer and a Cancel transition available from every state.",
+    "targetField": "status",
+    "transitions": [
+     {
+      "id": "request-approval",
+      "name": "Request manager approval",
+      "after": {
+       "actions": []
+      },
+      "color": "#2563eb",
+      "before": {},
+      "during": {
+       "checklist": [
+        {
+         "id": "order-verified",
+         "label": "Order and payment verified",
+         "mandatory": true
+        },
+        {
+         "id": "policy-checked",
+         "label": "Refund is inside the 30-day policy",
+         "mandatory": true
+        }
+       ],
+       "deskItems": [
+        {
+         "kind": "comment",
+         "mandatory": true
+        }
+       ],
+       "requiredFields": [
+        {
+         "name": "priority",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        }
+       ],
+       "instructionalMessage": "Check the order and the refund policy before asking a manager.",
+       "messages": [
+        {
+         "id": "instructions",
+         "text": "Check the order and the refund policy before asking a manager."
+        }
+       ]
+      },
+      "toStateId": "Escalated",
+      "fromStateId": "Open"
+     },
+     {
+      "id": "ask-documents",
+      "name": "Ask customer for documents",
+      "after": {
+       "actions": []
+      },
+      "color": "#d97706",
+      "before": {},
+      "during": {
+       "deskItems": [
+        {
+         "kind": "reply",
+         "mandatory": true
+        }
+       ]
+      },
+      "toStateId": "On Hold",
+      "fromStateId": "Escalated"
+     },
+     {
+      "id": "customer-replied",
+      "name": "Customer replied",
+      "after": {
+       "actions": []
+      },
+      "before": {},
+      "during": {},
+      "toStateId": "Escalated",
+      "fromStateId": "On Hold"
+     },
+     {
+      "id": "auto-close",
+      "name": "Close after 3 days without an answer",
+      "after": {
+       "actions": []
+      },
+      "before": {},
+      "during": {},
+      "toStateId": "Closed",
+      "fromStateId": "On Hold"
+     },
+     {
+      "id": "approve-refund",
+      "name": "Approve refund",
+      "after": {
+       "actions": []
+      },
+      "color": "#16a34a",
+      "before": {},
+      "during": {
+       "checklist": [
+        {
+         "id": "refund-issued",
+         "label": "Refund issued in the payment system",
+         "mandatory": true
+        }
+       ],
+       "deskItems": [
+        {
+         "kind": "resolution",
+         "mandatory": true
+        }
+       ]
+      },
+      "toStateId": "Closed",
+      "fromStateId": "Escalated"
+     },
+     {
+      "id": "reject-refund",
+      "name": "Reject refund",
+      "after": {
+       "actions": []
+      },
+      "color": "#dc2626",
+      "before": {},
+      "during": {
+       "deskItems": [
+        {
+         "kind": "comment",
+         "mandatory": true
+        }
+       ]
+      },
+      "toStateId": "Closed",
+      "fromStateId": "Escalated"
+     },
+     {
+      "id": "cancel",
+      "name": "Cancel request",
+      "after": {
+       "actions": []
+      },
+      "before": {},
+      "during": {
+       "deskItems": [
+        {
+         "kind": "comment",
+         "mandatory": true
+        }
+       ]
+      },
+      "isCommon": true,
+      "toStateId": "Closed",
+      "fromStateId": "Open"
+     }
+    ],
+    "departmentId": "369b76d3-eef4-4698-97db-be0c47e61ec5",
+    "entryCriteria": {
+     "op": "contains",
+     "field": "subject",
+     "value": "[Demo Refund]"
+    }
+   },
+   "createdAt": "2026-10-30T16:51:27.076256+00:00",
+   "updatedAt": "2026-10-30T16:51:27.390896+00:00",
+   "sortOrder": null,
+   "hasDraft": false,
+   "draftVersion": null,
+   "department_id": "369b76d3-eef4-4698-97db-be0c47e61ec5",
+   "in_progress_count": 2
+  },
+  {
+   "id": "9600b602-810d-4be5-be8e-ac06060981c4",
+   "moduleId": "e8e5e302-3873-4e32-b945-c9cd25c7659d",
+   "isActive": true,
+   "definition": {
+    "id": "9600b602-810d-4be5-be8e-ac06060981c4",
+    "name": "Demo · Hardware RMA",
+    "states": [
+     {
+      "id": "Open",
+      "name": "Open",
+      "position": {
+       "x": 0,
+       "y": 260
+      },
+      "slaClock": "calendar",
+      "slaMinutes": 60
+     },
+     {
+      "id": "Escalated",
+      "name": "Escalated",
+      "position": {
+       "x": 420,
+       "y": 260
+      },
+      "slaClock": "business",
+      "slaMinutes": 1440
+     },
+     {
+      "id": "On Hold",
+      "name": "On Hold",
+      "position": {
+       "x": 860,
+       "y": 40
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "Closed",
+      "name": "Closed",
+      "position": {
+       "x": 860,
+       "y": 520
+      },
+      "slaClock": "business",
+      "isTerminal": true
+     }
+    ],
+    "moduleKey": "desk_tickets",
+    "description": "Call Center takes the request and Tech Support repairs. Shows transitions owned by another department, which shares the ticket with it at the owner's access while the ticket waits.",
+    "targetField": "status",
+    "transitions": [
+     {
+      "id": "send-to-tech",
+      "name": "Send to Tech Support",
+      "after": {
+       "actions": []
+      },
+      "color": "#7c3aed",
+      "before": {
+       "allowOwner": true,
+       "allowedUserIds": [
+        "7017d261-36ee-4e2f-9e60-2310ece52ef8"
+       ]
+      },
+      "during": {
+       "checklist": [
+        {
+         "id": "serial",
+         "label": "Serial number recorded",
+         "mandatory": true
+        }
+       ],
+       "requiredFields": [
+        {
+         "name": "priority",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        }
+       ]
+      },
+      "toStateId": "Escalated",
+      "fromStateId": "Open"
+     },
+     {
+      "id": "parts-ordered",
+      "name": "Parts ordered",
+      "after": {
+       "actions": []
+      },
+      "before": {
+       "allowedUserIds": [
+        "7017d261-36ee-4e2f-9e60-2310ece52ef8"
+       ],
+       "departmentOwners": [
+        {
+         "access": "full",
+         "teamIds": [],
+         "userIds": [
+          "7017d261-36ee-4e2f-9e60-2310ece52ef8"
+         ],
+         "departmentId": "369b76d3-eef4-4698-97db-be0c47e61ec5"
+        }
+       ]
+      },
+      "during": {
+       "deskItems": [
+        {
+         "kind": "comment",
+         "mandatory": true
+        }
+       ]
+      },
+      "toStateId": "On Hold",
+      "fromStateId": "Escalated"
+     },
+     {
+      "id": "parts-arrived",
+      "name": "Parts arrived",
+      "after": {
+       "actions": []
+      },
+      "before": {
+       "allowedUserIds": [
+        "7017d261-36ee-4e2f-9e60-2310ece52ef8"
+       ],
+       "departmentOwners": [
+        {
+         "access": "full",
+         "teamIds": [],
+         "userIds": [
+          "7017d261-36ee-4e2f-9e60-2310ece52ef8"
+         ],
+         "departmentId": "369b76d3-eef4-4698-97db-be0c47e61ec5"
+        }
+       ]
+      },
+      "during": {},
+      "toStateId": "Escalated",
+      "fromStateId": "On Hold"
+     },
+     {
+      "id": "repair-complete",
+      "name": "Repair complete",
+      "after": {
+       "actions": []
+      },
+      "color": "#16a34a",
+      "before": {
+       "allowedUserIds": [
+        "7017d261-36ee-4e2f-9e60-2310ece52ef8"
+       ],
+       "departmentOwners": [
+        {
+         "access": "read_only",
+         "teamIds": [],
+         "userIds": [
+          "7017d261-36ee-4e2f-9e60-2310ece52ef8"
+         ],
+         "departmentId": "369b76d3-eef4-4698-97db-be0c47e61ec5"
+        }
+       ]
+      },
+      "during": {
+       "checklist": [
+        {
+         "id": "tested",
+         "label": "Device tested after repair",
+         "mandatory": true
+        }
+       ]
+      },
+      "toStateId": "Closed",
+      "fromStateId": "Escalated"
+     }
+    ],
+    "departmentId": "94a3c8e6-8ad1-4251-ab5d-a5a0e99fd996",
+    "entryCriteria": {
+     "op": "contains",
+     "field": "subject",
+     "value": "[Demo RMA]"
+    }
+   },
+   "createdAt": "2026-10-30T16:51:27.718947+00:00",
+   "updatedAt": "2026-10-30T16:51:28.040609+00:00",
+   "sortOrder": null,
+   "hasDraft": false,
+   "draftVersion": null,
+   "department_id": "94a3c8e6-8ad1-4251-ab5d-a5a0e99fd996",
+   "in_progress_count": 2
+  },
+  {
+   "id": "b4cb111b-8d9f-4234-a766-004df7a6042b",
+   "moduleId": "e8e5e302-3873-4e32-b945-c9cd25c7659d",
+   "isActive": false,
+   "definition": {
+    "id": "b4cb111b-8d9f-4234-a766-004df7a6042b",
+    "name": "Demo · Onboarding (inactive)",
+    "states": [
+     {
+      "id": "Open",
+      "name": "Open",
+      "position": {
+       "x": 0,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "Escalated",
+      "name": "Escalated",
+      "position": {
+       "x": 420,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "Closed",
+      "name": "Closed",
+      "position": {
+       "x": 840,
+       "y": 200
+      },
+      "slaClock": "business",
+      "isTerminal": true
+     }
+    ],
+    "moduleKey": "desk_tickets",
+    "description": "An inactive blueprint: saved and listed, but no ticket enters it until someone switches it on.",
+    "targetField": "status",
+    "transitions": [
+     {
+      "id": "kickoff",
+      "name": "Kick-off call done",
+      "after": {
+       "actions": []
+      },
+      "before": {},
+      "during": {
+       "checklist": [
+        {
+         "id": "call",
+         "label": "Kick-off call held",
+         "mandatory": true
+        }
+       ]
+      },
+      "toStateId": "Escalated",
+      "fromStateId": "Open"
+     },
+     {
+      "id": "live",
+      "name": "Customer is live",
+      "after": {
+       "actions": []
+      },
+      "before": {},
+      "during": {},
+      "toStateId": "Closed",
+      "fromStateId": "Escalated"
+     }
+    ],
+    "departmentId": "f6cf3a84-fc16-4e33-a671-3fcb26bc1422",
+    "entryCriteria": {
+     "op": "contains",
+     "field": "subject",
+     "value": "[Demo Onboarding]"
+    }
+   },
+   "createdAt": "2026-10-30T16:51:28.43054+00:00",
+   "updatedAt": "2026-10-30T16:51:28.814529+00:00",
+   "sortOrder": null,
+   "hasDraft": false,
+   "draftVersion": null,
+   "department_id": "f6cf3a84-fc16-4e33-a671-3fcb26bc1422",
+   "in_progress_count": 0
+  },
+  {
+   "id": "9f6e4f1b-1463-46fb-8fef-9b091bf9db3f",
+   "moduleId": "e8e5e302-3873-4e32-b945-c9cd25c7659d",
+   "isActive": false,
+   "definition": {
+    "id": "9f6e4f1b-1463-46fb-8fef-9b091bf9db3f",
+    "name": "Test Blueprint",
+    "states": [
+     {
+      "id": "Open",
+      "name": "Open",
+      "position": {
+       "x": 80,
+       "y": 80
+      },
+      "slaClock": "business",
+      "isTerminal": false
+     },
+     {
+      "id": "On Hold",
+      "name": "On Hold",
+      "position": {
+       "x": 325,
+       "y": -74
+      },
+      "slaClock": "calendar",
+      "isTerminal": false,
+      "slaMinutes": 3,
+      "slaEscalation": [
+       {
+        "body": "Your ticket has escalated",
+        "kind": "sendNotification",
+        "title": "Ticket Escalation",
+        "notifyOwner": true
+       }
+      ],
+      "autoTransitionId": "t_mvxpanpb_1",
+      "onReplyTransitionId": "t_mvxrk20q_1",
+      "slaPreExpiryMinutes": 1,
+      "onRatingTransitionId": "t_mvxrk20q_1",
+      "slaPreExpiryEscalation": [
+       {
+        "kind": "deskEmail",
+        "owner": true,
+        "contact": true,
+        "teamIds": [],
+        "userIds": [],
+        "templateId": "3218ebe9-2d1d-4692-8729-fd52bbf12592",
+        "roleTreeIds": []
+       },
+       {
+        "body": "Your ticket is about to escalate",
+        "kind": "sendNotification",
+        "title": "Ticket Escalation Warning",
+        "notifyOwner": true
+       }
+      ],
+      "autoTransitionAfterMinutes": 3
+     },
+     {
+      "id": "Escalated",
+      "name": "Escalated",
+      "position": {
+       "x": 678.2744160985782,
+       "y": 4.025581558788389
+      },
+      "slaClock": "business",
+      "isTerminal": false
+     },
+     {
+      "id": "Closed",
+      "name": "Closed",
+      "position": {
+       "x": 571.1433593610643,
+       "y": 195.14830858027068
+      },
+      "slaClock": "business",
+      "isTerminal": true,
+      "onRatingTransitionId": null
+     },
+     {
+      "id": "Reopened",
+      "name": "Reopened",
+      "position": {
+       "x": 294.3674129562336,
+       "y": 207.79178335814538
+      },
+      "slaClock": "business",
+      "isTerminal": false
+     }
+    ],
+    "layoutId": "d1d2bc76-70d4-4dda-a33c-d6b684cd0099",
+    "moduleKey": "desk_tickets",
+    "continuous": true,
+    "layoutName": "Standard",
+    "description": "",
+    "targetField": "status",
+    "transitions": [
+     {
+      "id": "t_mvxpan94_0",
+      "name": "Open To On Hold",
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "description",
+         "value": "OpenToOnHold"
+        },
+        {
+         "via": "contact_id",
+         "kind": "setField",
+         "field": "facebook",
+         "value": "https://www.facebook.com"
+        },
+        {
+         "body": "test body => OpenToOnHold",
+         "kind": "sendNotification",
+         "title": "test notification => OpenToOnHold",
+         "notifyOwner": true
+        },
+        {
+         "kind": "createTask",
+         "fields": {
+          "status": "In Progress",
+          "subject": "test task => OpenToOnHold",
+          "category": "email",
+          "due_date": "2026-11-02T13:30",
+          "priority": "normal"
+         },
+         "targetModuleKey": "desk_tasks"
+        },
+        {
+         "kind": "deskEmail",
+         "owner": true,
+         "contact": true,
+         "teamIds": [],
+         "userIds": [],
+         "templateId": "066527f6-9e64-44f7-bf15-d2d0da050ca3",
+         "roleTreeIds": []
+        }
+       ]
+      },
+      "color": "#2563eb",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {
+       "messages": [
+        {
+         "id": "msg-mvxqtjg6-3",
+         "text": "test message"
+        }
+       ],
+       "checklist": [
+        {
+         "id": "check-mvxqt2yt-1",
+         "label": "test checklist",
+         "mandatory": true
+        }
+       ],
+       "deskItems": [
+        {
+         "kind": "reply",
+         "mandatory": true
+        },
+        {
+         "kind": "comment",
+         "mandatory": true
+        },
+        {
+         "kind": "attachment",
+         "mandatory": true
+        },
+        {
+         "kind": "resolution",
+         "mandatory": true
+        }
+       ],
+       "itemOrder": [
+        "checklist",
+        "message:msg-mvxqtjg6-3",
+        "desk:reply",
+        "desk:comment",
+        "desk:attachment",
+        "desk:resolution",
+        "field:category",
+        "field:classification"
+       ],
+       "requiredFields": [
+        {
+         "name": "category",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        },
+        {
+         "name": "classification",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        }
+       ],
+       "instructionalMessage": null
+      },
+      "isCommon": false,
+      "toStateId": "On Hold",
+      "fromStateId": "Open"
+     },
+     {
+      "id": "t_mvxpanpb_1",
+      "name": "On Hold To Escalated",
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "description",
+         "value": "OnHoldToEscalated"
+        }
+       ]
+      },
+      "color": "#2563eb",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "toStateId": "Escalated",
+      "fromStateId": "On Hold"
+     },
+     {
+      "id": "t_mvxpao73_2",
+      "name": "Close Ticket",
+      "after": {
+       "actions": []
+      },
+      "color": "#2563eb",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "isCommon": true,
+      "toStateId": "Closed",
+      "fromStateId": "Open"
+     },
+     {
+      "id": "t_mvxrk20q_1",
+      "name": "Reopen Ticket",
+      "after": {
+       "actions": []
+      },
+      "color": "#2563eb",
+      "before": {},
+      "during": {},
+      "isCommon": true,
+      "toStateId": "Reopened",
+      "fromStateId": "Escalated"
+     }
+    ],
+    "departmentId": "258a87d2-5b80-458c-8aa2-bfa7657f7eee",
+    "entryCriteria": {
+     "op": "eq",
+     "field": "priority",
+     "value": "high"
+    }
+   },
+   "createdAt": "2026-11-01T10:42:22.667841+00:00",
+   "updatedAt": "2026-11-01T11:53:12.681438+00:00",
+   "sortOrder": null,
+   "hasDraft": false,
+   "draftVersion": null,
+   "department_id": "258a87d2-5b80-458c-8aa2-bfa7657f7eee",
+   "in_progress_count": 0
+  }
+ ],
+ "ticketStatuses": {
+  "statuses": [
+   {
+    "value": "Open",
+    "label": "Open",
+    "type": "open",
+    "configured": false,
+    "show_in_help_center": false,
+    "help_center_name": null,
+    "help_center_name_ar": null
+   },
+   {
+    "value": "On Hold",
+    "label": "On Hold",
+    "type": "on_hold",
+    "configured": false,
+    "show_in_help_center": false,
+    "help_center_name": null,
+    "help_center_name_ar": null
+   },
+   {
+    "value": "Escalated",
+    "label": "Escalated",
+    "type": "open",
+    "configured": false,
+    "show_in_help_center": false,
+    "help_center_name": null,
+    "help_center_name_ar": null
+   },
+   {
+    "value": "Closed",
+    "label": "Closed",
+    "type": "closed",
+    "configured": false,
+    "show_in_help_center": false,
+    "help_center_name": null,
+    "help_center_name_ar": null
+   },
+   {
+    "value": "Reopened",
+    "label": "Reopened",
+    "type": "closed",
+    "configured": true,
+    "show_in_help_center": false,
+    "help_center_name": null,
+    "help_center_name_ar": null
+   }
+  ]
+ },
+ "departments": [
+  {
+   "id": "369b76d3-eef4-4698-97db-be0c47e61ec5",
+   "name": "techSupport",
+   "help_center_display_name": null,
+   "effective_display_name": "techSupport",
+   "logo_file_id": null,
+   "description": null,
+   "visibility": "private",
+   "routing_strategy": "round_robin",
+   "is_active": true,
+   "is_default": true,
+   "agent_user_ids": [
+    "7017d261-36ee-4e2f-9e60-2310ece52ef8"
+   ],
+   "channels": [
+    {
+     "id": "75c21ab4-f9ac-49c3-9852-81d700e2f4b2",
+     "channel_type": "email",
+     "is_enabled": true,
+     "configuration": {
+      "address": "haytham.mohamed056@gmail.com"
+     }
+    },
+    {
+     "id": "baa852d9-e976-40e9-95fb-e25563661116",
+     "channel_type": "web_form",
+     "is_enabled": false,
+     "configuration": {}
+    },
+    {
+     "id": "b1bcfc35-1e94-4494-8983-07d665da7c93",
+     "channel_type": "chat",
+     "is_enabled": true,
+     "configuration": {}
+    },
+    {
+     "id": "af548119-9577-432c-8eb7-329d7b24a6ea",
+     "channel_type": "community",
+     "is_enabled": false,
+     "configuration": {}
+    },
+    {
+     "id": "d0b14e61-87d5-4be9-9424-af77d382f025",
+     "channel_type": "social",
+     "is_enabled": false,
+     "configuration": {}
+    }
+   ],
+   "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "created_at": "2026-09-17T06:51:55.092193+00:00",
+   "updated_at": "2026-10-21T09:07:00.117978+00:00",
+   "ticket_count": null,
+   "live_chat_widget_id": null,
+   "cc_enabled": true,
+   "auto_private_non_contacts": false,
+   "send_as_email_enabled": true,
+   "mass_comments_enabled": false,
+   "scheduled_replies_enabled": true,
+   "scheduled_reply_cancel_on_customer_reply": true,
+   "scheduled_reply_cancel_on_close": true,
+   "pending_scheduled_reply_count": null,
+   "email_addresses": null
+  },
+  {
+   "id": "94a3c8e6-8ad1-4251-ab5d-a5a0e99fd996",
+   "name": "Call Center",
+   "help_center_display_name": null,
+   "effective_display_name": "Call Center",
+   "logo_file_id": "c5bc9923-95e5-473e-9cac-be0f5b3f1712",
+   "description": null,
+   "visibility": "public",
+   "routing_strategy": "round_robin",
+   "is_active": true,
+   "is_default": false,
+   "agent_user_ids": [
+    "0c803bd5-e042-4734-8643-a799425ec0b2"
+   ],
+   "channels": [],
+   "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "created_at": "2026-09-24T07:33:08.67965+00:00",
+   "updated_at": "2026-09-24T07:33:26.350233+00:00",
+   "ticket_count": null,
+   "live_chat_widget_id": null,
+   "cc_enabled": true,
+   "auto_private_non_contacts": false,
+   "send_as_email_enabled": false,
+   "mass_comments_enabled": false,
+   "scheduled_replies_enabled": true,
+   "scheduled_reply_cancel_on_customer_reply": true,
+   "scheduled_reply_cancel_on_close": true,
+   "pending_scheduled_reply_count": null,
+   "email_addresses": null
+  },
+  {
+   "id": "f6cf3a84-fc16-4e33-a671-3fcb26bc1422",
+   "name": "DAR Review",
+   "help_center_display_name": null,
+   "effective_display_name": "DAR Review",
+   "logo_file_id": null,
+   "description": "Desk automation review test department (2026-10-11), safe to delete",
+   "visibility": "private",
+   "routing_strategy": "round_robin",
+   "is_active": true,
+   "is_default": false,
+   "agent_user_ids": [],
+   "channels": [],
+   "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "created_at": "2026-10-11T17:55:34.755904+00:00",
+   "updated_at": "2026-10-11T17:55:34.755904+00:00",
+   "ticket_count": null,
+   "live_chat_widget_id": null,
+   "cc_enabled": true,
+   "auto_private_non_contacts": false,
+   "send_as_email_enabled": false,
+   "mass_comments_enabled": false,
+   "scheduled_replies_enabled": true,
+   "scheduled_reply_cancel_on_customer_reply": true,
+   "scheduled_reply_cancel_on_close": true,
+   "pending_scheduled_reply_count": null,
+   "email_addresses": null
+  },
+  {
+   "id": "9a7e391c-be72-49e4-a1cf-763e5c88e23d",
+   "name": "QA WF Dept R",
+   "help_center_display_name": null,
+   "effective_display_name": "QA WF Dept R",
+   "logo_file_id": null,
+   "description": null,
+   "visibility": "private",
+   "routing_strategy": "round_robin",
+   "is_active": true,
+   "is_default": false,
+   "agent_user_ids": [],
+   "channels": [],
+   "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "created_at": "2026-09-30T08:45:26.842632+00:00",
+   "updated_at": "2026-10-27T08:18:59.027183+00:00",
+   "ticket_count": null,
+   "live_chat_widget_id": null,
+   "cc_enabled": true,
+   "auto_private_non_contacts": false,
+   "send_as_email_enabled": false,
+   "mass_comments_enabled": false,
+   "scheduled_replies_enabled": true,
+   "scheduled_reply_cancel_on_customer_reply": true,
+   "scheduled_reply_cancel_on_close": true,
+   "pending_scheduled_reply_count": null,
+   "email_addresses": null
+  },
+  {
+   "id": "258a87d2-5b80-458c-8aa2-bfa7657f7eee",
+   "name": "Tech",
+   "help_center_display_name": null,
+   "effective_display_name": "Tech",
+   "logo_file_id": null,
+   "description": null,
+   "visibility": "public",
+   "routing_strategy": "round_robin",
+   "is_active": true,
+   "is_default": false,
+   "agent_user_ids": [],
+   "channels": [],
+   "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "created_at": "2026-11-01T10:24:59.171374+00:00",
+   "updated_at": "2026-11-01T10:24:59.171374+00:00",
+   "ticket_count": null,
+   "live_chat_widget_id": null,
+   "cc_enabled": true,
+   "auto_private_non_contacts": false,
+   "send_as_email_enabled": false,
+   "mass_comments_enabled": false,
+   "scheduled_replies_enabled": true,
+   "scheduled_reply_cancel_on_customer_reply": true,
+   "scheduled_reply_cancel_on_close": true,
+   "pending_scheduled_reply_count": null,
+   "email_addresses": null
+  }
+ ],
+ "slaPolicies": [
+  {
+   "id": "bb8981fa-84f9-41e0-9d53-f8b1d3586335",
+   "department_id": "369b76d3-eef4-4698-97db-be0c47e61ec5",
+   "name": "Chat icket",
+   "description": null,
+   "is_active": true,
+   "sort_order": 0,
+   "triggers": {
+    "create": true,
+    "update": false,
+    "field_update": null,
+    "customer_reply": false,
+    "agent_response": false,
+    "private_thread": null,
+    "comment": null
+   },
+   "execute_only_with_account": false,
+   "resolution_from_created": true,
+   "targets": [
+    {
+     "id": "c19f7f8f-35b0-450a-9c55-19339140cc95",
+     "name": "Target 1",
+     "sort_order": 0,
+     "criteria": {
+      "conditions": [
+       {
+        "field_key": "channel",
+        "operator": "equals",
+        "value": "email"
+       }
+      ],
+      "pattern": null
+     },
+     "response": {
+      "value": 4,
+      "unit": "hours"
+     },
+     "resolution": {
+      "value": 24,
+      "unit": "hours"
+     },
+     "calendar_mode": "business",
+     "business_hours_id": null,
+     "first_response_only": true,
+     "escalate_on_business_hours": true,
+     "escalations": {
+      "response": [],
+      "resolution": []
+     }
+    }
+   ],
+   "accounts": [],
+   "support_plans": [
+    {
+     "id": "f5a0f5aa-8760-4eb1-84e2-dee37fe04582",
+     "name": "tes"
+    },
+    {
+     "id": "bf5aa6c9-4bfe-4636-860f-9c6c1703ed87",
+     "name": "E2069 SLA Platinum"
+    }
+   ],
+   "activated_at": "2026-10-07T11:08:41.682368+00:00",
+   "created_at": "2026-10-07T11:08:41.682368+00:00",
+   "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "updated_at": "2026-10-07T11:08:41.682368+00:00",
+   "updated_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "row_version": 1
+  },
+  {
+   "id": "1d692421-40cf-47e4-ba22-467331d2bb16",
+   "department_id": "369b76d3-eef4-4698-97db-be0c47e61ec5",
+   "name": "test",
+   "description": "fsdsd",
+   "is_active": true,
+   "sort_order": 1,
+   "triggers": {
+    "create": true,
+    "update": false,
+    "field_update": null,
+    "customer_reply": false,
+    "agent_response": false,
+    "private_thread": null,
+    "comment": null
+   },
+   "execute_only_with_account": false,
+   "resolution_from_created": true,
+   "targets": [
+    {
+     "id": "62da0313-c0d8-4e8d-92de-ffde008108b4",
+     "name": "Target 1",
+     "sort_order": 0,
+     "criteria": {
+      "conditions": [],
+      "pattern": null
+     },
+     "response": {
+      "value": 4,
+      "unit": "hours"
+     },
+     "resolution": {
+      "value": 24,
+      "unit": "hours"
+     },
+     "calendar_mode": "business",
+     "business_hours_id": null,
+     "first_response_only": false,
+     "escalate_on_business_hours": true,
+     "escalations": {
+      "response": [],
+      "resolution": []
+     }
+    }
+   ],
+   "accounts": [],
+   "support_plans": [],
+   "activated_at": "2026-10-20T10:54:47.014041+00:00",
+   "created_at": "2026-10-20T10:52:27.740402+00:00",
+   "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "updated_at": "2026-10-20T10:54:47.014041+00:00",
+   "updated_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "row_version": 4
+  },
+  {
+   "id": "331d6c33-4d98-4a24-a0db-90daaab5b0b1",
+   "department_id": "369b76d3-eef4-4698-97db-be0c47e61ec5",
+   "name": "ZZQA desc 501",
+   "description": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "is_active": false,
+   "sort_order": 2,
+   "triggers": {
+    "create": true,
+    "update": false,
+    "field_update": null,
+    "customer_reply": false,
+    "agent_response": false,
+    "private_thread": null,
+    "comment": null
+   },
+   "execute_only_with_account": false,
+   "resolution_from_created": true,
+   "targets": [
+    {
+     "id": "192e8805-7482-4bcf-8b8c-cfd48fe45190",
+     "name": "Target 1",
+     "sort_order": 0,
+     "criteria": {
+      "conditions": [],
+      "pattern": null
+     },
+     "response": {
+      "value": 4,
+      "unit": "hours"
+     },
+     "resolution": {
+      "value": 24,
+      "unit": "hours"
+     },
+     "calendar_mode": "calendar",
+     "business_hours_id": null,
+     "first_response_only": true,
+     "escalate_on_business_hours": false,
+     "escalations": {
+      "response": [],
+      "resolution": []
+     }
+    }
+   ],
+   "accounts": [],
+   "support_plans": [],
+   "activated_at": null,
+   "created_at": "2026-10-20T11:00:17.519034+00:00",
+   "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "updated_at": "2026-10-20T11:00:17.519034+00:00",
+   "updated_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+   "row_version": 1
+  }
+ ],
+ "businessHours": {
+  "is_seeded": true,
+  "preset": "24_7",
+  "timing_mode": null,
+  "days_active": [
+   "mon",
+   "tue",
+   "wed",
+   "thu",
+   "fri",
+   "sat",
+   "sun"
+  ],
+  "hours": null,
+  "hours_per_day": null,
+  "time_zone": "Africa/Cairo",
+  "week_starts_on": "mon",
+  "evaluated_at": "2026-11-01T12:06:21.5034435+00:00",
+  "is_open_now": true,
+  "next_opens_at": "2026-11-01T12:06:21.5034435+00:00",
+  "todays_holidays": [],
+  "holiday_lists": [
+   {
+    "id": "623932d9-48d5-4e92-be44-9cc3a7eb2b27",
+    "name": "tert",
+    "description": null,
+    "is_active": true,
+    "business_hour_profile_id": null,
+    "category": "recurring",
+    "holiday_count": 0,
+    "holidays": [],
+    "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+    "created_at": "2026-10-11T07:36:05.85245+00:00",
+    "updated_at": "2026-10-11T07:36:05.85245+00:00",
+    "is_detached": false
+   },
+   {
+    "id": "332ae62f-b3db-4200-af8a-ba78b01425be",
+    "name": "tretre",
+    "description": null,
+    "is_active": true,
+    "business_hour_profile_id": null,
+    "category": "recurring",
+    "holiday_count": 0,
+    "holidays": [],
+    "created_by": "7017d261-36ee-4e2f-9e60-2310ece52ef8",
+    "created_at": "2026-10-11T07:35:59.859571+00:00",
+    "updated_at": "2026-10-11T07:35:59.859571+00:00",
+    "is_detached": false
+   }
+  ],
+  "profiles": [
+   {
+    "id": "05d4814c-040a-455d-a349-19284e3df37c",
+    "name": "Default",
+    "is_default": true,
+    "time_zone": "Africa/Cairo",
+    "holiday_list": {
+     "id": "623932d9-48d5-4e92-be44-9cc3a7eb2b27",
+     "name": "tert",
+     "is_active": true
+    },
+    "holiday_lists": [
+     {
+      "id": "623932d9-48d5-4e92-be44-9cc3a7eb2b27",
+      "name": "tert",
+      "is_active": true
+     },
+     {
+      "id": "332ae62f-b3db-4200-af8a-ba78b01425be",
+      "name": "tretre",
+      "is_active": true
+     }
+    ]
+   }
+  ],
+  "slots": null,
+  "slots_per_day": null
+ },
+ "ticketsInBlueprint": [
+  {
+   "file": "_modules_e8e5e302_3873_4e32_b945_c9cd25c7659d_records_7b398cea_0e12_4d9f_ae71_c078bba72574_blueprint_state.json",
+   "state": [
+    {
+     "blueprintDefinitionId": "9600b602-810d-4be5-be8e-ac06060981c4",
+     "blueprintName": "Demo · Hardware RMA",
+     "targetField": "status",
+     "activeStates": [
+      "Escalated"
+     ],
+     "isTerminal": false,
+     "allStates": [
+      {
+       "id": "Open",
+       "name": "Open",
+       "isTerminal": false
+      },
+      {
+       "id": "Escalated",
+       "name": "Escalated",
+       "isTerminal": false
+      },
+      {
+       "id": "On Hold",
+       "name": "On Hold",
+       "isTerminal": false
+      },
+      {
+       "id": "Closed",
+       "name": "Closed",
+       "isTerminal": true
+      }
+     ],
+     "allTransitions": [
+      {
+       "id": "send-to-tech",
+       "name": "Send to Tech Support",
+       "fromStateId": "Open",
+       "toStateId": "Escalated",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "parts-ordered",
+       "name": "Parts ordered",
+       "fromStateId": "Escalated",
+       "toStateId": "On Hold",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "parts-arrived",
+       "name": "Parts arrived",
+       "fromStateId": "On Hold",
+       "toStateId": "Escalated",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "repair-complete",
+       "name": "Repair complete",
+       "fromStateId": "Escalated",
+       "toStateId": "Closed",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      }
+     ],
+     "enteredAt": "2026-10-30T16:53:48.85365+00:00",
+     "entered_at": "2026-10-30T16:53:35.2482102+00:00",
+     "slaDueAt": null,
+     "autoTransitionPending": false,
+     "autoTransitionAt": null,
+     "warning_due_at": null,
+     "escalation_due_at": {
+      "at": "2026-10-31T16:53:48.85365+00:00",
+      "provisional": false
+     },
+     "auto_due_at": null
+    }
+   ]
+  },
+  {
+   "file": "_modules_e8e5e302_3873_4e32_b945_c9cd25c7659d_records_9f7d9e69_ec79_433f_8004_12ee5021aae2_blueprint_state.json",
+   "state": [
+    {
+     "blueprintDefinitionId": "d47c2195-6eb5-4c81-847d-afe20a4028eb",
+     "blueprintName": "Demo · Refund approval",
+     "targetField": "status",
+     "activeStates": [
+      "Escalated"
+     ],
+     "isTerminal": false,
+     "allStates": [
+      {
+       "id": "Open",
+       "name": "Open",
+       "isTerminal": false
+      },
+      {
+       "id": "Escalated",
+       "name": "Escalated",
+       "isTerminal": false
+      },
+      {
+       "id": "On Hold",
+       "name": "On Hold",
+       "isTerminal": false
+      },
+      {
+       "id": "Closed",
+       "name": "Closed",
+       "isTerminal": true
+      }
+     ],
+     "allTransitions": [
+      {
+       "id": "request-approval",
+       "name": "Request manager approval",
+       "fromStateId": "Open",
+       "toStateId": "Escalated",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "ask-documents",
+       "name": "Ask customer for documents",
+       "fromStateId": "Escalated",
+       "toStateId": "On Hold",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "customer-replied",
+       "name": "Customer replied",
+       "fromStateId": "On Hold",
+       "toStateId": "Escalated",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "auto-close",
+       "name": "Close after 3 days without an answer",
+       "fromStateId": "On Hold",
+       "toStateId": "Closed",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "approve-refund",
+       "name": "Approve refund",
+       "fromStateId": "Escalated",
+       "toStateId": "Closed",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "reject-refund",
+       "name": "Reject refund",
+       "fromStateId": "Escalated",
+       "toStateId": "Closed",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "cancel",
+       "name": "Cancel request",
+       "fromStateId": "Open",
+       "toStateId": "Closed",
+       "isCommon": true,
+       "criteria": null,
+       "subTransitions": []
+      }
+     ],
+     "enteredAt": "2026-10-30T16:51:47.473658+00:00",
+     "entered_at": "2026-10-30T16:51:34.7534741+00:00",
+     "slaDueAt": null,
+     "autoTransitionPending": false,
+     "autoTransitionAt": null,
+     "warning_due_at": {
+      "at": "2026-10-30T23:51:47.473658+00:00",
+      "provisional": false
+     },
+     "escalation_due_at": {
+      "at": "2026-10-31T00:51:47.473658+00:00",
+      "provisional": false
+     },
+     "auto_due_at": null
+    }
+   ]
+  },
+  {
+   "file": "_modules_e8e5e302_3873_4e32_b945_c9cd25c7659d_records_f9be5f14_97bc_4c79_b209_d2a44c8e0acd_blueprint_state.json",
+   "state": [
+    {
+     "blueprintDefinitionId": "d47c2195-6eb5-4c81-847d-afe20a4028eb",
+     "blueprintName": "Demo · Refund approval",
+     "targetField": "status",
+     "activeStates": [
+      "Open"
+     ],
+     "isTerminal": false,
+     "allStates": [
+      {
+       "id": "Open",
+       "name": "Open",
+       "isTerminal": false
+      },
+      {
+       "id": "Escalated",
+       "name": "Escalated",
+       "isTerminal": false
+      },
+      {
+       "id": "On Hold",
+       "name": "On Hold",
+       "isTerminal": false
+      },
+      {
+       "id": "Closed",
+       "name": "Closed",
+       "isTerminal": true
+      }
+     ],
+     "allTransitions": [
+      {
+       "id": "request-approval",
+       "name": "Request manager approval",
+       "fromStateId": "Open",
+       "toStateId": "Escalated",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "ask-documents",
+       "name": "Ask customer for documents",
+       "fromStateId": "Escalated",
+       "toStateId": "On Hold",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "customer-replied",
+       "name": "Customer replied",
+       "fromStateId": "On Hold",
+       "toStateId": "Escalated",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "auto-close",
+       "name": "Close after 3 days without an answer",
+       "fromStateId": "On Hold",
+       "toStateId": "Closed",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "approve-refund",
+       "name": "Approve refund",
+       "fromStateId": "Escalated",
+       "toStateId": "Closed",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "reject-refund",
+       "name": "Reject refund",
+       "fromStateId": "Escalated",
+       "toStateId": "Closed",
+       "isCommon": false,
+       "criteria": null,
+       "subTransitions": []
+      },
+      {
+       "id": "cancel",
+       "name": "Cancel request",
+       "fromStateId": "Open",
+       "toStateId": "Closed",
+       "isCommon": true,
+       "criteria": null,
+       "subTransitions": []
+      }
+     ],
+     "enteredAt": "2026-10-30T16:51:29.405309+00:00",
+     "entered_at": "2026-10-30T16:51:29.4152989+00:00",
+     "slaDueAt": null,
+     "autoTransitionPending": false,
+     "autoTransitionAt": null,
+     "warning_due_at": null,
+     "escalation_due_at": {
+      "at": "2026-10-30T18:51:29.405309+00:00",
+      "provisional": false
+     },
+     "auto_due_at": null
+    }
+   ]
+  }
+ ]
+}
