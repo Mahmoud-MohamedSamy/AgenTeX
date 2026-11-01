@@ -127,6 +127,7 @@ Reference files in `reference/`:
   - Zoho edition limits (Desk has no edition caps).
 - Not repeated (already in NDC-2266): escalation to roles and contacts, an email template per escalation level, the countdown view.
 - Same engine as CRM: NDC-2540 (webhook after-actions and SLA escalation webhooks never sent), NDC-2420 (workflow rules not run after transitions with required fields) and NDC-2730 (a workflow changes the locked field and moves the record back). The spec re-checks each of them on Desk.
+- Filed 1 Nov 2026: NDC-2755 (auto-close hidden), NDC-2756 (fixed-week example), NDC-2757 (Close ticket button). The "Reopened" note no longer applies: the status was changed to the Open type on 1 Nov 2026.
 - Possible bug to check separately: the "On Hold" state of "Demo · Refund approval" closes tickets on its own after 3 days (`autoTransitionAfterMinutes: 4320`, the canvas shows "3d"). The state panel shows "No limit" and hides the auto-close, so saving the state may drop it.
 - Possible bug to check separately: the time-limit example always says "Counted on a Monday to Friday, 9 to 5 week", although this tenant's business hours are 24×7.
 - Possible bug to check separately: the status "Reopened" has the type Closed. A blueprint state "Reopened" may therefore end the blueprint or count as resolved.
