@@ -1,0 +1,8 @@
+const o = {}; const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3', DL = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430';
+const v = await api('o', 'GET', `/modules/${L}/views`); o.vshape = JSON.stringify(v.j).slice(0, 400);
+for (const [m, id] of [[L, '021a2876-1f9c-498b-b275-f0b4c6a280fa'], [DL, '337e0763-b8d1-4679-9416-1c821edeeb22'], [L, '7790bf60-f9e7-479f-ae91-5ae5cd6bbb5d'], [DL, '1bf1bfed-f307-4e94-90ec-7374d941ebf4']]) { const r = await api('o', 'GET', `/modules/${m}/views/${id}`); o['view ' + id.slice(0, 8)] = r.s + ' ' + (r.j?.data?.name || ''); }
+for (const [m, id] of [[L, '359519af-9468-4c18-b715-d9b46c93e2b9'], [L, '5484c639-23b7-4472-9366-70471e5f7eee'], [L, 'ffe572c1-a7d9-4be7-8ae3-c4bc7b95cf49'], [L, '366560b2-937f-450b-ae3d-63177ca6c019'], [L, 'fa4462b9-3d3d-4e1c-9376-73ef794232cc'], [L, 'acdfead9-391d-4b78-a015-56aa0390ec3c'], [L, 'bb525d42-3c6f-4e7e-9026-6207e05d0831'], [DL, 'e9d3db86-1581-44cf-b7b4-ff31053fee83'], [DL, 'e144754a-696f-4f64-a529-ed027f7e7285']]) { const r = await api('o', 'GET', `/modules/${m}/records/${id}`); o['rec ' + id.slice(0, 8)] = r.s; }
+const u = await api('o', 'GET', '/iam/users?status=invited'); const x = arr(u.j?.data).find(z => /qa\.rt12/.test(JSON.stringify(z))); o.invUser = x && { id: x.id, keys: Object.keys(x), status: x.status, inv: x.invitation_id || x.invitationId };
+const p = await api('o', 'GET', `/modules/${L}/list-preferences`); o.leadPrefs = p.s + ' ' + JSON.stringify(p.j?.data).slice(0, 600);
+const t = await api('o', 'GET', `/modules/a9d87b62-b704-4c2e-b2d5-1b745d7c2065/list-preferences`); o.taskPrefs = t.s + ' ' + JSON.stringify(t.j?.data).slice(0, 900);
+return o;

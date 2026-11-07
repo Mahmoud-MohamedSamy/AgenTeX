@@ -1,0 +1,33 @@
+{
+ "out": "NDC-2764-api.png",
+ "date": "3 Nov 2026",
+ "host": "staging-desk.taviportal.com (tenant NDC-Staging)",
+ "who": "ndc-staging-owner (Owner)",
+ "title": "NDC-2764 · Dept QA RT11 Dept A, blueprint L3 (Open → Escalated → Closed)",
+ "rows": [
+  [
+   "direct change",
+   "PATCH status = Closed on a ticket in the blueprint",
+   "422 \"Governed picklist field can only change via blueprint transition execution.\"",
+   "ok"
+  ],
+  [
+   "transition",
+   "Run go (Open → Escalated)",
+   "200; ticket stays at Escalated in the blueprint",
+   "ok"
+  ],
+  [
+   "QA rule",
+   "POST /workflow/rules (Field Update Status = Closed)",
+   "400 \"Module … has reached the limit of 50 rules.\"",
+   "info"
+  ],
+  [
+   "stand-in",
+   "existing rule \"QA NDC Close Ticket\"",
+   "did not fire even on a control ticket outside any blueprint",
+   "info"
+  ]
+ ]
+}

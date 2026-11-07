@@ -1,0 +1,12 @@
+{ "out": "NDC-2794-retest-FAIL.png", "ticket": "NDC-2794", "title": "Workflow Rules | Can't assign a ticket to a team and an agent of that team in one rule", "verdict": "FAIL",
+  "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · owner · department QA RT11 Dept A, team QA RT12 2275 team (fedelav803, Mahmoud Samy)", "date": "5–6 Nov 2026",
+  "panels": [
+   { "img": "2794-b-rule.png", "caption": "1 · Rule QA RT12 2794 team+agent: On create, Subject contains \"QA RT12 2794 \" → Owner Assignment, Teams = QA RT12 2275 team, \"Also assign an agent of this team\" = Mahmoud Samy (saved as TeamWithAgent)", "crop": [230, 60, 1160, 790], "w": 1600, "h": 900,
+     "boxes": [ { "b": [382, 740, 842, 832], "n": 1, "kind": "INFO" } ] },
+   { "img": "2794-a-ticket-history.png", "caption": "2 · Ticket #1013: the team is set, then cleared, and the owner is set — the ticket ends with an owner and no team", "crop": [370, 60, 1230, 800], "w": 1600, "h": 900,
+     "boxes": [ { "b": [384, 448, 646, 506], "n": 2, "kind": "INFO" }, { "b": [708, 484, 1000, 575], "n": 2, "kind": "FAIL" } ] } ],
+  "rows": [
+   ["1", "Owner Assignment → Teams + \"Also assign an agent of this team\"", "Saved with team and agent", "ownerTargetKind TeamWithAgent, ownerValue = team, ownerAgentId = agent", "PASS"],
+   ["", "Agent who is not in the team", "Refused", "400 \"Team with agent: the agent is not a member of the team.\"", "PASS"],
+   ["2", "Rule fires on a new ticket", "The ticket keeps the team and goes to the agent (editor text: \"The ticket keeps the team and goes to this agent\")", "Team set → cleared (\"Team was updated: QA RT12 2275 team → blank\"), owner = Mahmoud Samy; still no team after 30 s", "FAIL"]
+  ] }

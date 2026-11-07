@@ -1,0 +1,11 @@
+{ "out": "NDC-2752-api.png", "date": "6 Nov 2026", "host": "staging-desk.taviportal.com (tenant NDC-Staging)", "who": "ndc-staging-owner (Owner)",
+  "title": "NDC-2752 · Skills in QA RT11 Dept A: sk1 (subject \"QA RT12 2752 sk1\", agent A1), sk2 inactive, sk3 (subject \"QA RT12 2752\", agents A1+A2); auto-add on, order in settings",
+  "rows": [
+   ["per department", "GET /desk/skills?department_id=Dept A / Dept B", "Dept A got the 6 company skills typed General; QA skills only in Dept A", "ok"],
+   ["type required", "POST skill without type_id", "400 type_id required", "ok"],
+   ["inactive", "tickets matching sk2's criteria", "sk2 never added (tickets 5, 6: only sk1/sk3)", "ok"],
+   ["order", "list order sk3, sk1 → ticket 5; reorder sk1, sk3 → ticket 6", "ticket 5 = sk3, sk1 · ticket 6 = sk1, sk3", "ok"],
+   ["one ticket", "subject changed → Recalculate; unassigned → Assign by Skills", "skills sk1 removed, sk3 kept · assigned to A1 (holds both)", "ok"],
+   ["where used", "GET /desk/skills/{sk1}/usage after workflow \"QA RT12 2752 add skill\"", "rule listed; Delete dialog lists the rule, the agent, 2 open tickets, offers Make inactive", "ok"],
+   ["limits", "AddTicketSkills with 11 · ticket with 11 skills", "400 \"Choose at most 10 skills.\" · 422 \"more than 10 selected items\"", "ok"]
+  ] }

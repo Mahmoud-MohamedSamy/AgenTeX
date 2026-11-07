@@ -1,0 +1,12 @@
+{ "out": "NDC-2774-retest-PASS.png", "ticket": "NDC-2774", "title": "Business Hours | With business hours set to Mon–Fri, blueprint state and SLA due times still count Saturday", "verdict": "PASS",
+  "env": "staging-desk.taviportal.com · tenant NDC-Staging (Africa/Cairo) · Edge (headless) + API · owner · department QA RT11 Dept A", "date": "6 Nov 2026 (Fri, 00:46 Cairo)",
+  "panels": [ { "img": "2774-b-run1-sla.png", "caption": "Run 1 ticket (#1014, created 1.3 s after the hours change): blueprint state due and SLA resolution both Fri 13/11 00:51 — Sat/Sun skipped (24×7 would give Wed 11/11)", "crop": [364, 60, 1236, 660], "w": 1600, "h": 1000,
+    "boxes": [ { "b": [676, 140, 1290, 196], "n": 1, "kind": "PASS" }, { "b": [384, 540, 645, 610], "n": 2, "kind": "PASS" }, { "b": [384, 668, 645, 712], "n": 3, "kind": "INFO" } ] } ],
+  "rows": [
+   ["", "Setup", "Default hours 24×7 → 24 h Mon–Fri (approved change); blueprint state 7200 business min; SLA resolution 120 business h", "PUT 200 at 00:46:49; restored after the run, equal field by field", "INFO"],
+   ["1", "Run 1: ticket +1.3 s — blueprint state due", "Fri 13 Nov ~00:47 (120 working h, weekend skipped; not Wed 11 Nov)", "Fri 13 Nov 00:51 (final, not provisional)", "PASS"],
+   ["2", "Run 1: SLA resolution due", "Same, weekend skipped", "Fri 13 Nov 00:51 (13/11/2026 12:51 AM)", "PASS"],
+   ["", "Run 3: ticket +6.0 s — blueprint / SLA", "Weekend skipped", "Both Fri 13 Nov 00:51", "PASS"],
+   ["", "Control: ticket +60 s — blueprint / SLA", "Weekend skipped", "Both Fri 13 Nov 00:52", "PASS"],
+   ["3", "4–5 min after the expected time", "—", "The hours close at 23:59, so each working day is 1 min short (5 days = 5 min)", "INFO"]
+  ] }

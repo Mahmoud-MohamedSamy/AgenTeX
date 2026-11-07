@@ -1,0 +1,12 @@
+const o = {}; const bb = async (loc) => { const b = await loc.first().boundingBox().catch(() => null); return b ? [Math.round(b.x), Math.round(b.y), Math.round(b.x + b.width), Math.round(b.y + b.height)] : null; };
+await page.goto(H + '/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records/new', { waitUntil: 'commit', timeout: 120000 });
+for (let i = 0; i < 60; i++) { await sleep(3000); if (/Create Ticket/.test(await text())) break; } await sleep(4000);
+const row = lbl => page.locator(`xpath=//*[normalize-space(text())="${lbl}"]/ancestor::*[self::div][2]`).first();
+const sel = page.locator('xpath=//*[normalize-space(text())="Create Ticket"]/following::select[1]').first();
+const state = async () => sel.evaluate(s => ({ value: s.selectedOptions[0]?.text, options: [...s.options].map(x => x.text) }));
+const pickDept = async name => { await row('Department').locator('input, [role=combobox], button').first().click(); await sleep(1000); await page.keyboard.type(name); await sleep(2500); await page.getByRole('option', { name, exact: true }).first().click(); await sleep(5000); };
+o.cs = await state();
+await pickDept('QA NDC Accounting'); o.acc = await state(); o.accHasAdmFields = /ADM Number|IATA Source/.test(await text());
+o.boxSel = await bb(sel); o.boxDept = await bb(row('Department')); await shot('2801-d-accounting-selected.png');
+await pickDept('HR'); o.hr = await state(); await shot('2801-e-hr-selected.png');
+return o;

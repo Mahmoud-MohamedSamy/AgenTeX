@@ -1,0 +1,3 @@
+const st = {}; const ID = '359519af-9468-4c18-b715-d9b46c93e2b9', L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+await page.goto(`${H}/modules/${L}/records/${ID}`, { waitUntil: 'commit', timeout: 120000 }); for (let i = 0; i < 80; i++) { await sleep(3000); const t = await text(); if (/QA RT12 1948 lead/.test(t) && /Notes/.test(t)) break; } for (let i = 0; i < 30; i++) { await sleep(3000); const t = await text(); if (/QA RT12 1948 note by denied user|No notes yet/.test(t)) break; } await sleep(3000);
+st.shown = /QA RT12 1948 note by denied user/.test(await text()); st.noNotes = /No notes yet/.test(await text()); st.tabs = (await page.getByRole('tab').allInnerTexts()).map(x => x.trim()); await shot('1948-c-allowed-control.png'); return st;

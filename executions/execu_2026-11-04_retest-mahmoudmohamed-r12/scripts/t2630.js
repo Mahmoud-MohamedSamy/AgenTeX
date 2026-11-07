@@ -1,0 +1,12 @@
+const o = {}; const lead = '5484c639-23b7-4472-9366-70471e5f7eee'; const TO = 'qa.rt12.2630@example.com';
+const sa = await api('o', 'GET', '/emails/sendability'); o.sendability = sa.j?.data;
+const cn = await api('o', 'GET', '/mail/connections'); o.connections = arr(cn.j?.data).map(c => `${c.provider} ${c.domain} system=${c.is_system} global=${c.is_global} enabled=${c.enabled}`);
+const d = await api('o', 'POST', '/mail/drafts', { to: [TO], subject: 'QA RT12 2630 send result (5 Nov)', body: 'QA NDC-2630 send result check', body_html: '<p>QA NDC-2630 send result check</p>', record_type: 'leads', record_id: lead, attachments: [] });
+o.draft = d.s; const id = d.j?.data?.id; if (id) ledger('NDC-2630: mail draft ' + id + ' on lead 5484c639');
+const s = await api('o', 'POST', `/mail/drafts/${id}/send`, {}); o.send = s.s + ' ' + (s.j?.error?.code || '') + ' ' + (s.j?.error?.message || s.t.slice(0, 160));
+await sleep(15000);
+const mails = await api('o', 'GET', `/mail/records/leads/${lead}/emails?box=mails&limit=10`); const sent = await api('o', 'GET', `/mail/records/leads/${lead}/emails?box=sent&limit=10`);
+o.mails = arr(mails.j?.data).map(e => `${e.subject} | ${e.status} | ${(e.last_error || '').slice(0, 80)}`); o.sent = arr(sent.j?.data).map(e => `${e.subject} | ${e.status}`);
+const tl = await api('o', 'GET', `/timeline/records/leads/${lead}/feed`); o.timeline = (tl.t.match(/"entry_type":"(\w+)"/g) || []).map(x => x.slice(14, -1));
+const dr = await api('o', 'GET', `/mail/drafts/${id}`); o.draftAfter = dr.s + ' ' + (dr.j?.data?.status || '');
+return o;

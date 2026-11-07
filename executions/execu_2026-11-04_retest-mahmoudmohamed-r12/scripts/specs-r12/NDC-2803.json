@@ -1,0 +1,17 @@
+{ "out": "NDC-2803-retest-PASS.png", "ticket": "NDC-2803", "title": "Ticket Templates | Templates aren't tied to a layout: no department filter on the list and no Layout choice when creating a template", "verdict": "PASS",
+  "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · owner", "date": "5 Nov 2026",
+  "panels": [
+   { "img": "2803-c-filter-cs.png", "caption": "1 · Department filter = Customer Support: only its 2 templates (Marketing's QA GL W2 template hidden); Layout column", "crop": [270, 60, 1320, 360], "w": 1600, "h": 900,
+     "boxes": [ { "b": [292, 168, 612, 200], "n": 1, "kind": "PASS" }, { "b": [1008, 290, 1100, 385], "n": 1, "kind": "PASS" } ] },
+   { "img": "2803-d-new-adm.png", "caption": "2 · New template in QA NDC Accounting: Layout required, only the department's layouts; fields follow the layout", "crop": [464, 44, 672, 812], "w": 1600, "h": 900,
+     "boxes": [ { "b": [489, 326, 1111, 357], "n": 2, "kind": "PASS" }, { "b": [489, 419, 1111, 472], "n": 2, "kind": "PASS" } ] },
+   { "img": "2803-g-applied.png", "caption": "3 · Create Ticket, Accounting + layout QA NDC ADM: the template is offered and fills ADM Number 2803", "crop": [400, 100, 1050, 480], "w": 1600, "h": 900, "full": false,
+     "boxes": [ { "b": [542, 110, 1098, 140], "n": 3, "kind": "PASS" }, { "b": [603, 529, 906, 567], "n": 3, "kind": "PASS" } ] } ],
+  "rows": [
+   ["1", "Department dropdown on the Ticket Templates page", "Lists only that department's templates", "Customer Support → its 2 templates; QA NDC Accounting → none before the test", "PASS"],
+   ["2", "New template: Layout field", "Required; the department's layouts", "\"Choose a layout.\" on Save without one; Accounting, ADM + 2 shared layouts", "PASS"],
+   ["2", "Field values", "Fields of the chosen layout", "ADM: IATA Source, ADM Number, Airline Code, ADM Reason, Amount…", "PASS"],
+   ["3", "Create Ticket → Use template…", "Only templates of the selected department and layout", "Accounting + Standard / Accounting layout: none; Accounting + ADM: QA RT12 2803 ADM template; Customer Support: its own 2", "PASS"],
+   ["3", "Apply the template", "Fills the layout's fields", "QA NDC ADM Number = 2803, Priority = High", "PASS"],
+   ["", "API only: template with a layout of another department, or a field the layout lacks", "Refused (the screen prevents it)", "Saved 200/201 (Customer Support + ADM layout; Accounting layout + ADM Number)", "INFO"]
+  ] }

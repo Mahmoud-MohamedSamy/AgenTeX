@@ -1,0 +1,10 @@
+const st = {}; const reqs = [];
+page.on('request', r => { const u = r.url(); if (/api\/v1/.test(u) && /records|query|search/.test(u) && r.method() !== 'OPTIONS') reqs.push(r.method() + ' ' + u.replace(/^.*api\/v1/, '').slice(0, 300) + ' ' + (r.postData() || '').slice(0, 600)); });
+await page.goto(H + '/workqueue', { waitUntil: 'commit', timeout: 120000 }); for (let i = 0; i < 70; i++) { await sleep(3000); const t = await text(); if (/Total Records/.test(t) && /Subject/.test(t)) break; } await sleep(3000);
+await page.getByRole('button', { name: 'My Leads, 51 records' }).first().click(); await sleep(8000);
+await page.getByRole('button', { name: 'Filter', exact: true }).click(); await sleep(3000);
+const rel = page.locator('text=FILTER BY RELATED MODULES').locator('xpath=following::*[normalize-space(text())="Tasks"][1]');
+await rel.click(); await sleep(2500); await shot('1819-c1-related-tasks.png');
+const t = await text(); const i = t.indexOf('FILTER BY RELATED MODULES'); st.after = t.slice(i, i + 900).replace(/\n+/g, ' | ');
+st.controls = await page.locator('aside select, [role=dialog] select, select').evaluateAll(a => a.map(s => [...s.options].map(o => o.text).join('/')).slice(0, 8));
+st.reqs = reqs; return st;

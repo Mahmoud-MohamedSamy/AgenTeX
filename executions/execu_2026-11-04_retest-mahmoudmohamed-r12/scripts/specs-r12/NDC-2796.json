@@ -1,0 +1,14 @@
+{ "out": "NDC-2796-retest-PARTIAL.png", "ticket": "NDC-2796", "title": "Layouts | A department can use only one ticket layout (agent can't pick the form)", "verdict": "PARTIAL",
+  "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · owner", "date": "5 Nov 2026",
+  "panels": [
+   { "img": "2801-d-accounting-selected.png", "caption": "Create Ticket, Department QA NDC Accounting (default layout QA NDC ADM): the layout stays on Standard", "crop": [260, 60, 1340, 520], "w": 1600, "h": 900,
+     "boxes": [ { "b": [542, 110, 732, 140], "n": 2, "kind": "FAIL" }, { "b": [954, 428, 1409, 476], "n": 2, "kind": "INFO" } ] },
+   { "img": "2796-a-change-layout.png", "caption": "Accounting ticket ⋮ → Change Layout: all 11 layouts offered, not only Accounting's two", "crop": [540, 84, 520, 732], "w": 1600, "h": 900,
+     "boxes": [ { "b": [560, 240, 1040, 730], "n": 4, "kind": "FAIL" } ] } ],
+  "rows": [
+   ["1", "Two layouts for one department", "QA NDC ADM and QA NDC Accounting both on QA NDC Accounting, ADM default", "Saved (departmentIds + defaultDepartmentIds)", "PASS"],
+   ["2", "Create Ticket: pick department QA NDC Accounting", "The department's default (ADM) is pre-selected", "Layout stays \"Standard\"", "FAIL"],
+   ["", "Create Ticket: layouts offered", "Only the department's layouts", "Accounting, ADM + 2 shared (fixed with NDC-2801)", "PASS"],
+   ["3", "Ticket created by API without a layout", "Gets the department default", "QA NDC ADM (IATA Source, ADM Number, Airline Code, ADM Reason shown)", "PASS"],
+   ["4", "Change Layout on an Accounting ticket", "Only the department's layouts", "All 11 layouts (e.g. FLY-WT Refund, Manual Invoice)", "FAIL"]
+  ] }

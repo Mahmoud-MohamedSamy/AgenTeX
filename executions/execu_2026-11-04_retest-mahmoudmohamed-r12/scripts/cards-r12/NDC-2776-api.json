@@ -1,0 +1,10 @@
+{ "out": "NDC-2776-api.png", "date": "6 Nov 2026", "host": "staging-desk.taviportal.com (tenant NDC-Staging)", "who": "ndc-staging-owner (Owner)",
+  "title": "NDC-2776 · PUT /iam/tenant/company-profile with different Phone values (original 09876543210 restored)",
+  "rows": [
+   ["300 digits", "phone = 1×300", "400 company.phone_invalid \"phone must be 20 characters or fewer.\" (was 500 INTERNAL_ERROR)", "ok"],
+   ["40 digits", "phone = 1×40", "400 same message (was saved)", "ok"],
+   ["21 chars", "phone = +2012345678901234567 + 99", "400 same message", "ok"],
+   ["20 chars", "phone = +2012345678901234569", "200, saved as typed", "ok"],
+   ["letters", "phone = call me maybe", "400 \"phone must be a phone number (digits, spaces, + ( ) - . /).\"", "ok"],
+   ["restore", "phone = 09876543210", "200, value read back", "info"]
+  ] }

@@ -1,0 +1,10 @@
+const o = {}; const bb = async (loc) => { const b = await loc.first().boundingBox().catch(() => null); return b ? [Math.round(b.x), Math.round(b.y), Math.round(b.x + b.width), Math.round(b.y + b.height)] : null; };
+await page.goto(H + '/settings/modules-and-fields/88e8ea44-1658-4df3-9930-d0902b91073d/layouts/238085b7-78da-4805-8fb6-6063855256f0', { waitUntil: 'commit', timeout: 120000 });
+for (let i = 0; i < 60; i++) { await sleep(3000); if (/Save and Close/.test(await text())) break; } await sleep(5000);
+const lab = page.getByText('QA NDC 4-Account Number', { exact: true }).first();
+await lab.scrollIntoViewIfNeeded(); await sleep(800); o.labBox = await bb(lab);
+await lab.hover(); await sleep(1000);
+const card = lab.locator('xpath=ancestor::*[contains(@class,"field") or @draggable="true" or @data-field-id][1]');
+o.cardHtml = (await card.evaluate(e => e.outerHTML.slice(0, 1200)).catch(() => 'no card'));
+await shot('2791-c-hover.png');
+return o;

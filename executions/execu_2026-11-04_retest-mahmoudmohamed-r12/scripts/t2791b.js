@@ -1,0 +1,11 @@
+const o = {}; const F = 'qa_ndc_4_account_number';
+const LAY = { fly: ['238085b7-78da-4805-8fb6-6063855256f0', '3abf4280-94e5-49f8-b948-b8920dfc1e53'], tkt: ['3c11f91c-fa11-4baf-8f23-751835f3516e', '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158'], std: ['1b55c25d-eb27-4046-afd1-b292398b435b', '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158'] };
+const reqIn = async id => { const L = (await api('o', 'GET', `desk:/modules/${X.TK}/layouts/${id}`)).j.data; let r = 'absent'; JSON.stringify(L.views.CREATE, (k, v) => { if (v && v.apiName === F) r = v.config?.required; return v; }); return r; };
+o.flagFly = await reqIn(LAY.fly[0]); o.flagFinanceTKT = await reqIn(LAY.tkt[0]);
+const f = await api('o', 'GET', `desk:/modules/${X.TK}/fields`); o.fieldRequired = arr(f.j.data?.fields || f.j.data).find(x => x.apiName === F)?.required;
+const mk = async (k, sfx, extra = []) => { const [lid, dep] = LAY[k]; const r = await api('o', 'POST', `desk:/modules/${X.TK}/records`, { layout_id: lid, data: [{ field: 'subject', value: { kind: 'string', value: 'QA RT12 2791 ' + sfx } }, { field: 'department', value: { kind: 'string', value: dep } }, { field: 'status', value: { kind: 'string', value: 'Open' } }, ...extra] }); if (r.j?.data?.id) ledger(`ticket "QA RT12 2791 ${sfx}" ${r.j.data.id}`); return r.s + ' ' + (r.j?.error?.message || ''); };
+o.fly_without = await mk('fly', 'fly no account');
+o.fly_with = await mk('fly', 'fly with account', [{ field: F, value: { kind: 'string', value: '2791' } }]);
+o.financeTKT_without = await mk('tkt', 'finance tkt no account');
+o.standard_without = await mk('std', 'standard no account');
+return o;

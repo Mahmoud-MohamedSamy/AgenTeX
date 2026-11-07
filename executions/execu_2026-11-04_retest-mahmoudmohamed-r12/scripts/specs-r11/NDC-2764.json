@@ -1,0 +1,96 @@
+{
+ "out": "NDC-2764-retest-BLOCKED.png",
+ "ticket": "NDC-2764",
+ "title": "Blueprint | A workflow rule can change Status on a ticket the blueprint controls, so the ticket closes and leaves the blueprint",
+ "priority": "high",
+ "verdict": "BLOCKED",
+ "env": "staging-desk / staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API",
+ "date": "3 Nov 2026",
+ "panels": [
+  {
+   "img": "NDC-2764-api.png",
+   "caption": "API evidence — NDC-2764 · Dept QA RT11 Dept A, blueprint L3 (Open → Escalated → Closed)",
+   "crop": [
+    0,
+    0,
+    1600,
+    318
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      206
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      253
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      259,
+      1566,
+      300
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "direct change",
+   "Refused",
+   "422 \"Governed picklist field can only change via blueprint transition execution.\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "transition",
+   "—",
+   "200; ticket stays at Escalated in the blueprint",
+   "PASS"
+  ],
+  [
+   "3",
+   "QA rule",
+   "Rule saved, then skipped on blueprint tickets",
+   "400 \"Module … has reached the limit of 50 rules.\"",
+   "INFO"
+  ],
+  [
+   "4",
+   "stand-in",
+   "—",
+   "did not fire even on a control ticket outside any blueprint",
+   "INFO"
+  ]
+ ]
+}

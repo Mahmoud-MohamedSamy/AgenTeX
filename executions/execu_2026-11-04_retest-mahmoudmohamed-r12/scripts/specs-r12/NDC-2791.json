@@ -1,0 +1,122 @@
+{
+ "out": "NDC-2791-retest-PASS.png",
+ "ticket": "NDC-2791",
+ "title": "Layouts | \"Mark as Required\" on one layout makes the field required on every layout that has it",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · owner",
+ "date": "5 Nov 2026",
+ "panels": [
+  {
+   "img": "2791-g-fly-save.png",
+   "caption": "Layout QA NDC FLY-WT Refund (field marked Required there in Edit Page Layout): asterisk, and Save without it → \"This field is required\"",
+   "crop": [
+    420,
+    100,
+    1000,
+    800
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      542,
+      110,
+      732,
+      140
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      946,
+      780,
+      1412,
+      845
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2791-f-financeTKT-form.png",
+   "caption": "Layout QA NDC NDC Finance TKT (same field, never marked): no asterisk",
+   "crop": [
+    400,
+    100,
+    1050,
+    760
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      542,
+      110,
+      732,
+      140
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      451,
+      765,
+      906,
+      819
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Mark QA NDC 4-Account Number as Required on FLY-WT Refund only (layout editor → Save)",
+   "Only that layout changes",
+   "Layout PUT 200; FLY-WT flag true, Finance TKT flag false, module field required = false",
+   "PASS"
+  ],
+  [
+   "2",
+   "FLY-WT Refund ticket without the field",
+   "Refused",
+   "Form: asterisk + \"This field is required\"; API: 422",
+   "PASS"
+  ],
+  [
+   "3",
+   "Finance TKT ticket without the field (other layout that has it)",
+   "Saved; field optional",
+   "No asterisk; API 201",
+   "PASS"
+  ],
+  [
+   "",
+   "Standard ticket (layout without the field)",
+   "Saved",
+   "201 (on 4 Nov it was refused)",
+   "PASS"
+  ],
+  [
+   "",
+   "Flags left in stored layouts from the 3–4 Nov tests (Manual Invoice: Agent id, FLY-WT: TKT number)",
+   "Shown and applied consistently",
+   "Stored as required but not applied anywhere: no asterisk on the form, ticket saves (201). Editor shows them optional.",
+   "INFO"
+  ],
+  [
+   "",
+   "Restore",
+   "Flag removed again",
+   "Unmarked in the editor; FLY-WT flag false",
+   "INFO"
+  ]
+ ]
+}

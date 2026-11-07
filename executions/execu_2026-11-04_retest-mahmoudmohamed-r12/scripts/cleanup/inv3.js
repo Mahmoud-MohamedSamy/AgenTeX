@@ -1,0 +1,5 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d'; const A = 'b8941829-5e08-43e1-b8e0-89c33bb9903c', B = 'e95c1c91-00e6-41d1-ae35-7aef0c80db9b'; const o = {};
+for (const [k, d] of [['A', A], ['B', B]]) { const f = JSON.stringify([{ field: 'department', operator: 'equals', value: d }]); const r = await api('o', 'GET', `desk:/modules/${TK}/records?page=1&per_page=100&filters=${encodeURIComponent(f)}`); const L = r.j?.data?.records || r.j?.data || []; o[k] = { s: r.s, n: L.length, total: r.j?.meta?.total_count, subj: L.slice(0, 8).map(x => (x.data || []).find(y => y.field === 'subject')?.value?.value) }; }
+const bin = []; let cur = ''; for (let i = 0; i < 20; i++) { const r = await api('o', 'GET', `desk:/audit/recycle-bin/items?app_key=desk&limit=200${cur ? '&cursor=' + cur : ''}`); o.binS = r.s; bin.push(...arr(r.j?.data)); cur = r.j?.meta?.next_cursor; if (!cur) break; }
+o.binN = bin.length; o.binQA = bin.filter(x => /^QA RT/.test(x.record_label || '')).length; o.binSample = bin.slice(0, 2).map(x => JSON.stringify(x).slice(0, 300));
+return o;

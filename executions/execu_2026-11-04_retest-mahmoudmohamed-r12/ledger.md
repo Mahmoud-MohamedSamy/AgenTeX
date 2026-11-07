@@ -1,0 +1,138 @@
+# Round 12 ledger (4 Nov 2026) — everything created or changed
+- NDC-1819: owner's Work Queue Tasks sort changed to Subject asc (was default order); Reminder column hidden then shown again (back as before); Priority pinned then unpinned; related filter cleared. Restore sort at cleanup if possible.
+- 2026-11-04T11:21:37 NDC-1948: timeline visibility policy default Allow → Deny (v15 backup ../1948-policy-backup.json); restore at cleanup
+- 2026-11-04T11:21:39 lead 359519af-9468-4c18-b715-d9b46c93e2b9 "QA RT12 1948 lead" by u1 (mahmoud.mmohamedsamy)
+- 2026-11-04T11:29:09 NDC-1948: policy restored to Allow (no rules) — 200
+- 2026-11-04T11:37:20 lead 5484c639-23b7-4472-9366-70471e5f7eee "QA RT12 2630 lead" by owner
+- 2026-11-04T11:57:12 NDC-2773: invitation qa.rt12.2773@example.com (CRM User) — cancel at cleanup
+- NDC-2136: Leads list view switched from kanban (r11 leftover 'QA RT11 2113 leads kanban') to List view for the owner; Deals list view checked.
+- 2026-11-04T12:29:13 NDC-2764: workflow rule "QA RT12 2764 rule" 62f78152-7033-4af8-b75f-551c219f85f6
+- 2026-11-04T12:29:14 blueprint "QA RT12 2764 bp" ec6ba2aa-1dce-42f6-ac2d-d7dad3521d91 (active true)
+- 2026-11-04T12:29:17 ticket "QA RT12 2764 in bp" 237d3ee2-c706-4841-a0bb-ba446c62e0f2 (#?)
+- 2026-11-04T12:29:44 ticket "QA RT12 2764 control" 0586f637-9ac5-4027-baad-ee2d94b76296 (#?)
+- 2026-11-05T15:20:04 NDC-2275: Dept A RR prefs assign_to_offline_agents false -> true (restore all-default at cleanup)
+- 2026-11-05T15:20:24 NDC-2275: QA RT11 Dept A agents [] -> O, A1 (mahamed1515), A2 (mmohamedsamy), A3 (fedelav803)
+- 2026-11-05T15:21:02 NDC-2275: direct rule "QA RT12 2275 DA1" 0c78dd01-e865-405e-a408-2332f6cbc43c
+- 2026-11-05T15:21:03 NDC-2275: round_robin rule "QA RT12 2275 RR1" 417590f7-1d83-4e3f-8241-b3f3c291d8bd
+- 2026-11-05T15:21:06 ticket "QA RT12 2275 DA1 a" 50271e13-0ec3-4475-86ec-7b0649d622c5 (#?)
+- 2026-11-05T15:21:09 ticket "QA RT12 2275 DA1 b preset owner" be5f87cc-d856-4842-abcb-c95cd8b1c1e8 (#?)
+- 2026-11-05T15:21:37 ticket "QA RT12 2275 DA1 SEQ c" 0cc016f6-ccf8-4b34-ba5b-7bf7bf2f0311 (#?)
+- 2026-11-05T15:21:39 ticket "QA RT12 2275 SEQ 1" 93a752f5-ca5b-4e5c-ad0f-0bbb79171848 (#?)
+- 2026-11-05T15:21:42 ticket "QA RT12 2275 SEQ 2" 45e2dcc0-27cb-4114-878d-cba3cc3cc093 (#?)
+- 2026-11-05T15:21:46 ticket "QA RT12 2275 SEQ 3" cf82a8b6-0b86-4e5c-b699-38b4ad827c61 (#?)
+- 2026-11-05T15:21:48 ticket "QA RT12 2275 SEQ 4" 8fc485fa-cdcb-44ce-b362-4fb5f3fbb0d8 (#?)
+- 2026-11-05T15:21:51 ticket "QA RT12 2275 SEQ 5" c9cba584-4c46-4d91-8c6c-a2544a273cce (#?)
+- 2026-11-05T15:21:57 ticket "QA RT12 2275 SEQ 6" 7a05cbff-4136-4bb8-bc5b-b733ef742a7e (#?)
+- 2026-11-05T15:26:30 ticket "QA RT12 2275 noRule B" b51befa7-9e4a-426c-96d6-eebe45b9e02a (#?)
+- 2026-11-05T15:26:59 ticket "QA RT12 2275 SEQ null 1" 6d33b833-30e1-4288-b5ea-56e3b2245570
+- 2026-11-05T15:29:59 ticket "QA RT12 2275 SEQ ui 1" bf40208e-12e3-4e4c-93d6-2576d33efd6a (UI)
+- 2026-11-05T15:31:37 ticket "QA RT12 2275 SEQ upd 1" 460fe8b6-b544-4fc0-afb7-d60c9155da40 (#?)
+- 2026-11-05T15:31:46 ticket "QA RT12 2275 SEQ upd 2" c6c7e11b-a408-4c53-bb4b-8b0b05e48999 (#?)
+- 2026-11-05T15:31:51 ticket "QA RT12 2275 SEQ upd 3" 736bd677-0b28-4faf-9079-6d96d906ab39 (#?)
+- 2026-11-05T15:31:56 ticket "QA RT12 2275 SEQ upd 4" fb5c9652-15da-4417-8f6b-34501d626ea8 (#?)
+- 2026-11-05T15:32:00 ticket "QA RT12 2275 SEQ upd 5" d43ee2aa-69f9-43c1-9f87-73f6ba11efe1 (#?)
+- 2026-11-05T15:32:06 ticket "QA RT12 2275 SEQ upd 6" aaa57da6-344a-4fe1-93a6-36e812483306 (#?)
+- 2026-11-05T15:39:45 ticket "QA RT12 2275 LOAD 1" 30b1d7f1-e2bb-404c-9897-c8a9caf96023 (#?)
+- 2026-11-05T15:39:51 ticket "QA RT12 2275 LOAD 2" aa85e73f-3568-4583-9bfd-18bccaad3794 (#?)
+- 2026-11-05T15:39:59 ticket "QA RT12 2275 LOAD 3" a8f1ff8c-1541-401f-90ca-65ff35e92e3f (#?)
+- 2026-11-05T15:40:11 ticket "QA RT12 2275 LOAD 4" 604b294e-f7e4-4318-9858-9a0cc465f492 (#?)
+- 2026-11-05T15:40:46 ticket "QA RT12 2275 SKP 1" 1072b3a0-a98c-4500-85a9-e144e44b433e (#?)
+- 2026-11-05T15:41:27 ticket "QA RT12 2275 SKP 2" 8a58a960-b699-432f-af26-ecba5a7cadee (#?)
+- 2026-11-05T15:41:37 ticket "QA RT12 2275 SKP 3" c25b047b-441f-4c1f-b6a6-551999cd56c3 (#?)
+- 2026-11-05T15:44:39 ticket "QA RT12 2275 SEQ offline-pool" 040dbc24-0d70-4848-9c42-537e32d5ec64 (#?)
+- 2026-11-05T15:47:32 ticket "QA RT12 2275 SEQ thr 1" a79cbf20-85cc-45a5-bc38-03e02fff99a6 (#?)
+- 2026-11-05T15:47:41 ticket "QA RT12 2275 SEQ thr 2" e95c9deb-aba1-43e8-a324-bc8d06302c2a (#?)
+- 2026-11-05T15:47:58 ticket "QA RT12 2275 SEQ thr 3" 740cb422-32d6-4cc0-89e8-4577c1569bb0 (#?)
+- 2026-11-05T15:48:02 ticket "QA RT12 2275 SEQ thr 4" 5551ee5c-0cb5-439e-b5f6-653088fb3580 (#?)
+- 2026-11-05T15:48:24 ticket "QA RT12 2275 SEQ thr 5" 12c9ae03-4700-4749-81a0-e5bf15b32220 (#?)
+- 2026-11-05T15:48:49 ticket "QA RT12 2275 SEQ thr 6" 81ad5bce-0f6c-4d73-9925-80429715f126 (#?)
+- 2026-11-05T15:58:33 NDC-2275: workflow rule "QA RT12 2275 WF EO2" 2bb8296b-e17c-4ac0-a48d-2f87d5b786c5
+- 2026-11-05T15:58:35 NDC-2275: workflow rule "QA RT12 2275 WF EO5" 3f8b0265-9431-48ad-8ff5-373dc70a9b38
+- 2026-11-05T15:58:37 NDC-2275: workflow rule "QA RT12 2275 WF EO3" edd5838d-a2f1-4df2-b1fb-32b9c4b3a9a6
+- 2026-11-05T15:58:37 NDC-2275: direct rule "QA RT12 2275 DA3" 7274850e-5ca1-442e-9a10-cb5c2ac5dc41
+- 2026-11-05T15:58:41 ticket "QA RT12 2275 DA1 EO2" beb0c966-b826-4a36-aa23-9961eb0c5146 (#?)
+- 2026-11-05T15:59:38 ticket "QA RT12 2275 DA3 EO5" 3a5f71a8-0895-49cd-b580-4d2b50864075 (#?)
+- 2026-11-05T15:59:40 ticket "QA RT12 2275 DA3 control" b845c01c-aef3-4349-8983-34b55b47730f (#?)
+- 2026-11-05T16:00:08 ticket "QA RT12 2275 SEQ EO3" 13413294-058e-4981-a45b-01383f1f6344 (#?)
+- 2026-11-05T16:02:03 ticket "QA RT12 2275 DA1 at-threshold" 3a3a9741-67d4-40fe-ba41-b36951fe93fc (#?)
+- 2026-11-05T16:02:04 ticket "QA RT12 2275 DA1 + QA RT12 2275 DA3" 096e9b02-ec0e-4704-982a-dc84e1b39396 (#?)
+- 2026-11-05T16:02:05 ticket "QA RT12 2275 DA1 + QA RT12 2275 DA3 r2" 97cedc2a-ec63-43bf-81ba-e9dc0e6d0ca5 (#?)
+- 2026-11-05T16:02:10 ticket "QA RT12 2275 DA1 inactive" 8c65825d-db0a-4ea8-8864-5007e124a788 (#?)
+- 2026-11-05T16:02:16 ticket "QA RT12 2275 DA3 master-off" 845e3a12-f7f0-42df-a79e-8a59ea802fe1 (#?)
+- 2026-11-05T16:02:36 NDC-2275: team "QA RT12 2275 team" 02586334-de4a-4428-b8df-22183ff9e244 (Dept A, A3+A2)
+- 2026-11-05T16:02:38 NDC-2275: direct rule "QA RT12 2275 DA team+move" b49224e5-e209-473b-a5ca-ee43adb635b8
+- 2026-11-05T16:02:42 ticket "QA RT12 2275 DT team" 27332077-9b05-426e-bc9b-b4932d15080e (#?)
+- 2026-11-05T16:02:42 ticket "QA RT12 2275 DT move" 9907b81f-4722-4365-b584-097d8399e1a4 (#?)
+- 2026-11-05T16:05:21 ticket "QA RT12 2275 SEQ athr 1" a51eff7c-622a-4dd7-a30d-dee898df8c1f (#?)
+- 2026-11-05T16:05:26 ticket "QA RT12 2275 SEQ athr 2" 89ec8ebf-4fbd-4c66-8f52-6aabcb9edaab (#?)
+- 2026-11-05T16:05:32 ticket "QA RT12 2275 SEQ athr 3" dd9838e8-5e41-4496-874f-9a135bb6a0fd (#?)
+- 2026-11-05T16:05:43 ticket "QA RT12 2275 EXC 1" e17c3c04-a76c-4555-bcaf-9cd5a5d2496c (#?)
+- 2026-11-05T16:05:50 ticket "QA RT12 2275 EXC 2" 7592d177-4105-4cf3-9a97-38282a3c2d48 (#?)
+- 2026-11-05T16:05:55 ticket "QA RT12 2275 EXC 3" ae842a1f-8c94-4ef1-a8ae-74d3bd461607 (#?)
+- NDC-2275 cleanup list: direct rules DA1 0c78dd01-e865-405e-a408-2332f6cbc43c, DA3 7274850e-5ca1-442e-9a10-cb5c2ac5dc41, DA team+move b49224e5-e209-473b-a5ca-ee43adb635b8; RR rule RR1 417590f7-1d83-4e3f-8241-b3f3c291d8bd; workflow rules WF EO2 2bb8296b-e17c-4ac0-a48d-2f87d5b786c5, WF EO5 3f8b0265-9431-48ad-8ff5-373dc70a9b38, WF EO3 edd5838d-a2f1-4df2-b1fb-32b9c4b3a9a6; team 02586334-de4a-4428-b8df-22183ff9e244; Dept A agents → [] ; Dept A RR prefs → defaults (assign_to_offline false); all "QA RT12 2275 *" tickets; agent session fedelav803 state-r12desk-a.json
+- 2026-11-05T21:49:42 NDC-2630: CRM User profile (scope 7972984b-b5cc-034a-bd96-6de61e3937d0) added to mahmoud.mohamed1@taviportal.com (18ba78c4) — remove at cleanup
+- 2026-11-05T21:50:46 NDC-2630: CRM User profile removed again from mahmoud.mohamed1 — done
+- 2026-11-05T21:51:11 NDC-2630: mail draft d72c425e-94c7-4a18-8764-5c0c82f5ac00 on lead 5484c639
+- 2026-11-05T21:57:19 NDC-2796: layout QA NDC ADM departmentIds [] -> [QA NDC Accounting], default [QA NDC Accounting] (backup ../2796-adm-layout-backup.json)
+- 2026-11-05T22:01:20 ticket "QA RT12 2796 accounting no layout" 4b24aafb-47bc-42f8-8352-33ba90ab841f (QA NDC Accounting)
+- 2026-11-05T22:07:34 NDC-2803: ticket template "QA RT12 2803 ADM template" 34bfb232-03e8-43d9-9e17-b9070326cb5b (QA NDC Accounting / QA NDC ADM)
+- 2026-11-05T22:11:57 NDC-2803: template QA RT12 2803 wrong (should not exist) 7de810ee-ebeb-47b5-912f-c577a5f6a1eb
+- 2026-11-05T22:21:05 ticket "QA RT12 2791 fly no tkt" 5ed35202-aba6-48d0-b739-5f450e4a4f89
+- 2026-11-05T22:21:05 ticket "QA RT12 2791 cc no tkt" ffb85dcc-1ed2-4b43-8a6d-bc6d30383ef1
+- 2026-11-05T22:21:06 ticket "QA RT12 2791 mi no agent" 56b61edc-f3aa-4e24-ba13-eafa93dfd6bf
+- 2026-11-05T22:21:06 ticket "QA RT12 2791 standard" c9e5e22d-2f53-4069-9e09-f7809c8e1321
+- 2026-11-05T22:29:24 NDC-2791: QA NDC 4-Account Number marked Required on layout QA NDC FLY-WT Refund (UI) — unmark right after
+- 2026-11-05T22:31:32 ticket "QA RT12 2791 fly with account" b1795e91-9b52-4cff-a8a0-0a6432009e28
+- 2026-11-05T22:31:32 ticket "QA RT12 2791 finance tkt no account" 893e6ad8-966b-4472-bb5d-8aecd92964d1
+- 2026-11-05T22:31:33 ticket "QA RT12 2791 standard no account" 2362c05e-a1c1-4c9e-a595-0d10ef53229d
+- 2026-11-05T22:35:33 NDC-2791: required flag removed again (verified false)
+- 2026-11-05T22:41:28 NDC-2794: workflow rule "QA RT12 2794 team+agent" ae19f6b9-0ac9-4f60-bd2f-765585ade51b
+- 2026-11-05T22:41:32 ticket "QA RT12 2794 team and agent" db1a4695-ca0e-4073-be47-c841f3ae8682 (#?)
+- 2026-11-05T22:46:43 NDC-2774: SLA policy "QA RT12 2774 SLA" 91b24877-8120-48f4-8b7f-c3bbaffa0df0 (Dept A)
+- 2026-11-05T22:46:44 blueprint "QA RT12 2774 bp" 26fe5891-2d81-4743-8802-9cb63d133a36 (active true)
+- 2026-11-05T22:46:50 NDC-2774: default business hours 24x7 -> Mon-Fri 24h at 2026-11-05T22:46:49.390Z (backup ../2774-bh-backup.json)
+- 2026-11-05T22:46:51 ticket "QA RT12 2774 run1 +0.6s" 94e62491-dec2-4bba-9f12-f22c572f14b8 (#?)
+- 2026-11-05T22:46:56 ticket "QA RT12 2774 run3 +6s" b6366f4d-e857-4e3a-805a-22b253eba619 (#?)
+- 2026-11-05T22:47:49 ticket "QA RT12 2774 control +60s" e7cd2a55-5c92-4999-b7ed-398f1d6c96dd (#?)
+- 2026-11-05T22:48:12 NDC-2774: business hours restored 200 equal=true
+- 2026-11-05T23:04:11 blueprint "QA RT12 2754 bp" 45e045b1-2991-46dc-9af0-5b158de25ea8 (active false)
+- 2026-11-05T23:28:06 blueprint "QA RT12 2754 full" 0598d5d1-c843-4154-8487-4f5ea5f3f15f (active true)
+- 2026-11-05T23:30:25 ticket "QA RT12 2754F t1 check" 79752799-5318-4363-8fea-b7b121f62f49 (#?)
+- 2026-11-05T23:30:25 ticket "QA RT12 2754F t2 strict" 8598242d-f167-4a4f-9b0b-3ee189c13601 (#?)
+- 2026-11-05T23:30:26 ticket "QA RT12 2754F t3 approval" adfe7f1f-526a-4e36-a951-8a95ab1c3920 (#?)
+- 2026-11-05T23:30:26 ticket "QA RT12 2754F t4 share" f50e00dc-3f08-4d01-8a41-6e81f2db9fdd (#?)
+- 2026-11-05T23:30:27 ticket "QA RT12 2754F t5 revoke" 5fe15f85-aaf6-4188-a8f8-05481fbf4748 (#?)
+- 2026-11-05T23:32:57 ticket "QA RT12 2754 control (no blueprint)" ced93d6d-0109-443b-8fb4-6ffa9ccdbcd8 (#?)
+- 2026-11-05T23:53:50 ticket "QA RT12 2754F t6 rate bad" dde740df-2530-4289-bdf4-0d0d20b2f58a (#?)
+- 2026-11-05T23:53:51 ticket "QA RT12 2754F t7 rate good" 117bd1d2-1103-41e6-8bfc-877f56ca8356 (#?)
+- NDC-2754 cleanup: blueprints 0598d5d1-c843-4154-8487-4f5ea5f3f15f (QA RT12 2754 full), 45e045b1-2991-46dc-9af0-5b158de25ea8 (QA RT12 2754 bp, draft), 26fe5891 (QA RT12 2774 bp), SLA QA RT12 2774 SLA; tickets QA RT12 2754F t1..t7 + control; approval fe0be585 pending; share t4→Dept B
+- 2026-11-05T23:57:14 blueprint "QA RT12 2799 bp" b1d51be9-6ef1-4c31-9a7e-d5293af29985 (active false)
+- 2026-11-06T00:04:36 ticket "QA RT12 2799 escalation" 21c252e5-339e-4d81-ad03-941f46cd27fe (by o)
+- 2026-11-06T00:04:36 ticket "QA RT12 2799 custom mandatory agent" 74786657-9bfd-4148-bc94-706c34123432 (by a)
+- 2026-11-06T00:04:36 ticket "QA RT12 2799 custom mandatory owner" ffc5dac9-b0fe-4ca2-9499-73297f9d4b4c (by o)
+- 2026-11-06T00:09:32 NDC-2799: business-hours set "QA RT12 2799 BH" a8de8ae6-dff1-4e78-89c1-85dbf6492066 (Sun–Thu 09–17) — delete at cleanup
+- 2026-11-06T00:10:31 ticket "QA RT12 2799 bh set" d79043d3-3ebc-4eee-ab74-10cf21413407 (#?)
+- 2026-11-06T00:15:39 NDC-2752: skill type "QA RT12 2752 type" d35923cc-dec0-4dd8-b739-5e28ba563c83
+- 2026-11-06T00:15:39 NDC-2752: skill "qa_rt12_2752_sk1" 7d262fb2-0b98-488e-b76b-d9a604648f93 (Dept A)
+- 2026-11-06T00:15:39 NDC-2752: skill "qa_rt12_2752_sk2_inactive" 921d2517-0d33-459d-97f2-2f760a7c7d3d (Dept A)
+- 2026-11-06T00:15:40 NDC-2752: skill "qa_rt12_2752_sk3" 21e9c438-87ed-49cd-a526-0a0db8f25d1a (Dept A)
+- 2026-11-06T00:15:41 NDC-2752: Dept A skill preferences {"auto_add":false,"placement":"bottom"} -> auto_add true, placement undefined (restore at cleanup)
+- 2026-11-06T00:16:15 ticket "QA RT12 2752 sk1 ticket" e83656a9-dce6-4199-a582-5513950595db (#?)
+- 2026-11-06T00:16:23 ticket "QA RT12 2752 sk1 ticket2" 7ec1b09e-22ef-4a32-9527-3f54676dbe01 (#?)
+- 2026-11-06T00:17:40 ticket "QA RT12 2752 sk1 ticket3" 9263e287-e6a7-4edc-aea7-9dfe12cbcb48 (#?)
+- 2026-11-06T00:17:49 ticket "QA RT12 2752 sk1 ticket4" 3d5c8ec3-3686-4cd1-9361-50842dab7640 (#?)
+- 2026-11-06T00:18:15 NDC-2752: skill qa_rt12_2752_sk1 7d262fb2 deleted (by test, 204)
+- 2026-11-06T00:18:58 NDC-2752: skill "qa_rt12_2752_sk1" (recreated) 31c19ae1-2a31-462b-8fb3-68fd6d26a981
+- 2026-11-06T00:18:59 ticket "QA RT12 2752 sk1 ticket5" e18e6474-5387-488b-87e8-ee87def68de5 (#?)
+- 2026-11-06T00:19:08 ticket "QA RT12 2752 sk1 ticket6" 692c1315-cee1-4fd3-969c-8542134ac8cc (#?)
+- 2026-11-06T00:19:16 NDC-2752: workflow rule "QA RT12 2752 add skill" eab1fa40-ece3-46dc-9d98-5f50e7ff0465
+- 2026-11-06T00:29:43 NDC-2776: company profile phone tests; backup ../2776-company-backup.json (phone 09876543210)
+- 2026-11-06T00:29:44 NDC-2776: company phone restored -> 09876543210
+
+## Cleanup — 6 Nov 2026 (r11 + r12, done once after Gate 2)
+- Desk: 22 blueprints deleted (4 r11 ones were already gone), 6 workflow rules, 4 assignment rules (DA1, DA3, DA team+move, RR1), team "QA RT12 2275 team", 103 QA RT11/RT12 tickets, 2 SLA policies, business-hours set "QA RT12 2799 BH", 2 ticket templates, 3 skills + skill type; departments QA RT11 Dept A (4 agents removed first) and Dept B deleted. All 204/200.
+- Desk restored: QA NDC ADM layout departments → [] / default [] (as backup); Dept A skill prefs auto_add false/bottom and RR prefs assign_to_offline false (set before dept deletion). Default business hours still 24×7.
+- Desk Recycle Bin: 130 "QA RT11/RT12" items purged (200). 0 left.
+- CRM: 7 leads + 2 deals deleted, 2 kanban views deleted, mail draft d72c425e deleted, invitation qa.rt12.2773@example.com cancelled (POST /iam/users/invitations/{id}/cancel 204), Leads prefs: lastKanbanViewId dropped; Tasks Work Queue sort subject:asc removed (default order). CRM Recycle Bin: 11 QA items purged.
+- Verified at zero: rules, blueprints, teams, departments, SLA, BH, templates, tickets, CRM views/invitations/bin. Failed: none.
+- Saved sign-in state files (state-r12*.json) deleted.

@@ -1,0 +1,10 @@
+const o = {}; const net = [];
+page.on('response', async r => { const u = r.url(); if (/blueprint/.test(u) && /analytics|dashboard|report|stats/.test(u)) net.push(r.request().method() + ' ' + r.status() + ' ' + u.replace(/^.*api\/v1/, '').slice(0, 160) + ' ' + (await r.text().catch(() => '')).slice(0, 600)); });
+o.draftsLeft = await page.goto(H + '/hq', { waitUntil: 'commit' }).then(() => sleep(6000)).then(() => page.evaluate(async () => { const t = document.cookie; return 'n/a'; }));
+await page.goto(H + '/analytics', { waitUntil: 'commit', timeout: 120000 }); for (let i = 0; i < 60; i++) { await sleep(3000); if (/Dashboards/.test(await text())) break; } await sleep(3000);
+await page.getByText('Dashboards', { exact: true }).first().click().catch(() => {}); await sleep(4000);
+await page.getByText('Blueprints Dashboard').first().click().catch(e => o.noBp = String(e).slice(0, 80)); for (let k = 0; k < 20; k++) { await sleep(3000); if (/Over limit|Met|Missed|Average/i.test(await text())) break; } await sleep(4000);
+o.url = page.url(); await shot('2799-j-dashboard.png', { fullPage: true });
+const t = await text(); const i = t.indexOf('Blueprint'); o.text = t.slice(t.lastIndexOf('Range') > 0 ? t.lastIndexOf('Range') - 50 : i, (t.lastIndexOf('Range') > 0 ? t.lastIndexOf('Range') : i) + 2500);
+o.net = net.slice(0, 6);
+return o;

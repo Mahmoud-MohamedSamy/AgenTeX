@@ -1,0 +1,10 @@
+{ "out": "NDC-2773-retest-PASS.png", "ticket": "NDC-2773", "title": "Agent/User Invitation | \"Complete your registration\" doesn't list the digit requirement; it only shows as an error after Create account", "verdict": "PASS",
+  "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) · invitation qa.rt12.2773@example.com (CRM User)", "date": "4 Nov 2026",
+  "panels": [ { "img": "2773-a3-no-digit.png", "caption": "Typing a password without a digit: the list shows every rule and marks \"At least one number (0-9)\" live", "crop": [560, 160, 480, 640], "w": 1600, "h": 900, "boxes": [ { "b": [606, 506, 900, 632], "n": 1, "kind": "PASS" }, { "b": [606, 580, 770, 596], "n": 2, "kind": "PASS" } ] },
+    { "img": "2773-a5-after-create.png", "caption": "Create account with that password: no request sent, the error names the digit rule", "crop": [560, 160, 480, 700], "w": 1600, "h": 900, "boxes": [] } ],
+  "rows": [
+   ["1", "Password rules listed before Create account", "Digit requirement listed with the others", "12 chars, uppercase, lowercase, number (0-9), special, not the email part", "PASS"],
+   ["2", "Live check while typing", "Digit rule marked unmet", "Red ○ on \"At least one number (0-9)\", others green", "PASS"],
+   ["", "Create account without a digit", "Clear message, no account created", "No request sent; \"At least one number (0-9)\" under Password", "PASS"],
+   ["", "Second eye icon in Edge", "—", "Browser's own reveal button appears next to the app's", "INFO"]
+  ] }

@@ -1,0 +1,17 @@
+{ "out": "NDC-2752-retest-PASS.png", "ticket": "NDC-2752", "title": "Desk Skills: missing functions vs Zoho Desk", "verdict": "PASS",
+  "env": "staging-desk.taviportal.com › Setup › Customization › Skills · tenant NDC-Staging · Edge (headless) + API · owner", "date": "6 Nov 2026",
+  "panels": [
+   { "img": "2752-b-search.png", "caption": "Skills page: tabs Skills / Skill Types / Agent Skills, Department selector, search + type / agent / status filters, Add Skill, \"Active skills: 8 of 30\", status toggles, drag order", "crop": [280, 60, 1310, 650], "w": 1600, "h": 900, "boxes": [ { "b": [292, 130, 545, 165], "n": 5, "kind": "PASS" }, { "b": [292, 236, 940, 272], "n": 5, "kind": "PASS" }, { "b": [292, 285, 420, 305], "n": 9, "kind": "INFO" } ] },
+   { "img": "2752-d-delete-warning.png", "caption": "Delete a used skill: the dialog lists the workflow rule, the agent and the open tickets, and offers Make inactive", "crop": [400, 150, 1000, 600], "w": 1600, "h": 900, "boxes": [] },
+   { "img": "NDC-2752-api.png", "caption": "API evidence", "crop": [0, 0, 1600, 530], "w": 1600, "h": 900, "full": true, "boxes": [] } ],
+  "rows": [
+   ["1", "Skills per department", "Own list per department; existing skills copied in as General", "As expected", "PASS"],
+   ["2", "Active / Inactive", "Inactive skill not added to tickets", "Never added", "PASS"],
+   ["3", "Add Skill with required type", "Type required", "400 without type; Add Skill button on the page", "PASS"],
+   ["4", "Agents on the skill", "Saved with the skill", "agent_ids saved (1 / 2 agents shown)", "PASS"],
+   ["5", "Search, filters, tabs", "Name / type / agents / status", "Search \"qa_rt12\" → 3 of 9; Inactive → 1 of 9", "PASS"],
+   ["6", "Reorder", "Order in settings follows the list", "Ticket skill order follows each reorder", "PASS"],
+   ["7", "Recalculate / Assign on one ticket", "Works on one ticket (More menu)", "Recalculate removed the no-longer-matching skill; Assign by Skills → A1", "PASS"],
+   ["8", "Where used / delete warning", "Rules using the skill shown", "Usage + delete dialog list the rule", "PASS"],
+   ["9", "Limits", "Max 10 skills per ticket / action; 30 active per department", "10 enforced on ticket and workflow action; 30-cap shown (8 of 30) but not filled", "PASS"]
+  ] }

@@ -1,0 +1,14 @@
+const st = {}; const reqs = []; require(require('path').join(process.cwd(), 'hook.js'))(page, reqs);
+const total = async () => ((await text()).match(/Total Records\s*([\d,]+)/) || [])[1];
+const step = async (k, f) => { try { st[k] = await f(); } catch (e) { st[k] = 'ERR ' + e.message.split('\n')[0].slice(0, 140); await page.keyboard.press('Escape').catch(() => {}); } };
+const open = async () => { await page.goto(H + '/workqueue', { waitUntil: 'commit', timeout: 120000 }); for (let i = 0; i < 100; i++) { await sleep(3000); if (/Total Records\s*\d/.test(await text())) break; } await sleep(2000);
+  if (!(await page.getByRole('button', { name: 'Column options: Subject' }).count())) { await page.getByRole('button', { name: /^Tasks, \d+ items/ }).click(); for (let i = 0; i < 40; i++) { await sleep(3000); if (await page.getByRole('button', { name: 'Column options: Subject' }).count()) break; } } await sleep(3000); };
+const col = async (name) => { const h = await page.locator('table thead th').allInnerTexts(); const i = h.findIndex(x => x.trim() === name); return (await page.locator('table tbody tr').evaluateAll((rs, i) => rs.map(r => (r.children[i] || {}).innerText || ''), i)).map(s => s.trim()); };
+const sortBy = async (c, label) => { await page.getByRole('button', { name: 'Column options: ' + c }).click(); await sleep(1200); await page.getByText(label, { exact: true }).click(); await sleep(6000); };
+await open();
+await step('subjDesc', async () => { await sortBy('Subject', 'Sort descending'); const v = await col('Subject'); await shot('1819-k1-desc.png'); return { v, ok: v.every((x, i) => i === 0 || v[i - 1].localeCompare(x, undefined, { sensitivity: 'base' }) >= 0) }; });
+await step('subjAsc', async () => { await sortBy('Subject', 'Sort ascending'); const v = await col('Subject'); return { v, ok: v.every((x, i) => i === 0 || v[i - 1].localeCompare(x, undefined, { sensitivity: 'base' }) <= 0) }; });
+await step('keptAfterReload', async () => { await open(); return (await col('Subject')).slice(0, 10); });
+await step('dueToday', async () => { const pc = page.getByRole('combobox', { name: /Which open activities/ }).or(page.getByRole('button', { name: /Which open activities/ })).first(); const tag = await pc.evaluate(e => e.tagName); const o = {};
+  for (const p of ['Due today', 'Today & Overdue', 'Overdue', 'All open']) { if (tag === 'SELECT') await pc.selectOption({ label: p }); else { await pc.click(); await sleep(1000); await page.getByRole('option', { name: p }).first().click(); } await sleep(12000); const t = await text(); o[p] = { rail: (t.match(/Tasks\s*\n?\s*(\d+)/) || [])[1], total: await total() }; } return o; });
+st.sortReqs = reqs.filter(x => /sort/.test(x)).slice(-3).map(x => x.slice(0, 200)); return st;

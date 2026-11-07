@@ -1,0 +1,11 @@
+const M = require('./p2275.js'); const Z = M({ api, X, sleep, arr, ledger, log }); const E = { api, X, sleep, arr }; const o = {};
+const team = (await api('o', 'GET', 'desk:/desk/teams')).j.data.teams.find(t => t.name === 'QA RT12 2275 team'); o.team = team.id;
+const act = agent => ({ type: 'OwnerAssignment', order: 0, delaySeconds: 0, ownerTargetKind: 'TeamWithAgent', ownerValue: team.id, ownerAgentId: agent });
+const body = (name, agent) => ({ moduleId: X.TK, layoutId: '', name, description: 'QA retest r12 - safe to delete', mode: 'Recurring', isActive: true, trigger: { kind: 'RecordCreated' }, criteria: { kind: 'StringMatch', field: 'subject', operator: 'Contains', stringValue: 'QA RT12 2794 ', caseInsensitive: false }, actions: [act(agent)] });
+const bad = await api('o', 'POST', 'desk:/workflow/rules', body('QA RT12 2794 bad agent', Z.U.A1)); o.notMember = X.err(bad); if (bad.j?.data?.id) ledger('NDC-2794: workflow rule bad agent (should not exist) ' + bad.j.data.id);
+const r = await api('o', 'POST', 'desk:/workflow/rules', body('QA RT12 2794 team+agent', Z.U.A2)); o.rule = X.err(r); const rid = r.j?.data?.id; if (rid) ledger('NDC-2794: workflow rule "QA RT12 2794 team+agent" ' + rid);
+o.saved = JSON.stringify(((await api('o', 'GET', `desk:/workflow/rules/${rid}`)).j?.data?.actions || [])[0] || {}).match(/"ownerTargetKind":"[^"]+"|"ownerValue":"[^"]+"|"ownerAgentId":"[^"]+"/g);
+await sleep(3000);
+const t = await X.ticket('QA RT12 2794 team and agent'); const id = t.j?.data?.id; await sleep(15000);
+const fl = await X.fields(id); o.ticket = { owner: Z.N[fl.owner] || fl.owner, teamIsQA: fl.team === team.id, team: fl.team }; o.hist = await M.hist(Z, E, id); await sleep(15000); const f2 = await X.fields(id); o.after30s = { owner: Z.N[f2.owner] || f2.owner, teamIsQA: f2.team === team.id }; o.id = id;
+return o;

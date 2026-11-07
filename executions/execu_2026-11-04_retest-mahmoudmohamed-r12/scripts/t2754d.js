@@ -1,0 +1,11 @@
+const o = {}; const S = '8598242d-f167-4a4f-9b0b-3ee189c13601';
+const c = await X.ticket('QA RT12 2754 control (no blueprint)', { department: X.ids.DEPT_B }); const C = c.j?.data?.id; o.control = X.err(c);
+const tryAll = async id => { const r = {};
+  r.editField = X.err(await api('o', 'PATCH', `desk:/modules/${X.TK}/records/${id}`, { data: [{ field: 'description', value: { kind: 'string', value: 'qa strict edit' } }] }));
+  r.tag = X.err(await api('o', 'POST', `desk:/desk/tickets/${id}/tags`, { tags: ['qa-rt12-2754'] }));
+  const cm = await api('o', 'POST', `desk:/desk/tickets/${id}/comments`, { content: 'QA RT12 2754 comment', is_public: false }); r.comment = X.err(cm); r.commentId = cm.j?.data?.id;
+  r.reply = X.err(await api('o', 'POST', `desk:/desk/tickets/${id}/replies`, { to: ['qa.rt12@example.com'], content: 'QA RT12 2754 reply', send: false }));
+  r.status = X.err(await api('o', 'PATCH', `desk:/modules/${X.TK}/records/${id}`, { data: [{ field: 'status', value: { kind: 'string', value: 'Closed' } }] }));
+  return r; };
+o.strictTicket = await tryAll(S); o.controlTicket = await tryAll(C); o.C = C;
+return o;

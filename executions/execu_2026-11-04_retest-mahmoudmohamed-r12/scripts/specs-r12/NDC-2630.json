@@ -1,0 +1,12 @@
+{ "out": "NDC-2630-retest-BLOCKED.png", "ticket": "NDC-2630", "title": "Email | A failed email send is shown as sent", "verdict": "BLOCKED",
+  "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · owner", "date": "5 Nov 2026",
+  "panels": [ { "img": "NDC-2630-api.png", "caption": "API evidence — send from a QA lead as the owner; attempt to set up a failing provider for taviportal.com", "crop": [0, 0, 1600, 475], "w": 1600, "h": 900, "full": true,
+    "boxes": [ { "b": [36,99,1564,157], "n": 1, "kind": "INFO" }, { "b": [36,167,1564,225], "n": 2, "kind": "PASS" }, { "b": [36,235,1564,293], "n": 3, "kind": "PASS" }, { "b": [36,303,1564,340], "n": 4, "kind": "PASS" }, { "b": [36,350,1564,387], "n": 5, "kind": "PASS" }, { "b": [36,397,1564,455], "n": 6, "kind": "BLOCKED" } ] } ],
+  "rows": [
+   ["1", "Mail connections on the tenant", "Zoho Mail connection for taviportal.com (the ticket's case)", "Only the system SMTP for anyware.software; the Zoho connection is gone", "INFO"],
+   ["2", "Pre-check for a sender with no provider", "Says the user can't send, and why", "can_send false, reason no_connection", "PASS"],
+   ["3", "Send", "The screen/API says it failed and why — never \"Sent\"", "422 MAIL_NO_CONNECTION with the reason", "PASS"],
+   ["4", "Record Mails / Sent", "No sent email", "Both empty", "PASS"],
+   ["5", "Timeline", "No EmailSent for a failed send", "RecordCreated only", "PASS"],
+   ["6", "Original case: provider connected but the send fails", "Failed send shown as failed, no EmailSent (r10 FAIL point)", "Not testable: no Zoho connection; an SMTP connection is checked on save (fake host / wrong password refused, nothing saved)", "BLOCKED"]
+  ] }

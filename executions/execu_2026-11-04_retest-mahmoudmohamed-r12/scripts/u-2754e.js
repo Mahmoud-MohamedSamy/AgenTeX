@@ -1,0 +1,21 @@
+const o = {}; const reqs = [];
+page.on('response', async r => { if (['PUT', 'POST', 'PATCH'].includes(r.request().method()) && /blueprints/.test(r.url())) reqs.push(r.request().method() + ' ' + r.status()); });
+await page.goto(H + '/settings/automation/blueprints/45e045b1-2991-46dc-9af0-5b158de25ea8', { waitUntil: 'commit', timeout: 120000 });
+for (let i = 0; i < 60; i++) { await sleep(3000); if (/Save and Publish/.test(await text())) break; } await sleep(5000);
+await page.getByRole('button', { name: 'QA go', exact: true }).first().click(); await sleep(3000);
+const addSel = () => page.locator('select').filter({ hasText: 'Add item' }).first(); const add = async name => { await addSel().selectOption({ label: name }); await sleep(2500); };
+o.addOpts = await addSel().evaluate(x => [...x.options].map(y => y.text)); await add('Field'); await shot('2754-f-field-added.png'); const dur = page.locator('xpath=//*[normalize-space(text())="During"]/ancestor::*[self::div][3]').first(); o.during = (await dur.innerText().catch(() => '')).slice(0, 1500); o.selects = await page.locator('select').evaluateAll(a => a.map(x => [...x.options].slice(0, 6).map(y => y.text).join('|')));
+const fsel = page.locator('select').filter({ hasText: 'Choose a field' }).first(); o.amountOpts = (await fsel.evaluate(x => [...x.options].map(y => y.text))).filter(t => /Amount/i.test(t)); await fsel.selectOption({ label: 'QA NDC Amount' }); await sleep(2500);
+await page.getByRole('button', { name: /Add a check/i }).first().click().catch(e => o.noCheckBtn = String(e).slice(0, 80)); await sleep(2000);
+o.checkSelects = await page.locator('select').evaluateAll(a => a.map(x => [...x.options].slice(0, 12).map(y => y.text).join('|')).slice(2));
+o.inputs = await page.locator('input:visible').evaluateAll(a => a.map(x => (x.placeholder || x.getAttribute('aria-label') || x.name || '') + '=' + x.value).slice(-12));
+const msg = page.getByPlaceholder('Message when it fails'); await msg.scrollIntoViewIfNeeded(); await sleep(800); await shot('2754-g-check.png'); const box = await msg.boundingBox(); o.msgBox = box; const sec = msg.locator('xpath=ancestor::*[self::div][3]'); o.checkHtml = (await sec.innerText()).slice(0, 600); o.checkCtl = await sec.locator('select, input, button, [role=combobox]').evaluateAll(a => a.map(x => x.tagName + ':' + (x.getAttribute('aria-label') || x.placeholder || x.innerText || '').slice(0, 40)));
+await sec.getByRole('button', { name: 'Operator' }).first().click(); await sleep(1500); o.ops = (await page.getByRole('option').allInnerTexts()).map(x => x.trim()).slice(0, 20); if (!o.ops.length) o.ops = (await page.locator('[role=listbox] *, [role=menu] *').allInnerTexts()).slice(0, 20);
+const gt = page.getByRole('option', { name: /greater than|^>$|is greater/i }).first(); if (await gt.count()) { await gt.click(); await sleep(1000); }
+await sec.locator('input').first().fill('0'); await msg.fill('Amount must be more than 0'); await sleep(800);
+await addSel().selectOption({ label: 'Submit for approval' }); await sleep(2500); await addSel().selectOption({ label: 'Share' }); await sleep(2500);
+o.duringNow = (await page.locator('xpath=//*[normalize-space(text())="What the agent fills in"]/ancestor::*[self::div][2]').first().innerText()).slice(0, 1500);
+await shot('2754-h-during.png');
+await page.getByRole('button', { name: 'Save transition' }).click(); await sleep(3000); o.issues = (await text()).match(/d+ issues? to fix[sS]{0,400}/)?.[0];
+await page.getByRole('button', { name: 'Save Draft' }).first().click(); await sleep(6000); o.reqs = reqs;
+return o;

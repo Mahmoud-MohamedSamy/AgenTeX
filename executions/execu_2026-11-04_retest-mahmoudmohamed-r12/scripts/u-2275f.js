@@ -1,0 +1,16 @@
+const posts = []; page.on('request', r => { if (r.method() === 'POST' && /records$/.test(r.url())) posts.push(r.postData()); });
+const resp = []; page.on('response', async r => { if (r.request().method() === 'POST' && /records$/.test(r.url())) resp.push(r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 200)); });
+await page.goto(H + '/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records/new', { waitUntil: 'commit', timeout: 120000 });
+for (let i = 0; i < 60; i++) { await sleep(3000); if (/Create Ticket/.test(await text())) break; } await sleep(4000);
+const row = lbl => page.locator(`xpath=//*[normalize-space(text())="${lbl}"]/ancestor::*[self::div][2]`).first();
+await row('Department').locator('input, [role=combobox], button').first().click(); await sleep(1000); await page.keyboard.type('QA RT11 Dept A'); await sleep(2500);
+await page.getByRole('option', { name: 'QA RT11 Dept A' }).first().click().catch(async () => { await page.getByText('QA RT11 Dept A', { exact: true }).last().click(); }); await sleep(3000);
+await row('Subject').locator('input').first().fill(process.env.SUBJ || 'QA RT12 2275 SEQ ui 1'); await page.keyboard.press('Escape'); await sleep(800);
+await row('Status').locator('button, [role=combobox], select').first().click(); await sleep(1200); await page.getByRole('option', { name: 'Open', exact: true }).first().click().catch(() => page.getByText('Open', { exact: true }).last().click()); await sleep(1000);
+const ow = row('Ticket Owner'); log('owner before', (await ow.innerText()).replace(/\s+/g, ' '));
+await ow.locator('button[aria-label*="lear" i], [aria-label*="Clear" i]').first().click().catch(async () => { await ow.getByText('×').first().click().catch(() => {}); }); await sleep(1500);
+log('owner after clear', (await ow.innerText()).replace(/\s+/g, ' '));
+await shot('2275-c2-form-filled.png');
+await page.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(10000);
+await shot('2275-c3-after-save.png');
+return { posts: posts.map(p => p.slice(0, 900)), resp, url: page.url() };

@@ -1,0 +1,13 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d'; const re = /QA RT1[12]/; const o = {};
+for (const t of ['direct', 'round_robin']) o['rules_' + t] = arr((await api('o', 'GET', `desk:/desk/assignment-rules?type=${t}`)).j?.data?.rules).filter(x => re.test(x.name)).length;
+o.bp = arr((await api('o', 'GET', `desk:/modules/${TK}/blueprints`)).j?.data).filter(b => re.test(b.definition?.name || '')).length;
+o.teams = arr((await api('o', 'GET', '/desk/teams'.replace(/^/, 'desk:'))).j?.data?.teams || (await api('o', 'GET', 'desk:/desk/teams')).j?.data).filter(x => re.test(x.name)).length;
+o.depts = arr((await api('o', 'GET', 'desk:/desk/departments')).j?.data?.departments || (await api('o', 'GET', 'desk:/desk/departments')).j?.data).filter(x => re.test(x.name)).length;
+o.sla = arr((await api('o', 'GET', 'desk:/desk/sla/policies')).j?.data?.policies || (await api('o', 'GET', 'desk:/desk/sla/policies')).j?.data).filter(x => re.test(x.name)).length;
+o.bh = arr((await api('o', 'GET', 'desk:/iam/tenant/business-hours/profiles')).j?.data?.profiles || (await api('o', 'GET', 'desk:/iam/tenant/business-hours/profiles')).j?.data).filter(x => re.test(x.name)).length;
+o.tpl = arr((await api('o', 'GET', 'desk:/desk/ticket-templates')).j?.data?.templates || (await api('o', 'GET', 'desk:/desk/ticket-templates')).j?.data).filter(x => re.test(x.name)).length;
+for (const id of ['62f78152-7033-4af8-b75f-551c219f85f6', 'ae19f6b9-0ac9-4f60-bd2f-765585ade51b', 'eab1fa40-ece3-46dc-9d98-5f50e7ff0465']) o['wf_' + id.slice(0, 8)] = (await api('o', 'GET', `desk:/workflow/rules/${id}`)).s;
+let n = 0; for (const q of ['QA RT11', 'QA RT12']) { const f = JSON.stringify([{ field: 'subject', operator: 'contains', value: q }]); n += arr((await api('o', 'GET', `desk:/modules/${TK}/records?page=1&per_page=100&filters=${encodeURIComponent(f)}`)).j?.data?.records || []).length; } o.tickets = n;
+o.binQA = arr((await api('o', 'GET', 'desk:/audit/recycle-bin/items?app_key=desk&limit=200')).j?.data).filter(x => /^QA RT/.test(x.record_label || '')).map(x => x.module_label + ':' + x.record_label);
+const bh = (await api('o', 'GET', 'desk:/iam/tenant/business-hours/profiles')).j?.data; o.bhDefault = JSON.stringify(bh).slice(0, 160);
+return o;

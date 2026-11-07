@@ -1,0 +1,11 @@
+const M = require("./p2275.js"); const Z = M({api, X, sleep, arr, ledger, log}); const o = {}; const E = { api, X, sleep, arr }; const { U, A } = Z;
+const led = require('fs').readFileSync('../ledger.md', 'utf8'); const id = s => (led.match(new RegExp('"QA RT12 2275 ' + s + '" ([0-9a-f-]{36})')) || [])[1];
+const back = ['SEQ thr 5', 'SEQ thr 6'].map(id); const st = async () => Promise.all(back.map(async b => (await Z.owner(b)).owner || '-'));
+o.me_a = (await api('a', 'GET', 'desk:/iam/me')).j?.data?.email?.split('@')[0];
+o.p = X.err(await M.setPrefs(api, A, { assign_to_offline_agents: true, department_threshold_enabled: true, department_threshold: 6, assign_on_closure: true, assign_backlogs: false }));
+o.before = await st();
+const c = id('SEQ upd 6'); o.cOwner = (await Z.owner(c)).owner;
+const t0 = Date.now(); o.close = X.err(await api('a', 'PATCH', `desk:/modules/${X.TK}/records/${c}`, { data: [{ field: 'status', value: { kind: 'string', value: 'Closed' } }] }));
+let s; for (let i = 0; i < 20; i++) { await sleep(2000); s = await st(); if (s.some(x => x !== '-')) break; } o.after = s; o.secs = Math.round((Date.now() - t0) / 1000);
+o.auto = await Promise.all(back.map(b => M.auto(Z, E, b)));
+return o;

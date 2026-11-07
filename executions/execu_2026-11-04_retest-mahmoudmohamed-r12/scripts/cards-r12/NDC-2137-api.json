@@ -1,0 +1,9 @@
+{ "out": "NDC-2137-api.png", "date": "6 Nov 2026", "host": "staging-crm.taviportal.com (tenant NDC-Staging)", "who": "ndc-staging-owner (Owner)",
+  "title": "NDC-2137 · Transactions Kanban \"Kanban View\", Pipeline Standard (62 records, 6 columns) — 21 reloads + the board's column requests",
+  "rows": [
+   ["headers", "column captions + Amount totals after each reload", "p50 1.28 s, p95 1.76 s, max 2.90 s (20 reloads) — within the 2 s target", "ok"],
+   ["first cards", "cards in the columns", "never load: every column stays on grey placeholders, toast \"An unexpected error occurred. Please try again.\"", "bad"],
+   ["column request", "GET /modules/{Deals}/records?per_page=25&filters=[pipeline,stage]&layout_id&view_id&board_order&skip_total=true", "500 INTERNAL_ERROR on all 14 column calls of a load", "bad"],
+   ["cause", "same request without skip_total / with each other parameter", "200 (5 records for negotiation); only skip_total=true gives 500", "info"],
+   ["other modules", "GET /modules/{leads|deals|contacts|tasks}/records?per_page=25&skip_total=true", "500 on every module; without skip_total 200", "bad"]
+  ] }

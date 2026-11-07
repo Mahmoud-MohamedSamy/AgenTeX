@@ -1,0 +1,10 @@
+{ "out": "NDC-1948-retest-FAIL.png", "ticket": "NDC-1948", "title": "Notes | A user denied Timeline Visibility can't add notes: the note stays on \"Posting…\" forever with a success message", "verdict": "FAIL",
+  "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · user mahmoud.mmohamedsamy (CRM User) · Timeline Visibility default Deny (test), restored to Allow", "date": "4 Nov 2026",
+  "panels": [ { "img": "1948-b3-after-12s.png", "caption": "Note added: shown at 2 s and 12 s, no \"Posting…\"", "crop": [290, 60, 1290, 760], "w": 1600, "h": 900, "boxes": [] },
+    { "img": "1948-b4-reload.png", "caption": "After reload: \"No notes yet\" — the API returns the note for this user; Timeline tab hidden", "crop": [290, 60, 1290, 760], "w": 1600, "h": 900, "boxes": [ { "b": [300, 290, 580, 330], "n": 1, "kind": "PASS" }, { "b": [300, 360, 1200, 800], "n": 3, "kind": "FAIL" } ] } ],
+  "rows": [
+   ["1", "Timeline tab for a user denied timeline", "Hidden or empty", "Hidden (Overview / Emails / Calls / Files)", "PASS"],
+   ["2", "Add a note", "Note saved and shown, no endless \"Posting…\"", "201, toast \"Note added\", shown at 2 s and 12 s", "PASS"],
+   ["3", "Reload the record", "The note is still listed", "\"No notes yet\" although GET …/notes returns it (same call the page makes)", "FAIL"],
+   ["", "Control: policy back to Allow", "—", "Same user, same lead: note listed after reload", "INFO"]
+  ] }

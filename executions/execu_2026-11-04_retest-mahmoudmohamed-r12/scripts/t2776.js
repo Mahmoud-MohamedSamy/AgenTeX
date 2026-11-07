@@ -1,0 +1,13 @@
+const o = {}; const g = await api('o', 'GET', 'desk:/iam/tenant/company-profile'); const base = g.j?.data; require('fs').writeFileSync('../2776-company-backup.json', JSON.stringify(base));
+o.keys = Object.keys(base || {}); o.phone0 = base?.phone;
+const full = r => `${r.s} ${r.j?.error?.code || ''} ${r.j?.error?.message || ''} ${r.j?.error?.details ? JSON.stringify(r.j.error.details).slice(0, 200) : ''}`.trim();
+const put = async phone => { const body = { ...base, phone }; for (const k of ['id', 'tenant_id', 'created_at', 'updated_at', 'logo_url', 'version']) delete body[k]; return api('o', 'PUT', 'desk:/iam/tenant/company-profile', body); };
+ledger('NDC-2776: company profile phone tests; backup ../2776-company-backup.json (phone ' + (base?.phone ?? 'null') + ')');
+o.p300 = full(await put('1'.repeat(300)));
+o.p40 = full(await put('1'.repeat(40)));
+o.p21 = full(await put('+2012345678901234567'.padEnd(21, '9')));
+o.p20 = full(await put('+201234567890123456'.padEnd(20, '9'))); o.after20 = (await api('o', 'GET', 'desk:/iam/tenant/company-profile')).j?.data?.phone;
+o.letters = full(await put('call me maybe'));
+o.restore = full(await put(base?.phone ?? null)); o.phoneNow = (await api('o', 'GET', 'desk:/iam/tenant/company-profile')).j?.data?.phone;
+ledger('NDC-2776: company phone restored -> ' + o.phoneNow);
+return o;

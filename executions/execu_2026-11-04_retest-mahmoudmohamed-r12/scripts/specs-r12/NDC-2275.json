@@ -1,0 +1,34 @@
+{
+ "out": "NDC-2275-retest-PARTIAL.png",
+ "ticket": "NDC-2275",
+ "title": "Assignment Rules: Direct Assignment and Round Robin (requirements)",
+ "verdict": "PARTIAL",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · owner + agent fedelav803 · department QA RT11 Dept A",
+ "date": "5 Nov 2026",
+ "panels": [
+  { "img": "2275-c2-form-filled.png", "caption": "1 · New Ticket form, department QA RT11 Dept A, Ticket Owner cleared (request sends owner = null). Round Robin rule QA RT12 2275 RR1 (On Ticket Create, subject contains \"SEQ\") matches.", "crop": [400, 400, 1040, 420], "w": 1600, "h": 900,
+    "boxes": [ { "b": [1106, 746, 1408, 784], "n": 1, "kind": "INFO" }, { "b": [603, 598, 1408, 636], "n": 1, "kind": "INFO" } ] },
+  { "img": "2275-e1-ui1-history.png", "caption": "2 · After Save: owner = the creator (ndc-staging-owner); History has no \"Assigned automatically\" entry — round robin never ran", "crop": [370, 60, 1230, 480], "w": 1600, "h": 900,
+    "boxes": [ { "b": [384, 448, 646, 506], "n": 2, "kind": "FAIL" }, { "b": [708, 384, 1000, 492], "n": 2, "kind": "FAIL" } ] },
+  { "img": "2275-d1-history-skp1.png", "caption": "3 · Same rule on ticket update: History shows rule type, rule, method, trigger and the offline agent as SKIPPED", "crop": [664, 240, 936, 260], "w": 1600, "h": 900, "full": false,
+    "boxes": [ { "b": [708, 300, 1070, 470], "n": 3, "kind": "PASS" } ] }
+ ],
+ "rows": [
+  ["1-2", "Round robin on Ticket Create (New Ticket form, owner cleared; also API create)", "Unassigned ticket is assigned by the matching RR rule (EO-1, GEN-13)", "Owner set to the creator; RR never runs (form sends owner null, API sends kind null)", "FAIL"],
+  ["3", "Sequential, 3 agents, 6 tickets (on update)", "A1, A2, A3, A1, A2, A3", "A1, A2, A3, A1, A2, A3", "PASS"],
+  ["3", "Offline agent skipped, History", "Skipped agent marked SKIPPED; rule named in History (RR-7, GEN-10)", "Rule type, rule, method, trigger, \"mahmoud.mahamed1515 (SKIPPED)\"", "PASS"],
+  ["", "Load based, 4 tickets", "Least-loaded agent first", "A2, A2, A3, A2 (open counts 5/2/4 at start)", "PASS"],
+  ["", "Whole pool offline, offline not allowed", "Ticket stays unassigned (backlog)", "Stays unassigned", "PASS"],
+  ["", "Department threshold 6 / agent threshold A1 = 12", "Agents at threshold skipped; A1 goes on to 12", "3 assigned then backlog; A1, A2, A1 with agent threshold", "PASS"],
+  ["", "Assign backlogs / Assign tickets on closure", "Backlog ticket goes to the agent who drops below / who closes", "Backlog → A3 (trigger backlog); A3 closes a ticket → backlog ticket to A3 in 4 s", "PASS"],
+  ["", "Direct rule: preset owner / agent at threshold", "Owner kept / still assigned (DA-5, DA-7)", "Owner kept; A1 assigned at threshold", "PASS"],
+  ["", "Direct + RR both match; two direct rules match; reorder", "Direct wins; higher rule wins; after reorder the other", "A1; A1; after reorder A3 (order restored)", "PASS"],
+  ["", "Workflow sees owner set by direct rule (EO-2); RR keeps workflow owner (EO-3)", "Workflow fires; RR does not change owner", "Workflow wrote its marker; owner stays A2, no RR entry", "PASS"],
+  ["", "Direct A3 then workflow A1 in one event (EO-5)", "Only the final owner is notified", "A3 got no notice (control ticket: A3 notified); History A3 → A1", "PASS"],
+  ["", "Team target / Move to department / agent outside move-to department", "Team, no owner, team notified / moved unassigned / refused", "As expected; 400 not_a_member", "PASS"],
+  ["", "Deactivate rule; Direct master switch off (seconds)", "Rule does nothing, targets kept; no direct rule runs", "As expected; switch restored", "PASS"],
+  ["", "Validation: 6 targets, no Execute on, no method, threshold 0 / 201, stale save", "Refused; MSG-6 on stale save", "400 too_many / invalid / method required / 400 / 409 RULE_CHANGED", "PASS"],
+  ["", "Audit Log", "Entry per rule change and preferences save (GEN-11)", "assignment_rule created/updated, round_robin_preferences updated", "PASS"],
+  ["", "History shows the owner change twice", "One entry per change", "\"Ticket owner was changed\" and \"Ticket Owner was updated\" for the same change", "INFO"]
+ ]
+}

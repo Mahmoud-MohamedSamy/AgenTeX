@@ -1,0 +1,17 @@
+{ "out": "NDC-2754-retest-PARTIAL.png", "ticket": "NDC-2754", "title": "Blueprint (with SLA tie-in): features Zoho Desk has that Desk is missing", "verdict": "PARTIAL",
+  "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · owner + Desk Agent fedelav803 · items to retest per dev note: 1–6, 10, 15", "date": "6 Nov 2026",
+  "panels": [
+   { "img": "2754-k-ticket-buttons.png", "caption": "Ticket in \"QA RT12 2754 full\": buttons in the configured order (QA alt, QA go, QA hold, QA rate), \"Assign owners\" per transition, status locked", "crop": [664, 60, 936, 230], "w": 1600, "h": 900, "full": true,
+     "boxes": [ { "b": [1278, 142, 1584, 174], "n": 3, "kind": "PASS" }, { "b": [676, 182, 1414, 214], "n": 2, "kind": "PASS" } ] },
+   { "img": "NDC-2754-api.png", "caption": "API evidence — strict mode, owners, checks, approval, share, ratings, revoke", "crop": [0, 0, 1600, 650], "w": 1600, "h": 900, "full": true,
+     "boxes": [ { "b": [36,99,1564,178], "n": 1, "kind": "PASS" }, { "b": [36,188,1564,246], "n": 2, "kind": "INFO" }, { "b": [36,256,1564,314], "n": 4, "kind": "PASS" }, { "b": [36,324,1564,382], "n": 5, "kind": "PASS" }, { "b": [36,392,1564,450], "n": 6, "kind": "PASS" }, { "b": [36,460,1564,497], "n": 6, "kind": "FAIL" }, { "b": [36,507,1564,565], "n": 10, "kind": "INFO" }, { "b": [36,575,1564,633], "n": 15, "kind": "PASS" } ] } ],
+  "rows": [
+   ["1", "Strict Mode (Restrict All)", "Agents can't edit, comment, reply, reassign outside a transition", "All refused (403) on the strict ticket; same actions allowed on a control ticket. Tags / merge / delete comment not checked", "PASS"],
+   ["2", "Dynamic owners (Assign owners on the ticket)", "Admin sets owners per transition; only they can run it", "Saved; the owner account is refused (\"not an owner of this transition\"). The assigned agent could not open the ticket (404), so their run was not shown", "PARTIAL"],
+   ["3", "Button order per state", "Order set in the designer", "Designer arrows reorder; ticket shows QA alt, QA go, QA hold, QA rate", "PASS"],
+   ["4", "Field check with own message", "Amount > 0 with \"Amount must be more than 0\"", "0 and -5 refused with the message; 5 runs", "PASS"],
+   ["5", "Submit for approval (During item)", "Required approval request", "Refused without; with it → approval pending, ticket moved", "PASS"],
+   ["6", "Share (During item)", "Required share; a share that adds nothing is refused", "Share to Dept B works; share to the ticket's own department is accepted (200) and shares nothing", "FAIL"],
+   ["10", "Run only on certain ratings", "Good / Okay / Bad ticks", "Saved (Bad only); a trigger on a transition with input is refused. Not run: rating links are disabled on the tenant", "INFO"],
+   ["15", "Revoke permission", "Revoke needs desk:ticket:blueprint_revoke (Supervisor, Administrator)", "Desk Agent refused (message names desk:blueprints:manage); owner can revoke. Supervisor not tried", "PASS"]
+  ] }

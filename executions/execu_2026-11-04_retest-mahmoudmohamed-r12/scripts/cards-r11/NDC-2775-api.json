@@ -1,0 +1,27 @@
+{
+ "out": "NDC-2775-api.png",
+ "date": "3 Nov 2026",
+ "host": "staging-desk.taviportal.com (tenant NDC-Staging)",
+ "who": "ndc-staging-owner (Owner)",
+ "title": "NDC-2775 · Status field (42 values), QA status \"QA RT11 Verify\", blueprint QA RT11 C20 bp",
+ "rows": [
+  [
+   "add status",
+   "POST /desk/blueprints/states",
+   "200, Status field 42 → 43 values",
+   "info"
+  ],
+  [
+   "remove while active",
+   "PUT Status field without \"QA RT11 Verify\" (0 tickets in it)",
+   "422 FIELD_OPTION_IN_BLUEPRINT \"…is a state of the active blueprint \"QA RT11 C20 bp\", so it cannot be removed or merged…\"",
+   "ok"
+  ],
+  [
+   "after switching off",
+   "blueprint inactive → same PUT",
+   "200, back to 42 values",
+   "ok"
+  ]
+ ]
+}

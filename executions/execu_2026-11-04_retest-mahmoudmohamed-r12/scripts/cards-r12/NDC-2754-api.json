@@ -1,0 +1,12 @@
+{ "out": "NDC-2754-api.png", "date": "6 Nov 2026", "host": "staging-desk.taviportal.com (tenant NDC-Staging)", "who": "owner + Desk Agent fedelav803",
+  "title": "NDC-2754 · blueprint \"QA RT12 2754 full\" (QA RT11 Dept A) — strict all, dynamic owners, order alt→go→hold→rate, checks, approval, share, rating Bad",
+  "rows": [
+   ["1 strict", "owner on a strict ticket: edit field / comment / reply / reassign / status", "403 BLUEPRINT_STRICT_MODE · 403 · 403 · 403 \"allows this only through a transition\" · 422 governed; control ticket (no blueprint): 200 / 201 / 201 / 200", "ok"],
+   ["2 owners", "Assign owners of QA rate = fedelav803 → run QA rate as owner account", "PUT …/blueprint/owners/rate 200; owner account → 403 BLUEPRINT_NOT_OWNER; fedelav803 → 404 (can't see the ticket; reassign blocked by strict)", "info"],
+   ["4 check", "QA go with Amount 0 / -5 / 5", "422 \"Amount must be more than 0\" ×2; 5 → 200, state Escalated, Amount saved", "ok"],
+   ["5 approval", "QA hold without / with approval {subject, approver_user_ids}", "422 \"An approval request is required.\" / 200 → On Hold, approval pending (approver fedelav803)", "ok"],
+   ["6 share", "QA alt without / with shares [QA RT11 Dept B, full]", "422 \"A share with another department is required.\" / 200 → Closed, ticket.shared, share listed", "ok"],
+   ["6 no-op", "QA alt with shares [own department QA RT11 Dept A]", "200 — transition ran, nothing shared (shares = [])", "bad"],
+   ["10 ratings", "rating trigger Bad only; trigger on a transition that needs input", "saved onRatingValues [bad]; needs-input → 422 BLUEPRINT_TRIGGER_NEEDS_INPUT; run not possible: rating link reason \"disabled\"", "info"],
+   ["15 revoke", "revoke a ticket: Desk Agent / owner", "403 \"Missing required permission 'desk:blueprints:manage'\" / 200 (left blueprint)", "ok"]
+  ] }

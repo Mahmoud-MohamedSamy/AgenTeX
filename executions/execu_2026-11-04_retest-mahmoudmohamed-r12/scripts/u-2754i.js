@@ -1,0 +1,12 @@
+const o = {}; const net = [];
+page.on('response', async r => { const u = r.url(); if (/rating|happiness/.test(u)) net.push(r.request().method() + ' ' + r.status() + ' ' + u.replace(/^.*api\/v1/, '') + ' ' + (await r.text().catch(() => '')).replace(/token=[A-Za-z0-9._-]+/g, 'token=<t>').slice(0, 300)); });
+await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: H }).catch(() => {});
+const L = require('fs').readFileSync('../ledger.md', 'utf8'); const id = (L.match(/"QA RT12 2754F t6 rate bad" ([0-9a-f-]{36})/) || [])[1]; o.id = id;
+await page.goto(H + '/views/all/tickets/' + id, { waitUntil: 'commit', timeout: 120000 });
+for (let i = 0; i < 60; i++) { await sleep(3000); if (/QA RT12 2754F t6/.test(await text()) && /QA alt/.test(await text())) break; } await sleep(3000);
+await page.locator('button[aria-label*="More" i]').last().click().catch(() => {}); await sleep(1500);
+await page.getByRole('menuitem', { name: /Copy rating link/i }).click(); await sleep(3000);
+const link = await page.evaluate(() => navigator.clipboard.readText()).catch(e => 'ERR ' + e.message);
+o.linkShape = String(link).replace(/[A-Za-z0-9_-]{20,}/g, '<token>'); o.toast = (await text()).match(/[^\n]*(rating link|copied)[^\n]*/i)?.[0];
+require('fs').writeFileSync(require('path').join(process.env.TMPD || '.', 'rlink.txt'), String(link));
+o.net = net; return o;

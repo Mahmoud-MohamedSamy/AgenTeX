@@ -1,0 +1,21 @@
+const o = {}; const reqs = [];
+page.on('response', async r => { if (['PUT', 'POST', 'PATCH'].includes(r.request().method()) && /blueprints/.test(r.url())) reqs.push(r.request().method() + ' ' + r.status()); });
+await page.goto(H + '/settings/automation/blueprints/45e045b1-2991-46dc-9af0-5b158de25ea8', { waitUntil: 'commit', timeout: 120000 });
+for (let i = 0; i < 60; i++) { await sleep(3000); if (/Save and Publish/.test(await text())) break; } await sleep(5000);
+// open state Open on the canvas
+await page.locator('.react-flow__node').filter({ hasText: /^\s*Open/ }).first().click(); await sleep(3000);
+await shot('2754-i-state-open.png');
+const panel = page.locator('xpath=//*[contains(normalize-space(.),"When the customer rates")]/ancestor::*[self::div][4]').first();
+o.panel = (await panel.innerText().catch(() => (async () => '')())).slice(0, 1800);
+o.selects = await page.locator('select:visible').evaluateAll(a => a.map(x => (x.getAttribute('aria-label') || '') + ' :: ' + [...x.options].map(y => y.text).join('|')));
+o.orderBtns = await page.locator('button[aria-label*="Move" i]:visible').evaluateAll(a => a.map(x => x.getAttribute('aria-label')));
+o.ratingBoxes = await page.locator('[data-testid=desk-state-rating-values] input').count();
+const sels = page.locator('select:visible').filter({ hasText: 'QA hold' }); o.selLabels = await sels.evaluateAll(a => a.map(x => (x.closest('label')?.innerText || x.parentElement?.parentElement?.innerText || '').slice(0, 80)));
+await sels.nth(1).selectOption({ label: 'QA hold' }); await sleep(2000);
+const rv = page.locator('[data-testid=desk-state-rating-values]'); o.ratingText = (await rv.innerText().catch(() => '')).slice(0, 200);
+await rv.getByText('Bad', { exact: true }).click().catch(e => o.badErr = String(e).slice(0, 80)); await sleep(800);
+await page.getByRole('button', { name: 'Move QA alt up' }).click(); await sleep(800); await page.getByRole('button', { name: 'Move QA alt up' }).click(); await sleep(800);
+await shot('2754-j-state-config.png');
+await page.getByRole('button', { name: /Save state|Save/ }).filter({ hasText: /Save state/ }).first().click().catch(() => {}); await sleep(2000);
+await page.getByRole('button', { name: 'Save Draft' }).first().click(); await sleep(6000); o.reqs = reqs;
+return o;

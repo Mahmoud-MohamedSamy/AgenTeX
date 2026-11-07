@@ -1,0 +1,79 @@
+{
+ "out": "NDC-2763-retest-PASS.png",
+ "ticket": "NDC-2763",
+ "title": "Blueprint | The API saves an automatic move that points at a transition from another state, and it never runs",
+ "priority": "medium",
+ "verdict": "PASS",
+ "env": "staging-desk / staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API",
+ "date": "3 Nov 2026",
+ "panels": [
+  {
+   "img": "NDC-2763-api.png",
+   "caption": "API evidence — NDC-2763 · POST /modules/{Tickets}/blueprints, states Open / Escalated / Closed",
+   "crop": [
+    0,
+    0,
+    1600,
+    271
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      206
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      253
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "wrong auto move",
+   "Refused",
+   "422 \"State 'Open': 'esc2' is not a transition out of this state, so it cannot run automatically.\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "reply trigger",
+   "Refused (unchanged)",
+   "422 \"…cannot run on the contact's reply.\"",
+   "PASS"
+  ],
+  [
+   "3",
+   "control",
+   "Runs",
+   "auto due entered + 1 min; after 115 s Escalated, Status Escalated",
+   "PASS"
+  ]
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2758-api.png",
+ "date": "3 Nov 2026",
+ "host": "staging-desk.taviportal.com (tenant NDC-Staging)",
+ "who": "ndc-staging-owner (Owner)",
+ "title": "NDC-2758 · POST /modules/{Tickets}/blueprints, Dept QA RT11 Dept A",
+ "rows": [
+  [
+   "workflow-shape criteria",
+   "{kind:StringMatch, field, operator, stringValue}",
+   "422 \"The entry criteria cannot be read: a condition must have an 'op'.\"",
+   "ok"
+  ],
+  [
+   "unknown criteria",
+   "{foo:\"bar\"}",
+   "422",
+   "ok"
+  ],
+  [
+   "transition criteria",
+   "visibilityCriteria in the workflow shape",
+   "422 \"Transition 'go': its criteria cannot be read…\"",
+   "ok"
+  ],
+  [
+   "control",
+   "{op:contains, field:subject, value:\"QA RT11 N2-ONLY \"}",
+   "201",
+   "ok"
+  ],
+  [
+   "non-matching ticket",
+   "subject \"QA RT11 N2 other subject\"",
+   "not in the blueprint; matching ticket enters at Open",
+   "ok"
+  ]
+ ]
+}

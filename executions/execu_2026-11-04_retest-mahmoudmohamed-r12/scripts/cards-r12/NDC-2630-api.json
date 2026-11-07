@@ -1,0 +1,10 @@
+{ "out": "NDC-2630-api.png", "date": "5 Nov 2026", "host": "staging-crm.taviportal.com (tenant NDC-Staging)", "who": "ndc-staging-owner (Owner)",
+  "title": "NDC-2630 · send from lead \"QA RT12 2630 lead\" (5484c639)",
+  "rows": [
+   ["connections", "GET /mail/connections", "only smtp anyware.software (system, global) — the Zoho taviportal.com connection is gone", "info"],
+   ["pre-check", "GET /emails/sendability", "can_send false · reason no_connection · sender ndc-staging-owner@anyware.software", "ok"],
+   ["send", "POST /mail/drafts → POST /mail/drafts/{id}/send", "422 MAIL_NO_CONNECTION \"No email provider is connected for 'anyware.software'…\"", "ok"],
+   ["record", "GET /mail/records/leads/{id}/emails?box=mails|sent", "both empty — nothing shown as sent", "ok"],
+   ["timeline", "GET /timeline/records/leads/{id}/feed", "RecordCreated only — no EmailSent", "ok"],
+   ["original case", "POST /mail/connections/smtp (taviportal.com, fake host / wrong password)", "422 MAIL_CONNECTION_UNREACHABLE — nothing saved; a connected-but-failing provider cannot be set up", "info"]
+  ] }

@@ -1,0 +1,10 @@
+{ "out": "NDC-2137-retest-FAIL.png", "ticket": "NDC-2137", "title": "Custom Views | Kanban headers + first cards p95 5.1 s (target 2 s)", "verdict": "FAIL",
+  "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) 1600×900 · owner", "date": "6 Nov 2026",
+  "panels": [
+   { "img": "2137-f-board-15s.png", "caption": "Transactions Kanban 15 s after load: headers and totals shown, cards never arrive; error toast", "crop": [260, 60, 1340, 840], "w": 1600, "h": 900, "boxes": [ { "b": [276, 262, 1600, 335], "n": 1, "kind": "PASS" }, { "b": [276, 345, 1600, 640], "n": 2, "kind": "FAIL" }, { "b": [1170, 820, 1576, 876], "n": 2, "kind": "FAIL" } ] },
+   { "img": "NDC-2137-api.png", "caption": "Timing and the failing column request", "crop": [0, 0, 1600, 420], "w": 1600, "h": 900, "full": true, "boxes": [] } ],
+  "rows": [
+   ["1", "Column headers with Amount", "p95 ≤ 2 s", "p95 1.76 s, p50 1.28 s (20 reloads)", "PASS"],
+   ["2", "First cards", "p95 ≤ 2 s", "Never shown: each column call returns 500 (skip_total=true)", "FAIL"],
+   ["", "Scope of the 500", "—", "Any records list with skip_total=true fails (Leads, Deals, Contacts, Tasks)", "INFO"]
+  ] }

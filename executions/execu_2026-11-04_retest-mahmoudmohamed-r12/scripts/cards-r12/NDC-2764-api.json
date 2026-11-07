@@ -1,0 +1,9 @@
+{ "out": "NDC-2764-api.png", "date": "4 Nov 2026", "host": "staging-desk.taviportal.com (tenant NDC-Staging)", "who": "ndc-staging-owner (Owner)",
+  "title": "NDC-2764 · workflow rule \"QA RT12 2764 rule\" (on update, subject starts \"QA RT12 2764 \" → Status = Closed + description) vs blueprint \"QA RT12 2764 bp\" (Open → Escalated → Closed)",
+  "rows": [
+   ["rule limit", "POST /workflow/rules (r11: 400 limit of 50)", "201 — the limit no longer blocks", "ok"],
+   ["blueprint holds Status", "PATCH status on the blueprint ticket", "422 \"Governed picklist field can only change via blueprint transition execution.\"", "ok"],
+   ["rule fires", "run transition go → ticket updated → rule runs", "Status stays Escalated, ticket still in the blueprint, description written by the rule", "ok"],
+   ["dispatch", "rule result", "{\"written\":[\"description\"],\"kept_by_blueprint\":[{\"field\":\"status\"…}]} — matches the developer's note", "ok"],
+   ["control", "same rule on a ticket without a blueprint (QA RT11 Dept B)", "Status set to Closed and description written", "info"]
+  ] }

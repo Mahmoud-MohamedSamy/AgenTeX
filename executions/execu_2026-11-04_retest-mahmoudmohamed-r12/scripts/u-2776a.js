@@ -1,0 +1,12 @@
+const o = {}; const net = [];
+page.on('response', async r => { if (/company-profile$/.test(r.url()) && r.request().method() !== 'GET') net.push(r.request().method() + ' ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 200)); });
+await page.goto(H + '/settings/organization/company', { waitUntil: 'commit', timeout: 120000 }); for (let i = 0; i < 40; i++) { await sleep(3000); if (/Edit/.test(await text()) && /Phone/.test(await text())) break; } await sleep(2000);
+await page.getByRole('button', { name: 'Edit', exact: true }).first().click(); await sleep(2500);
+const ph = page.locator('xpath=//*[normalize-space(text())="Phone"]/following::input[1]').first();
+o.maxlength = await ph.getAttribute('maxlength'); await ph.fill(''); await ph.type('1'.repeat(40), { delay: 5 }); await sleep(800);
+o.typedLen = (await ph.inputValue()).length; await shot('2776-a-typed.png');
+await ph.fill('call me maybe'); await sleep(500); await page.mouse.click(1356, 127); await sleep(3000);
+o.msg = ((await text()).match(/[^\n]*(phone|unexpected)[^\n]*/gi) || []).slice(0, 4); await shot('2776-b-invalid.png');
+await page.mouse.click(1289, 127); await sleep(2500);
+o.net = net; o.phoneShown = ((await text()).match(/Phone\n[^\n]*/) || [''])[0];
+return o;

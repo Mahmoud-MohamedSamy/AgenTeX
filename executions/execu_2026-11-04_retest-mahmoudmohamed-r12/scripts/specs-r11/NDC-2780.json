@@ -1,0 +1,161 @@
+{
+ "out": "NDC-2780-retest-PASS.png",
+ "ticket": "NDC-2780",
+ "title": "Blueprint | Blueprint name accepts special characters and has no length limit (Zoho refuses special characters and stops at 60)",
+ "priority": "low",
+ "verdict": "PASS",
+ "env": "staging-desk / staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API",
+ "date": "3 Nov 2026",
+ "panels": [
+  {
+   "img": "2780-special.png",
+   "caption": "Designer: name with <script> → message, Save Draft and Publish disabled",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      1315,
+      208,
+      1586,
+      288
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1282,
+      66,
+      1586,
+      102
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2780-api.png",
+   "caption": "API evidence — NDC-2780 · Create Blueprint designer + POST /modules/{Tickets}/blueprints",
+   "crop": [
+    0,
+    0,
+    1600,
+    344
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      238,
+      1566,
+      279
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      285,
+      1566,
+      326
+     ],
+     "n": 7,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "name message",
+   "\"Special characters are not allowed\"",
+   "shown under Name",
+   "PASS"
+  ],
+  [
+   "2",
+   "save buttons",
+   "Save blocked",
+   "Save Draft and Save and Publish disabled",
+   "PASS"
+  ],
+  [
+   "3",
+   "designer special",
+   "Refused with message",
+   "\"Special characters are not allowed: …\"; Save Draft + Publish disabled",
+   "PASS"
+  ],
+  [
+   "4",
+   "designer length",
+   "60 / 1000",
+   "name 60, description 1000",
+   "PASS"
+  ],
+  [
+   "5",
+   "API special",
+   "Refused",
+   "422 for each",
+   "PASS"
+  ],
+  [
+   "6",
+   "API length",
+   "60 / 1000",
+   "201 / 422 / 422; 201 / 422",
+   "PASS"
+  ],
+  [
+   "7",
+   "allowed",
+   "Allowed",
+   "201 (API); no message (designer)",
+   "PASS"
+  ]
+ ]
+}

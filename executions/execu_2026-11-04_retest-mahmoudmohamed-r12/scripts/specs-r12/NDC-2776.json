@@ -1,0 +1,13 @@
+{ "out": "NDC-2776-retest-PASS.png", "ticket": "NDC-2776", "title": "Company profile | A long phone number gives \"An unexpected error occurred\", and the phone has no length limit", "verdict": "PASS",
+  "env": "staging-desk.taviportal.com › Setup › General › Company · tenant NDC-Staging · Edge (headless) + API · owner", "date": "6 Nov 2026",
+  "panels": [
+   { "img": "2776-a-typed.png", "caption": "Typing 40 digits: the field stops at 20 (maxlength 20), like Zoho", "crop": [510, 530, 820, 150], "w": 1600, "h": 900, "boxes": [ { "b": [551, 628, 922, 658], "n": 1, "kind": "PASS" } ] },
+   { "img": "2776-b-invalid.png", "caption": "Letters in Phone + Save: \"Enter a valid phone number\" under the field, nothing saved", "crop": [510, 530, 820, 180], "w": 1600, "h": 900, "boxes": [] },
+   { "img": "NDC-2776-api.png", "caption": "API: long values refused with a clear message, no server error", "crop": [0, 0, 1600, 420], "w": 1600, "h": 900, "full": true, "boxes": [] } ],
+  "rows": [
+   ["1", "Type a long number in Phone", "Stops at 20 characters", "maxlength 20; 40 typed → 20 kept", "PASS"],
+   ["", "Save a 300-digit phone (API)", "Clear message, never a server error", "400 \"phone must be 20 characters or fewer.\"", "PASS"],
+   ["", "Save a 40-digit phone (API)", "Refused", "400 same message", "PASS"],
+   ["", "Save a 20-character phone", "Saved", "200", "PASS"],
+   ["", "Invalid characters", "Message under the field", "\"Enter a valid phone number\" / API 400 with allowed characters", "PASS"]
+  ] }
