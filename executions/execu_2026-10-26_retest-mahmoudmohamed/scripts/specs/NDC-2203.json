@@ -1,0 +1,374 @@
+{
+ "out": "NDC-2203-retest-PARTIAL.png",
+ "ticket": "NDC-2203",
+ "title": "DESK Workflow Missings",
+ "verdict": "PARTIAL",
+ "date": "26 Oct 2026",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · account mahmoud.mahamed1515 (Desk Administrator)",
+ "panels": [
+  {
+   "img": "a4-events-all.png",
+   "caption": "A Ticket Event: Customer Reply, Agent Response, Private Thread, Comment (any / public / private), Happiness Rating (good / okay / bad). Private Thread has no incoming / outgoing choice.",
+   "crop": [
+    208,
+    170,
+    900,
+    440
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      228,
+      255,
+      1100,
+      290
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      228,
+      295,
+      1100,
+      352
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      228,
+      358,
+      1100,
+      432
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2203-behaviour.png",
+   "caption": "Every item was used on a QA ticket and checked on the ticket, in Execution History and in Ticket History.",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      95,
+      1570,
+      161
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      163,
+      1570,
+      229
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      231,
+      1570,
+      475
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      477,
+      1570,
+      543
+     ],
+     "n": 7,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      545,
+      1570,
+      768
+     ],
+     "n": 8,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      817,
+      1570,
+      904
+     ],
+     "n": 9,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      906,
+      1570,
+      972
+     ],
+     "n": 10,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "f4-history-rule-ran.png",
+   "caption": "Ticket History names the rule that ran, what triggered it and its actions.",
+   "crop": [
+    620,
+    250,
+    660,
+    200
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      640,
+      315,
+      1270,
+      440
+     ],
+     "n": 11,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "A1",
+   "Customer Reply",
+   "Trigger fires on a customer reply",
+   "Fired on the reply from the QA mailbox",
+   "PASS"
+  ],
+  [
+   "A2",
+   "Agent Response",
+   "Trigger fires",
+   "Fired on an agent reply",
+   "PASS"
+  ],
+  [
+   "A3",
+   "Comment",
+   "Trigger fires",
+   "Public-only rule: public comment fired, private did not",
+   "PASS"
+  ],
+  [
+   "A4",
+   "Private Thread",
+   "Incoming / outgoing / both",
+   "Fires on a forward; no direction choice",
+   "FAIL"
+  ],
+  [
+   "A5",
+   "Happiness Rating",
+   "All / good / okay / bad",
+   "Options offered; not fired — Customer Happiness disabled on staging",
+   "INFO"
+  ],
+  [
+   "B1",
+   "Add Comment",
+   "Public / private",
+   "Both added (by System)",
+   "PASS"
+  ],
+  [
+   "B2",
+   "Send Email Reply",
+   "Reply to customer",
+   "Sent to the contact",
+   "PASS"
+  ],
+  [
+   "B3–B4",
+   "Reply / Notify via IM",
+   "Offered",
+   "Hidden — no WhatsApp brand (setup not changed)",
+   "INFO"
+  ],
+  [
+   "B5",
+   "Add Followers",
+   "Follower added",
+   "Follower added",
+   "PASS"
+  ],
+  [
+   "B6",
+   "Mark as Spam",
+   "Ticket is spam",
+   "is_spam true",
+   "PASS"
+  ],
+  [
+   "B7",
+   "Share Ticket",
+   "Shared with dept",
+   "Shared with HR",
+   "PASS"
+  ],
+  [
+   "B8",
+   "Change Layout",
+   "Layout changed",
+   "Moved to QA WF Layout",
+   "PASS"
+  ],
+  [
+   "B9",
+   "Custom Functions",
+   "Offered",
+   "Moved to NDC-1989; Run Custom Action works",
+   "PASS"
+  ],
+  [
+   "B10",
+   "Cliq notification",
+   "Offered",
+   "N/A per developer; Slack/Teams/Chat hidden (Slack uninstalled)",
+   "INFO"
+  ],
+  [
+   "B11–B12",
+   "Add / Remove Skills",
+   "Skills changed",
+   "Added / removed",
+   "PASS"
+  ],
+  [
+   "B13",
+   "Recalculate Skills",
+   "Skills recalculated",
+   "Runs; no skill has criteria to match",
+   "INFO"
+  ],
+  [
+   "B14",
+   "Reassign by Skills",
+   "Owner = skilled agent",
+   "Runs; nobody_online, no reassign",
+   "INFO"
+  ],
+  [
+   "D1",
+   "Assign to team",
+   "Team / round robin",
+   "Works on Edit; ignored on Create",
+   "FAIL"
+  ],
+  [
+   "D2",
+   "Email alerts",
+   "Template; users/teams/roles/contact",
+   "Sent to contact + user; team/role accepted",
+   "PASS"
+  ],
+  [
+   "D3–D4",
+   "Field Changed 3 fields, All / Any",
+   "Up to 3, All / Any",
+   "Any and All behave; 4th refused",
+   "PASS"
+  ],
+  [
+   "E1",
+   "Contact / Account fields",
+   "In conditions",
+   "35 fields; Contact · Title and Account · Name match",
+   "PASS"
+  ],
+  [
+   "E2",
+   "Execution Time",
+   "Business hours / holiday",
+   "business_hours yes, outside / holiday no (24/7 tenant)",
+   "PASS"
+  ],
+  [
+   "E3",
+   "Missing ticket fields",
+   "Offered",
+   "All offered except Name (no value); Is Overdue false in Create rules",
+   "PASS"
+  ],
+  [
+   "E4",
+   "doesn't contain",
+   "Works",
+   "Matched / not matched as expected",
+   "PASS"
+  ],
+  [
+   "E5",
+   "between / not between",
+   "Works",
+   "Both as expected",
+   "PASS"
+  ],
+  [
+   "E6",
+   "Current Time",
+   "Date value",
+   "Offered; before Current Time matched",
+   "PASS"
+  ],
+  [
+   "F1",
+   "Saved actions",
+   "New types saveable",
+   "Saved Add comment ran via rule",
+   "PASS"
+  ],
+  [
+   "F2",
+   "Department-scoped rules",
+   "Runs only in dept",
+   "HR yes, Customer Support no",
+   "PASS"
+  ],
+  [
+   "F3",
+   "Active / Inactive tabs",
+   "Filter",
+   "Active 12 / Inactive 1",
+   "PASS"
+  ],
+  [
+   "F4",
+   "History names the rule",
+   "Rule name shown",
+   "\"Workflow rule ran — Rule QA WF D4all\"",
+   "PASS"
+  ]
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "out": "NDC-1699-api.png",
+ "date": "27 Oct 2026",
+ "title": "NDC-1699 · Manager-profile user vs teamspace \"QA RT TS r6\" access list (27 Oct)",
+ "who": "test user 2 (profile Manager, switched by the user)",
+ "rows": [
+  [
+   "precondition",
+   "test user 2 profile",
+   "Manager (switched by the user for this test)",
+   "info"
+  ],
+  [
+   "access list",
+   "QA RT TS r6 ACL (access Selected)",
+   "test user 1 = admin + profiles User / Supervisor / test — Manager not on the list",
+   "info"
+  ],
+  [
+   "teamspace list",
+   "GET /api/v1/teamspaces",
+   "CRM Teamspace, New Teamspace, QA RT 1172 — QA RT TS r6 NOT listed",
+   "ok"
+  ],
+  [
+   "open directly",
+   "GET /api/v1/teamspaces/{QA RT TS r6} · …/folders",
+   "403 · 403",
+   "ok"
+  ],
+  [
+   "control: covered teamspace",
+   "QA RT 1172 (its org unit is on that list)",
+   "listed — access works when the user is covered",
+   "ok"
+  ]
+ ]
+}

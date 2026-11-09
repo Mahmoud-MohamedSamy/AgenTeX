@@ -1,0 +1,57 @@
+{
+ "out": "NDC-2203-r7-behaviour.png",
+ "host": "staging-desk.taviportal.com",
+ "who": "mahmoud.mahamed1515 (Desk Administrator) + fedelav803 (Desk Agent)",
+ "date": "27 Oct 2026",
+ "title": "NDC-2203 round 7 · the five fixes used on QA tickets (rules guarded by Subject starts with \"QA WF <id> \")",
+ "rows": [
+  [
+   "A4 private thread",
+   "Rules Incoming / Outgoing / Both on #592; forward to a Gmail address (not the contact), then a reply from it",
+   "Forward: Outgoing + Both fired, Incoming not. Reply: filed private (private_thread_answer), Incoming + Both fired, Outgoing not; ticket stays Open, Customer Responded not set",
+   "ok"
+  ],
+  [
+   "D1 team on Create",
+   "Create rule Owner Assignment › Team (Customer Experience Specialists); tickets by API, New Ticket form, and an agent with owner = self",
+   "#605, #616, #617, #618: team set, owner null at create; #618 then round robin (\"sequence\") gave it to a team agent. Edit rule #650: owner cleared, team set",
+   "ok"
+  ],
+  [
+   "Is Overdue on Create",
+   "Create rules Is Overdue = true / = false; due yesterday and due in 5 days",
+   "Yesterday: true fired, false not. +5 days: false fired, true not",
+   "ok"
+  ],
+  [
+   "History by rule",
+   "History tab of #598 (Share), #594 (Add comment), #597 (Mark as spam), EN and AR",
+   "\"by workflow rule QA WF B07\"; \"Workflow rule ran · Actions Share ticket\"; AR \"بواسطة قاعدة سير العمل\" / \"مشاركة التذكرة\"",
+   "ok"
+  ],
+  [
+   "Email with template",
+   "Rule and saved action: Desk template, no subject / body",
+   "201; sent: agents_emailed 1, contact_emailed true (#612, #615). Without a template, subject + body still required (400)",
+   "ok"
+  ],
+  [
+   "regression",
+   "A2, A3, D3, D4, E1–E6, F1–F3, B1–B15 on new QA tickets",
+   "All as in round 5 (match / no-match pairs correct); 4th watched field refused",
+   "ok"
+  ],
+  [
+   "new: false 403",
+   "Save a ticket that a rule moves to a team the saver is not in (form + API, create and edit)",
+   "403 \"Permission denied.\" although the ticket is created / the edit is saved (#616, #617, #605, #650)",
+   "bad"
+  ],
+  [
+   "new: history gaps",
+   "Rules on Execution Time / Is Overdue; Department changed row",
+   "No \"Workflow rule ran\" row (comment is still \"by workflow rule\"); Department shows the raw id 7e1ac409-…",
+   "info"
+  ]
+ ]
+}

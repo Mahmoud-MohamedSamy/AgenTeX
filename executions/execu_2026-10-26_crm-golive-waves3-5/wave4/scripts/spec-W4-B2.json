@@ -1,0 +1,15 @@
+{ "out": "W4-B2-portal-link-404.png", "ticket": "W4-B2", "verdict": "FAIL", "label": "NEW BUG · HIGH",
+  "title": "Customer Portal | the portal link opens 404 Not Found even when the portal is on",
+  "env": "staging-crm.taviportal.com (owner; link opened without signing in) vs Zoho CRM org943261092 (read-only)", "date": "26 Oct 2026",
+  "panels": [
+    { "img": "t-portal-on-settings.png", "w": 1600, "h": 900, "caption": "TAVI — QA W4 Portal (Leads, Standard layout; Full Name view, Phone edit) switched On and saved (PATCH 200). Nobody was given access.", "crop": [292, 200, 1024, 230],
+      "boxes": [ { "b": [810, 308, 1090, 338], "n": 1 } ] },
+    { "img": "z-portals.png", "w": 1600, "h": 950, "caption": "Zoho — Setup › Channels › Portals (no portal set up in this org, so a Zoho portal link was not opened).", "crop": [258, 66, 1326, 150],
+      "boxes": [ { "b": [287, 155, 423, 187], "n": 1, "color": "#16a34a" } ] },
+    { "img": "t-portal-link-on-404.png", "w": 1280, "h": 900, "caption": "TAVI — the portal link (https://staging-crm.taviportal.com/portal/rp1.…) while the portal is On: nginx 404 Not Found. Same answer while Off.", "crop": [0, 0, 700, 140],
+      "boxes": [ { "b": [4, 4, 520, 110], "n": 2 } ] }
+  ],
+  "rows": [
+    ["1", "Create and switch on a portal", "Portals: Get Started Now (not set up in this org)", "Works: portal created (POST 201), fields chosen, switched On (PATCH 200)", "PASS"],
+    ["2", "Open the portal link", "Not checked (no Zoho portal in this org)", "404 Not Found from nginx, On and Off alike (curl and a fresh browser); /portal/ itself is 404 — the portal pages are not served on staging. The web form hosted link (/embed/feedback/f/…) is 404 the same way (NDC-1488)", "FAIL"]
+  ] }

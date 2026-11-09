@@ -1,0 +1,25 @@
+const IDS = {"base":"16720dfc-eb4d-4231-b84b-464372b58d0b","email":"4597b28f-8b03-45c3-a4b5-ad99baeee70b","merge_master":"7b730e71-6594-45b8-9b7d-96d10969ca00","merge_child":"5d2af5df-5efe-41bc-b822-7d82ade01719","parent":"95272caf-c101-4dc5-8351-faffa36f828b","child_1":"495f3f67-904b-420a-9631-9ee2afb50e74","child_2":"b62244d3-2509-4611-9df1-d1ceb812e41c","bulk_1":"dca8f1fd-c427-4ad6-b3c4-1622e1485820","bulk_2":"4a957724-e128-4c01-8380-b5a65fa541d9","delete_me":"aab97950-4415-45b2-8a8d-932f4309527f","xss":"28303528-17f6-4611-9298-68ae0c843594"};
+// Wave 2 NDC helpers (appended after prelude). Every created object is pushed to CREATED.
+const T='88e8ea44-1658-4df3-9930-d0902b91073d', CM='43004ce2-577f-4eda-b00a-0750fe40c3d4', DQ='2a73bbc0-efb3-4250-bf9b-2fdc98236794', DS='ef8dc91f-1d30-491d-a1fc-9b62b96eca94', DCS='7e1ac409-58b0-41ab-97e1-0e7d5c8c5158', ME='97be04b6-0a08-4883-aa51-e1650b11cab7', UB='3445ec4a-020e-4f12-b156-dd2de7610164', UC='9d182dfa-05f3-4af7-9685-8615a2fbe537', CON='183dc191-e233-4dba-a828-d1945358863d';
+const CREATED = [];
+const enc = v => v === null ? { kind: 'null' } : typeof v === 'number' ? { kind: 'number', value: v } : typeof v === 'boolean' ? { kind: 'boolean', value: v } : Array.isArray(v) ? { kind: 'array', items: v.map(enc) } : { kind: 'string', value: String(v) };
+const body = vals => ({ data: Object.entries(vals).map(([f, v]) => ({ field: f, value: enc(v) })) });
+const fl = r => { const o = { id: r.id }; for (const x of (r.data || [])) { const v = x.value || {}; o[x.field] = v.kind === 'array' ? (v.items || []).map(i => i.value) : v.value !== undefined ? v.value : (v.kind === 'null' ? null : v); } return o; };
+const mkRec = async (mod, vals, tag) => { const r = await api('POST', `/modules/${mod}/records`, body(vals)); const id = r.j && r.j.data && (r.j.data.id || (r.j.data.record && r.j.data.record.id)); if (id) CREATED.push({ k: mod === T ? 'ticket' : mod === CM ? 'contact' : mod, id, tag }); return { s: r.s, id, e: r.j && r.j.error, raw: r.t.slice(0, 300) }; };
+const getRec = async (mod, id) => { const r = await api('GET', `/modules/${mod}/records/${id}`); return { s: r.s, o: r.j && r.j.data ? fl(r.j.data) : null }; };
+const patchRec = async (mod, id, vals) => api('PATCH', `/modules/${mod}/records/${id}`, body(vals));
+const short = r => ({ s: r.s, e: r.j && r.j.error ? (r.j.error.code + ': ' + r.j.error.message).slice(0, 160) : undefined });
+const fin = extra => done({ R, CREATED, ...(extra || {}) });
+const sh = r => ({ s: r.s, e: r.j && r.j.error ? (r.j.error.code + ': ' + r.j.error.message + ' ' + JSON.stringify(r.j.error.details || '')).slice(0, 260) : undefined, d: r.j && r.j.data ? JSON.stringify(r.j.data).slice(0, 260) : undefined });
+const wfx = async id => { const r = await api('GET', '/workflow/executions?recordId=' + id); return r.s + ' ' + JSON.stringify(arr(r.j && r.j.data).map(x => [x.ruleName || x.rule_name || x.ruleId, x.status])).slice(0, 300); };
+// Owner: collision (W2-51) while B's composer is open; email draft state; new approval for B to reject
+const o = {}; const P = `/desk/tickets/${IDS.base}`;
+const waitText = async (re, n) => { for (let i = 0; i < (n || 25); i++) { await sleep(1000); const t = await txt().catch(() => ''); if (re.test(t)) return t; } return await txt().catch(() => ''); };
+o.hbOwner = sh(await api('POST', `${P}/viewers/heartbeat`, { replying: false }));
+await page.goto(H + '/views/all/tickets/' + IDS.base, { waitUntil: 'commit', timeout: 60000 }).catch(() => {}); await waitText(/QA GL W2 base ticket edited/, 90); await sleep(6000);
+const t = await txt(); o.collisionText = (t.match(/[^\n]{0,60}(viewing|replying|is also|are also|typing)[^\n]{0,60}/gi) || []).slice(0, 4); o.shotCollision = await shot('../wave2n/ui-collision-owner');
+o.hbOwner2 = sh(await api('POST', `${P}/viewers/heartbeat`, { replying: false }));
+const ed = await api('GET', `/desk/tickets/${IDS.email}/drafts`); o.emailDrafts = arr(ed.j && ed.j.data).map(d => [d.id, d.review_state, d.author_user_id === ME]);
+const ap = await api('POST', `${P}/approvals`, { subject: 'QA GL W2 approval reject 2', description: 'Go-live test, B rejects it', approver_user_ids: [UB] }); o.ap = sh(ap);
+const tk = await getRec(T, IDS.email); o.emailOwner = tk.o && tk.o.owner; const bk = await getRec(T, IDS.base); o.baseOwner = bk.o && bk.o.owner;
+return fin(o);

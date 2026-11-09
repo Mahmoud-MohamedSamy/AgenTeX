@@ -1,0 +1,8 @@
+eval(require('fs').readFileSync('lib.js','utf8'));
+const D=IDS.DA,q='?department_id='+D;
+const skills=async()=>(await api('GET','/desk/skills'+q)).j.data.skills;
+await cs('H-11 ticket limit 10',async()=>{const t=await mkTicket('QA AS6 limit b',D);const names=(await skills()).filter(s=>s.is_active).map(s=>s.name).slice(0,11);const r11=await patchT(t.id,{skills:names});const st11=(await getT(t.id)).skills;const r10=await patchT(t.id,{skills:names.slice(0,10)});const st10=(await getT(t.id)).skills;return {n:names.length,s11:r11.s,e11:E(r11),stored11:(st11||[]).length,s10:r10.s,stored10:(st10||[]).length};});
+await cs('H-13 type delete keeps skills',async()=>{const t2=await api('POST','/desk/skill-types',{name:'QA AS6 Type3'});const id2=t2.j&&t2.j.data&&(t2.j.data.id||(t2.j.data.type&&t2.j.data.type.id));if(id2)LED('skill type QA AS6 Type3 '+id2);
+ const sk=(await skills()).find(s=>s.id===IDS.SK3);const u=sh(await api('PUT','/desk/skills/'+IDS.SK3,{...sk,type_id:id2}));const del=sh(await api('DELETE','/desk/skill-types/'+id2));const after=(await skills()).find(x=>x.id===IDS.SK3);const back=sh(await api('PUT','/desk/skills/'+IDS.SK3,{...after,type_id:IDS.SKTYPE}));return {create:t2.s,move:u.s,moveE:u.e,del:del.s,typeAfterDelete:after&&after.type_id,restoreType:back.s};});
+await cs('H-10b delete dialog data (usage of sk2 with workflow)',async()=>{const tg=await mkWf('QA AS6 WF add skill','RecordCreated',SM('QA AS6 WFSK'),[{type:'AddTicketSkills',order:0,delaySeconds:0,skillKeys:['QA AS6 sk2']}]);IDS.WF_SK=tg.id;const u=sh(await api('GET','/desk/skills/'+IDS.SK2+'/usage'));const t=await mkTicket('QA AS6 WFSK x',D);await W(5000);return {wf:tg.s,wfE:tg.e,usage:u.d,ticketSkills:(await getT(t.id)).skills};});
+saveIds(); return RES;

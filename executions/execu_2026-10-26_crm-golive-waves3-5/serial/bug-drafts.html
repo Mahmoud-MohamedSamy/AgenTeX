@@ -1,0 +1,127 @@
+<title>Window Bug Drafts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+<style>.draft{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px}.draft ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live · tenant-wide window · drafts for review</div>
+  <h1>Window bug drafts</h1>
+  <p class="meta">Not in Plane yet · 27 Oct 2026 · staging-crm.taviportal.com, new build of 27 Oct</p>
+  <p>Three drafts from the tenant-wide window and the Wave 1 leftovers, plus one optional fourth found on the way. Planned fields for each: state Bug, assignees Hegazy, Mahmoud, Moaz and Eslam, CRM module, Sprint 13, start date today, the annotated TAVI-vs-Zoho image attached. Tell me what to change, then I file them.</p>
+</header>
+
+<section>
+  <h2>Overview</h2>
+  <div class="tbl"><table>
+    <tr><th>Draft</th><th>Title</th><th>Priority</th><th>Label</th><th>Image</th></tr>
+    <tr><td class="id">BH-1</td><td>Business Hours | The saved business hours can't be saved again (400), even unchanged</td><td>Medium</td><td>SLA &amp; Business Hours</td><td>BH-resave-candidate.png</td></tr>
+    <tr><td class="id">US-08</td><td>Users | The owner can choose a lower profile for themselves with no warning</td><td>Medium</td><td>Access Control</td><td>W1-US08-observation.png</td></tr>
+    <tr><td class="id">PE-06</td><td>Permissions | Without access, the Permissions page shows the raw text "Missing required permission 'iam.profile.manage'"</td><td>Low</td><td>Access Control</td><td>W1-PE06-finding.png</td></tr>
+    <tr><td class="id">SEAT</td><td>Users | Inviting with no free seat shows the raw key "iam.subscription.seat_limit_reached" (optional)</td><td>Low</td><td>Access Control</td><td>W1-US13-PS06-blocked.png</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>BH-1 · Business Hours | The saved business hours can't be saved again (400), even unchanged</h2>
+  <div class="draft">
+    <p><b>Summary.</b> The tenant's business hours are stored in a state the app's own check refuses. The record says "24×7" but also holds working hours 09:00–17:00. Saving it again, even without any change, answers 400, so nobody can save business hours until the stored record is fixed.</p>
+    <p><b>Steps to reproduce.</b></p>
+    <ol><li>Open Settings › Company › Business Hours (or <code>GET</code> the business-hours setting).</li><li>Without changing anything, click Save (or send the same body back with <code>PUT</code>).</li></ol>
+    <p><b>Expected result.</b></p>
+    <ul><li>An unchanged save succeeds. A 24×7 setting should not store working hours at all, so the stored record and the check agree.</li></ul>
+    <p><b>Actual result.</b></p>
+    <ul><li>The stored record: preset 24_7, timing mode "same", hours 09:00–17:00, Africa/Cairo.</li><li>Saving it unchanged answers 400 <code>business_hours.invalid_timing_mode</code>.</li><li>The check itself works: switching Sunday off is refused with "24_7 requires all 7 days".</li><li>Likely cause: on 26 Oct someone switched the tenant to 09:00–17:00 and later back to 24×7; switching back kept the hours.</li></ul>
+    <p><b>Environment.</b> NDC-Staging · ndc-staging-owner (Owner) · 27 Oct 2026, tenant-wide window (step 1b). Nothing was changed. Annotated image attached.</p>
+  </div>
+</section>
+
+<section>
+  <h2>US-08 · Users | The owner can choose a lower profile for themselves with no warning</h2>
+  <div class="draft">
+    <p><b>Summary.</b> On the owner's own user record, picking a lower profile such as "User" enables the Assign button without any warning. If the owner confirms, they would lose owner rights, and the Owner profile can't be given to any other account (409 OWNER_PROFILE_LOCKED), so nobody could give it back.</p>
+    <p><b>Steps to reproduce.</b></p>
+    <ol><li>Sign in as the owner. Open Settings › Users › your own user.</li><li>In Profile, choose "User (rank 100)".</li><li>Look at the Assign button and any message. (Do not click Assign.)</li></ol>
+    <p><b>Expected result.</b></p>
+    <ul><li>The owner can't remove their own owner rights, or gets a clear warning that explains the result and asks to confirm. Zoho doesn't let the super admin change their own profile.</li></ul>
+    <p><b>Actual result.</b></p>
+    <ul><li>Assign is enabled and no warning is shown.</li><li>Giving the Owner profile to another account is refused (409 OWNER_PROFILE_LOCKED), so the change could not be undone.</li><li>Assign was not clicked in the test.</li></ul>
+    <p><b>Environment.</b> NDC-Staging · ndc-staging-owner (Owner) · 27 Oct 2026, Wave 1 leftover US-08. Nothing was changed. Annotated image attached.</p>
+  </div>
+</section>
+
+<section>
+  <h2>PE-06 · Permissions | Without access, the Permissions page shows the raw text "Missing required permission 'iam.profile.manage'"</h2>
+  <div class="draft">
+    <p><b>Summary.</b> A user who may not manage profiles can still open Settings › Permissions by its address. The page shows the raw server text "Missing required permission 'iam.profile.manage'." instead of a normal "no access" page. There is also no view-only permission for profiles, so a read-only view can't be given to anyone.</p>
+    <p><b>Steps to reproduce.</b></p>
+    <ol><li>Sign in as a user whose profile doesn't include managing profiles (e.g. test user 1, built-in User profile).</li><li>Open <code>https://staging-crm.taviportal.com/settings/security/permissions</code>.</li></ol>
+    <p><b>Expected result.</b></p>
+    <ul><li>The page is hidden from the menu and opening it by address shows the app's normal "You don't have access" page. Optionally, a view-only permission lets someone see profiles without changing them (Zoho shows profiles read-only to users who can view but not edit).</li></ul>
+    <p><b>Actual result.</b></p>
+    <ul><li>The page opens and shows "Missing required permission 'iam.profile.manage'."</li><li><code>/iam/profiles</code> answers 403. The permission catalogue has only <code>iam.profile.manage</code>, no view-only key.</li></ul>
+    <p><b>Environment.</b> NDC-Staging · test user 1 · 27 Oct 2026, Wave 1 leftover PE-06. Annotated image attached.</p>
+  </div>
+</section>
+
+<section>
+  <h2>SEAT (optional) · Users | Inviting with no free seat shows the raw key "iam.subscription.seat_limit_reached"</h2>
+  <div class="draft">
+    <p><b>Summary.</b> When the tenant has no free user seat, inviting a user is refused, but the message is the raw key "iam.subscription.seat_limit_reached" instead of a sentence telling the admin to free or buy a seat.</p>
+    <p><b>Steps to reproduce.</b></p>
+    <ol><li>With all seats used, open Settings › Users › Invite and invite any email.</li></ol>
+    <p><b>Expected result.</b></p>
+    <ul><li>A clear message, e.g. "All seats are in use. Remove a user or add seats in Billing to invite someone."</li></ul>
+    <p><b>Actual result.</b></p>
+    <ul><li>The invite answers 409 SUBSCRIPTION_SEAT_LIMIT_REACHED and the screen shows "iam.subscription.seat_limit_reached".</li></ul>
+    <p><b>Environment.</b> NDC-Staging · ndc-staging-owner (Owner) · 27 Oct 2026, Wave 1 leftover US-13. No invite was created. Annotated image attached.</p>
+  </div>
+</section>
+</div>

@@ -1,0 +1,152 @@
+<title>Round 2 Phase 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+<style>.summary{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px}.big{gap:10px}.big li{font-size:17px}h3.sub{font-family:var(--display);font-size:16px;margin:10px 0 0;color:var(--fg)}.plain{color:var(--fg);max-width:80ch}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}.card.hot{border-color:var(--fail)}.card .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.card .top .id{font-family:var(--mono);font-weight:600}.card p{margin:0;font-size:15px}</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live · Round 2 · Phase 2</div>
+  <h1>Phase 2 report: automation and channels</h1>
+  <p class="meta">27–28 Oct 2026 · new build of 27 Oct · staging-crm.taviportal.com · compared with Zoho CRM (read-only; Zoho side from earlier captures) · Wave 3 = automation chain · Wave 4 = email, web forms, channels</p>
+</header>
+
+<section class="summary">
+  <h2>In short</h2>
+  <ul class="big">
+    <li><b>Automation mostly works on the new build.</b> 170 of 256 automated cases pass in the full run, and the re-checks confirmed most fixes, including the pipeline move (NDC-2621) and 14 other tickets.</li>
+    <li><b>4 of the 5 notification / email bugs we filed are fixed</b> (NDC-2631, 2632, 2633, 2634); NDC-2630 is half fixed.</li>
+    <li><b>Approvals and blueprints still have problems:</b> an approved record doesn't enter its blueprint, an approver sometimes gets "Record not found", and a record stays locked right after its review.</li>
+    <li><b>Email still can't be sent</b> (the mail connection lacks its Zoho org id) and <b>the web form's hosted link is still 404</b> (NDC-1488).</li>
+    <li><b>Done already from your decisions:</b> B-18 filed as NDC-2705, G-07 filed as NDC-2706; A-14 passes now, so it wasn't filed.</li>
+    <li><b>7 new problems</b> to decide on, and <b>8 decisions</b> at the end.</li>
+  </ul>
+</section>
+
+<div class="strip">
+  <div class="stat pass"><b>170 / 256</b><span>automation cases pass</span></div>
+  <div class="stat pass"><b>20</b><span>tickets pass</span></div>
+  <div class="stat fail"><b>6</b><span>tickets still fail</span></div>
+  <div class="stat fail"><b>7</b><span>new problems</span></div>
+  <div class="stat"><b>2</b><span>filed today (2705, 2706)</span></div>
+</div>
+
+<section>
+  <h2>Wave 3 · Automation (workflows, assignment, approvals, reviews, blueprints)</h2>
+  <p><b>What we tested:</b> every workflow trigger and action, the execution log, assignment rules, approvals, reviews, blueprints and webhooks — 256 automated cases, then re-checks of everything that failed. The 12 tests that expected old behaviour were fixed first, so their results now count.</p>
+  <p><b>Interruptions:</b> the first full run was thrown away (our test layouts became unusable after NDC-2650 was fixed — fixed in the tests), and staging sign-in was down from 22:20 to 23:43 (502). Nothing was lost; the runs were repeated.</p>
+
+  <h3 class="sub">Working now</h3>
+  <p class="plain"><b>NDC-2621 is fixed:</b> a deal moves to another pipeline from the record page, Mass Update and the API (C-10, which it blocked, passes too). Also passing: NDC-2420, 2421, 2422, 2411, 2391, 2334, 2323, 2309, 2308, 2298, 2297, 2296, 2540, 2541. The blueprint "Create record" after-action now works (NDC-2294 item 9). <b>A-14</b> (rule on an imported deal) passes now, so it wasn't filed.</p>
+
+  <h3 class="sub">Still not working</h3>
+  <div class="cards">
+    <div class="card"><div class="top"><span class="id">NDC-2510</span><span class="chip fail">Still fails</span></div><p>A workflow Task action with a status the Tasks module doesn't have saves; the run is logged as done but no task is created.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2511</span><span class="chip fail">Still fails</span></div><p>A date-based rule runs on time, but no audit log entry is written for it.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2419</span><span class="chip warn">Unclear</span></div><p>Ready for Test. The assignment rule logged "Fired" but kept the creator as owner once, then worked in the next run. Needs one more clean check.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2705 (B-18)</span><span class="chip fail">Filed today</span></div><p>Leads imported through a review process with the Import channel are not held for review.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2706 (G-07)</span><span class="chip fail">Filed today</span></div><p>After a review approval, the On Edit workflow doesn't run for a mass-updated lead (3 of 4 runs).</p></div>
+  </div>
+
+  <h3 class="sub">New problems found (not in Plane yet)</h3>
+  <div class="cards">
+    <div class="card hot"><div class="top"><span class="id">C-E2E5</span><span class="chip warn">Medium</span></div><p><b>An approved record doesn't enter its blueprint.</b> Seen for Tasks and for leads created by another blueprint (3 of 3, and in G-10). A lead created on screen does enter it. This is what's left of <b>G-10</b>: its "Create record" part is fixed, this part isn't.</p></div>
+    <div class="card hot"><div class="top"><span class="id">C-WH09</span><span class="chip warn">Medium</span></div><p><b>The approver gets "Record not found".</b> A user opening a record that waits for their own approval gets 404 (7 of 10 tries — it comes and goes).</p></div>
+    <div class="card"><div class="top"><span class="id">C-B04</span><span class="chip warn">Medium</span></div><p><b>A record stays locked right after its review is approved.</b> The first edit afterwards is refused (422 REVIEW_LOCKED); later edits work (4 of 4).</p></div>
+    <div class="card"><div class="top"><span class="id">C-D06</span><span class="chip info">Low</span></div><p>The approval view tells a user they can approve, but pressing Approve is refused because they lack the approval permission (3 of 3).</p></div>
+    <div class="card"><div class="top"><span class="id">C-LAYOUT403</span><span class="chip info">Low</span></div><p>Creating a record on a layout that no longer exists answers "Permission denied" instead of "not found".</p></div>
+  </div>
+
+  <h3 class="sub">Not done</h3>
+  <p class="plain">The automation screen suites (so custom actions were not retested), G-12 (an old test rule already has its name), the 1-hour SLA cases, and live Zoho checks (Zoho stayed on "Loading"). Google Sheets skipped as you asked. Skipped cases retried: still blocked by the web form 404, "API" creates being recorded as manual, Leads having no unique field, conversion creating no deal, and no inbox to read emails — each listed with its reason in the Wave 3 results.</p>
+</section>
+
+<section>
+  <h2>Wave 4 · Email, web forms, portals, SMS, notifications, reminders, calendar</h2>
+  <p><b>What we tested:</b> email connections and sending, templates and signature, web forms in full, portals, SMS and WhatsApp screens, notifications and "Signals", activity reminders and the calendar. Emails and form submissions only to your two addresses. Telephony and Google Sheets skipped.</p>
+
+  <h3 class="sub">Working now (fixed since yesterday)</h3>
+  <div class="cards">
+    <div class="card"><div class="top"><span class="id">NDC-2631</span><span class="chip pass">Pass</span></div><p>A template with a placeholder the app can't fill is refused, with the 5 allowed placeholders listed.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2632</span><span class="chip pass">Pass</span></div><p>Notifications work again for everyone (list, unread count, preferences).</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2633</span><span class="chip pass">Pass</span></div><p>The Signals page shows readable names, no raw keys.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2634</span><span class="chip pass">Pass</span></div><p>The portal link opens its sign-in page when on, and "This portal is not available" when off.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-1333</span><span class="chip pass">Pass</span></div><p>Activity Reminders page has one scroll area; a 5-minute reminder arrived on time.</p></div>
+  </div>
+
+  <h3 class="sub">Still not working</h3>
+  <div class="cards">
+    <div class="card"><div class="top"><span class="id">NDC-2630</span><span class="chip warn">Half fixed</span></div><p>A failed send now shows a red error and is marked failed on the record, but the timeline still says "EmailSent".</p></div>
+    <div class="card hot"><div class="top"><span class="id">NDC-1488</span><span class="chip fail">Still fails</span></div><p>The web form's hosted link, QR code and "Test your form" open a 404 page. The embedded form works and creates the lead correctly.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-1141</span><span class="chip fail">Still fails</span></div><p>Gmail and Microsoft 365 can't be connected (now shown as "Unavailable").</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-1479 · 2496 · 1482</span><span class="chip warn">Partly</span></div><p>The screens work, but nothing can be sent: email lacks the connection's Zoho org id; SMS has no sender ID and 0 credits.</p></div>
+  </div>
+
+  <h3 class="sub">New problem found</h3>
+  <div class="cards">
+    <div class="card"><div class="top"><span class="id">R2W4-C1</span><span class="chip warn">Medium</span></div><p><b>The web form's spam trap is ignored.</b> A hidden "leave this empty" field catches bots, but a submission with it filled still becomes a lead when sent the way the embedded form sends it (5 of 5).</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Your decisions</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Decision</th><th>What it changes</th><th>My suggestion</th></tr>
+    <tr><td class="id">1</td><td>File C-E2E5 (approved record doesn't enter its blueprint; covers G-10)</td><td>Developers fix the approval → blueprint hand-off</td><td>Yes, Medium</td></tr>
+    <tr><td class="id">2</td><td>File C-WH09 (approver gets "Record not found")</td><td>Approvers can open what they must approve</td><td>Yes, Medium</td></tr>
+    <tr><td class="id">3</td><td>File C-B04 (record locked right after review), C-D06 (approve button shown without permission), C-LAYOUT403 (wrong error)</td><td>Tracked</td><td>Yes: Medium, Low, Low</td></tr>
+    <tr><td class="id">4</td><td>File R2W4-C1 (web form spam trap ignored)</td><td>Spam leads blocked</td><td>Yes, Medium</td></tr>
+    <tr><td class="id">5</td><td>Ready-for-Test tickets that pass — NDC-2621, 2631, 2632, 2633, 2634: move to Done with a comment and image?</td><td>Plane shows them fixed</td><td>Yes (they were handed back for retest)</td></tr>
+    <tr><td class="id">6</td><td>NDC-2630 (Ready for Test, half fixed): back to Bug with a comment and image?</td><td>Developers finish the timeline part</td><td>Yes</td></tr>
+    <tr><td class="id">7</td><td>NDC-2419 and NDC-2294 (Ready for Test): 2419 unclear — one more clean check before deciding; 2294 — comment that item 9 is fixed and the other gaps remain?</td><td>No wrong verdict on an unclear result</td><td>Recheck 2419 in Phase 3; comment on 2294 and leave it</td></tr>
+    <tr><td class="id">8</td><td>Passing tickets already in Done (from the list above): add a "still passes" comment and image, like Phase 1?</td><td>Proof per ticket on the new build</td><td>Yes, after checking each is in Done</td></tr>
+  </table></div>
+  <p class="meta">Gaps (things Zoho has and TAVI doesn't) are on their own page. Evidence: executions/execu_2026-10-27_crm-golive-round2/wave3 and wave4/evidence/annotated/.</p>
+</section>
+</div>

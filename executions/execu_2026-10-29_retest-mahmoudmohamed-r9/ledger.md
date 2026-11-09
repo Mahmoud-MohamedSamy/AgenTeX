@@ -1,0 +1,151 @@
+# Round 9 cleanup ledger (Anyware tenant)
+
+Every record / rule / setting created or changed in round 9. Cleaned once at the end.
+
+- 2026-10-29T11:32:35 lead 6986f117-1032-4ec6-aea4-bd5ad2298b91 "QA RT 2412 U1 lead" (Leads) by u1
+- 2026-10-29T11:32:35 user U2 setoroj338 (0b3fefb6-acd0-4a8f-abb9-aa7fc04087e2) profile changes during NDC-2412 — baseline User @ team2, restore at the end of this script
+- 2026-10-29T11:33:14 lead ed822424-c04b-42e6-83f6-6a817aa5fc6a "QA RT 2412 U2 lead" (Leads) by u2
+- 2026-10-29T11:33:19 user U2 restored to User @ team2: 204 (User)
+- 2026-10-29T11:33:52 user U2 set to Manager @ team1 for NDC-2412 confirmation (restore to User @ team2)
+- 2026-10-29T11:35:37 user U2 restored to User @ team2: 204
+- 2026-10-29T12:01:23 workflow rule f05b6a51-f950-4ab6-87c3-e936190e2251 probe NoteAdded — deleted at once: 204
+- 2026-10-29T12:01:24 workflow rule 0ab7d270-2d85-485b-ac68-6bdfb3f1710d probe RecordNotes — deleted at once: 204
+- 2026-10-29T12:01:26 assignment rule 5e26be40-21e7-475a-9082-19e16e9954b4 "QA RT 2294 item5 AR" (/workflow/assignment-rules)
+- 2026-10-29T12:01:27 workflow rule 0e546f2d-46c7-460a-b8d9-cb4f05c66b17 "QA RT 2294 item5 options" (/workflow/rules)
+- 2026-10-29T12:01:27 approval process c9801374-75ff-43b8-85bf-991a1a0a1eb4 probe role/everyone_parallel — deleted: 204
+- 2026-10-29T12:01:28 approval process 05e6855b-d4da-4bd4-b6e1-9c25d2685e5c probe role/everyone_sequential — deleted: 204
+- 2026-10-29T12:01:28 approval process 27ddf43f-e301-46ca-986f-0ef69d7716a6 probe role/anyone — deleted: 204
+- 2026-10-29T12:01:29 approval process eaee2ffb-7b48-4e7e-a80c-745d9bd20709 probe group/everyone_parallel — deleted: 204
+- 2026-10-29T12:13:02 workflow rule b50f4112-9552-48d0-a033-0c2d8a0cfa45 "QA RT 2294 item11 sched FU" (/workflow/rules)
+- 2026-10-29T12:13:03 lead e1c94bcc-33f6-4305-8d4a-1491ae64af9d "QA RT 2294 SCHED lead" by o
+- 2026-10-29T12:13:04 workflow rule b64200a2-59ef-4db9-b813-b88b0e5b9a22 "QA RT 2294 item4 actions" (/workflow/rules)
+- 2026-10-29T12:13:05 lead 7aee5dce-abf3-494c-bb41-0bc228170231 "QA RT 2294 ACT lead" by o
+- 2026-10-29T12:13:37 workflow rule ecd5fc51-53b0-4aad-b7b5-9a76e02e0861 "QA RT 2294 item5 run" (/workflow/rules)
+- 2026-10-29T12:13:39 lead a1ef246c-c368-4390-b82b-c1256c5d2757 "QA RT 2294 AR lead" by o
+- 2026-10-29T12:13:48 approval process 9225dfa1-3914-4caf-bffd-31c7d2c4ed7e "QA RT 2294 item8 call fn" (/workflow/approval-processes)
+- 2026-10-29T12:13:48 lead a95b04c3-a398-41a0-a861-6fdba7bd744d "QA RT 2294 APPR8 lead" by o
+- 2026-10-29T12:14:22 workflow rule dd89cc61-a8c5-41c8-be05-fc1cd20d5672 "QA RT 2294 item12 with else (inactive)" (/workflow/rules)
+- 2026-10-29T12:14:23 workflow rule 0ae96ae0-b815-4acc-a941-ada79c644ecd "QA RT 2294 item12 run" (/workflow/rules)
+- 2026-10-29T12:14:23 lead 727271ef-39f2-4c61-b7a5-e56ce159eec1 "QA RT 2294 MC A lead" by o
+- 2026-10-29T12:14:23 lead cdb54fd3-e58f-4123-b0b0-b0017e859a70 "QA RT 2294 MC B lead" by o
+- 2026-10-29T12:14:24 lead 82637251-3019-480d-9ae3-a7c503978dcb "QA RT 2294 MC C lead" by o
+- 2026-10-29T12:14:49 workflow rule a2cee9ca-e355-49a4-a1ea-315be28cebcc "QA RT 2294 item13 trigger" (/workflow/rules)
+- 2026-10-29T12:14:50 lead 70d55a6a-88bf-42fc-bfd2-8cd43752b7b3 "QA RT 2294 T13 control" by o
+- 2026-10-29T12:14:51 lead 3ea841e0-0827-472c-b11b-0b1f32b8ccb9 "QA RT 2294 T13 no trigger" by o
+- 2026-10-29T12:16:27 review process bd081d46-b273-4579-9025-8c6e12c51219 "QA RT 2294 item6 review fns" (/workflow/review-processes)
+- 2026-10-29T12:17:35 blueprint 4d328199-00a0-4500-a679-8e38e68a43a4 "QA RT 2294 item9 after-actions" on Leads
+- 2026-10-29T12:17:37 lead 4a3edfc9-cd8b-4c1f-a77f-94a83c5583a6 "QA RT 2294 BP lead" by o
+- 2026-10-29T12:18:19 blueprint 6de90b00-0ea8-46c2-b865-b580344e3cd0 "QA RT 2294 item9 after-actions" on Leads
+- 2026-10-29T12:18:19 lead 92a73716-4a27-4fe5-ba85-8abd94f35e96 "QA RT 2294 BP lead" by o
+- 2026-10-29T12:19:27 blueprint 409471d6-f55e-4ce8-8780-f2eeba8975bc "QA RT 2294 item9 after-actions" on Leads
+- 2026-10-29T12:19:28 lead 1d90cf9d-72d9-4ddf-8ad3-f3e5a970c571 "QA RT 2294 BP lead" by o
+- 2026-10-29T12:19:57 task 8bff6081-f96a-448a-be33-a3cfcb5be8d4 "QA RT 2294 bp task" (blueprint after-action)
+- 2026-10-29T12:20:12 contact 31952102-90ba-4c3d-8544-a095cde78c27 created by converting QA lead 92a73716 (NDC-2294 item 9 convertLead) — check for account/deal from the same conversion at cleanup
+- 2026-10-29T12:25:34 lead 26c66d2e-404a-4b0c-adf2-4555c5f78b48 "QA RT 2294 MA" (import approved, NDC-2294 item 2)
+- 2026-10-29T12:26:17 lead 08fbce13-50a3-4bbe-a7f1-e83469b6491c "QA RT 2294 REV lead" by o
+- 2026-10-29T12:28:51 workflow rule 2e9ae445-ac0c-4333-93c6-1a47f4569985 "QA RT 2294 item3 note trigger" (/workflow/rules)
+- 2026-10-29T12:28:51 lead 18606c76-bf28-480a-9404-901ec2988c6b "QA RT 2294 NOTE lead" by o
+- 2026-10-29T12:31:43 CRM contact ffe47fd2-e1b4-442a-a1dd-79144860ec2b "QA RT 2406 contact" (qa.rt.2406.3176@example.com)
+- 2026-10-29T12:39:11 lead f06da22b-45bf-41ad-9458-04c3a0acf960 "QA RT 2630 mail lead" by o
+- 2026-10-29T12:39:11 mail draft dfd912f4-d281-43c2-b761-52af668a29ba on lead f06da22b-45bf-41ad-9458-04c3a0acf960
+- 2026-10-29T12:41:37 override deny iam.security.loginhistory.view_self on U1 3a503b61-076b-4d75-8d44-77071f3b7c39 (NDC-613) — remove
+- 2026-10-29T12:41:38 override deny iam.security.loginhistory.view_team on U1 3a503b61-076b-4d75-8d44-77071f3b7c39 (NDC-613) — remove
+- 2026-10-29T12:41:38 override deny iam.security.loginhistory.view_all on U1 3a503b61-076b-4d75-8d44-77071f3b7c39 (NDC-613) — remove
+- 2026-10-29T12:43:59 override GRANT iam.security.loginhistory.export on U1 (NDC-613) — remove
+- 2026-10-29T12:45:30 U1 login-history overrides removed: none left
+- 2026-10-29T12:47:25 approval process 36025683-c3e3-448e-8c65-13148b7e5951 "QA RT 2707 tasks approval" (/workflow/approval-processes)
+- 2026-10-29T12:47:25 blueprint fc229f9f-775b-4d75-acaa-04940fc3273c "QA RT 2707 tasks blueprint" (tasks)
+- 2026-10-29T12:47:33 task ad2e4516-4161-4f10-be81-4d9e060504c9 "QA RT 2707 T1"
+- 2026-10-29T12:47:59 task 633ef9db-0082-4610-8428-f7f08cdca57a "QA RT 2707 T2"
+- 2026-10-29T12:48:26 approval process 5a7da5e1-60b3-4346-903d-8f19571c2469 "QA RT 2707 leads approval" (/workflow/approval-processes)
+- 2026-10-29T12:48:27 blueprint 16a8f859-c047-4168-9c8c-c88c63b4faa6 "QA RT 2707 leads blueprint" (leads)
+- 2026-10-29T12:48:29 lead 35945edb-73c8-444e-a4aa-24287cc4fa86 "QA RT 2707 L1" by o
+- 2026-10-29T12:48:54 blueprint 4a287b9b-4c9b-4cd1-94c1-5c6599b3aa02 "QA RT 2707 maker blueprint" (leads)
+- 2026-10-29T12:48:55 lead cf989dfa-e65d-467b-a623-ec2f883c3d8b "QA RT 2707 A maker" by o
+- 2026-10-29T12:49:24 lead 8266483e-13f1-45ab-abbe-800f6928dfee "QA RT 2707 L2" (made by the maker blueprint)
+- 2026-10-29T12:50:31 approval process c4ded5bf-7a86-4e57-bf34-2e1e2722c829 "QA RT 2708 approver U1" (/workflow/approval-processes)
+- 2026-10-29T12:50:32 lead e3b2dc76-df5e-496b-9c95-3dfa38f2e2b8 "QA RT 2708 lead 1" by o
+- 2026-10-29T12:50:33 lead 9329a834-69fe-430a-b2b1-d7eb2bb0c893 "QA RT 2708 lead 2" by o
+- 2026-10-29T12:50:35 lead 31a4114c-7f8a-4a9d-bf41-adf0ff7b12ce "QA RT 2708 lead 3" by o
+- 2026-10-29T12:50:37 lead 9d14223b-05b5-4ffb-b7b6-2cb09a04fbe3 "QA RT 2708 lead 4" by o
+- 2026-10-29T12:50:38 lead 54a56bc5-f96c-4821-89da-5ba3a43ed6c4 "QA RT 2708 lead 5" by o
+- 2026-10-29T12:50:39 lead c0b0bb76-e404-4920-8f3e-22b560ad9a07 "QA RT 2708 lead 6" by o
+- 2026-10-29T12:50:40 lead 2a4826c6-ad3d-4f6b-97b2-9609bf22ae66 "QA RT 2708 lead 7" by o
+- 2026-10-29T12:50:42 lead 92ed0455-37cb-4ac4-a2a7-4d7b73048e9e "QA RT 2708 lead 8" by o
+- 2026-10-29T12:53:49 override GRANT workflow:approval:act on U1 (NDC-2708) — removed in the same script
+- 2026-10-29T12:53:53 lead 861d3e76-2c87-4a54-b9d3-002f5494e873 "QA RT 2708 act 1" by o
+- 2026-10-29T12:54:05 lead 66752f35-307d-436c-9b9e-df90bc5062c1 "QA RT 2708 act 2" by o
+- 2026-10-29T12:54:20 lead 4837e320-c472-4459-8e65-6db95a27712d "QA RT 2708 act 3" by o
+- 2026-10-29T12:54:36 lead d3fb5468-0618-428c-b837-63cde27d6054 "QA RT 2708 act 4" by o
+- 2026-10-29T12:54:49 lead db29e27f-096d-42a3-829d-0ab426522768 "QA RT 2708 act 5" by o
+- 2026-10-29T12:56:16 override GRANT workflow:approval:act on U1 (NDC-2708) — removed in the same script
+- 2026-10-29T12:56:19 lead c53f6b9c-e4e9-4080-af03-ebeaf167102b "QA RT 2708 act2 1" by o
+- 2026-10-29T12:56:33 lead 958e9c95-e334-435c-a4db-1301fd6c62d7 "QA RT 2708 act2 2" by o
+- 2026-10-29T12:56:49 lead 4e39d4b8-e98b-4e27-9080-99b348bf5f10 "QA RT 2708 act2 3" by o
+- 2026-10-29T12:57:03 lead 319b7f5a-169a-474a-be21-3eaac49e20bf "QA RT 2708 act2 4" by o
+- 2026-10-29T12:57:17 lead 8c5cc2e2-58be-4b55-ae47-59a4594c8611 "QA RT 2708 act2 5" by o
+- 2026-10-29T12:58:39 lead 6e4d5b24-0920-4c94-9c85-d575073c11eb "QA RT REV 2709 1" by o
+- 2026-10-29T12:58:48 lead f2451a7f-c788-4adc-abce-af2e04166cfa "QA RT REV 2709 2" by o
+- 2026-10-29T12:58:55 lead 537e8b99-e016-4cc6-9971-488e556645ee "QA RT REV 2709 3" by o
+- 2026-10-29T12:59:02 lead b1ca33a4-1870-4d2d-801a-3929fe78e186 "QA RT REV 2709 4" by o
+- 2026-10-29T13:04:06 lead 2b773482-ac15-44ff-808f-fee5be290776 "QA RT REV 2705 off" (import)
+- 2026-10-29T13:04:06 lead b052bbcd-c1e8-4056-bb6b-03b18df0034c "QA RT REV 2705 control" by o
+- 2026-10-29T13:04:44 lead e8f03a7b-c704-4ff5-9541-c1dc57274edc "QA RT REV 2705 on" (import, held then rejected by reject_all)
+- 2026-10-29T13:05:57 review process bd081d46-b273-4579-9025-8c6e12c51219: webhookUrl https://example.invalid/qa-rt-2538 + signing secret rotated (NDC-2538) — process deleted at cleanup
+- 2026-10-29T13:06:59 workflow rule dafb0ef7-3492-4479-85f3-a40cd7459713 "QA RT 2706 On Edit marker" (/workflow/rules)
+- 2026-10-29T13:07:00 blueprint 5450f8ea-7587-4221-ad18-c4b4112b7cff "QA RT 2706 blueprint" (Leads, Standard Layout)
+- 2026-10-29T13:07:01 lead 121b66b9-8c36-4571-8843-188189d6c850 "QA RT REV 2706 run 1" by o
+- 2026-10-29T13:08:13 lead 2bda9f9d-7501-4db7-a855-91d6daddc710 "QA RT REV 2706 run 2" by o
+- 2026-10-29T13:09:37 lead 9b8107f9-779f-4170-b12f-b805ede87a7a "QA RT REV 2706 run 3" by o
+- 2026-10-29T13:10:55 lead f12ab5d6-7cc0-448b-803f-4b71c834417c "QA RT REV 2706 run 4" by o
+- 2026-10-29T13:12:58 lead be7e0052-5625-47a5-88ed-548189f49e7b "QA RT REV 2706 edit" by o
+- 2026-10-29T13:15:23 lead 02984d3c-d0c2-4787-950f-fefcf249a2a7 "QA RT 2703 LK lead" by u1
+- 2026-10-29T13:15:29 lead ea7256ad-f2fa-4a1b-b18d-3bba9244075d "QA RT 2703 control" by u1
+- 2026-10-29T13:35:47 web form e63df697-7c10-444e-b2b4-51fec9773377 "QA RT 2712 form 26965"
+- 2026-10-29T13:36:02 lead 9f009a48-a33e-4753-8901-528974b841eb "QA RT 2712 ok 26965" (web form)
+- 2026-10-29T13:39:58 web form e63df697-7c10-444e-b2b4-51fec9773377 DELETE → 500 (retry at cleanup)
+- 2026-10-29T13:41:20 setting general.company.business_hours — original kept in r9-2655 output; restored at the end of the script
+- 2026-10-29T15:38:12 user U2 0b3fefb6-acd0-4a8f-abb9-aa7fc04087e2: Desk Administrator added for NDC-2414 — restore to User @ team2
+- 2026-10-29T15:38:21 user U2 restored: User, Desk Administrator @team2
+- 2026-10-29T15:39:34 user U2 Desk Administrator removed: User @team2
+- 2026-10-29T15:40:23 lead d815b69f-cae0-4bb0-914d-3ba027cdf8c2 "QA RT 2414 owner lead" by o
+- 2026-10-29T15:42:43 module e2e1c128-c1f2-4392-835d-528cff1df759 "QA RT r9 Rollup 60454" (qa_rt_r9p_60454) — delete with ?cascade=true + purge its bin items
+- 2026-10-29T15:42:44 module d57e6dc4-4c6d-4bd8-a177-c51584217d9c "QA RT r9 Rollup child 60454" (qa_rt_r9c_60454) — delete with ?cascade=true + purge its bin items
+- 2026-10-29T15:43:02 report e9c959e0-5386-4913-954e-087790817818 "QA RT r9 rollup 60454" (delete needs ?expected_revision=1)
+- 2026-10-29T15:47:01 lead e647a303-e5a7-46a0-b199-9ef1644ab3c0 "QA RT 2624 timeline lead" by o
+- 2026-10-29T15:57:38 approval process ee466144-6673-4d7a-abe0-6c78ed99c264 "QA RT 1950 approver U1" (/workflow/approval-processes)
+- 2026-10-29T15:57:44 lead 02be9f4f-c45a-4dee-ab5c-40aaeffc248f "QA RT 1950 A pending" by o
+- 2026-10-29T15:57:45 lead d5ec3168-d5ca-4c33-a044-4dabb48187f3 "QA RT 1950 A approved" by o
+- 2026-10-29T15:57:47 lead 18aefaf2-ad39-456a-99ce-589ac05a4dee "QA RT 1950 R pending" by o
+- 2026-10-29T16:00:36 lead d5ec3168-d5ca-4c33-a044-4dabb48187f3 "QA RT 1950 A approved" deleted (NDC-1950 history check) — purge from recycle bin
+- 2026-11-01T11:13:25 override GRANT crm.page.my_requests.view on U1 (NDC-1950) — remove
+- 2026-11-01T11:14:12 lead bb321a59-12a4-429f-b666-374ad99a4702 "QA RT 1950 A u1 own" by u1
+- 2026-11-01T11:14:47 lead bb321a59-12a4-429f-b666-374ad99a4702 "QA RT 1950 A u1 own" by u1
+- 2026-11-01T11:16:46 NDC-1950 wrap-up: U1 grant removed (204), approval ee466144 off (200), review bd081d46 off (200)
+- 2026-11-01T11:17:32 U1 reporting manager set to U2 + GRANT crm.page.my_requests.view on U2 (NDC-1950 middle tier) — undo
+- 2026-11-01T11:32:21 NDC-1950 middle tier undone: U1 manager null, U2 grant removed (204)
+- 2026-11-01T11:33:14 lead bbb0320d-b737-4b40-b42b-a207f8553579 "QA RT 1823 convert lead" by o
+- 2026-11-01T11:38:06 lead 367c132a-e9b2-437f-b2e1-a26532c3aae2 "QA RT 1343 audit lead 82587" by o
+- 2026-11-01T11:38:14 NDC-1343 audit probes (all removed in the same script): {"lead":"367c132a-e9b2-437f-b2e1-a26532c3aae2","field":"5c081797-5f7a-47cd-ad7c-6bd9ad473b73","rule":"737bbc70-4c5a-4158-bab3-ab51a61c6ef5"}
+- 2026-11-01T11:40:16 profile 08e95291-fa45-419e-a6c4-3a2f859495e8 "QA RT 1343 profile 82587" (NDC-1343) deleted: 204
+- 2026-11-01T11:42:21 org unit f59943aa-35f7-4e29-a02e-b6d0e201d8c5 "QA RT 1343 OU" (NDC-1343) deleted: 204
+- 2026-11-01T11:43:57 layout 7f2932ef-e833-4c39-b8cf-9385acc43131 "QA RT 2711 layout 28024" (Leads) — deleted in the same script
+- 2026-11-01T11:44:00 lead 4a6d3874-b565-4dfe-94aa-71103e771db1 "QA RT 2711" by u1 (control)
+- 2026-11-01T12:10:51 assignment rule 7e520eef-0060-4c74-8262-e2a65852c0a3 "QA RT 2321 AR 49774" (/workflow/assignment-rules)
+- 2026-11-01T12:10:52 workflow rule 288ac9c8-a75e-48cf-b70b-fdef3a26e990 "QA RT 2321 WF 49774" (/workflow/rules)
+- 2026-11-01T12:11:05 blueprint 0a9ce3f0-6893-4d4a-b844-350738730509 "QA RT 2321 BP 49774" (Leads)
+- 2026-11-01T12:11:08 lead 90af29c4-1995-494a-bd39-7974f200b91e "QA RT 2321 lead 49774" by o
+- 2026-11-01T12:19:19 lead 4e75c8f4-902b-4ed2-81b3-00ce7e0f8c3c "QA RT 2321 lead imp" (import)
+- 2026-11-01T12:29:55 webhook.site catcher 3b5367e4-5b85-4b73-8646-e5c6481e7081 (NDC-2538, public, user-approved) — delete at cleanup
+- 2026-11-01T12:29:59 lead e2b48c2e-eda6-43ef-a084-99a20f26bc55 "QA RT 2538 approve" by o
+- 2026-11-01T12:30:06 lead 41e579ab-ea3e-48c2-92b9-1ae8deb0ac87 "QA RT 2538 reject" by o
+- 2026-11-01T12:31:42 webhook.site catcher 3b5367e4-5b85-4b73-8646-e5c6481e7081 deleted
+- 2026-11-01T12:34:57 Desk contact b7770cf6-1520-4c36-bc57-682e0e297d80 "QA RT 2406 desk 95306" (qa.rt.2406.95306@example.com)
+- 2026-11-01T12:35:05 CRM contact bd5cf500-ac9d-4e0a-a4c9-3856e80237de (partner of Desk contact b7770cf6-1520-4c36-bc57-682e0e297d80)
+
+## Cleanup 1 Nov 2026 (done)
+- Inventory (read-only) + ledger existence check → delete by exact ids (cleanup-ids.json, cleanup-result.json).
+- Deleted: 10 workflow rules, 5 approval processes (2 needed the 10 pending QA approvals rejected first), 1 review process, 2 assignment rules, 8 blueprints, web form e63df697 (204 this time), report, mail draft, 72 records (65 leads, 3 tasks, 2 contacts, 1 call, 1 meeting), 3 QA module records + 2 QA modules, 1 Desk contact.
+- Verify: inventory of QA RT items = 0. Note: deleted blueprints still answer GET by id (not listed, DELETE → 404).
+- Not purged: recycle bin. Profile / org unit / layout probes were deleted during the tests.
+- Sign-in state files and the scratchpad credentials CSV deleted.

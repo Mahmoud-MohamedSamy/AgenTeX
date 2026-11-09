@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2219-api.png",
+ "date": "2 Nov 2026",
+ "host": "staging-desk.taviportal.com (tenant Anyware)",
+ "who": "owner; test user 3 as Desk Agent",
+ "title": "NDC-2219 · test user 3 = CRM Admin (CRM) + Desk Agent (Desk), fresh sign-in",
+ "rows": [
+  [
+   "page",
+   "Settings › Modules and Fields",
+   "\"You don't have permission to view this page\"",
+   "ok"
+  ],
+  [
+   "create module",
+   "POST /teamspaces/{Desk}/modules",
+   "403 PERMISSION_DENIED",
+   "ok"
+  ],
+  [
+   "add field",
+   "POST …/fields",
+   "403",
+   "ok"
+  ],
+  [
+   "permissions",
+   "GET /iam/me/permissions (x-app-key desk)",
+   "modules.manage, fields.manage_permissions, capabilities.manage, integrations.manage, records.convert, acl.manage, view_all …",
+   "bad"
+  ],
+  [
+   "restore",
+   "test user 3",
+   "CRM profile back to User",
+   "info"
+  ]
+ ]
+}

@@ -1,0 +1,201 @@
+{
+ "out": "MAIL-inbound-reply-not-received.png",
+ "ticket": "Desk · Email channel",
+ "title": "A customer's email reply to the Customer Support address never reaches Desk, while Setup says \"Mail is arriving\"",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "9 Nov 2026: agent reply 14:50, customer reply 15:30, checked until 16:12 (Cairo)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner ndc-staging-owner) · ticket #1 \"Check-in\" in Customer Support, receiving address customer-support@help-staging.anyware.software · customer mailbox mmohamed@anyware.software (Zoho Mail)",
+ "leftHead": "TAVI Desk",
+ "rightHead": "Customer mailbox (mmohamed@anyware.software)",
+ "rightLabel": "Mailbox",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/raw/mail-1-t1-conversation.png",
+   "caption": "TAVI #1, Customer Support: the agent reply went out at 2:50 PM (Sent). After more than an hour the conversation still has only this one message",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    664,
+    186,
+    936,
+    200
+   ],
+   "boxes": [
+    {
+     "b": [
+      676,
+      244,
+      1590,
+      370
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      678,
+      194,
+      816,
+      222
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/raw/mail-3-cs-address.png",
+   "caption": "TAVI Setup › Channels › Email, at the same time: \"Mail is arriving. Customers can write in…\", 4 of 4 done, \"Mail sent to customer-support@… becomes a ticket\"; also \"The mail provider did not answer when we checked taviportal.com\"",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    446,
+    190,
+    976,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      460,
+      208,
+      860,
+      256
+     ],
+     "n": 4
+    },
+    {
+     "b": [
+      894,
+      676,
+      1210,
+      724
+     ],
+     "n": 4
+    },
+    {
+     "b": [
+      484,
+      284,
+      1284,
+      352
+     ],
+     "n": 5
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/raw/mail-5-phone-agent-reply-received.png",
+   "caption": "Customer's phone: the agent reply arrived from Customer Support at 2:50 PM, subject \"Re: Check-in\"",
+   "w": 739,
+   "h": 1600,
+   "crop": [
+    0,
+    190,
+    739,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      24,
+      200,
+      330,
+      280
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      140,
+      300,
+      700,
+      440
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/raw/mail-4-zohomail-reply-sent.png",
+   "caption": "Customer's mailbox (Zoho Mail): reply \"test reply\" sent at 3:30 PM to customer-support, quoting the agent email from customer-support@help-staging.anyware.software",
+   "w": 1280,
+   "h": 984,
+   "crop": [
+    626,
+    222,
+    600,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      638,
+      248,
+      1200,
+      322
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      638,
+      336,
+      820,
+      388
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      638,
+      438,
+      1200,
+      504
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Agent reply from Desk",
+   "Arrived at 2:50 PM from Customer Support <customer-support@help-staging.anyware.software>, subject \"Re: Check-in\".",
+   "Sent from #1 (Customer Support) at 2:50 PM, status Sent.",
+   "PASS"
+  ],
+  [
+   2,
+   "Customer replies",
+   "Reply sent at 3:30 PM to customer-support@help-staging.anyware.software, subject \"Re: Check-in\", text \"test reply\".",
+   "Expected: the reply shows on #1 as a customer (inbound) message, or at least as a new ticket.",
+   "INFO"
+  ],
+  [
+   3,
+   "Reply in Desk",
+   "—",
+   "Nothing arrived: #1 still has only the agent reply at 4:12 PM (42 min later); no new ticket from that address; Suppressions empty (Quarantine and Spam were empty before, then returned server errors at 3:55 PM).",
+   "FAIL"
+  ],
+  [
+   4,
+   "Email status in Setup",
+   "—",
+   "Says \"Mail is arriving. Customers can write in, and replies go out. Nothing is waiting on you.\" and \"4 of 4 done\" while the customer reply did not arrive.",
+   "FAIL"
+  ],
+  [
+   5,
+   "Provider check",
+   "—",
+   "\"The mail provider did not answer when we checked taviportal.com.\" The page says this doesn't tell whether mail is arriving.",
+   "INFO"
+  ]
+ ]
+}

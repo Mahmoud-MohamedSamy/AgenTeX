@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desk Automation Order Plan</title>
+<style>
+:root{--bg:#f6f7f9;--surface:#fff;--fg:#1b2230;--muted:#5a6476;--line:#dde2ea;--accent:#1f5f8b;--soft:#e6f0f7;--ok:#1e7a46;--oksoft:#e7f4ec;--warn:#8a5a00;--warnsoft:#fbf1dc;--bad:#b3261e;--badsoft:#fbeaea}
+@media (prefers-color-scheme:dark){:root{--bg:#12161d;--surface:#1a2029;--fg:#e3e8ef;--muted:#9aa5b5;--line:#2c3440;--accent:#7fb6dc;--soft:#1c2d3b;--ok:#8fd3aa;--oksoft:#17301f;--warn:#e9c46a;--warnsoft:#332a14;--bad:#f2a29c;--badsoft:#3a1f1e;color-scheme:dark}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 "Segoe UI",system-ui,sans-serif}
+.wrap{max-width:1020px;margin:0 auto;padding:32px 16px 64px;display:grid;gap:32px}
+h1{font-size:1.8rem;margin:0 0 6px;line-height:1.25}h2{font-size:1.25rem;margin:0}h3{font-size:1rem;margin:8px 0 0}
+p{margin:0}section{display:grid;gap:12px;min-width:0}.muted{color:var(--muted)}
+.box{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:14px 18px;display:grid;gap:8px}
+.chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.step{background:var(--soft);padding:3px 10px;border-radius:5px;font-weight:600;font-size:.9rem}.step.add{background:var(--warnsoft);color:var(--warn)}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}th{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;background:var(--bg)}
+td.id{font-family:Consolas,monospace;white-space:nowrap;font-size:.84rem}
+ul,ol{margin:0;padding-left:1.3em;display:grid;gap:4px}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;padding:1px 8px;border-radius:999px;white-space:nowrap}.ok{background:var(--oksoft);color:var(--ok)}.warn{background:var(--warnsoft);color:var(--warn)}.new{background:var(--badsoft);color:var(--bad)}
+a{color:var(--accent)}code{font-family:Consolas,monospace;font-size:.86em;overflow-wrap:anywhere}
+</style></head><body><div class="wrap">
+
+<header><h1>Desk automation order: plan</h1>
+<p class="muted">TAVI Desk vs Zoho Desk · Drafted 8 Nov 2026 · Waiting for your review. Nothing has been started or published, and no tenant data was changed for this plan.</p></header>
+
+<section><h2>1. Is the order you quoted correct?</h2>
+<div class="box"><p><strong>Yes.</strong> It is Zoho's own wording, word for word, in its assignment article, and its SLA article gives the same order. It is correct but not the whole picture: three other points need a decision or a test.</p>
+<div class="chain"><span class="step add">Skills (Automation FAQ)</span>›<span class="step">Direct assignment</span>›<span class="step">Workflow</span>›<span class="step">SLA</span>›<span class="step">Round robin</span>›<span class="step">Blueprint</span>›<span class="step">Notifications</span>›<span class="step add">Automation Studio (SLA FAQ)</span></div>
+<p class="muted">Blue: your quoted order. Yellow: added by other Zoho pages. Supervise runs on a timer and Macros run by hand, so they are not part of one event.</p></div>
+<div class="scroll"><table><thead><tr><th>Zoho page</th><th>Order as written</th><th>Difference from your order</th></tr></thead><tbody>
+<tr><td><a href="https://help.zoho.com/portal/en/kb/desk/automation/assignment-rules-notification/articles/assigning-tickets-using-workflows-assignment-rule">Assignment article</a></td><td>Direct assignment &gt; Workflow &gt; SLA &gt; Round robin (sequential &gt; load balancing &gt; skill based) &gt; Blueprint &gt; Notifications</td><td>None. This is your text.</td></tr>
+<tr><td><a href="https://help.zoho.com/portal/en/kb/desk/automation/escalate-sla/articles/understanding-and-working-with-slas">SLA article</a></td><td>Direct assignment rules &gt; workflow rules &gt; SLA &gt; Round robin rule (sequential &gt; load balancing &gt; skill based) &gt; Blueprint &gt; Notifications</td><td>None. It adds that this applies when a ticket is created or updated.</td></tr>
+<tr><td><a href="https://help.zoho.com/portal/en/kb/desk/faqs/automation/articles/faqs-workflow-rules">Workflow FAQ</a></td><td>Assignment Rules → Workflow Rules → SLAs → Round Robin → Blueprint</td><td>Stops at Blueprint.</td></tr>
+<tr><td><a href="https://help.zoho.com/portal/en/kb/desk/faqs/automation/articles/faqs-sla-service-level-agreement">SLA FAQ</a></td><td>Direct Assignment Rules, Workflow Rules, SLAs, Round Robin Assignment, Blueprints, Notification Rules, Automation Studio</td><td>Adds Automation Studio last.</td></tr>
+<tr><td><a href="https://help.zoho.com/portal/en/kb/desk/faqs/automation/articles/faqs-automation">Automation FAQ</a></td><td>Skills based assignment rule &gt; Direct assignment rule &gt; Workflow rules &gt; SLA &gt; Round robin assignment rule &gt; Blueprint &gt; Supervise &gt; Macros</td><td>Skills first. Adds Supervise (periodic) and Macros (manual). No Notifications.</td></tr>
+</tbody></table></div>
+<h3>What this means for testing</h3>
+<ul>
+<li><strong>Skills first.</strong> Your quote leaves it out, but NDC-2275 (EO-1, decided 14 Oct) has Skills as step 1. I propose keeping it.</li>
+<li><strong>"Sequential &gt; load balancing &gt; skill based".</strong> Zoho doesn't explain this. NDC-2275 (EO-6) reads it as the three methods inside the round robin step: each target has one method and the first matching rule wins. It's not a priority between methods. I'd test first-match and check it live in Zoho.</li>
+<li><strong>Notifications last.</strong> Zoho never describes the case where two steps set the owner. NDC-2275 (EO-5) decided that only the final owner is told. Marked as our decision, not Zoho's documented behaviour.</li>
+<li><strong>Stale line.</strong> NDC-2275 EO-1 still says Blueprint is not built in TAVI. It is built now, so that step has never been tested as part of the order.</li>
+</ul>
+</section>
+
+<section><h2>2. What is already known, and what isn't</h2>
+<div class="scroll"><table><thead><tr><th>Feature</th><th>Earlier work</th><th>Gap ticket to reuse</th><th>Still unknown</th></tr></thead><tbody>
+<tr><td>Direct assignment + Round robin</td><td>Full run 6–7 Nov: order cases with workflow passed</td><td>NDC-2275 (Ready For Test), NDC-1978</td><td>Order with SLA and Blueprint. Rerun on current build.</td></tr>
+<tr><td>Skills</td><td>Run 6–7 Nov. Skill stamped, then skill-based round robin in one event passed.</td><td>NDC-2752 (Done), NDC-2805, NDC-2821</td><td>Skills against Direct and Workflow in the same event.</td></tr>
+<tr><td>Workflow</td><td>Runs 12–14 Oct, retest 26 Oct</td><td>NDC-2203</td><td>Bugs B-1..B-9 from October were never filed. Their status today must be checked.</td></tr>
+<tr><td>SLA</td><td>Run on 14 Oct (NDC-2266), and as a Blueprint tie-in (2 Nov). Its spec is not in this repo.</td><td>NDC-2266, NDC-1952 (both Ready For Test)</td><td>No order test, and the build has changed since 14 Oct.</td></tr>
+<tr><td>Blueprint</td><td>Phases 1–6, 1–3 Nov</td><td>NDC-2754 + bugs NDC-2755..2788</td><td>Its place in the order.</td></tr>
+<tr><td>Notifications</td><td>Only assignment notices (6–7 Nov)</td><td>None found</td><td><strong>No intake yet.</strong> New gap review needed.</td></tr>
+<tr><td>Supervisor rules</td><td>Listed as Missing (U-10)</td><td>NDC-1973 (Backlog), NDC-2760</td><td>Can only be logged as a gap.</td></tr>
+<tr><td>Macros, Automation Studio</td><td>One QA macro used on 14 Oct</td><td>To check</td><td>Whether TAVI has an Automation Studio equivalent.</td></tr>
+</tbody></table></div>
+<p class="muted">I found no Desk ticket for the execution order itself. NDC-1255 and NDC-2294 are CRM. Ticket states came from Plane on 8 Nov; older findings come from notes and will be re-checked, not assumed.</p>
+</section>
+
+<section><h2>3. Stages and your review points</h2>
+<div class="scroll"><table><thead><tr><th>Stage</th><th>What I do</th><th>Writes to tenant?</th><th>Ends with</th></tr></thead><tbody>
+<tr><td class="id">Gate 1</td><td>You review this plan and answer section 7.</td><td>No</td><td>Your OK</td></tr>
+<tr><td class="id">S1 Build map</td><td>Bundle, locale files and read-only API for all features. Baseline snapshot of rules, policies, blueprints and notification settings.</td><td>No</td><td>Baseline file</td></tr>
+<tr><td class="id">S2 Zoho research</td><td>Item-by-item Zoho inventory, reusing the existing ones. New research for SLA and Notifications. Read-only capture in Zoho.</td><td>No</td><td>Inventory</td></tr>
+<tr><td class="id">S3 Missing list</td><td>Re-check every earlier gap on today's build, then list only what is still open or new, grouped by feature, with annotated TAVI vs Zoho images.</td><td>No</td><td>Local list</td></tr>
+<tr><td class="id">S4 Spec</td><td>One master spec for Parts A, B and C (section 4). It points to the three existing specs and adds new SLA, Notifications and Macros specs, E2E journeys, Group Z for gaps, and traceability to EO-1..6.</td><td>No</td><td>Local spec</td></tr>
+<tr><td class="id">Gate 2</td><td>You review the missing list and spec.</td><td>No</td><td>Your OK</td></tr>
+<tr><td class="id">S5 Setup</td><td>QA data only, on a QA department, guarded by the subject prefix <code>QA AO </code>. Every object logged in a ledger.</td><td>Yes, QA only</td><td>Ledger</td></tr>
+<tr><td class="id">S6 Run</td><td>Part A (each automation alone), then Part B (pairs), then Part C (whole order and E2E). Short batches, because staging drops connections. Every candidate bug re-run alone before it is reported.</td><td>Yes, QA only</td><td>Results</td></tr>
+<tr><td class="id">S7 Zoho live</td><td>Same order scenarios on Zoho where the docs are silent (only if you allow it, section 7).</td><td>Zoho, if allowed</td><td>Comparison</td></tr>
+<tr><td class="id">S8 Report</td><td>Local HTML report, annotated images vs Zoho for failed cases only. Cleanup, then a check against the baseline.</td><td>Cleanup</td><td>Local report</td></tr>
+<tr><td class="id">Gate 3</td><td>You review. <strong>Nothing goes to Plane or a shared page unless you tell me.</strong></td><td>No</td><td>Your decision</td></tr>
+</tbody></table></div>
+</section>
+
+<section><h2>4. Test structure: alone, then together, then the whole order</h2>
+<p>Revised after your review. Testing runs in three parts, and a part starts only when the one before it is done, so a broken feature isn't mistaken for an order problem.</p>
+<div class="scroll"><table><thead><tr><th>Part</th><th>Question it answers</th><th>Cases</th></tr></thead><tbody>
+<tr><td class="id">A Alone</td><td>Does each automation work by itself?</td><td>A1..A8 below</td></tr>
+<tr><td class="id">B Together</td><td>Does each step see and respect what another step did? Every pair of steps is covered.</td><td>OR-01..OR-21, OR-25, OR-26, OR-28..OR-35</td></tr>
+<tr><td class="id">C Whole order</td><td>Do all steps run in the right order on one ticket, on every channel?</td><td>OR-22..OR-24, OR-27, then E2E journeys</td></tr>
+</tbody></table></div>
+<h3>Part A: each automation alone</h3>
+<p>Each area is tested with the others out of the way: setup screen, every option, runtime behaviour, limits, invalid input, permissions, edit, deactivate and delete, history and audit.</p>
+<div class="scroll"><table><thead><tr><th>Id</th><th>Automation</th><th>Existing spec rows</th><th>Tested alone</th></tr></thead><tbody>
+<tr><td class="id">A1</td><td>Skills</td><td rowspan="3">119 rows in <code>spec-v2-assignment-rules-skills.md</code> (minus its order rows, which move to Part B)</td><td>Skills and types per department, criteria, agent skills, recalculate</td></tr>
+<tr><td class="id">A2</td><td>Direct assignment</td><td>Form, criteria, targets, unassigned only, move department, limits</td></tr>
+<tr><td class="id">A3</td><td>Round robin: sequential, load balancing, skill based</td><td>Each method on its own, preferences, thresholds, offline agents, backlog, 30-day rule</td></tr>
+<tr><td class="id">A4</td><td>Workflow</td><td>242 rows in <code>spec-desk-workflow-rules.md</code></td><td>Triggers, conditions, every action, date rules, saved actions, history</td></tr>
+<tr><td class="id">A5</td><td>SLA</td><td><span class="pill new">New spec</span></td><td>Policies, targets per priority, business hours, escalation levels, contract precedence, reset, transfer, reports</td></tr>
+<tr><td class="id">A6</td><td>Blueprint</td><td>199 rows in <code>spec-desk-blueprint.md</code></td><td>Designer, Before/During/After, state timers, versions, ticket entry and moves</td></tr>
+<tr><td class="id">A7</td><td>Notifications</td><td><span class="pill new">New spec</span></td><td>Customer and agent notification rules per department, recipients, templates, on/off per event</td></tr>
+<tr><td class="id">A8</td><td>Macros (Supervisor rules are not built, so gap only)</td><td><span class="pill new">New, small</span></td><td>Apply by hand, actions, permissions</td></tr>
+</tbody></table></div>
+<p class="muted">Rows count table lines, including any already marked as gaps. The total is about 560 existing rows plus the new SLA, Notifications and Macros specs.</p>
+<h3>Part B coverage: every pair of steps</h3>
+<p>While answering your question I found the first list had no case for 7 of these pairs. They are added as OR-28..OR-35.</p>
+<div class="scroll"><table><thead><tr><th></th><th>Direct</th><th>Workflow</th><th>SLA</th><th>Round robin</th><th>Blueprint</th><th>Notifications</th></tr></thead><tbody>
+<tr><th>Skills</th><td>OR-28</td><td>OR-02, 03</td><td>OR-29</td><td>OR-01</td><td>OR-30</td><td>Via OR-01 owner, checked in OR-22</td></tr>
+<tr><th>Direct</th><td></td><td>OR-04, 05, 06</td><td>OR-09</td><td>OR-12</td><td>OR-31</td><td>OR-32</td></tr>
+<tr><th>Workflow</th><td></td><td></td><td>OR-07, 08</td><td>OR-10, 11</td><td>OR-16</td><td>OR-19, 33</td></tr>
+<tr><th>SLA</th><td></td><td></td><td></td><td>OR-13, 14</td><td>OR-18</td><td>OR-34</td></tr>
+<tr><th>Round robin</th><td></td><td></td><td></td><td></td><td>OR-17</td><td>OR-20</td></tr>
+<tr><th>Blueprint</th><td></td><td></td><td></td><td></td><td></td><td>OR-35</td></tr>
+</tbody></table></div>
+<h3>Parts B and C: cases</h3>
+<p>An order can't be read from a screen, so each case makes a later step depend on what an earlier step did. If the later step reacts, the order is right. Ticket history and execution history are the second check.</p>
+<div class="scroll"><table><thead><tr><th>Id</th><th>Steps tested</th><th>Scenario</th><th>Pass when</th><th>Status</th></tr></thead><tbody>
+<tr><td class="id">OR-01</td><td>Skills › Round robin</td><td>Skill added by criteria, skill-based target in the same event</td><td>Agent with that skill gets it</td><td><span class="pill ok">Rerun</span></td></tr>
+<tr><td class="id">OR-02</td><td>Skills › Workflow</td><td>Workflow condition on the ticket's skill</td><td>Workflow sees the skill</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-03</td><td>Workflow vs Skills</td><td>Workflow sets the field a skill's criteria need</td><td>Compare with Zoho: does the skill arrive in this event?</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-04</td><td>Direct › Workflow</td><td>Workflow condition "Owner is A1", direct rule sets A1</td><td>Workflow fires</td><td><span class="pill ok">Rerun</span></td></tr>
+<tr><td class="id">OR-05</td><td>Direct › Workflow</td><td>Direct sets A1, workflow sets A2</td><td>Final A2, history A1 then A2</td><td><span class="pill ok">Rerun</span></td></tr>
+<tr><td class="id">OR-06</td><td>Direct › Workflow alert</td><td>Workflow emails "Record Owner" after direct sets A1</td><td>A1 gets the alert (Zoho FAQ)</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-07</td><td>Workflow › SLA</td><td>Workflow raises Priority to High; SLA has per-priority targets</td><td>Due time uses the High target (Zoho FAQ)</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-08</td><td>Workflow › SLA</td><td>Workflow sets a field that makes the ticket match another SLA policy</td><td>Second policy applies</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-09</td><td>Direct › SLA</td><td>SLA criteria on what the direct rule changed (for example move department)</td><td>SLA matches the final values</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-10</td><td>Workflow › Round robin</td><td>Workflow sets owner, round robin also matches</td><td>Round robin does nothing (Zoho article)</td><td><span class="pill ok">Rerun</span></td></tr>
+<tr><td class="id">OR-11</td><td>Workflow › Round robin</td><td>Workflow sets the field round robin's rule needs</td><td>Round robin assigns in the same event</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-12</td><td>Direct › Round robin</td><td>Direct moves department and leaves unassigned</td><td>New department's round robin assigns in the same event</td><td><span class="pill ok">Rerun</span></td></tr>
+<tr><td class="id">OR-13</td><td>SLA › Round robin</td><td>Compare SLA stamp and owner stamp; use an SLA field in the rule criteria if offered</td><td>SLA first. Inconclusive if no timing or field proves it.</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-14</td><td>SLA agent timer › Round robin</td><td>Agent resolution time on a ticket assigned by round robin</td><td>Counted from the assignment (Zoho FAQ, transfer case)</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-15</td><td>Round robin methods</td><td>Two matching rules with different methods, then reordered</td><td>First in list wins, never both</td><td><span class="pill ok">Rerun</span></td></tr>
+<tr><td class="id">OR-16</td><td>Workflow › Blueprint</td><td>Workflow update makes the ticket match blueprint criteria</td><td>Ticket enters the blueprint (Zoho FAQ)</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-17</td><td>Round robin › Blueprint</td><td>Blueprint criteria or transition owner needs the owner round robin set</td><td>Blueprint sees the owner</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-18</td><td>SLA + Blueprint</td><td>Ticket has an SLA policy and a blueprint state timer</td><td>Both run, as in Zoho</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-19</td><td>All › Notifications</td><td>Direct sets A1, workflow sets A2</td><td>Only A2 notified (NDC-2275 EO-5)</td><td><span class="pill ok">Rerun</span></td></tr>
+<tr><td class="id">OR-20</td><td>Round robin › Notifications</td><td>Team target, no owner at the end</td><td>Only that team is told, once</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-21</td><td>Later events</td><td>SLA escalation, blueprint transition, macro each change the owner</td><td>Each is a new event; new owner notified</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-22</td><td>Full chain, create</td><td>One ticket that triggers every step</td><td>Every step ran, in order, each seeing the last</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-23</td><td>Full chain, update</td><td>Same chain from an update on a blank ticket</td><td>Same result; only rules set for update run</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-24</td><td>Full chain, channels</td><td>Screen, API, email, web form, chat; import with automation on and off</td><td>Same order on each; none when off</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-25</td><td>Step fails</td><td>Webhook fails, no agent available, inactive SLA</td><td>Later steps still run; failure is logged</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-26</td><td>Loops</td><td>Rule updates that would re-trigger themselves or each other</td><td>No endless loop; same chaining as Zoho</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-27</td><td>Timing</td><td>Owner set after save, 100 tickets</td><td>Within 5 seconds for 95 of 100 (NDC-2275)</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-28</td><td>Skills › Direct</td><td>Direct rule criteria use the skill stamped in the same event, if the criteria offer it</td><td>Rule sees the skill, or the gap is recorded vs Zoho</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-29</td><td>Skills › SLA</td><td>SLA criteria use the ticket's skill, if offered</td><td>Policy matches, or the gap is recorded vs Zoho</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-30</td><td>Skills › Blueprint</td><td>Blueprint criteria use the ticket's skill, if offered</td><td>Ticket enters, or the gap is recorded vs Zoho</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-31</td><td>Direct › Blueprint</td><td>Blueprint criteria need the owner or department set by a direct rule</td><td>Ticket enters the blueprint</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-32</td><td>Direct › Notifications</td><td>Only a direct rule assigns</td><td>Owner told once; nobody else</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-33</td><td>Workflow › Notifications</td><td>Workflow sets a field used by a notification rule, or sets the owner</td><td>Notification reflects the workflow's value</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-34</td><td>SLA › Notifications</td><td>Notification content or rule depends on the SLA due time set in the same event</td><td>Shows the due time; SLA alerts come later as their own event</td><td><span class="pill new">New</span></td></tr>
+<tr><td class="id">OR-35</td><td>Blueprint › Notifications</td><td>Ticket enters a blueprint in the event that assigns it</td><td>Notification reflects the final state and owner, sent once</td><td><span class="pill new">New</span></td></tr>
+</tbody></table></div>
+<p class="muted">"Rerun" passed on 6–7 Nov and is repeated on the current build. Final case list and wording come in the spec at Gate 2.</p>
+</section>
+
+<section><h2>5. Missing-function review, feature by feature</h2>
+<div class="scroll"><table><thead><tr><th>Feature</th><th>Focus</th><th>Gap review</th></tr></thead><tbody>
+<tr><td>Direct assignment</td><td>NDC-2275 DA rules: targets, criteria, scope, limits</td><td>Re-check known gaps, add new ones</td></tr>
+<tr><td>Round robin, sequential</td><td>Agent order, offline skip, thresholds, backlog, 30-day rule</td><td>Re-check known gaps, add new ones</td></tr>
+<tr><td>Round robin, load balancing</td><td>Open-ticket count, threshold scope</td><td>Re-check known gaps, add new ones</td></tr>
+<tr><td>Round robin, skill based</td><td>Skills per department, skill types (NDC-2821), no skilled agent</td><td>Re-check known gaps, add new ones</td></tr>
+<tr><td>Workflow</td><td>NDC-2203 list, triggers, actions, conditions, limits, history</td><td>Re-check known gaps and unfiled B-1..B-9</td></tr>
+<tr><td>SLA</td><td>Targets, business hours, escalation levels, contract precedence, reset on reapply, transfer, reports</td><td><strong>Full new review</strong>, starting from NDC-2266</td></tr>
+<tr><td>Blueprint</td><td>NDC-2754 and its bugs</td><td>Re-check known gaps, add new ones</td></tr>
+<tr><td>Notifications</td><td>Rule list, recipients, channels, templates, on/off per event, agent preferences</td><td><strong>Full new review</strong></td></tr>
+<tr><td>Supervisor, Macros, Automation Studio</td><td>Supervisor and Studio only where they touch the order; Macros alone in A8</td><td>Log gaps</td></tr>
+</tbody></table></div>
+</section>
+
+<section><h2>6. How I would run it</h2>
+<ul>
+<li><strong>Tenant:</strong> NDC-Staging, tickets module <code>88e8ea44…</code>. Never the Standard layout or shared rules.</li>
+<li><strong>Accounts:</strong> owner plus existing admin, supervisor and agent accounts. Each signs in once per run, because a second sign-in ends the first session. No credentials printed.</li>
+<li><strong>Evidence:</strong> screenshots for failed cases only, annotated side by side with Zoho. Anything only inferred about Zoho is marked "not checked".</li>
+<li><strong>If something blocks a case:</strong> I stop and tell you. No shared setting (business hours, master switches, Standard layout) changes without asking first.</li>
+</ul>
+<h3>Known blockers</h3>
+<ul>
+<li>Supervisor rules are not built, so those cases can only be gaps.</li>
+<li>Customer-reply triggers need a real outside mailbox; earlier replies from anyware.software did not fire rules, Gmail did.</li>
+<li>Suspending an agent was blocked by the permission check in October and may need you to run it or allow it.</li>
+<li>Staging connection drops and idle agents going offline after 10 minutes can give false failures, so failures are re-run alone.</li>
+<li>Other people work on staging at the same time and their rules may fire on my tickets. Rules are guarded by the prefix, and the baseline shows what else is active.</li>
+</ul>
+</section>
+
+<section><h2>7. Your decisions (8 Nov)</h2>
+<ol>
+<li><strong>Order:</strong> Skills › Direct › Workflow › SLA › Round robin › Blueprint › Notifications. Supervise and Macros are separate events; Automation Studio is checked only if TAVI has it.</li>
+<li><strong>Zoho writes:</strong> allowed. QA rules and tickets on <code>techsolutionsegypt</code>, deleted after. Deleted tickets stay in Zoho's Recycle Bin for up to 60 days.</li>
+<li><strong>Test code (changed 8 Nov):</strong> generate automation, and keep visual checks alongside the functional ones. See "Automation and visual checks" below.</li>
+<li><strong>Old QA AS6 data:</strong> left in place for now. This run uses its own QA department and the prefix <code>QA AO </code>, and the baseline records the old data so it isn't counted as new.</li>
+<li><strong>QA settings on the tenant:</strong> allowed, scoped to a QA department. I'll ask about any that can't be scoped.</li>
+<li><strong>Inboxes:</strong> <code>mahmoud.mmohamedsamy@gmail.com</code> for customer replies, because earlier replies from anyware.software did not fire rules. Either that or <code>mmohamed@anyware.software</code> for notifications.</li>
+<li><strong>Unfiled workflow bugs B-1..B-9:</strong> re-checked in this run.</li>
+</ol>
+<p><strong>Part A depth:</strong> every row, with results after each feature.</p>
+<h3>Automation and visual checks</h3>
+<ul>
+<li><strong>Functional:</strong> Java suite in <code>automation/</code>, new feature <code>deskautomationorder</code>, reusing <code>deskworkflowrules</code> and <code>deskblueprint</code>. All classes run in one JVM with one sign-in per account, to avoid the sign-in rate limit and session revocation.</li>
+<li><strong>Automatic visual checks on every screen and state:</strong> clipped or overflowing text, overlapping elements, raw translation keys, broken images, console errors, and fields that don't match the saved value.</li>
+<li><strong>Screens captured:</strong> light and dark theme, English and Arabic (RTL), desktop and phone width, plus empty, error and long-text states.</li>
+<li><strong>Looked at by eye:</strong> I review the captured screens myself, and compare them with Zoho where a difference matters. A screen isn't called visually clean from the automatic checks alone.</li>
+<li><strong>Limit:</strong> a test that passes says nothing about how a screen looks, so the report gives functional and visual results separately, and says which screens were not reviewed.</li>
+</ul>
+<h3>Tenant change made for this run</h3>
+<ul>
+<li>9 inactive workflow rules deleted at your request on 8 Nov. Full copies: <code>reference/deleted-inactive-workflow-rules-2026-11-08.json</code>.</li>
+<li>The list API returns at most 50 rules. The tenant really had 54, so the limit of 50 is not confirmed. The first QA rule created in S5 will show what the limit is now.</li>
+<li>4 active rules from the 6 Nov run (QA AS6 WF EO2, EO3, EO5, add skill) have no department limit. They stay, per your decision, and S5 checks that they can't fire on <code>QA AO </code> tickets.</li>
+</ul>
+</section>
+
+<section><h2>Sources</h2>
+<ul>
+<li><a href="https://help.zoho.com/portal/en/kb/desk/automation/assignment-rules-notification/articles/assigning-tickets-using-workflows-assignment-rule">Assigning tickets using workflow and assignment rules</a></li>
+<li><a href="https://help.zoho.com/portal/en/kb/desk/automation/escalate-sla/articles/understanding-and-working-with-slas">Understanding and working with SLAs</a></li>
+<li><a href="https://help.zoho.com/portal/en/kb/desk/faqs/automation/articles/faqs-automation">FAQs on Automation</a></li>
+<li><a href="https://help.zoho.com/portal/en/kb/desk/faqs/automation/articles/faqs-workflow-rules">FAQs: Workflow Rules</a></li>
+<li><a href="https://help.zoho.com/portal/en/kb/desk/faqs/automation/articles/faqs-sla-service-level-agreement">FAQs: SLA</a></li>
+</ul>
+</section>
+</div></body></html>

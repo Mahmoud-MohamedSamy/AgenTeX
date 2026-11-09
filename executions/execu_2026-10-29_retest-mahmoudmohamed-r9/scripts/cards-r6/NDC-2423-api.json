@@ -1,0 +1,43 @@
+{
+ "out": "NDC-2423-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2423 · Layout builder Save of validation regex and Unique/Required (QA fields on QA layout)",
+ "rows": [
+  [
+   "Phone regex",
+   "Set Permission › Validation regex ^01[0125]\\d{8}$ → Apply → Save",
+   "PUT field 200 with the regex; after reload editor and API show the same regex",
+   "ok"
+  ],
+  [
+   "Email unique + required",
+   "Mark as Unique + Mark as Required → Save",
+   "PATCH constraints {required:true, unique:true} 200; API unique = true, required = true",
+   "ok"
+  ],
+  [
+   "record: phone 123",
+   "POST /api/v1/modules/{Leads}/records",
+   "422 \"does not match the required pattern\"",
+   "ok"
+  ],
+  [
+   "record: 01012345678",
+   "POST /api/v1/modules/{Leads}/records",
+   "201",
+   "ok"
+  ],
+  [
+   "record: duplicate email",
+   "POST /api/v1/modules/{Leads}/records",
+   "422 \"already in use\"",
+   "ok"
+  ],
+  [
+   "record: no email",
+   "POST /api/v1/modules/{Leads}/records",
+   "422 \"is required\" — QA email set back to not required right after",
+   "ok"
+  ]
+ ]
+}

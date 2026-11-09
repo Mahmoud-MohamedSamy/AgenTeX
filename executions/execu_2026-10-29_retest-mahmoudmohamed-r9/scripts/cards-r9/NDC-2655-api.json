@@ -1,0 +1,45 @@
+{
+ "out": "NDC-2655-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2655 · Business hours — now /iam/tenant/business-hours (the old setting general.company.business_hours is no longer defined)",
+ "rows": [
+  [
+   "stored record",
+   "GET /iam/tenant/business-hours",
+   "24_7, all 7 days, timing_mode null, hours null — no leftover hours",
+   "ok"
+  ],
+  [
+   "unchanged save ×2",
+   "PUT the stored record back unchanged",
+   "200, 200 — record unchanged",
+   "ok"
+  ],
+  [
+   "the ticket's cause",
+   "PUT 24_7 WITH timing \"same\" + 09:00–17:00",
+   "200 and stored clean (timing null, hours null); re-save 200",
+   "ok"
+  ],
+  [
+   "check still works",
+   "PUT 24_7 without Sunday",
+   "400 business_hours.invalid_day_count \"24_7 requires all 7 days.\"",
+   "ok"
+  ],
+  [
+   "screen: Workweek",
+   "Workweek Sun–Thu 09–17, Save",
+   "400 \"Updated business hours would invalidate existing shifts.\" (evening shift) — nothing changed",
+   "info"
+  ],
+  [
+   "restore",
+   "Original 24/7 record",
+   "Restored and compared equal",
+   "info"
+  ]
+ ]
+}

@@ -61,7 +61,7 @@ code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:
   <div class="stat pass"><b>~95</b><span>cases with a result</span></div>
   <div class="stat pass"><b>16</b><span>tickets now pass</span></div>
   <div class="stat fail"><b>16</b><span>tickets still fail</span></div>
-  <div class="stat fail"><b>8</b><span>new bug candidates</span></div>
+  <div class="stat fail"><b>7</b><span>new bug candidates (1 dropped)</span></div>
   <div class="stat"><b>0</b><span>filed in Plane yet</span></div>
 </div>
 
@@ -120,9 +120,9 @@ code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:
     <div class="bug"><div class="top"><span class="id">W2-B6</span><span class="chip warn">Medium</span></div>
       <h3>Users on the "User" profile can't search</h3>
       <p>Global search says "You don't have access to search" (403). The built-in profile has no search permission; Zoho's Standard profile has it.</p></div>
-    <div class="bug"><div class="top"><span class="id">W2-B7</span><span class="chip warn">Medium</span></div>
+    <div class="bug"><div class="top"><span class="id">W2-B7</span><span class="chip pass">Dropped</span></div>
       <h3>"+ Task" on a record has no form</h3>
-      <p>First open hangs on "Loading form…", then "No quick-create form is available for this activity". Call and Meeting work.</p></div>
+      <p>Seen on 25 Oct ("No quick-create form is available"). On 26 Oct the automated screen test opened the Task form with Owner, Subject and Due date. No longer reproduces, so it won't be filed.</p></div>
     <div class="bug"><div class="top"><span class="id">W2-B8</span><span class="chip warn">Medium</span></div>
       <h3>Recurring tasks are never created</h3>
       <p>"Weekly, 3 times" is saved, but only the first task exists, even after completing it.</p></div>
@@ -187,7 +187,25 @@ code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:
 </section>
 
 <section>
-  <h2>Automation</h2>
-  <p>This wave was run in the browser with small API scripts (<code>scripts/</code> in the execution folder). It is being turned into the Java automation feature <code>crmrecords</code> so it can be rerun like Wave 1.</p>
+  <h2>Automated rerun, 26 Oct (API and screen)</h2>
+  <p>The wave is now the Java automation feature <code>crmrecords</code>: 10 test classes, rerunnable with <code>./mvnw test -Dsuite=crm-wave2-api</code> and <code>-Dtest=RecordScreensUiTest</code>. The first two API runs found mistakes in my tests, which were fixed; the third run is the result below. Every failure is an app bug that the manual run also found.</p>
+  <div class="tbl"><table>
+    <tr><th>Part</th><th>Run</th><th>Passed</th><th>Failed (app bugs)</th></tr>
+    <tr><td>API, 9 classes</td><td>54 tests</td><td>43 (+1 skipped on purpose: permanent delete of an orphan bin item, needs your OK)</td><td>10: NDC-1193 (Customers), NDC-2122, NDC-2382, NDC-1312, NDC-1316, NDC-1324, W2-B1, W2-B3, W2-B6, W2-B8</td></tr>
+    <tr><td>Screen, owner</td><td>5 tests</td><td>1: "+ Task" form (W2-B7 dropped)</td><td>3: NDC-2386 Pipelines page, NDC-2136 Leads list 11.8–16.2 s, W2-B2 "leads created". NDC-2098 still running: the list was still loading when it checked</td></tr>
+  </table></div>
+  <p class="meta">Not automated, checked by hand only: actions menu, kanban toolbar and speed, long view names, bin refill, import review filter, conversion fields, work queues, Empty Bin, attachments, export file content. Mass delete of 120 records is automated but runs only on request.</p>
+</section>
+
+<section>
+  <h2>What I need from you</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Decision</th><th>My suggestion</th></tr>
+    <tr><td class="id">1</td><td>File the 7 candidates (W2-B1 to B8 without B7)?</td><td>Yes: W2-B4 High; W2-B6, B8, B1 Medium; W2-B3, B5, B2 Low. Same fields as Wave 1 (Bug, CRM module, Sprint 13, the 4 assignees).</td></tr>
+    <tr><td class="id">2</td><td>W2-B6 (User profile can't search): a bug, or the profile set-up is intended?</td><td>File it; Zoho's Standard profile can search, and the team can close it if it is on purpose.</td></tr>
+    <tr><td class="id">3</td><td>Post a retest comment with an annotated TAVI-vs-Zoho image on all 32 retested tickets (16 pass, 16 fail)?</td><td>Yes. Images attached straight through the Plane API with your key; states left for you to move.</td></tr>
+    <tr><td class="id">4</td><td>Run the orphan-item delete (NDC-1797) once? It permanently deletes one of the 16 stuck bin items.</td><td>Yes, one item, so the ticket gets a clear answer.</td></tr>
+    <tr><td class="id">5</td><td>Add the 7 gaps (Clone, note edit/delete, any file type, coming-soon tools, notes and tags in search, Repeat on the meeting popup, Save as view) to the gap list for NDC-2031 / NDC-2032?</td><td>Yes, as one gap item, not 7 tickets.</td></tr>
+  </table></div>
 </section>
 </div>

@@ -1,0 +1,11 @@
+const O = 'https://crm.zoho.com/crm/org943261092';
+const wait = async () => { for (let i = 0; i < 40; i++) { await sleep(1500); const t = await page.innerText('body').catch(() => ''); if (!/^\s*Loading/.test(t) && t.length > 300) break; } await sleep(3000); };
+await page.goto(O + '/tab/Leads', { waitUntil: 'domcontentloaded' }); await wait();
+await page.locator('text=Kayleigh Lace (Sample)').first().click(); await wait();
+out.recUrl = page.url();
+const att = page.locator('text=Attachments').first(); await att.click().catch(() => {}); await sleep(2500);
+await page.screenshot({ path: RAW + 'z-attachments.png' });
+const attach = page.locator('button:has-text("Attach"), span:has-text("Attach")').first(); await attach.click().catch(e => out.aErr = String(e.message).slice(0, 60)); await sleep(1500);
+out.attachMenu = (await page.innerText('body')).replace(/\s+/g, ' ').match(/.{0,60}(Upload File|Documents|Zoho WorkDrive|Other Cloud).{0,200}/i)?.[0];
+await page.screenshot({ path: RAW + 'z-attach-menu.png' });
+await page.keyboard.press('Escape');

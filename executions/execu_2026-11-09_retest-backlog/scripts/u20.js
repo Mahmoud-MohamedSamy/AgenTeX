@@ -1,0 +1,15 @@
+const SS='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog/screenshots/';
+const o={};await page.setViewportSize({width:1600,height:900});
+await page.goto(H+'/settings/modules-and-fields',{waitUntil:'domcontentloaded',timeout:120000});
+await page.getByText('Ticket Status',{exact:true}).last().waitFor({timeout:150000});await sleep(2000);
+await page.getByText('Ticket Status',{exact:true}).last().click();
+const h=page.getByText('Statuses by department and layout',{exact:true}).first();await h.waitFor({timeout:90000});
+const sels=page.locator('select');await sels.nth(1).selectOption({label:'QA RT9 2174 Dept'});await sleep(3000);
+o.layouts=await sels.nth(2).evaluate(x=>[...x.options].map(o=>o.text));
+await sels.nth(2).selectOption({label:'QA RT9 2174 Layout'});await sleep(3000);
+await page.getByText('Use only the statuses picked below',{exact:true}).click();await sleep(2000);
+const sec=h.locator('xpath=ancestor::*[.//select][1]/..');await sec.scrollIntoViewIfNeeded();
+o.sec=(await sec.innerText()).split('Statuses by department and layout').pop().replace(/\nQA NDC [^\n]*/g,'').slice(0,2500);
+o.ctrls=await sec.evaluate(d=>[...d.querySelectorAll('input,select,button')].map(x=>x.tagName+':'+(x.type||'')+':'+(x.getAttribute('aria-label')||x.value||x.innerText||'').slice(0,40)+(x.type==='checkbox'||x.type==='radio'?'='+x.checked:'')).filter(s=>!/QA NDC/.test(s)).slice(0,120));
+await page.mouse.wheel(0,600);await sleep(1000);await page.screenshot({path:SS+'2174-10d-use-only.png'});
+return o;

@@ -1,0 +1,95 @@
+{
+ "out": "NDC-2416-retest-PASS.png",
+ "ticket": "NDC-2416",
+ "title": "Reporting Hierarchy | A user can change their own manager without permission",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2416-api.png",
+   "caption": "auto-hier.log — HierarchyApiTest G9 / A8.",
+   "crop": [
+    0,
+    0,
+    1600,
+    339
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      274
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      280,
+      1566,
+      321
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "PUT /iam/me/profile reporting_manager_id as a User",
+   "403, nothing saved",
+   "403, manager unchanged",
+   "PASS"
+  ],
+  [
+   "2",
+   "Admin endpoint as the same user (control)",
+   "403",
+   "403 \"Cannot assign a reporting manager for this user.\", unchanged",
+   "PASS"
+  ],
+  [
+   "3",
+   "Permission",
+   "—",
+   "iam.personal.reporting_hierarchy granted to no CRM profile",
+   "INFO"
+  ],
+  [
+   "4",
+   "Restore",
+   "—",
+   "Manager of test user 1 restored (204)",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "title": "Users API | User list ignores paging and filters and returns a fixed 200 rows (NDC has 478 active agents)",
+ "state": "Bug",
+ "priority": "high",
+ "assignees": [
+  "MahmoudMohamed",
+  "Hegazy",
+  "mfathy",
+  "eahmed"
+ ],
+ "module": "Desk",
+ "labels": [
+  "Teams & Agents",
+  "API & Platform"
+ ],
+ "cycle": "Sprint 15",
+ "relates": [
+  "NDC-2787"
+ ],
+ "attachment": "evidence/annotated/03-agent-scale-vs-ndc-zoho.png",
+ "description_html": "<h2>Summary</h2><p>GET /api/v1/iam/users always returns the same 200 users. It ignores every paging and filter parameter, and the response has no total and no next-page link (meta is null). Owner, agent and team pickers that load users from this list cannot reach user 201 and up. NDC runs 478 active agents (886 in total) in its Zoho Desk.</p><h2>Steps</h2><ol><li>Sign in to Desk staging as ndc-staging-owner (NDC-Staging tenant).</li><li>Call GET /api/v1/iam/users.</li><li>Call it again with ?page=2, ?pageSize=5, ?page=2&amp;pageSize=100, ?limit=5&amp;offset=5, ?cursor=x, ?search=a, ?status=invited and ?status=active.</li></ol><h2>Expected</h2><ul><li>Paging works: pageSize limits the rows, page / offset / cursor move through the list, and the response gives a total or a next-page link.</li><li>search and status filter the list.</li><li>Every user in the tenant can be reached, so pickers work for 478+ agents.</li></ul><h2>Actual</h2><ul><li>Every call returns the same 200 rows (121 active + 79 invited), the same first and last user, and meta = null.</li><li>pageSize=5 still returns 200 rows; status=invited still returns the 121 active users too; search is ignored.</li><li>/iam/users/search, /count and /summary return 405.</li></ul><h2>Note</h2><p>The NDC-Staging tenant has exactly 200 users today, so a 201st user being left out has not been seen yet. Proving it needs one more user in the tenant. The paging and filter parameters being ignored is seen now.</p><h2>Environment</h2><ul><li>staging-desk.taviportal.com, NDC-Staging tenant, 9 Nov 2026 (first seen 2 Nov 2026).</li><li>NDC Zoho Desk reference: 886 agents, 478 active, read-only 2 Nov 2026.</li></ul><h2>Related</h2><ul><li>NDC-2787 item M-05 (agent scale).</li></ul><h2>Evidence</h2><ul><li><strong>03-agent-scale-vs-ndc-zoho.png</strong>: TAVI API result vs NDC Zoho agent counts.</li></ul>"
+}

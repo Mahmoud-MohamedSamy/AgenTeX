@@ -1,0 +1,632 @@
+{
+ "batch": "CRM",
+ "title": "Retest round 8 — Mahmoud Mohamed · NDC · 31 CRM tickets",
+ "date": "27–28 Oct 2026",
+ "env": "staging-crm.taviportal.com (+ staging-desk for the integration) · tenant NDC-Staging · Edge headless + API · mahmoud.mahamed1515 (CRM Admin), test user 1, owner account through the automation",
+ "devNote": "Result so far: 25 pass, 2 partial, 1 fail, 3 blocked by the staging outage from ~19:00 UTC on 27 Oct (file storage 500, Leads layout create 500, reporting 503). Posted 28 Oct (user decision): 25 → Done; NDC-2294, 2630, 2406, 2624, 2647 → Bug; each with comment + annotated image (read back). NDC-2620 left to the user (not posted).",
+ "tickets": [
+  {
+   "id": "NDC-2650",
+   "uuid": "ad249020-5aa0-4094-a22a-01d939f8de96",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Modules & Fields",
+   "title": "Layouts | Layout access saved through the API is silently ignored (assignments endpoint 500 / 405)",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "PUT accessMode \"selected\" + User profile → stored and read back; POST /layouts/assignments → 201 and listed by GET. Observations: sending an empty profile list keeps the old one; an assignment without a profile is accepted with profileId null.",
+   "img": [
+    "NDC-2650-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2649",
+   "uuid": "043947be-6f85-45ff-a47c-88057039d281",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Modules & Fields",
+   "title": "Map Dependency | An empty dependency map is saved, and dependencies aren't checked when a record is saved",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Empty map → 422 \"The parent (controlling) field is required.\"; real map Red → A, B: record Red + C → 422 \"'C' is not allowed in 'QA Child' when 'QA Colour' is 'Red'\"; Red + A and Green + C saved.",
+   "img": [
+    "NDC-2649-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2648",
+   "uuid": "6db5bc60-ce84-4c71-bc45-df451f61aed1",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspaces | A folder name used twice answers 500 instead of a clear \"name taken\" message",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Duplicate folder name → 409 FOLDER_ALREADY_EXISTS \"A folder named '…' already exists in this teamspace. Choose a different name.\"; duplicate teamspace 409.",
+   "img": [
+    "NDC-2648-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2647",
+   "uuid": "32db02c4-3499-46b2-a4b2-abd2ce409982",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Reports",
+   "title": "Reports | Rollup summary fields are always empty in reports",
+   "v": "BLOCKED",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Rollup set up on a QA module (record shows 12). The report query answers 503 \"Permission service is temporarily unavailable\" since ~19:00 UTC — retest when reporting recovers.",
+   "img": [
+    "NDC-2647-retest-BLOCKED.png"
+   ]
+  },
+  {
+   "id": "NDC-2646",
+   "uuid": "3645151d-cc3c-489a-9d20-04b14677acc2",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Modules & Fields",
+   "title": "Validation Rules | Rules are saved but never applied, and any text is accepted as a condition",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Rule {gt qa_num 10}: create with 50 → 422 with the rule's message; edit 3 → 999 → 422, value stays 3; a text / nonsense condition → 422 VALIDATION_RULE_INVALID (SetupApiTest updated to the criteria format).",
+   "img": [
+    "NDC-2646-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2645",
+   "uuid": "44cbdfec-c1fb-4aab-b86a-505ac90015b2",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Import & Export",
+   "title": "Export | \"All fields\" exports every field defined on the module, including other layouts' fields and fields not used on any layout",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Export help now reads \"Every field on the layout this list shows, plus Record ID, Tags and the audit columns.\" The dialog's request for Leads Standard returns 17 columns = Record ID + the 11 layout fields + Tags + 4 audit columns.",
+   "img": [
+    "NDC-2645-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2634",
+   "uuid": "7e23e9b7-466c-4fd0-8138-d1bdcb434a8f",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Customers",
+   "title": "Portals | The customer portal link opens an nginx 404 page",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "QA portal switched on → the public link (signed out) opens the \"Sign in\" page; switched off → \"This portal is not available — The company that sent you this link has switched this portal off…\". No nginx 404.",
+   "img": [
+    "NDC-2634-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2633",
+   "uuid": "e8577b2f-2e21-4be9-92a2-fe4a9b3a94e7",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Notifications",
+   "title": "Notifications | My Notifications shows raw event keys instead of names",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Settings › Signals (My Notifications) lists every type by name (\"Email opened\", \"Activity reminders: due now\", \"Mass delete: finished with errors\"…) in English and Arabic; no raw keys.",
+   "img": [
+    "NDC-2633-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2632",
+   "uuid": "8cc91dfc-6141-449d-80f9-9328599c8e51",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Notifications",
+   "title": "Notifications | Every notification call answers 500, so the bell and My Notifications are empty",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "GET /notifications, /unread-count, /preferences/me = 200 for the owner and test user 1 (ChannelsApiTest); the bell lists today's notifications; no notification call ≥ 400.",
+   "img": [
+    "NDC-2632-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2631",
+   "uuid": "f89533a6-094c-480b-b19a-690291f3c172",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Templates & Workflow",
+   "title": "Email Templates | A placeholder the template can't fill is saved and comes out blank",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "A template with {{company_name}} is refused: 422 MAIL_TEMPLATE_UNKNOWN_PLACEHOLDER \"These placeholders can't be filled when composing: {{company_name}}. Use one of: …\".",
+   "img": [
+    "NDC-2631-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2630",
+   "uuid": "cd74d3ad-134c-433f-b719-c02babeb981c",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Email Channel",
+   "title": "Email | A failed email send is shown as sent",
+   "v": "PARTIAL",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Sent as the owner (taviportal.com sender, Zoho connection without zoid): the send now answers 422 MAIL_SEND_FAILED with the reason, and the Mails list shows the email as \"failed\" with the error.",
+   "still": [
+    "The timeline still logs \"EmailSent\" for the failed email.",
+    "GET /emails/sendability still answers can_send true for this sender, so the screen lets the user try."
+   ],
+   "img": [
+    "NDC-2630-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-2629",
+   "uuid": "616723dc-919c-44f2-9525-cf23fa395293",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Activity Reminders",
+   "title": "Activity Reminders | The Reminder card fields, Additional users and Additional profiles lists show every item at full length instead of in fixed-height scrollable boxes",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Reminder card fields, Additional users and Additional profiles each sit in a 254 px box with its own scroll bar; clicking an item selects exactly that item (counter 1 → 0 on undo); the field list caps at 5 as stated. Nothing saved.",
+   "img": [
+    "NDC-2629-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2627",
+   "uuid": "22473d01-a53e-4c8a-8cd9-ceeef0b447ca",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Notes & Timeline",
+   "title": "Timeline | The created entry reads \"leads created\" instead of \"Lead created\"",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Lead timeline \"Lead created by test user 1\"; Transactions timeline \"Transactions created\" = the module's configured singular name (\"Transactions\").",
+   "img": [
+    "NDC-2627-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2626",
+   "uuid": "e6bc22d6-178f-4b98-ac3d-dd64378b0765",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Pipelines",
+   "title": "Transactions | Pipeline is shown as a raw id and stages as raw keys",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Transactions list Pipeline column shows \"Standard\" / \"1\"; record page Pipeline \"Standard\", stage bar Qualification / Needs Analysis / Proposal / Negotiation / Closed Won / Closed Lost; Stage field \"Needs Analysis\".",
+   "img": [
+    "NDC-2626-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2625",
+   "uuid": "792a2106-68cc-4564-a559-06fa461a7f96",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Tags",
+   "title": "Tags | The record tag API lets a record hold more than 10 tags",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "10 tags → 200; 11 → 422 RECORD_TAG_LIMIT_EXCEEDED \"A record can have at most 10 tags.\"; the record keeps 10.",
+   "img": [
+    "NDC-2625-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2624",
+   "uuid": "31783f39-6980-4065-9a5c-70540f5ccd59",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Notes & Timeline",
+   "title": "Timeline | Deleting a record and adding or removing attachments are not logged on the timeline",
+   "v": "BLOCKED",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Deletion part PASS: timeline has RecordCreated, FieldChanged, NoteAdded, RecordDeleted, RecordRestored (TimelineTest). Attachment add / remove could not be tested: file uploads fail on staging (PUT /s3/… 500).",
+   "img": [
+    "NDC-2624-retest-BLOCKED.png"
+   ]
+  },
+  {
+   "id": "NDC-2623",
+   "uuid": "e544fd81-4c30-4405-af26-6932b61030a6",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Activities",
+   "title": "Activities | A recurring task (\"Weekly, 3 times\") is saved but the next tasks are never created",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Task \"Weekly, ends after 3 times\" → 3 tasks with the subject after the first is completed (SearchActivitiesTest).",
+   "img": [
+    "NDC-2623-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2622",
+   "uuid": "46751c5a-4b26-4524-9342-73409f4b74a9",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Search",
+   "title": "Search | Users on the built-in \"User\" profile can't use global search",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Test user 1 (built-in User profile): /search 200 (automation) and the top search box returns records with no \"You don't have access to search\".",
+   "img": [
+    "NDC-2622-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2621",
+   "uuid": "c76d9930-413a-436e-a8eb-74b6c19f3a3a",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Pipelines",
+   "title": "Pipelines | A deal can't be moved to another pipeline: record page, Mass Update and API all fail with \"Invalid value for: Pipeline\"",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "A deal moves to pipeline \"1\" in all three ways: list/record \"Change pipeline?\" dialog (PATCH 200, stored pipeline 1 / stage test-01), Mass Update (200, updated 1) and the API (PL-06, PL-08). The custom Deals field \"pipeline\" is now of type pipeline (was a pick list with only \"Standard (Standard)\").",
+   "img": [
+    "NDC-2621-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2620",
+   "uuid": "9e78008a-d8e9-4933-98d3-00a7755007a0",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "—",
+   "title": "Records | The Attachments section grows with every uploaded file instead of keeping a fixed height and scrolling",
+   "v": "BLOCKED",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "The lead Overview no longer has an \"Attachments\" section (files are in the Files tab). Uploading 15 files to check the Files list fails: POST /files 201 then PUT /s3/… 500 (\"Couldn't upload … Please try again.\"). Retest when storage recovers.",
+   "img": []
+  },
+  {
+   "id": "NDC-2419",
+   "uuid": "681147a1-23cc-465d-a5fc-0c19d64785b5",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Import & Export, Assignment Rules",
+   "title": "Assignment Rules | Rules fire on import and API but no longer set the owner",
+   "v": "PASS",
+   "dev": "Developer (27 Oct): metadata-engine fix deployed on crm.taviportal.com only; staging-crm likely needs a restart.",
+   "devHeld": "Works on staging-crm now.",
+   "summary": "API create by test user 1 matching an Api-channel rule → owner = rule user (test user 2), execution \"Fired\"; control lead keeps the creator. Import (A-02) assigns the rule user. Note: the owner is written ~2.4 s after the 201 (the response still shows the creator); the automated test now waits for it.",
+   "img": [
+    "NDC-2419-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2410",
+   "uuid": "1e253816-71ad-417e-b5c6-a374bbdc2835",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Desk Integrations",
+   "title": "CRM - Desk Integration | \"Lock CRM-owned fields on the contract\" does not stop edits in Desk",
+   "v": "PASS",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Lock on → editing the contract name in Desk answers 422 CRM_OWNED_FIELD_LOCKED \"Contract Name comes from the CRM deal and cannot be changed in Desk while …\"; lock off → the edit saves (FinishTest#d6Lock).",
+   "img": [
+    "NDC-2410-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2406",
+   "uuid": "39e189de-8412-4341-a206-c16906a525e6",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Desk Integrations",
+   "title": "CRM - Desk Integration | A Desk contact deleted by the integration is not in the recycle bin and cannot be restored",
+   "v": "FAIL",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "Integration test E8/E9: deleting the linked CRM contact deletes the Desk contact (GET 404), but there is no Desk recycle-bin item and it cannot be restored.",
+   "still": [
+    "Desk contact deleted by the integration is not in the Desk recycle bin (item null) and cannot be restored."
+   ],
+   "img": [
+    "NDC-2406-retest-FAIL.png"
+   ]
+  },
+  {
+   "id": "NDC-2294",
+   "uuid": "a81a08d3-ca03-410b-afec-1f9a7d464b45",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "—",
+   "title": "Automation Execution Order: features missing from TAVI CRM",
+   "v": "PARTIAL",
+   "dev": "No developer comment on the ticket.",
+   "devHeld": "—",
+   "summary": "13 items checked by API, automation and the screen: 5 done (1, 2, 10, 11, 13), 2 partly (4, 5), 3 missing (3, 7, 12), 3 not runnable or blocked on staging (6, 8, 9).",
+   "still": [
+    "Item 3: Record Score / Record Notes triggers — unknown trigger kind (400).",
+    "Item 4: Create Meeting action — rule saves, but at run time the meeting creation fails (HTTP 422, dispatch Cancelled).",
+    "Item 5: Assign Owner by assignment rule — \"transfer related records\" option is not stored.",
+    "Item 7: \"Everyone\" (parallel / sequential) for role and group approvers — accepted on save but read back as mode null.",
+    "Item 12: several conditions in one workflow rule — not available."
+   ],
+   "items": [
+    [
+     "1",
+     "Import option renamed",
+     "\"Trigger automation and process management\"",
+     "Import wizard, options step",
+     "Label and help text exactly as asked; off by default",
+     "PASS"
+    ],
+    [
+     "2",
+     "Manual approval of imported records",
+     "Implemented, or \"Coming soon\" kept",
+     "Import wizard; API manual_approval=true",
+     "\"Manual Record Approval — COMING SOON\" (as the ticket allows); the API still accepts manual_approval=true silently and the lead goes live",
+     "PASS"
+    ],
+    [
+     "3",
+     "Record Score / Record Notes triggers",
+     "Offered",
+     "POST /workflow/rules with RecordScore / RecordNotes / ScoreChanged / NoteAdded",
+     "400 \"Unknown trigger kind\"",
+     "FAIL"
+    ],
+    [
+     "4",
+     "Meeting, Call, Function, Create Connected Record actions",
+     "Offered and working",
+     "Rule on QA module with CreateMeeting + ScheduleCall + CreateConnectedRecord; RunCustomAction",
+     "Call created and related to the record; connected record created with the lookup set; Meeting Cancelled (HTTP 422); Function needs a custom action (none on staging)",
+     "PARTIAL"
+    ],
+    [
+     "5",
+     "Assign Owner by an assignment rule (+ online only, email, transfer related)",
+     "All options",
+     "GroupKZ z5 (layouts fixed)",
+     "Kind stored, the workflow ran the rule (owner = rule user), only-online and email options stored; \"transfer related records\" not stored",
+     "PARTIAL"
+    ],
+    [
+     "6",
+     "Functions on review events",
+     "Settable and running",
+     "Review process API / editor",
+     "eventFunctions exists in the editor and the API; needs a custom action (none on staging)",
+     "INFO",
+     "Not runnable"
+    ],
+    [
+     "7",
+     "\"Anyone\" / \"Everyone\" for role and group approvers",
+     "Stored and applied",
+     "Approval process with a role approver, modes everyone_parallel / everyone_sequential / anyone",
+     "Users + Everyone refused correctly (\"Only a role or a group approver can ask everyone to approve\"); for role / group every mode reads back null",
+     "FAIL"
+    ],
+    [
+     "8",
+     "Approval Call Function really runs",
+     "Runs",
+     "Approval editor",
+     "\"Call Functions\" offered (pick a custom action); none exists on staging",
+     "INFO",
+     "Not runnable"
+    ],
+    [
+     "9",
+     "Blueprint after-actions Convert, Function, Tags, Create record",
+     "Offered",
+     "Blueprint designer code; GroupKZ z9 with the designer's kinds",
+     "Designer offers createRecord, addTags, convertLead (Leads), customAction; API check blocked — creating a layout on Leads answers 500 since ~19:00 UTC",
+     "INFO",
+     "Blocked"
+    ],
+    [
+     "10",
+     "Rejection reasons per review process",
+     "Saved with the process",
+     "Review process with two reasons (EN / AR)",
+     "Stored on the process with order; the org-wide list is separate",
+     "PASS"
+    ],
+    [
+     "11",
+     "Field Update, Assign Owner, Tags as scheduled actions; delay honoured",
+     "Delay honoured",
+     "Scheduled Field Update 120 s on a QA record",
+     "Created 15:26:23, field changed 15:28:32 (delay honoured); the editor allows a delay for FieldUpdate, OwnerAssignment, AddTags, RemoveTags",
+     "PASS"
+    ],
+    [
+     "12",
+     "Several conditions in one rule, first match wins",
+     "Available",
+     "Workflow editor wording / API",
+     "Not available",
+     "FAIL"
+    ],
+    [
+     "13",
+     "\"trigger\": [] on API create skips automation",
+     "No workflow runs",
+     "Two API creates on the QA module, with and without \"trigger\": []",
+     "With [] no rule run; without, the rule Fired",
+     "PASS"
+    ]
+   ],
+   "img": [
+    "NDC-2294-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-1797",
+   "uuid": "2d00ee7f-5f93-4dee-b959-161486a97919",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Recycle Bin",
+   "title": "Recycle Bin | Some records can't be deleted forever in a bulk delete and stay in the Recycle Bin.",
+   "v": "PASS",
+   "dev": "Returned from Bug (26 Oct: items of deleted modules could not be deleted forever or restored).",
+   "devHeld": "Fixed.",
+   "summary": "An orphan item (module deleted) is now deleted forever by a CRM Admin (succeeded, gone from the bin). Deleting a module that still has records answers 409 MODULE_HAS_DESCENDANTS (cascade offered), so new orphans are not created.",
+   "img": [
+    "NDC-1797-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1694",
+   "uuid": "1ad3dd03-65db-49ef-9ee4-955bf051191f",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | A teamspace can be saved with zero modules.",
+   "v": "PASS",
+   "dev": "Returned from Bug (round 4: the API still created empty teamspaces).",
+   "devHeld": "Fixed.",
+   "summary": "POST /teamspaces without modules or with [] → 400 TEAMSPACE_MODULES_REQUIRED (new test emptyTeamspaceRefused); the screen already blocked it.",
+   "img": [
+    "NDC-1694-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1344",
+   "uuid": "6caaf05c-1eaf-4935-837e-43e983976444",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Audit Log",
+   "title": "Audit Log | The entity filter is incomplete and does not cover all system entities",
+   "v": "PASS",
+   "dev": "Returned from Bug (round 4: new modules by key, unknown \"23c1a6s8d46a\" / \"Test\", internal names).",
+   "devHeld": "Fixed.",
+   "summary": "All Entities filter: 69 options, no duplicates (AuditLogTest), modules by name (\"QA RT r8\", \"Transactions\"…), deleted modules shown as \"… (deleted)\", no raw keys, no \"23c1a6s8d46a\" / \"Test\" / \"Mail agent signature row\" / \"Module view pin\"; Module Configuration, Email, Security and System grouped. Minor: \"Org currency\" lower-case c.",
+   "img": [
+    "NDC-1344-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1335",
+   "uuid": "7e7ab4ed-955a-4bcd-a947-a70c1cd04ac2",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Modules & Fields",
+   "title": "Modules and Fields | Saving a layout fails with \"Failed to update options for Subform\" when the layout has no subform — a 404 on a non-existent field",
+   "v": "PASS",
+   "dev": "Returned from Bug (round 4: a new predefined-only layout failed on the unrelated Subform field, 422).",
+   "devHeld": "Fixed.",
+   "summary": "Leads › Layouts › Create New Layout with predefined fields only (Name, Created/Modified Time/By) › Save → POST /layouts 201 (\"New Layout\"), no PUT on any field, no Subform error. Save again → PUT on the same layout 200, no duplicate. Minor: the URL stays …/layouts/new after the first save.",
+   "img": [
+    "NDC-1335-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1324",
+   "uuid": "b983cc0e-7117-4929-a173-f81dd841000b",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Pipelines",
+   "title": "Deals Listing Page | Editing the Pipeline field inline shows an empty pipeline list",
+   "v": "PASS",
+   "dev": "Returned from Bug (26 Oct: blocked by the custom pipeline field).",
+   "devHeld": "Fixed.",
+   "summary": "List pencil → \"Change pipeline?\" with New pipeline \"1\" and the stages of \"1\"; Change pipeline → stored pipeline 1, stage test-01.",
+   "img": [
+    "NDC-1324-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1316",
+   "uuid": "4c9b218f-b4a4-4a43-b279-92042723719d",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Pipelines",
+   "title": "Deals - Mass Update | Pipeline is not offered as a field, so deals cannot be moved between pipelines in bulk",
+   "v": "PASS",
+   "dev": "Returned from Bug (26 Oct: blocked).",
+   "devHeld": "Fixed.",
+   "summary": "Mass Update offers Pipeline (Standard (Default), 1) + \"Stage in the new pipeline\" defaulting to the first stage with a hint → updated 1, failed 0; stored Standard / qualification.",
+   "img": [
+    "NDC-1316-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1312",
+   "uuid": "ce5dac3d-cf36-417f-afb0-ad599be28017",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Pipelines",
+   "title": "Pipelines | Changing a deal's pipeline does not ask which stage the deal should move to",
+   "v": "PASS",
+   "dev": "Returned from Bug (26 Oct: blocked).",
+   "devHeld": "Fixed.",
+   "summary": "The change-pipeline dialog asks the stage in the destination pipeline (its own stages) and the deal lands on the chosen stage (test-01 of \"1\").",
+   "img": [
+    "NDC-1312-retest-PASS.png"
+   ]
+  }
+ ],
+ "observations": [
+  [
+   "New defect",
+   "Creating any layout on Leads answers 500 (since ~19:00 UTC 27 Oct)",
+   "POST /modules/{Leads}/layouts → 500 INTERNAL_ERROR for any body (Standard views or a copy); a QA module still accepts layouts. Possibly the same storage outage (Leads has Module Image on). Recheck before filing."
+  ],
+  [
+   "Environment",
+   "File storage and reporting down",
+   "PUT /s3/anyware-files/… → 500 on every upload; POST /reporting/query → 503 permission_service_degraded."
+  ],
+  [
+   "Observation",
+   "A non-existent layout id answers 403",
+   "Creating a record on a deleted layout answers 403 \"Permission denied.\" instead of 404 / 422."
+  ],
+  [
+   "Observation",
+   "Transactions list \"Not Found\" toast",
+   "Seen once on loading the Transactions list."
+  ],
+  [
+   "Observation",
+   "Layout list pinned by a layout that lists the user's profile",
+   "A \"selected\" layout naming the user's profile opens instead of the default and the layout picker cannot switch away. Triggered by my own test-helper change (QA layouts with every profile) — reverted on 14 leftover QA layouts and the helper now uses all_users."
+  ],
+  [
+   "Observation",
+   "Owner from an assignment rule arrives ~2.4 s after an API create",
+   "The 201 and reads in the first seconds show the creator (NDC-2419)."
+  ],
+  [
+   "Automation",
+   "Tests updated / added",
+   "SetupApiTest (criteria-object validation rule + edit check; teamspace needs a module; new emptyTeamspaceRefused), ChannelsApiTest#sendResultIsHonest (new), GroupAJTest A-01 waits for the async owner, GroupKZ z7/z9 use the current approver modes and after-action kinds, CrmApi.createQaLayout uses all_users; tags NDC-2419/2646/2648/2649/2650/1694/2630 added."
+  ]
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "out": "NDC-2542-api.png",
+ "date": "26–27 Oct 2026",
+ "title": "NDC-2542 · Invitation lifetime validation (automation AdminApiTest US-06)",
+ "who": "automation (ndc-staging-owner) + API check 27 Oct",
+ "rows": [
+  [
+   "lifetime 0",
+   "POST /api/v1/iam/users/invite {lifetime_days:0}",
+   "400 iam.invite.lifetime_out_of_range \"lifetime_days must be between 1 and 90 days (received 0).\"",
+   "ok"
+  ],
+  [
+   "lifetime -1 (27 Oct)",
+   "POST /api/v1/iam/users/invite {lifetime_days:-1, profile User}",
+   "400 iam.invite.lifetime_out_of_range \"lifetime_days must be between 1 and 90 days (received -1).\" — nothing created",
+   "ok"
+  ],
+  [
+   "lifetime 10000",
+   "POST /api/v1/iam/users/invite {lifetime_days:10000}",
+   "400 iam.invite.lifetime_out_of_range \"…between 1 and 90 days (received 10000).\"",
+   "ok"
+  ],
+  [
+   "bad email (control)",
+   "POST /api/v1/iam/users/invite {email:\"bad\"}",
+   "400 VALIDATION_ERROR \"Email must be valid.\"",
+   "ok"
+  ],
+  [
+   "no profile (control)",
+   "POST /api/v1/iam/users/invite (unknown profile)",
+   "400 VALIDATION_ERROR \"Unknown profile.\"",
+   "ok"
+  ]
+ ]
+}

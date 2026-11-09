@@ -1,0 +1,1 @@
+const o={};await page.locator('[role=dialog] button, [role=alertdialog] button',{hasText:/^Reload latest$/}).click().catch(e=>o.e=e.message.slice(0,50));await sleep(2500);o.title=(await txt()).replace(/\s+/g,' ').match(/QA NDC [^@]{0,30}@/)?.[0];return JSON.stringify(o);

@@ -1,0 +1,20 @@
+const id=process.env.ID||'45d3cf65-da66-4ddb-acc8-138dd7cf6f47'; const st={};
+const load=async()=>{ for(let i=0;i<40;i++){ await sleep(3000); const t=await text(); if(t.includes('QA RT r10 2730') && !/Loading\.\.\./.test(t)) break; } await sleep(3000); };
+const src=async()=>{ const t=await text(); return (t.match(/LEAD SOURCE\s*\n\s*(\w+)/)||[])[1]; };
+await page.goto(H+'/modules/'+T.LEADS+'/records/'+id,{waitUntil:'commit',timeout:120000}); await load();
+st.trans0=(await page.getByRole('button').allInnerTexts()).map(x=>x.trim()).filter(x=>/^(Chat|Web)To/.test(x));
+await shot('2730-5b-before.png'); await page.getByText('ChatToWeb',{exact:true}).first().click(); await sleep(3000); await shot('2730-6-chattoweb-dialog.png');
+const d=page.getByRole('dialog'); st.dlg=(await d.innerText().catch(()=>'')).slice(0,500).replace(/\s+/g,' ');
+await d.locator('textarea, [contenteditable=true]').first().fill('QA RT r10 2730 note').catch(e=>st.noteErr=String(e).slice(0,80));
+await d.locator('input[type=file]').first().setInputFiles({name:'qa-r10-2730.txt',mimeType:'text/plain',buffer:Buffer.from('QA RT r10 2730 attachment')}).catch(e=>st.fileErr=String(e).slice(0,80));
+await sleep(6000); await shot('2730-7-chattoweb-filled.png');
+await d.getByRole('button',{name:/Execute/}).click(); await sleep(8000);
+st.afterT1=await src(); await shot('2730-8-after-chattoweb.png');
+st.trans1=(await page.getByRole('button').allInnerTexts()).map(x=>x.trim()).filter(x=>/^(Chat|Web)To/.test(x));
+const w=page.getByText('WebToReferral',{exact:true}); if(await w.count()){ await w.click(); await sleep(3000); const d2=page.getByRole('dialog'); if(await d2.count()){ await shot('2730-9-webtoref-dialog.png'); await d2.getByRole('button',{name:/Execute/}).click(); } await sleep(8000); }
+st.afterT2=await src(); await shot('2730-10-after-webtoref.png');
+st.msg=(await text()).match(/Unknown or invalid transition[^\n]*/)?.[0];
+await sleep(20000); await page.reload({waitUntil:'commit'}); await load(); st.afterReload=await src(); await shot('2730-11-after-reload.png');
+const tl=page.getByRole('tab',{name:'Timeline'}); if(await tl.count()){ await tl.click(); } else await page.getByText('Timeline',{exact:true}).first().click(); await sleep(8000); await shot('2730-12-timeline.png');
+st.timeline=(await text()).split('Timeline').slice(-1)[0].slice(0,1500).replace(/\s+/g,' ');
+return st;

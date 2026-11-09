@@ -1,0 +1,21 @@
+const M = 'b66f7a3b-fecb-48a7-8228-d45e05a059c6';
+const res = {};
+await page.goto(H + '/settings/modules-and-fields', { waitUntil: 'domcontentloaded' }); await sleep(6000);
+const row = page.locator('main tr', { hasText: 'QA R2W5 Dialog' }).first();
+res.rowHtmlSwitch = await row.locator('button[role=switch], input[type=checkbox]').count();
+const net = []; const on = x => { if (/\/modules\//.test(x.url()) && x.request().method() !== 'GET') net.push(x.request().method() + ' ' + x.url().replace(/^.*\/api\/v1/, '') + ' ' + x.status() + ' ' + (x.request().postData() || '').slice(0, 100)); }; page.on('response', on);
+await row.locator('button[role=switch], input[type=checkbox]').first().click(); await sleep(2500);
+if (await page.locator('[role=dialog]').count()) { res.confirm = (await page.locator('[role=dialog]').first().innerText()).replace(/\s+/g, ' ').slice(0, 400); await shot('c01-1864-confirm'); await page.locator('[role=dialog] button', { hasText: /Disable|Confirm|Yes|Deactivate|Turn off/ }).first().click().catch(() => {}); await sleep(2500); }
+page.off('response', on); res.net = net;
+await shot('c01-1864-disabled');
+const m = await call('GET', '/modules/' + M); res.status = m.j && m.j.data && m.j.data.status;
+await page.goto(H + '/home', { waitUntil: 'domcontentloaded' }); await sleep(5000);
+res.inSideMenu = await page.locator('nav a, aside a', { hasText: /^QA R2W5 Dialog$/ }).count();
+await page.goto(H + '/modules/' + M, { waitUntil: 'domcontentloaded' }); await sleep(6000);
+await shot('c01-1864-direct');
+res.direct = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 300); res.directUrl = page.url().replace(H, '');
+const L = await call('GET', `/modules/${M}/layouts`); const lid = L.j && L.j.data && (Array.isArray(L.j.data) ? L.j.data : L.j.data.layouts)[0]?.id;
+const c = await call('POST', `/modules/${M}/records`, { layout_id: lid, data: [{ field: 'name', value: { kind: 'string', value: 'QA R2W5 disabled rec' } }] });
+res.createInDisabled = c.s + ' ' + c.t.slice(0, 250);
+const l = await call('GET', `/modules/${M}/records?page=1&per_page=5`); res.listInDisabled = l.s + ' ' + l.t.slice(0, 120);
+return res;

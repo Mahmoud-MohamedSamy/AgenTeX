@@ -1,0 +1,207 @@
+{
+ "out": "NDC-2754-retest-PASS.png",
+ "ticket": "NDC-2754",
+ "title": "Blueprint (with SLA tie-in): features Zoho Desk has that Desk is missing",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · admin + Desk Agent fedelav803 (no share permission) · retest of the last open case from 7 Nov (dev note 7 Nov 20:16)",
+ "date": "8 Nov 2026",
+ "panels": [
+  {
+   "img": "2754-b4-agent-dept-picker.png",
+   "caption": "Agent (read-only banner) runs QA alt: the Share item now offers departments; only Dept B, not the ticket's own Dept A",
+   "crop": [
+    664,
+    56,
+    936,
+    800
+   ],
+   "boxes": [
+    {
+     "b": [
+      680,
+      188,
+      1584,
+      234
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      694,
+      616,
+      1310,
+      710
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2754-b5-agent-share-filled.png",
+   "caption": "Dept B, Full Access chosen; Run is enabled (7 Nov: \"ask an admin for access\")",
+   "crop": [
+    664,
+    540,
+    936,
+    360
+   ],
+   "boxes": [
+    {
+     "b": [
+      694,
+      744,
+      1528,
+      776
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1514,
+      858,
+      1584,
+      890
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2754-b6-agent-after-run.png",
+   "full": false,
+   "caption": "After Run: \"QA alt ran. The ticket moved to Closed.\"; the ticket left the agent's step, so it is no longer available to them",
+   "crop": [
+    664,
+    400,
+    936,
+    490
+   ],
+   "boxes": [
+    {
+     "b": [
+      1214,
+      820,
+      1576,
+      876
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      740,
+      426,
+      1180,
+      490
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2754-api.png",
+   "caption": "API checks",
+   "crop": [
+    0,
+    90,
+    1600,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      251
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      319
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      329,
+      1564,
+      387
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      397,
+      1564,
+      455
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Agent owns QA alt (Assign owners) on an admin-owned ticket",
+   "Can open the ticket and run their step",
+   "403 before, 200 after; read-only banner; step form opens",
+   "PASS"
+  ],
+  [
+   2,
+   "Step owner without desk:ticket:share, Share item in the step",
+   "Share rows offered, owner can complete it (QA lead decision 7 Nov)",
+   "Add department → Dept B only (own Dept A not offered); Run enabled",
+   "PASS"
+  ],
+  [
+   3,
+   "Run the step with a share (screen and API)",
+   "Runs; ticket shared",
+   "200 Open → Closed; Dept B shared Full (screen, API) and Read only (API)",
+   "PASS"
+  ],
+  [
+   4,
+   "Access after the ticket leaves the step",
+   "Ends",
+   "403; \"This ticket is not available\"",
+   "PASS"
+  ],
+  [
+   5,
+   "Plain Share on the ticket by the agent (dev note: unchanged)",
+   "Still needs the share permission",
+   "403 desk:ticket:share; empty share 422; own department 422",
+   "PASS"
+  ]
+ ]
+}

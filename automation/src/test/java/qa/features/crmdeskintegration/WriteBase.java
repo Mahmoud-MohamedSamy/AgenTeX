@@ -34,7 +34,9 @@ public abstract class WriteBase {
     static final String CRM_CONTACT_LAYOUT = "92269f8a-040c-4b00-8d33-cc323391dc3b";
     static final String CRM_ACCOUNT_LAYOUT = "d817ff75-2107-4114-9141-71f5efbc04cf";
     static final String CRM_DEAL_LAYOUT = "fcba0068-d67f-44f5-8412-cdef9c09e16e";
-    static final String CRM_DEAL_PIPELINE = "5170500c-b335-479c-96d1-ed138965c345";
+    // 25–26 Oct only the literal "Standard (Standard)" was accepted (NDC-2382); from the 27 Oct build the id is accepted again and the literal refused;
+    // -Dcrm.pipelineLiteral=true sends the literal again
+    static final String CRM_DEAL_PIPELINE = Boolean.getBoolean("crm.pipelineLiteral") ? "Standard (Standard)" : "5170500c-b335-479c-96d1-ed138965c345";
     static final String DESK_CONTACT_LAYOUT = "bcac166e-d4e6-4d1c-b319-f07d4dbc0d4d";
     static final String DESK_ACCOUNT_LAYOUT = "3e687db9-87b0-4d55-8e3d-3c8b5936a3a1";
     static final String DESK_TICKET_LAYOUT = "1b55c25d-eb27-4046-afd1-b292398b435b";

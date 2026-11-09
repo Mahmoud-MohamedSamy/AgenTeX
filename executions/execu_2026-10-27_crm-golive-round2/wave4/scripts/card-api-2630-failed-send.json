@@ -1,0 +1,26 @@
+{
+ "out": "api-2630-failed-send.png",
+ "title": "TAVI — one test email from QA lead \"QA R2W4 mail 16188\" to mahmoud.mmohamedsamy@gmail.com, 27 Oct 2026",
+ "lines": [
+  [
+   "POST /emails -> 422; compose shows red \"The email wasn't sent: No Zoho account found for sender …\" + error toast",
+   "ok"
+  ],
+  [
+   "GET /mail/records/leads/{id}/emails -> status \"failed\", last_error names the missing Zoho org id (zoid), can_resend true",
+   "ok"
+  ],
+  [
+   "GET /timeline/records/leads/{id}/feed -> [EmailSent, RecordCreated]   (a failed email is still logged as sent)",
+   "bad"
+  ],
+  [
+   "Settings › Email still says \"You can send as ndc-staging-owner@taviportal.com through Zoho Mail\"",
+   "bad"
+  ],
+  [
+   "Delivery to mahmoud.mmohamedsamy@gmail.com: not received (the send failed)",
+   "info"
+  ]
+ ]
+}

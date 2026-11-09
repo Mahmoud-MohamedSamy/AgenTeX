@@ -1,0 +1,1 @@
+const n='QA RT r10 2280 '+'x'.repeat(105); const r=await api('o','POST',`/modules/${T.LEADS}/views`,{name:n,kind:'list',visibility:'private',settings:{criteria:{conditions:[]}}}); if(r.j?.data?.id) ledger(`view ${r.j.data.id} "QA RT r10 2280 xxx…" (Leads)`); return r.s+' '+(r.j?.data?.id||r.t.slice(0,200));

@@ -1,0 +1,1 @@
+return { active: (await api('o', 'PATCH', '/workflow/review-processes/bd081d46-b273-4579-9025-8c6e12c51219/active', { isActive: true })).s, rp: JSON.stringify((({ name, channels, isActive }) => ({ name, channels, isActive }))((await api('o', 'GET', '/workflow/review-processes/bd081d46-b273-4579-9025-8c6e12c51219')).j?.data || {})) };

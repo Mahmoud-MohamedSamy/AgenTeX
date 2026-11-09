@@ -1,0 +1,1673 @@
+[
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/blueprints",
+  "b": {
+   "definition": {
+    "name": "QA NDC Clients' Financial Investigations ",
+    "description": "NDC mimic of blueprint \"Clients' Financial Investigations \" (Clients' Financial Investigations)",
+    "moduleKey": "desk_tickets",
+    "targetField": "status",
+    "departmentId": "a026f008-f6a1-49b7-b4a3-dce33c6b36b7",
+    "states": [
+     {
+      "id": "Open",
+      "name": "Open",
+      "position": {
+       "x": 0,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC HR Escalation",
+      "name": "QA NDC HR Escalation",
+      "position": {
+       "x": 300,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC Dep Manager",
+      "name": "QA NDC Dep Manager",
+      "position": {
+       "x": 600,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC BSP Investigation",
+      "name": "QA NDC BSP Investigation",
+      "position": {
+       "x": 900,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "Closed",
+      "name": "Closed",
+      "position": {
+       "x": 0,
+       "y": 200
+      },
+      "slaClock": "business",
+      "isTerminal": true
+     },
+     {
+      "id": "QA NDC Email Approval Sector",
+      "name": "QA NDC Email Approval Sector",
+      "position": {
+       "x": 300,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC Banking sector investigation",
+      "name": "QA NDC Banking sector investigation",
+      "position": {
+       "x": 600,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "Escalated",
+      "name": "Escalated",
+      "position": {
+       "x": 900,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC higher Level escalation",
+      "name": "QA NDC higher Level escalation",
+      "position": {
+       "x": 0,
+       "y": 400
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC AR Team",
+      "name": "QA NDC AR Team",
+      "position": {
+       "x": 300,
+       "y": 400
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC Needs NDC Finance investigation",
+      "name": "QA NDC Needs NDC Finance investigation",
+      "position": {
+       "x": 600,
+       "y": 400
+      },
+      "slaClock": "business"
+     }
+    ],
+    "transitions": [
+     {
+      "id": "email-approval-investigation-0",
+      "name": "Email Approval investigation",
+      "fromStateId": "Open",
+      "toStateId": "QA NDC Email Approval Sector",
+      "before": {
+       "teamIds": [
+        "3b8c65aa-e35d-489c-a8a5-137ee7fd02d1"
+       ]
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "6d0e0d73-f1e4-4421-bd7b-c9067aa5c33c"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ndc-finance-investigation-1",
+      "name": "NDC Finance investigation.",
+      "fromStateId": "QA NDC Dep Manager",
+      "toStateId": "QA NDC Needs NDC Finance investigation",
+      "before": {
+       "allowOwner": true,
+       "allowedUserIds": [
+        "3445ec4a-020e-4f12-b156-dd2de7610164"
+       ]
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "694caefc-c371-4ca2-bf80-e93452d1e909"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "closeed-2",
+      "name": "Closeed",
+      "fromStateId": "Escalated",
+      "toStateId": "Closed",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": []
+      }
+     },
+     {
+      "id": "banking-sector-feedback-3",
+      "name": "Banking sector Feedback",
+      "fromStateId": "QA NDC Banking sector investigation",
+      "toStateId": "QA NDC AR Team",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "close-the-case-4",
+      "name": "Close the case",
+      "fromStateId": "QA NDC AR Team",
+      "toStateId": "Closed",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": []
+      }
+     },
+     {
+      "id": "banking-sector-investigation-5",
+      "name": "banking sector investigation",
+      "fromStateId": "Open",
+      "toStateId": "QA NDC Banking sector investigation",
+      "before": {
+       "teamIds": [
+        "3b8c65aa-e35d-489c-a8a5-137ee7fd02d1"
+       ]
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "86c42b05-8456-4c05-9b8f-c4ae35dd1bf2"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ops-feedback-6",
+      "name": "Ops feedback",
+      "fromStateId": "QA NDC Dep Manager",
+      "toStateId": "QA NDC AR Team",
+      "before": {
+       "allowOwner": true,
+       "allowedUserIds": [
+        "3445ec4a-020e-4f12-b156-dd2de7610164"
+       ]
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "needs-ops-feedback-7",
+      "name": "Needs Ops Feedback",
+      "fromStateId": "QA NDC Needs NDC Finance investigation",
+      "toStateId": "QA NDC Dep Manager",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bdfa3ef9-7177-4574-afdb-ce3766707b9e"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "needs-investigation-8",
+      "name": "Needs Investigation",
+      "fromStateId": "QA NDC HR Escalation",
+      "toStateId": "QA NDC BSP Investigation",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "2ded02fc-b481-4fbf-8d4a-c525a0ac1cc4"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ops-manager-escalation-9",
+      "name": "Ops Manager escalation",
+      "fromStateId": "QA NDC AR Team",
+      "toStateId": "QA NDC higher Level escalation",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "d2c41509-2f0a-4d3a-8f7e-77c32c80ca39"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "higher-level-feedback-10",
+      "name": "Higher level feedback",
+      "fromStateId": "QA NDC Needs NDC Finance investigation",
+      "toStateId": "QA NDC higher Level escalation",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "d2c41509-2f0a-4d3a-8f7e-77c32c80ca39"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "waiting-escalation-feedback-11",
+      "name": "Waiting escalation feedback",
+      "fromStateId": "QA NDC BSP Investigation",
+      "toStateId": "Escalated",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "3137359c-3a97-4cba-b41c-56822c3759c1"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "bsp-investigation-feedback-12",
+      "name": "BSP investigation Feedback",
+      "fromStateId": "QA NDC BSP Investigation",
+      "toStateId": "QA NDC AR Team",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "closed-after-hr-investigation-13",
+      "name": "closed after HR investigation",
+      "fromStateId": "QA NDC HR Escalation",
+      "toStateId": "Closed",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": []
+      }
+     },
+     {
+      "id": "email-approval-sector-feedback-14",
+      "name": "Email Approval sector feedback",
+      "fromStateId": "QA NDC Email Approval Sector",
+      "toStateId": "QA NDC AR Team",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ops-manager-feedback-15",
+      "name": "Ops Manager feedback",
+      "fromStateId": "QA NDC higher Level escalation",
+      "toStateId": "QA NDC AR Team",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "bsp-investigation-request-16",
+      "name": "BSP investigation request",
+      "fromStateId": "QA NDC AR Team",
+      "toStateId": "QA NDC BSP Investigation",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "3137359c-3a97-4cba-b41c-56822c3759c1"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ar-after-hr-investigation-17",
+      "name": "AR after hr investigation",
+      "fromStateId": "QA NDC HR Escalation",
+      "toStateId": "QA NDC AR Team",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "escalated-internally-18",
+      "name": "Escalated internally",
+      "fromStateId": "QA NDC AR Team",
+      "toStateId": "Escalated",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {
+       "requiredFields": [
+        {
+         "name": "qa_ndc_airline_gds",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        }
+       ]
+      },
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ndc-finance-investigation-19",
+      "name": "NDC Finance investigation",
+      "fromStateId": "Open",
+      "toStateId": "QA NDC Needs NDC Finance investigation",
+      "before": {
+       "teamIds": [
+        "3b8c65aa-e35d-489c-a8a5-137ee7fd02d1"
+       ]
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "694caefc-c371-4ca2-bf80-e93452d1e909"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "higher-level-escalation-20",
+      "name": "higher level escalation",
+      "fromStateId": "QA NDC Dep Manager",
+      "toStateId": "QA NDC higher Level escalation",
+      "before": {
+       "allowOwner": true,
+       "allowedUserIds": [
+        "3445ec4a-020e-4f12-b156-dd2de7610164"
+       ]
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "d2c41509-2f0a-4d3a-8f7e-77c32c80ca39"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "hr-escalation-21",
+      "name": "HR Escalation",
+      "fromStateId": "QA NDC AR Team",
+      "toStateId": "QA NDC HR Escalation",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "2ded02fc-b481-4fbf-8d4a-c525a0ac1cc4"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ndc-finance-feedback-22",
+      "name": "NDC Finance Feedback",
+      "fromStateId": "QA NDC Needs NDC Finance investigation",
+      "toStateId": "QA NDC AR Team",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "needs-ops-investigation-23",
+      "name": "Needs Ops Investigation",
+      "fromStateId": "Open",
+      "toStateId": "QA NDC Dep Manager",
+      "before": {
+       "teamIds": [
+        "3b8c65aa-e35d-489c-a8a5-137ee7fd02d1"
+       ]
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bdfa3ef9-7177-4574-afdb-ce3766707b9e"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC Ops comment alert",
+         "body": "NDC mimic of alert \"Ops comment alert\" on transition Needs Ops Investigation",
+         "notifyOwner": true
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "isActive": true
+  },
+  "save": "bp-clients-financial-investigations"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/blueprints",
+  "b": {
+   "definition": {
+    "name": "QA NDC Financial approvals",
+    "description": "NDC mimic of blueprint \"Financial approvals\" (Financial approval)",
+    "moduleKey": "desk_tickets",
+    "targetField": "status",
+    "departmentId": "77fca069-39a4-4ff9-835d-a12c12c7d5f2",
+    "states": [
+     {
+      "id": "Open",
+      "name": "Open",
+      "position": {
+       "x": 0,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC AR Team",
+      "name": "QA NDC AR Team",
+      "position": {
+       "x": 300,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC KSA accounting team",
+      "name": "QA NDC KSA accounting team",
+      "position": {
+       "x": 600,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC Refund approved",
+      "name": "QA NDC Refund approved",
+      "position": {
+       "x": 900,
+       "y": 0
+      },
+      "slaClock": "business",
+      "isTerminal": true
+     },
+     {
+      "id": "QA NDC BSP",
+      "name": "QA NDC BSP",
+      "position": {
+       "x": 0,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC UAE Accounting Team",
+      "name": "QA NDC UAE Accounting Team",
+      "position": {
+       "x": 300,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "Closed",
+      "name": "Closed",
+      "position": {
+       "x": 600,
+       "y": 200
+      },
+      "slaClock": "business",
+      "isTerminal": true
+     },
+     {
+      "id": "QA NDC Operation Management",
+      "name": "QA NDC Operation Management",
+      "position": {
+       "x": 900,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC Bank deposit request",
+      "name": "QA NDC Bank deposit request",
+      "position": {
+       "x": 0,
+       "y": 400
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC Refund rejected",
+      "name": "QA NDC Refund rejected",
+      "position": {
+       "x": 300,
+       "y": 400
+      },
+      "slaClock": "business",
+      "isTerminal": true
+     },
+     {
+      "id": "QA NDC Refund amount request",
+      "name": "QA NDC Refund amount request",
+      "position": {
+       "x": 600,
+       "y": 400
+      },
+      "slaClock": "business"
+     }
+    ],
+    "transitions": [
+     {
+      "id": "deposit-added-0",
+      "name": "deposit added",
+      "fromStateId": "QA NDC Bank deposit request",
+      "toStateId": "QA NDC Refund approved",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": []
+      }
+     },
+     {
+      "id": "refund-approval-requst-1",
+      "name": "Refund approval requst",
+      "fromStateId": "Open",
+      "toStateId": "QA NDC Refund amount request",
+      "before": {
+       "allowOwner": true,
+       "teamIds": [
+        "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+       ]
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC send approval requst",
+         "body": "NDC mimic of alert \"send approval requst\" on transition Refund approval requst",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "uae-investigation-2",
+      "name": "UAE Investigation",
+      "fromStateId": "QA NDC Refund amount request",
+      "toStateId": "QA NDC UAE Accounting Team",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "40eb518f-dfa2-49ca-96a5-d493180bc9c5"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC UAE Investigation",
+         "body": "NDC mimic of alert \"UAE Investigation\" on transition UAE Investigation",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "approved-request-3",
+      "name": "Approved Request",
+      "fromStateId": "QA NDC Refund amount request",
+      "toStateId": "QA NDC Refund approved",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC Approved request",
+         "body": "NDC mimic of alert \"Approved request\" on transition Approved Request",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "operation-investigation-4",
+      "name": "Operation Investigation",
+      "fromStateId": "QA NDC Refund amount request",
+      "toStateId": "QA NDC Operation Management",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "36edeced-9bf2-4fd0-87fa-e6c2cf0ab6ec"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC Operation Investigation",
+         "body": "NDC mimic of alert \"Operation Investigation\" on transition Operation Investigation",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "ksa-investigation-5",
+      "name": "KSA Investigation",
+      "fromStateId": "QA NDC Refund amount request",
+      "toStateId": "QA NDC KSA accounting team",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "51f027c0-87bc-417b-911e-04ed20866fea"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC KSA Investigation",
+         "body": "NDC mimic of alert \"KSA Investigation\" on transition KSA Investigation",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "uae-feedback-6",
+      "name": "UAE Feedback",
+      "fromStateId": "QA NDC UAE Accounting Team",
+      "toStateId": "QA NDC Refund amount request",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC UAE Feedback",
+         "body": "NDC mimic of alert \"UAE Feedback\" on transition UAE Feedback",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "ksa-feedback-7",
+      "name": "KSA Feedback",
+      "fromStateId": "QA NDC KSA accounting team",
+      "toStateId": "QA NDC Refund amount request",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC KSA Feedback",
+         "body": "NDC mimic of alert \"KSA Feedback\" on transition KSA Feedback",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "rejected-request-8",
+      "name": "Rejected Request",
+      "fromStateId": "QA NDC Refund amount request",
+      "toStateId": "QA NDC Refund rejected",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC Rejected Request",
+         "body": "NDC mimic of alert \"Rejected Request\" on transition Rejected Request",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "bsp-feedback-9",
+      "name": "BSP Feedback",
+      "fromStateId": "QA NDC BSP",
+      "toStateId": "QA NDC Refund amount request",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC BSP Feedback",
+         "body": "NDC mimic of alert \"BSP Feedback\" on transition BSP Feedback",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "bsp-investigation-10",
+      "name": "BSP investigation",
+      "fromStateId": "QA NDC Refund amount request",
+      "toStateId": "QA NDC BSP",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "fd909d6c-9567-45cb-860a-206a03e9d639"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC BSP investigation",
+         "body": "NDC mimic of alert \"BSP investigation\" on transition BSP investigation",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "operation-feedback-11",
+      "name": "Operation Feedback",
+      "fromStateId": "QA NDC Operation Management",
+      "toStateId": "QA NDC Refund amount request",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ar-feedback-12",
+      "name": "AR Feedback",
+      "fromStateId": "QA NDC AR Team",
+      "toStateId": "QA NDC Refund amount request",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC AR Feedback",
+         "body": "NDC mimic of alert \"AR Feedback\" on transition AR Feedback",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "bank-deposit-request-13",
+      "name": "Bank deposit request",
+      "fromStateId": "QA NDC Refund amount request",
+      "toStateId": "QA NDC Bank deposit request",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "09b67738-ac36-47c3-9702-2bdead607999"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC Bank deposit request",
+         "body": "NDC mimic of alert \"Bank deposit request\" on transition Bank deposit request",
+         "notifyOwner": true
+        }
+       ]
+      }
+     },
+     {
+      "id": "closed-after-investigation-14",
+      "name": "Closed After investigation",
+      "fromStateId": "QA NDC Refund amount request",
+      "toStateId": "Closed",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ar-investigation-request-15",
+      "name": "AR investigation request",
+      "fromStateId": "QA NDC Refund amount request",
+      "toStateId": "QA NDC AR Team",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "b2ac3c73-747b-40b1-a7a4-8f2191722a3e"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "wrong-direction-16",
+      "name": "Wrong Direction",
+      "fromStateId": "QA NDC Bank deposit request",
+      "toStateId": "QA NDC Refund amount request",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC Wrong Direction",
+         "body": "NDC mimic of alert \"Wrong Direction\" on transition Wrong Direction",
+         "notifyOwner": true
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "isActive": true
+  },
+  "save": "bp-financial-approvals"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/blueprints",
+  "b": {
+   "definition": {
+    "name": "QA NDC flywt-refund",
+    "description": "NDC mimic of blueprint \"flywt-refund\" (FLY-WT Refund)",
+    "moduleKey": "desk_tickets",
+    "targetField": "status",
+    "departmentId": "3abf4280-94e5-49f8-b948-b8920dfc1e53",
+    "states": [
+     {
+      "id": "Open",
+      "name": "Open",
+      "position": {
+       "x": 0,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC Need exception",
+      "name": "QA NDC Need exception",
+      "position": {
+       "x": 300,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "Escalated",
+      "name": "Escalated",
+      "position": {
+       "x": 600,
+       "y": 0
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "Closed",
+      "name": "Closed",
+      "position": {
+       "x": 900,
+       "y": 0
+      },
+      "slaClock": "business",
+      "isTerminal": true
+     },
+     {
+      "id": "QA NDC AR after exception",
+      "name": "QA NDC AR after exception",
+      "position": {
+       "x": 0,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC AR Approval",
+      "name": "QA NDC AR Approval",
+      "position": {
+       "x": 300,
+       "y": 200
+      },
+      "slaClock": "business"
+     },
+     {
+      "id": "QA NDC Follow up",
+      "name": "QA NDC Follow up",
+      "position": {
+       "x": 600,
+       "y": 200
+      },
+      "slaClock": "business"
+     }
+    ],
+    "transitions": [
+     {
+      "id": "approved-missing-info-0",
+      "name": "Approved/missing info",
+      "fromStateId": "QA NDC AR Approval",
+      "toStateId": "QA NDC Follow up",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {
+       "requiredFields": [
+        {
+         "name": "qa_ndc_refund_status",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        },
+        {
+         "name": "qa_ndc_transaction_reference_number_from_custome",
+         "datatype": {
+          "key": "single_line"
+         },
+         "required": true
+        },
+        {
+         "name": "qa_ndc_refund_method",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        }
+       ]
+      },
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "054c8f63-d27f-45d9-ba86-b4dc048ccad6"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC follow up",
+         "body": "NDC mimic of alert \"follow up\" on transition Approved/missing info",
+         "notifyOwner": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "exception-rejected-1",
+      "name": "Exception rejected",
+      "fromStateId": "QA NDC Need exception",
+      "toStateId": "QA NDC Follow up",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "054c8f63-d27f-45d9-ba86-b4dc048ccad6"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC follow up",
+         "body": "NDC mimic of alert \"follow up\" on transition Exception rejected",
+         "notifyOwner": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "closed-successfully-2-2",
+      "name": "closed successfully 2",
+      "fromStateId": "Escalated",
+      "toStateId": "Closed",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": []
+      }
+     },
+     {
+      "id": "ar-approval-3",
+      "name": "AR Approval",
+      "fromStateId": "Open",
+      "toStateId": "QA NDC AR Approval",
+      "before": {
+       "teamIds": [
+        "58ad55d7-677b-49cb-870d-a4151e47d54e"
+       ]
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "58ad55d7-677b-49cb-870d-a4151e47d54e"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "ops-managment-approval-4",
+      "name": "Ops Managment Approval",
+      "fromStateId": "QA NDC AR Approval",
+      "toStateId": "QA NDC Need exception",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {
+       "requiredFields": [
+        {
+         "name": "qa_ndc_refund_status",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        }
+       ]
+      },
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "16a5aa46-e44e-44cb-a533-b91278d19918"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC Ops m",
+         "body": "NDC mimic of alert \"Ops m\" on transition Ops Managment Approval",
+         "notifyOwner": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "exception-approved-5",
+      "name": "Exception Approved",
+      "fromStateId": "QA NDC Need exception",
+      "toStateId": "QA NDC AR after exception",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "58ad55d7-677b-49cb-870d-a4151e47d54e"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC ar team",
+         "body": "NDC mimic of alert \"ar team\" on transition Exception Approved",
+         "notifyOwner": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "exceptional-approval-6",
+      "name": "Exceptional Approval",
+      "fromStateId": "QA NDC AR after exception",
+      "toStateId": "QA NDC Follow up",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {
+       "requiredFields": [
+        {
+         "name": "qa_ndc_refund_status",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        },
+        {
+         "name": "qa_ndc_refund_method",
+         "datatype": {
+          "key": "pick_list"
+         },
+         "required": true
+        },
+        {
+         "name": "qa_ndc_transaction_reference_number_from_custome",
+         "datatype": {
+          "key": "single_line"
+         },
+         "required": true
+        }
+       ]
+      },
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "054c8f63-d27f-45d9-ba86-b4dc048ccad6"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC follow up",
+         "body": "NDC mimic of alert \"follow up\" on transition Exceptional Approval",
+         "notifyOwner": false
+        }
+       ]
+      }
+     },
+     {
+      "id": "provide-missing-info-7",
+      "name": "Provide Missing info",
+      "fromStateId": "QA NDC Follow up",
+      "toStateId": "QA NDC AR Approval",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "58ad55d7-677b-49cb-870d-a4151e47d54e"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        }
+       ]
+      }
+     },
+     {
+      "id": "closed-successfully-8",
+      "name": "closed successfully",
+      "fromStateId": "QA NDC Follow up",
+      "toStateId": "Closed",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": []
+      }
+     },
+     {
+      "id": "customer-not-reached-9",
+      "name": "Customer not reached",
+      "fromStateId": "QA NDC Follow up",
+      "toStateId": "Escalated",
+      "before": {
+       "allowOwner": true
+      },
+      "during": {},
+      "after": {
+       "actions": [
+        {
+         "kind": "setField",
+         "field": "team",
+         "value": "054c8f63-d27f-45d9-ba86-b4dc048ccad6"
+        },
+        {
+         "kind": "setField",
+         "field": "owner",
+         "value": null
+        },
+        {
+         "kind": "sendNotification",
+         "title": "QA NDC follow up",
+         "body": "NDC mimic of alert \"follow up\" on transition Customer not reached",
+         "notifyOwner": false
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "isActive": true
+  },
+  "save": "bp-flywt-refund"
+ }
+]

@@ -1,0 +1,420 @@
+- 2026-11-06T17:22:59 department "QA AS6 Dept A" b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6
+- 2026-11-06T17:23:00 department "QA AS6 Dept B" ce1d8a43-07df-4b37-891c-cc8b2eceec6f
+- 2026-11-06T17:23:01 team "QA AS6 Team A" 434140a3-2145-428c-9e57-e6bc5cf2f8d0
+- 2026-11-06T17:26:27 rule round_robin "QA AS6 RR seq" 2a700860-6c8c-4c76-a106-20adcf899944
+- 2026-11-06T17:26:28 rule direct "QA AS6 DA D01" 8e318580-d635-49cc-8008-6e30942464ef
+- 2026-11-06T17:26:30 ticket "QA AS6 SEQ create 1" 2e172f95-bcd7-452d-b436-a291a9f8cf1c
+- 2026-11-06T17:26:30 ticket "QA AS6 SEQ create 2" 3dd5636f-854c-4051-b1ac-861be257d5bd
+- 2026-11-06T17:26:31 ticket "QA AS6 SEQ create 3" 90de4003-2773-40e5-9670-c91a6fcceb56
+- 2026-11-06T17:26:32 ticket "QA AS6 D01 a" 4d08fcbd-3b29-4000-83f0-9dca6fc0a20b
+- 2026-11-06T17:29:43 ticket "QA AS6 D02 nomatch" 42cfaccb-18ec-4a05-bcec-99a20107da0c
+- 2026-11-06T17:29:47 ticket "QA AS6 D01 preset" ba5ce2d0-bc0d-4c55-8ea9-5b984dc14a05
+- 2026-11-06T17:29:52 rule direct "QA AS6 DA D05 team" c6b0341b-9c91-4ed6-adda-f986c2682b4d
+- 2026-11-06T17:29:52 ticket "QA AS6 D05 team" 7f2e8f34-a3a6-42fa-a171-2636ac5adaec
+- 2026-11-06T17:29:57 rule direct "QA AS6 DA D06 move" 08d4c73b-780d-44c7-92be-3ac4e5345ed2
+- 2026-11-06T17:29:57 ticket "QA AS6 D06 move" e6a8d143-c79d-40f1-a7c0-58634519b527
+- 2026-11-06T17:30:02 rule direct "QA AS6 C07 both" 571c4024-4cd5-4cb2-bd83-e2efe6ab66a9
+- 2026-11-06T17:30:03 rule direct "QA AS6 DA D08 unassigned" ea8d623c-2ef4-4ade-85cf-fc2a95cdad3d
+- 2026-11-06T17:30:04 rule direct "QA AS6 DA D08 A2" ceccf39e-c8f8-4621-b69b-e275c06e343a
+- 2026-11-06T17:30:04 ticket "QA AS6 D08" d01613b8-4287-4151-8265-7c99026c9d0c
+- 2026-11-06T17:30:08 rule direct "QA AS6 DA D09 update" 07f0f871-c6d1-436c-b63c-27af8d82b2aa
+- 2026-11-06T17:30:09 ticket "QA AS6 D09 unowned" efe58d6d-5f4f-4869-b30b-a38e2c5fbf55
+- 2026-11-06T17:30:22 ticket "QA AS6 D09 owned" 2adee769-bd8e-4b93-988c-361a14341728
+- 2026-11-06T17:30:26 rule direct "QA AS6 DA D11 A1" 37b3ae8e-e2ac-4b59-a520-9352f411fa3b
+- 2026-11-06T17:30:27 rule direct "QA AS6 DA D11 A2" aaf0f765-69de-41e0-a8ef-fb2e013a9305
+- 2026-11-06T17:30:27 ticket "QA AS6 D11 first" 7568f386-5cae-4021-a851-24c9e0a77a66
+- 2026-11-06T17:30:31 direct order swapped D11a/D11b (restore at cleanup)
+- 2026-11-06T17:30:32 ticket "QA AS6 D11 after reorder" 1b79cbc9-fed2-4811-8a76-ffeb11e8db35
+- 2026-11-06T17:30:36 rule direct "QA AS6 DA D13 A3" 2017c813-ec2e-4be3-a97f-6371a54a233f
+- 2026-11-06T17:30:36 Dept A: A3 removed (restore)
+- 2026-11-06T17:30:37 ticket "QA AS6 D13" e9f4f234-7520-4c8d-bc25-ae1f38eb137c
+- 2026-11-06T17:30:40 Dept A: A3 restored
+- 2026-11-06T17:30:41 rule direct "QA AS6 DA EO2" 3ae890f7-0329-458b-83cd-963c974c4152
+- 2026-11-06T17:30:41 ticket "QA AS6 EO2" e812f9f1-f90d-4be6-b7db-40b84f538553
+- 2026-11-06T17:30:47 rule direct "QA AS6 DA EO5" 442f8416-ef14-4236-8f79-2ba39b4c760d
+- 2026-11-06T17:30:47 ticket "QA AS6 EO5" 3f972900-2308-4a51-8cfd-67ca06e9cc2c
+- 2026-11-06T17:30:54 ticket "QA AS6 SEQ EO3" 51a8e19d-90ab-45d1-b317-6120a6937db3
+- 2026-11-06T17:32:12 rule direct "QA AS6 DA D07 move-unassigned" 3f1baf2d-d3fb-40e4-8ced-e902f0fa35c1
+- 2026-11-06T17:32:13 ticket "QA AS6 SEQ D07" 42d53af3-0b3f-461e-9df1-7d36d4b26186
+- 2026-11-06T17:32:21 ticket "QA AS6 D01 inactive" c06102ea-83df-4c30-b8b2-0ea471500906
+- 2026-11-06T17:32:27 direct master switch OFF
+- 2026-11-06T17:32:28 ticket "QA AS6 D01 master off" 4968f2a1-b0c2-488e-9c9d-c8d28a8dd8ed
+- 2026-11-06T17:32:32 direct master switch restored ON
+- 2026-11-06T17:32:33 ticket "QA AS6 D01 after restore" bcea7f90-d8e9-454e-a8db-56a4b44d4f62
+- 2026-11-06T17:32:36 rule direct "QA AS6 DA D13 A3" c046cb03-08a1-4940-a578-802921f357ea
+- 2026-11-06T17:32:37 Dept A: A3 removed (restore)
+- 2026-11-06T17:32:39 ticket "QA AS6 D13" d671af76-cd70-4881-94ad-dc3b54294c40
+- 2026-11-06T17:32:43 Dept A: A3 restored
+- 2026-11-06T17:32:45 workflow "QA AS6 WF EO2" 8f5843d6-ba0f-420a-bcc3-1f19f018821c
+- 2026-11-06T17:32:46 ticket "QA AS6 EO2 b" 670906a5-1504-434e-8f8b-b31786dc9be1
+- 2026-11-06T17:32:52 workflow "QA AS6 WF EO5" 3b030524-10f7-420c-91c5-e7ba3e569c33
+- 2026-11-06T17:32:53 ticket "QA AS6 EO5 b" b80b3c99-68f1-45ce-b822-f0b3b7d61fae
+- 2026-11-06T17:33:01 workflow "QA AS6 WF EO3" 70524dc3-e0f6-4be0-b7c4-45331a1aa12c
+- 2026-11-06T17:33:02 ticket "QA AS6 SEQ EO3 b" 2452940c-9114-4535-80e4-9e1fd6cae6ef
+- 2026-11-06T17:33:16 ticket "QA AS6 SEQ create null" 8f8dd49f-feb2-4f00-a0bb-df8fc8da4e59
+- 2026-11-06T17:36:00 ticket "QA AS6 SEQ s 1" 2d1a826a-34f0-437c-b9dc-4a5289232887
+- 2026-11-06T17:36:08 ticket "QA AS6 SEQ s 2" 9726b551-bef6-4677-ab7c-1b48c16d735d
+- 2026-11-06T17:36:16 ticket "QA AS6 SEQ s 3" ff5d858f-6f6b-48cb-b580-bcfe2578523f
+- 2026-11-06T17:36:24 ticket "QA AS6 SEQ s 4" b464b252-18ee-4538-bde6-d2402929270a
+- 2026-11-06T17:36:34 ticket "QA AS6 SEQ s 5" 6048b027-fe28-4c59-baa5-e285199f1950
+- 2026-11-06T17:36:42 ticket "QA AS6 SEQ s 6" cabd3fa7-2843-4532-ae7f-2ba26b828efd
+- 2026-11-06T17:37:00 ticket "QA AS6 SEQ off 1" 14068549-d80d-4257-ac1a-50636b4016b6
+- 2026-11-06T17:37:09 ticket "QA AS6 SEQ off 2" 6d0da1c0-77b1-4156-8a42-b0d669602af5
+- 2026-11-06T17:37:18 ticket "QA AS6 SEQ off 3" c64ffb41-264c-4710-bf31-65b298c8d215
+- 2026-11-06T17:37:26 ticket "QA AS6 SEQ off 4" 6a4809c2-2028-45ec-a6ef-7297b79f3c94
+- 2026-11-06T17:37:43 ticket "QA AS6 SEQ r 1" 2ac5d702-37d6-4694-acfe-7730d71e2954
+- 2026-11-06T17:37:52 ticket "QA AS6 SEQ r 2" 4f6a0855-8edb-4a8b-9b03-5b478def8572
+- 2026-11-06T17:38:22 ticket "QA AS6 SEQ r after 2" d9b4272b-0899-4bbd-84cd-ca8e1f68c018
+- 2026-11-06T17:38:27 ticket "QA AS6 SEQ r after 3" f8c1070d-cd31-4698-b81b-f4c45b0be15a
+- 2026-11-06T17:38:30 rule round_robin "QA AS6 RR seq second (A3 only)" 9a0e7c30-c8e7-47b1-a186-98680b49f4ef
+- 2026-11-06T17:38:31 ticket "QA AS6 SEQ two 1" 9191b628-36ef-4800-afc6-da529c51d710
+- 2026-11-06T17:38:36 ticket "QA AS6 SEQ two 2" e31ef48b-8919-4aa5-8b3c-808463133c63
+- 2026-11-06T17:38:42 ticket "QA AS6 SEQ two 3" ef0a168c-8a26-40b2-a282-5a974e6fb5cc
+- 2026-11-06T17:38:53 rule round_robin "QA AS6 RR team" 81c3b4dc-d969-4704-ba9e-b2e19d085658
+- 2026-11-06T17:38:54 ticket "QA AS6 TEAMRR a 1" 52eca4d0-83b6-412a-bd18-3b0677fe7995
+- 2026-11-06T17:38:58 ticket "QA AS6 TEAMRR a 2" 518e3888-868c-4872-8663-c4fe1900913e
+- 2026-11-06T17:39:02 ticket "QA AS6 TEAMRR a 3" 56a6700f-f8c1-4601-b6b5-23a2e40fd3d7
+- 2026-11-06T17:39:12 ticket "QA AS6 TEAMRR a 4" dffc42e8-f657-4c3e-b9b4-cad602b2963a
+- 2026-11-06T17:39:23 ticket "QA AS6 TEAMRR excl 1" 6a96ccc7-8b43-41bb-a46c-5d62172a86f0
+- 2026-11-06T17:39:31 ticket "QA AS6 TEAMRR excl 2" 2660d844-1566-45db-b3fc-fee538adb5a0
+- 2026-11-06T17:39:34 ticket "QA AS6 TEAMRR excl 3" fe04d4c8-34d1-4cbd-aa11-3031948207d5
+- 2026-11-06T17:39:37 rule round_robin "QA AS6 RR load" 74c26534-fd9e-4f7b-89de-0a7538305abb
+- 2026-11-06T17:39:38 ticket "QA AS6 LOAD 1" 668e38f1-3127-43a1-9add-f1b42a21498b
+- 2026-11-06T17:39:41 ticket "QA AS6 LOAD 2" cee3ca66-303f-4f87-9c7b-4a58e197e6d1
+- 2026-11-06T17:39:46 ticket "QA AS6 LOAD 3" 8884d022-9e5c-40ad-8acb-0ff6004c3c4e
+- 2026-11-06T17:39:49 ticket "QA AS6 LOAD 4" 52ec5720-f3cf-4ab8-b978-249351199549
+- 2026-11-06T17:39:54 ticket "QA AS6 LOAD 5" 3b6a0445-7715-44e6-bae3-654a4b5e0735
+- 2026-11-06T17:40:08 ticket "QA AS6 SEQ alloff" 89830b5b-dc27-44fa-9ec5-c5daefe39043
+- 2026-11-06T17:41:24 ticket "QA AS6 SEQ u1" c89e040f-e911-44e4-8219-ebe0fd35e842
+- 2026-11-06T17:41:33 ticket "QA AS6 SEQ u2" 8ebf1651-e099-4ef3-ab6e-6e7eb62e2366
+- 2026-11-06T17:41:42 ticket "QA AS6 SEQ u3" a3bbd76d-9752-42cb-a3b6-56c42dd0542b
+- 2026-11-06T17:42:04 ticket "QA AS6 SEQ off-u1" 00323ccd-e450-4d91-ac3b-e66cad40b02b
+- 2026-11-06T17:42:11 ticket "QA AS6 SEQ off-u2" ce10db39-0bd9-477c-8e9b-5d94115acb52
+- 2026-11-06T17:42:20 ticket "QA AS6 SEQ off-u3" 3b291a85-0a54-47a7-867a-587faaf0076d
+- 2026-11-06T17:42:37 ticket "QA AS6 SEQ alloff-u" e1698fb1-b056-46b1-bf90-64981cc2ca4a
+- 2026-11-06T17:42:59 ticket "QA AS6 TEAMRR u1" 688b4318-e9ba-4db8-965f-c2217d7af896
+- 2026-11-06T17:43:07 ticket "QA AS6 TEAMRR u2" 9f18c47c-5f9a-4038-bf2e-9213161f000b
+- 2026-11-06T17:43:19 ticket "QA AS6 TEAMRR u3" 24e5fc40-5102-41d8-b13d-889c363076c2
+- 2026-11-06T17:43:29 ticket "QA AS6 TEAMRR u4" bbea0f42-18c7-4466-8746-6da671875633
+- 2026-11-06T17:43:37 ticket "QA AS6 SEQ r1" 3f5b1b86-3424-47fa-81d6-7e0fa1532e76
+- 2026-11-06T17:43:48 ticket "QA AS6 SEQ r2" 8b528d7e-294d-4a9e-b340-4eeaa949d73f
+- 2026-11-06T17:44:02 ticket "QA AS6 SEQ r after1" bb5927cb-7e16-4550-957d-f3b510f2c63d
+- 2026-11-06T17:44:19 ticket "QA AS6 SEQ r after2" ff3f952d-6d1c-406b-8cf2-8cd590c0ed8e
+- 2026-11-06T17:44:32 ticket "QA AS6 SEQ r after3" 362897c5-0dac-4078-9138-c5a00ba97401
+- 2026-11-06T17:46:23 Dept A RR prefs {"department_threshold_enabled":true,"department_threshold":0}
+- 2026-11-06T17:46:24 Dept A RR prefs {"department_threshold_enabled":true,"department_threshold":201}
+- 2026-11-06T17:46:24 Dept A RR prefs {"department_threshold_enabled":true,"department_threshold":1.5}
+- 2026-11-06T17:46:25 Dept A RR prefs {"department_threshold_enabled":true,"department_threshold":200}
+- 2026-11-06T17:46:25 Dept A RR prefs {"backlog_limit":0}
+- 2026-11-06T17:46:25 Dept A RR prefs {"backlog_limit":51}
+- 2026-11-06T17:46:26 Dept A RR prefs {"agent_threshold_enabled":true,"agent_thresholds":[]}
+- 2026-11-06T17:46:27 Dept A RR prefs {"agent_threshold_enabled":true,"agent_thresholds":[{"user_id":"876ce871-2b02-4854-89a7-68050391c62b","threshold":0}]}
+- 2026-11-06T17:46:27 Dept A RR prefs {"agent_threshold_enabled":true,"agent_thresholds":[{"user_id":"876ce871-2b02-4854-89a7-68050391c62b","threshold":5},{"user_id":"876ce871-2b02-4854-89a7-68050391c62b","threshold":6}]}
+- 2026-11-06T17:46:27 Dept A RR prefs {"agent_threshold_enabled":true,"agent_thresholds":[{"user_id":"9d182dfa-05f3-4af7-9685-8615a2fbe537","threshold":5}]}
+- 2026-11-06T17:46:27 Dept A RR prefs {"backlog_order":"priority"}
+- 2026-11-06T17:46:28 Dept A RR prefs {"incoming_mode":"x"}
+- 2026-11-06T17:46:28 Dept A RR prefs {"incoming_mode":"move_to_backlog"}
+- 2026-11-06T17:46:28 Dept A RR prefs {}
+- 2026-11-06T17:46:39 ticket "QA AS6 SEQ signout 1" 25af6dd6-c982-4bb8-b10f-b623580ee3af
+- 2026-11-06T17:46:48 ticket "QA AS6 SEQ signout 2" 8dc5627c-9785-43ec-8b7b-0bd443b4849c
+- 2026-11-06T17:46:56 ticket "QA AS6 SEQ signout 3" 9869bcbb-f873-41d9-bd48-bc3753e529b8
+- 2026-11-06T17:47:16 ticket "QA AS6 SEQ backlog A" b4cdb7ad-cf4f-4805-a7c9-759f71ce1f24
+- 2026-11-06T17:47:24 Dept A RR prefs {"assign_to_offline_agents":true}
+- 2026-11-06T17:47:24 ticket "QA AS6 SEQ offline-on" 67eace6c-e747-4772-a13b-b64042725eca
+- 2026-11-06T17:47:31 Dept A RR prefs {}
+- 2026-11-06T17:47:43 Dept A RR prefs {"department_threshold_enabled":true,"department_threshold":1}
+- 2026-11-06T17:47:43 ticket "QA AS6 SEQ thr1" 98d47454-3ded-466b-bebb-7c92146e0922
+- 2026-11-06T17:47:51 Dept A RR prefs {"department_threshold_enabled":true,"department_threshold":1,"agent_threshold_enabled":true,"agent_thresholds":[{"user_id":"876ce871-2b02-4854-89a7-68050391c62b","threshold":200}]}
+- 2026-11-06T17:47:53 ticket "QA AS6 SEQ agentthr 1" 53137ee2-8215-4d70-8fcc-2d5c37712d63
+- 2026-11-06T17:48:02 ticket "QA AS6 SEQ agentthr 2" 8d567a87-1a6d-442c-8446-8f1bad86d877
+- 2026-11-06T17:48:11 ticket "QA AS6 LOAD agentthr" 43941778-1c48-4922-ac2d-2f153cb24833
+- 2026-11-06T17:48:20 Dept A RR prefs {"department_threshold_enabled":true,"department_threshold":1,"agent_threshold_enabled":false,"agent_thresholds":[{"user_id":"876ce871-2b02-4854-89a7-68050391c62b","threshold":200}]}
+- 2026-11-06T17:48:21 ticket "QA AS6 SEQ agentthr off" 24610279-288f-4f4f-b2e1-ce91c8b77c5a
+- 2026-11-06T17:49:40 Dept A RR prefs {"department_threshold_enabled":true,"department_threshold":1,"agent_threshold_enabled":true,"agent_thresholds":[{"user_id":"d23fb4e0-248d-41f6-af60-d28885a7007e","threshold":200}],"assign_backlogs":true,"backlog_limit":1,"backlog_order":"created_time"}
+- 2026-11-06T17:51:58 Dept A RR prefs {}
+- 2026-11-06T17:59:09 ticket "QA AS6 SEQ emailoff 1" d65e1e1e-251c-4a3c-b329-0aed72503136
+- 2026-11-06T17:59:18 ticket "QA AS6 SEQ emailoff 2" 0bb90e52-b6e3-4c99-91b1-651d08484ac6
+- 2026-11-06T17:59:26 ticket "QA AS6 SEQ emailoff 3" b1a8d3d9-2951-412e-89e7-b9e61cb6a91f
+- 2026-11-06T17:59:46 ticket "QA AS6 SEQ backlog D" 7be0cd04-096a-4441-a96e-89e74a616bc6
+- 2026-11-06T17:59:53 Dept A RR prefs {"assign_to_offline_agents":true}
+- 2026-11-06T17:59:54 ticket "QA AS6 SEQ offline-allowed" 91728596-31c7-41cd-9bc9-6cb95da3c64c
+- 2026-11-06T18:00:01 Dept A RR prefs {}
+- 2026-11-06T18:00:02 Dept A RR prefs {"assign_on_closure":true}
+- 2026-11-06T18:00:15 ticket "QA AS6 F08 to close" b2a50dea-da38-4740-abeb-a4e23b5d07a8
+- 2026-11-06T18:00:29 Dept A RR prefs {"assign_on_closure":false}
+- 2026-11-06T18:00:42 ticket "QA AS6 SEQ backlog E" 8005f7ea-f6ed-41d4-a470-075a1f69f660
+- 2026-11-06T18:00:51 ticket "QA AS6 F08b to close" dc1c7e89-1f80-49a3-807d-5015cefcaa83
+- 2026-11-06T18:01:37 RR master OFF
+- 2026-11-06T18:01:37 Dept A RR prefs {"assign_backlogs":true,"backlog_limit":5}
+- 2026-11-06T18:01:38 ticket "QA AS6 SEQ rr master off" ed847d2e-eced-4175-920e-46a60ae95077
+- 2026-11-06T18:03:02 RR master restored ON
+- 2026-11-06T18:03:12 Dept A RR prefs {}
+- 2026-11-06T18:04:47 skill type QA AS6 Type 3337f0cc-2161-4829-9e50-4aec14a06fbd
+- 2026-11-06T18:04:49 skill "QA AS6 <img src=x onerror=alert(1)>" e4677bfb-4acb-49f3-8f5e-4fefdce8a40f
+- 2026-11-06T18:04:49 skill "QA AS6 sk1" e383aea4-539f-488b-a316-483b3895e432
+- 2026-11-06T18:04:50 skill "QA AS6 sk2" ac18bc92-f76a-474f-ac5e-0cace63a3c4a
+- 2026-11-06T18:04:50 skill "QA AS6 sk3" d8bb71bc-b69c-4969-8889-afab13a1f98b
+- 2026-11-06T18:04:51 Dept A skill prefs auto_add true, settings_order
+- 2026-11-06T18:04:52 ticket "QA AS6 SK1 auto" 98e44508-8cbe-49c7-b83a-6cf9a3ab8c51
+- 2026-11-06T18:04:57 ticket "QA AS6 SK3 inactive" 347cf487-059b-48a2-a060-1f8c65651bac
+- 2026-11-06T18:05:02 ticket "QA AS6 SK2 and QA AS6 SK1" a0d86a1f-484e-4547-ab56-29b1c8357c56
+- 2026-11-06T18:05:06 Dept A skill order swapped sk1/sk2
+- 2026-11-06T18:05:07 ticket "QA AS6 SK2 and QA AS6 SK1 after" be38775b-9323-48b4-8400-dbe35418b3a5
+- 2026-11-06T18:05:11 ticket "QA AS6 plain" ec53f6a0-d131-402f-b440-aa40c88f0b48
+- 2026-11-06T18:05:26 ticket "QA AS6 limit" 64a735a1-a03a-41aa-b9cd-775eefca08ed
+- 2026-11-06T18:05:27 skill "QA AS6 cap 3" eaca1061-62e7-42af-a297-a74e751fd46e
+- 2026-11-06T18:05:27 skill "QA AS6 cap 4" 591d26a7-5450-41c9-837e-2f2f10c18cd1
+- 2026-11-06T18:05:27 skill "QA AS6 cap 5" 15e955e9-7fc3-4563-8aa5-8efa972d0f54
+- 2026-11-06T18:05:28 skill "QA AS6 cap 6" 22403d9a-d212-441d-9e56-2c3dddbd869b
+- 2026-11-06T18:05:28 skill "QA AS6 cap 7" b11d883e-2ed6-4772-b32d-94352f797da8
+- 2026-11-06T18:05:28 skill "QA AS6 cap 8" cb036f10-da66-4136-9802-237ce51161c3
+- 2026-11-06T18:05:28 skill "QA AS6 cap 9" 25318e18-d63f-407a-a439-aa3c3d6c70be
+- 2026-11-06T18:05:28 skill "QA AS6 cap 10" b2a209b0-be3a-4fa0-8bd4-5ca4b6c2707c
+- 2026-11-06T18:05:29 skill "QA AS6 cap 11" 3fa44b56-e534-43e4-b1f9-7d5000a059fe
+- 2026-11-06T18:05:29 skill "QA AS6 cap 12" b68da3f3-d8c3-49a6-aaea-53007cfaf9b2
+- 2026-11-06T18:05:29 skill "QA AS6 cap 13" a52a4cc1-116c-417d-b199-655296db414d
+- 2026-11-06T18:05:29 skill "QA AS6 cap 14" 07b89b41-be53-428b-bdfd-2e586c16e2f6
+- 2026-11-06T18:05:30 skill "QA AS6 cap 15" 6d3598f1-4fc8-4abe-af7e-04570baee3bd
+- 2026-11-06T18:05:30 skill "QA AS6 cap 16" 3fb03916-09e9-4f63-9611-cf87de6f9449
+- 2026-11-06T18:05:30 skill "QA AS6 cap 17" 89f591ea-7369-4af6-bd2d-70aeaf2442d8
+- 2026-11-06T18:05:30 skill "QA AS6 cap 18" 35e66194-deaf-4fd2-a4d5-e06cf2cc1309
+- 2026-11-06T18:05:30 skill "QA AS6 cap 19" b28d11bb-e25c-4a6e-8b43-9de498a68d61
+- 2026-11-06T18:05:31 skill "QA AS6 cap 20" f697b8e8-2847-4f33-aefc-fd62f170bc0f
+- 2026-11-06T18:05:31 skill "QA AS6 cap 21" 696130cf-5f90-43c8-aaf6-017fd27bd839
+- 2026-11-06T18:05:31 skill "QA AS6 cap 22" 566300eb-7548-4b60-9fe0-9bb115ede1fe
+- 2026-11-06T18:05:31 skill "QA AS6 cap 23" 30b5e1ad-492f-4ec5-b097-e3aee2ef7bea
+- 2026-11-06T18:05:32 skill "QA AS6 cap 24" 55d1af59-60ca-43fa-ae5a-414b2c235d74
+- 2026-11-06T18:05:32 skill "QA AS6 cap 25" 0bb7054a-d1c4-459a-8f19-f7b9d828e178
+- 2026-11-06T18:05:32 skill "QA AS6 cap 26" ae1c599b-fa54-492e-9885-74f35e3346de
+- 2026-11-06T18:05:32 skill "QA AS6 cap 27" e4ac54e3-6e4c-4440-95f4-4972539eebff
+- 2026-11-06T18:05:33 skill "QA AS6 cap 28" d761d3ae-5b9f-4f20-98a5-4f68606ca114
+- 2026-11-06T18:05:33 skill "QA AS6 cap 29" 960e40d4-57aa-49cf-b822-4e8093666ee8
+- 2026-11-06T18:05:33 rule round_robin "QA AS6 RR skill" d4807ebf-a84a-4d69-a192-2db060ba9854
+- 2026-11-06T18:05:34 ticket "QA AS6 SKR QA AS6 SK2 a" 6a8f9424-d826-4390-a3be-b8596525252c
+- 2026-11-06T18:05:45 ticket "QA AS6 SKR QA AS6 SK2 b" b01b9c80-3810-4eda-931d-7186a4ee9971
+- 2026-11-06T18:05:55 ticket "QA AS6 SKR none 1" 7093948b-72ef-4cda-ace7-376ad2ac9300
+- 2026-11-06T18:06:05 ticket "QA AS6 SKR none 2" 1b1ba367-d259-4eae-ac8f-1865de9d1d68
+- 2026-11-06T18:06:17 ticket "QA AS6 SKR QA AS6 SK1 QA AS6 SK2" f044113d-daca-4c52-900e-4d6dede4961d
+- 2026-11-06T18:06:27 skill type QA AS6 Type2 8dc9055a-6f72-4a06-aca7-87123aaab901
+- 2026-11-06T18:06:57 ticket "QA AS6 limit b" c3d72f4b-7d09-4909-8dd0-d4bafc098923
+- 2026-11-06T18:06:58 skill type QA AS6 Type3 af2a42ab-5bb3-473c-88a2-c889ed41ef61
+- 2026-11-06T18:06:59 workflow "QA AS6 WF add skill" 6f51ef52-d3c6-46e9-80a1-fe1bc44ab6c3
+- 2026-11-06T18:07:00 ticket "QA AS6 WFSK x" 82fd61a7-fefe-4333-9abc-aee2bc11ce3b
+- 2026-11-06T18:09:37 ticket "QA AS6 G02 pickup" 73c8ccb7-ee47-4c3d-8919-979b3c4fe9fc
+- 2026-11-06T18:09:51 rule direct "QA AS6 nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn" 9d1bc506-0571-4a51-857d-926a94b234d5
+- 2026-11-06T18:09:52 rule direct "QA AS6 DA B02 pattern" 41207b59-ab57-4274-b758-ffc3b40e0e35
+- 2026-11-06T18:09:52 ticket "QA AS6 B02 a" 3b19239e-05e8-432f-8122-09a428bb9be8
+- 2026-11-06T18:09:56 ticket "QA AS6 B02 b" 570a4d09-5c19-4a09-b259-1b22cfcc1caa
+- 2026-11-06T18:10:00 ticket "QA AS6 B02 c" 043d3e85-0854-470e-bde8-608136cef61a
+- 2026-11-06T18:10:04 ticket "QA AS6 other B" 8fd8909c-8c47-4f76-a9da-ad1d66caa0bf
+- 2026-11-06T18:10:08 rule direct "QA AS6 B05 25" 9d9c5a6f-f87c-410d-8bfa-a8bbac1a5f4b
+- 2026-11-06T18:10:10 Dept A team assignment OFF
+- 2026-11-06T18:10:10 ticket "QA AS6 F12 manual" 2df58792-a2ff-47b3-af05-fcc2a1c1b303
+- 2026-11-06T18:10:13 ticket "QA AS6 D05 team when off" 23809fa5-43f3-438c-8079-a8e57e9218cb
+- 2026-11-06T18:10:16 Dept A team assignment restored ON
+- 2026-11-06T18:10:17 A3 removed from Dept A (restore)
+- 2026-11-06T18:10:18 ticket "QA AS6 D13 removed" 24ac8a79-d98f-4dc6-8e35-fe826b054512
+- 2026-11-06T18:10:22 ticket "QA AS6 TEAMRR removed" 38bb7b7d-fd50-414a-9616-5eef42bfe6d5
+- 2026-11-06T18:10:29 A3 restored to Dept A
+- 2026-11-06T18:17:24 Dept A RR prefs {"incoming_mode":"backlog_first"}
+- 2026-11-06T18:17:24 ticket "QA AS6 SEQ backlogfirst" cb21e719-65f0-423f-a7a7-583b0adafb7d
+- 2026-11-06T18:17:32 Dept A RR prefs {"incoming_mode":"backlog_first","assign_backlogs":true,"backlog_limit":5}
+- 2026-11-06T18:17:42 Dept A RR prefs {}
+- 2026-11-06T18:17:55 ticket "QA AS6 SEQ bl master" a3c9edff-d45a-42f8-9965-04d0f9a819fc
+- 2026-11-06T18:18:03 RR master OFF
+- 2026-11-06T18:18:03 Dept A RR prefs {"assign_backlogs":true,"backlog_limit":5}
+- 2026-11-06T18:19:31 RR master restored ON
+- 2026-11-06T18:19:51 Dept A RR prefs {}
+- 2026-11-06T18:19:52 rule round_robin "QA AS6 RR conc" 39bd3175-35ce-46c2-ae50-5a4b4a74edef
+- 2026-11-06T18:19:52 ticket "QA AS6 CONC 1" 138c1410-f845-4efb-aa9a-97fc9d9f7f35
+- 2026-11-06T18:19:52 ticket "QA AS6 CONC 2" ee38e894-1714-4d86-aa01-2da59eacc542
+- 2026-11-06T18:19:53 ticket "QA AS6 CONC 3" 447b06f3-3709-4260-bf8b-c2f4d1e4e354
+- 2026-11-06T18:19:54 ticket "QA AS6 CONC 4" f1210858-becc-4d2d-9e13-71af41f2448b
+- 2026-11-06T18:19:55 ticket "QA AS6 CONC 5" 535fbc7c-061f-46ab-acf4-b1d2e4f3fd39
+- 2026-11-06T18:19:55 ticket "QA AS6 CONC 6" db2fe8b0-497c-4405-8437-5778e55bfdd1
+- 2026-11-06T18:19:56 ticket "QA AS6 CONC 7" cf0e2c84-4bce-4473-b1a3-c1701f848402
+- 2026-11-06T18:19:57 ticket "QA AS6 CONC 8" f1e7c875-27bc-484f-a145-86c298838de0
+- 2026-11-06T18:19:58 ticket "QA AS6 CONC 9" fbd1df2a-ec24-4126-bda0-3453b8e0b4e6
+- 2026-11-06T18:19:59 ticket "QA AS6 CONC 10" c1569f2e-9d16-43d3-b794-363b581d223e
+- 2026-11-06T18:19:59 ticket "QA AS6 CONC 11" 03fc6716-c1e4-4a66-829a-4664cc7c516d
+- 2026-11-06T18:20:00 ticket "QA AS6 CONC 12" 123ec671-732c-4d24-aeb6-281477928d9d
+- 2026-11-06T18:20:01 ticket "QA AS6 CONC 13" 0c3b6254-2f18-4a2d-ba95-225e0f793f2f
+- 2026-11-06T18:20:03 ticket "QA AS6 CONC 14" 71571f12-945e-478c-9147-515dcf3ac4bc
+- 2026-11-06T18:20:03 ticket "QA AS6 CONC 15" a8a55e83-05e4-45ab-a14e-59d1b414c546
+- 2026-11-06T18:20:04 ticket "QA AS6 CONC 16" d21f408f-e452-4aa0-ad55-3507ec88649a
+- 2026-11-06T18:20:05 ticket "QA AS6 CONC 17" 2f6fc4a8-5b04-46f8-a592-fab25c4f9dbf
+- 2026-11-06T18:20:06 ticket "QA AS6 CONC 18" 8a86a79d-6aa8-421d-9229-4f8b7ca83e22
+- 2026-11-06T18:20:07 ticket "QA AS6 CONC 19" c9108018-165d-4ec4-a843-f4dd57a1f92d
+- 2026-11-06T18:20:08 ticket "QA AS6 CONC 20" a0908951-c536-4996-95a9-40e58d9921be
+- 2026-11-06T18:20:36 Dept A RR prefs {"department_threshold_enabled":true,"department_threshold":1,"agent_threshold_enabled":true,"agent_thresholds":[{"user_id":"876ce871-2b02-4854-89a7-68050391c62b","threshold":200}]}
+- 2026-11-06T18:20:37 ticket "QA AS6 CONC thr 1" 4a654a15-d3cd-44a5-a928-a2fd461d93f0
+- 2026-11-06T18:20:38 ticket "QA AS6 CONC thr 2" e14b8128-522d-4c33-ac43-e5912c652113
+- 2026-11-06T18:20:39 ticket "QA AS6 CONC thr 3" 485cd4c4-4440-4849-87ea-965ea59adcd6
+- 2026-11-06T18:20:40 ticket "QA AS6 CONC thr 4" d006c58c-6f89-4713-b229-00be137e6d37
+- 2026-11-06T18:20:41 ticket "QA AS6 CONC thr 5" be8bc361-5cc7-447a-ba11-9e96a87e3e9e
+- 2026-11-06T18:20:41 ticket "QA AS6 CONC thr 6" 05d42b05-c385-40e7-9a05-f187261a39dd
+- 2026-11-06T18:20:42 ticket "QA AS6 CONC thr 7" e8b785fd-0bff-4de1-8d1e-88287863de64
+- 2026-11-06T18:20:42 ticket "QA AS6 CONC thr 8" 0f6297ac-18cc-4dbc-be4f-d83ed9632488
+- 2026-11-06T18:20:43 ticket "QA AS6 CONC thr 9" 01da069d-f678-45b4-8b15-dbe25e1dc234
+- 2026-11-06T18:20:44 ticket "QA AS6 CONC thr 10" 469a4923-d457-4e84-9a24-639643bdff16
+- 2026-11-06T18:21:03 Dept A RR prefs {}
+- 7 Nov: B-2 image rebuilt — box 2 = Triggered by only (badge on left), Zoho panel = new live capture screenshots/zoho-rr-preferences-2026-11-07.png (techsolutionsegypt, dialog opened and closed with Cancel, nothing saved).
+- 2026-11-06T23:38:57 ticket "QA AS6 SEQ B1 create no owner" a8c48b81-7b5c-4605-b1ab-dd3de37dc2a2 B-1 evidence
+- 2026-11-06T23:38:58 ticket "QA AS6 SEQ B1 create owner null" 14f1210c-f792-40e8-8928-ec3dea1be1b3 B-1 evidence
+- 2026-11-06T23:39:08 B-1 evidence 7 Nov: RR_SEQ execute_on create+update and Dept A offline agents ON temporarily, both restored
+- 2026-11-06T23:39:37 ticket "QA AS6 SEQ B1 create default prefs" 3f618cc0-edcb-45a6-b0ea-8a8e1cc05cd3 B-1 recheck
+- 2026-11-06T23:39:47 B-1 recheck 7 Nov: RR_SEQ execute_on create+update temporarily, restored
+- 2026-11-06T23:40:35 ticket "QA AS6 SEQ D07 r2" 7c83eba0-8c9e-4bd6-b06f-f78e01c2d899 D-07 rerun
+- 2026-11-06T23:40:44 ticket "QA AS6 SKR QA AS6 SK2 r2" c7194cf2-cd09-44e9-8a6b-63dbf22bf4a6 H-12 rerun
+- 2026-11-06T23:40:53 ticket "QA AS6 SEQ F10 backlog first" abb0eff3-4670-4d27-b4a0-55aff8bd6071 F-10 rerun
+- 2026-11-06T23:41:51 7 Nov rerun D-07/H-12/F-10: RR_SEQ+RR_SKILL execute_on create+update, Dept A prefs offline ON / backlog_first / assign backlogs ON temporarily; all restored
+- 2026-11-06T23:42:17 B-3 evidence 7 Nov: Dept A Team Assignment OFF temporarily
+- 2026-11-06T23:42:18 ticket "QA AS6 B3 team assignment off" e75071c9-b86c-4678-a722-b8d51fb9d976 B-3 evidence
+- 2026-11-06T23:43:18 B-3 evidence 7 Nov: Dept A Team Assignment back ON
+- 2026-11-06T23:50:36 rule direct "QA AS6 B01 no criteria" 57a43ca8-3619-4522-a559-2b1d182eb8c4
+- 2026-11-06T23:50:37 ticket "QA AS6 zq any subject B01" 2c453671-5857-4426-8c0f-33fcbe5151f9 B-01
+- 2026-11-06T23:50:42 rule QA AS6 B01 no criteria deleted (A-11)
+- 2026-11-06T23:50:44 account QA AS6 Acct B09 035edbc2-766e-4cfa-a2df-fc86296153a6
+- 2026-11-06T23:50:45 contact QA AS6 B09 b9307d0f-5907-462b-a43e-6eeb6fae8084
+- 2026-11-06T23:50:46 ticket "QA AS6 B09 with contact" beead465-4044-4349-ae6a-c7fc95915d0a B-09
+- 2026-11-06T23:50:46 ticket "QA AS6 B09 with account only" f84df12a-7604-47d6-9a29-634b2175eb31 B-09
+- 2026-11-06T23:50:47 ticket "QA AS6 B09 no contact" 56516bc1-be6f-4c84-a963-eb8f61120e79 B-09
+- 2026-11-06T23:50:54 rule direct "QA AS6 D04 A1 offline" 5c11f9f0-dc8a-427f-bd47-40562de47bed
+- 2026-11-06T23:50:55 ticket "QA AS6 D04 offline threshold" 33202d8e-a777-4cc0-8e5f-bf17069ef794 D-04
+- 2026-11-06T23:51:00 D-04: Dept A threshold 1 temporarily, restored; rule deactivated
+- 2026-11-06T23:51:39 rule direct "QA AS6 B09 contact" cc2e70b3-c741-47ee-ad36-5f123ed31194
+- 2026-11-06T23:51:39 rule direct "QA AS6 B09 account" aa21ebb8-8bee-4708-b166-02fc468a7d49
+- 2026-11-06T23:51:40 ticket "QA AS6 B09 r2 with contact" a93296d9-2163-44d3-b926-9c311c15881e B-09
+- 2026-11-06T23:51:41 ticket "QA AS6 B09 r2 with account only" 9b792cba-1644-4418-918b-fbad6878b5f4 B-09
+- 2026-11-06T23:51:41 ticket "QA AS6 B09 r2 no contact" 7f48fea7-8fff-448b-9fe0-8045c5d22977 B-09
+- 2026-11-06T23:51:49 B-09 rules deactivated
+- 2026-11-06T23:54:26 rule QA AS6 D04 A1 offline deleted in UI (A-11)
+- 2026-11-06T23:57:24 D-14 form: RR_SEQ create + Dept A offline agents ON temporarily, restored
+- 2026-11-06T23:57:32 ticket "QA AS6 SEQ D14 form owner cleared" 91a347b5-b5ce-4d1c-b233-01a230b995de D-14 form
+- 2026-11-06T23:57:32 ticket "QA AS6 SEQ D14 form owner default" 683ab848-1ce3-415c-b13f-d3e1823b7799 D-14 form
+- 2026-11-06T23:58:38 ticket "QA AS6 FORMOWN default owner no rules" b992c481-2c56-4d12-b194-0a4ec3481d10 form owner check
+- 2026-11-07T00:03:04 ticket "QA AS6 SKR QA AS6 SK2 h09" 72b2052e-4681-445b-88e9-9398bfba1d34 H-09
+- 2026-11-07T00:03:51 H-09: Dept A offline agents ON temporarily, restored
+- 2026-11-07T00:04:11 ticket "QA AS6 SKR QA AS6 SK2 h09 offline" 3d6726e5-9a41-456c-b763-b3187cc30d98 H-09 edge
+- 2026-11-07T00:04:14 ticket "QA AS6 h09 no skills" f9edd31b-6465-4ed1-8b87-1f4116325a65 H-09 edge
+- 2026-11-07T00:04:18 ticket "QA AS6 SKR QA AS6 SK2 h09 owned" 65d00314-939a-4aca-b634-b1287949fa52 H-09 edge
+- 2026-11-07T00:04:22 H-09 edges: Dept A offline agents ON temporarily, restored
+- 2026-11-07T00:06:55 ticket "QA AS6 SEQ b2r allon 1" 0c6b7bfe-0b7d-4f91-b0cd-9538bc10b4fa B-2 recheck
+- 2026-11-07T00:07:00 ticket "QA AS6 SEQ b2r allon 2" 8d5fe828-6291-4768-a9de-d31a487014fc B-2 recheck
+- 2026-11-07T00:07:04 ticket "QA AS6 SEQ b2r allon 3" f57eb169-3d56-4a8e-8686-48302ca9f25a B-2 recheck
+- 2026-11-07T00:07:14 ticket "QA AS6 SEQ b2r a2off 1" 6bd94108-4622-49e4-8814-8ddb5ae37596 B-2 recheck
+- 2026-11-07T00:07:18 ticket "QA AS6 SEQ b2r a2off 2" 76e8be28-2118-4e46-be4a-f49ea1ecb4d5 B-2 recheck
+- 2026-11-07T00:07:23 ticket "QA AS6 SEQ b2r a2off 3" 05dc06ab-79f8-4cc0-a695-9f6a50341328 B-2 recheck
+- 2026-11-07T00:07:33 ticket "QA AS6 SEQ b2r alloff 1" b3bf5ecb-385e-4583-aa90-463c34dc37a8 B-2 recheck
+- 2026-11-07T00:07:38 B-2 recheck: RR_SEQ create temporarily, restored; presence via keeper back to on
+- 2026-11-07T00:08:13 G-05: Dept A department.ticket_created ON temporarily
+- 2026-11-07T00:08:14 ticket "QA AS6 G05 new ticket alert" 58e4a70f-2cf9-44f6-b044-366d205cf542 G-05
+- 2026-11-07T00:08:41 G-05: Dept A department.ticket_created restored
+- 2026-11-07T00:09:25 E2E 7 Nov: RR_SEQ + RR_SKILL create+update temporarily
+- 2026-11-07T00:09:26 ticket "QA AS6 SEQ D07 e2e 1" da6e7317-6295-4938-8f56-a5f50607ef2d E2E-1
+- 2026-11-07T00:09:30 ticket "QA AS6 SEQ D07 e2e 2" de47c5bf-c978-441a-bb08-f816266c54fd E2E-1
+- 2026-11-07T00:09:34 ticket "QA AS6 SEQ D07 e2e 3" 322cc191-b223-4422-83ea-29e7ba83b9fa E2E-1
+- 2026-11-07T00:09:38 ticket "QA AS6 SEQ D07 e2e 4" 768d4034-c003-4d23-9331-f275e64c65ea E2E-1
+- 2026-11-07T00:09:42 ticket "QA AS6 SEQ D07 e2e 5" 92261d4d-ce28-40f5-9c1f-6e366d33f270 E2E-1
+- 2026-11-07T00:09:46 ticket "QA AS6 SEQ D07 e2e 6" 3f92928b-29aa-4f53-bcdf-34d8ed636585 E2E-1
+- 2026-11-07T00:10:16 ticket "QA AS6 SEQ e2e3 a1out 1" 5f6b2b3f-ec8d-42cf-a4f9-07fea9aad60d E2E-3
+- 2026-11-07T00:10:20 ticket "QA AS6 SEQ e2e3 a1out 2" 8b180be1-547b-41b2-8d99-e89d35e3de31 E2E-3
+- 2026-11-07T00:10:30 ticket "QA AS6 SEQ e2e3 backlog" 170310c1-45b8-4b9a-8eee-151e6bcdf458 E2E-3
+- 2026-11-07T00:10:55 ticket "QA AS6 SKR QA AS6 SK2 e2e2" 0a59a797-38b9-4a6b-b5ed-bce181d57599 E2E-2
+- 2026-11-07T00:11:06 ticket "QA AS6 SEQ e2e2 backlog" 8a9faef4-95e5-48cd-9e45-623a2d838218 E2E-2
+- 2026-11-07T00:11:24 E2E 7 Nov: RR_SEQ/RR_SKILL execute_on and Dept A prefs restored; keeper back to all on
+- 2026-11-07T00:12:19 rule direct "QA AS6 B08 execution time" 840cd8cf-6e46-49ad-9525-a1f93b0de00c
+- 2026-11-07T00:12:19 ticket "QA AS6 B08 during" 6def3ed7-670a-465d-9f58-de85e7a59bc6 B-08
+- 2026-11-07T00:12:23 ticket "QA AS6 B08 outside" 0998d2ee-dcb0-4840-a682-4f65132ef3e9 B-08
+- 2026-11-07T00:12:27 B-08 rule deactivated
+- 2026-11-07T11:23:24 holiday list "QA AS6 HOL today" 3bf42474-8564-47ae-9aa4-3b70b3907c4d (detached, B-08 holiday)
+- 2026-11-07T11:23:24 holiday list "QA AS6 HOL xmas" 1fb3e44e-3792-400e-9652-533c8687090d (detached, B-08 holiday)
+- 2026-11-07T11:23:27 rule direct "QA AS6 B08 holiday" 30b42ed2-851d-4448-b9b0-18132630abbc B-08 holiday
+- 2026-11-07T11:23:32 ticket "QA AS6 HOL t1" 9e7fb6cf-20eb-459e-a8e7-ad0cd5be3d0d B-08 holiday
+- 2026-11-07T11:23:38 ticket "QA AS6 HOL t2" effcd457-a938-4144-997c-320c9681f814 B-08 holiday
+- 2026-11-07T11:23:44 ticket "QA AS6 HOL t3" b84b19a4-a541-4c93-b213-ae6920b9896d B-08 holiday
+- 2026-11-07T11:23:48 ticket "QA AS6 HOL t4" 029dc44d-e11d-4067-ac7f-de6547c67bf8 B-08 holiday
+- 2026-11-07T11:24:42 business hours profile "QA AS6 BH" 57146991-2293-428b-b6ba-09367eb18bf9 (non-default, B-08 holiday)
+- 2026-11-07T11:24:43 holiday list QA AS6 HOL today linked to QA AS6 BH
+- 2026-11-07T11:24:46 ticket "QA AS6 HOL t1 linked" d0338556-f121-4b34-9e6f-52f7562c9a0e B-08 holiday linked
+- 2026-11-07T11:24:50 ticket "QA AS6 HOL t2 linked" 07bd8bc8-6649-4f04-a79b-24abf6da189b B-08 holiday linked
+- 2026-11-07T11:24:55 B-08 holiday rule deactivated
+- 2026-11-07T16:56:46 B-5 evidence: QA AS6 HOL today detached again
+- 2026-11-07T16:56:46 B-5 evidence: rule QA AS6 B08 holiday active temporarily
+- 2026-11-07T16:56:47 ticket "QA AS6 HOL t1 detached r2" 2de53077-7bb1-43c8-996e-aa38a5e0a8ff B-5 evidence
+- 2026-11-07T16:56:52 ticket "QA AS6 HOL t2 detached r2" eced3f5b-1562-4463-a328-8ee668def693 B-5 evidence
+- 2026-11-07T16:56:57 B-5 evidence: rule QA AS6 B08 holiday inactive again
+- 2026-11-07T16:59:51 Zoho techsolutionsegypt Team Assignment (dept Haytham Mohamed) turned back ON with user approval; Zoho Add Ticket + New Holiday List forms opened and cancelled (nothing saved)
+- 2026-11-07T17:15:02 E-05/F-14: Dept A assign_to_offline_agents ON temporarily
+- 2026-11-07T17:15:03 E-05: RR_TEAM create+update, exclude A2 temporarily
+- 2026-11-07T17:15:06 ticket "QA AS6 TEAMRR E05 1" e47e70ca-171f-4f82-8370-35d66cd1a973 E-05
+- 2026-11-07T17:15:10 ticket "QA AS6 TEAMRR E05 2" b8990760-e401-4416-9fec-fed16f0c75db E-05
+- 2026-11-07T17:15:15 ticket "QA AS6 TEAMRR E05 3" 5e58c8ae-9f55-437a-9611-da177db76ef1 E-05
+- 2026-11-07T17:15:19 ticket "QA AS6 TEAMRR E05 4" 49548551-f075-4deb-ab3f-489bae574aeb E-05
+- 2026-11-07T17:15:24 E-05: RR_TEAM restored (update only, no exclusions)
+- 2026-11-07T17:15:25 ticket "QA AS6 F14 hold" ab5f67a4-a972-4491-9e4f-ee8b1053b83a F-14
+- 2026-11-07T17:15:26 ticket "QA AS6 F14 other dept" 1eb883a7-76b5-4cc7-80b3-d20988090c36 F-14
+- 2026-11-07T17:15:37 rule round_robin "QA AS6 F14 threshold" 480add73-28fd-4055-95cc-95fccf2495d2 F-14
+- 2026-11-07T17:15:42 ticket "QA AS6 F14 probe p1 open+hold DA" 56281f5e-b7e6-4e21-9a4d-b2e10d59b50b F-14
+- 2026-11-07T17:15:49 ticket "QA AS6 F14 probe p2 open+hold DA +1" fd2de505-2243-42e2-8aa5-582250998037 F-14
+- 2026-11-07T17:15:58 ticket "QA AS6 F14 probe p3 all depts +1" 86ccff51-7c26-4eef-ba2f-716a791c78e0 F-14
+- 2026-11-07T17:16:08 F-14: rule QA AS6 F14 threshold deactivated
+- 2026-11-07T17:16:09 E-05/F-14: Dept A preferences restored
+- 2026-11-07T17:17:47 F-14: rule QA AS6 F14 threshold active temporarily
+- 2026-11-07T17:17:47 F-14: Dept A prefs temporarily: offline allowed, agent threshold A1
+- 2026-11-07T17:17:48 ticket "QA AS6 F14 probe a" d8ffb033-0e5b-4372-a5c2-d7e29fb4804c F-14
+- 2026-11-07T17:17:58 ticket "QA AS6 F14 probe b" 6ad06bbb-01ad-4160-a299-760ad9d0b667 F-14
+- 2026-11-07T17:18:12 ticket "QA AS6 F14 probe c" 0644c9d2-7c71-43e2-ae91-ef244e1e1780 F-14
+- 2026-11-07T17:18:22 F-14: rule QA AS6 F14 threshold inactive
+- 2026-11-07T17:18:23 F-14: Dept A prefs restored
+- 2026-11-07T17:18:56 F-14 r2: rule QA AS6 F14 threshold active temporarily; Dept A prefs temporarily changed
+- 2026-11-07T17:18:57 ticket "QA AS6 F14 probe r2 ctl" f150b381-61e7-44e3-8a93-bf3f0d9669a4 F-14 r2
+- 2026-11-07T17:19:02 ticket "QA AS6 F14 probe r2 all" 6d944f55-cb1d-4dbb-920c-63d4f5f6dad3 F-14 r2
+- 2026-11-07T17:19:09 ticket "QA AS6 F14 probe r2 all+1" 00552abb-d3ff-424a-b1c9-23ae4ad4b73a F-14 r2
+- 2026-11-07T17:19:14 ticket "QA AS6 F14 probe r2 hold" bb7fdcd6-f9b4-4aa5-93a6-c156a034367b F-14 r2
+- 2026-11-07T17:19:21 ticket "QA AS6 F14 probe r2 closed" 5c04fa9f-5607-4f0c-9c06-590c8d049841 F-14 r2
+- 2026-11-07T17:19:26 F-14 r2: rule inactive, Dept A prefs restored
+- 2026-11-07T17:20:29 rule direct "QA AS6 G06 same owner" 8fcec957-496f-48d6-8052-1c165745f876 G-06
+- 2026-11-07T17:20:29 ticket "QA AS6 G06 same owner" c39be94a-c157-4636-baff-4f3d592a9763 G-06
+- 2026-11-07T17:20:45 G-06: rule QA AS6 G06 same owner deactivated
+- 2026-11-08T08:56:17 D-14 8 Nov: web form "QA AS6 D14 form" 12df8c8a-ed79-490a-beec-0553eaf6ad42 (Dept A, owner unassigned)
+- 2026-11-08T09:07:20 D-14 8 Nov: web form QA AS6 D14 share link (hosted/iframe) ON
+- 2026-11-08T09:07:53 D-14 8 Nov: RR_SEQ create+update and Dept A assign_to_offline_agents ON temporarily
+- 2026-11-08T09:07:53 rule direct "QA AS6 D14 web form direct" a380b929-f192-4e68-a81f-ff090a5288a5
+- 2026-11-08T09:07:53 D-14 8 Nov: direct rule QA AS6 D14 web form direct a380b929-f192-4e68-a81f-ff090a5288a5
+- 2026-11-08T09:10:06 D-14 8 Nov: restore after failed run — RR_SEQ exec update only, Dept A offline off, D14 direct rule inactive
+- 2026-11-08T09:13:06 D-14 8 Nov: RR_SEQ create+update and Dept A assign_to_offline_agents ON temporarily
+- 2026-11-08T09:13:06 D-14 8 Nov: direct rule D14 active temporarily
+- 2026-11-08T09:13:30 D-14 8 Nov: restore after failed run — RR_SEQ exec update only, Dept A offline off, D14 direct rule inactive
+- 2026-11-08T09:13:46 D-14 8 Nov: RR_SEQ create+update and Dept A assign_to_offline_agents ON temporarily
+- 2026-11-08T09:13:47 D-14 8 Nov: direct rule D14 active temporarily
+- 2026-11-08T09:14:21 ticket "QA AS6 SEQ D14 api control" 23e32abc-15c1-4389-a508-e035d6d820be D-14 8 Nov control
+- 2026-11-08T09:14:37 ticket "ctl" 23e32abc-15c1-4389-a508-e035d6d820be D-14 8 Nov web form
+- 2026-11-08T09:14:40 D-14 8 Nov: RR_SEQ exec + Dept A prefs restored; direct rule D14 inactive
+- 2026-11-08T09:15:48 D-14 8 Nov: web form QA AS6 D14 layout -> Standard
+- 2026-11-08T09:16:37 D-14 8 Nov: RR_SEQ create+update and Dept A assign_to_offline_agents ON temporarily
+- 2026-11-08T09:16:39 D-14 8 Nov: direct rule D14 active temporarily
+- 2026-11-08T09:17:23 ticket "QA AS6 SEQ D14 api control" 5165546d-6b8e-464a-b54f-8bd487c4c71e D-14 8 Nov control
+- 2026-11-08T09:17:39 ticket "ctl" 5165546d-6b8e-464a-b54f-8bd487c4c71e D-14 8 Nov web form
+- 2026-11-08T09:17:49 D-14 8 Nov: RR_SEQ exec + Dept A prefs restored; direct rule D14 inactive
+- 2026-11-08T09:18:11 ticket "QA AS6 D14 nomatch wf r3" 410a4a67-8f69-4d4a-904b-996ec236f981 D-14 8 Nov web form
+- 2026-11-08T09:18:16 ticket "QA AS6 SEQ D14 rr wf r3b" e19a109b-93d1-4153-bcfe-8a2c8e9a12b7 D-14 8 Nov web form
+- 2026-11-08T09:18:28 ticket "QA AS6 SEQ D14 rr wf r3a" 95afbf6c-7100-4a52-a6a3-9c5f970e68c4 D-14 8 Nov web form
+- 2026-11-08T09:18:29 ticket "QA AS6 D14 direct wf r3" a6c5e888-fbd9-425b-9573-d03a02b288e3 D-14 8 Nov web form
+- 2026-11-08T09:18:34 ticket "QA AS6 D14 probe wf" 44e5b24d-2990-47c1-b23b-cd864397c065 D-14 8 Nov web form
+- 2026-11-08T09:19:34 D-14 8 Nov: web form owner = user A2 temporarily
+- 2026-11-08T09:19:42 D-14 8 Nov: RR_SEQ create + offline ON temporarily (owner-mode test)
+- 2026-11-08T09:20:32 ticket "QA AS6 SEQ D14 owner A2 wf" d5291894-bb96-4858-a631-022cc9463535 D-14 8 Nov web form owner A2
+- 2026-11-08T09:20:35 D-14 8 Nov: RR_SEQ exec + Dept A prefs restored; web form owner back to unassigned
+- 8 Nov: ticket "QA AS6 D14 filler send check" (QA AS6 Dept A) created by tools/tech-webform-filler send check via QA form
+- 2026-11-08T14:56:04 "Tech" re-added in QA AS6 Dept A: 404
+- 2026-11-08T14:56:08 NDC-2821: RR_SKILL create+update + Dept A offline ON temporarily
+- 2026-11-08T14:56:09 ticket "QA AS6 SKR QA AS6 SK2 rt14" c673c1e1-11d2-4d0d-ba3f-2316a25ed798 NDC-2821
+- 2026-11-08T14:56:22 NDC-2821: RR_SKILL + Dept A prefs restored
+- 2026-11-08T14:57:00 "Tech" re-added in QA AS6 Dept A
+- 2026-11-08T14:57:32 NDC-2821 control: RR_SEQ, RR_SKILL create + offline ON temporarily
+- 2026-11-08T14:57:33 ticket "QA AS6 SEQ rt14 control no owner" 4bad326c-d2c8-4b72-b71b-50c413858bcf NDC-2821 control
+- 2026-11-08T14:57:33 ticket "QA AS6 SEQ rt14 control null owner" 8446d046-c298-4733-8e10-dd35840eedd4 NDC-2821 control
+- 2026-11-08T14:57:34 ticket "QA AS6 SKR QA AS6 SK2 rt14 b" 749be659-b8d6-4578-a460-d24c04a390b0 NDC-2821 control
+- 2026-11-08T14:57:35 ticket "QA AS6 SKR QA AS6 SK2 rt14 c" 20fa2b15-1be7-4be0-a3e4-0b7c07cd3304 NDC-2821 control
+- 2026-11-08T14:57:51 NDC-2821 control: restored

@@ -1,0 +1,1 @@
+const out = {}; for (const w of ['u1', 'u2']) { const t0 = Date.now(); try { const a = await api(w, 'GET', '/iam/me'); out[w] = a.s + ' ' + (Date.now() - t0) + 'ms'; } catch (e) { out[w] = String(e.message).slice(0, 60); } } return out;

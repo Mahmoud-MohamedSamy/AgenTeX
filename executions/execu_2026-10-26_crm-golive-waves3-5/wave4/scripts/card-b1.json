@@ -1,0 +1,12 @@
+{ "out": "api-w4b1-failed-email.png", "title": "TAVI API — the test email sent from the QA lead (26 Oct 2026, 09:19 UTC)",
+  "lines": [
+    ["GET /emails/sendability  -> can_send=true, sender ndc-staging-owner@taviportal.com, provider zoho", "ok"],
+    ["Compose › Send  -> toast \"Sent\" on screen", "ok"],
+    ["GET /mail/records/leads/{lead}/emails  -> 1 email, subject \"QA W4 send test 1026a\", status \"failed\"", "bad"],
+    ["GET /mail/emails/{id}  last_error: \"No Zoho account found for sender 'ndc-staging-owner@taviportal.com'.", "bad"],
+    ["      [own=200/n1 zoid=none orgInfo=401 ...] (set the 'zoid' org id on the connection)\"", "bad"],
+    ["GET /mail/connections  taviportal.com Zoho Mail: enabled, health \"ok — Zoho issued an access token\"", "info"],
+    ["GET /timeline/records/leads/{lead}/feed  -> \"EmailSent\" entry for the failed email", "bad"],
+    ["Record page › Emails › Mails tab  -> \"No emails yet\" (the failed email is not listed)", "bad"],
+    ["No notification about the failure (and the notification service answered 500 from ~09:50)", "bad"]
+  ] }

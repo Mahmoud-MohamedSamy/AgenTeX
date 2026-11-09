@@ -1,0 +1,26 @@
+{
+ "out": "api-1603-1693.png",
+ "title": "NDC-1693 / NDC-1603 — module create and unique restore (API, CRM Admin A, 28 Oct 2026)",
+ "lines": [
+  [
+   "POST /teamspaces/{CRM}/modules \"QA R2W5 Auto …\" -> 201; same name again -> 409 MODULE_NAME_TAKEN",
+   "ok"
+  ],
+  [
+   "Unique QA Email: same e-mail in another case -> 422",
+   "ok"
+  ],
+  [
+   "Delete record, create another with the same e-mail, restore the first from the bin ->",
+   "info"
+  ],
+  [
+   "   failed: recyclebin.error.name_conflict \"QA Email is already in use by another record.\" (record stays deleted)",
+   "ok"
+  ],
+  [
+   "Automated: SetupApiTest#moduleCreateAndDuplicate and #recordRules pass (2 runs)",
+   "ok"
+  ]
+ ]
+}

@@ -1,0 +1,275 @@
+[
+ {
+  "m": "POST",
+  "p": "/desk/assignment-rules",
+  "b": {
+   "department_id": "c0e05c3e-aa51-47ef-be50-53fd4c6edcb1",
+   "name": "QA NDC Accounting (Accounting)",
+   "description": "NDC mimic of direct assignment rule Accounting",
+   "is_active": true,
+   "criteria": {
+    "conditions": [],
+    "pattern": null,
+    "execute_on": [
+     "create"
+    ]
+   },
+   "action": {
+    "user_id": "3445ec4a-020e-4f12-b156-dd2de7610164",
+    "team_id": null,
+    "pool": null,
+    "strategy": null,
+    "capacity_limit": null,
+    "use_backlog": false,
+    "move_to_department_id": null,
+    "kind": "agent"
+   }
+  },
+  "save": "ar-d-0"
+ },
+ {
+  "m": "POST",
+  "p": "/desk/assignment-rules",
+  "b": {
+   "department_id": "14130980-b62e-4398-a879-93e4dbe9c790",
+   "name": "QA NDC NDC Top-UP (NDC Finance)",
+   "description": "NDC mimic of direct assignment rule NDC Top-UP",
+   "is_active": true,
+   "criteria": {
+    "conditions": [
+     {
+      "field_key": "qa_ndc_staff_action",
+      "operator": "equals",
+      "value": "Approved"
+     }
+    ],
+    "pattern": null,
+    "execute_on": [
+     "create"
+    ]
+   },
+   "action": {
+    "user_id": null,
+    "team_id": "485a7732-c380-428a-a9aa-e14e76efff14",
+    "pool": null,
+    "strategy": null,
+    "capacity_limit": null,
+    "use_backlog": false,
+    "move_to_department_id": null,
+    "kind": "team"
+   }
+  },
+  "save": "ar-d-1"
+ },
+ {
+  "m": "POST",
+  "p": "/desk/assignment-rules",
+  "b": {
+   "department_id": "14130980-b62e-4398-a879-93e4dbe9c790",
+   "name": "QA NDC NDC Top-UP (NDC Finance)",
+   "description": "NDC mimic of direct assignment rule NDC Top-UP",
+   "is_active": true,
+   "criteria": {
+    "conditions": [
+     {
+      "field_key": "status",
+      "operator": "equals",
+      "value": "Reconciliation Pass"
+     },
+     {
+      "field_key": "qa_ndc_staff_action",
+      "operator": "equals",
+      "value": "Approved"
+     }
+    ],
+    "pattern": null,
+    "execute_on": [
+     "create"
+    ]
+   },
+   "action": {
+    "user_id": null,
+    "team_id": "485a7732-c380-428a-a9aa-e14e76efff14",
+    "pool": null,
+    "strategy": null,
+    "capacity_limit": null,
+    "use_backlog": false,
+    "move_to_department_id": null,
+    "kind": "team"
+   }
+  },
+  "save": "ar-d-2"
+ },
+ {
+  "m": "POST",
+  "p": "/desk/assignment-rules",
+  "b": {
+   "department_id": "95a6fd64-b877-435e-8e23-62c75717f95f",
+   "name": "QA NDC Manual invoice (Manual Invoice)",
+   "description": "NDC mimic of direct assignment rule Manual invoice",
+   "is_active": true,
+   "criteria": {
+    "conditions": [
+     {
+      "field_key": "status",
+      "operator": "contains_any_of",
+      "value": [
+       "Open",
+       "Escalated",
+       "QA NDC Distributor",
+       "QA NDC Approved E-Top-Up Manager",
+       "QA NDC Rejected Audit",
+       "QA NDC Review Audit Manager",
+       "QA NDC Waiting Top-Up Manager"
+      ]
+     }
+    ],
+    "pattern": null,
+    "execute_on": [
+     "create"
+    ]
+   },
+   "action": {
+    "user_id": null,
+    "team_id": "e8ceb065-2b9a-4b68-8844-3a98ce5d9996",
+    "pool": null,
+    "strategy": null,
+    "capacity_limit": null,
+    "use_backlog": false,
+    "move_to_department_id": null,
+    "kind": "team"
+   }
+  },
+  "save": "ar-d-3"
+ },
+ {
+  "m": "POST",
+  "p": "/desk/assignment-rules",
+  "b": {
+   "department_id": "0cade824-7985-40f9-a3b7-b168a8e7efdb",
+   "name": "QA NDC RR Quality Assurance 1",
+   "description": "NDC mimic of round-robin rule Quality Assurance in Quality Assurance",
+   "is_active": true,
+   "criteria": {
+    "conditions": [
+     {
+      "field_key": "happiness_rating",
+      "operator": "equals",
+      "value": "bad"
+     }
+    ],
+    "pattern": null,
+    "execute_on": [
+     "create",
+     "edit"
+    ]
+   },
+   "action": {
+    "kind": "round_robin",
+    "user_id": null,
+    "team_id": null,
+    "pool": {
+     "kind": "agents",
+     "user_ids": [
+      "3445ec4a-020e-4f12-b156-dd2de7610164",
+      "876ce871-2b02-4854-89a7-68050391c62b",
+      "e82f62cb-9904-42c7-a13c-77a7449820b9"
+     ],
+     "team_id": null,
+     "excluded_user_ids": []
+    },
+    "strategy": "load",
+    "capacity_limit": null,
+    "use_backlog": true,
+    "move_to_department_id": null
+   }
+  },
+  "save": "ar-r-4"
+ },
+ {
+  "m": "POST",
+  "p": "/desk/assignment-rules",
+  "b": {
+   "department_id": "c0e05c3e-aa51-47ef-be50-53fd4c6edcb1",
+   "name": "QA NDC RR SYSTEM ADMIN TEAM 1",
+   "description": "NDC mimic of round-robin rule SYSTEM ADMIN TEAM in Accounting",
+   "is_active": true,
+   "criteria": {
+    "conditions": [
+     {
+      "field_key": "status",
+      "operator": "equals",
+      "value": "System admin"
+     }
+    ],
+    "pattern": null,
+    "execute_on": [
+     "edit"
+    ]
+   },
+   "action": {
+    "kind": "round_robin",
+    "user_id": null,
+    "team_id": null,
+    "pool": {
+     "kind": "agents",
+     "user_ids": [
+      "3445ec4a-020e-4f12-b156-dd2de7610164",
+      "876ce871-2b02-4854-89a7-68050391c62b",
+      "e82f62cb-9904-42c7-a13c-77a7449820b9"
+     ],
+     "team_id": null,
+     "excluded_user_ids": []
+    },
+    "strategy": "load",
+    "capacity_limit": null,
+    "use_backlog": true,
+    "move_to_department_id": null
+   }
+  },
+  "save": "ar-r-5"
+ },
+ {
+  "m": "POST",
+  "p": "/desk/assignment-rules",
+  "b": {
+   "department_id": "95a6fd64-b877-435e-8e23-62c75717f95f",
+   "name": "QA NDC RR manual invoice 1",
+   "description": "NDC mimic of round-robin rule manual invoice in Manual Invoice",
+   "is_active": true,
+   "criteria": {
+    "conditions": [
+     {
+      "field_key": "status",
+      "operator": "equals",
+      "value": "Open"
+     }
+    ],
+    "pattern": null,
+    "execute_on": [
+     "create"
+    ]
+   },
+   "action": {
+    "kind": "round_robin",
+    "user_id": null,
+    "team_id": null,
+    "pool": {
+     "kind": "agents",
+     "user_ids": [
+      "3445ec4a-020e-4f12-b156-dd2de7610164",
+      "876ce871-2b02-4854-89a7-68050391c62b",
+      "e82f62cb-9904-42c7-a13c-77a7449820b9"
+     ],
+     "team_id": null,
+     "excluded_user_ids": []
+    },
+    "strategy": "load",
+    "capacity_limit": null,
+    "use_backlog": true,
+    "move_to_department_id": null
+   }
+  },
+  "save": "ar-r-6"
+ }
+]

@@ -1,0 +1,27 @@
+{
+ "out": "NDC-2708-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2708 · Approver U1 (CRM User) opens records waiting for U1's approval (owner submits)",
+ "rows": [
+  [
+   "no approve permission",
+   "8 leads × 4 reads (record + approval state), 1.5–4 s apart",
+   "Record 32/32 → 200; approval state 32/32 → 200",
+   "ok"
+  ],
+  [
+   "with approve permission",
+   "10 leads × 3 reads (U1 granted workflow:approval:act)",
+   "Record 30/30 → 200; approval 30/30 → 200, canApprove true; Approve 204",
+   "ok"
+  ],
+  [
+   "after deciding",
+   "U1 reads the lead right after approving (5/5)",
+   "404 \"Record not found.\" — the approver loses access once decided (owner 200)",
+   "info"
+  ]
+ ]
+}

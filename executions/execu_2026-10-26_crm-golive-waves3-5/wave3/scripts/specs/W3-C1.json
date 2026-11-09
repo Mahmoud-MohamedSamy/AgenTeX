@@ -1,0 +1,14 @@
+{ "out": "W3-C1-candidate.png", "ticket": "W3-C1", "verdict": "FAIL", "label": "CANDIDATE BUG",
+  "title": "Import | Transactions can't be imported: every Pipeline value is refused",
+  "env": "staging-crm.taviportal.com (CRM Admin A, import API as the screen calls it) vs Zoho CRM org943261092 (read-only)", "date": "26 Oct 2026",
+  "panels": [
+    { "img": "api-a14.png", "w": 1600, "h": 431, "crop": [0, 0, 1600, 431], "caption": "TAVI: the same one-row deal import refused with \"Standard (Standard)\" (no pipeline with that name) and with \"Standard\" (not an allowed picklist value). crm-order A-14, 3 runs.",
+      "boxes": [ { "b": [40, 142, 1560, 234], "n": 1 }, { "b": [40, 234, 1560, 326], "n": 2 }, { "b": [40, 326, 1560, 372], "n": 3 } ] },
+    { "img": "z-import.png", "w": 1600, "h": 950, "crop": [0, 50, 1600, 700], "caption": "Zoho: Setup › Data Administration › Import (read-only). Importing deals with a Pipeline column was not run live.",
+      "boxes": [ { "b": [10, 490, 230, 520], "n": 1, "color": "#16a34a" } ] }
+  ],
+  "rows": [
+    ["1", "Import a deal with the pipeline's name", "Deals import maps Pipeline by its name (not run live today)", "\"Standard (Standard)\" -> \"No pipeline named 'Standard (Standard)' exists\"; 0 created", "FAIL"],
+    ["2", "Import with the plain pipeline name", "Accepted (pipeline name)", "\"Standard\" -> \"not one of the allowed picklist values\"; 0 created", "FAIL"],
+    ["3", "Any working value", "Import works", "None: record create accepts only \"Standard (Standard)\", import refuses it. Same root cause as W2-B4 / NDC-2382 (Pipeline allowed values hold only \"Standard (Standard)\"). A-14 passed on 18 Oct", "FAIL"]
+  ] }

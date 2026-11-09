@@ -1,0 +1,51 @@
+{
+ "out": "NDC-2538-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2538 · Review process webhook → public request catcher (user-approved for this ticket; deleted afterwards)",
+ "rows": [
+  [
+   "submitted",
+   "QA lead held for review",
+   "POST received: event review.submitted",
+   "ok"
+  ],
+  [
+   "approved",
+   "Approve the review",
+   "POST received: event review.approved",
+   "ok"
+  ],
+  [
+   "rejected",
+   "Reject a second QA lead (reason)",
+   "POST received: event review.rejected",
+   "ok"
+  ],
+  [
+   "resubmitted",
+   "Resubmit the rejected lead",
+   "POST received: event review.resubmitted",
+   "ok"
+  ],
+  [
+   "signature",
+   "Every request: X-Anyware-Timestamp + X-Anyware-Signature",
+   "Present on all 9 requests; v1=HMAC-SHA256(\"{timestamp}.{body}\") with the rotated secret matches every time",
+   "ok"
+  ],
+  [
+   "internal URL",
+   "webhookUrl http://127.0.0.1:8080",
+   "400 refused",
+   "ok"
+  ],
+  [
+   "cleanup",
+   "Webhook URL cleared; catcher deleted (404)",
+   "No QA data left on the public host",
+   "info"
+  ]
+ ]
+}

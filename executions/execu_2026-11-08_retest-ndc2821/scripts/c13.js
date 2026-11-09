@@ -1,0 +1,16 @@
+const fs=require('fs');const IDS=JSON.parse(fs.readFileSync('../../execu_2026-11-06_desk-assignment-skills/out/ids.json','utf8'));const DA=IDS.DA,DB=IDS.DB;
+const LED=m=>fs.appendFileSync('../ledger.md','- '+new Date().toISOString().slice(0,19)+' '+m+'\n');
+const S='../screenshots/raw/';await page.setViewportSize({width:1600,height:1000});
+const txt=async()=>(await page.innerText('body').catch(()=>'')).replace(/\s+/g,' ');
+const types=async d=>{const r=await api('GET','/desk/skill-types?department_id='+d);return ((r.j&&r.j.data&&r.j.data.types)||[]);};
+const tnames=async d=>(await types(d)).map(t=>t.name);
+const openTab=async(tab='skill-types')=>{await page.goto(H+'/settings/customization/skills'+(tab?'?tab='+tab:''),{waitUntil:'commit',timeout:180000});for(let i=0;i<60;i++){await page.waitForTimeout(3000);if(/Department/.test(await txt())&&!/Loading/.test((await txt()).slice(-300)))break;}await page.waitForTimeout(2500);};
+const pick=async name=>{const lab=page.getByText('Department',{exact:true}).first();const box=await lab.boundingBox();await page.mouse.click(box.x+box.width+120,box.y+box.height/2);await page.waitForTimeout(1200);const s=page.locator('input[placeholder*="earch" i]:visible').last();if(await s.count()){await s.fill(name).catch(()=>{});await page.waitForTimeout(800);}await page.getByRole('option',{name}).or(page.getByRole('menuitem',{name})).or(page.locator('[role=listbox] >> text="'+name+'"')).first().click({timeout:10000});await page.waitForTimeout(3500);};
+const shown=async()=>{const t=await page.locator('button[aria-label^="Delete "]').evaluateAll(e=>e.map(x=>x.getAttribute('aria-label').replace(/^Delete /,'')));return t;};
+const toast=async(ms=5000)=>{const seen=[];for(let i=0;i<ms/400;i++){await page.waitForTimeout(400);for(const t of await page.locator('[role=alert],[role=status],[data-sonner-toast]').allInnerTexts().catch(()=>[])){const c=t.replace(/\s+/g,' ').trim();if(c&&!seen.includes(c))seen.push(c);}}return seen;};
+const addType=async n=>{await page.getByPlaceholder('e.g. Languages').or(page.getByLabel('Skill type name')).first().fill(n);await page.getByRole('button',{name:'Add type'}).click({timeout:10000});return toast(3500);};
+const o={};await openTab('');await pick('QA AS6 Dept B');await page.waitForTimeout(1500);
+o.controls=await page.locator('main button:visible,main [role=combobox]:visible,main select:visible').evaluateAll(e=>e.map(x=>(x.innerText||x.getAttribute('aria-label')||'').trim()).filter(Boolean).slice(0,14));
+const f=page.getByRole('button',{name:/all (skill )?types|skill type/i}).first();o.filterBtn=await f.count();if(o.filterBtn){await f.click({timeout:8000});await page.waitForTimeout(1200);o.filterOpts=await page.locator('[role=option],[role=menuitem],[role=menuitemcheckbox]').evaluateAll(e=>e.map(x=>x.innerText.trim()));await page.screenshot({path:S+'c13-filter.png'});}
+const au=await api('GET','/audit/events?app_key=desk&limit=100');const ev=((au.j&&au.j.data)||[]).filter(e=>/skill_type/i.test(JSON.stringify(e))).slice(0,2);o.audit=ev.map(e=>JSON.stringify(e).slice(0,420));
+return o;

@@ -1,0 +1,129 @@
+{
+ "out": "NDC-2412-retest-PARTIAL.png",
+ "ticket": "NDC-2412",
+ "title": "Hierarchy Preference | Role mode: higher-ranked users can't see lower-ranked users' records",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26–27 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2412-api.png",
+   "caption": "auto-hier.log (26 Oct) and auto-run6.xml (27 Oct rerun) — VisibilityTest, role mode, Leads visibility = Hierarchy.",
+   "crop": [
+    0,
+    0,
+    1600,
+    475
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      295
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      301,
+      1566,
+      342
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      348,
+      1566,
+      389
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      395,
+      1566,
+      457
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Manager (500) sees User (100) leads, same dept",
+   "Sees them",
+   "Owner-set and self-created leads visible",
+   "PASS"
+  ],
+  [
+   "2",
+   "Supervisor (300) sees User (100) leads, same dept",
+   "Sees them (\"…lower-ranked users in their department\")",
+   "Not visible (owner-set false, N-created false)",
+   "FAIL"
+  ],
+  [
+   "3",
+   "Superior in another department",
+   "Sees them (preview: \"A Manager sees every User in the tenant…\")",
+   "Supervisor @HR does not see User @Sales lead",
+   "FAIL"
+  ],
+  [
+   "4–5",
+   "Controls",
+   "Own visible; lower rank cannot see higher; peers in other depts cannot",
+   "All correct",
+   "PASS"
+  ],
+  [
+   "—",
+   "Since 25 Oct (FAIL)",
+   "—",
+   "Manager same dept now works; Supervisor and other-dept cases still fail",
+   "INFO"
+  ],
+  [
+   "6",
+   "Rerun 27 Oct (auto-run6)",
+   "—",
+   "Same result: Manager same dept PASS; Supervisor same dept and other dept FAIL; controls PASS",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,124 @@
+{
+ "out": "NDC-2412-retest-FAIL.png",
+ "ticket": "NDC-2412",
+ "title": "Hierarchy Preference | Role mode: higher-ranked users can't see lower-ranked users' records",
+ "verdict": "FAIL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2412-rule-api.png",
+   "caption": "auto-run7.xml — VisibilityTest (role mode), judged against the user's rule of 27 Oct.",
+   "crop": [
+    0,
+    0,
+    1600,
+    532
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      426,
+      1566,
+      467
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      473,
+      1566,
+      514
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "—",
+   "Rule (user, 27 Oct)",
+   "Same profile never sees each other (same or different org unit); a higher-ranked profile sees all lower-ranked profiles' records in the SAME org unit; never across org units; the tenant owner sees everything",
+   "—",
+   "INFO"
+  ],
+  [
+   "—",
+   "I2 same profile, other org unit",
+   "Never see each other",
+   "User @HR and User @Sales: neither sees the other",
+   "PASS"
+  ],
+  [
+   "—",
+   "I2b same profile, same org unit",
+   "Never see each other",
+   "User @Sales and User @Sales: neither sees the other",
+   "PASS"
+  ],
+  [
+   "—",
+   "I1/I5 lower rank vs higher rank",
+   "Lower rank does not see higher",
+   "User sees own leads; superior's lead not visible",
+   "PASS"
+  ],
+  [
+   "—",
+   "I3b Manager (500) @Sales → User (100) @Sales",
+   "Sees (same org unit, higher rank)",
+   "Sees owner-set and N-created leads",
+   "PASS"
+  ],
+  [
+   "—",
+   "I7 Manager (500) @Sales → Supervisor (300) @Sales",
+   "Sees; Supervisor does not see Manager",
+   "Manager sees Supervisor's leads; Supervisor does not see Manager's lead",
+   "PASS"
+  ],
+  [
+   "—",
+   "I4 Supervisor @HR → User @Sales",
+   "Never across org units",
+   "Not visible",
+   "PASS"
+  ],
+  [
+   "—",
+   "I8 tenant owner",
+   "Sees everything",
+   "Sees N's and V's leads",
+   "PASS"
+  ],
+  [
+   "1",
+   "I3 Supervisor (300) @Sales → User (100) @Sales",
+   "Sees (same org unit, higher rank)",
+   "Does NOT see (owner-set false, N-created false)",
+   "FAIL"
+  ],
+  [
+   "2",
+   "I4b Manager (500) @HR → User (100) @Sales",
+   "Never across org units",
+   "DOES see (owner-set true, N-created true)",
+   "FAIL"
+  ],
+  [
+   "—",
+   "Pattern",
+   "—",
+   "Visibility follows the profile parent tree (Manager is the parent of User and Supervisor) tenant-wide, ignoring org unit and rank",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,32 @@
+{
+ "out": "annotated/NDC-2174-retest-PARTIAL.png",
+ "id": "NDC-2174 retest",
+ "title": "Modules and Fields missings: items 6, 7, 8, 10, 12 on a throwaway department + layout",
+ "verdict": "PARTIAL",
+ "date": "TAVI 9 Nov 2026 (NDC-Staging) · Zoho captures/docs from the 5 Oct intake",
+ "panels": [
+  {"side":"TAVI","caption":"Ticket Status → Statuses by department and layout","img":"raw/t-10-by-dept.png","boxes":[{"n":1,"x":10,"y":12,"w":1280,"h":228}]},
+  {"side":"TAVI","caption":"New ticket, dept QA RT9 2174 (layout limited to Open / Escalated / Closed, default Escalated)","img":"raw/t-10-new-ticket.png","boxes":[{"n":2,"x":184,"y":145,"w":302,"h":112},{"n":3,"x":184,"y":262,"w":302,"h":38}]},
+  {"side":"TAVI","caption":"Pick list → ADVANCED after bulk add + Sort A–Z","img":"raw/t-06-picklist.png","boxes":[{"n":4,"x":18,"y":44,"w":412,"h":224}]},
+  {"side":"TAVI","caption":"Decimal field → ADVANCED → Rounding","img":"raw/t-07-rounding.png","boxes":[{"n":5,"x":18,"y":72,"w":424,"h":162}]},
+  {"side":"TAVI","caption":"Lookup → ADVANCED → Lookup options (filter)","img":"raw/t-08-lookup.png","boxes":[{"n":6,"x":18,"y":44,"w":424,"h":172}]},
+  {"side":"TAVI","caption":"Single line → ADVANCED → Default value","img":"raw/t-12-default.png","boxes":[{"n":7,"x":18,"y":70,"w":426,"h":62}]},
+  {"side":"Zoho","caption":"Layouts and Fields → Ticket Status (department picker)","img":"raw/18-ticket-status.png","boxes":[{"n":1,"x":396,"y":62,"w":124,"h":24}]},
+  {"side":"Zoho","caption":"Tickets → Priority → Edit Field","img":"raw/09d-edit-properties-priority.png","boxes":[{"n":4,"x":1450,"y":516,"w":134,"h":28},{"n":7,"x":1500,"y":272,"w":82,"h":38}]},
+  {"side":"Zoho","caption":"Zoho help — rounding and lookup fields","text":["Decimal, Percent and Currency fields: Decimal Places and Rounding Option Normal / Round Off / Round Down / Round Up.","Lookup: filter records (up to 5 criteria), search by up to 6 fields, show up to 6 fields in the pop-up, sort, auto-fill up to 5 fields from the chosen record."],"sources":["https://help.zoho.com/portal/en/kb/desk/customization/layouts-and-fields/articles/working-with-custom-fields","https://help.zoho.com/portal/en/kb/desk/customization/layouts-and-fields/articles/creating-custom-lookup-fields-in-zoho-desk"]}
+ ],
+ "rows": [
+  {"n":"1","b":"Ticket statuses per department","zoho":"Department picker on the Ticket Status page (seen)","tavi":"Department + layout picker, \"Use only the statuses picked below\", default status; saved (200)","match":"Same as Zoho"},
+  {"n":"2","b":"Only the picked statuses can be used","zoho":"Not checked","tavi":"Ticket page and new-ticket form offer Open / Escalated / Closed only; API refuses On Hold: \"'On Hold' is not one of this layout's statuses\"","match":"PASS"},
+  {"n":"3","b":"Default status on a new ticket","zoho":"Not checked","tavi":"Default set to Escalated, but the form shows \"Select\" and the API answers \"Status is required.\"","match":"FAIL"},
+  {"n":"4","b":"Pick-list tools","zoho":"\"Add Values in Bulk\" + list icons (seen)","tavi":"Add values in bulk (duplicates skipped), Sort A–Z, Replace values, Clear all; order saved; unknown value refused (422)","match":"Same as Zoho"},
+  {"n":"5","b":"Rounding","zoho":"Normal / Round Off / Round Down / Round Up + decimal places (docs)","tavi":"Same options + decimal places; Round off, 2 places: 12.345 → 12.35, 7.3449 → 7.34, 1.005 → 1.01","match":"Same as Zoho"},
+  {"n":"6","b":"Lookup filter / search / pop-up / fill","zoho":"All documented (docs)","tavi":"All present; filter \"Email contains qa.webform\" → picker lists only those 5 contacts. API still accepts a contact outside the filter","match":"Same as Zoho"},
+  {"n":"7","b":"Default value","zoho":"Default tag on a pick-list value (seen); default value for fields (docs)","tavi":"Default value on the field; pre-filled on the new-ticket form and stored when left empty; a typed value is kept","match":"Same as Zoho"}
+ ],
+ "notes": [
+  "Tested on a throwaway department (QA RT9 2174 Dept), its own layout and four throwaway fields; all deleted afterwards.",
+  "The ADVANCED tab says \"No advanced configuration available for <field>\" above options that are there (decimal, number, single line).",
+  "Not tested: \"what happens to a ticket moved onto it\" (fallback to default)."
+ ]
+}

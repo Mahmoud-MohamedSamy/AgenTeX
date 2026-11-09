@@ -32,6 +32,16 @@ public final class AuthManager {
     private static boolean verified;
     private static String failure;
     private static int logins;
+    /** -Dauth.memoryOnly=true: the session is kept in this JVM only, never written to .auth/ (no token on disk; 28 Oct 2026). */
+    private static final Map<String, String> MEMORY = new java.util.concurrent.ConcurrentHashMap<>();
+
+    private static boolean memoryOnly() {
+        return Config.getBool("auth.memoryOnly", false);
+    }
+
+    private static boolean stored(Path f) {
+        return memoryOnly() ? MEMORY.containsKey(f.toString()) : Files.exists(f);
+    }
 
     private AuthManager() {
     }
@@ -42,8 +52,8 @@ public final class AuthManager {
         if (failure != null) throw new IllegalStateException("Not signed in - login already failed in this run: " + failure);
         Credentials creds = Credentials.load();
         Path file = sessionFile(creds);
-        if (verified && Files.exists(file) && restore(driver, file)) return; // already proven valid in this run
-        if (Files.exists(file) && fresh(file) && restore(driver, file) && signedIn(driver)) {
+        if (verified && stored(file) && restore(driver, file)) return; // already proven valid in this run
+        if (stored(file) && fresh(file) && restore(driver, file) && signedIn(driver)) {
             verified = true;
             return;
         }
@@ -61,6 +71,16 @@ public final class AuthManager {
         driver.get(Config.baseUrl() + Config.get("auth.loginPath", "/login"));
         Waits.pageReady(driver);
         new LoginPage().login(creds.email, creds.password());
+        // accounts in several tenants get "Choose an organization" after the password (26 Oct 2026): pick auth.org
+        // (NDC-Staging is listed as "Wonder Travel")
+        for (int i = 0; i < 20; i++) {
+            Waits.sleep(500);
+            if (!driver.findElement(org.openqa.selenium.By.tagName("body")).getText().contains("Choose an organization")) continue;
+            String orgName = Config.get("auth.org", "Wonder Travel");
+            java.util.List<org.openqa.selenium.WebElement> opts = driver.findElements(org.openqa.selenium.By.xpath("//*[normalize-space(text())='" + orgName + "']"));
+            if (!opts.isEmpty()) opts.get(0).click();
+            break;
+        }
         Pattern login = loginPattern();
         if (!Waits.until(() -> !login.matcher(driver.getCurrentUrl()).find(), Config.getInt("auth.timeout.seconds", 60))) {
             String body = driver.findElement(org.openqa.selenium.By.tagName("body")).getText();
@@ -89,6 +109,7 @@ public final class AuthManager {
         failure = null;
         try {
             Credentials creds = Credentials.load();
+            MEMORY.remove(sessionFile(creds).toString());
             Files.deleteIfExists(sessionFile(creds));
         } catch (Exception ignored) {
         }
@@ -109,6 +130,7 @@ public final class AuthManager {
     }
 
     private static boolean fresh(Path f) {
+        if (memoryOnly()) return MEMORY.containsKey(f.toString());
         try {
             Duration age = Duration.between(Files.getLastModifiedTime(f).toInstant(), Instant.now());
             return age.toMinutes() < Config.getInt("auth.maxAgeMinutes", 240);
@@ -173,6 +195,10 @@ public final class AuthManager {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             s.put("localStorage", js.executeScript("return Object.assign({}, window.localStorage);"));
             s.put("sessionStorage", js.executeScript("return Object.assign({}, window.sessionStorage);"));
+            if (memoryOnly()) {
+                MEMORY.put(file.toString(), JSON.writeValueAsString(s));
+                return;
+            }
             Files.createDirectories(file.getParent());
             Files.writeString(file, JSON.writeValueAsString(s));
         } catch (Exception e) {
@@ -182,7 +208,8 @@ public final class AuthManager {
 
     private static boolean restore(WebDriver driver, Path file) {
         try {
-            Map<String, Object> s = JSON.readValue(file.toFile(), new TypeReference<>() {
+            Map<String, Object> s = memoryOnly() ? JSON.readValue(MEMORY.get(file.toString()), new TypeReference<Map<String, Object>>() {
+            }) : JSON.readValue(file.toFile(), new TypeReference<Map<String, Object>>() {
             });
             // Storage is per origin: land on a cheap page of the app first, then inject.
             driver.get(Config.baseUrl() + Config.get("auth.loginPath", "/login"));

@@ -1,0 +1,45 @@
+{
+ "out": "NDC-613-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-613 · U1 (CRM User): export GRANTED + view self / team / all DENIED (user overrides) — then the control",
+ "rows": [
+  [
+   "effective permissions",
+   "GET /iam/me/permissions as U1",
+   "iam.security.loginhistory.export only",
+   "info"
+  ],
+  [
+   "list",
+   "GET /audit/login-history",
+   "403",
+   "ok"
+  ],
+  [
+   "export",
+   "GET /audit/login-history/export",
+   "403",
+   "ok"
+  ],
+  [
+   "control",
+   "Denies lifted, export grant kept",
+   "list 200, export 200 (23 rows)",
+   "ok"
+  ],
+  [
+   "export scope",
+   "Rows in the control export",
+   "All 23 rows are U1's own sessions",
+   "ok"
+  ],
+  [
+   "cleanup",
+   "Overrides on U1",
+   "All removed (none left)",
+   "info"
+  ]
+ ]
+}

@@ -1,0 +1,13 @@
+const o={};const P='/desk/skills?department_id='+DB;
+await openTab('');await pick('QA AS6 Dept B');o.before=await tnames(DB);o.beforeA=await tnames(DA);
+await page.getByRole('button',{name:/add skill|new skill/i}).first().click({timeout:15000});await page.waitForTimeout(2500);
+const f=page.locator('[role=dialog]').last();await f.locator('input:visible').first().fill('QA RT14 skill beta');
+await f.getByText('Choose a skill type').first().click({timeout:10000});await page.waitForTimeout(1500);o.optsB=await page.locator('[role=option]').evaluateAll(e=>e.map(x=>x.innerText.trim()));
+await page.getByRole('option',{name:'+ New skill type'}).click({timeout:8000});await page.waitForTimeout(1500);await page.screenshot({path:S+'c6-new-type.png'});
+o.inputsAfter=await f.locator('input:visible').evaluateAll(e=>e.map(x=>(x.placeholder||x.type)+'='+(x.value||'').slice(0,20)));
+const ni=f.locator('input[type=text]:visible,input:not([type]):visible');const vals=await ni.evaluateAll(e=>e.map(x=>x.value));const idx=vals.findIndex((v,i)=>v===''&&i>0);o.idx=idx;if(idx>=0)await ni.nth(idx).fill('QA RT14 beta');
+await page.screenshot({path:S+'c6-new-type-filled.png'});
+await f.getByRole('button',{name:/^(save|add skill|create|add)/i}).last().click({timeout:10000});o.toast=await toast(4000);await page.screenshot({path:S+'c6-saved.png'});
+o.afterB=await tnames(DB);o.afterA=await tnames(DA);
+const SK=(await api('GET',P)).j.data.skills;const bt=(await types(DB)).find(t=>t.name==='QA RT14 beta');const s=SK.find(k=>k.name==='QA RT14 skill beta');o.skill=s?{id:s.id,typeOk:bt&&s.type_id===bt.id}:'not created';if(s)LED('skill QA RT14 skill beta '+s.id+' + type QA RT14 beta in Dept B (via skill form)');
+return o;

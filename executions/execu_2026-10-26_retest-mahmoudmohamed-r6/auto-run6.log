@@ -1,0 +1,218 @@
+[AU-05/06] filters missing: []; entity options on screen 56, duplicates: {}
+[C-3] 111 entity options; duplicates (case-insensitive): {}
+[C-2b] 0 logout events in the newest 200 iam events; without a user: 0
+[C-1] after 3 s: created=true, updated=true (changes true), deleted=true; actor=ndc-staging-owner
+[cleanup] delete field permission 318cb1f8-f29a-4ced-8f0f-7b9d0f15334c -> 204
+[cleanup] clear override iam.security.loginhistory.view_team -> 204
+[C-2] logged: {profile created=true, field permission=true, user override=true}
+[cleanup] delete profile 78596ae9-8691-4e85-a9dc-aa48af7cfae7 -> 204
+[D-2] control, before any override: list 200, export 200
+[D-2] after denying view self/team/all (fresh sign-in): list 403, export 403 (0 bytes). The Setup link is checked on screen (the hub API lists every link with its required permission).
+[D-1] 6 sessions listed Active (up to 1,000 read); past their expiry: 0; oldest login 2026-10-27T06:33:43.151725+00:00
+[D-4] new session of test user 1: token before revoke 200; clear -> 204; token after revoke 401
+[cleanup] clear override iam.security.loginhistory.view_self -> 204
+[cleanup] clear override iam.security.loginhistory.view_team -> 204
+[cleanup] clear override iam.security.loginhistory.view_all -> 204
+[D-revert] overrides on test user 2 removed=true
+[A-01] lead afd8b30c-e4c2-4f63-873d-c6f20c32cd20 source=api owner=nameb56175 arRows=[assignmentRuleId=1be065d1-4f91-44e3-b178-d252dab2371a outcome=Fired trigger=RecordCreated]
+[cleanup] delete leads afd8b30c-e4c2-4f63-873d-c6f20c32cd20 -> 204
+[layout] delete 841043e1-c078-41f9-8d6e-dfd61bee45c3 c6fa61db-e339-41af-8dbb-de340436b390 -> 204
+[layout] delete f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430 bf4ecb71-baa4-49b8-95b8-121196200214 -> 204
+[layout] delete a9d87b62-b704-4c2e-b2d5-1b745d7c2065 15a29c6e-c1b9-4b0d-be6c-ee4670c25985 -> 204
+[E7d] Desk Administrator (app desk) grants metadata.records.view_all=true; the CRM Supervisor who also holds it has view_all=true
+[revert-api] restored: no difference from the baseline
+[baseline] mode role, users 16
+[I1/I5] role: N sees own=true, self-created=true, superior V's lead=false
+[I2] role, V=User@HR and N=User@Sales: V sees N=false, N sees V=false
+[I3] role, V=Supervisor(300)@Sales, N=User(100)@Sales: V sees N's leads: owner-set=false, N-created=false
+[I3b] role, V=Manager(500)@Sales: V sees N's leads: owner-set=true, N-created=true
+[I4] role, V=Supervisor@HR, N=User@Sales: V sees N's lead=false (preview text says yes, record-visibility hint says no, Zoho: yes for the branch)
+[I6] role, N reports to V (both User): V sees N=false
+[J1/J3] reporting, N reports to V (listed in /iam/me/subordinates=true), both rank 100: V sees N's leads: owner-set=true, N-created=true
+[J1s] reporting, N reports to V, V=Supervisor@Sales (same department, higher rank): V sees N's leads: owner-set=true, N-created=true
+[J2] reporting, N reports to V: N sees V's lead=false
+[J5] reporting, N reports to someone else, V=Supervisor@Sales: V sees N=false
+[J8/C11] after reporting -> role: N's manager still V=true; V sees N=false
+[restore] profile of test user 2 -> test
+[restore] manager of test user 1 -> 204
+[revert] restored: no difference from the baseline
+[ERROR] Tests run: 22, Failures: 4, Errors: 0, Skipped: 2, Time elapsed: 174.8 s <<< FAILURE! -- in TestSuite
+[ERROR] qa.features.crmautomationorder.GroupAJTest.ruleAppliesToLeadCreatedThroughApi -- Time elapsed: 15.81 s <<< FAILURE!
+java.lang.AssertionError: owner by the rule on an API-channel create expected [51666421-12cb-426e-b91e-3003a2a1f923] but found [45ffbc5b-7859-4c21-be9e-7b5f30747ca2]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertEqualsImpl(Assert.java:150)
+	at org.testng.Assert.assertEquals(Assert.java:132)
+	at org.testng.Assert.assertEquals(Assert.java:656)
+	at qa.features.crmautomationorder.GroupAJTest.ruleAppliesToLeadCreatedThroughApi(GroupAJTest.java:257)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmhierarchy.HierarchyApiTest.deskProfileGrantsCrmViewAll -- Time elapsed: 1.116 s <<< FAILURE!
+java.lang.AssertionError: a Desk profile gives a CRM Supervisor view-all on CRM records, so the CRM hierarchy does not apply to them expected [false] but found [true]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertFalse(Assert.java:79)
+	at qa.features.crmhierarchy.HierarchyApiTest.deskProfileGrantsCrmViewAll(HierarchyApiTest.java:179)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmhierarchy.VisibilityTest.roleSuperiorSameDepartment -- Time elapsed: 3.319 s <<< FAILURE!
+java.lang.AssertionError: a Supervisor does not see a lower-ranked User's leads in the same department (hint: 'Users see their own records and those of lower-ranked users in their department') expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at qa.features.crmhierarchy.VisibilityTest.roleSuperiorSameDepartment(VisibilityTest.java:105)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmhierarchy.VisibilityTest.roleSuperiorOtherDepartment -- Time elapsed: 2.394 s <<< FAILURE!
+java.lang.AssertionError: the preview promises 'A Manager sees every User in the tenant, regardless of who they report to' expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at qa.features.crmhierarchy.VisibilityTest.roleSuperiorOtherDepartment(VisibilityTest.java:128)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] Failures: 
+[ERROR]   GroupAJTest.ruleAppliesToLeadCreatedThroughApi:257 owner by the rule on an API-channel create expected [51666421-12cb-426e-b91e-3003a2a1f923] but found [45ffbc5b-7859-4c21-be9e-7b5f30747ca2]
+[ERROR]   HierarchyApiTest.deskProfileGrantsCrmViewAll:179 a Desk profile gives a CRM Supervisor view-all on CRM records, so the CRM hierarchy does not apply to them expected [false] but found [true]
+[ERROR]   VisibilityTest.roleSuperiorOtherDepartment:128 the preview promises 'A Manager sees every User in the tenant, regardless of who they report to' expected [true] but found [false]
+[ERROR]   VisibilityTest.roleSuperiorSameDepartment:105 a Supervisor does not see a lower-ranked User's leads in the same department (hint: 'Users see their own records and those of lower-ranked users in their department') expected [true] but found [false]
+[ERROR] Tests run: 22, Failures: 4, Errors: 0, Skipped: 2
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project ui-automation: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Software Testing\Automation\Agentex Installation\Agentex Installation\automation\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

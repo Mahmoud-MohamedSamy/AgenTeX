@@ -1,0 +1,31 @@
+{
+ "btns": [
+  "EN",
+  "Search or jump to…\nCtrl K",
+  "MA",
+  "New Workflow Rule",
+  "All layouts",
+  "Change",
+  "Add Description",
+  "Create",
+  "Edit",
+  "Create or Edit",
+  "Delete",
+  "Field Changed",
+  "Done",
+  "Add condition",
+  "Done",
+  "Add action",
+  "Owner Assignment\n\nSet the record owner.",
+  "Task\n\nCreate a task assigned to a user.",
+  "Pick a saved action…",
+  "Close",
+  "Add scheduled action",
+  "Task\n\nCreate a task assigned to a user.",
+  "Pick a saved action…",
+  "Close",
+  "Save & Activate",
+  "Cancel"
+ ],
+ "created": []
+}

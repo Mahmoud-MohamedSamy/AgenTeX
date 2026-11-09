@@ -1,0 +1,155 @@
+{
+ "label": "BUG",
+ "verdict": "FAIL",
+ "date": "2 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, org Anyware, owner, QA WF Dept R (QA records, deleted after; tenant settings restored) · Zoho: Zoho Desk Enterprise trial (read only)",
+ "out": "BP-C20-removed-status-vs-zoho.png",
+ "ticket": "Blueprint",
+ "taviHead": "TAVI Desk (API log, ticket #1109, designer)",
+ "zohoHead": "Zoho Desk (ticket #101 in a blueprint)",
+ "title": "A status a live blueprint uses can be removed when no ticket is in it; tickets then move into the removed status",
+ "panels": [
+  {
+   "img": "C20c-api.png",
+   "caption": "TAVI API: removal accepted with no ticket in the state; a transition then sets the removed status; with a ticket inside, removal is refused",
+   "crop": [
+    0,
+    0,
+    1600,
+    600
+   ],
+   "boxes": []
+  },
+  {
+   "img": "zoho-ticket-in-blueprint.png",
+   "caption": "Zoho: Status is locked while the blueprint controls it; the strip shows the current state",
+   "crop": [
+    0,
+    0,
+    1600,
+    1000
+   ],
+   "boxes": [
+    {
+     "b": [
+      352,
+      420,
+      436,
+      468
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      652,
+      916,
+      1600,
+      972
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "C20c-ticket.png",
+   "caption": "TAVI ticket #1109 after the transition: Status \"QA BP Verify\" (locked, set by the blueprint) although it is no longer a ticket status",
+   "crop": [
+    0,
+    56,
+    1600,
+    944
+   ],
+   "boxes": [
+    {
+     "b": [
+      388,
+      783,
+      504,
+      811
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      22,
+      210,
+      122,
+      240
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      1176,
+      108,
+      1352,
+      130
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "C20c-designer.png",
+   "caption": "TAVI designer: \"1 issue to fix before publishing · QA BP Verify is no longer a ticket status\", yet the blueprint is still Active",
+   "crop": [
+    0,
+    56,
+    1600,
+    944
+   ],
+   "boxes": [
+    {
+     "b": [
+      310,
+      122,
+      1290,
+      184
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      1458,
+      348,
+      1516,
+      370
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      70,
+      222,
+      292,
+      414
+     ],
+     "n": 3
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Removing a status a live blueprint uses",
+   "Status is locked inside a blueprint and changes only through its transitions. Deleting a status used by a blueprint is not described in Zoho help and was not tried in Zoho (it would change the Zoho org).",
+   "With no ticket in that state, removing \"QA BP Verify\" is accepted (200) and the blueprint stays active. With a ticket inside, it is refused (422 FIELD_OPTION_IN_BLUEPRINT), which is correct.",
+   "BUG"
+  ],
+  [
+   2,
+   "A ticket runs the transition into that state",
+   "The ticket stays on a valid status.",
+   "Ticket #1109 moves into \"QA BP Verify\": Status shows it (locked, \"Set by blueprint QA BP C20c\") although it is no longer a ticket status.",
+   "BUG"
+  ],
+  [
+   3,
+   "What the admin sees",
+   "Not applicable.",
+   "The designer shows \"QA BP Verify is no longer a ticket status\" as an issue to fix before publishing, but the published version stays Active and keeps moving tickets there.",
+   "INFO"
+  ]
+ ]
+}

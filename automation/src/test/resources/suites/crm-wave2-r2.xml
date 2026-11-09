@@ -1,0 +1,27 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- Round 2 Wave 2 (27 Oct 2026): ONE JVM, so the owner signs in exactly once (CrmUser caches per JVM). Order: clean the
+     stopped run's leftovers, round-1 API classes, the round-2 functions, then the screens (signed in as CRM Admin A with
+     -Dcredentials.account=mmohamed@anyware.software, so the browser adds no owner sign-in), then the QA W2 sweep.
+     mvnw test -Dsuite=crm-wave2-r2 -Dbase.url=https://staging-crm.taviportal.com -Dcredentials.host=staging-crm.taviportal.com
+         "-Dcredentials.file=../docs/Credentials/Microsoft Edge Passwords.csv" -Dcredentials.account=mmohamed@anyware.software -->
+<suite name="CRM go-live round 2 wave 2" verbose="1" preserve-order="true">
+    <test name="r2-wave2" preserve-order="true">
+        <groups>
+            <run><exclude name="volume"/><exclude name="perf"/></run>
+        </groups>
+        <classes>
+            <class name="qa.features.crmrecords.Round2CleanupTest"/>
+            <class name="qa.features.crmrecords.RecordLifecycleTest"/>
+            <class name="qa.features.crmrecords.TimelineTest"/>
+            <class name="qa.features.crmrecords.CustomViewTest"/>
+            <class name="qa.features.crmrecords.TagsTest"/>
+            <class name="qa.features.crmrecords.RecycleBinTest"/>
+            <class name="qa.features.crmrecords.PipelineTest"/>
+            <class name="qa.features.crmrecords.SearchActivitiesTest"/>
+            <class name="qa.features.crmrecords.ImportTest"/>
+            <class name="qa.features.crmrecords.Round2RecordsTest"/>
+            <class name="qa.features.crmrecords.RecordScreensUiTest"/>
+            <class name="qa.features.crmrecords.Wave2SweepTest"/>
+        </classes>
+    </test>
+</suite>

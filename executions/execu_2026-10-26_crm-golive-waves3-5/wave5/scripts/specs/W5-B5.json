@@ -1,0 +1,98 @@
+{
+ "out": "W5-B5-vs-zoho.png",
+ "ticket": "W5-B5",
+ "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "title": "Layouts | Layout access through the API is ignored or fails (500 / 405)",
+ "panels": [
+  {
+   "img": "c02-layout-permissions-chosen.png",
+   "w": 1280,
+   "h": 720,
+   "caption": "TAVI — Layout settings › Layout Permissions › Selected Users works on screen.",
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "boxes": [
+    {
+     "b": [
+      416,
+      225,
+      864,
+      495
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "api-b5.png",
+   "w": 1600,
+   "h": 292,
+   "caption": "TAVI API — the older calls (Zoho: layouts are shared per profile, \"Shared To: Administrator and Standard\").",
+   "crop": [
+    0,
+    0,
+    1600,
+    292
+   ],
+   "boxes": [
+    {
+     "b": [
+      20,
+      89,
+      1580,
+      135
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      20,
+      135,
+      1580,
+      181
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      20,
+      181,
+      1580,
+      273
+     ],
+     "n": 3
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Restrict a layout to chosen users / profiles",
+   "Layouts are shared per profile",
+   "Works on screen (users), stored",
+   "PASS"
+  ],
+  [
+   "2",
+   "PUT layout with accessMode / assignedProfiles",
+   "—",
+   "200, but nothing changes (silently ignored)",
+   "FAIL"
+  ],
+  [
+   "3",
+   "layouts/assignments API",
+   "—",
+   "POST 500 INTERNAL_ERROR, GET 405",
+   "FAIL"
+  ]
+ ]
+}

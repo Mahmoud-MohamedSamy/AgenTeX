@@ -1,0 +1,15 @@
+<p><strong>Retest PASS — 8 Nov 2026</strong> → proposed: Done (QA lead's decision)<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner ndc-staging-owner@anyware.software · Zoho connection for anyware.software with no zoid (the ticket's original condition)<br>Method: API and screen</p>
+<p>A failed send is no longer shown as sent. The sender is refused before sending, and a send that fails shows the reason, is listed as not delivered and logs no sent email.</p>
+<p>Checked:</p>
+<ul>
+<li>Pre-check for the refused sender → can_send false, reason provider_refused_sender, with the Zoho reason <strong>[PASS]</strong></li>
+<li>Compose → red message "You can't send email yet: the provider connected for anyware.software won't send as ndc-staging-owner@anyware.software…"; Send and Schedule disabled <strong>[PASS]</strong></li>
+<li>Send through the API past the disabled button, real recipient → 422 MAIL_SEND_FAILED "No Zoho account found for sender…"; nothing delivered through this path <strong>[PASS]</strong></li>
+<li>Send fails at the provider (recipient on example.com) → 422 MAIL_SEND_FAILED "550 5.4.4 No mail server for example.com…" <strong>[PASS]</strong></li>
+<li>Screen on failure (pre-check answer overridden in the test browser so Send could be clicked) → toast and red banner "The email wasn't sent: 550 5.4.4…"; Compose stays open; no "Sent" <strong>[PASS]</strong></li>
+<li>Record → Emails → Mails → all three attempts listed; refused sender "Failed" with "Not sent: No Zoho account found…" and Retry; example.com attempts "Bounced" <strong>[PASS]</strong></li>
+<li>Retry → "The email wasn't sent: No Zoho account found…"; stays Failed <strong>[PASS]</strong></li>
+<li>Timeline after 4 failed attempts → "Lead created" only, no EmailSent <strong>[PASS]</strong></li>
+<li>The screen shows "Bounced" for attempts the API lists as status failed, for a send that was refused at once. Their reason sits behind the info icon (not opened) <strong>[INFO]</strong></li>
+</ul>
+<p>Not checked: a successful send still logs EmailSent. The owner can't send on this tenant, because the connection has no zoid, so there was no sender to run it with.</p>

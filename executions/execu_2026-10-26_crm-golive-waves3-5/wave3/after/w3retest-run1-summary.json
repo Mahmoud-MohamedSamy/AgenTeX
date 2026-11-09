@@ -1,0 +1,49 @@
+[ {
+  "test" : "W3RetestTest.g13ApiTriggerEmptyRunsNoWorkflow",
+  "cases" : [ "W3-2294-13" ],
+  "groups" : [ "crm-order", "wave3", "NDC-2294" ],
+  "description" : "Creating a record through the API with \"trigger\": [] runs no workflow (Zoho)",
+  "status" : "FAILED",
+  "seconds" : 3.904,
+  "error" : "create record in leads returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"FIELD_PERMISSION_DENIED\",\"message\":\"One or more fields in the payload are not writable for your profile.\",\"details\":[{\"path\":\"data.phone\",\"type\":\"field_read_only\",\"message\":\"Field 'phone' is read-only for your profile and cannot be written.\"}]},\"meta\":null}"
+}, {
+  "test" : "W3RetestTest.gapProbes",
+  "cases" : [ "W3-GAPS" ],
+  "groups" : [ "crm-order", "wave3", "NDC-2294", "NDC-2030", "NDC-1486" ],
+  "description" : "Gap probes: workflow triggers/actions, blueprint after-actions, missing modules (schedules, scoring, cadences, macros, connected flow)",
+  "status" : "FAILED",
+  "seconds" : 13.719,
+  "error" : "gaps still open: [trigger RecordScoreChanged, trigger NoteAdded, action Meeting, action Call, action CustomFunction, action CreateConnectedRecord, route /workflow/schedules, route /workflow/scoring-rules, route /scoring-rules, route /workflow/cadences, route /workflow/macros, route /workflow/connected-flows] expected [true] but found [false]"
+}, {
+  "test" : "W3RetestTest.r2420WorkflowAfterRequiredTransition",
+  "cases" : [ "W3-2420" ],
+  "groups" : [ "crm-order", "wave3", "NDC-2420" ],
+  "description" : "A workflow rule on Lead Source runs after a blueprint transition that has a required During field",
+  "status" : "FAILED",
+  "seconds" : 11.023,
+  "error" : "create record in leads returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"FIELD_PERMISSION_DENIED\",\"message\":\"One or more fields in the payload are not writable for your profile.\",\"details\":[{\"path\":\"data.phone\",\"type\":\"field_read_only\",\"message\":\"Field 'phone' is read-only for your profile and cannot be written.\"}]},\"meta\":null}"
+}, {
+  "test" : "W3RetestTest.r2421ParallelFieldUpdate",
+  "cases" : [ "W3-2421" ],
+  "groups" : [ "crm-order", "wave3", "NDC-2421" ],
+  "description" : "Field Update reaches every one of 12 leads created at the same moment",
+  "status" : "FAILED",
+  "seconds" : 3.322,
+  "error" : "java.lang.IllegalStateException: create record in leads returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"FIELD_PERMISSION_DENIED\",\"message\":\"One or more fields in the payload are not writable for your profile.\",\"details\":[{\"path\":\"data.phone\",\"type\":\"field_read_only\",\"message\":\"Field 'phone' is read-only for your profile and cannot be written.\"}]},\"meta\":null}"
+}, {
+  "test" : "W3RetestTest.r2510TaskActionInvalidStatus",
+  "cases" : [ "W3-2510" ],
+  "groups" : [ "crm-order", "wave3", "NDC-2510" ],
+  "description" : "A Create Task action with a status the Tasks module doesn't have is refused on save (or the run is not logged as Fired)",
+  "status" : "FAILED",
+  "seconds" : 2.767,
+  "error" : "create record in leads returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"FIELD_PERMISSION_DENIED\",\"message\":\"One or more fields in the payload are not writable for your profile.\",\"details\":[{\"path\":\"data.phone\",\"type\":\"field_read_only\",\"message\":\"Field 'phone' is read-only for your profile and cannot be written.\"}]},\"meta\":null}"
+}, {
+  "test" : "W3RetestTest.r2511DateRuleRunIsAudited",
+  "cases" : [ "W3-2511" ],
+  "groups" : [ "crm-order", "wave3", "NDC-2511" ],
+  "description" : "A rule run on a date field (Tasks Due Date) leaves an Audit Log entry naming the rule",
+  "status" : "FAILED",
+  "seconds" : 187.599,
+  "error" : "the date rule ran but no Audit Log entry names its run (only: [crm:audit.action.created@2026-10-26T10:51:44.243027+00:00, crm:audit.action.created@2026-10-26T10:48:58.952877+00:00, crm:audit.action.updated@2026-10-26T10:48:58.076177+00:00, crm:audit.action.created@2026-10-26T10:48:57.295109+00:00]) expected [true] but found [false]"
+} ]

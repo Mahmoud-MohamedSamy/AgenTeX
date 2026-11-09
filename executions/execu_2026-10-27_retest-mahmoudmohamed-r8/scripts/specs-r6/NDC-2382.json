@@ -1,0 +1,160 @@
+{
+ "out": "NDC-2382-retest-PASS.png",
+ "ticket": "NDC-2382",
+ "title": "Deals | The record API ignores the pipeline — creates always land on the default pipeline and updates never move a deal",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2382-api.png",
+   "caption": "Rows 1–2: the staging blocker (custom field with api name \"pipeline\"); 3: widened for the test; 4–6: the fix; 7: restored.",
+   "crop": [
+    0,
+    0,
+    1600,
+    564
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      180
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      186,
+      1566,
+      248
+     ],
+     "n": 2,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      254,
+      1566,
+      295
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      301,
+      1566,
+      363
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      369,
+      1566,
+      410
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      416,
+      1566,
+      478
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      484,
+      1566,
+      546
+     ],
+     "n": 7,
+     "kind": "INFO"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Staging blocker",
+   "—",
+   "Deals has a CUSTOM pick-list field with api name \"pipeline\" (created 24 Oct by ndc-staging-owner on layout \"Wonder Travel\", allowed only \"Standard (Standard)\") that validates every deal's pipeline value",
+   "INFO"
+  ],
+  [
+   "2",
+   "With the blocker",
+   "—",
+   "Any real pipeline id → 422 \"Invalid value for: Pipeline.\" (create and PATCH) — same blocker as round 4",
+   "INFO"
+  ],
+  [
+   "3",
+   "For the test",
+   "—",
+   "Field's allowed values temporarily widened (PUT 200)",
+   "INFO"
+  ],
+  [
+   "4",
+   "Pipeline sent on create is stored",
+   "Stored",
+   "Create on \"1\" → stored 640e03a4, stage test-01",
+   "PASS"
+  ],
+  [
+   "5",
+   "Changing the pipeline moves the deal",
+   "Moved, at the chosen stage",
+   "PATCH a Standard deal to \"1\" → 5170500c → 640e03a4, stage test-01",
+   "PASS"
+  ],
+  [
+   "6",
+   "Stage validated against the new pipeline",
+   "Validated",
+   "closed_won (not a stage of \"1\") → 422",
+   "PASS"
+  ],
+  [
+   "7",
+   "Blocker restored",
+   "—",
+   "PUT 200, allowed [\"Standard (Standard)\"] exactly as before — pipeline writes on staging fail again until that field is fixed",
+   "INFO"
+  ],
+  [
+   "—",
+   "New defect candidate",
+   "—",
+   "A custom field may take the system api name \"pipeline\" and then hijacks validation of the real pipeline module-wide",
+   "INFO"
+  ],
+  [
+   "—",
+   "Not covered",
+   "—",
+   "Record page / list inline edit / Mass Update not re-run (API only); QA deals d13c0de2, bfd949ed, 0e718071, bffaa096",
+   "INFO"
+  ]
+ ]
+}

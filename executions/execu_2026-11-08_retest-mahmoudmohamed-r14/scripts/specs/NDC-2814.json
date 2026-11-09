@@ -1,0 +1,10 @@
+{ "out": "NDC-2814-retest-PASS.png", "ticket": "NDC-2814", "title": "Assignment rule \"on a holiday of\" never matches a holiday list that is not linked to business hours", "verdict": "PASS",
+  "env": "staging-desk.taviportal.com · tenant NDC-Staging · API · admin · QA AS6 Dept A, 3 QA RT14 holiday lists without business hours, 2 temporary direct rules", "date": "8 Nov 2026",
+  "panels": [ { "img": "NDC-2814-api.png", "full": true, "caption": "API requests and responses; today = 8 Nov 2026 in the default business hours' time zone (Africa/Cairo)", "crop": [0,0,1600,500],
+    "boxes": [ {"b":[36,235,1564,272],"n":1,"kind":"PASS"}, {"b":[36,282,1564,319],"n":2,"kind":"PASS"}, {"b":[36,329,1564,413],"n":3,"kind":"PASS"}, {"b":[36,423,1564,481],"n":4,"kind":"PASS"} ] } ],
+  "rows": [
+   [1, "\"on a holiday of\" a list with today, not linked to business hours", "Matches; the rule assigns the ticket", "#1328 assigned to A1 by the rule", "PASS"],
+   [2, "\"not a holiday of\" the same list", "No match", "#1329 not assigned by the rule", "PASS"],
+   [3, "Lists without today (25 Dec, 7 Nov)", "\"on a holiday\" no match, \"not a holiday\" matches", "#1330, #1332 no match; #1331 to A3, #1333 to A2", "PASS"],
+   [4, "An unlinked list doesn't close business hours (dev note)", "Business hours still open, no holiday today", "is_open_now true, todays_holidays [] before and after", "PASS"]
+  ] }

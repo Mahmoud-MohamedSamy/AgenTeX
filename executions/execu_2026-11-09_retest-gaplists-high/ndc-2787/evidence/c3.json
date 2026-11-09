@@ -1,0 +1,43 @@
+{
+ "out": "annotated/03-agent-scale-vs-ndc-zoho.png",
+ "id": "NDC-2787 M-05",
+ "title": "User list still stops at 200 rows and ignores paging",
+ "verdict": "Gap",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "API on NDC-Staging, 9 Nov 2026",
+   "flag": "API RESULT — seen 9 Nov 2026",
+   "text": [
+    "GET /iam/users → 200 rows (121 active + 79 invited).",
+    "Same 200 rows, same first and last user for: ?page=2, ?page=2&page_size=50, ?pageNumber=2&pageSize=50, ?pageSize=500, ?limit=5&offset=5, ?cursor=x, ?search=a.",
+    "meta = null: no total and no next-page link, so a picker cannot load user 201 and up.",
+    "The Desk Agents page (12 desk agents) pages on the screen only (Page 1 of 2)."
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "NDC Zoho Desk, read 2 Nov 2026",
+   "flag": "NDC ZOHO DATA — read-only API, 2 Nov 2026",
+   "text": [
+    "886 agents, 478 active.",
+    "Each active agent is in 9.3 departments on average, up to 57.",
+    "Owner, approver and team pickers list all of them."
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "List every user",
+   "zoho": "478 active agents reachable",
+   "tavi": "Fixed 200 rows; paging parameters ignored",
+   "match": "Gap"
+  }
+ ],
+ "notes": [
+  "The bug for this is still not filed (noted in NDC-2787 on 4 Nov)."
+ ],
+ "sub": "TAVI Desk NDC-Staging (ndc-staging-owner) vs NDC's own Zoho Desk (portal wondertravel, read-only captures 2 Nov 2026)",
+ "date": "TAVI 9 Nov 2026"
+}

@@ -390,24 +390,18 @@ public class GroupHIConversionTest extends OrderTestBase {
     }
 
     @CaseId("H-04")
-    @Test(groups = {"crm-order", "group-h"}, description = "Convert a lead in a blueprint: allowed only by a Convert transition (TAVI offers none: missing-list item 9) - so blocked; written down")
+    @Test(groups = {"crm-order", "group-h"}, description = "Convert a lead that is in a blueprint: the Convert action stays available, as in Zoho")
     public void h04ConvertLeadInBlueprint() {
+        // Round 1 verdict (22 Oct, same as Zoho): Zoho keeps Convert available on records in a blueprint (it can only be hidden for
+        // everyone by profile permission); so the intended behaviour is that the governed lead converts.
         String c = "H-04";
         blueprintLeads(c);
         String lead = lead(c, "lead");
         if (!CrmApi.waitFor(WAIT, () -> api.governed(LEADS, lead))) inconclusive("lead never entered the blueprint");
         Response r = convert(userN(), lead);
-        note(c, "convert as userN (no Convert transition exists) -> " + cut(r));
-        Response a = null;
-        if (r.statusCode() / 100 != 2) {
-            a = convert(adminA(), lead);
-            note(c, "convert as adminA -> " + cut(a));
-        }
+        note(c, "convert as userN (lead governed by a blueprint) -> " + cut(r));
         traceOf(c, LEADS, lead);
-        SoftAssert s = new SoftAssert();
-        s.assertTrue(blocked(r), "lead in a blueprint not convertible outside a Convert transition (userN): " + cut(r));
-        if (a != null) s.assertTrue(blocked(a), "same for adminA: " + cut(a));
-        s.assertAll();
+        Assert.assertEquals(r.statusCode() / 100, 2, "a lead in a blueprint can be converted, as in Zoho: " + cut(r));
     }
 
     @CaseId("H-05")

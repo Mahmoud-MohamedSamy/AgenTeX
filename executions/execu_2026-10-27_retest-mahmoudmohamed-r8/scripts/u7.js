@@ -1,0 +1,10 @@
+const M = 'abf9acff-7f9d-4702-b28d-a7d1bbbbb1b2'; const out = {};
+await go('/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3', 30000);
+out.sidebarHasModule = (await txt()).includes('QA RT partners');
+await go('/modules/' + M, 15000); await shot('1864-02-direct-url');
+out.directPage = (await txt()).split('\n').filter(l => /disabled|not available|not found|QA RT partners|Create|No records|permission/i.test(l)).slice(0, 8);
+const rl = await api('GET', `/modules/${M}/records?page=1&per_page=5`); out.listRecords = rl.s + ' ' + (rl.s >= 300 ? (rl.j?.error?.message || rl.t).slice(0, 160) : 'ok');
+const fl = arr((await api('GET', `/modules/${M}/fields`)).j?.data).find(f => /name/.test(f.apiName || ''));
+const cr = await api('POST', `/modules/${M}/records`, { data: [{ field: fl?.apiName || 'name', value: { kind: 'string', value: 'QA RT 1864 record in disabled module' } }] });
+out.createRecord = cr.s + ' ' + (cr.s >= 300 ? (cr.j?.error?.message || cr.t).slice(0, 160) : cr.j?.data?.id);
+return done(out);

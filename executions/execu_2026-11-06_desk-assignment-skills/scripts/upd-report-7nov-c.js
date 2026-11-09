@@ -1,0 +1,8 @@
+const fs=require('fs');const F=__dirname+'/../report.md';let r=fs.readFileSync(F,'utf8');
+const rep=(a,b)=>{if(!r.includes(a))throw new Error('missing: '+a.slice(0,60));r=r.replace(a,b);};
+rep("TAVI's own help text says \"Off: only agents can be chosen.\" So the gap is the API only. |","TAVI's own help text says \"Off: only agents can be chosen.\" So the gap is the API only. Image: `screenshots/annotated/B3-team-assignment-off-api-vs-zoho.png` |");
+rep('Zoho Add Ticket form default not checked yet. Screens: `screenshots/ev-B4-form-before-save.png`, `ev-B4-ticket-after-save.png`','Zoho (7 Nov, seen): the Add Ticket form also pre-fills Ticket Owner with the signed-in agent; Zoho was not submitted, so what it saves was not seen. Image: `screenshots/annotated/B4-new-ticket-owner-not-saved-vs-zoho.png`');
+rep('or the picker should not offer detached lists. Zoho behaviour not checked. |','or the picker should not offer detached lists. Re-run for the image: list detached again → #1252 Unassigned, #1254 → A2. Zoho (seen): a holiday list can also be saved with Business Hours off; Zoho runtime with such a list not checked. Image: `screenshots/annotated/B5-holiday-list-not-attached-vs-zoho.png` |');
+rep('The switch now reads off. Putting it back was blocked by the permission check — waiting for your decision.','Turned back ON on 7 Nov with your approval (PATCH departments 200; reads "Click to disallow ticket and activity assignment to teams" after reload).');
+rep('rule "QA AS6 B08 holiday" (now inactive), tickets #1229–#1234.','rule "QA AS6 B08 holiday" (now inactive), tickets #1229–#1234 and #1252, #1254 (image re-run; "QA AS6 HOL today" is detached again).');
+fs.writeFileSync(F,r);console.log('ok');

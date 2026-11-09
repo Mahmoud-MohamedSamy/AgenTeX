@@ -1,0 +1,177 @@
+{
+ "out": "NDC-2423-retest-PASS.png",
+ "ticket": "NDC-2423",
+ "title": "Modules and Fields | Layout builder Save doesn't persist field changes (validation regex, Mark as Unique)",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "2423-05-after-reload.png",
+   "caption": "After Save + reload: QA phone field keeps the regex ^01[0125]\\d{8}$.",
+   "crop": [
+    820,
+    130,
+    460,
+    380
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      840,
+      328,
+      1261,
+      364
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2423-04-email-marked.png",
+   "caption": "QA email field after Mark as Unique + Mark as Required: required (*).",
+   "crop": [
+    332,
+    380,
+    948,
+    340
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      365,
+      612,
+      1248,
+      660
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2423-api.png",
+   "caption": "Save requests and record checks.",
+   "crop": [
+    0,
+    0,
+    1600,
+    433
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      274
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      280,
+      1566,
+      321
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      327,
+      1566,
+      368
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      374,
+      1566,
+      415
+     ],
+     "n": 7,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Phone regex persists",
+   "New regex after refresh",
+   "PUT field 200 with the regex; after reload editor and API show ^01[0125]\\d{8}$",
+   "PASS"
+  ],
+  [
+   "2–3",
+   "Email unique + required",
+   "Both saved",
+   "PATCH constraints {required:true, unique:true} 200; API unique = true, required = true",
+   "PASS"
+  ],
+  [
+   "4–5",
+   "Records validate with the regex",
+   "Validated",
+   "phone 123 → 422 \"does not match the required pattern\"; 01012345678 → 201",
+   "PASS"
+  ],
+  [
+   "6–7",
+   "Duplicates refused / required enforced",
+   "Refused",
+   "duplicate email → 422 \"already in use\"; no email → 422 \"is required\"",
+   "PASS"
+  ],
+  [
+   "—",
+   "Restore",
+   "—",
+   "QA email set back to not required right after (module-wide setting)",
+   "INFO"
+  ],
+  [
+   "—",
+   "Note",
+   "—",
+   "Tested on QA fields of a QA layout; an earlier capture with the regex missing \"\\\" was our tooling, not the app",
+   "INFO"
+  ]
+ ]
+}

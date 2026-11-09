@@ -1,0 +1,26 @@
+{
+ "out": "NDC-2418-api.png",
+ "date": "27 Oct 2026",
+ "title": "NDC-2418 · Login History session status — 27 Oct rerun (automation LoginHistoryTest)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "D-1 expiredSessionsNotActive",
+   "GET /api/v1/audit/login-history?status=active (up to 1,000 read)",
+   "PASS — 6 sessions Active, 0 past their expiry; oldest login 2026-10-27 06:33 (25 Oct: 346 Active, 306 past expiry)",
+   "ok"
+  ],
+  [
+   "D-4 revokedSessionStopsWorking",
+   "new session of test user 1 → revoke",
+   "PASS — token before 200; clear 204; token after 401",
+   "ok"
+  ],
+  [
+   "D-2 deniedUserCannotExport",
+   "view self/team/all denied, fresh sign-in",
+   "PASS — list 403, export 403 (0 bytes); control before override 200 / 200",
+   "ok"
+  ]
+ ]
+}

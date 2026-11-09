@@ -1,0 +1,13 @@
+const S = '77f16167-1996-45b8-8f88-f5b3aec84d75', R = '564a6465-eba0-4bea-97d2-7bab1412f6fc';
+const res = {};
+const one = async (m, p, b) => { const r = await call(m, p, b); return r.s + ' ' + r.t.slice(0, 220); };
+res.get = await one('GET', `/reporting/schedules/${S}`);
+res.pause = await one('POST', `/reporting/schedules/${S}/pause`, {});
+res.resume = await one('POST', `/reporting/schedules/${S}/resume`, {});
+res.runs = await one('GET', `/reporting/schedules/${S}/runs`);
+res.runNow = await one('POST', `/reporting/schedules/${S}/run-now`, {});
+res.occ = await one('GET', `/reporting/schedules/occurrences?from=2026-10-29&to=2026-11-02`);
+res.endBeforeStart = await one('POST', '/reporting/schedules', { name: 'QA R2W5 bad end', report_id: R, export_format: 'csv', time_zone: 'Egypt', start_date: '2026-11-05', start_time: '08:00:00', repeat_type: 'daily', end_at: '2026-11-01T08:00:00Z', send_via: 'email', email_template_id: 'introduction', additional_recipients: ['mmohamed@anyware.software'] });
+res.badEmail = await one('POST', '/reporting/schedules', { name: 'QA R2W5 bad mail', report_id: R, export_format: 'csv', time_zone: 'Egypt', start_date: '2026-11-05', start_time: '08:00:00', repeat_type: 'daily', send_via: 'email', email_template_id: 'introduction', additional_recipients: ['not-an-email'] });
+res.dashSchedules = await one('GET', '/reporting/dashboards');
+return res;

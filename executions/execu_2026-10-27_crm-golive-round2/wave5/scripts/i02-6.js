@@ -1,0 +1,14 @@
+const CID = 'a7a7a7a7000000000000000000000004.e13196a27ca34ba9b1d5a8d802bad45d';
+const res = {};
+res.del = (await call('DELETE', '/iam/integrations/clients/' + encodeURIComponent(CID))).s;
+await page.goto(H + '/settings/integration-config', { waitUntil: 'domcontentloaded' }); await sleep(4000);
+await page.locator('main button', { hasText: /^Create integration$/ }).first().click(); await sleep(2000);
+const d = page.locator('[role=dialog]').first();
+const state = async () => { const out = []; const b = d.locator('input[type=checkbox]'); for (let i = 0; i < await b.count(); i++) if (await b.nth(i).isChecked()) out.push(await b.nth(i).evaluate(e => (e.closest('label') || e.parentElement).innerText.replace(/\s+/g, ' ').trim())); return out; };
+await d.locator('label', { hasText: 'QA R2W5 Child' }).first().click(); await sleep(500); res.afterLabelChild = await state();
+await d.locator('text=/^QA R2W5 Child$/').first().click(); await sleep(500); res.afterTextChild = await state();
+res.labelsFound = await d.locator('label', { hasText: 'QA R2W5 Child' }).count();
+res.firstLabel = await d.locator('label', { hasText: 'QA R2W5 Child' }).first().evaluate(e => e.innerText.replace(/\s+/g, ' ').slice(0, 200));
+await shot('i02-label-check');
+await d.locator('button', { hasText: /^Cancel$/ }).click();
+return res;

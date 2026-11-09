@@ -1,0 +1,163 @@
+{
+ "out": "NDC-1488-retest.png",
+ "ticket": "NDC-1488",
+ "verdict": "FAIL",
+ "label": "STILL FAILS",
+ "title": "Web Form | the form's hosted link (and its QR code and Test button) opens 404 Not Found",
+ "env": "staging-crm.taviportal.com (owner; public pages not signed in) vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "t-webform-publish.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "TAVI — QA W4 Lead form (Leads, Standard layout) › Publish & how to use: hosted link, QR code, Test your form, iframe code.",
+   "crop": [
+    292,
+    415,
+    1284,
+    395
+   ],
+   "boxes": [
+    {
+     "b": [
+      313,
+      490,
+      1555,
+      642
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      313,
+      705,
+      1555,
+      760
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-webforms.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "Zoho — Setup › Channels › Webforms: New Form, Form Analytics, A/B Testing and Auto-Response Rules (the org has no form, so a Zoho form link was not opened).",
+   "crop": [
+    258,
+    66,
+    1326,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      843,
+      522,
+      938,
+      553
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    },
+    {
+     "b": [
+      722,
+      410,
+      1072,
+      480
+     ],
+     "n": 3,
+     "color": "#16a34a"
+    },
+    {
+     "b": [
+      380,
+      70,
+      560,
+      106
+     ],
+     "n": 4,
+     "color": "#16a34a"
+    }
+   ]
+  },
+  {
+   "img": "t-webform-public.png",
+   "w": 1280,
+   "h": 900,
+   "caption": "TAVI — the hosted link opened in a browser that is not signed in: nginx \"404 Not Found\".",
+   "crop": [
+    0,
+    0,
+    700,
+    140
+   ],
+   "boxes": [
+    {
+     "b": [
+      4,
+      4,
+      520,
+      110
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "t-webform-after-submit.png",
+   "w": 1280,
+   "h": 900,
+   "caption": "TAVI — the iframe address works: a visitor's submission shows the thank-you message and created the lead.",
+   "crop": [
+    0,
+    0,
+    700,
+    140
+   ],
+   "boxes": [
+    {
+     "b": [
+      4,
+      4,
+      620,
+      110
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Open the form from its own link / QR code / Test button",
+   "Not checked (no Zoho form in this org)",
+   "404 Not Found (nginx) — curl and a fresh browser; same for the QR code and \"Test your form\". Also checked on staging-desk: 404",
+   "FAIL"
+  ],
+  [
+   "2",
+   "Form on a page (iframe / script) and submission",
+   "Not checked",
+   "Works: iframe 200, a visitor sent the form, the lead was created with all 4 values, owner = the chosen user, source web_form, listed under the form's submissions; empty required fields and a bad email are refused with clear messages",
+   "PASS"
+  ],
+  [
+   "3",
+   "Form analytics",
+   "Form Analytics and A/B testing offered",
+   "Works: Analytics tab shows 2 visits, 1 submission, 50% conversion, average time to submit 17 s and the created record; no A/B testing",
+   "PASS"
+  ],
+  [
+   "4",
+   "Acknowledgement to the visitor",
+   "Auto-Response Rules",
+   "Offered; needs CAPTCHA on (refused without it — by design). CAPTCHA (Cloudflare Turnstile) shows and blocks automated sends, so the acknowledgement email was not sent: delivery not checked",
+   "INFO"
+  ]
+ ]
+}

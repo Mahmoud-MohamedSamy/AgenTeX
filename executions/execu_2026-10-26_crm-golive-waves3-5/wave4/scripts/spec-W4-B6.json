@@ -1,0 +1,14 @@
+{ "out": "W4-B6-template-placeholders.png", "ticket": "W4-B6", "verdict": "FAIL", "label": "NEW BUG · LOW",
+  "title": "Email templates | a placeholder the template can't fill (e.g. {{company_name}}) silently becomes blank; only 5 placeholders",
+  "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)", "date": "26 Oct 2026",
+  "panels": [
+    { "img": "t-template-preview.png", "w": 1600, "h": 900, "caption": "TAVI — Settings › Email Templates › Add template › Preview with sample data. Message: \"Dear {{recipient_name}}, from {{sender_name}} at {{company_name}}.\"", "crop": [352, 69, 896, 763],
+      "boxes": [ { "b": [389, 460, 700, 490], "n": 1 }, { "b": [376, 256, 794, 295], "n": 3 } ] },
+    { "img": "z-templates.png", "w": 1600, "h": 950, "caption": "Zoho — Setup › Templates › Email: templates belong to a module (Big Deal Alert · Deals), with folders, favourites and usage stats.", "crop": [258, 66, 1326, 840],
+      "boxes": [ { "b": [530, 180, 700, 222], "n": 2, "color": "#16a34a" }, { "b": [1196, 82, 1320, 112], "n": 2, "color": "#16a34a" }, { "b": [282, 225, 440, 380], "n": 3, "color": "#16a34a" } ] }
+  ],
+  "rows": [
+    ["1", "A placeholder that can't be filled", "Not checked", "{{company_name}} (valid in the signature) is accepted in a template and previews as nothing — \"at .\" — with no warning; the template saved (POST 201)", "FAIL"],
+    ["2", "What can be merged", "Templates are tied to a module, so that module's fields can be used (insert-field menu not opened)", "Insert placeholder offers only 5: recipient name, recipient email, your name, your email, today's date — no record fields, templates not tied to a module", "GAP"],
+    ["3", "Organising templates", "Folders, favourites, created by me / shared with me, usage stats", "Who can use it (only me / my department / everyone), favourites; no folders, no stats", "GAP"]
+  ] }

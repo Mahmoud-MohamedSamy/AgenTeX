@@ -1,0 +1,10 @@
+const d = page.locator('[role=dialog]').first();
+await d.locator('[aria-label="Allow A when the parent is Red"]').click();
+await d.locator('[aria-label="Allow B when the parent is Red"]').click();
+await shot('c05-ticked');
+const rp = page.waitForResponse(r => /dependency-maps/.test(r.url()) && r.request().method() !== 'GET', { timeout: 20000 }).catch(() => null);
+await d.locator('button', { hasText: /^Save$/ }).click();
+const r = await rp; await sleep(2500);
+await shot('c05-saved');
+const list = (await page.innerText('main')).replace(/\s+/g, ' ');
+return { req: r ? r.request().postData() : null, save: r ? r.status() + ' ' + (await r.text()).slice(0, 300) : 'no request', list: list.slice(list.lastIndexOf('Map Dependency Fields'), list.lastIndexOf('Map Dependency Fields') + 500) };

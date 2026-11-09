@@ -1,0 +1,151 @@
+{
+ "G-01..03 / EO-5 notifications": {
+  "A1": {
+   "QA AS6 EO5 b": [],
+   "QA AS6 D05 team": [],
+   "QA AS6 D01 a": [
+    "desk.ticket.assigned",
+    "desk.ticket.assigned"
+   ],
+   "QA AS6 SEQ u1": []
+  },
+  "A2": {
+   "QA AS6 EO5 b": [
+    "desk.ticket.assigned"
+   ],
+   "QA AS6 D05 team": [
+    "desk.ticket.team_assigned"
+   ],
+   "QA AS6 D01 a": [],
+   "QA AS6 SEQ u1": []
+  },
+  "A3": {
+   "QA AS6 EO5 b": [],
+   "QA AS6 D05 team": [
+    "desk.ticket.team_assigned"
+   ],
+   "QA AS6 D01 a": [],
+   "QA AS6 SEQ u1": [
+    "desk.ticket.assigned"
+   ]
+  }
+ },
+ "G-02 self pick-up": {
+  "pick": 200,
+  "own": "A1",
+  "notif": {
+   "QA AS6 G02 pickup": []
+  }
+ },
+ "A-13 stale version": {
+  "first": 200,
+  "second": 409,
+  "secondE": "RULE_CHANGED: This rule was changed by someone else. Reload to see the latest version. {\"rule_ids\":[\"8e318580-d635-49cc-8008-6e30942464ef\"]}",
+  "descNow": "v-first"
+ },
+ "A-04 lengths": {
+  "n121": 400,
+  "n121e": "VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"name\",\"issue\":\"too_long\"}]",
+  "d1001": 400,
+  "d1001e": "VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"description\",\"issue\":\"too_long\"}]",
+  "n120": 201
+ },
+ "B-06 fields": {
+  "ticket": 138,
+  "contact": 17,
+  "account": 15,
+  "execution": [
+   "execution_time:during_business_hours/outside_business_hours/on_holiday/not_on_holiday"
+  ],
+  "keyTicket": "owner=y team=y tags=y skills=y contact_id=y account_id=y product=y due_date=y created_at=n modified_at=n closed_at=n is_overdue=y is_escalated=n thread_count=y comment_count=y",
+  "contactKeys": "contact.first_name,contact.last_name,contact.email,contact.phone,contact.mobile,contact.title,contact.owner,contact.secondary_email,contact.twitter,contact.facebook,contact.type,contact.language,contact.crm_record_id,contact.crm_sync_status,contact.crm_synced_at,contact.is_spam,contact.external_ref",
+  "accountKeys": "account.account_name,account.email,account.phone,account.website,account.owner,account.country,account.crm_record_id,account.crm_sync_status,account.crm_synced_at,account.external_ref,account.annual_revenue,account.street,account.city,account.state,account.code"
+ },
+ "B-07 operators": {
+  "date": "qa_ndc_issue_date: equals,not_equal_to,is_after(now),is_before(now),between,not_between,is_empty,is_not_empty",
+  "number": "first_response_time: equals,not_equal_to,less_than,greater_than,between,is_empty,is_not_empty"
+ },
+ "B-02 pattern runtime": {
+  "rule": 201,
+  "a": "QA AS6 B02 a/High → A1",
+  "b": "QA AS6 B02 b/Urgent → A1",
+  "c": "QA AS6 B02 c/Low → -",
+  "d": "QA AS6 other B/High → -"
+ },
+ "B-04 bad pattern": {
+  "1 and (2": "400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].criteria.pattern\",\"issue\":\"syntax\"}]",
+  "1 and 4": "400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].criteria.pattern\",\"issue\":\"unknown_condition\"}]",
+  "1 xor 2": "400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].criteria.pattern\",\"issue\":\"syntax\"}]",
+  "(1 or 2))": "400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].criteria.pattern\",\"issue\":\"syntax\"}]"
+ },
+ "B-05 25/26 conditions": {
+  "c25": "201 ",
+  "c26": "400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].criteria.conditions\",\"issue\":\"too_many\"}]"
+ },
+ "B-03 condition without value": {
+  "s": 400,
+  "e": "VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].criteria.conditions[0].value\",\"issue\":\"invalid_value\"}]"
+ },
+ "F-11/12 team assignment off": {
+  "shape": {
+   "enabled": true
+  },
+  "off": 200,
+  "newTeamRule": "400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].assign.team_id\",\"issue\":\"team_assignment_off\"}]",
+  "manualTeam": "200 ",
+  "existingTeamRuleWhenOff": {
+   "team": null,
+   "dept": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6"
+  },
+  "restore": 200
+ },
+ "D-13 agent removed from dept": {
+  "remove": 200,
+  "ruleView": {
+   "assign": {
+    "kind": "agent",
+    "user_id": "5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4",
+    "team_id": null
+   },
+   "unknown": [],
+   "inel": [
+    {
+     "kind": "agent",
+     "id": "5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4",
+     "reason": "not_a_member"
+    }
+   ]
+  },
+  "directOwner": "-",
+  "teamRR": "A2",
+  "restore": 200
+ },
+ "A-14 audit": {
+  "s": 200,
+  "total": 100,
+  "counts": {},
+  "sample": [
+   "event_id",
+   "occurred_at",
+   "recorded_at",
+   "actor_type",
+   "actor_id",
+   "actor_label",
+   "actor_on_behalf_of",
+   "source_channel",
+   "source_ip",
+   "source_user_agent",
+   "source_correlation_id",
+   "app_key",
+   "action",
+   "target_type",
+   "target_id",
+   "target_label",
+   "target_parent_type",
+   "changes",
+   "metadata",
+   "severity",
+   "schema_version"
+  ]
+ }
+}

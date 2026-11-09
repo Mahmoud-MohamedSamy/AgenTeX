@@ -1,0 +1,87 @@
+{
+ "out": "NDC-2294-api.png",
+ "date": "27 Oct 2026",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "title": "NDC-2294 · Automation gap list — what each item does on staging (API, automation, screen)",
+ "rows": [
+  [
+   "1 import option",
+   "Import wizard › Assign",
+   "\"Trigger automation and process management\" — runs workflow, review/approval, blueprint; off by default",
+   "ok"
+  ],
+  [
+   "2 manual approval",
+   "Import wizard / API manual_approval=true",
+   "\"Enable manual approval — COMING SOON\" (allowed by the ticket); API accepts the flag silently, lead goes live",
+   "ok"
+  ],
+  [
+   "3 score / notes triggers",
+   "POST /workflow/rules trigger RecordScore / RecordNotes / ScoreChanged / NoteAdded",
+   "400 \"Unknown trigger kind\"",
+   "bad"
+  ],
+  [
+   "4 meeting / call / connected",
+   "Rule on QA RT r8: CreateMeeting + ScheduleCall + CreateConnectedRecord",
+   "Call created, related to the record; connected record created (qa_parent = record); Meeting dispatch Cancelled — HTTP 422",
+   "bad"
+  ],
+  [
+   "5 assign by rule",
+   "GroupKZ z5 (owner by assignment rule + options)",
+   "Rule ran, owner = rule user; online-only + email stored; \"transfer related records\" NOT stored",
+   "bad"
+  ],
+  [
+   "6 review functions",
+   "Review process eventFunctions",
+   "Field exists in API + editor; needs a custom action — none on staging (not runnable)",
+   "info"
+  ],
+  [
+   "7 Anyone / Everyone",
+   "Approval, role approver, mode everyone_parallel / everyone_sequential / anyone",
+   "201 but read back mode null for every mode (users + everyone correctly refused)",
+   "bad"
+  ],
+  [
+   "8 approval Call Function",
+   "Approval editor \"Call Functions\"",
+   "Needs a custom action — none on staging (not runnable)",
+   "info"
+  ],
+  [
+   "9 blueprint after-actions",
+   "Designer: createRecord, addTags, convertLead, customAction",
+   "API check blocked: POST layout on Leads 500 (staging outage) — not runnable",
+   "info"
+  ],
+  [
+   "10 rejection reasons",
+   "Review process with reasons A / B",
+   "Stored on the process (EN/AR, order); org list separate",
+   "ok"
+  ],
+  [
+   "11 scheduled actions",
+   "Field Update delaySeconds 120 on a QA record",
+   "Created 15:26:23 → FieldChanged 15:28:32 (delay honoured)",
+   "ok"
+  ],
+  [
+   "12 several conditions",
+   "Workflow rule editor / API",
+   "Not available",
+   "bad"
+  ],
+  [
+   "13 \"trigger\": []",
+   "Two API creates, with / without \"trigger\": []",
+   "With []: no rule run; without: Fired",
+   "ok"
+  ]
+ ]
+}

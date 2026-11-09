@@ -1,0 +1,38 @@
+{
+ "out": "NDC-2309-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2309 · Reviewer \"Record owner\" on an imported, rule-assigned lead (automation F-01)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "import + rule (Import channel)",
+   "POST /api/v1/modules/{Leads}/import … execute → completed",
+   "lead 97c1fa12… owner = mahmoud.mahamed1515 (rule user), entryChannel excel_import",
+   "ok"
+  ],
+  [
+   "review request",
+   "GET /api/v1/workflow/reviews/{id}",
+   "pending_for_review, reviewerUserIds = [mahmoud.mahamed1515] = assigned owner",
+   "ok"
+  ],
+  [
+   "owner's queue",
+   "mahmoud.mahamed1515: GET /workflow/reviews/me",
+   "imported lead listed = true",
+   "ok"
+  ],
+  [
+   "owner reviews",
+   "POST /workflow/reviews/{id}/fields/email/approve",
+   "200",
+   "ok"
+  ],
+  [
+   "control (manual lead)",
+   "lead d18fe5a7… owner mahmoud.mahamed1515",
+   "reviewerUserIds = [mahmoud.mahamed1515]",
+   "info"
+  ]
+ ]
+}

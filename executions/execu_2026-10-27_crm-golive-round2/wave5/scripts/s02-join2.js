@@ -1,0 +1,13 @@
+const d = page.locator('[role=dialog]').first();
+const pick = async (lbl, re) => { await d.locator(`button[aria-label="${lbl}"], [aria-label="${lbl}"]`).first().click(); await sleep(1200); const o = await page.$$eval('[role=option], [cmdk-item]', os => os.map(x => x.innerText.trim())); const t = page.locator('[role=option], [cmdk-item]', { hasText: re }).first(); if (await t.count()) await t.click(); else await page.keyboard.press('Escape'); await sleep(800); return o.slice(0, 15); };
+const res = {};
+res.mods = await pick('Primary module', /^QA R2W5 Module$/);
+res.r1 = await pick('Report 1', /QA R2W5 Report rollup/);
+await d.locator('button', { hasText: /^Add Report$/ }).click(); await sleep(800);
+res.r2 = await pick('Report 2', /QA R2W5 Report 2/);
+await shot('s02-joined-filled');
+await d.locator('button', { hasText: /^Done$/ }).click(); await sleep(6000);
+await shot('s02-joined-builder');
+res.url = page.url().replace(H, '');
+res.text = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 1200);
+return res;

@@ -1,0 +1,88 @@
+{
+ "out": "NDC-2624-vs-zoho.png",
+ "ticket": "NDC-2624",
+ "env": "staging-crm.taviportal.com vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "title": "Timeline | Deleting a record and adding / removing attachments are not logged",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "panels": [
+  {
+   "img": "tl01-timeline-missing-delete-attach.png",
+   "caption": "TAVI — lead deleted, then restored: the Timeline shows created, name updated, Record restored and Note added, but no deleted entry.",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      355,
+      960,
+      765
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      412,
+      470,
+      660,
+      530
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-task-timeline.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "Zoho — record Timeline (History). The org’s sample records have no logged changes (\"No logs found\"), so Zoho’s entries could not be shown.",
+   "crop": [
+    0,
+    0,
+    1600,
+    950
+   ],
+   "boxes": [
+    {
+     "b": [
+      252,
+      240,
+      1288,
+      400
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Record deleted is logged",
+   "Not checked live: sample records have no timeline entries",
+   "No deleted entry; the API feed holds only RecordCreated, FieldChanged, NoteAdded, RecordRestored",
+   "FAIL"
+  ],
+  [
+   "2",
+   "Record restored is logged",
+   "Not checked live",
+   "\"Record restored\" is shown",
+   "PASS"
+  ],
+  [
+   "3",
+   "Attachment added / removed is logged",
+   "Not checked live",
+   "No entry for adding 2 attachments or removing 1 (screen and API)",
+   "FAIL"
+  ]
+ ]
+}

@@ -1,0 +1,150 @@
+{
+ "out": "NDC-1864-retest-PASS.png",
+ "ticket": "NDC-1864",
+ "title": "Modules and Fields | A disabled module is still reachable and accessible by users, and users can create records within it",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "1864-01-toggled-off.png",
+   "caption": "Modules and Fields: QA module \"QA RT partners\" switched off from the list → \"Module updated successfully\".",
+   "crop": [
+    292,
+    180,
+    988,
+    540
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      962,
+      638,
+      1256,
+      696
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1864-02-direct-url.png",
+   "caption": "Direct URL of the module: \"QA RT partners is disabled\"; the module is not in the sidebar.",
+   "crop": [
+    0,
+    0,
+    1000,
+    720
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      547,
+      132,
+      994,
+      412
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      10,
+      525,
+      251,
+      716
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-qa-rt-partners.png",
+   "caption": "API checks on the disabled module (rows 3–5).",
+   "crop": [
+    0,
+    0,
+    1600,
+    386
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      274
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      280,
+      1566,
+      321
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      327,
+      1566,
+      368
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1, 4",
+   "Switch the module off",
+   "—",
+   "Toggle → \"Module updated successfully\"; API status disabled",
+   "PASS"
+  ],
+  [
+   "3",
+   "Side menu / navigation",
+   "Not shown",
+   "QA RT partners not in the sidebar",
+   "PASS"
+  ],
+  [
+   "2",
+   "Open by direct URL",
+   "\"Module is disabled\" message",
+   "\"QA RT partners is disabled — … Its records can't be opened or created until it is switched back on.\"",
+   "PASS"
+  ],
+  [
+   "5",
+   "View / create records",
+   "Not allowed",
+   "GET records and POST record → 403 \"This module is disabled…\"",
+   "PASS"
+  ],
+  [
+   "—",
+   "Cleanup",
+   "—",
+   "QA module abf9acff (also used for NDC-2384 / 2388)",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,27 @@
+- 2026-11-07T16:49:30 department "QA RT13 2754 Dept A" 5168807c-ba21-4674-83f6-168c721a8210 agents 2
+- 2026-11-07T16:49:30 department "QA RT13 2754 Dept B" eb3aaf8c-af9e-42df-813b-9b605530d81c agents 0
+- 2026-11-07T16:49:56 blueprint "QA RT13 2754 full" 197e1d55-65ec-4faa-a9d9-37171eb9837a (active true)
+- 2026-11-07T16:49:57 team "QA RT13 2754 team" cc1eea82-a1b8-4f06-8d7d-2d5de0477bbc
+- 2026-11-07T16:49:57 ticket "QA RT13 2754F t0 baseline" bf39586a-cc27-45d1-a881-ba720aa2097d (#?)
+- 2026-11-07T16:49:58 ticket "QA RT13 2754F t1 user owner" 817b4849-1602-4cfb-af10-d7ba2f40729d (#?)
+- 2026-11-07T16:49:58 ticket "QA RT13 2754F t2 moved on" aae6f623-fdd1-46b9-b355-c4fde7f19c27 (#?)
+- 2026-11-07T16:49:59 ticket "QA RT13 2754F t3 team owner" ae561d14-469c-4ded-ae64-dcceb483f518 (#?)
+- 2026-11-07T16:50:00 ticket "QA RT13 2754F t4 agent share" 2ed083e0-8589-4c51-b8d4-17e2b91f1998 (#?)
+- 2026-11-07T16:50:01 ticket "QA RT13 2754F t5 own dept" e2703099-5639-4265-afe4-8598c2bc3f38 (#?)
+- 2026-11-07T16:50:01 ticket "QA RT13 2754F t6 deptB" 73604eac-70d3-4ba4-b49b-d3c1db590edd (#?)
+- 2026-11-07T16:50:02 ticket "QA RT13 2754F t7 check" 7f67cce8-4741-4747-98f9-9fbb6ed25beb (#?)
+- 2026-11-07T16:50:03 ticket "QA RT13 2754F t8 approval" 1dfac2b2-dde9-41d4-8704-16214d574d96 (#?)
+- 2026-11-07T16:50:04 ticket "QA RT13 2754F t9 strict" 570b5bd2-43d7-48d3-8527-730f3227ec37 (#?)
+- 2026-11-07T16:50:04 ticket "QA RT13 2754F t10 revoke" 7ef96763-e322-4b1e-9e8e-aee91be1af46 (#?)
+- 2026-11-07T16:52:20 ticket "QA RT13 2754F G0 baseline" 8506c494-3296-4893-8853-05d562a4da31 (#?)
+- 2026-11-07T16:52:21 ticket "QA RT13 2754F G1 user owner" ee9ba485-3bb1-4294-b596-67817b6f4f31 (#?)
+- 2026-11-07T16:52:22 ticket "QA RT13 2754F G2 moved on" beb74fca-af86-42b1-859c-bd3ef5bc528a (#?)
+- 2026-11-07T16:52:22 ticket "QA RT13 2754F G3 team owner" 5f10cd74-8004-44aa-a37d-84df5d47e0ff (#?)
+- 2026-11-07T16:52:23 ticket "QA RT13 2754F G4 agent share" 09503b2b-b122-4c1b-a512-072d41ffbd30 (#?)
+- 2026-11-07T16:56:44 ticket "QA RT13 2754 control agent-owned" 9003c696-4c32-42c4-8209-0faa24d2d140 (#?)
+- 2026-11-07T16:56:51 ticket "QA RT13 2754F G5 agent approval" 00f79e2f-9f6b-4c68-8b0e-a83278bc8f8e (#?)
+
+## Plane + cleanup — 7 Nov 2026
+- Plane: NDC-2754 comment 201, state → Bug 200 (QA lead decision: a step owner must be able to complete a required Share), NDC-2754-retest-PARTIAL.png attached (200/204/204).
+- Cleanup: blueprint "QA RT13 2754 full" deleted (204), 18 test tickets deleted (204) and purged from the Recycle Bin, team "QA RT13 2754 team" deleted, departments "QA RT13 2754 Dept A" (agents removed first) and "Dept B" deleted; bin purged. Verified: blueprint 404, Dept A 404, no QA RT13 items in teams, departments or the bin. Failed: none.
+- Saved sign-in state files deleted.

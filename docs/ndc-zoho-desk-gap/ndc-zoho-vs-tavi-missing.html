@@ -1,0 +1,224 @@
+<title>NDC Desk Gap Report</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~1040px) — summary strip, channel bar, then ranked gap tables with severity stripes */
+:root{
+  --bg:#f6f8f8; --surface:#ffffff; --fg:#14211f; --muted:#5b6b68; --line:#d9e2e0; --accent:#0f6e66;
+  --p0:#b42318; --p0bg:#fdecea; --p1:#a15c07; --p1bg:#fdf3e2; --p2:#1d5fa8; --p2bg:#e8f0fb; --ok:#2e7d4f;
+  --font-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1716; --surface:#16211f; --fg:#e4eeec; --muted:#9db0ac; --line:#2a3a37; --accent:#4fc2b6;
+  --p0:#ff8a7d; --p0bg:#3a1d1a; --p1:#f2b55a; --p1bg:#372a14; --p2:#82b4f0; --p2bg:#18263a; --ok:#6fcf97; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1716; --surface:#16211f; --fg:#e4eeec; --muted:#9db0ac; --line:#2a3a37; --accent:#4fc2b6;
+  --p0:#ff8a7d; --p0bg:#3a1d1a; --p1:#f2b55a; --p1bg:#372a14; --p2:#82b4f0; --p2bg:#18263a; --ok:#6fcf97; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0;text-wrap:balance;font-weight:700}
+h2{font-size:21px;margin:0;text-wrap:balance;display:flex;align-items:center;gap:10px}
+h3{font-size:15px;margin:0}
+p{margin:0;max-width:68ch}
+.meta{color:var(--muted);font-size:13px}
+.lead{font-size:17px;max-width:70ch}
+section{display:flex;flex-direction:column;gap:14px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.fact b{font-size:24px;font-variant-numeric:tabular-nums}
+.fact span{font-size:13px;color:var(--muted)}
+.bar{display:flex;height:34px;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.bar div{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.c-phone{background:#0f6e66}.c-chat{background:#3d9a8f}.c-email{background:#7a8f8b}.c-im{background:#c27c1a}.c-web{background:#4a6fa5}
+ol.flow{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:78ch}
+ol.flow b{font-weight:600}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--font-mono);font-size:13px;white-space:nowrap;font-weight:600}
+.p0 td.id{box-shadow:inset 3px 0 var(--p0)}.p1 td.id{box-shadow:inset 3px 0 var(--p1)}.p2 td.id{box-shadow:inset 3px 0 var(--p2)}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.s-miss{background:var(--p0bg);color:var(--p0)}.s-part{background:var(--p1bg);color:var(--p1)}.s-dev{background:var(--p2bg);color:var(--p2)}
+.tag{font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px}
+.tag.p0{background:var(--p0bg);color:var(--p0)}.tag.p1{background:var(--p1bg);color:var(--p1)}.tag.p2{background:var(--p2bg);color:var(--p2)}
+.plane{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.two>div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+ul.checks{list-style:none;padding-left:0}
+ul.checks li{display:flex;gap:10px}
+ul.checks li::before{content:"";flex:0 0 14px;height:14px;margin-top:4px;border:1.5px solid var(--muted);border-radius:3px}
+.note{border-left:3px solid var(--accent);padding:10px 14px;background:var(--surface);border-radius:0 8px 8px 0;color:var(--muted);font-size:14px;max-width:none}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">NDC go-live · Desk parity</div>
+  <h1>NDC Zoho Desk vs TAVI Desk: what NDC uses that TAVI is missing</h1>
+  <div class="meta">2 Nov 2026 · Source: NDC's live Zoho Desk (portal wondertravel, Zoho One), read-only · TAVI: go-live inventory and NDC-Staging runs of 1–2 Nov</div>
+  <p class="lead">NDC runs about 2.5 million tickets in Zoho Desk, 87 % of them logged as phone or chat. TAVI is missing live chat, WhatsApp and IM channels, working AI, agent lists past 200 users and confirmed dashboards. Those block go-live. Phone tickets turn out to be logged by hand, so telephony is not needed.</p>
+</header>
+
+<section>
+  <h2>NDC at a glance</h2>
+  <div class="facts">
+    <div class="fact"><b>2.52 M</b><span>tickets, all time</span></div>
+    <div class="fact"><b>74</b><span>departments (53 enabled)</span></div>
+    <div class="fact"><b>478</b><span>active agents (886 total)</span></div>
+    <div class="fact"><b>183</b><span>ticket fields, ~165 custom</span></div>
+    <div class="fact"><b>41</b><span>ticket statuses</span></div>
+    <div class="fact"><b>92</b><span>workflow rules (90 active)</span></div>
+  </div>
+  <h3>Tickets by channel</h3>
+  <div class="bar" role="img" aria-label="Phone 54 percent, chat 33 percent, email 4 percent, instant messaging 1 percent, web 0.5 percent">
+    <div class="c-phone" style="flex:1358264">Phone 54 %</div>
+    <div class="c-chat" style="flex:842027">Chat 33 %</div>
+    <div class="c-email" style="flex:90472" title="Email 90 K"></div>
+    <div class="c-im" style="flex:18856" title="WhatsApp / Telegram 19 K"></div>
+    <div class="c-web" style="flex:12747" title="Web 12.7 K"></div>
+  </div>
+  <div class="legend">
+    <span><i class="c-phone"></i>Phone 1.36 M</span><span><i class="c-chat"></i>Chat 842 K</span><span><i class="c-email"></i>Email 90 K</span><span><i class="c-im"></i>WhatsApp / Telegram 19 K</span><span><i class="c-web"></i>Web 12.7 K</span><span>Facebook / X / Instagram 0</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Item</th><th>NDC Zoho Desk</th></tr></thead>
+    <tbody>
+      <tr><td>Busiest departments</td><td>NDC Finance 1.05 M · Manual Invoice 946 K · Quality Assurance 77 K · System Admin 75 K · Airline Operations 74 K</td></tr>
+      <tr><td>Roles / profiles / teams</td><td>7 roles (CEO, Manager, Staff, LightAgent, Personal, AgentTeamPersonal, PortalUser) · 8 profiles (4 custom) · 57 teams</td></tr>
+      <tr><td>Ticket data</td><td>Picklists up to 208 values (airlines); multiselect, currency, decimal; lookups to custom modules Airline-IATA Data (TEST, OTB), NEW, Training · 80 layouts</td></tr>
+      <tr><td>Automation</td><td>6 blueprints (5 active, 81 transitions) · 30 direct-assignment + 24 round-robin rules · 10 layout rules · 1 validation rule · 200 SLA records</td></tr>
+      <tr><td>Email</td><td>25 support addresses, one per department</td></tr>
+      <tr><td>Integrations on</td><td>Zoho CRM, Zoho Analytics, Zoho Cliq, Zoho Assist, Zoho Lens, Zia generative AI and field prediction</td></tr>
+      <tr><td>Extensions</td><td>Related Tickets by Custom Fields, Customer Ticket History, Ticket Insights, Customer Insights, Agent Attendance Tracker, Ticket Assignment, Geolocation, ChatGPT for Zoho Desk, Zoho Calendar</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>How NDC works</h2>
+  <p>The gaps come from one process: tickets arrive by phone and chat, are routed per branch, shared across departments and approved through blueprint chains.</p>
+  <ol class="flow">
+    <li><b>Intake.</b> Mostly phone and chat, then email, WhatsApp/Telegram ("NDC Portal", "FlyWT customer support"), the help center and two feedback widgets.</li>
+    <li><b>Routing.</b> 30 direct-assignment rules send new tickets to a team or agent by Status, Created By, Layout or Staff Action. 24 round-robin rules load-balance to agents or teams; overdue, escalated, response-overdue and "Bad"-rated tickets have their own targets.</li>
+    <li><b>Sharing across departments.</b> 75 of 92 workflows run "Share Ticket": Quality Assurance, Financial approval, Clients' Financial Investigations and Client Complaints share each ticket to the branch in the field Related Branch, unless Feedback = Pass. Other actions: Assign Ticket (20), Send Email Reply (10), field updates (7), skill-based assignment (1).</li>
+    <li><b>Approval chains as blueprints on Status.</b> ADM (8 states, 18 transitions), 2nd check (7 states), Financial approvals (11 states), Clients' Financial Investigations (11 states, 24 transitions), flywt-refund (7 states). Transitions owned by the ticket owner (74) or a team (11); 63 field updates and 32 alerts after transitions; 10 transitions ask for mandatory fields.</li>
+    <li><b>Quality audit.</b> QA tickets carry a scoring sheet in custom fields; status ends as Pass Audit / Rejected Audit / Review Audit Manager (965 K are Pass Audit).</li>
+    <li><b>Finance.</b> E-Top-Up approval statuses, refund, ADM, GL and bank-deposit fields. A validation rule blocks Status = Reject without a rejection reason.</li>
+    <li><b>Notifications.</b> Per-department notification rules with about 65 email templates each.</li>
+    <li><b>AI.</b> Zia summary, sentiment, writing assistant, reply assistance and a Zia workflow action are active; field prediction suggests owner and priority; a ChatGPT extension is installed.</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="tag p0">P0</span> Blocks NDC go-live</h2>
+  <p>Six gaps cover live chat, IM, the AI NDC switched on, agent scale, dashboards and the approval chains.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>What NDC uses</th><th>NDC evidence</th><th>TAVI today</th><th>Status</th><th>Plane</th></tr></thead>
+    <tbody>
+      <tr class="p0"><td class="id">M-01</td><td>Live chat channel (website chat to ticket, Missed Chats view)</td><td>842 K chat tickets (33 %); 46 of 50 recent ones came in as online chat (Manual Invoice, MAC, Airline Ops, Emergency, Refund)</td><td>Live chat in development</td><td><span class="pill s-dev">In development</span></td><td class="plane">NDC-2000</td></tr>
+      <tr class="p0"><td class="id">M-02</td><td>WhatsApp outbound and the Zoho IM Talk web widget</td><td>3 of 10 IM channels active: "NDC Portal outbound" (WhatsApp, Reissue-Ref), "FlyWT" (IM Talk, ≈ 17 K tickets), a WhatsApp sandbox. Telegram off</td><td>No channel setup; workflow actions ReplyViaIm / NotifyViaIm exist in code</td><td><span class="pill s-miss">Missing</span></td><td class="plane">NDC-2000, NDC-2760</td></tr>
+      <tr class="p0"><td class="id">M-04</td><td>AI: summary, sentiment, writing assistant, reply assistance, AI workflow action, field prediction</td><td>Zia features and prediction pipeline ACTIVE</td><td>Every AI call returns 404 on NDC-Staging; no AI workflow action, no field prediction</td><td><span class="pill s-miss">Missing on NDC</span></td><td class="plane">NDC-2004, NDC-2005</td></tr>
+      <tr class="p0"><td class="id">M-05</td><td>Agent scale: 478 active agents (886 total), 74 departments, 57 teams; 9.3 departments per agent on average (max 57)</td><td>All 886 agent records read</td><td>User list stops at 200 rows and ignores paging; pickers cannot reach 478 agents</td><td><span class="pill s-part">Partly (bug)</span></td><td class="plane">Not filed</td></tr>
+      <tr class="p0"><td class="id">M-06</td><td>Desk dashboards and reports (Zoho Analytics also enabled)</td><td>12 dashboards: Overview (opened 2 Nov), Request (1 Nov), SLA, custom TOPUP and live chat; 4 custom summary reports (Agent Performance, Help Desk, tickets overall, by department)</td><td>Reports and dashboards not confirmed; both pages redirect to Headquarters</td><td><span class="pill s-part">Partly / unverified</span></td><td class="plane">NDC-2364, NDC-2068</td></tr>
+      <tr class="p0"><td class="id">M-07</td><td>Blueprints: team or owner transitions, after-transition updates and alerts, mandatory fields, escalation</td><td>5 active blueprints, 81 transitions</td><td>Built, with open defects from the 1 Nov blueprint run</td><td><span class="pill s-part">Partly</span></td><td class="plane">NDC-2754..2758, 2761..2764, 2774, 2775</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="tag p1">P1</span> Needed for NDC's daily process</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>What NDC uses</th><th>NDC evidence</th><th>TAVI today</th><th>Status</th><th>Plane</th></tr></thead>
+    <tbody>
+      <tr class="p1"><td class="id">M-08</td><td>Round robin: load balance to agents and teams, sequential, skill-based; targets for overdue / escalated / Bad rating; idle agents offline after 20 min</td><td>24 RR rules</td><td>Preferences and skills partly built; idle-to-offline unverified</td><td><span class="pill s-part">Partly</span></td><td class="plane">NDC-2275, NDC-2752</td></tr>
+      <tr class="p1"><td class="id">M-09</td><td>10 layout rules; validation "Status = Reject needs a rejection reason"</td><td>Rules API</td><td>Layout / validation rules partly built</td><td><span class="pill s-part">Partly</span></td><td class="plane">NDC-2230, 2231, 2535, 1988</td></tr>
+      <tr class="p1"><td class="id">M-10</td><td>Attachment limits: 40 MB per file, 40 files, agents vs end users</td><td>Attachment restrictions</td><td>No admin setting; a 200 MB declared upload was accepted</td><td><span class="pill s-part">Partly</span></td><td class="plane">NDC-2753</td></tr>
+      <tr class="p1"><td class="id">M-11</td><td>Related tickets by a custom field (same PNR), agent attendance, geolocation</td><td>9 installed extensions</td><td>No marketplace; customer history and calendar exist</td><td><span class="pill s-miss">Missing</span></td><td class="plane">NDC-2013</td></tr>
+      <tr class="p1"><td class="id">M-12</td><td>Help Center auto-translation, Arabic content</td><td>Auto-translate on, ar-EG</td><td>Ticket translation missing; KB translations unconfirmed</td><td><span class="pill s-miss">Missing</span></td><td class="plane">NDC-2005, NDC-2760</td></tr>
+      <tr class="p1"><td class="id">M-13</td><td>Gamescope trophies</td><td>4 trophies configured</td><td>Missing</td><td><span class="pill s-miss">Missing</span></td><td class="plane">NDC-2760</td></tr>
+      <tr class="p1"><td class="id">M-14</td><td>Remote support (Zoho Assist, Zoho Lens)</td><td>Both ENABLED</td><td>No equivalent</td><td><span class="pill s-miss">Missing</span></td><td class="plane">—</td></tr>
+      <tr class="p1"><td class="id">M-15</td><td>Zoho Cliq notifications</td><td>Cliq ENABLED</td><td>Slack, Teams, Google Chat exist; no Cliq</td><td><span class="pill s-miss">Missing (Cliq)</span></td><td class="plane">—</td></tr>
+      <tr class="p1"><td class="id">M-16</td><td>Anonymised contacts (data subject requests)</td><td>Anonymised contacts exist</td><td>Missing</td><td><span class="pill s-miss">Missing</span></td><td class="plane">NDC-2760</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="tag p2">P2</span> TAVI has it: prove it at NDC's settings</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>What NDC uses</th><th>TAVI</th></tr></thead>
+    <tbody>
+      <tr class="p2"><td class="id">V-01</td><td>41 custom statuses typed Open / On Hold / Closed, used as blueprint states</td><td>Custom statuses exist; untested at 41</td></tr>
+      <tr class="p2"><td class="id">V-02</td><td>183 ticket fields; picklists of 191–208 values; multiselect, currency, decimal</td><td>Built; untested at this size</td></tr>
+      <tr class="p2"><td class="id">V-03</td><td>Custom modules with ticket lookups; contact fields for airline name/code and mailboxes</td><td>Built</td></tr>
+      <tr class="p2"><td class="id">V-04</td><td>80 layouts, several per department</td><td>Built</td></tr>
+      <tr class="p2"><td class="id">V-05</td><td>Workflow triggers on field change, replies, comments, rating; is / isn't patterns; Share Ticket, Assign Ticket, Send Email Reply actions</td><td>Built; ShareTicket, SendTicketReply, ReassignTicketBySkills exist</td></tr>
+      <tr class="p2"><td class="id">V-06</td><td>Direct assignment by Status / Created By / Layout / Staff Action; cross-department targets</td><td>Built; Created By and cross-department unverified</td></tr>
+      <tr class="p2"><td class="id">V-07</td><td>Priority-based and Gold / Silver / Bronze SLAs; Airline services, Manual invoice, seasons-requests SLAs</td><td>Built</td></tr>
+      <tr class="p2"><td class="id">V-08</td><td>Notification rules per department, mostly switched off. On most often: assigning a ticket to agent / team (25 of 49 departments), contact new ticket and closing (15), department new / moved / shared ticket (10–11). No SMS. Only 2 custom templates ("Airline ops signature" EG, UAE/KSA)</td><td>Built</td></tr>
+      <tr class="p2"><td class="id">V-09</td><td>25 support email addresses, one per department</td><td>Built; needs a domain and forwarding plan</td></tr>
+      <tr class="p2"><td class="id">V-10</td><td>CC contacts, Send as Email, scheduled reply, manual time tracking, sharing, public data sharing</td><td>Built</td></tr>
+      <tr class="p2"><td class="id">V-11</td><td>190 KB articles, ~50 root categories, community topics, 2 feedback widgets</td><td>KB and community built; widgets partly</td></tr>
+      <tr class="p2"><td class="id">V-12</td><td>Role hierarchy, 4 custom profiles, light agents</td><td>Built</td></tr>
+      <tr class="p2"><td class="id">V-13</td><td>Phone tickets logged by hand at volume (1.36 M): no call threads, created by agents, mostly NDC Finance top-ups and Manual Invoice</td><td>Manual phone tickets work; telephony not needed (was M-03)</td></tr>
+      <tr class="p2"><td class="id">V-14</td><td>Zoho CRM sync of accounts, contacts, products; tickets shown in CRM lists Transactions, Agency Services, Customers, Leads, Agency Code</td><td>CRM ⇄ Desk built; NDC's custom CRM modules unverified</td></tr>
+      <tr class="p2"><td class="id">V-15</td><td>Customer happiness: rating link on replies and on close, survey per department, reopen on rating (ratings mostly from 2024)</td><td>Built</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="two">
+  <div>
+    <h3>TAVI defects that hit NDC (found 2 Nov, not filed)</h3>
+    <ul>
+      <li>An approval can name an approver outside the ticket's department.</li>
+      <li>History shows "Followers was updated" as a raw user-id array.</li>
+      <li>An existing reply draft pre-fills the comment editor.</li>
+      <li>An Open ticket can be archived and then disappears from All Tickets.</li>
+      <li>AI calls return 404 (M-04).</li>
+    </ul>
+  </div>
+  <div>
+    <h3>Not used by NDC: low priority</h3>
+    <p>Macros, supervisor rules, schedules, custom functions, webhooks, custom buttons, products, contracts, holiday lists, Answer Bot, guided conversations, Telegram (switched off), telephony (phone tickets are typed in). Tags exist but none is on a ticket; ticket approvals and time entries show no use. Facebook / X / Instagram brands exist but have no tickets.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Open questions for NDC</h2>
+  <ul class="checks">
+    <li>Phone (mostly answered): agents log phone tickets by hand. Confirm no call recording or CTI is expected in TAVI.</li>
+    <li>Chat: which websites embed the chat widget, and must chat bots or offline forms move too?</li>
+    <li>WhatsApp and IM Talk: which WhatsApp Business provider sends "NDC Portal outbound", and does the FlyWT web widget stay?</li>
+    <li>Reports: do managers also use Zoho Analytics beyond the Overview, Request, SLA and TOPUP dashboards?</li>
+    <li>Extensions: which of the 9 are still used (Agent Attendance Tracker and Related Tickets by Custom Fields look critical)?</li>
+    <li>Migration: how much of the 2.5 M tickets, 886 agents and custom-module data must move?</li>
+  </ul>
+  <p class="note">Two read-only passes on 2 Nov 2026. Not read, because the pages could not load without risking a change: phone (telephony) setup, chat settings, Help Center settings, CRM field mapping beyond the sync summary, and Zoho Analytics. Ticket content was never opened; usage comes from counts and the metadata of 150 recent tickets. TAVI items V-01 to V-15 come from the inventory and the Wave 1/2 runs; the test spec proves them.</p>
+</section>
+
+<section>
+  <h2>How we accessed NDC's Zoho</h2>
+  <ul>
+    <li><b>Account:</b> ahegazy@ndceg.com (Support Administrator), signed in twice on 2 Nov 2026, about 12:17 and 14:07, each with a OneAuth push approved by our team. Both show in the account's login history; the second session may still be active and count toward the account's limit of 2 sessions. Before the second sign-in one of the account's sessions had to be ended; we did not do that.</li>
+    <li><b>Read-only guard:</b> the browser blocked every write call to Zoho (297 calls, all Zoho's own telemetry and presence pings) and, in the second pass, every GET that looked like an action (20 calls). No ticket was opened, so nothing was marked as read.</li>
+    <li><b>One exception (first pass):</b> viewing Setup → Integrations → Others let Zoho's own page send <code>CtiApiConfig.do?mode=generatePhoneBridgeOauthtoken</code> (a GET). By its name it may have generated a PhoneBridge token; no visible setting changed. The second-pass guard blocked it every time.</li>
+    <li><b>Allowed on purpose:</b> 20 small POST calls to Zoho's notification-badge and interface-text endpoints.</li>
+    <li><b>Sign-in prompts:</b> the session-limit warning was dismissed with "Do it later" and the unverified-domain notice with its remind-later option; no domain or session setting changed.</li>
+    <li><b>Data kept:</b> the raw capture (setup, rules, staff names and emails, metadata of 150 recent tickets) stays on the tester's machine and is excluded from git.</li>
+    <li><b>Suggested for NDC:</b> end the extra session under Active Sessions and, if wanted, review the Zoho audit log for 2 Nov.</li>
+  </ul>
+</section>
+
+<footer>Sources: NDC Zoho Desk read-only capture, 2 Nov 2026 · TAVI Desk go-live inventory (131 features) · NDC-Staging runs 1–2 Nov 2026 · Test spec: docs/ndc-zoho-desk-gap/spec-ndc-usage-on-tavi.md</footer>
+</div>

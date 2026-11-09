@@ -1,0 +1,12 @@
+const out = {}; const TEAM = '1adfefb7-0c25-4484-ae92-782964695054';
+out.ruleC = await mkRule('D1e', { kind: 'RecordUpdated' }, [{ type: 'AddTicketComment', commentBody: 'QA WF D1e fired', commentPublic: false }]);
+out.ruleT = await mkRule('D1t', { kind: 'RecordUpdated' }, [{ type: 'OwnerAssignment', ownerTargetKind: 'Team', ownerValue: TEAM }]);
+const a = await mkTicket('D1e'); const b = await mkTicket('D1t'); out.tickets = [a.id, b.id];
+await sleep(20000);
+const fired = async id => arr((await api('GET', `/desk/tickets/${id}/comments`)).j?.data).filter(c => /fired/.test(c.body_html)).map(c => c.created_at.slice(11, 23));
+out.newTicketFired = await fired(a.id); const tb0 = await getTicket(b.id); out.d1tBefore = { owner: tb0.owner, team: tb0.team };
+out.patchA = await patchTicket(a.id, { description: 'QA WF D1e edit to fire' }); out.patchB = await patchTicket(b.id, { description: 'QA WF D1t edit to fire' });
+await sleep(15000);
+out.afterEditFired = await fired(a.id);
+out.hist = arr((await api('GET', `/desk/tickets/${a.id}/activity`)).j?.data).map(x => x.action + ' ' + x.occurred_at.slice(11, 23));
+return fin(out);

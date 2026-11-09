@@ -1,0 +1,16 @@
+- 2026-11-08T14:38:41 skill type "QA RT14 alpha" added in QA AS6 Dept A
+- 2026-11-08T14:39:12 skill type "QA RT14 alpha" added in QA AS6 Dept B
+- 2026-11-08T14:40:13 skill type in Dept A renamed to "QA RT14 alpha renamed"
+- 2026-11-08T14:42:04 skill type in Dept A renamed to "QA RT14 alpha renamed"
+- 2026-11-08T14:44:05 skill type in Dept A renamed to "QA RT14 alpha renamed"
+- 2026-11-08T14:44:11 skill type "QA RT14 alpha renamed" deleted in Dept A (test)
+- 2026-11-08T14:46:30 skill QA RT14 skill beta 7190bde1-b65b-41e9-8cad-f368edb16682 + type QA RT14 beta in Dept B (via skill form)
+- 2026-11-08T14:47:56 department QA RT14 Dept New 89a507f8-c2ed-422f-8d83-c93a91da715e
+- 2026-11-08T14:48:49 my foreign-id probe renamed + deleted "Tech" in QA AS6 Dept A (no skills on it); re-adding it
+- 2026-11-08T14:55:36 "Tech" re-added in QA AS6 Dept A: 404
+- 2026-11-08T15:08:12 CLEANUP skill QA RT14 skill beta: 204
+- 2026-11-08T15:08:13 CLEANUP type QA RT14 beta2: 204
+- 2026-11-08T15:08:36 CLEANUP types deleted 80 of 80 (QA RT14 alpha, QA AS6 Type, QA AS6 Type3 where unused)
+- 2026-11-08T15:08:39 CLEANUP tickets deleted 5 of 5
+- 2026-11-08T15:08:40 CLEANUP department QA RT14 Dept New: agents 200, delete 200
+- 2026-11-08T15:09:59 CLEANUP recycle bin: purged 6 own items by record id; left 0

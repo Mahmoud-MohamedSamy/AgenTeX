@@ -1,0 +1,10 @@
+const clickEdit = async label => { const b = await page.locator(`xpath=//*[normalize-space(text())="${label}"]`).first().boundingBox(); const btns = await page.$$('main button'); let best = null, bd = 1e9; for (const x of btns) { const bb = await x.boundingBox(); if (!bb) continue; const dy = Math.abs(bb.y - b.y), dx = bb.x - b.x; if (dy < 20 && dx > 0 && dx < 400 && dx < bd) { bd = dx; best = x; } } if (best) await best.click(); return !!best; };
+let d = page.locator('[role=dialog]').first();
+await d.locator('label, [role=checkbox], button, li', { hasText: /^\s*QA Pick\s*$/ }).first().click(); await sleep(400);
+await d.locator('button', { hasText: /^Done$/ }).click(); await sleep(1500);
+const res = {};
+res.agg = await clickEdit('Aggregate Columns'); await sleep(1500);
+d = page.locator('[role=dialog]').first();
+res.aggTxt = (await d.innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 1200);
+await shot('s02-agg-editor');
+return res;

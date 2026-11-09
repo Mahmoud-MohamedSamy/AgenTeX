@@ -92,6 +92,7 @@ public class GroupAJTest extends OrderTestBase {
 
     private static String csvCell(Object v) {
         String s = v == null ? "" : String.valueOf(v);
+        if ("Standard (Standard)".equals(s)) s = "Standard";   // import matches pipelines by name; record create wants the literal (NDC-2382 / W2-B4)
         return s.contains(",") || s.contains("\"") ? "\"" + s.replace("\"", "\"\"") + "\"" : s;
     }
 
@@ -233,7 +234,7 @@ public class GroupAJTest extends OrderTestBase {
     // =====================================================================================================
 
     @CaseId("A-01")
-    @Test(groups = {"crm-order", "group-a"}, description = "Rule (Import + Api) applies to a lead created through the API channel")
+    @Test(groups = {"crm-order", "group-a", "NDC-2419"}, description = "Rule (Import + Api) applies to a lead created through the API channel")
     public void ruleAppliesToLeadCreatedThroughApi() {
         String ar = activeRule(CrmProcs.assignmentRule(LEADS, "A-01 AR", List.of("Import", "Api"), caseGuard(LEADS, "A-01"),
                 List.of(userV().id()), "LeaveUnassigned", null));
@@ -247,6 +248,8 @@ public class GroupAJTest extends OrderTestBase {
         String id = r.jsonPath().getString("data.id");
         extra.add(new String[]{LEADS, id});
         String source = api.record(importer(), LEADS, id).getString("data.source");
+        // 27 Oct: on an API create the rule's owner is written asynchronously (~2.5 s after the create; the 201 still shows the creator)
+        CrmApi.waitFor(30, () -> userV().id().equals(owner(LEADS, id)));
         String own = owner(LEADS, id);
         traceOf("A-01", LEADS, id);
         System.out.println("[A-01] lead " + id + " source=" + source + " owner=" + who(own) + " arRows=" + arRows(id));
@@ -414,16 +417,18 @@ public class GroupAJTest extends OrderTestBase {
     }
 
     @CaseId("A-08")
-    @Test(groups = {"crm-order", "group-a"}, description = "No entry matches; fallback = Leave unassigned → owner is the importer (not ownerless)")
+    @Test(groups = {"crm-order", "group-a"}, description = "No entry matches; fallback = Leave unassigned → the record stays without owner, as the option says")
     public void fallbackLeaveUnassigned() {
+        // Round 1 (18–19 Oct): ownerless is what the TAVI option promises ("Leave unassigned", execution SkippedNoMatch) — not a bug.
+        // Zoho has no such option (every record gets an owner); that is a parity note, not this test's verdict.
         String ar = activeRule(rule(LEADS, "A-08 AR", List.of("Import", "Api"), "LeaveUnassigned", null, List.of(
                 CrmProcs.arEntry(CrmProcs.and(caseGuard(LEADS, "A-08"), CrmProcs.eq("lead_source", "chat")), List.of(userV().id())))));
         String id = importAndFind(LEADS, layout(LEADS), List.of(leadRow(rn("A-08", "other"), Map.of("lead_source", "other"))), ar).get(0);
         String own = owner(LEADS, id);
         traceOf("A-08", LEADS, id);
         System.out.println("[A-08] lead " + id + " owner=" + who(own) + " (raw " + own + ") arRows=" + arRows(id));
-        Assert.assertNotNull(own, "record is not ownerless");
-        Assert.assertEquals(own, importer().id(), "leave unassigned → owner = the importer");
+        Assert.assertNotEquals(own, userV().id(), "the non-matching lead was assigned to the entry's user");
+        Assert.assertNull(own, "leave unassigned → the lead has no owner");
     }
 
     @CaseId("A-09")
@@ -448,7 +453,28 @@ public class GroupAJTest extends OrderTestBase {
     @CaseId("A-10")
     @Test(groups = {"crm-order", "group-a"}, description = "Availability Online status: signed-out user skipped")
     public void onlineStatusSkipsSignedOutUser() {
-        throw new SkipException("NOT RUN: needs a target user who is reliably signed out; userN/userV are signed in by parallel sessions and signing users out touches shared accounts");
+        // User OK 27 Oct (NDC-2422 Done). The first member is a tenant probe user that never signs in (no session, so offline);
+        // the second is the Supervisor; fallback Default user = CRM Admin B. Control: the same entry without the availability check.
+        String offline = null;
+        for (Object o : CrmUser.ok(adminA().get("/iam/users?app_key=crm"), "users").jsonPath().getList("data")) {
+            Map<?, ?> u = (Map<?, ?>) o;
+            String mail = String.valueOf(u.get("email")).toLowerCase();
+            if ("active".equalsIgnoreCase(String.valueOf(u.get("status"))) && (mail.startsWith("zzsweep") || mail.contains("tavi-probe"))) offline = String.valueOf(u.get("userId"));
+        }
+        if (offline == null) inconclusive("no never-signed-in probe user found to act as the offline member");
+        Map<String, String> got = new LinkedHashMap<>();
+        for (boolean online : new boolean[]{false, true}) {
+            String tag = "A-10" + (online ? "on" : "off");
+            Map<String, Object> entry = CrmProcs.arEntry(caseGuard(LEADS, tag), List.of(offline, supervisor().id()));
+            entry.put("availability", qa.features.deskworkflowrules.Rules.kinded("requireOnline", online, "requireOnShift", false));
+            String ar = activeRule(rule(LEADS, tag + " AR", List.of("Import", "Api"), "DefaultUser", adminB().id(), List.of(entry)));
+            String id = importAndFind(LEADS, layout(LEADS), List.of(leadRow(rn(tag, "imp"), null)), ar).get(0);
+            String own = owner(LEADS, id);
+            got.put(online ? "requireOnline" : "control", own);
+            System.out.println("[A-10] " + (online ? "requireOnline=true" : "control") + " lead " + id + " owner=" + who(own) + " (offline member " + offline + ")");
+        }
+        Assert.assertEquals(got.get("control"), offline, "control: without availability the first member (offline probe user) gets the lead");
+        Assert.assertNotEquals(got.get("requireOnline"), offline, "Online status: the member with no session must be skipped");
     }
 
     @CaseId("A-11")
@@ -591,9 +617,40 @@ public class GroupAJTest extends OrderTestBase {
     }
 
     @CaseId("A-17")
-    @Test(groups = {"crm-order", "group-a"}, description = "Deactivated target user in the Category is skipped → fallback")
+    @Test(groups = {"a17-solo"}, description = "Suspended target user in the Category is skipped → the fallback user gets the record")
     public void deactivatedUserSkipped() {
-        throw new SkipException("NOT RUN – needs user OK: deactivating a user changes a shared account");
+        // User OK 27 Oct (NDC-2411 Done). Runs ALONE (group a17-solo, never with the parallel crm-order classes): test user 2 is
+        // suspended through the API and ALWAYS reactivated in finally, read back; the lane also re-checks it after the run.
+        String vid = userV().id();
+        String ar = activeRule(rule(LEADS, "A-17 AR", List.of("Import", "Api"), "DefaultUser", supervisor().id(), List.of(
+                CrmProcs.arEntry(caseGuard(LEADS, "A-17"), List.of(vid)))));
+        String own = null, status = null;
+        try {
+            Response s = adminA().patch("/iam/users/" + vid, qa.features.deskworkflowrules.Rules.kinded("status", "Suspended"));
+            CrmUser.ok(s, "suspend test user 2");
+            status = userStatus(vid);
+            System.out.println("[A-17] suspend -> " + s.statusCode() + ", listed as " + status);
+            if (!"suspended".equalsIgnoreCase(status)) inconclusive("test user 2 is not listed as suspended: " + status);
+            String id = importAndFind(LEADS, layout(LEADS), List.of(leadRow(rn("A-17", "imp"), null)), ar).get(0);
+            own = owner(LEADS, id);
+            System.out.println("[A-17] lead " + id + " owner=" + who(own));
+        } finally {
+            String back = "?";
+            for (int i = 0; i < 3 && !"active".equalsIgnoreCase(back); i++) {
+                adminA().patch("/iam/users/" + vid, qa.features.deskworkflowrules.Rules.kinded("status", "Active"));
+                CrmUser.sleep(1500);
+                back = userStatus(vid);
+            }
+            System.out.println("[A-17] reactivate test user 2 -> listed as " + back + ("active".equalsIgnoreCase(back) ? "" : "  *** NOT ACTIVE: reactivate by hand ***"));
+        }
+        Assert.assertNotEquals(own, vid, "the suspended member got the record");
+        Assert.assertEquals(own, supervisor().id(), "a suspended member is skipped and the fallback user (Supervisor) gets the record");
+    }
+
+    private String userStatus(String userId) {
+        for (Object o : CrmUser.ok(adminA().get("/iam/users?app_key=crm"), "users").jsonPath().getList("data"))
+            if (userId.equals(((Map<?, ?>) o).get("userId"))) return String.valueOf(((Map<?, ?>) o).get("status"));
+        return "not listed";
     }
 
     // =====================================================================================================
@@ -614,8 +671,10 @@ public class GroupAJTest extends OrderTestBase {
         String ap = api.approvalProcess(CrmProcs.approvalProcess(TASKS, "J-01 AQ", true, false, caseGuard(TASKS, "J-01"),
                 List.of(CrmProcs.levelUsers(supervisor().id())), List.of(adminB().id())));
         res.put("approval", ap + " on=" + api.setApprovalActive(ap, true).statusCode());
-        String bp = api.blueprint(TASKS, CrmProcs.blueprint("tasks", layout(TASKS), null, "status", "J-01 BP", caseGuard(TASKS, "J-01"),
-                List.of("Not Started", "In Progress"), List.of()));
+        // Tasks "status" is datatype status (not pick_list), which the blueprint validator refuses by design (round 1 verdict);
+        // a Tasks blueprint runs on the Priority pick list (see E-15)
+        String bp = api.blueprint(TASKS, CrmProcs.blueprint("tasks", layout(TASKS), null, "priority", "J-01 BP", caseGuard(TASKS, "J-01"),
+                List.of("normal", "high"), List.of()));
         Response bon = api.setBlueprintActive(TASKS, bp, true);
         res.put("blueprint", bp + " on=" + bon.statusCode() + (bon.statusCode() / 100 == 2 ? "" : " " + cut(bon)));
         System.out.println("[J-01] " + res);

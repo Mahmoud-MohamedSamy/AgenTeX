@@ -1,0 +1,9 @@
+{ "out": "W1-B4-vs-zoho.png", "ticket": "W1-B4", "title": "Company profile: the audit log says the time zone changed from blank to UTC, but the company time zone stayed Africa/Cairo", "verdict": "FAIL", "label": "BUG · Low", "date": "2 Nov 2026", "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner · Zoho Desk: techsolutionsegypt (Enterprise trial), admin · Edge",
+  "panels": [
+    { "img": "bugs/W1-B4-1-audit-list.png", "w": 1280, "h": 720, "caption": "TAVI · Setup › Audit Log · company saves of 11:43 (only phone and website were edited)", "boxes": [ { "b": [410, 576, 940, 602], "n": 1 } ] },
+    { "img": "bugs/zoho-B4-1-audit.png", "w": 1600, "h": 900, "caption": "Zoho · Privacy and Security › Audit Log · newest entries are from 1 Nov; today's company edits are not listed", "boxes": [ { "b": [0, 276, 1585, 316], "n": 3 } ] },
+    { "img": "bugs/W1-B4-3-company-page.png", "w": 1280, "h": 720, "caption": "TAVI · Setup › Company · stored time zone after those saves", "boxes": [ { "b": [784, 664, 905, 703], "n": 2 } ] } ],
+  "rows": [
+    [1, "Audit entry for a company save that did not touch the time zone", "Not comparable: Zoho's audit log has no entry for company profile edits (see 3).", "\"ndc-staging-owner updated Wonder Travel's time zone from blank value to UTC\" (two entries at 11:43; an earlier one says blank → Africa/Cairo). The time zone was not changed.", "BUG"],
+    [2, "Stored company time zone", "Not checked.", "Company page shows Africa/Cairo. The API read the same unchanged record (same updated_at) once as UTC (version 0) and then as Africa/Cairo (version 1).", "BUG"],
+    [3, "Company edits in the audit log", "Today's company phone and website edits (made and set back for W1-B1) do not appear; the newest entries are from 1 Nov.", "Company edits are logged, field by field.", "INFO"] ] }

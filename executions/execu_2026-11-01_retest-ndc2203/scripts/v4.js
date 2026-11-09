@@ -1,0 +1,13 @@
+const out = {}; const id = 'df2b2aa7-282b-43dd-8a7d-4ef002dbeb0e';
+await go('/views/all/tickets/' + id, 12000);
+await page.getByText('Customer Support', { exact: true }).first().click(); await sleep(1500);
+await page.getByText('Choose a department', { exact: true }).first().click(); await sleep(1000);
+out.opts = await page.locator('[role=option]').allInnerTexts();
+await page.locator('[role=option]', { hasText: /^HR$/ }).first().click().catch(e => out.e1 = String(e.message).slice(0, 80)); await sleep(800);
+await page.getByRole('button', { name: 'Move', exact: true }).click().catch(e => out.e2 = String(e.message).slice(0, 80)); await sleep(6000);
+await shot('v3-656-after-move'); out.after = (await txt()).split('\n').filter(l => /moved|denied|error|HR/i.test(l)).slice(0, 6);
+out.hist = arr((await api('GET', `/desk/tickets/${id}/activity`)).j?.data).filter(a => /department|moved/.test(a.action)).map(a => a.action + ' ' + JSON.stringify(a.summary).slice(0, 200));
+const openHist = async () => { for (let i = 0; i < 4; i++) { const h = page.getByText(/^History$/i).first(); if (await h.isVisible().catch(() => false)) { await h.click(); await sleep(4000); return true; } const nx = page.locator('button:right-of(:text("PARENT-CHILD"))').first(); await nx.click().catch(() => {}); await sleep(700); } return false; };
+await go('/views/all/tickets/' + id, 12000); out.histTab = await openHist(); await shot('v3-656-history');
+out.ui = (await txt()).split('\n').filter(l => /Department|department_id|7e1ac409|08fd8684|HR|Customer Support|moved/i.test(l)).slice(0, 14);
+return done(out);

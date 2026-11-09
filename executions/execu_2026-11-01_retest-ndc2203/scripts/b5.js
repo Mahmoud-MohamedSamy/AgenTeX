@@ -1,0 +1,13 @@
+const AY = 'ea827d0d-349b-4db5-b552-80cb1a1efaac';
+const g = (await api('GET', `/modules/784400e1-4a2a-42c2-b4f3-7ca56e79828a/records/${AY}`)).j?.data; const acc = {}; for (const x of g?.data || []) acc[x.field] = val(x.value);
+const cmt = tag => [{ type: 'AddTicketComment', order: 0, commentBody: `QA WF ${tag} fired`, commentPublic: false }];
+const rule = async (tag, cond) => { const r = await api('POST', '/workflow/rules', { moduleId: T, name: `QA WF ${tag}`, isActive: true, mode: 'Recurring', trigger: { kind: 'RecordCreated' }, criteria: and(guard(`QA WF ${tag} `), cond), actions: cmt(tag) }); if (r.j?.data?.id) track('rule', r.j.data.id, tag); return r.s; };
+const out = { account: { name: acc.account_name, desc: acc.description } };
+out.r1 = await rule('E1a2', { kind: 'StringMatch', field: 'account_id.account_name', operator: 'Contains', stringValue: 'QA WF E1', caseInsensitive: false });
+out.r2 = await rule('E3odF', { kind: 'Comparison', field: 'isOverdue', operator: 'Equal', negate: false, value: { kind: 'bool', boolValue: false } });
+const due = d => new Date(Date.now() + d * 864e5).toISOString();
+const tk = {}; tk.E1a2Y = (await mkTicket('E1a2', { account_id: AY })).id; tk.E1a2N = (await mkTicket('E1a2')).id;
+tk.E3odF_past = (await mkTicket('E3odF', { due_date: due(-1) })).id; tk.E3odF_future = (await mkTicket('E3odF', { due_date: due(5) })).id;
+await sleep(15000);
+for (const [k, id] of Object.entries(tk)) out[k] = arr((await api('GET', `/desk/tickets/${id}/comments`)).j?.data).filter(c => /fired/.test(c.body_html)).map(c => c.body_html);
+return fin(out);

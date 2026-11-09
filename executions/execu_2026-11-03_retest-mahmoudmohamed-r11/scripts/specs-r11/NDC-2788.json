@@ -1,0 +1,96 @@
+{
+ "out": "NDC-2788-retest-PASS.png",
+ "ticket": "NDC-2788",
+ "title": "Blueprint | Actions set at a state's warning never run (webhook or custom action); actions when the time runs out do run",
+ "priority": "high",
+ "verdict": "PASS",
+ "env": "staging-desk / staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API",
+ "date": "3 Nov 2026",
+ "panels": [
+  {
+   "img": "NDC-2788-api.png",
+   "caption": "API evidence — NDC-2788 · Dept QA RT11 Dept A, Open state 2 min (calendar), warning 1 min before",
+   "crop": [
+    0,
+    0,
+    1600,
+    339
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      206
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      274
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      280,
+      1566,
+      321
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "warning action",
+   "Runs once at the warning",
+   "warning due 13:56:00 UTC → Priority low → High at 13:56:16 (history, system), once",
+   "PASS"
+  ],
+  [
+   "2",
+   "time-out action",
+   "Runs once at the limit",
+   "due 13:57:00 → Description set at 13:57:17, once",
+   "PASS"
+  ],
+  [
+   "3",
+   "old key",
+   "Mistake no longer silent",
+   "422 \"'slaWarning' is not a state setting, so it would be ignored. The warning's actions go in slaPreExpiryEscalation…\"",
+   "PASS"
+  ],
+  [
+   "4",
+   "receiver",
+   "—",
+   "no external test inbox used",
+   "INFO"
+  ]
+ ]
+}

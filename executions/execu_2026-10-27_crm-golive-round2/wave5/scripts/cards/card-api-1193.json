@@ -1,0 +1,22 @@
+{
+ "out": "api-1193.png",
+ "title": "NDC-1193 — blank record through the API (CRM Admin A, 28 Oct 2026)",
+ "lines": [
+  [
+   "POST /modules/{Customers}/records {layout_id: Standard, data: []} -> 201 Created   (Name is required on Customers)",
+   "bad"
+  ],
+  [
+   "Same blank body on the QA module (required pick list) -> 422 (control)",
+   "ok"
+  ],
+  [
+   "Ingest API {} on the QA module -> 201, compliance_state \"incomplete\" (required Name and Email missing)",
+   "bad"
+  ],
+  [
+   "The blank Customers records were deleted and purged from the recycle bin at once",
+   "info"
+  ]
+ ]
+}

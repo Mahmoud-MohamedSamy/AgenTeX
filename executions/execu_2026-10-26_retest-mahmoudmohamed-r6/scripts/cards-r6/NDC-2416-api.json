@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2416-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2416 · A User-profile user tries to set their own reporting manager (automation crmhierarchy)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "G9 userCannotSetOwnManager",
+   "nameb56175 (no iam.personal.reporting_hierarchy): PUT /api/v1/iam/me/profile {reporting_manager_id}",
+   "403 — manager changed = false",
+   "ok"
+  ],
+  [
+   "A8 userCannotAssignManager",
+   "nameb56175: PATCH /api/v1/iam/users/{valafo4080}/reporting-manager",
+   "403 FORBIDDEN \"Cannot assign a reporting manager for this user.\" — changed = false",
+   "ok"
+  ],
+  [
+   "A7 permission",
+   "iam.personal.reporting_hierarchy",
+   "owner = false, User profile = false (no CRM profile grants it)",
+   "info"
+  ],
+  [
+   "restore",
+   "manager of test user 1",
+   "204 — baseline restored (\"no difference from the baseline\")",
+   "info"
+  ]
+ ]
+}

@@ -1,0 +1,17 @@
+{ "out": "NDC-2758-vs-zoho.png", "ticket": "NDC-2758", "label": "BUG", "taviHead": "TAVI Desk (API panel, ticket, designer)", "zohoHead": "Zoho Desk (Create Blueprint, top right)",
+  "title": "Entry criteria in an unknown format are accepted, then the blueprint catches every ticket",
+  "verdict": "FAIL", "date": "1 Nov 2026", "env": "TAVI: staging-desk.taviportal.com, org Anyware, owner, QA WF Dept R (QA blueprint + ticket #966, deleted after) · Zoho: Zoho Desk Enterprise trial, Setup › Blueprint › Create Blueprint (read only)",
+  "panels": [
+    { "img": "NDC-2758-api.png", "caption": "TAVI API: criteria in the workflow-rule format → 201 Created; non-matching ticket enters", "w": 1600, "h": 1000, "crop": [0,0,1600,1000], "boxes": [] },
+    { "img": "zoho-create-blueprint.png", "caption": "Zoho Create Blueprint: Specific Records (conditions) or All Records is an explicit choice", "w": 1600, "h": 1000, "crop": [220,100,800,330],
+      "boxes": [ { "b": [278,308,600,372], "n": 1 }, { "b": [686,308,960,372], "n": 3 } ] },
+    { "img": "NDC-2758-ticket.png", "caption": "TAVI ticket #966 \"QA BP N2 other subject\" is inside the blueprint, Status locked", "w": 1600, "h": 1000, "crop": [360,60,1240,760],
+      "boxes": [ { "b": [676,70,945,130], "n": 2 }, { "b": [678,136,894,158], "n": 2 }, { "b": [372,388,656,585], "n": 2 }, { "b": [388,735,640,808], "n": 2 } ] },
+    { "img": "NDC-2758-designer.png", "caption": "TAVI designer of the same blueprint: Criteria says \"Tickets that match\", Status Active", "w": 1600, "h": 1000, "crop": [860,110,740,520],
+      "boxes": [ { "b": [1310,244,1585,288], "n": 3 }, { "b": [1310,346,1520,372], "n": 3 } ] }
+  ],
+  "rows": [
+    [1, "Saving entry criteria the app cannot read", "Criteria are built in Setup from field pickers (Specific Records + conditions). Saving unreadable criteria through an API: not checked.", "The API accepts a criteria body in another format (the workflow-rule shape {kind, operator, stringValue}) and answers 201 Created. No error.", "BUG"],
+    [2, "A ticket that does not match the criteria", "Only records that meet the conditions enter the blueprint (Specific Records).", "Ticket #966 \"QA BP N2 other subject\" does not start with \"QA BP N2-ONLY \" but enters the blueprint at Open; its Status is locked by it.", "BUG"],
+    [3, "Applying a blueprint to every ticket", "\"All Records\" is a separate, visible choice: \"The Blueprint will be applied to all records.\"", "The designer still shows Criteria \"Tickets that match\" while the blueprint behaves as all tickets, so the admin cannot see it.", "DIFFERS"]
+  ] }

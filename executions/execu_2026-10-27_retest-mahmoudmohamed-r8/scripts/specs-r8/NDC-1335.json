@@ -1,0 +1,126 @@
+{
+ "out": "NDC-1335-retest-PASS.png",
+ "ticket": "NDC-1335",
+ "title": "Modules and Fields | Saving a layout fails with \"Failed to update options for Subform\" when the layout has no subform — a 404 on a non-existent field",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "v40-after-save.png",
+   "caption": "New Leads layout with predefined fields only (Name, Created/Modified Time/By) after Save: no Subform error, layout created.",
+   "crop": [
+    332,
+    56,
+    1268,
+    520
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      356,
+      340,
+      1576,
+      568
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1532,
+      66,
+      1586,
+      98
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1335-api.png",
+   "caption": "API / automation evidence — New Leads layout with predefined fields only — Save (layout builder network)",
+   "crop": [
+    0,
+    0,
+    1600,
+    292
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      206
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      274
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Screen",
+   "—",
+   "New Leads layout with predefined fields only (Name, Created/Modified Time/By) after Save: no Subform error, layout created.",
+   "PASS"
+  ],
+  [
+   "2",
+   "Screen",
+   "—",
+   "New Leads layout with predefined fields only (Name, Created/Modified Time/By) after Save: no Subform error, layout created.",
+   "INFO"
+  ],
+  [
+   "3",
+   "first Save",
+   "Saves, no Subform / field error",
+   "201 — layout 78288b9b created; no PUT on any field, no \"Failed to update options for Subform\"",
+   "PASS"
+  ],
+  [
+   "4",
+   "second Save",
+   "Updates the same layout",
+   "200 — same layout updated; still one \"New Layout\" (no duplicate)",
+   "PASS"
+  ],
+  [
+   "5",
+   "round 4 (26 Oct)",
+   "Was 422 on the Subform field",
+   "PUT /fields/5dd25be0 (Subform, 0 subfields) → 422; layout not created — gone now",
+   "INFO"
+  ]
+ ]
+}

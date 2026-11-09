@@ -1,0 +1,13 @@
+await page.goto(B + '/', { waitUntil: 'domcontentloaded' }); await sleep(6000);
+const reqs = []; const h = q => { if (q.url().includes('/api/v1/settings') && q.method() !== 'GET') reqs.push(q.method() + ' ' + q.url().split('/api/v1')[1] + ' ' + (q.postData() || '').slice(0, 300)); };
+page.on('request', h);
+await page.locator('header button:has-text("EN")').first().click(); await sleep(800);
+out.options = await page.$$eval('[role=menu] [role=menuitem], [role=listbox] [role=option], header button', es => es.map(e => e.innerText.trim()).filter(t => t && t.length < 30));
+await page.screenshot({ path: RAW + 'ar-switcher.png' });
+await page.locator('text=العربية').first().click(); await sleep(6000);
+page.off('request', h);
+out.reqs = reqs;
+out.after = await page.evaluate(() => ({ lang: localStorage.getItem('anyware_language'), html: document.documentElement.lang, dir: document.documentElement.dir }));
+const keys = ['language'].map(k => ({ app_key: 'general', key: 'general.user.locale.' + k, scope_type: 'User' }));
+out.stored = (await api('POST', '/settings/resolved-batch', { items: keys })).t.slice(0, 400);
+await page.screenshot({ path: RAW + 'ar-home.png' });

@@ -1,0 +1,82 @@
+{
+  "note": "DRAFT ONLY — nothing posted. Waiting for the user's approval and filing fields.",
+  "project_id": "efce4d84-5876-4015-b472-2efca7ad73f3",
+  "bugs": [
+    {
+      "key": "B-2",
+      "name": "Round robin gives tickets to agents whose Email channel is off",
+      "priority": "high",
+      "labels": [
+        "5ad0a95a-678e-4485-845d-bb93c27dce36"
+      ],
+      "attach": "screenshots/annotated/B2-email-channel-off-vs-zoho.png",
+      "description_html": "<p>Round robin treats an agent as available when they are signed in, even if their Email channel is off. Zoho Desk assigns round-robin tickets only to agents who are online in the ticket's channel. Agents who are fully signed out are skipped correctly.</p><p><strong>Steps</strong></p><ol><li>Setup → Automation → Assignment Rules → Round Robin: in a department, make a Sequential round-robin rule on Ticket Create with agents A1, A2 and A3. Round Robin Preferences: \"Assign to offline agents\" off.</li><li>Sign in as A1, A2 and A3. A2 turns their Email channel off (Chat and Phone stay on).</li><li>Create 3 tickets in that department.</li><li>Turn the Email channel off for all three agents and create one more ticket.</li></ol><p><strong>Expected</strong></p><p>A2 is skipped (History lists A2 as SKIPPED) and the tickets go to A1 and A3 only. With Email off for all three agents, the ticket waits unassigned in the backlog.</p><p><strong>Actual</strong></p><p>A2 still gets its turn and is not shown as SKIPPED. With Email off for all three agents, the ticket is still assigned (to A1). The presence API shows these agents as <code>online: true</code> with <code>channels.email: false</code>.</p><p><strong>Notes</strong></p><ul><li>Re-checked on the 7 Nov build: same result.</li><li>An agent who signs out completely is skipped and listed as SKIPPED, so only the channel check is missing.</li></ul><p><strong>Environment</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner ndc-staging-owner; agents Test User 1 (A1), Mahmoud Samy (A2), Dev Team 2 (A3); departments QA AS6 Dept A / Dept B, team QA AS6 Team A. Found 6–7 Nov 2026.</p><p><strong>Evidence</strong></p><p>B2-email-channel-off-vs-zoho.png (attached): TAVI on the left, Zoho Desk on the right, same box numbers on both sides.</p>",
+      "relate_to": [
+        "NDC-2275",
+        "NDC-1978"
+      ]
+    },
+    {
+      "key": "B-3",
+      "name": "Team Assignment off: the assign API still gives a ticket to a team",
+      "priority": "medium",
+      "labels": [
+        "5ad0a95a-678e-4485-845d-bb93c27dce36"
+      ],
+      "attach": "screenshots/annotated/B3-team-assignment-off-api-vs-zoho.png",
+      "description_html": "<p>With a department's Team Assignment switch off, the screens correctly allow only agents, but the assign API still accepts a team.</p><p><strong>Steps</strong></p><ol><li>Setup → Automation → Assignment Rules → Team Assignment: turn Team Assignment off for the department.</li><li>Open a ticket in that department: the owner picker shows AGENTS only (correct).</li><li>Call <code>POST /desk/tickets/{id}/assign</code> with <code>{\"team_id\": \"&lt;a team of that department&gt;\"}</code>.</li></ol><p><strong>Expected</strong></p><p>The request is refused (as new rules with a team target are refused with <code>team_assignment_off</code>). TAVI's own help text says \"Off: only agents can be chosen.\"</p><p><strong>Actual</strong></p><p>The request returns 200 and the ticket gets the team. Ticket #1189 shows Owner \"QA AS6 Team A\" while Team Assignment is off.</p><p><strong>Notes</strong></p><ul><li>Only the API is affected. On the ticket screen the owner picker shows AGENTS only when Team Assignment is off, and AGENTS + TEAMS when it is on.</li></ul><p><strong>Environment</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner ndc-staging-owner; agents Test User 1 (A1), Mahmoud Samy (A2), Dev Team 2 (A3); departments QA AS6 Dept A / Dept B, team QA AS6 Team A. Found 6–7 Nov 2026.</p><p><strong>Evidence</strong></p><p>B3-team-assignment-off-api-vs-zoho.png (attached): TAVI on the left, Zoho Desk on the right, same box numbers on both sides.</p>",
+      "relate_to": [
+        "NDC-2275",
+        "NDC-1978"
+      ]
+    },
+    {
+      "key": "B-4",
+      "name": "New Ticket form shows the current agent as owner but saves the ticket unassigned",
+      "priority": "medium",
+      "labels": [
+        "5ad0a95a-678e-4485-845d-bb93c27dce36"
+      ],
+      "attach": "screenshots/annotated/B4-new-ticket-owner-not-saved-vs-zoho.png",
+      "description_html": "<p>The New Ticket form opens with Ticket Owner filled in with the signed-in agent, but saving without touching that field does not send the owner. The ticket is saved Unassigned, or it is assigned by round robin to someone else. This appeared after the NDC-2275 fix of 6 Nov, which says a ticket created with the form's default owner keeps it.</p><p><strong>Steps</strong></p><ol><li>Sign in as an agent (here ndc-staging-owner) and open Tickets → New Ticket.</li><li>Check Ticket Owner: it shows the signed-in agent.</li><li>Fill in the required fields, leave Ticket Owner unchanged and save. (1) in a department with no assignment rules; (2) in a department with a round-robin rule on Ticket Create.</li></ol><p><strong>Expected</strong></p><p>The ticket is saved with the owner the form showed (the signed-in agent).</p><p><strong>Actual</strong></p><p>(1) Ticket #1200 (Dept B, no rules) is saved Unassigned. (2) Ticket #1199 goes to Dev Team 2 through round robin, although the form showed ndc-staging-owner. The create request has no <code>owner</code> field.</p><p><strong>Notes</strong></p><ul><li>Zoho Desk (seen 7 Nov): the Add Ticket form also pre-fills Ticket Owner with the signed-in agent. The Zoho form was not submitted.</li><li>Clearing Ticket Owner on purpose works correctly: round robin assigns the ticket.</li></ul><p><strong>Environment</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner ndc-staging-owner; agents Test User 1 (A1), Mahmoud Samy (A2), Dev Team 2 (A3); departments QA AS6 Dept A / Dept B, team QA AS6 Team A. Found 6–7 Nov 2026.</p><p><strong>Evidence</strong></p><p>B4-new-ticket-owner-not-saved-vs-zoho.png (attached): TAVI on the left, Zoho Desk on the right, same box numbers on both sides.</p>",
+      "relate_to": [
+        "NDC-2275",
+        "NDC-1978"
+      ]
+    },
+    {
+      "key": "B-5",
+      "name": "Assignment rule \"on a holiday of\" never matches a holiday list that is not linked to business hours",
+      "priority": "medium",
+      "labels": [
+        "5ad0a95a-678e-4485-845d-bb93c27dce36"
+      ],
+      "attach": "screenshots/annotated/B5-holiday-list-not-attached-vs-zoho.png",
+      "description_html": "<p>A holiday list can be saved without business hours, and the rule criteria picker offers it. But the criterion \"Execution Time — on a holiday of &lt;list&gt;\" ignores such a list, so its holidays are treated as working days.</p><p><strong>Steps</strong></p><ol><li>Setup → Holidays: create the list \"QA AS6 HOL today\" with one holiday today (7 Nov 2026) and the business hours switch off.</li><li>Assignment Rules → Direct Assignment: rule \"QA AS6 B08 holiday\" with target 1 = Execution Time on a holiday of \"QA AS6 HOL today\" → A1, and target 2 = not a holiday of the same list → A2.</li><li>Create a ticket matching target 1 and another matching target 2.</li><li>Link the same list to a business-hours profile (\"QA AS6 BH\", not the default) and repeat.</li></ol><p><strong>Expected</strong></p><p>Today is a holiday of that list: \"on a holiday\" matches and \"not a holiday\" does not, whether or not the list is linked to business hours. Otherwise the picker should not offer lists that are not linked.</p><p><strong>Actual</strong></p><p>With the list not linked: \"on a holiday\" does not match (#1229, re-run #1252 stay Unassigned), and \"not a holiday\" does match (#1230 → A2, re-run #1254 → A2). With the list linked to \"QA AS6 BH\", the same rule works: #1233 → A1, #1234 Unassigned.</p><p><strong>Notes</strong></p><ul><li>A list that is not linked, with a holiday on 25 Dec, behaves correctly on other days (#1231 no match, #1232 → A3).</li><li>Zoho Desk (seen): a holiday list can also be saved with Business Hours off. How Zoho rules treat such a list was not checked.</li></ul><p><strong>Environment</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner ndc-staging-owner; agents Test User 1 (A1), Mahmoud Samy (A2), Dev Team 2 (A3); departments QA AS6 Dept A / Dept B, team QA AS6 Team A. Found 6–7 Nov 2026.</p><p><strong>Evidence</strong></p><p>B5-holiday-list-not-attached-vs-zoho.png (attached): TAVI on the left, Zoho Desk on the right, same box numbers on both sides.</p>",
+      "relate_to": [
+        "NDC-2275",
+        "NDC-1978"
+      ]
+    }
+  ],
+  "comments": [
+    {
+      "item": "NDC-2275",
+      "current_state": "Ready For Test",
+      "proposed_state": "Done (new bugs filed separately and linked) — or Bug, your choice",
+      "comment_html": "<p><strong>Retest — 7 Nov 2026: the round robin on Ticket Create fix passes.</strong> New issues found during the full test are filed as separate bugs (linked).</p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner ndc-staging-owner; agents Test User 1 (A1), Mahmoud Samy (A2), Dev Team 2 (A3); departments QA AS6 Dept A / Dept B, team QA AS6 Team A<br>Method: API scripts and screen; agents kept online by a presence script.</p><p>Checked:</p><ul><li>Round robin on Ticket Create, API create with owner null and with no owner key → assigned by the RR rule; owner is not the creator <strong>[PASS]</strong></li><li>New Ticket form with Ticket Owner cleared → RR assigns the next agent <strong>[PASS]</strong></li><li>All agents offline at create → ticket waits Unassigned (backlog) <strong>[PASS]</strong></li><li>Direct rule moves a ticket to a department Unassigned → that department's RR assigns it in the same event (trigger \"moved\") <strong>[PASS]</strong></li><li>\"Push new tickets into the backlog first\" → Unassigned at create, assigned by the backlog run after about 50 s <strong>[PASS]</strong></li><li>Skill added on create → skill-based RR assigns in the same event <strong>[PASS]</strong></li><li>Team pool with \"Exclude agents\" (pool A2 + A3, A2 excluded) → 4 tickets all to A3 <strong>[PASS]</strong></li><li>Agent threshold counts open + On Hold tickets, not Closed <strong>[PASS]</strong></li><li>No notification when a rule re-runs and the owner does not change (#1272) <strong>[PASS]</strong></li><li>Department \"new ticket\" alert → each department agent notified once, creator not notified <strong>[PASS]</strong></li><li>Criteria: contact and account fields, \"no criteria\" target, during / outside business hours, holiday list linked to business hours <strong>[PASS]</strong></li><li>Conversion report in the Audit Log (actor \"Assignment conversion report\", 4 Nov 17:50 Cairo, 15 rules + 1 department) <strong>[PASS]</strong></li><li>Tickets created before the conversion (56) keep their owner, team and department <strong>[PASS]</strong></li><li>E2E: direct move → sequential RR + notifications; skill RR + assign on closure; sign-out → skip → backlog → assign backlogs <strong>[PASS]</strong></li><li>Holiday list not linked to business hours → \"on a holiday\" never matches <strong>[FAIL]</strong> → B-5 bug</li><li>New Ticket form with the default owner left as is → saved Unassigned or assigned by RR <strong>[FAIL]</strong> → B-4 bug (this contradicts the fix note \"a ticket created with an owner keeps it, including the form's default of the current agent\")</li><li>Email channel off → agent still gets RR tickets <strong>[FAIL]</strong> → B-2 bug (also seen on 6 Nov)</li><li>Team Assignment off → assign API still accepts a team <strong>[FAIL]</strong> → B-3 bug (screens are correct)</li></ul><p>To decide (not filed as bugs):</p><ul><li>The agent threshold counts the agent's open tickets in <strong>every</strong> department, not only the rule's department (A1: Dept A 60 + Dept B 6 = 66 counted). The help text says \"Maximum number of open tickets an agent in the department can handle\". How Zoho counts was not checked.</li><li>Audit Log conversion entries read as if nothing changed (\"type from round_robin to round_robin\", \"ID from f2d1… to f2d1…\"), the precedence change shows raw rule ids, and the \"Assignment conversion report\" actor cannot be picked in the users filter.</li></ul><p>Not run: the 30-day rule (data cannot be aged on staging); tickets arriving by email, web form or import.</p><p>Full report: executions/execu_2026-11-06_desk-assignment-skills/report.html</p>"
+    },
+    {
+      "item": "NDC-2752",
+      "current_state": "Done",
+      "proposed_state": "no change (comment only)",
+      "comment_html": "<p><strong>Skills retest — 6–7 Nov 2026, as part of the full Assignment Rules test: all pass.</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner ndc-staging-owner; agents Test User 1 (A1), Mahmoud Samy (A2), Dev Team 2 (A3); departments QA AS6 Dept A / Dept B, team QA AS6 Team A</p><ul><li>Skills, preferences and order per department; name / type required, 100 characters max, duplicate refused <strong>[PASS]</strong></li><li>Inactive skill is never added; agents on the skill form match the Agent Skills tab; search and filters <strong>[PASS]</strong></li><li>Skills added on create and on update, in list order; per-ticket Recalculate removes a stale skill <strong>[PASS]</strong></li><li>Ticket ⋯ menu → Assign by Skills: assigns a holder; clear messages for \"no active skills\" and \"no holder online\" <strong>[PASS]</strong></li><li>Limits: 10 skills per ticket, 30 active per department <strong>[PASS]</strong></li><li>Skill-based round robin, including in the same event as the skill being added <strong>[PASS]</strong></li><li>Where-used lists RR rule, workflow, agents and open tickets; skill name with HTML is shown as text <strong>[PASS]</strong></li></ul><p>Notes (not bugs, Zoho behaviour not checked):</p><ul><li>Assign by Skills on a ticket that already has an owner reassigns it (A1 → A2) with no warning.</li><li>Deleting a skill type that skills still use now returns 409 (on 1 Nov it left the skills without a type).</li></ul>"
+    },
+    {
+      "item": "NDC-1978",
+      "current_state": "Ready For Test",
+      "proposed_state": "Done, or keep in Ready For Test until B-2..B-5 are fixed — your choice",
+      "comment_html": "<p><strong>Full test — 6–7 Nov 2026 on NDC-Staging: Assignment Rules (NDC-2275) and Skills (NDC-2752).</strong></p><p>About 100 cases plus 3 end-to-end journeys: 93 pass, 4 pass with a failing part, 1 fail, 1 not run (the 30-day rule). Skills: all pass. The round robin on Ticket Create fix on NDC-2275 passes.</p><p>Open bugs from this test (linked):</p><ul><li>B-2 (High) Round robin gives tickets to agents whose Email channel is off</li><li>B-3 (Medium) Team Assignment off: the assign API still gives a ticket to a team</li><li>B-4 (Medium) New Ticket form shows the current agent as owner but saves the ticket unassigned</li><li>B-5 (Medium) \"On a holiday of\" never matches a holiday list that is not linked to business hours</li></ul><p>Details and the open questions are in the NDC-2275 comment of 7 Nov.</p>"
+    }
+  ]
+}

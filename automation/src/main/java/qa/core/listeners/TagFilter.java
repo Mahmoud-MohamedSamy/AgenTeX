@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  *   -Dfeature=deskworkflowrules      only that feature's package
  *   -Dtags=smoke,NDC-2205            tests in ANY of these TestNG groups (bug ids are groups)
  *   -Dcases=WFR-001,WFR-014          tests carrying these @CaseId values
+ *   -DexcludedGroups=tenant-wide     drop tests in ANY of these groups (also works with -Dsuite, where Surefire ignores it)
  */
 public class TagFilter implements IMethodInterceptor {
     @Override
@@ -22,9 +23,11 @@ public class TagFilter implements IMethodInterceptor {
         String feature = prop("feature");
         Set<String> tags = set(prop("tags"));
         Set<String> cases = set(prop("cases"));
+        Set<String> excluded = set(prop("excludedGroups"));
         return methods.stream().filter(m -> {
             var tm = m.getMethod();
             if (!feature.isEmpty() && !tm.getRealClass().getPackageName().contains(".features." + feature.toLowerCase())) return false;
+            if (Arrays.stream(tm.getGroups()).anyMatch(g -> excluded.contains(g.toLowerCase()))) return false;
             if (!tags.isEmpty() && Arrays.stream(tm.getGroups()).noneMatch(g -> tags.contains(g.toLowerCase()))) return false;
             if (!cases.isEmpty()) {
                 CaseId c = tm.getConstructorOrMethod().getMethod().getAnnotation(CaseId.class);

@@ -1,0 +1,11 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+const rx = page.getByPlaceholder('e.g. ^[A-Z]{2}[0-9]{4}$'); await rx.fill('^01[0125]\d{8}$'); await sleep(500);
+await shot('2423-03-regex-set');
+await page.getByRole('button', { name: 'Apply', exact: true }).last().click(); await sleep(1500);
+await rowMenu('QA RT email r6', /Mark as Unique/i); await sleep(800);
+await rowMenu('QA RT email r6', /Mark as Required/i); await sleep(800);
+await shot('2423-04-email-marked');
+const resp = []; const f = async r => { const q = r.request(); if (q.method() !== 'GET' && q.url().includes('/modules/')) resp.push(q.method() + ' ' + q.url().replace(/^.*\/api\/v1/, '').slice(0, 100) + ' → ' + r.status() + ' ' + (q.postData() || '').slice(0, 160)); }; page.on('response', f);
+await page.getByRole('button', { name: 'Save', exact: true }).click({ force: true }); await sleep(2000); const sa = page.getByRole('button', { name: /Save anyway/i }); if (await sa.count()) await sa.click(); await sleep(10000); page.off('response', f);
+const fl = arr((await api('GET', `/modules/${L}/fields`)).j?.data).filter(x => /QA RT (phone|email) r6/.test(x.labels?.en || '')).map(x => ({ api: x.apiName, cfg: JSON.stringify({ c: x.config, o: x.datatypeOptions }).slice(0, 300), unique: x.unique, required: x.required }));
+return done({ resp: resp.map(r => r.replace(/"layout":.*$/, '…')), fl });

@@ -1,0 +1,1 @@
+import{n as e}from"./react-vendor-DkHM6MDj.js";import{Yf as t}from"./index-De3hTVb3.js";import{n}from"./ApprovalProcessesPanel-BFwDaiD6.js";var r=e();function i(){return(0,r.jsx)(t,{children:(0,r.jsx)(`div`,{className:`min-h-full`,style:{background:`var(--bg-main)`},children:(0,r.jsx)(n,{})})})}export{i as ApprovalProcessesPage,i as default};

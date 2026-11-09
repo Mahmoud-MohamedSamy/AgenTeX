@@ -1,0 +1,2 @@
+const T='88e8ea44-1658-4df3-9930-d0902b91073d';const F=arr((await api('GET','/modules/'+T+'/fields')).j.data);
+return F.filter(x=>['decimal','currency','single_line'].includes(x.datatypeKey)&&x.isCustomField).map(x=>x.datatypeKey+' | '+(x.labels&&(x.labels.en||x.labels.EN)||JSON.stringify(x.labels).slice(0,40))+' | '+x.fieldName+' | '+JSON.stringify((x.layouts||[]).map(l=>l.name||l.layoutName||l)).slice(0,120));

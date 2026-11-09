@@ -1,0 +1,13 @@
+var fs=require('fs');var RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog';
+var T='88e8ea44-1658-4df3-9930-d0902b91073d';
+var IDS=fs.existsSync(RUN+'/out/ids.json')?JSON.parse(fs.readFileSync(RUN+'/out/ids.json','utf8')):{};
+var saveIds=()=>fs.writeFileSync(RUN+'/out/ids.json',JSON.stringify(IDS,null,1));
+var LED=m=>fs.appendFileSync(RUN+'/ledger.md','- '+new Date().toISOString().slice(0,19)+' '+m+'\n');
+var E=r=>r.j&&r.j.error?(r.j.error.code+': '+r.j.error.message+' '+JSON.stringify(r.j.error.details||'')).slice(0,400):undefined;
+var sh=r=>({s:r.s,e:E(r),d:r.j&&r.j.data?JSON.stringify(r.j.data).slice(0,400):r.t.slice(0,300)});
+var enc=v=>v===null?{kind:'null'}:typeof v==='number'?{kind:'number',value:v}:typeof v==='boolean'?{kind:'boolean',value:v}:{kind:'string',value:String(v)};
+var body=vals=>({data:Object.entries(vals).map(([f,v])=>({field:f,value:enc(v)}))});
+var fl=r=>{const o={id:r.id};for(const x of (r.data||[])){const v=x.value||{};o[x.field]=v.kind==='array'?(v.items||[]).map(i=>i.value):v.value!==undefined?v.value:(v.kind==='null'?null:v);}return o;};
+var mkTicket=async(subject,extra={})=>{const r=await api('POST','/modules/'+T+'/records',body({subject,department:IDS.dept,email:'qa.rt9@example.com',...extra}));var d=r.j&&r.j.data;var id=d&&(d.id||(d.record&&d.record.id));if(id){(IDS.tickets=IDS.tickets||[]).push(id);saveIds();LED('ticket "'+subject+'" '+id);}return{s:r.s,id,e:E(r),o:d&&d.data?fl(d):d&&JSON.stringify(d).slice(0,300)};};
+var getT=async id=>{const r=await api('GET','/modules/'+T+'/records/'+id);return r.j&&r.j.data?fl(r.j.data):{err:r.s};};
+var patchT=async(id,vals)=>{const r=await api('PATCH','/modules/'+T+'/records/'+id,body(vals));return{s:r.s,e:E(r)};};

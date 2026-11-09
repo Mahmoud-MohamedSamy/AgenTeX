@@ -1,0 +1,194 @@
+{
+ "out": "NDC-2812-retest-PASS.png",
+ "ticket": "NDC-2812",
+ "title": "Team Assignment off: the assign API still gives a ticket to a team",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · API + screen · admin · QA AS6 Dept A + QA AS6 Team A (Team Assignment switched off, then back on) · incl. dev follow-up 8 Nov 14:07",
+ "date": "8 Nov 2026",
+ "panels": [
+  {
+   "img": "2812-sla-history-off.png",
+   "h": 1000,
+   "caption": "#1368 History: SLA escalation at breach — reassign skipped (Team Assignment is off), priority changed; owner kept",
+   "crop": [
+    664,
+    380,
+    936,
+    200
+   ],
+   "boxes": [
+    {
+     "b": [
+      714,
+      490,
+      1372,
+      512
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      714,
+      512,
+      930,
+      534
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      928,
+      490,
+      1032,
+      512
+     ],
+     "n": 7,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2812-api.png",
+   "full": true,
+   "caption": "API requests and responses with Dept A Team Assignment OFF, then ON",
+   "crop": [
+    0,
+    90,
+    1600,
+    630
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      272
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      340
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      350,
+      1564,
+      408
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      418,
+      1564,
+      476
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      533,
+      1564,
+      591
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      648,
+      1564,
+      706
+     ],
+     "n": 8,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Assign a ticket to a team (Team Assignment off)",
+   "Refused; only agents can be chosen",
+   "422 team_assignment_off; ticket unchanged. Assigning an agent: 200",
+   "PASS"
+  ],
+  [
+   2,
+   "Bulk Assign from the ticket list",
+   "Team refused, agent accepted",
+   "Team: failed 1, team_assignment_off. Agent: succeeded 1",
+   "PASS"
+  ],
+  [
+   3,
+   "Move a ticket into the department with a team",
+   "Refused",
+   "422 team_assignment_off, ticket stays in Dept B. With an agent: moved",
+   "PASS"
+  ],
+  [
+   4,
+   "Delete a team and give its tickets to another team (dev follow-up 8 Nov 14:07)",
+   "Refused",
+   "422 team_assignment_off; team and tickets kept",
+   "PASS"
+  ],
+  [
+   5,
+   "Suspend/remove agent: move their work to a team (dev follow-up 8 Nov 14:07)",
+   "Refused",
+   "422 team_assignment_off; nothing moved",
+   "PASS"
+  ],
+  [
+   6,
+   "SLA escalation that reassigns to a team, live breach (dev follow-up)",
+   "Reassign skipped, owner kept, other actions run",
+   "#1368: skipped team_assignment_off, owner kept, priority low to high; control #1369 with it on: Team A",
+   "PASS"
+  ],
+  [
+   7,
+   "History text of the skipped reassign",
+   "Names the team",
+   "Shows \"ndc-staging-owner → User 434140a3\": the team appears as a raw user id",
+   "INFO"
+  ],
+  [
+   8,
+   "Team Assignment back on",
+   "Team accepted again",
+   "Assign 200 (owner Team A); move with team 200",
+   "PASS"
+  ]
+ ]
+}

@@ -1,0 +1,30 @@
+{
+ "out": "api-2648-1694.png",
+ "title": "NDC-2648 / NDC-1694 — teamspaces (API, CRM Admin A, 28 Oct 2026)",
+ "lines": [
+  [
+   "POST /teamspaces/{QA}/folders \"QA R2W5 Folder\" twice -> 409 FOLDER_ALREADY_EXISTS",
+   "ok"
+  ],
+  [
+   "   \"A folder named 'QA R2W5 Folder' already exists in this teamspace. Choose a different name.\"",
+   "ok"
+  ],
+  [
+   "POST /teamspaces same name twice -> 409 (control)",
+   "ok"
+  ],
+  [
+   "POST /teamspaces with no modules           -> 400 TEAMSPACE_MODULES_REQUIRED \"Add at least one module to save this teamspace.\"",
+   "ok"
+  ],
+  [
+   "POST /teamspaces with module_ids []        -> 400 TEAMSPACE_MODULES_REQUIRED",
+   "ok"
+  ],
+  [
+   "Screen: Create New Teamspace keeps Save disabled with \"Add at least one module to save this teamspace.\"",
+   "ok"
+  ]
+ ]
+}

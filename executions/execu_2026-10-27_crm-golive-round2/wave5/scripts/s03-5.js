@@ -1,0 +1,14 @@
+const d = page.locator('[role=dialog]').first();
+const pick = async (btnText, optRe) => { await d.locator('button', { hasText: btnText }).first().click(); await sleep(1200); const o = await page.$$eval('[role=option], [cmdk-item], [role=menuitem]', os => os.map(x => x.innerText.trim())); const t = page.locator('[role=option], [cmdk-item], [role=menuitem]', { hasText: optRe }).first(); if (await t.count()) await t.click(); else await page.keyboard.press('Escape'); await sleep(1000); return o.slice(0, 20); };
+await d.locator('input').first().fill('QA R2W5 chart by pick');
+const res = {};
+res.modules = await pick('Select a module', /^QA R2W5 Module$/);
+res.groups = await pick('Select a category field', /^QA Pick$/);
+res.measures = await pick('Record Count', /Sum.*QA Rollup|QA Rollup/);
+await sleep(3000); await shot('s03-chart-preview');
+const rq = page.waitForResponse(r => /reporting\/dashboards/.test(r.url()) && ['POST', 'PUT'].includes(r.request().method()), { timeout: 30000 }).catch(() => null);
+await d.locator('button', { hasText: /^Save$/ }).click(); await sleep(3000);
+res.after = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 600);
+await shot('s03-after-add');
+const r = await rq; res.saveReq = r ? r.status() + ' ' + (await r.text()).slice(0, 300) : 'none (component kept in builder only)';
+return res;

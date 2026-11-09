@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2420-api.png",
+ "date": "2 Nov 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2 / U3",
+ "title": "NDC-2420 · QA blueprint on Lead Source: web → referral (no fields) → other (required Email); rules on Lead Source changed",
+ "rows": [
+  [
+   "t0 no fields",
+   "POST …/blueprint-transitions/t0",
+   "200 → referral",
+   "ok"
+  ],
+  [
+   "R1 after t0",
+   "rule \"lead_source changed = referral\"",
+   "Fired: FieldUpdate Succeeded; SendPortalAccess Succeeded",
+   "ok"
+  ],
+  [
+   "t1 without Email",
+   "POST …/t1 {}",
+   "422 BLUEPRINT_FIELD_INVALID (email)",
+   "ok"
+  ],
+  [
+   "t1 with Email",
+   "POST …/t1 {email}",
+   "200 → other",
+   "ok"
+  ],
+  [
+   "R2 after t1",
+   "rule \"= other\": owner → test user 1",
+   "Fired: OwnerAssignment Succeeded; owner = test user 1",
+   "ok"
+  ]
+ ]
+}

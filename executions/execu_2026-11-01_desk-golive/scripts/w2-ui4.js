@@ -1,0 +1,9 @@
+const tk = '3008a52d-6f69-48bb-90ba-bac134c7aa56'; const o = {};
+const waitText = async (re, n) => { for (let i = 0; i < (n || 25); i++) { await sleep(1000); const t = await txt().catch(() => ''); if (re.test(t)) return t; } return await txt().catch(() => ''); };
+const snip = (t, k, n) => { const i = t.indexOf(k); return i < 0 ? '(not found: ' + k + ')' : t.slice(i, i + (n || 700)).replace(/\s+/g, ' '); };
+await page.goto(H + '/views/all/tickets/' + tk, { waitUntil: 'commit', timeout: 60000 }).catch(() => {}); await waitText(/QA GL W2 base ticket/, 35); await sleep(3000);
+o.cands = await page.$$eval('button, [role=tab], [role=button]', bs => bs.filter(b => /ai assist|history/i.test((b.getAttribute('aria-label') || '') + ' ' + (b.getAttribute('title') || '') + ' ' + b.innerText)).map(b => ({ tag: b.tagName, role: b.getAttribute('role'), al: b.getAttribute('aria-label'), title: b.getAttribute('title'), txt: b.innerText.trim().slice(0, 30), vis: b.offsetParent !== null })));
+const ai = page.locator('button[aria-label="AI assist"], [role=tab][aria-label="AI assist"], button[title="AI assist"]').first();
+if (await ai.count()) { await ai.click({ force: true }).catch(e => o.aiErr = String(e.message).slice(0, 100)); await sleep(6000); const t = await txt(); o.aiPane = snip(t, 'AI assist', 1000); o.aiButtons = await page.$$eval('button', bs => bs.filter(b => b.offsetParent !== null).map(b => b.innerText.trim()).filter(x => /summar|triage|suggest|run|generate|translate/i.test(x)).slice(0, 10)); o.shotAi = await shot('wave2/ui-ai-assist');
+  const run = page.locator('button', { hasText: /Summar/i }).first(); if (await run.count()) { await run.click().catch(() => {}); await sleep(10000); o.aiAfterRun = snip(await txt(), 'AI assist', 1100); o.shotAiRun = await shot('wave2/ui-ai-run'); } }
+return done(o);

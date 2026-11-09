@@ -1,0 +1,13 @@
+const res = {};
+const openMenu = async label => { const f = page.locator(`text=/^${label}$/`).first(); const b = await f.boundingBox(); await page.mouse.move(b.x + 50, b.y + 5); await sleep(600); let best = null, bd = 1e9; for (const x of await page.$$('main button[aria-label="Field options"]')) { const bb = await x.boundingBox(); if (!bb) continue; const dy = Math.abs((bb.y + bb.height / 2) - (b.y + b.height / 2)), dx = bb.x - b.x; if (dy < 25 && dx > 0 && dx < 700 && dx < bd) { bd = dx; best = x; } } await best.click(); await sleep(900); };
+const panel = page.locator('xpath=//*[normalize-space(text())="Field Properties"]/ancestor::*[.//button[normalize-space(.)="Apply"]][1]').first();
+await openMenu('QA Formula'); await page.locator('text=Edit Properties').first().click(); await sleep(1500);
+await panel.locator('button, [role=tab]', { hasText: /^ADVANCED$/ }).first().click(); await sleep(1000);
+res.formula = (await panel.innerText()).replace(/\s+/g, ' ').slice(0, 1500);
+await shot('c01-1586-formula');
+await panel.locator('button', { hasText: /^Cancel$/ }).click(); await sleep(800);
+await openMenu('QA Text'); await page.locator('text=Edit Properties').first().click(); await sleep(1500);
+await panel.locator('button, [role=tab]', { hasText: /^ADVANCED$/ }).first().click(); await sleep(1000);
+res.textAdv = (await panel.innerText()).replace(/\s+/g, ' ').slice(0, 1200);
+const sels = panel.locator('select'); res.sel = []; for (let i = 0; i < await sels.count(); i++) res.sel.push(await sels.nth(i).evaluate(s => [...s.options].map(o => o.value + '|' + o.text).join(' / ')));
+return res;

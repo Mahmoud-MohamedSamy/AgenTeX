@@ -59,7 +59,9 @@ public class CrmApi {
         if (CrmOrderFeature.DEALS.equals(module)) {
             f.put("name", name);
             f.put("deal_name", name);
-            f.put("pipeline", pipelineOf(defaultLayout(module)));
+            // 25–26 Oct only the literal "Standard (Standard)" was accepted (NDC-2382); from the 27 Oct build the id is accepted again and the literal refused;
+            // -Dcrm.pipelineLiteral=true sends the literal again
+            f.put("pipeline", Boolean.getBoolean("crm.pipelineLiteral") ? "Standard (Standard)" : pipelineOf(defaultLayout(module)));
             f.put("stage", "qualification");
         } else if (CrmOrderFeature.TASKS.equals(module)) {
             f.put("name", name);
@@ -110,12 +112,21 @@ public class CrmApi {
         Map<String, Object> put = new LinkedHashMap<>();
         put.put("name", made.get("name"));
         put.put("views", made.get("views"));
+        // Since 27 Oct (NDC-2650 fixed) "selected" access is enforced: with no profiles test users get 403, and listing profiles
+        // makes a leftover copy the list's layout for those users. So the QA copy stays open to all users.
         put.put("assignedProfiles", List.of());
-        put.put("accessMode", "selected");
+        put.put("accessMode", "all_users");
         put.put("status", made.get("status"));
         put.put("rowVersion", made.get("rowVersion"));
         ok(admin.put("/modules/" + module + "/layouts/" + id, put), "restrict QA layout");
         return id;
+    }
+
+    /** Every profile id. Since 27 Oct (NDC-2650 fixed) a "selected" layout is usable only by the profiles it lists. */
+    private static List<Object> allProfileIds(CrmUser admin) {
+        List<Object> ids = new ArrayList<>();
+        for (Object p : ok(admin.get("/iam/profiles"), "profiles").jsonPath().getList("data")) ids.add(((Map<?, ?>) p).get("profileId"));
+        return ids;
     }
 
     /**
@@ -141,7 +152,7 @@ public class CrmApi {
         Map<String, Object> put = new LinkedHashMap<>();
         put.put("name", cur.get("name"));
         put.put("views", views);
-        put.put("assignedProfiles", List.of());
+        put.put("assignedProfiles", allProfileIds(admin)); // [] here wiped the QA layout's access (27 Oct: later creates on it answered 403)
         put.put("accessMode", cur.get("accessMode"));
         put.put("status", cur.get("status"));
         put.put("rowVersion", cur.get("rowVersion"));
@@ -198,7 +209,13 @@ public class CrmApi {
         Response d = admin.delete("/modules/" + module + "/records/" + id);
         if (d.statusCode() / 100 == 2 || d.statusCode() == 404) return;
         if (d.asString().contains("APPROVAL")) {
-            CrmUser owner = CrmUser.as(CrmOrderFeature.OWNER);
+            CrmUser owner;
+            try {
+                owner = CrmUser.as(CrmOrderFeature.OWNER);
+            } catch (org.testng.SkipException reserved) {   // -Dcrm.noOwner: leave it for an owner status reset later
+                System.out.println("[cleanup late] LEFT FOR OWNER RESET " + module + " " + id + " (approval-locked)");
+                return;
+            }
             Response reset = owner.post("/workflow/approvals/records/" + module + "/" + id + "/status-reset", Map.of("reason", "QA AEO cleanup"));
             d = owner.delete("/modules/" + module + "/records/" + id);
             System.out.println("[cleanup late] " + id + " status-reset " + reset.statusCode() + ", delete " + d.statusCode());
@@ -412,6 +429,15 @@ public class CrmApi {
             admin.delete("/workflow/rules/" + id);
         });
         return id;
+    }
+
+    /** Registers a workflow rule created with a raw POST (e.g. a payload the builder can't make) for cleanup. */
+    public void trackRule(String id) {
+        if (id == null) return;
+        undo.push(() -> {
+            admin.post("/workflow/rules/" + id + "/deactivate", null);
+            admin.delete("/workflow/rules/" + id);
+        });
     }
 
     public Response setWorkflowActive(String id, boolean on) {

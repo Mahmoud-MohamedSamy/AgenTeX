@@ -1,0 +1,1 @@
+var e=new Set([`permission_denied`,`forbidden`,`http_403`]);function t(t){if(typeof t!=`object`||!t)return!1;let n=t.code;if(typeof n==`string`)return e.has(n.toLowerCase());let r=t.message;return typeof r==`string`&&e.has(r.toLowerCase())}var n=e;function r(e,t){return e&&e.trim()?e:t}export{r as n,t as r,n as t};

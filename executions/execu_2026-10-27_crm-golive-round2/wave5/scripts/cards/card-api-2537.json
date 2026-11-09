@@ -1,0 +1,30 @@
+{
+ "out": "api-2537.png",
+ "title": "NDC-2537 — webhook addresses (inactive QA rules on the QA module, deleted at once; 28 Oct 2026)",
+ "lines": [
+  [
+   "Workflow webhook http://169.254.169.254/latest/meta-data/ -> 400 \"Webhook Url must be a public http(s) endpoint…\"",
+   "ok"
+  ],
+  [
+   "Workflow webhook http://10.0.0.5/ and http://localhost/      -> 400",
+   "ok"
+  ],
+  [
+   "Review process webhookUrl http://169.254.169.254/…            -> 400 (was accepted)",
+   "ok"
+  ],
+  [
+   "Workflow webhook http://169.254.169.254.nip.io/ -> 201 at save; ACTIVE rule + QA record: dispatch Cancelled",
+   "ok"
+  ],
+  [
+   "   lastError \"[custom-actions-egress-blocked] '169.254.169.254.nip.io' resolves only to addresses blocked by the outbound egress policy.\"",
+   "ok"
+  ],
+  [
+   "Blueprint After webhook to an internal address: not checked in this lane",
+   "info"
+  ]
+ ]
+}

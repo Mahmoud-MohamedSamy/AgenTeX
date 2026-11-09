@@ -1,0 +1,13 @@
+{ "out": "NDC-2754-api.png", "date": "7 Nov 2026", "host": "staging-desk.taviportal.com (tenant NDC-Staging)", "who": "admin (ndc-staging-owner) + Desk Agent fedelav803",
+  "title": "NDC-2754 · blueprint \"QA RT13 2754 full\" (QA RT13 2754 Dept A, strict all, dynamic owners) — items 6 and 2 after desk #233/#234, metadata-engine #212",
+  "rows": [
+   ["6 own dept", "admin runs QA alt (Share required) with shares [{Dept A = ticket's own dept, full}] · and [Dept A + Dept B]", "422 \"A ticket cannot be shared with its own department.\" ×2 · state stays Open · shares []", "ok"],
+   ["6 control", "QA alt with no share · with Dept B · plain Share PUT …/shares to own dept", "422 payload validation · 200 → Closed, shared with Dept B (full) · 422 same message as the step", "ok"],
+   ["2 before", "agent GET admin-owned ticket G0/G1 (no owner assigned to agent)", "403 · 403 (Desk Agent can't see it)", "ok"],
+   ["2 owner", "admin: Assign owners QA rate → fedelav803 (G1, G2) · → team with fedelav803 (G3)", "PUT …/blueprint/owners/rate 200 ×3 → agent GET 200 on G1, G2, G3; agent list shows G1–G4", "ok"],
+   ["2 limits", "agent on G1: edit field · reply · run QA go (not theirs)", "403 PERMISSION_DENIED · 403 \"You can view this ticket but not change it.\" · 403 BLUEPRINT_NOT_OWNER (state Open)", "ok"],
+   ["2 run + end", "agent runs QA rate on G1 and G3 (team) · admin runs QA go on G2", "200 → On Hold ×2, 200 → Escalated · then agent GET 403 on G1, G2, G3; screen \"This ticket is not available\"", "ok"],
+   ["2 approval", "agent owns QA hold (G5), runs it with approval {subject, approver_user_ids}", "200 → On Hold, approval pending", "ok"],
+   ["2 share", "agent owns QA alt (G4, Share required), runs it with a share to Dept B (read_only / full)", "403 \"You are not allowed to add a share to this transition.\" Desk Agent lacks desk:ticket:share (plain share also 403); screen says ask an admin", "info"],
+   ["regression", "1 strict edit/status · 4 Amount 0/5 · 5 hold without/with approval · 15 revoke agent/admin · 10 rating", "403/422 · 422/200 · 422/200 · 403 desk:blueprints:manage / 200 · rating links still off (is_enabled false)", "ok"]
+  ] }

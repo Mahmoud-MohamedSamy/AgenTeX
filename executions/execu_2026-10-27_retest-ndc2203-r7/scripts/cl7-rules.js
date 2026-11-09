@@ -1,0 +1,1 @@
+const rules = arr((await api('GET', `/workflow/rules?moduleId=${T}&limit=200`)).j?.data); return done({ total: rules.length, active: rules.filter(r => r.isActive).length, names: rules.map(r => r.name) });

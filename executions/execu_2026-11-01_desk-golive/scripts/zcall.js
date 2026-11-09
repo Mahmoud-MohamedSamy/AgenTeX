@@ -1,0 +1,1 @@
+const fs=require("fs");const code=fs.readFileSync(process.argv[2],"utf8");fetch("http://127.0.0.1:8891/run",{method:"POST",body:JSON.stringify({code}),signal:AbortSignal.timeout(280000)}).then(r=>r.text()).then(t=>console.log(t.slice(0,6000))).catch(e=>console.log("ERR",e.message));

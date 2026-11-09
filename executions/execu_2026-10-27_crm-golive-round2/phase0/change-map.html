@@ -1,0 +1,110 @@
+<title>Build Change Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live · Round 2 · Phase 0</div>
+  <h1>What changed in the 27 Oct build</h1>
+  <p class="meta">25 Oct build <code>index-BWLZ8sns.js</code> vs 27 Oct build <code>index-De3hTVb3.js</code> · staging-crm.taviportal.com · read-only comparison plus one run of every screen-test suite; nothing changed on staging, nothing in Plane</p>
+</header>
+
+<div class="strip">
+  <div class="stat"><b>0</b><span>screens added or removed (162)</span></div>
+  <div class="stat warn"><b>6</b><span>new API paths</span></div>
+  <div class="stat warn"><b>3</b><span>new permission keys</span></div>
+  <div class="stat"><b>116 / 60</b><span>English texts added / removed</span></div>
+</div>
+
+<section>
+  <h2>Most important changes, and which wave checks them</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Change</th><th>Wave</th></tr>
+    <tr><td class="id">1</td><td><b>AI agents with access per custom view</b> (new agent-grants and agents API, new built-in "AI Agent" profile, new permissions <code>ai:agent:manage</code>, <code>ai:summary:view</code>). Not in the feature inventory yet.</td><td>5 (S05 AI)</td></tr>
+    <tr><td class="id">2</td><td><b>Reports and dashboards lost features in the build:</b> dashboard share and public links, Export dashboard, Email this dashboard, report email schedules and workspace variables are gone. To confirm on screen; if gone, they become gaps vs Zoho.</td><td>5 (S02, S03)</td></tr>
+    <tr><td class="id">3</td><td>Report time zone setting and a report date-range check added.</td><td>5 (S02)</td></tr>
+    <tr><td class="id">4</td><td>Built-in profiles can no longer be renamed or deleted (NDC-2543 fix); "Create permission" button now says "Create profile" (NDC-2547 fix).</td><td>1</td></tr>
+    <tr><td class="id">5</td><td>Validation Rules and Map Dependency tabs are now real screens. Still "In Development": Layout Rules, Record Locking Configuration, Links, Buttons.</td><td>5 (C03–C05, C10, R26)</td></tr>
+    <tr><td class="id">6</td><td>Settings › Pipelines now loads (NDC-2386, In Progress, so not judged yet).</td><td>2 / serial</td></tr>
+    <tr><td class="id">7</td><td>New limits: approval duration 1–168 hours; webhooks limited to 50 per account, public http(s) only, and must answer a check with HTTP 200.</td><td>3, 5 (I03)</td></tr>
+    <tr><td class="id">8</td><td>New permission <code>metadata.modules.manage</code>; "Signals" in the Setup menu is the notification preferences page.</td><td>1, 4</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Screen tests on the new build</h2>
+  <div class="tbl"><table>
+    <tr><th>Suite</th><th>Passed</th><th>Note</th></tr>
+    <tr><td>Wave 1 owner screens</td><td class="id">10 / 11</td><td>One test updated for the new Profiles tree ("Expand all") and the "Create profile" label</td></tr>
+    <tr><td>Wave 1 test-user-1 screens</td><td class="id">2 / 3</td><td>See NDC-613 below</td></tr>
+    <tr><td>Wave 2 record screens</td><td class="id">2 / 4</td><td>1 inconclusive (slow Leads list, NDC-2136)</td></tr>
+    <tr><td>Wave 3 smoke test</td><td class="id">12 / 15</td><td>5 locator heals kept</td></tr>
+    <tr><td>Wave 5 setup screens</td><td class="id">2 / 3</td><td>Module-tab gap (fewer tabs "In Development" now)</td></tr>
+    <tr><td>CRM ⇄ Desk screens</td><td class="id">11 / 16</td><td>CRM asked to sign in instead of reusing the Desk session</td></tr>
+  </table></div>
+  <p class="meta">No locator was broken by the new build; every failure traces to an app change or a sign-in issue. Files changed in automation/: AccessScreensUiTest.java and crmautomationorder/locators.json.</p>
+</section>
+
+<section>
+  <h2>Needs attention in the waves</h2>
+  <ul>
+    <li><b>Possible regression, NDC-613:</b> test user 1 (denied those permissions) now sees Login History, Profiles and Security Policies in Setup. It passed on 25 Oct. Test user 1 was also changed by someone outside our runs today, so Wave 1 must confirm before calling it a bug.</li>
+    <li><b>Wave 3:</b> the Workflow Rules list showed "All 0" right after a rule was created (42 on reopening); a webhook URL added as a blueprint After action isn't saved from the screen.</li>
+    <li><b>CRM ⇄ Desk:</b> the CRM showed its own sign-in page instead of reusing the Desk session; either sign-in sharing changed or the suite needs an update.</li>
+    <li><b>Reports and dashboards:</b> the removed features need your decision once Wave 5 confirms them.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Next</h2>
+  <p>Phase 1: Wave 1 (access and security) and Wave 2 (daily record work) side by side, full feature, screens and API, including the newly added features (data sharing rules, merge, mass transfer, record locking, split view, advanced filters, Cases, Sales/Purchase Orders).</p>
+  <p class="meta">Full details: <code>executions/execu_2026-10-27_crm-golive-round2/phase0/change-map.md</code> and <code>locator-fixes.md</code>.</p>
+</section>
+</div>

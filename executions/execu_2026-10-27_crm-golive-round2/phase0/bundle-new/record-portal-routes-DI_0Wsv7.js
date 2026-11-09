@@ -1,0 +1,1 @@
+var e=`/settings/record-portals`,t=`${e}/new`,n=`${e}/changes`;`${e}`;function r(t){return`${e}/${encodeURIComponent(t)}`}var i=`record-portals`;export{r as a,t as i,e as n,n as r,i as t};

@@ -1,0 +1,109 @@
+{
+ "out": "NDC-2659-retest-PASS.png",
+ "ticket": "NDC-2659",
+ "title": "Blueprint | Portal access is not sent automatically after «قبول التسجيل» (N02 never runs after the transition)",
+ "priority": "urgent",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · owner; test users U1–U3",
+ "date": "2 Nov 2026",
+ "panels": [
+  {
+   "img": "2420-lead-portal.png",
+   "caption": "Customer Portal: Granted 02/11/2026 10:13 by Workflow; last email Failed MAIL_SEND_FAILED (tenant mail)",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": []
+  },
+  {
+   "img": "NDC-2659-api.png",
+   "caption": "API evidence — NDC-2659 · Rule \"lead_source changed = referral\" → Send portal access (QA portal), after a plain transition",
+   "crop": [
+    0,
+    0,
+    1600,
+    297
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      238,
+      1566,
+      279
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "rule run",
+   "Runs after the transition",
+   "Fired 08:13:56, SendPortalAccess Succeeded {\"outcome\":\"sent\"}",
+   "PASS"
+  ],
+  [
+   "2",
+   "access",
+   "Access created",
+   "Granted by Workflow, username created",
+   "PASS"
+  ],
+  [
+   "3",
+   "email",
+   "Email sent",
+   "MAIL_SEND_FAILED — Anyware has no working mail connection",
+   "INFO"
+  ],
+  [
+   "4",
+   "observation",
+   "—",
+   "dispatch says \"sent\" while the email failed",
+   "INFO"
+  ]
+ ]
+}

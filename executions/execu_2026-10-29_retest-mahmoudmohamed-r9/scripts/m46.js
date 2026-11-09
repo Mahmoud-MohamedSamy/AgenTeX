@@ -1,0 +1,3 @@
+const out = {}; for (const n of ['crm-blueprint', 'crm-blueprints', 'blueprint', 'blueprints', 'crm-approval', 'crm-approvals', 'approval', 'crm-process', 'process-management']) { const r = await page.context().request.get(H + `/locales/en/${n}.json`, { timeout: 60000 }).catch(() => null); if (!r || r.status() !== 200) continue; const t = await r.text(); if (!t.trim().startsWith('{')) continue;
+  out[n] = [...t.matchAll(/"([^"]*(after|After|action|Action|function|Function|convert|Convert|tag|Tag)[^"]*)"\s*:\s*"([^"]{0,90})"/g)].map(m => m[1] + ' = ' + m[3]).filter(x => /after|convert|function|tag|createRecord|custom/i.test(x)).slice(0, 30); }
+return done(out);

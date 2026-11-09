@@ -1,0 +1,110 @@
+{
+ "label": "DIFFERS",
+ "verdict": "FAIL",
+ "date": "2 Nov 2026",
+ "out": "BP-C3-name-rules-vs-zoho.png",
+ "ticket": "Blueprint name",
+ "env": "TAVI: staging-desk.taviportal.com, org Anyware, owner (QA drafts deleted after) · Zoho: Zoho Desk Enterprise trial, Setup → Blueprint → Create Blueprint (nothing saved)",
+ "taviHead": "TAVI Desk (API + designer)",
+ "zohoHead": "Zoho Desk (Create Blueprint)",
+ "title": "Blueprint name: TAVI accepts special characters and any length; Zoho refuses special characters and stops at 60 characters",
+ "panels": [
+  {
+   "img": "c3c4-api.png",
+   "caption": "TAVI API: \"<script>\" name and 70 / 309-character names are saved as sent",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": []
+  },
+  {
+   "img": "zoho-c3-special-chars.png",
+   "caption": "Zoho: Next with \"QA BP <script>alert(1)</script>\" → \"Special characters are not allowed.\"",
+   "crop": [
+    221,
+    98,
+    760,
+    330
+   ],
+   "boxes": [
+    {
+     "b": [
+      276,
+      160,
+      546,
+      210
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "c3-ui-new.png",
+   "caption": "TAVI designer: Name and Description boxes have no length limit (maxlength not set)",
+   "crop": [
+    1300,
+    120,
+    300,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      1314,
+      190,
+      1586,
+      350
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "zoho-c3-len60.png",
+   "caption": "Zoho: typing a 70-character name stops at 60 characters (\" END\" is cut off); Description allows 1000",
+   "crop": [
+    221,
+    98,
+    760,
+    330
+   ],
+   "boxes": [
+    {
+     "b": [
+      276,
+      135,
+      546,
+      190
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Special characters such as < > ( ) in the name",
+   "Refused on Next: \"Special characters are not allowed.\" (also \"(\" — seen 1 Nov).",
+   "Accepted and stored as typed (201). The text is shown as plain text, so it does not run (no XSS), but Zoho does not allow it.",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "Name length",
+   "The name box stops at 60 characters (maxlength 60); Description 1000.",
+   "No limit in the designer or the API: 70 and 309-character names are saved.",
+   "DIFFERS"
+  ],
+  [
+   3,
+   "Arabic, emoji, trailing spaces",
+   "Accepted; trailing spaces kept in the draft name.",
+   "Accepted and stored exactly as typed.",
+   "SAME"
+  ]
+ ]
+}

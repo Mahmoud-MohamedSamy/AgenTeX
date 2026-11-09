@@ -28,7 +28,8 @@ public class TeamspaceAccessTest {
     public void setUp() {
         long t = System.currentTimeMillis() % 100000;
         name = QA + "Teamspace " + t;
-        Response c = CrmUser.ok(owner().post("/teamspaces", m("name", name, "slug", "qa_w1_teamspace_" + t, "description", "QA W1 access test, deleted after the run")), "create teamspace");
+        Response c = CrmUser.ok(owner().post("/teamspaces", m("name", name, "slug", "qa_w1_teamspace_" + t, "description", "QA W1 access test, deleted after the run",
+                "module_ids", List.of(LEADS))), "create teamspace");   // a teamspace needs at least one module since the 27 Oct build
         id = c.jsonPath().getString("data.id");
         Response acl = owner().put("/teamspaces/" + id + "/acl", m("rows", List.of(
                 m("principal_kind", "user", "principal_id", OWNER_ID, "permission_key", null, "access_level", "admin"),

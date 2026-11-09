@@ -1,0 +1,6 @@
+const o = {}; const S = r => ({ s: r.s, e: r.j && r.j.error ? (r.j.error.code + ': ' + String(r.j.error.message).slice(0, 120)) : null });
+o.me = (await api('GET', '/iam/me')).j.data.email;
+o.api = { createDept: S(await api('POST', '/desk/departments', { name: 'QA GL N agent should fail', visibility: 'private' })), profiles: S(await api('GET', '/iam/profiles')), invite: S(await api('POST', '/iam/users/invite', { email: 'qa-gl-n-nobody@example.invalid', profile_id: '44444444-4444-4444-4444-444444444402' })), bh: S(await api('POST', '/iam/tenant/business-hours/profiles', { name: 'QA GL N agent bh' })), auditList: S(await api('GET', '/audit/events?limit=1')), tickets: S(await api('GET', '/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records?limit=5')) };
+const pages = {}; for (const u of ['/settings/organization/departments', '/settings/users-control/agents', '/settings/users-control/profiles', '/settings/organization/company', '/views/all/tickets']) { await page.goto(H + u, { waitUntil: 'commit', timeout: 45000 }).catch(() => {}); let t = ''; for (let i = 0; i < 20; i++) { await sleep(1000); t = await txt().catch(() => ''); if (t.length > 600) break; } pages[u] = page.url().replace(H, '') + ' :: ' + t.replace(/\s+/g, ' ').slice(-260); }
+o.pages = pages; o.shot = await shot('ndc/W1-33-agent-settings');
+return done(o);

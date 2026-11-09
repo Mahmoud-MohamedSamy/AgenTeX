@@ -1,0 +1,13 @@
+const wait = async () => { for (let i = 0; i < 40; i++) { await sleep(1500); const t = await page.innerText('body').catch(() => ''); if (!/^\s*Loading/.test(t) && t.length > 300) break; } await sleep(3000); };
+await page.keyboard.press('Slash'); await sleep(800);
+out.slashFocus = await page.evaluate(() => { const a = document.activeElement; return a ? a.tagName + ' ' + (a.placeholder || a.getAttribute('aria-label') || '') : null; });
+await page.keyboard.press('Escape');
+await page.goto('https://crm.zoho.com/crm/org943261092/tab/Leads', { waitUntil: 'domcontentloaded' }); await wait();
+await page.locator('body').click({ position: { x: 900, y: 120 } }).catch(() => {});
+await page.keyboard.press('Shift+Slash'); await sleep(2000);
+out.leadsQ = (await page.innerText('body')).replace(/\s+/g, ' ').match(/.{0,100}[Ss]hortcut.{0,800}/)?.[0] || null;
+await page.screenshot({ path: RAW + 'z-leads-q.png' }); await page.keyboard.press('Escape');
+await page.goto('https://crm.zoho.com/crm/org943261092/settings/index', { waitUntil: 'domcontentloaded' }); await wait();
+const s = page.locator('input[placeholder*="Search" i]').first(); await s.fill('shortcut').catch(e => out.sErr = String(e.message).slice(0, 60)); await sleep(2500);
+out.setupSearch = (await page.innerText('body')).replace(/\s+/g, ' ').match(/.{0,200}[Ss]hortcut.{0,300}/)?.[0] || 'no match';
+await page.screenshot({ path: RAW + 'z-setup-shortcut.png' });

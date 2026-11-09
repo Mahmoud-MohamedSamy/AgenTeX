@@ -1,0 +1,1 @@
+const out={}; for (const w of ['o','u1','u2','u3','u4']) { const r=await api(w,'GET','/iam/me'); const d=r.j?.data||r.j; out[w]=[r.s, d?.email, d?.tenant?.name||d?.tenantName||d?.organization?.name, d?.profile?.name, d?.role?.name||d?.orgUnit?.name]; } return out;

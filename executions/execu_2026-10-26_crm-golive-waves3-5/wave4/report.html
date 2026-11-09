@@ -1,0 +1,150 @@
+<title>CRM Go-Live Wave 4</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live retest · Wave 4 of 5</div>
+  <h1>Email, channels and reminders</h1>
+  <p class="meta">26 Oct 2026 · staging-crm.taviportal.com (NDC-Staging) · checked against Zoho CRM Enterprise (org943261092, read-only) · accounts: owner and test user 1 · Lane B of the parallel plan</p>
+  <p>Everything that reaches customers was retested: email connections, sending and receiving from records, templates and signatures, web forms, SMS and WhatsApp, telephony, portals, notifications, activity reminders and the calendar. Test emails and web forms went only to the two addresses you named.</p>
+</header>
+
+<div class="strip">
+  <div class="stat"><b>14</b><span>tickets checked</span></div>
+  <div class="stat pass"><b>1</b><span>still fixed</span></div>
+  <div class="stat warn"><b>3</b><span>partly working</span></div>
+  <div class="stat fail"><b>2</b><span>still fail</span></div>
+  <div class="stat"><b>8</b><span>blocked (no telephony)</span></div>
+  <div class="stat fail"><b>5</b><span>new bug candidates</span></div>
+</div>
+
+<div class="note"><b>Live problem on staging:</b> every notification call (list, unread count, preferences) answers 500 for every user, from about 09:50 UTC and still at 10:49 when last checked. The bell and My Notifications are empty and reminders can't arrive. Worth telling the team now (W4-B3).</div>
+
+<section>
+  <h2>Ticket results</h2>
+  <div class="tbl"><table>
+    <tr><th>Ticket</th><th>Result</th><th>What we saw</th></tr>
+    <tr><td class="id">NDC-1333</td><td><span class="chip pass">Still fixed</span></td><td>The Activity Reminders page has one scroll area.</td></tr>
+    <tr><td class="id">NDC-1479</td><td><span class="chip warn">Partly</span></td><td>Providers and connections are fine. The taviportal.com Zoho Mail connection can't send (its Zoho org id is missing), although it shows as healthy.</td></tr>
+    <tr><td class="id">NDC-2496</td><td><span class="chip warn">Partly</span></td><td>Compose with templates, signature, drafts and scheduled email works. Sending fails (see W4-B1).</td></tr>
+    <tr><td class="id">NDC-1482</td><td><span class="chip warn">Partly</span></td><td>Every SMS screen and template works. Nothing can be sent: there is no sender ID and 0 credits.</td></tr>
+    <tr><td class="id">NDC-1141</td><td><span class="chip fail">Still fails</span></td><td>Gmail and Microsoft 365 can't be connected ("not configured on this server"). SendGrid and SES say "coming soon".</td></tr>
+    <tr><td class="id">NDC-1488</td><td><span class="chip fail">Still fails</span></td><td>The form works when embedded and creates the lead correctly, but its hosted link, QR code and "Test your form" open an nginx 404 page.</td></tr>
+    <tr><td class="id">NDC-1493 · 1494 · 1495 · 1496 · 1497 · 1498 · 1944 · 1949</td><td><span class="chip info">Blocked</span></td><td>They need a telephony integration. Staging has none, and creating one switches telephony on for the whole tenant, so it wasn't done.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>New bug candidates</h2>
+  <p class="meta">Not in Plane yet. Each one was re-checked a second way before being listed.</p>
+  <div class="bugs">
+    <div class="bug"><div class="top"><span class="id">W4-B1</span><span class="chip fail">High</span></div>
+      <h3>A failed email send looks sent</h3>
+      <p>The screen says "Sent" and the timeline logs "EmailSent", but the record's Mails tab says "No emails yet" and no notification follows. Only the API shows status "failed" ("No Zoho account found … set the 'zoid' org id on the connection").</p></div>
+    <div class="bug"><div class="top"><span class="id">W4-B2</span><span class="chip fail">High</span></div>
+      <h3>Customer portal link is a 404</h3>
+      <p>The portal's public link opens an nginx 404 page, whether the portal is switched on or off.</p></div>
+    <div class="bug"><div class="top"><span class="id">W4-B3</span><span class="chip fail">High</span></div>
+      <h3>Notifications fail for everyone</h3>
+      <p>List, unread count and preferences all answer 500 for every user. The bell is empty, My Notifications is blank and reminders can't arrive.</p></div>
+    <div class="bug"><div class="top"><span class="id">W4-B5</span><span class="chip info">Low</span></div>
+      <h3>Raw event keys in My Notifications</h3>
+      <p>Many signals show their internal key instead of a name: mail.email_received, salesiq.*, crm.activity.reminder.*, crm.mass_delete.*.</p></div>
+    <div class="bug"><div class="top"><span class="id">W4-B6</span><span class="chip info">Low</span></div>
+      <h3>Unknown template placeholder comes out blank</h3>
+      <p>A placeholder the template can't fill, such as <code>{{company_name}}</code>, is saved without a warning and comes out empty in compose ("…at .").</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Smaller notes</h2>
+  <ul>
+    <li>Spell-check answered 503 while composing.</li>
+    <li>The "+ Task" quick form sends the due time without a time zone; tasks made by the API store UTC. Whether this shifts reminders couldn't be checked while notifications were down.</li>
+    <li>Call Logs totals stay "…" instead of 0.</li>
+    <li>The web-form builder offers the "FieldPermissions" test layout first.</li>
+    <li>The owner saw one "You don't have access to CRM" page and one 502 page; both cleared on reload.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Differences from Zoho (for the gap list)</h2>
+  <ul>
+    <li>Email templates have no record fields, folders or usage stats.</li>
+    <li>No personal signatures.</li>
+    <li>Calendar items can't be dragged to another day.</li>
+    <li>No web-form A/B testing.</li>
+    <li>Fewer mailbox providers.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What the team needs to provide</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Needed</th><th>Unblocks</th></tr>
+    <tr><td class="id">1</td><td>Set the Zoho org id on the taviportal.com mail connection</td><td>Retest of email sending (NDC-1479, 2496, W4-B1)</td></tr>
+    <tr><td class="id">2</td><td>Approve or set up one QA telephony integration</td><td>The 8 telephony tickets</td></tr>
+    <tr><td class="id">3</td><td>An SMS sender ID and a few credits on staging</td><td>SMS sending (NDC-1482)</td></tr>
+    <tr><td class="id">4</td><td>Fix notifications, then a recheck of reminders</td><td>W4-B3, activity reminders</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Automation</h2>
+  <p>New feature <code>crmchannels</code> with 8 API tests (suite <code>crm-wave4.xml</code>), merged into <code>automation/</code>. First run: 4 pass, 4 fail, and the 4 failures are the app bugs NDC-1488, W4-B2, W4-B3 and W4-B6.</p>
+</section>
+
+<section>
+  <h2>Test data</h2>
+  <p>Every QA W4 web form, portal, email template, draft, lead and task was deleted, and 13 QA W4 items were purged from the recycle bin. Two archived QA SMS templates stay: the app doesn't allow deleting archived templates. Test user 1's notification settings were never changed (the calls only answered 500). The final check matches the morning snapshot apart from those two templates, another lane's new test modules and the notification outage.</p>
+  <p class="meta">Evidence images (approved TAVI-vs-Zoho layout) are in <code>executions/execu_2026-10-26_crm-golive-waves3-5/wave4/evidence/annotated/</code>. Nothing went to Plane.</p>
+</section>
+</div>

@@ -1,0 +1,133 @@
+{
+ "out": "NDC-2294-retest.png",
+ "ticket": "NDC-2294",
+ "env": "staging-crm.taviportal.com (CRM Admin A / Supervisor, API) vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "verdict": "FAIL",
+ "label": "GAPS STILL OPEN",
+ "title": "Automation Execution Order: features missing from TAVI CRM (gap list recheck)",
+ "panels": [
+  {
+   "img": "t-wf-actions.png",
+   "w": 1600,
+   "h": 950,
+   "crop": [
+    230,
+    230,
+    1150,
+    720
+   ],
+   "caption": "TAVI: workflow designer with 9 instant actions and one condition; scheduled actions only Webhook, Email, Task, Create Record, portal access.",
+   "boxes": [
+    {
+     "b": [
+      380,
+      620,
+      855,
+      890
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      880,
+      540,
+      1375,
+      700
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      236,
+      395,
+      1376,
+      490
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "img": "z-rule-actions-menu.png",
+   "w": 1600,
+   "h": 950,
+   "crop": [
+    0,
+    190,
+    1150,
+    720
+   ],
+   "caption": "Zoho: the same designer offers Activities, Create Connected Record, Convert, Function, \"+ Add another condition\" and scheduled actions.",
+   "boxes": [
+    {
+     "b": [
+      190,
+      400,
+      405,
+      700
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    },
+    {
+     "b": [
+      625,
+      545,
+      1000,
+      595
+     ],
+     "n": 2,
+     "color": "#16a34a"
+    },
+    {
+     "b": [
+      25,
+      540,
+      135,
+      580
+     ],
+     "n": 3,
+     "color": "#16a34a"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Instant actions (gap item 4)",
+   "Field Update, Assign Owner, Tags, Email, Activities (Task / Meeting / Call), Create Record, Create Connected Record, Convert, Webhook, Function",
+   "Field Update, Owner Assignment, Webhook, Email, Task, Create Record, Add / Remove Tags, portal access; API refuses Meeting, Call, CustomFunction, CreateConnectedRecord (400)",
+   "GAP"
+  ],
+  [
+   "2",
+   "Scheduled actions (gap item 11)",
+   "All action types can be scheduled",
+   "Only Webhook, Email, Task, Create Record, portal access",
+   "GAP"
+  ],
+  [
+   "3",
+   "Several conditions in one rule (gap item 12)",
+   "\"+ Add another condition\", first match wins",
+   "One condition per rule",
+   "GAP"
+  ],
+  [
+   "4",
+   "Record Score / Notes triggers (gap item 3)",
+   "Offered (NDC-2294 image 02)",
+   "API: \"Unknown trigger kind\" for RecordScoreChanged and NoteAdded",
+   "GAP"
+  ],
+  [
+   "5",
+   "API \"trigger\": [] skips automation (gap item 13)",
+   "Record created without running workflows",
+   "Accepted but ignored: the QA rule still ran",
+   "GAP"
+  ]
+ ]
+}

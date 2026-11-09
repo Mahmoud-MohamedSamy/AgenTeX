@@ -1,0 +1,9 @@
+{"out":"card-b1-svg.png","title":"R2SC-B1 · An attached SVG runs script on staging-crm.taviportal.com (CRM Admin B, 28 Oct 2026)","lines":[
+["1. Upload qa-r2sc-script.svg (contains a <script>) as a record attachment  -> POST /files 201, confirm 200, attach 201",""],
+["2. POST /files/<id>/download -> download_url = https://staging-crm.taviportal.com/s3/anyware-files/…/qa-r2sc-script.svg?<signature>","info"],
+["3. GET that URL: 200, Content-Type image/svg+xml, no Content-Disposition, no Content-Security-Policy","bad"],
+["4. Opening the link in the browser: the SVG's script ran -> document.title = 'QA-R2SC-SCRIPT-RAN'","bad"],
+["   location.origin = https://staging-crm.taviportal.com (the app's own origin)","bad"],
+["   document.cookie contains aw_staging_access_token (readable by the script) -> account takeover risk","bad"],
+["In the app the preview uses <img> (script does not run there); the risk is anyone opening or being sent the download link.","info"],
+["Re-run in the Java suite (AT-06): same headers.","info"]]}

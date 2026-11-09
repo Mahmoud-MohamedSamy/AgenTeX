@@ -1,0 +1,16 @@
+const reqs = []; const h = async r => { const q = r.request(); if (q.url().includes('/api/v1/') && q.method() !== 'GET') reqs.push(q.method() + ' ' + q.url().split('/api/v1')[1].slice(0, 80) + ' ' + (q.postData() || '').slice(0, 400) + ' -> ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 300)); };
+page.on('response', h);
+const boxes = page.locator('main tbody input[type=checkbox], main [role=row] input[type=checkbox]');
+out.boxes = await boxes.count();
+await boxes.nth(0).check(); await boxes.nth(1).check(); await sleep(800);
+out.selText = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 200);
+await page.click('main button:has-text("Delete")'); await sleep(1500);
+out.dialog = await page.$$eval('[role=dialog], [role=alertdialog]', es => es.map(e => e.innerText.replace(/\s+/g, ' ').slice(0, 400)));
+await page.screenshot({ path: RAW + 'md-confirm.png' });
+const btns = await page.$$eval('[role=dialog] button, [role=alertdialog] button', es => es.map(e => e.innerText.trim())); out.dialogButtons = btns;
+const confirm = page.locator('[role=dialog] button, [role=alertdialog] button').filter({ hasText: /^(Delete|Confirm|Yes|Move)/ }).last();
+await confirm.click().catch(e => out.cErr = String(e.message).slice(0, 100));
+for (let i = 0; i < 30; i++) { await sleep(1000); if (reqs.length) break; } await sleep(4000);
+out.after = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 600);
+await page.screenshot({ path: RAW + 'md-after-selected.png' });
+page.off('response', h); out.reqs = reqs;

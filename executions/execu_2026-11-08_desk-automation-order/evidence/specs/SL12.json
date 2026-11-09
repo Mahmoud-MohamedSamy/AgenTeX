@@ -1,0 +1,93 @@
+{
+ "out": "SL-12-sla-no-number-date-operators-vs-zoho.png",
+ "ticket": "SL-12",
+ "title": "SLA target conditions have no number or date operators (less than, greater than, between, is before, is after)",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 9 Nov 2026 (live) · Zoho 9 Nov 2026 (Zoho Desk API documentation; live Zoho did not load)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · Setup › SLA & Escalation › New SLA › Add Target, field QA NDC Amount (number) · Zoho: desk.zoho.com/DeskAPIDocument#SLA_GetSLACriteriaFields, Due Date field",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/t09-sla-operators.png",
+   "w": 1440,
+   "h": 900,
+   "crop": [
+    420,
+    160,
+    1020,
+    300
+   ],
+   "caption": "TAVI: SLA target condition on a number field (QA NDC Amount) (1). The operator list offers only is, isn't, is empty, is not empty (2).",
+   "boxes": [
+    {
+     "b": [
+      473,
+      235,
+      760,
+      269
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      769,
+      278,
+      1055,
+      422
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/z09-doc-sla-criteria.png",
+   "w": 1440,
+   "h": 900,
+   "crop": [
+    826,
+    250,
+    614,
+    420
+   ],
+   "caption": "Zoho Desk API documentation, SLA criteria fields: the Due Date field offers is after, is before (1) and between, not between (2). Not seen live: Zoho did not load on this network.",
+   "boxes": [
+    {
+     "b": [
+      930,
+      285,
+      1120,
+      371
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      930,
+      417,
+      1160,
+      525
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Comparing a date in an SLA target condition",
+   "Due Date offers is after and is before, with the current time or a fixed date.",
+   "No is after or is before. Date and number fields get the same four text-style operators.",
+   "GAP"
+  ],
+  [
+   2,
+   "Ranges in an SLA target condition",
+   "between and not between are offered for date fields.",
+   "No between, less than or greater than. A number field such as QA NDC Amount offers only is, isn't, is empty, is not empty.",
+   "GAP"
+  ]
+ ]
+}

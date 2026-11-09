@@ -1,0 +1,139 @@
+{
+ "out": "bug1-detail-view-overwritten.png",
+ "ticket": "Bug 1",
+ "priority": "high",
+ "title": "Saving a ticket layout replaces its Detail view with the Create view (Standard layout cannot be saved)",
+ "verdict": "FAIL",
+ "date": "Jam 8 Nov 2026 08:50 UTC · checked 8 Nov 2026",
+ "env": "staging-desk.taviportal.com (NDC-Staging) · Setup › Modules & Fields › Tickets › Layouts › Standard · Edge 156, Windows 10",
+ "panels": [
+  {
+   "img": "detail-tab-resolution.png",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    340,
+    60,
+    1260,
+    780
+   ],
+   "caption": "Standard layout, Detail View tab: Resolution is on the Detail view (1). It is not on the Create tab.",
+   "boxes": [
+    {
+     "b": [
+      362,
+      708,
+      962,
+      812
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      556,
+      114,
+      668,
+      160
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "jam-0009-toast.png",
+   "w": 1584,
+   "h": 1080,
+   "crop": [
+    415,
+    80,
+    1169,
+    1000
+   ],
+   "caption": "Jam 0:09: one label change on the Create tab (2), then Save, gives \"Layout not saved: resolution cannot be removed\" (3).",
+   "boxes": [
+    {
+     "b": [
+      436,
+      140,
+      545,
+      198
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      394,
+      972,
+      1192,
+      1054
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "img": "detail-stored-vs-sent.png",
+   "w": 980,
+   "h": 299,
+   "full": true,
+   "caption": "(4) Left: Detail view as stored. Right: Detail view the editor sends on Save. It is a copy of the Create view, so Resolution and the whole Integration section (CRM deal, contract) are dropped.",
+   "boxes": [
+    {
+     "b": [
+      498,
+      0,
+      980,
+      299
+     ],
+     "n": 4,
+     "color": "#dc2626"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Detail view of the Standard layout",
+   "Has its own fields, including Resolution",
+   "Correct: Resolution and an Integration section are shown on Detail only",
+   "INFO"
+  ],
+  [
+   2,
+   "Change one label on the Create tab and click Save",
+   "Layout saves",
+   "\"Layout not saved: resolution cannot be removed from the layout…\"; every save of this layout fails",
+   "FAIL"
+  ],
+  [
+   3,
+   "Same as 2, after opening the Detail View tab first",
+   "Layout saves",
+   "Same error",
+   "FAIL"
+  ],
+  [
+   4,
+   "Detail view sent on Save",
+   "The Detail view as it is: 21 fields, 3 sections",
+   "A copy of the Create view: 18 fields, 2 sections; Resolution, CRM deal and contract are missing",
+   "FAIL"
+  ],
+  [
+   "Risk",
+   "Layouts whose Detail-only fields are not protected",
+   "Detail view kept",
+   "Would be overwritten without warning and lose fields. The 10 QA NDC layouts already have Detail = Create (inferred, not seen)",
+   "INFO"
+  ],
+  [
+   "Side effect",
+   "Error text",
+   "Tells the user what to do",
+   "Asks to \"move\" Resolution, which is not on the tab being edited and was not removed by the user",
+   "INFO"
+  ]
+ ],
+ "label": "BUG"
+}

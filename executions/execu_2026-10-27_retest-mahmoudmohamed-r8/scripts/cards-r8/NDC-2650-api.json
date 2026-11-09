@@ -1,0 +1,33 @@
+{
+ "out": "NDC-2650-api.png",
+ "date": "27 Oct 2026",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "title": "NDC-2650 · Layout access through the API (QA layout on Leads)",
+ "rows": [
+  [
+   "PUT access",
+   "PUT /layouts/{QA} accessMode selected + [User profile]",
+   "200; read back selected + [11111111-…103]",
+   "ok"
+  ],
+  [
+   "assignments",
+   "POST /layouts/assignments {profileId, layoutId} · GET",
+   "201 · 200 listed (was 500 / 405)",
+   "ok"
+  ],
+  [
+   "observation",
+   "PUT all_users with assignedProfiles []",
+   "old profile kept in the list",
+   "info"
+  ],
+  [
+   "observation",
+   "POST assignment without profileId",
+   "accepted, stored profileId null",
+   "info"
+  ]
+ ]
+}

@@ -1,0 +1,12 @@
+eval(require('fs').readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog/scripts/lib.js','utf8'));
+const o={};const CM='43004ce2-577f-4eda-b00a-0750fe40c3d4';
+const F=arr((await api('GET','/modules/'+T+'/fields')).j.data);const P=F.find(f=>f.id===IDS.fPick),K=F.find(f=>f.id===IDS.fLk);
+o.pick=P.datatypeOptions;o.lookup=K.datatypeOptions;
+const L=(await api('GET','/modules/'+T+'/layouts/'+IDS.layout)).j.data;o.layoutMod=L.lastModifiedAt;o.ts=L.ticketStatuses;
+const C=arr((await api('GET','/modules/'+CM+'/records?page_size=200')).j.data).map(fl);
+const good=C.find(c=>/qa\.webform/.test(c.email||'')),bad=C.find(c=>!/qa\.webform/.test(c.email||''));
+o.good=good&&good.email;o.bad=bad&&bad.email;
+const t1=await mkTicket('QA RT9 2174 H lookup ok',{status:'Open',qa_rt9_contact:good.id,qa_rt9_pick:'gamma'});o.t1={s:t1.s,e:t1.e,lk:t1.o&&t1.o.qa_rt9_contact,pick:t1.o&&t1.o.qa_rt9_pick};
+const t2=await mkTicket('QA RT9 2174 I lookup outside filter',{status:'Open',qa_rt9_contact:bad.id});o.t2={s:t2.s,e:t2.e,lk:t2.o&&t2.o.qa_rt9_contact};
+const t3=await mkTicket('QA RT9 2174 J pick not in list',{status:'Open',qa_rt9_pick:'omega'});o.t3={s:t3.s,e:t3.e};
+return o;

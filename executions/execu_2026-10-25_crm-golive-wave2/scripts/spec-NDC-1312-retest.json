@@ -1,0 +1,81 @@
+{
+ "out": "NDC-1312-retest.png",
+ "ticket": "NDC-1312",
+ "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "verdict": "FAIL",
+ "label": "STILL FAILS",
+ "title": "Change pipeline asks for the stage, but saving fails",
+ "panels": [
+  {
+   "img": "pl06-change-pipeline-dialog.png",
+   "caption": "TAVI — deal \"QA W2 PL Standard\" (25 Oct 2026): \"Change pipeline?\" asks for the stage in pipeline \"1\". Change pipeline → 422, no message, deal not moved.",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      544,
+      380,
+      1056,
+      530
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      896,
+      558,
+      1031,
+      594
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-deal-overview.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "Zoho — deal \"Benton\" stage bar. This org has only the default pipeline.",
+   "crop": [
+    0,
+    0,
+    1600,
+    950
+   ],
+   "boxes": [
+    {
+     "b": [
+      512,
+      256,
+      1440,
+      284
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Ask for the stage in the new pipeline",
+   "Not checked live (no second pipeline in this org)",
+   "The dialog asks for the stage and keeps the current one if the new pipeline has it",
+   "PASS"
+  ],
+  [
+   "2",
+   "Save the change",
+   "Not checked live",
+   "PATCH → 422 \"Invalid value for: Pipeline\" (also by API on 26 Oct); no message; the deal stays in \"Standard\"",
+   "FAIL"
+  ]
+ ]
+}

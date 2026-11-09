@@ -1,0 +1,4 @@
+const D = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430';
+const p = await api('GET', `/modules/${D}/list-preferences`);
+let n = 0, cur = '', mine = []; for (let i = 0; i < 40; i++) { const r = await api('GET', `/audit/recycle-bin/items?app_key=crm&app_key=iam&app_key=files&app_key=reporting&app_key=workflow&app_key=mail&limit=200${cur ? '&cursor=' + encodeURIComponent(cur) : ''}`); const a = arr(r.j?.data); n += a.length; mine.push(...a.filter(x => /^(QA RT|qa_rt|QA WF)/i.test(x.record_label || '')).map(x => ({ id: x.id, label: x.record_label, by: x.deleted_by_label || x.deleted_by }))); cur = r.j?.meta?.next_cursor; if (!cur || !a.length) break; }
+return done({ dealPrefs: p.s + ' ' + p.t.slice(0, 300), binTotal: n, qaInBin: mine.length, sample: mine.slice(0, 40).map(x => x.label + ' (' + x.by + ')') });

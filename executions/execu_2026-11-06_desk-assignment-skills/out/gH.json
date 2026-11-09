@@ -1,0 +1,140 @@
+{
+ "before": {
+  "count": 0,
+  "names": "",
+  "prefs": {
+   "auto_add": false,
+   "placement": "bottom"
+  },
+  "types": {
+   "types": [
+    {
+     "id": "b0a5e2f1-6c3d-4e0a-9f7b-2d8c1e5a7f30",
+     "name": "General",
+     "sort_order": 0
+    },
+    {
+     "id": "3d8c3b0d-3702-4359-bb93-741d26e027d5",
+     "name": "Tech",
+     "sort_order": 1
+    }
+   ]
+  }
+ },
+ "type": {
+  "s": 201,
+  "d": "{\"id\":\"3337f0cc-2161-4829-9e50-4aec14a06fbd\",\"name\":\"QA AS6 Type\",\"sort_order\":2}"
+ },
+ "H-02 validation": {
+  "blank": "VALIDATION_ERROR: The skill is invalid. [{\"field\":\"name\",\"issue\":\"required\"}]",
+  "noType": {
+   "s": 400,
+   "id": null,
+   "e": "VALIDATION_ERROR: The skill is invalid. [{\"field\":\"type_id\",\"issue\":\"required\"}]"
+  },
+  "long101": "VALIDATION_ERROR: The skill is invalid. [{\"field\":\"name\",\"issue\":\"too_long\"}]",
+  "html": {
+   "s": 201,
+   "id": "e4677bfb-4acb-49f3-8f5e-4fefdce8a40f"
+  }
+ },
+ "H-setup skills": {
+  "sk1": {
+   "s": 201,
+   "id": "e383aea4-539f-488b-a316-483b3895e432"
+  },
+  "sk2": {
+   "s": 201,
+   "id": "ac18bc92-f76a-474f-ac5e-0cace63a3c4a"
+  },
+  "sk3": {
+   "s": 201,
+   "id": "d8bb71bc-b69c-4969-8889-afab13a1f98b"
+  },
+  "dup": "CONFLICT: The department already has a skill with this name. [{\"field\":\"name\",\"issue\":\"SKILL_DUPLICATE\"}]",
+  "ag1": {
+   "s": 200,
+   "d": "{\"skill_id\":\"e383aea4-539f-488b-a316-483b3895e432\",\"user_ids\":[\"876ce871-2b02-4854-89a7-68050391c62b\"]}"
+  },
+  "ag2": {
+   "s": 200,
+   "d": "{\"skill_id\":\"ac18bc92-f76a-474f-ac5e-0cace63a3c4a\",\"user_ids\":[\"d23fb4e0-248d-41f6-af60-d28885a7007e\"]}"
+  },
+  "ag3": {
+   "s": 200,
+   "d": "{\"skill_id\":\"d8bb71bc-b69c-4969-8889-afab13a1f98b\",\"user_ids\":[\"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4\"]}"
+  },
+  "agentSkills": "[[\"A3\",[\"QA AS6 sk3\"]],[\"A2\",[\"QA AS6 sk2\"]],[\"O\",[]],[\"A1\",[\"QA AS6 sk1\"]]]",
+  "stored": "[[\"QA AS6 sk1\",true,\"3337f0cc\",[\"A1\"]],[\"QA AS6 sk2\",true,\"3337f0cc\",[\"A2\"]],[\"QA AS6 sk3\",false,\"3337f0cc\",[\"A3\"]]]",
+  "prefs": {
+   "s": 200,
+   "d": "{\"auto_add\":true,\"placement\":\"settings_order\"}"
+  }
+ },
+ "H-07 auto add on create": {
+  "skills": [
+   "QA AS6 sk1"
+  ],
+  "h": [
+   "ticket.department_changed {\"field_key\":\"department_id\",\"old_value\":null,\"new_value\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\"}"
+  ]
+ },
+ "H-06 order follows list": {
+  "before": [
+   "QA AS6 sk1",
+   "QA AS6 sk2"
+  ],
+  "reorder": 200,
+  "after": [
+   "QA AS6 sk2",
+   "QA AS6 sk1"
+  ],
+  "restore": 200
+ },
+ "H-07b on update": {
+  "patch": 200,
+  "skills": [
+   "QA AS6 sk2"
+  ]
+ },
+ "H-08 per-ticket recalculate": {
+  "afterEdit": [
+   "QA AS6 sk1"
+  ],
+  "recalc": {
+   "s": 200,
+   "d": "{\"skills\":[],\"changed\":true,\"dropped\":[]}"
+  },
+  "afterRecalc": []
+ },
+ "H-10 usage": {
+  "s": 200,
+  "d": "{\"skill_id\":\"e383aea4-539f-488b-a316-483b3895e432\",\"name\":\"QA AS6 sk1\",\"assignment_rules\":[],\"skills\":[],\"agent_ids\":[\"876ce871-2b02-4854-89a7-68050391c62b\"],\"open_tickets\":2,\"open_tickets_capped\":false,\"workflow\":{\"available\":true,\"rules\":[]}}"
+ },
+ "H-11 ticket limit 10": {
+  "n": 4,
+  "s": 200,
+  "stored": 4
+ },
+ "H-11b 30 active per dept": {
+  "activeBefore": 3,
+  "statuses": "201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,201,400",
+  "lastErr": "VALIDATION_ERROR: A department can have up to 30 active skills. [{\"field\":\"is_active\",\"issue\":\"SKILL_ACTIVE_LIMIT\"}]"
+ },
+ "H-01 per department": {
+  "deptB": ""
+ },
+ "E-14/H-12 skill RR": {
+  "rule": 201,
+  "withSk2": "QA AS6 SKR QA AS6 SK2 a skills=[\"QA AS6 sk2\"] owner=A2",
+  "withSk2b": "QA AS6 SKR QA AS6 SK2 b skills=[\"QA AS6 sk2\"] owner=A2",
+  "noSkill1": "QA AS6 SKR none 1 skills=undefined owner=A3",
+  "noSkill2": "QA AS6 SKR none 2 skills=undefined owner=O",
+  "both": "QA AS6 SKR QA AS6 SK1 QA AS6 SK2 skills=[\"QA AS6 sk1\",\"QA AS6 sk2\"] owner=-"
+ },
+ "H-13 type delete keeps skills": {
+  "create": 201,
+  "ren": 200,
+  "del": 204
+ }
+}

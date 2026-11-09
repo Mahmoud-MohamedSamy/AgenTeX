@@ -1,0 +1,95 @@
+{
+ "out": "NDC-2419-retest-PARTIAL.png",
+ "ticket": "NDC-2419",
+ "title": "Assignment Rules | Rules fire on import and API but no longer set the owner",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26–27 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2419-api.png",
+   "caption": "auto-run3 — GroupAJTest A-02 / A-01; row 4: auto-run6 rerun (27 Oct).",
+   "crop": [
+    0,
+    0,
+    1600,
+    360
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      274
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      280,
+      1566,
+      342
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Import choosing the rule",
+   "Lead Owner = rule user",
+   "Owner = valafo4080 (rule user)",
+   "PASS"
+  ],
+  [
+   "2",
+   "API-channel create",
+   "Lead Owner = rule user",
+   "Owner stays the creator test user 1 (45ffbc5b…) instead of rule user 51666421…",
+   "FAIL"
+  ],
+  [
+   "3",
+   "Execution log",
+   "—",
+   "Rule outcome Fired, owner not changed (same as 22 Oct for API)",
+   "FAIL"
+  ],
+  [
+   "4",
+   "Rerun 27 Oct (auto-run6)",
+   "Lead Owner = rule user",
+   "Same result: API create → owner nameb56175 (creator), rule 1be065d1 Fired, expected valafo4080",
+   "FAIL"
+  ]
+ ]
+}

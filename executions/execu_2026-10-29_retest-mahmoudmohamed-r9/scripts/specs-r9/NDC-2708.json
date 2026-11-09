@@ -1,0 +1,79 @@
+{
+ "out": "NDC-2708-retest-PASS.png",
+ "ticket": "NDC-2708",
+ "title": "Approval Process | The approver sometimes gets \"Record not found\" on a record waiting for their approval",
+ "priority": "medium",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2708-api.png",
+   "caption": "API evidence — NDC-2708 · Approver U1 (CRM User) opens records waiting for U1's approval (owner submits)",
+   "crop": [
+    0,
+    0,
+    1600,
+    271
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      253
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "no approve permission",
+   "Always opens",
+   "Record 32/32 → 200; approval state 32/32 → 200",
+   "PASS"
+  ],
+  [
+   "2",
+   "with approve permission",
+   "Always opens; can approve",
+   "Record 30/30 → 200; approval 30/30 → 200, canApprove true; Approve 204",
+   "PASS"
+  ],
+  [
+   "3",
+   "after deciding",
+   "— (observation)",
+   "404 \"Record not found.\" — the approver loses access once decided (owner 200)",
+   "INFO"
+  ]
+ ]
+}

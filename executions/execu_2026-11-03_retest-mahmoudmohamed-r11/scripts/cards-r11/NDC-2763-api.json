@@ -1,0 +1,27 @@
+{
+ "out": "NDC-2763-api.png",
+ "date": "3 Nov 2026",
+ "host": "staging-desk.taviportal.com (tenant NDC-Staging)",
+ "who": "ndc-staging-owner (Owner)",
+ "title": "NDC-2763 · POST /modules/{Tickets}/blueprints, states Open / Escalated / Closed",
+ "rows": [
+  [
+   "wrong auto move",
+   "Open: autoTransitionId esc2 (Escalated → Closed)",
+   "422 \"State 'Open': 'esc2' is not a transition out of this state, so it cannot run automatically.\"",
+   "ok"
+  ],
+  [
+   "reply trigger",
+   "Open: onReplyTransitionId esc2",
+   "422 \"…cannot run on the contact's reply.\"",
+   "ok"
+  ],
+  [
+   "control",
+   "Open: auto \"go\" after 1 min, active, ticket",
+   "auto due entered + 1 min; after 115 s Escalated, Status Escalated",
+   "ok"
+  ]
+ ]
+}

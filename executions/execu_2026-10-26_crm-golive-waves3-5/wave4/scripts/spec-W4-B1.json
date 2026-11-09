@@ -1,0 +1,138 @@
+{
+ "out": "W4-B1-failed-email-looks-sent.png",
+ "ticket": "W4-B1",
+ "verdict": "FAIL",
+ "label": "NEW BUG · HIGH",
+ "title": "Email | An email that fails to send looks sent: \"Sent\" toast, \"EmailSent\" on the timeline, nothing in Mails",
+ "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "t-mails-tab-failed.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "TAVI — the QA lead after Send: Emails › Mails says \"No emails yet\".",
+   "crop": [
+    300,
+    580,
+    1260,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      313,
+      717,
+      1548,
+      862
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "z-lead-emails.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "Zoho — a lead's Emails section has the same Mails / Drafts / Scheduled tabs; sent emails are listed there with their status.",
+   "crop": [
+    472,
+    240,
+    1116,
+    145
+   ],
+   "boxes": [
+    {
+     "b": [
+      472,
+      245,
+      1588,
+      378
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    }
+   ]
+  },
+  {
+   "img": "api-w4b1-failed-email.png",
+   "w": 1600,
+   "h": 523,
+   "caption": "TAVI API — what really happened to the same email.",
+   "crop": [
+    0,
+    0,
+    1600,
+    523
+   ],
+   "boxes": [
+    {
+     "b": [
+      16,
+      186,
+      1584,
+      320
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      16,
+      370,
+      1584,
+      412
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      16,
+      140,
+      1584,
+      182
+     ],
+     "n": 4
+    },
+    {
+     "b": [
+      16,
+      416,
+      1584,
+      458
+     ],
+     "n": 1
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "The email shows on the record",
+   "Listed in the record's Emails › Mails with its status (a failed send was not reproduced in Zoho: not checked)",
+   "Mails tab says \"No emails yet\"; the API lists the email with status \"failed\" (the screen reads a different address)",
+   "FAIL"
+  ],
+  [
+   "2",
+   "Why it failed is visible",
+   "Not checked",
+   "Only in the API: \"No Zoho account found for sender … set the 'zoid' org id on the connection\". The connection still reports health \"ok\" and sendability says can_send=true",
+   "FAIL"
+  ],
+  [
+   "3",
+   "Timeline entry",
+   "Not checked",
+   "Timeline logs \"EmailSent\" for an email that was never sent",
+   "FAIL"
+  ],
+  [
+   "4",
+   "Message after Send",
+   "Not checked",
+   "Toast \"Sent\"; no later warning and no notification",
+   "FAIL"
+  ]
+ ]
+}

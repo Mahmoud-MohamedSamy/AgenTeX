@@ -1,0 +1,31 @@
+{
+ "out": "NDC-2323-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2323 · Scheduled webhook (120 s) on a lead converted before it is due",
+ "rows": [
+  [
+   "rule",
+   "POST /api/v1/workflow/rules (Leads, On Create, scheduled Webhook +120 s)",
+   "201 — rule 1448ac2e…",
+   "info"
+  ],
+  [
+   "lead 1 converted at once",
+   "POST /api/v1/modules/{Leads}/records/3a22e4a4…/convert (15:08:41)",
+   "200",
+   "info"
+  ],
+  [
+   "lead 1 after 2+ min",
+   "executions / dispatches + receiver",
+   "no dispatch, nothing received — scheduled webhook cancelled",
+   "ok"
+  ],
+  [
+   "lead 2 control",
+   "executions / receiver",
+   "Webhook Succeeded 15:10:41 (+2 min); receiver got only recordId 5898eb60… (control)",
+   "ok"
+  ]
+ ]
+}

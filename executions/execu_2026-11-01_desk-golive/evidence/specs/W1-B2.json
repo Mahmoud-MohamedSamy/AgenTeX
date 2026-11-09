@@ -1,0 +1,9 @@
+{ "out": "W1-B2-vs-zoho.png", "ticket": "W1-B2", "title": "Departments: saving from an older copy of the form silently undoes another admin's change", "verdict": "FAIL", "label": "BUG · Medium", "date": "2 Nov 2026", "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner, two tabs on department \"QA GL N Dept\" · Zoho Desk: techsolutionsegypt (Enterprise trial) · Edge",
+  "panels": [
+    { "img": "bugs/W1-B2-2-tabA-cc-off-saved.png", "w": 1280, "h": 720, "caption": "TAVI · tab A: CC turned off and saved", "boxes": [ { "b": [308, 548, 578, 572], "n": 1 } ] },
+    { "img": "bugs/zoho-dept-edit.png", "w": 1600, "h": 900, "caption": "Zoho · Departments › Marketing › Edit (same kind of form; saves failed in the trial org)", "boxes": [ { "b": [626, 420, 826, 450], "n": 1 }, { "b": [626, 316, 958, 384], "n": 2 }, { "b": [658, 52, 942, 82], "n": 3 } ] },
+    { "img": "bugs/W1-B2-5-reload-cc-on.png", "w": 1280, "h": 720, "caption": "TAVI · after tab B (stale) saved a Help Center name: reload shows CC back ON", "boxes": [ { "b": [308, 312, 990, 351], "n": 2 }, { "b": [308, 548, 578, 572], "n": 3 } ] } ],
+  "rows": [
+    [1, "Tab A turns a department setting off and saves", "Not checked: in the trial org the department edit form does not save (\"Unable to process your request\"), so the two-tab test could not run. Nothing was changed in Zoho.", "Saved: \"Allow copied addresses (CC)\" off.", "INFO"],
+    [2, "Tab B, opened before tab A saved, changes another field and saves", "Not checked (same reason).", "Saved with 200. No message that the department changed meanwhile; the API has no version check.", "BUG"],
+    [3, "Department after reload", "Not checked (same reason).", "CC is back ON. Tab A's change was lost without any warning (reproduced 3 times: twice by API on Anyware, once on screen on NDC).", "BUG"] ] }

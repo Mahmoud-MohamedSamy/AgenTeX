@@ -1,0 +1,14 @@
+const d = page.locator('[role=dialog]').first();
+const res = {};
+let rq = page.waitForResponse(r => /schedules/.test(r.url()) && r.request().method() === 'POST', { timeout: 30000 }).catch(() => null);
+await d.locator('button', { hasText: /^Send me a test$/ }).click();
+let r = await rq; await sleep(2500);
+res.test = r ? r.url().replace(/^.*\/api\/v1/, '') + ' -> ' + r.status() + ' ' + (await r.text()).slice(0, 300) : 'none';
+res.testToast = ((await page.innerText('body')).replace(/\s+/g, ' ').match(/[^.]{0,60}(test|sent)[^.]{0,60}/gi) || []).slice(-3);
+rq = page.waitForResponse(r => /reporting\/schedules$/.test(r.url().split('?')[0]) && r.request().method() === 'POST', { timeout: 30000 }).catch(() => null);
+await d.locator('button', { hasText: /^Schedule$/ }).click();
+r = await rq; await sleep(3000);
+res.save = r ? r.status() + ' ' + (await r.text()).slice(0, 500) : 'none';
+await shot('s02-sched-saved');
+res.list = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 800);
+return res;

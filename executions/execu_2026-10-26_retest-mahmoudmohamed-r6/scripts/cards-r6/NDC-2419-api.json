@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2419-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2419 · Assignment rules set the owner — import vs API channel (automation GroupAJTest)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "A-02 import choosing the rule",
+   "Leads import, rule chosen in the Assign step",
+   "lead 0c6d852e… owner = valafo4080 (rule user), rule Fired, source excel_import",
+   "ok"
+  ],
+  [
+   "A-01 API-channel create",
+   "test user 1: POST /api/v1/modules/{Leads}/records (source api)",
+   "lead a82cf193… owner = nameb56175 (creator 45ffbc5b…) — expected rule user 51666421…",
+   "bad"
+  ],
+  [
+   "A-01 execution",
+   "GET /workflow/executions?recordId=a82cf193…",
+   "assignment rule c5b0df2f… outcome Fired — but owner not changed",
+   "bad"
+  ],
+  [
+   "rerun 27 Oct (auto-run6)",
+   "test user 1: POST /api/v1/modules/{Leads}/records (source api)",
+   "same result — lead afd8b30c… owner = nameb56175 (creator), rule 1be065d1… Fired; expected 51666421… (valafo4080)",
+   "bad"
+  ]
+ ]
+}

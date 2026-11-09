@@ -1,0 +1,1 @@
+return { main: (await page.innerText('main')).replace(/\s+/g, ' ').match(/Create Folder.{0,300}/)?.[0], rows: await page.$$eval('main [draggable], main li', es => es.map(e => e.innerText.replace(/\s+/g, ' ').slice(0, 60))) };

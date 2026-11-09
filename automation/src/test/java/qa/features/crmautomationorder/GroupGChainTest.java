@@ -939,8 +939,14 @@ public class GroupGChainTest extends OrderTestBase {
         activate(d);
         d.id = api.createRecord(userN(), DEALS, layout(DEALS), fields(DEALS, nm(c, "src")));
         Assert.assertTrue(CrmApi.waitFor(WAIT, () -> api.governed(DEALS, d.id)), "source deal governed by the blueprint");
+        String stored = adminA().get("/modules/" + DEALS + "/blueprints/" + d.bp).asString();
+        int at = stored.indexOf("createRecord");
+        note(c, "stored blueprint keeps createRecord after-action: " + (at >= 0) + (at >= 0 ? " … " + stored.substring(Math.max(0, at - 40), Math.min(stored.length(), at + 260)) : ""));
         runBlueprintToEnd(d, userN(), 1);
-        String lead = findByName(LEADS, made);
+        String[] found = new String[1];
+        CrmApi.waitFor(90, () -> (found[0] = findByName(LEADS, made)) != null);   // round 2: wait for an async After action
+        String lead = found[0];
+        note(c, "lead made by the After action after 90 s: " + lead);
         traceOf(c, DEALS, d.id);
         if (lead == null) inconclusive("blueprint After 'Create record' made no lead '" + made + "' (missing list item 9: not offered in the After list)");
         adopt(LEADS, lead);

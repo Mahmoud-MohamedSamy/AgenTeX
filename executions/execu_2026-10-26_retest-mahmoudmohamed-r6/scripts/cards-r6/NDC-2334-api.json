@@ -1,0 +1,26 @@
+{
+ "out": "NDC-2334-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2334 · On Edit approval vs a deal in a published blueprint (automation VerifyV3 F-20)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "blueprint deal edited",
+   "test user 1: PATCH /api/v1/modules/{Deals}/records/7aac7231… {next_step:\"edit\"} (matches the On Edit approval)",
+   "200 — approval = null, governed = true",
+   "ok"
+  ],
+  [
+   "blueprint state",
+   "GET /api/v1/modules/{Deals}/records/7aac7231…/blueprint-state",
+   "states: QA AEO V3 F-20 BP, target stage, activeStates [\"qualification\"] — still in the blueprint",
+   "ok"
+  ],
+  [
+   "control deal (no blueprint)",
+   "PATCH /api/v1/modules/{Deals}/records/ab9a0c9e… same edit",
+   "approval = pending_approval, governed = false (approval works outside blueprints)",
+   "info"
+  ]
+ ]
+}

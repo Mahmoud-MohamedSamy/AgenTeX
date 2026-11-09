@@ -1,0 +1,34 @@
+{
+ "out": "api-2646.png",
+ "title": "NDC-2646 — validation rules on the QA module (API, CRM Admin A, 28 Oct 2026)",
+ "lines": [
+  [
+   "Rule \"QA number must be 10 or less\" = criteria {op: gt, field: qa_num, value: 10}, active",
+   "info"
+  ],
+  [
+   "Create with QA Number 5   -> 201 (control)",
+   "ok"
+  ],
+  [
+   "Create with QA Number 50  -> 422 RECORD_VALIDATION_FAILED / VALIDATION_RULE_FAILED \"QA number must be 10 or less\"",
+   "ok"
+  ],
+  [
+   "Edit 3 -> 999             -> 422, stored value stays 3",
+   "ok"
+  ],
+  [
+   "Rule with condition \"garbage ((( not an expression\" -> 422 VALIDATION_RULE_INVALID",
+   "ok"
+  ],
+  [
+   "Pick-list rule {eq qa_pick Blue}: create with Blue -> 422 \"Blue is not allowed\" (NDC-2536 item 2)",
+   "ok"
+  ],
+  [
+   "Same rule through the ingest API (mobile client): QA Number 50 -> 201 \"valid\"   (candidate R2W5-C1)",
+   "bad"
+  ]
+ ]
+}

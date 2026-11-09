@@ -1,0 +1,137 @@
+<title>Layout Mandatory Fields Bug</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: single bug-report column (~920px) — ticket header, summary, numbered steps, expected vs actual side by side, evidence tables */
+:root{
+  --bg:#f6f8f8; --surface:#ffffff; --fg:#14211f; --muted:#5b6b68; --line:#d9e2e0; --accent:#0f6e66;
+  --bad:#b42318; --badbg:#fdecea; --good:#21734a; --goodbg:#e6f4ec; --warn:#a15c07; --warnbg:#fdf3e2;
+  --font-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1716; --surface:#16211f; --fg:#e4eeec; --muted:#9db0ac; --line:#2a3a37; --accent:#4fc2b6;
+  --bad:#ff8a7d; --badbg:#3a1d1a; --good:#6fcf97; --goodbg:#173126; --warn:#f2b55a; --warnbg:#372a14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1716; --surface:#16211f; --fg:#e4eeec; --muted:#9db0ac; --line:#2a3a37; --accent:#4fc2b6;
+  --bad:#ff8a7d; --badbg:#3a1d1a; --good:#6fcf97; --goodbg:#173126; --warn:#f2b55a; --warnbg:#372a14; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.55}
+.wrap{max-width:920px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:32px}
+header{display:flex;flex-direction:column;gap:10px}
+.draft{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);background:var(--warnbg);padding:3px 10px;border-radius:4px}
+h1{font-size:clamp(22px,3.4vw,30px);line-height:1.2;margin:0;text-wrap:balance}
+h2{font-size:18px;margin:0}
+p{margin:0;max-width:72ch}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px 16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:13px}
+.fields div{display:flex;flex-direction:column;gap:1px;min-width:0}
+.fields span{color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.fields b{font-weight:600}
+section{display:flex;flex-direction:column;gap:12px}
+ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:76ch}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cmp>div{border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0;border:1px solid var(--line);background:var(--surface)}
+.cmp .exp{box-shadow:inset 3px 0 var(--good)}
+.cmp .act{box-shadow:inset 3px 0 var(--bad)}
+.cmp h3{margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.cmp .exp h3{color:var(--good)}.cmp .act h3{color:var(--bad)}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+code,.mono{font-family:var(--font-mono);font-size:12.5px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.bad{background:var(--badbg);color:var(--bad)}.good{background:var(--goodbg);color:var(--good)}.warn{background:var(--warnbg);color:var(--warn)}
+.note{border-left:3px solid var(--warn);padding:10px 14px;background:var(--surface);border-radius:0 8px 8px 0;color:var(--muted);font-size:14px}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:680px){.cmp{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="draft">Draft · not filed in Plane</div>
+  <h1>Layouts | A department layout's mandatory fields are not enforced — the ticket is saved with them empty</h1>
+  <div class="fields">
+    <div><span>Project</span><b>NDC</b></div>
+    <div><span>State</span><b>Bug</b></div>
+    <div><span>Priority</span><b>High</b></div>
+    <div><span>Module · Cycle</span><b>Desk · Sprint 14</b></div>
+    <div><span>Assignees</span><b>MahmoudMohamed, mfathy, Hegazy, eahmed</b></div>
+    <div><span>Related</span><b>NDC-2787</b></div>
+  </div>
+</header>
+
+<section>
+  <h2>Summary</h2>
+  <p>A field marked mandatory on a department's ticket layout is not checked when the ticket is saved, so a ticket in that department is created with its mandatory fields empty. Rules that require a field (layout rules, validation rules) are checked; only the layout's own mandatory flag is ignored. NDC marks 4 to 18 fields mandatory on each department form, for example Manual Invoice 9, ADM 18 and NDC Finance TKT 15.</p>
+</section>
+
+<section>
+  <h2>Steps to reproduce</h2>
+  <ol class="steps">
+    <li>In Setup → Layouts and Fields → Tickets, open the layout <b>QA NDC Manual Invoice</b> (assigned to department QA NDC Manual Invoice).</li>
+    <li>Check that these fields are marked mandatory on the layout: Agent id, Need to issue invoice, Transaction Type, Number of Transaction, Number of transaction validation (plus Subject, Contact, Status, Department).</li>
+    <li>Create a ticket in department QA NDC Manual Invoice with only Subject, Contact, Status = Open and Department filled, using that layout.</li>
+    <li>Save.</li>
+  </ol>
+</section>
+
+<section class="cmp">
+  <div class="exp">
+    <h3>Expected</h3>
+    <ul>
+      <li>The save is refused and lists each empty mandatory field, for example "Agent id is required", as Zoho Desk does for the department's layout.</li>
+      <li>No ticket is created.</li>
+    </ul>
+  </div>
+  <div class="act">
+    <h3>Actual</h3>
+    <ul>
+      <li>The ticket is saved with all five mandatory custom fields empty.</li>
+      <li>The mandatory flags are still shown on the layout when it is read back, so the setting is stored but not applied.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Evidence</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Ticket</th><th>How it was created</th><th>Mandatory fields filled</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">#890</td><td>Department QA NDC Manual Invoice, no layout named</td><td>0 of 5</td><td><span class="pill bad">Saved</span></td></tr>
+      <tr><td class="mono">#895</td><td>Department QA NDC Manual Invoice, layout "QA NDC Manual Invoice" given</td><td>0 of 5</td><td><span class="pill bad">Saved</span></td></tr>
+      <tr><td class="mono">—</td><td>Layout rule: Transaction Type = Ancillary without Ancillary Type</td><td>—</td><td><span class="pill good">Refused</span> "QA NDC Ancillary Type is required"</td></tr>
+      <tr><td class="mono">—</td><td>Validation rule: Status = Reject without a rejection reason</td><td>—</td><td><span class="pill good">Refused</span> "Please add a clear rejection reason"</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Mandatory fields per NDC department form (as set in NDC's Zoho)</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Layout</th><th>Department</th><th>Mandatory fields</th></tr></thead>
+    <tbody>
+      <tr><td>ADM</td><td>Accounting</td><td>18</td></tr>
+      <tr><td>NDC Finance TKT</td><td>NDC Finance</td><td>15</td></tr>
+      <tr><td>Client Complaints</td><td>Client Complaints</td><td>14</td></tr>
+      <tr><td>Clients' Financial Investigations</td><td>Clients' Financial Investigations</td><td>13</td></tr>
+      <tr><td>NDC Mail</td><td>Financial approval</td><td>11</td></tr>
+      <tr><td>Manual Invoice</td><td>Manual Invoice</td><td>9</td></tr>
+      <tr><td>FLY-WT Refund</td><td>FLY-WT Refund</td><td>8</td></tr>
+      <tr><td>Accounting</td><td>Accounting</td><td>6</td></tr>
+      <tr><td>NDC Finance</td><td>NDC Finance</td><td>4</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Environment</h2>
+  <ul>
+    <li>staging-desk.taviportal.com, NDC-Staging (company "Wonder Travel"), owner account, 3 Nov 2026.</li>
+    <li>Tickets created through the records API, the same call the create form uses.</li>
+    <li>Found while rebuilding NDC's Zoho Desk setup on TAVI (NDC-2787, item A-6).</li>
+  </ul>
+  <p class="note">The create form on screen could not be checked on 3 Nov because the TAVI web app did not load on our network. Checking it on screen, and adding a TAVI vs Zoho image, is recommended before filing.</p>
+</section>
+
+<footer>Draft prepared 3 Nov 2026 · source: docs/ndc-zoho-desk-gap/plane-bug-a6-draft.md</footer>
+</div>

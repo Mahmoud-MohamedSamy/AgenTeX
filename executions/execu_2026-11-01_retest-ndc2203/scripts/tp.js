@@ -1,0 +1,1 @@
+const out = {}; for (const p of ['/desk/happiness/settings', '/desk/skills', '/desk/agents/me/presence', `/modules/${T}/records?page=1&per_page=1`]) { const t0 = Date.now(); const r = await api('GET', p); out[p] = r.s + ' ' + (Date.now() - t0) + 'ms ' + (r.s > 299 ? r.t.slice(0, 120) : ''); } return out;

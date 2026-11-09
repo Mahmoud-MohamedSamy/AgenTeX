@@ -1,0 +1,43 @@
+{
+ "ruleUser": {
+  "s": 400,
+  "err": "One or more validation errors occurred. [{\"field\":\"Actions[0].OwnerTargetKind\",\"issue\":\"OwnerTargetKind must be SpecificUser, UserField, RoleRoundRobin, OrgUnitRoundRobin, Team, or AssignmentRule.\"}]"
+ },
+ "a_createUserRule": "201",
+ "b_createOwnerOther": "403 PERMISSION_DENIED Permission denied.",
+ "c_createTeamNoRule": "403 PERMISSION_DENIED Permission denied.",
+ "perms": [
+  "iam.security.audit.view_all",
+  "iam.security.loginhistory.view_all",
+  "iam.security.recyclebin.view_all",
+  "metadata.records.access",
+  "metadata.records.convert",
+  "metadata.records.manage",
+  "metadata.records.view_all",
+  "metadata.records.mass_delete",
+  "metadata.records.change_owner",
+  "desk:crm_tickets:view",
+  "desk:crm_tickets:link",
+  "desk:ticket:close",
+  "desk:ticket:comment",
+  "desk:ticket:delete",
+  "desk:ticket:manage",
+  "desk:ticket:reply",
+  "desk:ticket:view",
+  "desk:ticket:forward",
+  "desk:ticket:share",
+  "desk:ticket:assign",
+  "desk:ticket:assign_unassigned",
+  "desk:ticket:bulk",
+  "desk:ticket:create",
+  "desk:ticket:macro",
+  "desk:ticket:mass_comment",
+  "desk:ticket:mass_reply",
+  "desk:ticket:move",
+  "desk:ticket:pick_up",
+  "desk:ticket:view_unassigned",
+  "desk:ticket:scheduled_replies_manage",
+  "desk:ticket:merge"
+ ],
+ "created": []
+}

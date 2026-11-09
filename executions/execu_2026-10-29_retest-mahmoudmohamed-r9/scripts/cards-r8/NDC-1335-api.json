@@ -1,0 +1,27 @@
+{
+ "out": "NDC-1335-api.png",
+ "date": "27 Oct 2026",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "title": "NDC-1335 · New Leads layout with predefined fields only — Save (layout builder network)",
+ "rows": [
+  [
+   "first Save",
+   "POST /api/v1/modules/{Leads}/layouts (name \"New Layout\", predefined fields)",
+   "201 — layout 78288b9b created; no PUT on any field, no \"Failed to update options for Subform\"",
+   "ok"
+  ],
+  [
+   "second Save",
+   "PUT /api/v1/modules/{Leads}/layouts/78288b9b",
+   "200 — same layout updated; still one \"New Layout\" (no duplicate)",
+   "ok"
+  ],
+  [
+   "round 4 (26 Oct)",
+   "Save of a new predefined-only layout",
+   "PUT /fields/5dd25be0 (Subform, 0 subfields) → 422; layout not created — gone now",
+   "info"
+  ]
+ ]
+}

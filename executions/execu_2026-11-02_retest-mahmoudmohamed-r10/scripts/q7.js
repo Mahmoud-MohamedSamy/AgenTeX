@@ -1,0 +1,1 @@
+const u=arr((await api('o','GET','/iam/users?limit=200')).j?.data).find(u=>u.userId.startsWith('25f4b5fe')); return [u?.email?.replace(/^(.{3}).*@/,'$1…@'), u?.profileNames, u?.status, u?.displayName||u?.name];

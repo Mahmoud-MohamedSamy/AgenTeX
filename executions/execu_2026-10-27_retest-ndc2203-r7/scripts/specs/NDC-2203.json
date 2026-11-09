@@ -1,0 +1,270 @@
+{
+ "out": "NDC-2203-retest-r7.png",
+ "ticket": "NDC-2203",
+ "title": "DESK Workflow Missings — round 7",
+ "verdict": "PASS",
+ "label": "RETEST PASS",
+ "date": "27 Oct 2026",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (Desk Administrator), fedelav803 (Desk Agent)",
+ "panels": [
+  {
+   "img": "a4-private-thread-options.png",
+   "caption": "A Ticket Event › Private Thread now offers Incoming and outgoing / Incoming / Outgoing.",
+   "crop": [
+    208,
+    236,
+    900,
+    400
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      228,
+      572,
+      700,
+      632
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2203-r7-behaviour.png",
+   "caption": "Each fix used on a QA ticket and checked on the ticket, Execution History and Ticket History.",
+   "crop": [
+    0,
+    0,
+    1600,
+    670
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      95,
+      1570,
+      182
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      184,
+      1570,
+      271
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      273,
+      1570,
+      318
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      320,
+      1570,
+      386
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      388,
+      1570,
+      454
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      456,
+      1570,
+      522
+     ],
+     "n": 7,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      524,
+      1570,
+      590
+     ],
+     "n": 8,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      592,
+      1570,
+      658
+     ],
+     "n": 9,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "f4-history-b07-ruleran.png",
+   "caption": "History of #598: the share and the \"Workflow rule ran\" row are \"by workflow rule QA WF B07\"; action \"Share ticket\".",
+   "crop": [
+    664,
+    230,
+    616,
+    410
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      700,
+      505,
+      1000,
+      628
+     ],
+     "n": 10,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "d1-form-4-after-save.png",
+   "caption": "New Ticket form: \"Permission denied.\" after Save, yet tickets #616 / #617 were created on the team.",
+   "crop": [
+    664,
+    400,
+    616,
+    310
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      975,
+      638,
+      1258,
+      696
+     ],
+     "n": 11,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "A1",
+   "Customer Reply",
+   "Fires on a customer reply",
+   "Fired on the reply from the QA Gmail (#648)",
+   "PASS"
+  ],
+  [
+   "A4",
+   "Private Thread: incoming / outgoing / both",
+   "Direction choice works",
+   "Outgoing fires on a forward, Incoming on the third party's answer, Both on each; answer stays private, no Customer Responded",
+   "PASS"
+  ],
+  [
+   "D1",
+   "Assign to team (Create rule)",
+   "Ticket goes to the team, owner cleared",
+   "Team set, owner null on API, form and agent-created tickets; round robin then assigns",
+   "PASS"
+  ],
+  [
+   "D1",
+   "Assign to team (Edit rule)",
+   "Unchanged",
+   "Owner cleared, team set (#650)",
+   "PASS"
+  ],
+  [
+   "E3",
+   "Is Overdue in Create rules",
+   "true for a past due date",
+   "true fired for yesterday, false for +5 days",
+   "PASS"
+  ],
+  [
+   "F4",
+   "History names the rule",
+   "\"by workflow rule <name>\", actions as words, EN + AR",
+   "Share ticket / Add comment / Mark as spam / Reply sent by workflow rule QA WF …; Arabic the same",
+   "PASS"
+  ],
+  [
+   "D2",
+   "Email with a Desk template",
+   "Saves without subject / body",
+   "Rule + saved action saved and sent (contact_emailed true)",
+   "PASS"
+  ],
+  [
+   "—",
+   "On Edit rule on a new ticket",
+   "Developer: not a bug",
+   "New ticket: no fire in 20 s; real edit: fired",
+   "PASS"
+  ],
+  [
+   "—",
+   "Regression of the round 5 passes",
+   "Still pass",
+   "A2, A3, D3, D4, E1–E6, F1–F3, B1–B15 as before",
+   "PASS"
+  ],
+  [
+   "A5 B3 B4 B10 B13 B14",
+   "Not testable on staging",
+   "Developer: needs setup staging lacks",
+   "Same as round 5 (setup not changed)",
+   "INFO"
+  ],
+  [
+   "B9",
+   "Run Custom Action",
+   "—",
+   "Not re-run: no custom action / API source on staging now (NDC-1989)",
+   "INFO"
+  ],
+  [
+   "new",
+   "Saving moves the ticket out of my reach",
+   "Saved, no error",
+   "403 \"Permission denied.\" toast although saved → duplicates likely",
+   "FAIL"
+  ],
+  [
+   "new",
+   "History rows",
+   "Rule-ran row, department name",
+   "Missing for Execution Time / Is Overdue rules; raw department id",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,126 @@
+[
+ {
+  "start": "2026-10-27T22:02:06.588Z",
+  "cls": "GroupEBlueprintTest",
+  "method": "e13MassExcludeOne",
+  "caseId": "E-13",
+  "name": "Mass exclude one record: it leaves the blueprint (control record stays)",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:02:06.742Z",
+  "cls": "VerifyV3ApprovalBlueprintTest",
+  "method": "e13MassExclude",
+  "caseId": "E-13",
+  "name": "Mass-exclude one record from a blueprint, then edit its (formerly governed) field",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:02:24.453Z",
+  "status": "skipped",
+  "cls": "GroupKZRegressionGapsTest",
+  "method": "k09ApprovalStatusFieldLockedInLayout",
+  "caseId": "K-09",
+  "name": "Approval Status field is a locked system field in the layout (read-only check, nothing changed)",
+  "msg": "INCONCLUSIVE: approval_status not found in the layout JSON - cannot tell whether it is hidden from the builder or named differently (UI check)"
+ },
+ {
+  "start": "2026-10-27T22:02:24.877Z",
+  "status": "passed",
+  "cls": "GroupKZRegressionGapsTest",
+  "method": "k09ApprovalStatusRefusedInApprovalCriteria",
+  "caseId": "K-09",
+  "name": "Approval process criteria on Approval Status are refused (the system guard already fixes it)",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:02:26.458Z",
+  "status": "passed",
+  "cls": "GroupHIConversionTest",
+  "method": "i08StatusResetOnApprovedRecordInBlueprint",
+  "caseId": "I-08",
+  "name": "Approval status reset (Owner) on an approved record in a blueprint: write down re-entry vs blueprint (F-20: no re-entry)",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:02:28.557Z",
+  "status": "failed",
+  "cls": "GroupKZRegressionGapsTest",
+  "method": "k09OwnerCanEditApprovalStatus",
+  "caseId": "K-09",
+  "name": "Tenant Owner can change a record's Approval Status by hand (US-A3)",
+  "msg": "The following asserts failed: Owner edit of Approval Status accepted: 422 {\"success\":false,\"data\":null,\"error\":{\"code\":\"APPROVAL_STATUS_READ_ONLY\",\"message\":\"Approval Status is managed by the approval process. Use the approval status reset action to change it.\",\"details\":[]},\"meta\":null} expected [true] but found [false], Approval Status changed by the Owner expected [rejected] but found [not_subm"
+ },
+ {
+  "start": "2026-10-27T22:02:29.199Z",
+  "status": "passed",
+  "cls": "GroupDApprovalTest",
+  "method": "d10ResetFieldSendsBackForApproval",
+  "caseId": "D-10",
+  "name": "'Reset approval status if changed' field edited by a permitted user sends the record back for approval",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:02:34.697Z",
+  "status": "passed",
+  "cls": "GroupKZRegressionGapsTest",
+  "method": "k13A1NewRecordSeededNotSubmitted",
+  "caseId": "K-13",
+  "name": "US-A1: a new record is seeded with Approval Status = not_submitted",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:02:36.069Z",
+  "status": "passed",
+  "cls": "GroupKZRegressionGapsTest",
+  "method": "k13B1GuardInjectedIntoEntryCriteria",
+  "caseId": "K-13",
+  "name": "US-B1: the Approval Status guard is injected into a new approval process's entry criteria",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:02:37.951Z",
+  "status": "passed",
+  "cls": "GroupKZRegressionGapsTest",
+  "method": "k13B3ReentryOnlyAfterAuthorizedReset",
+  "caseId": "K-13",
+  "name": "US-B3: after an authorized status reset, an edit sends the approved record back into approval",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:02:45.713Z",
+  "status": "passed",
+  "cls": "GroupKZRegressionGapsTest",
+  "method": "k13D2ApprovalEventsOnTimeline",
+  "caseId": "K-13",
+  "name": "US-D2: submission and approval are both written to the record Timeline",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:02:46.947Z",
+  "status": "passed",
+  "cls": "GroupDApprovalTest",
+  "method": "d18ApprovalStatusEditPermission",
+  "caseId": "D-18",
+  "name": "Approval Status not editable by a normal user; reset by a profile with 'Can Edit Record Approval Status' (Owner)",
+  "msg": ""
+ },
+ {
+  "start": "2026-10-27T22:03:08.988Z",
+  "status": "skipped",
+  "cls": "GroupHIConversionTest",
+  "method": "i09DeleteHeldRecordThenRestore",
+  "caseId": "I-09",
+  "name": "Delete a record pending review, then restore it from the Recycle Bin: write down which holds come back",
+  "msg": "INCONCLUSIVE: a record pending review cannot be deleted by userN, adminA or Owner (nameb56175@airhemp.com -> 422 {\"success\":false,\"data\":null,\"error\":{\"code\":\"REVIEW_LOCKED\",\"message\":\"This record is under review and cannot be deleted until the review is complete.\",\"details\":[]},\"meta\":null}; mmohamed@anyware.software -> 422 {\"success\":false,\"data\":null,\"error\":{\"code\":\"REVIEW_LOCKED\",\"message\":\"T"
+ },
+ {
+  "start": "2026-10-27T22:03:10.027Z",
+  "status": "passed",
+  "cls": "VerifyV3ApprovalBlueprintTest",
+  "method": "k09OwnerEdit",
+  "caseId": "K-09",
+  "name": "Owner PATCHes approval_status by hand (control: Owner status-reset action, D-18)",
+  "msg": ""
+ }
+]

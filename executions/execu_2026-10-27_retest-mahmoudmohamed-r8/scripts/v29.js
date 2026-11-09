@@ -1,0 +1,10 @@
+const out = {}; const reqs = []; page.on('request', r => { if (['PUT', 'POST', 'PATCH'].includes(r.method()) && /reminder|settings\/values|activity/i.test(r.url())) reqs.push(r.method() + ' ' + r.url().replace(API, '') + ' ' + (r.postData() || '').slice(0, 200)); });
+const checked = async () => page.evaluate(() => [...document.querySelectorAll('input[type=checkbox],[role=checkbox],button[role=checkbox],button[aria-checked]')].filter(c => c.checked || c.getAttribute('aria-checked') === 'true' || c.getAttribute('data-state') === 'checked').map(c => { let p = c; for (let k = 0; k < 5 && p; k++) { p = p.parentElement; if (p && p.innerText && p.innerText.trim().length > 2) break; } return (p?.innerText || '').split('\n').filter(Boolean).slice(-1)[0]; }));
+out.before = await checked();
+const a1 = await page.getByText('Address 1', { exact: true }).first().boundingBox(); await page.mouse.click(a1.x + 60, a1.y + a1.height / 2); await sleep(1200);
+const amc = await page.getByText('Area Manager Cairo', { exact: true }).first().boundingBox(); await page.mouse.click(amc.x + 60, amc.y + amc.height / 2); await sleep(1500);
+out.after = await checked(); await shot('v29-two-clicked');
+out.counters = (await txt()).split('\n').filter(l => /selected/i.test(l)).slice(0, 4);
+await page.mouse.click(a1.x + 60, a1.y + a1.height / 2); await sleep(800); await page.mouse.click(amc.x + 60, amc.y + amc.height / 2); await sleep(1500);
+out.undone = await checked(); out.counters2 = (await txt()).split('\n').filter(l => /selected/i.test(l)).slice(0, 4); out.reqs = reqs;
+return done(out);

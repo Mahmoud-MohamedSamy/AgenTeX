@@ -1,0 +1,2 @@
+const fs=require('fs');const KEY=fs.readFileSync('C:/Users/Dell/Downloads/secret-key-1793537440144.csv','utf8').trim().split(/\r?\n/)[1].split(',')[3].replace(/"/g,'').trim();
+(async()=>{const r=await fetch('https://api.plane.so/api/v1/workspaces/ahmed-hegazy/projects/efce4d84-5876-4015-b472-2efca7ad73f3/work-items/7ae77874-2a69-4a0a-ae58-177b7912a974/attachments/',{headers:{'X-API-Key':KEY}});const j=await r.json();for(const x of (j.results||j))console.log(x.created_at,x.attributes&&x.attributes.size,x.attributes&&x.attributes.name);})();

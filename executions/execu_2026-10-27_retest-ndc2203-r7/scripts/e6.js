@@ -1,0 +1,12 @@
+const r = await mkRule('D4all', { kind: 'SpecificFieldChanged', fieldNames: ['description', 'phone', 'due_date'], fieldMatch: 'all' }, [{ type: 'AddTicketComment', commentBody: 'QA WF D4all fired', commentPublic: false }]);
+const tk = await mkTicket('D4all'); const id = tk.id; await sleep(4000);
+const two = await patchTicket(id, { description: 'QA WF D4all two fields', phone: '+201000000001' });
+await sleep(12000);
+const afterTwo = arr((await api('GET', `/desk/tickets/${id}/comments`)).j?.data).filter(c => /fired/.test(c.body_html)).length;
+const due = new Date(Date.now() + 7 * 864e5).toISOString();
+const three = await patchTicket(id, { description: 'QA WF D4all three fields', phone: '+201000000002', due_date: due });
+await sleep(15000);
+const afterThree = arr((await api('GET', `/desk/tickets/${id}/comments`)).j?.data).filter(c => /fired/.test(c.body_html)).map(c => c.body_html + ' @' + c.created_at.slice(11, 19));
+const t = await getTicket(id);
+const ex = arr((await api('GET', `/workflow/executions?recordId=${id}`)).j?.data).filter(e => e.ruleId === r.id).map(e => [e.outcome, e.criteriaMatched, e.evaluatedAt.slice(11, 19)].join(' '));
+return fin({ rule: r, ticket: id, two, afterTwo, three, afterThree, now: { d: t.description, p: t.phone, due: t.due_date }, ex });

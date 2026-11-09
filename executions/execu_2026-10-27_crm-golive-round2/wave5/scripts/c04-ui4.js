@@ -1,0 +1,14 @@
+const d = page.locator('[role=dialog]').first();
+await page.locator('[role=option], [role=menuitem], [role=listbox] li, [role=listbox] button').filter({ hasText: /^>$/ }).first().click(); await sleep(700);
+const ins = d.locator('input');
+const n = await ins.count();
+await ins.nth(0).fill('QA R2W5 VR number');
+await ins.nth(n - 1).fill('10').catch(() => {});
+await d.locator('textarea').first().fill('QA R2W5: number must be 10 or less');
+await shot('c04-rule-filled');
+const saveResp = page.waitForResponse(r => /validation-rules/.test(r.url()) && r.request().method() !== 'GET', { timeout: 20000 }).catch(() => null);
+await d.locator('button', { hasText: /^Save$/ }).click();
+const r = await saveResp; await sleep(2500);
+await shot('c04-rule-saved');
+const list = (await page.innerText('main')).replace(/\s+/g, ' ');
+return { n, req: r ? r.request().postData() : null, save: r ? r.status() + ' ' + (await r.text()).slice(0, 400) : 'no request', list: list.slice(list.lastIndexOf('Validation Rules'), list.lastIndexOf('Validation Rules') + 500) };

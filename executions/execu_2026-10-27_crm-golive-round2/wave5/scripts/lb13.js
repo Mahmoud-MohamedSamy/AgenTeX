@@ -1,0 +1,26 @@
+const res = {};
+const panel = page.locator('xpath=//*[normalize-space(text())="Field Properties"]/ancestor::*[.//button[normalize-space(.)="Apply"]][1]').first();
+const sels = panel.locator('select');
+await sels.nth(0).selectOption({ label: 'QA R2W5 Child' }); await sleep(1500);
+res.rel = await sels.nth(1).evaluate(s => [...s.options].map(o => o.text));
+const rel = res.rel.find(x => /QA Parent/.test(x)); if (rel) await sels.nth(1).selectOption({ label: rel }); await sleep(1000);
+res.fields = await sels.nth(2).evaluate(s => [...s.options].map(o => o.text));
+const f = res.fields.find(x => /QA Amount/.test(x)); if (f) await sels.nth(2).selectOption({ label: f }); await sleep(800);
+res.funcs = await sels.nth(3).evaluate(s => [...s.options].map(o => o.text));
+const sum = res.funcs.find(x => /^Sum/.test(x)); if (sum) await sels.nth(3).selectOption({ label: sum }); await sleep(500);
+await panel.locator('button', { hasText: /^GENERAL$/ }).first().click(); await sleep(500);
+await panel.locator('input').first().fill('QA R2W5 Rollup UI');
+await shot('c01-1444-filled');
+await panel.locator('button', { hasText: /^Apply$/ }).click(); await sleep(1500);
+const net = []; const on = x => { if (/\/api\/v1\//.test(x.url()) && x.request().method() !== 'GET') net.push(x.request().method() + ' ' + x.url().replace(/^.*\/api\/v1/, '').replace(/[0-9a-f]{8}-[0-9a-f-]{27}/g, ':id') + ' ' + x.status()); }; page.on('response', on);
+const t0 = Date.now();
+await page.locator('button', { hasText: /^Save$/ }).first().click(); await sleep(1500);
+let txt = (await page.innerText('body')).replace(/\s+/g, ' ');
+if (/Save anyway/.test(txt)) await page.locator('button', { hasText: 'Save anyway' }).click();
+for (let i = 0; i < 120; i++) { await sleep(1000); txt = (await page.innerText('body')).replace(/\s+/g, ' '); if (/saved successfully/i.test(txt) || /not saved|Failed/i.test(txt)) break; }
+res.secs = (Date.now() - t0) / 1000; page.off('response', on); res.net = net;
+res.msg = (txt.match(/[^.]{0,60}(saved successfully|not saved|Failed)[^.]{0,160}/i) || [''])[0];
+await shot('c01-2383-saved');
+const L = await call('GET', '/modules/b4848bdf-9f59-45a9-8336-9f4f2a4fc36b/layouts/04c3cdbe-8cb0-49ba-bf49-f595bccab842');
+res.onLayout = JSON.stringify(L.j).includes('QA R2W5 Rollup UI');
+return res;

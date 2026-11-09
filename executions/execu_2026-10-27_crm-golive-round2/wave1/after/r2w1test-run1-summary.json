@@ -1,0 +1,68 @@
+[ {
+  "test" : "R2W1Test.builtInProfilesLocked",
+  "cases" : [ "R2-PR06", "R2-AIP" ],
+  "groups" : [ "crmaccess", "api", "NDC-2543", "r2w1" ],
+  "description" : "Built-in profiles (User, AI Agent) can't be renamed or deleted",
+  "status" : "FAILED",
+  "seconds" : 16.727,
+  "error" : "the built-in AI Agent profile could be renamed expected [4] but found [2]"
+}, {
+  "test" : "R2W1Test.businessHoursObserved",
+  "cases" : [ "R2-BH" ],
+  "groups" : [ "crmaccess", "api", "NDC-2655", "r2w1" ],
+  "description" : "Observe only: the stored business hours (no save)",
+  "status" : "PASSED",
+  "seconds" : 0.885
+}, {
+  "test" : "R2W1Test.deskAdminNoCrmViewAll",
+  "cases" : [ "R2-DA" ],
+  "groups" : [ "crmaccess", "api", "NDC-2414", "r2w1" ],
+  "description" : "The Desk Administrator profile does not give the Supervisor view-all on CRM records",
+  "status" : "FAILED",
+  "seconds" : 5.627,
+  "error" : "the Supervisor holds CRM view-all (comes from the Desk Administrator profile?) expected [false] but found [true]"
+}, {
+  "test" : "R2W1Test.fieldPermissionsEnforced",
+  "cases" : [ "R2-FP", "R2-IM" ],
+  "groups" : [ "NDC-1593", "crmaccess", "api", "NDC-1599", "r2w1", "NDC-1337" ],
+  "description" : "Test user 2 on a QA profile with Company hidden and Email read-only: create/edit/import refuse those fields, read hides Company",
+  "status" : "PASSED",
+  "seconds" : 36.913
+}, {
+  "test" : "R2W1Test.newPermissionKeys",
+  "cases" : [ "R2-PE07" ],
+  "groups" : [ "crmaccess", "api", "r2w1" ],
+  "description" : "The permission catalogue has the new keys ai:agent:manage, ai:summary:view, metadata.modules.manage",
+  "status" : "PASSED",
+  "seconds" : 6.725
+}, {
+  "test" : "R2W1Test.orgUnitLifecycle",
+  "cases" : [ "R2-OU" ],
+  "groups" : [ "crmaccess", "api", "r2w1" ],
+  "description" : "Org units: create a QA root and child, rename, move, delete with children refused, delete",
+  "status" : "FAILED",
+  "seconds" : 1.093,
+  "error" : "create root returned 400: {\"success\":false,\"data\":null,\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"One or more validation errors occurred.\",\"details\":{\"body\":[\"The body field is required.\"],\"$.parent_id\":[\"The JSON value could not be converted to Anyware.Iam.WebApi.Controllers.OrgUnitsController+CreateOrgUnitRequest. Path: $.parent_id | LineNumber: 0 | BytePositionInLine: 17.\"]}},\"meta\":null}"
+}, {
+  "test" : "R2W1Test.ownManagerNeedsPermission",
+  "cases" : [ "R2-HM" ],
+  "groups" : [ "crmaccess", "api", "r2w1", "NDC-2416" ],
+  "description" : "Test user 2 can't change their own reporting manager without the personal reporting-hierarchy permission",
+  "status" : "PASSED",
+  "seconds" : 3.843
+}, {
+  "test" : "R2W1Test.rankAboveParentRefused",
+  "cases" : [ "R2-PR04" ],
+  "groups" : [ "crmaccess", "api", "NDC-2546", "r2w1" ],
+  "description" : "Editing a profile's rank above its parent's is refused with a clear error, not ignored",
+  "status" : "PASSED",
+  "seconds" : 2.448
+}, {
+  "test" : "R2W1Test.recordVisibilityValidation",
+  "cases" : [ "R2-VIS" ],
+  "groups" : [ "crmaccess", "api", "r2w1" ],
+  "description" : "Record visibility per module (U07): readable; an invalid value is refused and nothing changes",
+  "status" : "FAILED",
+  "seconds" : 0.756,
+  "error" : "visibility returned 405: {\"success\":false,\"data\":null,\"error\":{\"code\":\"METHOD_NOT_ALLOWED\",\"message\":\"That operation is not available on this resource.\"},\"meta\":null}"
+} ]

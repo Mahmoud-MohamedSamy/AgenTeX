@@ -1,0 +1,45 @@
+{
+ "out": "NDC-2701-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2701 · Role mode — a Manager in another org unit opens a User's lead (U1 User @ team1 owns lead 6986f117)",
+ "rows": [
+  [
+   "setting",
+   "Hierarchy Preference / Leads record visibility",
+   "role / hierarchy; U2 without records.view_all",
+   "info"
+  ],
+  [
+   "Manager @team2",
+   "U2 Manager (500) in team2 → GET /api/v1/modules/{Leads}/records/6986f117",
+   "403 Permission denied",
+   "ok"
+  ],
+  [
+   "Leads list",
+   "U2 Manager @team2 → GET Leads list",
+   "lead not listed",
+   "ok"
+  ],
+  [
+   "Supervisor @team2",
+   "U2 Supervisor in team2 → same GET",
+   "403; not listed",
+   "ok"
+  ],
+  [
+   "list owners",
+   "U2 (User @team2) Leads list: owner / creator of every row",
+   "14 rows — own leads or no owner; none of team1",
+   "ok"
+  ],
+  [
+   "note",
+   "Linked to NDC-2412",
+   "Superiors currently see no lower rank at all (2412 FAIL) — recheck this case after 2412 is fixed",
+   "info"
+  ]
+ ]
+}

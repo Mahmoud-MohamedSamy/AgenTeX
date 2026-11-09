@@ -325,7 +325,7 @@ public class GroupEBlueprintTest extends OrderTestBase {
         Map<String, Object> mail = new LinkedHashMap<>();
         mail.put("kind", "sendEmail");
         mail.put("to", List.of());
-        mail.put("userIds", List.of(adminB().id()));
+        mail.put("userIds", List.of(adminA().id()));   // real mail only to the two allowed inboxes (user, 26 Oct 2026)
         mail.put("subject", nm("E-04", "after email"));
         mail.put("bodyHtml", "<p>QA AEO SE E-04 blueprint after email</p>");
         Map<String, Object> notif = kinded("kind", "sendNotification", "title", nm("E-04", "after notification"), "body", "QA AEO SE E-04",
@@ -627,8 +627,10 @@ public class GroupEBlueprintTest extends OrderTestBase {
     // ------------------------------------------------------------------ E-15
 
     @CaseId("E-15")
-    @Test(groups = {"crm-order", "group-e"}, description = "Tasks blueprint on Status works")
+    @Test(groups = {"crm-order", "group-e"}, description = "Tasks blueprint runs end to end on Priority; one on Status (datatype status, not a pick list) is refused with a clear 4xx")
     public void e15TasksBlueprintOnStatus() {
+        // Round 1 verdict: Tasks "status" is datatype status, which the blueprint validator refuses by design; Zoho's support for a
+        // Tasks blueprint on Status was not confirmed. The intended check: Priority works end to end, Status is refused cleanly.
         List<String> st = List.of("Not Started", "In Progress", "Deferred");
         Response onStatus = api.admin().post("/modules/" + TASKS + "/blueprints",
                 kinded("isActive", false, "definition", def("tasks", layout(TASKS), null, "status", "E-15 BP status", entry(TASKS, "E-15"), states(st), chain(st))));
@@ -648,7 +650,8 @@ public class GroupEBlueprintTest extends OrderTestBase {
         Assert.assertEquals(api.field(userN(), TASKS, task, "priority"), "normal");
         expectGovernedBlock(edit, "direct edit of the governed task priority");
         traceOf("E-15", TASKS, task);
-        Assert.assertEquals(onStatus.statusCode() / 100, 2, "Zoho allows a blueprint on Tasks Status; TAVI: " + cut(onStatus.asString()));
+        Assert.assertEquals(onStatus.statusCode() / 100, 4, "a blueprint on Tasks Status (datatype status) must be refused with a 4xx, not saved or 5xx: " + cut(onStatus.asString()));
+        Assert.assertTrue(onStatus.asString().contains("error"), "the refusal names the reason: " + cut(onStatus.asString()));
     }
 
     // ------------------------------------------------------------------ E-16
@@ -785,17 +788,11 @@ public class GroupEBlueprintTest extends OrderTestBase {
         List<Object> names1 = bpState(adminB(), LEADS, l1).getList("data.states.blueprintName");
         note("[E-18] lead1 " + l1 + " governed by " + names1 + " offered " + offered(userN(), LEADS, l1));
         // swap: put B first
-        Response sort = null;
-        List<Object> bodies = List.of(
-                Map.of("ids", List.of(b, a)),
-                Map.of("orderedIds", List.of(b, a)),
-                Map.of("items", List.of(Map.of("id", b, "sortOrder", 0), Map.of("id", a, "sortOrder", 1))),
-                List.of(Map.of("id", b, "sortOrder", 0), Map.of("id", a, "sortOrder", 1)));
-        for (Object body : bodies) {
-            sort = api.admin().patch("/modules/" + LEADS + "/blueprints/sort", body);
-            note("[E-18] sort body " + body + " -> " + sort.statusCode() + " " + cut(sort.asString()));
-            if (sort.statusCode() / 100 == 2) break;
-        }
+        // round 1 verdict: the endpoint takes {"items":[{"id","sort_order"}]}; other bodies answered 204 but were ignored
+        Map<String, Object> body = Map.of("items", List.of(Map.of("id", b, "sort_order", 0), Map.of("id", a, "sort_order", 1)));
+        Response sort = api.admin().patch("/modules/" + LEADS + "/blueprints/sort", body);
+        note("[E-18] sort body " + body + " -> " + sort.statusCode() + " " + cut(sort.asString()));
+        Assert.assertEquals(sort.statusCode() / 100, 2, "sort answered: " + cut(sort.asString()));
         String l2 = lead("E-18", "lead2", null);
         Assert.assertTrue(governedNow(LEADS, l2), "governed lead2");
         List<Object> names2 = bpState(adminB(), LEADS, l2).getList("data.states.blueprintName");
@@ -803,7 +800,6 @@ public class GroupEBlueprintTest extends OrderTestBase {
         traceOf("E-18", LEADS, l1);
         Assert.assertEquals(names1 == null ? 0 : names1.size(), 1, "only one blueprint may govern the record, got " + names1);
         Assert.assertEquals(names2 == null ? 0 : names2.size(), 1, "only one blueprint may govern lead2, got " + names2);
-        if (sort != null && sort.statusCode() / 100 == 2)
-            Assert.assertNotEquals(String.valueOf(names2), String.valueOf(names1), "after /sort the new first blueprint should run");
+        Assert.assertNotEquals(String.valueOf(names2), String.valueOf(names1), "after /sort the new first blueprint should run");
     }
 }

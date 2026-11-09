@@ -1,0 +1,147 @@
+{
+  "P2_1": [
+    {
+      "case": "warn 120 = limit 120",
+      "sent": {
+        "slaMinutes": 120,
+        "slaPreExpiryMinutes": 120
+      },
+      "status": 201,
+      "saved": {
+        "slaMinutes": 120,
+        "slaPreExpiryMinutes": 120
+      },
+      "id": "826e0b14-ba86-4ab5-bd1e-7fa46be13908"
+    },
+    {
+      "case": "warn 120 > limit 60",
+      "sent": {
+        "slaMinutes": 60,
+        "slaPreExpiryMinutes": 120
+      },
+      "status": 201,
+      "saved": {
+        "slaMinutes": 60,
+        "slaPreExpiryMinutes": 120
+      },
+      "id": "961a75af-d1f1-4055-9692-4a957b41af1e"
+    },
+    {
+      "case": "warn 60, no limit",
+      "sent": {
+        "slaPreExpiryMinutes": 60
+      },
+      "status": 201,
+      "saved": {
+        "slaPreExpiryMinutes": 60
+      },
+      "id": "fe6f2420-d8b6-4d1d-8fd3-cb864e5a1592"
+    }
+  ],
+  "P2_2": {
+    "sent": {
+      "slaMinutes": -1
+    },
+    "status": 201,
+    "saved": -1,
+    "id": "2c945df0-2092-4c6a-9428-89d39cee450a"
+  },
+  "P2_3": {
+    "sent": {
+      "state": "Open",
+      "autoTransitionId": "esc2 (Escalated → Closed)",
+      "autoTransitionAfterMinutes": 5
+    },
+    "status": 201,
+    "saved": {
+      "autoTransitionId": "esc2",
+      "autoTransitionAfterMinutes": 5
+    },
+    "id": "02672f10-08bf-433b-b784-be88cec11501",
+    "control": {
+      "sent": {
+        "state": "Open",
+        "onReplyTransitionId": "esc2"
+      },
+      "status": 422,
+      "body": {
+        "success": false,
+        "data": null,
+        "error": {
+          "code": "BLUEPRINT_DEFINITION_INVALID",
+          "message": "Blueprint definition validation failed.",
+          "details": [
+            {
+              "path": "states.Open.onReplyTransitionId",
+              "type": "BLUEPRINT_DEFINITION_FIELD_INVALID",
+              "message": "State 'Open': 'esc2' is not a transition out of this state, so it cannot run on the contact's reply."
+            }
+          ]
+        },
+        "meta": null
+      }
+    }
+  },
+  "P2_4": {
+    "rule": {
+      "status": 201,
+      "trigger": "RecordUpdated (On Edit)",
+      "action": "Field Update Status = Closed"
+    },
+    "ticket": "19441221-bfbe-4c6f-a870-36cd971d52ff",
+    "before": {
+      "status": "Open",
+      "blueprintState": [
+        "Open"
+      ]
+    },
+    "directPatch": {
+      "status": 422,
+      "body": {
+        "success": false,
+        "data": null,
+        "error": {
+          "code": "RECORD_VALIDATION_FAILED",
+          "message": "Governed picklist field can only change via blueprint transition execution.",
+          "details": [
+            {
+              "path": "status",
+              "type": "BLUEPRINT_GOVERNED_FIELD",
+              "message": "This field is controlled by a blueprint.",
+              "meta": {
+                "blueprint_id": "a494b67b-4e27-4bbc-8a39-d73fdb2e3081",
+                "blueprint_name": "QA BP EV4"
+              }
+            }
+          ]
+        },
+        "meta": null
+      }
+    },
+    "transition": {
+      "status": 200
+    },
+    "after": {
+      "status": "Closed",
+      "blueprintState": null
+    },
+    "bp": "a494b67b-4e27-4bbc-8a39-d73fdb2e3081",
+    "ticketText": [
+      "#1067",
+      "Closed",
+      "Set by blueprint Test Tickets From Mail & Webform",
+      "#887",
+      "Set by blueprint Test Blueprint",
+      "#886",
+      "Set by blueprint Test Blueprint",
+      "#885",
+      "Set by blueprint Test Blueprint",
+      "#884",
+      "Meeting Update Blueprint",
+      "Set by blueprint Test Blueprint",
+      "#883",
+      "#882",
+      "Set by blueprint Test Tickets From Mail & Webform"
+    ]
+  }
+}

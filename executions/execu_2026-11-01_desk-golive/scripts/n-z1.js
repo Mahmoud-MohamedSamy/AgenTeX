@@ -1,0 +1,11 @@
+const o = {}; const S = r => ({ s: r.s, e: r.j && r.j.error ? (r.j.error.code + ': ' + String(r.j.error.message).slice(0, 140)) : null });
+const T = '88e8ea44-1658-4df3-9930-d0902b91073d', TK = 'd564fa1f-7b42-4710-94ab-e49de784519a';
+o.unshare = S(await api('PUT', '/desk/tickets/' + TK + '/shares', { shares: [] }));
+o.ticket = S(await api('DELETE', '/modules/' + T + '/records/' + TK));
+o.module = S(await api('DELETE', '/modules/a1a9ac50-47d3-42d6-b5b6-a7247cad2843?cascade=true'));
+o.dept = S(await api('DELETE', '/desk/departments/3eeae90e-e61b-47df-add9-3e1c5e840150'));
+o.sig = JSON.stringify((await api('GET', '/mail/signatures/me')).j.data);
+o.modsLeft = ((await api('GET', '/modules')).j.data || []).filter(x => /qagln/.test(x.moduleKey || '')).length;
+o.deptsLeft = (await api('GET', '/desk/departments')).j.data.filter(d => /QA GL N/.test(d.name)).length;
+o.rolesLeft = (await api('GET', '/iam/org-units?app_key=desk')).j.data.filter(r => /QA GL N/.test(r.name)).length;
+return done(o);

@@ -1,0 +1,222 @@
+{
+ "out": "NDC-2302-retest-PASS.png",
+ "ticket": "NDC-2302",
+ "title": "Import | Import with \"Trigger automation\" off still runs the workflow once the review is approved",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26–27 Oct 2026",
+ "panels": [
+  {
+   "img": "2302-tavi-lead-off.png",
+   "caption": "TAVI — imported with the option OFF: lead \"QA RT 2302 tavi off\" has no blueprint bar (blueprint-state states []).",
+   "crop": [
+    288,
+    80,
+    964,
+    440
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      289,
+      336,
+      1252,
+      400
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "zoho-2302-lead-off-t2.png",
+   "caption": "Zoho — imported with the box OFF: \"QA RT 2302 off\" shows only the Lead Status path, no blueprint (API RECORD_NOT_IN_PROCESS).",
+   "crop": [
+    240,
+    40,
+    1360,
+    380
+   ],
+   "w": 1600,
+   "h": 420,
+   "boxes": [
+    {
+     "b": [
+      472,
+      186,
+      1574,
+      252
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2302-tavi-lead-on.png",
+   "caption": "TAVI — option ON: \"QA RT 2302 tavi on\" is in blueprint \"QA RT 2302 TAVI BP\", state chat.",
+   "crop": [
+    288,
+    80,
+    964,
+    440
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      289,
+      356,
+      1252,
+      518
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "zoho-2302-lead-on-t2.png",
+   "caption": "Zoho — box ON: \"QA RT 2302 on\" is in the blueprint (Current State -None-, transition \"QA RT 2302 Go\").",
+   "crop": [
+    240,
+    40,
+    1360,
+    380
+   ],
+   "w": 1600,
+   "h": 420,
+   "boxes": [
+    {
+     "b": [
+      472,
+      186,
+      1574,
+      302
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2302on-assign-ticked.png",
+   "caption": "TAVI Assign step: \"Trigger automation and process management — Run workflow rules, review and approval processes and blueprints on the imported records. Off by default…\".",
+   "crop": [
+    240,
+    370,
+    800,
+    160
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      268,
+      437,
+      1012,
+      507
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "zoho-2302-imp-off-before-submit.png",
+   "caption": "Zoho Assign step: \"Trigger configured automations and processes for new and updated records\" — unticked by default.",
+   "crop": [
+    90,
+    370,
+    1000,
+    90
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      104,
+      382,
+      632,
+      442
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2302-imp-4-review.png",
+   "caption": "TAVI Review with the option off: \"Automation and process management: Not triggered\".",
+   "crop": [
+    256,
+    330,
+    768,
+    110
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      268,
+      364,
+      1012,
+      400
+     ],
+     "n": 7,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "—",
+   "Workflow / approval / review with the option off",
+   "Nothing runs",
+   "Import with automation off, review step: review null, Description null, wfFired 0, no executions (G-04, 26 Oct)",
+   "PASS"
+  ],
+  [
+   "1–2, 7",
+   "Blueprint with the option off",
+   "Not entered (Zoho: RECORD_NOT_IN_PROCESS)",
+   "TAVI lead 96061733 not in the blueprint (states []) — same as Zoho",
+   "PASS"
+  ],
+  [
+   "3–4",
+   "Control: option on",
+   "Enters the blueprint",
+   "TAVI lead f814b24e in state chat; Zoho lead in the blueprint (Current State -None-)",
+   "PASS"
+  ],
+  [
+   "—",
+   "Control: manual create",
+   "Enters the blueprint",
+   "TAVI e512668a in state chat; Zoho manual lead in the blueprint",
+   "PASS"
+  ],
+  [
+   "5–6",
+   "Option wording",
+   "One option for automation and processes, off by default",
+   "TAVI \"Trigger automation and process management\" (off by default); Zoho \"Trigger configured automations and processes for new and updated records\" (unticked)",
+   "INFO"
+  ],
+  [
+   "—",
+   "Lead held for review, then approved",
+   "—",
+   "Can enter a blueprint afterwards because the approval is an edit (G-04b governed=true) — Zoho also evaluates blueprints on edit",
+   "INFO"
+  ]
+ ]
+}

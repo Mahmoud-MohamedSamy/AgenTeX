@@ -1,0 +1,11 @@
+const SS='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog/screenshots/';
+const o={};await page.setViewportSize({width:1600,height:900});
+await page.goto(H+'/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records/new',{waitUntil:'domcontentloaded',timeout:120000});
+await page.getByText('Ticket Information',{exact:true}).or(page.getByText('Case Information',{exact:true})).first().waitFor({timeout:240000});await sleep(3000);
+await page.getByText('Select department…').first().click({timeout:20000});await sleep(1500);
+await page.keyboard.type('QA RT9 2174');await sleep(3000);await page.getByText('QA RT9 2174 Dept').last().click({timeout:20000});await sleep(6000);
+const l=page.getByText('QA RT9 Default',{exact:true}).first();await l.scrollIntoViewIfNeeded();
+o.def=await page.locator('xpath=(//*[normalize-space(text())="QA RT9 Default"])[1]/following::input[1]').inputValue().catch(e=>e.message.slice(0,60));
+o.round=await page.locator('xpath=(//*[normalize-space(text())="QA RT9 Round"])[1]/following::input[1]').inputValue().catch(e=>e.message.slice(0,60));
+await page.screenshot({path:SS+'2174-12c-new-ticket-default.png'});
+return o;

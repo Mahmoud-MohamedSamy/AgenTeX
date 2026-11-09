@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2308-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2308 · Approver \"Record Owner\" on an imported, rule-assigned lead (automation F-03)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "import + rule (Import channel)",
+   "POST /api/v1/modules/{Leads}/import … execute → completed (submitted by mmohamed)",
+   "lead b66dd4f1… owner = mahmoud.mahamed1515 (rule user)",
+   "ok"
+  ],
+  [
+   "approval",
+   "GET /api/v1/workflow/approvals/records/{Leads}/b66dd4f1…",
+   "pending_approval, currentApprovers = [mahmoud.mahamed1515] = assigned owner (not the importer / process admin)",
+   "ok"
+  ],
+  [
+   "owner can act",
+   "mahmoud.mahamed1515 canApprove",
+   "true",
+   "ok"
+  ],
+  [
+   "controls (manual leads)",
+   "created by test user 1 / CRM Admin",
+   "currentApprovers = [nameb56175] / [mahmoud.mahamed1515] = owner",
+   "info"
+  ]
+ ]
+}

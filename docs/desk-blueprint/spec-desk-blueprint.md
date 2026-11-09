@@ -8,9 +8,9 @@
 | Gap list | [`desk-blueprint-missing-list.md`](desk-blueprint-missing-list.md) (15 items → Group Z) |
 | Reference | `reference/tavi-build-map.md`, `reference/zoho-docs-inventory.md`, baseline `reference/tavi-baseline-2026-11-01.json` |
 | Common lenses | `Suit 1/_COMMON.md` (lenses, D1–D20 data classes) where present; otherwise the data classes in §2.4 |
-| Status | Written 1 Nov 2026. **Not run** |
+| Status | Written 1 Nov 2026. Run 1–2 Nov 2026 (Phases 1–3): results in `executions/execu_2026-11-01_desk-blueprint/report.md` and `run-report.html`; open rows in §1.4 and "Run status" below. Updated 2 Nov 2026 |
 
-Tags: `[func]` `[ui]` `[ux]` `[api]` `[sec]` 🔒 (needs a lower-permission user) `[data]` (data-class sweep) `[conc]` `[serial]` (writes tenant-wide config or runs tickets through a blueprint) `[perf]` (exclusive) `[i18n]` `[a11y]` `[compat]` `[reg NDC-x]` (regression of a filed bug).
+Tags: `[func]` `[ui]` `[ux]` `[api]` `[sec]` 🔒 (needs a lower-permission user) `[data]` (data-class sweep) `[conc]` `[serial]` (writes tenant-wide config or runs tickets through a blueprint) `[perf]` (exclusive) `[i18n]` `[a11y]` `[compat]` `[reg NDC-x]` (regression of a filed bug) `[zoho]` (check live Zoho Desk read-only and compare; user request 2 Nov 2026).
 
 ---
 
@@ -88,10 +88,11 @@ Items 1–15 of the missing list → Z1–Z15.
 | Role | Account | Use |
 |---|---|---|
 | Tenant owner (admin) | `anyware-staging-owner@anyware.software`, org Anyware (password from the user, not stored in the repo) | All write rows |
-| Agent A (QA department member) | **to be provided** | Transition owner, J rows |
-| Agent B (QA department member, in a team) | **to be provided** | Team owner, "not owner" rows |
-| Agent C (another department) | **to be provided** | Cross-department owner and share rows (D6–D8, J9) |
-| Lower-profile user 🔒 | **to be provided** (no `desk:blueprints:manage`) | A rows |
+| Agents (2 Nov 2026) | Org **NDC-Staging** (tenant `a7a7a7a7-0000-0000-0000-000000000004`), accounts in `docs/Credentials/TAVI Desk Credentials.csv` (gitignored; never print it). Owner `ndc-staging-owner@anyware.software` (agent of all departments) | Agent rows run there, in department **Customer Support** |
+| Agent A | `fedelav803@meinvr.com` — Desk Agent, Customer Support | Plain agent: transition owner, J rows, F3/F6 receiver |
+| Agent B | `kinase5517@meinvr.com` — Desk Administrator, Customer Support | Second member / team owner |
+| Agent C (another department) | `pacox68754@meinvr.com` or `mahmoud.mohamed2@taviportal.com` — Desk Supervisor, Tech | Cross-department owner and share rows (D6–D8, J9) |
+| Lower-profile user 🔒 | Agent A (Desk Agent profile; check it lacks `desk:blueprints:manage`) | A rows |
 | Other tenant user | any throwaway tenant | A9 |
 | Zoho Desk reference | `hmohammed@anyware.software` (trial org `techsolutionsegypt`), Edge, normal user agent, **read only** | Side-by-side evidence for failed rows |
 
@@ -128,8 +129,8 @@ Saved 1 Nov 2026 in `reference/tavi-baseline-2026-11-01.json`. Refresh it into t
 ### 1.4 Environment blockers
 | Blocker | Rows | Action |
 |---|---|---|
-| Business hours are 24×7 and both holiday lists are empty, so business and calendar clocks cannot be told apart | G6, G7, K8, K9, Z12 | Ask the user for a QA business-hours set (for example Sun–Thu 09:00–17:00 plus one holiday). Without it: Inconclusive |
-| No agent accounts given (only the owner) | A, D, J, K | Ask the user for Agents A–C and a lower-profile user |
+| Business hours are 24×7. **Resolved 2 Nov (user OK):** Default can be switched briefly to 24 hours Mon–Fri (`preset 24_5`, `timing_mode same`, `hours 00:00–23:59`) and restored; custom hours that clash with agent shifts are refused (`business_hours.would_invalidate_shifts`). Departments have no business-hours profile of their own. Holidays go on the default list (`/desk/holiday-lists/{id}/holidays`) | G6, G7, K8, K9, Z12 | Run, restore and verify field by field. Compare only settled due times (`provisional: false`, ~25 s after entry) |
+| Agent accounts — **resolved 2 Nov**: available on NDC-Staging (§1.1), not on Anyware | A, D, E12, F3, F6, J9 | Run the agent rows on NDC-Staging, department Customer Support |
 | Demo blueprints are active in techSupport and Call Center with tickets inside | I, L | Do not touch them. Work only in QA WF Dept R |
 | No webhook receiver | F5, K12 | Inconclusive until a receiver is approved |
 | No safe custom action | F7, K13 | Ask the user |
@@ -137,7 +138,7 @@ Saved 1 Nov 2026 in `reference/tavi-baseline-2026-11-01.json`. Refresh it into t
 | No IM channel seen | N10, Z-IM note | Inconclusive |
 
 ### 1.5 Things that cannot be undone cleanly
-- A status created by **Add State** becomes a ticket Status value. Removing it may be refused while tickets or blueprints use it (FIELD_OPTION_IN_BLUEPRINT).
+- A status created by **Add State** (`POST /desk/blueprints/states {name, type}`) becomes a value of the ticket Status field (`datatypeOptions.allowed_values`). It can be removed with `PUT /modules/{tickets}/fields/{id}` `{fieldName, labels, datatypeKey, datatypeOptions:{allowed_values}, required, unique}`; refused while a ticket is in that state (FIELD_OPTION_IN_BLUEPRINT). `PUT /desk/ticket-statuses` only saves status settings and does not delete.
 - Ticket numbers, ticket history lines ("Entered blueprint …") and audit entries stay.
 - Emails, notifications and webhooks already sent cannot be recalled.
 - A revoked ticket keeps the status it had. Its old timers do not come back.
@@ -209,7 +210,7 @@ Empty, spaces only, 1 char, 60 / 100 / 255 / 256 / 1000 chars, Arabic, mixed RTL
 | A3 | No permission, API reads | 🔒 GET list, one, versions | 403, no data | `[api]` `[sec]` 🔒 |
 | A4 | No permission, API writes | 🔒 POST / PUT / DELETE / sort / draft / publish / restore / include / revoke | 403 each; baseline unchanged | `[api]` `[sec]` 🔒 |
 | A5 | Agents can still see the ticket's steps | 🔒 agent who is a transition owner opens a QA ticket in a blueprint | Steps card and their transitions shown, with no designer access | `[func]` 🔒 |
-| A6 | Ticket revoke by a non-admin | Agent A: revoke from the ticket menu and by `POST /desk/tickets/{id}/blueprint/revoke` | Record who may revoke (only one permission exists → Z15) | `[sec]` 🔒 |
+| A6 | Ticket revoke by a non-admin | Agent A: revoke from the ticket menu and by `POST /desk/tickets/{id}/blueprint/revoke` | Record who may revoke (only one permission exists → Z15). 2 Nov: Desk Agent → 403 "Missing required permission 'desk:ticket:blueprint_revoke'" | `[sec]` 🔒 |
 | A7 | Run a transition as non-owner by API | Agent B (not owner) POSTs the transition | 403 BLUEPRINT_NOT_OWNER; ticket unchanged | `[api]` `[sec]` |
 | A8 | Ticket you cannot see | Agent of another department GETs `blueprint-state` / runs a transition of a ticket not shared with them | 404 / 403, no data | `[api]` `[sec]` |
 | A9 | Other tenant | Another tenant's token: GET a blueprint id, PUT it, run a transition | 404 / 403; nothing changed | `[api]` `[sec]` |
@@ -238,8 +239,8 @@ Empty, spaces only, 1 char, 60 / 100 / 255 / 256 / 1000 chars, Arabic, mixed RTL
 |---|---|---|---|---|
 | C1 | New blueprint opens | Create Blueprint | Empty canvas text "Drag a status from the list onto the canvas, or use Add State to create one."; details panel | `[ui]` |
 | C2 | Name required | Publish with no name | Issue "The blueprint needs a name"; nothing saved | `[func]` |
-| C3 | Name data classes | §2.4 on name and description | Stored as typed (trimmed?); server limit enforced with a clear message; XSS inert | `[data]` `[sec]` |
-| C4 | Duplicate name | Same name as another blueprint in the department | Record: allowed or refused | `[data]` |
+| C3 | Name data classes | §2.4 on name and description: XSS text, Arabic, emoji, trailing spaces, 300+ characters | Same as **live Zoho** (Setup → Blueprint → Create Blueprint, read only: try typing, do not save in Zoho unless the user approves): stored as typed or trimmed, Zoho's length limit and message; XSS inert. TAVI 1–2 Nov: stored as typed, trailing spaces kept, no limit (309 chars) | `[data]` `[sec]` `[zoho]` |
+| C4 | Duplicate name | Same name as another blueprint in the department | Same as **live Zoho** (does Zoho refuse a duplicate blueprint name, and with what message). TAVI 1–2 Nov: allowed | `[data]` `[zoho]` |
 | C5 | Layout | Any layout vs one layout | `layoutId` / `layoutName` stored; ticket with another layout does not enter (I3) | `[func]` |
 | C6 | Criteria builder | Add conditions (text, pick list, tags, date), pattern | Saved in `entryCriteria`; summary shows "Tickets that match" | `[func]` |
 | C7 | Field fixed | Look at Field | "Ticket status", not editable | `[ui]` |
@@ -255,7 +256,7 @@ Empty, spaces only, 1 char, 60 / 100 / 255 / 256 / 1000 chars, Arabic, mixed RTL
 | C17 | Common transition | Set "Cancel" common | Listed in COMMON TRANSITIONS; offered from every non-final state on tickets (J-row) | `[func]` |
 | C18 | Parallel steps | Transition with 1 parallel step | "needs at least two parallel steps, or none"; with 2 → OK; with branches as well → refused | `[func]` |
 | C19 | Remove a state in use | Remove a state where a QA ticket sits | "1 ticket is in {{state}}. Revoke it before removing the state." | `[func]` `[serial]` |
-| C20 | Status gone | Delete a status used on the canvas (in Ticket statuses) | Refused (FIELD_OPTION_IN_BLUEPRINT with count) or publish issue "is no longer a ticket status" | `[func]` `[serial]` |
+| C20 | Status gone | Delete a status used on the canvas (in Ticket statuses) | Refused (FIELD_OPTION_IN_BLUEPRINT with count) whether or not a ticket is in that state. 2 Nov: refused only with a ticket inside; with none it is removed and tickets then move into it — **NDC-2775** | `[func]` `[serial]` |
 | C21 | Undo / redo / tidy | Add, move, undo, redo, tidy | Canvas follows; no lost transitions | `[ui]` |
 | C22 | Zoom / fit / phone width | Zoom, fit; open at 390 px | Phone shows "Draw states and connectors on a larger screen"; settings still editable | `[ui]` `[compat]` |
 | C23 | Leave with unsaved changes | Edit, then Back | Asked to keep or discard (record); nothing published | `[ux]` |
@@ -318,7 +319,7 @@ Empty, spaces only, 1 char, 60 / 100 / 255 / 256 / 1000 chars, Arabic, mixed RTL
 | G3 | Warning not smaller | Warn 2 h, limit 2 h; warn without limit | "The warning must come before the time limit."; publish issue | `[data]` |
 | G4 | Limit values | 0, -1, 0.05, 0.5, 1, 9999, text, empty | Rule per value recorded; minutes stored match | `[data]` |
 | G5 | Auto-move | When it runs out → a transition | `autoTransitionId` stored; wait < 1 min refused; transition with required items / parallel steps refused | `[func]` |
-| G6 | Business vs calendar | Same limit, two states, one each | Different due times when business hours are not 24×7 (needs §1.4) | `[func]` |
+| G6 | Business vs calendar | Same limit, two states, one each | Different settled due times when business hours are not 24×7 (§1.4). 2 Nov: weekend counted — **NDC-2774** | `[func]` |
 | G7 | Example text | Business hours selected | Example uses the tenant's hours, not a fixed "Monday to Friday, 9 to 5 week" (possible bug) | `[ui]` |
 | G8 | Actions at the warning / when it runs out | Add notification + field update to each list | Saved in `slaWarning` / `slaEscalation` | `[func]` |
 | G9 | Customer triggers | When the customer replies → a transition; when rates → another | Stored; transition must start from this state; not on exit states ("a customer reply cannot move a ticket out of an exit state") | `[func]` |
@@ -393,16 +394,16 @@ Empty, spaces only, 1 char, 60 / 100 / 255 / 256 / 1000 chars, Arabic, mixed RTL
 | K5 | Rating trigger | Customer rates Good, then Bad on another ticket | Both move (no filter today → Z10) | `[func]` |
 | K6 | Time limit runs out | Wait past due | Escalation actions run once; Steps "Overdue by …"; history | `[func]` |
 | K7 | Auto-move on timer | State with auto transition | Moves at the time; history "Moved by … when the time limit passed" | `[func]` |
-| K8 | Business-hours clock | Enter outside business hours (needs §1.4) | Due counted in business hours | `[func]` |
-| K9 | Holiday | Business day marked as a holiday | Not counted (record) | `[func]` |
+| K8 | Business-hours clock | Enter on a working day, limit crossing a weekend (§1.4) | Due counted in working time only. 2 Nov: Saturday counted (blueprint and department SLA) — **NDC-2774** | `[func]` |
+| K9 | Holiday | Business day marked as a holiday | Not counted. 2 Nov: Pass | `[func]` |
 | K10 | Leaving the state stops timers | Run a transition before due | Old warning / escalation do not fire later | `[func]` |
 | K11 | Revoke stops timers | Revoke before due | Nothing fires later | `[func]` |
 | K12 | Escalation webhook | Webhook in "when it runs out" | Request arrives `[reg NDC-2540]` | `[func]` |
 | K13 | Escalation custom action | Custom action at the warning | Runs once | `[func]` |
-| K14 | Department SLA in an On Hold state | Ticket with a department SLA enters a blueprint state on an On Hold-type status | Department SLA response / resolution pause; resume on leaving | `[func]` |
-| K15 | State timer in On Hold | Same, the state has its own limit | Record whether the state timer pauses | `[func]` |
+| K14 | Department SLA in an On Hold state | Ticket with a department SLA enters a blueprint state on an On Hold-type status | Department SLA response / resolution pause; resume on leaving. Compare with **live Zoho** (SLA timer while a blueprint state uses an On Hold status). TAVI 1–2 Nov: pauses and resumes | `[func]` `[zoho]` |
+| K15 | State timer in On Hold | Same, the state has its own limit | Compare with **live Zoho** (does the state-level SLA keep running in an On Hold status). TAVI 1–2 Nov: keeps running | `[func]` `[zoho]` |
 | K16 | Both overdue | Department SLA and state limit both pass | Both shown separately (SLA Violated pill + Overdue by in Steps); no mixed-up times | `[ui]` |
-| K17 | Department SLA reapply | Reapply SLA on a ticket in a blueprint | Blueprint state untouched | `[func]` |
+| K17 | Department SLA reapply | Reapply SLA on a ticket in a blueprint | Blueprint state untouched; compare with **live Zoho** where reapply exists. TAVI 1–2 Nov: state kept | `[func]` `[zoho]` |
 
 ## Group L — Automation interplay `[serial]`
 
@@ -414,7 +415,7 @@ Empty, spaces only, 1 char, 60 / 100 / 255 / 256 / 1000 chars, Arabic, mixed RTL
 | L4 | API sets Status | PATCH status by API | TICKET_IN_BLUEPRINT | `[api]` |
 | L5 | Macro sets Status | QA macro with a status change | Same as L3 | `[func]` |
 | L6 | Supervise / time rule | Time-based rule changes Status | Same as L3 | `[func]` |
-| L7 | Department change | Move the ticket to another department | Record: leaves the blueprint or refused (Zoho refuses) | `[func]` |
+| L7 | Department change | Move the ticket to another department | Same as **live Zoho** (Zoho refuses moving a ticket that is in a blueprint — confirm live and record the message). TAVI 1–2 Nov: move allowed, ticket leaves the blueprint, status kept | `[func]` `[zoho]` |
 | L8 | Approval process | If Desk approvals exist: approve a QA ticket that matches; edit a ticket that is in a blueprint | The approved ticket enters the blueprint `[reg NDC-2707]`; the edit does not drop it out `[reg NDC-2334]` | `[func]` |
 
 ## Group M — Where results appear
@@ -439,7 +440,7 @@ Empty, spaces only, 1 char, 60 / 100 / 255 / 256 / 1000 chars, Arabic, mixed RTL
 | N5 | Arabic UI | Switch to AR | Every string translated (designer, ticket form, history, toasts); canvas and arrows mirror sensibly | `[i18n]` |
 | N6 | RTL text | Arabic names in states / transitions | Correct direction on canvas and ticket | `[i18n]` |
 | N7 | Keyboard and screen reader | Tab through list, designer panels, ticket form | Labels ("Drag to reorder …", "Diagram of …"), focus order, Escape closes dialogs | `[a11y]` |
-| N8 | Big blueprint | 30 states, 80 transitions | Designer stays usable; publish < 5 s (record) | `[perf]` |
+| N8 | Big blueprint | 30 states, 80 transitions (Add State for the extra statuses, removed after) | Designer stays usable; publish < 5 s. 2 Nov: API create 2.5 s, publish 2.2 s; designer first load ~60 s on slow staging — re-measure | `[perf]` |
 | N9 | Many tickets | Include / revoke 500 tickets | Paged; counts correct; "stopped before the end" resume works | `[perf]` |
 | N10 | IM ticket | Required reply transition on an IM ticket | Record (Zoho opens the IM reply) — Inconclusive without IM | `[compat]` |
 | N11 | Browsers | Edge, Chrome, Firefox, Safari (if any) | Designer drag and drop works | `[compat]` |
@@ -478,6 +479,19 @@ Each row: look in the UI and the API. **Still missing** = the item stays open. *
 | Z15 | Separate revoke permission | Profiles → permissions | "Revoke blueprint" apart from manage |
 
 ---
+
+## Run status (2 Nov 2026, after Phase 4)
+
+| Bucket | Rows |
+|---|---|
+| Fail — filed | G11 NDC-2755, G7 NDC-2756, J6 NDC-2757, N2/C6 NDC-2758, G3 NDC-2761, G4 NDC-2762, G5 NDC-2763, L3 NDC-2764, G6/K8 NDC-2774, C20 NDC-2775; E4 NDC-2753 (other reporter, still fails) |
+| Compared with live Zoho (Phase 4) | C3 **differs**: Zoho refuses special characters ("Special characters are not allowed.") and caps the name at 60 characters (description 1000); TAVI accepts both (image BP-C3-name-rules-vs-zoho.png). Arabic/emoji/trailing spaces same. K14 same as Zoho docs (SLA freezes in On Hold, resumes recalculated) |
+| Live Zoho with QA records (user OK, 2 Nov) | C4 same (Zoho saves a duplicate name, draft and active). K15 same (Zoho state timer keeps running in On Hold). K17 TAVI extra (Zoho has no SLA reapply on the ticket). L7 **differs**: Zoho allows the move, the ticket leaves the blueprint and Status resets to Open (owner unassigned); TAVI keeps the status. C3 filed as NDC-2780 |
+| Agent rows (NDC-Staging, Phase 4) | Pass: A2, A3, A4, A5, A7, A8, D1, D2, D3, D4, D6, D7, E12 (optional reply), F3, J9. Record: A6 — Desk Agent refused, a separate permission `desk:ticket:blueprint_revoke` exists (Z15 is partly built). Inconclusive: F6 (no email trace). Not run: D5 (changes shared accounts). Blocked: D8 (only 5 departments) |
+| Not run — blocked | K3–K5 (customer mailbox), F5/K12 (webhook receiver), F7/K13 (safe custom action), N10 (IM channel) |
+| Re-measure | N8 designer load; C20 designer warning (seen 2 Nov: "QA BP Verify is no longer a ticket status") |
+| Automation | Java: BlueprintRunTest, BlueprintAdminTest, BlueprintTimerTest, BlueprintUiBugTest, BlueprintPhase2ApiTest, BlueprintScreenTest (5/10 pass on 2 Nov, test fixes pending) — `automation/src/test/resources/features/deskblueprint/feature-map.md` |
+| Everything else | Pass (see report) |
 
 ## Traceability
 

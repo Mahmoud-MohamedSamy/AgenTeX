@@ -1,0 +1,12 @@
+eval(require('fs').readFileSync('lib.js','utf8'));
+await page.setViewportSize({width:1600,height:1000});const RAW=RUN+'/screenshots/raw/';
+const field=lbl=>page.locator('main').locator('div').filter({has:page.locator('label',{hasText:new RegExp('^[*]?'+lbl+'$')})}).last();
+await page.goto(H+'/modules/'+T+'/records/new',{waitUntil:'commit'});await page.waitForFunction(()=>/Ticket Information/.test(document.body.innerText),null,{timeout:120000}).catch(()=>{});await page.waitForTimeout(3000);
+await field('Department').getByText('Customer Support').first().click();await page.waitForTimeout(800);await page.getByRole('option',{name:'QA AS6 Dept A'}).first().click();await page.waitForTimeout(1200);
+const f=field('Ticket Owner');const o={html:(await f.innerHTML()).slice(0,1500)};
+await f.locator('button').first().click();await page.waitForTimeout(1500);
+await page.screenshot({path:RAW+'2813-owner-picker.png'});
+o.popup=(await page.locator('[role=listbox],[role=dialog],[role=menu],[data-radix-popper-content-wrapper]').last().innerText().catch(()=>'')).replace(/\s+/g,' ').slice(0,600);
+o.opts=await page.getByRole('option').evaluateAll(b=>b.map(e=>e.innerText.trim().replace(/\s+/g,' ')).slice(0,15));
+o.btns=await page.locator('[role=listbox] button,[role=dialog] button,[data-radix-popper-content-wrapper] button').evaluateAll(b=>b.map(e=>(e.getAttribute('aria-label')||e.innerText).trim()).slice(0,15));
+return o;

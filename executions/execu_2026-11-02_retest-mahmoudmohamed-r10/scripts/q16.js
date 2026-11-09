@@ -1,0 +1,1 @@
+const r=await api('o','GET','/web-forms?app_key=crm'); return arr(r.j?.data).map(x=>[x.id.slice(0,8),x.name,x.kind,x.app_key,x.module_id===T.LEADS,x.is_enabled??x.enabled??x.status,x.definition?.share_link_enabled]);

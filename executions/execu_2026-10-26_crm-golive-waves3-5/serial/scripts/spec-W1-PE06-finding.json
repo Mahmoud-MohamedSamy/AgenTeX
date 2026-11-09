@@ -1,0 +1,63 @@
+{
+ "out": "W1-PE06-finding.png",
+ "ticket": "Wave 1 PE-06",
+ "verdict": "FAIL",
+ "label": "FINDING",
+ "title": "No view-only permission for profiles; the page shows a raw permission error",
+ "env": "staging-crm.taviportal.com (owner, test user 1) vs Zoho CRM org943261092 (read-only captures)",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "t-pe06-user1-permissions.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "caption": "TAVI — test user 1 (no iam.profile.manage) opens Settings › Permissions by URL: the page opens and its profile list shows \"Missing required permission 'iam.profile.manage'.\"; GET /iam/profiles answers 403.",
+   "boxes": [
+    {
+     "b": [
+      300,
+      190,
+      575,
+      235
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "z-profiles.png",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "caption": "Zoho — Profiles (captured 25 Oct).",
+   "boxes": []
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "A user who may only look at profiles sees a read-only page",
+   "Not checked live",
+   "Not possible: the permission catalog has only iam.profile.manage, no view-only permission",
+   "FAIL"
+  ],
+  [
+   "2",
+   "A user without access gets a clear \"no access\" page",
+   "Not checked live",
+   "The page opens by URL and shows the raw permission key in red",
+   "FAIL"
+  ]
+ ]
+}

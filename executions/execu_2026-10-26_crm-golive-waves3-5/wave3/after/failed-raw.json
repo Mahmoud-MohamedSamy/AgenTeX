@@ -1,0 +1,247 @@
+{
+ "W3-2510": {
+  "st": "FAILED",
+  "test": "W3RetestTest.r2510TaskActionInvalidStatus",
+  "desc": "A Create Task action with a status the Tasks module doesn't have is refused on save (or the run is not logged as Fired)",
+  "err": "create record in leads returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"FIELD_PERMISSION_DENIED\",\"message\":\"One or more fields in the payload are not writable for your profile.\",\"details\":[{\"path\":\"data.phone\",\"type\":\"field_read_only\",\"message\":\"Field 'phone' is read-only for your profile and cannot be written.\"}]},\"meta\":null}",
+  "src": "w3retest-run1-summary.json"
+ },
+ "W3-2511": {
+  "st": "FAILED",
+  "test": "W3RetestTest.r2511DateRuleRunIsAudited",
+  "desc": "A rule run on a date field (Tasks Due Date) leaves an Audit Log entry naming the rule",
+  "err": "the date rule ran but no Audit Log entry names its run (only: [crm:audit.action.created@2026-10-26T10:51:44.243027+00:00, crm:audit.action.created@2026-10-26T10:48:58.952877+00:00, crm:audit.action.updated@2026-10-26T10:48:58.076177+00:00, crm:audit.action.created@2026-10-26T10:48:57.295109+00:00]) expected [true] but found [false]",
+  "src": "w3retest-run1-summary.json"
+ },
+ "Z2": {
+  "st": "FAILED",
+  "test": "GroupKZRegressionGapsTest.z2ImportManualApprovalHonoured",
+  "desc": "Import option manual_approval: imported lead waits for approval instead of going live",
+  "err": "lead imported with manual_approval=true went live at once (record 7fee367e-97c0-4f04-972a-ed698d568608, import status completed); Zoho holds it in Approve Leads",
+  "src": "crm-order-run3-summary.json"
+ },
+ "Z3": {
+  "st": "FAILED",
+  "test": "GroupKZRegressionGapsTest.z3ScoreAndNotesTriggers",
+  "desc": "Workflow trigger kinds Record Score and Record Notes are accepted",
+  "err": "The following asserts failed: a Record Score trigger kind is accepted expected object to not be null, a Record Notes trigger kind is accepted expected object to not be null",
+  "src": "crm-order-run3-summary.json"
+ },
+ "Z4": {
+  "st": "FAILED",
+  "test": "GroupKZRegressionGapsTest.z4MeetingCallFunctionConnectedRecordActions",
+  "desc": "Workflow action types Meeting, Call, Function and Create Connected Record are accepted",
+  "err": "The following asserts failed: Meeting action accepted expected object to not be null, Call action accepted expected object to not be null, Function action accepted expected object to not be null, CreateConnectedRecord action accepted expected object to not be null",
+  "src": "crm-order-run3-summary.json"
+ },
+ "Z5": {
+  "st": "FAILED",
+  "test": "GroupKZRegressionGapsTest.z5OwnerAssignmentByAssignmentRule",
+  "desc": "Workflow Assign Owner by an assignment rule (+ online only, email, transfer related)",
+  "err": "Owner Assignment with an assignment rule is accepted expected object to not be null",
+  "src": "crm-order-run3-summary.json"
+ },
+ "Z6": {
+  "st": "FAILED",
+  "test": "GroupKZRegressionGapsTest.z6ReviewFunctionHooks",
+  "desc": "Review process: functions on submission / review / rejection / resubmission are settable",
+  "err": "per-event review functions (onSubmission/onReview/onRejection/onResubmission) not supported: the valid body + 'functions' is refused 400 {\"success\":false,\"data\":null,\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"functions: The JSON property 'functions' could not be mapped to any .NET member contained in type 'Anyware.Workflow.Application.Dtos.ReviewProcesses.CreateReviewProcessRequest'.\",\"details\":[{\"field\":\"functions\",\"issue\":\"invalid\",\"message\":\"The JSON property 'functions' could not be mapped to any .NET member contained in type 'Anyware.Workflow.Application.Dtos.ReviewProcesses.CreateRevi",
+  "src": "crm-order-run3-summary.json"
+ },
+ "Z7": {
+  "st": "FAILED",
+  "test": "GroupKZRegressionGapsTest.z7ApproverAnyoneEveryone",
+  "desc": "Approval level: 'Everyone' (parallel) must approve, not just anyone",
+  "err": "Everyone option stored on the level: {approver={kind=users, values=[d23fb4e0-248d-41f6-af60-d28885a7007e, 3445ec4a-020e-4f12-b156-dd2de7610164]}, waitingFieldAccess={mode=none, fields=[], resetFields=[]}, afterStageUpdateFields=null, assignTask=null, assignToSubmitterManager=false, distribution=broadcast, assigneeField=null, decisionFields=[]} expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "Z8": {
+  "st": "FAILED",
+  "test": "GroupKZRegressionGapsTest.z8ApprovalCallFunctionRuns",
+  "desc": "Approval final action Call Function actually runs",
+  "err": "approval final action Call Function accepted expected object to not be null",
+  "src": "crm-order-run3-summary.json"
+ },
+ "Z9": {
+  "st": "FAILED",
+  "test": "GroupKZRegressionGapsTest.z9BlueprintAfterActions",
+  "desc": "Blueprint after-transition actions Convert, Function (custom action), Tags, Create record are accepted",
+  "err": "The following asserts failed: Convert after-action accepted and stored expected object to not be null, Function after-action accepted and stored expected object to not be null, Tags after-action accepted and stored expected object to not be null, CreateRecord after-action accepted and stored expected object to not be null",
+  "src": "crm-order-run3-summary.json"
+ },
+ "W3-GAPS": {
+  "st": "FAILED",
+  "test": "W3RetestTest.gapProbes",
+  "desc": "Gap probes: workflow triggers/actions, blueprint after-actions, missing modules (schedules, scoring, cadences, macros, connected flow)",
+  "err": "gaps still open: [trigger RecordScoreChanged, trigger NoteAdded, action Meeting, action Call, action CustomFunction, action CreateConnectedRecord, route /workflow/schedules, route /workflow/scoring-rules, route /scoring-rules, route /workflow/cadences, route /workflow/macros, route /workflow/connected-flows] expected [true] but found [false]",
+  "src": "w3retest-run1-summary.json"
+ },
+ "W3-2294-13": {
+  "st": "FAILED",
+  "test": "W3RetestTest.g13ApiTriggerEmptyRunsNoWorkflow",
+  "desc": "Creating a record through the API with \"trigger\": [] runs no workflow (Zoho)",
+  "err": "create record in leads returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"FIELD_PERMISSION_DENIED\",\"message\":\"One or more fields in the payload are not writable for your profile.\",\"details\":[{\"path\":\"data.phone\",\"type\":\"field_read_only\",\"message\":\"Field 'phone' is read-only for your profile and cannot be written.\"}]},\"meta\":null}",
+  "src": "w3retest-run1-summary.json"
+ },
+ "G-04": {
+  "st": "FAILED",
+  "test": "GroupGChainTest.g04LeadsImportTriggerOff",
+  "desc": "Leads import with trigger automation off: workflow, approval and blueprint do not run (Zoho runs nothing); review hold written down",
+  "err": "import with 'trigger automation' off ran workflow/approval/blueprint: owner=45ffbc5b-7859-4c21-be9e-7b5f30747ca2 review=null description=null wfFired=0 approval=null governed=true expected [false] but found [true]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "B-19": {
+  "st": "FAILED",
+  "test": "GroupBReviewTest.apiChannel",
+  "desc": "API channel ticked: API-created lead held; legacy API caller warning",
+  "err": "API-channel process must hold an API-created lead (source=api), review status null expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "F-01": {
+  "st": "FAILED",
+  "test": "GroupFHandoffTest.f01AssignmentBeforeReviewRecordOwnerReviewer",
+  "desc": "AR → RP: owner is set before review, so a 'record owner' reviewer is the assigned owner",
+  "err": "record-owner reviewer = assigned owner (adminB) 3445ec4a-020e-4f12-b156-dd2de7610164; reviewers [] expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "H-05": {
+  "st": "FAILED",
+  "test": "GroupHIConversionTest.h05ScheduledActionsDroppedOnConvert",
+  "desc": "Converted lead's pending scheduled workflow actions are dropped (Zoho)",
+  "err": "scheduled action still ran on the converted lead 188c12a3-bc8f-408b-bba7-158a38b98263 did not expect [WF H-05] but found [WF H-05]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "G-16": {
+  "st": "FAILED",
+  "test": "GroupGChainTest.g16TimelineShowsOrder",
+  "desc": "Timeline of a full-chain record lists each process with its time, in order (run on an imported lead: no API channel)",
+  "err": "Timeline lists every process (Zoho: the Timeline displays the order each process ran); missing [assignment, workflow, blueprint] in [NoteAdded:Approval: approved (final) by Mahmoud Samy, FieldChanged:null, NoteAdded:Approval: submitted for approval, NoteAdded:Review: approved by Mahmoud Mohamed, OwnerChanged:null, RecordCreated:null, NoteAdded:Review: submitted for review by mahmoud.mahamed1515] expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "G-12": {
+  "st": "FAILED",
+  "test": "GroupGChainTest.g12DealsApiCreate",
+  "desc": "Deals API create with the assignment rule: all five in order (API channel)",
+  "err": "create assignment rule returned 409: {\"success\":false,\"data\":null,\"error\":{\"code\":\"CONFLICT\",\"message\":\"An assignment rule named 'QA AEO SG G-12 AR' already exists in this module.\",\"details\":null},\"meta\":null}",
+  "src": "crm-order-deals-rerun-summary.json"
+ },
+ "J-01": {
+  "st": "FAILED",
+  "test": "GroupAJTest.allFiveProcessesOnTasks",
+  "desc": "Each of the five processes can be created and switched on for Tasks",
+  "err": "create blueprint returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"BLUEPRINT_DEFINITION_INVALID\",\"message\":\"Blueprint definition validation failed.\",\"details\":[{\"path\":\"targetField\",\"type\":\"BLUEPRINT_DEFINITION_FIELD_INVALID\",\"message\":\"Target field 'status' must be a pick_list to drive a blueprint.\"}]},\"meta\":null}",
+  "src": "crm-order-run3-summary.json"
+ },
+ "E-15": {
+  "st": "FAILED",
+  "test": "GroupEBlueprintTest.e15TasksBlueprintOnStatus",
+  "desc": "Tasks blueprint on Status works",
+  "err": "Zoho allows a blueprint on Tasks Status; TAVI: {\"success\":false,\"data\":null,\"error\":{\"code\":\"BLUEPRINT_DEFINITION_INVALID\",\"message\":\"Blueprint definition validation failed.\",\"details\":[{\"path\":\"targetField\",\"type\":\"BLUEPRINT_DEFINITION_FIELD_INVALID\",\"message\":\"Target field 'status' must be a pick_list to drive a blueprint.\"}]},\"meta\":null} expected [2] but found [4]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "E2E-5": {
+  "st": "FAILED",
+  "test": "GroupGChainTest.e2e5TaskApproval",
+  "desc": "Task approval: WF on Leads creates a task → Tasks approval → blueprint (on Priority; Status per E-15)",
+  "err": "blueprint entered after the approval: owner=45ffbc5b-7859-4c21-be9e-7b5f30747ca2 review=null description=null wfFired=- approval=approved governed=false expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "E-18": {
+  "st": "FAILED",
+  "test": "GroupEBlueprintTest.e18TwoBlueprintsFirstWins",
+  "desc": "Two blueprints match the same record: only the first in the list runs; /sort changes which",
+  "err": "after /sort the new first blueprint should run did not expect [[QA AEO SE E-18 BP A]] but found [[QA AEO SE E-18 BP A]]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "C-11": {
+  "st": "FAILED",
+  "test": "GroupCWorkflowTest.scheduledActionCancelledWhenNoLongerMatching",
+  "desc": "Scheduled action (2 min) is cancelled when the record stops matching before then",
+  "err": "scheduled Field Update still ran for the lead that stopped matching did not expect [WF C-11] but found [WF C-11]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "C-09": {
+  "st": "FAILED",
+  "test": "GroupCWorkflowTest.criteriaFalseDoesNotFire",
+  "desc": "Criteria false: does not fire; execution row says criteria not matched",
+  "err": "no execution row with outcome 'criteria not matched' for the rule (spec expects one). Runs: {rule=ab61d411-dc7f-4810-891c-295b6ba52ad0 trig=RecordCreated matched=true outcome=Fired err=null at=2026-10-26T11:12:08.018887+00:00} expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "A-08": {
+  "st": "FAILED",
+  "test": "GroupAJTest.fallbackLeaveUnassigned",
+  "desc": "No entry matches; fallback = Leave unassigned → owner is the importer (not ownerless)",
+  "err": "record is not ownerless expected object to not be null",
+  "src": "crm-order-run3-summary.json"
+ },
+ "D-17": {
+  "st": "FAILED",
+  "test": "GroupDApprovalTest.d17DeleteWithPending",
+  "desc": "Delete the process with pending records: records in the process are unaffected (lock state written down)",
+  "err": "process with pending records can be deleted, records unaffected (Zoho); TAVI: {\"success\":false,\"data\":null,\"error\":{\"code\":\"CONFLICT\",\"message\":\"This process still has 1 record(s) awaiting approval. Resolve them (approve, reject, or an admin takeover) before deleting it — deactivate it instead to stop new records entering.\",\"details\":null},\"meta\":null} expected [2] but found [4]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "C-12": {
+  "st": "FAILED",
+  "test": "GroupCWorkflowTest.fieldUpdateChainsToAnotherRule",
+  "desc": "Rule A's field update makes rule B match: B fires after A (chaining)",
+  "err": "rule A's field update did not trigger the On Edit rule B (Zoho: a field update can trigger other rules) expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "H-04": {
+  "st": "FAILED",
+  "test": "GroupHIConversionTest.h04ConvertLeadInBlueprint",
+  "desc": "Convert a lead in a blueprint: allowed only by a Convert transition (TAVI offers none: missing-list item 9) - so blocked; written down",
+  "err": "The following asserts failed: lead in a blueprint not convertible outside a Convert transition (userN): 200 {\"success\":true,\"data\":{\"leadId\":\"d72b7812-1ccf-4694-b582-409c8069fcb7\",\"targets\":[{\"moduleId\":\"b2398920-2914-4836-be53-81bd960effea\",\"moduleKey\":\"accounts\",\"outcome\":\"skipped\",\"recordId\":null,\"matchedField\":null,\"reason\":\"skipped: gating field 'company' is not set on the lead\"},{\"moduleId\":\"6f553963-01d6-4b68-9fb3-143d23044c41\",\"moduleKey\":\"contacts\",\"outcome\":\"created\",\"recordId\":\"dad2e764-f337-… expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "D-05": {
+  "st": "FAILED",
+  "test": "GroupDApprovalTest.d05ResubmitWithNoMatchReleases",
+  "desc": "Resubmit when no process matches any more: record released",
+  "err": "The following asserts failed: no longer rejected did not expect [rejected] but found [rejected]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "D-06": {
+  "st": "FAILED",
+  "test": "GroupDApprovalTest.d06SubmitterCannotApproveOwnRecord",
+  "desc": "Submitter who is also a level approver can't approve their own record",
+  "err": "The following asserts failed: self approve blocked: 204 expected [true] but found [false], still pending expected [pending_approval] but found [approved], canApprove false expected [false] but found [true], UI: You can't approve a record you submitted expected [self_submitted] but found [null]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "C-10": {
+  "st": "FAILED",
+  "test": "GroupCWorkflowTest.eachActionTypeRuns",
+  "desc": "Each action once: Owner → A, Email, Task, Create Record (Deal), Add Tags, Remove Tags, Webhook",
+  "err": "actions not all applied: [Create Record: no deal named QA AEO SC C-10 deal]. Runs: {rule=b97f8336-6e94-4520-99a3-aa114767b924 trig=RecordUpdated matched=true outcome=Fired err=null at=2026-10-26T11:18:01.723902+00:00} {rule=b97f8336-6e94-4520-99a3-aa114767b924 trig=RecordUpdated matched=true outcome=Fired err=null at=2026-10-26T11:17:59.553157+00:00} expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "A-14": {
+  "st": "FAILED",
+  "test": "GroupAJTest.dealsRuleApplied",
+  "desc": "Deals: rule on Deals applied to an imported deal",
+  "err": "rows created by the import: session=38593352-cfdb-4fd6-80e0-0172c5c3ba75 mapping=204 validate=200 {\"success\":true,\"data\":{\"total\":1,\"valid\":0,\"error_rows\":1,\"issues\":[{\"row\":2,\"field\":\"pipeline\",\"reason\":\"The value isn't a valid option from the list: 'Standard' is not one of the allowed picklist values.\",\"value\":\"Standard\",\"kind\":\"picklist\"}],\"aggregates\":[{\"field\":\"pipeline\",\"field_label\":\"Pipeline\",\"kind\":\"picklist\",\"reason\":\"The value isn't a valid option from the list: 'Standard' is not one of the allowed picklist values.\",\"count\":1,\"example_row\":2,\"example_value\":\"Standard\"}],\"total_issu",
+  "src": "crm-order-rerun2-summary.json"
+ },
+ "B-18": {
+  "st": "FAILED",
+  "test": "GroupBReviewTest.importedLeadIsHeld",
+  "desc": "Import (Excel channel ticked): imported lead is held",
+  "err": "imported lead is held expected [true] but found [false]",
+  "src": "crm-order-rerun2-summary.json"
+ },
+ "G-07": {
+  "st": "FAILED",
+  "test": "GroupGChainTest.g07LeadsMassUpdate",
+  "desc": "Leads mass update into the workflow/approval criteria: workflow → approval → blueprint in order for each record (no assignment, no review)",
+  "err": "workflow marker after review approval: owner=45ffbc5b-7859-4c21-be9e-7b5f30747ca2 review=approved description=null wfFired=0 approval=null governed=true expected [true] but found [false]",
+  "src": "crm-order-run3-summary.json"
+ },
+ "G-10": {
+  "st": "FAILED",
+  "test": "GroupGChainTest.g10LeadsMadeByBlueprint",
+  "desc": "Lead created by a blueprint After 'Create record' action: as G-09 (review if Automation ticked, then the chain)",
+  "err": "blueprint entered after the approval: owner=45ffbc5b-7859-4c21-be9e-7b5f30747ca2 review=null description=WF G-10 wfFired=1 approval=approved governed=false expected [true] but found [false]",
+  "src": "crm-order-rerun2-summary.json"
+ }
+}

@@ -1,0 +1,1 @@
+import{i as e}from"./rolldown-runtime-DWdDZTNf.js";import{b as t}from"./dnd-kit-DwRl-dS8.js";var n=e(t());function r(e=6e4){let[t,r]=(0,n.useState)(()=>Date.now());return(0,n.useEffect)(()=>{let t=window.setInterval(()=>r(Date.now()),e);return()=>window.clearInterval(t)},[e]),t}export{r as t};

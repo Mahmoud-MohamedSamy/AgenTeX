@@ -1,0 +1,45 @@
+{
+ "out": "NDC-2653-api.png",
+ "date": "2 Nov 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2 / U3",
+ "title": "NDC-2653 · Anyware Deals (pipelines Standard + New)",
+ "rows": [
+  [
+   "field \"pipeline\"",
+   "POST fields fieldName pipeline / Pipeline",
+   "422 PIPELINE_FIELD_NAME_RESERVED",
+   "ok"
+  ],
+  [
+   "\"stage\" / \"owner\"",
+   "same",
+   "409 FIELD_ALREADY_EXISTS",
+   "ok"
+  ],
+  [
+   "non-default pipeline",
+   "POST deal pipeline = New, stage qualification",
+   "201, stored pipeline New",
+   "ok"
+  ],
+  [
+   "move",
+   "PATCH to Standard and back",
+   "200 / 200",
+   "ok"
+  ],
+  [
+   "wrong stage",
+   "stage \"proposal\" on New",
+   "422",
+   "ok"
+  ],
+  [
+   "note",
+   "tenant",
+   "NDC-Staging data field not rechecked (Anyware by instruction)",
+   "info"
+  ]
+ ]
+}

@@ -95,8 +95,8 @@ public class VisibilityTest {
     }
 
     @CaseId("I3")
-    @Test(groups = {"crmhierarchy", "visibility", "regression", "HP-BUG-01"}, priority = 3,
-            description = "Role mode: a Supervisor sees the leads of a lower-ranked User in the same department")
+    @Test(groups = {"crmhierarchy", "visibility", "regression", "HP-BUG-01", "NDC-2412"}, priority = 3,
+            description = "Role mode: a Supervisor sees the leads of a lower-ranked User in the same org unit")
     public void roleSuperiorSameDepartment() {
         state("role", P_SUPERVISOR, OU_SALES, false);
         control(v, leadV);
@@ -117,15 +117,68 @@ public class VisibilityTest {
         Assert.assertTrue(a && b, "a Manager does not see a User's leads in the same department");
     }
 
+    // Expected rule (user, 27 Oct 2026, NDC-2412): within one org unit a higher-ranked profile sees the records of every
+    // lower-ranked profile; same rank never; a different org unit never (whatever the rank); the tenant owner sees all.
+
     @CaseId("I4")
-    @Test(groups = {"crmhierarchy", "visibility", "regression", "HP-BUG-01"}, priority = 5,
-            description = "Role mode: a Supervisor in another department sees the User's leads (preview: 'every User in the tenant')")
+    @Test(groups = {"crmhierarchy", "visibility", "regression", "NDC-2412"}, priority = 5,
+            description = "Role mode: a Supervisor in another org unit does NOT see a lower-ranked User's leads")
     public void roleSuperiorOtherDepartment() {
         state("role", P_SUPERVISOR, OU_HR, false);
         control(v, leadV);
         boolean a = sees(v, leadN);
-        fact("I4", "role, V=Supervisor@HR, N=User@Sales: V sees N's lead=" + a + " (preview text says yes, record-visibility hint says no, Zoho: yes for the branch)");
-        Assert.assertTrue(a, "the preview promises 'A Manager sees every User in the tenant, regardless of who they report to'");
+        fact("I4", "role, V=Supervisor@HR, N=User@Sales: V sees N's lead=" + a + " (expected false: other org unit)");
+        Assert.assertFalse(a, "a higher-ranked user in another org unit sees a lower-ranked user's lead");
+    }
+
+    @CaseId("I2b")
+    @Test(groups = {"crmhierarchy", "visibility", "regression", "NDC-2412"}, priority = 16,
+            description = "Role mode: two Users in the same org unit do not see each other's leads")
+    public void rolePeersSameOrgUnit() {
+        state("role", P_USER, OU_SALES, false);
+        control(v, leadV);
+        boolean vn = sees(v, leadN), nv = sees(n, leadV);
+        fact("I2b", "role, V=User@Sales and N=User@Sales: V sees N=" + vn + ", N sees V=" + nv + " (expected false/false)");
+        Assert.assertFalse(vn || nv, "two Users in the same org unit see each other's leads");
+    }
+
+    @CaseId("I4b")
+    @Test(groups = {"crmhierarchy", "visibility", "regression", "NDC-2412"}, priority = 13,
+            description = "Role mode: a Manager in another org unit does NOT see a User's leads")
+    public void roleManagerOtherOrgUnit() {
+        state("role", P_MANAGER, OU_HR, false);
+        control(v, leadV);
+        boolean a = sees(v, leadN), b = sees(v, leadNself);
+        fact("I4b", "role, V=Manager(500)@HR, N=User(100)@Sales: V sees N's leads: owner-set=" + a + ", N-created=" + b + " (expected false)");
+        Assert.assertFalse(a || b, "a Manager in another org unit sees a User's leads");
+    }
+
+    @CaseId("I7")
+    @Test(groups = {"crmhierarchy", "visibility", "regression", "NDC-2412"}, priority = 14,
+            description = "Role mode: a Manager sees a Supervisor's leads in the same org unit")
+    public void roleManagerSeesSupervisorSameOrgUnit() {
+        state("role", P_MANAGER, OU_SALES, false);
+        try {
+            setProfile(N_ID, P_SUPERVISOR, OU_SALES);
+            if (hasPermission(n, "metadata.records.view_all")) throw new SkipException("INCONCLUSIVE: nameb56175 has records.view_all as Supervisor");
+            control(v, leadV);
+            boolean a = sees(v, leadN), b = sees(v, leadNself), up = sees(n, leadV);
+            fact("I7", "role, V=Manager(500)@Sales, N=Supervisor(300)@Sales: V sees N's leads: owner-set=" + a + ", N-created=" + b + "; N sees V's lead=" + up);
+            Assert.assertTrue(a && b, "a Manager does not see a lower-ranked Supervisor's leads in the same org unit");
+            Assert.assertFalse(up, "a Supervisor sees a higher-ranked Manager's lead");
+        } finally {
+            setProfile(N_ID, P_USER, OU_SALES);
+        }
+    }
+
+    @CaseId("I8")
+    @Test(groups = {"crmhierarchy", "visibility", "regression", "NDC-2412"}, priority = 15,
+            description = "Role mode: the tenant owner sees every user's leads")
+    public void ownerSeesAll() {
+        state("role", P_USER, OU_HR, false);
+        boolean a = sees(owner(), leadN), b = sees(owner(), leadNself), c = sees(owner(), leadV);
+        fact("I8", "role: owner sees N owner-set=" + a + ", N-created=" + b + ", V's=" + c);
+        Assert.assertTrue(a && b && c, "the tenant owner does not see every user's leads");
     }
 
     @CaseId("I6")

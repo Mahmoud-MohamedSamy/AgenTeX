@@ -1,0 +1,112 @@
+{
+ "out": "NDC-2542-retest-PASS.png",
+ "ticket": "NDC-2542",
+ "title": "Users | Invitation lifetime is not validated: 0 and -1 days silently become 7 days, 10000 days is accepted",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26–27 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2542-api.png",
+   "caption": "auto-run2 — AdminApiTest.inviteValidation (US-06); row 2: API check 27 Oct.",
+   "crop": [
+    0,
+    0,
+    1600,
+    407
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      295
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      301,
+      1566,
+      342
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      348,
+      1566,
+      389
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "lifetime 0",
+   "Refused with a clear message",
+   "400 iam.invite.lifetime_out_of_range \"lifetime_days must be between 1 and 90 days (received 0).\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "lifetime -1",
+   "Refused with a clear message",
+   "400 iam.invite.lifetime_out_of_range \"lifetime_days must be between 1 and 90 days (received -1).\" — nothing created",
+   "PASS"
+  ],
+  [
+   "3",
+   "lifetime 10000",
+   "Refused",
+   "400 — same code, \"(received 10000)\"",
+   "PASS"
+  ],
+  [
+   "4–5",
+   "Bad email / unknown profile (controls)",
+   "400",
+   "400 \"Email must be valid.\" / \"Unknown profile.\"",
+   "PASS"
+  ],
+  [
+   "—",
+   "Not covered",
+   "—",
+   "Invite dialog in the UI",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "out": "NDC-1797-api.png",
+ "date": "27 Oct 2026",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "title": "NDC-1797 · Delete forever an item whose module no longer exists",
+ "rows": [
+  [
+   "orphan item",
+   "GET /audit/recycle-bin/items — \"QA W5 R1\", module qa_w5_auto_442716 (deleted)",
+   "listed",
+   "info"
+  ],
+  [
+   "delete forever",
+   "POST /audit/recycle-bin/delete {ids:[aca36754…]} (CRM Admin)",
+   "200 succeeded [aca36754…], failed [] — gone from the bin",
+   "ok"
+  ],
+  [
+   "26 Oct",
+   "Same for items of deleted modules",
+   "recyclebin.error.forbidden (Owner) — fixed",
+   "info"
+  ],
+  [
+   "new orphans",
+   "DELETE /modules/{qa_rt_r8o} with a record in the bin",
+   "409 MODULE_HAS_DESCENDANTS (cascade offered)",
+   "ok"
+  ]
+ ]
+}

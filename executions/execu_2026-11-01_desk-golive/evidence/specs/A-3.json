@@ -1,0 +1,91 @@
+{
+ "out": "A-3-vs-zoho.png",
+ "ticket": "A-3",
+ "verdict": "FAIL",
+ "date": "3 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner · Zoho Desk: NDC's portal wondertravel, read-only (nothing saved) · Edge",
+ "title": "Workflow rules: no trigger for \"on create, and later when these fields change\"",
+ "label": "MISSING · High",
+ "panels": [
+  {
+   "img": "a3/tavi-trigger.png",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    370,
+    240,
+    890,
+    360
+   ],
+   "caption": "TAVI · QA NDC Close Ticket · trigger is one of Create / Edit / Create or Edit / Delete / Field Changed",
+   "boxes": [
+    {
+     "b": [
+      389,
+      343,
+      782,
+      373
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      389,
+      380,
+      700,
+      520
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "a3/zoho-gds-b2b-trigger.png",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    270,
+    140,
+    1050,
+    280
+   ],
+   "caption": "NDC Zoho · Client Complaints › GDS B2B · Create ticked together with Field Update (Related Branch, Status)",
+   "boxes": [
+    {
+     "b": [
+      322,
+      218,
+      660,
+      262
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      832,
+      280,
+      1280,
+      402
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Run on create as well",
+   "\"Create\" can be ticked together with \"Field Update\": the rule runs when the ticket is created and later only when the chosen fields change. 38 of NDC's core rules use this.",
+   "The options are exclusive. \"Field Changed\" runs on edits only (QA NDC Close Ticket did not fire on a new ticket). \"Create or Edit\" fires on every edit, not only when the chosen fields change.",
+   "GAP"
+  ],
+  [
+   2,
+   "Watched fields",
+   "Related Branch, Status; runs when any of them changes.",
+   "Watch field list with \"any\" or \"all\" works, but only for edits.",
+   "GAP"
+  ]
+ ]
+}

@@ -1,0 +1,105 @@
+{
+ "env": "staging-crm.taviportal.com, build of 27 Oct (owner; public pages not signed in) vs Zoho CRM org943261092 (read-only, captured 26 Oct)",
+ "date": "27 Oct 2026",
+ "out": "NDC-2630-retest.png",
+ "ticket": "NDC-2630",
+ "verdict": "PARTIAL",
+ "label": "PARTLY FIXED",
+ "title": "Email | a failed send is now shown as failed on screen, but the timeline still logs \"EmailSent\"",
+ "panels": [
+  {
+   "img": "tavi-compose-after-send.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "TAVI — Compose after Send: red banner and toast \"The email wasn't sent: No Zoho account found for sender …\".",
+   "crop": [
+    352,
+    48,
+    1248,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      376,
+      130,
+      1224,
+      177
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      1157,
+      862,
+      1576,
+      925
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "api-2630-failed-send.png",
+   "w": 1600,
+   "h": 338,
+   "caption": "TAVI API — the email is stored as failed, but the timeline entry says EmailSent.",
+   "crop": [
+    0,
+    0,
+    1600,
+    338
+   ],
+   "boxes": [
+    {
+     "b": [
+      0,
+      94,
+      1600,
+      190
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    },
+    {
+     "b": [
+      0,
+      186,
+      1600,
+      282
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-lead-emails.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "Zoho — a lead's Emails related list (read-only). Zoho's handling of a failed send was not checked live (our Zoho org can't be made to fail).",
+   "crop": [
+    0,
+    0,
+    1600,
+    950
+   ],
+   "boxes": []
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "What the sender sees when sending fails",
+   "Not checked live",
+   "Clear error banner and toast with the reason (was \"Sent\" on 26 Oct) — fixed",
+   "PASS"
+  ],
+  [
+   "2",
+   "Timeline after a failed send",
+   "Not checked live",
+   "Still logs \"EmailSent\" for the failed email; the record's email list shows it as failed",
+   "FAIL"
+  ]
+ ]
+}

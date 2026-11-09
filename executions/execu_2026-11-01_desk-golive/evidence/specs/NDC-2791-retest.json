@@ -1,0 +1,73 @@
+{
+ "out": "NDC-2791-retest-FAIL.png",
+ "ticket": "NDC-2791",
+ "date": "4 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner + agent · Zoho: NDC's portal wondertravel, screenshots saved 3 Nov (not reopened) · Edge",
+ "verdict": "FAIL",
+ "label": "RETEST FAIL",
+ "title": "Layouts | \"Mark as Required\" on one layout makes the field required on every layout — still broken, now blocks saving",
+ "panels": [
+  {
+   "img": "rt/2791-cc-editor.png",
+   "w": 1600,
+   "h": 2200,
+   "crop": [
+    330,
+    1000,
+    1270,
+    300
+   ],
+   "caption": "TAVI · QA NDC Client Complaints layout (never edited) · Agent id still shown as required",
+   "boxes": [
+    {
+     "b": [
+      366,
+      1130,
+      957,
+      1176
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "a6/zoho-new-cc.png",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    180,
+    110,
+    920,
+    560
+   ],
+   "caption": "NDC Zoho · Add Ticket › Client Complaints · Agent id not required on this form",
+   "boxes": [
+    {
+     "b": [
+      215,
+      130,
+      890,
+      665
+     ],
+     "n": 1
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Field marked required on one layout only",
+   "Each layout keeps its own mandatory setting (Agent id mandatory on Manual Invoice, optional on Client Complaints).",
+   "Client Complaints still shows Agent id as required. Fresh repro: TKT number marked on FLY-WT Refund only → field is required for the whole module.",
+   "FAIL"
+  ],
+  [
+   2,
+   "Saving a ticket on another layout",
+   "Saves (field is optional there).",
+   "Now refused (422): a Client Complaints ticket \"QA NDC TKT number is required.\"; a Customer Support ticket on the Standard layout, which does not even have the field, \"QA NDC Agent id is required.\" Ticket creation for every department was blocked until the flag was cleared.",
+   "FAIL"
+  ]
+ ]
+}

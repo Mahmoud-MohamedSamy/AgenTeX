@@ -1,0 +1,574 @@
+{
+ "A-14": {
+  "verdict": "PASS",
+  "label": "PASSES NOW",
+  "title": "Deals: an assignment rule on Deals is applied to an imported deal",
+  "src": "after/run3.log line 33 + run2",
+  "zimg": "z-assignment.png",
+  "ztext": "Assignment rules apply to imported records when the rule is chosen on import",
+  "lines": [
+   [
+    "Case A-14 · GroupAJTest#dealsRuleApplied — re-verified from scratch twice (run 2 27 Oct, run 3 28 Oct): PASS both times",
+    "info"
+   ],
+   [
+    "Deal bb391886-a2c2-40de-b714-ff5483e175f9 imported with the Deals assignment rule chosen",
+    "",
+    "r1"
+   ],
+   [
+    "owner = valafo4080 (the rule's user); execution row: assignmentRuleId=842ae51e… outcome=Fired trigger=RecordCreated",
+    "ok",
+    "r1"
+   ],
+   [
+    "Round 1 (26 Oct) candidate W3-C1 no longer reproduces: nothing to file",
+    "ok",
+    "r2"
+   ]
+  ],
+  "rows": [
+   [
+    "Imported deal gets the rule's owner",
+    "The rule's user owns the imported deal",
+    "owner = valafo4080, rule logged Fired (runs 2 and 3)",
+    "PASS"
+   ],
+   [
+    "Round-1 candidate W3-C1",
+    "—",
+    "Not reproduced in round 2: do not file",
+    "INFO"
+   ]
+  ]
+ },
+ "B-18": {
+  "verdict": "FAIL",
+  "label": "STILL FAILS",
+  "title": "Import (Excel channel ticked): the imported lead is not held for review",
+  "src": "after/run2.log, run3.log line 453, run4.log line 95",
+  "zimg": "z-review.png",
+  "ztext": "Review process with the import channel holds imported records",
+  "lines": [
+   [
+    "Case B-18 · GroupBReviewTest#importedLeadIsHeld — failed in run 2, run 3 and run 4 (each from scratch)",
+    "info"
+   ],
+   [
+    "Active review process on the session QA layout, channels include Excel import; matching lead imported",
+    "",
+    "r1"
+   ],
+   [
+    "run 3: import session e954e951… created 1, review queue=[]  ·  run 4: import session f5da7935… created 1, review queue=[]",
+    "bad",
+    "r1"
+   ],
+   [
+    "imported lead is held: expected true, found false (review status null)",
+    "bad",
+    "r2"
+   ],
+   [
+    "Control in the same class: the same process holds a lead created on screen/API (B-01, B-02 pass)",
+    "ok",
+    "r3"
+   ]
+  ],
+  "rows": [
+   [
+    "Imported lead is held for review",
+    "Held (pending review) when the import channel is ticked",
+    "Import created 1 lead, review queue empty (3 runs)",
+    "FAIL"
+   ],
+   [
+    "Review status of the imported lead",
+    "pending review",
+    "null",
+    "FAIL"
+   ],
+   [
+    "Control: manual / API create on the same process",
+    "Held",
+    "Held (B-01, B-02 pass)",
+    "PASS"
+   ]
+  ]
+ },
+ "G-07": {
+  "verdict": "FAIL",
+  "label": "STILL FAILS (intermittent)",
+  "title": "Leads mass update into a review: the On Edit workflow does not run after the review is approved",
+  "src": "after/run2.log, run3.log, run4.log lines 159–160",
+  "zimg": "z-workflow-rules.png",
+  "ztext": "Workflow rules run on records once a review releases them",
+  "lines": [
+   [
+    "Case G-07 · GroupGChainTest#g07LeadsMassUpdate: failed run 2 and run 4 (run 3 broke on a test-side layout fault, fixed)",
+    "info"
+   ],
+   [
+    "run 4: mass update -> 200 (2 updated); lead 85ac483e… review on this entry point: pending_for_review; review approved",
+    "",
+    "r1"
+   ],
+   [
+    "after review approval: description=null wfFired=0 approval=null governed=true -> the On Edit workflow never ran",
+    "bad",
+    "r2"
+   ],
+   [
+    "Same check through VerifyV2#g07EditHeldByReview: failed run 2 (wfFired=0 for mass update and single edit; control without review fired 1),",
+    "",
+    "r3"
+   ],
+   [
+    "passed run 3 — so the defect is intermittent: 3 of 4 from-scratch runs failed",
+    "bad",
+    "r3"
+   ]
+  ],
+  "rows": [
+   [
+    "Mass update puts the lead into review",
+    "Held for review",
+    "pending_for_review",
+    "PASS"
+   ],
+   [
+    "On Edit workflow after the review is approved",
+    "Runs once the record is released",
+    "wfFired=0, no workflow marker; the record went on into the blueprint",
+    "FAIL"
+   ],
+   [
+    "Repeatability",
+    "—",
+    "Failed 3 of 4 from-scratch runs (GroupG run 2 + run 4, V2 run 2); passed V2 run 3",
+    "PARTIAL"
+   ]
+  ]
+ },
+ "G-10": {
+  "verdict": "PARTIAL",
+  "label": "AFTER ACTION FIXED · CHAIN STOPS",
+  "title": "Lead made by a blueprint After 'Create record': made correctly, but it never enters its blueprint after approval",
+  "src": "after/run4.log lines 161–165 + probe 28 Oct",
+  "zimg": "z-blueprint.png",
+  "ztext": "Blueprint transition with an After action that creates a record",
+  "lines": [
+   [
+    "Case G-10 · GroupGChainTest#g10LeadsMadeByBlueprint — fresh run 4 (28 Oct) + probe of the run 2 leftover",
+    "info"
+   ],
+   [
+    "Stored blueprint keeps the after-action: {kind:createRecord, targetModuleKey:leads, fields first_name/email/phone/lead_source/single_line_3_9}",
+    "ok",
+    "r1"
+   ],
+   [
+    "Deal transition 1 -> 200; lead 580a6007… 'QA AEO SG G-10 made hb6i' exists with every mapped field (run 2: lead 58c8afb3… made 2 s after the transition)",
+    "ok",
+    "r1"
+   ],
+   [
+    "The made lead then ran the chain: workflow marker 'WF G-10' (wfFired=1), approval -> approved",
+    "ok",
+    "r2"
+   ],
+   [
+    "After the approval: governed=false -> the lead never entered its blueprint",
+    "bad",
+    "r3"
+   ],
+   [
+    "Run 2 'inconclusive' was a test fault (it looked for the lead at once); the test now waits 90 s",
+    "info"
+   ]
+  ],
+  "rows": [
+   [
+    "Blueprint After 'Create record' makes the lead",
+    "A lead with the mapped fields is created",
+    "Made, all fields set (run 2 and run 4)",
+    "PASS"
+   ],
+   [
+    "Workflow + approval on the made lead",
+    "Run in order",
+    "WF G-10 fired, approval approved",
+    "PASS"
+   ],
+   [
+    "Blueprint entered after the approval",
+    "The lead enters its blueprint",
+    "governed=false (same as E2E-5)",
+    "FAIL"
+   ]
+  ]
+ },
+ "NDC-2621-api": {
+  "verdict": "PASS",
+  "label": "FIXED (API)",
+  "title": "Pipelines: a deal can be moved to another pipeline (API create, edit, Mass Update)",
+  "src": "after/run3.log lines 27–31, 48, 284 (PipelineTest as CRM Admin A)",
+  "zimg": "z-pipelines.png",
+  "ztext": "Pipelines of a layout; a deal moves between them with a stage",
+  "lines": [
+   [
+    "PipelineTest (crmrecords) run 3, 28 Oct, as CRM Admin A",
+    "info"
+   ],
+   [
+    "Pipelines of the Standard layout: Standard|5170500c…, 1|640e03a4…; first stage of '1' = test-01",
+    "",
+    "r1"
+   ],
+   [
+    "PL-04 create with pipeline id 5170500c… -> 201",
+    "ok",
+    "r1"
+   ],
+   [
+    "PL-06 PATCH pipeline -> '1' (640e03a4…), stage test-01 -> 200; pipeline now 640e03a4…",
+    "ok",
+    "r2"
+   ],
+   [
+    "PL-08 mass-update pipeline -> 200; moved=true",
+    "ok",
+    "r3"
+   ],
+   [
+    "PL-05 stage-only change keeps pipeline 5170500c…; PL-07 field now datatype 'pipeline' (options {} by design)",
+    "ok",
+    "r3"
+   ]
+  ],
+  "rows": [
+   [
+    "Create a deal with the pipeline id",
+    "Accepted",
+    "201",
+    "PASS"
+   ],
+   [
+    "Move a deal to pipeline '1' with its stage (edit / API)",
+    "Moved",
+    "200, pipeline now 640e03a4…",
+    "PASS"
+   ],
+   [
+    "Mass Update of Pipeline",
+    "Moved",
+    "200, moved=true",
+    "PASS"
+   ]
+  ]
+ },
+ "A-17": {
+  "verdict": "PASS",
+  "label": "PASSES (NDC-2411 Done)",
+  "title": "Assignment: a suspended member is skipped and the fallback user gets the record",
+  "src": "after/run5-a17.log",
+  "zimg": "z-assignment.png",
+  "ztext": "Round-robin skips inactive users; the fallback user gets the record",
+  "lines": [
+   [
+    "Case A-17 · GroupAJTest (group a17-solo), run alone 28 Oct",
+    "info"
+   ],
+   [
+    "suspend test user 2 -> 204, listed as suspended",
+    "",
+    "r1"
+   ],
+   [
+    "imported lead 11d18aee… owner = mahmoud.mmohamedsamy (the Supervisor = fallback)",
+    "ok",
+    "r1"
+   ],
+   [
+    "finally: reactivate test user 2 -> listed as active (read back); the sweep checks it again",
+    "ok",
+    "r2"
+   ]
+  ],
+  "rows": [
+   [
+    "Suspended member skipped, fallback gets the lead",
+    "Fallback user owns it",
+    "Owner = Supervisor (fallback)",
+    "PASS"
+   ],
+   [
+    "Test user 2 reactivated",
+    "—",
+    "Active (read back)",
+    "INFO"
+   ]
+  ]
+ },
+ "C-B04": {
+  "verdict": "FAIL",
+  "label": "CANDIDATE",
+  "title": "Review approved but the record still answers REVIEW_LOCKED on the next edit",
+  "src": "after/run2.log, run3.log, run4.log (GroupBReviewTest#approveBothFieldsReleases)",
+  "zimg": "z-review.png",
+  "ztext": "An approved review releases the record for editing",
+  "lines": [
+   [
+    "Case B-04 — failed 4 times from scratch (check run, run 2, run 3, run 4)",
+    "info"
+   ],
+   [
+    "CRM Admin A approves both reviewed fields (email, phone) -> 200, 200; review status -> approved",
+    "",
+    "r1"
+   ],
+   [
+    "test user 1 edits description right away -> 422 REVIEW_LOCKED 'This record is under review and cannot be edited until the review is complete.'",
+    "bad",
+    "r2"
+   ],
+   [
+    "Edits after approval in B-06 / I-10 (which wait longer) pass: the lock is released late, not never",
+    "info",
+    "r2"
+   ]
+  ],
+  "rows": [
+   [
+    "Both fields approved",
+    "Review complete",
+    "status approved",
+    "PASS"
+   ],
+   [
+    "Edit right after the approval",
+    "Allowed",
+    "422 REVIEW_LOCKED (4 of 4 runs)",
+    "FAIL"
+   ]
+  ]
+ },
+ "C-D06": {
+  "verdict": "FAIL",
+  "label": "CANDIDATE",
+  "title": "Approval view says canApprove=true to a user whose approve is refused 403",
+  "src": "after/run3.log, run4.log lines 30, 76 (GroupDApprovalTest#d06SubmitterCannotApproveOwnRecord)",
+  "zimg": "z-approvals.png",
+  "ztext": "Approve / Reject are offered only to a user who may act",
+  "lines": [
+   [
+    "Case D-06 — failed run 2, run 3, run 4",
+    "info"
+   ],
+   [
+    "Submitter = test user 1 (also a level approver); approval view: canApprove=true, no 'self_submitted' reason",
+    "bad",
+    "r1"
+   ],
+   [
+    "self approve -> 403 'Missing required permission workflow:approval:act.'",
+    "",
+    "r2"
+   ],
+   [
+    "So the screen would offer Approve and then fail; the self-submission rule itself is not observable (the permission blocks first)",
+    "info",
+    "r2"
+   ]
+  ],
+  "rows": [
+   [
+    "canApprove for a user who may not act",
+    "false (button hidden)",
+    "true",
+    "FAIL"
+   ],
+   [
+    "Approve by that user",
+    "Refused",
+    "403 missing workflow:approval:act",
+    "INFO"
+   ]
+  ]
+ },
+ "C-E2E5": {
+  "verdict": "FAIL",
+  "label": "CANDIDATE",
+  "title": "A record approved by an approval process does not enter its blueprint",
+  "src": "after/run2.log, run3.log, run4.log (GroupGChainTest#e2e5TaskApproval, #g10)",
+  "zimg": "z-blueprint.png",
+  "ztext": "After approval the record enters the blueprint whose criteria it meets",
+  "lines": [
+   [
+    "E2E-5 (Tasks) failed run 2, run 3, run 4; G-10 (Leads, made by a blueprint After action) failed the same way in run 4",
+    "info"
+   ],
+   [
+    "E2E-5: approval=approved, governed=false, blueprint not entered",
+    "bad",
+    "r1"
+   ],
+   [
+    "G-10: approval=approved, governed=false",
+    "bad",
+    "r1"
+   ],
+   [
+    "Control: I-04 (Leads created on screen) entered the blueprint after approval in run 3",
+    "ok",
+    "r2"
+   ]
+  ],
+  "rows": [
+   [
+    "Blueprint entered after approval (Tasks / engine-made lead)",
+    "Entered",
+    "governed=false (3 + 1 runs)",
+    "FAIL"
+   ],
+   [
+    "Control: lead created on screen",
+    "Entered",
+    "Entered (I-04 run 3)",
+    "PASS"
+   ]
+  ]
+ },
+ "C-WH09": {
+  "verdict": "PARTIAL",
+  "label": "CANDIDATE (intermittent)",
+  "title": "The approver gets 404 'Record not found.' on a record waiting for their approval",
+  "src": "after/run2.log, run3.log, run4.log (VerifyV7WebhooksTest, GroupDApprovalTest#d02)",
+  "zimg": "z-approvals.png",
+  "ztext": "An approver can open and decide records sent to them",
+  "lines": [
+   [
+    "Approver = Supervisor; record created by CRM Admin B (V7) / test user 2 (D-02); admin sees state pending_approval",
+    "",
+    "r1"
+   ],
+   [
+    "Supervisor GET /workflow/approvals/records/{leads}/{id} -> 404 'Record not found.' (run 2: WH-08, 09, 15, 16, 19; run 3: WH-09, D-02)",
+    "bad",
+    "r1"
+   ],
+   [
+    "run 3 WH-08 and run 4 WH-09, D-02 passed: intermittent",
+    "info",
+    "r2"
+   ],
+   [
+    "Probe: Supervisor GET of a CRM Admin B lead that is NOT under approval -> 403 (record visibility, expected)",
+    "info",
+    "r2"
+   ]
+  ],
+  "rows": [
+   [
+    "Approver reads a record pending their approval",
+    "Allowed",
+    "404 in 7 of 10 runs",
+    "FAIL"
+   ],
+   [
+    "Repeatability",
+    "—",
+    "Passed in run 3 (WH-08) and run 4 (WH-09, D-02)",
+    "PARTIAL"
+   ]
+  ]
+ },
+ "C-LAYOUT403": {
+  "verdict": "FAIL",
+  "label": "CANDIDATE (Low)",
+  "title": "Creating a record on a deleted layout answers 403 'Permission denied.' instead of 404 / 422",
+  "src": "R2W3ProbeTest 27 Oct",
+  "zimg": null,
+  "lines": [
+   [
+    "As test user 1 (profile User), POST /modules/leads/records with layout_id f56991e7… (layout deleted; GET -> 404)",
+    "",
+    "r1"
+   ],
+   [
+    "-> 403 PERMISSION_DENIED 'Permission denied.'",
+    "bad",
+    "r1"
+   ],
+   [
+    "Same user on the Standard Leads / Deals / Tasks layouts -> 201 (deleted after)",
+    "ok",
+    "r2"
+   ]
+  ],
+  "rows": [
+   [
+    "Create on a missing layout",
+    "Clear error naming the layout (404 / 422)",
+    "403 'Permission denied.'",
+    "FAIL"
+   ],
+   [
+    "Create on a valid layout (control)",
+    "201",
+    "201",
+    "PASS"
+   ]
+  ]
+ },
+ "NDC-2621-ui": {
+  "verdict": "PASS",
+  "label": "FIXED (SCREEN)",
+  "title": "Pipelines: a deal moves to pipeline \"1\" from the record page and by Mass Update",
+  "src": "scripts/ui-2621.js, evidence/raw/t-2621-log.txt",
+  "zimg": "z-pipelines.png",
+  "ztext": "Pipelines of a layout; a deal moves between them with a stage",
+  "timg": "t-2621-mass-after.png",
+  "tcaption": "TAVI — Transactions list after both moves (28 Oct, CRM Admin A): \"QA R2W3 PL ui edit\" moved on its record page (Change pipeline? → \"1\", stage kept), \"QA R2W3 PL ui mass\" moved by Mass Update › Pipeline → \"1\". Read back by API: 640e03a4… / qualification and 640e03a4… / test-01. Both deals deleted after.",
+  "tboxes": [
+   {
+    "b": [
+     1418,
+     340,
+     1530,
+     378
+    ],
+    "n": "1"
+   },
+   {
+    "b": [
+     1418,
+     284,
+     1530,
+     322
+    ],
+    "n": "2"
+   }
+  ],
+  "lines": [
+   [
+    "see the screen panel",
+    "info"
+   ]
+  ],
+  "rows": [
+   [
+    "Record page: Change pipeline → \"1\" + stage, Confirm",
+    "Deal moves",
+    "Moved: pipeline 640e03a4… (\"1\"), stage qualification; dialog closed",
+    "PASS"
+   ],
+   [
+    "List: Mass Update › Pipeline → \"1\", Update records",
+    "Selected deals move",
+    "Moved: pipeline 640e03a4…, stage test-01; dialog closed",
+    "PASS"
+   ]
+  ]
+ }
+}

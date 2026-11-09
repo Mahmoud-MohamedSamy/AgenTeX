@@ -1,0 +1,1 @@
+const g = (await api('GET', '/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/layouts/f56991e7-692b-4c22-8a54-c5adb8a988fe')).j?.data; return done({ name: g?.name, accessMode: g?.accessMode, assignedProfiles: g?.assignedProfiles, modified: g?.lastModifiedAt, by: g?.lastModifiedByName });

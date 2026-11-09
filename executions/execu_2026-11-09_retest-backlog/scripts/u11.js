@@ -1,0 +1,10 @@
+const SS='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog/screenshots/';
+const o={};await page.setViewportSize({width:1600,height:900});
+await page.goto(H+'/settings/modules-and-fields/88e8ea44-1658-4df3-9930-d0902b91073d/layouts/0dabc9a3-c7f2-4f74-bd1b-9e21373a6c06',{waitUntil:'domcontentloaded',timeout:120000});
+await page.getByText('Case Information',{exact:true}).waitFor({timeout:200000});await sleep(4000);
+const before=await page.innerText('body');
+const l=page.getByText('Contact',{exact:true}).first();await l.hover();await sleep(800);
+await l.locator('xpath=ancestor::*[.//button][1]').getByRole('button',{name:'Field options'}).click();await sleep(2000);
+await page.screenshot({path:SS+'u11-menu.png'});
+const after=await page.innerText('body');const bl=new Set(before.split('\n'));o.newText=after.split('\n').filter(x=>x.trim()&&!bl.has(x)).slice(0,40);
+return o;

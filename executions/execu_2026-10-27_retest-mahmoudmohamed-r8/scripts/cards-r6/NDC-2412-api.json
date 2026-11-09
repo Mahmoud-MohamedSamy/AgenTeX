@@ -1,0 +1,44 @@
+{
+ "out": "NDC-2412-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2412 · Hierarchy, Role mode — Leads visibility = Hierarchy (automation crmhierarchy VisibilityTest)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "I3b roleManagerProfileSameDepartment",
+   "V = Manager (500) @Sales, N = User (100) @Sales → V opens N's leads",
+   "PASS — owner-set lead visible = true, N-created lead visible = true",
+   "ok"
+  ],
+  [
+   "I3 roleSuperiorSameDepartment",
+   "V = Supervisor (300) @Sales, N = User (100) @Sales",
+   "FAIL — owner-set = false, N-created = false (\"Users see their own records and those of lower-ranked users in their department\")",
+   "bad"
+  ],
+  [
+   "I4 roleSuperiorOtherDepartment",
+   "V = Supervisor @HR, N = User @Sales",
+   "FAIL — V sees N's lead = false; preview promises \"A Manager sees every User in the tenant, regardless of who they report to\"",
+   "bad"
+  ],
+  [
+   "I1/I5 control",
+   "N opens own and superior V's lead",
+   "own = true, self-created = true, superior V's lead = false (correct)",
+   "ok"
+  ],
+  [
+   "I2 control",
+   "V = User @HR, N = User @Sales",
+   "V sees N = false, N sees V = false (correct)",
+   "ok"
+  ],
+  [
+   "rerun 27 Oct (auto-run6)",
+   "same VisibilityTest cases",
+   "same result — I3b PASS; I3 FAIL (owner-set false, N-created false); I4 FAIL; controls PASS",
+   "info"
+  ]
+ ]
+}

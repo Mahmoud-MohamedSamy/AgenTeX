@@ -1,0 +1,144 @@
+<title>Wave 4 Bug Drafts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+<style>.draft{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px}.draft ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}.warn-line{color:var(--warn);font-size:15px}</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live retest · Wave 4 · drafts for review</div>
+  <h1>Wave 4 bug drafts</h1>
+  <p class="meta">Not in Plane yet. 26 Oct 2026 · staging-crm.taviportal.com · Telephony and web forms are skipped for now, as you asked.</p>
+  <p>Five drafts, written in the same format as the Wave 2 bugs (NDC-2621…2627). Planned fields for each: state Bug, assignees Hegazy, Mahmoud, Moaz and Eslam, CRM module, Sprint 13, start date today, the annotated TAVI-vs-Zoho image attached. Tell me what to change, then I file them.</p>
+</header>
+
+<section>
+  <h2>Overview</h2>
+  <div class="tbl"><table>
+    <tr><th>Draft</th><th>Title</th><th>Priority</th><th>Label</th><th>Image</th></tr>
+    <tr><td class="id">W4-B1</td><td>Email | A failed email send is shown as sent</td><td>High</td><td>Email Channel</td><td>W4-B1-failed-email-looks-sent.png</td></tr>
+    <tr><td class="id">W4-B6</td><td>Email Templates | A placeholder the template can't fill is saved and comes out blank</td><td>Low</td><td>Templates &amp; Workflow</td><td>W4-B6-template-placeholders.png</td></tr>
+    <tr><td class="id">W4-B3</td><td>Notifications | Every notification call answers 500, so the bell and My Notifications are empty</td><td>High</td><td>Notifications</td><td>W4-B3-notifications-down.png</td></tr>
+    <tr><td class="id">W4-B5</td><td>Notifications | My Notifications shows raw event keys instead of names</td><td>Low</td><td>Notifications</td><td>W4-B5-notification-raw-keys.png</td></tr>
+    <tr><td class="id">W4-B2</td><td>Portals | The customer portal link opens an nginx 404 page</td><td>High</td><td>Customers</td><td>W4-B2-portal-link-404.png</td></tr>
+  </table></div>
+  <p class="meta">Not drafted as a bug: the taviportal.com mail connection has no Zoho org id. That is set-up, so it goes on NDC-1479 as a retest comment with a request to the team.</p>
+</section>
+
+<section>
+  <h2>W4-B1 · Email | A failed email send is shown as sent</h2>
+  <div class="draft">
+    <p><b>Summary.</b> When an email sent from a record fails, the app tells the user it was sent. The screen shows "Sent" and the timeline logs "EmailSent", but the email never left: its status in the API is "failed". The record's Mails tab shows "No emails yet" and no notification follows, so the user has no way to know.</p>
+    <p><b>Steps to reproduce.</b></p>
+    <ol><li>Open a QA lead that has an email address.</li><li>Click Send Email, pick the taviportal.com Zoho Mail connection, write a subject and body, and send.</li><li>Look at the toast, the Timeline tab and the Mails tab.</li><li>Read the email's status through the API.</li></ol>
+    <p><b>Expected result.</b></p>
+    <ul><li>When sending fails, the screen says it failed and why, the timeline does not log a sent email, and the email shows as failed on the record, so the user can retry. Zoho shows failed emails with a reason on the record.</li></ul>
+    <p><b>Actual result.</b></p>
+    <ul><li>Toast "Sent"; the timeline logs "EmailSent".</li><li>Mails tab: "No emails yet". No notification.</li><li>API status "failed": "No Zoho account found for sender 'ndc-staging-owner@taviportal.com' … set the 'zoid' org id on the connection".</li><li>The connection itself still reports health "ok" and can_send = true.</li></ul>
+    <p><b>Environment.</b> NDC-Staging, staging-crm.taviportal.com · ndc-staging-owner (Owner) · 26 Oct 2026, CRM go-live Wave 4 (case M02) · test email to mahmoud.mmohamedsamy@gmail.com, not received · related NDC-2496, NDC-1479 · annotated TAVI-vs-Zoho image attached.</p>
+  </div>
+</section>
+
+<section>
+  <h2>W4-B6 · Email Templates | A placeholder the template can't fill is saved and comes out blank</h2>
+  <div class="draft">
+    <p><b>Summary.</b> An email template accepts any placeholder, including ones the app can't fill. <code>{{company_name}}</code> is saved without a warning, and when the template is used in compose it comes out empty, so the customer gets a sentence like "…at ." Only 5 placeholders are supported.</p>
+    <p><b>Steps to reproduce.</b></p>
+    <ol><li>Settings › Email Templates › New template. In the body type <code>Thanks for visiting us at {{company_name}}.</code> and save.</li><li>Open a QA lead, Send Email, pick the template.</li></ol>
+    <p><b>Expected result.</b></p>
+    <ul><li>Saving warns that <code>{{company_name}}</code> is not a known field, or the merge-field picker offers only fields that can be filled. Zoho's template editor inserts merge fields from a list of the module's fields.</li></ul>
+    <p><b>Actual result.</b></p>
+    <ul><li>The template saves (201) with no warning.</li><li>In compose the text reads "Thanks for visiting us at ." with no warning to the sender.</li></ul>
+    <p><b>Environment.</b> NDC-Staging · ndc-staging-owner (Owner) · 26 Oct 2026, Wave 4 (case C14) · automation crmchannels/ChannelsApiTest · annotated image attached. The template was deleted after the test.</p>
+  </div>
+</section>
+
+<section>
+  <h2>W4-B3 · Notifications | Every notification call answers 500, so the bell and My Notifications are empty</h2>
+  <div class="draft">
+    <p><b>Summary.</b> Notifications are down for every user. The notification list, the unread count and the notification preferences all answer 500. The bell shows nothing, My Notifications is blank, and activity reminders can't reach anyone. Other APIs answer normally.</p>
+    <p><b>Steps to reproduce.</b></p>
+    <ol><li>Sign in as any user (seen with the Owner and test user 1).</li><li>Open the bell, then Settings › My Notifications.</li><li>Or call the notification list, unread-count and preferences endpoints.</li></ol>
+    <p><b>Expected result.</b></p>
+    <ul><li>The bell lists notifications with an unread count, and the preferences page loads.</li></ul>
+    <p><b>Actual result.</b></p>
+    <ul><li>All three calls answer 500 for both users, from about 09:50 UTC to at least 10:49 UTC on 26 Oct.</li><li>The bell is empty and My Notifications is blank. Two QA task reminders (5 minutes before) never arrived.</li></ul>
+    <p><b>Environment.</b> NDC-Staging · Owner and test user 1 · 26 Oct 2026, Wave 4 (case M09) · automation crmchannels/ChannelsApiTest · annotated image attached.</p>
+    <p class="warn-line">Before filing I will check once more whether it still answers 500; if it has recovered, the draft becomes "notifications were down for at least an hour" with the times.</p>
+  </div>
+</section>
+
+<section>
+  <h2>W4-B5 · Notifications | My Notifications shows raw event keys instead of names</h2>
+  <div class="draft">
+    <p><b>Summary.</b> The My Notifications preferences page lists many notification types by their internal key instead of a readable name, so users can't tell what they are switching on or off.</p>
+    <p><b>Steps to reproduce.</b></p>
+    <ol><li>Open Settings › My Notifications (while notifications work).</li><li>Read the list of notification types.</li></ol>
+    <p><b>Expected result.</b></p>
+    <ul><li>Every type has a plain name, such as "Email received" or "Activity reminder", in English and Arabic.</li></ul>
+    <p><b>Actual result.</b></p>
+    <ul><li>Types are shown as mail.email_received, salesiq.*, crm.activity.reminder.* and crm.mass_delete.*.</li></ul>
+    <p><b>Environment.</b> NDC-Staging · Owner · 26 Oct 2026, Wave 4 (case M09), seen before the outage in W4-B3 · annotated image attached.</p>
+  </div>
+</section>
+
+<section>
+  <h2>W4-B2 · Portals | The customer portal link opens an nginx 404 page</h2>
+  <div class="draft">
+    <p><b>Summary.</b> A customer portal can be created and switched on, but its public link doesn't work. It opens an nginx 404 page whether the portal is on or off, so customers can't reach it.</p>
+    <p><b>Steps to reproduce.</b></p>
+    <ol><li>Settings › Portals › New portal (Leads, Standard layout). Save and switch it on.</li><li>Open the portal link in a browser that is not signed in.</li><li>Switch the portal off and open the link again.</li></ol>
+    <p><b>Expected result.</b></p>
+    <ul><li>With the portal on, the link opens its sign-in page. With it off, a clear "portal not available" page.</li></ul>
+    <p><b>Actual result.</b></p>
+    <ul><li>The link opens an nginx 404 page in both cases. Creating and switching the portal works (PATCH 200).</li></ul>
+    <p><b>Environment.</b> NDC-Staging · ndc-staging-owner (Owner) · 26 Oct 2026, Wave 4 (case M07) · automation crmchannels/ChannelsApiTest · annotated image attached. The QA portal was deleted after the test.</p>
+  </div>
+</section>
+</div>

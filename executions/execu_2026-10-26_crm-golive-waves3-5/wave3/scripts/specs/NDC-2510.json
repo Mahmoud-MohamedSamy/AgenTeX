@@ -1,0 +1,83 @@
+{
+ "out": "NDC-2510-retest.png",
+ "ticket": "NDC-2510",
+ "env": "staging-crm.taviportal.com (CRM Admin A / Supervisor, API) vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "verdict": "FAIL",
+ "label": "STILL FAILS",
+ "title": "Workflow Rules | A Task action with an invalid status is logged as Fired but creates no task and shows no error",
+ "panels": [
+  {
+   "img": "api-2510.png",
+   "w": 1600,
+   "h": 431,
+   "crop": [
+    0,
+    0,
+    1600,
+    431
+   ],
+   "caption": "TAVI: rule saved with taskStatus \"Task Closed\"; the run is logged Fired and no task exists (automated test W3RetestTest.r2510).",
+   "boxes": [
+    {
+     "b": [
+      40,
+      96,
+      1560,
+      188
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      40,
+      280,
+      1560,
+      372
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-audit-log.png",
+   "w": 1600,
+   "h": 950,
+   "crop": [
+    256,
+    260,
+    1344,
+    640
+   ],
+   "caption": "Zoho: the Audit Log names every workflow action that ran (\"Workflow Rule Rule A Added a Tag…\", \"…Updated a Lead…\").",
+   "boxes": [
+    {
+     "b": [
+      360,
+      335,
+      1000,
+      390
+     ],
+     "n": 2,
+     "color": "#16a34a"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Saving a Task action with a status the Tasks module does not have",
+   "Not checked live (the Zoho Task action form was not opened)",
+   "Saved with 201 and the value kept as entered",
+   "FAIL"
+  ],
+  [
+   "2",
+   "What the run reports when the action cannot work",
+   "Each action that ran is listed in the Audit Log by rule name",
+   "Execution outcome \"Fired\", no error; 0 tasks created",
+   "FAIL"
+  ]
+ ]
+}

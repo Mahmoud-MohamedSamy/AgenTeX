@@ -1,0 +1,22 @@
+const clickEdit = async label => { const b = await page.locator(`xpath=//*[normalize-space(text())="${label}"]`).first().boundingBox(); const btns = await page.$$('main button'); let best = null, bd = 1e9; for (const x of btns) { const bb = await x.boundingBox(); if (!bb) continue; const dy = Math.abs(bb.y - b.y), dx = bb.x - b.x; if (dy < 20 && dx > 0 && dx < 400 && dx < bd) { bd = dx; best = x; } } if (best) await best.click(); return !!best; };
+let d = page.locator('[role=dialog]').first();
+for (const n of ['Record count', 'Sum of QA Rollup']) await d.locator('label, [role=checkbox], button, li', { hasText: new RegExp('^\s*' + n + '\s*$') }).first().click();
+await d.locator('button', { hasText: /^Done$/ }).click(); await sleep(1500);
+const rq = page.waitForResponse(r => /reporting\/(query|reports)/.test(r.url()) && r.request().method() === 'POST', { timeout: 30000 }).catch(() => null);
+await page.locator('button', { hasText: /^Run$/ }).first().click();
+const r = await rq; await sleep(4000);
+await shot('s02-summary-run');
+const t = (await page.innerText('main')).replace(/\s+/g, ' ');
+const res = { summary: t.slice(t.indexOf('Preview'), t.indexOf('Preview') + 900), resp: r ? r.status() + ' ' + (await r.text()).slice(0, 900) : 'none' };
+// matrix: column group QA Sub pick
+res.cg = await clickEdit('Column groups'); await sleep(1500);
+d = page.locator('[role=dialog]').first();
+await d.locator('label, [role=checkbox], button, li', { hasText: /^\s*QA Sub pick\s*$/ }).first().click(); await sleep(300);
+await d.locator('button', { hasText: /^Done$/ }).click(); await sleep(1500);
+const rq2 = page.waitForResponse(r => /reporting\/(query|reports)/.test(r.url()) && r.request().method() === 'POST', { timeout: 30000 }).catch(() => null);
+await page.locator('button', { hasText: /^Run$/ }).first().click();
+const r2 = await rq2; await sleep(4000);
+await shot('s02-matrix-run');
+const t2 = (await page.innerText('main')).replace(/\s+/g, ' ');
+res.matrix = t2.slice(t2.indexOf('Preview'), t2.indexOf('Preview') + 900); res.resp2 = r2 ? r2.status() + ' ' + (await r2.text()).slice(0, 600) : 'none';
+return res;

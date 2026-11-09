@@ -1,0 +1,1 @@
+const l = arr((await api('GET', '/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/layouts')).j?.data).filter(x => /^Standard$|^QA AEO/.test(x.name)).map(x => x.name + ' ' + x.id + ' ' + x.accessMode); return done(l);

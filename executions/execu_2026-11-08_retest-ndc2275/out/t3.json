@@ -1,0 +1,121 @@
+{
+ "A who changed DirectRulesEnabled today": [
+  {
+   "t": "2026-11-08T20:19:17",
+   "who": "ndc-staging-owner",
+   "ch": "rest_api",
+   "from": "True",
+   "to": "False"
+  },
+  {
+   "t": "2026-11-08T20:18:48",
+   "who": "ndc-staging-owner",
+   "ch": "rest_api",
+   "from": "False",
+   "to": "True"
+  },
+  {
+   "t": "2026-11-08T20:16:29",
+   "who": "ndc-staging-owner",
+   "ch": "rest_api",
+   "from": "True",
+   "to": "False"
+  },
+  {
+   "t": "2026-11-08T20:15:23",
+   "who": "ndc-staging-owner",
+   "ch": "rest_api",
+   "from": "False",
+   "to": "True"
+  },
+  {
+   "t": "2026-11-08T14:42:46",
+   "who": "Mahmoud Mohamed",
+   "ch": "rest_api",
+   "from": "True",
+   "to": "False"
+  }
+ ],
+ "counts": {
+  "A2": 88,
+  "A3": 82
+ },
+ "B 20 creates at once, each agent +5 allowed": {
+  "created": 20,
+  "tally": {
+   "A2": 6,
+   "-": 9,
+   "A3": 5
+  },
+  "maxEntries": 1,
+  "workload": {
+   "A2": 94,
+   "A3": 87
+  }
+ },
+ "C both backlog options off: waits 20 s": {
+  "A2": 6,
+  "-": 9,
+  "A3": 5
+ },
+ "D Assign backlogs ON, A2 threshold +1: assigned within 1 min?": {
+  "got": {
+   "sec": 34,
+   "workload": 95
+  },
+  "mineNowAssigned": {
+   "A2": 6,
+   "-": 9,
+   "A3": 5
+  },
+  "changed": 0
+ },
+ "E Assign on closure: A3 closes one, next backlog ticket to A3 at once": {
+  "closed": "1522",
+  "patch": 200,
+  "secToRefill": 1.7,
+  "workload": {
+   "before": 87,
+   "after": 87
+  },
+  "mineTakenByA3": 0
+ },
+ "F both off: A3 closes one, nothing assigned": {
+  "before": 87,
+  "after": 87,
+  "mineChanged": 0
+ },
+ "G agent threshold off, row kept, dept threshold 1: over threshold, waits": {
+  "owner": "-",
+  "rowKept": [
+   {
+    "user_id": "d23fb4e0-248d-41f6-af60-d28885a7007e",
+    "threshold": 200
+   }
+  ]
+ },
+ "H agent threshold on again (A2=200): overrides dept threshold": [
+  "A2",
+  "A2",
+  "A2"
+ ],
+ "I incoming = backlog first: unassigned at create, assigned by the run": {
+  "at4s": "-",
+  "finally": "-",
+  "sec": 153,
+  "trigger": []
+ },
+ "prefsBack": 200,
+ "prefsNow": {
+  "assign_to_offline_agents": false,
+  "department_threshold_enabled": false,
+  "department_threshold": 40,
+  "agent_threshold_enabled": false,
+  "agent_thresholds": [],
+  "assign_backlogs": false,
+  "backlog_limit": 10,
+  "backlog_order": "created_time",
+  "assign_on_closure": false,
+  "incoming_mode": "immediate"
+ }
+}

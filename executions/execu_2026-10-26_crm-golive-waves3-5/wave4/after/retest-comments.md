@@ -1,0 +1,16 @@
+# Wave 4 retest comments (posted 26 Oct 2026)
+
+## NDC-1141 — STILL FAILS
+<p><strong>Retest 26 Oct 2026 — still fails</strong></p><p>Settings › Email › Add connection: Gmail answers "not configured on this server" and Microsoft 365 can't be connected either. Transactional email (SendGrid / SES) still shows "coming soon" with no configuration fields. Zoho CRM connects Gmail and Microsoft 365 mailboxes.</p><p>Environment: staging-crm.taviportal.com, owner account, CRM go-live Wave 4 (case M01). Nothing was changed on the existing connections.</p><p>Annotated TAVI-vs-Zoho image attached: NDC-1141-retest.png</p>
+
+## NDC-1479 — PARTLY WORKS
+<p><strong>Retest 26 Oct 2026 — partly works</strong></p><p>The connection list, providers and both Zoho Mail connections (taviportal.com and anyware.software) show as Active. But the taviportal.com connection can't send: a test email from a record failed with "No Zoho account found for sender 'ndc-staging-owner@taviportal.com' … set the 'zoid' org id on the connection", while the connection still reports health "ok". Request to the team: please set the Zoho org id on the taviportal.com connection so sending can be retested. The way a failed send is shown is filed as NDC-2630.</p><p>Environment: staging-crm.taviportal.com, owner account, CRM go-live Wave 4 (cases M01, M02).</p><p>Annotated TAVI-vs-Zoho image attached: NDC-1479-retest.png</p>
+
+## NDC-2496 — PARTLY WORKS
+<p><strong>Retest 26 Oct 2026 — partly works</strong></p><p>Compose from a record works: templates, the company signature, drafts and scheduled email. Sending fails because of the mail connection (see NDC-1479), and the failure is shown as "Sent" (filed as NDC-2630). Template placeholders that can't be filled come out blank (filed as NDC-2631). Compared with Zoho: no record fields, folders or usage stats in templates, and no personal signatures.</p><p>Environment: staging-crm.taviportal.com, owner account, CRM go-live Wave 4 (cases M02, C14). The test email went to mahmoud.mmohamedsamy@gmail.com and was not received. QA templates and drafts were deleted.</p><p>Annotated TAVI-vs-Zoho image attached: NDC-2496-retest.png</p>
+
+## NDC-1482 — PARTLY WORKS
+<p><strong>Retest 26 Oct 2026 — partly works</strong></p><p>Every SMS screen works: templates (create, edit, archive), campaigns, sender IDs, suppressions, webhooks and credits. Nothing can be sent yet: staging has no sender ID and 0 credits. Request to the team: please add a sender ID and a few credits on staging so sending can be tested. Two archived QA templates remain because archived templates can't be deleted.</p><p>Environment: staging-crm.taviportal.com, owner account, CRM go-live Wave 4 (case M04). No SMS or WhatsApp message was sent.</p><p>Annotated TAVI-vs-Zoho image attached: NDC-1482-retest.png</p>
+
+## NDC-1333 — STILL FIXED
+<p><strong>Retest 26 Oct 2026 — still fixed</strong></p><p>Settings › Activity Reminders has one scroll area; the double scroll bar is gone. Whether reminders arrive could not be checked because notifications were down during the run (filed as NDC-2632).</p><p>Environment: staging-crm.taviportal.com, owner account, CRM go-live Wave 4 (case M10).</p><p>Annotated TAVI-vs-Zoho image attached: NDC-1333-retest.png</p>

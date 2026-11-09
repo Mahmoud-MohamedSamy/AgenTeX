@@ -1,0 +1,65 @@
+# Round 11 ledger — QA items created on NDC-Staging (3 Nov 2026)
+- 2026-11-03T13:38:10 department "QA RT11 Dept A" b8941829-5e08-43e1-b8e0-89c33bb9903c
+- 2026-11-03T13:38:10 department "QA RT11 Dept B" e95c1c91-00e6-41d1-ae35-7aef0c80db9b
+- 2026-11-03T13:38:39 blueprint "QA RT11 2758 ok" 43f634ff-950b-4513-8ae0-318eaf4f97da (active false)
+- 2026-11-03T13:38:41 blueprint "QA RT11 2762 0" 5b3b6133-f765-4e0e-a54a-3de47787fe09 (active false)
+- 2026-11-03T13:38:42 blueprint "QA RT11 2762 control 30" d4fb838c-3ed6-463c-afca-6685b2940236 (active false)
+- 2026-11-03T13:38:42 blueprint "QA RT11 2763 ok" 65af4e7b-6e08-4f8c-b5eb-da4805825d72 (active false)
+- 2026-11-03T13:38:58 blueprint "QA RT11 2761 c" 2bdf89b7-77dc-4898-a70b-13b5e3c2a349 (active false)
+- 2026-11-03T13:39:16 blueprint "QA RT11 2761 2762 limit 0 active" 861887c4-6fe0-4d0e-8e04-849c8407a70a (active true)
+- 2026-11-03T13:39:17 blueprint "QA RT11 2761 w on active ok 60 10" 3102a8d0-a960-4b2b-984b-4cbb8e417268 (active true)
+- 2026-11-03T13:39:40 ticket "QA RT11 2761 live warn" 04229437-a7db-4f37-8222-7bd6ad7ee00c (#?)
+- 2026-11-03T13:40:13 ticket "QA RT11 N2 other subject" 50f67925-3ca5-4d88-88b5-60c6e9fb39a2 (#?)
+- 2026-11-03T13:40:15 ticket "QA RT11 N2-ONLY match" f597611a-59a0-4a63-95ce-080440efc640 (#?)
+- 2026-11-03T13:40:42 ticket "QA RT11 2763 auto move" c212d2ad-fea7-494d-a7b9-d5e60b083845 (#?)
+- 2026-11-03T13:44:19 blueprint "QA RT11 L3 bp" af4dff23-7fb7-403b-89aa-a8fe97a2d801 (active true)
+- 2026-11-03T13:44:21 ticket "QA RT11 L3 ticket" 1f7e31db-17ef-4bf6-969a-64a1f482fc8c (#?)
+- 2026-11-03T13:47:51 ticket "QA RT11 L3 rule ticket" de0aabf5-24e0-49a0-8000-b606d445d5f9 (layout QA NDC Manual Invoice)
+- 2026-11-03T13:47:51 ticket "QA RT11 control no bp" 640fa939-2e05-4ade-8444-a53570614722 (layout QA NDC Manual Invoice)
+- 2026-11-03T13:49:27 blueprint "QA RT11 L7 bp" da5a2584-073e-44b7-b6d5-7d78e30290a0 (active true)
+- 2026-11-03T13:49:28 ticket "QA RT11 L7 onhold" 931e5b3a-5d65-46b7-9cd3-0504c775d369 (#?)
+- 2026-11-03T13:49:39 ticket "QA RT11 L7 escalated" 402e19c1-f441-4efb-bc9f-94d2acebcae3 (#?)
+- 2026-11-03T13:49:50 ticket "QA RT11 M7 plain onhold" 375c24c6-5462-4e59-be85-728647f5b7c2 (#?)
+- 2026-11-03T13:50:56 ticket status "QA RT11 Verify" added (Add State)
+- 2026-11-03T13:51:00 blueprint "QA RT11 C20 bp" 34e84925-1d55-4b15-a5f2-74223afe257d (active true)
+- 2026-11-03T13:51:34 blueprint "QA RT11 60 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" c156c853-69bb-48aa-b454-00e6675f1e3c (active false)
+- 2026-11-03T13:52:16 blueprint "QA RT11 60 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" cb0fcd0a-b7ad-424e-bf94-b562cce06266 (active false)
+- 2026-11-03T13:52:19 blueprint "QA RT11 desc1000" bd69682d-ac1e-46f0-9233-a9d4edc0a824 (active false)
+- 2026-11-03T13:52:19 blueprint "QA RT11 ok - _ . , ' & : عربي 😀" ebca7c3d-39b7-4810-97cd-4f8c844353ef (active false)
+- 2026-11-03T13:54:59 blueprint "QA RT11 K13 bp" 7bf47b4b-eb3a-45ee-ab70-83773b754ab7 (active true)
+- 2026-11-03T13:54:59 ticket "QA RT11 K13 ticket" bfc7da8d-5da1-4ea9-866d-f1e287eb6f2d (#?)
+- 2026-11-03T13:58:52 blueprint "QA RT11 BH bp" caeb6f1a-076a-4523-aecf-553bc0edfd36 (active true)
+- 2026-11-03T13:59:05 SLA policy QA RT11 BH SLA eee9e74e-5e8d-45de-b414-e4f0e87be9ba
+- 2026-11-03T13:59:11 business hours default → 24_5 Mon–Fri (to restore)
+- 2026-11-03T13:59:12 ticket "QA RT11 BH ticket" 85beb083-08e6-4794-8215-953024b3e2f2 (#?)
+- 2026-11-03T14:00:00 business hours restored (equal true)
+- 2026-11-03T14:00:28 business hours default → 24_5 Mon–Fri (2nd run, to restore)
+- 2026-11-03T14:00:30 ticket "QA RT11 BH immediate" 4dd97cd3-ab93-476d-9116-d37e2af35aec (#?)
+- 2026-11-03T14:01:46 ticket "QA RT11 BH after75s" 3c1c7bb6-2336-41be-b635-1da6483345cb (#?)
+- 2026-11-03T14:02:33 business hours restored (equal true)
+- 2026-11-03T14:03:08 ticket "QA RT11 BH t0" 29b34f1f-5a1c-4d2e-a274-0879fe33a900 (#?)
+- 2026-11-03T14:03:13 ticket "QA RT11 BH t5" 90a196d1-f5f9-4ea1-9bfd-b6941b1bd07d (#?)
+- 2026-11-03T14:03:24 ticket "QA RT11 BH t15" 93848d01-ec34-4c4f-835c-1e2388d2268c (#?)
+- 2026-11-03T14:03:24 business hours default → 24_5 Mon–Fri (3rd run, to restore)
+- 2026-11-03T14:04:12 business hours restored (equal true)
+- 2026-11-03T14:04:54 blueprint "QA RT11 UI bp" 7d2c276d-e3e1-418d-b5ca-709644f0e5e0 (active true)
+- 2026-11-03T14:04:55 ticket "QA RT11 UI attach ticket" fdf4a2c3-7ed6-4fe7-a470-137dbc78b5fc (#?)
+- 2026-11-03T14:04:58 ticket "QA RT11 UI close button ticket" 00e797b4-90b7-4d87-b5dd-187ade7914b0 (#?)
+- 2026-11-03T14:26:51 ticket "QA RT11 2661 api owner colleague" fb35811c-dd0f-46ac-aac2-66a9c1e40f9e (#?)
+- 2026-11-03T14:29:46 ticket "QA RT11 2661 screen owner colleague" e34ad214-29d1-4f47-8ff1-346f5c9ea541 (screen, owner = admin itself — control)
+- 2026-11-03T14:45:12 ticket "QA RT11 2661 screen colleague owner" c4b08a2d-4d20-47d2-b65d-251804bd7f8a (screen, owner fedelav803, Customer Support)
+- 2026-11-03T14:51:27 CRM lead "QA RT11 2701 sales lead" ffe572c1-a7d9-4be7-8ae3-c4bc7b95cf49
+- 2026-11-03T14:51:30 CRM lead "QA RT11 2701 hr lead" 366560b2-937f-450b-ae3d-63177ca6c019
+- 2026-11-03T14:51:34 user mahmoud.mahamed1515 profiles → Manager@HR only (temporary)
+- 2026-11-03T14:52:13 user mahmoud.mahamed1515 profiles restored (equal true)
+- 2026-11-03T14:55:00 CRM field leads.b2c_lead_status option "QA RT11 stale" added (restore to ["Interested","Pending"])
+- 2026-11-03T14:55:01 CRM lead "QA RT11 2113 stale" fa4462b9-3d3d-4e1c-9376-73ef794232cc
+- 2026-11-03T14:55:01 CRM lead "QA RT11 2113 B" acdfead9-391d-4b78-a015-56aa0390ec3c
+- 2026-11-03T14:55:02 CRM lead "QA RT11 2113 A" bb525d42-3c6f-4e7e-9026-6207e05d0831
+- 2026-11-03T14:55:23 CRM field leads.b2c_lead_status restored (equal true)
+- 2026-11-03T14:55:54 CRM deal "QA RT11 2113 D no stage" e9d3db86-1581-44cf-b7b4-ff31053fee83
+- 2026-11-03T14:55:58 CRM deal "QA RT11 2113 D qual" e144754a-696f-4f64-a529-ed027f7e7285
+- 2026-11-03T14:57:00 CRM view "QA RT11 2113 leads kanban" 7790bf60-f9e7-479f-ae91-5ae5cd6bbb5d
+- 2026-11-03T14:57:05 CRM view "QA RT11 2113 deals kanban" 1bf1bfed-f307-4e94-90ec-7374d941ebf4
+- 2026-11-03T15:11:48 CRM view "QA RT11 2113 leads kanban" 021a2876-1f9c-498b-b275-f0b4c6a280fa (recreated on Standard layout; old 7790bf60 deleted)
+- 2026-11-03T15:11:49 CRM view "QA RT11 2113 deals kanban" 337e0763-b8d1-4679-9416-1c821edeeb22 (recreated on Standard layout; old 1bf1bfed deleted)

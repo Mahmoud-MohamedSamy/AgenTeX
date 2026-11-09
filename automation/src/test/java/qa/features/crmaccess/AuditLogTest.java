@@ -94,7 +94,9 @@ public class AuditLogTest {
     @Test(groups = {"crmaccess", "wave1", "api", "NDC-2293"}, description = "The Entities filter lists each entity once (read-only)")
     @SuppressWarnings("unchecked")
     public void entityFilterHasNoDuplicates() {
-        Response r = CrmUser.ok(owner().get("/audit/events/facets"), "GET audit facets");
+        // the screen sends the app keys (27 Oct build); without them the server answers 500 — recorded, not the verdict
+        fact("C-3 bare", "GET /audit/events/facets without app_key -> " + owner().get("/audit/events/facets").statusCode());
+        Response r = CrmUser.ok(owner().get("/audit/events/facets?app_key=crm&app_key=iam&app_key=metadata-engine&app_key=workflow"), "GET audit facets");
         Object data = r.jsonPath().get("data");
         List<String> labels = new ArrayList<>();
         collectEntities(data, labels, false);

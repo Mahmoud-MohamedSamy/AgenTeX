@@ -38,6 +38,10 @@ public final class CrmUser {
 
     public static CrmUser as(String email) {
         if (rateLimited != null) throw new org.testng.SkipException("INCONCLUSIVE: sign-in rate-limited earlier in this run (" + rateLimited + ") - not retried");
+        // -Dcrm.noOwner=true: the owner account is reserved for other sessions (parallel go-live lanes, 26 Oct 2026);
+        // owner-only steps are skipped instead of signing in
+        if (Boolean.getBoolean("crm.noOwner") && email.equalsIgnoreCase(CrmOrderFeature.OWNER))
+            throw new org.testng.SkipException("NOT RUN: owner account reserved for another session (-Dcrm.noOwner)");
         return SIGNED_IN.computeIfAbsent(email, e -> {
             CrmUser u = new CrmUser(e);
             u.login();
@@ -73,6 +77,11 @@ public final class CrmUser {
     private synchronized String token() {
         if (System.currentTimeMillis() - at > 4 * 60_000) {
             Response r = base().header("x-tenant-id", CrmOrderFeature.TENANT).body(Map.of("refresh_token", refresh)).post("/iam/auth/refresh");
+            // a gateway 5xx on refresh is retried (27 Oct: one 502 turned into a failed fresh sign-in)
+            for (int i = 0; i < 3 && r.statusCode() >= 502 && r.statusCode() <= 504; i++) {
+                sleep(3000);
+                r = base().header("x-tenant-id", CrmOrderFeature.TENANT).body(Map.of("refresh_token", refresh)).post("/iam/auth/refresh");
+            }
             if (r.statusCode() == 200 && r.jsonPath().getBoolean("success")) {
                 access = r.jsonPath().getString("data.access_token");
                 String nr = r.jsonPath().getString("data.refresh_token");

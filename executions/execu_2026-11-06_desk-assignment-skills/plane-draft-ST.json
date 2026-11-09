@@ -1,0 +1,24 @@
+{
+  "note": "DRAFT ONLY — nothing posted. Waiting for the user's approval.",
+  "project_id": "efce4d84-5876-4015-b472-2efca7ad73f3",
+  "key": "B-6",
+  "name": "Assignment Rules | Skill types are shared by all departments instead of being set per department",
+  "priority": "medium",
+  "state": "Bug (34a7f4b6-7207-4955-b927-0d8d1dd3c666)",
+  "labels": [
+    "5ad0a95a-678e-4485-845d-bb93c27dce36"
+  ],
+  "module": "Desk (274a73de-564a-4b8c-8b51-74fe8304e7c2)",
+  "cycle": "Sprint 15 (3a5ac486-3f65-4632-ab05-8f790e61c7b0)",
+  "assignees": [
+    "MahmoudMohamed",
+    "mfathy",
+    "Hegazy"
+  ],
+  "relates_to": [
+    "NDC-2752",
+    "NDC-1978"
+  ],
+  "attach": "screenshots/annotated/ST-skill-types-not-per-department-vs-zoho.png",
+  "description_html": "<p>Skill types are one list shared by every department. In Zoho Desk, skill types are managed per department, like skills. TAVI's skills are already per department, but their types are not.</p><p><strong>Steps</strong></p><ol><li>Go to Setup → Customization → Skills → <strong>Skills</strong> tab. Note the <strong>Department</strong> picker: skills belong to one department.</li><li>Open the <strong>Skill Types</strong> tab.</li><li>Look for a department picker, and read the help text above the list.</li></ol><p><strong>Expected</strong></p><p>The Skill Types tab has the same department picker as the Skills tab, and each department has its own list of skill types, as in Zoho Desk (Setup → Skills → SKILL TYPES keeps the department picker; the list sits under the selected department).</p><p><strong>Actual</strong></p><ul><li>The Skill Types tab has no department picker. Its help text says \"Skill types group skills, such as Languages or Products. <strong>Every department uses the same types.</strong>\"</li><li>One list is shown for all departments (on NDC-Staging: General, Tech, QA AS6 Type, QA AS6 Type3). Every department sees and uses every type; a type cannot be limited to one department.</li><li>The API matches the screen: <code>GET /desk/skill-types</code> returns one list with no department.</li></ul><p><strong>Notes</strong></p><ul><li>Skills themselves are per department in TAVI (Skills tab has a Department picker), so only the types are affected.</li><li>Deleting a skill type that skills still use is refused in both products with a clear message. TAVI: \"Skills still have this skill type. Give them another type first.\" Zoho: \"The skill type could not be deleted because it is associated with one or more skills.\" That part works and is not part of this bug.</li><li>Zoho side: only department Haytham Mohamed was opened; other departments' lists were not compared.</li></ul><p><strong>Environment</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, owner account, Edge + API. Zoho Desk reference: org techsolutionsegypt, department Haytham Mohamed. Checked 8 Nov 2026.</p><p><strong>Evidence</strong></p><p>ST-skill-types-not-per-department-vs-zoho.png (attached): TAVI on the left, Zoho Desk on the right, same box numbers on both sides.</p>"
+}

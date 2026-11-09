@@ -1,0 +1,96 @@
+{
+ "out": "NDC-2711-retest-PASS.png",
+ "ticket": "NDC-2711",
+ "title": "Records API | Creating a record on a deleted layout answers 403 \"Permission denied\" instead of \"not found\"",
+ "priority": "low",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2711-api.png",
+   "caption": "API evidence — NDC-2711 · POST /api/v1/modules/{Leads}/records with a deleted / unknown layout_id",
+   "crop": [
+    0,
+    0,
+    1600,
+    318
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      206
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      253
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      259,
+      1566,
+      300
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "deleted layout, U1",
+   "404 / 422 naming the layout",
+   "404 LAYOUT_NOT_FOUND \"The layout is not one of this module's layouts. It may have been deleted.\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "deleted layout, owner",
+   "Not 403",
+   "404 LAYOUT_NOT_FOUND",
+   "PASS"
+  ],
+  [
+   "3",
+   "random layout id",
+   "Not 403",
+   "404 LAYOUT_NOT_FOUND",
+   "PASS"
+  ],
+  [
+   "4",
+   "control",
+   "Created",
+   "201",
+   "PASS"
+  ]
+ ]
+}

@@ -1,0 +1,790 @@
+{
+ "batch": "CRM",
+ "title": "Retest round 6 — Mahmoud Mohamed · NDC · 47 CRM tickets",
+ "date": "26 Oct 2026",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge headless + API + automation · mahmoud.mahamed1515 (CRM Admin); test users 1/2, ndc-staging-owner via automation",
+ "devNote": "Developer comments on 2 of 47 tickets (NDC-1444, NDC-1172, both 21 Oct \"FIXED\"). Staging outage 26 Oct ~14:30–(next morning); the 9 blocked tickets were retested on 27 Oct after recovery.",
+ "tickets": [
+  {
+   "id": "NDC-2381",
+   "uuid": "b44450d2-de86-49fc-a80c-a024565037b3",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Audit Log",
+   "title": "Audit Log | No audit events are recorded after 20 Oct 21:41 UTC — record changes, metadata changes and sign-ins are missing",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Rerun 27 Oct after the outage: record create/update/delete and setup changes appear in the Audit Log (AuditLogTest recordLifecycleIsLogged, setupChangesAreLogged).",
+   "still": null,
+   "img": [
+    "NDC-2381-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2382",
+   "uuid": "a28753b1-964a-466a-beeb-d54252161c3d",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Deals",
+   "title": "Deals | The record API ignores the pipeline — creates always land on the default pipeline and updates never move a deal",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Blocker found: Deals has a CUSTOM pick-list field with api name \"pipeline\" (created 24 Oct by ndc-staging-owner on layout \"Wonder Travel\", allowed only \"Standard (Standard)\") that validates every deal's pipeline → 422. Widened for the test and restored exactly. Then: create on pipeline \"1\" → stored on \"1\"; PATCH a Standard deal to \"1\" → moved with stage test-01; stage not in \"1\" → 422.",
+   "still": null,
+   "img": [
+    "NDC-2382-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2412",
+   "uuid": "d445616c-8681-40ba-baa2-d5a9aa4db3c4",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Hierarchy Preference",
+   "title": "Hierarchy Preference | Role mode: higher-ranked users can't see lower-ranked users' records",
+   "v": "FAIL",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Against the expected rule given by the user on 27 Oct (same profile never; higher rank sees lower ranks in the SAME org unit only; other org units never; owner sees all): 7 cases follow it (I2, I2b, I1/I5, I3b, I7, I4, I8); 2 do not — I3 a Supervisor does not see a User's leads in the same org unit, and I4b a Manager in another org unit DOES see a User's leads. Visibility follows the profile parent tree tenant-wide, ignoring org unit and rank.",
+   "still": [
+    "I3: Supervisor (300) does not see a lower-ranked User (100)'s leads in the same org unit.",
+    "I4b: Manager (500) in another org unit (HR) sees a User's leads in Sales."
+   ],
+   "img": [
+    "NDC-2412-retest-FAIL.png"
+   ]
+  },
+  {
+   "id": "NDC-2413",
+   "uuid": "0e25b024-fae8-4940-9a16-d2bbe8ccd142",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Hierarchy Preference",
+   "title": "Hierarchy Preference | Reporting mode: a manager can't see their direct report's records",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Reporting mode (VisibilityTest): reporting manager sees the direct report's leads; also as Supervisor; report cannot see manager; user outside the chain sees nothing. Indirect (2 levels) not checked (needs a third user without view-all).",
+   "still": null,
+   "img": [
+    "NDC-2413-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2416",
+   "uuid": "73cfcb0d-2953-4e62-b914-4e3624fe6fd4",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Reporting Hierarchy",
+   "title": "Reporting Hierarchy | A user can change their own manager without permission",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "HierarchyApiTest.userCannotSetOwnManager: a User-profile user can no longer change their own reporting manager through PUT /iam/me/profile; admin endpoint still refused.",
+   "still": null,
+   "img": [
+    "NDC-2416-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2298",
+   "uuid": "9ff00920-1f60-4246-ab23-0878a03647d1",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Assignment Rule",
+   "title": "Assignment Rule | An assignment rule limited to the API channel still assigns owners to imported leads",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Import Assign step offers the Import-channel QA rule but not the API-only one; and an API-only rule picked on an import assigns no owner (A-04).",
+   "still": null,
+   "img": [
+    "NDC-2298-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2281",
+   "uuid": "c4b88a2a-2f01-4375-acca-e0671eb8a42a",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Modules and Fields - Records Listing Page",
+   "title": "Modules and Fields - Records Listing Page | Owner filter lists both CRM users and Desk agents",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Leads › Filter › Owner offers Current user + exactly the 9 CRM users; no Desk-only agents.",
+   "still": null,
+   "img": [
+    "NDC-2281-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1863",
+   "uuid": "aa1dfd04-057c-4c06-93ac-20bd173eac45",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Deleting a field and trying to save the layout returns 400 Bad Request",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Field ⋮ → Remove from Layout → \"Delete Permanently\" on a QA field → DELETE 204; Save → layout PUT 200, no error; field gone from module and layout.",
+   "still": null,
+   "img": [
+    "NDC-1863-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1864",
+   "uuid": "b3a825af-3d42-40b5-bb9d-2d4619e9d6f4",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | A disabled module is still reachable and accessible by users, and users can create records within it",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "QA module switched off: not in the sidebar; direct URL shows \"QA RT partners is disabled … records can't be opened or created\"; list and create → 403 \"This module is disabled\".",
+   "still": null,
+   "img": [
+    "NDC-1864-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1701",
+   "uuid": "e7512895-1e5f-4c8e-b7cf-133db87016be",
+   "pri": "Urgent",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | Any user with access to a teamspace can act as admin on it",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Plain member (test user 1) of a QA teamspace: create folder, change access list, rename, create module and change access mode are all refused (403); Settings › Teamspace says \"You don't have permission to manage teamspaces\"; teamspace unchanged.",
+   "still": null,
+   "img": [
+    "NDC-1701-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2540",
+   "uuid": "41c78776-d156-4ae5-9066-e7390e581d2f",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Blueprint",
+   "title": "Blueprint | Webhook actions are never sent (After transition and SLA escalation)",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Blueprint webhooks: After-transition → 1 request (WH-10); SLA escalation → field update + 1 request (WH-11); also from the designer screen (WH-22).",
+   "still": null,
+   "img": [
+    "NDC-2540-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2423",
+   "uuid": "1ed0dac7-4dce-4b7e-a619-7ab0b8a13775",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Layout builder Save doesn't persist field changes (validation regex, Mark as Unique)",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "On QA fields of a QA layout: Phone validation regex and Email Mark as Unique + Required persist after Save and reload; records are validated accordingly (bad pattern / duplicate / missing → 422).",
+   "still": null,
+   "img": [
+    "NDC-2423-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2419",
+   "uuid": "681147a1-23cc-465d-a5fc-0c19d64785b5",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Assignment Rules",
+   "title": "Assignment Rules | Rules fire on import and API but no longer set the owner",
+   "v": "PARTIAL",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Import choosing the rule → owner = rule user (A-02 PASS). API-channel create → owner stays the creator (test user 1) instead of the rule user (test user 2) (A-01 FAIL).",
+   "still": [
+    "API-channel create: the rule fires but the owner is not set to the rule's user."
+   ],
+   "img": [
+    "NDC-2419-retest-PARTIAL.png"
+   ]
+  },
+  {
+   "id": "NDC-2418",
+   "uuid": "3cc90c86-0d95-44c4-982b-bc723a752610",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Login History",
+   "title": "Login History | Sessions stay \"Active\" after they expire (255 \"active\" sessions, back to 30 Aug)",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Rerun 27 Oct: expired sessions are no longer Active (LoginHistoryTest.expiredSessionsNotActive); a revoked session stops working; a denied user cannot export.",
+   "still": null,
+   "img": [
+    "NDC-2418-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2384",
+   "uuid": "5414e104-108b-4e57-be81-39e856ae5a4c",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | CRM Create module dialog cannot create a module — \"Module plural form is required\" but the dialog has no plural field",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Create module dialog now has Module name (plural) and (singular), auto-filled; \"QA RT partners\" created (POST 201).",
+   "still": null,
+   "img": [
+    "NDC-2384-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2383",
+   "uuid": "900c4f77-136e-445b-abd6-b210f6cc22e0",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Layout builder Save is silently lost when the layout save is slow (e.g. after adding a Rollup Summary)",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Rollup Summary added on a QA layout → Save: field 201 (2 s), layout PUT 200 (3 s), rollup on the layout after reopen. The save is now 3 s, so a truly slow save could not be reproduced.",
+   "still": null,
+   "img": [
+    "NDC-2383-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2334",
+   "uuid": "7347b379-cb48-414c-af3a-7d93bc780508",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Blueprint + Approval Process",
+   "title": "Blueprint + Approval Process | Editing a deal in a blueprint starts an approval and drops the deal out of the blueprint",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Deal in a published blueprint edited to match an On Edit approval → no approval, stays governed; control deal outside the blueprint → pending approval (F-20). Scenario 2 not covered.",
+   "still": null,
+   "img": [
+    "NDC-2334-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2309",
+   "uuid": "42e16ff8-d3e2-457a-941f-79a591a574aa",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Review Process",
+   "title": "Review Process | Reviewer \"Record owner\" resolves to nobody on an imported, assigned record",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Imported, rule-assigned lead under review → reviewer = assigned owner, who can approve (F-01). Checked on Leads (ticket was Contacts).",
+   "still": null,
+   "img": [
+    "NDC-2309-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2308",
+   "uuid": "0fe9eca6-89ee-4a09-ab85-a27a1cf1e1eb",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Approval Process",
+   "title": "Approval Process | Approver \"Record Owner\" ignores the owner set by the assignment rule on import",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Imported, rule-assigned lead → current approver = assigned owner, who can approve (F-03).",
+   "still": null,
+   "img": [
+    "NDC-2308-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2297",
+   "uuid": "c97e7584-b075-4058-8adc-83c2b47ea364",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Review Process",
+   "title": "Review Process | A lead held for review can be converted",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Convert a lead under review → 422 REVIEW_LOCKED, as User and as CRM Admin (H-02).",
+   "still": null,
+   "img": [
+    "NDC-2297-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2296",
+   "uuid": "084ef91a-e6e2-4e6b-8273-ebab4d8a7dd8",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Approval Process",
+   "title": "Approval Process | A lead waiting for approval can be converted",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Convert (and delete) a lead awaiting approval → 422 APPROVAL_LOCKED, as User and as CRM Admin (D-21, H-03).",
+   "still": null,
+   "img": [
+    "NDC-2296-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2293",
+   "uuid": "3b11ea52-41cd-401f-940d-d28348de8410",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Audit Log",
+   "title": "Audit Log | Entities filter lists the same entity several times and doesn't group related entities",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "All Entities filter: 67 options, no duplicates; related entities grouped (Approval and Approval Override under Approval Process; Saved View Sharing next to Saved View); Test / Module view pin / User list preference removed. INFO: \"Audit Log Entry\" and \"Mail agent signature row\" still look internal.",
+   "still": null,
+   "img": [
+    "NDC-2293-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1873",
+   "uuid": "09f2c397-06d1-4c4a-a905-210a7de6d1bb",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Changing a new field's name doesn't automatically change its API name",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Renaming a new Lookup to \"Lookup Contacts\" updates the read-only API name to lookup_contacts; saved (201/200); a second field with the same label gets lookup_contacts_2.",
+   "still": null,
+   "img": [
+    "NDC-1873-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1699",
+   "uuid": "467c3fce-fbfc-436b-9a8a-68eccb3316f1",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | A Manager-profile user can access a teamspace though neither the user nor the Manager profile is on the access list",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Retest 27 Oct with test user 2 switched to the Manager profile (by the user): teamspace QA RT TS r6 limited to profiles User / Supervisor / test (no Manager) → not in the Manager user's teamspace list or switcher; opening it and its folders → 403. Control: a teamspace whose org unit covers the user (QA RT 1172) is listed. Supervisor not on a list also refused (automation).",
+   "still": null,
+   "img": [
+    "NDC-1699-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1444",
+   "uuid": "40563a1b-3839-45ab-bc3e-2ee2e7f10945",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Modules and Fields",
+   "title": "Modules and Fields | Rollup Summary says the related module has no lookup pointing at this module, when it does",
+   "v": "PASS",
+   "dev": "FIXED (21 Oct): rollup lookup check accepts single, multi-module and related_module lookups; please confirm end to end.",
+   "devHeld": "Yes — confirmed end to end.",
+   "summary": "Transactions (Deals) offers Connected To / Lookup / Multi-Select Lookup, Customers (Contacts) Connected To / Lookup, no false warning; rollup Connected To › Amount › Sum saved with the layout.",
+   "still": null,
+   "img": [
+    "NDC-1444-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1172",
+   "uuid": "244331d7-49dc-4f9d-9fba-947440bb2433",
+   "pri": "High",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | A CRM Admin can open any teamspace they are not on the access list of, whatever accessibility option is set",
+   "v": "PASS",
+   "dev": "FIXED (21 Oct), verified only as owner; org-unit option not tested.",
+   "devHeld": "Partly — separate CRM Admin refused (automation); Settings › Teamspace list still to check.",
+   "summary": "CRM Admin not on the access list (selected users, then an org unit he is not in): teamspace not listed, opening it and its folders → 403, not listed in Settings › Teamspace; the teamspace admin keeps access. Profile option covered by automation.",
+   "still": null,
+   "img": [
+    "NDC-1172-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2545",
+   "uuid": "64598854-9c26-440f-bd5b-0c4652e4a751",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Security Policies",
+   "title": "Security Policies | Idle timeout also signs out sessions that are in active use",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Idle timeout 2 min: busy session stays signed in through 210 s; idle session signed out; policy restored to 60. Login History part not checkable (audit 500).",
+   "still": null,
+   "img": [
+    "NDC-2545-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2543",
+   "uuid": "405c8ff3-848d-4901-b317-2d7ac2f24a5c",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Profiles",
+   "title": "Profiles | The built-in \"User\" profile can be renamed",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Renaming the built-in User profile → 409 SYSTEM_PROFILE_PROTECTED \"Built-in profiles cannot be renamed…\"; not renamed.",
+   "still": null,
+   "img": [
+    "NDC-2543-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2541",
+   "uuid": "0a19cfc4-0dfb-4fae-a444-5783f11d3e5d",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Approval Process",
+   "title": "Approval Process | A failed Call Webhook is not retried and not logged",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Approval Call Webhook to a 500 receiver: approve and reject each retried (3 requests in 4 min) and logged (dispatch Pending, attempts 3).",
+   "still": null,
+   "img": [
+    "NDC-2541-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2422",
+   "uuid": "79c37985-afc7-494f-80b7-787cac009234",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Assignment Rules",
+   "title": "Assignment Rules | \"Online status\" availability does not skip a member who is not online",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Online status on: the offline first member is skipped and the online owner gets the lead; off (control): the first member gets it.",
+   "still": null,
+   "img": [
+    "NDC-2422-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2414",
+   "uuid": "6d5f4999-6b0c-4f38-96c5-a2729bceb70a",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Profiles",
+   "title": "Profiles | The Desk Administrator profile gives view-all on CRM records",
+   "v": "FAIL",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "HierarchyApiTest.deskProfileGrantsCrmViewAll: a CRM Supervisor who also has the Desk Administrator profile still gets view-all on CRM records.",
+   "still": [
+    "The Desk Administrator profile still grants CRM records.view_all."
+   ],
+   "img": [
+    "NDC-2414-retest-FAIL.png"
+   ]
+  },
+  {
+   "id": "NDC-2411",
+   "uuid": "5f61b254-25be-48fb-a2c5-805cf2668a6b",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Assignment Rules",
+   "title": "Assignment Rules | A suspended member is not skipped and the fallback user never gets the record",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Suspended first member skipped; the fallback (Supervisor) gets the lead; test user 2 reactivated right after.",
+   "still": null,
+   "img": [
+    "NDC-2411-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2391",
+   "uuid": "99f20ca0-c9d1-4a21-a4cb-a2273c435b6e",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Workflow Rules",
+   "title": "Workflow Rules | A condition on Lead Owner never matches",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Workflow with an Owner condition fires for the assigned owner (F-02).",
+   "still": null,
+   "img": [
+    "NDC-2391-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2388",
+   "uuid": "019988ab-3db8-4757-b7aa-226eff8cfa2c",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Lead Conversion",
+   "title": "Lead Conversion | A newly created module is switched on as a conversion target with \"Always create\" without being asked",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "New module QA RT partners is listed under Conversion Targets switched off (isConversionTarget false).",
+   "still": null,
+   "img": [
+    "NDC-2388-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2386",
+   "uuid": "b97a3d54-1567-4c1d-9228-79d9145e644b",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Pipelines",
+   "title": "Pipelines | Settings › Pipelines stays on \"Loading board…\" when opened directly or reloaded",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "RecordScreensUiTest.pipelinesPageLoads: Settings › Pipelines opened directly is no longer stuck on \"Loading board…\".",
+   "still": null,
+   "img": [
+    "NDC-2386-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2385",
+   "uuid": "35ca4331-daef-4e22-9e25-bad818dca343",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Import",
+   "title": "Import | The \"All errors\" table on the Review step is always empty (\"No errors match your filters\") although errors are counted",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Import Review: \"Rows with errors 1\"; the All errors table lists Row 3 | Percent Permission | 250 | \"The value isn't a valid percentage: Percent value must be between 0 and 100.\" | Invalid format.",
+   "still": null,
+   "img": [
+    "NDC-2385-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2323",
+   "uuid": "3e832279-3a1a-458c-8d33-2b599d5aa26c",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Workflow Rules",
+   "title": "Workflow Rules | Pending scheduled actions still run on a converted lead",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Scheduled (2 min) webhook: the lead converted at once never sent it; the control lead sent it at +2 min; the receiver got only the control.",
+   "still": null,
+   "img": [
+    "NDC-2323-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2302",
+   "uuid": "0e6cb4e3-3e24-45b3-a5b3-534e1901c13a",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Import",
+   "title": "Import | Import with \"Trigger automation\" off still runs the workflow once the review is approved",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Import with Trigger automation off: workflow, approval and review do not run (G-04), and the lead does not enter a blueprint (TAVI lead not governed; same in live Zoho org943261092). Option on and manual create: the lead enters the blueprint in both TAVI and Zoho. INFO: a lead held for review and later approved can enter a blueprint because the approval is an edit (Zoho also evaluates blueprints on edit).",
+   "still": null,
+   "img": [
+    "NDC-2302-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2282",
+   "uuid": "4faacfdf-a173-4647-9981-dde53b74178a",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Deals – Kanban View",
+   "title": "Deals – Kanban View | Duplicate unlabeled Layout picklist and unlabeled Pipeline picklist in the toolbar",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Deals Kanban: Layout picklist only in the page header; toolbar Pipeline picklist has a visible \"Pipeline\" label.",
+   "still": null,
+   "img": [
+    "NDC-2282-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1823",
+   "uuid": "2323dc05-4952-429c-853a-ba237dded14b",
+   "pri": "Medium",
+   "mod": "CRM",
+   "feat": "Lead Conversion",
+   "title": "Lead Conversion | \"Create a new Deal\" offers Probability and Expected Revenue as editable instead of read-only system fields",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Convert › Create a new Deal: Probability and Expected Revenue locked (read-only); Stage + Amount fill them in (10, 1000).",
+   "still": null,
+   "img": [
+    "NDC-1823-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2547",
+   "uuid": "9222d052-5b31-4a64-b10c-57896b8a3898",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Permissions",
+   "title": "Permissions | \"Create permission\" button opens the \"Create profile\" dialog",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Permissions page button now reads \"Create profile\" and opens \"Create profile\".",
+   "still": null,
+   "img": [
+    "NDC-2547-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2546",
+   "uuid": "44334f73-b187-4d25-afb1-74ef1e56e39c",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Profiles",
+   "title": "Profiles | API: editing a profile's rank above its parent's rank answers 204 but is silently ignored",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "PATCH rank 600 under a rank-300 parent → 400 \"Profile rank (600) must be lower than parent profile's rank (300).\"; valid edits 204.",
+   "still": null,
+   "img": [
+    "NDC-2546-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2542",
+   "uuid": "8e2be0f9-cff6-462b-b7c3-423f4cab4493",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Users",
+   "title": "Users | Invitation lifetime is not validated: 0 and -1 days silently become 7 days, 10000 days is accepted",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Invitation lifetime 0 and 10000 → 400 \"lifetime_days must be between 1 and 90 days\"; bad email / no profile 400.",
+   "still": null,
+   "img": [
+    "NDC-2542-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2539",
+   "uuid": "50a9cd2d-4c9c-4435-9e47-896495d622c3",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Approval Process",
+   "title": "Approval Process | ${owner} merge field is empty in Call Webhook actions",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Approval Call Webhook body \"owner\" = the lead owner after approve (WH-15) and after reject (WH-09).",
+   "still": null,
+   "img": [
+    "NDC-2539-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2415",
+   "uuid": "8881a557-6d80-40ab-96a8-c877c5cae723",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Hierarchy Preference",
+   "title": "Hierarchy Preference | Change history doesn't show who changed the mode",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Hierarchy change history shows who changed the mode (B5/D2).",
+   "still": null,
+   "img": [
+    "NDC-2415-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-2322",
+   "uuid": "b6dca941-9531-4498-a32f-228999060e53",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Workflow Rules",
+   "title": "Workflow Rules | A rule with exactly 25 conditions is refused (\"this one has 26\")",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "One And group: 24 and 25 conditions saved; 26 refused \"at most 25 conditions (this one has 26)\".",
+   "still": null,
+   "img": [
+    "NDC-2322-retest-PASS.png"
+   ]
+  },
+  {
+   "id": "NDC-1678",
+   "uuid": "ad63df05-31fd-4e0f-b49c-a379b550dab5",
+   "pri": "Low",
+   "mod": "CRM",
+   "feat": "Teamspace",
+   "title": "Teamspace | No option to set a teamspace icon/logo; admin can't be changed (disabled picklist); description doesn't persist",
+   "v": "PASS",
+   "dev": "No developer note.",
+   "devHeld": "—",
+   "summary": "Edit Teamspace: icon picker (20 icons, 8 colours), admin picker opens and saves (admin changed), description persists; the saved icon (pink rocket) shows in the list. INFO: Add Modules lists raw module keys; Save needs at least one module; handing admin to someone else makes the follow-up access-mode call fail (403) silently.",
+   "still": null,
+   "img": [
+    "NDC-1678-retest-PASS.png"
+   ]
+  }
+ ],
+ "observations": [
+  [
+   "New defect",
+   "A custom field can take the system api name \"pipeline\" and then validates every deal's pipeline",
+   "Deals custom pick list \"pipeline\" (24 Oct, ndc-staging-owner, layout Wonder Travel, allowed \"Standard (Standard)\") → any real pipeline id refused 422 \"Invalid value for: Pipeline\" module-wide. Root of the NDC-1302/1312/1316/1324 blockers in round 4."
+  ],
+  [
+   "Decision",
+   "NDC-2302: import with automation off still enters a blueprint",
+   "Workflow, approval and review do not run; the lead is still governed by a blueprint. Ticket expected says Zoho's option also covers blueprints."
+  ],
+  [
+   "Observation",
+   "Layout Save also rewrites untouched fields",
+   "Deleting a field and saving also PUT two unrelated fields (5dd25be0, 9eff6424), as reported in NDC-2383/2423."
+  ],
+  [
+   "Environment",
+   "Staging outage",
+   "Audit 500 from ~14:30 UTC; IAM 503/500, /modules 500 and sign-in \"Exception was thrown by handler.\" from ~15:45 UTC (still down at ~17:00)."
+  ]
+ ]
+}

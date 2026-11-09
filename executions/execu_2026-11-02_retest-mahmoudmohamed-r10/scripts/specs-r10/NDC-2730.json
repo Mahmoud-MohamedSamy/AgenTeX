@@ -1,0 +1,143 @@
+{
+ "out": "NDC-2730-retest-PASS.png",
+ "ticket": "NDC-2730",
+ "title": "Blueprint | A workflow can change the blueprint-locked field and send the lead back to an earlier stage; blueprint doesn't show after approval until the page is refreshed",
+ "priority": "urgent",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · owner; test users U1–U3",
+ "date": "2 Nov 2026",
+ "panels": [
+  {
+   "img": "2730-12-timeline.png",
+   "caption": "Timeline: chat → web → referral by transitions, no workflow change of Lead Source afterwards",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": []
+  },
+  {
+   "img": "NDC-2730-api.png",
+   "caption": "API evidence — NDC-2730 · Real AEX-01 setup on Anyware (rule On Create, blueprint AEX-01_Leads)",
+   "crop": [
+    0,
+    0,
+    1600,
+    391
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      238,
+      1566,
+      279
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      285,
+      1566,
+      326
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      332,
+      1566,
+      373
+     ],
+     "n": 6,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "approval",
+   "Shown without refresh",
+   "blueprint section appeared 6 s later, no reload",
+   "PASS"
+  ],
+  [
+   "2",
+   "ChatToWeb",
+   "Moves",
+   "web",
+   "PASS"
+  ],
+  [
+   "3",
+   "WebToReferral",
+   "Moves",
+   "referral",
+   "PASS"
+  ],
+  [
+   "4",
+   "after 20 s + reload",
+   "Stays",
+   "referral",
+   "PASS"
+  ],
+  [
+   "5",
+   "AEX-01 runs",
+   "Create only",
+   "only RecordCreated 08:46:32 (once); 1 workflow task",
+   "PASS"
+  ],
+  [
+   "6",
+   "ChatToOther",
+   "Accepted",
+   "no \"Invalid Phone Number\", Execute enabled → Other",
+   "PASS"
+  ]
+ ]
+}

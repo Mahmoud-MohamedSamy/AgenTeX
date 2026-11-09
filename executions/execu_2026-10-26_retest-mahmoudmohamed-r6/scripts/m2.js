@@ -1,0 +1,2 @@
+const me = await api('GET', '/iam/me'); const p = await api('GET', '/iam/me/permissions');
+return done({ me: me.s + ' ' + JSON.stringify(me.j?.data?.profiles_by_app || me.j?.data?.profiles || me.t.slice(0, 200)).slice(0, 300), perms: p.s + ' ' + (p.s >= 300 ? p.t.slice(0, 200) : 'n=' + JSON.stringify(p.j?.data).length), users: (await api('GET', '/iam/users?app_key=crm&limit=3')).s, mods: (await api('GET', '/modules')).s });

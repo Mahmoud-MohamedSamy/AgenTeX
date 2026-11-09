@@ -1,0 +1,126 @@
+{
+ "out": "NDC-1948-retest-FAIL.png",
+ "ticket": "NDC-1948",
+ "title": "Notes | A user denied Timeline Visibility can't add notes: the note stays on \"Posting…\" forever with a success message",
+ "priority": "high",
+ "verdict": "FAIL",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · owner; test users U1–U3",
+ "date": "2 Nov 2026",
+ "panels": [
+  {
+   "img": "1948-u1-reload.png",
+   "caption": "After reload, as test user 1: \"No notes yet\" — the note exists (API) and the owner sees it",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": []
+  },
+  {
+   "img": "NDC-1948-api.png",
+   "caption": "API evidence — NDC-1948 · Anyware policy default Deny; test user 1 denied; U1's own lead",
+   "crop": [
+    0,
+    0,
+    1600,
+    344
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      238,
+      1566,
+      279
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      285,
+      1566,
+      326
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "add note",
+   "Shown at once",
+   "\"Note added\", note shown, no Posting… (2 s, 12 s)",
+   "PASS"
+  ],
+  [
+   "2",
+   "after reload",
+   "Note listed",
+   "\"No notes yet\"",
+   "FAIL"
+  ],
+  [
+   "3",
+   "notes API",
+   "—",
+   "200, 1 note",
+   "INFO"
+  ],
+  [
+   "4",
+   "owner",
+   "Visible",
+   "note listed, NoteAdded in feed",
+   "PASS"
+  ],
+  [
+   "5",
+   "Timeline tab",
+   "Hidden for a denied user",
+   "shown (\"No activity yet\")",
+   "FAIL"
+  ]
+ ]
+}

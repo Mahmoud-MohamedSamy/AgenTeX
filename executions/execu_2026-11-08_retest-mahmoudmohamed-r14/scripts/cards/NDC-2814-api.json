@@ -1,0 +1,11 @@
+{ "out": "NDC-2814-api.png", "date": "8 Nov 2026 (Africa/Cairo)", "host": "staging-desk.taviportal.com (tenant NDC-Staging)", "who": "admin (ndc-staging-owner)",
+  "title": "NDC-2814 · \"Execution Time on a holiday of <list>\" with holiday lists NOT linked to business hours (desk #238)",
+  "rows": [
+   ["Holiday lists", "POST /desk/holiday-lists, business_hour_profile_id null (detached): \"QA RT14 HOL today\" = 8 Nov 2026 · \"… xmas\" = 25 Dec · \"… yesterday\" = 7 Nov", "201 ×3 · read back: business hours = none", "info"],
+   ["Rules", "direct rules \"QA RT14 2814 holiday\" (+ \"… b\"), QA AS6 Dept A, on create: subject contains tN AND execution_time on_holiday / not_on_holiday <list>", "201 ×2 (max 5 targets per rule)", "info"],
+   ["t1 on holiday of today-list", "create \"QA RT14 HOL t1\"", "#1328 → A1, history: auto_assigned by \"QA RT14 2814 holiday\"", "ok"],
+   ["t2 NOT on holiday of today-list", "create \"QA RT14 HOL t2\"", "#1329 no rule match (today is a holiday)", "ok"],
+   ["t3 / t4 xmas list", "on_holiday 25 Dec · not_on_holiday 25 Dec", "#1330 no match · #1331 → A3", "ok"],
+   ["t5 / t6 yesterday list", "on_holiday 7 Nov · not_on_holiday 7 Nov", "#1332 no match · #1333 → A2 (rule b)", "ok"],
+   ["SLA hours", "GET /desk/business-hours before and after creating the lists", "is_open_now true · todays_holidays [] — an unlinked list closes no business hours", "ok"]
+  ] }

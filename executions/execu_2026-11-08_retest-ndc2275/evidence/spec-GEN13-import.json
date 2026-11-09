@@ -1,0 +1,162 @@
+{
+ "out": "NDC-2275-GEN13-import-vs-zoho.png",
+ "ticket": "NDC-2275 · GEN-13",
+ "title": "Import: rules don't run on imported tickets (Zoho too); TAVI keeps the importer as owner",
+ "verdict": "INFO",
+ "label": "DECISION vs ZOHO",
+ "date": "TAVI 8 Nov 2026 (import #1681–#1684) · Zoho 9 Nov 2026 (live test, data deleted after)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner ndc-staging-owner) · Dept QA AS6 Dept A, round robin rule on create · Zoho Desk techsolutionsegypt, dept Haytham Mohamed, temporary round robin rule on Ticket Create",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/raw/imp-on-assign.png",
+   "caption": "TAVI: Import → Assign. No rule to choose, only \"Trigger automation and process management\"; help text mentions \"the chosen rule\"",
+   "w": 1600,
+   "h": 1100,
+   "crop": [
+    400,
+    180,
+    800,
+    230
+   ],
+   "boxes": [
+    {
+     "b": [
+      428,
+      322,
+      1180,
+      344
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      440,
+      364,
+      778,
+      382
+     ],
+     "n": 5
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/zoho/z-import-8-review-before-start.png",
+   "caption": "Zoho: Import → Review, the last step. Summary, then Start Import or Cancel; no owner, rule or automation option on any step",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    120,
+    150,
+    1360,
+    200
+   ],
+   "boxes": [
+    {
+     "b": [
+      124,
+      158,
+      1476,
+      336
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/zoho/z-imp-104-history.png",
+   "caption": "Zoho: imported #104 (no owner column). Owner Unassigned; History only \"New ticket created through import\", no round robin",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    330,
+    60,
+    780,
+    440
+   ],
+   "boxes": [
+    {
+     "b": [
+      352,
+      288,
+      634,
+      346
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      745,
+      282,
+      1010,
+      482
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/zoho/z-ctrl-5-history.png",
+   "caption": "Zoho control: #103 made on the New Ticket form, owner set to Unassigned. The same rule assigned it at once",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    330,
+    60,
+    800,
+    440
+   ],
+   "boxes": [
+    {
+     "b": [
+      745,
+      300,
+      1115,
+      400
+     ],
+     "n": 4
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Rule or automation option in the import wizard",
+   "None on any step (Upload, Module Mapping, Field Mapping, Review).",
+   "No rule picker; only the \"Trigger automation and process management\" box.",
+   "SAME"
+  ],
+  [
+   2,
+   "Owner of rows with no owner",
+   "Unassigned (#104, #105).",
+   "The person importing (#1681–#1684, read through the API on 8 Nov), box ticked or not. Kept as designed (QA decision 9 Nov).",
+   "DECISION"
+  ],
+  [
+   3,
+   "Round robin on imported tickets",
+   "Not applied; History has no rule entry; still Unassigned 3 min later.",
+   "Not applied, box ticked or not (no auto-assignment entry).",
+   "SAME"
+  ],
+  [
+   4,
+   "Same rule on a ticket made by hand",
+   "#103 assigned through the round robin rule.",
+   "#1660 assigned by the rule (8 Nov retest).",
+   "SAME"
+  ],
+  [
+   5,
+   "Help text on the Assign step",
+   "No such text.",
+   "\"Owner assignment from the chosen rule runs regardless\", but no rule can be chosen. The text should be reworded.",
+   "GAP"
+  ]
+ ]
+}

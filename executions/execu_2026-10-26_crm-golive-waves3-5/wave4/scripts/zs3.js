@@ -1,0 +1,10 @@
+const RAW = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_crm-golive-waves3-5/wave4/evidence/raw/';
+const out = {};
+await page.goto('https://crm.zoho.com/crm/org943261092/settings/email-configuration', { waitUntil: 'domcontentloaded', timeout: 90000 }); await page.waitForTimeout(12000);
+const tab = page.locator('text=Email Configuration').filter({ visible: true });
+out.tabs = await tab.count(); if (out.tabs > 1) await tab.nth(1).click().catch(() => {}); else if (out.tabs) await tab.first().click().catch(() => {});
+await page.waitForTimeout(8000); await page.screenshot({ path: RAW + 'z-email-providers.png' });
+let t = (await page.innerText('body')).replace(/\s+/g, ' '); out.email = t.slice(t.indexOf('Email Configuration'), t.indexOf('Email Configuration') + 1200);
+await page.goto('https://crm.zoho.com/crm/org943261092/tab/Calendar', { waitUntil: 'domcontentloaded', timeout: 90000 }); await page.waitForTimeout(15000);
+await page.screenshot({ path: RAW + 'z-calendar.png' }); t = (await page.innerText('body')).replace(/\s+/g, ' '); out.calendar = page.url().replace(/\?.*/, '') + ' ' + t.slice(0, 600);
+return out;

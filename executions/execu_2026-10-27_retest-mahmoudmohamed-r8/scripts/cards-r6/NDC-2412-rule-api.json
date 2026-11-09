@@ -1,0 +1,62 @@
+{
+ "out": "NDC-2412-rule-api.png",
+ "date": "27 Oct 2026",
+ "title": "NDC-2412 · Role mode against the user's rule (27 Oct) — VisibilityTest, Leads visibility = Hierarchy",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "I2 same profile, other OU",
+   "V = User @HR, N = User @Sales",
+   "V sees N = false, N sees V = false",
+   "ok"
+  ],
+  [
+   "I2b same profile, same OU",
+   "V = User @Sales, N = User @Sales",
+   "V sees N = false, N sees V = false",
+   "ok"
+  ],
+  [
+   "I1/I5 lower does not see higher",
+   "N = User opens own and superior V's lead",
+   "own = true, self-created = true, superior V's lead = false",
+   "ok"
+  ],
+  [
+   "I3b higher, same OU",
+   "V = Manager (500) @Sales, N = User (100) @Sales",
+   "owner-set = true, N-created = true",
+   "ok"
+  ],
+  [
+   "I7 higher, same OU",
+   "V = Manager (500) @Sales, N = Supervisor (300) @Sales",
+   "V sees N: true / true; N sees V's lead = false",
+   "ok"
+  ],
+  [
+   "I4 higher, other OU",
+   "V = Supervisor @HR, N = User @Sales",
+   "V sees N's lead = false",
+   "ok"
+  ],
+  [
+   "I8 tenant owner",
+   "owner opens N's and V's leads",
+   "owner-set = true, N-created = true, V's = true",
+   "ok"
+  ],
+  [
+   "I3 higher, same OU",
+   "V = Supervisor (300) @Sales, N = User (100) @Sales",
+   "FAIL — owner-set = false, N-created = false (does NOT see)",
+   "bad"
+  ],
+  [
+   "I4b higher, other OU",
+   "V = Manager (500) @HR, N = User (100) @Sales",
+   "FAIL — owner-set = true, N-created = true (DOES see across org units)",
+   "bad"
+  ]
+ ]
+}

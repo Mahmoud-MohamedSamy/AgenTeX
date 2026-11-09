@@ -1,0 +1,13 @@
+await page.goto('https://staging-crm.taviportal.com/settings/general/users', { waitUntil: 'domcontentloaded' }); await page.waitForTimeout(6000);
+await page.locator('tr', { hasText: 'ndc-staging-owner@taviportal.com' }).first().click(); await page.waitForTimeout(3000);
+const dlg = page.locator('[role=dialog]').first();
+let sel = null; for (const s of await dlg.locator('select').all()) { const t = await s.innerText(); if (/rank/.test(t)) { sel = s; break; } } const opts = await sel.locator('option').allInnerTexts();
+const pick = opts.find(o => o.trim().startsWith('User (rank')) || opts[1];
+await sel.selectOption({ label: pick }); await page.waitForTimeout(1500);
+await dlg.locator('text=Assign profile').scrollIntoViewIfNeeded().catch(() => {});
+await page.screenshot({ path: 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_crm-golive-waves3-5/serial/evidence/raw/t-us08-owner-pick.png' });
+const after = (await dlg.innerText()).replace(/\s+/g, ' '); const tail = after.slice(after.indexOf('ASSIGN PROFILE'));
+const assignEnabled = await dlg.locator('button', { hasText: 'Assign' }).last().isEnabled();
+await page.keyboard.press('Escape'); await page.waitForTimeout(800);
+const me = (await call('GET', '/iam/users?limit=200')).j.data; const own = (Array.isArray(me) ? me : me.items).find(u => u.email === 'ndc-staging-owner@taviportal.com');
+return { options: opts.slice(0, 50), picked: pick, assignEnabled, textAfterPick: tail.slice(0, 600), ownerProfilesStill: own.profileNames };

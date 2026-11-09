@@ -1,0 +1,13 @@
+const SS='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog/screenshots/';
+const o={};await page.setViewportSize({width:1600,height:900});
+await page.goto(H+'/settings/modules-and-fields/88e8ea44-1658-4df3-9930-d0902b91073d?tab=fields',{waitUntil:'domcontentloaded',timeout:120000});
+await page.getByText('created_at',{exact:true}).waitFor({timeout:150000});await sleep(3000);
+const open=async(key,file)=>{const r={};try{const c=page.getByText(key,{exact:true}).first();await c.scrollIntoViewIfNeeded();await c.click({timeout:20000});await sleep(5000);
+ const d=page.locator('[role=dialog]').last();const has=await d.count();r.dialog=has?(await d.innerText()).slice(0,1600):(await page.innerText('body')).split('Create and Edit Fields').pop().slice(0,1200);
+ r.url=page.url();await page.screenshot({path:SS+file});await page.keyboard.press('Escape');await sleep(1500);
+ if(!/tab=fields/.test(page.url())){await page.goBack();await sleep(5000);} }catch(e){r.e=e.message.slice(0,150);}return r;};
+o.currency=await open('qa_ndc_amount','2174-07-currency-edit.png');
+o.decimal=await open('qa_ndc_adm_number','2174-07b-decimal-edit.png');
+o.lookup=await open('contact_id','2174-08-lookup-edit.png');
+o.pick=await open('priority','2174-06-picklist-edit.png');
+return o;

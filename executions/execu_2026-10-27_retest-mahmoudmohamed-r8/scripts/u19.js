@@ -1,0 +1,10 @@
+const id = 'f7082675-ea1b-4220-bfd2-47925ef97570'; const out = {};
+await page.getByRole('button', { name: 'Add Modules' }).click(); await sleep(2000);
+const d = page.locator('[role=dialog]').last(); out.offered = (await d.innerText()).split('\n').filter(l => l.trim()).slice(0, 25);
+const qa = d.getByText(/QA RT partners/).first(); if (await qa.count()) await qa.click({ force: true }); else await d.locator('input[type=checkbox]').first().check({ force: true });
+await sleep(600); await d.getByRole('button', { name: /^Add/ }).last().click({ force: true }); await sleep(1500);
+const resp = []; page.on('response', r => { const q = r.request(); if (q.method() !== 'GET' && /teamspaces/.test(q.url())) resp.push(q.method() + ' ' + q.url().replace(/^.*\/api\/v1/, '') + ' → ' + r.status()); });
+await page.getByRole('button', { name: 'Save', exact: true }).last().click({ force: true }); await sleep(5000); await shot('1678-05-saved');
+const toasts = (await txt()).split('\n').filter(l => /updated|saved|error|success/i.test(l)).slice(0, 4);
+const t = (await api('GET', `/teamspaces/${id}`)).j?.data; const acl = (await api('GET', `/teamspaces/${id}/acl`)).j?.data?.rows;
+return done({ ...out, resp, toasts, icon: t?.icon, iconColor: t?.iconColor, admins: (acl || []).filter(r => r.access_level === 'admin').map(r => r.principal_id.slice(0, 8)), desc: t?.description });

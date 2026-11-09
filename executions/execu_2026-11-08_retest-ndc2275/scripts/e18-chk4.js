@@ -1,0 +1,1 @@
+module.exports=async()=>{const rs=(await api('GET','/desk/tickets/33dfd714-5b9e-4c51-86f4-f33dd1fe9504/replies')).j.data||[];return {now:new Date().toISOString().slice(11,19),dirs:rs.map(x=>x.direction+':'+(x.status||''))};};

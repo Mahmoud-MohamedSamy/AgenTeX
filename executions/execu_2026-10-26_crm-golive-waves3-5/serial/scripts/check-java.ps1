@@ -1,0 +1,2 @@
+# Lists java processes that do not come from automation-w3 (the serial runner's copy). Empty output = no conflict.
+Get-CimInstance Win32_Process -Filter "Name='java.exe'" | Where-Object { $_.CommandLine -notmatch 'automation-w3' } | ForEach-Object { "$($_.ProcessId) $($_.CreationDate) " + $(if ($_.CommandLine -match 'multiModuleProjectDirectory=("[^"]+"|\S+)') { $matches[1] } else { 'surefire/other' }) }

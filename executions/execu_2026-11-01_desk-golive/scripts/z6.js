@@ -1,0 +1,3 @@
+(async (page) => { await page.getByText('Departments', { exact: true }).first().click(); await page.waitForTimeout(20000);
+  const out = { url: page.url() }; for (const f of page.frames()) { const t = await f.innerText('body').catch(() => ''); if (/Department/i.test(t) && /Haytham|Default|Add Department|New Department/i.test(t)) { out.f = f.url().slice(0, 80); out.t = t.replace(/\s+/g, ' ').slice(0, 900); } }
+  await page.screenshot({ path: 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-01_desk-golive/evidence/raw/bugs/zoho-dept-list.png' }); return out; })

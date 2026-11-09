@@ -1,0 +1,15 @@
+await page.goto(H + '/settings/modules-and-fields', { waitUntil: 'domcontentloaded' }); await sleep(6000);
+await page.locator('main button', { hasText: /^Create New Module$/ }).first().click(); await sleep(2500);
+const d = page.locator('[role=dialog]').first();
+const res = { dlg: (await d.innerText()).replace(/\s+/g, ' ').slice(0, 800) };
+res.inputs = await page.$$eval('[role=dialog] input, [role=dialog] select', is => is.map(i => i.tagName + ':' + (i.getAttribute('aria-label') || i.placeholder || i.name || '') + '=' + i.value));
+await d.locator('input').first().fill('QA R2W5 Dialog'); await sleep(1200);
+res.inputs2 = await page.$$eval('[role=dialog] input', is => is.map(i => (i.getAttribute('aria-label') || i.placeholder || i.name || '') + '=' + i.value));
+await shot('c01-2384-dialog');
+const rq = page.waitForResponse(r => /teamspaces\/.*\/modules/.test(r.url()) && r.request().method() === 'POST', { timeout: 30000 }).catch(() => null);
+await d.locator('button', { hasText: /^Create$/ }).click();
+const r = await rq; await sleep(4000);
+res.create = r ? r.status() + ' ' + (await r.text()).slice(0, 300) : 'none';
+res.url = page.url().replace(H, '');
+await shot('c01-2384-after');
+return res;

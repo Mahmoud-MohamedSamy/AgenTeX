@@ -1,0 +1,10 @@
+const res = {};
+const net = []; const on = x => { if (/api\/v1/.test(x.url()) && !/telephony|notifications/.test(x.url())) net.push(x.request().method() + ' ' + x.url().replace(/^.*\/api\/v1/, '').slice(0, 90) + ' ' + x.status()); }; page.on('response', on);
+await page.mouse.click(1217, 298); await sleep(3000);
+await shot('s02-drill-click');
+res.after1 = (await page.locator('[role=dialog], [role=menu]').count()) ? (await page.locator('[role=dialog], [role=menu]').first().innerText()).replace(/\s+/g, ' ').slice(0, 800) : 'none ' + page.url().replace(H, '');
+await page.mouse.click(1217, 298, { button: 'right' }); await sleep(2000);
+res.after2 = (await page.locator('[role=dialog], [role=menu]').count()) ? (await page.locator('[role=dialog], [role=menu]').first().innerText()).replace(/\s+/g, ' ').slice(0, 800) : 'none';
+await shot('s02-drill-right');
+page.off('response', on); res.net = net.slice(0, 15);
+return res;

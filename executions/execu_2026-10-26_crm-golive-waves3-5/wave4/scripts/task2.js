@@ -1,0 +1,14 @@
+await page.getByRole('button', { name: /^[+] ?Task$/ }).first().click(); await page.waitForTimeout(8000);
+const d = page.locator('[role=dialog]');
+await d.getByRole('combobox', { name: 'Type or pick a subject' }).fill('QA W4 Reminder task UI');
+await page.keyboard.press('Tab').catch(() => {});
+const due = new Date(Date.now() + 8 * 60000); const pad = n => String(n).padStart(2, '0');
+const local = `${due.getFullYear()}-${pad(due.getMonth() + 1)}-${pad(due.getDate())}T${pad(due.getHours())}:${pad(due.getMinutes())}`;
+await d.locator('input[type=datetime-local]').first().fill(local);
+await d.locator('select').first().selectOption('5');
+await page.waitForTimeout(800);
+const txt = (await d.innerText()).replace(/\s+/g, ' ');
+await page.screenshot({ path: 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_crm-golive-waves3-5/wave4/evidence/raw/t-task-quick-reminder.png' });
+await d.getByRole('button', { name: 'Save', exact: true }).click();
+await page.waitForTimeout(4000);
+return { local, tz: Intl.DateTimeFormat().resolvedOptions().timeZone, before: txt.slice(0, 400), after: (await page.innerText('body')).match(/Task (created|saved)[^.]*|could not[^.]*/gi) };

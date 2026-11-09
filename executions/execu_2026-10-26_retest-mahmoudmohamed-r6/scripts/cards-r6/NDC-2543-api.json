@@ -1,0 +1,26 @@
+{
+ "out": "NDC-2543-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2543 · Rename the built-in \"User\" profile (automation AdminApiTest PR-06)",
+ "who": "automation (ndc-staging-owner)",
+ "rows": [
+  [
+   "rename built-in User",
+   "PATCH /api/v1/iam/profiles/11111111-…-111111111103 {\"name\":\"…renamed\"}",
+   "409 SYSTEM_PROFILE_PROTECTED \"Built-in profiles cannot be renamed. Clone the profile to create one you can rename.\"",
+   "ok"
+  ],
+  [
+   "read back",
+   "GET /api/v1/iam/profiles",
+   "renamed = false — still \"User\"",
+   "ok"
+  ],
+  [
+   "custom profile edits",
+   "PATCH a QA custom profile (rank 200, parent) — NDC-2546 run",
+   "204 — custom profiles still editable",
+   "ok"
+  ]
+ ]
+}

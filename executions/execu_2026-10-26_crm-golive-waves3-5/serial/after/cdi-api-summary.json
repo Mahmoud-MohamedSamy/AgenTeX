@@ -1,0 +1,409 @@
+[ {
+  "test" : "ReadApiTest.agentCannotReadIntegrationAdminData",
+  "cases" : [ "A3" ],
+  "groups" : [ "crmdesk", "crmdesk-read", "group-a" ],
+  "description" : "Agent without desk:integration:view cannot read the integration settings, runs, history, failures or links",
+  "status" : "PASSED",
+  "seconds" : 17.093
+}, {
+  "test" : "ReadApiTest.bothAppsShareOneSettingsObject",
+  "cases" : [ "A7" ],
+  "groups" : [ "crmdesk", "crmdesk-read", "group-a" ],
+  "description" : "CRM and Desk read the same settings object (same row_version)",
+  "status" : "PASSED",
+  "seconds" : 5.617
+}, {
+  "test" : "ReadApiTest.configGapsStillMissing",
+  "cases" : [ "Z3", "Z5" ],
+  "groups" : [ "gap-check", "crmdesk", "crmdesk-read" ],
+  "description" : "No matching-key setting in the contacts config; pane fields still a fixed list",
+  "status" : "PASSED",
+  "seconds" : 0.718
+}, {
+  "test" : "ReadApiTest.crmCardMatchesDeskTickets",
+  "cases" : [ "L1", "L2" ],
+  "groups" : [ "group-l", "crmdesk", "crmdesk-read" ],
+  "description" : "Desk Tickets card on a CRM contact lists the Desk contact's tickets, and the statistics match the list",
+  "status" : "PASSED",
+  "seconds" : 4.709
+}, {
+  "test" : "ReadApiTest.defaultAccessIsAdminOnly",
+  "cases" : [ "J1a" ],
+  "groups" : [ "group-j", "crmdesk", "crmdesk-read", "Z9" ],
+  "description" : "Default CRM data access matches Zoho: only the Administrator profile; others no access until ticked",
+  "status" : "FAILED",
+  "seconds" : 1.197,
+  "error" : "No profile restrictions are stored: every Desk profile (agents, light agents …) has Full Access to CRM data. Zoho starts with only the Administrator profile expected [false] but found [true]"
+}, {
+  "test" : "ReadApiTest.failureReasonsAreReadable",
+  "cases" : [ "H10" ],
+  "groups" : [ "crmdesk", "group-h", "crmdesk-read" ],
+  "description" : "NDC-1669 §10: failure reasons are human-readable (name the record, no raw ids)",
+  "status" : "FAILED",
+  "seconds" : 1.638,
+  "error" : "6 of 21 reasons show raw record ids instead of names, e.g. crm_record_already_linked: The CRM contacts record <id> with the same email is already paired with Desk record \"QA RT 2393 Pair\". expected [true] but found [false]"
+}, {
+  "test" : "ReadApiTest.gapRoutesStillMissing",
+  "cases" : [ "Z1", "Z2", "Z7" ],
+  "groups" : [ "gap-check", "crmdesk", "crmdesk-read" ],
+  "description" : "Gap routes still absent: products, list-views, invite / light-agents",
+  "status" : "PASSED",
+  "seconds" : 7.145
+}, {
+  "test" : "ReadApiTest.handshakeBucketsMatchRequesters",
+  "cases" : [ "K2", "K7", "K8" ],
+  "groups" : [ "group-k", "crmdesk", "crmdesk-read" ],
+  "description" : "Handshake buckets match the requester: linked CRM contact without deals → Contacts/Leads; not in CRM → New",
+  "status" : "PASSED",
+  "seconds" : 59.068
+}, {
+  "test" : "ReadApiTest.historyHasFailedCounts",
+  "cases" : [ "H3" ],
+  "groups" : [ "crmdesk", "group-h", "crmdesk-read" ],
+  "description" : "NDC-1669 §10: Sync History shows failed counts as well as added / updated",
+  "status" : "PASSED",
+  "seconds" : 4.207
+}, {
+  "test" : "ReadApiTest.historyShape",
+  "cases" : [ "H1" ],
+  "groups" : [ "crmdesk", "group-h", "crmdesk-read" ],
+  "description" : "Sync History covers the last 7 days with known directions and modules and non-negative counts",
+  "status" : "PASSED",
+  "seconds" : 0.801
+}, {
+  "test" : "ReadApiTest.linksAreComplete",
+  "cases" : [ "I17" ],
+  "groups" : [ "group-i", "crmdesk", "crmdesk-read" ],
+  "description" : "Links: every link has a sync status and both record ids; account links exist when accounts sync two-way",
+  "status" : "PASSED",
+  "seconds" : 12.695
+}, {
+  "test" : "ReadApiTest.mappedPairsHaveCompatibleTypes",
+  "cases" : [ "C4" ],
+  "groups" : [ "crmdesk", "crmdesk-read", "group-c" ],
+  "description" : "Mapped pairs hold the same kind of data (no text→number, pick list→text …)",
+  "status" : "PASSED",
+  "seconds" : 8.81
+}, {
+  "test" : "ReadApiTest.mappingsMatchSchemas",
+  "cases" : [ "C3" ],
+  "groups" : [ "crmdesk", "crmdesk-read", "group-c" ],
+  "description" : "Every mapped field exists on both sides; no lookup or read-only Desk target; directions valid for the module direction",
+  "status" : "PASSED",
+  "seconds" : 3.529
+}, {
+  "test" : "ReadApiTest.mentionableUsers",
+  "cases" : [ "M5" ],
+  "groups" : [ "group-m", "crmdesk", "crmdesk-read" ],
+  "description" : "Mentionable users: Desk agents and CRM users, each with a known kind",
+  "status" : "PASSED",
+  "seconds" : 0.746
+}, {
+  "test" : "ReadApiTest.noOrBadTokenIs401",
+  "cases" : [ "A10" ],
+  "groups" : [ "crmdesk", "crmdesk-read", "group-a" ],
+  "description" : "No token / a garbage token: 401 and no data, in both apps",
+  "status" : "PASSED",
+  "seconds" : 3.165
+}, {
+  "test" : "ReadApiTest.noSecretsInSettings",
+  "cases" : [ "O4" ],
+  "groups" : [ "crmdesk", "crmdesk-read", "group-o" ],
+  "description" : "Status and settings carry no tokens or secrets",
+  "status" : "PASSED",
+  "seconds" : 1.529
+}, {
+  "test" : "ReadApiTest.paneInfoFieldsFollowConfig",
+  "cases" : [ "I2" ],
+  "groups" : [ "group-i", "crmdesk", "crmdesk-read" ],
+  "description" : "CRM pane Info returns exactly panel.info_fields.contacts, with the CRM values",
+  "status" : "PASSED",
+  "seconds" : 1.965
+}, {
+  "test" : "ReadApiTest.randomIdsAre404",
+  "cases" : [ "O3" ],
+  "groups" : [ "crmdesk", "crmdesk-read", "group-o" ],
+  "description" : "Random ids: 404 without details for context, stats and links",
+  "status" : "PASSED",
+  "seconds" : 1.98
+}, {
+  "test" : "ReadApiTest.relatedListsFollowCrmModules",
+  "cases" : [ "E10" ],
+  "groups" : [ "crmdesk", "crmdesk-read", "group-e" ],
+  "description" : "CRM Related Lists offer every non-activity CRM module",
+  "status" : "PASSED",
+  "seconds" : 1.981
+}, {
+  "test" : "ReadApiTest.statusIsConsistent",
+  "cases" : [ "B1" ],
+  "groups" : [ "crmdesk", "crmdesk-read", "group-b" ],
+  "description" : "Status: connected, not paused, connected_at and last imports set, queue counts not negative, same as config.status",
+  "status" : "PASSED",
+  "seconds" : 2.263
+}, {
+  "test" : "ReadApiTest.unlinkedContactAnswer",
+  "cases" : [ "I7" ],
+  "groups" : [ "group-i", "crmdesk", "crmdesk-read" ],
+  "description" : "A Desk contact that is not linked gets an explicit 'not linked' answer from the pane API, not an error or empty data",
+  "status" : "PASSED",
+  "seconds" : 10.178
+}, {
+  "test" : "RemainingApiTest.d3DraftOff",
+  "cases" : [ "D3" ],
+  "groups" : [ "crmdesk", "crmdesk-remaining" ],
+  "description" : "Draft switched off: an incomplete won deal makes no draft contract",
+  "status" : "FAILED",
+  "seconds" : 7.915,
+  "error" : "create crm f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430 returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"RECORD_VALIDATION_FAILED\",\"message\":\"Invalid value for: Pipeline.\",\"details\":[{\"path\":\"pipeline\",\"type\":\"PICKLIST_VALUE_INVALID\",\"message\":\"Pipeline: '5170500c-b335-479c-96d1-ed138965c345' is not one of the allowed values (Standard (Standard)).\"}]},\"meta\":null}"
+}, {
+  "test" : "RemainingApiTest.d5LostAndReopen",
+  "cases" : [ "D5", "D4" ],
+  "groups" : [ "crmdesk", "crmdesk-remaining" ],
+  "description" : "Won deal marked lost / reopened under keep and terminate",
+  "status" : "FAILED",
+  "seconds" : 0.695,
+  "error" : "create crm f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430 returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"RECORD_VALIDATION_FAILED\",\"message\":\"Invalid value for: Pipeline.\",\"details\":[{\"path\":\"pipeline\",\"type\":\"PICKLIST_VALUE_INVALID\",\"message\":\"Pipeline: '5170500c-b335-479c-96d1-ed138965c345' is not one of the allowed values (Standard (Standard)).\"}]},\"meta\":null}"
+}, {
+  "test" : "RemainingApiTest.d6d7d8",
+  "cases" : [ "D6", "D7", "D8" ],
+  "groups" : [ "crmdesk", "crmdesk-remaining" ],
+  "description" : "Lock CRM-owned fields; default owner / support level; cancel and recreate",
+  "status" : "FAILED",
+  "seconds" : 5.844,
+  "error" : "create crm f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430 returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"RECORD_VALIDATION_FAILED\",\"message\":\"Invalid value for: Pipeline.\",\"details\":[{\"path\":\"pipeline\",\"type\":\"PICKLIST_VALUE_INVALID\",\"message\":\"Pipeline: '5170500c-b335-479c-96d1-ed138965c345' is not one of the allowed values (Standard (Standard)).\"}]},\"meta\":null}"
+}, {
+  "test" : "RemainingApiTest.d9d10",
+  "cases" : [ "D9", "D10" ],
+  "groups" : [ "crmdesk", "crmdesk-remaining" ],
+  "description" : "Sync all contracts; contracts switched off",
+  "status" : "FAILED",
+  "seconds" : 28.853,
+  "error" : "create crm f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430 returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"RECORD_VALIDATION_FAILED\",\"message\":\"Invalid value for: Pipeline.\",\"details\":[{\"path\":\"pipeline\",\"type\":\"PICKLIST_VALUE_INVALID\",\"message\":\"Pipeline: '5170500c-b335-479c-96d1-ed138965c345' is not one of the allowed values (Standard (Standard)).\"}]},\"meta\":null}"
+}, {
+  "test" : "RemainingApiTest.d11l22",
+  "cases" : [ "D11", "L20", "L22", "D12" ],
+  "groups" : [ "crmdesk", "crmdesk-remaining" ],
+  "description" : "Linking a ticket to another customer's deal; ticket contract; needs-attention reasons",
+  "status" : "FAILED",
+  "seconds" : 1.111,
+  "error" : "create crm f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430 returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"RECORD_VALIDATION_FAILED\",\"message\":\"Invalid value for: Pipeline.\",\"details\":[{\"path\":\"pipeline\",\"type\":\"PICKLIST_VALUE_INVALID\",\"message\":\"Pipeline: '5170500c-b335-479c-96d1-ed138965c345' is not one of the allowed values (Standard (Standard)).\"}]},\"meta\":null}"
+}, {
+  "test" : "RemainingApiTest.e8e9",
+  "cases" : [ "E8", "E9" ],
+  "groups" : [ "crmdesk", "crmdesk-remaining" ],
+  "description" : "A delete queued under 'keep' stays keep after switching to 'delete'; restore a cross-deleted record",
+  "status" : "FAILED",
+  "seconds" : 161.593,
+  "error" : "E9 restore from the Desk recycle bin failed expected [true] but found [false]"
+}, {
+  "test" : "RemainingApiTest.g14g17",
+  "cases" : [ "G14", "G17" ],
+  "groups" : [ "crmdesk", "crmdesk-remaining" ],
+  "description" : "Same field edited on both sides within a second; value invalid on the other side",
+  "status" : "PASSED",
+  "seconds" : 76.317
+}, {
+  "test" : "RemainingApiTest.f8Audit",
+  "cases" : [ "F8" ],
+  "groups" : [ "crmdesk", "crmdesk-remaining" ],
+  "description" : "Settings changes appear in the tenant Audit Log",
+  "status" : "PASSED",
+  "seconds" : 2.208
+}, {
+  "test" : "RemainingApiTest.e2e3",
+  "cases" : [ "E2E-3" ],
+  "groups" : [ "crmdesk", "crmdesk-remaining" ],
+  "description" : "Agent mentions a CRM user on the ticket; a reply is sent and logged on the ticket",
+  "status" : "PASSED",
+  "seconds" : 21.455
+}, {
+  "test" : "WriteRunTest.a4AgentWritesRefused",
+  "cases" : [ "A4" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Agent without desk:integration:manage cannot change anything",
+  "status" : "PASSED",
+  "seconds" : 13.314
+}, {
+  "test" : "WriteRunTest.f1SaveAndShared",
+  "cases" : [ "F1", "A7" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Save one setting; both apps read the same value and row_version",
+  "status" : "PASSED",
+  "seconds" : 7.255
+}, {
+  "test" : "WriteRunTest.f5StaleRowVersion",
+  "cases" : [ "F5" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "PUT with an old or missing row_version is refused",
+  "status" : "PASSED",
+  "seconds" : 2.543
+}, {
+  "test" : "WriteRunTest.f6PartialBody",
+  "cases" : [ "F6" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Partial body never wipes the mappings",
+  "status" : "PASSED",
+  "seconds" : 1.701
+}, {
+  "test" : "WriteRunTest.f7c17InvalidBodies",
+  "cases" : [ "F7", "C17", "Z4" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Invalid settings bodies are refused with a code and change nothing",
+  "status" : "PASSED",
+  "seconds" : 24.447
+}, {
+  "test" : "WriteRunTest.g1CrmContactToDesk",
+  "cases" : [ "G1", "G20" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "CRM contact created -> Desk contact with mapped fields",
+  "status" : "PASSED",
+  "seconds" : 11.163
+}, {
+  "test" : "WriteRunTest.g2DeskContactToCrm",
+  "cases" : [ "G2" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Desk contact created -> CRM contact (two-way)",
+  "status" : "PASSED",
+  "seconds" : 14.015
+}, {
+  "test" : "WriteRunTest.g3Accounts",
+  "cases" : [ "G3" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Accounts both ways",
+  "status" : "PASSED",
+  "seconds" : 11.676
+}, {
+  "test" : "WriteRunTest.g4UpdateBothWays",
+  "cases" : [ "G4" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Updates arrive both ways",
+  "status" : "PASSED",
+  "seconds" : 10.638
+}, {
+  "test" : "WriteRunTest.g5PerFieldDirection",
+  "cases" : [ "G5" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "A CRM -> Desk field edited in Desk is not written to CRM",
+  "status" : "PASSED",
+  "seconds" : 9.318
+}, {
+  "test" : "WriteRunTest.g11NoEmail",
+  "cases" : [ "G11" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "CRM contact without an email still syncs",
+  "status" : "PASSED",
+  "seconds" : 16.343
+}, {
+  "test" : "WriteRunTest.g12MassUpdate",
+  "cases" : [ "G12" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Mass update of CRM contacts arrives for every record",
+  "status" : "PASSED",
+  "seconds" : 32.178
+}, {
+  "test" : "WriteRunTest.g15AccountLink",
+  "cases" : [ "G15" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Changing a CRM contact's account moves the Desk contact to the linked Desk account",
+  "status" : "PASSED",
+  "seconds" : 7.255
+}, {
+  "test" : "WriteRunTest.g16DataClasses",
+  "cases" : [ "G16", "O1" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Arabic, emoji, quotes and markup arrive byte for byte",
+  "status" : "PASSED",
+  "seconds" : 14.861
+}, {
+  "test" : "WriteRunTest.b3PauseAndQueue",
+  "cases" : [ "B3", "B4", "B5" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Pause with a reason; changes made while paused do not move",
+  "status" : "PASSED",
+  "seconds" : 70.234
+}, {
+  "test" : "WriteRunTest.b6ArriveOnResume",
+  "cases" : [ "B6" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Changes made while paused arrive after resume",
+  "status" : "PASSED",
+  "seconds" : 5.204
+}, {
+  "test" : "WriteRunTest.g7MatchOnEmail",
+  "cases" : [ "G7" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Desk and CRM contacts with the same email are linked, not duplicated",
+  "status" : "PASSED",
+  "seconds" : 20.392
+}, {
+  "test" : "WriteRunTest.g8EmailCase",
+  "cases" : [ "G8", "D21" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Email case: UPPER in CRM vs lower in Desk",
+  "status" : "PASSED",
+  "seconds" : 36.446
+}, {
+  "test" : "WriteRunTest.g9DuplicateEmail",
+  "cases" : [ "G9", "G19", "H9", "H10" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Two Desk contacts with one CRM email: one link, one readable failure",
+  "status" : "PASSED",
+  "seconds" : 25.797
+}, {
+  "test" : "WriteRunTest.h13Discard",
+  "cases" : [ "H13" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Discard our own failure",
+  "status" : "PASSED",
+  "seconds" : 3.695
+}, {
+  "test" : "WriteRunTest.i8i9i11Links",
+  "cases" : [ "I9", "I8", "I10", "I11" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Unlink stops sync; manual link; Update from CRM; search with no result",
+  "status" : "PASSED",
+  "seconds" : 71.249
+}, {
+  "test" : "WriteRunTest.dealsHandshakeContracts",
+  "cases" : [ "K7", "K6", "I3", "I15", "K9", "K5", "D1", "D2", "D4", "L1", "L2", "L4", "M2" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Ticket of a QA contact through deal states; contracts; CRM card; notification",
+  "status" : "FAILED",
+  "seconds" : 71.642,
+  "error" : "create crm f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430 returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"RECORD_VALIDATION_FAILED\",\"message\":\"Invalid value for: Pipeline.\",\"details\":[{\"path\":\"pipeline\",\"type\":\"PICKLIST_VALUE_INVALID\",\"message\":\"Pipeline: '5170500c-b335-479c-96d1-ed138965c345' is not one of the allowed values (Standard (Standard)).\"}]},\"meta\":null}"
+}, {
+  "test" : "WriteRunTest.m4SignalOff",
+  "cases" : [ "M4" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Signal off: no CRM bell entry",
+  "status" : "PASSED",
+  "seconds" : 52.329
+}, {
+  "test" : "WriteRunTest.l5NewTicketFromCrm",
+  "cases" : [ "L5" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "New ticket from the CRM contact",
+  "status" : "PASSED",
+  "seconds" : 3.411
+}, {
+  "test" : "WriteRunTest.jPermissions",
+  "cases" : [ "J3", "J4", "J5", "J6", "J7", "J8", "J9", "J10", "J11" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Desk Agent profile limited: API enforces each section",
+  "status" : "PASSED",
+  "seconds" : 22.807
+}, {
+  "test" : "WriteRunTest.eDeletePreferences",
+  "cases" : [ "E2", "E3", "E4", "E5", "E6", "E7" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "Delete preferences in both directions",
+  "status" : "PASSED",
+  "seconds" : 341.093
+}, {
+  "test" : "WriteRunTest.hHistoryAndRuns",
+  "cases" : [ "H2", "H6", "H7", "H8" ],
+  "groups" : [ "crmdesk", "crmdesk-write" ],
+  "description" : "History counts; Sync all customers; already running; run detail; no duplicates",
+  "status" : "PASSED",
+  "seconds" : 29.096
+} ]

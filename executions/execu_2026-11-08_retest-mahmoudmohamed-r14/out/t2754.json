@@ -1,0 +1,37 @@
+{
+ "agent": "\"display_name\":\"Customer Experience Specialists 2\"",
+ "bp": "201 ",
+ "bpId": "801b318b-b5f1-469b-a4a5-7d92e2cb563f",
+ "states": {
+  "g1": "Open",
+  "g2": "Open",
+  "g3": "Open",
+  "g4": "Open"
+ },
+ "1 agent GET g1 before owner": "403 PERMISSION_DENIED Permission denied.",
+ "owners alt g1": "200",
+ "owners alt g2": "200",
+ "owners alt g3": "200",
+ "2 agent GET g1 as step owner": "200",
+ "3 agent runs alt, no share": "422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed.",
+ "4 agent runs alt, own dept": "422 UNPROCESSABLE A ticket cannot be shared with its own department.",
+ "4 state": "Open",
+ "5 agent runs alt, share Dept B full": "200 {\"run_id\":\"33cc232b-c7d9-491a-8c42-e66e88db5e44\",\"from_state\":\"Open\",\"to_state\":\"Closed\",\"reply_id\":null,\"comment_id\":null,\"resolution_set\":false,\"approval_id\":null}",
+ "5 state": "none",
+ "5 shares (admin read)": "{\"success\":true,\"data\":[{\"department_id\":\"7b0ba6f0-6d2d-4c87-9605-65e21cc97b8d\",\"department_name\":\"QA RT14 2754 Dept B\",\"access\":\"full\",\"shared_by\":\"9d182dfa-05f3-4af7-9685-8615a2fbe537\",\"shared_at\":\"2026-11-08T12:36:34.762892+00:00\",\"updated_by\":null,\"updated_at\":null}],\"error\":null,\"meta\":{\"page\":",
+ "5 agent GET g1 after (left state)": "403 PERMISSION_DENIED Permission denied.",
+ "6 agent runs alt g3, Dept B read_only": "200",
+ "6 state": "none",
+ "6 shares": "{\"success\":true,\"data\":[{\"department_id\":\"7b0ba6f0-6d2d-4c87-9605-65e21cc97b8d\",\"department_name\":\"QA RT14 2754 Dept B\",\"access\":\"read_only\",\"shared_by\":\"9d182dfa-05f3-4af7-9685-8615a2fbe537\",\"shared_at\":\"2026-11-08T12:36:49.138045+00:00\",\"updated_by\":null,\"updated_at\":null}],\"error\":null,\"meta\":{\"p",
+ "7 agent plain Share on g2 (owner of alt)": "403 forbidden Missing required permission 'desk:ticket:share'.",
+ "7 g2 shares": "{\"success\":true,\"data\":[],\"error\":null,\"meta\":{\"page\":null,\"page_size\":null,\"total_count\":null,\"total_pages\":null,\"sort_by\":null,\"sort_order\":null,\"more_records\":null,\"next_cursor\":null,\"total_in_scop",
+ "8 agent runs go on g2 (not owner)": "403 BLUEPRINT_NOT_OWNER You are not an owner of this transition.",
+ "8 g2 state": "Open",
+ "9 agent GET g4 (no owner role)": "403 PERMISSION_DENIED Permission denied.",
+ "G": {
+  "g1": "366c00b8-7b45-41ea-b670-631c4a045d08",
+  "g2": "7326ffa9-27c8-41f7-b8dc-35fb64c40e07",
+  "g3": "330b8b1a-57af-4ecc-bf6a-d87cff606ba2",
+  "g4": "1cc330c1-be19-41b6-9cfd-f1ea3ade96d2"
+ }
+}

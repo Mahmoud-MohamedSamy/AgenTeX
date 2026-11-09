@@ -1,0 +1,14 @@
+const M = 'b4848bdf-9f59-45a9-8336-9f4f2a4fc36b', L = '04c3cdbe-8cb0-49ba-bf49-f595bccab842';
+const res = {};
+const items = async () => page.evaluate(() => [...document.querySelectorAll('[role=menu], [data-radix-popper-content-wrapper]')].map(e => e.innerText.replace(/\s+/g, ' ')).join(' || '));
+await page.locator('button[aria-label="Open menu for QA R2W5 Layout B"]').click(); await sleep(1000); res.menuB = await items(); await shot('c02-1588-row-menu'); await page.keyboard.press('Escape'); await sleep(500);
+await page.locator('button[aria-label="Open menu for Default"]').click(); await sleep(1000); res.menuDefault = await items(); await page.keyboard.press('Escape'); await sleep(500);
+res.defaultToggleDisabled = await page.locator('button[aria-label="Toggle Default status"]').isDisabled();
+const B = (await call('GET', `/modules/${M}/layouts`)).j.data; const bl = (Array.isArray(B) ? B : B.layouts).find(l => l.name === 'QA R2W5 Layout B'); res.B = bl.id;
+await page.locator('button[aria-label="Toggle QA R2W5 Layout B status"]').click(); await sleep(2500);
+if (await page.locator('button', { hasText: /^(Deactivate|Disable|Confirm)$/ }).count()) await page.locator('button', { hasText: /^(Deactivate|Disable|Confirm)$/ }).first().click(); await sleep(2000);
+res.Bstatus = (await call('GET', `/modules/${M}/layouts/${bl.id}`)).j.data.status;
+const acc = await call('GET', `/modules/${M}/layouts/accessible`); res.accessible = acc.s + ' ' + JSON.stringify((acc.j && (Array.isArray(acc.j.data) ? acc.j.data : acc.j.data?.layouts) || []).map(l => l.name + ':' + l.status));
+await page.goto(H + `/modules/${M}`, { waitUntil: 'domcontentloaded' }); await sleep(5000);
+res.layoutPicker = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 200);
+return res;

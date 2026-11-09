@@ -1,0 +1,1 @@
+import{n as e}from"./react-vendor-DkHM6MDj.js";import{t}from"./KanbanViewSettingsDialog-Cl2lvzii.js";var n=e();function r({moduleId:e,fields:r,view:i,onClose:a,onSaved:o,onDeleted:s}){return(0,n.jsx)(t,{moduleId:e,moduleFields:r,view:i,layoutId:null,layoutLabel:null,onClose:a,onSaved:o,onDeleted:s})}export{r as default};

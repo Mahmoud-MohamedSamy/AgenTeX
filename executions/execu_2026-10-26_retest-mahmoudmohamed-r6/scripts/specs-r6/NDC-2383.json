@@ -1,0 +1,119 @@
+{
+ "out": "NDC-2383-retest-PASS.png",
+ "ticket": "NDC-2383",
+ "title": "Modules and Fields | Layout builder Save is silently lost when the layout save is slow (e.g. after adding a Rollup Summary)",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "2383-01-after-save.png",
+   "caption": "Same Rollup save as NDC-1444, layout reopened: the rollup is on the layout; nothing left to save.",
+   "crop": [
+    332,
+    56,
+    948,
+    560
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      366,
+      558,
+      1247,
+      606
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1213,
+      65,
+      1266,
+      100
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1444-api.png",
+   "caption": "Save requests and read-back.",
+   "crop": [
+    0,
+    0,
+    1600,
+    386
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      274
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      280,
+      1566,
+      321
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      327,
+      1566,
+      368
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1, 4",
+   "Save after adding a Rollup Summary persists",
+   "Layout saved (or an error shown)",
+   "Saved: layout lastModified 15:15:51, rollup on the layout",
+   "PASS"
+  ],
+  [
+   "3",
+   "Save requests",
+   "Slow saves waited for",
+   "POST field 201 (2 s) → PUT layout 200 (3 s); no silent loss",
+   "PASS"
+  ],
+  [
+   "2",
+   "After the save",
+   "—",
+   "Save button disabled — nothing pending",
+   "INFO"
+  ],
+  [
+   "—",
+   "Slow-save case",
+   "A 14–18 s save is waited for",
+   "Layout PUT now takes 3 s (was 14–18 s), so a truly slow save could not be reproduced",
+   "INFO"
+  ]
+ ]
+}

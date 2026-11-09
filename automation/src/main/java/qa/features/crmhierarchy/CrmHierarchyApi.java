@@ -29,7 +29,8 @@ public final class CrmHierarchyApi {
     }
 
     public static CrmUser owner() {
-        return CrmUser.as(OWNER);
+        // -Dcrm.adminAs=<email> lets another admin account act for the owner (owner unavailable: rate limit or session limit, 27 Oct 2026)
+        return CrmUser.as(System.getProperty("crm.adminAs", OWNER));
     }
 
     /** One result line for the report ("[C3] ..."), printed and appended to target/crmhierarchy-facts.txt. */

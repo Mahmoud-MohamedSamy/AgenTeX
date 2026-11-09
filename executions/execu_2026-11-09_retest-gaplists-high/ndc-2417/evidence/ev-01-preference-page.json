@@ -1,0 +1,91 @@
+{
+ "out": "annotated/ev-01-preference-page-vs-zoho.png",
+ "id": "NDC-2417 items 1, 2, 4",
+ "title": "Hierarchy Preference page",
+ "verdict": "PARTIAL",
+ "sub": "TAVI CRM (staging-crm, tenant NDC-Staging, mode Role, read only) vs Zoho CRM org943261092 (21 Oct 2026 captures)",
+ "date": "TAVI 9 Nov 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Setup → Company Settings → Hierarchy Preference (as found, not switched)",
+   "img": "../shots/t01-hierarchy-page.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 940,
+     "y": 280,
+     "w": 397,
+     "h": 76
+    },
+    {
+     "n": 4,
+     "x": 531,
+     "y": 280,
+     "w": 397,
+     "h": 76
+    },
+    {
+     "n": 2,
+     "x": 531,
+     "y": 222,
+     "w": 806,
+     "h": 46
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Reporting Hierarchy picked, not saved (live, 21 Oct 2026)",
+   "img": "../../../../docs/crm-hierarchy-preference/evidence/originals/zoho-z10-reporting-unsaved.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 375,
+     "y": 405,
+     "w": 470,
+     "h": 80
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho rules (help docs)",
+   "text": [
+    "Item 2: switching back from Reporting to Role shows a popup listing each report, criteria, filter and merge field that uses \"Reporting To\", with keep or remove for each.",
+    "Item 4: a superior sees the records of their own branch of the role tree (all levels below), not the whole tenant."
+   ],
+   "sources": [
+    "docs/crm-hierarchy-preference/reference/zoho-docs-inventory.md §1–2"
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Who manages records of users with no manager (Reporting mode)",
+   "zoho": "\"Any user higher up in the hierarchy\" / \"Super admin and Administrators\"",
+   "tavi": "No such choice; only the two mode cards",
+   "match": "Gap"
+  },
+  {
+   "n": "2",
+   "b": "Warning when switching back to Role",
+   "zoho": "Lists every use of \"Reporting To\" with keep / remove",
+   "tavi": "Same generic text both ways: \"Switching changes how visibility flows. Existing manager and role assignments still apply.\"",
+   "match": "Gap"
+  },
+  {
+   "n": "4",
+   "b": "Superior sees only own branch",
+   "zoho": "Branch of the role tree",
+   "tavi": "Text now: lower-ranked profiles \"in the same org unit and the units below it\" (preview and record-visibility hint now agree). Branch = org-unit subtree, not a role tree; runtime not re-run (NDC-2412 Done)",
+   "match": "PARTIAL"
+  }
+ ],
+ "notes": [
+  "Hierarchy preference read only: value role, version 36; nothing was switched."
+ ],
+ "zohoCol": "Zoho CRM",
+ "taviCol": "TAVI CRM"
+}

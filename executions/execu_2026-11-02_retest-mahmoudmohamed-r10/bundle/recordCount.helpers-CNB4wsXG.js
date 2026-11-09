@@ -1,0 +1,1 @@
+function e(e,t,n,r){return r?e*t+1:(e-1)*t+n}function t(t,n,r){let i=r?.total_count;return typeof r?.total_pages==`number`&&typeof i==`number`?{count:i,isExact:!0}:{count:e(t,n,i??0,r?.more_records??!1),isExact:!1}}export{t};

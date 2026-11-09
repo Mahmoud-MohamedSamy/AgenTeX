@@ -1,0 +1,121 @@
+{
+ "out": "bug2-label-saved-despite-error.png",
+ "ticket": "Bug 2",
+ "priority": "medium",
+ "title": "A field label rename is saved even though the layout editor says \"Layout not saved\"",
+ "verdict": "FAIL",
+ "date": "Jam 8 Nov 2026 08:50 UTC · checked 8 Nov 2026",
+ "env": "staging-desk.taviportal.com (NDC-Staging) · Setup › Modules & Fields › Tickets · Edge 156, Windows 10",
+ "panels": [
+  {
+   "img": "jam-0005-label-edit.png",
+   "w": 1584,
+   "h": 1080,
+   "crop": [
+    415,
+    80,
+    1169,
+    900
+   ],
+   "caption": "Jam 0:05: the label \"test\" is renamed on the layout canvas (1).",
+   "boxes": [
+    {
+     "b": [
+      992,
+      566,
+      1176,
+      628
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "jam-0009-toast.png",
+   "w": 1584,
+   "h": 1080,
+   "crop": [
+    415,
+    80,
+    1169,
+    1000
+   ],
+   "caption": "Jam 0:09: after Save the editor says \"Layout not saved\" (2), while the field already shows its new label \"Email\" (3).",
+   "boxes": [
+    {
+     "b": [
+      394,
+      972,
+      1192,
+      1054
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      992,
+      568,
+      1180,
+      614
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "img": "fields-email-saved.png",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    270,
+    60,
+    1330,
+    600
+   ],
+   "full": true,
+   "caption": "Tickets › Fields, checked later: the field is stored as \"Email\" (4). The rename was saved although the user was told nothing was saved.",
+   "boxes": [
+    {
+     "b": [
+      298,
+      356,
+      640,
+      404
+     ],
+     "n": 4
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Rename a field label on the layout canvas",
+   "Change waits for Save",
+   "Rename is pending until Save",
+   "INFO"
+  ],
+  [
+   2,
+   "Click Save when the layout save fails",
+   "Nothing is saved and the message says so, or the message lists what was saved",
+   "\"Layout not saved\"",
+   "FAIL"
+  ],
+  [
+   3,
+   "Field label after the failed save",
+   "Unchanged (\"test\")",
+   "Changed to \"Email\": the rename is saved before the layout save, and is not rolled back when it fails",
+   "FAIL"
+  ],
+  [
+   4,
+   "Label in Tickets › Fields",
+   "Matches what the editor reported",
+   "\"Email\" is stored. For about an hour the layout canvas still showed the old \"test\"",
+   "FAIL"
+  ]
+ ],
+ "label": "BUG"
+}

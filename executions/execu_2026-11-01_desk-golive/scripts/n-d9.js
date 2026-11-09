@@ -1,0 +1,1 @@
+const r = await api('PUT', '/desk/tickets/d564fa1f-7b42-4710-94ab-e49de784519a/shares', { shares: [{ department_id: '19510fdc-91f3-4a7a-8888-153f1318b765', access: 'full' }] }); return done({ s: r.s });

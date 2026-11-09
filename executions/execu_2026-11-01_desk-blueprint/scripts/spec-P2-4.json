@@ -1,0 +1,116 @@
+{
+ "label": "BUG",
+ "verdict": "FAIL",
+ "date": "2 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, org Anyware, owner, QA WF Dept R (QA records, deleted after) · Zoho: Zoho Desk Enterprise trial, Setup › Blueprint (read only)",
+ "out": "BP-P2-4-vs-zoho.png",
+ "ticket": "BP-P2-4",
+ "taviHead": "TAVI Desk (API log, ticket #1067)",
+ "zohoHead": "Zoho Desk (ticket #101 in a blueprint)",
+ "title": "A workflow rule can change Status on a ticket the blueprint controls; the ticket closes and leaves the blueprint",
+ "panels": [
+  {
+   "img": "P2-4-api.png",
+   "caption": "TAVI API: rule saved; direct Status change refused (422); after a transition the rule closes the ticket and it leaves the blueprint",
+   "crop": [
+    0,
+    0,
+    1600,
+    560
+   ],
+   "boxes": []
+  },
+  {
+   "img": "zoho-ticket-in-blueprint.png",
+   "caption": "Zoho: Status shows a lock while the blueprint controls it; the blueprint strip shows the current state",
+   "crop": [
+    0,
+    0,
+    1600,
+    1000
+   ],
+   "boxes": [
+    {
+     "b": [
+      352,
+      420,
+      436,
+      468
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      652,
+      916,
+      1600,
+      972
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "img": "P2-4-ui.png",
+   "caption": "TAVI ticket #1067 after the transition: Status Closed, no Steps card, \"Reopen ticket\"",
+   "crop": [
+    0,
+    56,
+    1600,
+    944
+   ],
+   "boxes": [
+    {
+     "b": [
+      386,
+      538,
+      472,
+      572
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      1180,
+      108,
+      1232,
+      130
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      1436,
+      954,
+      1584,
+      990
+     ],
+     "n": 3
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Workflow rule that updates Status",
+   "Status is locked while a blueprint controls the ticket; only its transitions change it.",
+   "A rule (On Edit, Field Update Status = Closed) is saved with no warning that Status is controlled by a blueprint.",
+   "BUG"
+  ],
+  [
+   2,
+   "Changing Status directly",
+   "Locked (lock icon on Status).",
+   "Refused: PATCH status → 422 \"Governed picklist field can only change via blueprint transition execution.\"",
+   "SAME"
+  ],
+  [
+   3,
+   "After running a transition",
+   "The ticket stays in the blueprint at the new state.",
+   "Transition Open → Escalated runs, then the rule sets Status to Closed: ticket #1067 is Closed and has left the blueprint (no Steps card, \"Reopen ticket\"). The blueprint lock is bypassed through normal admin setup.",
+   "BUG"
+  ]
+ ]
+}

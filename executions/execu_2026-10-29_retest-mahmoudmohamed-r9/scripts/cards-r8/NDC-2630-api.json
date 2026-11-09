@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2630-api.png",
+ "date": "27 Oct 2026",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "title": "NDC-2630 · A send that fails (owner, taviportal.com sender, Zoho connection without zoid)",
+ "rows": [
+  [
+   "pre-check",
+   "GET /api/v1/emails/sendability",
+   "can_send true, provider zoho — the sender is let through",
+   "bad"
+  ],
+  [
+   "send",
+   "POST /mail/drafts → POST /mail/drafts/{id}/send",
+   "422 MAIL_SEND_FAILED \"No Zoho account found for sender 'ndc-staging-owner@…'\" — no longer \"Sent\"",
+   "ok"
+  ],
+  [
+   "record Mails",
+   "GET /mail/records/leads/{id}/emails",
+   "status \"failed\", last_error with the reason",
+   "ok"
+  ],
+  [
+   "timeline",
+   "GET /timeline/records/leads/{id}/feed",
+   "EmailSent, RecordCreated — the failed email is logged as sent",
+   "bad"
+  ],
+  [
+   "own account (Gmail)",
+   "Send Email on a lead",
+   "Compose says \"You can't send email yet: no provider is connected for gmail.com…\"",
+   "info"
+  ]
+ ]
+}

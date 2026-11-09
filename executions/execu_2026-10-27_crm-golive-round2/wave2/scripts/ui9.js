@@ -1,0 +1,11 @@
+const H = 'https://staging-crm.taviportal.com', LEADS = '841043e1-c078-41f9-8d6e-dfd61bee45c3';
+const wait = ms => page.waitForTimeout(ms);
+const lid = '7d5c8192-3680-48f1-ac20-ba98383fc42e';
+await page.goto(H + `/modules/${LEADS}/records/${lid}/convert`, { waitUntil: 'domcontentloaded' }); await page.waitForSelector('text=Create a new Transactions', { timeout: 40000 });
+await page.getByText('Create a new Transactions', { exact: false }).click(); await wait(5000);
+out.convFields = await page.evaluate(() => { const res = {}; for (const lab of ['Probability (%)', 'Expected Revenue', 'Lead Conversion Time', 'Sales Cycle Duration', 'Overall Sales Duration']) { const el = [...document.querySelectorAll('label, span, div')].find(x => x.childElementCount === 0 && x.innerText && x.innerText.trim().replace(/\s*\*$/, '') === lab); if (!el) { res[lab] = 'not shown'; continue; } const box = el.closest('div'); const c = (box && box.parentElement || document).querySelector('input,textarea,[contenteditable=true]'); res[lab] = c ? (c.disabled || c.readOnly || c.getAttribute('aria-readonly') === 'true' ? 'read-only' : 'editable') : 'no input'; } return res; });
+await page.screenshot({ path: RAW + 'convert-deal-fields.png', fullPage: true });
+await page.goto(H + '/', { waitUntil: 'domcontentloaded' }); await wait(3000);
+await page.locator('a, button').filter({ hasText: /^Work Queue$/ }).first().click(); await wait(9000);
+out.wqUrl = page.url(); out.wq = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 500);
+await page.screenshot({ path: RAW + 'work-queue-page.png' });

@@ -1,0 +1,12 @@
+const L = 'bf971461-2edc-45f2-b6e4-6e180aa64288', name = 'QA W2 2098 view ' + (Date.now() % 100000);
+const c = await call('POST', `/modules/${MODS.leads}/views`, { name, kind: 'list', layout_id: L, visibility: 'private', settings: { columns: ['first_name', 'phone'], sort: { field: 'created_at', dir: 'desc' }, criteria: { pattern: '1 and 2', conditions: [{ field: 'first_name', operator: 'starts_with', value: 'QA W2 2098' }, { field: 'phone', operator: 'is_not_empty', value: null }] }, related_criteria: [] } });
+const id = c.j.data.id; const base = `https://staging-crm.taviportal.com/modules/${MODS.leads}`;
+const waitList = async () => { for (let i = 0; i < 90; i++) { const t = await page.innerText('body'); if (!/Loading (Leads|records)/.test(t)) return true; await page.waitForTimeout(2000); } return false; };
+await page.goto(`${base}?view=${id}`, { waitUntil: 'domcontentloaded' }); const l1 = await waitList(); await page.waitForTimeout(2000);
+const t1 = (await page.innerText('body')).includes(name);
+const del = (await call('DELETE', `/modules/${MODS.leads}/views/${id}`)).s;
+await page.goto(`${base}?view=${id}`, { waitUntil: 'domcontentloaded' }); const t0 = Date.now(); const l2 = await waitList(); await page.waitForTimeout(3000);
+await page.screenshot({ path: 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_crm-golive-waves3-5/serial/evidence/raw/t-ndc2098-deleted-view.png' });
+const body = (await page.innerText('body')).replace(/\s+/g, ' ');
+const head = body.slice(body.indexOf('Leads'), body.indexOf('Leads') + 300);
+return { created: c.s, firstOpenLoaded: l1, firstShowsView: t1, deleted: del, secondLoaded: l2, secondLoadSeconds: Math.round((Date.now() - t0) / 1000), showsDeletedName: body.includes(name), showsAllLeads: /All Leads/.test(body), url: page.url(), head };

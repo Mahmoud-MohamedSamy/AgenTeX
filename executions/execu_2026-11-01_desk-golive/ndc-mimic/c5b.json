@@ -1,0 +1,240 @@
+[
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules",
+  "b": {
+   "name": "QA NDC Financial Decision",
+   "description": "NDC mimic: Accounting",
+   "layoutId": "d1e6505d-ad05-45d0-bd8a-8f3f1eca96cb",
+   "primaryField": "status",
+   "applyToHelpCenter": true,
+   "conditions": [
+    {
+     "field": "status",
+     "operator": "eq",
+     "value": "Closed"
+    }
+   ],
+   "branches": [
+    {
+     "name": "Secondary Condition 1",
+     "condition": {
+      "op": "eq",
+      "field": "status",
+      "value": "Closed"
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_gl",
+        "qa_ndc_financial_decision",
+        "qa_ndc_gl_amount",
+        "qa_ndc_gl_document_no"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_gl",
+        "qa_ndc_financial_decision",
+        "qa_ndc_gl_amount",
+        "qa_ndc_gl_document_no"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 2",
+     "condition": {
+      "op": "and",
+      "children": [
+       {
+        "op": "eq",
+        "field": "status",
+        "value": "Closed"
+       },
+       {
+        "op": "eq",
+        "field": "qa_ndc_financial_decision",
+        "value": "Partial Debit"
+       }
+      ]
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_gl",
+        "qa_ndc_gl2",
+        "qa_ndc_gl_amount",
+        "qa_ndc_gl2_amount",
+        "qa_ndc_gl_document_no"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_gl",
+        "qa_ndc_gl2",
+        "qa_ndc_gl_amount",
+        "qa_ndc_gl2_amount",
+        "qa_ndc_gl_document_no"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "save": "lrule-1"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules",
+  "b": {
+   "name": "QA NDC Validation fields",
+   "description": "NDC mimic: Client Complaints",
+   "layoutId": "a01a53e7-cec9-4794-b91b-b177cbac2ee8",
+   "primaryField": "status",
+   "applyToHelpCenter": true,
+   "conditions": [
+    {
+     "field": "status",
+     "operator": "neq",
+     "value": "Open"
+    }
+   ],
+   "branches": [
+    {
+     "name": "Secondary Condition 1",
+     "condition": {
+      "op": "neq",
+      "field": "status",
+      "value": "Open"
+     },
+     "actions": [
+      {
+       "type": "show_sections",
+       "sections": [
+        "sec-qa-ndc-7-1"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 2",
+     "condition": {
+      "op": "and",
+      "children": [
+       {
+        "op": "neq",
+        "field": "status",
+        "value": "Open"
+       },
+       {
+        "op": "eq",
+        "field": "qa_ndc_issue_side",
+        "value": "Process"
+       }
+      ]
+     },
+     "actions": [
+      {
+       "type": "show_sections",
+       "sections": [
+        "sec-qa-ndc-7-3"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_issue_side"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 3",
+     "condition": {
+      "op": "and",
+      "children": [
+       {
+        "op": "neq",
+        "field": "status",
+        "value": "Open"
+       },
+       {
+        "op": "eq",
+        "field": "qa_ndc_issue_side",
+        "value": "Agent"
+       }
+      ]
+     },
+     "actions": [
+      {
+       "type": "show_sections",
+       "sections": [
+        "sec-qa-ndc-7-2"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 4",
+     "condition": {
+      "op": "and",
+      "children": [
+       {
+        "op": "neq",
+        "field": "status",
+        "value": "Open"
+       },
+       {
+        "op": "eq",
+        "field": "qa_ndc_issue_side",
+        "value": "Both"
+       }
+      ]
+     },
+     "actions": [
+      {
+       "type": "show_sections",
+       "sections": [
+        "sec-qa-ndc-7-2",
+        "sec-qa-ndc-7-3"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "save": "lrule-6"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/validation-rules",
+  "b": {
+   "name": "QA NDC Reject needs a reason",
+   "description": "NDC mimic of validation rule on Status = Reject (alert: Please add a clear rejection reason)",
+   "condition": {
+    "op": "and",
+    "children": [
+     {
+      "op": "eq",
+      "field": "status",
+      "value": "QA NDC Reject"
+     },
+     {
+      "op": "isEmpty",
+      "field": "qa_ndc_rejection_reasons"
+     }
+    ]
+   },
+   "errorMessage": {
+    "default": "Please add a clear rejection reason",
+    "en": "Please add a clear rejection reason"
+   }
+  },
+  "save": "vrule"
+ }
+]

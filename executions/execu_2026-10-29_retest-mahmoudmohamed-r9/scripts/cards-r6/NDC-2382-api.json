@@ -1,0 +1,49 @@
+{
+ "out": "NDC-2382-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2382 · Deals pipeline through the record API — staging blocker removed for the test, then restored",
+ "rows": [
+  [
+   "blocker (found)",
+   "GET /api/v1/modules/{Deals}/fields → apiName \"pipeline\"",
+   "CUSTOM pick_list (isCustomField true) created 2026-10-24 15:54 by ndc-staging-owner on layout \"Wonder Travel\"; allowed_values [\"Standard (Standard)\"] — it validates every deal's pipeline value",
+   "bad"
+  ],
+  [
+   "with the blocker (automation)",
+   "POST /api/v1/modules/{Deals}/records {pipeline:\"5170500c…\" (Standard)} · PATCH → \"1\" 640e03a4…, stage test-01",
+   "422 RECORD_VALIDATION_FAILED \"Invalid value for: Pipeline.\" (both; deal stays 5170500c)",
+   "bad"
+  ],
+  [
+   "blocker widened (test only)",
+   "PUT /api/v1/modules/{Deals}/fields/{pipeline} — allowed values widened",
+   "200",
+   "info"
+  ],
+  [
+   "create on \"1\"",
+   "POST /api/v1/modules/{Deals}/records {pipeline:\"640e03a4…\", stage:\"test-01\"}",
+   "201 — stored pipeline 640e03a4 (\"1\"), stage test-01",
+   "ok"
+  ],
+  [
+   "move a Standard deal",
+   "PATCH /api/v1/modules/{Deals}/records/{id} {pipeline:\"640e03a4…\"}",
+   "200 — moved 5170500c → 640e03a4, stage test-01",
+   "ok"
+  ],
+  [
+   "stage not in the pipeline",
+   "PATCH /api/v1/modules/{Deals}/records/{id} stage \"closed_won\" on pipeline \"1\"",
+   "422 — closed_won is not a stage of \"1\"",
+   "ok"
+  ],
+  [
+   "blocker restored",
+   "PUT /api/v1/modules/{Deals}/fields/{pipeline} (baseline)",
+   "200 — allowed [\"Standard (Standard)\"] again, same as pipeline-field-baseline.json",
+   "info"
+  ]
+ ]
+}

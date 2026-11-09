@@ -1,0 +1,2 @@
+module.exports=async()=>{const R={};for(const [k,d] of [['DA',IDS.DA],['DB',IDS.DB]]){const r=await api('GET','/desk/departments/'+d+'/agents');const L=arr(r.j&&r.j.data);R[k]=r.s+' '+L.map(x=>{const id=x.user_id||x.id;return (id===IDS.A1?'A1':id===IDS.A2?'A2':id===IDS.A3?'A3':id===IDS.O?'owner':String(id).slice(0,8))+':'+(x.display_name||x.name||'').slice(0,20);}).join(', ');}
+ const t=await api('GET','/desk/tickets?department_id='+IDS.DB+'&limit=5');R.dbTickets=t.s;return R;};

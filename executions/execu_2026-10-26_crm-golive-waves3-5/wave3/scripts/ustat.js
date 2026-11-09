@@ -1,0 +1,1 @@
+const r = await call('GET', '/iam/users?app_key=crm&limit=200'); return ((r.j && r.j.data) || []).filter(u => /valafo4080|nameb56175/.test(u.email)).map(u => u.email + ' ' + u.status + ' mgr=' + u.reportingManagerId);

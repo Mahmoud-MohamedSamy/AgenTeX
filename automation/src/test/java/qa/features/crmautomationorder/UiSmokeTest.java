@@ -416,7 +416,7 @@ public class UiSmokeTest extends BaseTest {
      * rule must skip the offline member. Control: the same entry without the availability check picks the first member.
      */
     @CaseId("A-10")
-    @Test(groups = {"crm-ui"}, description = "Assignment availability Online status: the signed-out member is skipped")
+    @Test(groups = {"crm-ui-a10"}, description = "Assignment availability Online status: the signed-out member is skipped")
     public void a10OnlineStatusSkipsOfflineMember() {
         String c = "A-10";
         new LeadRecordPage().openPath("/workqueue", "Work Queue"); // the Owner is online in this browser
@@ -523,7 +523,7 @@ public class UiSmokeTest extends BaseTest {
      * reactivated in finally.
      */
     @CaseId("A-17")
-    @Test(groups = {"crm-ui"}, description = "Assignment: a suspended member is skipped and the fallback user gets the lead")
+    @Test(groups = {"crm-ui-a17", "tenant-wide"}, description = "Assignment: a suspended member is skipped and the fallback user gets the lead")
     @SuppressWarnings("unchecked")
     public void a17SuspendedMemberSkipped() {
         String c = "A-17";

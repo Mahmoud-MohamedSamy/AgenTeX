@@ -1,0 +1,127 @@
+{
+ "out": "NDC-2661-retest-PASS.png",
+ "ticket": "NDC-2661",
+ "title": "Tickets | Save shows \"Permission denied.\" although the ticket is created — users save again and create duplicates",
+ "priority": "high",
+ "verdict": "PASS",
+ "env": "staging-desk / staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API",
+ "date": "3 Nov 2026",
+ "panels": [
+  {
+   "img": "2661-after-save.png",
+   "caption": "After Save: success message, form closed (back to Tickets)",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      1158,
+      812,
+      1576,
+      876
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2661-api.png",
+   "caption": "API evidence — NDC-2661 · Customer Support, owner fedelav803 (Customer Experience Specialists 2)",
+   "crop": [
+    0,
+    0,
+    1600,
+    318
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      206
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      253
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      259,
+      1566,
+      300
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "message",
+   "Saved, with a note that it can't be opened",
+   "\"Record created. You can't open it: it is outside your view.\"; form closed",
+   "PASS"
+  ],
+  [
+   "2",
+   "API create",
+   "201 with the id",
+   "201 {id, caller_can_read:false} (was 403)",
+   "PASS"
+  ],
+  [
+   "3",
+   "screen save",
+   "Success message, leave the form",
+   "POST 201; \"Record created. You can't open it: it is outside your view.\"; form closes",
+   "PASS"
+  ],
+  [
+   "4",
+   "duplicates",
+   "Saved once",
+   "1 ticket each",
+   "PASS"
+  ],
+  [
+   "5",
+   "control",
+   "—",
+   "201 \"Record saved successfully\", ticket opens",
+   "INFO"
+  ]
+ ]
+}

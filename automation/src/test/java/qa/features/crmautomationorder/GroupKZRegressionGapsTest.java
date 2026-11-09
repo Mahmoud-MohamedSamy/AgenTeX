@@ -764,7 +764,7 @@ public class GroupKZRegressionGapsTest extends OrderTestBase {
     public void z7ApproverAnyoneEveryone() {
         String c = "Z7";
         Map<String, Object> approver = kinded("kind", "users", "values", List.of(supervisor().id(), adminB().id()),
-                "approvalMode", "everyone", "mode", "everyone", "sequence", "parallel");
+                "approvalMode", "everyone", "mode", "everyone_parallel", "sequence", "parallel"); // 27 Oct: modes anyone | everyone_sequential | everyone_parallel
         Map<String, Object> level = CrmProcs.level(approver, false);
         level.put("approvalMode", "everyone");
         level.put("everyoneOrder", "parallel");
@@ -843,10 +843,11 @@ public class GroupKZRegressionGapsTest extends OrderTestBase {
         if (createReadBack(path, body.apply(kinded("kind", "qa_bogus_kind")), log) != null)
             inconclusive("a bogus after-action kind was accepted (no validation): " + log);
         Map<String, List<Map<String, Object>>> cands = new LinkedHashMap<>();
-        cands.put("Convert", List.of(kinded("kind", "convert", "createDeal", true), kinded("kind", "convertLead", "createDeal", true)));
+        // 27 Oct: the designer's kinds are convertLead {}, addTags {tags: [names]}, createRecord, customAction {customActionId, inputs}
+        cands.put("Convert", List.of(kinded("kind", "convertLead"), kinded("kind", "convert", "createDeal", true)));
         cands.put("Function", List.of(kinded("kind", "function", "functionName", "qa_aeo_sk_z9"), kinded("kind", "customAction", "customActionId", "qa_aeo_sk_z9"),
                 kinded("kind", "callFunction", "functionName", "qa_aeo_sk_z9")));
-        cands.put("Tags", List.of(kinded("kind", "addTags", "tagIds", List.of()), kinded("kind", "tags", "tagIds", List.of())));
+        cands.put("Tags", List.of(kinded("kind", "addTags", "tags", List.of("QA AEO Z9 tag")), kinded("kind", "addTags", "tagIds", List.of())));
         cands.put("CreateRecord", List.of(kinded("kind", "createRecord", "moduleId", DEALS, "fields", Map.of("deal_name", nm(c, "bp deal")))));
         SoftAssert s = new SoftAssert();
         cands.forEach((what, list) -> {

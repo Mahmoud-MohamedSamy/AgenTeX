@@ -1,0 +1,109 @@
+{
+ "out": "NDC-2624-retest-BLOCKED.png",
+ "ticket": "NDC-2624",
+ "title": "Timeline | Deleting a record and adding or removing attachments are not logged on the timeline",
+ "verdict": "BLOCKED",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "v34-files-15.png",
+   "caption": "Files tab: every upload fails on staging (storage PUT 500).",
+   "crop": [
+    290,
+    300,
+    1300,
+    600
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      1157,
+      810,
+      1575,
+      876
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      290,
+      356,
+      1570,
+      552
+     ],
+     "n": 1,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2624-api.png",
+   "caption": "API / automation evidence — Timeline entries (TimelineTest) and attachments",
+   "crop": [
+    0,
+    0,
+    1600,
+    245
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "2",
+   "Screen",
+   "—",
+   "Files tab: every upload fails on staging (storage PUT 500).",
+   "FAIL"
+  ],
+  [
+   "1",
+   "Screen",
+   "—",
+   "Files tab: every upload fails on staging (storage PUT 500).",
+   "INFO"
+  ],
+  [
+   "3",
+   "deletion (automation)",
+   "Every step logged",
+   "RecordCreated, FieldChanged:company, NoteAdded, RecordDeleted, RecordRestored",
+   "PASS"
+  ],
+  [
+   "4",
+   "attachments",
+   "Attachment added / removed logged",
+   "POST /files 201 → PUT /s3/anyware-files/… 500 (\"Couldn't upload … Please try again.\") — not runnable on staging",
+   "FAIL"
+  ]
+ ]
+}

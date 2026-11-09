@@ -1,0 +1,13 @@
+const d = page.locator('[role=dialog]').first();
+await d.locator('button[aria-label="Report"], button', { hasText: /Choose a report/ }).first().click(); await sleep(1200);
+const opts = await page.$$eval('[role=option], [cmdk-item]', os => os.map(o => o.innerText.trim()));
+await page.locator('[role=option], [cmdk-item]', { hasText: 'QA R2W5 Report rollup' }).first().click(); await sleep(800);
+await d.locator('button', { hasText: /^XLS$/ }).click(); await sleep(800);
+const fmt = await page.$$eval('[role=option], [role=menuitem]', os => os.map(o => o.innerText.trim()));
+await page.locator('[role=option], [role=menuitem]', { hasText: /^CSV/ }).first().click().catch(() => page.keyboard.press('Escape'));
+await sleep(500);
+await d.locator('button', { hasText: /^Next$/ }).click(); await sleep(1500);
+await shot('s02-sched-step2');
+const txt = (await d.innerText()).replace(/\s+/g, ' ');
+const ctrls = await page.$$eval('[role=dialog] input, [role=dialog] select, [role=dialog] button', es => es.map(e => [e.tagName, e.getAttribute('type'), e.getAttribute('aria-label') || e.getAttribute('placeholder') || e.innerText.trim().slice(0, 30)].join(':')));
+return { opts: opts.slice(0, 10), fmt, txt: txt.slice(0, 1500), ctrls };

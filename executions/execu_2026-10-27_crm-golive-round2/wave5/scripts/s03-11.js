@@ -1,0 +1,10 @@
+const res = {};
+const net = []; const on = x => { if (/reporting/.test(x.url())) net.push(x.request().method() + ' ' + x.url().replace(/^.*\/api\/v1/, '').slice(0, 100) + ' ' + x.status()); }; page.on('response', on);
+const bars = page.locator('main svg path[class*="bar"], main svg rect, main .recharts-bar-rectangle, main canvas');
+res.nbars = await bars.count();
+await page.mouse.click(470, 450); await sleep(3000);
+await shot('s03-drill-click');
+res.pop = await page.evaluate(() => [...document.querySelectorAll('[role=dialog], [role=menu], [role=tooltip]')].map(e => e.innerText.replace(/\s+/g, ' ').trim()).join(' || ').slice(0, 1200));
+res.url = page.url().replace(H, '');
+page.off('response', on); res.net = net.slice(-8);
+return res;

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N10 Chat Reply</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#111827;--muted:#5b6472;--border:#e3e6eb;--ok:#15803d;--ok-bg:#e7f6ec;--bad:#b42318;--bad-bg:#fdecea;--warn:#a15c07;--warn-bg:#fdf3e1;--info:#1d4ed8;--info-bg:#e8effd;--code:#f1f3f6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1218;--card:#171b23;--text:#e6e9ef;--muted:#9aa3b2;--border:#2a303b;--ok:#4ade80;--ok-bg:#12291b;--bad:#f87171;--bad-bg:#2f1517;--warn:#fbbf24;--warn-bg:#2d2310;--info:#93b4ff;--info-bg:#162140;--code:#222834}}
+:root[data-theme="dark"]{--bg:#0f1218;--card:#171b23;--text:#e6e9ef;--muted:#9aa3b2;--border:#2a303b;--ok:#4ade80;--ok-bg:#12291b;--bad:#f87171;--bad-bg:#2f1517;--warn:#fbbf24;--warn-bg:#2d2310;--info:#93b4ff;--info-bg:#162140;--code:#222834}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 "Segoe UI",system-ui,-apple-system,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:32px 16px 64px}
+header h1{margin:0 0 4px;font-size:26px}
+.meta{color:var(--muted);font-size:13px;margin-bottom:20px}
+.verdict{display:flex;gap:14px;align-items:flex-start;background:var(--bad-bg);border:1px solid var(--bad);border-radius:12px;padding:16px 18px;margin-bottom:28px}
+.pill{display:inline-block;font-weight:700;font-size:12px;letter-spacing:.04em;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.p-bad{background:var(--bad-bg);color:var(--bad);border:1px solid var(--bad)}
+.p-ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok)}
+.p-warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn)}
+.p-info{background:var(--info-bg);color:var(--info);border:1px solid var(--info)}
+section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:20px}
+section h2{margin:0 0 6px;font-size:19px}
+section > p.lead{margin:0 0 14px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 10px;border-top:1px solid var(--border);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-top:none}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font:13px Consolas,ui-monospace,monospace;overflow-wrap:anywhere}
+ol,ul{margin:0;padding-left:22px}li{margin:6px 0}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 16px}
+.step{background:var(--code);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px}
+.step.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);font-weight:600}
+.arrow{color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.box{border:1px solid var(--border);border-radius:10px;padding:14px}
+.box h3{margin:0 0 8px;font-size:15px}
+.tablewrap{overflow-x:auto}
+@media (max-width:700px){.grid2{grid-template-columns:1fr}.verdict{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>N10 — Blueprint reply on a chat ticket</h1>
+<div class="meta">TAVI Desk vs Zoho Desk · staging-desk.taviportal.com, org NDC-Staging, department Customer Support · tested 3 Nov 2026 · spec row N10 · not filed yet</div>
+</header>
+
+<div class="verdict">
+<span class="pill p-bad">DIFFERS FROM ZOHO</span>
+<div>On a ticket that came from a live chat, a blueprint step that requires a reply sends that reply <b>as an email</b>, not back into the chat. In Zoho Desk the same step opens the IM reply, so the answer goes to the conversation the customer started. The step itself works; only the reply's destination is wrong.</div>
+</div>
+
+<section>
+<h2>What happened</h2>
+<div class="flow">
+<span class="step">Visitor chat on "NDC Staging" widget</span><span class="arrow">→</span>
+<span class="step">Converted to Desk ticket #889 (Channel = chat)</span><span class="arrow">→</span>
+<span class="step">Blueprint step "reply required" run</span><span class="arrow">→</span>
+<span class="step bad">Reply sent as email — nothing in the chat</span>
+</div>
+<div class="tablewrap"><table>
+<tr><th>Check</th><th>What TAVI did</th><th>Verdict</th></tr>
+<tr><td>Run the step with no reply</td><td>Refused: "A reply to the contact is required."</td><td><span class="pill p-ok">CORRECT</span></td></tr>
+<tr><td>Run the step with reply text only</td><td>Refused: "Name who the reply goes to." The reply needs <code>to: [email addresses]</code>; there is no chat option</td><td><span class="pill p-bad">DIFFERS</span></td></tr>
+<tr><td>Run the step with <code>to: [contact email]</code></td><td>Accepted (200); the ticket moved to the next state</td><td><span class="pill p-ok">WORKS</span></td></tr>
+<tr><td>Ticket replies list</td><td>Outbound <b>email</b> reply, subject "Re: QA BP N10 chat ticket", to qa-bp-n10@example.com</td><td><span class="pill p-bad">DIFFERS</span></td></tr>
+<tr><td>Omni Channel conversation</td><td>No new message; the last outbound message is still the bot's "nobody is available"</td><td><span class="pill p-bad">DIFFERS</span></td></tr>
+<tr><td>Ticket history</td><td>No "Instant message sent" entry, although TAVI has that event type</td><td><span class="pill p-bad">DIFFERS</span></td></tr>
+<tr><td>Visitor who left no email</td><td>The step cannot be completed without inventing an address</td><td><span class="pill p-warn">GAP</span></td></tr>
+</table></div>
+</section>
+
+<section>
+<h2>TAVI vs Zoho</h2>
+<p class="lead">Zoho side from the intake research and the spec, not a live Zoho check: the Zoho trial org has no IM channel.</p>
+<div class="grid2">
+<div class="box"><h3>Zoho Desk</h3><ul>
+<li>The step opens the IM reply box; the agent answers in the chat.</li>
+<li>The customer sees the answer in the chat they started.</li>
+<li>A visitor who left no email can still be answered.</li>
+<li>The ticket records an IM message in the conversation.</li></ul></div>
+<div class="box"><h3>TAVI Desk</h3><ul>
+<li>The step asks for email recipients; there is no chat reply.</li>
+<li>The customer gets an email at the contact's address.</li>
+<li>A visitor with no email blocks the step.</li>
+<li>The ticket shows an email reply; no "Instant message sent" history.</li></ul></div>
+</div>
+</section>
+
+<section>
+<h2>How it was tested</h2>
+<p class="lead">Live chat and IM live in the separate Omni Channel app; Desk links to it per department. NDC-Staging has one enabled chat widget, "NDC Staging", which no Desk department used before this test.</p>
+<ol>
+<li>Linked Customer Support's Live chat widget to "NDC Staging" (<code>PUT /desk/departments/{id}/channels</code>).</li>
+<li>Loaded the widget's embed code on a local test page at <code>http://127.0.0.1:5500</code>, an origin the widget allows.</li>
+<li>As a visitor: chose English, then "Connect with a human", and sent "QA BP N10 test - please ignore". No operator was online, so the chat was queued as missed.</li>
+<li>Converted the chat with the action behind Omni Channel's "Convert to Desk ticket" dialog (<code>POST /salesiq/conversations/{id}/desk-ticket</code>). First refused with <code>missing_identity</code> (anonymous visitor); after giving the visitor a placeholder email (qa-bp-n10@example.com, a reserved address) it created ticket <b>#889</b> in Customer Support, Channel = chat.</li>
+<li>Created a QA blueprint whose step requires a reply, added #889 to it, and ran the step through the same API the ticket page uses.</li>
+</ol>
+</section>
+
+<section>
+<h2>Evidence — server responses</h2>
+<p class="lead">3 Nov 2026, 09:53–10:05 UTC. Raw files: <code>evidence/raw/n10-run.json</code>, <code>evidence/raw/n10-convert.json</code>.</p>
+<div class="tablewrap"><table>
+<tr><th>Call</th><th>Response</th></tr>
+<tr><td><code>POST /salesiq/conversations/{id}/desk-ticket</code> (anonymous visitor)</td><td>422 DESK_CONVERSION_REFUSED, reason <code>missing_identity</code></td></tr>
+<tr><td>Same, after the visitor got an email</td><td>201 — ticket #889, department Customer Support</td></tr>
+<tr><td>Run step, <code>reply: null</code></td><td>422 "A reply to the contact is required."</td></tr>
+<tr><td>Run step, <code>reply: {content}</code></td><td>400 <code>reply.to</code>: "Name who the reply goes to."</td></tr>
+<tr><td>Run step, <code>to: "qa-bp-n10@example.com"</code></td><td>400 <code>reply.to</code>: wrong type</td></tr>
+<tr><td>Run step, <code>to: ["qa-bp-n10@example.com"]</code></td><td>200 — ticket moved Open → Escalated</td></tr>
+<tr><td><code>GET /desk/tickets/{id}/replies</code></td><td>outbound, mode reply, <code>to: ["qa-bp-n10@example.com"]</code>, subject "Re: QA BP N10 chat ticket"</td></tr>
+<tr><td><code>GET /salesiq/conversations/{id}/messages</code></td><td>7 messages; none after the bot's "nobody is available" at 09:53</td></tr>
+<tr><td><code>GET /desk/tickets/{id}/history</code></td><td>status changed, blueprint transition, blueprint entered, field changed, department changed — no reply or IM entry</td></tr>
+</table></div>
+</section>
+
+<section>
+<h2>Limits and checks before filing</h2>
+<p class="lead">Two checks would make this ready to file; both need one more QA chat and ticket, cleaned up the same way.</p>
+<ul>
+<li><span class="pill p-info">LIMIT</span> Run by API, not on the ticket page: a chat option in the step form is not ruled out, though the server accepting only email recipients makes it unlikely.</li>
+<li><span class="pill p-info">LIMIT</span> No operator joined the chat (it stayed "missed"); routing after an operator accepts it was not checked.</li>
+<li><span class="pill p-info">LIMIT</span> Zoho not checked live.</li>
+<li><span class="pill p-warn">TO DO</span> Control: an ordinary agent reply on a chat ticket, outside any blueprint. If it also goes out by email, the gap is in Desk's chat tickets in general, not in blueprints.</li>
+<li><span class="pill p-warn">TO DO</span> Screenshot of the blueprint step form on a chat ticket, then file with an annotated image (TAVI email reply vs empty chat).</li>
+</ul>
+</section>
+
+<section>
+<h2>Cleanup</h2>
+<div class="tablewrap"><table>
+<tr><th>Item</th><th>What happened</th></tr>
+<tr><td>Omni Channel conversation</td><td>Closed</td></tr>
+<tr><td>Visitor's placeholder email</td><td>Cleared (the anonymous visitor record stays, as for every widget visit)</td></tr>
+<tr><td>Ticket #889, its contact, the QA blueprint</td><td>Deleted</td></tr>
+<tr><td>Customer Support live chat link</td><td>Removed (a disabled, empty chat row remains — same effect as before)</td></tr>
+<tr><td>Other visitors' chats on the widget</td><td>Not touched</td></tr>
+</table></div>
+</section>
+</div>
+</body>
+</html>

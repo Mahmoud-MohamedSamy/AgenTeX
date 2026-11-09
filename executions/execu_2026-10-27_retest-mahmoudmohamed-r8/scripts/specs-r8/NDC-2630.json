@@ -1,0 +1,112 @@
+{
+ "out": "NDC-2630-retest-PARTIAL.png",
+ "ticket": "NDC-2630",
+ "title": "Email | A failed email send is shown as sent",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2630-api.png",
+   "caption": "API / automation evidence — A send that fails (owner, taviportal.com sender, Zoho connection without zoid)",
+   "crop": [
+    0,
+    0,
+    1600,
+    386
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      206
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      253
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      259,
+      1566,
+      300
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      306,
+      1566,
+      368
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "pre-check",
+   "Says if the sender cannot send",
+   "can_send true, provider zoho — the sender is let through",
+   "FAIL"
+  ],
+  [
+   "2",
+   "send",
+   "Failure reported, not \"Sent\"",
+   "422 MAIL_SEND_FAILED \"No Zoho account found for sender 'ndc-staging-owner@…'\" — no longer \"Sent\"",
+   "PASS"
+  ],
+  [
+   "3",
+   "record Mails",
+   "Shown as failed with the reason",
+   "status \"failed\", last_error with the reason",
+   "PASS"
+  ],
+  [
+   "4",
+   "timeline",
+   "No sent entry for a failed email",
+   "EmailSent, RecordCreated — the failed email is logged as sent",
+   "FAIL"
+  ],
+  [
+   "5",
+   "own account (Gmail)",
+   "—",
+   "Compose says \"You can't send email yet: no provider is connected for gmail.com…\"",
+   "INFO"
+  ]
+ ]
+}

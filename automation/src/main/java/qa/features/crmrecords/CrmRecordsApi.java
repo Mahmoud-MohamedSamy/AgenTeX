@@ -28,7 +28,8 @@ public final class CrmRecordsApi {
     }
 
     public static CrmUser owner() {
-        return CrmUser.as(OWNER);
+        // -Dcrm.apiUser=<email> (or -Dcrm.adminAs) runs the owner-side API work as another admin (owner reserved, rate-limited or at its session limit)
+        return CrmUser.as(qa.core.config.Config.get("crm.apiUser", System.getProperty("crm.adminAs", OWNER)));
     }
 
     public static CrmUser user1() {
@@ -79,7 +80,8 @@ public final class CrmRecordsApi {
             }
             case "deals" -> {
                 b.put("deal_name", name);
-                b.put("pipeline", "Standard (Standard)");   // the only value the API accepts today (NDC-2382)
+                // 25–26 Oct only the literal "Standard (Standard)" was accepted (NDC-2382); from the 27 Oct build the id is accepted and the literal refused
+                b.put("pipeline", Boolean.getBoolean("crm.pipelineLiteral") ? "Standard (Standard)" : PIPELINE_STANDARD);
                 b.put("stage", "qualification");
             }
             case "accounts" -> b.put("account_name", name);

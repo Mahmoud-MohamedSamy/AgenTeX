@@ -1,0 +1,1 @@
+await shot('v31-lead'); const t = (await txt()).split('\n').map(l => l.trim()).filter(l => l && l.length < 50); return done({ url: page.url(), att: t.filter(l => /ttach|Files|Upload/i.test(l)), n: t.length, sample: t.slice(30, 90) });

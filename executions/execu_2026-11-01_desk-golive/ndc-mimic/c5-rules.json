@@ -1,0 +1,500 @@
+[
+ {
+  "m": "DELETE",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules/e0e698e6-90fd-49b1-8d25-bf1dafb5a1ea"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules",
+  "b": {
+   "name": "QA NDC responsible appear",
+   "description": "NDC mimic: Accounting",
+   "layoutId": "d1e6505d-ad05-45d0-bd8a-8f3f1eca96cb",
+   "primaryField": "qa_ndc_mistake_category",
+   "applyToHelpCenter": true,
+   "conditions": [
+    {
+     "field": "qa_ndc_mistake_category",
+     "operator": "eq",
+     "value": "Branch Staff"
+    }
+   ],
+   "branches": [
+    {
+     "name": "Secondary Condition 1",
+     "condition": {
+      "op": "eq",
+      "field": "qa_ndc_mistake_category",
+      "value": "Branch Staff"
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_responsible_area",
+        "qa_ndc_responsible_email"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_responsible_area",
+        "qa_ndc_responsible_email"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 2",
+     "condition": {
+      "op": "eq",
+      "field": "qa_ndc_mistake_category",
+      "value": "Contact Center"
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_responsible_area",
+        "qa_ndc_responsible_email"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_responsible_area",
+        "qa_ndc_responsible_email"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 3",
+     "condition": {
+      "op": "eq",
+      "field": "qa_ndc_mistake_category",
+      "value": "Travel Agency"
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_responsible_area",
+        "qa_ndc_agency_code"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_responsible_area",
+        "qa_ndc_agency_code"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "save": "lrule-0"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules",
+  "b": {
+   "name": "QA NDC Financial Decision",
+   "description": "NDC mimic: Accounting",
+   "layoutId": "d1e6505d-ad05-45d0-bd8a-8f3f1eca96cb",
+   "primaryField": "status",
+   "applyToHelpCenter": true,
+   "conditions": [
+    {
+     "field": "status",
+     "operator": "eq",
+     "value": "Closed"
+    }
+   ],
+   "branches": [
+    {
+     "name": "Secondary Condition 1",
+     "condition": {
+      "op": "eq",
+      "field": "status",
+      "value": "Closed"
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_gl",
+        "qa_ndc_financial_decision",
+        "qa_ndc_gl_amount",
+        "qa_ndc_gl_document_no"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_gl",
+        "qa_ndc_financial_decision",
+        "qa_ndc_gl_amount",
+        "qa_ndc_gl_document_no"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 2",
+     "condition": {
+      "op": "and",
+      "conditions": [
+       {
+        "op": "eq",
+        "field": "status",
+        "value": "Closed"
+       },
+       {
+        "op": "eq",
+        "field": "qa_ndc_financial_decision",
+        "value": "Partial Debit"
+       }
+      ]
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_gl",
+        "qa_ndc_gl2",
+        "qa_ndc_gl_amount",
+        "qa_ndc_gl2_amount",
+        "qa_ndc_gl_document_no"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_gl",
+        "qa_ndc_gl2",
+        "qa_ndc_gl_amount",
+        "qa_ndc_gl2_amount",
+        "qa_ndc_gl_document_no"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "save": "lrule-1"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules",
+  "b": {
+   "name": "QA NDC Ancillary",
+   "description": "NDC mimic: Manual Invoice",
+   "layoutId": "602826bb-1d89-4aaf-82a9-1ab5e469c628",
+   "primaryField": "qa_ndc_transaction_type",
+   "applyToHelpCenter": true,
+   "conditions": [
+    {
+     "field": "qa_ndc_transaction_type",
+     "operator": "eq",
+     "value": "Ancillary"
+    }
+   ],
+   "branches": [
+    {
+     "name": "Secondary Condition 1",
+     "condition": {
+      "op": "eq",
+      "field": "qa_ndc_transaction_type",
+      "value": "Ancillary"
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_ancillary_type"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_ancillary_type"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "save": "lrule-2"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules",
+  "b": {
+   "name": "QA NDC Rejection",
+   "description": "NDC mimic: NDC Finance",
+   "layoutId": "3c11f91c-fa11-4baf-8f23-751835f3516e",
+   "primaryField": "status",
+   "applyToHelpCenter": false,
+   "conditions": [
+    {
+     "field": "status",
+     "operator": "eq",
+     "value": "QA NDC Rejected Audit"
+    }
+   ],
+   "branches": [
+    {
+     "name": "Secondary Condition 1",
+     "condition": {
+      "op": "eq",
+      "field": "status",
+      "value": "QA NDC Rejected Audit"
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_rejection_reasons"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_rejection_reasons"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "save": "lrule-3"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules",
+  "b": {
+   "name": "QA NDC Banking sector",
+   "description": "NDC mimic: Clients' Financial Investigations",
+   "layoutId": "14998e92-01f7-4d34-b88f-522091dae062",
+   "primaryField": "qa_ndc_responsible_dep_for_investigation",
+   "applyToHelpCenter": false,
+   "conditions": [
+    {
+     "field": "qa_ndc_responsible_dep_for_investigation",
+     "operator": "neq",
+     "value": "Banking sector"
+    }
+   ],
+   "branches": [
+    {
+     "name": "Secondary Condition 1",
+     "condition": {
+      "op": "neq",
+      "field": "qa_ndc_responsible_dep_for_investigation",
+      "value": "Banking sector"
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_related_branch"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "save": "lrule-4"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules",
+  "b": {
+   "name": "QA NDC Responsible Airline",
+   "description": "NDC mimic: to identify the Airline that we escalate the case to",
+   "layoutId": "14998e92-01f7-4d34-b88f-522091dae062",
+   "primaryField": "status",
+   "applyToHelpCenter": true,
+   "conditions": [
+    {
+     "field": "status",
+     "operator": "eq",
+     "value": "Escalated"
+    }
+   ],
+   "branches": [
+    {
+     "name": "Secondary Condition 1",
+     "condition": {
+      "op": "eq",
+      "field": "status",
+      "value": "Escalated"
+     },
+     "actions": [
+      {
+       "type": "show_fields",
+       "fields": [
+        "qa_ndc_airline_gds"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_airline_gds"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "save": "lrule-5"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/layout-rules",
+  "b": {
+   "name": "QA NDC Validation fields",
+   "description": "NDC mimic: Client Complaints",
+   "layoutId": "a01a53e7-cec9-4794-b91b-b177cbac2ee8",
+   "primaryField": "status",
+   "applyToHelpCenter": true,
+   "conditions": [
+    {
+     "field": "status",
+     "operator": "neq",
+     "value": "Open"
+    }
+   ],
+   "branches": [
+    {
+     "name": "Secondary Condition 1",
+     "condition": {
+      "op": "neq",
+      "field": "status",
+      "value": "Open"
+     },
+     "actions": [
+      {
+       "type": "show_sections",
+       "sections": [
+        "sec-qa-ndc-7-1"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 2",
+     "condition": {
+      "op": "and",
+      "conditions": [
+       {
+        "op": "neq",
+        "field": "status",
+        "value": "Open"
+       },
+       {
+        "op": "eq",
+        "field": "qa_ndc_issue_side",
+        "value": "Process"
+       }
+      ]
+     },
+     "actions": [
+      {
+       "type": "show_sections",
+       "sections": [
+        "sec-qa-ndc-7-3"
+       ]
+      },
+      {
+       "type": "require_fields",
+       "fields": [
+        "qa_ndc_issue_side"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 3",
+     "condition": {
+      "op": "and",
+      "conditions": [
+       {
+        "op": "neq",
+        "field": "status",
+        "value": "Open"
+       },
+       {
+        "op": "eq",
+        "field": "qa_ndc_issue_side",
+        "value": "Agent"
+       }
+      ]
+     },
+     "actions": [
+      {
+       "type": "show_sections",
+       "sections": [
+        "sec-qa-ndc-7-2"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Secondary Condition 4",
+     "condition": {
+      "op": "and",
+      "conditions": [
+       {
+        "op": "neq",
+        "field": "status",
+        "value": "Open"
+       },
+       {
+        "op": "eq",
+        "field": "qa_ndc_issue_side",
+        "value": "Both"
+       }
+      ]
+     },
+     "actions": [
+      {
+       "type": "show_sections",
+       "sections": [
+        "sec-qa-ndc-7-2",
+        "sec-qa-ndc-7-3"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "save": "lrule-6"
+ },
+ {
+  "m": "POST",
+  "p": "/modules/88e8ea44-1658-4df3-9930-d0902b91073d/validation-rules",
+  "b": {
+   "name": "QA NDC Reject needs a reason",
+   "description": "NDC mimic of validation rule on Status = Reject (alert: Please add a clear rejection reason)",
+   "condition": {
+    "op": "and",
+    "conditions": [
+     {
+      "op": "eq",
+      "field": "status",
+      "value": "QA NDC Reject"
+     },
+     {
+      "op": "isEmpty",
+      "field": "qa_ndc_rejection_reasons"
+     }
+    ]
+   },
+   "errorMessage": "Please add a clear rejection reason"
+  },
+  "save": "vrule"
+ }
+]

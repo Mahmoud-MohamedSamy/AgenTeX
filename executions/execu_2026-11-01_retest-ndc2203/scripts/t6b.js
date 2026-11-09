@@ -1,0 +1,2 @@
+const id = 'aad01815-63d7-4890-807f-2dd11e7b6b91'; const t = await getTicket(id); const h = arr((await api('GET', `/desk/tickets/${id}/activity`)).j?.data);
+return { read: (await api('GET', `/modules/${T}/records/${id}`)).s, number: t.ticket_number, ownerIsMe: t.owner === '9d182dfa-05f3-4af7-9685-8615a2fbe537', skills: t.skills, history: h.map(a => a.action + (a.summary?.by_rule_name ? ' by ' + a.summary.by_rule_name : '')).slice(0, 8) };

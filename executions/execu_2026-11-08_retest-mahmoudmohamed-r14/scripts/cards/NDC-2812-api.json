@@ -1,0 +1,69 @@
+{
+ "out": "NDC-2812-api.png",
+ "date": "8 Nov 2026",
+ "host": "staging-desk.taviportal.com (tenant NDC-Staging)",
+ "who": "admin (ndc-staging-owner)",
+ "title": "NDC-2812 · QA AS6 Dept A with Team Assignment OFF — every way to give a ticket to a team (desk #236, #239)",
+ "rows": [
+  [
+   "assign team",
+   "PUT …/departments/{Dept A}/team-assignment {enabled:false} → POST /desk/tickets/{id}/assign {team_id: QA AS6 Team A}",
+   "422 team_assignment_off \"Team Assignment is off in the ticket's department … Choose an agent.\" · ticket unchanged",
+   "ok"
+  ],
+  [
+   "assign agent",
+   "POST …/assign {owner_id: A2}",
+   "200 · owner A2",
+   "ok"
+  ],
+  [
+   "bulk assign",
+   "POST /desk/tickets/bulk/assign {ticket_ids, team_id: Team A} · same with owner_id A3",
+   "200 {succeeded 0, failed 1, code team_assignment_off} · agent: succeeded 1",
+   "ok"
+  ],
+  [
+   "move into Dept A",
+   "POST /desk/tickets/{Dept B ticket}/move {department_id: Dept A, team_id: Team A} · with owner_id A2",
+   "422 team_assignment_off · stays in Dept B · with agent: 200, Dept A / A2",
+   "ok"
+  ],
+  [
+   "team delete",
+   "DELETE /desk/teams/{QA RT14 2812 team 2}?reassign_team_id=Team A (team holds 2 open Dept A tickets)",
+   "422 reassign_team_id team_assignment_off · team and its tickets kept",
+   "ok"
+  ],
+  [
+   "agent work",
+   "POST /desk/agents/{A1}/reassign {departments:[{Dept A, target team: Team A}]} (suspend/remove tool)",
+   "422 team_assignment_off · A1 still 66 tickets / 62 activities in Dept A",
+   "ok"
+  ],
+  [
+   "rule",
+   "POST /desk/assignment-rules direct, target team Team A",
+   "400 targets[0].assign.team_id team_assignment_off (as before)",
+   "ok"
+  ],
+  [
+   "SLA escalation",
+   "SLA \"QA RT14 2812 SLA\" (response 1 min, escalation: reassign to Team A + priority high) · ticket #1368 breaches with Team Assignment off",
+   "sla.escalation_fired: reassign outcome skipped, reason team_assignment_off · owner kept · priority low → high done",
+   "ok"
+  ],
+  [
+   "SLA control",
+   "same SLA with Team Assignment on · ticket #1369",
+   "reassign done → Team A · priority high",
+   "ok"
+  ],
+  [
+   "back ON",
+   "team-assignment {enabled:true} → assign team · move Dept B → Dept A with team",
+   "200 owner Team A · 200 Dept A / Team A",
+   "ok"
+  ]
+ ]
+}

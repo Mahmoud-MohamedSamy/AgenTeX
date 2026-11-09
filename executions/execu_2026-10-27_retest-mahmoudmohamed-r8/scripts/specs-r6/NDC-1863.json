@@ -1,0 +1,122 @@
+{
+ "out": "NDC-1863-retest-PASS.png",
+ "ticket": "NDC-1863",
+ "title": "Modules and Fields | Deleting a field and trying to save the layout returns 400 Bad Request",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "1863-01-menu.png",
+   "caption": "QA field \"Lookup Contacts\" ⋮ menu: \"Remove from Layout\".",
+   "crop": [
+    332,
+    320,
+    948,
+    330
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      1007,
+      586,
+      1214,
+      615
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1863-02-remove-dialog.png",
+   "caption": "Dialog \"Remove Field: Lookup Contacts\": Move to Unused Fields / Delete Permanently.",
+   "crop": [
+    400,
+    250,
+    480,
+    220
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      552,
+      402,
+      703,
+      438
+     ],
+     "n": 2,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      707,
+      402,
+      842,
+      438
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1863-04-after-save.png",
+   "caption": "After Delete Permanently + Save: no error; \"Lookup Contacts\" gone (rollup row is followed by Company).",
+   "crop": [
+    332,
+    330,
+    948,
+    390
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      365,
+      550,
+      1248,
+      654
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Remove a field from the layout",
+   "Delete Permanently available",
+   "Menu \"Remove from Layout\" → choice Move to Unused Fields / Delete Permanently",
+   "PASS"
+  ],
+  [
+   "3",
+   "Delete Permanently",
+   "Field deleted from the module",
+   "DELETE field lookup_contacts → 204",
+   "PASS"
+  ],
+  [
+   "4",
+   "Save the layout",
+   "Layout saved, field removed from it",
+   "Save → PUT layout 200, no error; field gone from module and layout (old: 400 \"places fields that do not exist\")",
+   "PASS"
+  ],
+  [
+   "—",
+   "Observation",
+   "—",
+   "The Save also PUT 2 untouched fields (5dd25be0, 9eff6424)",
+   "INFO"
+  ]
+ ]
+}

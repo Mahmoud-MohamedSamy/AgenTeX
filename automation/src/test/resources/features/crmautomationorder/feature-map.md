@@ -118,3 +118,19 @@ Bug → test map (19 Oct): B-01 D-21/H-03 · B-02 H-02 · B-03 G-07 · B-04 F-03
 | 2026-10-21 | UI layer full class, re-run | 6 | 1 | UI-05 read the reopened name before the designer filled it (test timing; now waits) → UI-05 re-run PASSED. Earlier run stopped by low memory; UI-02 once showed "Something went wrong." on Done (not reproduced). Sweep now also removes stray QA AEO Layout UI layouts |
 | 2026-10-21 | Open cases E-04, F-02, E-16, K-09, B-13 | 3 | 1 | E-16, K-09, B-13 pass; F-02 Lead Owner condition never matches (candidate bug); E-04 email sent, inbox to confirm. The 70-min B-13 watch was stopped by low memory at +25 min; a one-shot check after the due time found the escalation notification |
 | 2026-10-21 | A-13, G-05, J-04, A-10, A-17 + blocker re-check | 3 | 1 | A-13/G-05/J-04 pass; A-17 suspended member still assigned (candidate B-17); A-10 inconclusive; web form still 404, API channel still manual, Deals conversion target has no mappings |
+
+## Go-live Wave 3 (26 Oct 2026, lane A)
+- New class `W3RetestTest` (group `wave3` + `crm-order`): NDC-2510 Task action with unknown status, NDC-2511 date-rule run in the
+  audit log, NDC-2421 Field Update on 12 parallel creates, NDC-2420 workflow after a required-field blueprint transition, NDC-2294
+  item 13 (`"trigger": []` on API create) and gap probes (triggers RecordScoreChanged / NoteAdded, actions Meeting / Call /
+  CustomFunction / CreateConnectedRecord, routes schedules / scoring / cadences / macros / connected-flows). Run: `-Dtest=W3RetestTest`.
+- `-Dcrm.noOwner=true`: `CrmUser.as(OWNER)` throws SkipException "NOT RUN: owner account reserved" (parallel lanes); owner-only steps
+  skip and `CrmApi.deleteLate` leaves approval-locked records ("LEFT FOR OWNER RESET"). Release them without the owner: an approver
+  or process admin rejects the pending approval (`GET /workflow/approvals/records/{m}/{r}` → `canReject`, `POST /workflow/approvals/{instanceId}/reject`).
+- `CrmApi.trackRule(id)` registers a workflow rule created with a raw POST.
+- Real mail only to the two allowed inboxes: C-10 workflow email, E-04 blueprint email and VerifyV4 SLA mail now go to CRM Admin A.
+- Trap (26 Oct 2026): test user 2 (profile "test") has Phone read-only, so it can't create leads; W3RetestTest submits as the Supervisor.
+- Trap: the TAVI web sign-in for CRM Admin A shows "Choose an organization" (Ashtar / Wonder Travel): NDC-Staging is "Wonder Travel".
+- Audit log query: `GET /audit/events?app_key=workflow|crm&limit=200` (CRM Admin A can read it).
+- Custom actions (A08): import an OpenAPI spec (Settings › Custom Actions › Import a spec › Paste), select the operation, set Base URL,
+  "Save & publish"; Run from the list. API: `/workflow/custom-actions`, `/workflow/custom-actions/sources`, `/{id}/run`, `/runs`.

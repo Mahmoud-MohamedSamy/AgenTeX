@@ -1,0 +1,12 @@
+const o = {};
+await page.goto(H + '/hq', { waitUntil: 'commit', timeout: 60000 }); for (let i = 0; i < 30; i++) { await sleep(1000); if ((await txt()).includes('Headquarters')) break; } await sleep(2000);
+await page.getByRole('button', { name: 'Open profile' }).click(); await sleep(2000);
+await page.getByText('My Profile', { exact: true }).first().click(); for (let i = 0; i < 20; i++) { await sleep(1000); if ((await txt()).length > 600) break; } await sleep(2000);
+let t = await txt(); o.url = page.url().replace(H, ''); o.text = t.replace(/\s+/g, ' ').slice(-900);
+o.has = ['Time zone', 'Time Zone', 'Date format', 'Language', 'Photo', 'Phone'].filter(s => t.includes(s));
+o.shot = await shot('wave1/W1-57-my-profile');
+await page.goto(H + '/hq', { waitUntil: 'commit', timeout: 60000 }); await sleep(8000);
+await page.getByRole('button', { name: 'Open profile' }).click(); await sleep(2000);
+await page.getByText('Default settings', { exact: true }).first().click(); await sleep(4000); t = await txt(); o.defaults = t.replace(/\s+/g, ' ').slice(-600);
+await page.keyboard.press('Escape');
+return done(o);

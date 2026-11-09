@@ -1,0 +1,63 @@
+{
+ "out": "NDC-2412-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2412 · Role mode, Leads visibility = Hierarchy — U1 (User @ team1) owns lead 6986f117; U2 is moved between profiles / org units",
+ "rows": [
+  [
+   "setting",
+   "Hierarchy Preference / Leads record visibility",
+   "role / hierarchy; U2 has no records.view_all in any step",
+   "info"
+  ],
+  [
+   "C1 Supervisor @team1",
+   "U2 Supervisor (300), same org unit → GET /api/v1/modules/{Leads}/records/6986f117 + Leads list",
+   "403 Permission denied; not in the list",
+   "bad"
+  ],
+  [
+   "C2 Manager @team1",
+   "U2 Manager (500), same org unit → same GET + list",
+   "403; not in the list — also after 60 s and after a fresh sign-in (/iam/me = Manager @team1)",
+   "bad"
+  ],
+  [
+   "C3 Manager @team2",
+   "U2 Manager, other org unit (NDC-2701 case)",
+   "403; not in the list",
+   "ok"
+  ],
+  [
+   "C4 Supervisor @team2",
+   "U2 Supervisor, other org unit",
+   "403; not in the list",
+   "ok"
+  ],
+  [
+   "C5 User @team1",
+   "U2 User (same rank), same org unit",
+   "403; not in the list",
+   "ok"
+  ],
+  [
+   "C7 lower → higher",
+   "U1 (User) opens a lead of U2 as Supervisor @team1",
+   "403",
+   "ok"
+  ],
+  [
+   "C8 / C9 controls",
+   "U1 opens own lead; Owner opens U1 lead",
+   "200 / 200",
+   "ok"
+  ],
+  [
+   "vs 27 Oct (NDC-Staging)",
+   "Manager same org unit",
+   "was visible on NDC-Staging; on Anyware it is not — now no superior sees a lower rank at all",
+   "info"
+  ]
+ ]
+}

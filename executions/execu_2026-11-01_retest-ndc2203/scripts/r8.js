@@ -1,0 +1,10 @@
+const A3 = 'e9314303-2abb-44b6-8b76-f908b7a3553b', DL = 'f7845032-d1be-48ff-8708-c539f2360df7'; const out = {};
+const s = r => r.s + (r.s >= 300 ? ' ' + r.t.slice(0, 300) : '');
+out.priv = s(await api('POST', `/desk/tickets/${A3}/comments`, { body_html: '<p>QA WF A3 private comment (must not fire)</p>', is_public: false }));
+await sleep(10000); out.firedAfterPrivate = arr((await api('GET', `/desk/tickets/${A3}/comments`)).j?.data).filter(c => /A3 fired/.test(c.body_html)).length;
+out.pub = s(await api('POST', `/desk/tickets/${A3}/comments`, { body_html: '<p>QA WF A3 public comment (must fire)</p>', is_public: true }));
+const r = await api('PATCH', `/modules/${T}/records/${DL}`, { data: [['description', 'QA WF D3all changed all'], ['resolution', 'QA WF resolution'], ['language', 'ar']].map(([k, v]) => ({ field: k, value: enc(v) })) }); out.dlAll = s(r);
+const fl = arr((await api('GET', `/modules/${T}/fields`)).j?.data).find(f => f.fieldName === 'language' || f.apiName === 'language'); out.langOpts = JSON.stringify(fl?.datatypeOptions || fl?.options || '').slice(0, 300);
+await sleep(15000);
+for (const [k, id] of [['A3', A3], ['D3all', DL]]) out[k] = arr((await api('GET', `/desk/tickets/${id}/comments`)).j?.data).filter(c => /fired/.test(c.body_html)).map(c => c.body_html + ' @' + c.created_at.slice(11, 19));
+return fin(out);

@@ -1,0 +1,16 @@
+{
+ "note": "DRAFT ONLY. Nothing posted.",
+ "name": "Assignment Rules | Round robin threshold counts the agent's tickets in every department and On Hold tickets",
+ "priority": "medium",
+ "state": "Bug",
+ "label": "Assignment Rules",
+ "module": "Desk",
+ "cycle": "Sprint 15",
+ "assignees": "same three as NDC-2811..2814, NDC-2821",
+ "relates": [
+  "NDC-2275",
+  "NDC-1978"
+ ],
+ "description_html": "<h3>Summary</h3>\n<p>The round robin thresholds (Department wise threshold and Agent level threshold) count an agent's open tickets in <strong>every department</strong>, and count <strong>On Hold</strong> tickets too. The help text says \"Maximum number of open tickets an agent <em>in the department</em> can handle at any given time\". Zoho Desk, with the same help text, counts only the agent's Open tickets in the department of the rule. As a result, an agent who works in several departments is treated as full and new tickets wait in the backlog although the agent is under the limit in that department.</p>\n<h3>Steps to Reproduce</h3>\n<ol>\n<li>Pick an agent who has open tickets in more than one department (NDC-Staging: Test User 1 has 6 open in QA AS6 Dept B and 82 in all departments).</li>\n<li>Setup › Assignment Rules › Round Robin, department QA AS6 Dept B: add a round robin rule on Ticket Create with this agent in the pool.</li>\n<li>Round Robin Preferences: turn on Department wise threshold and set it to 7 (one more than the agent's open tickets in Dept B). Allow offline agents if the agent isn't signed in.</li>\n<li>Create a ticket in Dept B that matches the rule, with no owner.</li>\n</ol>\n<h3>Expected Result</h3>\n<p>The agent has 6 open tickets in Dept B, under the threshold of 7, so the ticket is assigned to the agent, as the help text says and as Zoho Desk does. On Hold tickets don't count towards the threshold.</p>\n<h3>Actual Result</h3>\n<ul>\n<li>The ticket waits Unassigned in the backlog (#1758, 9 Nov). It is assigned only when the threshold is above the agent's open tickets in <strong>all</strong> departments (threshold 83 → #1759 assigned to Test User 1).</li>\n<li>On Hold tickets are counted too (7 Nov: with one of the agent's tickets On Hold, a threshold equal to the count including it sends the ticket to the backlog). Closed tickets are not counted.</li>\n<li>The same happens with the Agent level threshold (7 Nov, rule \"QA AS6 F14 threshold\": Dept A 60 + Dept B 6 → 66 counted).</li>\n</ul>\n<h3>Zoho Desk (checked live, 9 Nov)</h3>\n<ul>\n<li>Department wise threshold 2; the agent had 1 open ticket in the department and 2 in another department (Marketing): the new ticket was assigned by the rule (#108).</li>\n<li>Control: once the agent had 2 open tickets in the department, the next ticket waited Unassigned (#109).</li>\n<li>With one of the two set On Hold, the next ticket was assigned (#110): On Hold is not counted.</li>\n</ul>\n<h3>Environment</h3>\n<p>staging-desk.taviportal.com, tenant NDC-Staging, owner account, Edge; Zoho Desk test account (techsolutionsegypt), department Haytham Mohamed. Test data was removed after the checks.</p>\n<p>Evidence: I12-threshold-counts-all-departments-vs-zoho.png (attached)</p>",
+ "attach": "screenshots/annotated/I12-threshold-counts-all-departments-vs-zoho.png"
+}

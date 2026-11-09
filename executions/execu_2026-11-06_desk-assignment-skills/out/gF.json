@@ -1,0 +1,204 @@
+{
+ "P0": {
+  "assign_to_offline_agents": false,
+  "department_threshold_enabled": false,
+  "department_threshold": 40,
+  "agent_threshold_enabled": false,
+  "agent_thresholds": [],
+  "assign_backlogs": false,
+  "backlog_limit": 10,
+  "backlog_order": "created_time",
+  "assign_on_closure": false,
+  "incoming_mode": "immediate"
+ },
+ "F-02 validation": {
+  "thr0": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"department_threshold\",\"issue\":\"out_of_range\"}]"
+  },
+  "thr201": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"department_threshold\",\"issue\":\"out_of_range\"}]"
+  },
+  "thr1.5": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: department_threshold has a value of the wrong type. [{\"field\":\"department_threshold\",\"issue\":\"invalid_type\"}]"
+  },
+  "thr200": {
+   "s": 200
+  },
+  "bl0": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"backlog_limit\",\"issue\":\"out_of_range\"}]"
+  },
+  "bl51": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"backlog_limit\",\"issue\":\"out_of_range\"}]"
+  },
+  "agentNoRows": {
+   "s": 200
+  },
+  "agentRow0": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"agent_thresholds[0].threshold\",\"issue\":\"out_of_range\"}]"
+  },
+  "agentDup": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"agent_thresholds[1].user_id\",\"issue\":\"duplicate\"}]"
+  },
+  "agentNotMember": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"agent_thresholds[0].user_id\",\"issue\":\"not_a_member\"}]"
+  },
+  "order_bad": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"backlog_order\",\"issue\":\"unknown\"}]"
+  },
+  "mode_bad": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"incoming_mode\",\"issue\":\"unknown\"}]"
+  },
+  "mode_backlog": {
+   "s": 400,
+   "e": "VALIDATION_ERROR: The round robin preferences is invalid. [{\"field\":\"incoming_mode\",\"issue\":\"unknown\"}]"
+  }
+ },
+ "RR-10 signed-out agent": {
+  "p": "A1:true/true A2:true/true A3:true/true",
+  "L": [
+   {
+    "id": "25af6dd6-c982-4bb8-b10f-b623580ee3af",
+    "owner": "A1",
+    "aa": [
+     "auto_assigned A1 updated sequence skipped=[]"
+    ]
+   },
+   {
+    "id": "8dc5627c-9785-43ec-8b7b-0bd443b4849c",
+    "owner": "A3",
+    "aa": [
+     "auto_assigned A3 updated sequence skipped=[\"A2\"]"
+    ]
+   },
+   {
+    "id": "9869bcbb-f873-41d9-bd48-bc3753e529b8",
+    "owner": "A1",
+    "aa": [
+     "auto_assigned A1 updated sequence skipped=[]"
+    ]
+   }
+  ]
+ },
+ "E-16c all signed out → backlog": {
+  "p": "A1:true/true A2:false/false A3:true/true",
+  "t": {
+   "id": "b4cdb7ad-cf4f-4805-a7c9-759f71ce1f24",
+   "owner": "A3",
+   "aa": [
+    "auto_assigned A3 updated sequence skipped=[\"A2\"]"
+   ]
+  }
+ },
+ "F-01 offline agents on": {
+  "s": {
+   "s": 200
+  },
+  "t": {
+   "id": "67eace6c-e747-4772-a13b-b64042725eca",
+   "owner": "A1",
+   "aa": [
+    "auto_assigned A1 updated sequence skipped=[]"
+   ]
+  },
+  "restore": 200
+ },
+ "F-03 dept threshold 1": {
+  "p": "A1:true/true A2:true/true A3:true/true",
+  "s": {
+   "s": 200
+  },
+  "t": {
+   "id": "98d47454-3ded-466b-bebb-7c92146e0922",
+   "owner": "-",
+   "aa": []
+  }
+ },
+ "F-05 agent level A1=200": {
+  "s": {
+   "s": 200
+  },
+  "saved": [
+   {
+    "user_id": "876ce871-2b02-4854-89a7-68050391c62b",
+    "threshold": 200
+   }
+  ],
+  "L": [
+   {
+    "id": "53137ee2-8215-4d70-8fcc-2d5c37712d63",
+    "owner": "A1",
+    "aa": [
+     "auto_assigned A1 updated sequence skipped=[\"A2\",\"A3\"]"
+    ]
+   },
+   {
+    "id": "8d567a87-1a6d-442c-8446-8f1bad86d877",
+    "owner": "A1",
+    "aa": [
+     "auto_assigned A1 updated sequence skipped=[\"A2\",\"A3\"]"
+    ]
+   }
+  ],
+  "loadRule": {
+   "id": "43941778-1c48-4922-ac2d-2f153cb24833",
+   "owner": "A1",
+   "aa": [
+    "auto_assigned A1 updated load skipped=[\"A2\",\"A3\"]"
+   ]
+  }
+ },
+ "F-06 agent level off again": {
+  "s": {
+   "s": 200
+  },
+  "rowKept": [
+   {
+    "user_id": "876ce871-2b02-4854-89a7-68050391c62b",
+    "threshold": 200
+   }
+  ],
+  "t": {
+   "id": "24610279-288f-4f4f-b2e1-ce91c8b77c5a",
+   "owner": "-",
+   "aa": []
+  }
+ },
+ "F-09 both off → stays": {
+  "A": {
+   "owner": "5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4",
+   "team": null,
+   "dept": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6"
+  },
+  "B": {
+   "team": null,
+   "dept": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6"
+  },
+  "C": {
+   "team": null,
+   "dept": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6"
+  }
+ },
+ "F-07 assign backlogs": {
+  "s": {
+   "s": 200
+  },
+  "seen": {
+   "TK_BL_A": "A3 after 15s",
+   "TK_BL_B": "A2 after 77s",
+   "TK_BL_C": "A2 after 138s"
+  },
+  "aaA": [
+   "auto_assigned A3 updated sequence skipped=[\"A2\"]"
+  ]
+ }
+}

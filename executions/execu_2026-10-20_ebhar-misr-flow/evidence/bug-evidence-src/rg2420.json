@@ -1,0 +1,19 @@
+{
+ "out": "../NDC-2420-regression-2026-10-27.png",
+ "id": "NDC-2420 retest",
+ "title": "No workflow rule runs after a blueprint button any more — no portal access, no Committee hand-over",
+ "verdict": "Retest: FAIL",
+ "date": "27 Oct 2026, 14:05–14:09 local (UTC+3)",
+ "sub": "TAVI CRM crm.taviportal.com, Education First tenant (Ebhar Misr) · EM-00184 (QA AUTO A1, Science) and EM-00185 (QA AUTO A2, Math), kept · nothing granted or assigned by hand, waited 2 min after each button",
+ "panels": [
+  {"side": "TAVI", "col": "L", "caption": "EM-00184 Execution History: reviewer2 pressed «قبول التسجيل» at 14:05 — no N02 (portal access) run; the next entries are the 14:07 video save", "img": "../originals/rg2420-a1-exec.png", "boxes": [{"n": 1, "x": 293, "y": 441, "w": 1102, "h": 170}]},
+  {"side": "TAVI", "col": "R", "caption": "EM-00185 after pool-math pressed «اعتماد الفيديو — الرياضيات» (14:07): Assessment Complete for 15 min, owner still Pool — الرياضيات", "img": "../originals/rg2420-a2-record.png", "boxes": [{"n": 2, "x": 316, "y": 284, "w": 214, "h": 70}, {"n": 3, "x": 436, "y": 474, "w": 172, "h": 30}]},
+  {"side": "TAVI", "col": "R", "caption": "EM-00185 Execution History: no run of «نقل الملكية للجنة بعد اعتماد الفيديو» (nor N02) — only the save-triggered rules", "img": "../originals/rg2420-a2-exec.png", "boxes": [{"n": 4, "x": 293, "y": 271, "w": 1102, "h": 4}, {"n": 5, "x": 293, "y": 526, "w": 1102, "h": 170}]}
+ ],
+ "rows": [
+  {"n": "1", "b": "Portal access (N02, SendPortalAccess) after «قبول التسجيل»", "zoho": "25 Oct: Fired, access created", "tavi": "No run, no access after 2 min (EM-00184, EM-00185; also 0 of 13 approvals in the morning run)", "match": "FAIL"},
+  {"n": "2–4", "b": "Owner round robin to the Committee after «اعتماد الفيديو»", "zoho": "25 Oct: Fired, owner Pool — التسجيل", "tavi": "No run, owner unchanged after 2 min (EM-00184, EM-00185; also 0 of 4 in the morning run)", "match": "FAIL"},
+  {"n": "5", "b": "Rules after a normal save (video link → N04, category owner, «إسناد التقييم»)", "zoho": "Fired", "tavi": "Fired — still works", "match": "PASS"}
+ ],
+ "notes": ["Rules N02 (12057f81) and hand-over (4e51785b) are active and unchanged since 20/21 Oct; the blueprint is unchanged since 21 Oct. The worker that runs rules after blueprint transitions (fix 8419587) now runs nothing — wider than the original bug, since N02 worked even before the fix.", "Expected column = behaviour verified on 25 Oct after the fix (EM-00124, EM-00125, website E2E 4/4)."]
+}

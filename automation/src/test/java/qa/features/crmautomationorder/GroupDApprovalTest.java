@@ -67,7 +67,7 @@ public class GroupDApprovalTest extends OrderTestBase {
 
     private Map<String, Object> fields(String module, String name) {
         Map<String, Object> f = new LinkedHashMap<>(CrmApi.minimal(module, name));
-        if (LEADS.equals(module)) f.remove("phone"); // read-only for userV's profile
+        // phone stays: since 27 Oct userV may write it and the Leads layout requires it (422 "Phone is required." without it)
         return f;
     }
 
@@ -243,29 +243,34 @@ public class GroupDApprovalTest extends OrderTestBase {
         Assert.assertEquals(e.statusCode() / 100, 2, "rename out of the criteria: " + e.asString());
         Response rs = api.resubmitApproval(userN(), LEADS, lead);
         log("D-05", "resubmit", rs);
-        CrmApi.waitFor(20, () -> !"rejected".equals(state(LEADS, lead)));
+        // Round 1 verdict: the record IS released (outcome released, approval_status not_submitted, edit and delete allowed); the
+        // approvals status endpoint keeps describing the OLD instance as "rejected", so the record's own field is the source of truth
+        CrmApi.waitFor(20, () -> notSubmitted(api.approvalStatus(LEADS, lead)));
         String st = state(LEADS, lead);
         String status = api.approvalStatus(LEADS, lead);
-        log("D-05", "after", "state=" + st + " approval_status=" + status);
+        Response edit = api.update(userN(), LEADS, lead, Map.of("description", "QA AEO D-05 edit after release"));
+        log("D-05", "after", "old instance state=" + st + " approval_status=" + status + " edit=" + edit.statusCode());
         traceOf("D-05", LEADS, lead);
         SoftAssert s = new SoftAssert();
         s.assertEquals(rs.statusCode() / 100, 2, "resubmit answered");
         s.assertTrue(rs.asString().contains("released") || rs.asString().toLowerCase().contains("no_match") || rs.asString().contains("resubmitReleased"), "released outcome in response");
-        s.assertNotEquals(st, PENDING, "not pending");
-        s.assertNotEquals(st, "rejected", "no longer rejected");
         s.assertTrue(notSubmitted(status), "approval_status released (" + status + ")");
+        s.assertEquals(edit.statusCode() / 100, 2, "released record is editable again: " + edit.asString());
         s.assertAll();
     }
 
     @CaseId("D-06")
     @Test(groups = {"crm-order", "group-d"}, description = "Submitter who is also a level approver can't approve their own record")
     public void d06SubmitterCannotApproveOwnRecord() {
-        process("D-06", List.of(CrmProcs.levelUsers(userV().id(), supervisor().id())), null);
-        String lead = lead("D-06");
+        // Round 1 verdict: userV's profile holds workflow:approval:admin, and a process admin may decide (not a bug). The rule under
+        // test is for a PLAIN approver who submitted the record: userN (built-in User profile) is both submitter and level approver.
+        process("D-06", List.of(CrmProcs.levelUsers(userN().id(), supervisor().id())), null);
+        String lead = nLead(nm("D-06", "lead"));
         Assert.assertTrue(waitState(LEADS, lead, PENDING), "pending");
-        JsonPath v = ap(userV(), LEADS, lead);
+        JsonPath v = ap(userN(), LEADS, lead);
         log("D-06", "submitter view", v.prettify());
-        Response a = post(userV(), "/workflow/approvals/" + v.getString("data.instanceId") + "/approve", Map.of("comment", "self"));
+        if (Boolean.TRUE.equals(v.get("data.isProcessAdmin"))) inconclusive("userN is a process admin now (profile changed?), so the plain-approver rule can't be checked: " + v.prettify());
+        Response a = post(userN(), "/workflow/approvals/" + v.getString("data.instanceId") + "/approve", Map.of("comment", "self"));
         log("D-06", "self approve", a);
         traceOf("D-06", LEADS, lead);
         SoftAssert s = new SoftAssert();
@@ -501,7 +506,11 @@ public class GroupDApprovalTest extends OrderTestBase {
         api.setApprovalActive(p, false);
         Response del = adminA().delete("/workflow/approval-processes/" + p);
         log("D-17", "delete process", del);
-        Assert.assertEquals(del.statusCode() / 100, 2, "process with pending records can be deleted, records unaffected (Zoho); TAVI: " + del.asString());
+        // Round 1 verdict (not a bug, design choice): a process with pending records can't be deleted — 409 with a clear message
+        // telling the admin to deactivate it instead (the review process does the same); the pending record stays as it was
+        Assert.assertEquals(del.statusCode(), 409, "deleting a process with pending records must be refused (409): " + del.asString());
+        Assert.assertTrue(del.asString().toLowerCase().contains("deactivate") || del.asString().toLowerCase().contains("pending"),
+                "the refusal explains why (pending records / deactivate instead): " + del.asString());
         CrmUser.sleep(5000);
         JsonPath v = ap(supervisor(), LEADS, lead);
         log("D-17", "after delete (approver view)", v.prettify());

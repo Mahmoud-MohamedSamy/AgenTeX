@@ -1,0 +1,109 @@
+{
+ "out": "NDC-2645-retest-PASS.png",
+ "ticket": "NDC-2645",
+ "title": "Export | \"All fields\" exports every field defined on the module, including other layouts' fields and fields not used on any layout",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "v38-export-allfields.png",
+   "caption": "Export Leads: \"All fields — Every field on the layout this list shows, plus Record ID, Tags and the audit columns.\"",
+   "crop": [
+    608,
+    168,
+    384,
+    564
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      620,
+      550,
+      980,
+      612
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2645-api.png",
+   "caption": "API / automation evidence — Export \"All fields\" on Leads (Standard layout)",
+   "crop": [
+    0,
+    0,
+    1600,
+    313
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 2,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      248
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      254,
+      1566,
+      295
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Screen",
+   "—",
+   "Export Leads: \"All fields — Every field on the layout this list shows, plus Record ID, Tags and the audit columns.\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "dialog request",
+   "—",
+   "GET …/records/export?format=xlsx&scope=all&layout_id=… (no columns parameter)",
+   "INFO"
+  ],
+  [
+   "3",
+   "same request, CSV",
+   "Layout fields + Record ID, Tags, audit",
+   "17 columns: Record ID, Full Name, Email, Phone, Company, Lead Source, Lead Status, Reason, Comment, Complaint Reason, Lead Owner, Address 5, Tags, Created At, Created By, Last Modified At, Last Modified By",
+   "PASS"
+  ],
+  [
+   "4",
+   "before",
+   "—",
+   "~400 columns incl. other layouts' and unused fields",
+   "INFO"
+  ]
+ ]
+}

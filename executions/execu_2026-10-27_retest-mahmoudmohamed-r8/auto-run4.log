@@ -1,0 +1,196 @@
+[import leads] session=9ce84398-c693-4e73-9d51-1bac2bf385a8 mapping=204  validate=200 {"success":true,"data":{"total":1,"valid":1,"error_rows":0,"issues":[],"aggregates":[],"total_issues":0},"error":null,"meta":null} execute=202 {"success":true,"data":{"session_id":"9ce84398-c693-4e73-9d51-1bac2bf385a8","status":"scheduled"},"error":null,"meta":null} final=completed created=1 updated=0 errors=0 []
+[A-02] lead 86a8409e-0cc8-474f-813c-f42a5173ffd5 owner=valafo4080 arRows=[assignmentRuleId=b6b89a01-25e1-419c-8c09-45d81e762cd5 outcome=Fired trigger=RecordCreated] source=excel_import
+[cleanup] delete leads 86a8409e-0cc8-474f-813c-f42a5173ffd5 -> 204
+[layout] delete 841043e1-c078-41f9-8d6e-dfd61bee45c3 05b9e2e7-0711-41d5-b76f-938b65658128 -> 204
+[layout] delete f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430 70f5a126-9dd6-4427-abc0-f9df83fe57ee -> 204
+[layout] delete a9d87b62-b704-4c2e-b2d5-1b745d7c2065 58f42d86-e158-4b96-9a14-ca1f55eb689c -> 204
+[SK Z2] import mapping 204 
+[SK Z2] import status {"success":true,"data":{"session_id":"aa8249df-110f-4c06-8346-821e5bb8c8b4","module_id":"841043e1-c078-41f9-8d6e-dfd61bee45c3","file_name":"qa-aeo-sk.csv","status":"completed","mode":"add","total_rows":1,"created_count":1,"updated_count":0,"skipped_count":0,"error_count":0,"errors":[],"failure_reason":null,"started_at":"2026-10-27T15:03:47.484821+00:00","completed_at":"2026-10-27T15:03:47.627947+00:00","undone_at":null,"can_undo":true,"created_at":"2026-10-27T15:03:40.297445+00:00","layout_id":"dc21fc76-e783-4d99-8c64-525b9cc7b711"},"error":null,"meta":null}
+[SK Z2] import status=completed record=be236cbf-035c-4fbf-b337-448f3bc11717
+[SK] delete extra be236cbf-035c-4fbf-b337-448f3bc11717 -> 204
+[SK Z5] 400 {"success":false,"data":null,"error":{"code":"VALIDATION_ERROR","message":"One or more validation errors occurred.","details":[{"field":"Actions[0].OwnerTargetKind","issue":"OwnerTargetKind must be SpecificUser, UserField, RoleRoundRobin, OrgUnitRoundRobin, Team, or AssignmentRule."}]},"meta":null}
+AssignmentRule -> 201 {"success":true,"data":{"id":"b72e4a24-a694-42b6-91db-5e8068452f75","moduleId":"841043e1-c078-41f9-8d6e-dfd61bee45c3","appKey":"crm","layoutId":null,"departmentIds":[],"name":"QA AEO SK Z5 WF AssignmentRule","description":null,"trigger":{"kind":"RecordCreated","fieldName":null,"fieldNames":null,"fieldMatch":null,"dateFieldName":null,"offsetSeconds":null,"offsetMode":null,"ticketEvents":null},"criteria":{"kind":"StringMatch","field":"first_name","operator":"StartsWith","negate":null,"caseInsensit…
+[SK] delete /workflow/rules/b72e4a24-a694-42b6-91db-5e8068452f75 -> 204
+[SK Z7] create 400 {"success":false,"data":null,"error":{"code":"VALIDATION_ERROR","message":"One or more validation errors occurred.","details":[{"field":"Rules[0].Levels[0].Approver.Mode","issue":"The approver mode must be one of: anyone, everyone_sequential, everyone_parallel."},{"field":"Rules[0].Levels[0].Approver.Kind","issue":"Only a role or a group approver can ask everyone to approve."}]},"meta":null}
+[layout] delete 841043e1-c078-41f9-8d6e-dfd61bee45c3 dc21fc76-e783-4d99-8c64-525b9cc7b711 -> 204
+[layout] delete f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430 b463061d-08e7-4d0b-8424-e30443fad57c -> 204
+[layout] delete a9d87b62-b704-4c2e-b2d5-1b745d7c2065 a3f1a899-d8e9-4720-b089-d8894f70474f -> 204
+[ERROR] Tests run: 5, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 277.2 s <<< FAILURE! -- in TestSuite
+[ERROR] qa.features.crmautomationorder.GroupAJTest.ruleAppliesToLeadCreatedThroughApi -- Time elapsed: 4.812 s <<< FAILURE!
+java.lang.AssertionError: create through the records API: 403 {"success":false,"data":null,"error":{"code":"PERMISSION_DENIED","message":"Permission denied."},"meta":null} expected [2] but found [4]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertEqualsImpl(Assert.java:150)
+	at org.testng.Assert.assertEquals(Assert.java:132)
+	at org.testng.Assert.assertEquals(Assert.java:1419)
+	at org.testng.Assert.assertEquals(Assert.java:1383)
+	at qa.features.crmautomationorder.GroupAJTest.ruleAppliesToLeadCreatedThroughApi(GroupAJTest.java:247)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmautomationorder.GroupKZRegressionGapsTest.z2ImportManualApprovalHonoured -- Time elapsed: 32.99 s <<< FAILURE!
+java.lang.AssertionError: lead imported with manual_approval=true went live at once (record be236cbf-035c-4fbf-b337-448f3bc11717, import status completed); Zoho holds it in Approve Leads
+	at org.testng.Assert.fail(Assert.java:111)
+	at qa.features.crmautomationorder.GroupKZRegressionGapsTest.z2ImportManualApprovalHonoured(GroupKZRegressionGapsTest.java:603)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmautomationorder.GroupKZRegressionGapsTest.z5OwnerAssignmentByAssignmentRule -- Time elapsed: 10.07 s <<< FAILURE!
+java.lang.IllegalStateException: create record in leads returned 403: {"success":false,"data":null,"error":{"code":"PERMISSION_DENIED","message":"Permission denied."},"meta":null}
+	at qa.features.crmautomationorder.CrmUser.ok(CrmUser.java:156)
+	at qa.features.crmautomationorder.CrmApi.createRecord(CrmApi.java:179)
+	at qa.features.crmautomationorder.GroupKZRegressionGapsTest.nLead(GroupKZRegressionGapsTest.java:207)
+	at qa.features.crmautomationorder.GroupKZRegressionGapsTest.z5OwnerAssignmentByAssignmentRule(GroupKZRegressionGapsTest.java:698)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmautomationorder.GroupKZRegressionGapsTest.z7ApproverAnyoneEveryone -- Time elapsed: 14.34 s <<< FAILURE!
+java.lang.AssertionError: approval level with Everyone accepted: 400 {"success":false,"data":null,"error":{"code":"VALIDATION_ERROR","message":"One or more validation errors occurred.","details":[{"field":"Rules[0].Levels[0].Approver.Mode","issue":"The approver mode must be one of: anyone, everyone_sequential, everyone_parallel."},{"field":"Rules[0].Levels[0].Approver.Kind","issue":"Only a role or a group approver can ask everyone to approve."}]},"meta":null} expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at qa.features.crmautomationorder.GroupKZRegressionGapsTest.z7ApproverAnyoneEveryone(GroupKZRegressionGapsTest.java:774)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] Failures: 
+[ERROR]   GroupAJTest.ruleAppliesToLeadCreatedThroughApi:247 create through the records API: 403 {"success":false,"data":null,"error":{"code":"PERMISSION_DENIED","message":"Permission denied."},"meta":null} expected [2] but found [4]
+[ERROR]   GroupKZRegressionGapsTest.z2ImportManualApprovalHonoured:603 lead imported with manual_approval=true went live at once (record be236cbf-035c-4fbf-b337-448f3bc11717, import status completed); Zoho holds it in Approve Leads
+[ERROR]   GroupKZRegressionGapsTest.z5OwnerAssignmentByAssignmentRule:698->nLead:207 » IllegalState create record in leads returned 403: {"success":false,"data":null,"error":{"code":"PERMISSION_DENIED","message":"Permission denied."},"meta":null}
+[ERROR]   GroupKZRegressionGapsTest.z7ApproverAnyoneEveryone:774 approval level with Everyone accepted: 400 {"success":false,"data":null,"error":{"code":"VALIDATION_ERROR","message":"One or more validation errors occurred.","details":[{"field":"Rules[0].Levels[0].Approver.Mode","issue":"The approver mode must be one of: anyone, everyone_sequential, everyone_parallel."},{"field":"Rules[0].Levels[0].Approver.Kind","issue":"Only a role or a group approver can ask everyone to approve."}]},"meta":null} expected [true] but found [false]
+[ERROR] Tests run: 5, Failures: 4, Errors: 0, Skipped: 0
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project ui-automation: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Software Testing\Automation\Agentex Installation\Agentex Installation\automation\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

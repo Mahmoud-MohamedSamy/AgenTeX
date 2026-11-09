@@ -1,0 +1,56 @@
+--- 2026-11-03T23:26:32.480653+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Progress, 3 Nov 2026. Every unit of this item is built and open as a pull request. Nothing is merged or deployed yet. The ticket state is unchanged.
+Pull requests. Desk, in merge order: #214 (U1, Round Robin Preferences, Team Assignment switch, master switches), #215 (U2, two rule types, up to 5 targets, conversion of saved rules), #216 (U3, sequential order, SKIPPED agents, load and skill methods), #217 (U4, skills and direct rules run inside the save, before workflow rules), #218 (U6, criteria fields and operators), #219 (Phase 3, incoming backlog-first, 30-day rule, skill recalculation) and #220 (Phase 3, per-department email and mobile switches, unassigned-ticket alert). Client-engine: #770 (setup screen), #771, #772, #773 and #774. Metadata-engine: #204. Deploy repo grants: #142 and #143.
+Deploy to staging. These ship as one batch: grants first, then desk #214 to #220, then client-engine #770 to #774, then metadata-engine #204. The old settings screen does not work with the new desk API, and the new screen does not work with the old one.
+Verified. Each unit's test suites passed locally. The rule conversion and the new tables were tested on a real Postgres 16. Each unit had 10 to 30 mutation checks, and all were caught. The two largest units (U2 and U4) each had two independent code reviews, which led to 13 and 16 fixes. The screens were checked in English and Arabic, light and dark, at 1280 and 1440 wide, against mock data.
+Not verified yet. Nothing ran on staging, and there was no end-to-end run with the real services together. The first checks after deploy:
+A workflow "Ticket Owner is A" fires on a ticket that a direct rule assigned to A.
+A direct rule sets A and a workflow sets B in the same save. Only B is notified.
+Saved rules appear in the two new lists in their old order.
+A sequential pool with one agent offline lists that agent as SKIPPED in History.
+Decisions to confirm.
+Date conditions compare by UTC day, the same as workflow rules, so for UTC+2 or UTC+3 tenants the day boundary falls 2 to 3 hours before local midnight.
+The new unassigned-ticket alert is a separate rule, off by default. With both it and "New ticket" on, an unassigned ticket alerts twice.
+A direct rule whose agent, team or move target is no longer valid leaves the ticket to round robin.
+
+--- 2026-11-05T14:20:11.304030+02:00 by 00a20184-a95d-4ad8-a9d9-6273a8ba704f
+Live on tavi, checked on NDC Staging on 5 Nov. Moving to Ready For Test.
+Where to test: Setup → Automation → Assignment Rules.
+The page tabs are Rules, Team Assignment and Notifications. Inside Rules, a switch picks Direct Assignment or Round Robin. Round Robin can be linked directly with ?view=round-robin and keeps its department selector and Preferences.
+Rules are reordered by dragging the grip at the start of each row, with the mouse or with Space and the arrow keys. A drop shows "Order saved.". This replaces the up and down buttons.
+A rule's criteria look like the workflow builder's: numbered conditions with AND / OR between them, "Criteria pattern ( 1 and 2 ) Edit Pattern", and "Tickets matching certain conditions / All Tickets". The same editor is used for SLA targets and skills.
+Checked live: the tabs and the switch, a drag that saved and survived a reload (then put back), and the criteria layout with one and with two conditions (closed without saving). Nothing was left changed.
+
+--- 2026-11-06T14:01:22.678671+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 5 Nov 2026 → moved to Bug
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner + agent fedelav803 · department QA RT11 Dept A
+Method: API and screen
+Assignment works on ticket update and for direct rules, but round robin never runs when a ticket is created: a ticket created by an agent (New Ticket form with Ticket Owner cleared, the request sends owner = null) or by API gets the creator as owner, so the matching Round Robin rule (On Ticket Create) never assigns it.
+Checked:
+Round robin on Ticket Create (New Ticket form, owner cleared; also API create) → Owner set to the creator; RR never runs (form sends owner null, API sends kind null) [FAIL]
+Sequential, 3 agents, 6 tickets (on update) → A1, A2, A3, A1, A2, A3 [PASS]
+Offline agent skipped, History → Rule type, rule, method, trigger, "mahmoud.mahamed1515 (SKIPPED)" [PASS]
+Load based, 4 tickets → A2, A2, A3, A2 (open counts 5/2/4 at start) [PASS]
+Whole pool offline, offline not allowed → Stays unassigned [PASS]
+Department threshold 6 / agent threshold A1 = 12 → 3 assigned then backlog; A1, A2, A1 with agent threshold [PASS]
+Assign backlogs / Assign tickets on closure → Backlog → A3 (trigger backlog); A3 closes a ticket → backlog ticket to A3 in 4 s [PASS]
+Direct rule: preset owner / agent at threshold → Owner kept; A1 assigned at threshold [PASS]
+Direct + RR both match; two direct rules match; reorder → A1; A1; after reorder A3 (order restored) [PASS]
+Workflow sees owner set by direct rule (EO-2); RR keeps workflow owner (EO-3) → Workflow wrote its marker; owner stays A2, no RR entry [PASS]
+Direct A3 then workflow A1 in one event (EO-5) → A3 got no notice (control ticket: A3 notified); History A3 → A1 [PASS]
+Team target / Move to department / agent outside move-to department → As expected; 400 not_a_member [PASS]
+Deactivate rule; Direct master switch off (seconds) → As expected; switch restored [PASS]
+Validation: 6 targets, no Execute on, no method, threshold 0 / 201, stale save → 400 too_many / invalid / method required / 400 / 409 RULE_CHANGED [PASS]
+Audit Log → assignment_rule created/updated, round_robin_preferences updated [PASS]
+History shows the owner change twice → "Ticket owner was changed" and "Ticket Owner was updated" for the same change [INFO]
+Still failing:
+Round robin on Ticket Create (New Ticket form, owner cleared; also API create): expected Unassigned ticket is assigned by the matching RR rule (EO-1, GEN-13), actual Owner set to the creator; RR never runs (form sends owner null, API sends kind null)
+Evidence: NDC-2275-retest-PARTIAL.png (attached)
+
+--- 2026-11-07T07:32:16.647088+02:00 by 00a20184-a95d-4ad8-a9d9-6273a8ba704f
+Fix for the retest failure, live on tavi 6 Nov. Moving back to Ready For Test.
+Cause: a ticket created without an owner (New Ticket form with Ticket Owner cleared, or an API create with no owner) was given to its creator by metadata-engine. Round robin only assigns unassigned tickets, so it skipped it.
+Fix (metadata-engine #211): a desk ticket created without an owner now stays unassigned, so the assignment rules route it. Unchanged: a ticket created with an owner keeps it, including the form's default of the current agent. Excel imports also keep their own rule: a row with no owner and no chosen assignment rule belongs to the importer.
+Checked live on NDC Staging with a temporary round robin rule (sequential, 3 agents, On Ticket Create) that I deleted afterwards. A ticket created with owner = null went to agent 1, and a ticket created with no owner key went to agent 2. The event names the rule, the method and the trigger "created". The probe tickets were deleted, and the department's Round Robin Preferences are unchanged.
+Note for retesting: direct rules run before round robin. In "QA NDC Manual Invoice", the direct rule "QA NDC Manual invoice (Manual Invoice)" gives every Open ticket to a team, so that department's round robin rule never gets an Open ticket on create. That is expected. Retest in a department where no direct rule matches the new ticket.
+Not changed: History showing the owner change twice ("Ticket owner was changed" and "Ticket Owner was updated"), marked INFO in the retest.

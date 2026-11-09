@@ -1,0 +1,33 @@
+{
+ "out": "NDC-2712-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2712 · QA web form on Leads — public submissions exactly as the embedded form sends them",
+ "rows": [
+  [
+   "control",
+   "Submit with the trap empty (page_origin null)",
+   "200 \"submitted\" → lead created",
+   "ok"
+  ],
+  [
+   "trap, page_origin null",
+   "Trap filled, as the real embed sends",
+   "200 \"submitted\" (no hint to the bot) → no lead",
+   "ok"
+  ],
+  [
+   "trap, page_origin set",
+   "Trap filled, page_origin set",
+   "200 → no lead",
+   "ok"
+  ],
+  [
+   "cleanup",
+   "DELETE the QA web form",
+   "500 — retried at cleanup (observation)",
+   "info"
+  ]
+ ]
+}

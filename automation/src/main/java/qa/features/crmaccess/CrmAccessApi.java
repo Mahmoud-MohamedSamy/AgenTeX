@@ -32,7 +32,8 @@ public final class CrmAccessApi {
     }
 
     public static CrmUser owner() {
-        return CrmUser.as(OWNER);
+        // -Dcrm.adminAs=<email> lets another admin account act for the owner (owner unavailable: rate limit or session limit, 27 Oct 2026)
+        return CrmUser.as(System.getProperty("crm.adminAs", OWNER));
     }
 
     public static void fact(String caseId, String text) {

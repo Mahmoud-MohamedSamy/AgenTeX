@@ -1,0 +1,16 @@
+const res = {};
+await page.locator('main button', { hasText: 'QA Pick filter' }).first().click(); await sleep(1500);
+res.opts = await page.evaluate(() => [...document.querySelectorAll('[role=option], [cmdk-item], [role=menuitemcheckbox], [role=dialog] label, [data-radix-popper-content-wrapper] label')].map(e => e.innerText.trim()).filter(Boolean));
+await shot('s03-filter-open');
+const g = page.locator('[role=option], [cmdk-item], [role=menuitemcheckbox], label', { hasText: /^Green$/ }).first();
+if (await g.count()) await g.click();
+await sleep(500);
+const apply = page.locator('button', { hasText: /^(Apply|Done)$/ }).first(); if (await apply.count()) await apply.click(); else await page.keyboard.press('Escape');
+await sleep(4000);
+await shot('s03-filter-green');
+res.after = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 500);
+const rq = page.waitForResponse(r => /reporting\/dashboards/.test(r.url()) && ['POST', 'PUT', 'PATCH'].includes(r.request().method()), { timeout: 30000 }).catch(() => null);
+await page.locator('main button', { hasText: /^Save$/ }).first().click();
+const r = await rq; await sleep(3000);
+res.save = r ? r.status() + ' ' + (await r.text()).slice(0, 200) : 'none';
+return res;

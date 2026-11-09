@@ -1,0 +1,3 @@
+const fs=require('fs');const KEY=fs.readFileSync('C:/Users/Dell/Downloads/secret-key-1793537440144.csv','utf8').trim().split(/\r?\n/)[1].split(',')[3].replace(/"/g,'').trim();
+(async()=>{let cur='',all=[];for(let i=0;i<10;i++){const r=await (await fetch('https://api.plane.so/api/v1/workspaces/ahmed-hegazy/projects/efce4d84-5876-4015-b472-2efca7ad73f3/labels/?per_page=100'+(cur?'&cursor='+cur:''),{headers:{'X-API-Key':KEY}})).json();all.push(...(r.results||r));if(!r.next_page_results)break;cur=r.next_cursor;}
+ console.log(all.length,'labels; email/mail/channel:',all.filter(l=>/mail|channel|inbound/i.test(l.name)).map(l=>l.name).join(' | '));})();

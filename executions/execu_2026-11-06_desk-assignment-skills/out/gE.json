@@ -1,0 +1,71 @@
+{
+ "presence0": "A1:on A2:on A3:on",
+ "E-02 no method": {
+  "s": 400,
+  "e": "VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].method\",\"issue\":\"required\"}]"
+ },
+ "E-04 empty pool": {
+  "s": 400,
+  "e": "VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].pool.user_ids\",\"issue\":\"required\"}]"
+ },
+ "A-06 six targets": {
+  "s": 400,
+  "e": "VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets\",\"issue\":\"too_many\"}]"
+ },
+ "A-05 no execute_on": {
+  "s": 400,
+  "e": "VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"execute_on\",\"issue\":\"required\"}]"
+ },
+ "E-09 sequential x6": "A1(patch), A2(patch), A3(patch), A1(patch), A2(patch), A3(patch)",
+ "E-12 A2 offline": {
+  "p": "A1:on A2:off A3:on",
+  "order": "A1,A2,A3,A1",
+  "hist1": "{\"o\":\"A1\",\"strategy\":\"sequence\",\"type\":\"round_robin\",\"trig\":\"updated\"}",
+  "hist2": "{\"o\":\"A2\",\"strategy\":\"sequence\",\"type\":\"round_robin\",\"trig\":\"updated\"}",
+  "p2": "A1:on A2:on A3:on"
+ },
+ "E-11 pool change resets": {
+  "before": "A2,-",
+  "upd": [
+   503,
+   503,
+   "UNAVAILABLE: The ticket fields could not be read from the records service, so this could not be validated. Try again shortly. \"\""
+  ],
+  "after": "-,A3,A1"
+ },
+ "E-15 two RR rules": {
+  "rule": 201,
+  "order": "A2,A3,A1",
+  "deact": 200
+ },
+ "E-05/E-10 team pool": {
+  "rule": 201,
+  "teamOrder": "A3,A2,A3,A3",
+  "excl": 200,
+  "afterExclude": "A2,A2,A2"
+ },
+ "E-13 load": {
+  "rule": 201,
+  "order": "A3,A3,A2,A3,A1",
+  "hist": "{\"o\":\"A3\",\"strategy\":\"load\",\"type\":\"round_robin\",\"trig\":\"created\"}"
+ },
+ "E-16 all offline": {
+  "p": "A1:off A2:off A3:off",
+  "t": {
+   "id": "89830b5b-dc27-44fa-9ec5-c5daefe39043",
+   "owner": "A2",
+   "team": null,
+   "via": "unassign"
+  },
+  "h": [
+   "ticket.department_changed {\"field_key\":\"department_id\",\"old_value\":null,\"new_value\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\"}",
+   "ticket.auto_assigned {\"kind\":\"round_robin\",\"rule_id\":\"2a700860-6c8c-4c76-a106-20adcf899944\",\"team_id\":null,\"trigger\":\"created\",\"owner_id\":\"d23fb4e0-248d-41f6-af60-d28885a7007e\",\"strategy\":\"sequence\",\"rule_name\":\"QA AS6 RR seq\",\"rule_type\":\"round_robin\",\"skipped_user_ids\":[]}"
+  ],
+  "afterOnline": {
+   "owner": "d23fb4e0-248d-41f6-af60-d28885a7007e",
+   "team": null,
+   "dept": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6"
+  },
+  "p2": "A1:on A2:on A3:on"
+ }
+}

@@ -1,0 +1,11 @@
+const d = page.locator('[role=dialog]').first();
+const mods = await d.locator('button, select', { hasText: 'All Modules' }).first().evaluate(e => e.tagName === 'SELECT' ? [...e.options].map(o => o.text) : e.outerHTML.slice(0, 200)).catch(() => null);
+for (const n of ['Name', 'QA Pick', 'QA Number', 'QA Formula', 'QA Auto', 'QA Rollup']) await d.locator('label, [role=checkbox], button, li', { hasText: new RegExp('^\s*' + n + '\s*$') }).first().click();
+await sleep(500); await shot('s02-cols-picked');
+await d.locator('button', { hasText: /^Done$/ }).click(); await sleep(1500);
+const rq = page.waitForResponse(r => /reporting\/(query|reports)/.test(r.url()) && r.request().method() === 'POST', { timeout: 30000 }).catch(() => null);
+await page.locator('button', { hasText: /^Run$/ }).first().click();
+const r = await rq; await sleep(4000);
+await shot('s02-run');
+const t = (await page.innerText('main')).replace(/\s+/g, ' ');
+return { mods, runResp: r ? r.status() + ' ' + (await r.text()).slice(0, 1500) : 'none', preview: t.slice(t.indexOf('Preview'), t.indexOf('Preview') + 1200) };

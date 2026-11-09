@@ -1,0 +1,72 @@
+{
+ "out": "NDC-2098-retest.png",
+ "ticket": "NDC-2098",
+ "verdict": "PASS",
+ "label": "RETEST PASS",
+ "title": "A deleted view id in the URL opens All Leads",
+ "env": "staging-crm.taviportal.com (owner, test user 1) vs Zoho CRM org943261092 (read-only captures)",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "t-ndc2098-deleted-view.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "caption": "TAVI — QA view created, opened, deleted by API, then /modules/{Leads}?view={deleted id} opened again: the URL drops ?view and the list shows \"All Leads\", 172 records.",
+   "boxes": [
+    {
+     "b": [
+      284,
+      150,
+      380,
+      182
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      262,
+      70,
+      380,
+      125
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-leads-views.png",
+   "w": 1600,
+   "h": 950,
+   "crop": [
+    0,
+    0,
+    1600,
+    950
+   ],
+   "caption": "Zoho — Leads view picker (captured 25 Oct).",
+   "boxes": []
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Open a deleted view by its link",
+   "Not checked live with a deleted view id",
+   "Falls back to the default \"All Leads\" view; the deleted view does not open",
+   "PASS"
+  ],
+  [
+   "2",
+   "The list loads",
+   "Not checked live",
+   "Loaded once the slow first load finished (the automated check timed out at 60 s, NDC-2136)",
+   "INFO"
+  ]
+ ]
+}

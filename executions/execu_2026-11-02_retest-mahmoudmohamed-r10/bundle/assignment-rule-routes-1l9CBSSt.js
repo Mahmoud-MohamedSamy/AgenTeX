@@ -1,0 +1,1 @@
+var e=`/settings/automation/assignment-rules`,t=`${e}/new`;function n(e,n){let r=new URLSearchParams({moduleId:e});return n&&r.set(`layoutId`,n),`${t}?${r.toString()}`}export{n,e as t};

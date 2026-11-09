@@ -1,0 +1,15 @@
+{ "out": "NDC-2496-retest.png", "ticket": "NDC-2496", "verdict": "PARTIAL", "label": "PARTLY WORKS",
+  "title": "Email Feature | compose from a record, templates, signature, drafts, scheduled — sending fails",
+  "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)", "date": "26 Oct 2026",
+  "panels": [
+    { "img": "t-compose-dialog.png", "w": 1600, "h": 900, "caption": "TAVI — Send Email on the QA lead: the default template is filled for this lead and the company signature is added.", "crop": [352, 45, 896, 810],
+      "boxes": [ { "b": [376, 190, 1224, 440], "n": 1 }, { "b": [376, 595, 1224, 775], "n": 2 }, { "b": [1028, 807, 1150, 843], "n": 3 }, { "b": [372, 807, 460, 843], "n": 4 } ] },
+    { "img": "z-lead-emails.png", "w": 1600, "h": 950, "caption": "Zoho — a lead's Emails section: Compose Email plus Mails / Drafts / Scheduled tabs (compose itself not opened).", "crop": [472, 240, 1116, 145],
+      "boxes": [ { "b": [1448, 252, 1568, 279], "n": 1, "color": "#16a34a" }, { "b": [480, 296, 700, 330], "n": 3, "color": "#16a34a" } ] }
+  ],
+  "rows": [
+    ["1", "Compose from the record with a template", "Compose Email on the record; templates per module (Setup › Templates lists them)", "Works: recipient taken from the lead, template \"Introduction\" fills subject and body with the lead's and sender's names; 39 templates offered", "PASS"],
+    ["2", "Signature", "Personal signatures (Setup › Email › Compose › Add New Signature)", "One company signature added automatically (placeholders filled); no personal signature", "INFO"],
+    ["3", "Drafts and scheduled emails", "Mails / Drafts / Scheduled tabs", "Works: draft saved, edited and deleted; a scheduled email (29 Oct) listed under Scheduled and deleted", "PASS"],
+    ["4", "Send", "Sends from the connected mailbox (not tried in Zoho)", "Fails: the taviportal.com Zoho Mail connection has no org id, and the failure is hidden — see W4-B1", "FAIL"]
+  ] }

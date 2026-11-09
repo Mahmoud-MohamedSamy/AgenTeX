@@ -1,0 +1,79 @@
+{
+ "out": "NDC-2710-retest-PASS.png",
+ "ticket": "NDC-2710",
+ "title": "Approval Process | The approval view offers Approve to a user whose approve is then refused",
+ "priority": "low",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2710-api.png",
+   "caption": "API evidence — NDC-2710 · Approval view for an approver without workflow:approval:act (U1, CRM User)",
+   "crop": [
+    0,
+    0,
+    1600,
+    271
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      206
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      253
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "approval view",
+   "Approve not offered",
+   "canApprove false, viewerDecisionBlockedReason \"missing_permission\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "press Approve",
+   "Consistent",
+   "403 \"Missing required permission 'workflow:approval:act'\" — agrees with the view",
+   "PASS"
+  ],
+  [
+   "3",
+   "with the permission",
+   "Offered and works",
+   "canApprove true; Approve 204 (10/10)",
+   "PASS"
+  ]
+ ]
+}

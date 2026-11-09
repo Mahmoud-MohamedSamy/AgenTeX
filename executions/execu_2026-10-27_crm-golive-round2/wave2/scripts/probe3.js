@@ -1,0 +1,10 @@
+const o = as(OWNER), u = as(ADMA);
+const LOCK = '907638b4-97f7-4fc8-9527-809d232605b4';
+const t = Date.now() % 100000;
+const c = await o.post(`/modules/${MODS.leads}/records`, { layout_id: LAY.leads, data: enc({ first_name: 'QA R2W2 LK ' + t, phone: '0101' + String(2000000 + t).slice(0, 7), single_line_3_9: 'QA R2W2' }) });
+const id = c.j.data.id; out.lead = id;
+const g = await o.get(`/modules/${MODS.leads}/records/${id}`); out.recordLockFields = JSON.stringify(g.j.data).match(/"(is_locked|locked[a-z_]*)":[^,]*/gi);
+out.editOwner = (await o.patch(`/modules/${MODS.leads}/records/${id}`, { data: enc({ company: 'QA R2W2 owner edit' }) })).t.slice(0, 250);
+out.editAdminA = (await u.patch(`/modules/${MODS.leads}/records/${id}`, { data: enc({ company: 'QA R2W2 adminA edit' }) })).t.slice(0, 250);
+out.after = val(await o.get(`/modules/${MODS.leads}/records/${id}`), 'company');
+out.lockGet = (await o.get(`/modules/${MODS.leads}/record-locks/${LOCK}`)).t.slice(0, 500);

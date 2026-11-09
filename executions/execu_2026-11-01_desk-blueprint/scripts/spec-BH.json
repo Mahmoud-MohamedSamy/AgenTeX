@@ -1,0 +1,147 @@
+{
+ "label": "BUG",
+ "verdict": "FAIL",
+ "date": "2 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, org Anyware, owner, QA WF Dept R (QA records, deleted after; tenant settings restored) · Zoho: Zoho Desk Enterprise trial (read only)",
+ "out": "BP-BH-weekend-vs-zoho.png",
+ "ticket": "Business hours",
+ "taviHead": "TAVI Desk (Business Hours, ticket #1107)",
+ "zohoHead": "Zoho Desk (State Level SLA clock)",
+ "title": "With business hours set to Mon–Fri, blueprint and SLA due times still count Saturday",
+ "panels": [
+  {
+   "img": "BH-settings-keep.png",
+   "caption": "TAVI Setup → Business Hours: Default = 24 hours · Mon–Fri; \"SLA policies, blueprints and supervise rules count time in them.\"",
+   "crop": [
+    270,
+    60,
+    1160,
+    320
+   ],
+   "boxes": [
+    {
+     "b": [
+      288,
+      90,
+      852,
+      110
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      905,
+      325,
+      1122,
+      352
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "zoho-state-sla-clock.png",
+   "caption": "Zoho: a state SLA picks its clock (business-hours sets or Calendar Hours); business hours count working days only",
+   "crop": [
+    1120,
+    160,
+    480,
+    320
+   ],
+   "boxes": [
+    {
+     "b": [
+      1312,
+      294,
+      1444,
+      340
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "BH3-ticket.png",
+   "caption": "TAVI ticket #1107, entered Mon 2 Nov 11:57: blueprint state (5 days, business clock) \"Due Sat 11:57\", warning Fri 11:57",
+   "crop": [
+    365,
+    385,
+    300,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      408,
+      510,
+      530,
+      534
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      408,
+      534,
+      548,
+      556
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "BH3-ticket-sla.png",
+   "caption": "Same ticket, department SLA on business hours: resolution (120 h) due 07/11/2026 11:57 but \"4 days 11 hours of business time left\"",
+   "crop": [
+    365,
+    280,
+    300,
+    370
+   ],
+   "boxes": [
+    {
+     "b": [
+      386,
+      466,
+      640,
+      532
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      386,
+      596,
+      600,
+      638
+     ],
+     "n": 3
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Working days",
+   "Business hours define the working days and times; time outside them is not counted by SLAs or blueprint state SLAs.",
+   "Default business hours set to 24 hours · Mon–Fri (Sat and Sun not working days). The page says blueprints and SLA policies count time in them.",
+   "INFO"
+  ],
+  [
+   2,
+   "Blueprint state, 5-day limit on \"Business hours\"",
+   "Counts only working time: entered Mon 11:57 → due the next Mon 11:57.",
+   "Due Sat 7 Nov 11:57 (warning Fri 11:57) — exactly 5 calendar days. The value is final (not provisional) after the server recalculates it.",
+   "BUG"
+  ],
+  [
+   3,
+   "Department SLA, resolution 120 business hours, same ticket",
+   "Counts only working time.",
+   "Due 07/11/2026 11:57 too, while the card says \"4 days 11 hours of business time left\" — only about 108 working hours exist before that time.",
+   "BUG"
+  ]
+ ]
+}

@@ -1,0 +1,177 @@
+{
+ "D-10": {
+  "st": "SKIPPED",
+  "test": "GroupDApprovalTest.d10ResetFieldSendsBackForApproval",
+  "desc": "'Reset approval status if changed' field edited by a permitted user sends the record back for approval",
+  "err": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "src": "crm-order-run3-summary.json"
+ },
+ "D-18": {
+  "st": "SKIPPED",
+  "test": "GroupDApprovalTest.d18ApprovalStatusEditPermission",
+  "desc": "Approval Status not editable by a normal user; reset by a profile with 'Can Edit Record Approval Status' (Owner)",
+  "err": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "src": "crm-order-rerun2-summary.json"
+ },
+ "I-08": {
+  "st": "SKIPPED",
+  "test": "GroupHIConversionTest.i08StatusResetOnApprovedRecordInBlueprint",
+  "desc": "Approval status reset (Owner) on an approved record in a blueprint: write down re-entry vs blueprint (F-20: no re-entry)",
+  "err": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "src": "crm-order-run3-summary.json"
+ },
+ "I-09": {
+  "st": "SKIPPED",
+  "test": "GroupHIConversionTest.i09DeleteHeldRecordThenRestore",
+  "desc": "Delete a record pending review, then restore it from the Recycle Bin: write down which holds come back",
+  "err": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "src": "crm-order-run3-summary.json"
+ },
+ "K-09": {
+  "st": "SKIPPED",
+  "test": "GroupKZRegressionGapsTest.k09OwnerCanEditApprovalStatus",
+  "desc": "Tenant Owner can change a record's Approval Status by hand (US-A3)",
+  "err": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "src": "crm-order-run3-summary.json"
+ },
+ "K-13": {
+  "st": "PASSED",
+  "test": "GroupKZRegressionGapsTest.k13D2ApprovalEventsOnTimeline",
+  "desc": "US-D2: submission and approval are both written to the record Timeline",
+  "err": "",
+  "src": "crm-order-run3-summary.json"
+ },
+ "A-10": {
+  "st": "SKIPPED",
+  "test": "GroupAJTest.onlineStatusSkipsSignedOutUser",
+  "desc": "Availability Online status: signed-out user skipped",
+  "err": "NOT RUN: needs a target user who is reliably signed out; userN/userV are signed in by parallel sessions and signing users out touches shared accounts",
+  "src": "crm-order-run3-summary.json"
+ },
+ "A-17": {
+  "st": "SKIPPED",
+  "test": "GroupAJTest.deactivatedUserSkipped",
+  "desc": "Deactivated target user in the Category is skipped → fallback",
+  "err": "NOT RUN – needs user OK: deactivating a user changes a shared account",
+  "src": "crm-order-run3-summary.json"
+ },
+ "J-04": {
+  "st": "SKIPPED",
+  "test": "GroupAJTest.workqueueCompletionNotAffected",
+  "desc": "Workqueue task completion triggers the teammate rule, not QA rules",
+  "err": "NOT RUN: needs Tasks status = Completed, which fires the teammate rule ActionsOnTaskCompletionFromWorkqueue",
+  "src": "crm-order-run3-summary.json"
+ },
+ "A-02": {
+  "st": "SKIPPED",
+  "test": "GroupAJTest.webFormSubmissionAssignsOwnerByRule",
+  "desc": "Extra: web-form submission (form owner = assignment rule) assigns the rule's user (WebForm channel)",
+  "err": "INCONCLUSIVE: public web-form session not issued: 404",
+  "src": "crm-order-run3-summary.json"
+ },
+ "E2E-1": {
+  "st": "SKIPPED",
+  "test": "GroupGChainTest.e2e1WebLeadHappyPath",
+  "desc": "Web lead happy path: web form → AR to userN → review approved → WF sets status + follow-up task → AP approved → BP to final state → convert → Deal chain",
+  "err": "INCONCLUSIVE: public web-form session not issued: 404",
+  "src": "crm-order-run3-summary.json"
+ },
+ "G-08": {
+  "st": "SKIPPED",
+  "test": "GroupGChainTest.g08LeadsWebForm",
+  "desc": "Leads web-form submission: assignment (form uses the rule) → review (web form channel) → workflow → approval → blueprint",
+  "err": "INCONCLUSIVE: public web-form session not issued: 404",
+  "src": "crm-order-run3-summary.json"
+ },
+ "G-02": {
+  "st": "SKIPPED",
+  "test": "GroupGChainTest.g02LeadsApiCreate",
+  "desc": "Leads API create with the assignment rule: all five in order (API channel)",
+  "err": "INCONCLUSIVE: no API channel: a records-API create has source 'manual', so the assignment stage cannot run; review → workflow → approval → blueprint ran in order",
+  "src": "crm-order-run3-summary.json"
+ },
+ "G-15": {
+  "st": "SKIPPED",
+  "test": "GroupGChainTest.g15TasksApiCreate",
+  "desc": "Tasks API create with the assignment rule: assignment → … (API channel)",
+  "err": "INCONCLUSIVE: no API channel: a records-API create has source 'manual', so the assignment stage cannot run; the rest ran in order",
+  "src": "crm-order-run3-summary.json"
+ },
+ "A-13": {
+  "st": "SKIPPED",
+  "test": "GroupAJTest.updateImportDoesNotReassign",
+  "desc": "Import in update mode with the rule does not change owners",
+  "err": "INCONCLUSIVE: Leads has no unique field, so an update-mode import cannot match an existing lead",
+  "src": "crm-order-run3-summary.json"
+ },
+ "H-01": {
+  "st": "SKIPPED",
+  "test": "GroupHIConversionTest.h01ConvertReleasedLeadDealProcesses",
+  "desc": "Convert a released lead (no holds) to a Deal while Deals has all five QA processes: write down which run (Zoho: AR does not run, owner = convert dialog)",
+  "err": "INCONCLUSIVE: conversion created no Deal; it created: contacts=c1f1b548-d934-434f-bc89-039750f3a64f (created) subscriptions=69b63a9b-38ae-4fba-95e3-563c2fa0ef91 (created) | response 200 {\"success\":true,\"data\":{\"leadId\":\"7bdd354a-f6a8-4da5-8f79-253b942a0e65\",\"targets\":[{\"moduleId\":\"b2398920-2914-4836-be53-81bd960effea\",\"moduleKey\":\"accounts\",\"outcome\":\"skipped\",\"recordId\":null,\"matchedField\":null,\"reason\":\"skipped: gating field 'company' is not set on the lead\"},{\"moduleId\":\"6f553963-01d6-4b68-9fb3-143d23044c41\",\"moduleKey\":\"contacts\",\"outcome\":\"created\",\"recordId\":\"c1f1b548-d934-…",
+  "src": "crm-order-run3-summary.json"
+ },
+ "H-07": {
+  "st": "SKIPPED",
+  "test": "GroupHIConversionTest.h07MassConvert",
+  "desc": "Mass convert: same as H-01 for each lead",
+  "err": "INCONCLUSIVE: no mass-convert endpoint answered 2xx (/records/mass-convert -> 405; /records/bulk-convert -> 405; /records/convert -> 405; /mass-convert -> 404; ) - mass convert not reachable through the API",
+  "src": "crm-order-run3-summary.json"
+ },
+ "B-13": {
+  "st": "SKIPPED",
+  "test": "GroupBReviewTest.slaEscalationNotifiesRecipient",
+  "desc": "SLA escalation 1 minute → adminB notified",
+  "err": "INCONCLUSIVE: SLA below 1 hour is refused (400 SLA duration must be between 1 hour and 90 days); 60-min SLA stored, slaDueAt=2026-10-26T12:20:50.760081+00:00 — escalation not observable within the run",
+  "src": "crm-order-run3-summary.json"
+ },
+ "B-22": {
+  "st": "SKIPPED",
+  "test": "GroupBReviewTest.reorderProcesses",
+  "desc": "Reorder two review processes: saved order is used",
+  "err": "INCONCLUSIVE: reorder saved (p1 8→1, p2 9→0) but first-match-wins is not observable: only one process may cover a module+layout",
+  "src": "crm-order-run3-summary.json"
+ },
+ "E-04": {
+  "st": "SKIPPED",
+  "test": "GroupEBlueprintTest.e04FilledTransitionRunsAfterActions",
+  "desc": "Transition with During fields filled moves the state and runs the After actions (field update, task, email, notification)",
+  "err": "INCONCLUSIVE: state moved, field update and task ran; the After email is not visible in the Timeline (no inbox) - lead 11dd4bc2-934f-4b4f-b7bc-852b044852f5",
+  "src": "crm-order-run3-summary.json"
+ },
+ "E-16": {
+  "st": "SKIPPED",
+  "test": "GroupEBlueprintTest.e16AfterTaskRelatedToShowsName",
+  "desc": "After-transition Task: Related To points at a record whose name resolves (names, not ids)",
+  "err": "INCONCLUSIVE: runtime OK: task a2747917-6c98-491d-959e-be498a293a34 related_to=841043e1-c078-41f9-8d6e-dfd61bee45c3:860a5799-4b19-42bf-8597-e04f55382191 resolves to 'QA AEO SE E-16x anchor'; the designer's Contact Name / Related To label (NDC-1328) is UI-only and browser sign-in is not allowed in this run",
+  "src": "crm-order-run3-summary.json"
+ },
+ "F-04": {
+  "st": "SKIPPED",
+  "test": "GroupFHandoffTest.f04AssignmentBeforeBlueprintOwnerTransition",
+  "desc": "AR → BP: transition open to the record owner can be run by the assigned owner",
+  "err": "INCONCLUSIVE: import reported success but the imported record 'QA AEO SF F-04 imp' could not be found in the list",
+  "src": "crm-order-run3-summary.json"
+ },
+ "G-13": {
+  "st": "SKIPPED",
+  "test": "GroupGChainTest.g13DealsImport",
+  "desc": "Deals import with the rule, trigger automation on: all five in order",
+  "err": "INCONCLUSIVE: import created nothing: { \"success\": true, \"data\": { \"session_id\": \"8bbb277e-0dd5-4476-90b1-bc00e2962363\", \"module_id\": \"f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430\", \"file_name\": \"qa-aeo-sg.csv\", \"status\": \"partially_completed\", \"mode\": \"add\", \"total_rows\": 1, \"created_count\": 0, \"updated_count\": 0, \"skipped_count\": 0, \"error_count\": 1, \"errors\": [ { \"row\": 2, \"field\": \"pipeline\", \"reason\": \"The value isn't a valid option from the l",
+  "src": "crm-order-run3-summary.json"
+ },
+ "Z1": {
+  "st": "SKIPPED",
+  "test": "GroupKZRegressionGapsTest.z1ImportStartsApprovalAndBlueprint",
+  "desc": "Import with Trigger automation also starts approval, then blueprint (Deals)",
+  "err": "INCONCLUSIVE: imported deal not found: {\"success\":true,\"data\":{\"session_id\":\"f4535a03-be1a-444a-b6a9-7b120920beac\",\"module_id\":\"f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430\",\"file_name\":\"qa-aeo-sk.csv\",\"status\":\"partially_completed\",\"mode\":\"add\",\"total_rows\":1,\"created_count\":0,\"updated_count\":0,\"skipped_count\":0,\"error_count\":1,\"errors\":[{\"row\":2,\"field\":\"pipeline\",\"reason\":\"The value isn't a valid option from the list: '84fc94da-09b6-41bd-9f79-80bf02f976c6' is not one of the allowed picklist values.\",\"value\":null,\"kind\":\"picklist\"}],\"failure_reason\":null,\"started_at\":\"2026-10-26T11:54:48.985559+00:0",
+  "src": "crm-order-run3-summary.json"
+ },
+ "G-18": {
+  "st": "SKIPPED",
+  "test": "GroupGChainTest.g18ApiEmptyTrigger",
+  "desc": "API create with an empty trigger list: written down what is skipped (Zoho: [] skips workflow, approval, blueprint)",
+  "err": "INCONCLUSIVE: TAVI accepts but ignores an empty 'trigger' list (no documented trigger parameter): workflow=true approval=true blueprint=false (Zoho: [] skips all three); source api",
+  "src": "crm-order-run3-summary.json"
+ }
+}

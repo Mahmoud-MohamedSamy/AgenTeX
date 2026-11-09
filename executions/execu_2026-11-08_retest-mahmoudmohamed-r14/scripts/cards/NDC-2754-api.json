@@ -1,0 +1,11 @@
+{ "out": "NDC-2754-api.png", "date": "8 Nov 2026", "host": "staging-desk.taviportal.com (tenant NDC-Staging)", "who": "admin + Desk Agent fedelav803 (Customer Experience Specialists 2)",
+  "title": "NDC-2754 · blueprint \"QA RT14 2754 share\" (QA RT14 2754 Dept A, strict, dynamic owners): QA alt Open → Closed with a required Share (desk #235, client-engine #794)",
+  "rows": [
+   ["Before", "agent GET admin-owned ticket g1 (agent owns no step yet)", "403", "info"],
+   ["Owner", "admin: Assign owners QA alt → fedelav803 on g1, g2, g3 · agent GET g1", "200 ×3 · 200", "ok"],
+   ["Required share", "agent runs QA alt with no share · with the ticket's own department", "422 payload validation · 422 \"A ticket cannot be shared with its own department.\"", "ok"],
+   ["Owner completes Share", "agent runs QA alt on g1 with shares [Dept B, full] · on g3 with [Dept B, read_only]", "200 Open → Closed ×2 · shares: Dept B full (shared_by fedelav803) · Dept B read_only", "ok"],
+   ["From the screen", "agent on g2 (#1364): QA alt → Add department → Dept B, Full Access → Run", "POST …/blueprint-transitions/alt 200 → Closed · \"QA alt ran. The ticket moved to Closed.\"", "ok"],
+   ["Unchanged", "agent plain Share PUT …/shares on g2 · run QA go (not owner)", "403 \"Missing required permission 'desk:ticket:share'\" · 403 BLUEPRINT_NOT_OWNER", "ok"],
+   ["After", "agent GET g1 after it moved to Closed", "403 · screen: \"This ticket is not available\"", "ok"]
+  ] }

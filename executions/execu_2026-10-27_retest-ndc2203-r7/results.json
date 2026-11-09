@@ -1,0 +1,347 @@
+{
+ "batch": "Desk",
+ "title": "Retest — Mahmoud Mohamed · NDC-2203 round 7 (Desk Workflow Rules)",
+ "date": "27 Oct 2026",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge headless + API · mahmoud.mahamed1515 (Desk Administrator); fedelav803 (Desk Agent) to read team tickets",
+ "devNote": "Developer (27 Oct 10:22 UTC): fixed A4, D1 (Create rule), Is Overdue in Create rules, History \"by workflow rule\", email with a Desk template; D1e and untrusted replies not bugs; A5/B3/B4/B10/B13/B14 not testable. Result: 28 pass, 0 fail, 7 not testable / limited / waiting, of 35 rows.",
+ "tickets": [
+  {
+   "id": "NDC-2203",
+   "uuid": "2f7deb90-a42b-43ea-b910-41b4cb4d8114",
+   "pri": "Urgent",
+   "mod": "Desk",
+   "feat": "Workflow Rules",
+   "title": "DESK Workflow Missings",
+   "v": "PARTIAL",
+   "dev": "Fixes for the 26 Oct retest live on staging-desk 27 Oct 10:17 UTC: A4 Private Thread direction, D1 team on Create, Is Overdue in Create rules, History \"by workflow rule <name>\" (EN/AR), Desk email template without subject/body. Not a bug: On Edit on a new ticket; untrusted replies. Not testable: A5, B3, B4, B10, B13, B14.",
+   "devHeld": "Yes. All five fixes work on staging; the On Edit explanation holds; the not-testable list matches staging setup.",
+   "summary": "All five fixes pass and the round 5 passes still pass (28 rows PASS). Two new problems found outside the ticket's list (see observations): a false \"Permission denied.\" when a rule moves the saved ticket to a team, and gaps in Ticket History.",
+   "still": [],
+   "items": [
+    [
+     "A1",
+     "Customer Reply trigger",
+     "Rule fires when the customer replies",
+     "Ticket #648 with the contact = QA Gmail; agent reply sent; customer replies from Gmail",
+     "Fired on the reply from the QA Gmail",
+     "PASS",
+     "Waiting"
+    ],
+    [
+     "A2",
+     "Agent Response trigger",
+     "Rule fires on an agent reply",
+     "Agent reply on a QA ticket",
+     "Fired",
+     "PASS"
+    ],
+    [
+     "A3",
+     "Comment trigger (public only)",
+     "Public comment fires, private does not",
+     "Private comment, then public comment",
+     "Private: not fired. Public: fired",
+     "PASS"
+    ],
+    [
+     "A4",
+     "Private Thread: incoming / outgoing / both (FIXED)",
+     "Choose incoming, outgoing or both",
+     "Editor options; 3 rules on #592; forward to a Gmail address that is not the contact; answer from that address",
+     "Editor: Incoming and outgoing / Incoming / Outgoing. Forward → Outgoing + Both fired, Incoming not. Answer → filed private (private_thread_answer), Incoming + Both fired, Outgoing not; ticket stays Open, Customer Responded not set",
+     "PASS"
+    ],
+    [
+     "A5",
+     "Happiness Rating trigger",
+     "All / good / okay / bad",
+     "Developer: needs Customer Happiness on",
+     "Customer Happiness still disabled on staging (not changed)",
+     "INFO",
+     "Not testable"
+    ],
+    [
+     "B1",
+     "Add Comment (public / private)",
+     "Comment added",
+     "Create rules",
+     "Both added; History \"by workflow rule QA WF B01a/B01b\"",
+     "PASS"
+    ],
+    [
+     "B2",
+     "Send Email Reply",
+     "Reply emailed",
+     "Create rule",
+     "sent_to = contact; \"Reply sent by workflow rule QA WF B02\"",
+     "PASS"
+    ],
+    [
+     "B3",
+     "Reply via Instant Messaging",
+     "Offered / works",
+     "Developer: needs a WhatsApp brand",
+     "Not configured on staging",
+     "INFO",
+     "Not testable"
+    ],
+    [
+     "B4",
+     "Notify via Instant Messaging",
+     "Offered / works",
+     "Same",
+     "Not configured on staging",
+     "INFO",
+     "Not testable"
+    ],
+    [
+     "B5",
+     "Add Followers",
+     "Follower added",
+     "Create rule",
+     "followers = [me]",
+     "PASS"
+    ],
+    [
+     "B6",
+     "Mark as Spam",
+     "Ticket marked spam",
+     "Create rule",
+     "is_spam true; \"Marked as spam by workflow rule QA WF B06\"",
+     "PASS"
+    ],
+    [
+     "B7",
+     "Share Ticket",
+     "Shared with a department",
+     "Create rule, HR read-only",
+     "Shared with HR; \"by workflow rule QA WF B07\"",
+     "PASS"
+    ],
+    [
+     "B8",
+     "Change Layout",
+     "Layout changed",
+     "Create rule → QA WF Layout",
+     "changed true; \"by workflow rule QA WF B08\"",
+     "PASS"
+    ],
+    [
+     "B9",
+     "Custom Functions → Run Custom Action",
+     "Offered / runs",
+     "Developer: NDC-1989",
+     "Not re-run: no custom action or API source exists on staging now (round 5 source deleted)",
+     "INFO",
+     "Not re-run"
+    ],
+    [
+     "B10",
+     "Cliq → Slack / Teams / Google Chat",
+     "Offered",
+     "Developer: needs a connected chat service",
+     "None connected (not changed)",
+     "INFO",
+     "Not testable"
+    ],
+    [
+     "B11",
+     "Add Skills",
+     "Skills added",
+     "Create rule",
+     "skills = [tier_1_support] (History still \"by System\" — developer's known limit)",
+     "PASS"
+    ],
+    [
+     "B12",
+     "Remove Skills",
+     "Skills removed",
+     "Create rule",
+     "skills = [tier_2_support]",
+     "PASS"
+    ],
+    [
+     "B13",
+     "Recalculate Skills",
+     "Skills recalculated",
+     "Create rule",
+     "Succeeded, changed false (no skill has criteria)",
+     "INFO",
+     "Limited"
+    ],
+    [
+     "B14",
+     "Reassign based on Skills",
+     "Owner = skilled agent",
+     "Create rule",
+     "Succeeded, reassigned false, nobody_online",
+     "INFO",
+     "Limited"
+    ],
+    [
+     "D1",
+     "Assign to a team — Create rule (FIXED)",
+     "Ticket goes to the team, owner cleared",
+     "Create rule; tickets by API (#605), New Ticket form (#616, #617), Desk Agent with owner = self (#618); read as the agent",
+     "All: team = Customer Experience Specialists, owner null at create; #618 then auto-assigned by the team round robin (\"sequence\")",
+     "PASS"
+    ],
+    [
+     "D1",
+     "Assign to a team — Edit rule",
+     "Unchanged",
+     "Edit rule on #650",
+     "Owner cleared, team set",
+     "PASS"
+    ],
+    [
+     "D2",
+     "Email alerts / Desk template without subject and body (FIXED)",
+     "Saves and sends with the template",
+     "QA Desk template; rule + saved action without subject/body; Team and Role recipients",
+     "201; contact_emailed true, agents_emailed 1 (#612, #615); Team/Role accepted; no template → subject + body still required (400)",
+     "PASS"
+    ],
+    [
+     "D3",
+     "Field Changed: up to 3 fields",
+     "3 allowed",
+     "Rule with 4 fields",
+     "\"watches at most 3 fields\"",
+     "PASS"
+    ],
+    [
+     "D4",
+     "Field Changed: All / Any",
+     "All / Any",
+     "Any: 1 field. All: 2 of 3, then 3 of 3 in one save",
+     "Any fired; All not on 2 of 3, fired on 3 of 3",
+     "PASS"
+    ],
+    [
+     "E1",
+     "Contact and Account fields",
+     "Conditions match",
+     "Contact · Title and Account · Account Name with Y/N tickets",
+     "Only the matching tickets fired",
+     "PASS"
+    ],
+    [
+     "E2",
+     "Execution Time",
+     "Business hours / outside / holiday",
+     "Three rules (24/7 tenant)",
+     "business_hours fired; the other two not",
+     "PASS"
+    ],
+    [
+     "E3",
+     "Missing ticket fields + Is Overdue in Create rules (FIXED)",
+     "Fields offered; Is Overdue true for a past due date",
+     "Picker; Is Overdue = true / = false rules with due yesterday and +5 days",
+     "82 fields, all 24 listed offered; true fired for yesterday, false for +5 days",
+     "PASS"
+    ],
+    [
+     "E4",
+     "\"doesn't contain\"",
+     "Works",
+     "Y/N tickets",
+     "As expected",
+     "PASS"
+    ],
+    [
+     "E5",
+     "\"between\" / \"not between\"",
+     "Works",
+     "Y/N tickets",
+     "As expected",
+     "PASS"
+    ],
+    [
+     "E6",
+     "\"Current Time\" as a value",
+     "Works",
+     "Y/N tickets",
+     "As expected",
+     "PASS"
+    ],
+    [
+     "F1",
+     "Saved actions",
+     "Reusable",
+     "Saved Add comment + saved Email (template) used by rules",
+     "Both ran",
+     "PASS"
+    ],
+    [
+     "F2",
+     "Department-scoped rules",
+     "Runs only in its departments",
+     "HR-only rule",
+     "HR fired, Customer Support not",
+     "PASS"
+    ],
+    [
+     "F3",
+     "Active / Inactive tabs",
+     "Tabs filter",
+     "Deactivated QA WF A2",
+     "All 32 / Active 31 / Inactive 1 (only A2)",
+     "PASS"
+    ],
+    [
+     "F4",
+     "Ticket History names the rule (FIXED)",
+     "\"by workflow rule <name>\", action names as words, EN + AR",
+     "History of #598, #594, #597 in English and Arabic",
+     "\"by workflow rule QA WF B07\", \"Workflow rule ran · Actions Share ticket\"; AR \"بواسطة قاعدة سير العمل QA WF B07\", \"مشاركة التذكرة\"",
+     "PASS"
+    ],
+    [
+     "—",
+     "On Edit rule on a new ticket (developer: not a bug)",
+     "No fire without an edit",
+     "New ticket, wait 20 s, then a real edit",
+     "Not fired on create; fired on the edit — claim holds",
+     "PASS"
+    ]
+   ],
+   "img": [
+    "NDC-2203-retest-r7.png"
+   ]
+  }
+ ],
+ "observations": [
+  [
+   "Filed NDC-2661",
+   "False \"Permission denied.\" when a rule moves the ticket to a team",
+   "Creating (New Ticket form, API) or editing a ticket that an Owner Assignment › Team rule moves to a team the saver is not in answers 403 \"Permission denied.\" (toast; the form stays open), although the ticket IS created (#616, #617, #605) / the edit IS saved (#650). Users will submit again → duplicates. Expected: saved message, then e.g. \"You no longer have access to this ticket\"."
+  ],
+  [
+   "Filed NDC-2662",
+   "\"Workflow rule ran\" row missing for some rules",
+   "Rules whose condition uses Execution Time or Is Overdue (QA WF E2in, E3od, E3odT, E3odF) run (comment added \"by workflow rule …\", Execution History has the run) but no \"Workflow rule ran\" row is written. Rules on Contact / Created By / description have the row."
+  ],
+  [
+   "Filed NDC-2660",
+   "History shows a raw department id",
+   "\"Department changed · New 7e1ac409-58b0-41ab-97e1-0e7d5c8c5158 · by System\" instead of \"Customer Support\" (EN and AR)."
+  ],
+  [
+   "Observation",
+   "Developer's known limit",
+   "Add / Remove / Recalculate Skills still show \"by System\" in History (rule named on the \"Workflow rule ran\" row)."
+  ],
+  [
+   "Observation",
+   "API changes since round 5 (for automation)",
+   "Comment body field is body_html (content_html → 400); Language values are words (arabic, not ar); Private Thread key ticketEvents.privateThreads any|incoming|outgoing; deactivate = POST /workflow/rules/{id}/deactivate."
+  ],
+  [
+   "Plane",
+   "NDC-2203",
+   "Moved to Bug 27 Oct (QA decision: fixes pass; not-testable / not-covered items remain) with comment + NDC-2203-retest-r7.png."
+  ]
+ ]
+}

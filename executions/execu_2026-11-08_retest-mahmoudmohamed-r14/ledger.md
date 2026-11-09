@@ -1,0 +1,88 @@
+- 2026-11-08T11:44:31 team "QA RT14 2812 team 2" 8d2b7e89-1758-4abb-9595-88fbe52d1679
+- 2026-11-08T11:44:32 ticket "QA RT14 2812 on team 2" 8069d707-10ff-4ec8-9291-53c0bcea8fa9 NDC-2812
+- 2026-11-08T11:44:33 ticket "QA RT14 2812 move from B" 3e79e8e5-1d53-4758-ac78-ee7c91ece99d NDC-2812
+- 2026-11-08T11:44:34 ticket "QA RT14 2812 for agent A1" fc8c57aa-3f66-4eec-b110-d2c1c1e9d6a6 NDC-2812
+- 2026-11-08T11:44:36 NDC-2812: Dept A team assignment OFF temporarily
+- 2026-11-08T11:44:36 ticket "QA RT14 2812 off team" d653a589-c001-4150-b3e1-606d25d54b16 NDC-2812
+- 2026-11-08T11:44:45 NDC-2812: Dept A team assignment restored ON
+- 2026-11-08T11:44:46 ticket "QA RT14 2812 on team" a443485d-e210-4ac6-9791-82f1859c8c5d NDC-2812
+- 2026-11-08T11:45:13 ticket "QA RT14 2812 on team 2" 92ce1771-62f0-468c-ad6b-2bed76ff0d71 NDC-2812
+- 2026-11-08T11:45:15 ticket "QA RT14 2812 move from B" f50423b2-1ae3-4227-8293-0cd676f80c86 NDC-2812
+- 2026-11-08T11:45:16 ticket "QA RT14 2812 for agent A1" d6e09e9f-276c-4d39-9ce4-f8fd6bc06e59 NDC-2812
+- 2026-11-08T11:45:18 NDC-2812: Dept A team assignment OFF temporarily
+- 2026-11-08T11:45:18 ticket "QA RT14 2812 off team" d43bc826-1b7b-4e0d-8650-8a10e738d14c NDC-2812
+- 2026-11-08T11:45:28 NDC-2812: Dept A team assignment restored ON
+- 2026-11-08T11:45:28 ticket "QA RT14 2812 on team" 38c2b41a-3d3f-4c3b-81e9-0883d539e256 NDC-2812
+- 2026-11-08T11:46:29 ticket "QA RT14 2812 move B to A" c6660840-5a2e-49c9-8909-295d41217286 NDC-2812
+- 2026-11-08T11:46:29 ticket "QA RT14 2812 move B to A agent" d6ee634b-9f70-4b9b-b6f4-ef65675c41ce NDC-2812
+- 2026-11-08T11:46:30 ticket "QA RT14 2812 team 2 work" 461f3a06-1a03-4a52-8d61-872d8d36863e NDC-2812
+- 2026-11-08T11:46:31 NDC-2812 part 2: Dept A team assignment OFF temporarily
+- 2026-11-08T11:46:34 NDC-2812 part 2: Dept A team assignment restored ON
+- 2026-11-08T11:49:25 holiday list "QA RT14 HOL today" fe7dff63-03d3-4683-a4bc-9ac5123c9c8b (detached) NDC-2814
+- 2026-11-08T11:49:26 holiday list "QA RT14 HOL xmas" 1a4a8fe7-d768-4f79-8cb2-1e3db1327dbc (detached) NDC-2814
+- 2026-11-08T11:49:26 holiday list "QA RT14 HOL yesterday" 8a83eb23-756e-4c2e-8639-8ff221aeff2c (detached) NDC-2814
+- 2026-11-08T11:50:05 rule direct "QA RT14 2814 holiday" 9bc5b845-0a8b-4579-951b-0c507cc9f095 NDC-2814
+- 2026-11-08T11:50:05 rule direct "QA RT14 2814 holiday b" 3814ce78-f8c6-4602-852a-63c775445814 NDC-2814
+- 2026-11-08T11:50:06 ticket "QA RT14 HOL t1" 2c8e94a3-c646-45b4-83ba-116d3b2651bf NDC-2814
+- 2026-11-08T11:50:11 ticket "QA RT14 HOL t2" a0f7e736-0125-40cf-9f7c-7fd56a75c95a NDC-2814
+- 2026-11-08T11:50:16 ticket "QA RT14 HOL t3" abc679b3-ed34-4283-9e34-b384adb72832 NDC-2814
+- 2026-11-08T11:50:22 ticket "QA RT14 HOL t4" be3f1494-ba27-436a-a421-7c9461dcf667 NDC-2814
+- 2026-11-08T11:50:26 ticket "QA RT14 HOL t5" bdc4622b-7a32-45e3-985b-4cfe9815407a NDC-2814
+- 2026-11-08T11:50:31 ticket "QA RT14 HOL t6" 03e1ff15-0823-4f55-9fdc-30c845c8454b NDC-2814
+- 2026-11-08T11:50:37 NDC-2814: rule QA RT14 2814 holiday deactivated
+- 2026-11-08T11:54:58 ticket "QA RT14 2813 api plain" 412d51e6-633f-4746-9210-59b2f42c0d00 NDC-2813 probe
+- 2026-11-08T11:54:59 ticket "QA RT14 2813 api source top" 27f14e24-d1f1-4f5b-852b-7d7dd8ccd7a5 NDC-2813 probe
+- 2026-11-08T11:55:39 NDC-2811: RR_SEQ execute_on create+update temporarily
+- 2026-11-08T11:55:40 ticket "QA AS6 SEQ RT14 2811 allon 1" e5efc32d-26a3-4a0e-9429-a02d38c8a0bf NDC-2811
+- 2026-11-08T11:55:46 ticket "QA AS6 SEQ RT14 2811 allon 2" d4064277-674f-442c-b26d-3420712158fe NDC-2811
+- 2026-11-08T11:55:53 ticket "QA AS6 SEQ RT14 2811 allon 3" fdcc685c-35f0-4183-be91-d9f453ac39d5 NDC-2811
+- 2026-11-08T11:56:08 ticket "QA AS6 SEQ RT14 2811 a2off 1" 3380063d-1d7b-4430-9b7a-69085e79ef60 NDC-2811
+- 2026-11-08T11:56:20 ticket "QA AS6 SEQ RT14 2811 a2off 2" e8590161-befa-4d52-961f-901777385e5b NDC-2811
+- 2026-11-08T11:56:29 ticket "QA AS6 SEQ RT14 2811 a2off 3" 6d5ccf46-c8ea-4028-9c14-820a9288bb9c NDC-2811
+- 2026-11-08T11:56:36 ticket "QA AS6 SEQ RT14 2811 a2off 4" 9711a485-9711-48d8-8d24-c50bc47c4f80 NDC-2811
+- 2026-11-08T11:56:43 ticket "QA AS6 SEQ RT14 2811 a2off email ch" 6ae8bb59-885a-4eab-ad71-e6fd132fed0f NDC-2811
+- 2026-11-08T11:56:49 ticket "QA AS6 SEQ RT14 2811 a2off chat ch" 0fc20e04-4438-47b7-8f7d-8564719fcd91 NDC-2811
+- 2026-11-08T11:57:01 ticket "QA AS6 SEQ RT14 2811 alloff 1" 13c6e163-ce21-47e0-9ed0-033635e13c7a NDC-2811
+- 2026-11-08T11:57:13 NDC-2811: Dept A assign_to_offline_agents ON temporarily
+- 2026-11-08T11:57:32 ticket "QA AS6 SEQ RT14 2811 alloff offline allowed" 39c0fab8-c1ac-438f-9ae9-f074741eb268 NDC-2811
+- 2026-11-08T11:57:39 NDC-2811: Dept A RR prefs restored
+- 2026-11-08T11:57:46 ticket "QA AS6 SEQ RT14 2811 back on 1" 56afdf32-1d23-43c7-b62f-e91b4b7e1aa1 NDC-2811
+- 2026-11-08T11:57:57 NDC-2811: RR_SEQ execute_on restored (update); presence back to on
+- 2026-11-08T11:59:39 ticket "QA RT14 2813 form owner untouched" 84d77add-c613-4b76-81db-b9c85206e77e NDC-2813 form
+- 2026-11-08T11:59:53 NDC-2813: RR_SEQ execute_on create+update temporarily
+- 2026-11-08T12:00:11 ticket "QA AS6 SEQ RT14 2813 form owner cleared" 07a8a51d-108e-4cec-b873-b8f36d90ec44 NDC-2813 form
+- 2026-11-08T12:00:42 ticket "QA AS6 SEQ RT14 2813 form untouched rr" 268f4897-02e6-40a6-8c3f-ab4425aa7034 NDC-2813 form
+- 2026-11-08T12:00:57 rule direct "QA RT14 2813 direct" 04fdaf93-106f-46ca-b835-b6b2e45c8052 NDC-2813
+- 2026-11-08T12:01:14 ticket "QA RT14 2813 direct form untouched" 545ac343-c409-4828-8607-cc5af7243335 NDC-2813 form
+- 2026-11-08T12:01:31 ticket "QA AS6 SEQ RT14 2813 api source" ca6ae75c-7ca0-4fa1-bc3f-daa699a1cb0f NDC-2813 api
+- 2026-11-08T12:01:36 ticket "QA AS6 SEQ RT14 2813 api webform" 5e9a8dd3-9fde-4157-b237-be4551c79821 NDC-2813 api
+- 2026-11-08T12:01:43 ticket "QA RT14 2813 api plain" b5c0d358-02b6-418d-ae7c-dbd80aed90df NDC-2813 api
+- 2026-11-08T12:01:49 ticket "QA RT14 2813 direct api source" 524dfb8a-0025-49df-a673-7aa6216d85e8 NDC-2813 api
+- 2026-11-08T12:01:55 NDC-2813: rule QA RT14 2813 direct deactivated
+- 2026-11-08T12:01:55 NDC-2813: RR_SEQ execute_on restored
+- 2026-11-08T12:03:40 NDC-2813 b: RR_SEQ execute_on create+update temporarily
+- 2026-11-08T12:05:07 ticket "QA AS6 SEQ RT14 2813 form owner cleared r2" bfe62cdc-2af7-4b24-a211-1ca56c70e114 NDC-2813 form
+- 2026-11-08T12:09:26 NDC-2813: RR_SEQ execute_on restored
+- 2026-11-08T12:13:21 NDC-2813 b: RR_SEQ execute_on create+update temporarily
+- 2026-11-08T12:18:20 ticket "QA RT14 2813 form owner cleared nomatch" 6134d2ea-b353-4b86-8fa6-3a12b6a8d2b3 NDC-2813 form
+- 2026-11-08T12:18:35 NDC-2813: RR_SEQ execute_on restored
+- 2026-11-08T12:19:00 NDC-2813 b: RR_SEQ execute_on create+update temporarily
+- 2026-11-08T12:19:37 ticket "QA AS6 SEQ RT14 2813 form owner cleared r3" 799b3809-c63c-412a-a6ca-13023a244ed5 NDC-2813 form
+- 2026-11-08T12:20:08 NDC-2813: RR_SEQ execute_on restored
+- 2026-11-08T12:32:35 department "QA RT14 2754 Dept A" 31feced6-4027-4a6b-9dc3-8b5f934e0609 agents 2 NDC-2754
+- 2026-11-08T12:32:35 department "QA RT14 2754 Dept B" 7b0ba6f0-6d2d-4c87-9605-65e21cc97b8d agents 0 NDC-2754
+- 2026-11-08T12:33:15 blueprint "QA RT14 2754 share" 801b318b-b5f1-469b-a4a5-7d92e2cb563f (active true)
+- 2026-11-08T12:33:22 ticket "QA RT14 2754F g1 admin-owned" 366c00b8-7b45-41ea-b670-631c4a045d08 (#?)
+- 2026-11-08T12:33:24 ticket "QA RT14 2754F g2 admin-owned" 7326ffa9-27c8-41f7-b8dc-35fb64c40e07 (#?)
+- 2026-11-08T12:33:25 ticket "QA RT14 2754F g3 admin-owned" 330b8b1a-57af-4ecc-bf6a-d87cff606ba2 (#?)
+- 2026-11-08T12:33:27 ticket "QA RT14 2754F g4 admin-owned" 1cc330c1-be19-41b6-9cfd-f1ea3ade96d2 (#?)
+- 2026-11-08T12:55:29 SLA policy "QA RT14 2812 SLA" b668a67a-c0f7-40ef-a653-65ac4163b0f5 (QA AS6 Dept A) NDC-2812
+- 2026-11-08T12:55:31 NDC-2812 SLA: Dept A team assignment OFF temporarily
+- 2026-11-08T12:55:33 ticket "QA RT14 2812 SLA off" d3798b1e-de02-4bee-a3d6-8fb91a33ec97 NDC-2812 SLA
+- 2026-11-08T12:56:56 NDC-2812 SLA: Dept A team assignment restored ON
+- 2026-11-08T12:56:56 ticket "QA RT14 2812 SLA on" 37c12238-c559-4d1d-8993-c9d27b202378 NDC-2812 SLA
+- 2026-11-08T12:58:18 NDC-2812 SLA: policy deactivated
+
+## Plane — 8 Nov 2026 (approved by user)
+- post-r14.js --post: NDC-2754, 2811, 2812, 2813, 2814 comment 201, state → Done 200
+- plane-attach.js: 5 annotated images attached (create 200 / storage 204 / confirm 204), verified by attachment list; all 5 read back in Done

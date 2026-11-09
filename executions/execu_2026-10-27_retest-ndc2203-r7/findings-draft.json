@@ -1,0 +1,32 @@
+[
+ {
+  "name": "Tickets | Save shows \"Permission denied.\" although the ticket is created — users save again and create duplicates",
+  "priority": "high",
+  "labels": [
+   "Tickets"
+  ],
+  "module": "Desk",
+  "assignees": [
+   "MahmoudMohamed",
+   "Hegazy"
+  ],
+  "state": "Bug",
+  "html": "<p><strong>Summary.</strong> When a user saves a ticket that, after the save, they are no longer allowed to see (owner = a colleague, a team they are not in, or a workflow rule moves it there), Desk answers <code>403 PERMISSION_DENIED</code> and shows \"Permission denied.\" — but the ticket is created / the edit is saved. On the New Ticket form the form stays open, so users click Save again and create duplicates.</p>\n<h3>Steps to reproduce</h3><ol>\n<li>Sign in as a user who is not an agent of Customer Support but can create tickets (here: Desk Administrator mahmoud.mahamed1515; sees own + unassigned tickets).</li>\n<li>Tickets › New Ticket (Standard) › Department Customer Support, Email, Subject, Status Open, <strong>Ticket Owner = a colleague</strong> (Customer Experience Specialists 2) › Save.</li>\n<li>Click Save again.</li>\n<li>Sign in as the colleague and open All Tickets.</li></ol>\n<h3>Expected</h3><ul><li>The ticket is saved once with a success message; if the saver can't open it afterwards, say so (\"Ticket created. You don't have access to it.\") and leave the form (go back to the list). Never report an error for a write that succeeded.</li><li>API: 201 with the id (or a documented response for \"created but not visible\"), not 403.</li></ul>\n<h3>Actual</h3><ul>\n<li>Step 2: toast \"Permission denied.\" (POST /api/v1/modules/{Tickets}/records → 403), form stays open. Ticket #675 exists.</li>\n<li>Step 3: same 403 again → a second ticket. #676 and #677 both exist with the same subject.</li>\n<li>Same 403 with the record created: API create with another owner (#671) or with a team and no owner (#672); a Create rule \"Assign to team\" (#605, #616, #617, #658); an Edit rule that moves the ticket to a team (#650, edit saved).</li>\n<li>A Create rule \"Assign to specific user\" returns 201 (#673) because it runs after the create; the creator silently loses access.</li>\n<li>Control: the same form with no owner/team (unassigned) → 201, the ticket opens (#657).</li></ul>\n<h3>Impact</h3><p>Duplicate tickets (customers may get two acknowledgements), users believe the save failed, API clients retry. Any admin or agent creating a ticket for a colleague or a team hits it.</p>\n<h3>Suggested fix</h3><ol><li>Check visibility of the response separately from the write: return 201/200 with the id and a flag (e.g. <code>accessible:false</code>) instead of 403 after committing.</li><li>UI: on that flag show \"Ticket created and assigned to …\" and close the form.</li></ol>\n<p><strong>Environment:</strong> staging-desk.taviportal.com, tenant NDC-Staging, Edge + API, 27 Oct 2026. Found while retesting NDC-2203 (D1 Assign to team).</p><p><strong>Evidence:</strong> NDC-new-false-permission-denied-DRAFT.png (attached).</p>",
+  "img": "NDC-new-false-permission-denied-DRAFT.png"
+ },
+ {
+  "name": "Workflow Rules | Create rules whose condition uses Is Overdue, Execution Time, Recent Comment or thread/comment counts write no \"Workflow rule ran\" row in Ticket History",
+  "priority": "medium",
+  "labels": [
+   "Workflow Rules"
+  ],
+  "module": "Desk",
+  "assignees": [
+   "MahmoudMohamed",
+   "Hegazy"
+  ],
+  "state": "Bug",
+  "html": "<p><strong>Summary.</strong> A workflow rule on Tickets with trigger \"On create\" whose condition uses a computed rule fact — Is Overdue, Execution Time, Recent Comment (and its type), Number of Threads, Number of Comments — runs and its actions are done, but Ticket History gets no \"Workflow rule ran\" row. The same rule with a normal field in the condition writes the row, and the same fact in an \"On edit\" rule writes it too.</p>\n<h3>Steps to reproduce</h3><ol>\n<li>Setup › Automation › Workflow Rules › Tickets › new rule: On create, condition <strong>Is Overdue is true</strong>, action Add comment (private) › Save & Activate.</li>\n<li>Create a ticket with a due date of yesterday.</li>\n<li>Open the ticket › History.</li>\n<li>Repeat with the condition <strong>Status is Open</strong> instead (control).</li></ol>\n<h3>Expected</h3><ul><li>Every rule run writes \"Workflow rule ran · Rule &lt;name&gt; · Triggered by A new ticket · Actions …\" (as fixed in NDC-2203), whatever fields the condition uses.</li></ul>\n<h3>Actual</h3><ul>\n<li>Is Overdue (#653), Execution Time (#654), Recent Comment (#661), Thread count (#666), Comment count (#667), and description AND Is Overdue (#662): Execution History shows Fired, the comment is in History \"by workflow rule …\", but there is no \"Workflow rule ran\" row (waited 45–60 s).</li>\n<li>Control: no condition (#651), description (#652), Due Date before now (#655), Status (#668), Priority (#669) → the row is written.</li>\n<li>Is Overdue in an On edit rule (#665) → the row is written. Execution records are identical with and without the row.</li></ul>\n<h3>Impact</h3><p>History does not explain why a ticket changed for rules that use these conditions; audits and support investigations miss the rule.</p>\n<h3>Suggested fix</h3><p>Write the \"Workflow rule ran\" history entry from the same place for every Create-rule execution, including the path that evaluates rule facts.</p>\n<p><strong>Environment:</strong> staging-desk.taviportal.com, tenant NDC-Staging, Edge + API, 27 Oct 2026. Found while retesting NDC-2203 (F4).</p><p><strong>Evidence:</strong> NDC-new-rule-ran-row-missing-DRAFT.png (attached).</p>",
+  "img": "NDC-new-rule-ran-row-missing-DRAFT.png"
+ }
+]

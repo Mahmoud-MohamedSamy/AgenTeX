@@ -1,0 +1,1 @@
+const o={};await page.locator('[role=dialog] button',{hasText:/^Cancel$/}).click().catch(e=>o.e=e.message.slice(0,50));await sleep(1000);o.open=await page.locator('[role=dialog]').count();return JSON.stringify(o);

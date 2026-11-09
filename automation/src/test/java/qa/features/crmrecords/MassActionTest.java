@@ -47,7 +47,7 @@ public class MassActionTest {
             pool.shutdown();
         }
         long t0 = System.currentTimeMillis();
-        Response r = CrmUser.ok(owner().post("/modules/" + LEADS + "/records/mass-delete", m("mode", "ids", "recordIds", ids)), "mass delete");
+        Response r = CrmUser.ok(owner().post("/modules/" + LEADS + "/records/mass-delete", m("record_ids", ids)), "mass delete");
         String job = r.jsonPath().getString("data.job_id") != null ? r.jsonPath().getString("data.job_id") : r.jsonPath().getString("data.id");
         if (job != null) CrmApi.waitFor(300, () -> owner().get("/modules/" + LEADS + "/mass-delete-jobs/" + job).asString().matches("(?is).*(completed|failed|done).*"));
         boolean allGone = CrmApi.waitFor(120, () -> ids.stream().allMatch(id -> get(owner(), mod("leads"), id).statusCode() == 404));

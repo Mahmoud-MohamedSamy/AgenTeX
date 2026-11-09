@@ -1,0 +1,10 @@
+const out={}; const DM='ee386e8d-6d19-4cc0-94b0-100661f513dd';
+const short = r => r.s + ' ' + (r.s > 299 ? (r.j?.error?.code || '') + ' ' + (r.j?.error?.message || r.t).slice(0, 140) : '');
+const pd = await api('u3', 'GET', 'desk:/iam/me/permissions'); const keys = JSON.stringify(pd.j?.data || pd.t);
+out.desk_perms = { s: pd.s, n: (pd.j?.data||[]).length, modulesManage: keys.includes('metadata.modules.manage'), fieldsManagePerm: keys.includes('metadata.fields.manage_permissions'), capabilities: keys.includes('metadata.capabilities.manage'), integrations: keys.includes('metadata.integrations.manage'), convert: keys.includes('metadata.records.convert'), recordsAccess: keys.includes('metadata.records.access'), recordsManage: keys.includes('metadata.records.manage'), meta: (pd.j?.data||[]).filter(k=>/^metadata\./.test(k)) };
+const eff = await api('o','GET','/iam/profiles/44444444-4444-4444-4444-444444444402/effective'); out.deskAgentEffectiveMeta = JSON.stringify(eff.j?.data||'').match(/metadata\.[a-z_.]+/g);
+out.create_module = short(await api('u3','POST','desk:/teamspaces/d1cacab7-85d4-476f-88f0-1cc6e6788946/modules',{moduleKey:'qa_rt_r10_agent',labels:{en:'QA RT r10 agent mod'},pluralForm:'QA RT r10 agent mod',singularForm:'x'}));
+out.add_field = short(await api('u3','POST','desk:/modules/0a2f56b2-681d-41c1-b504-d2140eecb1e8/fields',{fields:[{fieldName:'qa_agent_f',labels:{en:'QA agent f'},datatypeKey:'single_line',required:false,unique:false}]}));
+const list = async w => arr((await api(w, 'GET', `desk:/modules/${DM}/records`)).j?.data).map(r => (r.data || []).find(f => f.field === 'name')?.value?.value);
+out.owner_sees = await list('o'); out.agent_sees = await list('u3');
+return out;

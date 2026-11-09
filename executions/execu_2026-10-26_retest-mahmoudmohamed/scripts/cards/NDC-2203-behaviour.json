@@ -1,0 +1,81 @@
+{
+ "out": "NDC-2203-behaviour.png",
+ "host": "staging-desk.taviportal.com",
+ "who": "mahmoud.mahamed1515 (Desk Administrator)",
+ "date": "26 Oct 2026",
+ "title": "NDC-2203 · what each new item did on a QA ticket (rules guarded by Subject starts with \"QA WF <id> \")",
+ "rows": [
+  [
+   "ticket events",
+   "Agent reply · public vs private comment · forward",
+   "Agent Response fired; Comment \"public only\" fired on the public comment, not on the private one; Private Thread fired on a forward",
+   "ok"
+  ],
+  [
+   "private thread",
+   "Ticket Event › Private Thread",
+   "No incoming / outgoing / both choice (UI and saved trigger have only comments + ratings options)",
+   "bad"
+  ],
+  [
+   "new actions",
+   "Create-trigger rule per action",
+   "Add comment (private + public, by System), Send email reply (sent to contact), Add followers, Mark as spam, Share ticket (HR, read_only), Add / Remove skills, Change layout (→ QA WF Layout), Update related record (contact title) — all done",
+   "ok"
+  ],
+  [
+   "skills",
+   "Recalculate / Reassign based on skills",
+   "Both Succeeded; recalc changed:false (no skill on staging has criteria); reassign reassigned:false reason nobody_online",
+   "info"
+  ],
+  [
+   "custom action",
+   "QA custom action (targetApps desk, published) › Run custom action",
+   "Offered once published; rule ran it: run status succeeded; agents see it under the ticket header Actions menu",
+   "ok"
+  ],
+  [
+   "assign to team",
+   "Owner Assignment › Teams (Customer Experience Specialists)",
+   "Edit rule: team set, owner cleared. Create rule: rule ran before the ticket row was written; ticket kept owner = creator, no team",
+   "bad"
+  ],
+  [
+   "email alert",
+   "Email with a Desk template → Contact + User",
+   "agents_emailed 1, contact_emailed true; Team / Role recipients accepted; Contact without a template refused",
+   "ok"
+  ],
+  [
+   "field changed",
+   "3 watched fields, Any / All",
+   "Any fired on one field; All: 2 of 3 changed → no fire, 3 of 3 in one save → fired; a 4th field refused",
+   "ok"
+  ],
+  [
+   "conditions",
+   "Rules with a should-match and a should-not ticket",
+   "16 / 16 as expected: Contact · Title, Account · Account Name, Execution Time (business hours yes / outside no / holiday no), Created By, doesn't contain, between, not between, before Current Time",
+   "ok"
+  ],
+  [
+   "is overdue",
+   "Is Overdue = true, due date yesterday",
+   "Create rule: not true (Is Overdue = false fired instead); Edit rule: true",
+   "info"
+  ],
+  [
+   "other",
+   "Saved action · department scope · tabs · history",
+   "Saved Add comment ran via a rule; HR-only rule fired on HR ticket, not on CS; Active 12 / Inactive 1 after deactivating one; history: \"Workflow rule ran — Rule QA WF D4all\"",
+   "ok"
+  ],
+  [
+   "not testable",
+   "Happiness Rating · IM · Slack / Teams / Google Chat",
+   "Customer Happiness disabled (send: reason disabled); no WhatsApp brand; Slack uninstalled → actions hidden as the developer said",
+   "info"
+  ]
+ ]
+}

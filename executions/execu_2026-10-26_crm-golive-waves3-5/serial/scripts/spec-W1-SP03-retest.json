@@ -1,0 +1,63 @@
+{
+ "out": "W1-SP03-retest.png",
+ "ticket": "Wave 1 SP-03",
+ "verdict": "PASS",
+ "label": "PASS",
+ "title": "Max concurrent sessions can be raised (20 -> 25) and is shown",
+ "env": "staging-crm.taviportal.com (owner, test user 1) vs Zoho CRM org943261092 (read-only captures)",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "t-sp03-25.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    0,
+    0,
+    1280,
+    720
+   ],
+   "caption": "TAVI — Security Policies after PUT max_concurrent = 25 (200): the field shows 25; existing sessions of the owner and test user 1 kept working (200). Restored to 20 (read back).",
+   "boxes": [
+    {
+     "b": [
+      781,
+      257,
+      893,
+      291
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "z-security-policies.png",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "caption": "Zoho — Security Policies (captured 25 Oct). Session limits live in Zoho Directory, which is not enabled in this org.",
+   "boxes": []
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Raise the session limit and see it on screen",
+   "Not checked live (Zoho Directory not enabled)",
+   "Saved as 25 and shown as 25; set back to 20 at once",
+   "PASS"
+  ],
+  [
+   "2",
+   "More sessions than the limit are refused",
+   "Not checked live",
+   "Not exercised: would need 26 sign-ins (rate limit risk)",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,3 @@
+const o = {}; const rows = []; o.tries = {};
+for (const q of ['/iam/users?limit=200&offset=200', '/iam/users?limit=200&page=2', '/iam/users?search=qagln', '/iam/users?q=qagln', '/iam/users/directory?search=qagln']) { const r = await api('GET', q); const d = r.j && r.j.data; const a = Array.isArray(d) ? d : (d && (d.items || d.users)) || []; o.tries[q] = r.s + ':' + a.length + ':' + a.filter(x => /qagln/.test(x.email || '')).length; for (const x of a) if (/qagln/.test(x.email || '')) rows.push({ q, st: x.status, inv: x.invitationStatus, invId: x.invitationId, exp: x.invitationExpiresAt }); }
+o.rows = rows; return done(o);

@@ -1,0 +1,144 @@
+<title>Round 2 Wave 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live · Round 2 · Wave 2 of 5</div>
+  <h1>Daily record work</h1>
+  <p class="meta">27 Oct 2026 · build of 27 Oct (index-De3hTVb3.js) · staging-crm.taviportal.com · owner (one sign-in) and CRM Admin A · Zoho CRM org943261092 read-only</p>
+  <p>All 29 daily-record features were retested through the screens and the API, including the ones round 1 didn't cover: merge, mass update on every field type, mass transfer, record locking, split view, advanced filters, Cases and Sales / Purchase Orders in full.</p>
+</header>
+
+<div class="strip">
+  <div class="stat"><b>67</b><span>automated tests</span></div>
+  <div class="stat pass"><b>59</b><span>pass after the deal rerun</span></div>
+  <div class="stat fail"><b>5</b><span>fail (3 app problems, 2 gaps)</span></div>
+  <div class="stat"><b>3</b><span>skipped</span></div>
+  <div class="stat fail"><b>2</b><span>new bug candidates</span></div>
+</div>
+
+<section>
+  <h2>Decisions for you</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Decision</th><th>My suggestion</th></tr>
+    <tr><td class="id">1</td><td>File R2W2-C1 (record locking not enforced) and R2W2-C2 (raw column keys on Home)?</td><td>Yes: C1 Medium, C2 Low, with their images.</td></tr>
+    <tr><td class="id">2</td><td>NDC-1823 is in Done but fails again (conversion fields editable). Reopen to Bug with a comment and image?</td><td>Yes.</td></tr>
+    <tr><td class="id">3</td><td>NDC-2098 is in Bug and now passes. Move to Done with a comment and image?</td><td>Yes.</td></tr>
+    <tr><td class="id">4</td><td>Passing tickets already in Done (NDC-1484, 1832, 1302, 1603, 1597, 1600, 1601, 1593, 1599, 2302, 2382, 2388, 2386, 1197, 2282): add a round 2 comment and image?</td><td>Yes, so the tickets show they still pass on the new build.</td></tr>
+    <tr><td class="id">5</td><td>Still failing in Bug (NDC-1193, 2122, 2280, 2136, 2137): comment with today's result, or leave until Ready For Test?</td><td>Leave, as you chose for Wave 3, unless you want today's numbers on them (NDC-2136 got worse: 22–40 s).</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Ticket results</h2>
+  <div class="tbl"><table>
+    <tr><th>Ticket</th><th>State now</th><th>Result</th><th>What we saw</th></tr>
+    <tr><td class="id">NDC-1484, 1832, 1302, 1603, 1597, 1600, 1601, 1593, 1599, 2302</td><td>Done</td><td><span class="chip pass">Pass</span></td><td>Still working on the new build.</td></tr>
+    <tr><td class="id">NDC-2382, 2388, 2386</td><td>Done</td><td><span class="chip pass">Pass</span></td><td>Deals are created with the pipeline id; no module turns itself into a conversion target; Settings › Pipelines loads.</td></tr>
+    <tr><td class="id">NDC-1197, 2282</td><td>Done</td><td><span class="chip pass">Pass</span></td><td>Actions menu (new entries not each clicked); kanban toolbar has Layout, Pipeline, Categorize by, Aggregate by.</td></tr>
+    <tr><td class="id">NDC-2098</td><td>Bug</td><td><span class="chip pass">Pass now</span></td><td>A deleted view id in the URL falls back to "All Leads" (checked by hand; the automated check was too slow to read the list).</td></tr>
+    <tr><td class="id">NDC-1823</td><td>Done</td><td><span class="chip fail">Fails again</span></td><td>At conversion, Probability, Expected Revenue and three duration fields are editable. The deal form also takes about 25 s to appear.</td></tr>
+    <tr><td class="id">NDC-1193</td><td>Bug</td><td><span class="chip fail">Still fails</span></td><td>A blank Customer is accepted (201); the other 14 modules refuse it.</td></tr>
+    <tr><td class="id">NDC-2122</td><td>Bug</td><td><span class="chip fail">Still fails</span></td><td>Pattern "1 AND 2" is accepted.</td></tr>
+    <tr><td class="id">NDC-2280</td><td>Bug</td><td><span class="chip fail">Still fails</span></td><td>A long view name is drawn over the next columns.</td></tr>
+    <tr><td class="id">NDC-2136</td><td>Bug</td><td><span class="chip fail">Worse</span></td><td>Leads list rows after 22.5 s, 34.7 s and over 40 s (target 1.5 s; round 1 was 12–25 s).</td></tr>
+    <tr><td class="id">NDC-2137</td><td>Bug</td><td><span class="chip warn">Close</span></td><td>Kanban first cards after 2.7 s (target 2 s).</td></tr>
+    <tr><td class="id">NDC-1819</td><td>Bug</td><td><span class="chip info">Not judged</span></td><td>Work Queue was still loading during the check.</td></tr>
+    <tr><td class="id">NDC-1554, 2385, 1795, 1216, 1602</td><td>Done</td><td><span class="chip info">Not rerun</span></td><td>Mass delete by criteria and Empty Bin are not allowed in a shared run.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Seen on In Progress tickets (not judged)</h2>
+  <p>These all look fixed on this build; they'll be retested properly once they reach Ready For Test.</p>
+  <ul>
+    <li>Moving a deal to another pipeline by edit and Mass Update works (NDC-2621, 1312, 1316, 1324).</li>
+    <li>Deleting a record is now on the timeline (NDC-2624); the timeline says "Lead created" (NDC-2627).</li>
+    <li>An 11th tag is refused (NDC-2625); a weekly task repeated 3 times creates 3 tasks (NDC-2623).</li>
+    <li>Test user 1 can search (NDC-2622); the Transactions list shows the pipeline name "Standard" (NDC-2626).</li>
+    <li>NDC-1797: the recycle bin now holds 53 items from modules that no longer exist, including test modules from Wave 5.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>New bug candidates</h2>
+  <div class="bugs">
+    <div class="bug"><div class="top"><span class="id">R2W2-C1</span><span class="chip warn">Medium</span></div>
+      <h3>Record locking is not enforced</h3>
+      <p>A record-lock rule accepts any free-text condition, and a matching lead can still be edited (CRM Admin A edited one, 200). The screen tab still says "In Development".</p></div>
+    <div class="bug"><div class="top"><span class="id">R2W2-C2</span><span class="chip info">Low</span></div>
+      <h3>Home shows raw column keys</h3>
+      <p>The Home cards "My Tasks" and "My Meetings Today" show column headers like subject, due_date, related_to and from_time instead of field names.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>The 29 features</h2>
+  <div class="tbl"><table>
+    <tr><th>Result</th><th>Features</th></tr>
+    <tr><td><span class="chip pass">Pass</span></td><td>Lifecycle of all 15 modules (R01–R05, R12) · Cases and Sales / Purchase Orders with every field type (R07, R08) · record page, notes, timeline, tags (R14, R15, R17, R18) · mass update on 5 field types plus owner (R22) · mass transfer of owner by API (R24) · custom views (R29, apart from 2122 and 2280) · kanban (R30) · split view (R31, per-split counts not confirmed) · search (R34) · import (R35) · recycle bin (R38) · advanced filters (R33, every supported operator)</td></tr>
+    <tr><td><span class="chip warn">Gap vs Zoho</span></td><td>Merge (R21) works by API only, with no screen and no timeline entry · clone (R13) still missing · number filters have no ≥, ≤ or between (R33)</td></tr>
+    <tr><td><span class="chip fail">Problem</span></td><td>Conversion (R19, NDC-1823) · list speed (R28, NDC-2136) · record locking (R26, R2W2-C1)</td></tr>
+    <tr><td><span class="chip info">Not rerun</span></td><td>Attachments (R16) · mass delete (R23) · work queue (S01)</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Run notes</h2>
+  <ul>
+    <li>The first start stopped on the owner sign-in limit (429) caused by our own repeated sign-ins; after a wait and clearing the owner's sessions (your OK), the restart used one owner sign-in.</li>
+    <li>This build refuses the pipeline text "Standard (Standard)" and accepts the pipeline id again, so the automation now sends the id by default (switch: <code>-Dcrm.pipelineLiteral=true</code>).</li>
+    <li>New automation merged into <code>automation/</code>: Round2RecordsTest (merge, locking, mass update, mass transfer, filters, Cases, orders), suite <code>crm-wave2-r2.xml</code>.</li>
+    <li>Clean-up: all QA R2W2 records, views and the lock rule deleted, 46 bin items purged, none left. Test user 1 back on User / Sales.</li>
+  </ul>
+  <p class="meta">Evidence (approved layout) in <code>executions/execu_2026-10-27_crm-golive-round2/wave2/evidence/annotated/</code>. Nothing went to Plane.</p>
+</section>
+</div>

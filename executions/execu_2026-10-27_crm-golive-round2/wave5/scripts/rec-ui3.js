@@ -1,0 +1,16 @@
+const P = '#live-field-0363c341-66a7-4dd2-8036-19405fea46e7', S = '#live-field-429bcc3f-3594-470d-9081-124ea4485cbc', N = '#live-field-fb4a9dcd-edce-4ceb-9202-5880a035447a';
+const res = {};
+res.parentNow = (await page.locator(P + ' button').first().innerText()).trim();
+await page.locator(S + ' button').first().click(); await sleep(700);
+await page.locator('[role=option]', { hasText: /^C$/ }).first().click(); await sleep(700);
+await page.locator(N + ' input').first().fill('50');
+await shot('rec-filled-redC-50');
+const rp = page.waitForResponse(r => /\/records$/.test(r.url().split('?')[0]) && r.request().method() === 'POST', { timeout: 20000 }).catch(() => null);
+await page.locator('button', { hasText: /^Save$/ }).first().click();
+const r = await rp; await sleep(2500);
+await shot('rec-save-refused');
+const body = (await page.innerText('body')).replace(/\s+/g, ' ');
+res.resp = r ? r.status() + ' ' + (await r.text()).slice(0, 400) : 'no POST';
+res.shown = (body.match(/[^.]{0,80}(not allowed|10 or less|Validation failed)[^.]{0,80}/gi) || []).slice(0, 5);
+res.url = page.url().replace(H, '');
+return res;

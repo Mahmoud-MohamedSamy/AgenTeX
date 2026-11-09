@@ -1,0 +1,218 @@
+{
+ "out": "NDC-1678-retest-PASS.png",
+ "ticket": "NDC-1678",
+ "title": "Teamspace | No option to set a teamspace icon/logo; admin can't be changed (disabled picklist); description doesn't persist",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "1678-02-tile-click.png",
+   "caption": "Edit Teamspace: clicking the tile opens the \"Teamspace icon\" picker (20 icons, 8 colours, Use initials).",
+   "crop": [
+    292,
+    100,
+    720,
+    440
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      313,
+      205,
+      601,
+      520
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1678-03-admin-open.png",
+   "caption": "Admin opens \"Select the teamspace admin\" with the CRM users.",
+   "crop": [
+    128,
+    61,
+    1024,
+    600
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      146,
+      78,
+      640,
+      122
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      146,
+      224,
+      632,
+      584
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1678-06-saved.png",
+   "caption": "After Save: pink rocket tile + description in the list; toast \"1 module added to this teamspace\".",
+   "crop": [
+    268,
+    56,
+    1012,
+    664
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      292,
+      330,
+      1140,
+      432
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      928,
+      638,
+      1257,
+      696
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-1678-api.png",
+   "caption": "Save requests, read-back and observations.",
+   "crop": [
+    0,
+    0,
+    1600,
+    365
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      206
+     ],
+     "n": 7,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      253
+     ],
+     "n": 8,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      259,
+      1566,
+      300
+     ],
+     "n": 9,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      306,
+      1566,
+      347
+     ],
+     "n": 10,
+     "kind": "INFO"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1, 4",
+   "Choose an icon instead of initials",
+   "Icon / image selectable, shown in the list",
+   "Icon picker; Rocket / pink saved (API icon Rocket, iconColor pink) and shown in the list",
+   "PASS"
+  ],
+  [
+   "2–3",
+   "Admin can be changed",
+   "Opens, allows another user",
+   "\"Select the teamspace admin\" lists the CRM users; admin set to test user 1 (45ffbc5b…)",
+   "PASS"
+  ],
+  [
+   "4, 7",
+   "Description persists",
+   "Saved and shown on reopen",
+   "Description kept and shown in the list",
+   "PASS"
+  ],
+  [
+   "5–6",
+   "Save",
+   "—",
+   "PUT teamspace 200, PUT acl 200, toast \"1 module added to this teamspace\"",
+   "PASS"
+  ],
+  [
+   "8",
+   "Observation: Add Modules",
+   "—",
+   "Lists raw module keys (leads, contacts, qa_rt_partners…)",
+   "INFO"
+  ],
+  [
+   "9",
+   "Observation: Save",
+   "—",
+   "Save needs at least one module",
+   "INFO"
+  ],
+  [
+   "10",
+   "Observation: handing admin away",
+   "—",
+   "Follow-up PATCH access-mode returns 403 with no message (mode was unchanged)",
+   "INFO"
+  ]
+ ]
+}

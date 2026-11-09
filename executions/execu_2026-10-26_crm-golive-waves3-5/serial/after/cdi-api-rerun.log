@@ -1,0 +1,395 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< qa:ui-automation >--------------------------
+[INFO] Building UI automation (Selenium + TestNG + Allure, self-healing locators) 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ui-automation ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ ui-automation ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ui-automation ---
+[INFO] Copying 77 resources from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ ui-automation ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ ui-automation ---
+[INFO] Using auto detected provider org.apache.maven.surefire.testng.TestNGProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running TestSuite
+[BASE] run r2pd rv 53340879
+[BASE] account 8dc2c2d7-0f50-49ae-9d65-0a3897eef7a0 -> 416d9423-0f54-4b93-981a-ef0b325a31bc; contact 4415d9ba-dc27-4c53-a3ca-67896e3a1c73 -> 8ae9e05e-ac7b-4fe6-9c45-f7ac2ea26ca8
+[D3] draft off, won deal without end date -> no contract link
+[RESTORE] D3 -> 200
+[D5] lost with keep -> contract status draft (before draft)
+[D5] lost with terminate -> contract status terminated
+[D4] reopened with terminate -> contract status terminated
+[RESTORE] D5 -> 200
+[D7] defaults stored: 9d182dfa-05f3-4af7-9685-8615a2fbe537 / premium
+[D7] contract owner=97be04b6-0a08-4883-aa51-e1650b11cab7 support_level=premium (deal owner = owner account)
+[D6] lock on: edit CRM-owned contract_name in Desk -> 422 RECORD_VALIDATION_FAILED 'Validation failed.' now=QA CD D6 r2pd
+[D6] lock off: edit -> 422 RECORD_VALIDATION_FAILED now=QA CD D6 r2pd
+[D8] cancel link -> 200 {"success":true,"data":{"id":"dda32462-65e0-4855-a32e-646ba2d32e68","kind":"contract","crm_module_key":"deals","crm_record_id":"434acb62-8474-4ccb-952a-e29da1782569","crm_display":"QA CD D6 r2pd","des…; link now {crm 434acb62-8474-4ccb-952a-e29da1782569, desk 908ca033-c720-4e55-a203-0f93aa674f00, needs_attention, event}
+[D8] recreate -> 200 {"success":true,"data":{"id":"28beb98b-4f38-4176-8b43-f227381f573e","kind":"contract","crm_module_key":"deals","crm_record_id":"434acb62-8474-4ccb-952a-e29da1782569","crm_display":"QA CD D6 r2pd","des…; link now {crm 434acb62-8474-4ccb-952a-e29da1782569, desk 908ca033-c720-4e55-a203-0f93aa674f00, needs_attention, match_existing}
+[RESTORE] D6/D7 -> 200
+[D9] sync all contracts -> 202 {"success":true,"data":{"run_id":"5925e462-1ab4-4731-8130-558fde89addc"},"error":null,"meta":null}; again -> 409 CONFLICT 'A initial_contracts run is already queued or running.'
+[D10] contracts off, deal won -> none
+[RESTORE] D10 -> 200
+[D11] allow_any_deal_link=false: link another customer's deal -> 422 UNPROCESSABLE 'Deal bd5f5275-d869-4cb7-8725-0bddebfe9c22 is not related to this ticket's customer. Enable "allow any deal" to link it anyway.'
+[D11] allow_any_deal_link=true: same link -> 200
+[RESTORE] D11 -> 200
+[L22] ticket contract -> 200 {"success":true,"data":{"contract":null,"reason":"no_contract"},"error":null,"meta":null}
+[D12] needs-attention reasons (API): [[end_date], [end_date], [end_date], [account, end_date], [account, start_date, end_date], [deal_reopened], [deal_lost], [deal_lost], [source_deleted], [source_deleted], [source_deleted], [source_deleted], [source_deleted], [source_deleted], [source_deleted], [contract_deleted], [source_deleted], [source_deleted], [source_deleted], [source_deleted], [source_deleted], [source_deleted]]
+[E8] resume -> 200
+[E8] delete queued under keep, preference changed to delete before it ran -> Desk contact kept=true
+[E9] Desk contact after the cross-delete: GET -> 404 is_deleted=n/a
+[E9] cross-deleted Desk contact deleted=true; recycle-bin item=null restore -> n/a; back=false; link={crm 69820559-b6a1-4815-93ab-b4781d99e315, desk 39c0804e-9432-4913-acfc-88e1f83957c2, unlinked, event}
+[RESTORE] E8/E9 -> 200
+[G14] after 40 s: CRM=G14 crm Desk=G14 crm; after 70 s: CRM=G14 crm Desk=G14 crm
+[G17] Desk phone 'abc-not-a-phone' -> 422 RECORD_VALIDATION_FAILED 'Validation failed.'
+[F8] audit events -> 200; entries mentioning the integration=true {"success":true,"data":[{"event_id":"57f2536c-48ac-42e2-8ffa-021e3b86e218","occurred_at":"2026-10-27T07:35:24.367711+00:00","recorded_at":"2026-10-27T07:35:24.407837+00:00","actor_type":"user","actor_id":"97be04b6-0a08-4883-aa51-e1650b11cab7","actor_label":null,"actor_on_behalf_of":null,"source_channel":"rest_api","source_ip":null,"source_user_agent":null,"source_correlation_id":null,"app_key":"de…
+[E2E-3] comment with mention -> 201; reply -> 201 '' {"success":true,"data":{"reply":{"id":"e86f3dbd-e3a8-427d-b9cf-36412fec9c8e","ticket_id":"780b0885-8610-413a-aaf0-6615cc3eabfd","direction":"outbound","mode":"reply","is_public":true,"from_user_id":"9…; ticket counts {replies=1, comments=1, attachments=0, time_entries=0}
+[RESTORE] end -> 200
+[CLEAN] delete desk 88e8ea44 780b0885-8610-413a-aaf0-6615cc3eabfd -> 204
+[CLEAN] delete desk 88e8ea44 b0de7d7b-7a2b-4533-a8ce-88377e98c445 -> 204
+[CLEAN] delete desk 0924eb24 8582d6ec-1270-42f3-811d-4b3428825751 -> 204
+[CLEAN] delete crm f42cbafd adbfff00-90b5-40ce-8b1d-11e103cd6b63 -> 204
+[CLEAN] delete crm f42cbafd bd5f5275-d869-4cb7-8725-0bddebfe9c22 -> 204
+[CLEAN] delete crm f42cbafd 9826a352-ebfd-4f27-9118-ae21975ce484 -> 204
+[CLEAN] delete desk 0924eb24 908ca033-c720-4e55-a203-0f93aa674f00 -> 204
+[CLEAN] delete crm f42cbafd 434acb62-8474-4ccb-952a-e29da1782569 -> 204
+[CLEAN] delete desk 0924eb24 54d7baf8-84da-4273-be8c-79967c0d8f86 -> 204
+[CLEAN] delete crm f42cbafd a5f16bfc-b5a7-4d72-8646-c782d8a02af3 -> 204
+[CLEAN] delete desk 0924eb24 1e67daf2-338f-48c2-9cdd-ba7254f1bf58 -> 204
+[CLEAN] delete crm f42cbafd b53c6c04-9795-42b2-a2ea-b243c729c7d0 -> 204
+[CLEAN] delete desk 0924eb24 fae40561-703d-4d50-8cfb-0686f21b9aa8 -> 204
+[CLEAN] delete crm f42cbafd 09c8c244-26fa-4aef-973e-3516d702dd48 -> 204
+[CLEAN] delete crm f42cbafd 7c00fa80-069b-4dbd-b6f6-5a20d7aab6ee -> 204
+[CLEAN] delete desk 43004ce2 39c0804e-9432-4913-acfc-88e1f83957c2 -> 204
+[CLEAN] delete crm 6f553963 69820559-b6a1-4815-93ab-b4781d99e315 -> 204
+[CLEAN] delete desk 43004ce2 34f2f10f-b8d9-4f53-a0c6-28fe0caeee04 -> 204
+[CLEAN] delete crm 6f553963 0240e97f-7889-4a61-bbed-502d990ab138 -> 204
+[CLEAN] delete desk 43004ce2 8ae9e05e-ac7b-4fe6-9c45-f7ac2ea26ca8 -> 204
+[CLEAN] delete crm 6f553963 4415d9ba-dc27-4c53-a3ca-67896e3a1c73 -> 204
+[CLEAN] delete desk 784400e1 416d9423-0f54-4b93-981a-ef0b325a31bc -> 204
+[CLEAN] delete crm b2398920 8dc2c2d7-0f50-49ae-9d65-0a3897eef7a0 -> 204
+[BASE] run tag r2pd; baseline row_version 53364822; status {enabled=true, paused=false, paused_reason=null, paused_at=null, connected_at=2026-10-26T08:05:10.94375+00:00, last_customer_import_at=2026-10-27T07:24:05.526642+00:00, last_contract_import_at=2026-10-27T07:30:50.898379+00:00, queue={queued=4, processing=0, failed=0, parked=21}, health={metadata_reachable=true, catalog_ready=true, deal_support_fields_present=false, last_checked_at=2026-10-27T07:36:51.4435376+00:00}, integrated_user={user_id=97be04b6-0a08-4883-aa51-e1650b11cab7, name=ndc-staging-owner}}
+[BASE] links contact=610 account=33 contract=22
+[A4] agent PUT /config -> 403 forbidden
+[A4] agent POST /pause -> 403 forbidden
+[A4] agent POST /imports/customers -> 403 forbidden
+[A4] agent POST /failures/retry-all -> 403 forbidden
+[A4] agent POST /failures/{rnd}/discard -> 404 NOT_FOUND
+[A4] agent POST /links -> 403 forbidden
+[A4] agent DELETE /links/{rnd} -> 403 forbidden
+[A4] agent POST /connect -> 403 forbidden
+[A4] row_version 53364822 -> 53364822
+[F1] PUT notifications.rating=false -> 200
+[F1] desk rating=false rv=53365992 | crm rating=false rv=53365992
+[F5] stale row_version -> 409 CONFLICT 'The integration settings were changed by someone else. Reload and try again.'; no row_version -> 400 VALIDATION_ERROR '"row_version" is required: send the row_version these settings were read at, so a save never overwrites another administrator's changes.'; row_version 53366023 -> 53366023
+[F6] PUT {notifications,row_version} -> 400 VALIDATION_ERROR 'Enter a value for Panel.'; contacts mappings after = 8 (baseline 8)
+[C17] F7 direction=5 -> 400 VALIDATION_ERROR 'contacts.direction has a value of the wrong type.' [{field=contacts.direction, issue=invalid_type}]
+[C17] F7 direction=sideways -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.*.*, issue=direction_invalid}, {field=contacts.first_name.first_name, issue=direction_not_allowed}, {field=contacts.last_name.last_name, issue=direction_not_allowed}, {field=contacts.email.email, issue=direction_not_allowed}, {field=
+[C17] F7 mappings as object -> 400 VALIDATION_ERROR 'contacts.mappings has a value of the wrong type.' [{field=contacts.mappings, issue=invalid_type}]
+[C17] F7 on_crm_delete=maybe -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=on_crm_delete.*.*, issue=value_invalid}]
+[C17] C17 duplicate desk field -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.mobile.first_name, issue=duplicate_target}]
+[C17] C17 unknown crm field -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.no_such_field_qa.description, issue=crm_field_unknown}]
+[C17] C17 unknown desk field -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.description.no_such_field_qa, issue=desk_field_unknown}]
+[C17] C17 read-only desk field -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.description.crm_sync_status, issue=protected_target}]
+[C17] C17 lookup not mappable -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.account_id.description, issue=desk_field_unknown}]
+[C17] C17 one-way with two-way field -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts.first_name.first_name, issue=direction_not_allowed}, {field=contacts.last_name.last_name, issue=direction_not_allowed}, {field=contacts.email.email, issue=direction_not_allowed}, {field=contacts.secondary_email.secondary_email, issue
+[C17] C17 incomplete row -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=contacts..description, issue=incomplete}]
+[C17] Z4 delete_if_no_associates -> 422 CRM_SYNC_MAPPING_INVALID 'One or more field mappings are invalid.' [{field=mappings, issue=CRM_SYNC_MAPPING_INVALID}, {field=on_crm_delete.*.*, issue=value_invalid}]
+[C17] row_version 53366023 -> 53366023; accepted: []
+[G1] CRM 73ed44dd-07ae-42e9-90d0-f3e5d6fbc62a -> Desk 19bd9a33-139a-4a9e-9681-5d771551a8c0 in 14 s; desk: first_name=QA CD last_name=G1 r2pd email=qa.cd.g1.r2pd@example.com phone=0100000835 title=G1 title owner=97be04b6-0a08-4883-aa51-e1650b11cab7 crm_sync_status=synced
+[G20] G1 latency 14 s
+[G2] Desk cf840c35-f68a-4c40-be9c-bb7bc0e3c41b -> CRM 42e4d877-1fc7-4ed6-852d-d9cb20420902 in 14 s; crm: first_name=QA CD last_name=G2 r2pd email=qa.cd.g2.r2pd@example.com title=G2 title owner=97be04b6-0a08-4883-aa51-e1650b11cab7
+[G3] CRM account 5efe4d7b-df2a-440c-9869-53eb616cc86b -> Desk f1d3147d-1cc9-4cfb-913c-0ac69053c606 account_name=QA CD G3 crm r2pd website=https://qa-cd.example.com phone=0123456 | Desk account 2c4c87ae-8e95-47e5-9541-f7d3e041f455 -> CRM a7b5d43f-da01-467e-a025-061326078d7c account_name=QA CD G3 desk r2pd website=https://qa-cd2.example.com
+[G4] CRM->Desk title arrived=true; Desk->CRM title arrived=true
+[G5] Desk owner -> agent: 200
+[G5] control (two-way title) arrived=true; CRM owner=97be04b6-0a08-4883-aa51-e1650b11cab7
+[G11] CRM contact without email 596ed803-3c5d-49e7-a867-8dae9aad5ae6 -> Desk a073b35a-38fd-4161-b992-09e7f8ebf7ff
+[G12] mass-update 3 CRM contacts -> 200
+[G12] Desk titles after: [G12 mass, G12 mass, G12 mass]
+[G15] CRM contact account_id -> QA account: 200
+[G15] Desk contact account_id=f1d3147d-1cc9-4cfb-913c-0ac69053c606 (expected f1d3147d-1cc9-4cfb-913c-0ac69053c606)
+[G16] sent 53 chars, Desk has 53 chars, equal=true
+[B4] pause with a 1206-char reason -> 400 VALIDATION_ERROR 'The pause reason can be at most 500 characters.'
+[B3] pause -> 200
+[B3] status paused=true reason='QA CD pause r2pd <b>x</b>' paused_at=2026-10-27T07:40:28.550518+00:00
+[B5] after 45 s paused: Desk title='G5 control' (held=true); G7 CRM link=false; queue {queued=8, processing=0, failed=0, parked=21}
+[B6] resume -> 200 ''
+[B6] paused edit arrived after resume=true; paused=false queue {queued=0, processing=3, failed=0, parked=21}
+[G7] CRM 088e9a72-0366-4f88-a09a-168e73fefb82 link={crm 088e9a72-0366-4f88-a09a-168e73fefb82, desk 90d3877d-b369-43a4-aa03-16a3996b5f3c, synced, match_existing} | Desk 90d3877d-b369-43a4-aa03-16a3996b5f3c link={crm 088e9a72-0366-4f88-a09a-168e73fefb82, desk 90d3877d-b369-43a4-aa03-16a3996b5f3c, synced, match_existing}
+[G8] CRM (UPPER) {crm ec741ce3-7c8c-4241-8d0b-86478723199e, desk 7900ad01-7112-462f-ab3a-a4c2aa484496, synced, match_existing} | Desk (lower) {crm ec741ce3-7c8c-4241-8d0b-86478723199e, desk 7900ad01-7112-462f-ab3a-a4c2aa484496, synced, match_existing}
+[G9] CRM {crm 81877eb2-5e6d-4096-acb2-8e34d3c37456, desk e3a10862-ab2b-437e-bb5d-e796b73581ae, synced, match_existing} | Desk A none | Desk B {crm 81877eb2-5e6d-4096-acb2-8e34d3c37456, desk e3a10862-ab2b-437e-bb5d-e796b73581ae, synced, match_existing}
+[G19] failure for the second Desk contact: crm_record_already_linked / 'The CRM contacts record "QA CD G9 crm r2pd" with the same email is already paired with Desk record "QA CD G9 crm r2pd".' / record_name=QA CD G9 desk A r2pd
+[H13] discard 3880 -> 200; gone from the log=true
+[I9] DELETE /links/{id} -> 204
+[I9] after unlink + CRM edit: Desk title='G4 from Desk' crm_sync_status=unlinked link=none
+[I10] candidates for nonsense -> 200 rows=0
+[I8] candidates for the email -> 200 rows=1
+[I8] POST /links -> 201 ''
+[I8] link now {crm 42e4d877-1fc7-4ed6-852d-d9cb20420902, desk cf840c35-f68a-4c40-be9c-bb7bc0e3c41b, synced, manual}
+[I11] refresh -> 200 {"success":true,"data":{"outcome":"updated","changed_fields":["title"],"queued":false},"error":null,"meta":null}; Desk title updated=true
+[K] ticket 4cab2ed4-0240-41cf-9bb3-54f211d225c9 #null contact_id=19bd9a33-139a-4a9e-9681-5d771551a8c0 account_id=null
+[M2] CRM bell entry for the contact owner (owner account) after ticket create: false []
+[K7] no deal -> crm_contact_or_lead
+[K6] open deal -> open_prospect
+[I3] potentials -> 200 {"success":true,"data":[{"id":"def4bd61-8fc6-4809-a244-21499fc3dc3f","deal_name":"QA CD K6 open r2pd","stage":"qualification","stage_label":"qualification","category":"open","amount":1000,"currency":null,"closing_date":"2026-11-26","url":"https://staging-crm.taviportal.com/modules/f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430/records/def4bd61-8fc6-4809-a244-21499fc3dc3f","linked_ticket_count":0}],"error":null,"meta":{"page":null,"page_size":null,"total_count":null,"total_pages":null,"sort_by":null,"sort_…
+[I15] link deal -> 200; GET deal -> 200 {"success":true,"data":{"deal_id":"def4bd61-8fc6-4809-a244-21499fc3dc3f","deal_name":"QA CD K6 open r2pd","stage":"qualification","category":"open","amount":1000,"closing_date":"2026-11-26","url":"https://staging-crm.taviportal.com/modules/f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430/records/def4bd61-8fc6-4…
+[I15] unlink -> 204; GET deal -> 204 
+[K9] deal won -> won_customer
+[D1] contract for the won deal: {id=ec9e785b-ecc3-4d13-b088-c8ef5fa06c39, kind=contract, crm_module_key=deals, crm_record_id=def4bd61-8fc6-4809-a244-21499fc3dc3f, crm_display=QA CD K6 open r2pd, desk_module_key=desk_contracts, desk_record_id=d2d4b798-cc64-4193-b37f-a4058d30d888, desk_display=QA CD K6 open r2pd, sync_status=needs_attention, needs_attention=true, missing_fields=[end_date], last_synced_at=2026-10-27T07:46:48.140978+00:00, match_source=event, crm_url=https://staging-crm.taviportal.com/modules/f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430/records/def4bd61-8fc6-4809-a244-21499fc3dc3f, desk_url=https://staging-desk.taviportal.com/modules/0924eb24-e42a-4eab-8efd-e3428f19e882/records/d2d4b798-cc64-4193-b37f-a4058d30d888}
+[D2] missing_fields=[end_date] sync_status=needs_attention
+[K5] won + open -> won_customer
+[D4] after reopen (keep): link=needs_attention contract status=draft
+[L1] contact card -> 200 has ticket=true
+[L4] account card -> 200 has ticket=true
+[L2] contact stats -> 404 NOT_FOUND {"success":false,"data":null,"error":{"code":"NOT_FOUND","message":"Record 73ed44dd-07ae-42e9-90d0-f3e5d6fbc62a was not found.","details":null},"meta":null}
+[M4] ticket null with the signal off -> bell entries []
+[L5] prefill -> 200 {"success":true,"data":{"contact_id":"19bd9a33-139a-4a9e-9681-5d771551a8c0","account_id":"f1d3147d-1cc9-4cfb-913c-0ac69053c606","email":"qa.cd.g1.r2pd@example.com","phone":"0100000835","status":"Open"},"error":null,"meta":null}
+[L5] create -> 201 '' {"success":true,"data":{"id":"9d2933e9-1f0d-4215-9a1d-e6a5579367a7","ticket_number":588,"status":"Open","department_id":"7e1ac409-58b0-41ab-97e1-0e7d5c8c5158","closed_at":null,"closed_by":null,"resolution":null,"counts":{"replies":0,"comments":0,"attachments":0,"time_entries":0},"total_time_seconds":0,"active_timer":null,"engine_deleted_at":null,"created_at":"2026-10-27T07:50:46.795741+00:00","updated_at":"2026-10-27T07:50:46.795741+00:00","following":false,"followers_count":0,"unread":false,"sp…
+[L5] Desk ticket 9d2933e9-1f0d-4215-9a1d-e6a5579367a7 #588 contact_id=19bd9a33-139a-4a9e-9681-5d771551a8c0 (expected 19bd9a33-139a-4a9e-9681-5d771551a8c0)
+[J] agent before change: info 200, potentials 200, account info 200
+[J3] stored profile_access for Desk Agent: {profile_id=44444444-4444-4444-4444-444444444402, enabled=true, contacts={enabled=true, info=true, potentials=false, notes=true, activities=[meetings, tasks]}, accounts={enabled=false, info=false, potentials=false, notes=false, activities=[]}}
+[J7] Custom(info,notes,meetings+tasks; no potentials): info 200, potentials 403 FORBIDDEN {"success":false,"data":null,"error":{"code":"FORBIDDEN","message":"Your profile may not open the potentials tab of the CRM panel.","details":[{"field":"tab","issue":"CRM_PANEL_TAB_FORBIDDEN"}]},"meta…, activities 200, notes-target 200; account (no access): info 403 FORBIDDEN, potentials 403 FORBIDDEN
+[J11] owner potentials -> 200
+[J4] Contacts No access: info 403 FORBIDDEN, notes-target 403 FORBIDDEN, activities 403 FORBIDDEN
+[E2] keep: Desk contact gone=false link={crm adb333ac-b5fa-479a-a123-b8f7d4cebd36, desk 64874275-bc87-4789-adc4-c01790fdf8ef, needs_attention, event}
+[E3] unlink: Desk contact gone=false link={crm 47277e37-3a43-45b7-b2ac-6672dc77d9bc, desk 3ce09530-c9e7-4db1-892d-8ad55c8651e1, unlinked, event} crm_sync_status=unlinked
+[E4] delete: Desk contact deleted=true; its ticket deleted=true
+[E5] account delete: Desk account deleted=true
+[E6] Desk delete with keep: CRM contact gone=false link={crm f6bdeba1-5500-4ba8-b2da-e07f0966b6a3, desk 7591fd0e-4393-48be-809f-1da6739830d9, needs_attention, event}
+[E6] Desk delete with delete: CRM contact deleted=true
+[E7] Desk account delete with delete: CRM account deleted=true
+[H2] history today -> {"success":true,"data":[{"date":"2026-10-27","direction":"desk_to_crm","module":"accounts","added":4,"updated":0,"failed":5},{"date":"2026-10-27","direction":"desk_to_crm","module":"contacts","added":6,"updated":6,"failed":22},{"date":"2026-10-27","direction":"crm_to_desk","module":"accounts","added":6,"updated":1,"failed":6},{"date":"2026-10-27","direction":"crm_to_desk","module":"contacts","added":24,"updated":22,"failed":24},{"date":"2026-10-27","direction":"crm_to_desk","module":"contracts","added":0,"updated":0,"failed":29}],"error":null,"meta":{"page":null,"page_size":null,"total_count":null,"total_pages":null,"sort_by":null,"sort_order":null,"more_records":null,"next_cursor":null,"total_in_scope":null}}
+[H6] Sync all customers -> 202 {"success":true,"data":{"run_id":"237719b1-297e-4749-a329-9732befa9d90"},"error":null,"meta":null}
+[H7] again at once -> 409 CONFLICT 'A initial_customers run is already queued or running.'
+[H8] run 237719b1-297e-4749-a329-9732befa9d90 kind=initial_customers status=partially_completed requested=37 created=0 updated=1 skipped=27 failed=0 needs_attention=9; progress seen [running:{phase=draining, page=0}, partially_completed:{phase=draining, page=0}]; items -> 200
+[H6] contact links before 625 after 625
+[RESTORE] end of run -> 200 
+[CLEAN] delete desk 88e8ea44 7f95bb7a-dbd9-4439-868e-0c062d1ad546 -> 204
+[CLEAN] delete desk 88e8ea44 9d2933e9-1f0d-4215-9a1d-e6a5579367a7 -> 204
+[CLEAN] delete desk 88e8ea44 7d1b7b78-40c0-41fd-9d51-8c7724fc8ffc -> 204
+[CLEAN] delete desk 88e8ea44 4cab2ed4-0240-41cf-9bb3-54f211d225c9 -> 204
+[CLEAN] delete desk 88e8ea44 780b0885-8610-413a-aaf0-6615cc3eabfd -> 204
+[CLEAN] delete desk 88e8ea44 b0de7d7b-7a2b-4533-a8ce-88377e98c445 -> 204
+[CLEAN] delete crm f42cbafd 12fd5c60-9200-4bad-ad30-0222a0f111b2 -> 204
+[CLEAN] delete desk 0924eb24 d2d4b798-cc64-4193-b37f-a4058d30d888 -> 204
+[CLEAN] delete crm f42cbafd def4bd61-8fc6-4809-a244-21499fc3dc3f -> 204
+[CLEAN] delete desk 0924eb24 8582d6ec-1270-42f3-811d-4b3428825751 -> 204
+[CLEAN] delete crm f42cbafd adbfff00-90b5-40ce-8b1d-11e103cd6b63 -> 204
+[CLEAN] delete crm f42cbafd bd5f5275-d869-4cb7-8725-0bddebfe9c22 -> 204
+[CLEAN] delete crm f42cbafd 9826a352-ebfd-4f27-9118-ae21975ce484 -> 204
+[CLEAN] delete desk 0924eb24 908ca033-c720-4e55-a203-0f93aa674f00 -> 204
+[CLEAN] delete crm f42cbafd 434acb62-8474-4ccb-952a-e29da1782569 -> 204
+[CLEAN] delete desk 0924eb24 54d7baf8-84da-4273-be8c-79967c0d8f86 -> 204
+[CLEAN] delete crm f42cbafd a5f16bfc-b5a7-4d72-8646-c782d8a02af3 -> 204
+[CLEAN] delete desk 0924eb24 1e67daf2-338f-48c2-9cdd-ba7254f1bf58 -> 204
+[CLEAN] delete crm f42cbafd b53c6c04-9795-42b2-a2ea-b243c729c7d0 -> 204
+[CLEAN] delete desk 0924eb24 fae40561-703d-4d50-8cfb-0686f21b9aa8 -> 204
+[CLEAN] delete crm f42cbafd 09c8c244-26fa-4aef-973e-3516d702dd48 -> 204
+[CLEAN] delete crm f42cbafd 7c00fa80-069b-4dbd-b6f6-5a20d7aab6ee -> 204
+[CLEAN] delete crm 6f553963 f8dfea6e-725d-4b85-8d70-c5152c19a346 -> 204
+[CLEAN] delete desk 43004ce2 19d2df30-d8cd-4d4c-80e6-482074c6a199 -> 204
+[CLEAN] delete crm 6f553963 f6bdeba1-5500-4ba8-b2da-e07f0966b6a3 -> 204
+[CLEAN] delete desk 43004ce2 7591fd0e-4393-48be-809f-1da6739830d9 -> 204
+[CLEAN] delete desk 43004ce2 04006ba4-c249-49b2-a37b-6a88e49a2f28 -> 204
+[CLEAN] delete crm 6f553963 926810fa-b790-464c-9af0-fe5e90232c94 -> 204
+[CLEAN] delete desk 43004ce2 3ce09530-c9e7-4db1-892d-8ad55c8651e1 -> 204
+[CLEAN] delete crm 6f553963 47277e37-3a43-45b7-b2ac-6672dc77d9bc -> 204
+[CLEAN] delete desk 43004ce2 64874275-bc87-4789-adc4-c01790fdf8ef -> 204
+[CLEAN] delete crm 6f553963 adb333ac-b5fa-479a-a123-b8f7d4cebd36 -> 204
+[CLEAN] delete desk 43004ce2 e3a10862-ab2b-437e-bb5d-e796b73581ae -> 204
+[CLEAN] delete desk 43004ce2 0666aef5-7203-49ac-9b07-0eba65126f2a -> 204
+[CLEAN] delete crm 6f553963 81877eb2-5e6d-4096-acb2-8e34d3c37456 -> 204
+[CLEAN] delete desk 43004ce2 7900ad01-7112-462f-ab3a-a4c2aa484496 -> 204
+[CLEAN] delete crm 6f553963 ec741ce3-7c8c-4241-8d0b-86478723199e -> 204
+[CLEAN] delete desk 43004ce2 90d3877d-b369-43a4-aa03-16a3996b5f3c -> 204
+[CLEAN] delete crm 6f553963 088e9a72-0366-4f88-a09a-168e73fefb82 -> 204
+[CLEAN] delete desk 43004ce2 f5a96915-8856-4876-bcc0-57defd758099 -> 204
+[CLEAN] delete crm 6f553963 fc1786cc-ef1c-4041-8ddd-427161aa588e -> 204
+[CLEAN] delete desk 43004ce2 6c67e5dd-d313-45bb-b924-9d8764d2de5a -> 204
+[CLEAN] delete desk 43004ce2 d5ea98d3-004c-4782-ace6-6ec6a2a78913 -> 204
+[CLEAN] delete desk 43004ce2 e20a438d-0d9c-49d9-82ba-dd334e42410e -> 204
+[CLEAN] delete crm 6f553963 27f1ff04-6360-4604-a30c-39f31c9c897b -> 204
+[CLEAN] delete crm 6f553963 8127bb8b-3e85-4f0b-a848-5f27132bf8d5 -> 204
+[CLEAN] delete crm 6f553963 f3a72ac0-0904-43f0-bea8-e21cdcfb8508 -> 204
+[CLEAN] delete desk 43004ce2 a073b35a-38fd-4161-b992-09e7f8ebf7ff -> 204
+[CLEAN] delete crm 6f553963 596ed803-3c5d-49e7-a867-8dae9aad5ae6 -> 204
+[CLEAN] delete crm 6f553963 42e4d877-1fc7-4ed6-852d-d9cb20420902 -> 204
+[CLEAN] delete desk 43004ce2 cf840c35-f68a-4c40-be9c-bb7bc0e3c41b -> 204
+[CLEAN] delete desk 43004ce2 19bd9a33-139a-4a9e-9681-5d771551a8c0 -> 204
+[CLEAN] delete crm 6f553963 73ed44dd-07ae-42e9-90d0-f3e5d6fbc62a -> 204
+[CLEAN] delete desk 43004ce2 39c0804e-9432-4913-acfc-88e1f83957c2 -> 204
+[CLEAN] delete crm 6f553963 69820559-b6a1-4815-93ab-b4781d99e315 -> 204
+[CLEAN] delete desk 43004ce2 34f2f10f-b8d9-4f53-a0c6-28fe0caeee04 -> 204
+[CLEAN] delete crm 6f553963 0240e97f-7889-4a61-bbed-502d990ab138 -> 204
+[CLEAN] delete desk 43004ce2 8ae9e05e-ac7b-4fe6-9c45-f7ac2ea26ca8 -> 204
+[CLEAN] delete crm 6f553963 4415d9ba-dc27-4c53-a3ca-67896e3a1c73 -> 204
+[CLEAN] delete crm b2398920 24703f09-7c5b-4ea2-a3e0-bd86811fc25b -> 204
+[CLEAN] delete desk 784400e1 fcbeb2b1-dccd-4e64-9acc-2ead5b888c4f -> 204
+[CLEAN] delete desk 784400e1 21ad7ac8-1921-4023-a3d4-3b48bdceb9f6 -> 204
+[CLEAN] delete crm b2398920 faf01ab5-6f72-432f-9aaa-f899b2eecbde -> 204
+[CLEAN] delete crm b2398920 a7b5d43f-da01-467e-a025-061326078d7c -> 204
+[CLEAN] delete desk 784400e1 f1d3147d-1cc9-4cfb-913c-0ac69053c606 -> 204
+[CLEAN] delete desk 784400e1 2c4c87ae-8e95-47e5-9541-f7d3e041f455 -> 204
+[CLEAN] delete crm b2398920 5efe4d7b-df2a-440c-9869-53eb616cc86b -> 204
+[CLEAN] delete desk 784400e1 416d9423-0f54-4b93-981a-ef0b325a31bc -> 204
+[CLEAN] delete crm b2398920 8dc2c2d7-0f50-49ae-9d65-0a3897eef7a0 -> 204
+[ERROR] Tests run: 36, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 1943 s <<< FAILURE! -- in TestSuite
+[ERROR] qa.features.crmdeskintegration.RemainingApiTest.d6d7d8 -- Time elapsed: 44.03 s <<< FAILURE!
+java.lang.AssertionError: D6 unlocked field not editable expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at qa.features.crmdeskintegration.RemainingApiTest.d6d7d8(RemainingApiTest.java:164)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmdeskintegration.RemainingApiTest.e8e9 -- Time elapsed: 155.5 s <<< FAILURE!
+java.lang.AssertionError: E9 restore from the Desk recycle bin failed expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at qa.features.crmdeskintegration.RemainingApiTest.e8e9(RemainingApiTest.java:259)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmdeskintegration.WriteRunTest.dealsHandshakeContracts -- Time elapsed: 279.4 s <<< FAILURE!
+java.lang.AssertionError: M2 no CRM bell entry for the contact owner expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at qa.features.crmdeskintegration.WriteRunTest.dealsHandshakeContracts(WriteRunTest.java:551)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   RemainingApiTest.d6d7d8:164 D6 unlocked field not editable expected [true] but found [false]
+[ERROR]   RemainingApiTest.e8e9:259 E9 restore from the Desk recycle bin failed expected [true] but found [false]
+[ERROR]   WriteRunTest.dealsHandshakeContracts:551 M2 no CRM bell entry for the contact owner expected [true] but found [false]
+[INFO] 
+[ERROR] Tests run: 36, Failures: 3, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  32:26 min
+[INFO] Finished at: 2026-10-27T10:59:04+03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project ui-automation: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Software Testing\Automation\Agentex Installation\Agentex Installation\automation-w3\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

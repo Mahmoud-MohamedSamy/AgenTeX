@@ -1,0 +1,11 @@
+{"out":"B4-new-ticket-owner-not-saved-vs-zoho.png","ticket":"NDC-2275 · D-14","title":"New Ticket form shows the signed-in agent as owner, but the ticket is saved Unassigned","verdict":"FAIL","label":"BUG vs ZOHO",
+"date":"TAVI 7 Nov 2026 01:58 · Zoho 7 Nov 2026 (live, form opened and cancelled, nothing saved)","env":"TAVI staging-desk.taviportal.com (NDC-Staging, owner ndc-staging-owner) · Dept QA AS6 Dept B, no rules · Zoho Desk org techsolutionsegypt (Enterprise trial, admin)",
+"panels":[
+ {"side":"tavi","img":"executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-B4-form-before-save.png","caption":"TAVI: Tickets → Create Ticket, before Save — Ticket Owner pre-filled with ndc-staging-owner","w":1600,"h":1000,"crop":[418,590,1024,210],"boxes":[{"b":[1100,744,1412,792],"n":1}]},
+ {"side":"tavi","img":"executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-B4-ticket-after-save.png","caption":"TAVI: the saved ticket #1200 — Ticket Owner Unassigned","w":1600,"h":1000,"crop":[370,60,800,460],"boxes":[{"b":[384,448,650,508],"n":2}]},
+ {"side":"zoho","img":"executions/execu_2026-11-06_desk-assignment-skills/screenshots/zoho-add-ticket-owner-2026-11-07.png","caption":"Zoho: Tickets → Add Ticket — Ticket Owner pre-filled with the signed-in agent (closed with Cancel, not submitted)","w":1600,"h":900,"crop":[188,420,890,270],"boxes":[{"b":[610,604,884,666],"n":1}]}
+],
+"rows":[
+ [1,"Default Ticket Owner on the form","The Add Ticket form opens with Ticket Owner = the signed-in agent (seen).","The Create Ticket form opens with Ticket Owner = the signed-in user (ndc-staging-owner). Same as Zoho.","PASS"],
+ [2,"Owner after Save","The ticket keeps the owner shown on the form (expected; Zoho was not submitted, so its saved result was not seen).","Saving without touching the field sends no owner (the POST has no owner field) and #1200 is saved Unassigned. In a department with a round-robin create rule the ticket went to the next agent instead (#1199 → Dev Team 2), although the form showed ndc-staging-owner.","FAIL"]
+]}

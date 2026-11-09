@@ -1,0 +1,19 @@
+{
+ "out": "../N02-portal-access-not-sent-2026-10-27.png",
+ "id": "New bug",
+ "title": "Portal access is not sent automatically after «قبول التسجيل» — N02 never runs",
+ "verdict": "Retest: FAIL",
+ "date": "27 Oct 2026 · approved 14:52:07 local (11:52:07 UTC), screenshots ~4 min later",
+ "sub": "TAVI CRM crm.taviportal.com, Education First tenant (Ebhar Misr) · record EM-00186 «QA N02 REPRO» left at Registration Approved (kept) · nothing sent by hand",
+ "panels": [
+  {"side": "TAVI", "col": "L", "caption": "EM-00186 is at Registration Approved for 4 min after «قبول التسجيل»", "img": "../originals/n02-record.png", "boxes": [{"n": 1, "x": 436, "y": 474, "w": 296, "h": 32}]},
+  {"side": "TAVI", "col": "L", "caption": "Same record: Customer Portal «بوابة المتقدمين» = Not sent, only the manual Send access button; no email sent", "img": "../originals/n02-portal.png", "boxes": [{"n": 2, "x": 300, "y": 800, "w": 574, "h": 126}, {"n": 3, "x": 313, "y": 606, "w": 1134, "h": 100}]},
+  {"side": "TAVI", "col": "R", "caption": "Execution History for EM-00186: only the 14:51 On Create rules — no N02 «دخول البوابة عند قبول التسجيل» run after the approval", "img": "../originals/n02-exec.png", "boxes": [{"n": 4, "x": 293, "y": 226, "w": 1102, "h": 44}]}
+ ],
+ "rows": [
+  {"n": "1", "b": "Status after «قبول التسجيل»", "zoho": "Registration Approved", "tavi": "Registration Approved", "match": "PASS"},
+  {"n": "2–3", "b": "Portal access + access email sent automatically by N02 (SendPortalAccess)", "zoho": "Sent within seconds (worked 21 and 25 Oct)", "tavi": "Not sent after 4 min; only the manual Send access button", "match": "FAIL"},
+  {"n": "4", "b": "N02 run recorded in Execution History", "zoho": "On Edit · Fired", "tavi": "No entry at all", "match": "FAIL"}
+ ],
+ "notes": ["Rule N02 12057f81-9263-423a-a0dd-261ff5e6d1fa is active and unchanged since 20 Oct (On edit · Application Status = Registration Approved AND changed · action Send portal access).", "Same result on EM-00184, EM-00185 and 13 approvals in the morning run (EM-00165…178). Rules after normal saves still run. Root cause is shared with NDC-2420 (no rule runs after any blueprint transition)."]
+}

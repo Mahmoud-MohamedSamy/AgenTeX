@@ -27,7 +27,8 @@ public final class CrmOrderFeature {
     // layouts. Every Leads layout already has a teammate's review process (one per layout), so Leads review tests use
     // the restricted QA layout created for this feature on 18 Oct 2026 (delete it at the very end of the run).
     public static final String LEADS_STANDARD = "bf971461-2edc-45f2-b6e4-6e180aa64288";
-    public static final String LEADS_QA_LAYOUT = "f56991e7-692b-4c22-8a54-c5adb8a988fe";
+    // f56991e7 was deleted on staging before 27 Oct (creates then answer 403); override with -Dcrm.leadsLayout=<layout id>
+    public static final String LEADS_QA_LAYOUT = System.getProperty("crm.leadsLayout", "f56991e7-692b-4c22-8a54-c5adb8a988fe");
     public static final String DEALS_STANDARD = "fcba0068-d67f-44f5-8412-cdef9c09e16e";
     public static final String DEALS_PIPELINE = "5170500c-b335-479c-96d1-ed138965c345";
     public static final String TASKS_STANDARD = "40c084f2-f062-45d5-ac70-132a7597fac0";

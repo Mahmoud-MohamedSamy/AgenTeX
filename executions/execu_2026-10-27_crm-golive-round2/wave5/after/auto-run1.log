@@ -1,0 +1,112 @@
+[I02 NDC-1193] Customers blank record -> 201 {"success":true,"data":{"id":"2571ccd4-2db0-4872-87e5-bbdc6cbe88be","module_id":"6f553963-01d6-4b68-9fb3-143d23044c41","schema_version_id":"05834014-fa90-4df9-a573-6f8ed0badb5c","compliance_state":"va
+[C12] duplicate folder -> 409 {"success":false,"data":null,"error":{"code":"FOLDER_ALREADY_EXISTS","message":"A folder named 'QA R2W5 Folder' already exists in this teamspace. Choose a different name.","details":[{"path":"name","t; duplicate teamspace -> 409
+[C05] POST dependency-maps {} -> 422 {"success":false,"data":null,"error":{"code":"DEPENDENCY_MAP_INVALID","message":"The parent (controlling) field is required.","details":[{"path":"controllingFieldId","type":"required","message":"The p
+[C11] POST /teamspaces without modules -> 400 {"success":false,"data":null,"error":{"code":"TEAMSPACE_MODULES_REQUIRED","message":"Add at least one module to save this teamspace.","details":[{"path":"module_ids","type":"required","message":"A tea; with module_ids [] -> 400 {"success":false,"data":null,"error":{"code":"TEAMSPACE_MODULES_REQUIRED","message":"Add at least one module to save this teamspace.","details":[{"path":"module_ids","type":"required","message":"A tea
+[C01 types] 26 data types tried, failed: []
+[C02 assignments] GET -> 200, POST -> 201
+[C02] layout A, duplicate name -> 409, clone, default and back, reassign -> 200 {"success":true,"data":{"source_layout_id":"c37ff8fc-4569-4879-a054-6a4656ae3535","target_layout_id":"1c058559-7858-41b9-bcf2-403775c7cbb1","moved_count":1},"error":null,"meta":null}, records on clone 1
+[C01] module a5c7e2b0-e9a1-45ba-a560-ffe4ca9bde26 created; same name again -> 409 {"success":false,"data":null,"error":{"code":"MODULE_NAME_TAKEN","message":"A module named 'QA R2W5 Auto 845641' already exists in this app. Module names must be unique.","details":[{"path":"labels.en
+[C06-C09] no pick 422, Purple 422, same email other case 422, formula 2, auto QW5-0002, rollup 12; restore with taken email -> 200 {"success":true,"data":{"succeeded":[],"failed":[{"id":"1c7fac36-ebfe-4a5e-82a5-f61a5ac35b06","reason_key":"recyclebin.error.name_conflict","detail":"QA Email is already in use by another record."}],"
+[C04] rule {gt qa_num 10}: control 5 -> 201, create 50 -> 422 {"success":false,"data":null,"error":{"code":"RECORD_VALIDATION_FAILED","message":"Validation failed.","details":[{"path":"qa_num","type":"VALIDATION_RULE_FAILED","message":"QA number must be 10 or le; edit 3 -> 999 -> 422 {"success":false,"data":null,"error":{"code":"RECORD_VALIDATION_FAILED","message":"Validation failed.","details":[{"path":"qa_num","type":"VALIDATION_RULE_FAILED","message":"QA number must be 10 or le, stored 3; garbage condition -> 422 {"success":false,"data":null,"error":{"code":"VALIDATION_RULE_INVALID","message":"The condition could not be understood. Send a criteria object, for example {\"op\":\"gt\",\"field\":\"amount\",\"value
+[cleanup] delete validation rule -> 204
+[cleanup] delete QA teamspace -> 204
+[cleanup] delete custom datatype -> 204
+[cleanup] module 3146b5bf-a21f-45f8-84fa-91a87b10d577: 0 records deleted, 2 bin items purged
+[cleanup] delete QA child module -> 204
+[cleanup] module a5c7e2b0-e9a1-45ba-a560-ffe4ca9bde26: 4 records deleted, 5 bin items purged
+[cleanup] delete QA module -> 204
+[ERROR] Tests run: 11, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 205.5 s <<< FAILURE! -- in TestSuite
+[ERROR] qa.features.crmsetup.SetupApiTest.blankCustomerRefused -- Time elapsed: 3.627 s <<< FAILURE!
+java.lang.AssertionError: Customers accepted a blank record expected [422] but found [201]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertEqualsImpl(Assert.java:150)
+	at org.testng.Assert.assertEquals(Assert.java:132)
+	at org.testng.Assert.assertEquals(Assert.java:1419)
+	at org.testng.Assert.assertEquals(Assert.java:1383)
+	at qa.features.crmsetup.SetupApiTest.blankCustomerRefused(SetupApiTest.java:264)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmsetup.SetupApiTest.datatypeAndSkills -- Time elapsed: 5.860 s <<< FAILURE!
+java.lang.IllegalStateException: category returned 403: {"success":false,"data":null,"error":{"code":"forbidden","message":"Missing required permission 'skills:manage'."},"meta":null}
+	at qa.features.crmautomationorder.CrmUser.ok(CrmUser.java:161)
+	at qa.features.crmsetup.SetupApiTest.datatypeAndSkills(SetupApiTest.java:234)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] Failures: 
+[ERROR]   SetupApiTest.blankCustomerRefused:264 Customers accepted a blank record expected [422] but found [201]
+[ERROR]   SetupApiTest.datatypeAndSkills:234 » IllegalState category returned 403: {"success":false,"data":null,"error":{"code":"forbidden","message":"Missing required permission 'skills:manage'."},"meta":null}
+[ERROR] Tests run: 11, Failures: 2, Errors: 0, Skipped: 0
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project ui-automation: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Software Testing\Automation\Agentex Installation\Agentex Installation\automation-r2w5\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

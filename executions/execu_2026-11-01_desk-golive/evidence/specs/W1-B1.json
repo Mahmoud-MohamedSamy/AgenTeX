@@ -1,0 +1,9 @@
+{ "out": "W1-B1-vs-zoho.png", "ticket": "W1-B1", "title": "Company profile: a long phone number gives a server error; phone and website are not checked by the API", "verdict": "FAIL", "label": "BUG · Low", "date": "2 Nov 2026", "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner · Zoho Desk: techsolutionsegypt (Enterprise trial), admin · Edge",
+  "panels": [
+    { "img": "bugs/W1-B1-4-phone-after-save.png", "w": 1280, "h": 720, "caption": "TAVI · Setup › Company › Edit · 300-digit phone, Save", "boxes": [ { "b": [388, 626, 765, 661], "n": 1 }, { "b": [944, 638, 1258, 697], "n": 2 } ] },
+    { "img": "bugs/zoho-B1-3-phone-typed.png", "w": 1600, "h": 900, "caption": "Zoho · Setup › Company › Edit · same 300 digits typed", "boxes": [ { "b": [750, 798, 1098, 828], "n": 1 }, { "b": [28, 832, 122, 863], "n": 2 } ] } ],
+  "rows": [
+    [1, "Typing a 300-digit phone number", "The field stops at 20 characters (maxlength 20).", "The field takes all 300 digits; no limit and no hint.", "DIFFERS"],
+    [2, "Saving it", "Update saves the 20 digits with no error (checked after reload, then set back).", "\"An unexpected error occurred.\" (HTTP 500 INTERNAL_ERROR); nothing is saved. Same on the API, twice.", "BUG"],
+    [3, "Saving a 40-digit phone", "Cannot be typed (20 characters max).", "Saved without complaint (40 digits stored).", "DIFFERS"],
+    [4, "Website \"not a url\"", "Saved as \"http://not a url\" (no format check, 50 characters max).", "Screen: \"Enter a valid website URL\" and Save is disabled. API: saved as \"not a url\" (200).", "INFO"] ] }

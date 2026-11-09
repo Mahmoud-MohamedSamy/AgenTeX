@@ -107,7 +107,7 @@ public class VerifyV4SlaTest extends VerifyBase {
             Map<String, Object> mail = new LinkedHashMap<>();
             mail.put("kind", "sendEmail");
             mail.put("to", List.of());
-            mail.put("userIds", List.of(adminB().id()));
+            mail.put("userIds", List.of(adminA().id()));   // real mail only to the two allowed inboxes (user, 26 Oct 2026)
             mail.put("subject", tag + " email");
             mail.put("bodyHtml", "<p>" + tag + " email</p>");
             Map<String, Object> task = new LinkedHashMap<>();

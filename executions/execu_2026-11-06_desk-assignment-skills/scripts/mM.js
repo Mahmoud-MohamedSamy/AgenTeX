@@ -1,0 +1,3 @@
+eval(require('fs').readFileSync('lib.js','utf8'));
+const g=(await api('GET','/web-forms/ea8a3838-2d86-4f33-ba1b-afb7ab3a8b77')).j.data;
+return {name:g.name,dept:g.department_id,enabled:g.is_enabled,share_link_enabled:g.definition.share_link_enabled,allowed:g.definition.allowed_origins,captcha:g.definition.captcha_enabled,attachments:g.definition.attachments&&g.definition.attachments.enabled,iframe:g.snippets&&g.snippets.iframe,fields:(g.preview&&g.preview.fields||[]).map(f=>({key:f.key,label:f.label,type:f.input_type,required:f.required,options:f.options&&f.options.map(o=>o.label||o.value||o).slice(0,20)})),success:g.definition.success_message};

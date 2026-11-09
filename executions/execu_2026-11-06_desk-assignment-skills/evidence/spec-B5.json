@@ -1,0 +1,155 @@
+{
+ "out": "B5-holiday-list-not-attached-vs-zoho.png",
+ "ticket": "NDC-2275 · B-08",
+ "title": "\"Is on a holiday of\" ignores a holiday list that is not attached to business hours",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 7 Nov 2026 (holiday on 7 Nov 2026) · Zoho 7 Nov 2026 (live, form opened and cancelled, nothing saved)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · rule QA AS6 B08 holiday, Dept QA AS6 Dept A · Zoho Desk org techsolutionsegypt (Enterprise trial, admin)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-B5-holiday-lists.png",
+   "caption": "TAVI: Setup → Holidays — \"QA AS6 HOL today\" (one holiday: 7 Nov 2026), Business hours: Not attached",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    447,
+    392,
+    975,
+    160
+   ],
+   "boxes": [
+    {
+     "b": [
+      452,
+      440,
+      1416,
+      490
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-B5-rule-target1.png",
+   "caption": "TAVI: rule QA AS6 B08 holiday, Target 1: Subject contains \"QA AS6 HOL t1\" AND Execution Time is on a holiday of QA AS6 HOL today → Test User 1 (Target 2: is not on a holiday of → Mahmoud Samy)",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    981,
+    480,
+    600,
+    270
+   ],
+   "boxes": [
+    {
+     "b": [
+      992,
+      676,
+      1504,
+      712
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-B5-ticket-t1.png",
+   "caption": "TAVI: #1252 \"QA AS6 HOL t1 detached r2\" created on 7 Nov — Unassigned (target 1 did not match)",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    370,
+    60,
+    800,
+    460
+   ],
+   "boxes": [
+    {
+     "b": [
+      384,
+      450,
+      650,
+      508
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-B5-ticket-t2-history.png",
+   "caption": "TAVI: #1254 \"QA AS6 HOL t2 detached r2\" — assigned to Mahmoud Samy by target 2 (\"not on a holiday\")",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    370,
+    60,
+    800,
+    460
+   ],
+   "boxes": [
+    {
+     "b": [
+      384,
+      450,
+      650,
+      508
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/zoho-new-holiday-list-2026-11-07.png",
+   "caption": "Zoho: Setup → Holiday Lists → New Holiday List — Business Hours is an optional switch (off by default) (closed with Cancel)",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    240,
+    104,
+    1080,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      286,
+      288,
+      432,
+      314
+     ],
+     "n": 1,
+     "tag": "left"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Holiday list without business hours",
+   "A holiday list can be saved with the Business Hours switch off (seen on the New Holiday List form).",
+   "Same: Holidays page shows \"QA AS6 HOL today\" with Business hours \"Not attached\".",
+   "INFO"
+  ],
+  [
+   2,
+   "Criteria offers the list",
+   "Execution Time \"on a holiday of / not a holiday of\" a holiday list (seen earlier in Zoho's rule criteria). Whether Zoho's picker offers lists without business hours was not checked.",
+   "The rule's picker offers the unattached list and the rule saves: \"Execution Time is on a holiday of QA AS6 HOL today\".",
+   "INFO"
+  ],
+  [
+   3,
+   "Result on the holiday (7 Nov)",
+   "Expected: on 7 Nov a ticket matches \"on a holiday of\" a list that contains 7 Nov. Zoho's runtime with an unattached list was not checked (it would need a list created in Zoho).",
+   "\"On a holiday of\" did NOT match (#1252 stayed Unassigned) and \"not on a holiday of\" DID match (#1254 → Mahmoud Samy): today is treated as a working day. After attaching the same list to business hours \"QA AS6 BH\", the same rule worked (#1233 → Test User 1, #1234 no match). A list with only 25 Dec behaves correctly either way.",
+   "FAIL"
+  ]
+ ]
+}

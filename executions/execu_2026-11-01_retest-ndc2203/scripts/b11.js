@@ -1,0 +1,9 @@
+const out = {}; const TEAM = '1adfefb7-0c25-4484-ae92-782964695054', TPL = '0a1ba3f9-abdb-4a1b-b7e6-bb2602b8a0e9';
+const em = rec => ({ type: 'Email', emailTemplateId: TPL, emailSubject: 'QA WF D2 alert {{ticket.subject}}', emailBody: '<p>QA WF D2 alert for ticket {{ticket.number}}</p>', emailRecipients: rec });
+out.rule = await mkRule('D2', { kind: 'RecordCreated' }, [em([{ kind: 'Contact', value: '' }, { kind: 'User', value: ME }])]);
+for (const [k, v] of [['Team', TEAM], ['Role', 'manager']]) { const r = await api('POST', '/workflow/rules', { moduleId: T, name: 'QA WF probe ' + k, isActive: false, mode: 'Recurring', trigger: { kind: 'RecordCreated' }, criteria: guard('QA WF probe '), actions: [{ order: 0, ...em([{ kind: k, value: v }]) }] }); if (r.j?.data?.id) await api('DELETE', `/workflow/rules/${r.j.data.id}`); out['validate ' + k] = r.s + ' ' + (r.s >= 300 ? (r.j?.error?.message || '') + JSON.stringify(r.j?.error?.details || '').slice(0, 200) : 'accepted'); }
+// without a template: contact must be refused
+{ const r = await api('POST', '/workflow/rules', { moduleId: T, name: 'QA WF probe notpl', isActive: false, mode: 'Recurring', trigger: { kind: 'RecordCreated' }, criteria: guard('QA WF probe '), actions: [{ order: 0, type: 'Email', emailSubject: 's', emailBody: 'b', emailRecipients: [{ kind: 'Contact', value: '' }] }] }); if (r.j?.data?.id) await api('DELETE', `/workflow/rules/${r.j.data.id}`); out.noTemplateContact = r.s + ' ' + JSON.stringify(r.j?.error?.details || '').slice(0, 200); }
+if (out.rule.id) { const tk = (await mkTicket('D2')).id; out.t = tk; await sleep(15000);
+  out.disp = arr((await api('GET', `/workflow/executions?recordId=${tk}`)).j?.data).flatMap(e => (e.dispatches || []).map(x => x.actionType + ' ' + x.status + ' ' + x.target + ' ' + (x.responseBodyTruncated || x.lastError || '').slice(0, 220))); }
+return fin(out);

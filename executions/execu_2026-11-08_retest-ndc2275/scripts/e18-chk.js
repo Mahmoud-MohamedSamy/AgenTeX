@@ -1,0 +1,7 @@
+module.exports=async()=>{const R={};const T1='33dfd714-5b9e-4c51-86f4-f33dd1fe9504';const m=s=>String(s).replace(/([A-Za-z0-9._%+-]{2})[A-Za-z0-9._%+-]*@/g,'$1***@');
+ const t0=Date.now();let rs=[];while(Date.now()-t0<300000){rs=(await api('GET','/desk/tickets/'+T1+'/replies')).j.data||[];if(rs.some(x=>x.direction==='inbound'))break;await W(20000);}
+ R.waitedSec=Math.round((Date.now()-t0)/1000);R.replies=rs.map(x=>({dir:x.direction,status:x.status||x.delivery_status,at:String(x.created_at||x.sent_at||x.received_at||'').slice(0,19),from:m(JSON.stringify(x.from||x.from_address||x.sender||'')).slice(0,70),text:String(x.body_text||x.text||x.snippet||x.preview||'').slice(0,80)}));
+ const d=(await api('GET','/desk/tickets/'+T1)).j.data;R.t1={status:d.status,dept:String(d.department_id).slice(0,8),counts:d.counts,in_backlog:d.in_backlog};
+ const r=await api('GET','/modules/'+T+'/records?page=1&per_page=40&sort_by=created_at&sort_dir=desc');R.newTicketsLike=arr(r.j.data).map(fl).filter(o=>/check-in/i.test(String(o.subject))||/mmohamed@/i.test(String(o.email))).filter(o=>String(o.created_at)>'2026-11-09T12:45').map(o=>({no:o.ticket_number,s:o.subject,c:String(o.created_at).slice(11,19),ch:o.channel}));
+ const a=(await api('GET','/desk/tickets/'+T1+'/activity')).j.data;R.recentAct=(Array.isArray(a)?a:[]).filter(x=>x.occurred_at>'2026-11-09T12:45').map(x=>x.occurred_at.slice(11,19)+' '+x.action+' '+JSON.stringify(x.summary||{}).slice(0,120));
+ return R;};

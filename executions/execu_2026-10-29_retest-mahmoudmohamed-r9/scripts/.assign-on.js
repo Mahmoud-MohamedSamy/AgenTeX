@@ -1,0 +1,10 @@
+await page.getByRole('button', { name: 'Next' }).click(); await sleep(5000);
+const assignText = (await txt()).split('\n').filter(l => /trigger|automation|process/i.test(l)).slice(0, 6);
+const cb = page.getByText(/Trigger (automation|configured)/i).first(); await cb.click({ force: true }); await sleep(1000); await shot('2302on-assign-ticked');
+await page.getByRole('button', { name: 'Save & next' }).click(); await sleep(8000); await shot('2302on-review');
+const rev = (await txt()).split('\n').filter(l => /Automation and process|triggered/i.test(l)).slice(0, 4);
+await page.getByText('I confirm I have permission', { exact: false }).click(); await sleep(500);
+await page.getByRole('button', { name: 'Submit' }).click();
+for (let i = 0; i < 40 && !/Import complete|completed with errors|Import failed/i.test(await txt()); i++) await sleep(1500);
+await shot('2302on-result');
+return done({ assignText, rev, result: (await txt()).match(/Import complete[\s\S]{0,80}/)?.[0] });

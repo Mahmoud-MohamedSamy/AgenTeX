@@ -1,0 +1,10 @@
+const o={};o.A=await tnames(DA);
+await openTab();await page.screenshot({path:S+'c8-pre.png'});
+o.langBtns=await page.locator('header button, button').evaluateAll(e=>e.map(x=>(x.innerText||'').trim()).filter(t=>/^(EN|AR)\b/i.test(t)).slice(0,4));
+await page.getByText('EN',{exact:true}).first().click({timeout:10000});await page.waitForTimeout(1200);
+o.menu=await page.locator('[role=menuitem],[role=option],[role=menuitemradio]').evaluateAll(e=>e.map(x=>x.innerText.trim()).slice(0,6));
+const ar=page.locator('[role=menuitem],[role=option],[role=menuitemradio]').filter({hasText:/عرب|Arabic/i}).first();await ar.click({timeout:8000});await page.waitForTimeout(6000);
+const t=await txt();o.dir=await page.evaluate(()=>document.documentElement.dir);o.arSnippet=t.slice(t.length-400);o.enOldText=/Every department uses the same types/.test(t);o.arSame=/(كل|جميع) الأقسام/.test(t);await page.screenshot({path:S+'c8-arabic.png'});
+await page.getByText('AR',{exact:true}).first().click({timeout:8000}).catch(e=>o.backErr=e.message.slice(0,60));await page.waitForTimeout(1200);
+const en=page.locator('[role=menuitem],[role=option],[role=menuitemradio]').filter({hasText:/English|الإنجليزية/i}).first();if(await en.count()){await en.click();await page.waitForTimeout(4000);}o.dirBack=await page.evaluate(()=>document.documentElement.dir);
+return o;

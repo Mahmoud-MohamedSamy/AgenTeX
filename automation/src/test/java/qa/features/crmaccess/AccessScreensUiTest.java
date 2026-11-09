@@ -33,7 +33,7 @@ public class AccessScreensUiTest extends BaseTest {
     @Test(groups = {"crmaccess", "wave1", "ui"}, description = "Users: views, columns, search narrows the list")
     public void usersList() {
         AccessScreensPage p = new AccessScreensPage().open("/settings/general/users", "Invite user", 40);
-        List<String> miss = missing(p.text(), "Users", "Invite user", "Filters", "Invitation Status", "Profile", "Org unit", "Referral code", "Status", "test user 1");
+        List<String> miss = missing(p.text(), "Users", "Invite user", "Filters", "Invitation Status", "Profile", "Org unit", "Referral code", "Status");   // test user 1 is not on the first screen of rows since 27 Oct: found through search below
         boolean views = p.text().contains("Active Users") && p.text().contains("All Users");   // in the locale file, not on screen (25 Oct)
         int all = p.tableRows();
         p.search("airhemp");   // the list searches by email
@@ -42,6 +42,7 @@ public class AccessScreensUiTest extends BaseTest {
         fact("US-01/02", "missing on screen: " + miss + "; Active/All Users views shown=" + views + "; rows " + all + " -> after search 'airhemp' " + filtered + ", only matches=" + onlyMatches);
         Assert.assertTrue(miss.isEmpty(), "Users screen lacks " + miss);
         Assert.assertTrue(filtered > 0 && filtered < all, "search did not narrow the list (" + all + " -> " + filtered + ")");
+        Assert.assertTrue(onlyMatches, "searching the email did not show test user 1 only");
     }
 
     @CaseId("US-10")
@@ -59,15 +60,19 @@ public class AccessScreensUiTest extends BaseTest {
     @Test(groups = {"crmaccess", "wave1", "ui"}, description = "Profiles list with badges; Permissions matrix with Grant / Deny / Inherit")
     public void profilesAndPermissions() {
         AccessScreensPage p = new AccessScreensPage().open("/settings/security/profiles", "Create profile", 40);
+        if (p.has("Expand all", 10)) p.clickText("Expand all");   // since 27 Oct 2026 the Profiles page is a collapsed hierarchy tree
+        p.waitForText("User", 10);
         List<String> miss1 = missing(p.text(), "Profiles", "Create profile", "CRM Admin", "User");
         boolean systemBadge = p.text().toLowerCase(Locale.ROOT).contains("system");
         p.open("/settings/security/permissions", "Permissions", 40);
         boolean picked = p.has("User", 10);
         if (picked) p.clickText("User");
         p.waitForText("GRANT", 20);
-        List<String> miss2 = missing(p.text(), "Grant", "Deny", "Create permission");
+        // 27 Oct 2026 build: the button that said "Create permission" (and opened Create profile, NDC-2547) now says "Create profile"
+        boolean oldLabel = p.text().contains("Create permission");
+        List<String> miss2 = missing(p.text(), "Grant", "Deny", oldLabel ? "Create permission" : "Create profile");
         boolean inherit = p.text().toLowerCase(Locale.ROOT).contains("inherit");   // an Inherit column exists in the locale file
-        fact("PR-01/PE-01", "profiles screen missing: " + miss1 + " (System badge on the list=" + systemBadge + ")" + "; permissions matrix missing: " + miss2 + " (profile 'User' picked=" + picked + "); Inherit column shown=" + inherit);
+        fact("PR-01/PE-01", "profiles screen missing: " + miss1 + " (System badge on the list=" + systemBadge + ")" + "; permissions matrix missing: " + miss2 + " (button label: " + (oldLabel ? "Create permission" : "Create profile") + ")" + " (profile 'User' picked=" + picked + "); Inherit column shown=" + inherit);
         Assert.assertTrue(miss1.isEmpty(), "Profiles screen lacks " + miss1);
         Assert.assertTrue(miss2.isEmpty(), "Permissions matrix lacks " + miss2);
     }
@@ -76,6 +81,7 @@ public class AccessScreensUiTest extends BaseTest {
     @Test(groups = {"crmaccess", "wave1", "ui"}, description = "Org units: tree, search, create root / child actions")
     public void orgUnits() {
         AccessScreensPage p = new AccessScreensPage().open("/settings/security/org-units", "Org Units", 40);
+        for (int i = 0; i < 120 && p.text().contains("Loading org units"); i++) qa.core.base.Waits.sleep(500);   // 124 units since 27 Oct: slow first load
         List<String> miss = missing(p.text(), "Org Units", "Create unit", "Organization", "Expand all");
         fact("OU-01", "missing: " + miss);
         Assert.assertTrue(miss.isEmpty(), "Org Units screen lacks " + miss);

@@ -1,0 +1,15 @@
+// NDC-2294 item 4: CreateMeeting + ScheduleCall + CreateConnectedRecord on QA RT r8 (rule kept for cleanup).
+const M = '064aa360-7e4b-4e0b-9e68-831c469fa6e9', C = 'b690647a-27b1-45b2-bcc9-0c8c185e1e5a'; const out = {}; const enc = v => ({ kind: 'string', value: String(v) });
+const b = { moduleId: M, appKey: 'crm', layoutId: null, departmentIds: [], name: 'QA RT r8 actions', description: null, mode: 'Recurring', isActive: false, trigger: { kind: 'RecordCreated', fieldName: null, fieldNames: null, fieldMatch: null, dateFieldName: null, offsetSeconds: null, offsetMode: null },
+  criteria: { kind: 'StringMatch', field: 'name', operator: 'StartsWith', stringValue: 'QA RT r8 ACT', caseInsensitive: false, negate: null },
+  actions: [{ order: 0, delaySeconds: 0, type: 'CreateMeeting', activitySubject: 'QA RT r8 meeting', meetingVenue: 'QA room' }, { order: 1, delaySeconds: 0, type: 'ScheduleCall', activitySubject: 'QA RT r8 call' },
+    { order: 2, delaySeconds: 0, type: 'CreateConnectedRecord', targetModuleId: C, connectedLookupField: 'qa_parent', fieldUpdates: { name: { kind: 'string', stringValue: 'QA RT r8 connected' } } }] };
+const r = await api('POST', '/workflow/rules', b); const wid = r.j?.data?.id; out.create = r.s + ' ' + (wid || JSON.stringify(r.j?.error?.details || r.t).slice(0, 400)); if (!wid) return done(out);
+out.stored = JSON.stringify((await api('GET', '/workflow/rules/' + wid)).j?.data?.actions?.map(a => ({ t: a.type, s: a.activitySubject, v: a.meetingVenue, m: a.targetModuleId, l: a.connectedLookupField }))); out.activate = (await api('POST', `/workflow/rules/${wid}/activate`)).s; out.wid = wid;
+const lay = arr((await api('GET', `/modules/${M}/layouts`)).j?.data)[0]?.id;
+const rec = await api('POST', `/modules/${M}/records`, { layout_id: lay, data: [['name', 'QA RT r8 ACT 1'], ['qa_colour', 'Green'], ['qa_child', 'C']].map(([f, v]) => ({ field: f, value: enc(v) })) }); const id = rec.j?.data?.id; out.rec = rec.s + ' ' + id;
+await sleep(25000);
+out.exec = arr((await api('GET', `/workflow/executions?recordId=${id}`)).j?.data).map(e => e.outcome + ' ' + JSON.stringify((e.dispatches || []).map(d => d.actionType + ':' + d.status + ' ' + (d.responseBodyTruncated || d.errorMessage || '').slice(0, 140))));
+const mods = arr((await api('GET', '/modules')).j?.data); const find = async (key, subj) => { const mm = mods.find(x => x.moduleKey === key); if (!mm) return 'no module ' + key; const l = arr((await api('GET', `/modules/${mm.id}/records?page=1&per_page=20&sort_by=created_at&sort_dir=desc`)).j?.data); const hit = l.find(x => JSON.stringify(x.data).includes(subj)); return hit ? 'found ' + hit.id + ' ' + JSON.stringify((hit.data || []).filter(d => /related|what_id|who_id|regarding|parent|venue|subject|qa_parent/i.test(d.field)).map(d => d.field + '=' + JSON.stringify(d.value?.value ?? d.value))).slice(0, 300) : 'not found'; };
+out.meeting = await find('meetings', 'QA RT r8 meeting'); out.call = await find('calls', 'QA RT r8 call'); out.connected = await find('qa_rt_r8c', 'QA RT r8 connected'); out.recId = id;
+return done(out);

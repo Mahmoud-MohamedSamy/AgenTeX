@@ -1,0 +1,132 @@
+<title>Round 2 Wave 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live · Round 2 · Wave 1 of 5</div>
+  <h1>Access and security</h1>
+  <p class="meta">27 Oct 2026 · build of 27 Oct (index-De3hTVb3.js) · staging-crm.taviportal.com · owner (two sign-ins), CRM Admin B, Supervisor, test user 1 and 2 · Zoho CRM org943261092 read-only</p>
+  <p>All 11 access and security features were retested through the screens and the API, including the new data sharing check, the new "AI Agent" profile and permissions, and the fixes that came with this build. Tenant-wide steps (hierarchy mode, session and password policies, business hours, Referral Code sync) stay in Phase 4.</p>
+</header>
+
+<div class="strip">
+  <div class="stat"><b>77</b><span>automated checks</span></div>
+  <div class="stat pass"><b>71</b><span>pass</span></div>
+  <div class="stat fail"><b>3</b><span>still fail</span></div>
+  <div class="stat fail"><b>2</b><span>new bug candidates</span></div>
+  <div class="stat"><b>0</b><span>differences after cleanup</span></div>
+</div>
+
+<section>
+  <h2>Decisions for you</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Decision</th><th>My suggestion</th></tr>
+    <tr><td class="id">1</td><td>File R2W1-B2: in role mode, a Manager in another org unit (HR) sees a Sales user's leads. Possible data leak, seen twice.</td><td>Yes, High.</td></tr>
+    <tr><td class="id">2</td><td>File R2W1-B1: the new built-in "AI Agent" profile can be renamed (the problem NDC-2543 fixed for "User").</td><td>Yes, Medium.</td></tr>
+    <tr><td class="id">3</td><td>Add a round 2 comment and image to the passing tickets in Done (NDC-2381, 2293, 2418, 1172, 1699, 1701, 1337, 1593, 1599, 2416, 2543, 2546, 2547, 2415, 613, 2414)?</td><td>Yes; move any that sit in Bug to Done (I'll check states first).</td></tr>
+    <tr><td class="id">4</td><td>Still failing (NDC-2412, 2657, 2658): comment with today's result, or leave?</td><td>Leave until Ready For Test, as for the other waves.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Ticket results</h2>
+  <div class="tbl"><table>
+    <tr><th>Ticket</th><th>Result</th><th>What we saw</th></tr>
+    <tr><td class="id">NDC-2381, 2293, 2418, 1172, 1699, 1701, 1337, 1593, 1599, 2416, 2543, 2546, 2547, 2415, 613</td><td><span class="chip pass">Pass</span></td><td>Audit log, sessions, teamspace access, field permissions, own-manager change, built-in profile protection, rank edit, button label, history names who, Setup links for a denied user.</td></tr>
+    <tr><td class="id">NDC-2414</td><td><span class="chip pass">Pass in effect</span></td><td>The Supervisor gets 403 on a lead outside its hierarchy; the view-all permission still shows in its list (from Desk Administrator) but has no effect in CRM.</td></tr>
+    <tr><td class="id">NDC-2412</td><td><span class="chip fail">Still fails</span></td><td>A Supervisor in Sales can't see a Sales user's leads in role mode (seen twice).</td></tr>
+    <tr><td class="id">NDC-2657</td><td><span class="chip fail">Still fails</span></td><td>The Permissions page shows the raw "Missing required permission 'iam.profile.manage'." to test user 1.</td></tr>
+    <tr><td class="id">NDC-2658</td><td><span class="chip fail">Still fails</span></td><td>Invites are refused with the raw seat-limit key.</td></tr>
+    <tr><td class="id">NDC-2542, US-13 / PS-06</td><td><span class="chip info">Blocked</span></td><td>No free user seat.</td></tr>
+    <tr><td class="id">NDC-2655, 2656, 2413, 2545</td><td><span class="chip info">Phase 4</span></td><td>Need tenant-wide changes or the owner's screen.</td></tr>
+    <tr><td class="id">NDC-1343</td><td><span class="chip info">Skipped</span></td><td>In Progress.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>New bug candidates</h2>
+  <div class="bugs">
+    <div class="bug"><div class="top"><span class="id">R2W1-B2</span><span class="chip fail">High</span></div>
+      <h3>Manager in another org unit sees a user's leads</h3>
+      <p>In role mode, a Manager in HR without view-all can see the leads of a User in Sales. Seen in two separate runs. Possible data leak.</p></div>
+    <div class="bug"><div class="top"><span class="id">R2W1-B1</span><span class="chip warn">Medium</span></div>
+      <h3>"AI Agent" profile can be renamed</h3>
+      <p>The new built-in profile answers 204 to a rename and isn't marked as built-in, while "User" is now protected. It was set back to "AI Agent" straight away.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>The 11 features</h2>
+  <div class="tbl"><table>
+    <tr><th>Feature</th><th>Result</th></tr>
+    <tr><td>U01 Users</td><td><span class="chip pass">Pass</span> · invites blocked by the seat limit</td></tr>
+    <tr><td>U03 Referral Code page</td><td><span class="chip pass">Pass</span> (read only; sync in Phase 4)</td></tr>
+    <tr><td>U04 Profiles and permissions</td><td><span class="chip warn">Pass with issues</span> · R2W1-B1, NDC-2657</td></tr>
+    <tr><td>U05 Org units</td><td><span class="chip pass">Pass</span> (owner only)</td></tr>
+    <tr><td>U06 Reporting hierarchy</td><td><span class="chip fail">Issues</span> · NDC-2412, R2W1-B2; reporting mode in Phase 4</td></tr>
+    <tr><td>U07 Data sharing</td><td><span class="chip warn">Gap</span> · per-module public / hierarchy visibility only; no sharing rules like Zoho</td></tr>
+    <tr><td>U10 Security policies</td><td><span class="chip warn">Gap</span> · read only pass; no password, lockout or MFA policy screens</td></tr>
+    <tr><td>U11 Login history · U12 Audit log · U15 Personal settings</td><td><span class="chip pass">Pass</span></td></tr>
+    <tr><td>C06 Field permissions (incl. import and Transactions)</td><td><span class="chip pass">Pass</span></td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Run notes</h2>
+  <ul>
+    <li>The owner couldn't sign in on screen from about 14:10 to 15:35 (session limit); CRM Admin B acted as admin in that time. After you allowed clearing the owner's sessions, the owner was used in two single sign-ins, with no 429.</li>
+    <li>Incident: one tenant-wide screen test ran by mistake and switched the hierarchy mode to Reporting and back within a minute. Later runs excluded tenant-wide tests.</li>
+    <li>Clean-up: staging matches the starting snapshot (users, 43 profiles, overrides, 124 org units, field permissions, visibility, teamspaces, mode, sessions). Leftover QA org units and 34 QA bin items removed.</li>
+    <li>New automation merged into <code>automation/</code>: round 2 access tests, restricted-screen checks, a snapshot test and a bin sweep; an option to act as another admin when the owner is unavailable.</li>
+  </ul>
+  <p class="meta">22 evidence images (approved layout) in <code>executions/execu_2026-10-27_crm-golive-round2/wave1/evidence/annotated/</code>. Nothing went to Plane.</p>
+</section>
+</div>

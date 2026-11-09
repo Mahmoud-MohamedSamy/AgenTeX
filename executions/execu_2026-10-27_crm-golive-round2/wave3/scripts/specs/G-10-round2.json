@@ -1,0 +1,119 @@
+{
+ "out": "G-10-round2.png",
+ "ticket": "G-10",
+ "verdict": "PARTIAL",
+ "label": "AFTER ACTION FIXED · CHAIN STOPS",
+ "title": "Lead made by a blueprint After 'Create record': made correctly, but it never enters its blueprint after approval",
+ "env": "staging-crm.taviportal.com, build index-De3hTVb3.js (CRM Admin A / B, Supervisor, test users; API) vs Zoho CRM org943261092 (read-only)",
+ "date": "28 Oct 2026",
+ "panels": [
+  {
+   "img": "r2-card-G-10.png",
+   "w": 1600,
+   "h": 477,
+   "crop": [
+    0,
+    0,
+    1600,
+    477
+   ],
+   "caption": "TAVI — facts logged by the automated run (after/run4.log lines 161–165 + probe 28 Oct).",
+   "boxes": [
+    {
+     "b": [
+      40,
+      140.09375,
+      1584,
+      324.46875
+     ],
+     "n": "1"
+    },
+    {
+     "b": [
+      40,
+      324.46875,
+      1584,
+      370.5625
+     ],
+     "n": "2"
+    },
+    {
+     "b": [
+      40,
+      370.5625,
+      1584,
+      416.65625
+     ],
+     "n": "3"
+    }
+   ]
+  },
+  {
+   "img": "z-blueprint.png",
+   "w": 1600,
+   "h": 950,
+   "crop": [
+    0,
+    0,
+    1600,
+    950
+   ],
+   "caption": "Zoho — Blueprint transition with an After action that creates a record (read-only).",
+   "boxes": [
+    {
+     "b": [
+      250,
+      60,
+      1590,
+      940
+     ],
+     "n": "1",
+     "color": "#16a34a"
+    },
+    {
+     "b": [
+      310,
+      60,
+      1590,
+      940
+     ],
+     "n": "2",
+     "color": "#16a34a"
+    },
+    {
+     "b": [
+      370,
+      60,
+      1590,
+      940
+     ],
+     "n": "3",
+     "color": "#16a34a"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Blueprint After 'Create record' makes the lead",
+   "A lead with the mapped fields is created",
+   "Made, all fields set (run 2 and run 4)",
+   "PASS"
+  ],
+  [
+   "2",
+   "Workflow + approval on the made lead",
+   "Run in order",
+   "WF G-10 fired, approval approved",
+   "PASS"
+  ],
+  [
+   "3",
+   "Blueprint entered after the approval",
+   "The lead enters its blueprint",
+   "governed=false (same as E2E-5)",
+   "FAIL"
+  ]
+ ]
+}

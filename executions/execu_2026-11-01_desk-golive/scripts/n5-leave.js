@@ -1,0 +1,1 @@
+const o={};for(let k=0;k<2;k++){await page.locator('button',{hasText:/^Cancel$/}).last().click().catch(()=>{});await sleep(1500);}const d=page.locator('[role=dialog] button,[role=alertdialog] button',{hasText:/^(Discard|Leave|Yes|OK)/});if(await d.count()){await d.first().click();await sleep(1000);}o.u=page.url().replace(H,'');return JSON.stringify(o);

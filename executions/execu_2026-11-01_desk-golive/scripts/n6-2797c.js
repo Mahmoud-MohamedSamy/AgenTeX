@@ -1,0 +1,10 @@
+const o = {};
+const h = page.getByText('Statuses by department and layout', { exact: true }).first(); await h.scrollIntoViewIfNeeded().catch(() => {}); await sleep(800);
+const dep = page.locator('select').filter({ has: page.locator('option', { hasText: 'Choose a department' }) }).first();
+await dep.selectOption({ label: 'QA NDC Manual Invoice' }).catch(e => o.e = e.message.slice(0, 60)); await sleep(2500);
+const lay = page.locator('select').filter({ has: page.locator('option', { hasText: /Choose a layout/ }) });
+o.layOpts = await lay.first().locator('option').allInnerTexts().catch(() => []);
+await lay.first().selectOption({ label: 'QA NDC Manual Invoice' }).catch(e => o.e2 = e.message.slice(0, 60)); await sleep(3000);
+const t = (await txt()).replace(/\s+/g, ' '); const i = t.indexOf('Statuses by department and layout'); o.sec = t.slice(i, i + 1200);
+o.shot = await shot('rt/2797-section');
+return JSON.stringify(o);

@@ -1,0 +1,93 @@
+{
+ "out": "NDC-2658-retest-PASS.png",
+ "ticket": "NDC-2658",
+ "title": "Users | Inviting with no free seat shows the raw key \"iam.subscription.seat_limit_reached\"",
+ "priority": "low",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "2658-3-result.png",
+   "caption": "Invite dialog after Send: a clear sentence under the row; nothing invited.",
+   "crop": [
+    288,
+    290,
+    1024,
+    324
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      314,
+      434,
+      730,
+      454
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2658-api.png",
+   "caption": "API evidence — NDC-2658 · Invite qa.rt.2658@example.com with all seats used (trial plan, 5 seats)",
+   "crop": [
+    0,
+    0,
+    1600,
+    203
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Message",
+   "A sentence telling the admin to free or buy a seat",
+   "\"All seats are in use. Remove a user or add seats in Billing to invite someone.\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "server",
+   "Refused",
+   "ok false, SUBSCRIPTION_SEAT_LIMIT_REACHED; no invitation created",
+   "PASS"
+  ],
+  [
+   "3",
+   "raw key",
+   "No raw key",
+   "\"iam.subscription.seat_limit_reached\" not shown",
+   "PASS"
+  ]
+ ]
+}

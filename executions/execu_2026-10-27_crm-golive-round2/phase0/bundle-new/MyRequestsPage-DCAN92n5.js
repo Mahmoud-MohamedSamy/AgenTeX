@@ -1,0 +1,1 @@
+import{t as e}from"./i18n-vendor-Cum07jb0.js";import{n as t}from"./react-vendor-DkHM6MDj.js";import"./index-De3hTVb3.js";import{MyApprovalsPage as n}from"./MyApprovalsPage-D7gRyI5S.js";var r=t();function i(){let{t}=e(`crm-records`);return(0,r.jsx)(n,{title:t(`myRequests.title`)})}export{i as MyRequestsPage};

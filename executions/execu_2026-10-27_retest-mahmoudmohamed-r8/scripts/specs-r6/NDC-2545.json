@@ -1,0 +1,105 @@
+{
+ "out": "NDC-2545-retest-PASS.png",
+ "ticket": "NDC-2545",
+ "title": "Security Policies | Idle timeout also signs out sessions that are in active use",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2545-api.png",
+   "caption": "auto-run2 — SessionPolicyTest.idleTimeoutEnforced (SP-04).",
+   "crop": [
+    0,
+    0,
+    1600,
+    386
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      274
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      280,
+      1566,
+      321
+     ],
+     "n": 4,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      327,
+      1566,
+      368
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "2",
+   "Busy session stays signed in",
+   "Stays signed in",
+   "200 every 30 s through 210 s; token and refresh still 200",
+   "PASS"
+  ],
+  [
+   "3",
+   "Idle session signed out after 2 min",
+   "Signed out",
+   "Token 401 / refresh 401",
+   "PASS"
+  ],
+  [
+   "1, 4",
+   "Shared setting",
+   "Restore 60",
+   "Idle 2 min for the test, restored to 60 (= baseline)",
+   "INFO"
+  ],
+  [
+   "5",
+   "Login History shows the idle session ended",
+   "Ended",
+   "Not checkable — audit service 500 this round",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,212 @@
+{
+ "out": "NDC-2813-retest-PASS.png",
+ "ticket": "NDC-2813",
+ "title": "New Ticket form shows the current agent as owner but saves the ticket unassigned",
+ "verdict": "PASS",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · admin · QA AS6 Dept A, round robin \"QA AS6 RR seq\" on create (temporary), direct rule QA RT14 2813 (temporary)",
+ "date": "8 Nov 2026",
+ "panels": [
+  {
+   "img": "2813-a-form.png",
+   "h": 1000,
+   "caption": "Create Ticket: Ticket Owner left as ndc-staging-owner",
+   "crop": [
+    420,
+    420,
+    1020,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      1106,
+      746,
+      1410,
+      788
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2813-a-saved.png",
+   "h": 1000,
+   "caption": "After Save: #1348 owner ndc-staging-owner (was Unassigned)",
+   "crop": [
+    364,
+    60,
+    1000,
+    470
+   ],
+   "boxes": [
+    {
+     "b": [
+      680,
+      110,
+      730,
+      134
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      384,
+      448,
+      650,
+      506
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2813-b-form.png",
+   "h": 1000,
+   "caption": "Owner cleared (Clear selection): \"Assign to user…\"",
+   "crop": [
+    420,
+    420,
+    1020,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      1106,
+      746,
+      1410,
+      786
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2813-b-history.png",
+   "h": 1000,
+   "caption": "#1360 History: round robin assigned it to Mahmoud Samy, triggered by a new ticket (NDC-2275 case)",
+   "crop": [
+    664,
+    240,
+    936,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      714,
+      284,
+      1000,
+      436
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2813-api.png",
+   "full": true,
+   "caption": "All cases (form and API)",
+   "crop": [
+    0,
+    90,
+    1600,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      350,
+      1564,
+      408
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      418,
+      1564,
+      455
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Owner left as the signed-in agent, Save",
+   "Ticket saved with that owner",
+   "#1348 owner ndc-staging-owner",
+   "PASS"
+  ],
+  [
+   2,
+   "Owner cleared, round robin matches (NDC-2275)",
+   "Unassigned on save, then round robin assigns",
+   "Form sends owner null; #1356 to A1, #1360 to A2 by QA AS6 RR seq",
+   "PASS"
+  ],
+  [
+   3,
+   "Owner cleared, no rule matches",
+   "Unassigned",
+   "#1359 Unassigned",
+   "PASS"
+  ],
+  [
+   4,
+   "Owner untouched, a direct rule matches",
+   "The rule can still assign someone else",
+   "#1351 to A3 by QA RT14 2813 direct",
+   "PASS"
+  ],
+  [
+   5,
+   "API create with source api / web_form and no owner",
+   "Unassigned, so the rules route it",
+   "#1352 to A2, #1353 to A3 by round robin. Without a source: creator (#1354), as the note says",
+   "PASS"
+  ]
+ ]
+}

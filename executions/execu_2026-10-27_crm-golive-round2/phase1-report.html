@@ -1,0 +1,157 @@
+<title>Round 2 Phase 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+<style>.summary{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px}.big{gap:10px}.big li{font-size:17px}h3.sub{font-family:var(--display);font-size:16px;margin:10px 0 0;color:var(--fg)}.plain{color:var(--fg);max-width:80ch}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}.card.hot{border-color:var(--fail)}.card .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.card .top .id{font-family:var(--mono);font-weight:600}.card p{margin:0;font-size:15px}</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live · Round 2 · Phase 1</div>
+  <h1>Phase 1 report: access and daily records</h1>
+  <p class="meta">27 Oct 2026 · new build of 27 Oct · staging-crm.taviportal.com · compared with Zoho CRM (read-only) · nothing has gone to Plane yet</p>
+</header>
+
+<section class="summary">
+  <h2>In short</h2>
+  <ul class="big">
+    <li><b>Most things work on the new build.</b> 130 of 144 automated checks pass, and 20 old tickets are confirmed fixed.</li>
+    <li><b>One possible data leak needs attention:</b> a manager in one department can see another department's leads (R2W1-B2).</li>
+    <li><b>The biggest problem for users is speed:</b> the Leads list takes 22–40 seconds to show rows (NDC-2136, target 1.5 s). It got worse.</li>
+    <li><b>One ticket marked Done is not fixed:</b> NDC-1823 (lead conversion lets you edit fields that should be locked).</li>
+    <li><b>4 new bugs found</b>, and <b>9 decisions</b> for you at the end of this page.</li>
+  </ul>
+</section>
+
+<div class="strip">
+  <div class="stat pass"><b>130 / 144</b><span>checks pass</span></div>
+  <div class="stat pass"><b>20</b><span>old tickets now pass</span></div>
+  <div class="stat fail"><b>9</b><span>old tickets still fail</span></div>
+  <div class="stat fail"><b>4</b><span>new bugs found</span></div>
+  <div class="stat warn"><b>5</b><span>features Zoho has, TAVI doesn't</span></div>
+</div>
+
+<section>
+  <h2>Wave 1 · Who can see and do what</h2>
+  <p><b>What we tested:</b> users and invites, profiles and permissions, departments (org units), the reporting hierarchy, data sharing, security settings, login history, the audit log, personal settings and field permissions. We signed in as different kinds of users (owner, admins, a supervisor, normal users) to check what each one can and can't reach, on screen and through the API.</p>
+  <p><b>Result:</b> 71 of 77 checks pass.</p>
+
+  <h3 class="sub">Working now (16 old tickets fixed)</h3>
+  <p class="plain">Field permissions are respected everywhere (screen, API and import) · the audit log records changes · built-in profiles can't be renamed · a user can't change their own manager · sessions show the right status · teamspaces are private to their members · the button label "Create profile" is fixed. Tickets: NDC-2381, 2293, 2418, 1172, 1699, 1701, 1337, 1593, 1599, 2416, 2543, 2546, 2547, 2415, 613, 2414.</p>
+
+  <h3 class="sub">Still not working (already ticketed)</h3>
+  <div class="cards">
+    <div class="card"><div class="top"><span class="id">NDC-2412</span><span class="chip fail">Still fails</span></div><p>A supervisor can't see the leads of a lower-ranked person in the same department, so managers miss their team's records.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2657</span><span class="chip fail">Still fails</span></div><p>A user without access sees the raw text "Missing required permission …" on the Permissions page. Confusing, not harmful.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2658</span><span class="chip fail">Still fails</span></div><p>Inviting a user when no seat is free shows a raw code instead of a message.</p></div>
+  </div>
+
+  <h3 class="sub">New problems found</h3>
+  <div class="cards">
+    <div class="card hot"><div class="top"><span class="id">R2W1-B2</span><span class="chip fail">High</span></div><p><b>A manager can see another department's leads.</b> A Manager in HR, without "view all", can open leads that belong to a user in Sales. Managers should only see their own team. If real, staff can see customers of other departments. Seen in two separate runs. It may be the same visibility logic as NDC-2412, wrong in the other direction.</p></div>
+    <div class="card"><div class="top"><span class="id">R2W1-B1</span><span class="chip warn">Medium</span></div><p><b>The new "AI Agent" profile can be renamed.</b> This build protected the built-in "User" profile, but not the new one. Anything that finds the profile by its name could break. (We renamed it back at once.)</p></div>
+  </div>
+
+  <h3 class="sub">Zoho has it, TAVI doesn't (scope, not bugs)</h3>
+  <p class="plain">Data sharing rules (TAVI only has "public" or "by hierarchy" per module) · password, lock-out and two-factor (MFA) policy screens.</p>
+
+  <h3 class="sub">Not tested in this phase</h3>
+  <p class="plain">Switching the hierarchy mode, session and security policy edits, business hours, the Referral Code sync — these change things for everyone, so they run in Phase 4. Invites and deleting a user are blocked because no user seat is free. NDC-1343 skipped (In Progress).</p>
+</section>
+
+<section>
+  <h2>Wave 2 · Everyday work with records</h2>
+  <p><b>What we tested:</b> creating, editing, deleting and restoring records in all 15 modules; the record page, notes, timeline, tags, lead conversion; list, custom views, kanban, split view, filters, search, import and the recycle bin. New this time: merge, mass update of every field type, moving records to another owner, record locking, and Cases and Sales / Purchase Orders in full.</p>
+  <p><b>Result:</b> 59 of 67 checks pass (after rerunning the deal tests, which our own workaround had broken).</p>
+
+  <h3 class="sub">Working now</h3>
+  <p class="plain">All 15 modules work end to end · Cases and Sales / Purchase Orders work with every field type · mass update and moving owners work · filters return the right records · import and the recycle bin work · deals can be created with their pipeline again (NDC-2382) · the Pipelines settings page loads (NDC-2386) · no module turns itself on as a conversion target (NDC-2388) · a deleted view in a link opens "All Leads" (NDC-2098, now fixed). Also still passing: NDC-1484, 1832, 1302, 1603, 1597, 1600, 1601, 1593, 1599, 2302, 1197, 2282.</p>
+
+  <h3 class="sub">Still not working</h3>
+  <div class="cards">
+    <div class="card hot"><div class="top"><span class="id">NDC-2136</span><span class="chip fail">Worse</span></div><p><b>The Leads list is very slow:</b> 22, 35 and over 40 seconds to show rows (target 1.5 s; it was 12–25 s on 25 Oct). This is the problem users will notice most.</p></div>
+    <div class="card hot"><div class="top"><span class="id">NDC-1823</span><span class="chip fail">Marked Done, still fails</span></div><p>When converting a lead, fields Zoho locks (Probability, Expected Revenue, durations) can still be edited. The conversion form also took about 25 seconds to open.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-1193</span><span class="chip fail">Still fails</span></div><p>A completely empty Customer can be saved.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2122</span><span class="chip fail">Still fails</span></div><p>An invalid filter pattern ("1 AND 2") is accepted.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2280</span><span class="chip fail">Still fails</span></div><p>A long view name runs over the other columns.</p></div>
+    <div class="card"><div class="top"><span class="id">NDC-2137</span><span class="chip warn">Close</span></div><p>Kanban shows its first cards in 2.7 seconds (target 2 s).</p></div>
+  </div>
+
+  <h3 class="sub">New problems found</h3>
+  <div class="cards">
+    <div class="card"><div class="top"><span class="id">R2W2-C1</span><span class="chip warn">Medium</span></div><p><b>Record locking doesn't lock.</b> You can save a rule to lock records, but locked records can still be edited, and the rule accepts any text as its condition. Anyone relying on it (for example to freeze closed deals) gets no protection. Its settings tab still says "In Development".</p></div>
+    <div class="card"><div class="top"><span class="id">R2W2-C2</span><span class="chip info">Low</span></div><p><b>Raw column names on Home.</b> The "My Tasks" and "My Meetings Today" cards show headers like "due_date" instead of "Due Date".</p></div>
+  </div>
+
+  <h3 class="sub">Probably fixed, waiting for the developers</h3>
+  <p class="plain">These tickets are still In Progress, so they aren't marked as passed, but on this build they look fixed: moving a deal to another pipeline (NDC-2621, 1312, 1316, 1324) · deletes shown on the timeline (2624) · "Lead created" wording (2627) · the 10-tag limit (2625) · recurring tasks (2623) · search for normal users (2622) · pipeline name shown (2626).</p>
+
+  <h3 class="sub">Zoho has it, TAVI doesn't</h3>
+  <p class="plain">Merge only through the API, no screen · no Clone · number filters have no "greater or equal", "less or equal" or "between".</p>
+
+  <h3 class="sub">Not tested in this phase</h3>
+  <p class="plain">Attachments, mass delete and the work queue were not rerun (mass delete by condition and Empty Bin affect everyone). I can add them to Phase 3.</p>
+</section>
+
+<section>
+  <h2>Your decisions</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Decision</th><th>What it changes</th><th>My suggestion</th></tr>
+    <tr><td class="id">1</td><td>File R2W1-B2 (manager sees another department's leads)</td><td>Developers look at a possible data leak before go-live</td><td>Yes, High</td></tr>
+    <tr><td class="id">2</td><td>File R2W1-B1 ("AI Agent" profile can be renamed)</td><td>New built-in profile protected like "User"</td><td>Yes, Medium</td></tr>
+    <tr><td class="id">3</td><td>File R2W2-C1 (record locking doesn't lock)</td><td>Tracked before anyone relies on locking</td><td>Yes, Medium</td></tr>
+    <tr><td class="id">4</td><td>File R2W2-C2 (raw column names on Home)</td><td>Small cosmetic fix</td><td>Yes, Low</td></tr>
+    <tr><td class="id">5</td><td>Reopen NDC-1823 (Done → Bug) with comment and image</td><td>Plane shows the real state</td><td>Yes</td></tr>
+    <tr><td class="id">6</td><td>Move NDC-2098 (Bug → Done) with comment and image</td><td>Plane shows it's fixed</td><td>Yes</td></tr>
+    <tr><td class="id">7</td><td>Add a "still passes on the 27 Oct build" comment and image to the 31 passing tickets</td><td>Proof per ticket that it works on the new build; any still in Bug move to Done</td><td>Yes</td></tr>
+    <tr><td class="id">8</td><td>Post today's numbers on NDC-2136 (list now 22–40 s)</td><td>Developers know it got worse</td><td>Yes — the other still-failing tickets wait for Ready For Test</td></tr>
+    <tr><td class="id">9</td><td>Add attachments, mass delete and work queue to Phase 3</td><td>Closes the last Wave 2 gaps</td><td>Yes</td></tr>
+  </table></div>
+  <p class="meta">Details per case: Wave 1 report https://claude.ai/artifact/S5CzQ1DFhsAcmYpLm2Da1a · Wave 2 report https://claude.ai/artifact/9URFE2mJRbFiEKExEtSGXa · evidence images in executions/execu_2026-10-27_crm-golive-round2/wave1 and wave2/evidence/annotated/.</p>
+</section>
+</div>

@@ -1,0 +1,85 @@
+{
+ "out": "NDC-2418-retest-PASS.png",
+ "ticket": "NDC-2418",
+ "title": "Login History | Sessions stay \"Active\" after they expire (255 \"active\" sessions, back to 30 Aug)",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2418-api.png",
+   "caption": "auto-run6.xml — LoginHistoryTest.",
+   "crop": [
+    0,
+    0,
+    1600,
+    292
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      274
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Only current sessions are Active",
+   "No past-expiry session Active",
+   "6 Active, 0 past expiry (25 Oct: 346 Active, 306 past expiry)",
+   "PASS"
+  ],
+  [
+   "2",
+   "Revoked session ends",
+   "Stops working",
+   "Token 200 → revoke 204 → token 401",
+   "PASS"
+  ],
+  [
+   "3",
+   "Denied user cannot list / export",
+   "—",
+   "List 403, export 403 (0 bytes)",
+   "PASS"
+  ],
+  [
+   "—",
+   "Online status for assignment rules",
+   "Reflects really-online users",
+   "See NDC-2422 (offline member skipped, PASS 26 Oct)",
+   "INFO"
+  ]
+ ]
+}

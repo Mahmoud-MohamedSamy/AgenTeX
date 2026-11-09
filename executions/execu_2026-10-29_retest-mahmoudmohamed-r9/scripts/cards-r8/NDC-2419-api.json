@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2419-api.png",
+ "date": "27 Oct 2026",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "title": "NDC-2419 · Assignment rule on API and import creates",
+ "rows": [
+  [
+   "rule",
+   "POST /workflow/assignment-rules \"QA RT r8 AR api\" (Api+Import, names \"QA RT r8 AR…\" → test user 2)",
+   "201, active",
+   "info"
+  ],
+  [
+   "API create (test user 1)",
+   "POST /api/v1/modules/{Leads}/records source api \"QA RT r8 AR api 1\"",
+   "201; owner = test user 2 (51666421); execution AR Fired",
+   "ok"
+  ],
+  [
+   "control",
+   "POST /api/v1/modules/{Leads}/records \"QA RT r8 control 1\" (no match)",
+   "owner = test user 1; no rule run",
+   "ok"
+  ],
+  [
+   "timing (A-01 test)",
+   "Timeline of lead 2a2f3f4a",
+   "RecordCreated 15:11:17.540 → OwnerChanged 15:11:19.974 (owner written ~2.4 s after the 201)",
+   "info"
+  ],
+  [
+   "import (A-02)",
+   "Import with the rule",
+   "owner valafo4080 (rule user), AR Fired",
+   "ok"
+  ]
+ ]
+}

@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2302-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2302 · Import with \"Trigger automation\" off — review, workflow, approval, blueprint",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "G-04r import, trigger off",
+   "POST /api/v1/modules/{Leads}/import … execute (review process + On Create workflow active)",
+   "completed — lead 848c3929…; review status null, Description null",
+   "ok"
+  ],
+  [
+   "G-04r after review step",
+   "approve / wait, read lead + executions",
+   "review = null, description = null, wfFired = 0, executions = [] — workflow not run",
+   "ok"
+  ],
+  [
+   "G-04b blueprint (observation)",
+   "GroupGChainTest.g04LeadsImportTriggerOff",
+   "owner set by assignment, review null, wfFired 0, approval null — but governed = true (lead entered a blueprint)",
+   "info"
+  ],
+  [
+   "first run (run 2)",
+   "reviewer history check",
+   "test error: 403 \"Missing required permission 'workflow:review:view'\" (account) — rerun in run 5 passed",
+   "info"
+  ]
+ ]
+}

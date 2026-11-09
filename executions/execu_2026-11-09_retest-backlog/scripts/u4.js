@@ -1,0 +1,13 @@
+const SS='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog/screenshots/';
+const o={};await page.setViewportSize({width:1600,height:900});const calls=[];
+page.on('request',r=>{const u=r.url();if(/api\/v1/.test(u)&&!/iam\/auth/.test(u))calls.push(r.method()+' '+u.replace(/.*api\/v1/,'').slice(0,140));});
+await page.goto(H+'/settings/modules-and-fields',{waitUntil:'domcontentloaded',timeout:120000});
+await page.getByText('Ticket Status',{exact:true}).last().waitFor({timeout:120000});await sleep(2000);
+await page.getByText('Ticket Status',{exact:true}).last().click();
+const h=page.getByText('Statuses by department and layout',{exact:true}).first();await h.waitFor({timeout:90000});await h.scrollIntoViewIfNeeded();await sleep(2000);
+await page.screenshot({path:SS+'2174-10b-by-dept-empty.png'});
+const sec=h.locator('xpath=ancestor::*[.//select or .//button][1]');
+o.secText=(await sec.innerText()).slice(0,800);
+o.selects=await page.$$eval('select',s=>s.map(x=>({opts:[...x.options].map(o=>o.text).slice(0,30)})));
+o.calls=[...new Set(calls)].filter(c=>/status|layout|depart/i.test(c));
+return o;

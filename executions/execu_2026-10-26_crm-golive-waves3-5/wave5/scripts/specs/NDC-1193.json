@@ -1,0 +1,93 @@
+{
+ "out": "NDC-1193-retest.png",
+ "ticket": "NDC-1193",
+ "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "verdict": "FAIL",
+ "label": "STILL FAILS",
+ "title": "Records API | A blank record is accepted although a field is required",
+ "panels": [
+  {
+   "img": "api-1193.png",
+   "w": 1600,
+   "h": 385,
+   "caption": "TAVI — POST a record with no fields in four modules (owner).",
+   "crop": [
+    0,
+    0,
+    1600,
+    385
+   ],
+   "boxes": [
+    {
+     "b": [
+      20,
+      135,
+      1580,
+      181
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      20,
+      273,
+      1580,
+      319
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-contact-create.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "Zoho — Create Contact: Last Name is mandatory (red bar); the API refuses a contact without it.",
+   "crop": [
+    0,
+    0,
+    1600,
+    950
+   ],
+   "boxes": [
+    {
+     "b": [
+      252,
+      60,
+      1588,
+      96
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    },
+    {
+     "b": [
+      1153,
+      366,
+      1543,
+      400
+     ],
+     "n": 2,
+     "color": "#16a34a"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Blank record where fields are required",
+   "Refused",
+   "Refused (422) in Leads and both QA modules",
+   "PASS"
+  ],
+  [
+   "2",
+   "Blank record in Customers (Name required)",
+   "Refused — Last Name is mandatory",
+   "201 Created: the blank Customer is accepted (deleted again at once)",
+   "FAIL"
+  ]
+ ]
+}

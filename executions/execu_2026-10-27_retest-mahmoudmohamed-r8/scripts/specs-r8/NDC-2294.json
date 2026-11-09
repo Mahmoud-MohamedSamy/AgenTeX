@@ -1,0 +1,296 @@
+{
+ "out": "NDC-2294-retest-PARTIAL.png",
+ "ticket": "NDC-2294",
+ "title": "Automation Execution Order: features missing from TAVI CRM",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "date": "27 Oct 2026",
+ "panels": [
+  {
+   "img": "v42-import-options.png",
+   "caption": "Import wizard › Assign: renamed option and manual approval \"Coming soon\" (items 1–2).",
+   "crop": [
+    400,
+    90,
+    800,
+    500
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      430,
+      350,
+      1170,
+      412
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      430,
+      510,
+      1170,
+      556
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2294-api.png",
+   "caption": "API / automation evidence — Automation gap list — what each item does on staging (API, automation, screen)",
+   "crop": [
+    0,
+    0,
+    1600,
+    888
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      295
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      301,
+      1566,
+      363
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      369,
+      1566,
+      431
+     ],
+     "n": 7,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      437,
+      1566,
+      499
+     ],
+     "n": 8,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      505,
+      1566,
+      567
+     ],
+     "n": 9,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      573,
+      1566,
+      614
+     ],
+     "n": 10,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      620,
+      1566,
+      682
+     ],
+     "n": 11,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      688,
+      1566,
+      729
+     ],
+     "n": 12,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      735,
+      1566,
+      776
+     ],
+     "n": 13,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      782,
+      1566,
+      823
+     ],
+     "n": 14,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      829,
+      1566,
+      870
+     ],
+     "n": 15,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Screen",
+   "—",
+   "Import wizard › Assign: renamed option and manual approval \"Coming soon\" (items 1–2).",
+   "PASS"
+  ],
+  [
+   "2",
+   "Screen",
+   "—",
+   "Import wizard › Assign: renamed option and manual approval \"Coming soon\" (items 1–2).",
+   "PASS"
+  ],
+  [
+   "3",
+   "1 import option",
+   "Renamed",
+   "\"Trigger automation and process management\" — runs workflow, review/approval, blueprint; off by default",
+   "PASS"
+  ],
+  [
+   "4",
+   "2 manual approval",
+   "Implemented or Coming soon",
+   "\"Enable manual approval — COMING SOON\" (allowed by the ticket); API accepts the flag silently, lead goes live",
+   "PASS"
+  ],
+  [
+   "5",
+   "3 score / notes triggers",
+   "Offered",
+   "400 \"Unknown trigger kind\"",
+   "FAIL"
+  ],
+  [
+   "6",
+   "4 meeting / call / connected",
+   "All four offered and working",
+   "Call created, related to the record; connected record created (qa_parent = record); Meeting dispatch Cancelled — HTTP 422",
+   "FAIL"
+  ],
+  [
+   "7",
+   "5 assign by rule",
+   "All options",
+   "Rule ran, owner = rule user; online-only + email stored; \"transfer related records\" NOT stored",
+   "FAIL"
+  ],
+  [
+   "8",
+   "6 review functions",
+   "Settable and running",
+   "Field exists in API + editor; needs a custom action — none on staging (not runnable)",
+   "INFO"
+  ],
+  [
+   "9",
+   "7 Anyone / Everyone",
+   "Stored and applied",
+   "201 but read back mode null for every mode (users + everyone correctly refused)",
+   "FAIL"
+  ],
+  [
+   "10",
+   "8 approval Call Function",
+   "Runs",
+   "Needs a custom action — none on staging (not runnable)",
+   "INFO"
+  ],
+  [
+   "11",
+   "9 blueprint after-actions",
+   "Offered",
+   "API check blocked: POST layout on Leads 500 (staging outage) — not runnable",
+   "INFO"
+  ],
+  [
+   "12",
+   "10 rejection reasons",
+   "Per process",
+   "Stored on the process (EN/AR, order); org list separate",
+   "PASS"
+  ],
+  [
+   "13",
+   "11 scheduled actions",
+   "Delay honoured",
+   "Created 15:26:23 → FieldChanged 15:28:32 (delay honoured)",
+   "PASS"
+  ],
+  [
+   "14",
+   "12 several conditions",
+   "Available",
+   "Not available",
+   "FAIL"
+  ],
+  [
+   "15",
+   "13 \"trigger\": []",
+   "No automation",
+   "With []: no rule run; without: Fired",
+   "PASS"
+  ]
+ ]
+}

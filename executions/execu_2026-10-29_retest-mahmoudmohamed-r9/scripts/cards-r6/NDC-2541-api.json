@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2541-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2541 · Approval \"Call Webhook\" to a receiver answering HTTP 500 — retries and log",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "WH-16 after approval",
+   "approve lead e3fb80a5… → 204; watch receiver 4 min",
+   "+60 s 2 · +120 s 2 · +181 s 3 · +241 s 3 requests",
+   "ok"
+  ],
+  [
+   "WH-16 log",
+   "GET /api/v1/workflow/executions?recordId=e3fb80a5…",
+   "dispatch actionType Webhook, status Pending, attempts 3 (logged)",
+   "ok"
+  ],
+  [
+   "WH-19 after rejection",
+   "reject lead ba0a65ba… → 204, state rejected",
+   "+60 s 2 · +120 s 2 · +180 s 3 · +241 s 3 requests",
+   "ok"
+  ],
+  [
+   "WH-19 log",
+   "GET /api/v1/workflow/executions?recordId=ba0a65ba…",
+   "dispatch Webhook, status Pending, attempts 3 (logged)",
+   "ok"
+  ]
+ ]
+}

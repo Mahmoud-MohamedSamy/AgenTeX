@@ -1,0 +1,612 @@
+[
+ {
+  "id": "W3-2510",
+  "status": "FAILED",
+  "class": "STILL FAILS",
+  "test": "W3RetestTest#r2510TaskActionInvalidStatus",
+  "what": "A Create Task action with a status the Tasks module doesn't have is refused on save (or the run is not logged as Fired)",
+  "result": "Rule with a Task action taskStatus \"Task Closed\" saved 201; a lead was created; the run is logged Fired with no error and 0 tasks exist.",
+  "ticket": "NDC-2510",
+  "evidence": "NDC-2510-retest.png"
+ },
+ {
+  "id": "W3-2511",
+  "status": "FAILED",
+  "class": "STILL FAILS",
+  "test": "W3RetestTest#r2511DateRuleRunIsAudited",
+  "what": "A rule run on a date field (Tasks Due Date) leaves an Audit Log entry naming the rule",
+  "result": "The Tasks date rule (due_date + 0) ran on time (reminder created); /audit/events has no entry naming the rule after the due time.",
+  "ticket": "NDC-2511",
+  "evidence": "NDC-2511-retest.png"
+ },
+ {
+  "id": "Z2",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupKZRegressionGapsTest#z2ImportManualApprovalHonoured",
+  "what": "Import option manual_approval: imported lead waits for approval instead of going live",
+  "result": "lead imported with manual_approval=true went live at once (record 7fee367e-97c0-4f04-972a-ed698d568608, import status completed); Zoho holds it in Approve Leads",
+  "ticket": "NDC-2294",
+  "evidence": "case-Z2.png"
+ },
+ {
+  "id": "Z3",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupKZRegressionGapsTest#z3ScoreAndNotesTriggers",
+  "what": "Workflow trigger kinds Record Score and Record Notes are accepted",
+  "result": "The following asserts failed: a Record Score trigger kind is accepted expected object to not be null, a Record Notes trigger kind is accepted expected object to not be null",
+  "ticket": "NDC-2294",
+  "evidence": "case-Z3.png"
+ },
+ {
+  "id": "Z4",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupKZRegressionGapsTest#z4MeetingCallFunctionConnectedRecordActions",
+  "what": "Workflow action types Meeting, Call, Function and Create Connected Record are accepted",
+  "result": "The following asserts failed: Meeting action accepted expected object to not be null, Call action accepted expected object to not be null, Function action accepted expected object to not be null, CreateConnectedRecord action accepted expected object to not be null",
+  "ticket": "NDC-2294",
+  "evidence": "case-Z4.png"
+ },
+ {
+  "id": "Z5",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupKZRegressionGapsTest#z5OwnerAssignmentByAssignmentRule",
+  "what": "Workflow Assign Owner by an assignment rule (+ online only, email, transfer related)",
+  "result": "Owner Assignment with an assignment rule is accepted expected object to not be null",
+  "ticket": "NDC-2294",
+  "evidence": "case-Z5.png"
+ },
+ {
+  "id": "Z6",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupKZRegressionGapsTest#z6ReviewFunctionHooks",
+  "what": "Review process: functions on submission / review / rejection / resubmission are settable",
+  "result": "per-event review functions (onSubmission/onReview/onRejection/onResubmission) not supported: the valid body + 'functions' is refused 400 {\"success\":false,\"data\":null,\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"functions: The JSON property 'functions' could not be mapped to any .NET member contained in type 'Anyware.Workflow.Application.Dtos.ReviewProcesses.CreateReviewProcessRequest'.\",\"details\" …",
+  "ticket": "NDC-2294",
+  "evidence": "case-Z6.png"
+ },
+ {
+  "id": "Z7",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupKZRegressionGapsTest#z7ApproverAnyoneEveryone",
+  "what": "Approval level: 'Everyone' (parallel) must approve, not just anyone",
+  "result": "Everyone option stored on the level: {approver={kind=users, values=[d23fb4e0-248d-41f6-af60-d28885a7007e, 3445ec4a-020e-4f12-b156-dd2de7610164]}, waitingFieldAccess={mode=none, fields=[], resetFields=[]}, afterStageUpdateFields=null, assignTask=null, assignToSubmitterManager=false, distribution=broadcast, assigneeField=null, decisionFields=[]} expected [true] but found [false]",
+  "ticket": "NDC-2294",
+  "evidence": "case-Z7.png"
+ },
+ {
+  "id": "Z8",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupKZRegressionGapsTest#z8ApprovalCallFunctionRuns",
+  "what": "Approval final action Call Function actually runs",
+  "result": "approval final action Call Function accepted expected object to not be null",
+  "ticket": "NDC-2294",
+  "evidence": "case-Z8.png"
+ },
+ {
+  "id": "Z9",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupKZRegressionGapsTest#z9BlueprintAfterActions",
+  "what": "Blueprint after-transition actions Convert, Function (custom action), Tags, Create record are accepted",
+  "result": "The following asserts failed: Convert after-action accepted and stored expected object to not be null, Function after-action accepted and stored expected object to not be null, Tags after-action accepted and stored expected object to not be null, CreateRecord after-action accepted and stored expected object to not be null",
+  "ticket": "NDC-2294",
+  "evidence": "case-Z9.png"
+ },
+ {
+  "id": "W3-GAPS",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "W3RetestTest#gapProbes",
+  "what": "Gap probes: workflow triggers/actions, blueprint after-actions, missing modules (schedules, scoring, cadences, macros, connected flow)",
+  "result": "gaps still open: [trigger RecordScoreChanged, trigger NoteAdded, action Meeting, action Call, action CustomFunction, action CreateConnectedRecord, route /workflow/schedules, route /workflow/scoring-rules, route /scoring-rules, route /workflow/cadences, route /workflow/macros, route /workflow/connected-flows] expected [true] but found [false]",
+  "ticket": "NDC-2294, NDC-2030, NDC-1486",
+  "evidence": "case-W3-GAPS.png"
+ },
+ {
+  "id": "W3-2294-13",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "W3RetestTest#g13ApiTriggerEmptyRunsNoWorkflow",
+  "what": "Creating a record through the API with \"trigger\": [] runs no workflow (Zoho)",
+  "result": "The control lead got the rule, and a lead created with \"trigger\": [] also got it (description \"QA W3 G13 ran\") — an empty trigger list does not stop workflows.",
+  "ticket": "NDC-2294 item 13",
+  "evidence": "case-W3-2294-13.png"
+ },
+ {
+  "id": "G-04",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupGChainTest#g04LeadsImportTriggerOff",
+  "what": "Leads import with trigger automation off: workflow, approval and blueprint do not run (Zoho runs nothing); review hold written down",
+  "result": "import with 'trigger automation' off ran workflow/approval/blueprint: owner=45ffbc5b-7859-4c21-be9e-7b5f30747ca2 review=null description=null wfFired=0 approval=null governed=true expected [false] but found [true]",
+  "ticket": "NDC-2294 item 1",
+  "evidence": "case-G-04.png"
+ },
+ {
+  "id": "B-19",
+  "status": "FAILED",
+  "class": "GAP",
+  "test": "GroupBReviewTest#apiChannel",
+  "what": "API channel ticked: API-created lead held; legacy API caller warning",
+  "result": "API-channel process must hold an API-created lead (source=api), review status null expected [true] but found [false]",
+  "ticket": "NDC-2294",
+  "evidence": "case-B-19.png"
+ },
+ {
+  "id": "F-01",
+  "status": "FAILED",
+  "class": "IN PROGRESS – NOT JUDGED",
+  "test": "GroupFHandoffTest#f01AssignmentBeforeReviewRecordOwnerReviewer",
+  "what": "AR → RP: owner is set before review, so a 'record owner' reviewer is the assigned owner",
+  "result": "record-owner reviewer = assigned owner (adminB) 3445ec4a-020e-4f12-b156-dd2de7610164; reviewers [] expected [true] but found [false]",
+  "ticket": "NDC-2309",
+  "evidence": "case-F-01.png"
+ },
+ {
+  "id": "H-05",
+  "status": "FAILED",
+  "class": "IN PROGRESS – NOT JUDGED",
+  "test": "GroupHIConversionTest#h05ScheduledActionsDroppedOnConvert",
+  "what": "Converted lead's pending scheduled workflow actions are dropped (Zoho)",
+  "result": "scheduled action still ran on the converted lead 188c12a3-bc8f-408b-bba7-158a38b98263 did not expect [WF H-05] but found [WF H-05]",
+  "ticket": "NDC-2323",
+  "evidence": "case-H-05.png"
+ },
+ {
+  "id": "G-16",
+  "status": "FAILED",
+  "class": "IN PROGRESS – NOT JUDGED",
+  "test": "GroupGChainTest#g16TimelineShowsOrder",
+  "what": "Timeline of a full-chain record lists each process with its time, in order (run on an imported lead: no API channel)",
+  "result": "Timeline lists every process (Zoho: the Timeline displays the order each process ran); missing [assignment, workflow, blueprint] in [NoteAdded:Approval: approved (final) by Mahmoud Samy, FieldChanged:null, NoteAdded:Approval: submitted for approval, NoteAdded:Review: approved by Mahmoud Mohamed, OwnerChanged:null, RecordCreated:null, NoteAdded:Review: submitted for review by mahmoud.mahamed1515] e …",
+  "ticket": "NDC-2321",
+  "evidence": "case-G-16.png"
+ },
+ {
+  "id": "G-12",
+  "status": "FAILED",
+  "class": "IN PROGRESS – NOT JUDGED",
+  "test": "GroupGChainTest#g12DealsApiCreate",
+  "what": "Deals API create with the assignment rule: all five in order (API channel)",
+  "result": "create assignment rule returned 409: {\"success\":false,\"data\":null,\"error\":{\"code\":\"CONFLICT\",\"message\":\"An assignment rule named 'QA AEO SG G-12 AR' already exists in this module.\",\"details\":null},\"meta\":null}",
+  "ticket": "NDC-2419",
+  "evidence": "case-G-12.png"
+ },
+ {
+  "id": "J-01",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupAJTest#allFiveProcessesOnTasks",
+  "what": "Each of the five processes can be created and switched on for Tasks",
+  "result": "create blueprint returned 422: {\"success\":false,\"data\":null,\"error\":{\"code\":\"BLUEPRINT_DEFINITION_INVALID\",\"message\":\"Blueprint definition validation failed.\",\"details\":[{\"path\":\"targetField\",\"type\":\"BLUEPRINT_DEFINITION_FIELD_INVALID\",\"message\":\"Target field 'status' must be a pick_list to drive a blueprint.\"}]},\"meta\":null}",
+  "ticket": "",
+  "evidence": "case-J-01.png"
+ },
+ {
+  "id": "E-15",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupEBlueprintTest#e15TasksBlueprintOnStatus",
+  "what": "Tasks blueprint on Status works",
+  "result": "Zoho allows a blueprint on Tasks Status; TAVI: {\"success\":false,\"data\":null,\"error\":{\"code\":\"BLUEPRINT_DEFINITION_INVALID\",\"message\":\"Blueprint definition validation failed.\",\"details\":[{\"path\":\"targetField\",\"type\":\"BLUEPRINT_DEFINITION_FIELD_INVALID\",\"message\":\"Target field 'status' must be a pick_list to drive a blueprint.\"}]},\"meta\":null} expected [2] but found [4]",
+  "ticket": "",
+  "evidence": "case-E-15.png"
+ },
+ {
+  "id": "E2E-5",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupGChainTest#e2e5TaskApproval",
+  "what": "Task approval: WF on Leads creates a task → Tasks approval → blueprint (on Priority; Status per E-15)",
+  "result": "blueprint entered after the approval: owner=45ffbc5b-7859-4c21-be9e-7b5f30747ca2 review=null description=null wfFired=- approval=approved governed=false expected [true] but found [false]",
+  "ticket": "",
+  "evidence": "case-E2E-5.png"
+ },
+ {
+  "id": "E-18",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupEBlueprintTest#e18TwoBlueprintsFirstWins",
+  "what": "Two blueprints match the same record: only the first in the list runs; /sort changes which",
+  "result": "after /sort the new first blueprint should run did not expect [[QA AEO SE E-18 BP A]] but found [[QA AEO SE E-18 BP A]]",
+  "ticket": "",
+  "evidence": "case-E-18.png"
+ },
+ {
+  "id": "C-11",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupCWorkflowTest#scheduledActionCancelledWhenNoLongerMatching",
+  "what": "Scheduled action (2 min) is cancelled when the record stops matching before then",
+  "result": "scheduled Field Update still ran for the lead that stopped matching did not expect [WF C-11] but found [WF C-11]",
+  "ticket": "",
+  "evidence": "case-C-11.png"
+ },
+ {
+  "id": "C-09",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupCWorkflowTest#criteriaFalseDoesNotFire",
+  "what": "Criteria false: does not fire; execution row says criteria not matched",
+  "result": "no execution row with outcome 'criteria not matched' for the rule (spec expects one). Runs: {rule=ab61d411-dc7f-4810-891c-295b6ba52ad0 trig=RecordCreated matched=true outcome=Fired err=null at=2026-10-26T11:12:08.018887+00:00} expected [true] but found [false]",
+  "ticket": "",
+  "evidence": "case-C-09.png"
+ },
+ {
+  "id": "A-08",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupAJTest#fallbackLeaveUnassigned",
+  "what": "No entry matches; fallback = Leave unassigned → owner is the importer (not ownerless)",
+  "result": "record is not ownerless expected object to not be null",
+  "ticket": "",
+  "evidence": "case-A-08.png"
+ },
+ {
+  "id": "D-17",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupDApprovalTest#d17DeleteWithPending",
+  "what": "Delete the process with pending records: records in the process are unaffected (lock state written down)",
+  "result": "process with pending records can be deleted, records unaffected (Zoho); TAVI: {\"success\":false,\"data\":null,\"error\":{\"code\":\"CONFLICT\",\"message\":\"This process still has 1 record(s) awaiting approval. Resolve them (approve, reject, or an admin takeover) before deleting it — deactivate it instead to stop new records entering.\",\"details\":null},\"meta\":null} expected [2] but found [4]",
+  "ticket": "",
+  "evidence": "case-D-17.png"
+ },
+ {
+  "id": "C-12",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupCWorkflowTest#fieldUpdateChainsToAnotherRule",
+  "what": "Rule A's field update makes rule B match: B fires after A (chaining)",
+  "result": "rule A's field update did not trigger the On Edit rule B (Zoho: a field update can trigger other rules) expected [true] but found [false]",
+  "ticket": "",
+  "evidence": "case-C-12.png"
+ },
+ {
+  "id": "H-04",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupHIConversionTest#h04ConvertLeadInBlueprint",
+  "what": "Convert a lead in a blueprint: allowed only by a Convert transition (TAVI offers none: missing-list item 9) - so blocked; written down",
+  "result": "The following asserts failed: lead in a blueprint not convertible outside a Convert transition (userN): 200 {\"success\":true,\"data\":{\"leadId\":\"d72b7812-1ccf-4694-b582-409c8069fcb7\",\"targets\":[{\"moduleId\":\"b2398920-2914-4836-be53-81bd960effea\",\"moduleKey\":\"accounts\",\"outcome\":\"skipped\",\"recordId\":null,\"matchedField\":null,\"reason\":\"skipped: gating field 'company' is not set on the lead\"},{\"moduleId\": …",
+  "ticket": "",
+  "evidence": "case-H-04.png"
+ },
+ {
+  "id": "D-05",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupDApprovalTest#d05ResubmitWithNoMatchReleases",
+  "what": "Resubmit when no process matches any more: record released",
+  "result": "The following asserts failed: no longer rejected did not expect [rejected] but found [rejected]",
+  "ticket": "",
+  "evidence": "case-D-05.png"
+ },
+ {
+  "id": "D-06",
+  "status": "FAILED",
+  "class": "TEST DEFECT",
+  "test": "GroupDApprovalTest#d06SubmitterCannotApproveOwnRecord",
+  "what": "Submitter who is also a level approver can't approve their own record",
+  "result": "The following asserts failed: self approve blocked: 204 expected [true] but found [false], still pending expected [pending_approval] but found [approved], canApprove false expected [false] but found [true], UI: You can't approve a record you submitted expected [self_submitted] but found [null]",
+  "ticket": "",
+  "evidence": "case-D-06.png"
+ },
+ {
+  "id": "C-10",
+  "status": "FAILED",
+  "class": "BLOCKED BY NDC-2621",
+  "test": "GroupCWorkflowTest#eachActionTypeRuns",
+  "what": "Each action once: Owner → A, Email, Task, Create Record (Deal), Add Tags, Remove Tags, Webhook",
+  "result": "actions not all applied: [Create Record: no deal named QA AEO SC C-10 deal]. Runs: {rule=b97f8336-6e94-4520-99a3-aa114767b924 trig=RecordUpdated matched=true outcome=Fired err=null at=2026-10-26T11:18:01.723902+00:00} {rule=b97f8336-6e94-4520-99a3-aa114767b924 trig=RecordUpdated matched=true outcome=Fired err=null at=2026-10-26T11:17:59.553157+00:00} expected [true] but found [false]",
+  "ticket": "NDC-2621",
+  "evidence": "case-C-10.png"
+ },
+ {
+  "id": "A-14",
+  "status": "FAILED",
+  "class": "NEW CANDIDATE",
+  "test": "GroupAJTest#dealsRuleApplied",
+  "what": "Deals: rule on Deals applied to an imported deal",
+  "result": "rows created by the import: session=38593352-cfdb-4fd6-80e0-0172c5c3ba75 mapping=204 validate=200 {\"success\":true,\"data\":{\"total\":1,\"valid\":0,\"error_rows\":1,\"issues\":[{\"row\":2,\"field\":\"pipeline\",\"reason\":\"The value isn't a valid option from the list: 'Standard' is not one of the allowed picklist values.\",\"value\":\"Standard\",\"kind\":\"picklist\"}],\"aggregates\":[{\"field\":\"pipeline\",\"field_label\":\"Pipeli …",
+  "ticket": "W3-C1",
+  "evidence": "W3-C1-candidate.png"
+ },
+ {
+  "id": "B-18",
+  "status": "FAILED",
+  "class": "NEW CANDIDATE",
+  "test": "GroupBReviewTest#importedLeadIsHeld",
+  "what": "Import (Excel channel ticked): imported lead is held",
+  "result": "imported lead is held expected [true] but found [false]",
+  "ticket": "W3-C2",
+  "evidence": "W3-C2-candidate.png"
+ },
+ {
+  "id": "G-07",
+  "status": "FAILED",
+  "class": "NEEDS TRIAGE",
+  "test": "GroupGChainTest#g07LeadsMassUpdate",
+  "what": "Leads mass update into the workflow/approval criteria: workflow → approval → blueprint in order for each record (no assignment, no review)",
+  "result": "workflow marker after review approval: owner=45ffbc5b-7859-4c21-be9e-7b5f30747ca2 review=approved description=null wfFired=0 approval=null governed=true expected [true] but found [false]",
+  "ticket": "",
+  "evidence": "case-G-07.png"
+ },
+ {
+  "id": "G-10",
+  "status": "FAILED",
+  "class": "NEEDS TRIAGE",
+  "test": "GroupGChainTest#g10LeadsMadeByBlueprint",
+  "what": "Lead created by a blueprint After 'Create record' action: as G-09 (review if Automation ticked, then the chain)",
+  "result": "blueprint entered after the approval: owner=45ffbc5b-7859-4c21-be9e-7b5f30747ca2 review=null description=WF G-10 wfFired=1 approval=approved governed=false expected [true] but found [false]",
+  "ticket": "NDC-2334 area (In Progress)",
+  "evidence": "case-G-10.png"
+ },
+ {
+  "id": "D-10",
+  "status": "SKIPPED",
+  "class": "Owner account reserved for the other lanes",
+  "test": "GroupDApprovalTest#d10ResetFieldSendsBackForApproval",
+  "what": "'Reset approval status if changed' field edited by a permitted user sends the record back for approval",
+  "result": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "D-18",
+  "status": "SKIPPED",
+  "class": "Owner account reserved for the other lanes",
+  "test": "GroupDApprovalTest#d18ApprovalStatusEditPermission",
+  "what": "Approval Status not editable by a normal user; reset by a profile with 'Can Edit Record Approval Status' (Owner)",
+  "result": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "I-08",
+  "status": "SKIPPED",
+  "class": "Owner account reserved for the other lanes",
+  "test": "GroupHIConversionTest#i08StatusResetOnApprovedRecordInBlueprint",
+  "what": "Approval status reset (Owner) on an approved record in a blueprint: write down re-entry vs blueprint (F-20: no re-entry)",
+  "result": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "I-09",
+  "status": "SKIPPED",
+  "class": "Owner account reserved for the other lanes",
+  "test": "GroupHIConversionTest#i09DeleteHeldRecordThenRestore",
+  "what": "Delete a record pending review, then restore it from the Recycle Bin: write down which holds come back",
+  "result": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "K-09",
+  "status": "SKIPPED",
+  "class": "Owner account reserved for the other lanes",
+  "test": "GroupKZRegressionGapsTest#k09OwnerCanEditApprovalStatus",
+  "what": "Tenant Owner can change a record's Approval Status by hand (US-A3)",
+  "result": "NOT RUN: owner account reserved for another session (-Dcrm.noOwner)",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "K-13",
+  "status": "SKIPPED",
+  "class": "Owner account reserved for the other lanes",
+  "test": "GroupKZRegressionGapsTest#k13D2ApprovalEventsOnTimeline",
+  "what": "US-D2: submission and approval are both written to the record Timeline",
+  "result": "",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "A-10",
+  "status": "SKIPPED",
+  "class": "Needs your OK: would change a shared account",
+  "test": "GroupAJTest#onlineStatusSkipsSignedOutUser",
+  "what": "Availability Online status: signed-out user skipped",
+  "result": "NOT RUN: needs a target user who is reliably signed out; userN/userV are signed in by parallel sessions and signing users out touches shared accounts",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "A-17",
+  "status": "SKIPPED",
+  "class": "Needs your OK: would change a shared account",
+  "test": "GroupAJTest#deactivatedUserSkipped",
+  "what": "Deactivated target user in the Category is skipped → fallback",
+  "result": "NOT RUN – needs user OK: deactivating a user changes a shared account",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "J-04",
+  "status": "SKIPPED",
+  "class": "Would fire a teammate's rule",
+  "test": "GroupAJTest#workqueueCompletionNotAffected",
+  "what": "Workqueue task completion triggers the teammate rule, not QA rules",
+  "result": "NOT RUN: needs Tasks status = Completed, which fires the teammate rule ActionsOnTaskCompletionFromWorkqueue",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "A-02",
+  "status": "SKIPPED",
+  "class": "Environment: public web form answers 404",
+  "test": "GroupAJTest#webFormSubmissionAssignsOwnerByRule",
+  "what": "Extra: web-form submission (form owner = assignment rule) assigns the rule's user (WebForm channel)",
+  "result": "INCONCLUSIVE: public web-form session not issued: 404",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "E2E-1",
+  "status": "SKIPPED",
+  "class": "Environment: public web form answers 404",
+  "test": "GroupGChainTest#e2e1WebLeadHappyPath",
+  "what": "Web lead happy path: web form → AR to userN → review approved → WF sets status + follow-up task → AP approved → BP to final state → convert → Deal chain",
+  "result": "INCONCLUSIVE: public web-form session not issued: 404",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "G-08",
+  "status": "SKIPPED",
+  "class": "Environment: public web form answers 404",
+  "test": "GroupGChainTest#g08LeadsWebForm",
+  "what": "Leads web-form submission: assignment (form uses the rule) → review (web form channel) → workflow → approval → blueprint",
+  "result": "INCONCLUSIVE: public web-form session not issued: 404",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "G-02",
+  "status": "SKIPPED",
+  "class": "Environment: no API channel (API creates are \"manual\")",
+  "test": "GroupGChainTest#g02LeadsApiCreate",
+  "what": "Leads API create with the assignment rule: all five in order (API channel)",
+  "result": "INCONCLUSIVE: no API channel: a records-API create has source 'manual', so the assignment stage cannot run; review → workflow → approval → blueprint ran in order",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "G-15",
+  "status": "SKIPPED",
+  "class": "Environment: no API channel (API creates are \"manual\")",
+  "test": "GroupGChainTest#g15TasksApiCreate",
+  "what": "Tasks API create with the assignment rule: assignment → … (API channel)",
+  "result": "INCONCLUSIVE: no API channel: a records-API create has source 'manual', so the assignment stage cannot run; the rest ran in order",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "A-13",
+  "status": "SKIPPED",
+  "class": "Environment: Leads has no unique field",
+  "test": "GroupAJTest#updateImportDoesNotReassign",
+  "what": "Import in update mode with the rule does not change owners",
+  "result": "INCONCLUSIVE: Leads has no unique field, so an update-mode import cannot match an existing lead",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "H-01",
+  "status": "SKIPPED",
+  "class": "Environment: deal conversion / mass convert",
+  "test": "GroupHIConversionTest#h01ConvertReleasedLeadDealProcesses",
+  "what": "Convert a released lead (no holds) to a Deal while Deals has all five QA processes: write down which run (Zoho: AR does not run, owner = convert dialog)",
+  "result": "INCONCLUSIVE: conversion created no Deal; it created: contacts=c1f1b548-d934-434f-bc89-039750f3a64f (created) subscriptions=69b63a9b-38ae-4fba-95e3-563c2fa0ef91 (created) | response 200 {\"success\":true,\"data\":{\"leadId\":\"7bdd354a-f6a8-4da5-8f79-253b942a0e65\",\"targets\":[{\"moduleId\":\"b2398920-2914-4836-be53-81bd960effea\",\"moduleKey\":\"accounts\",\"outcome\":\"skipped\",\"recordId\":null,\"matchedField\":null,\"reason\":\"skipped: gating field 'company' is not set on the lead\"},{\"moduleId\":\"6f553963-01d6-4b68-9fb3-143d23044c41\",\"moduleKey\":\"contacts\",\"outcome\":\"created\",\"recordId\":\"c1f1b548-d934-…",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "H-07",
+  "status": "SKIPPED",
+  "class": "Environment: deal conversion / mass convert",
+  "test": "GroupHIConversionTest#h07MassConvert",
+  "what": "Mass convert: same as H-01 for each lead",
+  "result": "INCONCLUSIVE: no mass-convert endpoint answered 2xx (/records/mass-convert -> 405; /records/bulk-convert -> 405; /records/convert -> 405; /mass-convert -> 404; ) - mass convert not reachable through the API",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "B-13",
+  "status": "SKIPPED",
+  "class": "Environment: SLA below 1 hour refused",
+  "test": "GroupBReviewTest#slaEscalationNotifiesRecipient",
+  "what": "SLA escalation 1 minute → adminB notified",
+  "result": "INCONCLUSIVE: SLA below 1 hour is refused (400 SLA duration must be between 1 hour and 90 days); 60-min SLA stored, slaDueAt=2026-10-26T12:20:50.760081+00:00 — escalation not observable within the run",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "E-04",
+  "status": "SKIPPED",
+  "class": "Environment: no inbox to see the email",
+  "test": "GroupEBlueprintTest#e04FilledTransitionRunsAfterActions",
+  "what": "Transition with During fields filled moves the state and runs the After actions (field update, task, email, notification)",
+  "result": "INCONCLUSIVE: state moved, field update and task ran; the After email is not visible in the Timeline (no inbox) - lead 11dd4bc2-934f-4b4f-b7bc-852b044852f5",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "B-22",
+  "status": "SKIPPED",
+  "class": "Not applicable (your earlier decision)",
+  "test": "GroupBReviewTest#reorderProcesses",
+  "what": "Reorder two review processes: saved order is used",
+  "result": "INCONCLUSIVE: reorder saved (p1 8→1, p2 9→0) but first-match-wins is not observable: only one process may cover a module+layout",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "E-16",
+  "status": "SKIPPED",
+  "class": "Other inconclusive",
+  "test": "GroupEBlueprintTest#e16AfterTaskRelatedToShowsName",
+  "what": "After-transition Task: Related To points at a record whose name resolves (names, not ids)",
+  "result": "INCONCLUSIVE: runtime OK: task a2747917-6c98-491d-959e-be498a293a34 related_to=841043e1-c078-41f9-8d6e-dfd61bee45c3:860a5799-4b19-42bf-8597-e04f55382191 resolves to 'QA AEO SE E-16x anchor'; the designer's Contact Name / Related To label (NDC-1328) is UI-only and browser sign-in is not allowed in this run",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "F-04",
+  "status": "SKIPPED",
+  "class": "Other inconclusive",
+  "test": "GroupFHandoffTest#f04AssignmentBeforeBlueprintOwnerTransition",
+  "what": "AR → BP: transition open to the record owner can be run by the assigned owner",
+  "result": "INCONCLUSIVE: import reported success but the imported record 'QA AEO SF F-04 imp' could not be found in the list",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "G-13",
+  "status": "SKIPPED",
+  "class": "Other inconclusive",
+  "test": "GroupGChainTest#g13DealsImport",
+  "what": "Deals import with the rule, trigger automation on: all five in order",
+  "result": "INCONCLUSIVE: import created nothing: { \"success\": true, \"data\": { \"session_id\": \"8bbb277e-0dd5-4476-90b1-bc00e2962363\", \"module_id\": \"f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430\", \"file_name\": \"qa-aeo-sg.csv\", \"status\": \"partially_completed\", \"mode\": \"add\", \"total_rows\": 1, \"created_count\": 0, \"updated_count\": 0, \"skipped_count\": 0, \"error_count\": 1, \"errors\": [ { \"row\": 2, \"field\": \"pipeline\", \"reason\": \"The value isn't a valid option from the l",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "Z1",
+  "status": "SKIPPED",
+  "class": "Other inconclusive",
+  "test": "GroupKZRegressionGapsTest#z1ImportStartsApprovalAndBlueprint",
+  "what": "Import with Trigger automation also starts approval, then blueprint (Deals)",
+  "result": "INCONCLUSIVE: imported deal not found: {\"success\":true,\"data\":{\"session_id\":\"f4535a03-be1a-444a-b6a9-7b120920beac\",\"module_id\":\"f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430\",\"file_name\":\"qa-aeo-sk.csv\",\"status\":\"partially_completed\",\"mode\":\"add\",\"total_rows\":1,\"created_count\":0,\"updated_count\":0,\"skipped_count\":0,\"error_count\":1,\"errors\":[{\"row\":2,\"field\":\"pipeline\",\"reason\":\"The value isn't a valid option from the list: '84fc94da-09b6-41bd-9f79-80bf02f976c6' is not one of the allowed picklist values.\",\"value\":null,\"kind\":\"picklist\"}],\"failure_reason\":null,\"started_at\":\"2026-10-26T11:54:48.985559+00:0",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "G-18",
+  "status": "SKIPPED",
+  "class": "Other inconclusive",
+  "test": "GroupGChainTest#g18ApiEmptyTrigger",
+  "what": "API create with an empty trigger list: written down what is skipped (Zoho: [] skips workflow, approval, blueprint)",
+  "result": "INCONCLUSIVE: TAVI accepts but ignores an empty 'trigger' list (no documented trigger parameter): workflow=true approval=true blueprint=false (Zoho: [] skips all three); source api",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ },
+ {
+  "id": "K-09 (layout)",
+  "status": "SKIPPED",
+  "class": "Other inconclusive",
+  "test": "GroupKZRegressionGapsTest#k09ApprovalStatusFieldLockedInLayout",
+  "what": "Approval Status field is a locked system field in the layout (read-only check, nothing changed)",
+  "result": "INCONCLUSIVE: approval_status not found in the layout JSON - cannot tell whether it is hidden from the builder or named differently (UI check)",
+  "ticket": "",
+  "evidence": "skipped-cases.png"
+ }
+]

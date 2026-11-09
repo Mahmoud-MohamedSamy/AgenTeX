@@ -1,0 +1,177 @@
+<title>Waves 3–5 Gate 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+<style>ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live retest · Gate 1 · Waves 3, 4 and 5 in parallel</div>
+  <h1>Parallel run plan</h1>
+  <p class="meta">Draft for review · 26 Oct 2026 · staging-crm.taviportal.com (NDC-Staging) · reference Zoho CRM org943261092 (read-only)</p>
+  <p>Each wave is a full feature retest, as agreed: every function of every feature in the wave, with old tickets rechecked inside it. The three waves run at the same time in three separate lanes. Anything that changes a setting for the whole tenant waits for one short serial window at the end, so the lanes can't break each other's results.</p>
+</header>
+
+<div class="note"><b>Nothing runs until you approve this plan.</b> Answer the Gate 1 questions at the bottom; I then take the snapshot and start the three lanes.</div>
+
+<section>
+  <h2>Why not just run everything at once</h2>
+  <div class="tbl"><table>
+    <tr><th>Risk</th><th>What would go wrong</th><th>How the plan avoids it</th></tr>
+    <tr><td>Wave 3 rules act on other lanes' records</td><td>Workflow, assignment, review and approval rules fire on any new lead or deal, including Wave 4's web-form leads and Wave 5's test records. Results get mixed up.</td><td>Every Wave 3 rule has a criteria on its own name prefix ("QA AEO") and runs on its own restricted copy of the layout, as the suite already does. Waves 4 and 5 use their own prefixes.</td></tr>
+    <tr><td>Wave 5 changes fields and layouts that Wave 3 uses</td><td>Adding a field, a validation rule or a layout rule on Leads or Transactions can make Wave 3's record saves fail.</td><td>Wave 5 builds its fields, layouts, validation rules, layout rules and dependencies on a new module "QA W5 Module", never on Leads or Transactions during the parallel phase.</td></tr>
+    <tr><td>Tenant-wide settings</td><td>CRM ⇄ Desk integration on/off, business hours, fiscal year, company details and pipelines change behaviour for everyone.</td><td>Read-only checks during the parallel phase; edits only in the serial window after Wave 3, each set back at once.</td></tr>
+    <tr><td>Sign-in rate limit (429)</td><td>The owner account was rate-limited once on 25 Oct.</td><td>Each lane signs in once per account and reuses it; the lanes use different accounts (table below). On any 429 that lane stops; no retries.</td></tr>
+    <tr><td>Known blockers from Wave 2</td><td>Deals can't change pipeline (W2-B4) and Settings › Pipelines doesn't load (NDC-2386).</td><td>Deal-stage and blueprint cases use the "Standard (Standard)" pipeline, as the suite already does; pipeline settings cases are marked blocked.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Lanes and accounts</h2>
+  <div class="tbl"><table>
+    <tr><th>Lane</th><th>Wave</th><th>How it runs</th><th>Accounts</th><th>Prefix</th></tr>
+    <tr><td class="id">A</td><td>3 · Automation chain</td><td>Rerun the existing Java suites crm-order and crm-verify, then the cases they don't cover, by API and screen</td><td>CRM Admin A, CRM Admin B, Supervisor, test user 2</td><td>QA AEO / QA W3</td></tr>
+    <tr><td class="id">B</td><td>4 · Email, channels, reminders</td><td>Browser and API; new automation feature crmchannels written as it goes</td><td>Owner, test user 1</td><td>QA W4</td></tr>
+    <tr><td class="id">C</td><td>5 · Setup and integrations</td><td>Browser and API on "QA W5 Module"; new automation feature crmsetup; read-only checks of tenant settings</td><td>Owner (own browser session), CRM Admin A for read-only checks</td><td>QA W5</td></tr>
+    <tr><td class="id">Serial</td><td>Tenant-wide items of 3–5</td><td>After lane A ends: CRM ⇄ Desk suite, settings edits, pipeline settings if fixed</td><td>Owner</td><td>QA W5</td></tr>
+  </table></div>
+  <p class="meta">Each lane runs as its own background agent with its own browser sessions. I coordinate, check the results, build the Zoho comparisons and write the reports. Cost: three agents in parallel use roughly three times the tokens of one, in about a third of the time.</p>
+</section>
+
+<section>
+  <h2>Lane A · Wave 3: automation chain</h2>
+  <div class="tbl"><table>
+    <tr><th>Group</th><th>Function (full feature)</th><th>Old tickets rechecked</th></tr>
+    <tr><td class="id">A01–A03</td><td>Workflow rules: every trigger (create, edit, field change, date-relative, delete), criteria and patterns, every action (email, task, field update, webhook, create record, owner assignment, tags, custom function, update related, Slack / Teams / Google Chat), execution log list and detail, activate / deactivate, order with other processes</td><td>NDC-2391, 2421, 2510, 2511, 2322, 2323, 2294 (12 gap items)</td></tr>
+    <tr><td class="id">A04</td><td>Assignment rules: round robin and criteria, for import, web form and API; the owner is really set</td><td>NDC-2419, 2298, 2411, 2422</td></tr>
+    <tr><td class="id">A05</td><td>Approval processes: single and multi-level, approve / reject / delegate, My Approvals, record locked while pending</td><td>NDC-2296, 2308, 2334</td></tr>
+    <tr><td class="id">A06</td><td>Review processes: field-level review, reasons, My Reviews; convert a lead held for review (moved from Wave 2)</td><td>NDC-2297, 2309, 2321</td></tr>
+    <tr><td class="id">A07</td><td>Blueprints: draft, publish, versions, transitions, SLA, during-transition fields</td><td>NDC-2420, 2334</td></tr>
+    <tr><td class="id">A08</td><td>Custom actions (functions): create, variables, run, bulk run</td><td>—</td></tr>
+    <tr><td class="id">A14</td><td>Google Sheets sync: connection, tabs, sync runs (read-only if there is no test sheet)</td><td>NDC-2314 … 2320</td></tr>
+    <tr><td class="id">Gaps</td><td>Confirm still missing: schedules, scoring rules, cadences, macros, escalation (one check each)</td><td>NDC-2030, 1486</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Lane B · Wave 4: email, channels and reminders</h2>
+  <div class="tbl"><table>
+    <tr><th>Group</th><th>Function (full feature)</th><th>Old tickets rechecked</th></tr>
+    <tr><td class="id">M01</td><td>Email connections: list, SMTP and Zoho Mail status, Gmail / Microsoft 365 connect (expected to fail). No connection is changed or removed.</td><td>NDC-1141, 1479</td></tr>
+    <tr><td class="id">M02</td><td>Send from a record to the test inbox, reply back, thread on the record, open and click tracking, drafts, attachments, templates with merge fields, signature</td><td>NDC-2496</td></tr>
+    <tr><td class="id">C14</td><td>Email templates: create, folders, merge fields, preview</td><td>—</td></tr>
+    <tr><td class="id">M06</td><td>Web forms: build a QA form, public link opens (was 404), submit, captcha, lead created, acknowledgement mail; the 3 existing forms are not touched</td><td>NDC-1488 (Ready For Test)</td></tr>
+    <tr><td class="id">M04</td><td>SMS and WhatsApp: templates, campaigns, sender IDs, suppressions, credits. Nothing is sent: there are no sender IDs.</td><td>NDC-1482</td></tr>
+    <tr><td class="id">M05</td><td>Telephony: providers page, Ziwo set-up screen, call logs, click-to-call (no provider configured, so screens only)</td><td>NDC-1949, 1944, 1493 … 1498</td></tr>
+    <tr><td class="id">M07</td><td>Portals: create a QA portal and look at the invite screen (no real invite sent)</td><td>—</td></tr>
+    <tr><td class="id">M09–M11</td><td>Notifications bell and preferences (test user 1 only), activity reminders for a QA task, calendar day / week / month and drag</td><td>NDC-1333</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Lane C · Wave 5: setup and integrations</h2>
+  <div class="tbl"><table>
+    <tr><th>Group</th><th>Function (full feature)</th><th>Old tickets rechecked</th></tr>
+    <tr><td class="id">C01</td><td>Modules and fields on "QA W5 Module": create the module, every field type (37), limits, edit, delete, restore, rename labels</td><td>NDC-1693, 2384, 1863, 1864, 1873, 1444, 1598</td></tr>
+    <tr><td class="id">C02</td><td>Layouts on the QA module: create, clone, default, profile assignment, reassign records, usage, layout builder save</td><td>NDC-2383, 2423, 1335, 492</td></tr>
+    <tr><td class="id">C03–C09</td><td>Layout rules, validation rules (also on picklists), picklist dependency, formula, rollup, unique fields and duplicate check, all on the QA module</td><td>NDC-2536, 1444, 2423, 1603</td></tr>
+    <tr><td class="id">C10, C12, C13, C20</td><td>Custom buttons and links, teamspace folders, data types, skills</td><td>NDC-1232</td></tr>
+    <tr><td class="id">C16, C17, G05, G06</td><td>Translations, Arabic and RTL, home page components, keyboard shortcuts</td><td>NDC-2130, 2131, 1476, 2027, 163</td></tr>
+    <tr><td class="id">S02, S03</td><td>Reports (tabular, summary, matrix, joined, scheduled, export) and dashboards (components, filters, drill-down) built on QA data</td><td>—</td></tr>
+    <tr><td class="id">I02, I03, I05, S05, S06</td><td>API clients (create a QA client, call the ingest API, delete it), webhooks, storage, AI pages, billing: smoke checks, nothing bought</td><td>NDC-1193, 1487</td></tr>
+    <tr><td class="id">G01–G03</td><td>Company details, business hours, fiscal year: read-only in this lane</td><td>—</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Serial window (after lane A finishes)</h2>
+  <ul>
+    <li>CRM ⇄ Desk integration: rerun the crmdeskintegration suite (it switches the integration and its settings): NDC-2392 … 2410, 2295.</li>
+    <li>Company details, business hours and fiscal year: change one value each, check where it shows, set it back at once.</li>
+    <li>Pipeline settings (create, clone, default, delete with transfer): only if NDC-2386 is fixed by then; otherwise blocked.</li>
+    <li>Modules and fields on Leads itself: only the cases that can't be proven on the QA module, each undone at once.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Steps for each lane</h2>
+  <ol>
+    <li><b>Prepare:</b> a snapshot of everything the wave can touch (rules, processes, forms, templates, modules, layouts, settings, users' profiles), plus the Plane state of each ticket.</li>
+    <li><b>Run:</b> API and screen together for every case; automation written as it goes and rerun once to prove it.</li>
+    <li><b>Check against Zoho:</b> the same function opened in Zoho, read-only, for every retested ticket and every candidate bug.</li>
+    <li><b>Verify:</b> every candidate bug re-run once from scratch before it is reported; test mistakes are fixed, not reported.</li>
+    <li><b>Evidence:</b> one annotated image per retested ticket and per candidate bug, pass or fail, in the approved layout (TAVI left, Zoho right, text under each, the same box numbers on both sides).</li>
+    <li><b>Clean up:</b> delete everything with the lane's prefix, purge it from the recycle bin, restore every changed setting, then a diff against the snapshot.</li>
+    <li><b>Report and Gate 2:</b> one report per wave. Nothing goes to Plane until you approve it.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>What I will not do</h2>
+  <ul>
+    <li>Save anything in Zoho.</li>
+    <li>Change or remove existing email connections, web forms, rules, processes, blueprints or integrations that are not ours.</li>
+    <li>Send SMS or WhatsApp, buy credits, or invite real portal users.</li>
+    <li>Retest or move the 11 Wave 1 tickets that are In Progress.</li>
+    <li>Retry after an HTTP 429.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Gate 1 questions</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Question</th><th>My suggestion</th></tr>
+    <tr><td class="id">1</td><td>Run the three lanes as three background agents at once?</td><td>Yes</td></tr>
+    <tr><td class="id">2</td><td>Which inbox receives the test emails, replies and web-form acknowledgements?</td><td>hmohamed@anyware.software, as in Wave 1</td></tr>
+    <tr><td class="id">3</td><td>Allow the serial window's tenant-wide changes, each set back at once (CRM ⇄ Desk on/off, business hours, fiscal year, company details)?</td><td>Yes, briefly; tell the team first</td></tr>
+    <tr><td class="id">4</td><td>Allow creating "QA W5 Module"? A deleted module leaves bin items that can't be removed (NDC-1797).</td><td>Yes, or reuse an existing test module if you'd rather add nothing</td></tr>
+    <tr><td class="id">5</td><td>Wave 3–5 tickets that are In Progress: test and record only, or also comment?</td><td>Test and record only; comment once they reach Ready For Test</td></tr>
+    <tr><td class="id">6</td><td>Real outbound actions: send a test email from a record and submit a public web form?</td><td>Yes, to the inbox from question 2 only</td></tr>
+  </table></div>
+</section>
+</div>

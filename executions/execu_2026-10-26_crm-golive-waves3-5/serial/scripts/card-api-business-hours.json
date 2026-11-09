@@ -1,0 +1,26 @@
+{
+ "out": "api-business-hours.png",
+ "title": "TAVI API — business hours check, 27 Oct 2026",
+ "lines": [
+  [
+   "GET /iam/tenant/business-hours -> preset 24_7, all 7 days, timing_mode \"same\", hours 09:00–17:00, Africa/Cairo",
+   ""
+  ],
+  [
+   "PUT the same object back, unchanged -> 400 business_hours.invalid_timing_mode",
+   "bad"
+  ],
+  [
+   "  \"24_7 preset must have timing_mode, hours, hours_per_day, slots and slots_per_day all null.\"",
+   "bad"
+  ],
+  [
+   "PUT with Sunday off -> 400 \"24_7 requires all 7 days.\"  (correct)",
+   "ok"
+  ],
+  [
+   "Stored record unchanged (read back); company fax and fiscal start month were changed and restored (200)",
+   "info"
+  ]
+ ]
+}

@@ -291,7 +291,7 @@ public class GroupCWorkflowTest extends OrderTestBase {
     }
 
     @CaseId("C-09")
-    @Test(groups = {"crm-order", "group-c"}, description = "Criteria false: does not fire; execution row says criteria not matched")
+    @Test(groups = {"crm-order", "group-c"}, description = "Criteria false: the rule does not fire and changes nothing (the control rule on the same lead fires)")
     public void criteriaFalseDoesNotFire() {
         String r = rule(CrmProcs.workflow(LEADS, "C-09 WF referral only").guardCase("C-09").onCreate().where(CrmProcs.eq("lead_source", "referral")).fieldUpdate("description", "WF C-09"));
         String ctl = rule(CrmProcs.workflow(LEADS, "C-09 control on create").guardCase("C-09").onCreate().fieldUpdate("lead_status_comment", "WF C-09 control"));
@@ -303,8 +303,10 @@ public class GroupCWorkflowTest extends OrderTestBase {
         note("C-09", "lead " + id + " description=" + val(id, "description") + " rule rows=" + rr);
         Assert.assertEquals(fired(id, r), 0L, "rule fired although criteria are false: " + runsText(id));
         Assert.assertNotEquals(val(id, "description"), "WF C-09");
-        Assert.assertTrue(rr.stream().anyMatch(e -> Boolean.FALSE.equals(e.get("criteriaMatched")) || String.valueOf(e.get("outcome")).toLowerCase().contains("not")),
-                "no execution row with outcome 'criteria not matched' for the rule (spec expects one). Runs: " + runsText(id));
+        // Round 1 verdict: no execution row for a non-match is by design (Zoho doesn't log non-matches either); if a row exists it
+        // must not be a run that applied actions
+        Assert.assertTrue(rr.stream().noneMatch(e -> Boolean.TRUE.equals(e.get("criteriaMatched"))),
+                "an execution row claims the criteria matched: " + runsText(id));
     }
 
     // ---------------- C-10: every action type ----------------
@@ -323,7 +325,7 @@ public class GroupCWorkflowTest extends OrderTestBase {
             mappings.put("pipeline", Rules.s(CrmApi.pipelineOf(layout(DEALS))));
             mappings.put("stage", Rules.s("qualification"));
             Map<String, Object> email = raw("Email", 1);
-            email.put("emailRecipients", List.of(kinded("kind", "User", "value", userV().id())));
+            email.put("emailRecipients", List.of(kinded("kind", "User", "value", adminA().id())));   // real mail only to the two allowed inboxes (user, 26 Oct 2026)
             email.put("emailTemplateId", null);
             email.put("emailSubject", "QA AEO SC C-10 workflow email");
             email.put("emailBody", "<p>QA AEO SC C-10</p>");
@@ -395,42 +397,37 @@ public class GroupCWorkflowTest extends OrderTestBase {
     @CaseId("C-11")
     @Test(groups = {"crm-order", "group-c"}, description = "Scheduled action (2 min) is cancelled when the record stops matching before then")
     public void scheduledActionCancelledWhenNoLongerMatching() {
-        CrmProcs.Wf wf = CrmProcs.workflow(LEADS, "C-11 WF scheduled").guardCase("C-11").onCreate().where(CrmProcs.eq("lead_source", "web"))
-                .fieldUpdate("description", "WF C-11").delayed(120);
-        Response probe = tryRule(wf.build());
-        boolean fieldUpdateDelayOk = probe.statusCode() / 100 == 2;
-        note("C-11", "scheduled Field Update save -> " + probe.statusCode() + (fieldUpdateDelayOk ? "" : " " + probe.asString()));
-        String r = fieldUpdateDelayOk ? rule(wf)
-                : rule(CrmProcs.workflow(LEADS, "C-11 WF scheduled webhook").guardCase("C-11").onCreate().where(CrmProcs.eq("lead_source", "web")).webhook(HTTPBIN).delayed(120));
+        // Round 1 (B-12 withdrawn 20 Oct): the screen offers no scheduled Field Update (NDC-2294 item 11), so this case uses a
+        // scheduled Webhook, which the screen does offer. The receiver is public and answers 200 (new webhook check, 27 Oct build).
+        String r = rule(CrmProcs.workflow(LEADS, "C-11 WF scheduled webhook").guardCase("C-11").onCreate().where(CrmProcs.eq("lead_source", "web")).webhook(HTTPBIN).delayed(120));
         String stop = lead(userN(), "C-11", "stops matching", Map.of("lead_source", "web"));
         String ctl = lead(userN(), "C-11", "control", Map.of("lead_source", "web"));
         edit(userN(), LEADS, stop, Map.of("lead_source", "chat"));
-        boolean ctlRan = fieldUpdateDelayOk ? waitVal(ctl, "description", "WF C-11", 320)
-                : CrmApi.waitFor(320, () -> dispText(dispatches(ctl, r)).toLowerCase().matches("(?s).*(succeeded|failed).*"));
+        boolean ctlRan = CrmApi.waitFor(320, () -> dispText(dispatches(ctl, r)).toLowerCase().matches("(?s).*(succeeded|failed).*"));
         CrmUser.sleep(15000);
-        String stopDesc = val(stop, "description");
         String stopDisp = dispText(dispatches(stop, r));
         traceOf("C-11", LEADS, stop);
-        note("C-11", "control " + ctl + " ran=" + ctlRan + " | changed lead " + stop + " description=" + stopDesc + " dispatches=" + stopDisp + " runs=" + runsText(stop));
-        if (!ctlRan) inconclusive("the control lead's scheduled action never ran, so scheduling itself did not run: " + runsText(ctl) + " " + dispText(dispatches(ctl, r)));
-        if (fieldUpdateDelayOk) Assert.assertNotEquals(stopDesc, "WF C-11", "scheduled Field Update still ran for the lead that stopped matching");
-        else Assert.assertFalse(stopDisp.toLowerCase().contains("succeeded"), "scheduled webhook still ran for the lead that stopped matching: " + stopDisp);
+        note("C-11", "control " + ctl + " ran=" + ctlRan + " dispatches=" + dispText(dispatches(ctl, r)) + " | changed lead " + stop + " dispatches=" + stopDisp + " runs=" + runsText(stop));
+        if (!ctlRan) inconclusive("the control lead's scheduled webhook never ran, so scheduling itself did not run: " + runsText(ctl) + " " + dispText(dispatches(ctl, r)));
+        Assert.assertFalse(stopDisp.toLowerCase().contains("succeeded"), "scheduled webhook still ran for the lead that stopped matching: " + stopDisp);
     }
 
     @CaseId("C-12")
-    @Test(groups = {"crm-order", "group-c"}, description = "Rule A's field update makes rule B match: B fires after A (chaining)")
+    @Test(groups = {"crm-order", "group-c"}, description = "On Edit rule A's field update makes On Edit rule B match: B fires after A (chaining, as in Zoho)")
     public void fieldUpdateChainsToAnotherRule() {
-        String a = rule(CrmProcs.workflow(LEADS, "C-12 A sets referral").guardCase("C-12").onCreate().fieldUpdate("lead_source", "referral"));
+        // Round 1 (B-08 withdrawn 20 Oct, user check on Zoho): Zoho chains only when rule A is triggered On Edit; A On Create does not
+        // chain there either. So A runs On Edit (only while Lead Source is chat, so it can't loop) and B On Edit when it is referral.
+        String a = rule(CrmProcs.workflow(LEADS, "C-12 A on edit chat to referral").guardCase("C-12").onEdit().where(CrmProcs.eq("lead_source", "chat")).fieldUpdate("lead_source", "referral"));
         String b = rule(CrmProcs.workflow(LEADS, "C-12 B on edit referral").guardCase("C-12").onEdit().where(CrmProcs.eq("lead_source", "referral")).fieldUpdate("description", "WF C-12 B"));
-        String b2 = rule(CrmProcs.workflow(LEADS, "C-12 B2 on create referral").guardCase("C-12").onCreate().where(CrmProcs.eq("lead_source", "referral")).fieldUpdate("lead_status_comment", "WF C-12 B2"));
         String id = lead(userN(), "C-12", "lead", Map.of("lead_source", "chat"));
-        if (!waitVal(id, "lead_source", "referral", WAIT)) inconclusive("rule A did not set Lead Source referral on " + id + ": " + runsText(id));
-        boolean bRan = waitVal(id, "description", "WF C-12 B", 45);
-        boolean b2Ran = "WF C-12 B2".equals(val(id, "lead_status_comment"));
+        CrmUser.sleep(5000);
+        Assert.assertEquals(fired(id, a), 0L, "control: rule A (On Edit) must not run on create: " + runsText(id));
+        edit(userN(), LEADS, id, Map.of("lead_status_comment", "QA AEO C-12 user edit"));
+        if (!waitVal(id, "lead_source", "referral", WAIT)) inconclusive("rule A (On Edit) did not set Lead Source referral on " + id + ": " + runsText(id));
+        boolean bRan = waitVal(id, "description", "WF C-12 B", 60);
         traceOf("C-12", LEADS, id);
-        note("C-12", "lead " + id + " A fired=" + fired(id, a) + " B(on edit) fired=" + fired(id, b) + " marker=" + bRan + " B2(on create, after A) fired=" + fired(id, b2) + " marker=" + b2Ran + " runs=" + runsText(id));
-        Assert.assertTrue(bRan || b2Ran, "no rule ran after rule A's field update made it match (no chaining at all)");
-        Assert.assertTrue(bRan, "rule A's field update did not trigger the On Edit rule B (Zoho: a field update can trigger other rules)");
+        note("C-12", "lead " + id + " A fired=" + fired(id, a) + " B fired=" + fired(id, b) + " marker=" + bRan + " runs=" + runsText(id));
+        Assert.assertTrue(bRan, "rule A's On Edit field update did not trigger the On Edit rule B (Zoho chains from On Edit rules)");
     }
 
     @CaseId("C-13")

@@ -1,0 +1,152 @@
+<title>Round 2 Gate 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+<style>ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live · Round 2 · Gate 1</div>
+  <h1>Full retest on the new build</h1>
+  <p class="meta">Draft for review · 27 Oct 2026 · staging-crm.taviportal.com (NDC-Staging), build <code>index-De3hTVb3.js</code> (deployed 27 Oct, replaces <code>index-BWLZ8sns.js</code>) · reference Zoho CRM org943261092 (read-only)</p>
+  <p>The CRM changed, so every implemented feature is retested from the beginning, through the screens and through the API. This round covers all 89 implemented features except telephony (skipped by your decision): 88 features. It adds the 20 features the first round didn't fully cover, plus web forms and Google Sheets.</p>
+</header>
+
+<div class="strip">
+  <div class="stat"><b>88</b><span>features in scope</span></div>
+  <div class="stat pass"><b>66</b><span>retested again</span></div>
+  <div class="stat warn"><b>20</b><span>not or partly covered before</span></div>
+  <div class="stat"><b>2</b><span>added back (web forms, Sheets)</span></div>
+  <div class="stat"><b>1</b><span>skipped (telephony)</span></div>
+</div>
+
+<div class="note"><b>Already decided:</b> tickets that are In Progress or Ready for Deployment are skipped until they reach Ready For Test · two lanes at a time · same prefixes, cleanup, snapshot and diff per wave · same accounts and email addresses · nothing goes to Plane without your approval.</div>
+
+<section>
+  <h2>Step 0 · Map what changed in the new build</h2>
+  <ol>
+    <li>Compare the new build with the 25 Oct copy: routes, screens, texts and the API calls the screens make. List every changed screen and every new, removed or changed API.</li>
+    <li>Run each automation suite's screen tests once with self-healing on; fix every locator the change broke and record the heals.</li>
+    <li>Publish the change map for you (what changed, which wave covers it) before the waves start.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Order of work</h2>
+  <div class="tbl"><table>
+    <tr><th>Phase</th><th>Lane A</th><th>Lane B</th><th>Why paired this way</th></tr>
+    <tr><td class="id">0</td><td colspan="2">Change map and locator fixes (one lane)</td><td>Everything else depends on it</td></tr>
+    <tr><td class="id">1</td><td>Wave 1 · Access and security</td><td>Wave 2 · Daily record work</td><td>Different accounts; Wave 1's hierarchy-mode switch waits for the serial window</td></tr>
+    <tr><td class="id">2</td><td>Wave 3 · Automation chain</td><td>Wave 4 · Email, web forms, channels</td><td>Wave 3 rules are limited to their own prefix, so Wave 4's web-form leads don't trigger them</td></tr>
+    <tr><td class="id">3</td><td>Wave 5 · Setup, reports, integrations (on a QA module)</td><td>Remaining screen checks (RTL, performance, flights)</td><td>Schema changes only on the QA module</td></tr>
+    <tr><td class="id">4</td><td colspan="2">Serial window: CRM ⇄ Desk, company settings, business hours, fiscal year, hierarchy mode, session limits, pipeline settings (only if NDC-2386 is Ready For Test)</td><td>Tenant-wide; nothing else runs</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Coverage map (88 features)</h2>
+  <p class="meta">Bold = not or only partly covered in round 1, added now.</p>
+  <div class="tbl"><table>
+    <tr><th>Wave</th><th>Features</th><th>Count</th></tr>
+    <tr><td class="id">1 Access</td><td>U01 users · <b>U03 Referral Code sync</b> · U04 profiles and permissions · U05 org units and roles · U06 reporting hierarchy · <b>U07 data sharing rules</b> · U10 security policies · U11 login history and sessions · U12 audit log · U15 personal settings · C06 field permissions</td><td>11</td></tr>
+    <tr><td class="id">2 Records</td><td>R01 Leads · R02 Customers · R03 Agency Code · R04 Transactions + pipelines · R05 Tasks / Calls / Meetings · <b>R07 Cases</b> · <b>R08 Sales and Purchase Orders</b> · R12 custom business modules · R13 create / edit / clone / delete · R14 record page · R15 notes · R16 attachments · R17 timeline · R18 tags · R19 lead conversion · <b>R21 merge records</b> · <b>R22 mass update (all field types)</b> · R23 mass delete · <b>R24 mass transfer / change owner</b> · <b>R26 record locking</b> · R28 list view · R29 custom views · R30 kanban · <b>R31 split view</b> · <b>R33 advanced filters (all operators)</b> · R34 global search · R35 import · R38 recycle bin · S01 work queue</td><td>29</td></tr>
+    <tr><td class="id">3 Automation</td><td>A01 workflow rules · A02 actions · A03 execution log · A04 assignment · A05 approvals · A06 reviews · A07 blueprints · A08 custom actions · <b>A14 Google Sheets sync</b></td><td>9</td></tr>
+    <tr><td class="id">4 Channels</td><td>M01 email connections · M02 send and receive · C14 templates and signature · M04 SMS and WhatsApp · <b>M06 web forms</b> · M07 portals · M09 notifications · M10 activity reminders · M11 calendar</td><td>9</td></tr>
+    <tr><td class="id">5 Setup</td><td>C01 modules and fields · C02 layouts · C03 layout rules · C04 validation rules · C05 dependencies · C07 formulas · C08 rollups · C09 unique fields · <b>C10 buttons and links (on the record page)</b> · C11 pipelines · C12 teamspaces · C13 data types · C16 translations · <b>C17 home page components</b> · C20 skills · <b>S02 reports (tabular, summary, matrix, joined, scheduled, export)</b> · <b>S03 dashboards (filters, drill-down)</b> · <b>S05 AI</b> · <b>S06 billing</b> · <b>S07 flights / bookings</b> · I01 CRM ⇄ Desk · I02 API clients · <b>I03 webhooks</b> · I05 storage · G01 company · G02 business hours · G03 fiscal year · <b>G05 Arabic and RTL layout</b> · G06 shortcuts · <b>G09 performance</b></td><td>30</td></tr>
+    <tr><td class="id">Skipped</td><td>M05 telephony (your decision)</td><td>1</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>How each wave runs</h2>
+  <ol>
+    <li><b>Snapshot</b> of everything the wave can touch, and the Plane state of every ticket in it.</li>
+    <li><b>Automation first:</b> the wave's existing suite, API and screens (crmaccess + crmhierarchy, crmrecords, crmautomationorder, crmchannels, crmsetup, crmdeskintegration).</li>
+    <li><b>By hand</b> for every function the suite doesn't cover, every changed screen, and every newly added feature; each new check is added to the automation.</li>
+    <li><b>Zoho check</b> (read-only) for every retested ticket and every failure.</li>
+    <li><b>Verify</b> each candidate bug once more from scratch; separate test defects from app bugs.</li>
+    <li><b>Evidence:</b> one annotated image per retested ticket and per failed case, in the approved layout.</li>
+    <li><b>Clean up</b> and diff against the snapshot; <b>report</b> with decisions; <b>Gate 2</b>.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>What the new features need</h2>
+  <div class="tbl"><table>
+    <tr><th>Feature</th><th>Plan</th><th>Needed from the team</th></tr>
+    <tr><td class="id">M06 Web forms</td><td>Build a QA form, test the builder, embed, hosted link, QR, submit, captcha, lead created, assignment, acknowledgement mail to the two test addresses</td><td>The hosted link answered nginx 404 on 26 Oct (NDC-1488). If still 404, only the embedded form can be tested</td></tr>
+    <tr><td class="id">A14 Google Sheets</td><td>Connect a sheet, map tabs, sync runs, errors, disconnect</td><td>A Google service account (or OAuth) for staging and one test spreadsheet shared with it. Without these, Sheets stays blocked</td></tr>
+    <tr><td class="id">U03 Referral Code sync</td><td>Check sync status, a sync run, and what changes on a user</td><td>Confirm a sync run is safe on staging</td></tr>
+    <tr><td class="id">U07 Data sharing rules</td><td>Create a QA rule, check record visibility for test users, remove</td><td>—</td></tr>
+    <tr><td class="id">R21 · R24 · R26 · R31</td><td>Merge two QA records, mass transfer QA records between test users, lock and unlock a record, split view create and edit</td><td>—</td></tr>
+    <tr><td class="id">S07 Flights</td><td>Check whether the routes now open; test if they do</td><td>Tell us if flights are meant to be in CRM at go-live</td></tr>
+    <tr><td class="id">G09 Performance</td><td>Page load times for the main screens and key API calls, 3 runs each, against the targets in the tickets</td><td>Targets for screens without a ticket (suggest 2 s)</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Gate 1 questions</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Question</th><th>My suggestion</th></tr>
+    <tr><td class="id">1</td><td>Can the team provide a Google service account and a test spreadsheet for Google Sheets?</td><td>Yes, before Phase 2; otherwise A14 is reported as blocked</td></tr>
+    <tr><td class="id">2</td><td>Is a Referral Code sync run safe on staging?</td><td>Read-only checks only unless you confirm</td></tr>
+    <tr><td class="id">3</td><td>Should flights / bookings be part of CRM at go-live?</td><td>Check the routes; test only if they open</td></tr>
+    <tr><td class="id">4</td><td>Performance target for screens without a ticket?</td><td>2 seconds to first content</td></tr>
+    <tr><td class="id">5</td><td>Approve the order of work and lane pairing above?</td><td>Yes</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Still finishing from round 1</h2>
+  <ul>
+    <li>Tenant-wide window and Wave 1 leftovers (running now, already on the new build; their results count for this round).</li>
+    <li>Wave 3 page of failed, skipped and blocked cases with evidence (being built).</li>
+  </ul>
+</section>
+</div>

@@ -1,0 +1,1 @@
+const r = await api('DELETE', '/modules/' + T + '/records/853bf3cd-8b44-4dd2-b3cf-cb02cdcbe4bd'); return done({ del650: r.s });

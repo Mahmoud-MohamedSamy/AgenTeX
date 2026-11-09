@@ -1,0 +1,289 @@
+{
+ "found": {
+  "switches": {
+   "notify_agent_on_assignment": true,
+   "notify_team_on_assignment": true,
+   "direct_rules_enabled": false,
+   "round_robin_rules_enabled": true
+  },
+  "prefs": {
+   "assign_to_offline_agents": false,
+   "department_threshold_enabled": false,
+   "department_threshold": 40,
+   "agent_threshold_enabled": false,
+   "agent_thresholds": [],
+   "assign_backlogs": false,
+   "backlog_limit": 10,
+   "backlog_order": "created_time",
+   "assign_on_closure": false,
+   "incoming_mode": "immediate"
+  }
+ },
+ "1a owner null": {
+  "no": "1439",
+  "owner": "A2",
+  "team": null,
+  "ms": 940,
+  "s": 201
+ },
+ "1b no owner, source api": {
+  "no": "1440",
+  "owner": "A3",
+  "team": null,
+  "ms": 298,
+  "s": 201
+ },
+ "1c no owner, source field web_form": {
+  "owner": "-",
+  "team": null,
+  "ms": 96,
+  "s": 422,
+  "e": "RECORD_VALIDATION_FAILED: Unknown field: source. Create the field on the module first, or remove it from data. [{\"path\":\"source\",\"type\":\"unknown_field\",\"message\":\"Field 'source' does not exist on this module. Reload the page if it was just deleted.\"}]"
+ },
+ "1d no owner, no source": {
+  "no": "1441",
+  "owner": "owner",
+  "team": null,
+  "ms": 312,
+  "s": 201
+ },
+ "1e owner A1 preset": {
+  "no": "1442",
+  "owner": "A1",
+  "team": null,
+  "ms": 348,
+  "s": 201,
+  "hist": [
+   "ticket.department_changed {\"field_key\":\"department_id\",\"old_value\":null,\"new_value\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\"}"
+  ]
+ },
+ "1f history of RR on create": {
+  "own": {
+   "no": "1443",
+   "owner": "A2",
+   "team": null,
+   "dept": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6"
+  },
+  "h": [
+   "ticket.department_changed {\"field_key\":\"department_id\",\"old_value\":null,\"new_value\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\"}",
+   "ticket.auto_assigned {\"kind\":\"round_robin\",\"rule_id\":\"550b428b-7f08-4bef-9d78-758076260b10\",\"team_id\":null,\"trigger\":\"created\",\"owner_id\":\"d23fb4e0-248d-41f6-af60-d28885a7007e\",\"strategy\":\"sequence\",\"rule_name\":\"QA RT15 2275 seq\",\"rule_type\":\"round_robin\",\"skip"
+  ],
+  "raw": [
+   {
+    "a": "ticket.auto_assigned",
+    "s": "{\"kind\":\"round_robin\",\"rule_id\":\"550b428b-7f08-4bef-9d78-758076260b10\",\"team_id\":null,\"trigger\":\"created\",\"owner_id\":\"d23fb4e0-248d-41f6-af60-d28885a7007e\",\"strategy\":\"sequence\",\"rule_name\":\"QA RT15 2275 seq\",\"rule_type\":\"round_robin\",\"skipped_user_ids\":[]}"
+   },
+   {
+    "a": "ticket.created",
+    "s": "{\"initial\":{\"status\":\"Open\",\"team_id\":null,\"owner_id\":null},\"created_values\":{\"email\":\"qa.rt15@example.com\",\"status\":\"Open\",\"subject\":\"QA RT15 2275 RT15SEQ hist\",\"priority\":\"medium\",\"department\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\",\"approval_status\":\"not_submitted\"}}"
+   },
+   {
+    "a": "ticket.department_changed",
+    "s": "{\"field_key\":\"department_id\",\"old_value\":null,\"new_value\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\"}"
+   }
+  ]
+ },
+ "1g all offline: waits unassigned, not the creator": {
+  "no": "1444",
+  "owner": "-",
+  "team": null,
+  "ms": 436,
+  "s": 201,
+  "hist": [
+   "ticket.department_changed {\"field_key\":\"department_id\",\"old_value\":null,\"new_value\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\"}"
+  ]
+ },
+ "2a 3 agents, offline allowed: 6 tickets": [
+  "A1",
+  "A2",
+  "A3",
+  "A1",
+  "A2",
+  "A3"
+ ],
+ "2b A1 offline: SKIPPED": {
+  "seq": [
+   "A2",
+   "A3",
+   "A2",
+   "A3"
+  ],
+  "entriesNamingSkipped": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "sample": "ticket.department_changed {\"field_key\":\"department_id\",\"old_value\":null,\"new_value\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\"}"
+ },
+ "3a direct master OFF as found: rule does not act": {
+  "no": "1455",
+  "owner": "-",
+  "team": null,
+  "ms": 420,
+  "s": 201,
+  "master": false
+ },
+ "activeBeforeOn": {
+  "listed": 1,
+  "active": [
+   "QA RT15 2275 master"
+  ]
+ },
+ "masterOn": {
+  "s": 200
+ },
+ "3b master ON: rule acts": {
+  "no": "1456",
+  "owner": "A2",
+  "team": null,
+  "ms": 399,
+  "s": 201
+ },
+ "4a direct + RR both match: direct wins, A1 offline still gets it": {
+  "no": "1457",
+  "owner": "A1",
+  "team": null,
+  "ms": 483,
+  "s": 201,
+  "hist": [
+   "ticket.auto_assigned {\"kind\":\"agent\",\"rule_id\":\"4096b70c-c673-4d27-85da-7a7e3102c1d2\",\"team_id\":null,\"trigger\":\"created\",\"owner_id\":\"876ce871-2b02-4854-89a7-68050391c62b\",\"reopened\":false,\"strategy\":null,\"rule_name\":\"QA RT15 2275 dir\",\"rule_type\":\"direct\",\"old_",
+   "ticket.department_changed {\"field_key\":\"department_id\",\"old_value\":null,\"new_value\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\"}"
+  ]
+ },
+ "4b direct: preset owner kept": {
+  "no": "1458",
+  "owner": "A3",
+  "team": null,
+  "ms": 233,
+  "s": 201
+ },
+ "4c direct: form-default style, no owner + no source, rule still decides": {
+  "no": "1459",
+  "owner": "A1",
+  "team": null,
+  "ms": 882,
+  "s": 201
+ },
+ "4d team target: team, no owner, members notified once, outsider none": {
+  "no": "1460",
+  "owner": "-",
+  "team": "434140a3-2145-428c-9e57-e6bc5cf2f8d0",
+  "ms": 818,
+  "s": 201,
+  "a2": [
+   "desk.ticket.team_assigned: Ticket #1460 assigned to team QA AS6 Team A: QA RT"
+  ],
+  "a3": [
+   "desk.ticket.team_assigned: Ticket #1460 assigned to team QA AS6 Team A: QA RT"
+  ],
+  "raw": {
+   "owner": null,
+   "team": "434140a3-2145-428c-9e57-e6bc5cf2f8d0"
+  }
+ },
+ "4e direct moves to Dept A unassigned: Dept A RR assigns in same event": {
+  "no": "1461",
+  "owner": "-",
+  "team": null,
+  "ms": 759,
+  "s": 201,
+  "hist": [
+   "ticket.auto_assigned {\"kind\":\"unassigned\",\"rule_id\":\"e977974c-d6ad-4e7b-add8-91a9d1f04a27\",\"team_id\":null,\"trigger\":\"created\",\"owner_id\":null,\"reopened\":false,\"strategy\":null,\"rule_name\":\"QA RT15 2275 move\",\"rule_type\":\"direct\",\"old_team_id\":null,\"old_owner_id\""
+  ]
+ },
+ "4f rule on update: unowned assigned; owned kept": {
+  "beforeUpdate": "-",
+  "patch": 200,
+  "after": "A2",
+  "owned": "A3"
+ },
+ "4g Mark as Unassigned stops next direct rule": {
+  "no": "1464",
+  "owner": "-",
+  "team": null,
+  "ms": 473,
+  "s": 201
+ },
+ "5a EO-2 workflow \"owner is A1\" fires on direct rule result": {
+  "ERR": "wf 400 VALIDATION_ERROR: One or more validation errors occurred. [{\"field\":\"Actions[0].TagIds\",\"issue\":\"AddTags requires at least one tag.\"}]"
+ },
+ "5b EO-3 workflow owner on create, RR leaves it": {
+  "ERR": "wf 400 VALIDATION_ERROR: One or more validation errors occurred. [{\"field\":\"Actions[0].OwnerTargetKind\",\"issue\":\"OwnerTargetKind must be SpecificUser, UserField, RoleRoundRobin, OrgUnitRoundRobin, Team, TeamWithAgent, or AssignmentRule.\"}]"
+ },
+ "5c EO-4/5 direct A2 then workflow A3: only A3 notified": {
+  "ERR": "wf 400 VALIDATION_ERROR: One or more validation errors occurred. [{\"field\":\"Actions[0].OwnerTargetKind\",\"issue\":\"OwnerTargetKind must be SpecificUser, UserField, RoleRoundRobin, OrgUnitRoundRobin, Team, TeamWithAgent, or AssignmentRule.\"}]"
+ },
+ "5d no matching rule: unassigned stays": {
+  "no": "1465",
+  "owner": "-",
+  "team": null,
+  "ms": 917,
+  "s": 201
+ },
+ "6a two RR rules match: first in list acts": [
+  "A2",
+  "A2"
+ ],
+ "6b skill added on create, skill RR in same event": {
+  "no": "1469",
+  "owner": "A2",
+  "team": null,
+  "ms": 780,
+  "s": 201,
+  "skills": [
+   "QA AS6 sk2"
+  ],
+  "hist": [
+   "ticket.department_changed {\"field_key\":\"department_id\",\"old_value\":null,\"new_value\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\"}",
+   "ticket.auto_assigned {\"kind\":\"round_robin\",\"rule_id\":\"d9982d4d-f898-451d-ab4c-fef1eca9a87c\",\"team_id\":null,\"trigger\":\"created\",\"owner_id\":\"d23fb4e0-248d-41f6-af60-d28885a7007e\",\"strategy\":\"skills\",\"rule_name\":\"QA RT15 2275 skill\",\"rule_type\":\"round_robin\",\"skip",
+   "ticket.owner_changed {\"field_key\":\"owner\",\"old_value\":null,\"new_value\":\"d23fb4e0-248d-41f6-af60-d28885a7007e\"}"
+  ]
+ },
+ "6c load based: fewest open first": {
+  "open": {
+   "A2": 79,
+   "A3": 61
+  },
+  "seq": [
+   "-",
+   "A3",
+   "-",
+   "-"
+  ]
+ },
+ "6d speed: owner in first read after create (10 tickets)": {
+  "createMs": [
+   438,
+   1456,
+   677,
+   449,
+   349,
+   732,
+   420,
+   736,
+   678,
+   332
+  ],
+  "maxMs": 1456,
+  "ownersAtFirstRead": [
+   "-",
+   "-",
+   "-",
+   "-",
+   "-",
+   "-",
+   "-",
+   "-",
+   "-",
+   "-"
+  ]
+ },
+ "masterBack": {
+  "notify_agent_on_assignment": true,
+  "notify_team_on_assignment": true,
+  "direct_rules_enabled": false,
+  "round_robin_rules_enabled": true
+ },
+ "prefsBack": 200
+}

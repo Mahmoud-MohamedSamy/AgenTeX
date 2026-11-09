@@ -1,0 +1,113 @@
+{
+ "out": "NDC-2703-retest-PASS.png",
+ "ticket": "NDC-2703",
+ "title": "Record Locking | Lock rules are saved but records are not locked, and any text is accepted as a condition",
+ "priority": "medium",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2703-api.png",
+   "caption": "API evidence — NDC-2703 · Record lock rules on Leads (API the settings tab uses)",
+   "crop": [
+    0,
+    0,
+    1600,
+    344
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      238,
+      1566,
+      279
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      285,
+      1566,
+      326
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "free text",
+   "Refused",
+   "400 INVALID_RECORD_LOCK (asks for filter criteria)",
+   "PASS"
+  ],
+  [
+   "2",
+   "valid rule",
+   "Saved",
+   "201, active",
+   "PASS"
+  ],
+  [
+   "3",
+   "edit as owner",
+   "Refused",
+   "422 RECORD_LOCKED \"This record is locked by the rule 'QA RT 2703 lock'…\"",
+   "PASS"
+  ],
+  [
+   "4",
+   "edit as U1",
+   "Refused",
+   "422 RECORD_LOCKED",
+   "PASS"
+  ],
+  [
+   "5",
+   "control",
+   "Editable",
+   "200",
+   "PASS"
+  ]
+ ]
+}

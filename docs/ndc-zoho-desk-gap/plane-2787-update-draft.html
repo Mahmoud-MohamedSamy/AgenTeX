@@ -1,0 +1,196 @@
+<title>NDC-2787 Update Draft</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: single review column (~920px) — header with fields, "what changes" strip, rebuild summary, three missing groups as item cards, comment preview */
+:root{
+  --bg:#f6f8f8; --surface:#ffffff; --fg:#14211f; --muted:#5b6b68; --line:#d9e2e0; --accent:#0f6e66;
+  --bad:#b42318; --badbg:#fdecea; --good:#21734a; --goodbg:#e6f4ec; --warn:#a15c07; --warnbg:#fdf3e2; --info:#1d4ed8; --infobg:#e8effd;
+  --font-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1716; --surface:#16211f; --fg:#e4eeec; --muted:#9db0ac; --line:#2a3a37; --accent:#4fc2b6;
+  --bad:#ff8a7d; --badbg:#3a1d1a; --good:#6fcf97; --goodbg:#173126; --warn:#f2b55a; --warnbg:#372a14; --info:#8fb3ff; --infobg:#1a2440; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1716; --surface:#16211f; --fg:#e4eeec; --muted:#9db0ac; --line:#2a3a37; --accent:#4fc2b6;
+  --bad:#ff8a7d; --badbg:#3a1d1a; --good:#6fcf97; --goodbg:#173126; --warn:#f2b55a; --warnbg:#372a14; --info:#8fb3ff; --infobg:#1a2440; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:920px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:32px}
+header{display:flex;flex-direction:column;gap:10px}
+.draft{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);background:var(--warnbg);padding:3px 10px;border-radius:4px}
+h1{font-size:clamp(22px,3.4vw,30px);line-height:1.2;margin:0;text-wrap:balance}
+h2{font-size:19px;margin:0}
+h3{font-size:16px;margin:0}
+p{margin:0;max-width:74ch}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px 16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:13px}
+.fields div{display:flex;flex-direction:column;gap:1px;min-width:0}
+.fields span{color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.fields b{font-weight:600}
+section{display:flex;flex-direction:column;gap:14px}
+.changes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.changes>div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.changes b{font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.item .hd{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.id{font-family:var(--font-mono);font-size:12.5px;font-weight:600;color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid>div{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:14px}
+.lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.exp{border-left:3px solid var(--good);padding:8px 12px;background:var(--goodbg);border-radius:0 6px 6px 0;font-size:14px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.p0{background:var(--badbg);color:var(--bad)}.hi{background:var(--warnbg);color:var(--warn)}.lo{background:var(--infobg);color:var(--info)}.new{background:var(--infobg);color:var(--info)}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.quote{border-left:3px solid var(--accent);padding:10px 14px;background:var(--surface);border-radius:0 8px 8px 0}
+.note{border-left:3px solid var(--warn);padding:10px 14px;background:var(--surface);border-radius:0 8px 8px 0;color:var(--muted);font-size:14px}
+code{font-family:var(--font-mono);font-size:12.5px}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:680px){.grid{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="draft">Draft · not posted to Plane</div>
+  <h1>NDC-2787 update: what will be added</h1>
+  <p>NDC-2787 is "NDC Zoho Desk usage — features TAVI Desk is missing". This draft adds the gaps found when we rebuilt NDC's setup on TAVI on 3 Nov. Nothing that is already on the ticket is removed.</p>
+  <div class="fields">
+    <div><span>Ticket</span><b>NDC-2787</b></div>
+    <div><span>State · Priority</span><b>Backlog · High (unchanged)</b></div>
+    <div><span>Module · Cycle</span><b>Desk · Sprint 14 (unchanged)</b></div>
+    <div><span>Assignees</span><b>unchanged</b></div>
+    <div><span>Related</span><b>NDC-2791 (already linked)</b></div>
+  </div>
+</header>
+
+<section>
+  <h2>What changes on the ticket</h2>
+  <div class="changes">
+    <div><b>Description</b>A new section is added at the end: "Rebuild of NDC's setup on TAVI (3 Nov 2026)", with 8 missing items in 3 groups.</div>
+    <div><b>Comment</b>One short comment summarising what was added (text at the bottom of this page).</div>
+    <div><b>Not changed</b>Fields, assignees, attachments and the existing description text.</div>
+  </div>
+  <div class="note">Left out on purpose: assignment-rule items (direct and round robin will be rebuilt), the blueprint start-state note, and the workflow status skipped inside a blueprint (already NDC-2764). Per-layout mandatory fields are their own bug, NDC-2791.</div>
+</section>
+
+<section>
+  <h2>Rebuild of NDC's setup on TAVI (3 Nov 2026)</h2>
+  <div class="box">
+    <p>We rebuilt NDC's core Zoho Desk setup on NDC-Staging. Every object starts with "QA NDC" and is kept as the NDC reference setup:</p>
+    <ul>
+      <li>8 core departments: Manual Invoice, NDC Finance, Financial approval, Accounting, Quality Assurance, Client Complaints, Clients' Financial Investigations, FLY-WT Refund.</li>
+      <li>Plus the 23 branch departments their workflows share tickets into.</li>
+      <li>32 teams, 41 statuses, 94 custom fields, 10 layouts, 7 layout rules, 1 validation rule, 6 blueprints (81 transitions), 42 of 80 workflows, 9 SLA policies, 240 notification settings.</li>
+      <li>Then smoke-tested with tickets.</li>
+    </ul>
+    <p><b>Works like NDC:</b> custom statuses with types; large pick lists (up to 188 values); decimal, currency and date fields; a layout assigned to a department; layout rules (show fields or sections, require fields, checked on save); the "Reject needs a reason" validation rule; blueprints with team and ticket-owner transitions, required fields and after-actions; the share-ticket workflow (a QA ticket shared to its branch); SLA policies with NDC's targets and escalations; per-department notification rules.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Missing: Workflow rules</h2>
+
+  <div class="item">
+    <div class="hd"><span class="id">M-18</span><h3>Workflow rule limit</h3><span class="pill p0">P0</span></div>
+    <div class="grid">
+      <div><span class="lbl">NDC's Zoho</span>92 workflow rules, 90 active; all but 2 were changed in 2024–2026. 80 active rules are in the 8 core departments alone.</div>
+      <div><span class="lbl">TAVI now</span>Stops at 50 rules per module for the whole tenant. The 51st is refused ("Module has reached the limit of 50 rules"), and the Workflow Rules page doesn't show the limit or how many are used. 38 of NDC's core rules could not be created.</div>
+    </div>
+    <div class="exp"><b>Expected:</b> the Workflow Rules page shows the limit and how many rules are used, and the limit can be set per tenant (at least NDC's 92).</div>
+  </div>
+
+  <div class="item">
+    <div class="hd"><span class="id">M-20</span><h3>Clear the ticket owner from a workflow</h3><span class="pill hi">High</span></div>
+    <div class="grid">
+      <div><span class="lbl">NDC's Zoho</span>NDC Finance's rules "Ticket owner -1", "Ticket owner -2", "R1" and "R2" use a Field Update that sets Team = a team (e.g. Top-up Managers) and Ticket Owner = Unassigned. The ticket goes back to the team queue for any member to pick up.</div>
+      <div><span class="lbl">TAVI now</span>The workflow Field Update refuses the owner field, and no other action clears it. The ticket stays with the previous agent.</div>
+    </div>
+    <div class="exp"><b>Expected:</b> a workflow can set Ticket Owner to Unassigned, alone or together with a team.</div>
+  </div>
+
+  <div class="item">
+    <div class="hd"><span class="id">A-3</span><h3>Trigger "on create, or when these fields change"</h3><span class="pill hi">High</span></div>
+    <div class="grid">
+      <div><span class="lbl">NDC's Zoho</span>A rule can run when the ticket is created, and later only when chosen fields change. For example, QA "GDS B2B" runs on create and when Related Branch or Status changes. 38 of NDC's core rules use this.</div>
+      <div><span class="lbl">TAVI now</span>The triggers are on create, on any edit, on create or any edit, and when fields change (edits only). "When fields change" misses the creation (Manual Invoice "Close Ticket" didn't fire on a new ticket), and "create or any edit" fires on every edit.</div>
+    </div>
+    <div class="exp"><b>Expected:</b> an "also run on create" option on the field-change trigger.</div>
+  </div>
+
+  <div class="item">
+    <div class="hd"><span class="id">A-2</span><h3>Assign to a team and an agent in one rule</h3><span class="pill hi">High</span></div>
+    <div class="grid">
+      <div><span class="lbl">NDC's Zoho</span>The action "Assign Ticket → Team with Agent" puts the ticket in a team and gives it to an agent of that team in one step. 19 NDC rules use it, e.g. Accounting "ADM Assignment Airline Ops".</div>
+      <div><span class="lbl">TAVI now</span>Only one assignment action per rule ("A rule can have only one OwnerAssignment action"), so a rule sets the team or the agent, not both.</div>
+    </div>
+    <div class="exp"><b>Expected:</b> one rule can set both the team and the agent.</div>
+  </div>
+
+  <div class="item">
+    <div class="hd"><span class="id">A-1</span><h3>Same rule name in different departments</h3><span class="pill lo">Low</span></div>
+    <div class="grid">
+      <div><span class="lbl">NDC's Zoho</span>Rule names such as "GDS B2B", "GDS B2C", "Airline Ops", "LCC" and "KSA" are reused in up to 4 departments. Names only need to be unique within a department.</div>
+      <div><span class="lbl">TAVI now</span>Names must be unique per module ("A rule named … already exists"). Renaming works around it.</div>
+    </div>
+    <div class="exp"><b>Expected:</b> rule names only need to be unique within a department.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Missing: Layouts and statuses</h2>
+
+  <div class="item">
+    <div class="hd"><span class="id">M-17</span><h3>More than one layout per department</h3><span class="pill hi">High</span></div>
+    <div class="grid">
+      <div><span class="lbl">NDC's Zoho</span>A department can have several ticket forms, and the agent picks one when creating a ticket. Accounting has "Accounting" (18 fields, normal requests) and "ADM" (42 fields, ADM disputes). NDC Finance has "NDC Finance" (17 fields) and "NDC Finance TKT" (31 fields, top-up requests).</div>
+      <div><span class="lbl">TAVI now</span>One layout per department. A second one is refused ("A department can use only one layout of a module"), so the ADM and top-up forms can't be used by their departments.</div>
+    </div>
+    <div class="exp"><b>Expected (as in NDC's Zoho):</b> a department can have several layouts. When creating a ticket in that department, the agent picks the layout, with the department's default already selected. The ticket keeps the chosen layout with its fields, mandatory fields and layout rules, and the layout can be changed on the ticket later.</div>
+  </div>
+
+  <div class="item">
+    <div class="hd"><span class="id">A-9</span><h3>Ticket statuses per department</h3><span class="pill hi">High</span><span class="pill new">Reworded 3 Nov</span></div>
+    <div class="grid">
+      <div><span class="lbl">NDC's Zoho</span>Setup → Ticket Status is chosen by department first, then by that department's layout (e.g. Accounting → Accounting / ADM). Each department, and each of its forms, has its own list:
+        <ul>
+          <li>Manual Invoice 8; FLY-WT Refund 8</li>
+          <li>Accounting → ADM 10: Open, On Hold, Escalated, Closed, System Admin, Dep Manager, Finance team after Validation, Distributor, Governance, HR Escalation</li>
+          <li>NDC Finance → NDC Finance TKT 6</li>
+          <li>Financial approval 13; Clients' Financial Investigations 13</li>
+          <li>Client Complaints, Accounting (Accounting form) and NDC Finance: only Open / On Hold / Escalated / Closed</li>
+        </ul>
+        Each status also has a fall-back-to-default setting.</div>
+      <div><span class="lbl">TAVI now</span>One tenant-wide list of 41 statuses for every department. Setup has no department or layout picker for statuses. A per-layout list can be saved on the layout through the API, but a ticket with a status outside it is still accepted.</div>
+    </div>
+    <div class="exp"><b>Expected (as in NDC's Zoho):</b> statuses are set per department, and per layout within it. A ticket is only offered, and only accepts, its department's or layout's statuses.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Missing: Notifications</h2>
+  <div class="item">
+    <div class="hd"><span class="id">M-21</span><h3>Team notification when a comment is edited</h3><span class="pill lo">Low</span></div>
+    <div class="grid">
+      <div><span class="lbl">NDC's Zoho</span>The Quality Assurance department has "Team Notification → Editing a comment" switched on.</div>
+      <div><span class="lbl">TAVI now</span>Team notifications exist for assigning, replies, adding a comment and mentions, but not for an edited comment.</div>
+    </div>
+    <div class="exp"><b>Expected:</b> a team notification rule for an edited comment.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Closing lines of the section</h2>
+  <div class="box">
+    <p><b>Not tested yet:</b> email delivery, SLA escalation timing and notification delivery. Layouts were also checked on screen on 3 Nov, which found NDC-2791.</p>
+    <p>Full report: <code>docs/ndc-zoho-desk-gap/ndc-on-tavi-mimic-report.md</code> (QA repo).</p>
+  </div>
+</section>
+
+<section>
+  <h2>Comment to post</h2>
+  <div class="quote">Rebuilt NDC's core Zoho Desk setup on NDC-Staging ("QA NDC" prefix, kept as the reference setup) and smoke-tested it. Added the missing items found: workflow rules (50-rule limit — P0, clearing the owner, "on create or field change" trigger, team + agent assignment, rule names per department), more than one layout per department, per-department ticket statuses, and the team notification for edited comments. Per-layout mandatory fields: filed separately as bug NDC-2791.</div>
+</section>
+
+<footer>Draft prepared 3 Nov 2026 · source: docs/ndc-zoho-desk-gap/plane-2787-update-draft.md · posted only after your OK</footer>
+</div>

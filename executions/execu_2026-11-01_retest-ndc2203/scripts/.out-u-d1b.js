@@ -1,0 +1,30 @@
+{
+ "inputs": [],
+ "labels": [
+  "Skip to content",
+  "Tickets",
+  "Tickets",
+  "Knowledge Base",
+  "EN",
+  "Search or jump to…",
+  "Ctrl K",
+  "27",
+  "MA",
+  "Desk",
+  "Headquarters",
+  "Team Feeds",
+  "Views",
+  "Agent Queue",
+  "Team Queue",
+  "Tags",
+  "Scheduled Replies",
+  "Tickets",
+  "Create Ticket",
+  "QA WF Layout",
+  "Standard",
+  "Edit Page Layout",
+  "Cancel",
+  "Save and New",
+  "Save"
+ ]
+}

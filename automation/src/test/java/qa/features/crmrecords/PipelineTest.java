@@ -105,7 +105,8 @@ public class PipelineTest {
         Map<String, Object> pf = fields.stream().filter(f -> "pipeline".equals(f.get("apiName"))).findFirst().orElseThrow();
         String opts = String.valueOf(pf.get("datatypeOptions"));
         fact("PL-07", "pipeline field options: " + (opts.length() > 300 ? opts.substring(0, 300) : opts));
-        Assert.assertTrue(opts.contains(PIPELINE_ONE) || opts.matches("(?s).*[\\[,]\\s*\"?1( \\(Standard\\))?\"?\\s*[\\],].*"),
+        // 27 Oct build: the field has no allowed_values list any more (no restriction) — that also passes
+        Assert.assertTrue(!opts.contains("allowed_values") || opts.contains(PIPELINE_ONE) || opts.matches("(?s).*[\\[,]\\s*\"?1( \\(Standard\\))?\"?\\s*[\\],].*"),
                 "the Pipeline field does not offer pipeline '1': " + opts);
     }
 }

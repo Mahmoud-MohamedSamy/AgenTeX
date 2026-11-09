@@ -1,0 +1,88 @@
+{
+ "out": "NDC-2621-vs-zoho.png",
+ "ticket": "NDC-2621",
+ "env": "staging-crm.taviportal.com vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "title": "Pipelines | A deal can’t be moved to another pipeline (record page, Mass Update, API)",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "panels": [
+  {
+   "img": "pl06-change-pipeline-fails-silently.png",
+   "caption": "TAVI — deal \"QA W2 PL Standard\": \"Change pipeline\" to pipeline \"1\" confirmed; the PATCH answered 422 and the dialog stays open with no message. The deal is still in \"Standard (Default)\".",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      544,
+      293,
+      1056,
+      607
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      372,
+      272,
+      596,
+      304
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-pipelines.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "Zoho — Setup › Customization › Pipelines. This org has only the default sales process, so moving a deal between pipelines could not be shown here.",
+   "crop": [
+    0,
+    0,
+    1600,
+    950
+   ],
+   "boxes": [
+    {
+     "b": [
+      258,
+      170,
+      1584,
+      640
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Move a deal to another pipeline from the record page",
+   "Not checked live: this Zoho org has no second pipeline (the Pipelines page offers \"Create New Pipeline\")",
+   "Confirm sends PATCH → 422 \"Invalid value for: Pipeline\"; the dialog stays open and shows no message",
+   "FAIL"
+  ],
+  [
+   "2",
+   "The deal after the attempt",
+   "Not checked live",
+   "Still in pipeline \"Standard (Default)\"; nothing moved",
+   "FAIL"
+  ],
+  [
+   "3",
+   "Move by Mass Update or the API",
+   "Not checked live",
+   "Mass Update → 422 \"‘640e03a4…’ is not one of the allowed values (Standard (Standard))\"; API PATCH, and even create with the layout’s own pipeline id → 422. Only the text \"Standard (Standard)\" is accepted",
+   "FAIL"
+  ]
+ ]
+}

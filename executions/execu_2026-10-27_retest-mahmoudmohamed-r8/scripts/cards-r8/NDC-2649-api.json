@@ -1,0 +1,33 @@
+{
+ "out": "NDC-2649-api.png",
+ "date": "27 Oct 2026",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "title": "NDC-2649 · Dependency maps on the QA module",
+ "rows": [
+  [
+   "empty map",
+   "POST /dependency-maps {}",
+   "422 DEPENDENCY_MAP_INVALID \"The parent (controlling) field is required.\"",
+   "ok"
+  ],
+  [
+   "real map",
+   "Colour → Child: Red → A, B; Green → C",
+   "201",
+   "info"
+  ],
+  [
+   "Red + C",
+   "POST /api/v1/modules/{QA RT r8}/records",
+   "422 DEPENDENCY_VALUE_NOT_ALLOWED \"'C' is not allowed in 'QA Child' when 'QA Colour' is 'Red'\"",
+   "ok"
+  ],
+  [
+   "controls",
+   "Red + A · Green + C",
+   "201 · 201",
+   "ok"
+  ]
+ ]
+}

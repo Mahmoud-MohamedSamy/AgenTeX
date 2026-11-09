@@ -1,0 +1,10 @@
+const M = 'b4848bdf-9f59-45a9-8336-9f4f2a4fc36b', B = '750470cc-f60a-4129-a5fa-d02aeda70a2c', PU = '11111111-1111-1111-1111-111111111103', PADM = '11111111-1111-1111-1111-111111111105';
+const res = {};
+const g0 = (await call('GET', `/modules/${M}/layouts/${B}`)).j.data;
+res.before = g0.accessMode + ' ' + JSON.stringify(g0.assignedProfiles);
+const p = await call('PUT', `/modules/${M}/layouts/${B}`, { accessMode: 'selected', assignedProfiles: [PU, PADM] }); res.put = p.s + ' ' + p.t.slice(0, 200);
+const g1 = (await call('GET', `/modules/${M}/layouts/${B}`)).j.data; res.after = g1.accessMode + ' ' + JSON.stringify(g1.assignedProfiles);
+const am = await call('PATCH', `/modules/${M}/layouts/${B}/access-mode`, { access_mode: 'all_users' }); res.patchAccessMode = am.s + ' ' + am.t.slice(0, 150);
+const g2 = (await call('GET', `/modules/${M}/layouts/${B}`)).j.data; res.after2 = g2.accessMode;
+const ga = await call('GET', `/modules/${M}/layouts/assignments`); res.assignGet = ga.s + ' ' + ga.t.slice(0, 300);
+return res;

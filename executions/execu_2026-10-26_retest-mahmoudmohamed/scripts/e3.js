@@ -1,0 +1,11 @@
+const A3 = '1a696e04-600e-4ca9-9cdf-22cd8aa78257', DL = '924f2fa3-5d1c-44ec-86cd-9082a7544789';
+const s = r => r.s + (r.s >= 300 ? ' ' + (r.j?.error?.message || r.t).slice(0, 200) : '');
+const f = arr((await api('GET', `/modules/${T}/fields`)).j?.data).find(x => x.apiName === 'language');
+const langOpts = JSON.stringify(f?.datatypeOptions || f?.config || '').slice(0, 300);
+const steps = {};
+steps.a3private = s(await api('POST', `/desk/tickets/${A3}/comments`, { body_html: '<p>QA WF A3 private comment (must not fire)</p>', is_public: false }));
+await sleep(10000); const a3after1 = arr((await api('GET', `/desk/tickets/${A3}/comments`)).j?.data).filter(c => /A3 fired/.test(c.body_html)).length;
+steps.a3public = s(await api('POST', `/desk/tickets/${A3}/comments`, { body_html: '<p>QA WF A3 public comment (must fire)</p>', is_public: true }));
+const r = await api('PATCH', `/modules/${T}/records/${DL}`, { data: [{ field: 'description', value: { kind: 'string', value: 'QA WF D3all changed all' } }, { field: 'resolution', value: { kind: 'string', value: 'QA WF resolution' } }, { field: 'language', value: { kind: 'string', value: 'ar' } }] });
+steps.dlAllErr = s(r);
+return fin({ langOpts, steps, a3after1 });

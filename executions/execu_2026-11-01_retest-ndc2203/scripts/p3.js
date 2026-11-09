@@ -1,0 +1,21 @@
+// Validate action configs: inactive guarded QA rules, deleted right away.
+const T = '88e8ea44-1658-4df3-9930-d0902b91073d'; const out = [];
+const me = (await api('GET', '/iam/me')).j?.data; const uid = me?.id || me?.user?.id || me?.user_id || me?.userId; const meKeys = Object.keys(me || {});
+const deps = arr((await api('GET', '/desk/departments')).j?.data); const HR = deps.find(d => d.name === 'HR')?.id;
+const guard = p => ({ kind: 'StringMatch', field: 'subject', operator: 'StartsWith', stringValue: p, caseInsensitive: false });
+const tryA = async (label, a, trig) => { const r = await api('POST', '/workflow/rules', { moduleId: T, name: 'QA WF probe ' + label, isActive: false, mode: 'Recurring', trigger: trig || { kind: 'RecordCreated' }, criteria: guard('QA WF probe '), actions: [{ order: 0, ...a }] });
+  const id = r.j?.data?.id; if (id) await api('DELETE', `/workflow/rules/${id}`); out.push(label + ' ' + r.s + (r.s >= 300 ? ' ' + (r.j?.error?.message || r.t).slice(0, 200) : '')); };
+await tryA('comment', { type: 'AddTicketComment', commentBody: 'QA WF', commentPublic: false });
+await tryA('reply', { type: 'SendTicketReply', replyIncludeContact: true, replySubject: 'QA WF', replyBody: '<p>QA WF</p>' });
+await tryA('followers', { type: 'AddTicketFollowers', followerUserIds: [uid] });
+await tryA('spam', { type: 'MarkTicketSpam', spamContact: false });
+await tryA('share', { type: 'ShareTicket', shareDepartmentId: HR, shareAccess: 'read' });
+await tryA('skills', { type: 'AddTicketSkills', skillKeys: ['tier_1_support'] });
+await tryA('rmskills', { type: 'RemoveTicketSkills', skillKeys: ['tier_1_support'] });
+await tryA('recalc', { type: 'RecalculateTicketSkills' });
+await tryA('reassign', { type: 'ReassignTicketBySkills' });
+await tryA('layout', { type: 'ChangeTicketLayout', ticketLayoutId: '1b55c25d-eb27-4046-afd1-b292398b435b' });
+await tryA('related', { type: 'UpdateRelatedRecord', relatedLookupField: 'contact', fieldUpdates: { description: { kind: 'string', stringValue: 'QA WF' } } });
+await tryA('event', { type: 'AddTicketComment', commentBody: 'x', commentPublic: false }, { kind: 'TicketEvent', ticketEvents: { events: ['comment'], comments: 'public' } });
+await tryA('fc3', { type: 'AddTicketComment', commentBody: 'x', commentPublic: false }, { kind: 'SpecificFieldChanged', fieldNames: ['subject', 'description', 'priority'], fieldMatch: 'all' });
+return done({ uid, meKeys, HR, out });

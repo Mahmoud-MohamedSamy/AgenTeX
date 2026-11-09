@@ -1,0 +1,1 @@
+import{Cg as e,Eg as t,qb as n}from"./index-D1B-80q7.js";var r=[`assignment-rules`],i={all:r,list:e=>[...r,`list`,e],detail:e=>[...r,`detail`,e]},a=e=>t(e);function o(t={},r={}){return n({queryKey:i.list(t),queryFn:()=>e.listRules(t),select:a,enabled:r.enabled??!0})}export{o as t};

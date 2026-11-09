@@ -1,0 +1,12 @@
+const panel = page.locator('text=Profile Visibility').locator('xpath=ancestor::*[.//table or .//*[@role="table"]][1]');
+const row = page.getByText('QA W1 FP02 80068', { exact: true }).locator('xpath=ancestor::*[.//input[@type="checkbox"] or .//*[@role="checkbox"]][1]'); await row.scrollIntoViewIfNeeded(); await page.waitForTimeout(500);
+const boxes = row.locator('input[type=checkbox], [role=checkbox]'); const n = await boxes.count();
+const before = []; for (let i = 0; i < n; i++) before.push(await boxes.nth(i).isChecked().catch(() => null));
+if (n >= 2) await boxes.nth(1).click();
+await page.waitForTimeout(500); const after = []; for (let i = 0; i < n; i++) after.push(await boxes.nth(i).isChecked().catch(() => null));
+await row.screenshot({ path: 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_crm-golive-waves3-5/serial/evidence/raw/t-fp02-row.png' }).catch(() => {});
+await page.waitForTimeout(3000);
+await page.screenshot({ path: 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-10-26_crm-golive-waves3-5/serial/evidence/raw/t-fp02-after-apply.png' });
+const pid = '33279398-919f-43d9-9968-ddf89c75787d';
+const fp = (await call('GET', `/modules/${MODS.leads}/field-permissions`)).j.data.filter(x => x.profileId === pid);
+return { checkboxes: n, before, after, storedForQaProfile: fp.map(x => x.fieldName + '=' + x.permission), toast: (await page.innerText('body')).match(/(saved|applied|updated)[^.]{0,60}/i)?.[0] || null };

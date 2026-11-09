@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2761-api.png",
+ "date": "3 Nov 2026",
+ "host": "staging-desk.taviportal.com (tenant NDC-Staging)",
+ "who": "ndc-staging-owner (Owner)",
+ "title": "NDC-2761 · POST /modules/{Tickets}/blueprints, state Open",
+ "rows": [
+  [
+   "60 / 120",
+   "slaMinutes 60, slaPreExpiryMinutes 120",
+   "422 \"State 'Open': the warning must come before the time limit.\"",
+   "ok"
+  ],
+  [
+   "120 / 120",
+   "equal",
+   "422 same message",
+   "ok"
+  ],
+  [
+   "warning only",
+   "slaPreExpiryMinutes 60, no limit",
+   "422 same message",
+   "ok"
+  ],
+  [
+   "negative",
+   "warning −5",
+   "422 same message",
+   "ok"
+  ],
+  [
+   "control live",
+   "60 / 10, active, ticket",
+   "entered 13:39:41, warning 14:29:41, due 14:39:41 (not provisional)",
+   "ok"
+  ]
+ ]
+}

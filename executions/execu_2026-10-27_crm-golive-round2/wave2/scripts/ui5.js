@@ -1,0 +1,11 @@
+const wait = ms => page.waitForTimeout(ms);
+await page.getByLabel('Ahmed Hegazy NDC').check().catch(async () => { await page.getByText('Ahmed Hegazy NDC', { exact: true }).click(); });
+await page.getByText('Mahmoud TAVIPortal', { exact: true }).click().catch(() => {});
+await page.getByRole('button', { name: 'Done', exact: true }).click(); await wait(1000);
+const dlg = page.locator('[role=dialog]').last();
+for (const f of ['Full Name', 'Phone', 'Lead Owner']) await dlg.getByText(f, { exact: true }).first().click().catch(() => {});
+await wait(500); await page.screenshot({ path: RAW + 'split-dialog-filled.png' });
+await page.getByRole('button', { name: 'Save', exact: true }).last().click(); await wait(8000);
+out.dialogOpen = await page.locator('[role=dialog]').count();
+out.splitResult = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 700);
+await page.screenshot({ path: RAW + 'split-view-result.png' });

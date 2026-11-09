@@ -1,0 +1,104 @@
+{
+ "out": "annotated/ev-D-access-users-vs-zoho.png",
+ "id": "NDC-2392 items 6, 13, 16, 17",
+ "title": "Default access, Light Agents, Leads, CRM Contact Type",
+ "verdict": "Gap",
+ "sub": "TAVI Desk + CRM (tenant NDC-Staging) vs Zoho Desk + Zoho CRM (Oct 2026 captures/docs)",
+ "date": "TAVI 9 Nov 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Setup → CRM ⇄ Desk Integration → Permissions (as found)",
+   "img": "../shots/d-tab-Permissions.png",
+   "boxes": [
+    {
+     "n": 4,
+     "x": 383,
+     "y": 248,
+     "w": 1102,
+     "h": 366
+    },
+    {
+     "n": 4,
+     "x": 383,
+     "y": 618,
+     "w": 740,
+     "h": 22
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Desk → Setup → Zoho CRM → Permissions (defaults right after integrating)",
+   "img": "../../../../docs/crm-desk-integration/evidence/originals/zoho/07-desk-permissions.png",
+   "boxes": [
+    {
+     "n": 4,
+     "x": 296,
+     "y": 478,
+     "w": 1240,
+     "h": 330
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "Live checks 9 Nov (API, owner)",
+   "flag": "LIVE API CHECK — tenant NDC-Staging",
+   "text": [
+    "Item 6: CRM Lead \"QA RT 2392 Lead\" (email E) created, then a Desk contact with the same email E. After 45 s the sync created a NEW CRM contact (faa1c662) and linked it (status synced). All three records were deleted and purged afterwards.",
+    "Item 13: the Desk profile \"Desk Light Agent\" exists, but none of the 11 CRM users holds it; 5 CRM users have no Desk profile at all.",
+    "Item 16: no CRM Contact Type field in the SLA / assignment criteria code; the classification is used only by Handshake Mode."
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho behaviour (docs)",
+   "text": [
+    "Leads: a Desk contact is not created as a CRM contact if the person exists as a CRM Lead (community answer).",
+    "CRM users are auto-added to Desk as Light Agents; CRM-only users can comment.",
+    "\"CRM Contact Type\" (Customer, Potential, Contact, Lead) is a criteria field for SLA, Direct Assignment and Round Robin rules."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/community/topic/simple-way-to-add-support-contact-to-crm-leads-contacts-on-new-ticket",
+    "https://help.zoho.com/portal/en/kb/desk/integrations-and-marketplace/sales-and-marketing/articles/integrating-zoho-desk-with-zoho-crm",
+    "https://desk.zoho.com/DeskAPIDocument (criteriaFields)"
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "—",
+   "b": "Leads considered (item 6)",
+   "zoho": "No new CRM contact when a Lead has the email",
+   "tavi": "New CRM contact created and linked",
+   "match": "Gap"
+  },
+  {
+   "n": "—",
+   "b": "CRM users as Light Agents (item 13)",
+   "zoho": "Auto-added; CRM-only users can comment",
+   "tavi": "Not added; 5 CRM users without any Desk profile",
+   "match": "Gap"
+  },
+  {
+   "n": "—",
+   "b": "CRM Contact Type criteria (item 16)",
+   "zoho": "In SLA and assignment rules",
+   "tavi": "Not available",
+   "match": "Gap"
+  },
+  {
+   "n": "4",
+   "b": "Default access + level name (item 17)",
+   "zoho": "Only Administrator after connecting; \"Restricted Access\"",
+   "tavi": "All 5 profiles Full Access; \"Every profile has full access until you change one\"; middle level \"Custom Access\"",
+   "match": "Gap"
+  }
+ ],
+ "notes": [
+  "Throwaway records for item 6 are in ledger.md (created, deleted by id, recycle bin purged by id)."
+ ],
+ "zohoCol": "Zoho",
+ "taviCol": "TAVI"
+}

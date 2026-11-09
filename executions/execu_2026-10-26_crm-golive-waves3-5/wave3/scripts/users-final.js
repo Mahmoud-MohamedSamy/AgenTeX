@@ -1,0 +1,1 @@
+const r=await call('GET','/iam/users?app_key=crm&limit=200');return ((r.j&&r.j.data)||[]).filter(u=>/valafo4080|nameb56175|mmohamedsamy|mahamed1515|mmohamed@/.test(u.email)).map(u=>u.email+' '+u.status+' '+u.profileNames+' mgr='+u.reportingManagerId);

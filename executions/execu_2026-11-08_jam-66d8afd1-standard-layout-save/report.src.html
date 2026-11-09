@@ -1,0 +1,229 @@
+<title>Standard Layout Save Failure</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; evidence tables and screenshots break slightly wider. Summary first, then proof, then extras. */
+:root {
+  --bg: #f6f7f9; --surface: #ffffff; --fg: #1b2230; --muted: #5a6476; --line: #dde2ea;
+  --accent: #1f5f8b; --accent-soft: #e6f0f7;
+  --bad: #b3261e; --bad-soft: #fbeaea; --ok: #1e7a46; --ok-soft: #e7f4ec; --warn: #8a5a00; --warn-soft: #fbf1dc;
+  --code-bg: #eef1f5;
+  --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12161d; --surface: #1a2029; --fg: #e3e8ef; --muted: #9aa5b5; --line: #2c3440;
+  --accent: #7fb6dc; --accent-soft: #1c2d3b;
+  --bad: #f2a29c; --bad-soft: #3a1f1e; --ok: #8fd3aa; --ok-soft: #17301f; --warn: #e9c46a; --warn-soft: #332a14;
+  --code-bg: #232a35; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e3e8ef; --muted: #9aa5b5; --line: #2c3440;
+  --accent: #7fb6dc; --accent-soft: #1c2d3b;
+  --bad: #f2a29c; --bad-soft: #3a1f1e; --ok: #8fd3aa; --ok-soft: #17301f; --warn: #e9c46a; --warn-soft: #332a14;
+  --code-bg: #232a35; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15.5px; line-height: 1.6; }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 40px; }
+.prose { max-width: 70ch; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.25; margin: 0; }
+h1 { font-size: 1.95rem; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.3rem; font-weight: 600; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; }
+section { display: grid; gap: 14px; min-width: 0; }
+.eyebrow { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+code, .mono { font-family: var(--mono); font-size: 0.86em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+a { color: var(--accent); }
+header { display: grid; gap: 12px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--muted); font-size: 0.9rem; }
+.meta b { color: var(--fg); font-weight: 500; }
+.verdict { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--bad); border-radius: 6px; padding: 18px 20px; display: grid; gap: 8px; }
+.verdict p.big { font-size: 1.12rem; font-weight: 500; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; vertical-align: 2px; }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.info { background: var(--accent-soft); color: var(--accent); }
+.scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+td.t { font-family: var(--mono); font-size: 0.84rem; white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cmp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.col { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.col h3 { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.sec { display: grid; gap: 4px; }
+.sec .name { font-size: 0.8rem; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { font-family: var(--mono); font-size: 0.78rem; padding: 1px 7px; border-radius: 4px; background: var(--code-bg); }
+.chip.gone { background: var(--bad-soft); color: var(--bad); text-decoration: line-through; }
+.chip.key { background: var(--ok-soft); color: var(--ok); font-weight: 500; }
+.secgone { font-size: 0.82rem; color: var(--bad); }
+.findings { display: grid; gap: 14px; }
+.finding { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px; display: grid; gap: 8px; min-width: 0; }
+.finding h3 { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.finding .id { font-family: var(--mono); color: var(--muted); font-size: 0.85rem; }
+.finding p, .finding ul { max-width: 75ch; }
+ul, ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+figure img { border: 1px solid var(--line); border-radius: 6px; display: block; width: 100%; height: auto; }
+figcaption { font-size: 0.88rem; color: var(--muted); max-width: 75ch; }
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+pre { margin: 0; font-family: var(--mono); font-size: 0.82rem; background: var(--code-bg); padding: 12px 14px; border-radius: 6px; overflow-x: auto; line-height: 1.5; }
+.note { font-size: 0.9rem; color: var(--muted); }
+footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
+@media (max-width: 720px) { .cmp, .shots { grid-template-columns: minmax(0, 1fr); } h1 { font-size: 1.6rem; } }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">TAVI Desk · Settings › Modules &amp; Fields › Tickets · Bug investigation</span>
+  <h1>The Standard ticket layout cannot be saved</h1>
+  <div class="meta">
+    <span>Jam <a href="https://jam.dev/c/66d8afd1-07f6-4798-be51-141d09767226">66d8afd1</a> · <b>8 Nov 2026, 08:50 UTC</b></span>
+    <span>Environment <b>staging-desk.taviportal.com (NDC-Staging)</b></span>
+    <span>Recorded on <b>Edge 156, Windows 10</b>, as <b>ndc-staging-owner</b></span>
+    <span>Investigated <b>8 Nov 2026</b></span>
+  </div>
+</header>
+
+<section>
+  <div class="verdict">
+    <span class="eyebrow">Root cause · confirmed</span>
+    <p class="big">When you click Save, the layout editor sends a copy of the <b>Create</b> view as the <b>Detail</b> view. On the Standard layout, the Detail view holds fields that are not on Create, including the required <code>resolution</code> field, so they are left out of the request and the server rejects it with a 422.</p>
+    <p class="note">The stored layout is correct, so this is not a data problem. I captured the full save request in a live repeat of the steps, with every write to the server blocked so nothing was changed.</p>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>What the reporter did</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Time</th><th>Step</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td class="t">0:01</td><td>Opened the <b>Standard</b> (default) ticket layout. The editor opens on the Create tab.</td><td></td></tr>
+        <tr><td class="t">0:03–0:05</td><td>Renamed the label of the <code>email</code> field from “test” to “Email” on the canvas and pressed Enter.</td><td></td></tr>
+        <tr><td class="t">0:07</td><td>Clicked <b>Save</b>. Never opened Quick Create or Detail View.</td><td></td></tr>
+        <tr><td class="t">0:07</td><td><code>PATCH …/fields/2eb122dd…/labels</code></td><td><span class="pill ok">200</span> label saved</td></tr>
+        <tr><td class="t">0:07</td><td><code>PUT …/layouts/1b55c25d…</code></td><td><span class="pill bad">422</span> non_removable</td></tr>
+        <tr><td class="t">0:08–0:11</td><td>Toast: <i>Layout not saved: "resolution" cannot be removed from the layout: non-removable standard fields stay on it. Move them instead.</i> Clicked it four times.</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">The server's error detail is <code>{"path":"views.detail","type":"non_removable","message":"\"resolution\" is a non-removable standard field and must stay on the DETAIL view."}</code>. No console errors were logged.</p>
+</section>
+
+<section>
+  <h2>Proof: stored Detail view vs. the Detail view the editor sends</h2>
+  <p class="prose">Left: the Standard layout as stored on the server (<code>GET …/layouts/1b55c25d…</code>, rowVersion 1). Right: the <code>views.DETAIL</code> part of the save request, captured from the editor after a one-label change on the Create tab. The Detail view sent matches the Create view exactly, section for section and field for field.</p>
+  <div class="cmp">
+    <div class="col">
+      <h3>Stored Detail view <span class="pill ok">21 fields · 3 sections</span></h3>
+      <div class="sec"><span class="name">Ticket Information</span><div class="chips">
+        <span class="chip">contact_id</span><span class="chip">account_id</span><span class="chip">phone</span><span class="chip">description</span><span class="chip">owner</span><span class="chip key">resolution</span><span class="chip">department</span><span class="chip">email</span><span class="chip">subject</span><span class="chip">status</span><span class="chip">product_id</span><span class="chip">skills</span></div></div>
+      <div class="sec"><span class="name">Additional Information</span><div class="chips">
+        <span class="chip">due_date</span><span class="chip">channel</span><span class="chip">classification</span><span class="chip">sub_category</span><span class="chip">priority</span><span class="chip">language</span><span class="chip">category</span></div></div>
+      <div class="sec"><span class="name">Integration</span><div class="chips">
+        <span class="chip key">crm_deal_id</span><span class="chip key">contract_id</span></div></div>
+    </div>
+    <div class="col">
+      <h3>Detail view in the save request <span class="pill bad">18 fields · 2 sections</span></h3>
+      <div class="sec"><span class="name">Ticket Information</span><div class="chips">
+        <span class="chip">contact_id</span><span class="chip">account_id</span><span class="chip">phone</span><span class="chip">description</span><span class="chip">owner</span><span class="chip gone">resolution</span><span class="chip">department</span><span class="chip">email</span><span class="chip">subject</span><span class="chip">status</span><span class="chip">product_id</span><span class="chip">skills</span></div></div>
+      <div class="sec"><span class="name">Additional Information</span><div class="chips">
+        <span class="chip">due_date</span><span class="chip">channel</span><span class="chip">classification</span><span class="chip">sub_category</span><span class="chip">priority</span><span class="chip">language</span><span class="chip">category</span></div></div>
+      <div class="sec"><span class="name">Integration</span><span class="secgone">Section missing from the request (crm_deal_id, contract_id)</span></div>
+    </div>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Check</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Stored Detail view contains <code>resolution</code></td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Stored Detail view is the same as stored Create view</td><td><span class="pill info">no</span> Detail has 3 extra fields and a 3rd section</td></tr>
+        <tr><td>Detail view in the request is the same as Create view in the request</td><td><span class="pill bad">yes</span> identical sections and fields</td></tr>
+        <tr><td>Same result when the Detail View tab is opened first, then Save</td><td><span class="pill bad">yes</span> still 18 fields, no <code>resolution</code></td></tr>
+        <tr><td><code>resolution</code> field flags</td><td><code>isNonRemovable: true</code>, <code>canRemoveFromLayout: false</code>; on Standard it is placed on <b>DETAIL only</b></td></tr>
+        <tr><td>Standard layout ever saved since it was created</td><td><span class="pill warn">no</span> rowVersion 1, lastModifiedAt 6 Sep 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Screens</h2>
+  <div class="shots">
+    <figure><img src="{{IMG_01}}" alt="Standard layout editor on the Create tab, Ticket Information section without a Resolution field"><figcaption>Create tab of the Standard layout. No Resolution field; the email field still shows the old label “test” at 09:37 UTC (see F3).</figcaption></figure>
+    <figure><img src="{{IMG_02}}" alt="Standard layout editor on the Detail View tab, Resolution field shown in Ticket Information"><figcaption>Detail View tab of the same layout. The editor loads and shows <b>Resolution (ro)</b>, yet the save request leaves it out.</figcaption></figure>
+  </div>
+  <figure><img src="{{IMG_00}}" alt="Six frames from the Jam recording, ending with the Layout not saved toast"><figcaption>Jam frames 0:01 → 0:10: layout list, label edit on the Create tab, Save, then the “Layout not saved” toast.</figcaption></figure>
+</section>
+
+<section>
+  <h2>Findings</h2>
+  <div class="findings">
+    <div class="finding">
+      <h3><span class="id">F1</span> Saving the layout overwrites the Detail view with the Create view <span class="pill bad">High · confirmed</span></h3>
+      <p>Whatever is changed, the editor builds <code>views.DETAIL</code> from the Create view's sections. Any field or section that exists only on Detail is dropped from the request. On Standard this always includes <code>resolution</code>, so the server blocks every save of the default ticket layout.</p>
+      <p><span class="label">Impact</span> Admins cannot save any change to the Standard layout, including label edits, field moves and new fields.</p>
+    </div>
+    <div class="finding">
+      <h3><span class="id">F2</span> Data loss on any layout with its own Detail view <span class="pill bad">High · risk</span></h3>
+      <p>The 422 only happens because <code>resolution</code> is protected. Fields that are not protected are dropped from Detail without any warning. On Standard, the whole <b>Integration</b> section (<code>crm_deal_id</code>, <code>contract_id</code>) would disappear from the ticket detail page as soon as the save goes through.</p>
+      <p><span class="label">Supporting observation</span> All 10 other ticket layouts (QA NDC …) have a Detail view identical to Create, and none has the Integration fields. That matches F1 having already flattened them on earlier saves. This is an inference; I did not see those saves.</p>
+    </div>
+    <div class="finding">
+      <h3><span class="id">F3</span> The rename is half-saved, and the message says nothing was saved <span class="pill warn">Medium · confirmed</span></h3>
+      <p>The label PATCH runs first and succeeds (the field's label became “Email”), then the layout PUT fails and the toast says “Layout not saved”. The layout keeps its own copy of the label, so at 09:37 UTC, 47 minutes after the Jam, the Create canvas still showed “test”. The copy changed to “Email” at 09:47:42 UTC, written by the system user <code>a7a7a7a7-…-0004</code>. I did not trigger that change; my test edits were on Phone and never reached the server.</p>
+      <p><span class="label">Impact</span> The user is told the change failed while part of it was saved, and the canvas can show a stale label afterwards.</p>
+    </div>
+    <div class="finding">
+      <h3><span class="id">F4</span> The error message asks for an action the user cannot take <span class="pill info">Low · confirmed</span></h3>
+      <p>The toast says “Move them instead”. The user is on the Create tab, where Resolution does not exist, and did not remove it. The message is accurate for the request but not for anything the user did. Once F1 is fixed it should not appear, but it should name the view (Detail) when it does.</p>
+    </div>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>Where the fix belongs</h2>
+  <ul>
+    <li><b>Layout editor (frontend).</b> Keep each view (Create, Quick Create, Detail) as its own state and send each one from its own state on Save. If the editor is meant to keep Detail in step with Create, it must merge (keep the fields and sections that exist only on Detail) rather than replace.</li>
+    <li><b>Save order.</b> Send the label PATCH and the layout PUT as one action: run the PUT first, or roll the label back when the PUT fails, and make the message say exactly what was saved.</li>
+    <li><b>Backend check.</b> The 422 rule is correct and prevented data loss here. Keep it.</li>
+  </ul>
+  <p class="note">The TAVI Desk source code is not in this QA repo, so I couldn't point to a file or line. The behaviour above is from the live staging build on 8 Nov 2026.</p>
+</section>
+
+<section class="prose">
+  <h2>How to reproduce</h2>
+  <ol>
+    <li>Sign in to staging-desk as an admin and open Setup › Modules &amp; Fields › Tickets › Layouts › <b>Standard</b>.</li>
+    <li>On the Create tab, click any field label (for example Phone), change the text and press Enter.</li>
+    <li>Click <b>Save</b>.</li>
+    <li>Expected: the layout saves and the Detail view keeps Resolution and the Integration section.<br>Actual: “Layout not saved: "resolution" cannot be removed from the layout…”, and the label rename is saved anyway.</li>
+  </ol>
+</section>
+
+<section class="prose">
+  <h2>How this was checked</h2>
+  <ul>
+    <li>Jam timeline, network bodies (the recorded PUT body was cut at 4 KB of 16 KB, so it could not settle the cause), and video frames.</li>
+    <li>Read-only API calls as an admin other than the reporter: the Standard layout, every ticket layout, and the ticket fields.</li>
+    <li>A repeat of the steps in a headless Edge browser with all writes intercepted. The label PATCH got a fake 200 so the editor would go on to send the PUT. The PUT was captured and never sent. I ran it twice: editing straight away, and opening the Detail View tab first.</li>
+    <li>A before/after read of the Standard layout to confirm nothing changed apart from the system label sync in F3.</li>
+  </ul>
+  <p class="note">Files in <code>executions/execu_2026-11-08_jam-66d8afd1-standard-layout-save/</code>: <code>data/stored-standard-layout.json</code>, <code>data/captured-put-body.json</code>, <code>data/all-layouts-detail-vs-create.json</code>, the scripts used, and <code>evidence/</code>.</p>
+</section>
+
+<footer>
+  <span>Module 88e8ea44-1658-4df3-9930-d0902b91073d (Tickets) · Layout 1b55c25d-eb27-4046-afd1-b292398b435b (Standard) · Field 5eecded7-c8cf-48e2-961c-3853ff568dd1 (resolution)</span>
+  <span>Nothing was posted to the Jam or Plane for this report.</span>
+</footer>
+
+</div>

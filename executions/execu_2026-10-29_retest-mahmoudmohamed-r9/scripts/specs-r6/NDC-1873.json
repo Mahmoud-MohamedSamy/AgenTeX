@@ -1,0 +1,139 @@
+{
+ "out": "NDC-1873-retest-PASS.png",
+ "ticket": "NDC-1873",
+ "title": "Modules and Fields | Changing a new field's name doesn't automatically change its API name",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin); test users 1/2, automation where noted",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "1873-03-renamed.png",
+   "caption": "New Lookup renamed \"Lookup Contacts\": API NAME follows (lookup_contacts) and is read-only.",
+   "crop": [
+    820,
+    0,
+    460,
+    390
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      840,
+      196,
+      1261,
+      232
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      840,
+      296,
+      1261,
+      332
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      840,
+      336,
+      1261,
+      372
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1873-05-duplicate-label.png",
+   "caption": "A second new Lookup with the same label gets lookup_contacts_2 (no reuse).",
+   "crop": [
+    820,
+    0,
+    460,
+    390
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      840,
+      296,
+      1261,
+      332
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "1873-04-saved.png",
+   "caption": "Save → layout saved with \"Lookup Contacts\" (no \"API name already used\" error).",
+   "crop": [
+    332,
+    380,
+    948,
+    340
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      365,
+      558,
+      1248,
+      606
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Renaming a new field updates the API name",
+   "lookup_contacts",
+   "Label \"Lookup Contacts\" → API NAME lookup_contacts",
+   "PASS"
+  ],
+  [
+   "3",
+   "API name read-only",
+   "System-generated, not editable",
+   "Read-only: \"Generated from the field name, and fixed once the layout is saved. It cannot be edited.\"",
+   "PASS"
+  ],
+  [
+   "4",
+   "Save",
+   "No duplicate-name error",
+   "POST field 201 + PUT layout 200; field lookup_contacts 74e730ba",
+   "PASS"
+  ],
+  [
+   "5",
+   "Never reuse an existing API name",
+   "Unique API name",
+   "Same label again → lookup_contacts_2",
+   "PASS"
+  ],
+  [
+   "—",
+   "Cleanup",
+   "—",
+   "QA field 74e730ba and layout \"QA RT r6 layout\" 212d0ec2",
+   "INFO"
+  ]
+ ]
+}

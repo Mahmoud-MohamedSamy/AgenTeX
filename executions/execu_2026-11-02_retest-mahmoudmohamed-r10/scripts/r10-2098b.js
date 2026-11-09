@@ -1,0 +1,1 @@
+const r=await api('u2','POST',`/modules/${T.LEADS}/views`,{name:'QA RT r10 2098 u2 private',kind:'list',visibility:'private',settings:{criteria:{conditions:[]}}}); if(r.j?.data?.id) ledger(`view ${r.j.data.id} "QA RT r10 2098 u2 private" (Leads, u2)`); return r.s+' '+(r.j?.data?.id||r.t.slice(0,200));

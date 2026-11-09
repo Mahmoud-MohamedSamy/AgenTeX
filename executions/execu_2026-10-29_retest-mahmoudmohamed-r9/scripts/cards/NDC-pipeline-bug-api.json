@@ -1,0 +1,45 @@
+{
+ "out": "NDC-pipeline-bug-api.png",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin)",
+ "date": "26–27 Oct 2026",
+ "title": "Deals: the custom field \"pipeline\" replaces the validation of the real pipeline",
+ "rows": [
+  [
+   "custom field",
+   "GET /api/v1/modules/{Deals}/fields → apiName \"pipeline\"",
+   "id 6b44c7c9…, datatype pick_list, isCustomField true, isSystemField false, allowed_values [\"Standard (Standard)\"], created 24 Oct 15:54 UTC by ndc-staging-owner, placed only on layout \"Wonder Travel\"",
+   "bad"
+  ],
+  [
+   "real pipelines",
+   "GET /modules/{Deals}/pipelines?layout_id={Standard}",
+   "Standard 5170500c… (default), \"1\" 640e03a4…",
+   "info"
+  ],
+  [
+   "create on \"1\"",
+   "POST /modules/{Deals}/records layout Standard, pipeline = 640e03a4…",
+   "422 \"Invalid value for: Pipeline.\" (UI: \"Pipeline: '640e03a4-…' is not one of the allowed values (Standard (Standard)).\")",
+   "bad"
+  ],
+  [
+   "default only",
+   "POST without pipeline / with \"Standard (Standard)\"",
+   "201, stored on Standard 5170500c… — no deal can be put on another pipeline (create, change pipeline, Mass Update, API)",
+   "bad"
+  ],
+  [
+   "proof",
+   "Custom list widened temporarily to [..., 640e03a4…, 5170500c…]",
+   "create on \"1\" → 201, stored on \"1\"; PATCH a Standard deal → moved to \"1\"; stage not in \"1\" → 422 (pipeline logic itself works)",
+   "ok"
+  ],
+  [
+   "restored",
+   "PUT the field back",
+   "200, allowed_values [\"Standard (Standard)\"] again (nothing left changed)",
+   "info"
+  ]
+ ]
+}

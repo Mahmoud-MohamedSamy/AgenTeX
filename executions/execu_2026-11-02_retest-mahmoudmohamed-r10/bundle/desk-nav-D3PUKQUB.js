@@ -1,0 +1,1 @@
+import"./index-Bp0UvXNm.js";import{t as e}from"./permissions-Bbd5GBi5.js";var t=`/views`,n=`/activities`,r=`/customers`,i=`/modules`;`${i}`,e.hqView;export{t as i,r as n,i as r,n as t};

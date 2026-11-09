@@ -1,0 +1,100 @@
+{
+ "label": "BUG",
+ "verdict": "FAIL",
+ "date": "2 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, org Anyware, owner, QA WF Dept R (QA records, deleted after) · Zoho: Zoho Desk Enterprise trial, Setup › Blueprint (read only)",
+ "out": "BP-P2-1-vs-zoho.png",
+ "ticket": "BP-P2-1",
+ "taviHead": "TAVI Desk (API log, designer)",
+ "zohoHead": "Zoho Desk (State Level SLA)",
+ "title": "The API saves a state warning that is not before the time limit; live tickets lose the warning",
+ "panels": [
+  {
+   "img": "P2-1-api.png",
+   "caption": "TAVI API: warning = limit, warning > limit and warning without a limit all saved (201); live ticket gets no warning time",
+   "crop": [
+    0,
+    0,
+    1600,
+    490
+   ],
+   "boxes": []
+  },
+  {
+   "img": "zoho-state-sla-escalation.png",
+   "caption": "Zoho: SLA time is picked from lists; escalation is set Before / On Time / After that time",
+   "crop": [
+    1130,
+    160,
+    470,
+    320
+   ],
+   "boxes": [
+    {
+     "b": [
+      1140,
+      255,
+      1445,
+      305
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      1155,
+      390,
+      1250,
+      432
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "P2-1-ui.png",
+   "caption": "TAVI designer of the saved blueprint: only when opened does it say \"1 issue to fix before publishing\"",
+   "crop": [
+    300,
+    110,
+    1300,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      312,
+      124,
+      1228,
+      182
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      1254,
+      268,
+      1586,
+      352
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Saving a warning that is not before the time limit",
+   "Time and escalation come from fixed choices (Before / On Time / After the SLA time), so a warning after the limit cannot be set.",
+   "POST blueprint with warning 120 min and limit 120, warning 120 and limit 60, or a warning and no limit: all answer 201 Created and are saved as sent. The designer would block the same values.",
+   "BUG"
+  ],
+  [
+   2,
+   "A live blueprint with that state",
+   "Not possible to save.",
+   "The blueprint can be made active and tickets enter it. The ticket gets the due time but warning_due_at is null, so the warning actions never run. The designer shows the problem only when someone opens it.",
+   "BUG"
+  ]
+ ]
+}

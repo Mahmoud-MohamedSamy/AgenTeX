@@ -1,0 +1,1 @@
+import{vt as e,yt as t}from"./index-LdioPOXJ.js";var n=`module`;function r(e){return e?`${t}?${n}=${encodeURIComponent(e)}`:t}function i(t){return t?`${e}?${n}=${encodeURIComponent(t)}`:e}var a={recordsRoute:e=>`/modules/${encodeURIComponent(e)}`,importRoute:e=>r(e),historyRoute:e=>i(e),assignmentRules:{enabled:!1}};export{r as i,a as n,i as r,n as t};

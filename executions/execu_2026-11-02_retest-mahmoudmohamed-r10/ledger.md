@@ -1,0 +1,112 @@
+# Round 10 cleanup ledger (Anyware, 2 Nov 2026)
+- 2026-11-02T08:05:45 lead 876ebb35-6e5c-46f5-823b-51caa964c2dc "QA RT r10 2412 U1 lead" (Leads) by u1
+- 2026-11-02T08:05:45 user U2 setoroj338 (0b3fefb6-acd0-4a8f-abb9-aa7fc04087e2) profile changes during NDC-2412 — baseline User @ team2, restore at the end of this script
+- 2026-11-02T08:06:26 lead 35668833-df8a-4e2c-a682-6b8f4897ae4a "QA RT r10 2412 U2 lead" (Leads) by u2
+- 2026-11-02T08:06:30 user U2 restored to User @ team2: 204 (User)
+- 2026-11-02T08:11:53 record portal 415bba11-491d-4951-b07b-e386f473e486 "QA RT r10 Portal"
+- 2026-11-02T08:11:53 blueprint 482aaf78-ffe9-441f-80f9-a3614e28d3a3 "QA RT r10 2420 BP" (/modules/259e93be-1e0a-4d78-a385-055db8265323/blueprints)
+- 2026-11-02T08:11:55 workflow rule fd8087d4-0e7d-47f4-9faa-7cc4444cf5af "QA RT r10 2420 R1 after t0" (/workflow/rules)
+- 2026-11-02T08:11:56 workflow rule 51b597bc-2492-43c7-9783-496ca37817db "QA RT r10 2420 R2 after t1" (/workflow/rules)
+- 2026-11-02T08:13:49 lead d8746d4e-923b-45a7-abbb-e826e9e0cf40 "QA RT r10 2420 lead a" by o
+- 2026-11-02T08:26:18 assignment rule 199c4f46-bdd5-4f76-9b2e-7c91ebcdc9bd "QA RT r10 2714 AR" (/workflow/assignment-rules)
+- 2026-11-02T08:34:45 lead 0772fc3f-f42c-4a61-a999-d357fd019b7d "QA RT r10 2714 imp1" (import)
+- 2026-11-02T08:39:52 lead b125cef8-1c24-4b64-8941-ca208e83bb4e "QA RT r10 2714 imp2" (import)
+- 2026-11-02T08:39:52 lead 0772fc3f-f42c-4a61-a999-d357fd019b7d "QA RT r10 2714 imp1" (import)
+- 2026-11-02T08:43:59 lead 45d3cf65-da66-4ddb-acc8-138dd7cf6f47 "QA RT r10 2730 AEX-01" by o
+- 2026-11-02T08:55:29 task 061ee622-3d13-49e0-a8d0-6f10eba5b317 "QA RT r10 2730 AEX-01 Task From Approval Process" (by AEX-01 for 2730 lead)
+- 2026-11-02T08:55:29 task 1bda00bc-4a59-4d92-98e2-00faff40c748 "Task Created by Workflow for Lead QA RT r10 2730 AEX-01" (by AEX-01 for 2730 lead)
+- 2026-11-02T08:56:19 lead 6765b2a8-4384-42f1-815a-3aa2de0e243e "QA RT r10 2730 AEX-01 b" by o
+- 2026-11-02T09:58:41 scoring rule b718d7eb-9e66-4e00-86ae-69f4d3eec23f "QA RT r10 2294 score"
+- 2026-11-02T09:58:42 workflow rule c8634f31-ee9f-485b-9b2f-74227e09ef40 "QA RT r10 2294 WF score up" (/workflow/rules)
+- 2026-11-02T09:58:45 lead dca5af05-3c63-4684-abcd-296ebd582090 "QA RT r10 2294 lead" by o
+- 2026-11-02T10:03:10 deal 2bceab02-8a56-43e9-b67b-b9a947d82125 "QA RT r10 2653 deal"
+- 2026-11-02T10:06:53 workflow rule 4a4bc7ee-e161-4356-887d-2390d99d1f8b "QA RT r10 2726 WF" (/workflow/rules)
+- 2026-11-02T10:06:54 lead 92b6aa9c-ad6c-403b-8a6c-19487c8f5abc "QA RT r10 2726 lead" by o
+- 2026-11-02T10:07:25 deal 8bb15f69-3e3e-4f6c-a557-108d08fc4062 "QA RT r10 2726 D create specific U3" (by 2726 rule)
+- 2026-11-02T10:07:25 deal f1053157-7290-4f7a-b47a-cb6dc00914ce "QA RT r10 2726 C create triggering owner" (by 2726 rule)
+- 2026-11-02T10:07:26 deal ac79cf6b-1f4d-4d87-ab82-0387dbd7d0b2 "QA RT r10 2726 B connected no owner" (by 2726 rule)
+- 2026-11-02T10:07:26 deal b0842f08-74ff-4040-9b2a-421097ecd313 "QA RT r10 2726 A create no owner" (by 2726 rule)
+- 2026-11-02T10:09:14 lead 53b72369-057a-4a3a-9a05-59f6f6276d6e "QA RT r10 2727 lead" by o
+- 2026-11-02T10:09:16 deal 3fc73a93-a49f-44e4-8ed5-0d86bc76d00e "QA RT r10 2727 deal 1"
+- 2026-11-02T10:09:17 deal fa6c5265-2626-4f96-ab30-72d74b4715b7 "QA RT r10 2727 deal 2"
+- 2026-11-02T10:09:19 deal 0f457f54-75c6-456f-868a-0d128b90b841 "QA RT r10 2727 deal 3"
+- 2026-11-02T10:09:21 deal a157e0f1-107b-45fa-9725-d45085f39ef0 "QA RT r10 2727 deal 4"
+- 2026-11-02T10:09:22 deal bf0e86e6-bcc7-442b-916e-e9f92958b28f "QA RT r10 2727 deal 5"
+- 2026-11-02T10:09:23 deal 80da46c4-a906-42bf-8082-4dd4e4606a96 "QA RT r10 2727 deal 6"
+- 2026-11-02T10:09:23 deal aa7b84fa-fab1-41dd-bfe1-f797d611a399 "QA RT r10 2727 deal 7"
+- 2026-11-02T10:09:24 deal 8f2412c8-f7ac-44cc-b8b7-ea3be5b4e840 "QA RT r10 2727 deal 8"
+- 2026-11-02T10:09:25 deal dd018b46-d31a-491b-aeee-04aaccb5407e "QA RT r10 2727 deal 9"
+- 2026-11-02T10:09:25 deal fbe3b98a-f081-4f8c-927e-fa47c80c20b1 "QA RT r10 2727 deal 10"
+- 2026-11-02T10:09:25 deal 4b21aed4-2671-4b07-9b55-3312de9d0ce3 "QA RT r10 2727 deal 11"
+- 2026-11-02T10:09:28 deal cac61eb3-ff2c-43e5-ba9f-56d1d7470203 "QA RT r10 2727 deal 12"
+- 2026-11-02T10:18:22 saved action 8a35a4dd-ed6a-4c37-90bf-27a1fc73fa7b "QA RT r10 2728 saved call"
+- 2026-11-02T10:18:22 workflow rule 6e49c0ff-3261-4028-8adb-ca534aa49784 "QA RT r10 2728 WF" (/workflow/rules)
+- 2026-11-02T10:18:23 lead fdef9e44-d6d0-4d21-9071-3092c5a47755 "QA RT r10 2728 lead" by o
+- 2026-11-02T10:18:57 call fb437400-6466-454f-8395-dc24bb93c038 (Calls 9b0ba259) by 2728 saved action
+- 2026-11-02T10:24:20 web form 27655b65-ba7f-4112-9b2e-d7fa79c72659 "QA RT r10 2732 form"
+- 2026-11-02T10:24:48 lead 98cf3aed-d84b-4461-8d70-af70cec1a5ba "QA RT r10 2732 iframe 73669" (web form iframe)
+- 2026-11-02T10:26:34 lead 1ca764d4-2dfb-40dc-99ba-3ea6e2fd081f "QA RT r10 1948 lead" by u1
+- 2026-11-02T10:35:46 view 3b1f892f-43ea-4bdd-b91e-a8478db842a3 "QA RT r10 2098 last" (Leads, o)
+- 2026-11-02T10:35:46 view e1f676d0-24cf-4876-a094-d37e417f4504 "QA RT r10 2098 gone" (Leads, o)
+- 2026-11-02T10:37:44 view 8709f4b3-5298-4c5f-a449-4267d54fef6f "QA RT r10 2098 u2 private" (Leads, u2)
+- 2026-11-02T10:40:37 lead a7e4c6b6-4980-4a99-a201-be7dc33f9a96 "QA RT r10 2113 A unaccounted" by o
+- 2026-11-02T10:40:38 lead 24026a9e-3067-4ff3-9741-9ae0e5c6ecb9 "QA RT r10 2113 B interested" by o
+- 2026-11-02T10:42:05 view f24a7fd3-e04d-4f56-ad87-a587920396b2 "QA RT r10 2113 kanban" (Leads kanban)
+- 2026-11-02T11:12:46 view f89bd442-f659-4f81-8be0-33b2e3f855bf "QA RT r10 2122 1 and 2"
+- 2026-11-02T12:05:34 view 8639ef6b-6652-43bd-9b95-874468e25118 "QA RT r10 2280 xxx…" (Leads)
+- 2026-11-02T12:10:26 desk module 0a2f56b2-681d-41c1-b504-d2140eecb1e8 "QA RT r10 MF"
+- 2026-11-02T12:10:27 desk module ee386e8d-6d19-4cc0-94b0-100661f513dd "QA RT r10 DeptMod"
+- 2026-11-02T12:18:15 user U3 yibih11717 (60963775-a57c-46ac-877a-2dbfa20e98d7) temporarily CRM Admin + Desk Agent and agent of QA WF Dept R — restore to User @ agent x, remove Desk Agent, remove from dept
+- 2026-11-02T12:29:13 user U3: CRM profile back to User @ agent x (204); still Desk Agent + member of QA WF Dept R until Desk retests finish
+- 2026-11-02T12:48:50 desk rule a736646c-fce7-49f1-bd2d-c0481234c66f "QA RT r10 2662 OD"
+- 2026-11-02T12:48:51 desk rule b6b86960-7a64-49ef-b785-9509bf086d93 "QA RT r10 2662 ET"
+- 2026-11-02T12:48:52 desk rule bce01ea5-4671-4be2-bf4e-1f2c5d4ab90a "QA RT r10 2662 RC"
+- 2026-11-02T12:48:53 desk rule 11d2b148-562a-42f5-9709-698589c31428 "QA RT r10 2662 ODD"
+- 2026-11-02T12:48:59 desk ticket 13f01bc7-e26a-428d-939f-ef773481b2d4 "QA RT r10 2662 OD ticket"
+- 2026-11-02T12:49:01 desk ticket 649d01a3-8051-4b6a-b719-fcbdac86a430 "QA RT r10 2662 ET ticket"
+- 2026-11-02T12:49:03 desk ticket 76df196e-b344-4b04-8668-5640658d8864 "QA RT r10 2662 RC ticket"
+- 2026-11-02T12:49:05 desk ticket 9ea21988-2307-42c4-a599-9bd93ab481e2 "QA RT r10 2662 TH ticket"
+- 2026-11-02T12:49:06 desk ticket 8c12d2ab-c597-4767-8f3d-fe1693e1f0ea "QA RT r10 2662 CC ticket"
+- 2026-11-02T12:49:09 desk ticket 222bc656-9cbf-4de8-acc5-8a5d7450040b "QA RT r10 2662 ODD ticket"
+- 2026-11-02T12:49:10 desk ticket 154f0fd9-b88b-4110-8800-aede5fbd0d6a "QA RT r10 2662 CTRL ticket"
+- 2026-11-02T12:51:17 desk rule 842ea8a7-2c38-43cd-9c75-b1204e05bc17 "QA RT r10 2662 ET2"
+- 2026-11-02T12:51:18 desk rule 916eb291-0e7d-4e2c-b3ab-380aef800be9 "QA RT r10 2662 TH2"
+- 2026-11-02T12:51:19 desk rule 34838ac2-2614-4043-a453-f879db3a9b09 "QA RT r10 2662 CC2"
+- 2026-11-02T12:51:20 desk rule 057e3d2f-37e2-45f8-9707-87570ca5fac9 "QA RT r10 2662 CTRL2"
+- 2026-11-02T12:51:24 desk ticket ddb61198-4c24-461c-814d-ce570d74d690 "QA RT r10 2662 ET2 ticket"
+- 2026-11-02T12:51:26 desk ticket 8bff8dc8-fe3e-46f7-9fc5-dc3a77f6a59e "QA RT r10 2662 TH2 ticket"
+- 2026-11-02T12:51:28 desk ticket 3c331cf5-425c-437c-97e1-d3d7826c017a "QA RT r10 2662 CC2 ticket"
+- 2026-11-02T12:51:32 desk ticket 8e1588fb-34b3-4186-b7fa-48dc118cd175 "QA RT r10 2662 CTRL2 ticket"
+- 2026-11-02T12:53:16 desk ticket ad4dc97c-5813-4f6e-a540-fb2e0175fdcb QA RT r10 2662 ET2
+- 2026-11-02T12:53:17 desk ticket 545115f4-7f12-43c2-88e3-0c8dd3dd04b0 QA RT r10 2662 TH2
+- 2026-11-02T12:53:18 desk ticket 755126ac-68fc-4eaa-ba67-d0bb4303e767 QA RT r10 2662 CC2
+- 2026-11-02T12:53:19 desk ticket 86ee1251-3057-4b2f-8fa9-3113f022205c QA RT r10 2662 CTRL2
+- 2026-11-02T12:58:24 desk task 7dd96c76-c87a-4587-a4b3-1264e90396df QA RT r10 2638 task no status
+- 2026-11-02T12:58:25 desk task a942e222-9db2-4a0b-b752-8bcb6e3f3cbb QA RT r10 2641 task A
+- 2026-11-02T12:58:32 desk task 5d79108c-fe93-40cb-8438-82dff7773736 QA RT r10 2641 task B
+- 2026-11-02T12:59:41 desk contact add5c838-9710-40c4-b824-2b049a3cf171 QA RT r10 activities contact
+- 2026-11-02T12:59:49 desk call fce063a6-1a60-405b-a4f7-9229611fc842 QA RT r10 2642 dur 00:10
+- 2026-11-02T12:59:50 desk call c7b9e35c-3818-468b-b78a-6439db50d071 QA RT r10 2642 dur 00:00:10
+- 2026-11-02T12:59:52 desk call 56eb43d9-1a58-45a8-a5ed-66909236d822 QA RT r10 2640 call
+- 2026-11-02T12:59:55 desk call 472d4bb6-f42e-4b7f-904a-5699f2341491 QA RT r10 2637 scheduled call
+- 2026-11-02T13:00:54 desk ticket 2e38b578-12b1-4a24-9250-7a9afc810475 QA RT r10 2661 agent ticket
+- 2026-11-02T14:16:00 crm module 2eebd75e-1695-4dd4-9d7e-8de411e7083b QA RT r10 Bin
+- 2026-11-03T08:26:16 desk task 8b0ac18c-8ac3-493b-afbe-76a54d725d68 QA RT r10 write probe u3
+
+## NDC-Staging (3 Nov 2026, user: continue on NDC-Staging) — admin mahmoud.mahamed1515, agent fedelav803
+- 2026-11-03T08:59:33 NDC desk contact 09d14e43-7979-44ae-aac2-03b022c1efa4 QA RT r10 NDC contact
+- 2026-11-03T08:59:34 NDC desk call 378d282c-3235-4bf2-94ac-bd86f8aec54d QA RT r10 2637 NDC call
+- 2026-11-03T08:59:34 NDC desk ticket 79a61d0f-e0a1-4772-87db-c8f2703b6118 QA RT r10 2644 NDC ticket
+- 2026-11-03T09:02:57 NDC desk call 04a9d46e-1332-4f55-a682-00778799bc33 (missed-call entry from 2637 reschedule)
+- 2026-11-03T09:53:06 NDC desk module 7ca329ce-3430-44e6-92c4-6146478844b1 "QA RT r10 QC" (2262)
+- 2026-11-03T10:53:25 NDC crm module b075380e-b052-4101-9bcf-c72679a44731 QA RT r10 1630
+
+### Cleanup — NDC-Staging, 3 Nov 2026 (exact ids, read-only inventory first, re-inventory after)
+- desk call 04a9d46e (missed-call entry) → 204; desk call 378d282c → 204; desk contact 09d14e43 → 204; Desk module "QA RT r10 QC" 7ca329ce (0 records) DELETE ?cascade=true → 204 — as admin mahmoud.mahamed1515
+- desk ticket 79a61d0f (+ agent draft): already gone when the agent tried (404 for agent, admin and owner; not in the Desk Recycle Bin) — it disappeared right after its contact was deleted
+- CRM module "QA RT r10 1630" b075380e (0 records) DELETE ?cascade=true → 204 — as owner ndc-staging-owner
+- NDC-2248 QA record c641e3bb: deleted forever during the test
+- Re-inventory: all 6 → 404; live QA contacts / calls 0; QA modules CRM 0 / Desk 0
+- Recycle Bin not purged: desk_contacts "QA RT r10 NDC contact", 2 desk_calls "QA RT r10 2637 NDC call" (expire after 60 days)
+- CRM ⇄ Desk integration: disconnected by the user, reconnected by me (NDC-2399) — enabled, not paused, mapping contacts / accounts / deals (same as before)
+- Anyware-Staging: NOT cleaned (user, 3 Nov: "forget about Anyware-Staging"; owner needs 2FA). Its items stay as listed above in this ledger; test user 3 still Desk Agent + member of "QA WF Dept R".

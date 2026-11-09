@@ -1,0 +1,25 @@
+const tk = IDS.base; const P = `/desk/tickets/${tk}`; const o = {};
+const qa = await api('GET', '/desk/queues/agents'); o.agentQueue = qa.s + ' ' + JSON.stringify(((qa.j && qa.j.data && qa.j.data.agents) || []).map(a => [a.name, a.open_count ?? a.counts])).slice(0, 500);
+o.assignB = sh(await api('POST', `${P}/assign`, { owner_id: UB })); o.ownerB = (await getRec(T, tk)).o.owner;
+o.assignC = sh(await api('POST', `${P}/assign`, { owner_id: UC }));
+o.unassign = sh(await api('POST', `${P}/assign`, { owner_id: null })); o.ownerNull = (await getRec(T, tk)).o.owner;
+o.pickUp = sh(await api('POST', `${P}/pick-up`, {})); o.ownerPick = (await getRec(T, tk)).o.owner;
+o.pickUp2 = sh(await api('POST', `${P}/pick-up`, {}));
+o.ownerPatch = sh(await patchRec(T, tk, { owner: UB }));
+o.onHold = sh(await patchRec(T, tk, { status: 'On Hold' }));
+o.close = sh(await api('POST', `${P}/close`, {})); o.stClose = (await getRec(T, tk)).o.status;
+o.editClosed = sh(await patchRec(T, tk, { description: 'QA GL W2 edit while closed' }));
+o.reopen = sh(await api('POST', `${P}/reopen`, {})); o.stReopen = (await getRec(T, tk)).o.status;
+o.badStatus = sh(await patchRec(T, tk, { status: 'Bogus' }));
+o.edit = sh(await patchRec(T, tk, { subject: 'QA GL W2 base ticket edited', priority: 'Low', due_date: new Date(Date.now() + 2 * 86400e3).toISOString() }));
+const g = await getRec(T, tk); o.afterEdit = [g.o.subject, g.o.priority, g.o.due_date];
+for (const p of [`/modules/${T}/records/${tk}/history`, `${P}/history`, `${P}/activity`, `/modules/${T}/records/${tk}/timeline`]) { const r = await api('GET', p); o['h ' + p.split('/').pop()] = r.s + ' ' + JSON.stringify(r.j && r.j.data).slice(0, 900); }
+o.move = sh(await api('POST', `${P}/move`, { department_id: DS })); o.depMove = (await getRec(T, tk)).o.department; o.ownerAfterMove = (await getRec(T, tk)).o.owner;
+o.moveBack = sh(await api('POST', `${P}/move`, { department_id: DQ })); o.depBack = (await getRec(T, tk)).o.department;
+o.moveBad = sh(await api('POST', `${P}/move`, { department_id: '00000000-1111-2222-3333-444444444444' }));
+o.share = sh(await api('PUT', `${P}/shares`, { shares: [{ department_id: DS, access: 'read_only' }] }));
+o.shareFull = sh(await api('PUT', `${P}/shares`, { shares: [{ department_id: DS, access: 'full' }] }));
+o.shareOwn = sh(await api('PUT', `${P}/shares`, { shares: [{ department_id: DQ, access: 'full' }] }));
+o.unshare = sh(await api('PUT', `${P}/shares`, { shares: [] }));
+o.wf = await wfx(tk);
+return fin(o);

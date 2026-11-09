@@ -1,0 +1,15 @@
+const SS='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog/screenshots/';
+const o={};await page.setViewportSize({width:1600,height:900});const writes=[];
+page.on('request',r=>{if(/api\/v1/.test(r.url())&&!['GET','OPTIONS'].includes(r.method())&&!/heartbeat|resolved-batch|iam\/auth|realtime|query|search|summaries/.test(r.url()))writes.push(r.method()+' '+r.url().replace(/.*api\/v1/,''));});
+await page.goto(H+'/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records/new',{waitUntil:'domcontentloaded',timeout:120000});
+await page.getByText('Ticket Information',{exact:true}).first().waitFor({timeout:240000});await sleep(3000);
+const statusInfo=()=>page.evaluate(()=>{const lab=[...document.querySelectorAll('label,span,div')].find(e=>e.childElementCount<=1&&/^\*?\s*Status$/.test(e.textContent.trim()));if(!lab)return 'no label';
+ let c=lab;for(let i=0;i<5;i++){c=c.parentElement;const ctl=c.querySelector('select,button[role=combobox],[role=combobox],button[aria-haspopup]');if(ctl){return {tag:ctl.tagName,text:(ctl.tagName==='SELECT'?ctl.options[ctl.selectedIndex]?.text:ctl.innerText).trim(),opts:ctl.tagName==='SELECT'?[...ctl.options].map(o=>o.text):null};}}return 'no ctl';});
+o.s0=await statusInfo();
+o.s1='skipped';
+o.s1=await statusInfo();await page.screenshot({path:SS+'2174-10h-new-ticket-layout.png'});
+await page.getByText('Select department…').first().click({timeout:20000}).catch(e=>o.dErr=e.message.slice(0,80));await sleep(1500);
+await page.keyboard.type('QA RT9 2174');await sleep(3000);
+await page.getByText('QA RT9 2174 Dept').last().click({timeout:20000}).catch(e=>o.dErr2=e.message.slice(0,80));await sleep(5000);
+o.s2=await statusInfo();await page.screenshot({path:SS+'2174-10i-new-ticket-dept.png'});
+await page.locator('xpath=(//*[normalize-space(text())="Status"])[1]/following::button[1]').click().catch(e=>o.sErr=e.message.slice(0,80));await sleep(2500);o.opts=await page.locator('[role=option],[role=menuitem],[role=menuitemradio]').allInnerTexts();await page.screenshot({path:SS+'2174-10j-new-ticket-status-opts.png'});await page.keyboard.press('Escape');o.writes=writes;return o;

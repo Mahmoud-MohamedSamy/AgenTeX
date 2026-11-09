@@ -1,0 +1,105 @@
+{
+ "out": "NDC-2637-retest-PASS.png",
+ "ticket": "NDC-2637",
+ "title": "Activities | Rescheduling a call with \"log a missed call\" fails: \"One or more fields in the payload are read-only.\"",
+ "priority": "high",
+ "verdict": "PASS",
+ "env": "staging-crm / staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · admin mahmoud.mahamed1515, agent fedelav803, owner ndc-staging-owner",
+ "date": "3 Nov 2026",
+ "panels": [
+  {
+   "img": "2637-ndc-1-dialog.png",
+   "caption": "Reschedule: tomorrow 10:00 + \"The call went unanswered — log a missed call\" ticked",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": []
+  },
+  {
+   "img": "2637-ndc-2-after.png",
+   "caption": "After Reschedule: Start Time 04/11/2026 10:00",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": []
+  },
+  {
+   "img": "NDC-2637-api.png",
+   "caption": "API evidence — NDC-2637 · NDC-Staging Desk, agent fedelav803, scheduled call 378d282c",
+   "crop": [
+    0,
+    0,
+    1600,
+    250
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "reschedule",
+   "No \"read-only\" error",
+   "dialog closed in 3 s, no error",
+   "PASS"
+  ],
+  [
+   "2",
+   "missed call",
+   "Missed call logged",
+   "201 → entry 04a9d46e, status missed, original time",
+   "PASS"
+  ],
+  [
+   "3",
+   "call moved",
+   "Moves to the new time",
+   "200 → 04/11 10:00, still scheduled",
+   "PASS"
+  ]
+ ]
+}

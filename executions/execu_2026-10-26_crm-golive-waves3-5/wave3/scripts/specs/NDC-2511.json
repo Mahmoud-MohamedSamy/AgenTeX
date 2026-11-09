@@ -1,0 +1,83 @@
+{
+ "out": "NDC-2511-retest.png",
+ "ticket": "NDC-2511",
+ "env": "staging-crm.taviportal.com (CRM Admin A / Supervisor, API) vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "verdict": "FAIL",
+ "label": "STILL FAILS",
+ "title": "Workflow Rules | Rules that run on a date field leave no entry in the Audit Log when they run",
+ "panels": [
+  {
+   "img": "api-2511.png",
+   "w": 1600,
+   "h": 385,
+   "crop": [
+    0,
+    0,
+    1600,
+    385
+   ],
+   "caption": "TAVI: the Due Date rule ran on time (reminder task created) but no audit entry names the run (W3RetestTest.r2511).",
+   "boxes": [
+    {
+     "b": [
+      40,
+      188,
+      1560,
+      234
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      40,
+      234,
+      1560,
+      326
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-audit-log.png",
+   "w": 1600,
+   "h": 950,
+   "crop": [
+    256,
+    260,
+    1344,
+    640
+   ],
+   "caption": "Zoho: the Audit Log lists rule runs by rule name (\"Workflow Rule Rule A Updated a Lead…\").",
+   "boxes": [
+    {
+     "b": [
+      360,
+      335,
+      1000,
+      390
+     ],
+     "n": 2,
+     "color": "#16a34a"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "The date-based rule runs at the due time",
+   "Not re-run live in Zoho today",
+   "Ran on time: the reminder task was created",
+   "PASS"
+  ],
+  [
+   "2",
+   "The run is recorded in the Audit Log",
+   "Rule runs appear with the rule name and the record",
+   "No entry for the run after the due time (only the rule's own create / activate entries before it)",
+   "FAIL"
+  ]
+ ]
+}

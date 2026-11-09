@@ -1,0 +1,13 @@
+const out={}; const G='QA RT r10 2294';
+const sr=await api('o','POST','/scoring-rules',{module_id:T.LEADS,name:'QA RT r10 2294 score',description:null,is_active:true,entries:[{field_key:'description',operator:'contains',value:'QA R10 SCORE',points:10}]});
+out.scoring=sr.s+' '+(sr.j?.data?.id||sr.t.slice(0,300)); if(sr.j?.data?.id) ledger(`scoring rule ${sr.j.data.id} "QA RT r10 2294 score"`);
+const body=X.wf(T.LEADS,G+' WF score up',G,{actions:[X.fieldUpdate('lead_status','Interested')]}); body.trigger={kind:'RecordScoreChanged',scoreChange:'increased'};
+const w=await X.made('o','/workflow/rules',body,'workflow rule'); out.wf=w.s+' '+(w.j?.data?.id||w.t.slice(0,300)); const wid=w.j?.data?.id;
+if(wid) out.wfOn=(await api('o','POST',`/workflow/rules/${wid}/activate`)).s;
+const L=await X.lead('o',G+' lead',{}); const id=L.j?.data?.id; out.lead=L.s+' '+id; if(!id) return out;
+await sleep(5000); const g0=(await api('o','GET',`/modules/${T.LEADS}/records/${id}`)).j?.data; out.score0=JSON.stringify((g0.data||[]).filter(f=>/score/i.test(f.field)).map(f=>[f.field,f.value?.value]));
+const p=await api('o','PATCH',`/modules/${T.LEADS}/records/${id}`,{data:rec({description:'QA R10 SCORE marker'})}); out.patch=p.s+' '+(p.s>299?p.t.slice(0,200):'');
+await X.waitFor(90, async()=> (await X.field('o',T.LEADS,id,'lead_status'))==='Interested');
+const g=(await api('o','GET',`/modules/${T.LEADS}/records/${id}`)).j?.data; out.score1=JSON.stringify((g.data||[]).filter(f=>/score/i.test(f.field)).map(f=>[f.field,f.value?.value])); out.status=await X.field('o',T.LEADS,id,'lead_status');
+out.exec=(await X.executions(id)).map(e=>[(e.ruleId||'')?.slice(0,8),e.triggerKind,e.outcome,e.evaluatedAt.slice(11,19)]); out.wid=wid; out.id=id;
+return out;

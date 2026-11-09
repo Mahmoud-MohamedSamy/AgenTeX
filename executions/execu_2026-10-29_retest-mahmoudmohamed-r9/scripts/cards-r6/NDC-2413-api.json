@@ -1,0 +1,38 @@
+{
+ "out": "NDC-2413-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2413 · Hierarchy, Reporting mode — Leads visibility = Hierarchy (automation crmhierarchy)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "J1/J3 reportingManagerSeesReport",
+   "N reports to V (both rank 100); V: GET /iam/me/subordinates, open N's leads",
+   "PASS — N listed = true; owner-set lead visible = true, N-created lead visible = true",
+   "ok"
+  ],
+  [
+   "J1s reportingSupervisorManager",
+   "N reports to V, V = Supervisor @Sales",
+   "PASS — owner-set = true, N-created = true",
+   "ok"
+  ],
+  [
+   "J2 control",
+   "N opens V's lead",
+   "false (report does not see manager — correct)",
+   "ok"
+  ],
+  [
+   "J5 control",
+   "N reports to someone else; V = Supervisor @Sales",
+   "V sees N = false (not in chain — correct)",
+   "ok"
+  ],
+  [
+   "reportingIndirect",
+   "manager of a manager",
+   "SKIPPED — needs a third user without view-all",
+   "info"
+  ]
+ ]
+}

@@ -1,0 +1,160 @@
+{
+ "out": "E18-30-day-rule-backlog-PASS.png",
+ "ticket": "Assignment Rules · E-18 (RR-19)",
+ "title": "30-day rule: a backlog ticket with no customer reply in 30 days is left out; a new one is assigned",
+ "verdict": "PASS",
+ "date": "TAVI 9 Nov 2026 14:25–14:37 (Cairo); same result in an earlier run 13:00–13:15",
+ "env": "staging-desk.taviportal.com (NDC-Staging, owner) · QA AS6 Dept B, temporary round robin rule (subject contains \"Check-in\", agent Test User 1), offline agents allowed · both tickets put in the backlog with threshold 1, then threshold off + Assign backlogs on (oldest first, 10 per run)",
+ "panels": [
+  {
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ui-06-rr-prefs.png",
+   "caption": "Round Robin Preferences: the 30-day rule as stated in TAVI",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    464,
+    790,
+    672,
+    56
+   ],
+   "boxes": [
+    {
+     "b": [
+      484,
+      798,
+      1112,
+      838
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/raw/e18b-2-ctl-history.png",
+   "caption": "Control #1768, created today: assigned to Test User 1 by the backlog run within a minute (\"Taken from the backlog\")",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    664,
+    250,
+    936,
+    210
+   ],
+   "boxes": [
+    {
+     "b": [
+      700,
+      284,
+      1000,
+      452
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/raw/e18b-2-t1-after-10min.png",
+   "caption": "#1 \"Check-in\", created 7 Oct (33 days), no replies: still Unassigned after 10 minutes of backlog runs, although it is the oldest ticket in the backlog",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    370,
+    60,
+    920,
+    600
+   ],
+   "boxes": [
+    {
+     "b": [
+      384,
+      450,
+      660,
+      508
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      864,
+      108,
+      1004,
+      134
+     ],
+     "n": 4
+    },
+    {
+     "b": [
+      676,
+      190,
+      830,
+      226
+     ],
+     "n": 4
+    }
+   ]
+  },
+  {
+   "img": "executions/execu_2026-11-08_retest-ndc2275/screenshots/raw/e18b-2-t1-history.png",
+   "caption": "#1 History: only the test's reopen, move and owner removal. No \"Assigned automatically\" entry, and no entry saying why it was skipped",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    664,
+    280,
+    936,
+    660
+   ],
+   "boxes": [
+    {
+     "b": [
+      700,
+      315,
+      1000,
+      935
+     ],
+     "n": 5
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Rule (RR-19)",
+   "Unassigned and backlog tickets are assigned by round robin only if the customer responded within the last 30 days.",
+   "Stated in Round Robin Preferences.",
+   "PASS"
+  ],
+  [
+   2,
+   "New ticket in the backlog",
+   "Assigned by the backlog run.",
+   "#1768 assigned to Test User 1 at the first run (trigger backlog).",
+   "PASS"
+  ],
+  [
+   3,
+   "Ticket with no customer reply for 30+ days in the same backlog",
+   "Stays unassigned.",
+   "#1 stayed Unassigned for 10 min (about 20 runs; first run of the day: 15 min, 14 runs) although the run takes the oldest first.",
+   "PASS"
+  ],
+  [
+   4,
+   "Age of #1",
+   "Over 30 days, no customer reply.",
+   "Created 07/10/2026, 0 replies (conversation empty).",
+   "INFO"
+  ],
+  [
+   5,
+   "Reason shown",
+   "Not specified.",
+   "History records nothing about the skip. An entry such as \"skipped: no customer reply in 30 days\" would explain why the ticket waits.",
+   "INFO"
+  ]
+ ],
+ "leftHead": "TAVI Desk (now)",
+ "rightHead": "Expected (requirement RR-19; not run in Zoho)",
+ "rightLabel": "Expected"
+}

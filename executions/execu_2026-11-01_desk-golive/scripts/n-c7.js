@@ -1,0 +1,11 @@
+const o = {}; const S = r => ({ s: r.s, e: r.j && r.j.error ? (r.j.error.code + ': ' + String(r.j.error.message).slice(0, 160)) : null });
+const FED = '9d182dfa-05f3-4af7-9685-8615a2fbe537'; const ORIG = '7972984b-b5cc-034a-bd96-6de61e3937d0'; const RID = 'cdf614ef-59a5-4488-a217-62d4e180b4a4';
+const fedOrg = async () => { const u = (await api('GET', '/iam/users?limit=200&app_key=desk')).j.data.find(x => x.userId === FED); return u && u.orgUnitId; };
+o.before = await fedOrg();
+o.assign = S(await api('PATCH', '/iam/users/' + FED + '?app_key=desk', { org_unit_id: RID })); o.afterAssign = await fedOrg();
+o.deleteInUse = S(await api('DELETE', '/iam/org-units/' + RID + '?app_key=desk'));
+o.stillThere = !!(await api('GET', '/iam/org-units?app_key=desk')).j.data.find(x => x.orgUnitId === RID);
+o.restore = S(await api('PATCH', '/iam/users/' + FED + '?app_key=desk', { org_unit_id: ORIG })); o.afterRestore = await fedOrg();
+if (o.stillThere) o.cleanup = S(await api('DELETE', '/iam/org-units/' + RID + '?app_key=desk'));
+o.gone = !(await api('GET', '/iam/org-units?app_key=desk')).j.data.find(x => x.orgUnitId === RID);
+return done(o);

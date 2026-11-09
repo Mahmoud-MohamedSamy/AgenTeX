@@ -1,0 +1,146 @@
+<title>Google Sheets Test Cases</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live · Round 2 · A14 Google Sheets sync</div>
+  <h1>Google Sheets test cases</h1>
+  <p class="meta">For manual testing · 27 Oct 2026 · staging-crm.taviportal.com · Settings › Integrations › Google Sheets (<code>/settings/integrations/google-sheets</code>)</p>
+  <p>Built from what the app contains: connections with a Google service-account key and a spreadsheet link, tab mappings (sheet tab → CRM module, columns → fields), a preview of each tab, Verify, manual Sync, pause and resume, sync runs with their errors, cancel a run, edit and delete. Zoho has no built-in equivalent, so there's no Zoho comparison.</p>
+</header>
+
+<section>
+  <h2>Before you start</h2>
+  <ul>
+    <li>A Google Cloud service account with the Google Sheets API enabled, and its JSON key file.</li>
+    <li>A test spreadsheet shared with the service account's email (Editor). Tabs: <b>Leads</b> with columns Full Name, Phone, Email, Company, and <b>Bad rows</b> with a few invalid rows (empty Full Name, phone "abc", a duplicate row).</li>
+    <li>Names start with <code>QA GS</code> so they can be found and deleted afterwards. Use the owner or a CRM Admin.</li>
+    <li>Note the time of each sync; the run list should show the same time.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Connection</h2>
+  <div class="tbl"><table>
+    <tr><th>ID</th><th>Steps</th><th>Expected</th></tr>
+    <tr><td class="id">GS-01</td><td>Open Settings › Integrations › Google Sheets with no connection.</td><td>Empty state "No Google spreadsheets connected yet" with a way to add one.</td></tr>
+    <tr><td class="id">GS-02</td><td>New connection: name "QA GS 1", paste the spreadsheet link, upload the service-account key, save.</td><td>"Connection created", then "Service account key saved". The connection is listed.</td></tr>
+    <tr><td class="id">GS-03</td><td>Click Verify on the connection.</td><td>Success: the spreadsheet is reachable and its tabs can be read.</td></tr>
+    <tr><td class="id">GS-04</td><td>New connection with a link that isn't a spreadsheet (e.g. a Google Doc) or a random URL.</td><td>Refused with a clear message; nothing saved.</td></tr>
+    <tr><td class="id">GS-05</td><td>New connection to a spreadsheet NOT shared with the service account, then Verify.</td><td>Clear "no access / share the sheet with …" message; no raw error text.</td></tr>
+    <tr><td class="id">GS-06</td><td>Upload a file that isn't a service-account key (e.g. any other JSON) as the key.</td><td>Refused with a clear message; the old key, if any, still works.</td></tr>
+    <tr><td class="id">GS-07</td><td>Open the connection again and look at the saved key.</td><td>The secret is never shown in full (masked or "key saved"); only who/when or the service-account email.</td></tr>
+    <tr><td class="id">GS-08</td><td>Edit the connection name and save.</td><td>"Connection saved"; the new name shows in the list.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Tabs and mapping</h2>
+  <div class="tbl"><table>
+    <tr><th>ID</th><th>Steps</th><th>Expected</th></tr>
+    <tr><td class="id">GS-09</td><td>Open the connection's setup: list the spreadsheet tabs.</td><td>Both tabs (Leads, Bad rows) are listed by name.</td></tr>
+    <tr><td class="id">GS-10</td><td>Preview the Leads tab.</td><td>The header row and the first rows are shown as in Google Sheets (Arabic text and emoji too).</td></tr>
+    <tr><td class="id">GS-11</td><td>Map tab Leads → module Leads; map each column to a field (Full Name → Full Name, Phone → Phone, Email → Email, Company → Company). Save.</td><td>"Tab mappings saved"; the mapping is shown again after reload.</td></tr>
+    <tr><td class="id">GS-12</td><td>Try to save a mapping that leaves a required field (Full Name, Phone) unmapped.</td><td>Refused or clearly warned before saving.</td></tr>
+    <tr><td class="id">GS-13</td><td>Map two columns to the same field.</td><td>Refused or clearly warned.</td></tr>
+    <tr><td class="id">GS-14</td><td>Rename a column in Google Sheets, then open the mapping again.</td><td>The broken column is flagged; the sync does not silently drop the data.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Sync runs</h2>
+  <div class="tbl"><table>
+    <tr><th>ID</th><th>Steps</th><th>Expected</th></tr>
+    <tr><td class="id">GS-15</td><td>Click Sync on the connection.</td><td>A run starts and finishes; the run list shows time, status and counts (created / updated / failed).</td></tr>
+    <tr><td class="id">GS-16</td><td>Open Leads in the CRM and search the QA GS rows.</td><td>One lead per sheet row, with every mapped value correct (check Arabic and phone format).</td></tr>
+    <tr><td class="id">GS-17</td><td>Sync again without changing the sheet.</td><td>No duplicate leads (rows are updated or skipped, not created twice).</td></tr>
+    <tr><td class="id">GS-18</td><td>Change one cell (e.g. Company) in the sheet, sync.</td><td>The matching lead is updated; the lead's timeline shows the change.</td></tr>
+    <tr><td class="id">GS-19</td><td>Add a new row in the sheet, sync.</td><td>One new lead is created.</td></tr>
+    <tr><td class="id">GS-20</td><td>Delete a row in the sheet, sync.</td><td>Note what happens to the lead (kept, or removed) — record it; the run summary should say.</td></tr>
+    <tr><td class="id">GS-21</td><td>Edit a synced lead in the CRM, sync, then look at the sheet.</td><td>Note which side wins; nothing is lost silently. (Tells us whether sync is one-way or two-way.)</td></tr>
+    <tr><td class="id">GS-22</td><td>Map the "Bad rows" tab to Leads and sync.</td><td>Valid rows are created; each bad row is listed under the run's errors with the row number and the reason.</td></tr>
+    <tr><td class="id">GS-23</td><td>Start a sync of a larger tab (200+ rows) and click Cancel on the run while it is running.</td><td>"Cancelling the sync…", the run ends as cancelled, and its counts show what was done before the cancel.</td></tr>
+    <tr><td class="id">GS-24</td><td>Check the leads created by the sync for workflow / assignment rules.</td><td>Note whether rules ran on synced leads (like an import) and which source the lead shows.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Pause, delete, permissions</h2>
+  <div class="tbl"><table>
+    <tr><th>ID</th><th>Steps</th><th>Expected</th></tr>
+    <tr><td class="id">GS-25</td><td>Pause the connection, change the sheet, wait, then look for automatic syncs.</td><td>"Sync paused"; no run happens while paused; manual Sync is blocked or clearly warned.</td></tr>
+    <tr><td class="id">GS-26</td><td>Resume the connection.</td><td>"Sync resumed"; the next sync runs normally.</td></tr>
+    <tr><td class="id">GS-27</td><td>Remove the service account's access to the sheet in Google, then sync.</td><td>The run fails with a clear message; the connection shows it needs attention.</td></tr>
+    <tr><td class="id">GS-28</td><td>Sign in as a normal user (test user 1) and open the Google Sheets page and its URL directly.</td><td>No access (hidden in Setup and refused by URL), unless the profile has the integration permission.</td></tr>
+    <tr><td class="id">GS-29</td><td>Delete the connection.</td><td>Asks to confirm; "Connection deleted"; it is gone from the list. Note whether leads it created stay (they should).</td></tr>
+    <tr><td class="id">GS-30</td><td>Check Settings › Audit Log for the connection's create, key save, sync and delete.</td><td>Each change is logged with who and when.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Clean-up</h2>
+  <ul>
+    <li>Delete the QA GS connections, then the QA GS leads, and empty them from the recycle bin.</li>
+    <li>Remove the test spreadsheet's share with the service account (or delete the sheet).</li>
+    <li>Send me the case IDs that fail with a screenshot each, and I'll build the annotated evidence and draft the tickets.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Flights and bookings: where to find them</h2>
+  <p>They are not in the menu. The app contains two pages you can open by typing the address while signed in:</p>
+  <ul>
+    <li>Flight search: <code>https://staging-crm.taviportal.com/v2/flights/search</code></li>
+    <li>Bookings: <code>https://staging-crm.taviportal.com/v2/bookings</code></li>
+  </ul>
+  <p class="meta">On 25 Oct both sent the owner straight back to Home. If they still do on the new build, nobody can reach them; if they open, I'll test them in Wave 5.</p>
+</section>
+</div>

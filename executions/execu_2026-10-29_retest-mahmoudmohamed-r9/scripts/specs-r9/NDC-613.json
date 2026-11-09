@@ -1,0 +1,178 @@
+{
+ "out": "NDC-613-retest-PASS.png",
+ "ticket": "NDC-613",
+ "title": "User denied both view login history permissions can still export his own login history",
+ "priority": "high",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "613-direct-url.png",
+   "caption": "Direct URL /settings/security/login-history as U1: Access Denied, no Export button, no Login History link in Security Control.",
+   "crop": [
+    60,
+    56,
+    1540,
+    500
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      710,
+      312,
+      1158,
+      510
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      66,
+      425,
+      266,
+      485
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-613-api.png",
+   "caption": "API evidence — NDC-613 · U1 (CRM User): export GRANTED + view self / team / all DENIED (user overrides) — then the control",
+   "crop": [
+    0,
+    0,
+    1600,
+    391
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      238,
+      1566,
+      279
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      285,
+      1566,
+      326
+     ],
+     "n": 7,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      332,
+      1566,
+      373
+     ],
+     "n": 8,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Screen: direct URL",
+   "Page refused",
+   "\"Access Denied — You don't have permission to view login history\"; no Export",
+   "PASS"
+  ],
+  [
+   "2",
+   "Screen: Settings menu",
+   "No Login History link",
+   "Security Control shows only Org Units",
+   "PASS"
+  ],
+  [
+   "3",
+   "effective permissions",
+   "Views denied, export granted",
+   "iam.security.loginhistory.export only",
+   "INFO"
+  ],
+  [
+   "4",
+   "list",
+   "Refused",
+   "403",
+   "PASS"
+  ],
+  [
+   "5",
+   "export",
+   "Refused (export needs the view permission)",
+   "403",
+   "PASS"
+  ],
+  [
+   "6",
+   "control",
+   "Works when allowed",
+   "list 200, export 200 (23 rows)",
+   "PASS"
+  ],
+  [
+   "7",
+   "export scope",
+   "Never more than the user may see",
+   "All 23 rows are U1's own sessions",
+   "PASS"
+  ],
+  [
+   "8",
+   "cleanup",
+   "—",
+   "All removed (none left)",
+   "INFO"
+  ]
+ ]
+}

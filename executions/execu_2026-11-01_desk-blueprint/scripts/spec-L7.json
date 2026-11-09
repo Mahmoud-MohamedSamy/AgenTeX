@@ -1,0 +1,17 @@
+{
+ "label": "BUG", "verdict": "FAIL", "date": "2 Nov 2026", "out": "BP-L7-move-status-vs-zoho.png", "ticket": "Blueprint",
+ "env": "TAVI: staging-desk.taviportal.com, org Anyware, owner, QA WF Dept R → DAR Review (QA blueprint + ticket #1135, deleted after) · Zoho: Zoho Desk Enterprise trial, Haytham Mohamed → Tech (QA blueprint + ticket #102, deleted after; user OK)",
+ "taviHead": "TAVI Desk (ticket #1135)", "zohoHead": "Zoho Desk (ticket #102)",
+ "title": "Moving a ticket in a blueprint to another department keeps its blueprint status (On Hold); Zoho resets it to Open",
+ "panels": [
+  { "img": "L7-tavi-before.png", "caption": "TAVI before the move: ticket #1135 in blueprint \"QA BP L7 move\", state On Hold, Status \"On Hold\" locked (set by blueprint)", "crop": [365, 60, 870, 780], "boxes": [{ "b": [1036, 107, 1205, 131], "n": 1 }, { "b": [372, 386, 656, 612], "n": 1 }, { "b": [389, 783, 475, 813], "n": 1 }] },
+  { "img": "zoho-L7-before.png", "caption": "Zoho before the move: ticket #102 in the blueprint, state On Hold, Status \"On Hold\" locked", "crop": [330, 60, 870, 920], "boxes": [{ "b": [356, 362, 447, 388], "n": 1 }, { "b": [654, 920, 850, 972], "n": 1 }] },
+  { "img": "L7-tavi-after.png", "caption": "TAVI after POST /desk/tickets/{id}/move to DAR Review (200): no Steps card, owner Unassigned, but Status is still \"On Hold\"", "crop": [365, 60, 870, 780], "boxes": [{ "b": [733, 106, 860, 132], "n": 2 }, { "b": [389, 473, 507, 502], "n": 2 }, { "b": [389, 541, 476, 571], "n": 3 }] },
+  { "img": "zoho-L7-after.png", "caption": "Zoho after Move → Tech (\"The ticket will be moved from 'Haytham Mohamed' to the 'Tech' department.\"): out of the blueprint, owner Unassigned, Status reset to \"Open\"", "crop": [330, 0, 870, 920], "boxes": [{ "b": [1136, 10, 1198, 38], "n": 2 }, { "b": [356, 292, 478, 322], "n": 2 }, { "b": [356, 362, 428, 388], "n": 3 }] }
+ ],
+ "rows": [
+  [1, "Ticket in a blueprint, state On Hold", "Ticket #102 in the blueprint, state On Hold, Status \"On Hold\" locked.", "Ticket #1135 in the blueprint, state On Hold, Status \"On Hold\" locked (\"Set by blueprint QA BP L7 move\").", "INFO"],
+  [2, "Move to another department", "Allowed. The ticket leaves the blueprint (no blueprint strip, Status unlocked) and the owner becomes Unassigned. Zoho help: moved tickets are treated as new tickets in the receiving department and their status is set to Open.", "Allowed (200). The ticket leaves the blueprint (no Steps card) and the owner becomes Unassigned — same as Zoho.", "SAME"],
+  [3, "Status after the move", "Reset to \"Open\" in the new department.", "Stays \"On Hold\" — the status the blueprint set in the old department is carried into the new department, where no blueprint or rule put it there.", "BUG"]
+ ]
+}

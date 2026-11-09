@@ -1,0 +1,137 @@
+{
+ "out": "W4-B3-notifications-down.png",
+ "ticket": "W4-B3",
+ "verdict": "FAIL",
+ "label": "NEW BUG · HIGH",
+ "title": "Notifications | every notification call answers 500 for every user (bell, list, preferences) — 45 min and counting",
+ "env": "staging-crm.taviportal.com (owner, test user 1) · Zoho not compared (an outage, not a feature difference)",
+ "date": "26 Oct 2026",
+ "panels": [
+  {
+   "img": "t-notif-prefs.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "TAVI at 09:15 UTC — My Notifications loads: channels and per-signal delivery; the bell shows 9.",
+   "crop": [
+    268,
+    0,
+    1332,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      141,
+      1060,
+      383
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      1312,
+      8,
+      1350,
+      46
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "t-notif-prefs-owner-500.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "TAVI at 10:38 UTC — the same page for the owner: only the Channels heading; the bell has no count.",
+   "crop": [
+    268,
+    0,
+    1332,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      141,
+      1060,
+      205
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      1312,
+      8,
+      1350,
+      46
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "api-w4b3-notifications-500.png",
+   "w": 1600,
+   "h": 569,
+   "caption": "TAVI API — what the page and the bell get back.",
+   "crop": [
+    0,
+    0,
+    1600,
+    569
+   ],
+   "boxes": [
+    {
+     "b": [
+      16,
+      140,
+      1584,
+      368
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      16,
+      460,
+      1584,
+      552
+     ],
+     "n": 4
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "My Notifications page",
+   "Not compared",
+   "Empty except the Channels heading (was full at 09:15)",
+   "FAIL"
+  ],
+  [
+   "2",
+   "Bell count",
+   "Not compared",
+   "No count (was 9); unread-count answers 500",
+   "FAIL"
+  ],
+  [
+   "3",
+   "Notification API",
+   "Not compared",
+   "list, unread-count and preferences answer 500 INTERNAL_ERROR for the owner and for test user 1 from about 09:50 to at least 10:38 UTC; every other API answers 200",
+   "FAIL"
+  ],
+  [
+   "4",
+   "Activity reminders",
+   "Not compared",
+   "No reminder seen for the two QA tasks (before and overdue) — cannot be judged while notifications are down",
+   "BLOCKED"
+  ]
+ ]
+}

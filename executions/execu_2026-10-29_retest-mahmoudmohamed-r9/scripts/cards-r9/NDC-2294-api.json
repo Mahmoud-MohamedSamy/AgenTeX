@@ -1,0 +1,87 @@
+{
+ "out": "NDC-2294-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2294 · Automation gap list — each item run on Anyware (owner, QA RT leads, custom action \"NDC agency profile\" = read-only GET)",
+ "rows": [
+  [
+   "2 manual approval run",
+   "Import 1 row with manual approval on → approve it",
+   "\"0 added · 1 waiting for approval\"; no lead until approved; approve → lead 26c66d2e, pending 0",
+   "ok"
+  ],
+  [
+   "3 Record Notes trigger",
+   "Rule \"On Note Added\" → add a note to a QA lead",
+   "NoteAdded Fired; Description set",
+   "ok"
+  ],
+  [
+   "3 Record Score trigger",
+   "POST /workflow/rules trigger RecordScoreChanged / RecordScore / ScoreChanged",
+   "400 \"Unknown trigger kind\"; editor category \"Score value\" switched off (\"Scoring rules land in Phase 5\")",
+   "bad"
+  ],
+  [
+   "4 Meeting / Call / Function",
+   "Rule on create: CreateMeeting (office) + ScheduleCall + RunCustomAction",
+   "All three Succeeded (meeting, call created; custom action run)",
+   "ok"
+  ],
+  [
+   "5 Assign Owner by rule",
+   "OwnerAssignment kind AssignmentRule + online-only, email, transfer related",
+   "Owner = rule user; all three options stored",
+   "ok"
+  ],
+  [
+   "6 review functions",
+   "Functions on submitted / approved / rejected / resubmitted; lead held, then approved",
+   "Stored; custom action ran on submission and on approval (Succeeded)",
+   "ok"
+  ],
+  [
+   "7 Anyone / Everyone",
+   "Role / group approver, modes everyone_parallel / _sequential / anyone",
+   "Stored and read back (users + everyone refused). Not run: approver groups hold real users",
+   "ok"
+  ],
+  [
+   "8 approval Call Function",
+   "Final action Call Function → approve a QA lead",
+   "RunCustomAction Succeeded after approval (no longer a no-op)",
+   "ok"
+  ],
+  [
+   "9 blueprint after-actions",
+   "Transition with Tags, Convert, Function, Create record",
+   "Tag added, lead converted, custom action Succeeded, task created",
+   "ok"
+  ],
+  [
+   "10 rejection reasons",
+   "Reasons on one review process",
+   "Stored per process (EN/AR, order); org list unchanged",
+   "ok"
+  ],
+  [
+   "11 scheduled Field Update",
+   "Field Update with a 120 s delay",
+   "Applied after ~150 s",
+   "ok"
+  ],
+  [
+   "12 several conditions",
+   "2 conditions + \"Records not meeting any of the above\"",
+   "First match wins (A→cond1, B→cond2, other untouched); duplicate criteria and else-not-last refused",
+   "ok"
+  ],
+  [
+   "13 \"trigger\": []",
+   "API create with and without \"trigger\": []",
+   "With []: no rule run; without: rule ran",
+   "ok"
+  ]
+ ]
+}

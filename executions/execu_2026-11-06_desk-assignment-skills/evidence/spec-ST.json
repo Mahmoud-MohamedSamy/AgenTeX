@@ -1,0 +1,150 @@
+{
+ "out": "ST-skill-types-not-per-department-vs-zoho.png",
+ "ticket": "NDC-2752 · H-13",
+ "title": "Skill types are shared by all departments; in Zoho each department has its own skill types",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 8 Nov 2026 · Zoho 8 Nov 2026 (live)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · Setup → Skills · Zoho Desk org techsolutionsegypt (admin), dept Haytham Mohamed, Setup → Skills",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-ST-tavi-skills-tab.png",
+   "caption": "TAVI: Setup → Skills → Skills tab has a Department picker (skills are per department)",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    280,
+    60,
+    700,
+    175
+   ],
+   "boxes": [
+    {
+     "b": [
+      286,
+      182,
+      626,
+      224
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-ST-tavi-skill-types-tab.png",
+   "caption": "TAVI: Skill Types tab has no Department picker and says \"Every department uses the same types\"; one list for all departments",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    250,
+    60,
+    730,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      286,
+      180,
+      970,
+      208
+     ],
+     "n": 2,
+     "tag": "left"
+    },
+    {
+     "b": [
+      290,
+      210,
+      966,
+      424
+     ],
+     "n": 3,
+     "tag": "left"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/zoho-skills-2026-11-08.png",
+   "caption": "Zoho: Setup → Skills → SKILLS tab, department picker (Haytham Mohamed)",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    222,
+    48,
+    430,
+    190
+   ],
+   "boxes": [
+    {
+     "b": [
+      334,
+      56,
+      476,
+      88
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/zoho-skill-types-2026-11-08.png",
+   "caption": "Zoho: SKILL TYPES tab keeps the same department picker; the list sits under that department (\"test\" with skill 1)",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    222,
+    48,
+    700,
+    190
+   ],
+   "boxes": [
+    {
+     "b": [
+      334,
+      56,
+      476,
+      88
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      264,
+      176,
+      918,
+      226
+     ],
+     "n": 3
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Skills per department",
+   "Skills tab has a department picker; skills belong to one department (seen).",
+   "Same: Skills tab has a Department picker and skills are per department.",
+   "PASS"
+  ],
+  [
+   2,
+   "Skill types per department",
+   "SKILL TYPES tab has the same department picker as the SKILLS tab (seen), so skill types are managed per department.",
+   "Skill Types tab has no department picker; help text says \"Every department uses the same types.\" The API (GET /desk/skill-types) returns one list with no department.",
+   "FAIL"
+  ],
+  [
+   3,
+   "Skill type list",
+   "The list sits under the selected department (Haytham Mohamed): type \"test\" with its associated skill \"skill 1\" (seen; other departments not opened).",
+   "One list for all departments (General, Tech, QA AS6 Type, QA AS6 Type3); a type cannot belong to a single department.",
+   "FAIL"
+  ]
+ ]
+}

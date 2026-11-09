@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2296-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2296 · Convert a lead waiting for approval (automation D-21 / H-03)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "D-21 convert, User profile",
+   "valafo4080: POST /api/v1/modules/{Leads}/records/{id}/convert",
+   "422 APPROVAL_LOCKED \"This record is awaiting approval and cannot be converted until the approval is complete.\"",
+   "ok"
+  ],
+  [
+   "D-21 convert, CRM Admin",
+   "mmohamed: POST /api/v1/modules/{Leads}/records/{id}/convert",
+   "422 APPROVAL_LOCKED (same message)",
+   "ok"
+  ],
+  [
+   "D-21 delete (control)",
+   "both users: DELETE /api/v1/modules/{Leads}/records/{id}",
+   "422 APPROVAL_LOCKED \"…cannot be deleted until the approval is complete.\"",
+   "ok"
+  ],
+  [
+   "H-03 convert",
+   "nameb56175 and mahmoud.mahamed1515: POST …/convert",
+   "422 APPROVAL_LOCKED (both)",
+   "ok"
+  ]
+ ]
+}

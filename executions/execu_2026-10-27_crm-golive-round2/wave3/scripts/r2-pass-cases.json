@@ -1,0 +1,185 @@
+{
+ "NDC-2421": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Workflow Rules: Field Update is applied on every record saved at the same moment",
+  "src": "after/run2.log line 1563", "zimg": "z-workflow-rules.png",
+  "ztext": "Workflow rules with a Field Update action apply to every matching record",
+  "lines": [
+   ["Case W3-2421 · W3RetestTest#r2421ParallelFieldUpdate — run 2, 27 Oct: PASS", "info"],
+   ["On Create rule with Field Update description = \"QA W3 2421 ran\"; 12 leads created at the same moment (12 parallel threads)", "", "r1"],
+   ["[W3] 2421 parallel creates: 12 of 12 got the Field Update", "ok", "r1"],
+   ["Scope: parallel creates on staging; the original report was parallel edits on the Education First tenant (intermittent)", "info", "r2"]
+  ],
+  "rows": [
+   ["Field Update on 12 records saved at once", "Applied to every matching record", "12 of 12 leads got the Field Update", "PASS"],
+   ["Scope of this check", "—", "Parallel creates on staging (the bug was intermittent on parallel edits)", "INFO"]
+  ]
+ },
+ "NDC-2422": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Assignment Rules: \"Online status\" skips a member who is not online",
+  "src": "after/run2.log lines 87, 92", "zimg": "z-assignment.png",
+  "ztext": "Assignment rule availability: a user who is not online is skipped",
+  "lines": [
+   ["Case A-10 · GroupAJTest#onlineStatusSkipsSignedOutUser — run 2, 27 Oct: PASS", "info"],
+   ["Entry members: [a probe user that never signs in (5b3f7466…, no session), the Supervisor]; fallback CRM Admin B", ""],
+   ["Control (no availability check): lead 8fefa787… owner = 5b3f7466… (the offline first member)", "", "r1"],
+   ["Online status ticked: lead 270997cc… owner = mahmoud.mmohamedsamy (the Supervisor, the next member)", "ok", "r2"]
+  ],
+  "rows": [
+   ["Control rule without the check", "First member gets the record", "Offline first member got the lead", "PASS"],
+   ["Rule with Online status ticked", "Member who is not online is skipped", "Lead went to the next member (Supervisor)", "PASS"]
+  ]
+ },
+ "NDC-2411": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Assignment Rules: a suspended member is skipped and the fallback user gets the record",
+  "src": "after/run5-a17.log", "zimg": "z-assignment.png",
+  "ztext": "Assignment rules skip inactive users; the default user gets the record",
+  "lines": [
+   ["Case A-17 · GroupAJTest#deactivatedUserSkipped (run alone) — run 5, 28 Oct: PASS", "info"],
+   ["Rule on Leads (Import, Api): member = test user 2; fallback Default user = the Supervisor", ""],
+   ["suspend test user 2 -> 204, listed as suspended", "", "r1"],
+   ["imported lead 11d18aee… owner = mahmoud.mmohamedsamy (the Supervisor = fallback)", "ok", "r1"],
+   ["finally: reactivate test user 2 -> listed as active (read back)", "ok", "r2"]
+  ],
+  "rows": [
+   ["Suspended member skipped, fallback gets the lead", "Default user owns it", "Owner = Supervisor (fallback)", "PASS"],
+   ["Test user 2 reactivated", "—", "Active (read back)", "INFO"]
+  ]
+ },
+ "NDC-2391": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Workflow Rules: a condition on Lead Owner matches the lead's owner",
+  "src": "after/run2.log line 636", "zimg": "z-rule-a.png",
+  "ztext": "Workflow rule conditions can use Lead Owner",
+  "lines": [
+   ["Case F-02 · GroupFHandoffTest#f02AssignmentBeforeWorkflowOwnerCriteria — run 2, 27 Oct: PASS", "info"],
+   ["Assignment rule sets the owner on import; workflow rule On Create with condition Owner = that user", ""],
+   ["owner after import = 3445ec4a… (expected 3445ec4a…); assignment rule execution Fired", "ok", "r1"],
+   ["workflow rule with the Lead Owner condition: execution origin=Rule, trigger RecordCreated, outcome Fired", "ok", "r2"]
+  ],
+  "rows": [
+   ["Owner set by the assignment rule", "Assigned user is the owner", "Owner = expected user", "PASS"],
+   ["Rule with condition \"Lead Owner is <user>\"", "Rule runs", "Rule logged Fired on the lead", "PASS"]
+  ]
+ },
+ "NDC-2334": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Blueprint + Approval: editing a deal in a blueprint does not start an approval",
+  "src": "after/run2.log lines 942, 1381, 1452–1462", "zimg": "z-blueprint.png",
+  "ztext": "A record in a blueprint does not enter an approval process",
+  "lines": [
+   ["Case F-20 · GroupFHandoffTest#f20…, VerifyV3#f20ApprovalOnBlueprintRecord, VerifyV5#f20Governance — run 2, 27 Oct: all PASS", "info"],
+   ["Control deal 61b15660… (not in a blueprint) edited to match: approval = pending_approval", "", "r1"],
+   ["Blueprint deal 326527da… edited to match the On Edit approval: approval = null, governed = true", "ok", "r2"],
+   ["Deal 551fe325… governed after create; after edit: approval = null, governed = true", "ok", "r2"],
+   ["[SF F-20] approval on blueprint deal after edit: null, still governed true", "ok", "r2"]
+  ],
+  "rows": [
+   ["Control: deal outside a blueprint", "Approval starts", "pending_approval", "PASS"],
+   ["Deal in a blueprint edited to match", "No approval; deal stays in the blueprint", "Approval null, still governed (3 tests)", "PASS"]
+  ]
+ },
+ "NDC-2323": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Workflow Rules: pending scheduled actions do not run on a converted lead",
+  "src": "after/run2.log lines 931, 1302, 1481–1487", "zimg": "z-workflow-rules.png",
+  "ztext": "Scheduled actions of a converted lead are not executed",
+  "lines": [
+   ["Case H-05 · GroupHIConversionTest#h05…, VerifyV2#h05ScheduledAfterConvert, VerifyV5#h05WebhookAfterConvert — run 2, 27 Oct: all PASS", "info"],
+   ["Scheduled Field Update (2 min): control lead ran = true; converted lead 9a4cc41f… description = null (not applied)", "ok", "r1"],
+   ["Scheduled Webhook (2 min): control 3a09bda3… dispatch Webhook Succeeded", "", "r2"],
+   ["converted lead 94640648… dispatches = [] (nothing sent)", "ok", "r2"]
+  ],
+  "rows": [
+   ["Scheduled Field Update on a converted lead", "Not executed", "Not applied (control applied)", "PASS"],
+   ["Scheduled Webhook on a converted lead", "Not executed", "No dispatch (control sent)", "PASS"]
+  ]
+ },
+ "NDC-2309": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Review Process: reviewer \"Record owner\" is the owner set by the assignment rule on import",
+  "src": "after/run2.log lines 612, 1130–1139", "zimg": "z-review.png",
+  "ztext": "Assignment runs before review, so the assigned owner is the reviewer",
+  "lines": [
+   ["Case F-01 · GroupFHandoffTest#f01…, VerifyV1AssignImportTest#f01RecordOwnerReviewer — run 2, 27 Oct: both PASS", "info"],
+   ["Imported lead 08a8d08a… (Import-channel assignment rule): owner = CRM Admin B, review = pending_for_review", "", "r1"],
+   ["reviewerUserIds = [CRM Admin B]; lead is in CRM Admin B's review queue: true", "ok", "r1"],
+   ["CRM Admin B (assigned owner) approves the field -> 200", "ok", "r2"],
+   ["Control manual lead e4beb310…: reviewer = owner (CRM Admin B)", "", "r3"]
+  ],
+  "rows": [
+   ["Reviewer of the imported, assigned lead", "The assigned owner", "CRM Admin B, in their queue", "PASS"],
+   ["Assigned owner can review", "Yes", "Approve -> 200", "PASS"],
+   ["Control: manual lead", "Owner is reviewer", "Owner is reviewer", "PASS"]
+  ]
+ },
+ "NDC-2308": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Approval Process: approver \"Record Owner\" is the owner set by the assignment rule on import",
+  "src": "after/run3.log lines 529, 689–697", "zimg": "z-approvals.png",
+  "ztext": "Assignment runs before approval, so the assigned owner is the approver",
+  "lines": [
+   ["Case F-03 · GroupFHandoffTest#f03…, VerifyV1AssignImportTest#f03RecordOwnerApprover — run 3, 28 Oct: both PASS", "info"],
+   ["(run 2 was a test-side 409: an approval process with the same name already existed; rerun from scratch in run 3)", "info"],
+   ["Imported lead 72312b3d…: owner = CRM Admin B; currentApprovers = [CRM Admin B]; canApprove = true", "ok", "r1"],
+   ["Control manual leads: approver = each lead's owner", "", "r2"]
+  ],
+  "rows": [
+   ["Approver of the imported, assigned lead", "The assigned owner", "CRM Admin B, can approve", "PASS"],
+   ["Control: manual leads", "Owner is approver", "Owner is approver", "PASS"]
+  ]
+ },
+ "NDC-2298": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Assignment Rules: a rule limited to the API channel does not assign imported leads",
+  "src": "after/run2.log lines 123, 1054–1073", "zimg": "z-assignment.png",
+  "ztext": "Assignment rules are set per channel (records created by that channel)",
+  "lines": [
+   ["Case A-04 · GroupAJTest#ruleWithoutImportChannelNotAppliedToImport, VerifyV1#a04ChannelRestriction — run 2, 27 Oct: both PASS", "info"],
+   ["Rule channels = [Api] only, named on an import", ""],
+   ["Imported lead 170960f9…: owner = null (rule not applied)", "ok", "r1"],
+   ["GroupAJ: imported lead a2d0dcb3… owner = null, rule outcome SkippedNoMatch", "ok", "r1"],
+   ["Control rule with the Import channel: imported lead 6f7223f2… owner = valafo4080 (the rule's user)", "", "r2"]
+  ],
+  "rows": [
+   ["API-only rule on an imported lead", "Not applied", "Owner not set, rule skipped", "PASS"],
+   ["Control: rule with the Import channel", "Applied", "Owner = rule's user", "PASS"]
+  ]
+ },
+ "NDC-2297": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Review Process: a lead held for review cannot be converted",
+  "src": "after/run2.log lines 917–918, 1391", "zimg": "z-review.png",
+  "ztext": "Records under review are locked until a reviewer clears them",
+  "lines": [
+   ["Case H-02 · GroupHIConversionTest#h02…, VerifyV3#h02ConvertPendingReview — run 2, 27 Oct: both PASS", "info"],
+   ["Lead 3e37d81c… review = pending_for_review; edit while held (control) -> 422", "", "r1"],
+   ["Convert as test user -> 422 REVIEW_LOCKED; as CRM Admin A -> 422 REVIEW_LOCKED", "ok", "r1"],
+   ["\"This record is under review and cannot be converted until the review is complete.\"", "ok", "r1"],
+   ["Review after the convert attempt: pending_for_review (unchanged)", "", "r2"]
+  ],
+  "rows": [
+   ["Convert a lead held for review", "Blocked", "422 REVIEW_LOCKED (user and admin)", "PASS"],
+   ["Review status", "Still pending", "pending_for_review", "PASS"]
+  ]
+ },
+ "NDC-2296": {
+  "verdict": "PASS", "label": "STILL PASSES",
+  "title": "Approval Process: a lead waiting for approval cannot be converted",
+  "src": "after/run2.log lines 921–922, 1395–1399", "zimg": "z-approvals.png",
+  "ztext": "A record waiting for approval is locked: Convert, Delete and Edit are disabled",
+  "lines": [
+   ["Case H-03 · GroupHIConversionTest#h03ConvertPendingApprovalBlocked + VerifyV3 — run 2, 27 Oct: PASS", "info"],
+   ["Lead 01f16b46… approval = pending_approval; delete (control) -> 422", "", "r1"],
+   ["Convert as test user -> 422 APPROVAL_LOCKED; as CRM Admin B -> 422 APPROVAL_LOCKED", "ok", "r1"],
+   ["\"This record is awaiting approval and cannot be converted until the approval is complete.\"", "ok", "r1"],
+   ["Approval after the convert attempt: pending_approval (unchanged)", "", "r2"]
+  ],
+  "rows": [
+   ["Convert a lead waiting for approval", "Blocked", "422 APPROVAL_LOCKED (user and admin)", "PASS"],
+   ["Approval status", "Still pending", "pending_approval", "PASS"]
+  ]
+ }
+}

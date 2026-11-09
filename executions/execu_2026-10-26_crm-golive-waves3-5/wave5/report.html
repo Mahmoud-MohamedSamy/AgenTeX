@@ -1,0 +1,134 @@
+<title>CRM Go-Live Wave 5</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then ticket tables, then bug cards, then housekeeping. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6577; --line:#dde2ea; --accent:#2b5fd9;
+  --pass:#1d7a46; --pass-bg:#e3f4ea; --fail:#b42318; --fail-bg:#fde8e6; --warn:#9a6200; --warn-bg:#fdf1d8; --info:#4b5565; --info-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e6e9ef; --muted:#9aa4b5; --line:#2c3441; --accent:#7ea2ff;
+  --pass:#5fd08f; --pass-bg:#173326; --fail:#ff8a7e; --fail-bg:#3a1c1a; --warn:#f0bb5a; --warn-bg:#3a2d12; --info:#b5bdcb; --info-bg:#262d38; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 12px;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.meta{color:var(--muted);font-size:15px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.stat.pass b{color:var(--pass)} .stat.fail b{color:var(--fail)} .stat.warn b{color:var(--warn)}
+section{display:flex;flex-direction:column;gap:12px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.pass{color:var(--pass);background:var(--pass-bg)} .chip.fail{color:var(--fail);background:var(--fail-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)} .chip.info{color:var(--info);background:var(--info-bg)}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bug{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.bug .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bug .top .id{font-family:var(--mono);font-weight:600}
+.bug h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;text-wrap:balance}
+.bug p{color:var(--muted);font-size:15px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+code{font-family:var(--mono);font-size:13.5px;background:var(--info-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">TAVI CRM go-live retest · Wave 5 of 5 (parallel part)</div>
+  <h1>Setup and integrations</h1>
+  <p class="meta">26 Oct 2026 · staging-crm.taviportal.com (NDC-Staging) · checked against Zoho CRM Enterprise (org943261092, read-only) · owner account · Lane C of the parallel plan</p>
+  <p>Admin screens were retested on a separate test module so the other lanes were not disturbed: modules and fields, layouts, layout and validation rules, dependencies, formulas, rollups, unique fields, buttons and links, teamspaces, data types, skills, translations, home page, reports, dashboards, API clients, storage, AI and billing. Tenant-wide settings were only read.</p>
+</header>
+
+<div class="strip">
+  <div class="stat"><b>13</b><span>tickets retested</span></div>
+  <div class="stat pass"><b>9</b><span>pass</span></div>
+  <div class="stat warn"><b>2</b><span>partly</span></div>
+  <div class="stat fail"><b>2</b><span>still fail</span></div>
+  <div class="stat"><b>8</b><span>skipped (In Progress)</span></div>
+  <div class="stat fail"><b>6</b><span>new bug candidates</span></div>
+</div>
+
+<div class="note"><b>Check needed:</b> the tenant time zone is now UTC (it was Africa/Cairo) and business hours are now 09:00–17:00. Wave 5 didn't change them and the tenant-wide window hasn't run yet. I'm finding out where the change came from before anything is set back.</div>
+
+<section>
+  <h2>Ticket results</h2>
+  <div class="tbl"><table>
+    <tr><th>Ticket</th><th>Result</th><th>What we saw</th></tr>
+    <tr><td class="id">NDC-1693</td><td><span class="chip pass">Pass</span></td><td>Creating a module through the API answers 201. The screen dialog is NDC-2384 (In Progress).</td></tr>
+    <tr><td class="id">NDC-1598</td><td><span class="chip pass">Pass</span></td><td>The Field Listing layout filter works.</td></tr>
+    <tr><td class="id">NDC-1335</td><td><span class="chip pass">Pass</span></td><td>A layout without a subform saves with no subform error.</td></tr>
+    <tr><td class="id">NDC-1603</td><td><span class="chip pass">Pass</span></td><td>Restoring a record whose unique value is taken is refused with a clear message.</td></tr>
+    <tr><td class="id">NDC-1232</td><td><span class="chip pass">Pass</span></td><td>The Data Types table has a sticky header and compact columns.</td></tr>
+    <tr><td class="id">NDC-2130 · 2131</td><td><span class="chip pass">Pass</span></td><td>The Arabic strings are now translated.</td></tr>
+    <tr><td class="id">NDC-492</td><td><span class="chip pass">Pass</span></td><td>Tab Order is stored and still set after reload.</td></tr>
+    <tr><td class="id">NDC-1487</td><td><span class="chip pass">Pass</span></td><td>The Storage page exists.</td></tr>
+    <tr><td class="id">NDC-163 · 2027</td><td><span class="chip warn">Partly</span></td><td>Home greets "Welcome ndc-staging-owner" without time of day, first name or date; no My Company View; the pipeline component says "in an upcoming update".</td></tr>
+    <tr><td class="id">NDC-1193</td><td><span class="chip fail">Still fails</span></td><td>Customers accepts a blank record although Name is required; the other modules refuse it.</td></tr>
+    <tr><td class="id">NDC-2536</td><td><span class="chip fail">Still fails</span></td><td>No second currency; a pick-list validation rule is accepted but never applied; formulas have no SUM.</td></tr>
+    <tr><td class="id">NDC-2423 · 2384 · 2383 · 1873 · 1864 · 1863 · 1444 · 1476</td><td><span class="chip info">Skipped</span></td><td>In Progress; retested once they reach Ready For Test.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>New bug candidates</h2>
+  <p class="meta">Not in Plane yet.</p>
+  <div class="bugs">
+    <div class="bug"><div class="top"><span class="id">W5-B1</span><span class="chip warn">Medium</span></div><h3>Validation rules are never applied</h3><p>Rules save, but records that break them still save. Any text is accepted as a rule condition.</p></div>
+    <div class="bug"><div class="top"><span class="id">W5-B2</span><span class="chip warn">Medium</span></div><h3>Reports show rollup fields empty</h3><p>A rollup summary field holds 12 on the record but is always empty in reports (checked 3 times over 40 minutes).</p></div>
+    <div class="bug"><div class="top"><span class="id">W5-B5</span><span class="chip info">Low</span></div><h3>Layout access via the API is ignored</h3><p>Saving layout access through the API does nothing; the assignments endpoint answers 500 on POST and 405 on GET. The screen works.</p></div>
+    <div class="bug"><div class="top"><span class="id">W5-B3</span><span class="chip info">Low</span></div><h3>Duplicate folder name gives 500</h3><p>A teamspace folder name used twice answers 500 instead of a clear "name taken" (409).</p></div>
+    <div class="bug"><div class="top"><span class="id">W5-B4</span><span class="chip info">Low</span></div><h3>Empty dependency map is saved</h3><p>An empty map is stored with all-zero field ids, and the dependency isn't checked when a record is saved.</p></div>
+    <div class="bug"><div class="top"><span class="id">W5-B6</span><span class="chip info">Low</span></div><h3>Module delete advice leads nowhere</h3><p>A plain delete says "retry with cascade", then cascade refuses a module that still has records (409). Seen once; not re-run.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Differences from Zoho (for the gap list)</h2>
+  <ul>
+    <li>Six module tabs say "In Development": Layout Rules, Validation Rules, Record Locking, Map Dependency, Links, Buttons. The APIs exist; Zoho has working screens.</li>
+    <li>Layouts are shared per user, not per profile.</li>
+    <li>Four dashboard components are "Coming soon": Comparator, Anomaly Detector, Target Meter, Funnel.</li>
+  </ul>
+  <p class="meta">Smaller notes: system-only data types can be added by API · a third unique field is accepted · link labels are stored empty · teamspace access mode on create is ignored · a misleading field name in one error message · API-made modules get an empty Default layout · "Change history" twice on Fiscal Year · "New Leads" in the command palette · one billing endpoint answers 500.</p>
+</section>
+
+<section>
+  <h2>Left for the tenant-wide window</h2>
+  <ul>
+    <li>CRM ⇄ Desk integration suite (NDC-2392 … 2410, NDC-2295).</li>
+    <li>Company details, business hours and fiscal year edits.</li>
+    <li>Pipeline settings (blocked while NDC-2386 is open).</li>
+    <li>Schema changes on live modules and the Create Module dialog (mostly In Progress tickets).</li>
+    <li>Not reached: scheduled and emailed reports, summary / matrix / joined reports, dashboard filters and drill-down, home component setup, field permissions on the test module, record-page buttons and links, ingest API duplicate modes.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Automation</h2>
+  <p>New feature <code>crmsetup</code>, merged into <code>automation/</code>: 10 API tests (5 pass, 5 fail = W5-B1, B3, B4, B5 and NDC-1193) and 3 screen tests (2 pass, 1 fails on the module-tabs gap). Suite <code>crm-wave5.xml</code>.</p>
+</section>
+
+<section>
+  <h2>Test data</h2>
+  <p>Every QA W5 module, teamspace, folder, data type, skill, report, dashboard, API client, rule, map, button and link was deleted; the module list matches the morning. 24 recycle-bin items of the deleted test modules can't be removed (the same behaviour as NDC-1797) and expire on 25 Dec 2026.</p>
+  <p class="meta">Evidence images (approved layout) are in <code>executions/execu_2026-10-26_crm-golive-waves3-5/wave5/evidence/annotated/</code>. Nothing went to Plane.</p>
+</section>
+</div>

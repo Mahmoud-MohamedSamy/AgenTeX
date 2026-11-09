@@ -1,0 +1,63 @@
+{
+ "out": "NDC-2412-api.png",
+ "date": "2 Nov 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2 / U3",
+ "title": "NDC-2412 · Role mode, Leads = Hierarchy · U1 (User @ team1) owns the lead; U2 moved between profiles / org units",
+ "rows": [
+  [
+   "C1 Supervisor @team1",
+   "U2 Supervisor, same OU → GET /modules/{Leads}/records/{U1 lead} + list",
+   "200, listed",
+   "ok"
+  ],
+  [
+   "C2 Manager @team1",
+   "U2 Manager, same OU",
+   "200, listed",
+   "ok"
+  ],
+  [
+   "C3 Manager @team2",
+   "U2 Manager, other OU",
+   "403, not listed",
+   "ok"
+  ],
+  [
+   "C4 Supervisor @team2",
+   "other OU",
+   "403",
+   "ok"
+  ],
+  [
+   "C5 User @team1",
+   "same rank",
+   "403",
+   "ok"
+  ],
+  [
+   "C6 Manager @agent x",
+   "child OU of team1",
+   "403",
+   "info"
+  ],
+  [
+   "C7 lower → higher",
+   "U1 opens a Supervisor @team1 lead",
+   "403",
+   "ok"
+  ],
+  [
+   "C8 / C9",
+   "own lead / owner",
+   "200 / 200",
+   "ok"
+  ],
+  [
+   "view_all",
+   "U2 /iam/me/permissions in every step",
+   "no records.view_all; U2 restored to User @ team2",
+   "info"
+  ]
+ ]
+}

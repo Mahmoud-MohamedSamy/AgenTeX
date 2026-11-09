@@ -1,0 +1,18 @@
+const SS='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog/screenshots/';
+const o={};await page.setViewportSize({width:1600,height:900});
+const writes=[];page.on('request',r=>{if(/api\/v1/.test(r.url())&&!['GET','OPTIONS'].includes(r.method())&&!/heartbeat|resolved-batch|iam\/auth|realtime/.test(r.url()))writes.push(r.method()+' '+r.url().replace(/.*api\/v1/,''));});
+await page.goto(H+'/settings/modules-and-fields/88e8ea44-1658-4df3-9930-d0902b91073d/layouts/0dabc9a3-c7f2-4f74-bd1b-9e21373a6c06',{waitUntil:'domcontentloaded',timeout:120000});
+await page.getByText('Case Information',{exact:true}).waitFor({timeout:200000});await sleep(4000);
+const props=async(label,file,exact=true)=>{const r={};try{const l=page.getByText(label,{exact}).first();await l.scrollIntoViewIfNeeded({timeout:15000});await l.hover();await sleep(800);
+ await l.locator('xpath=ancestor::*[.//button][1]').getByRole('button',{name:'Field options'}).click();await sleep(1500);
+ const before=new Set((await page.innerText('body')).split('\n'));
+ await page.getByText('Edit Properties',{exact:true}).last().click();await sleep(3500);
+ const after=(await page.innerText('body')).split('\n');r.dialog=after.filter(x=>x.trim()&&!before.has(x)).slice(0,80);
+ await page.screenshot({path:SS+file});
+ const c=page.getByRole('button',{name:/^Cancel$/}).last();await c.click({timeout:5000}).catch(()=>page.keyboard.press('Escape'));await sleep(1500);
+ }catch(e){r.e=e.message.slice(0,160);await page.keyboard.press('Escape').catch(()=>{});}return r;};
+o.lookup=await props('Contact','2174-08-lookup-props.png');
+o.pick=await props('Language','2174-06-picklist-props.png');
+o.number=await props('QA NDC Number of assigned',' 2174-07-number-props.png'.trim(),false);
+o.writes=writes;
+return o;

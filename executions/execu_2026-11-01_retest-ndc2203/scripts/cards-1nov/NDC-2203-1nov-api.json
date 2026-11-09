@@ -1,0 +1,87 @@
+{
+ "out": "NDC-2203-1nov-api.png",
+ "date": "1 Nov 2026",
+ "host": "staging-desk.taviportal.com (tenant NDC-Staging)",
+ "who": "mahmoud.mahamed1515 (Desk Administrator, not on team CES); fedelav803 (Desk Agent, team CES)",
+ "title": "NDC-2203 · 1 Nov fixes, regression of the 27 Oct fixes, and A5 / B13 / B14 with temporary set-up (QA WF rules, QA tickets #714–#740)",
+ "rows": [
+  [
+   "Fix 1 · Create rule → team",
+   "Admin creates a ticket; rule \"Assign to team CES\" moves it out of view",
+   "201 (was 403), caller_can_read false; agent sees ONE ticket #714, team CES, no owner",
+   "ok"
+  ],
+  [
+   "Fix 1 · no rule, other owner",
+   "Admin creates with owner = another agent / team + no owner",
+   "201 / 201 (were 403); one ticket each (#715, #716)",
+   "ok"
+  ],
+  [
+   "Fix 1 · Edit rule → team",
+   "Admin edits own ticket; Edit rule moves it to team CES",
+   "PATCH 200 (was 403); #717 team CES, no owner",
+   "ok"
+  ],
+  [
+   "Fix 1 · Arabic message",
+   "Desk web app text savedOutOfView (ar)",
+   "\"تم حفظ السجل. نقلته قاعدة سير عمل إلى خارج نطاق رؤيتك.\"",
+   "ok"
+  ],
+  [
+   "Fix 2 · Is Overdue",
+   "Create rule \"Is Overdue = true\", ticket due yesterday",
+   "Fired + \"Workflow rule ran\" row (#719) — row was missing",
+   "ok"
+  ],
+  [
+   "Fix 2 · Execution Time",
+   "Create rules during / outside business hours",
+   "During: fired + row (#720); outside: not fired (#721)",
+   "ok"
+  ],
+  [
+   "Fix 2 · other facts",
+   "Recent Comment, Thread Count, Comment Count, description AND Is Overdue, Status",
+   "All fired with the row (#722, #725, Y5, Y6, Y8)",
+   "ok"
+  ],
+  [
+   "Fix 2 · side effect",
+   "Create rule \"Is Overdue = true\" → Assign to team CES",
+   "Applied: #727 team CES, no owner, row written (did nothing before)",
+   "ok"
+  ],
+  [
+   "27 Oct fixes",
+   "A4 directions, Is Overdue both ways, email with a Desk template, D1, \"by workflow rule\"",
+   "All still work (stored incoming/outgoing/any; true/false correct; template mail sent; no template/body → 400)",
+   "ok"
+  ],
+  [
+   "A5 Happiness Rating trigger",
+   "Customer Happiness ON briefly (user-approved) → rating email → customer rated #736 Bad, #737 Good",
+   "#736: bad-only + all fired (good-only not); #737: good-only + all fired (bad-only not); setting back OFF",
+   "ok"
+  ],
+  [
+   "B13 Recalculate Skills",
+   "Temporary criterion on skill product_expertise (subject contains SKILLQA)",
+   "SKILLQA ticket #738: skill added (changed true); plain #739: nothing (changed false); criterion restored to empty",
+   "ok"
+  ],
+  [
+   "B14 Reassign based on Skills",
+   "Online agent with the skill; Recalculate + Reassign on #740",
+   "reassigned true → owner = the agent; History \"auto assigned by QA WF B14\"",
+   "ok"
+  ],
+  [
+   "Still not verifiable",
+   "B3 / B4 Instant Messaging, B10 Cliq",
+   "Need a WhatsApp brand in SalesIQ and a connected Slack / Cliq workspace (real external accounts)",
+   "info"
+  ]
+ ]
+}

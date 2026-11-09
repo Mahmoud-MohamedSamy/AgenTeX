@@ -1,0 +1,99 @@
+{
+ "out": "B3-team-assignment-off-api-vs-zoho.png",
+ "ticket": "NDC-2275 · F-12",
+ "title": "A team can still be assigned through the API while Team Assignment is off",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 7 Nov 2026 01:42 · Zoho 7 Nov 2026 (live)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · Dept QA AS6 Dept A, team QA AS6 Team A · Zoho Desk org techsolutionsegypt (Enterprise trial, admin), dept Haytham Mohamed",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-B3-team-assignment-off.png",
+   "caption": "TAVI: Setup → Assignment Rules → Team Assignment, QA AS6 Dept A switched OFF",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    292,
+    236,
+    672,
+    160
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      290,
+      955,
+      382
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-B3-ticket.png",
+   "caption": "TAVI: ticket #1189 after POST /desk/tickets/{id}/assign {team_id} (200) — owner QA AS6 Team A",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    370,
+    60,
+    800,
+    460
+   ],
+   "boxes": [
+    {
+     "b": [
+      384,
+      450,
+      650,
+      530
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/zoho-team-assignment-on-2026-11-07.png",
+   "caption": "Zoho: Setup → Teams → \"Team Assignment\" switch per department (shown ON; its tooltip reads \"Click to disallow ticket and activity assignment to teams\")",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    700,
+    50,
+    900,
+    250
+   ],
+   "boxes": [
+    {
+     "b": [
+      1366,
+      54,
+      1534,
+      90
+     ],
+     "n": 1
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Team Assignment switch per department",
+   "One \"Team Assignment\" switch per department; its tooltip says it allows or disallows ticket and activity assignment to teams (seen).",
+   "Same single switch per department, with help text \"Off: only agents can be chosen.\" With it off, the ticket owner picker shows only Agents (correct).",
+   "INFO"
+  ],
+  [
+   2,
+   "Assigning a team while the switch is off",
+   "Not allowed: with Team Assignment off, tickets cannot be assigned to teams (Zoho tooltip, seen). What Zoho's API returns in this state was not checked.",
+   "With Dept A switch OFF, POST /desk/tickets/{id}/assign with team_id returned 200 and ticket #1189 was assigned to QA AS6 Team A. New rules with a team target are refused correctly (team_assignment_off), so only this API path lets it through.",
+   "FAIL"
+  ]
+ ]
+}

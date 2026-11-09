@@ -1,0 +1,8 @@
+// Round 8 cleanup on NDC-Staging CRM: exact ids from ../cleanup-ids.json (ledger.md matched to the read-only inventory).
+const P={"rules":["b28e7bfb-f0b1-4035-a0c0-dddfb060b4b2","a568dbf5-c260-4928-92b1-2abd9e469d4f"],"assign":["54dbfced-30be-440f-914b-9379e8e147b8"],"leads":["e8e8c1dd-8468-4199-8f7c-db017aeebd02","3b0b6ece-2f8c-4446-b13f-65df18bdd78d","bba3bc66-1d83-4314-a086-34fd4f13bcae","8c430ec9-5f2f-4db3-80b7-10134bc6284f","cc2bb773-7075-4b2c-828c-894d0de552df","677aaeb6-e8a0-4d0c-a68a-e454e45d0a85"],"deals":["a60da2df-a13c-4859-8322-eb3339d771c4"],"layouts":["78288b9b-8f12-4360-8d08-9d6338496e12"]}; const L="841043e1-c078-41f9-8d6e-dfd61bee45c3", D="f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430"; const r={};
+r.rules=[]; for (const id of P.rules) { await api("POST","/workflow/rules/"+id+"/deactivate"); r.rules.push((await api("DELETE","/workflow/rules/"+id)).s); }
+r.assign=[]; for (const id of P.assign) { const cur=(await api("GET","/workflow/assignment-rules/"+id)).j?.data; if (cur?.isActive) await api("PATCH","/workflow/assignment-rules/"+id,{...cur,isActive:false}); r.assign.push((await api("DELETE","/workflow/assignment-rules/"+id)).s); }
+r.leads=[]; for (const id of P.leads) r.leads.push((await api("DELETE","/modules/"+L+"/records/"+id)).s);
+r.deals=[]; for (const id of P.deals) r.deals.push((await api("DELETE","/modules/"+D+"/records/"+id)).s);
+r.layouts=[]; for (const id of P.layouts) r.layouts.push((await api("DELETE","/modules/"+L+"/layouts/"+id)).s);
+return r;

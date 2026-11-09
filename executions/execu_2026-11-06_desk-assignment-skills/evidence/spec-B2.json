@@ -1,0 +1,83 @@
+{
+ "out": "B2-email-channel-off-vs-zoho.png",
+ "ticket": "NDC-2275 · RR-10",
+ "title": "Round robin gives tickets to an agent whose Email channel is off",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 6 Nov 2026 19:59 · Zoho 7 Nov 2026 (live, read-only)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · Dept QA AS6 Dept A, rule QA AS6 RR seq (Sequential, A1/A2/A3) · Zoho Desk org techsolutionsegypt (Enterprise trial, admin)",
+ "panels": [
+  {
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/ev-B2-tavi-history.png",
+   "caption": "TAVI: ticket #1122 → History. Owner Mahmoud Samy (A2), whose Email channel was OFF",
+   "w": 1600,
+   "h": 1000,
+   "crop": [
+    664,
+    56,
+    936,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      706,
+      281,
+      995,
+      410
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      706,
+      412,
+      995,
+      450
+     ],
+     "n": 2,
+     "tag": "left"
+    }
+   ]
+  },
+  {
+   "img": "executions/execu_2026-11-06_desk-assignment-skills/screenshots/zoho-rr-preferences-2026-11-07.png",
+   "caption": "Zoho: Setup → Assignment Rules → Round Robin → ⋯ → Round Robin Preferences (opened, closed with Cancel)",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    380,
+    0,
+    840,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      412,
+      56,
+      1188,
+      136
+     ],
+     "n": 1
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Who round robin may pick",
+   "Only agents who are online in the mail channel, unless \"Assign tickets to offline agents\" is on.",
+   "\"Assign tickets to offline agents\" was OFF. A2 was signed in (online: true) but had the Email channel switched off (channels.email: false). Round robin still gave A2 its normal turn: 3 tickets went A3, A1, A2 (#1122 to A2). With all three agents on Email off, the ticket was still assigned (to A3) instead of staying in the backlog.",
+   "FAIL"
+  ],
+  [
+   2,
+   "Skipped agents in the history",
+   "Zoho docs (not shown on this screen): agents who go offline or reach their threshold are marked SKIPPED and moved to the end of the queue.",
+   "History shows \"Assigned automatically … Assigned to Mahmoud Samy\" with no skipped agent. Only a full sign-out (online: false) makes round robin skip the agent (checked: SKIPPED shown).",
+   "FAIL"
+  ]
+ ]
+}

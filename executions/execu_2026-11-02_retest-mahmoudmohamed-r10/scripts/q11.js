@@ -1,0 +1,3 @@
+const all=arr((await api('o','GET','/workflow/rules?take=500')).j?.data); const mc=all.find(x=>x.id.startsWith('c11555bd'));
+const s2=await X.field('o',T.LEADS,'6765b2a8-4384-42f1-815a-3aa2de0e243e','lead_source');
+return {lead2_source_now:s2, base:mc.actions.length, conds:(mc.conditions||[]).map(c=>[JSON.stringify(c.criteria||c.condition||'').slice(0,80),(c.actions||[]).length, c.isElse||c.kind||'']), total:mc.actions.length+(mc.conditions||[]).reduce((a,c)=>a+(c.actions||[]).length,0), condKeys:mc.conditions?.[0]&&Object.keys(mc.conditions[0]), multi: all.filter(x=>(x.conditions||[]).length>0).map(x=>[x.name,(x.actions||[]).length+(x.conditions||[]).reduce((a,c)=>a+(c.actions||[]).length,0)])};

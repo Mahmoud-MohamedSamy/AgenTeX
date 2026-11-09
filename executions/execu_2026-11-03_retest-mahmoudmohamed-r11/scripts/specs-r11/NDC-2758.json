@@ -1,0 +1,113 @@
+{
+ "out": "NDC-2758-retest-PASS.png",
+ "ticket": "NDC-2758",
+ "title": "Blueprint | A blueprint saved with entry criteria in an unknown format is accepted and then catches every ticket in the department",
+ "priority": "medium",
+ "verdict": "PASS",
+ "env": "staging-desk / staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API",
+ "date": "3 Nov 2026",
+ "panels": [
+  {
+   "img": "NDC-2758-api.png",
+   "caption": "API evidence — NDC-2758 · POST /modules/{Tickets}/blueprints, Dept QA RT11 Dept A",
+   "crop": [
+    0,
+    0,
+    1600,
+    344
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      238,
+      1566,
+      279
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      285,
+      1566,
+      326
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "workflow-shape criteria",
+   "400/422 with a clear message",
+   "422 \"The entry criteria cannot be read: a condition must have an 'op'.\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "unknown criteria",
+   "Refused",
+   "422",
+   "PASS"
+  ],
+  [
+   "3",
+   "transition criteria",
+   "Refused",
+   "422 \"Transition 'go': its criteria cannot be read…\"",
+   "PASS"
+  ],
+  [
+   "4",
+   "control",
+   "Saved",
+   "201",
+   "PASS"
+  ],
+  [
+   "5",
+   "non-matching ticket",
+   "Never enters",
+   "not in the blueprint; matching ticket enters at Open",
+   "PASS"
+  ]
+ ]
+}

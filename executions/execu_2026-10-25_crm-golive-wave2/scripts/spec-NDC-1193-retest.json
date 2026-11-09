@@ -1,0 +1,83 @@
+{
+ "out": "NDC-1193-retest.png",
+ "ticket": "NDC-1193",
+ "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)",
+ "date": "26 Oct 2026",
+ "verdict": "FAIL",
+ "label": "STILL FAILS",
+ "title": "A record with no fields is still accepted in Customers",
+ "panels": [
+  {
+   "img": "api-1193-blank-record.png",
+   "w": 1600,
+   "h": 880,
+   "caption": "TAVI — automated test (26 Oct 2026): POST a record with no fields to each of the 15 modules. Customers (module key contacts) answers 201 and creates an empty record (the test deleted it again).",
+   "crop": [
+    0,
+    0,
+    1600,
+    880
+   ],
+   "boxes": [
+    {
+     "b": [
+      20,
+      140,
+      1580,
+      186
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      20,
+      186,
+      1580,
+      785
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-contact-create.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "Zoho — Create Contact: Last Name is marked mandatory (red edge); the form was not submitted.",
+   "crop": [
+    0,
+    0,
+    1600,
+    950
+   ],
+   "boxes": [
+    {
+     "b": [
+      1150,
+      364,
+      1545,
+      402
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Create a Customer (contact) with no fields",
+   "Last Name is mandatory on the form; not checked live whether an empty contact is refused",
+   "POST {data: []} answers 201 and an empty Customer is created",
+   "FAIL"
+  ],
+  [
+   "2",
+   "Same blank create in the other 14 modules",
+   "Not checked live (only the Contacts form was opened)",
+   "422 RECORD_VALIDATION_FAILED in all 14 modules",
+   "PASS"
+  ]
+ ]
+}

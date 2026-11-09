@@ -1,0 +1,18 @@
+const d = page.locator('[role=dialog]').first();
+await d.locator('input[placeholder^="e.g."]').fill('QA R2W5 VR number');
+await d.locator('button', { hasText: '— select field —' }).click(); await sleep(1000);
+const opts1 = (await page.locator('[role=option], [role=listbox] li, [cmdk-item]').allInnerTexts()).slice(0, 30);
+await page.locator('[role=option], [role=listbox] li, [cmdk-item]', { hasText: /^QA Number/ }).first().click().catch(e => opts1.push('ERR ' + e.message.slice(0, 80))); await sleep(800);
+await d.locator('button[aria-label="Operator"], button', { hasText: /equals|Operator/ }).first().click(); await sleep(800);
+const opts2 = (await page.locator('[role=option], [role=listbox] li, [cmdk-item]').allInnerTexts()).slice(0, 30);
+await page.locator('[role=option], [role=listbox] li, [cmdk-item]', { hasText: /greater than|is greater|>/i }).first().click().catch(e => opts2.push('ERR ' + e.message.slice(0, 80))); await sleep(800);
+const valInput = d.locator('input[type=text], input[type=number]').nth(1);
+await valInput.fill('10').catch(() => {});
+await d.locator('textarea').first().fill('QA R2W5: number must be 10 or less');
+await shot('c04-rule-filled');
+const saveResp = page.waitForResponse(r => /validation-rules/.test(r.url()) && r.request().method() !== 'GET', { timeout: 20000 }).catch(() => null);
+await d.locator('button', { hasText: /^Save$/ }).click();
+const r = await saveResp; await sleep(2500);
+await shot('c04-rule-saved');
+const list = (await page.innerText('main')).replace(/\s+/g, ' ');
+return { opts1, opts2, save: r ? r.status() + ' ' + (await r.text()).slice(0, 400) : 'no request', list: list.slice(list.lastIndexOf('Validation Rules'), list.lastIndexOf('Validation Rules') + 500) };

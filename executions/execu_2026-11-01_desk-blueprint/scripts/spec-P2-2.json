@@ -1,0 +1,82 @@
+{
+ "label": "BUG",
+ "verdict": "FAIL",
+ "date": "2 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, org Anyware, owner, QA WF Dept R (QA records, deleted after) · Zoho: Zoho Desk Enterprise trial, Setup › Blueprint (read only)",
+ "out": "BP-P2-2-vs-zoho.png",
+ "ticket": "BP-P2-2",
+ "taviHead": "TAVI Desk (API log, designer)",
+ "zohoHead": "Zoho Desk (State Level SLA)",
+ "title": "The API saves a negative state time limit; the designer shows \"No limit\" and tickets get no timer",
+ "panels": [
+  {
+   "img": "P2-2-api.png",
+   "caption": "TAVI API: slaMinutes -1 saved (201); live ticket has no due time",
+   "crop": [
+    0,
+    0,
+    1600,
+    490
+   ],
+   "boxes": []
+  },
+  {
+   "img": "zoho-state-sla-escalation.png",
+   "caption": "Zoho: the state SLA time is picked from a list of positive values",
+   "crop": [
+    1130,
+    160,
+    470,
+    320
+   ],
+   "boxes": [
+    {
+     "b": [
+      1140,
+      255,
+      1445,
+      305
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "P2-2-ui.png",
+   "caption": "TAVI designer of the saved blueprint: Time limit shows \"No limit\", no issue banner",
+   "crop": [
+    300,
+    60,
+    1300,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      1254,
+      268,
+      1586,
+      326
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Saving a negative time limit",
+   "The SLA time is chosen from a list, so a negative or zero time cannot be entered.",
+   "POST blueprint with slaMinutes -1 answers 201 Created and stores -1 (0 is stored too). Decimals and text are refused, so only the sign check is missing.",
+   "BUG"
+  ],
+  [
+   2,
+   "What the admin and the ticket see",
+   "Not possible to save.",
+   "The blueprint can be made active; tickets enter with no due time. The designer shows \"No limit\" with no error, so the saved -1 is hidden.",
+   "BUG"
+  ]
+ ]
+}

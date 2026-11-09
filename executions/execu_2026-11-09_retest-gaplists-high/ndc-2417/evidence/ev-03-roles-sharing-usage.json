@@ -1,0 +1,113 @@
+{
+ "out": "annotated/ev-03-roles-sharing-usage-vs-zoho.png",
+ "id": "NDC-2417 items 3, 5, 6, 10–19",
+ "title": "Roles, data sharing, where the hierarchy is used, API",
+ "verdict": "PARTIAL",
+ "sub": "TAVI CRM (staging-crm, tenant NDC-Staging) vs Zoho CRM org943261092 (21 Oct 2026 captures/docs)",
+ "date": "TAVI 9 Nov 2026",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Live checks 9 Nov (API as Owner + app text files)",
+   "flag": "LIVE API / APP TEXT CHECK — tenant NDC-Staging",
+   "text": [
+    "/iam/roles, /iam/hierarchy, /settings/roles → 404; /iam/sharing-rules, /settings/data-sharing → 404; /iam/users/{id}/subordinates → 404 (only /iam/me/subordinates).",
+    "Record visibility per CRM module: Public, Public Read Only (new), Hierarchy.",
+    "Approval approvers: Users, Role, Groups, Levels (new: \"Reporting depth — how many levels up the reporting chain to ask\"), Manager, Record Owner, User Lookup Field, \"Assign to the submitter's manager\".",
+    "Workflow email recipients: Users, Org Units, Roles, Profiles, User fields, Teams, \"Roles and subordinates\" — no record owner's manager. Blueprint owners: users / \"Allow record owner\" — no Reporting Manager.",
+    "No text for Share Data with Peers, Transfer & Delete, subordinate prompts on delete/suspend or profile change, or \"Reporting To\" in views/filters/reports."
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Security Control → Roles and Sharing → Roles",
+   "img": "../../../../docs/crm-hierarchy-preference/evidence/originals/zoho-z02-roles.png",
+   "boxes": [
+    {
+     "n": 3,
+     "x": 287,
+     "y": 290,
+     "w": 170,
+     "h": 115
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Roles and Sharing → Data Sharing Settings → Default Organization Permissions",
+   "img": "../../../../docs/crm-hierarchy-preference/evidence/originals/zoho-z05-data-sharing.png",
+   "boxes": [
+    {
+     "n": 16,
+     "x": 287,
+     "y": 110,
+     "w": 900,
+     "h": 560
+    }
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "3",
+   "b": "Roles tree separate from profiles",
+   "zoho": "Roles under Roles and Sharing",
+   "tavi": "Still profile rank; roles APIs 404",
+   "match": "Gap"
+  },
+  {
+   "n": "—",
+   "b": "Share Data with Peers (5) · Transfer & Delete (6)",
+   "zoho": "Per role / on delete",
+   "tavi": "Not present",
+   "match": "Gap"
+  },
+  {
+   "n": "—",
+   "b": "Manager delete/deactivate prompt (10) · role-change check (11)",
+   "zoho": "Asks where reports go / to change manager",
+   "tavi": "Not present",
+   "match": "Gap"
+  },
+  {
+   "n": "—",
+   "b": "\"Reporting To\" in reports/views/filters/merge fields (12)",
+   "zoho": "Available",
+   "tavi": "Only the Reporting Manager user field in assignment criteria",
+   "match": "Gap"
+  },
+  {
+   "n": "—",
+   "b": "Workflow email to owner's manager (13) · Blueprint owner Reporting Manager (14)",
+   "zoho": "Available",
+   "tavi": "Not present",
+   "match": "Gap"
+  },
+  {
+   "n": "—",
+   "b": "Approval levels up the hierarchy (15)",
+   "zoho": "1st/2nd/3rd level or all up to 2nd/3rd; no-manager fallback",
+   "tavi": "NEW approver type Levels with a reporting depth; \"all up to N\" and the fallback not visible; not run",
+   "match": "PARTIAL"
+  },
+  {
+   "n": "16",
+   "b": "Default access per module",
+   "zoho": "Private, Public Read Only, Public Read/Write, Public Read/Write/Delete",
+   "tavi": "Public, Public Read Only (new), Hierarchy",
+   "match": "PARTIAL"
+  },
+  {
+   "n": "—",
+   "b": "Sharing rules (17) · Roles API (18) · any user's subordinates (19)",
+   "zoho": "Available",
+   "tavi": "All 404",
+   "match": "Gap"
+  }
+ ],
+ "notes": [
+  "Sources: live API GET calls as Owner and the app's own text files (iam, crm-approvals, crm-workflow, crm-blueprint, crm-modules), 9 Nov 2026."
+ ],
+ "zohoCol": "Zoho CRM",
+ "taviCol": "TAVI CRM"
+}

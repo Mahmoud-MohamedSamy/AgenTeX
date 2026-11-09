@@ -1,0 +1,71 @@
+<title>TAVI Desk Go-Live Inventory</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600&display=swap">
+<style>
+/* Layout: a single working column — summary tiles, wave list, then one filterable feature register (ticket-desk ledger feel). */
+:root{
+  --bg:#f6f7f9; --panel:#ffffff; --fg:#1b2230; --muted:#5d6676; --line:#dfe3ea; --accent:#2d5bd7;
+  --ok:#1f7a4d; --ok-bg:#e3f3ea; --warn:#9a6200; --warn-bg:#fbf0d9; --bad:#b4232c; --bad-bg:#fbe4e5; --info:#5a3fb8; --info-bg:#ece7fb; --grey-bg:#eceef2;
+  --display:"Fraunces",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --panel:#1a2029; --fg:#e4e8ef; --muted:#9aa3b2; --line:#2c3441; --accent:#7ea2ff;
+  --ok:#6fd3a0; --ok-bg:#16352a; --warn:#f0bf63; --warn-bg:#3a2f16; --bad:#ff8f95; --bad-bg:#3d1c20; --info:#b9a6ff; --info-bg:#2a2445; --grey-bg:#252c37; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --panel:#1a2029; --fg:#e4e8ef; --muted:#9aa3b2; --line:#2c3441; --accent:#7ea2ff;
+  --ok:#6fd3a0; --ok-bg:#16352a; --warn:#f0bf63; --warn-bg:#3a2f16; --bad:#ff8f95; --bad-bg:#3d1c20; --info:#b9a6ff; --info-bg:#2a2445; --grey-bg:#252c37; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body)}
+.wrap{max-width:1240px;margin:0 auto;padding-block:28px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
+h1{font:600 clamp(24px,3.4vw,34px)/1.15 var(--display);margin:0;text-wrap:balance}
+h2{font:600 19px/1.3 var(--display);margin:0 0 8px}
+.meta{color:var(--muted);margin:6px 0 0;max-width:80ch}
+.tiles{display:flex;flex-wrap:wrap;gap:10px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;display:grid;min-width:110px}
+.tile b{font:500 22px var(--mono);font-variant-numeric:tabular-nums}.tile span{color:var(--muted);font-size:13px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+.box ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.legend{color:var(--muted);font-size:13.5px;margin:0;max-width:95ch}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.bar label{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+select,input{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+input{min-width:0;flex:1 1 220px}
+select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.tbl{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:980px;font-size:13.5px}
+th{position:sticky;top:0;background:var(--panel);text-align:left;font-weight:600;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding:9px 10px}
+td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}
+td.id{font-family:var(--mono);white-space:nowrap}
+td.ev{color:var(--muted);font-size:12.5px;max-width:300px}
+td.pl{font-family:var(--mono);font-size:12px;max-width:220px}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:500;white-space:nowrap;background:var(--grey-bg)}
+.pill.built{background:var(--ok-bg);color:var(--ok)}.pill.partly{background:var(--warn-bg);color:var(--warn)}
+.pill.missing{background:var(--bad-bg);color:var(--bad)}.pill.tavi-only{background:var(--info-bg);color:var(--info)}
+.pill.in-development,.pill.not-confirmed{background:var(--grey-bg);color:var(--muted)}
+.count{color:var(--muted);font-size:13px}
+</style>
+<div class="wrap">
+  <header>
+    <h1>TAVI Desk go-live inventory</h1>
+    <p class="meta">Every Desk feature in today's build, set against Zoho Desk Enterprise. Build: staging-desk.taviportal.com, org Anyware, 1 Nov 2026. Reference: the Zoho Desk help centre (2,491 items) and the live Zoho Desk trial org. Open Plane items come from the Desk module (353 items).</p>
+  </header>
+  <div class="tiles">{{TILES}}</div>
+  <p class="legend"><b>Built</b> means the screen and its API exist in today's build. Whether it works is decided in the wave runs. <b>Partly</b>: it exists, but a known part is missing. <b>Missing</b>: Zoho has it, and TAVI has no screen or API for it. <b>In development</b>: TAVI shows an "In Development" page. <b>Not confirmed</b>: it could not be checked yet. <b>TAVI-only</b>: TAVI has it and Zoho does not.</p>
+  <section class="box"><h2>Retest waves</h2><ul>{{WAVES}}</ul></section>
+  <section>
+    <div class="bar">
+      <label for="fw">Wave</label><select id="fw"><option value="">All</option><option value="1">W1</option><option value="2">W2</option><option value="3">W3</option><option value="4">W4</option><option value="5">W5</option><option value="0">Not in run</option></select>
+      <label for="fs">Status</label><select id="fs"><option value="">All</option>{{STATUSES}}</select>
+      <input id="fq" type="search" placeholder="Search feature, evidence or NDC id">
+      <span class="count" id="cnt"></span>
+    </div>
+  </section>
+  <div class="tbl"><table><thead><tr><th>Id</th><th>Area</th><th>Feature</th><th>TAVI status</th><th>Evidence</th><th>Open Plane items</th><th>Pri</th><th>Wave</th></tr></thead><tbody id="tb">
+{{ROWS}}
+  </tbody></table></div>
+</div>
+<script>
+const fw=document.getElementById('fw'),fs=document.getElementById('fs'),fq=document.getElementById('fq'),cnt=document.getElementById('cnt'),trs=[...document.querySelectorAll('#tb tr')];
+function apply(){const w=fw.value,s=fs.value,q=fq.value.trim().toLowerCase();let n=0;for(const t of trs){const ok=(!w||t.dataset.w===w)&&(!s||t.dataset.s===s)&&(!q||t.textContent.toLowerCase().includes(q));t.hidden=!ok;if(ok)n++;}cnt.textContent=n+' of '+trs.length+' features';}
+[fw,fs].forEach(e=>e.addEventListener('change',apply));fq.addEventListener('input',apply);apply();
+</script>

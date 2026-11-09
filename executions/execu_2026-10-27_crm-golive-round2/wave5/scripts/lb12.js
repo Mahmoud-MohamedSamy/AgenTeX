@@ -1,0 +1,13 @@
+const res = {};
+const s = page.locator('text=/^Rollup Sum/').first(); const b = await s.boundingBox();
+const sec = await page.locator('text=Basic Information').first().boundingBox();
+await page.mouse.move(b.x + 10, b.y + b.height / 2); await page.mouse.down();
+await page.mouse.move(b.x + 40, b.y + 20, { steps: 5 }); await page.mouse.move(700, sec.y + 140, { steps: 20 }); await sleep(300); await page.mouse.move(710, sec.y + 150, { steps: 5 }); await sleep(300);
+await page.mouse.up(); await sleep(2500);
+const panel = page.locator('xpath=//*[normalize-space(text())="Field Properties"]/ancestor::*[.//button[normalize-space(.)="Apply"]][1]').first();
+await panel.locator('button, [role=tab]', { hasText: /^ADVANCED$/ }).first().click(); await sleep(1000);
+res.adv1 = (await panel.innerText()).replace(/\s+/g, ' ').slice(0, 900);
+const sels = panel.locator('select'); res.nsel = await sels.count();
+res.selOpts = []; for (let i = 0; i < res.nsel; i++) res.selOpts.push(await sels.nth(i).evaluate(s => [...s.options].map(o => o.text).join('/')));
+await shot('c01-1444-adv');
+return res;

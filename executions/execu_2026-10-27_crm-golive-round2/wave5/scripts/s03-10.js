@@ -1,0 +1,12 @@
+const res = {};
+const net = []; const on = x => { if (/reporting/.test(x.url()) && x.request().method() === 'POST') net.push(x.url().replace(/^.*\/api\/v1/, '').slice(0, 80) + ' ' + x.status() + ' ' + (x.request().postData() || '').slice(0, 300)); }; page.on('response', on);
+await page.locator('main button', { hasText: 'QA Pick filter' }).first().click(); await sleep(1200);
+await page.locator('button, [role=combobox]', { hasText: /^Select…$/ }).first().click(); await sleep(1200);
+res.opts = await page.evaluate(() => [...document.querySelectorAll('[role=option], [cmdk-item], [role=menuitemcheckbox], label')].map(e => e.innerText.trim()).filter(Boolean).slice(0, 20));
+await page.locator('[role=option], [cmdk-item], [role=menuitemcheckbox], label', { hasText: /^Green$/ }).first().click(); await sleep(800);
+await page.keyboard.press('Escape'); await sleep(300); await page.keyboard.press('Escape');
+await sleep(5000);
+await shot('s03-filter-green');
+page.off('response', on); res.net = net.slice(-4);
+res.after = (await page.innerText('main')).replace(/\s+/g, ' ').slice(0, 400);
+return res;

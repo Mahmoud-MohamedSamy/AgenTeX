@@ -1,0 +1,13 @@
+{ "out": "api-w4b3-notifications-500.png", "title": "TAVI API — notification endpoints, 26 Oct 2026 (owner and test user 1)",
+  "lines": [
+    ["09:25 UTC  owner  GET /notifications?limit=10            -> 200 (list returned)", "ok"],
+    ["09:59 UTC  user 1 GET /notifications/preferences/me     -> 500 INTERNAL_ERROR", "bad"],
+    ["10:00 UTC  user 1 GET /notifications/unread-count       -> 500    GET /notifications -> 500", "bad"],
+    ["10:04 UTC  owner  GET /notifications?limit=50           -> 500 INTERNAL_ERROR", "bad"],
+    ["10:04 UTC  owner  GET /notifications/preferences/me     -> 500    unread-count -> 500", "bad"],
+    ["10:21 UTC  owner + user 1: all three                    -> 500", "bad"],
+    ["10:37 UTC  owner: all three                             -> 500  (about 45 minutes)", "bad"],
+    ["Same time: /iam/me/profile, records, mail, web forms     -> 200 (only notifications fail)", "info"],
+    ["Effect: bell shows no count, My Notifications shows only the Channels heading,", "bad"],
+    ["        and the QA tasks' reminders (09:52 / 09:59 / 10:01 / 10:08) were never seen", "bad"]
+  ] }

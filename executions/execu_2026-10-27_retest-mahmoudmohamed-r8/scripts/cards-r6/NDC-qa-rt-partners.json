@@ -1,0 +1,37 @@
+{
+ "out": "NDC-qa-rt-partners.png",
+ "date": "26 Oct 2026",
+ "title": "Module \"QA RT partners\" lifecycle — NDC-2384 (create) · NDC-2388 (conversion target) · NDC-1864 (disable)",
+ "rows": [
+  [
+   "NDC-2384 create",
+   "Create module dialog → POST /api/v1/teamspaces/5ea90671…/modules {plural, singular, key qa_rt_partners}",
+   "201 — module abf9acff created",
+   "ok"
+  ],
+  [
+   "NDC-2388 conversion target",
+   "GET /api/v1/modules/{Leads}/conversion/targets",
+   "QA RT partners isConversionTarget = false (no Create when, no Field Mapping column)",
+   "ok"
+  ],
+  [
+   "NDC-1864 switch off",
+   "Modules list status toggle",
+   "\"Module updated successfully\"; module status disabled; not in sidebar",
+   "ok"
+  ],
+  [
+   "NDC-1864 read records",
+   "GET /api/v1/modules/{QA RT partners}/records",
+   "403 \"This module is disabled…\"",
+   "ok"
+  ],
+  [
+   "NDC-1864 create record",
+   "POST /api/v1/modules/{QA RT partners}/records",
+   "403 \"This module is disabled…\"",
+   "ok"
+  ]
+ ]
+}

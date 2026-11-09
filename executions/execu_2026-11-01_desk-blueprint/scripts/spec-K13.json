@@ -1,0 +1,15 @@
+{
+ "label": "BUG", "verdict": "FAIL", "date": "3 Nov 2026", "out": "BP-K13-warning-actions-vs-zoho.png", "ticket": "Blueprint",
+ "env": "TAVI: staging-desk.taviportal.com, org NDC-Staging, owner, Customer Support (QA blueprints + tickets, deleted after; receiver = webhook.site test inbox) · Zoho: Zoho Desk Enterprise trial (read only)",
+ "taviHead": "TAVI Desk (state limit with a warning action)", "zohoHead": "Zoho Desk (state-level SLA escalation)",
+ "title": "Actions set at a blueprint state's warning never run (webhook or custom action); actions when the time runs out do run",
+ "panels": [
+  { "img": "K13-warning-api.png", "caption": "TAVI: 2-minute state limit, warning 1 minute before. The warning webhook never reached the receiver; the time-out webhook did (09:01:48). Same with a custom action at the warning (2 runs)", "crop": [0, 0, 1600, 900], "boxes": [] },
+  { "img": "zoho-state-sla-escalation.png", "caption": "Zoho: a state-level SLA escalation runs at its configured point and notifies the chosen people", "crop": [1121, 160, 479, 560], "boxes": [{ "b": [1150, 352, 1570, 690], "n": 1 }] }
+ ],
+ "rows": [
+  [1, "Action at the state warning (webhook)", "Escalation actions run at their configured time.", "Warning due 09:00:14 (not provisional) — the webhook never arrived (checked until 09:02).", "BUG"],
+  [2, "Action at the state warning (custom action)", "Not applicable.", "Warning due 08:15:16 — the custom action never ran (receiver checked until 08:18).", "BUG"],
+  [3, "Control: action when the time runs out", "Runs on time.", "Webhook arrived 09:01:48; custom action arrived 08:20:46 — so the timer works and only warning actions are skipped.", "INFO"]
+ ]
+}

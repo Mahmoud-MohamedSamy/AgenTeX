@@ -1,0 +1,51 @@
+{
+ "out": "F1-permission-denied-api.png",
+ "host": "staging-desk.taviportal.com",
+ "who": "mahmoud.mahamed1515 (Desk Administrator); fedelav803 (Desk Agent) to read the tickets",
+ "date": "27 Oct 2026",
+ "title": "Saving a ticket the saver cannot see afterwards: response vs what was stored",
+ "rows": [
+  [
+   "form, owner = colleague",
+   "New Ticket form › Owner = Customer Experience Specialists 2 › Save",
+   "403 PERMISSION_DENIED, toast \"Permission denied.\", form stays open — ticket #675 exists (owner = colleague)",
+   "bad"
+  ],
+  [
+   "same form saved twice",
+   "Save, toast, Save again",
+   "403 + 403 → two tickets #676 and #677 (duplicates)",
+   "bad"
+  ],
+  [
+   "API, no rule",
+   "POST /modules/{Tickets}/records with owner = colleague / with team only",
+   "403 both — tickets #671 and #672 exist",
+   "bad"
+  ],
+  [
+   "rule: assign to team",
+   "Create rule Owner Assignment › Team (runs inside the create)",
+   "403 — tickets #605, #616, #617, #658 exist on the team",
+   "bad"
+  ],
+  [
+   "rule: assign to user",
+   "Create rule Owner Assignment › SpecificUser (runs 0.5 s after create)",
+   "201 — #673; creator silently loses access, no message",
+   "info"
+  ],
+  [
+   "edit",
+   "PATCH on own ticket; Edit rule moves it to a team",
+   "403 — edit saved, team set (#650)",
+   "bad"
+  ],
+  [
+   "control",
+   "Form without owner / team (unassigned)",
+   "201 — #657 saved and opened",
+   "ok"
+  ]
+ ]
+}

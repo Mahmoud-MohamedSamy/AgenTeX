@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2703-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2703 · Record lock rules on Leads (API the settings tab uses)",
+ "rows": [
+  [
+   "free text",
+   "POST record-locks condition \"zz not a condition !!\"",
+   "400 INVALID_RECORD_LOCK (asks for filter criteria)",
+   "ok"
+  ],
+  [
+   "valid rule",
+   "condition first_name starts_with \"QA RT 2703 LK\"",
+   "201, active",
+   "ok"
+  ],
+  [
+   "edit as owner",
+   "PATCH the matching lead",
+   "422 RECORD_LOCKED \"This record is locked by the rule 'QA RT 2703 lock'…\"",
+   "ok"
+  ],
+  [
+   "edit as U1",
+   "Same as test user 1",
+   "422 RECORD_LOCKED",
+   "ok"
+  ],
+  [
+   "control",
+   "Edit a lead that doesn't match",
+   "200",
+   "ok"
+  ]
+ ]
+}

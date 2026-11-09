@@ -1,0 +1,11 @@
+const L = '841043e1-c078-41f9-8d6e-dfd61bee45c3', lid = '6bf87122-6d42-48e9-acb1-1b5a63e4fcfb'; const out = {};
+const user = arr((await api('GET', '/iam/profiles')).j?.data).find(p => p.name === 'User');
+const base = async () => { const g = (await api('GET', `/modules/${L}/layouts/${lid}`)).j?.data; const b = { ...g }; delete b.id; return b; };
+const rd = async () => { const g = (await api('GET', `/modules/${L}/layouts/${lid}`)).j?.data; return g.accessMode + ' ' + JSON.stringify(g.assignedProfiles); };
+const p1 = await api('PUT', `/modules/${L}/layouts/${lid}`, { ...(await base()), accessMode: 'selected', assignedProfiles: [user.id] }); out.p1 = p1.s + ' ' + JSON.stringify(p1.j?.error?.details || '').slice(0, 300) + ' → ' + await rd();
+const p2 = await api('PUT', `/modules/${L}/layouts/${lid}`, { ...(await base()), accessMode: 'selected', assignedProfiles: [{ profileId: user.id }] }); out.p2 = p2.s + ' ' + (p2.s >= 300 ? JSON.stringify(p2.j?.error?.details || p2.t).slice(0, 300) : '') + ' → ' + await rd();
+const p3 = await api('PUT', `/modules/${L}/layouts/${lid}`, { ...(await base()), accessMode: 'selected', assignedProfiles: [{ id: user.id, name: 'User' }] }); out.p3 = p3.s + ' ' + (p3.s >= 300 ? JSON.stringify(p3.j?.error?.details || p3.t).slice(0, 300) : '') + ' → ' + await rd();
+const p4 = await api('PUT', `/modules/${L}/layouts/${lid}`, { ...(await base()), accessMode: 'selected' }); out.p4 = p4.s + ' ' + (p4.s >= 300 ? JSON.stringify(p4.j?.error?.details || p4.t).slice(0, 300) : '') + ' → ' + await rd();
+const a1 = await api('POST', `/modules/${L}/layouts/assignments`, { assignments: [{ profile_id: user.id, layout_id: lid }] }); out.a1 = a1.s + ' ' + a1.t.slice(0, 260);
+out.profileShape = Object.keys(user);
+return done(out);

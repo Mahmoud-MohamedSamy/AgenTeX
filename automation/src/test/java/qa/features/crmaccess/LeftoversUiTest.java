@@ -111,7 +111,7 @@ public class LeftoversUiTest extends BaseTest {
         String key = "iam.user.view";
         String effect0 = effectOf(profileId, key);   // GRANT, DENY or null (inherit / not set)
         boolean had = "GRANT".equals(effect0);
-        AccessScreensPage p = new AccessScreensPage().open("/settings/security/permissions", "Create permission", 40);
+        AccessScreensPage p = new AccessScreensPage().open("/settings/security/permissions", "Create profile", 60);   // label was "Create permission" before the 27 Oct build (NDC-2547)
         p.clickText(profileName);
         Waits.sleep(3000);
         boolean ownerOnly = p.text().toLowerCase().contains("owner only");

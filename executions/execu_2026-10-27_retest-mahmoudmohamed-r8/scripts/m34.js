@@ -1,0 +1,1 @@
+const c = await api('GET', '/mail/connections'); return done({ s: c.s, list: arr(c.j?.data).map(x => ({ id: x.id, provider: x.provider || x.kind, email: (x.email || x.address || '').replace(/@.*/, '@…'), health: x.health || x.status, can_send: x.can_send, scope: x.scope || x.owner_kind })) });

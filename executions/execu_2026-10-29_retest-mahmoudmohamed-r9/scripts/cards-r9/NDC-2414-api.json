@@ -1,0 +1,45 @@
+{
+ "out": "NDC-2414-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2414 · U2 (CRM User @ team2) with the Desk Administrator profile added — CRM record access",
+ "rows": [
+  [
+   "profiles by app",
+   "GET /iam/me as U2 (Desk Administrator added)",
+   "desk: Desk Administrator; crm: User — kept apart",
+   "info"
+  ],
+  [
+   "CRM permissions",
+   "GET /iam/me/permissions?app_key=crm",
+   "No metadata.records.view_all",
+   "ok"
+  ],
+  [
+   "open other leads",
+   "GET a team1 user's lead and an owner lead",
+   "403 / 403",
+   "ok"
+  ],
+  [
+   "Leads list",
+   "GET Leads list",
+   "Neither lead listed (only U2's own part of the hierarchy)",
+   "ok"
+  ],
+  [
+   "unscoped list",
+   "GET /iam/me/permissions (no app)",
+   "Still merges metadata.records.view_all, modules.manage, mass_delete … from the Desk profile — has no effect on CRM records",
+   "info"
+  ],
+  [
+   "restore",
+   "U2 profiles",
+   "Desk Administrator removed → User @ team2",
+   "info"
+  ]
+ ]
+}

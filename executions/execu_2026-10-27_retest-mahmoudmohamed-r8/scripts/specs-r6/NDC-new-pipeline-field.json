@@ -1,0 +1,167 @@
+{
+ "out": "NDC-new-pipeline-field-BUG.png",
+ "ticket": "NEW BUG",
+ "label": "NEW BUG",
+ "verdict": "FAIL",
+ "title": "Deals | A custom field named \"pipeline\" overrides the real pipeline: every deal is refused on any pipeline but the default",
+ "date": "26–27 Oct 2026",
+ "env": "staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (CRM Admin)",
+ "panels": [
+  {
+   "img": "pipe-01-field-list.png",
+   "caption": "Settings › Modules and Fields › Transactions (Deals) › Fields: \"Pipeline\", API name pipeline, Pick list, Custom Field ✓, only on layout Wonder Travel.",
+   "crop": [
+    292,
+    300,
+    964,
+    160
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      300,
+      405,
+      1250,
+      452
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "pipe-02-ui-error-25oct.png",
+   "caption": "Create Transactions on the STANDARD layout, Pipeline \"1\" → refused with the custom field's allowed values (25 Oct; same on 26–27 Oct by API).",
+   "crop": [
+    300,
+    100,
+    940,
+    420
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      318,
+      436,
+      1225,
+      500
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      450,
+      110,
+      595,
+      142
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-pipeline-bug-api.png",
+   "caption": "API: the custom field's pick list validates the real pipeline on every layout; with it widened, pipelines work.",
+   "crop": [
+    0,
+    0,
+    1600,
+    492
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      95,
+      1570,
+      182
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      231,
+      1570,
+      365
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      367,
+      1570,
+      433
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      272,
+      435,
+      1570,
+      480
+     ],
+     "n": 7,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Custom field api name",
+   "A custom field cannot take a built-in field's api name (Zoho: system api names are reserved; custom fields get their own name)",
+   "Custom pick list saved with api name \"pipeline\" (24 Oct, ndc-staging-owner)",
+   "FAIL"
+  ],
+  [
+   "2–3",
+   "Create a deal on pipeline \"1\" (Standard layout)",
+   "Deal saved on \"1\"",
+   "422 \"Pipeline: '640e03a4-…' is not one of the allowed values (Standard (Standard)).\"",
+   "FAIL"
+  ],
+  [
+   "4–5",
+   "Any write that sends a pipeline (create, change pipeline, Mass Update, API)",
+   "Validated against the module's pipelines",
+   "Validated against the custom field's list on every layout → only \"Standard (Standard)\" passes, deal lands on the default",
+   "FAIL"
+  ],
+  [
+   "6",
+   "Control: custom list widened for the test",
+   "—",
+   "Create on \"1\" stored on \"1\"; edit moves the deal; stage check still works → the custom field is the cause",
+   "PASS"
+  ],
+  [
+   "7",
+   "Data left as found",
+   "—",
+   "Field restored to [\"Standard (Standard)\"]",
+   "INFO"
+  ],
+  [
+   "—",
+   "Impact",
+   "—",
+   "Blocked NDC-1302 / 1312 / 1316 / 1324 in round 4 (moved to Bug for this reason)",
+   "INFO"
+  ]
+ ]
+}

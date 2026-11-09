@@ -1,0 +1,173 @@
+{
+ "shape": {
+  "enabled": true
+ },
+ "team2": "409 CONFLICT: A team named 'QA RT14 2812 team 2' already exists in this department. \"\"",
+ "onTeam2": 200,
+ "off": 200,
+ "offRead": false,
+ "1 assign team (off)": {
+  "s": 422,
+  "e": "UNPROCESSABLE: Team Assignment is off in the ticket's department, so team 434140a3-2145-428c-9e57-e6bc5cf2f8d0 cannot take it. Choose an agent. [{\"field\":\"team_id\",\"issue\":\"team_assignment_off\"}]"
+ },
+ "1 after": {
+  "owner": "O",
+  "team": "-",
+  "dept": "Dept A"
+ },
+ "2 assign agent (off)": {
+  "s": 200,
+  "d": "{\"ticket_id\":\"d43bc826-1b7b-4e0d-8650-8a10e738d14c\",\"owner_id\":\"d23fb4e0-248d-41f6-af60-d28885a7007e\",\"team_id\":null}"
+ },
+ "2 after": {
+  "owner": "A2",
+  "team": "-",
+  "dept": "Dept A"
+ },
+ "3 assign agent+team (off)": {
+  "s": 422,
+  "e": "UNPROCESSABLE: A ticket is owned by an agent or by a team, not both. Send owner_id or team_id. [{\"field\":\"owner_id\",\"issue\":\"exclusive\"}]"
+ },
+ "3 after": {
+  "owner": "A2",
+  "team": "-",
+  "dept": "Dept A"
+ },
+ "4 record PATCH team (off)": {
+  "s": 422,
+  "e": "OWNERSHIP_MANAGED_BY_DESK: Ticket ownership and department are managed by Desk: assign, pick up, unassign or move the ticket through Desk. [{\"path\":\"data.team\",\"type\":\"ownership_managed_by_desk\",\"message\":\"'team' can only be changed through Desk's ticket assignment.\"}]"
+ },
+ "4 after": {
+  "owner": "A2",
+  "team": "-",
+  "dept": "Dept A"
+ },
+ "5 move B->A with team (PATCH)": {
+  "s": 422,
+  "e": "OWNERSHIP_MANAGED_BY_DESK: Ticket ownership and department are managed by Desk: assign, pick up, unassign or move the ticket through Desk. [{\"path\":\"data.team\",\"type\":\"ownership_managed_by_desk\",\"message\":\"'team' can only be changed through Desk's ticket assignment.\"},{\"path\":\"data.department\",\"type"
+ },
+ "5 after": {
+  "owner": "O",
+  "team": "-",
+  "dept": "Dept B"
+ },
+ "5b move B->A with team (assign+department)": {
+  "s": 422,
+  "e": "UNPROCESSABLE: Team 434140a3-2145-428c-9e57-e6bc5cf2f8d0 does not serve the ticket's department. [{\"field\":\"team_id\",\"issue\":\"not_in_department\"}]"
+ },
+ "5b after": {
+  "owner": "O",
+  "team": "-",
+  "dept": "Dept B"
+ },
+ "6 bulk assign team (off)": {
+  "s": 200,
+  "d": "{\"results\":[{\"ticket_id\":\"d43bc826-1b7b-4e0d-8650-8a10e738d14c\",\"ok\":false,\"error\":{\"code\":\"team_assignment_off\",\"message\":\"Team Assignment is off in the ticket's department, so team 434140a3-2145-428c-9e57-e6bc5cf2f8d0 cannot take it. Choose an agent.\",\"field\":\"team_id\"}}],\"succeeded\":0,\"failed\":1}"
+ },
+ "6 after": {
+  "owner": "A2",
+  "team": "-",
+  "dept": "Dept A"
+ },
+ "6b bulk assign agent (off)": {
+  "s": 200,
+  "d": "{\"results\":[{\"ticket_id\":\"d43bc826-1b7b-4e0d-8650-8a10e738d14c\",\"ok\":true,\"error\":null}],\"succeeded\":1,\"failed\":0}"
+ },
+ "6b after": {
+  "owner": "A3",
+  "team": "-",
+  "dept": "Dept A"
+ },
+ "a1workload": [
+  {
+   "dept": "Dept A",
+   "tickets": 66,
+   "acts": 62
+  },
+  {
+   "dept": "Dept B",
+   "tickets": 6,
+   "acts": 6
+  },
+  {
+   "dept": "QA NDC Accounting",
+   "tickets": 0,
+   "acts": 0
+  },
+  {
+   "dept": "QA NDC Client Complaints",
+   "tickets": 0,
+   "acts": 0
+  },
+  {
+   "dept": "QA NDC Clients' Financial Investigations",
+   "tickets": 0,
+   "acts": 0
+  },
+  {
+   "dept": "QA NDC Financial approval",
+   "tickets": 0,
+   "acts": 0
+  },
+  {
+   "dept": "QA NDC FLY-WT Refund",
+   "tickets": 0,
+   "acts": 0
+  },
+  {
+   "dept": "QA NDC Manual Invoice",
+   "tickets": 0,
+   "acts": 0
+  },
+  {
+   "dept": "QA NDC NDC Finance",
+   "tickets": 0,
+   "acts": 0
+  },
+  {
+   "dept": "QA NDC Quality Assurance",
+   "tickets": 0,
+   "acts": 0
+  },
+  {
+   "dept": "Tech",
+   "tickets": 0,
+   "acts": 0
+  }
+ ],
+ "7 agent reassign": "skipped: A1 has open work outside QA departments",
+ "8 delete team 2, reassign to Team A (off)": {
+  "s": 404,
+  "e": "NOT_FOUND: The requested resource was not found. \"\""
+ },
+ "8 after": {
+  "owner": "-",
+  "team": "-",
+  "dept": "Dept A"
+ },
+ "8 team2 still there": 404,
+ "9 new rule team target (off)": {
+  "s": 400,
+  "e": "VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].assign.team_id\",\"issue\":\"team_assignment_off\"}]"
+ },
+ "on": 200,
+ "onRead": true,
+ "10 assign team (on)": {
+  "s": 200,
+  "d": "{\"ticket_id\":\"38c2b41a-3d3f-4c3b-81e9-0883d539e256\",\"owner_id\":null,\"team_id\":\"434140a3-2145-428c-9e57-e6bc5cf2f8d0\"}"
+ },
+ "10 after": {
+  "owner": "-",
+  "team": "Team A",
+  "dept": "Dept A"
+ },
+ "11 bulk assign team (on)": {
+  "s": 422,
+  "e": "UNPROCESSABLE: A ticket is owned by an agent or by a team, not both. Send owner_id or team_id. [{\"field\":\"owner_id\",\"issue\":\"exclusive\"}]"
+ },
+ "11 after": {
+  "owner": "-",
+  "team": "Team A",
+  "dept": "Dept A"
+ }
+}

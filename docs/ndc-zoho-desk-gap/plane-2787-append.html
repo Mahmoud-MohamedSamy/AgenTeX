@@ -1,0 +1,21 @@
+<h2>Rebuild of NDC's setup on TAVI and follow-up tickets (3–4 Nov 2026)</h2>
+<p>On 3 Nov we rebuilt NDC's core Zoho Desk setup on NDC-Staging, prefixed "QA NDC" and kept as the NDC reference setup: 8 core departments (Manual Invoice, NDC Finance, Financial approval, Accounting, Quality Assurance, Client Complaints, Clients' Financial Investigations, FLY-WT Refund), the 23 branch departments their workflows share into, 32 teams, 41 statuses, 94 custom fields, 10 layouts, 7 layout rules, 1 validation rule, 6 blueprints (81 transitions), 42 of 80 core workflows (the rest were blocked by the old 50-rule limit), 9 SLA policies and the notification settings. Then we ran smoke tickets.</p>
+<p><strong>Works like NDC:</strong> custom statuses with types, large pick lists (up to 188 values), decimal, currency and date fields, layout rules (show fields or sections, require fields), the "Reject needs a reason" validation rule, blueprints with team and ticket-owner transitions, the share-ticket workflow, SLA policies with NDC's targets and escalations, per-department notification rules, and clearing the owner from a workflow by assigning to a team.</p>
+<h3>Gaps filed as separate tickets (retested 4 Nov)</h3>
+<ul>
+<li><strong>NDC-2792</strong> Workflow rule limit — <strong>Done</strong>. The 50-per-module cap was replaced by 200 rules per department (NDC has 92 rules in Tickets, at most 24 in one department). Not configurable per tenant.</li>
+<li><strong>NDC-2793</strong> Trigger "on create, and later when these fields change" — <strong>Done</strong>.</li>
+<li><strong>NDC-2795</strong> Same rule name in different departments — <strong>Done</strong>.</li>
+<li><strong>NDC-2797</strong> Ticket statuses per department and layout — <strong>Done</strong>. The status change when a ticket moves onto a layout (fall-back to default) is still to compare with NDC's Zoho.</li>
+<li><strong>NDC-2798</strong> Team notification when a comment is edited or deleted — <strong>Done</strong>.</li>
+<li><strong>NDC-2791</strong> "Mark as Required" on one layout makes the field required on every layout, and now blocks saving tickets in every department — <strong>Bug</strong>.</li>
+<li><strong>NDC-2794</strong> Team with agent in one rule: the agent is set but the team is cleared — <strong>Bug</strong>.</li>
+<li><strong>NDC-2796</strong> Several layouts per department: works, but the create form does not pre-select the department's default layout and offers every layout — <strong>Bug</strong>.</li>
+</ul>
+<h3>Checked and not a gap</h3>
+<ul><li>Clearing the ticket owner from a workflow (NDC Finance "Ticket owner -1/-2", "R1", "R2"): Owner Assignment → Teams sends the ticket to the team and clears the owner, as in NDC's Zoho.</li></ul>
+<h3>Left out on purpose</h3>
+<ul><li>Assignment rules (direct and round robin): they will be rebuilt.</li><li>A workflow's status update skipped inside a blueprint: already NDC-2764.</li></ul>
+<h3>Still open from this list</h3>
+<ul><li>M-05: the agent list stops at 200 users while NDC has 478 active agents (bug not filed yet).</li><li>Not tested yet on TAVI: email delivery, SLA escalation timing, notification delivery.</li></ul>
+<p>Report: docs/ndc-zoho-desk-gap/ndc-on-tavi-mimic-report.md (QA repo).</p>

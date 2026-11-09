@@ -1,0 +1,38 @@
+{
+ "out": "NDC-2546-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2546 · Edit a profile's rank above its parent's (automation LeftoversApiTest PR-04)",
+ "who": "automation (ndc-staging-owner)",
+ "rows": [
+  [
+   "valid edit",
+   "PATCH /api/v1/iam/profiles/{QA} {\"rank\":200}",
+   "204",
+   "ok"
+  ],
+  [
+   "valid edit",
+   "PATCH {parent: Supervisor, rank: 100}",
+   "204",
+   "ok"
+  ],
+  [
+   "rank above parent",
+   "PATCH {\"rank\":600} under a rank-300 parent",
+   "400 VALIDATION_ERROR \"Profile rank (600) must be lower than parent profile's rank (300).\"",
+   "ok"
+  ],
+  [
+   "read back",
+   "GET /api/v1/iam/profiles",
+   "rank stays 100, parent 11111111-…104 (Supervisor)",
+   "ok"
+  ],
+  [
+   "cleanup",
+   "DELETE QA profiles",
+   "204",
+   "info"
+  ]
+ ]
+}

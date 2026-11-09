@@ -1,0 +1,112 @@
+[ {
+  "test" : "AuditLogTest.entityFilterHasNoDuplicates",
+  "cases" : [ "C-3" ],
+  "groups" : [ "wave1", "NDC-2293", "crmaccess", "api" ],
+  "description" : "The Entities filter lists each entity once (read-only)",
+  "status" : "FAILED",
+  "seconds" : 20.215,
+  "error" : "GET audit facets returned 500: {\"success\":false,\"data\":null,\"error\":{\"code\":\"INTERNAL_ERROR\",\"message\":\"An unexpected error occurred. Please try again.\"},\"meta\":null}"
+}, {
+  "test" : "AuditLogTest.logoutNamesUser",
+  "cases" : [ "C-2b" ],
+  "groups" : [ "wave1", "NDC-1343", "crmaccess", "api" ],
+  "description" : "Every sign-out event names the user (read-only)",
+  "status" : "PASSED",
+  "seconds" : 3.071
+}, {
+  "test" : "AuditLogTest.recordLifecycleIsLogged",
+  "cases" : [ "C-1" ],
+  "groups" : [ "wave1", "NDC-2381", "crmaccess", "api" ],
+  "description" : "Create, update and delete of a record each appear in the audit log within 3 minutes, with who and what",
+  "status" : "PASSED",
+  "seconds" : 13.204
+}, {
+  "test" : "AuditLogTest.setupChangesAreLogged",
+  "cases" : [ "C-2" ],
+  "groups" : [ "wave1", "NDC-1343", "crmaccess", "api" ],
+  "description" : "Setup changes are logged: profile, field permission, user permission override",
+  "status" : "PASSED",
+  "seconds" : 19.95
+}, {
+  "test" : "InviteTest.inviteResendCancel",
+  "cases" : [ "US-03", "US-05" ],
+  "groups" : [ "wave1", "crmaccess", "api" ],
+  "description" : "Invite one user (profile, org unit, lifetime), it is listed as invited, resend works, cancel removes it",
+  "status" : "FAILED",
+  "seconds" : 2.257,
+  "error" : "invite returned 409: {\"success\":false,\"data\":null,\"error\":{\"code\":\"SUBSCRIPTION_SEAT_LIMIT_REACHED\",\"message\":\"iam.subscription.seat_limit_reached\"},\"meta\":null}"
+}, {
+  "test" : "InviteTest.bulkInvite",
+  "cases" : [ "US-04" ],
+  "groups" : [ "wave1", "crmaccess", "api" ],
+  "description" : "Bulk invite: per-row result, the bad row fails, the good row is sent",
+  "status" : "FAILED",
+  "seconds" : 5.192,
+  "error" : "the good row was not invited expected object to not be null"
+}, {
+  "test" : "LoginHistoryTest.deniedUserCannotExport",
+  "cases" : [ "D-2" ],
+  "groups" : [ "wave1", "crmaccess", "api", "NDC-613" ],
+  "description" : "A user denied every 'view login history' permission can neither open nor export it",
+  "status" : "PASSED",
+  "seconds" : 13.748
+}, {
+  "test" : "LoginHistoryTest.expiredSessionsNotActive",
+  "cases" : [ "D-1" ],
+  "groups" : [ "NDC-2418", "wave1", "crmaccess", "api" ],
+  "description" : "No session is listed as Active after its expiry time (read-only)",
+  "status" : "PASSED",
+  "seconds" : 0.912
+}, {
+  "test" : "LoginHistoryTest.revokedSessionStopsWorking",
+  "cases" : [ "D-4" ],
+  "groups" : [ "wave1", "crmaccess", "api" ],
+  "description" : "Revoking a session from Login History stops that token",
+  "status" : "PASSED",
+  "seconds" : 8.957
+}, {
+  "test" : "TeamspaceAccessTest.crmAdminNotOnListIsRefused",
+  "cases" : [ "F-1a" ],
+  "groups" : [ "wave1", "NDC-1172", "crmaccess", "api" ],
+  "description" : "A CRM Admin who is not on the access list cannot open the teamspace",
+  "status" : "SKIPPED",
+  "seconds" : 0.0,
+  "error" : "create teamspace returned 400: {\"success\":false,\"data\":null,\"error\":{\"code\":\"TEAMSPACE_MODULES_REQUIRED\",\"message\":\"Add at least one module to save this teamspace.\",\"details\":[{\"path\":\"module_ids\",\"type\":\"required\",\"message\":\"A teamspace needs at least one module.\"}]},\"meta\":null}"
+}, {
+  "test" : "TeamspaceAccessTest.memberCannotAdminister",
+  "cases" : [ "F-1c" ],
+  "groups" : [ "wave1", "crmaccess", "api", "NDC-1701" ],
+  "description" : "A member without admin rights cannot change the teamspace",
+  "status" : "SKIPPED",
+  "seconds" : 0.0,
+  "error" : "create teamspace returned 400: {\"success\":false,\"data\":null,\"error\":{\"code\":\"TEAMSPACE_MODULES_REQUIRED\",\"message\":\"Add at least one module to save this teamspace.\",\"details\":[{\"path\":\"module_ids\",\"type\":\"required\",\"message\":\"A teamspace needs at least one module.\"}]},\"meta\":null}"
+}, {
+  "test" : "TeamspaceAccessTest.otherProfileNotOnListIsRefused",
+  "cases" : [ "F-1b" ],
+  "groups" : [ "wave1", "crmaccess", "api", "NDC-1699" ],
+  "description" : "A Supervisor/Manager-profile user who is not on the access list cannot open the teamspace",
+  "status" : "SKIPPED",
+  "seconds" : 0.0,
+  "error" : "create teamspace returned 400: {\"success\":false,\"data\":null,\"error\":{\"code\":\"TEAMSPACE_MODULES_REQUIRED\",\"message\":\"Add at least one module to save this teamspace.\",\"details\":[{\"path\":\"module_ids\",\"type\":\"required\",\"message\":\"A teamspace needs at least one module.\"}]},\"meta\":null}"
+}, {
+  "test" : "UsersProfilesTest.overrideAndHistory",
+  "cases" : [ "E-3" ],
+  "groups" : [ "wave1", "crmaccess", "api" ],
+  "description" : "A per-user override is applied, listed in its history with who changed it, and can be removed",
+  "status" : "PASSED",
+  "seconds" : 4.356
+}, {
+  "test" : "UsersProfilesTest.profileLifecycle",
+  "cases" : [ "E-2" ],
+  "groups" : [ "wave1", "crmaccess", "api" ],
+  "description" : "Profile lifecycle: clone, add a permission, rename, delete",
+  "status" : "PASSED",
+  "seconds" : 12.299
+}, {
+  "test" : "UsersProfilesTest.suspendAndReactivate",
+  "cases" : [ "E-1" ],
+  "groups" : [ "wave1", "crmaccess", "api" ],
+  "description" : "A suspended user cannot sign in; after reactivation they can",
+  "status" : "PASSED",
+  "seconds" : 9.881
+} ]

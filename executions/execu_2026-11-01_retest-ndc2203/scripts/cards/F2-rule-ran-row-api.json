@@ -1,0 +1,39 @@
+{
+ "out": "F2-rule-ran-row-api.png",
+ "host": "staging-desk.taviportal.com",
+ "who": "mahmoud.mahamed1515 (Desk Administrator); fedelav803 (Desk Agent) to read the tickets",
+ "date": "27 Oct 2026",
+ "title": "Create rules, same action (private comment), only the condition differs — \"Workflow rule ran\" row in Ticket History",
+ "rows": [
+  [
+   "normal fields",
+   "No condition (#651) · description contains (#652) · Due Date before now (#655) · Status = Open (#668) · not Priority High (#669)",
+   "Rule Fired, comment \"by workflow rule …\", \"Workflow rule ran\" row written",
+   "ok"
+  ],
+  [
+   "rule facts",
+   "Is Overdue (#653) · Execution Time (#654) · Recent Comment (#661) · Thread count (#666) · Comment count (#667)",
+   "Rule Fired (Execution History), comment \"by workflow rule …\", NO \"Workflow rule ran\" row",
+   "bad"
+  ],
+  [
+   "mixed",
+   "description contains AND Is Overdue (#662)",
+   "Fired, NO row — one fact in the condition is enough",
+   "bad"
+  ],
+  [
+   "Edit rule",
+   "Is Overdue = true on an Edit rule (#665)",
+   "Fired, row written — only Create rules are affected",
+   "ok"
+  ],
+  [
+   "timing",
+   "Waited 45–60 s; execution records compared",
+   "Row never appears; execution records identical with and without the row",
+   "info"
+  ]
+ ]
+}

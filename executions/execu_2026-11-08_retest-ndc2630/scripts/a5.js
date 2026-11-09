@@ -1,0 +1,14 @@
+const fs=require('fs');const LED=m=>fs.appendFileSync('../ledger.md','- '+new Date().toISOString().slice(0,19)+' '+m+'\n');const L=JSON.parse(fs.readFileSync('../out/lead.json','utf8'));
+const tok=(await ctx.cookies()).find(x=>x.name==='aw_staging_access_token');
+const C='https://staging-crm.taviportal.com/api/v1';const ca=async(m,p,b)=>{const r=await ctx.request.fetch(C+p,{method:m,headers:{authorization:'Bearer '+tok.value,'content-type':'application/json'},data:b?JSON.stringify(b):undefined,timeout:90000});const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}return{s:r.status(),j,t:t.slice(0,500)};};
+const o={};const TO='qa.rt13.2630@example.com';
+const cn=await ca('GET','/mail/connections');o.connFields=arr(cn.j.data).map(c=>{const m={};for(const k of Object.keys(c))if(/mail|account|user|sender|from|zoid|created_by/i.test(k))m[k]=typeof c[k]==='string'&&c[k].includes('@')?'<'+c[k].split('@')[0].slice(0,3)+'…@'+c[k].split('@')[1]+'>':c[k];return {provider:c.provider,enabled:c.enabled,...m};});
+const d=await ca('POST','/mail/drafts',{to:[TO],subject:'QA RT13 2630 send check',body:'QA NDC-2630',body_html:'<p>QA NDC-2630</p>',record_type:'leads',record_id:L.id,attachments:[]});o.draft=d.s;const id=d.j&&d.j.data&&d.j.data.id;if(id)LED('mail draft '+id+' on QA lead');
+const s=await ca('POST','/mail/drafts/'+id+'/send',{});o.send=s.s+' '+((s.j&&s.j.error&&(s.j.error.code+' — '+s.j.error.message))||s.t.slice(0,200));
+await sleep(20000);
+const box=async b=>{const r=await ca('GET','/mail/records/leads/'+L.id+'/emails?box='+b+'&limit=10');return arr(r.j&&r.j.data).map(e=>e.subject+' | '+e.status+' | '+String(e.last_error||'').slice(0,120));};
+o.mails=await box('mails');o.sent=await box('sent');
+const tl=await ca('GET','/timeline/records/leads/'+L.id+'/feed');const tl2=await ctx.request.fetch(C+'/timeline/records/leads/'+L.id+'/feed',{headers:{authorization:'Bearer '+tok.value}});const tt=await tl2.text();o.timeline=(tt.match(/"entry_type":"(\w+)"/g)||[]).map(x=>x.slice(14,-1));
+const dr=await ca('GET','/mail/drafts/'+id);o.draftAfter=dr.s+' '+((dr.j&&dr.j.data&&dr.j.data.status)||'');
+const n=await ca('GET','/notifications?limit=10');o.notif=arr(n.j&&n.j.data&&(n.j.data.data||n.j.data)).filter(x=>/2630|mail|email/i.test(JSON.stringify(x))).slice(0,3).map(x=>(x.title||'').slice(0,100));
+return o;

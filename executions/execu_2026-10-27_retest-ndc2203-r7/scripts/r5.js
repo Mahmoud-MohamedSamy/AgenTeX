@@ -1,0 +1,9 @@
+const IDS = JSON.parse(`{"B01a":"02cda707-f03c-4e20-a61f-6024fb40c4d4","B01b":"c0593438-33fd-4dda-97db-6fb24bafc890","B02":"fc2c2d90-1caa-44f8-9d06-11382b46132d","B05":"79a09b3a-d783-4b75-a99d-dec3e4226eed","B06":"e155afa5-ff41-467c-9816-dd3fa29955e3","B07":"e39023b0-4809-4542-872d-8e00c58f1cbb","B08":"3050096b-be96-45a9-aed4-0574ab0b5b65","B11":"17674e43-728d-4a8f-b5e4-e4a72c292667","B12":"9b59a209-fc80-4a14-bdc7-ed6e72f4b634","B13":"92f94382-fe96-462c-8e0c-680f41ec86a2","B14":"b4b5d0ac-7af3-41a6-ac6f-804b1555b46f","B15":"b72ef335-a8a8-4687-941b-28f8edbca1f5","D2t":"9b47c023-a3b8-4176-9d97-4af94f11f2ef","E3odT_past":"3f0c1279-254e-4cec-8be1-92ddb449aaf1","E3odT_future":"29eace80-0f69-48c6-aa79-844ab90de7f8","E3odF_past":"62dc27db-3e23-47cc-aa09-4349bd76163c","E3odF_future":"643a5469-a488-4788-a368-256c57587bda","F1t2":"8ae83305-d9cc-40cd-b923-5c97a05f5ba8"}`); const out = {};
+for (const [tag, id] of Object.entries(IDS)) {
+  const t = await getTicket(id);
+  const cm = arr((await api('GET', `/desk/tickets/${id}/comments`)).j?.data).map(c => (c.is_public ? 'pub ' : 'priv ') + c.body_html.replace(/<[^>]+>/g, '').slice(0, 50));
+  const ex = arr((await api('GET', `/workflow/executions?recordId=${id}`)).j?.data).map(e => (e.ruleName || e.ruleId?.slice(0, 8)) + ' ' + e.status + ' ' + (e.dispatches || []).map(x => x.actionType + ':' + x.status + ' ' + (x.responseBodyTruncated || '').slice(0, 120)).join(';'));
+  const h = arr((await api('GET', `/desk/tickets/${id}/activity`)).j?.data).map(a => a.action + (a.summary?.by_rule_name ? ' [by ' + a.summary.by_rule_name + ']' : '') + (a.action === 'ticket.workflow_rule_ran' ? ' ' + JSON.stringify(a.summary?.actions || a.summary?.action_labels || '') : ''));
+  out[tag] = { n: t.ticket_number, spam: t.is_spam, layout: t.layout_id || t.layout, skills: t.skills, owner: t.owner, followers: t.followers, cm, ex, h };
+}
+return done(out);

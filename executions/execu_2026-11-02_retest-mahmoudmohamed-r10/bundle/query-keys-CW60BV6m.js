@@ -1,0 +1,1 @@
+var e={all:()=>[`blueprints`],list:(e,t=!1)=>[`blueprints`,e,`list`,{includeInactive:t}],detail:(e,t)=>[`blueprints`,e,t],versions:(e,t)=>[`blueprints`,e,t,`versions`],recordRoot:()=>[`blueprint-transitions`],recordTransitions:(e,t)=>[`blueprint-transitions`,e,t],recordState:(e,t)=>[`blueprint-transitions`,e,t,`state`]};export{e as t};

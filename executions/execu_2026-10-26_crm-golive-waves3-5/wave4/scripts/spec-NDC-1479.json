@@ -1,0 +1,14 @@
+{ "out": "NDC-1479-retest.png", "ticket": "NDC-1479", "verdict": "PARTIAL", "label": "PARTLY WORKS",
+  "title": "Email Channel | providers list and connections work; the taviportal.com Zoho Mail connection can't send",
+  "env": "staging-crm.taviportal.com (owner) vs Zoho CRM org943261092 (read-only)", "date": "26 Oct 2026",
+  "panels": [
+    { "img": "t-email-integrations.png", "w": 1600, "h": 900, "caption": "TAVI — Settings › Email: 2 Zoho Mail connections (taviportal.com, anyware.software) and the platform no-reply SMTP; nothing was changed.", "crop": [292, 60, 1300, 500],
+      "boxes": [ { "b": [292, 245, 1012, 293], "n": 1 }, { "b": [292, 305, 1012, 375], "n": 1 }, { "b": [292, 142, 1012, 233], "n": 2 }, { "b": [1399, 70, 1576, 106], "n": 3 } ] },
+    { "img": "z-email-providers-list.png", "w": 1600, "h": 950, "caption": "Zoho — Email Integration: each user connects a mailbox (Zoho Mail, Gmail, Yahoo, Office 365, Outlook, other).", "crop": [258, 190, 1110, 280],
+      "boxes": [ { "b": [287, 334, 439, 451], "n": 1, "color": "#16a34a" }, { "b": [469, 334, 1349, 451], "n": 3, "color": "#16a34a" } ] }
+  ],
+  "rows": [
+    ["1", "Send from my own mailbox", "The user's connected mailbox sends", "Page says \"You can send as ndc-staging-owner@taviportal.com through Zoho Mail\" and the connection is Active with health \"ok\" — but the send failed: \"No Zoho account found … set the 'zoid' org id on the connection\" (see W4-B1). Please set the org id on the taviportal.com connection so sending can be retested", "FAIL"],
+    ["2", "System notification mail", "Not compared", "Platform no-reply (Zoho) SMTP, shared by all tenants; own no-reply sender can be connected", "PASS"],
+    ["3", "Add a provider", "6 mailbox providers", "SMTP, Zoho Mail and Google Workspace can be connected; Gmail and Microsoft 365 not configured on the server; Transactional coming soon (NDC-1141)", "PARTIAL"]
+  ] }

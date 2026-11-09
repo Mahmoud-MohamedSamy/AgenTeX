@@ -1,0 +1,45 @@
+{
+ "out": "NDC-2811-api.png",
+ "date": "8 Nov 2026",
+ "host": "staging-desk.taviportal.com (tenant NDC-Staging)",
+ "who": "admin + QA AS6 agents A1 Test User 1, A2 Mahmoud Samy, A3 Dev Team 2 (each signed in, heartbeat on)",
+ "title": "NDC-2811 · round robin \"QA AS6 RR seq\" (QA AS6 Dept A, sequence A1→A2→A3, on create) — agent Email status (desk #237)",
+ "rows": [
+  [
+   "All Email on",
+   "3 tickets with no channel (API, source api)",
+   "#1336 A1 · #1337 A2 · #1338 A3 · nobody skipped",
+   "info"
+  ],
+  [
+   "A2 Email off (online, Chat + Phone on)",
+   "PUT /desk/agents/me/presence {email:false} as A2 → 4 tickets, no channel",
+   "#1339 A1 · #1340 A3 (A2 SKIPPED) · #1341 A1 · #1342 A3 (A2 SKIPPED) — A2 gets none",
+   "ok"
+  ],
+  [
+   "A2 Email off, channel tickets",
+   "1 ticket channel email · 1 ticket channel chat",
+   "email #1343 → A1 (A2 not next in sequence) · chat #1344 → A2 (Chat is on, correct)",
+   "ok"
+  ],
+  [
+   "Everyone's Email off",
+   "1 ticket, no channel; Dept A \"assign to offline agents\" off",
+   "#1345 stays unassigned (waits)",
+   "ok"
+  ],
+  [
+   "… offline agents allowed",
+   "PUT Dept A round-robin-preferences {assign_to_offline_agents:true} → 1 ticket",
+   "#1346 → A3 (setting restored afterwards)",
+   "ok"
+  ],
+  [
+   "Email back on",
+   "all agents Email on → 1 ticket",
+   "#1347 → A1",
+   "ok"
+  ]
+ ]
+}

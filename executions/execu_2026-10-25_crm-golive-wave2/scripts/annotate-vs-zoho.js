@@ -28,8 +28,12 @@ const panelHtml = spec.panels.map(p => {
     `<figcaption>${esc(p.caption || '')}</figcaption></figure>`;
 }).join('');
 
-const rows = spec.rows.map(r => `<tr><td class="n">${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td>` +
-  `<td><span class="pill" style="background:${VC[r[4]] || '#6b7280'}">${r[4]}</span></td></tr>`).join('');
+// Each behaviour: a title line (number = the box number on BOTH screenshots, then the verdict), then the TAVI text under
+// the left (TAVI) screenshot and the Zoho text under the right (Zoho) screenshot, in columns as wide as the screenshots.
+const half = (W - 48 - 16) / 2;
+const rows = spec.rows.map(r => `<div class="row"><div class="rt"><span class="num">${r[0]}</span><span class="beh">${esc(r[1])}</span>` +
+  `<span class="pill" style="background:${VC[r[4]] || '#6b7280'}">${r[4]}</span></div>` +
+  `<div class="cells"><div class="cell" style="flex:1"><b>TAVI:</b> ${esc(r[3])}</div><div class="cell" style="flex:1"><b>Zoho:</b> ${esc(r[2])}</div></div></div>`).join('');
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 *{box-sizing:border-box}body{margin:0;width:${W}px;background:#f4f5f7;font:14px/1.45 "Segoe UI",system-ui,sans-serif;color:#111827}
@@ -42,15 +46,17 @@ figure{margin:0}.shot{position:relative;overflow:hidden;border:1px solid #d1d5db
 .shot img{position:absolute}.box{position:absolute;border:3px solid;border-radius:4px}
 .tag{position:absolute;width:28px;height:28px;border-radius:50%;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 1px 3px rgba(0,0,0,.4)}
 figcaption{margin-top:6px;color:#374151;font-size:13px}
-table{margin:0 24px 24px;width:${W - 48}px;border-collapse:collapse;background:#fff;border:1px solid #d1d5db}
-th{background:#f9fafb;text-align:left;padding:8px 10px;font-size:13px;border-bottom:1px solid #d1d5db}
-td{padding:8px 10px;border-top:1px solid #e5e7eb;vertical-align:top}td.n{font-weight:700;width:36px;text-align:center}
+.cmp{margin:0 24px 24px;display:flex;flex-direction:column;gap:10px}
+.colhead{display:flex;gap:16px}.colhead div{width:${half}px;font-weight:700;font-size:14px;padding:6px 10px;background:#111827;color:#fff;border-radius:6px}
+.row{background:#fff;border:1px solid #d1d5db;border-radius:6px;padding:10px 12px}
+.rt{display:flex;align-items:center;gap:10px;margin-bottom:6px}.num{width:26px;height:26px;border-radius:50%;background:#ff2d55;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.beh{flex:1;font-weight:600}.cells{display:flex;gap:16px}.cell{color:#1f2937}
 .pill{color:#fff;font-weight:700;font-size:12px;padding:2px 8px;border-radius:10px}
 </style></head><body>
 <header><span class="id">${esc(spec.ticket)}</span><span class="t">${esc(spec.title)}</span><span class="v">${esc(spec.label || "RETEST " + spec.verdict)}</span></header>
 <div class="meta">${esc(spec.env)} · ${esc(spec.date)}</div>
 <div class="panels">${panelHtml}</div>
-<table><tr><th>#</th><th>Behaviour</th><th>Zoho CRM</th><th>TAVI CRM</th><th>Match</th></tr>${rows}</table>
+<div class="cmp"><div class="colhead"><div>TAVI CRM (left screenshot)</div><div>Zoho CRM (right screenshot)</div></div>${rows}</div>
 </body></html>`;
 
 (async () => {

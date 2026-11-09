@@ -1,0 +1,207 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< qa:ui-automation >--------------------------
+[INFO] Building UI automation (Selenium + TestNG + Allure, self-healing locators) 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ui-automation ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ ui-automation ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ui-automation ---
+[INFO] Copying 77 resources from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ ui-automation ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ ui-automation ---
+[INFO] Using auto detected provider org.apache.maven.surefire.testng.TestNGProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running TestSuite
+[US-16] test user 1 (User profile): iam.user.view (held) 200; iam.profile.manage (not held) 403; workflow:rule:view (held) 200; workflow:approval:view (not held) 403; crm:web_form:view (not held) 403; mail:connection:manage (not held) 403; 
+[US-15] CRM Admin GRANT 'ai:agent:manage' (not held) to test user 2 -> 403 forbidden 'Cannot grant a permission you do not hold.'; override stored=false
+[US-07] after change: profile Supervisor, org unit HR=true; after revert: User, Sales=true
+[PR-05] delete profile with test user 1 on it -> 409 PROFILE_ASSIGNED 'Unassign this profile from all users first.'; test user 1 profile afterwards 'QA W1 InUse 50738'
+[PS-01] PUT alias+website -> 200; stored alias='QA W1 alias', website='https://qa-w1.example.com'; restore -> 200
+[US-06] bad email -> 400 VALIDATION_ERROR 'Email must be valid.'; no profile -> 400 VALIDATION_ERROR 'Unknown profile.'; lifetime 0 -> 400 iam.invite.lifetime_out_of_range 'lifetime_days must be between 1 and 90 days (received 0).'; lifetime 10000 -> 400 iam.invite.lifetime_out_of_range 'lifetime_days must be between 1 and 90 days (received 10000).'; 
+[OU] create A/B ok; rename -> 204 shown=true; move A under its child B -> 400 VALIDATION_ERROR 'Invalid parent: would create a cycle.'; delete A with child -> 409 org_unit_has_children 'Org unit has child units.'; move B to Sales -> 204; test user 1 in B=true; delete B with a user -> 409 org_unit_not_empty 'Org unit still has users.'; audit event for A=true
+[AU-07/LH-06] test user 1 holds audit view_all=false, view_self=false; audit -> 200 (100 rows, others' 0); login history view_all=false -> 200 (100 rows, others' 0)
+[PS-05] same password as current -> 400 PASSWORD_UNCHANGED 'The new password must be different from the current one.'
+[PE-05] control as test user 2 before any deny: iam.user.view 200; workflow:rule:view 200; workflow:action:view 403; workflow:approval:view 403; workflow:review:view 403; crm:web_form:view 403; crm:record_portal:view 403; mail:connection:manage 403; telephony:integration:view 403; messaging:view 403; billing:view 403; iam.security.audit.view_all 200; 
+[PE-05] after DENY overrides (fresh sign-in): iam.user.view 403; workflow:rule:view 403; iam.security.audit.view_all 200; (others' events 0) 
+[PR-03] CRM Admin creates rank 1000 -> 400 VALIDATION_ERROR 'Profile rank must be lower than your effective rank.'
+[PR-06] owner renames system profile User -> 409 SYSTEM_PROFILE_PROTECTED 'Built-in profiles cannot be renamed. Clone the profile to create one you can rename.'; renamed=false
+[cleanup] clear override iam.user.view -> 204
+[cleanup] clear override workflow:rule:view -> 204
+[cleanup] clear override iam.security.audit.view_all -> 204
+[cleanup] delete org unit 1a471362-215d-42fe-91c4-bb6160d121b7 -> 204
+[cleanup] delete org unit 9adda03d-406b-454f-8bec-bd8aa8f4f1fe -> 204
+[cleanup] delete profile 853623a1-81fc-4b9f-93d1-3e7a19435538 -> 204
+[admin-revert] users and mode as before; QA org units left=false
+[B-setup] profile 0f5c9f63-6434-46fd-9bb2-a06f4015df89 rows {company=hidden, lead_status_comment=read_only}; test user 1 moved to it
+[B-0] effective for test user 1: mentions hidden=true, read_only=true, company=true, comment=true; body 129 chars
+[B-3c] owner stored Company; test user 1 GET -> 200, value in response=false
+[B-3a] create with the hidden field refused: 422 FIELD_PERMISSION_DENIED 'One or more fields in the payload are not writable for your profile.'
+[B-3b] update with the read-only field refused: 422 FIELD_PERMISSION_DENIED 'One or more fields in the payload are not writable for your profile.'
+[cleanup] delete field permission 1e15a619-fe43-4260-b70d-75b9b456187f -> 204
+[cleanup] delete field permission 1cf61cf2-5428-4264-901a-25d3fe6aa32b -> 204
+[cleanup] delete profile 0f5c9f63-6434-46fd-9bb2-a06f4015df89 -> 204
+[B-revert] users and mode as before; QA profile deleted=true
+[PR-04] rank 200 -> 204; parent Supervisor + rank 100 -> 204; rank 600 under a rank-300 parent -> 400 VALIDATION_ERROR 'Profile rank (600) must be lower than parent profile's rank (300).' (rank stored afterwards 100); now rank 100, parent 11111111-1111-1111-1111-111111111104
+[FP-06] test user 1 list: own lead present=true, hidden Company value present=false
+[FP-08] Transactions as test user 1: write hidden Next Step -> 422 FIELD_PERMISSION_DENIED 'One or more fields in the payload are not writable for your profile.'; write read-only Description -> 422 FIELD_PERMISSION_DENIED 'One or more fields in the payload are not writable for your profile.'; read owner's deal -> 200, hidden value returned=false
+[LH-04] clear all for test user 1 -> 200; its token before 200, after 401; test user 2 (control) 200; test user 1 sessions still Active and unexpired: 0
+[cleanup] delete deal 5690199c-a0ff-43d4-8849-a3722441a7c0 -> 204
+[cleanup] delete field permission 56bc98d0-fe32-4861-8f00-6ab435213952 -> 204
+[cleanup] delete deal FP 48fb22ea-ce8d-410f-8312-bb0abed8f711 -> 204
+[cleanup] delete deal FP 0dd3f34b-064b-4ba1-b5fb-ca5d3bbbdbe7 -> 204
+[cleanup] delete profile 6e92283d-e010-4153-a7d1-19d92ae69f03 -> 204
+[cleanup] delete profile 01f30cfc-2ad8-4c6e-8335-e7d7dbbd9e4f -> 204
+[LO-revert] users and mode as before
+[R2-PE06 perms] nameb56175@airhemp.com holds {iam.profile.manage=false, iam.user.view=true, iam.security.loginhistory.view_all=false, iam.security.loginhistory.view_self=true, iam.tenant.admin=false, audit.view_all=false}
+[R2-PE06] by URL: {/settings/security/permissions=page opened (Skip to content Settings EN Search or jump to… Ctrl K 2 99+ TU Setup Home Set up), /settings/security/profiles=page opened (Skip to content Settings EN Search or jump to… Ctrl K 2 99+ TU Setup Home Set up), /settings/security/policies=page opened (Skip to content Settings EN Search or jump to… Ctrl K 2 99+ TU Setup Home Set up), /settings/security/login-history=page opened (Skip to content Settings EN Search or jump to… Ctrl K 2 99+ TU Setup Home Set up), /settings/security/org-units=page opened (Skip to content Settings EN Search or jump to… Ctrl K TU Setup Home Set up your ), /settings/security/audit-log=page opened (Skip to content Settings EN Search or jump to… Ctrl K 2 99+ TU Setup Home Set up), /settings/general/users=page opened (Skip to content Settings EN Search or jump to… Ctrl K 2 99+ TU Setup Home Set up)}
+[R2-LH07] Setup menu links shown: {Login History=true, Profiles=false, Permissions=false, Security Policies=false, Org Units=true, Audit Log=false, Users=true}
+[R2-OU create] {"success":true,"data":{"org_unit_id":"a7ec341f-9eb8-4816-927f-8ec4d94e47b7"},"error":null,"meta":null}
+[R2-OU] rename child 204; delete root with child -> 409 org_unit_has_children 'Org unit has child units.'; move root under its child -> 400 VALIDATION_ERROR 'Invalid parent: would create a cycle.'; delete child 204
+[cleanup] delete org unit QA R2W1 OU root 15804 -> 204
+[cleanup] delete org unit QA R2W1 OU root 81545 -> 204
+[cleanup] QA R2W1 org units left: 0
+[cleanup] delete child OU -> 404
+[cleanup] delete root OU -> 404
+[RU-setup] profile 9d85abfd-50ca-48b2-995b-0866bc47237d, lead fdbe390b-3a61-4315-8295-f693a2ea3649, login-history denies [iam.security.loginhistory.view_self, iam.security.loginhistory.view_team, iam.security.loginhistory.view_all]
+[FP-04] create form as test user 1: Company (hidden) shown=false; Email (read only) shown=true, editable=false
+[FP-05] record page as test user 1: hidden Company value shown=false; read-only Email value shown=true
+[LH-07/US-16/PR-08/SP-05] test user 1 (login history denied): Login History link=false; links shown without permission []; admin pages opened by URL without permission []
+[cleanup] clear override iam.security.loginhistory.view_self -> 204
+[cleanup] clear override iam.security.loginhistory.view_team -> 204
+[cleanup] clear override iam.security.loginhistory.view_all -> 204
+[cleanup] delete field permission af03984a-0837-479d-a869-4c63bae33f57 -> 204
+[cleanup] delete field permission da201fa5-9ed8-4df9-ba69-b4f9bb089c75 -> 204
+[cleanup] delete profile 9d85abfd-50ca-48b2-995b-0866bc47237d -> 204
+[RU-revert] users as before; overrides left=false
+[baseline] mode role, users 16
+[I1/I5] role: N sees own=true, self-created=true, superior V's lead=false
+[I2] role, V=User@HR and N=User@Sales: V sees N=false, N sees V=false
+[I3] role, V=Supervisor(300)@Sales, N=User(100)@Sales: V sees N's leads: owner-set=false, N-created=false
+[I3b] role, V=Manager(500)@Sales: V sees N's leads: owner-set=true, N-created=true
+[I4] role, V=Supervisor@HR, N=User@Sales: V sees N's lead=false (expected false: other org unit)
+[I6] role, N reports to V (both User): V sees N=false
+[I4b] role, V=Manager(500)@HR, N=User(100)@Sales: V sees N's leads: owner-set=true, N-created=true (expected false)
+[I7] role, V=Manager(500)@Sales, N=Supervisor(300)@Sales: V sees N's leads: owner-set=true, N-created=true; N sees V's lead=false
+[I8] role: owner sees N owner-set=true, N-created=true, V's=true
+[I2b] role, V=User@Sales and N=User@Sales: V sees N=false, N sees V=false (expected false/false)
+[restore] profile of test user 2 -> Manager
+[revert] restored: no difference from the baseline
+[ERROR] Tests run: 36, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 720.0 s <<< FAILURE! -- in TestSuite
+[ERROR] qa.features.crmhierarchy.VisibilityTest.roleSuperiorSameDepartment -- Time elapsed: 5.458 s <<< FAILURE!
+java.lang.AssertionError: a Supervisor does not see a lower-ranked User's leads in the same department (hint: 'Users see their own records and those of lower-ranked users in their department') expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at qa.features.crmhierarchy.VisibilityTest.roleSuperiorSameDepartment(VisibilityTest.java:105)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] qa.features.crmhierarchy.VisibilityTest.roleManagerOtherOrgUnit -- Time elapsed: 11.88 s <<< FAILURE!
+java.lang.AssertionError: a Manager in another org unit sees a User's leads expected [false] but found [true]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1578)
+	at org.testng.Assert.assertFalse(Assert.java:79)
+	at qa.features.crmhierarchy.VisibilityTest.roleManagerOtherOrgUnit(VisibilityTest.java:153)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:739)
+	at org.testng.TestRunner.run(TestRunner.java:614)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:155)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeMulti(TestNGDirectoryTestSuite.java:169)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:88)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:137)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   VisibilityTest.roleManagerOtherOrgUnit:153 a Manager in another org unit sees a User's leads expected [false] but found [true]
+[ERROR]   VisibilityTest.roleSuperiorSameDepartment:105 a Supervisor does not see a lower-ranked User's leads in the same department (hint: 'Users see their own records and those of lower-ranked users in their department') expected [true] but found [false]
+[INFO] 
+[ERROR] Tests run: 36, Failures: 2, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12:05 min
+[INFO] Finished at: 2026-10-27T16:30:28+03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project ui-automation: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Software Testing\Automation\Agentex Installation\Agentex Installation\automation-r2w1\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

@@ -44,7 +44,7 @@ public class VerifyV3ApprovalBlueprintTest extends VerifyBase {
 
     private Map<String, Object> leadNoPhone(String c, String sfx) {
         Map<String, Object> f = new LinkedHashMap<>(CrmApi.minimal(LEADS, nm(c, sfx)));
-        f.remove("phone"); // read-only for userV's profile
+        // phone stays: since 27 Oct userV may write it and the Leads layout requires it (422 "Phone is required." without it)
         return f;
     }
 
@@ -98,9 +98,10 @@ public class VerifyV3ApprovalBlueprintTest extends VerifyBase {
         CrmUser.sleep(5000);
         JsonPath after = view(c, userN(), LEADS, id);
         Response e2 = patch(c, userN(), "/modules/" + LEADS + "/records/" + id, Map.of("data", CrmApi.data(Map.of("description", "QA edit after release"))));
+        String statusField = api.approvalStatus(LEADS, id); // read before the delete (it 404s afterwards)
         Response del = del(c, adminA(), "/modules/" + LEADS + "/records/" + id);
         fact(c, "rename " + e.statusCode() + "; resubmit " + rs.statusCode() + " outcome=" + rs.jsonPath().getString("data.outcome") + "; after: " + summary(after)
-                + " approval_status field=" + api.approvalStatus(LEADS, id) + "; userN edit after release -> " + e2.statusCode() + "; admin delete -> " + del.statusCode());
+                + " approval_status field=" + statusField + "; userN edit after release -> " + e2.statusCode() + "; admin delete -> " + del.statusCode());
     }
 
     // ------------------------------------------------------------ D-17

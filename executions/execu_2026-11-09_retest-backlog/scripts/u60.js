@@ -1,0 +1,16 @@
+const SS='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-backlog/screenshots/';
+const o={};await page.setViewportSize({width:1600,height:900});const writes=[];
+page.on('request',r=>{if(/api\/v1/.test(r.url())&&!['GET','OPTIONS'].includes(r.method())&&!/heartbeat|resolved-batch|iam\/auth|realtime|summaries/.test(r.url()))writes.push(r.method()+' '+r.url().replace(/.*api\/v1/,''));});
+await page.goto(H+'/settings/modules-and-fields/88e8ea44-1658-4df3-9930-d0902b91073d/layouts/a539323e-9252-4967-a1b6-bb3e69f7c300',{waitUntil:'domcontentloaded',timeout:120000});
+await page.getByText('QA RT9 Pick',{exact:true}).first().waitFor({timeout:240000});await sleep(4000);
+const openProps=async label=>{const l=page.getByText(label,{exact:true}).first();await l.scrollIntoViewIfNeeded();await l.hover();await sleep(800);
+ await l.locator('xpath=ancestor::*[.//button][1]').getByRole('button',{name:'Field options'}).click();await sleep(1500);
+ await page.getByText('Edit Properties',{exact:true}).last().click();await sleep(3000);await page.getByText('ADVANCED',{exact:true}).last().click();await sleep(1500);};
+await openProps('QA RT9 Pick');
+const before=new Set((await page.innerText('body')).split('\n'));
+await page.getByText('Add values in bulk',{exact:true}).click();await sleep(2000);
+o.bulkNew=(await page.innerText('body')).split('\n').filter(x=>x.trim()&&!before.has(x));
+o.textareas=await page.$$eval('textarea',t=>t.map(x=>x.placeholder||x.getAttribute('aria-label')||''));
+await page.screenshot({path:SS+'u60-bulk.png'});
+await page.keyboard.press('Escape');
+o.writes=writes;return o;

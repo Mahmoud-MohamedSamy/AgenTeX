@@ -1,0 +1,4 @@
+const M = 'df656ed7-da62-4e06-b17b-bb3c83961fde', out = {};
+const shapes = { a: { key: 'qa_sub_text', label: 'Sub text', datatype: 'single_line' }, b: { key: 'qa_sub_text', label: 'Sub text', datatype_key: 'single_line' }, c: { key: 'qa_sub_text', labels: { en: 'Sub text' }, type: 'single_line' }, d: { key: 'qa_sub_text', label: 'Sub text', datatypeKey: 'single_line', datatype: { key: 'single_line' } } };
+for (const [k, s] of Object.entries(shapes)) { const r = await call('POST', `/modules/${M}/fields`, { fields: [{ fieldName: 'qa_w5_subform_' + k, labels: { en: 'QA W5 Subform ' + k }, datatypeKey: 'subform', required: false, unique: false, datatypeOptions: { subfields: [s] } }] }); out[k] = r.s + ' ' + (r.s < 300 ? '' : (r.j && r.j.error && r.j.error.message)); if (r.s < 300) break; }
+return out;

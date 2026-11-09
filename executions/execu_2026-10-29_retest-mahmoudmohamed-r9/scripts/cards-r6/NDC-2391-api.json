@@ -1,0 +1,26 @@
+{
+ "out": "NDC-2391-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2391 · Workflow rule with a Lead Owner condition (automation F-02, assignment → workflow)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "import + assignment rule",
+   "POST /api/v1/modules/{Leads}/import … execute → completed, 1 created",
+   "owner after import 3445ec4a… (mahmoud.mahamed1515) = expected",
+   "ok"
+  ],
+  [
+   "executions",
+   "GET /api/v1/workflow/executions?recordId=…",
+   "AssignmentRule → Fired, then Rule (Owner = 3445ec4a… criteria) → Fired",
+   "ok"
+  ],
+  [
+   "result",
+   "GroupFHandoffTest.f02AssignmentBeforeWorkflowOwnerCriteria",
+   "PASS — the owner condition matches the owner set by the rule",
+   "ok"
+  ]
+ ]
+}

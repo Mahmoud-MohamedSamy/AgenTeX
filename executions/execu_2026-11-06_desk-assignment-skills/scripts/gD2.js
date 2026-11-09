@@ -1,0 +1,25 @@
+eval(require('fs').readFileSync('lib.js','utf8'));
+const TK={};
+await cs('D-07',async()=>{const u=await putRule(IDS.RR_SEQ,{execute_on:['create','update']});const r=await mkRule({type:'direct',name:'QA AS6 DA D07 move-unassigned',description:'QA',is_active:true,execute_on:['create'],targets:[DT('QA AS6 SEQ D07',IDS.DB,IDS.DA,UN)]});IDS.DA_D07=r.id;const t=await mkTicket('QA AS6 SEQ D07',IDS.DB);await W(5000);return {rrUpd:u.s,rrE:u.e,rule:r.s,e:r.e,own:await own(t.id),h:await hist(t.id)};});
+await cs('D-12',async()=>{const off=await setActive(IDS.DA_D01,false);const t1=await mkTicket('QA AS6 D01 inactive',IDS.DA);await W(3000);const o1=await own(t1.id);const on=await setActive(IDS.DA_D01,true);const g=await getRule(IDS.DA_D01);
+ const ns=(await api('GET','/desk/assignment/notification-settings')).j.data;const m=sh(await api('PUT','/desk/assignment/notification-settings',{...ns,direct_rules_enabled:false}));LED('direct master switch OFF');const t2=await mkTicket('QA AS6 D01 master off',IDS.DA);await W(3000);const o2=await own(t2.id);const L=await rules('direct');
+ const m2=sh(await api('PUT','/desk/assignment/notification-settings',{...ns,direct_rules_enabled:true}));LED('direct master switch restored ON');
+ const t3=await mkTicket('QA AS6 D01 after restore',IDS.DA);await W(3000);
+ return {off:off.s,offE:off.e,o1,on:on.s,activeNow:g.is_active,targetsKept:JSON.stringify(g.targets[0].assign),master:m.s,me:m.e,o2,listedWhileOff:L.length,restore:m2.s,o3:await own(t3.id)};});
+await cs('D-13',async()=>{const r=await mkRule({type:'direct',name:'QA AS6 DA D13 A3',is_active:true,execute_on:['create'],targets:[DT('QA AS6 D13',IDS.DA,null,AG(IDS.A3))]});IDS.DA_D13=r.id;
+ const d=(await api('GET','/desk/departments/'+IDS.DA)).j.data;const p=sh(await api('PUT','/desk/departments/'+IDS.DA,{...d,agent_user_ids:d.agent_user_ids.filter(x=>x!==IDS.A3)}));LED('Dept A: A3 removed (restore)');
+ const g=await getRule(r.id);const t=await mkTicket('QA AS6 D13',IDS.DA);await W(3000);const o=await own(t.id);const h=await hist(t.id);
+ const d2=(await api('GET','/desk/departments/'+IDS.DA)).j.data;const p2=sh(await api('PUT','/desk/departments/'+IDS.DA,{...d2,agent_user_ids:[...new Set([...d2.agent_user_ids,IDS.A3])]}));LED('Dept A: A3 restored');
+ const team=(await api('GET','/desk/teams')).j.data.teams.find(x=>x.id===IDS.TA);
+ return {rule:r.s,remove:p.s,removeE:p.e,ruleView:{assign:g.targets[0].assign,unknown:g.targets[0].unknown_user_ids,inel:g.targets[0].ineligible},o,h,restore:p2.s,teamSources:team&&team.sources.map(s=>s.ref_id.slice(0,8))};});
+const tg=await api('POST','/desk/tags',{name:'qa-as6-eo2',department_id:IDS.DA});const tagId=tg.j&&tg.j.data&&(tg.j.data.id||(tg.j.data.tag&&tg.j.data.tag.id));if(tagId){IDS.TAG=tagId;LED('tag qa-as6-eo2 '+tagId);}
+await cs('EO-2',async()=>{const w=await mkWf('QA AS6 WF EO2','RecordCreated',{kind:'Logical',operator:'And',operands:[SM('QA AS6 EO2'),{kind:'Comparison',field:'owner',operator:'Equal',value:{kind:'string',stringValue:IDS.A1}}]},[{type:'AddTags',order:0,delaySeconds:0,tagIds:[tagId]}]);IDS.WF_EO2=w.id;
+ const t=await mkTicket('QA AS6 EO2 b',IDS.DA);await W(6000);const o=await getT(t.id);const a=await act(t.id);
+ return {tag:tg.s,tagE:E(tg),wf:w.s,we:w.e,owner:o.owner,tags:o.tags,wfRan:Array.isArray(a)?a.filter(x=>/workflow|tag/.test(x.action)).map(x=>x.action+' '+(x.summary&&(x.summary.rule_name||JSON.stringify(x.summary).slice(0,120)))):a};});
+await cs('EO-4/5',async()=>{const w=await mkWf('QA AS6 WF EO5','RecordCreated',SM('QA AS6 EO5'),[{type:'OwnerAssignment',order:0,delaySeconds:0,ownerTargetKind:'SpecificUser',ownerValue:IDS.A2}]);IDS.WF_EO5=w.id;
+ const t=await mkTicket('QA AS6 EO5 b',IDS.DA);TK.EO5=t.id;await W(7000);
+ return {wf:w.s,we:w.e,own:await own(t.id),h:await hist(t.id)};});
+await cs('EO-3',async()=>{const w=await mkWf('QA AS6 WF EO3','RecordUpdated',SM('QA AS6 SEQ EO3'),[{type:'OwnerAssignment',order:0,delaySeconds:0,ownerTargetKind:'SpecificUser',ownerValue:IDS.A3}]);IDS.WF_EO3=w.id;
+ const t=await mkTicket('QA AS6 SEQ EO3 b',IDS.DA);const u=await unassign(t.id);await W(3000);const a1=await own(t.id);await patchT(t.id,{priority:'Low'});await W(6000);return {wf:w.s,we:w.e,unassign:u.s,afterUnassign:a1,own:await own(t.id),h:await hist(t.id)};});
+await cs('E-08b owner null on create',async()=>{const t=await mkTicket('QA AS6 SEQ create null',IDS.DA,{owner:null});await W(5000);return {s:t.s,e:t.e,own:await own(t.id),h:await hist(t.id)};});
+saveIds(); return {RES,TK};

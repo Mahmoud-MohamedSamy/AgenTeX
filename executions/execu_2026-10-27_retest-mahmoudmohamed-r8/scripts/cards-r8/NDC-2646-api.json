@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2646-api.png",
+ "date": "27 Oct 2026",
+ "host": "staging-crm.taviportal.com",
+ "who": "mahmoud.mahamed1515 (CRM Admin); test user 1; owner account through the automation",
+ "title": "NDC-2646 · Validation rule on a QA module (SetupApiTest C04)",
+ "rows": [
+  [
+   "rule",
+   "POST /validation-rules condition {op:gt, field:qa_num, value:10}",
+   "201",
+   "info"
+  ],
+  [
+   "create 50",
+   "POST records qa_num 50",
+   "422 VALIDATION_RULE_FAILED \"QA number must be 10 or less\"",
+   "ok"
+  ],
+  [
+   "edit 3 → 999",
+   "PATCH record",
+   "422; value stays 3",
+   "ok"
+  ],
+  [
+   "garbage condition",
+   "condition \"garbage ((( not an expression\"",
+   "422 VALIDATION_RULE_INVALID \"The condition could not be understood…\"",
+   "ok"
+  ],
+  [
+   "control",
+   "POST records qa_num 5",
+   "201",
+   "ok"
+  ]
+ ]
+}

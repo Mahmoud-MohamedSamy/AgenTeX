@@ -1,0 +1,10 @@
+const res = {};
+const panel = page.locator('xpath=//*[normalize-space(text())="Field Properties"]/ancestor::*[.//button[normalize-space(.)="Apply"]][1]').first();
+const sel = panel.locator('select').first();
+await sel.selectOption('record_field'); await sleep(1500);
+res.value = await sel.inputValue();
+res.after = (await panel.innerText()).replace(/\s+/g, ' ').slice(0, 900);
+const sels = panel.locator('select'); res.sel = []; for (let i = 0; i < await sels.count(); i++) res.sel.push(await sels.nth(i).evaluate(s => s.value + ' :: ' + [...s.options].map(o => o.text).join(' / ')));
+await shot('c01-1231-autofill');
+await panel.locator('button', { hasText: /^Cancel$/ }).click(); await sleep(600);
+return res;

@@ -1,0 +1,20 @@
+// NDC-1823: Convert form › new Deal: Amount 10000 + Stage Qualification → Probability / Expected Revenue auto-filled and locked. NOT converted.
+const L = 'bbb0320d-b737-4b40-b42b-a207f8553579';
+await page.goto(`${H}/modules/${T.LEADS}/records/${L}`, { waitUntil: 'domcontentloaded', timeout: 150000 }); await page.waitForSelector('text=QA RT 1823 convert lead', { timeout: 120000 }); await sleep(3000);
+await page.locator('button', { hasText: /^Convert$/ }).first().click();
+await page.waitForSelector('text=/Create a new Deal/i', { timeout: 90000 }); await sleep(1500);
+const cb = page.locator('label, div', { hasText: /^Create a new Deals? for this Contacts\.?$/ }).locator('input[type=checkbox]').first();
+if (await cb.count() && !(await cb.isChecked())) await cb.check(); else if (!(await cb.count())) await page.locator('text=/Create a new Deal/i').first().click();
+await page.waitForSelector('text=Probability', { timeout: 60000 }); await sleep(1500);
+const field = n => page.locator(`xpath=//*[normalize-space(text())="${n}" or starts-with(normalize-space(text()),"${n}")]/following::input[1]`).first();
+await field('Amount').fill('10000'); await sleep(800);
+await page.locator(`xpath=//*[starts-with(normalize-space(text()),"Stage")]/following::*[normalize-space()="Select"][1]`).first().click(); await sleep(1500);
+const opts = await page.$$eval('[role=option]', o => o.map(x => x.innerText.trim()).slice(0, 10));
+await page.locator('[role=option]', { hasText: /^Qualification/ }).first().click(); await sleep(2500);
+const read = async n => { const i = field(n); return { value: await i.inputValue().catch(() => null), readOnly: await i.evaluate(e => e.readOnly || e.disabled).catch(() => null) }; };
+const out = { stageOptions: opts, probability: await read('Probability'), expectedRevenue: await read('Expected Revenue') };
+await field('Probability').fill('500', { timeout: 3000 }).catch(e => out.typeProbability = 'refused: ' + e.message.split('\n')[0].slice(0, 80));
+out.probabilityAfterTyping = await read('Probability');
+await page.locator('text=Probability').first().scrollIntoViewIfNeeded(); await sleep(800); await shot('1823-4-auto.png');
+out.durations = await page.evaluate(() => ['Lead Conversion Time', 'Sales Cycle Duration', 'Overall Sales Duration'].map(n => n + ':' + document.body.innerText.includes(n)));
+return out;

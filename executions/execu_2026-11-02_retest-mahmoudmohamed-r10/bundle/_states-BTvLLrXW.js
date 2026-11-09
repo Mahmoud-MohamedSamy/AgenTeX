@@ -1,0 +1,1 @@
+import{n as e}from"./react-vendor-DkHM6MDj.js";import{Gv as t}from"./index-Bp0UvXNm.js";import{t as n}from"./WorkStates-Bk1jRMo7.js";var r=e();function i({title:e,body:i,action:a}){return(0,r.jsx)(n,{title:e,body:i,icon:(0,r.jsx)(t,{size:26}),tone:`primary`,action:a})}export{i as t};

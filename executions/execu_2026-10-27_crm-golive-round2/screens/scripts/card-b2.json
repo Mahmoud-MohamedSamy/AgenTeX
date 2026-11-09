@@ -1,0 +1,9 @@
+{"out":"card-b2-ghost.png","title":"R2SC-B2 · POST /modules/{leads}/records/{id}/attachments accepts files that do not exist (CRM Admin B, 28 Oct 2026)","lines":[
+["1. POST /files {purpose: attachment, qa-r2sc-ghost.pdf, 2048 B}  -> 201  (file created, status 'pending', nothing uploaded)",""],
+["   POST …/attachments {file_id: <pending file>, size: 2048}  -> 201  attachment row created","bad"],
+["   POST /files/<id>/download  -> 409 \"File is 'pending' and not available for download.\"","info"],
+["2. POST …/attachments {file_id: 00000000-0000-4000-8000-000000000001 (no such file)}  -> 201","bad"],
+["3. POST …/attachments {file_id: <real 64 B pdf>, size: 999999999}  -> 201, stored size 999999999 (screen shows 954 MB)","bad"],
+["4. Same on notes: POST …/notes {attachments:[{file_id: 00000000-…0002}]}  -> 201","bad"],
+["Re-run from scratch in the Java suite (AT-04, AT-05): same results.","info"],
+["Expected: 4xx unless the file exists, is confirmed, belongs to the tenant; size and type taken from the stored file.",""]]}

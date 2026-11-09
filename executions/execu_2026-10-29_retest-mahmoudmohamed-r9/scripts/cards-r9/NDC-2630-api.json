@@ -1,0 +1,39 @@
+{
+ "out": "NDC-2630-api.png",
+ "date": "29 Oct 2026",
+ "host": "staging-crm.taviportal.com (tenant Anyware)",
+ "who": "anyware-staging-owner (Owner); test users U1 / U2",
+ "title": "NDC-2630 · Sending from a QA lead as the owner (anyware.software has no working mail connection) — recipient on example.com",
+ "rows": [
+  [
+   "pre-check",
+   "GET /emails/sendability (owner, U1)",
+   "can_send false, reason no_connection (r8: can_send true for a failing sender)",
+   "ok"
+  ],
+  [
+   "send",
+   "POST /mail/drafts/{id}/send",
+   "422 MAIL_NO_CONNECTION \"No email provider is connected for 'anyware.software'…\"",
+   "ok"
+  ],
+  [
+   "record Mails / Sent",
+   "GET /mail/records/leads/{id}/emails",
+   "Empty — nothing shown as sent; draft kept for a retry",
+   "ok"
+  ],
+  [
+   "timeline",
+   "GET /timeline/records/leads/{id}/feed",
+   "RecordCreated, BlueprintStateChanged — no EmailSent",
+   "ok"
+  ],
+  [
+   "r8 path not testable",
+   "Connection present, provider fails at send time",
+   "Only taviportal.com has a working connection on Anyware; no account on that domain",
+   "info"
+  ]
+ ]
+}

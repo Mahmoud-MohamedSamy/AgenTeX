@@ -1,0 +1,297 @@
+{
+ "out": "NDC-2294-retest-PARTIAL.png",
+ "ticket": "NDC-2294",
+ "title": "Automation Execution Order: features missing from TAVI CRM",
+ "priority": "high",
+ "verdict": "PARTIAL",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "2294-import-2.png",
+   "caption": "Leads › Import › Assign: renamed automation option (1) and manual approval, now available (2).",
+   "crop": [
+    400,
+    280,
+    800,
+    320
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      420,
+      340,
+      1180,
+      420
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      420,
+      500,
+      1180,
+      580
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2294-api.png",
+   "caption": "API evidence — NDC-2294 · Automation gap list — each item run on Anyware (owner, QA RT leads, custom action \"NDC agency profile\" = read-only GET)",
+   "crop": [
+    0,
+    0,
+    1600,
+    825
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      206
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      212,
+      1566,
+      274
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      280,
+      1566,
+      321
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      327,
+      1566,
+      368
+     ],
+     "n": 7,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      374,
+      1566,
+      436
+     ],
+     "n": 8,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      442,
+      1566,
+      504
+     ],
+     "n": 9,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      510,
+      1566,
+      551
+     ],
+     "n": 10,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      557,
+      1566,
+      598
+     ],
+     "n": 11,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      604,
+      1566,
+      645
+     ],
+     "n": 12,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      651,
+      1566,
+      692
+     ],
+     "n": 13,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      698,
+      1566,
+      760
+     ],
+     "n": 14,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      766,
+      1566,
+      807
+     ],
+     "n": 15,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Screen: import option name",
+   "\"Trigger automation and process management\"",
+   "Shown with the help text; off by default",
+   "PASS"
+  ],
+  [
+   "2",
+   "Screen: manual approval",
+   "Implemented, or \"Coming soon\"",
+   "Implemented: \"Enable manual approval\"",
+   "PASS"
+  ],
+  [
+   "3",
+   "2 manual approval run",
+   "Records wait for approval",
+   "\"0 added · 1 waiting for approval\"; no lead until approved; approve → lead 26c66d2e, pending 0",
+   "PASS"
+  ],
+  [
+   "4",
+   "3 Record Notes trigger",
+   "Trigger offered and runs",
+   "NoteAdded Fired; Description set",
+   "PASS"
+  ],
+  [
+   "5",
+   "3 Record Score trigger",
+   "Trigger offered",
+   "400 \"Unknown trigger kind\"; editor category \"Score value\" switched off (\"Scoring rules land in Phase 5\")",
+   "FAIL"
+  ],
+  [
+   "6",
+   "4 Meeting / Call / Function",
+   "Actions run",
+   "All three Succeeded (meeting, call created; custom action run)",
+   "PASS"
+  ],
+  [
+   "7",
+   "5 Assign Owner by rule",
+   "Rule + options",
+   "Owner = rule user; all three options stored",
+   "PASS"
+  ],
+  [
+   "8",
+   "6 review functions",
+   "Functions run on review events",
+   "Stored; custom action ran on submission and on approval (Succeeded)",
+   "PASS"
+  ],
+  [
+   "9",
+   "7 Anyone / Everyone",
+   "Modes stored",
+   "Stored and read back (users + everyone refused). Not run: approver groups hold real users",
+   "PASS"
+  ],
+  [
+   "10",
+   "8 approval Call Function",
+   "Function really runs",
+   "RunCustomAction Succeeded after approval (no longer a no-op)",
+   "PASS"
+  ],
+  [
+   "11",
+   "9 blueprint after-actions",
+   "All four run",
+   "Tag added, lead converted, custom action Succeeded, task created",
+   "PASS"
+  ],
+  [
+   "12",
+   "10 rejection reasons",
+   "Per process",
+   "Stored per process (EN/AR, order); org list unchanged",
+   "PASS"
+  ],
+  [
+   "13",
+   "11 scheduled Field Update",
+   "Delay honoured",
+   "Applied after ~150 s",
+   "PASS"
+  ],
+  [
+   "14",
+   "12 several conditions",
+   "Up to N conditions, first match wins",
+   "First match wins (A→cond1, B→cond2, other untouched); duplicate criteria and else-not-last refused",
+   "PASS"
+  ],
+  [
+   "15",
+   "13 \"trigger\": []",
+   "No automation with []",
+   "With []: no rule run; without: rule ran",
+   "PASS"
+  ]
+ ]
+}

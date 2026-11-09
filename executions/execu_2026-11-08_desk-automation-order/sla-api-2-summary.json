@@ -1,0 +1,205 @@
+[ {
+  "test" : "SlaApiTest.agentCannotWrite",
+  "cases" : [ "SL-52" ],
+  "groups" : [ "regression" ],
+  "description" : "A Desk Agent can't write SLA policies through the API",
+  "status" : "PASSED",
+  "seconds" : 2.153
+}, {
+  "test" : "SlaApiTest.conditionLimit",
+  "cases" : [ "SL-10b" ],
+  "groups" : [ "regression" ],
+  "description" : "Conditions: 25 accepted, 26 refused",
+  "status" : "PASSED",
+  "seconds" : 0.845
+}, {
+  "test" : "SlaApiTest.deactivateAndDelete",
+  "cases" : [ "SL-33" ],
+  "groups" : [ "regression" ],
+  "description" : "Deactivate: no new tickets. Delete works when unused",
+  "status" : "PASSED",
+  "seconds" : 19.386
+}, {
+  "test" : "SlaApiTest.nameLimits",
+  "cases" : [ "SL-03" ],
+  "groups" : [ "regression" ],
+  "description" : "Name: empty refused, 120 accepted, 121 refused",
+  "status" : "PASSED",
+  "seconds" : 1.249
+}, {
+  "test" : "SlaApiTest.neitherRefused",
+  "cases" : [ "SL-13" ],
+  "groups" : [ "regression" ],
+  "description" : "Target needs response or resolution; neither is refused",
+  "status" : "PASSED",
+  "seconds" : 0.932
+}, {
+  "test" : "SlaApiTest.onlyWithAccount",
+  "cases" : [ "SL-09" ],
+  "groups" : [ "regression" ],
+  "description" : "Only with an Account: ticket with no account gets no SLA from this policy",
+  "status" : "PASSED",
+  "seconds" : 18.798
+}, {
+  "test" : "SlaApiTest.operators",
+  "cases" : [ "SL-12" ],
+  "groups" : [ "regression" ],
+  "description" : "No number or date operators in target conditions (gap 9): each is refused or missing",
+  "status" : "FAILED",
+  "seconds" : 0.216,
+  "error" : "GAP 9: no number or date operators, offered [equals, not_equal_to, contains, does_not_contain, starts_with, ends_with, is_empty, is_not_empty, contains_any_of] expected [true] but found [false]"
+}, {
+  "test" : "SlaApiTest.resolutionFromCreated",
+  "cases" : [ "SL-08" ],
+  "groups" : [ "regression" ],
+  "description" : "Calculate resolution from created time",
+  "status" : "FAILED",
+  "seconds" : 9.0,
+  "error" : "from_created expected [true] but found [false]"
+}, {
+  "test" : "SlaApiTest.security",
+  "cases" : [ "SL-50" ],
+  "groups" : [ "regression" ],
+  "description" : "Script in name and description is stored as text; another tenant's department is refused",
+  "status" : "PASSED",
+  "seconds" : 1.232
+}, {
+  "test" : "SlaApiTest.severalMatchingTargets",
+  "cases" : [ "SL-11" ],
+  "groups" : [ "regression" ],
+  "description" : "Which of several matching targets wins, recorded",
+  "status" : "PASSED",
+  "seconds" : 5.983
+}, {
+  "test" : "SlaApiTest.staleSave",
+  "cases" : [ "SL-48" ],
+  "groups" : [ "regression" ],
+  "description" : "Stale save is refused",
+  "status" : "PASSED",
+  "seconds" : 4.294
+}, {
+  "test" : "SlaApiTest.targetLimit",
+  "cases" : [ "SL-10a" ],
+  "groups" : [ "regression" ],
+  "description" : "Targets: 50 accepted, 51 refused",
+  "status" : "PASSED",
+  "seconds" : 1.647
+}, {
+  "test" : "SlaApiTest.units",
+  "cases" : [ "SL-14" ],
+  "groups" : [ "regression" ],
+  "description" : "Units: zero, negative and unknown unit refused",
+  "status" : "PASSED",
+  "seconds" : 1.032
+}, {
+  "test" : "SlaApiTest.updateAndFieldUpdateEitherOr",
+  "cases" : [ "SL-05" ],
+  "groups" : [ "regression" ],
+  "description" : "Ticket Update and Field Update together are refused",
+  "status" : "FAILED",
+  "seconds" : 0.223,
+  "error" : "body: {\"success\":true,\"data\":{\"id\":\"9d454c47-8347-4b29-8539-9652c58752bc\",\"department_id\":\"93949fbd-f9df-4e2e-ae45-00b8dc38385b\",\"name\":\"QA AO eitheror 6ffd78\",\"description\":null,\"is_active\":true,\"sort_order\":9,\"triggers\":{\"create\":true,\"update\":true,\"field_update\":{\"keys\":[\"priority\"],\"match\":\"any\"},\"customer_reply\":false,\"agent_response\":false,\"private_thread\":null,\"comment\":null},\"execute_only_with_account\":false,\"resolution_from_created\":false,\"targets\":[{\"id\":\"0b779a52-e247-45eb-bace-6815ddd78bdd\",\"name\":\"t1\",\"sort_order\":0,\"criteria\":{\"conditions\":[{\"field_key\":\"priority\",\"operator\":\"equ"
+}, {
+  "test" : "SlaApiTest.watchedFieldLimit",
+  "cases" : [ "SL-06" ],
+  "groups" : [ "regression" ],
+  "description" : "Field Update: 3 watched fields accepted, 4 refused",
+  "status" : "PASSED",
+  "seconds" : 0.997
+}, {
+  "test" : "SlaRuntimeTest.closeFromHold",
+  "cases" : [ "SL-28" ],
+  "groups" : [ "regression" ],
+  "description" : "Close from On Hold ends the obligation; record its state",
+  "status" : "PASSED",
+  "seconds" : 16.306
+}, {
+  "test" : "SlaRuntimeTest.closedResolves",
+  "cases" : [ "SL-45" ],
+  "groups" : [ "regression" ],
+  "description" : "Closed means resolved: resolution met on close",
+  "status" : "PASSED",
+  "seconds" : 16.975
+}, {
+  "test" : "SlaRuntimeTest.editKeepsRunning",
+  "cases" : [ "SL-32" ],
+  "groups" : [ "regression" ],
+  "description" : "Editing a policy leaves running tickets on the targets they started with",
+  "status" : "PASSED",
+  "seconds" : 11.392
+}, {
+  "test" : "SlaRuntimeTest.hold",
+  "cases" : [ "SL-26" ],
+  "groups" : [ "regression" ],
+  "description" : "On Hold pauses; resume moves due by the held time; closing from hold records",
+  "status" : "PASSED",
+  "seconds" : 69.691
+}, {
+  "test" : "SlaRuntimeTest.kindOrder",
+  "cases" : [ "WF-B1" ],
+  "groups" : [ "regression" ],
+  "description" : "Earlier bug B-1: record API returned 500 when kind is not the first key",
+  "status" : "FAILED",
+  "seconds" : 0.757,
+  "error" : "body: {\"success\":false,\"data\":null,\"error\":{\"code\":\"INTERNAL_ERROR\",\"message\":\"An unexpected error occurred. Trace id: 3e86726c-47df-4575-853f-5e03a402d96d\"},\"meta\":null} did not expect [500] but found [500]"
+}, {
+  "test" : "SlaRuntimeTest.levelLimits",
+  "cases" : [ "SL-19a" ],
+  "groups" : [ "regression" ],
+  "description" : "Levels: 2 response and 4 resolution accepted; a 3rd and a 5th refused",
+  "status" : "PASSED",
+  "seconds" : 0.791
+}, {
+  "test" : "SlaRuntimeTest.levelsFire",
+  "cases" : [ "SL-19" ],
+  "groups" : [ "regression" ],
+  "description" : "All levels fire on real timers; action reassigns and sets priority; closed ticket stays quiet",
+  "status" : "FAILED",
+  "seconds" : 433.142,
+  "error" : "response levels reached expected [2] but found [0]"
+}, {
+  "test" : "SlaRuntimeTest.moveDepartment",
+  "cases" : [ "SL-41" ],
+  "groups" : [ "regression" ],
+  "description" : "Move department: old SLA stops, new department's policy applies",
+  "status" : "PASSED",
+  "seconds" : 16.617
+}, {
+  "test" : "SlaRuntimeTest.reapplyFromTicket",
+  "cases" : [ "SL-66" ],
+  "groups" : [ "regression" ],
+  "description" : "Reapply from the ticket",
+  "status" : "PASSED",
+  "seconds" : 14.319
+}, {
+  "test" : "SlaRuntimeTest.resetOnTrigger",
+  "cases" : [ "SL-30" ],
+  "groups" : [ "regression" ],
+  "description" : "A selected trigger resets the SLA: new execution, times restart",
+  "status" : "FAILED",
+  "seconds" : 20.274,
+  "error" : "new execution expected [true] but found [false]"
+}, {
+  "test" : "SlaRuntimeTest.triggerCreate",
+  "cases" : [ "SL-04a" ],
+  "groups" : [ "regression" ],
+  "description" : "Create-only policy: applies on create, not on a later trigger only policy",
+  "status" : "PASSED",
+  "seconds" : 9.216
+}, {
+  "test" : "SlaRuntimeTest.triggerFieldUpdate",
+  "cases" : [ "SL-04c" ],
+  "groups" : [ "regression" ],
+  "description" : "Field Update: another field does nothing; the watched field applies the policy",
+  "status" : "FAILED",
+  "seconds" : 49.969,
+  "error" : "after priority change expected [QA AO SL04cf0827f] but found [null]"
+}, {
+  "test" : "SlaRuntimeTest.triggerUpdate",
+  "cases" : [ "SL-04b" ],
+  "groups" : [ "regression" ],
+  "description" : "Update-only policy: nothing on create; applies after an update",
+  "status" : "FAILED",
+  "seconds" : 8.702,
+  "error" : "after update: [state:applied, policy:[id:29e5a6df-7f93-45f6-954e-e9cc57ca4d2a, name:QA AO probe], target:[id:fc323a53-115c-40c1-bc51-261f9d1f3b7d, name:QA t1], coverage:[source:general, contract:null, plan:null, reason:null], execution:[number:1, trigger:create, applied_at:2026-11-08T15:57:17.752371+00:00, from_created:false], calendar:[mode:calendar, time_zone:Africa/Cairo, configured:true], obligations:[[id:53d81f80-ca73-4a42-97b6-367788b06b9f, kind:resolution, cycle:1, state:running, started_at:2026-11-08T15:57:17.752371+00:00, due_at:2026-11-08T17:57:17.752371+00:00, met_at:null, breached_"
+} ]

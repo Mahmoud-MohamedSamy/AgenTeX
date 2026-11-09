@@ -1,0 +1,4 @@
+const paths = ['/mail/connections', '/mail/templates', '/mail/signature', '/emails/sendability', '/mail/sender/system', '/web-forms?app=crm', '/web-forms/limits?app=crm', '/web-forms/modules?app=crm', '/record-portals', '/activity-reminders/overdue-escalation', '/messaging/settings', '/messaging/templates', '/messaging/campaigns', '/messaging/sender-ids', '/messaging/suppressions', '/messaging/balance', '/messaging/webhooks', '/messaging/rates', '/messaging/usage', '/telephony/providers', '/telephony/integrations', '/telephony/status', '/telephony/me', '/telephony/calls/summary', '/telephony/calls?limit=5', '/notifications/preferences/me', '/notifications/unread-count', '/mail/inbox?limit=5', '/mail/inbox/unread-count'];
+const out = {};
+for (const p of paths) { const r = await call('GET', p); out[p] = { s: r.s, j: r.j }; }
+return out;

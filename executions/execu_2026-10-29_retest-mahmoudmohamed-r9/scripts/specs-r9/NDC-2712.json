@@ -1,0 +1,96 @@
+{
+ "out": "NDC-2712-retest-PASS.png",
+ "ticket": "NDC-2712",
+ "title": "Web Forms | The spam trap field is ignored: a filled trap still creates a lead",
+ "priority": "medium",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2712-api.png",
+   "caption": "API evidence — NDC-2712 · QA web form on Leads — public submissions exactly as the embedded form sends them",
+   "crop": [
+    0,
+    0,
+    1600,
+    297
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      238,
+      1566,
+      279
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "control",
+   "Lead",
+   "200 \"submitted\" → lead created",
+   "PASS"
+  ],
+  [
+   "2",
+   "trap, page_origin null",
+   "No lead",
+   "200 \"submitted\" (no hint to the bot) → no lead",
+   "PASS"
+  ],
+  [
+   "3",
+   "trap, page_origin set",
+   "No lead",
+   "200 → no lead",
+   "PASS"
+  ],
+  [
+   "4",
+   "cleanup",
+   "—",
+   "500 — retried at cleanup (observation)",
+   "INFO"
+  ]
+ ]
+}

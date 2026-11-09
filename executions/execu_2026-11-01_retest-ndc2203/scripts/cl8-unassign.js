@@ -1,0 +1,4 @@
+// step 2 (agent): unassign the QA tickets only the agent can see (exact ids).
+const res=[];
+for (const x of [{"id":"aad01815-63d7-4890-807f-2dd11e7b6b91","n":"740","s":"QA WF B14 SKILLQA ticket","st":"Open"},{"id":"715841e8-7bf0-4d54-b5f0-e1df82d974d5","n":"727","s":"QA WF X9odTeam ticket","st":"Open"},{"id":"09ce6d2c-be0a-407f-8506-f75ffd07da28","n":"718","s":"QA WF Z1 form en 93989","st":"Open"},{"id":"5fa9fc0e-6582-4406-89af-7dbc3ba73454","n":"717","s":"QA WF Z4 ticket","st":"Open"},{"id":"b0616532-6bce-4703-9109-6722c23658f2","n":"716","s":"QA WF Z3 ticket","st":"Open"},{"id":"726a299f-5807-4ef1-b779-295f8ffb199e","n":"715","s":"QA WF Z2 ticket","st":"Open"},{"id":"f885d91a-94fe-4825-93b2-e909c9fc7b59","n":"714","s":"QA WF Z1 ticket","st":"Open"}]) { const r=await api("POST","/desk/tickets/"+x.id+"/assign",{owner_id:null,team_id:null}); res.push("#"+x.n+" "+x.s+" → "+r.s); }
+return res;

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desk Automation Order</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1b1f24;--muted:#5b6470;--line:#e2e5ea;--accent:#2457d6;--ok:#16794c;--okbg:#e5f4ec;--bad:#b42318;--badbg:#fdecea;--warn:#a15c07;--warnbg:#fdf3e1;--info:#2457d6;--infobg:#e8eefc;--grey:#5b6470;--greybg:#eef0f3}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121417;--card:#1b1e23;--ink:#e8eaed;--muted:#9aa3ad;--line:#2c3138;--accent:#7aa2ff;--ok:#5fd39a;--okbg:#16301f;--bad:#ff8a80;--badbg:#3a1a18;--warn:#f3b65c;--warnbg:#3a2a12;--info:#7aa2ff;--infobg:#1b2640;--grey:#9aa3ad;--greybg:#24282e}}
+:root[data-theme="dark"]{--bg:#121417;--card:#1b1e23;--ink:#e8eaed;--muted:#9aa3ad;--line:#2c3138;--accent:#7aa2ff;--ok:#5fd39a;--okbg:#16301f;--bad:#ff8a80;--badbg:#3a1a18;--warn:#f3b65c;--warnbg:#3a2a12;--info:#7aa2ff;--infobg:#1b2640;--grey:#9aa3ad;--greybg:#24282e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1080px;margin:0 auto;padding:28px 16px 64px}
+h1{font-size:26px;margin:0 0 4px}
+h2{font-size:19px;margin:36px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:16px;margin:20px 0 8px}
+p{margin:6px 0 10px}
+.sub{color:var(--muted);margin:0 0 18px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card .n{font-size:28px;font-weight:700}
+.card .l{color:var(--muted);font-size:13px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.alert{border-left:4px solid var(--bad);background:var(--badbg)}
+.note{border-left:4px solid var(--warn);background:var(--warnbg)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--greybg);font-weight:600}
+tr:last-child td{border-bottom:0}
+.tbl{overflow-x:auto}
+.pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.ok{color:var(--ok);background:var(--okbg)}.bad{color:var(--bad);background:var(--badbg)}.warn{color:var(--warn);background:var(--warnbg)}.info{color:var(--info);background:var(--infobg)}.grey{color:var(--grey);background:var(--greybg)}
+code{background:var(--greybg);padding:1px 5px;border-radius:4px;font-size:13px}
+figure{margin:12px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+figure img{width:100%;height:auto;border-radius:6px;display:block}
+figcaption{color:var(--muted);font-size:13px;margin-top:6px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+ul{margin:6px 0 10px;padding-left:22px}
+li{margin:3px 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Desk automation order: status and findings</h1>
+<p class="sub">TAVI Desk on NDC-Staging, compared with Zoho Desk. 8–9 Nov 2026. Local report, not published. Nothing has been filed in Plane yet.</p>
+
+<div class="cards">
+  <div class="card"><div class="n">44 / 67</div><div class="l">SLA rows run</div></div>
+  <div class="card"><div class="n">21 / 30</div><div class="l">Notification rows run</div></div>
+  <div class="card"><div class="n">15</div><div class="l">Missing-list items confirmed so far, 1 image built</div></div>
+  <div class="card"><div class="n">64</div><div class="l">QA Team 1 / Dev Team 2 tickets deleted</div></div>
+</div>
+
+<div class="box alert">
+<strong>Open check: the "Tickets from Mail" blueprint.</strong> While opening a transition on this published blueprint (Customer Support), a click landed on a "+" and added an unsaved parallel transition. Nothing was saved or published, and the browser was closed. A fresh load before the network dropped showed no issue banner and no extra transition, but the last load came back blank. It will be confirmed again as soon as TAVI loads reliably.
+</div>
+
+<h2>1. SLA (44 of 67 rows run)</h2>
+<div class="tbl"><table>
+<tr><th>Result</th><th>Count</th><th>Rows</th></tr>
+<tr><td><span class="pill ok">Pass</span></td><td>38</td><td>SL-01–04, 06–11, 13, 14, 19, 23–26, 28, 31–37, 39, 41, 43, 45, 47–50, 52, 56, 59, 63, 66. Some are partial: SL-07 (comment scope only), SL-39 (valid contract only), SL-43 (views exist only).</td></tr>
+<tr><td><span class="pill bad">Fail</span></td><td>2</td><td>SL-12: no number or date operators in target conditions. SL-30: with Create + Update, an update doesn't restart the SLA (Zoho says it should; live Zoho not checked).</td></tr>
+<tr><td><span class="pill warn">Finding</span></td><td>3</td><td>SL-17: Business mode with no hours saves through the API, and the ticket gets no SLA. SL-21: agents who can't see the ticket are skipped (<code>no_access</code>), shown only in the feed. SL-54: a "before due" reminder longer than the target still saves.</td></tr>
+<tr><td><span class="pill grey">API only</span></td><td>1</td><td>SL-05.</td></tr>
+<tr><td><span class="pill grey">Blocked</span></td><td>5</td><td>SL-15, 16, 20, 53, 65: business hours need the owner. Owner sign-in is now allowed, but these haven't been run yet.</td></tr>
+<tr><td><span class="pill info">Not run</span></td><td>18</td><td>SL-18, 22, 27, 29, 38, 40, 42, 44, 46, 51, 55, 57, 58, 60, 61, 62, 64, 67. Also E2E, Group Z and the live Zoho checks.</td></tr>
+</table></div>
+
+<h2>2. Notifications (21 of 30 rows run)</h2>
+<div class="tbl"><table>
+<tr><th>Result</th><th>Count</th><th>Rows</th></tr>
+<tr><td><span class="pill ok">Pass</span></td><td>17</td><td>NT-01, 02, 03, 05, 08, 11, 12, 13, 14, 15, 18, 20, 21, 25, 27, 28, 29. Several cover only part of the row.</td></tr>
+<tr><td><span class="pill warn">Finding</span></td><td>4</td><td>NT-16, NT-07 (both from your Gmail, below), NT-04 (an agent notice still fired right after the rule was switched off; stopped within 60 seconds), NT-23 (closing through the record API sends no closed mail).</td></tr>
+<tr><td><span class="pill grey">Blocked</span></td><td>2</td><td>NT-19: you've said yes; not run yet. NT-22: needs the owner; not run yet.</td></tr>
+<tr><td><span class="pill info">Not run</span></td><td>7</td><td>NT-06, 09, 10, 17, 24, 26, 30.</td></tr>
+</table></div>
+
+<h3>What your Gmail screenshot showed</h3>
+<div class="tbl"><table>
+<tr><th>Row</th><th>Ticket</th><th>Expected</th><th>Seen</th><th>Result</th></tr>
+<tr><td>SL-21</td><td>#1493</td><td>SLA escalation mail</td><td>"Update on your ticket #1493" arrived</td><td><span class="pill ok">Pass</span></td></tr>
+<tr><td>NT-05 (rules on)</td><td>#1546</td><td>Comment mail and closed mail</td><td>Both arrived</td><td><span class="pill ok">Pass</span></td></tr>
+<tr><td>NT-05b</td><td>#1673</td><td>Comment added, edited and removed mails</td><td>"New comment" mail plus a 2-mail "Re:" thread</td><td><span class="pill ok">Pass</span></td></tr>
+<tr><td>NT-07</td><td>#1678</td><td>"Added as CC" mail, then a closed mail to the CC</td><td>Only the "added" mail; no closed mail</td><td><span class="pill warn">Finding</span></td></tr>
+<tr><td>NT-15c (inactive template)</td><td>#1679</td><td>Tell me what arrives</td><td>Mail used the custom subject, with the number and subject filled in</td><td><span class="pill ok">Pass</span></td></tr>
+<tr><td>NT-16</td><td>between #1673 and #1678</td><td>Closed mail using the bound custom template</td><td>No mail between those two in the inbox</td><td><span class="pill bad">Likely bug</span></td></tr>
+<tr><td>NT-15c (active template)</td><td>likely #1680</td><td>Closed mail with the custom subject</td><td>Above the part of the inbox in your screenshot</td><td><span class="pill grey">Unknown</span></td></tr>
+</table></div>
+<p>Still needed from you: the top of the inbox above #1679, and confirmation that Spam is empty.</p>
+
+<h2>3. Missing list for Plane (Zoho has it, TAVI doesn't)</h2>
+<p>Your four exclusions are removed (contact fields in criteria, AI owner suggestion, Zoho Cliq action, AI actions). Item 3 is off under your API-only rule, and item 26 is off because the bell @Mentions tab and Settings link work. Live Zoho mostly didn't load on this network, so most Zoho sides come from Zoho's help or API pages, and each image says so.</p>
+
+<h3>Confirmed in TAVI, with a Zoho source</h3>
+<div class="tbl"><table>
+<tr><th>#</th><th>Missing in TAVI</th><th>TAVI today (seen 9 Nov)</th><th>Zoho source</th><th>Image</th></tr>
+<tr><td>6</td><td>Workflow email alert to typed outside addresses</td><td>Email action: "Free-text addresses aren't allowed"</td><td>Workflow help: "Additional Recipients: enter the email addresses"</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>9</td><td>Number and date operators in SLA target conditions</td><td>A number field offers only is, isn't, is empty, is not empty</td><td>SLA criteria API doc: is after, is before, between, not between</td><td><span class="pill ok">Built</span></td></tr>
+<tr><td>15</td><td>Business hours past midnight</td><td>22:00–01:00 refused: "End time must be after start time." Nothing saved.</td><td>Business hours help: "10:00 PM to 1:00 AM" example</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>16</td><td>Widgets in a blueprint transition</td><td>The During tab has Fields, Checklist and Instructional message only</td><td>"A guide to integrate widgets in Blueprint"</td><td><span class="pill warn">Retake TAVI screenshot</span></td></tr>
+<tr><td>21</td><td>"Assigning a blueprint transition" agent notification</td><td>No blueprint rule in the 37 rules</td><td>Notification rules help</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>22</td><td>Contact "Receiving a reply" notification</td><td>Not in Contact Notifications</td><td>Notification rules help</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>23</td><td>CC "Receiving a reply" notification</td><td>CC has only the acknowledgement</td><td>Notification rules help</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>24</td><td>Separate call, task and event notification rules</td><td>One "activity" rule each for assigned, completed and mentioned</td><td>Notification rules help (9 separate rules)</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>25</td><td>Notifications on or off per department</td><td>My Notifications has channels and signals, no department switch</td><td>Feeds help: agents can disable a department's notifications</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>27</td><td>Custom function action in macros</td><td>9 macro action types, none runs a custom function</td><td>Macros help: custom functions</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>28</td><td>Reusing saved actions in macros</td><td>No saved-action picker in macros (workflows have one)</td><td>Macros help: new actions are kept and reusable</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>30</td><td>Macro runs in the Bulk Actions Log</td><td>Action filter: Mass delete, Import, Export, Recycle Bin bulk, Data backup</td><td>Macro FAQ: check macro status in the action logs</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>31</td><td>Supervisor rules (time-based automation)</td><td>Not in Setup › Automation</td><td>Supervisor rules help</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>32</td><td>Automation Studio</td><td>Not in Setup</td><td>Automation Studio overview</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>33</td><td>Schedules</td><td>Not in Setup</td><td>Schedules help</td><td><span class="pill warn">To build</span></td></tr>
+<tr><td>34</td><td>Webhook list and API screens</td><td>Webhook only as a workflow action; no Webhooks or APIs in Setup</td><td>Webhooks help, API dashboard help</td><td><span class="pill warn">To build</span></td></tr>
+</table></div>
+
+<h3>Dropped: built in TAVI after all</h3>
+<div class="tbl"><table>
+<tr><th>#</th><th>Item</th><th>What TAVI has</th></tr>
+<tr><td>12</td><td>Response Overdue and SLA Violated views</td><td>Both views exist (Response Overdue Tickets 9, SLA Violated Tickets 9)</td></tr>
+<tr><td>13</td><td>SLA static report, Agent Performance SLA metrics</td><td>"SLA Tickets" static report; Agent Performance includes SLA</td></tr>
+<tr><td>14</td><td>Contract expiry alert</td><td>"Contract Expiry Notification" section with "Whom to notify" and "Notify before (days)"</td></tr>
+<tr><td>29</td><td>Apply a macro to many tickets</td><td>Ticket list › select › More › Macro</td></tr>
+</table></div>
+
+<h3>Not confirmed: no Zoho help page backs them up</h3>
+<ul>
+<li><strong>4</strong> One workflow rule combining Create/Edit with Customer Reply: <strong>to drop</strong>. Zoho's own help says to pick one Execute On option, so Zoho doesn't do this either.</li>
+<li><strong>5</strong> Workflow conditions on Name and To Address; <strong>10</strong> "Violations by hour" widget; <strong>11</strong> Countdown view; <strong>17</strong> public or private reply in a transition; <strong>18</strong> holiday list per blueprint state; <strong>19</strong> agent filter on the Blueprint dashboard; <strong>20</strong> saving a half-done transition. These need live Zoho, which isn't loading. Decision for you: keep trying, or leave them off this ticket.</li>
+</ul>
+
+<h3>Evidence so far</h3>
+<figure><img src="evidence/annotated/G09-sla-number-date-operators-vs-zoho.png" alt="Item 9 TAVI vs Zoho"><figcaption>Item 9, approved format: TAVI live (left) vs Zoho Desk API documentation (right).</figcaption></figure>
+<div class="grid2">
+<figure><img src="evidence/raw/t06-wf-email-action.png" alt="TAVI workflow email action"><figcaption>Item 6, TAVI: workflow Email action. The hint under Recipients reads "Free-text addresses aren't allowed."</figcaption></figure>
+<figure><img src="evidence/raw/t15-bh-midnight.png" alt="TAVI business hours past midnight refused"><figcaption>Item 15, TAVI: 22:00 to 01:00 refused. Not saved.</figcaption></figure>
+<figure><img src="evidence/raw/t30-bulk-log-actions.png" alt="TAVI bulk actions log filter"><figcaption>Item 30, TAVI: Bulk Actions Log action types, with no macro.</figcaption></figure>
+<figure><img src="evidence/raw/t-prefs.png" alt="TAVI my notifications"><figcaption>Item 25, TAVI: My Notifications, with no department switch.</figcaption></figure>
+</div>
+
+<h2>4. Housekeeping done today</h2>
+<ul>
+<li><strong>Deleted 64 tickets</strong> owned by QA Team 1 or Dev Team 2, out of 378 read, with no failures. 63 were named "QA …". One, #1310 "testxzxcsw12313", was not. The list is in <code>deleted-team-tickets-2026-11-09.json</code>.</li>
+<li>Signed in once each as the admin and the owner. Zoho used a saved session (the Zoho account itself asks for email verification).</li>
+<li>No changes in Zoho. One business-hours save attempt in TAVI was refused, so nothing was created.</li>
+</ul>
+
+<h2>5. Still open</h2>
+<ul>
+<li>Confirm the "Tickets from Mail" blueprint is unchanged.</li>
+<li>Build the remaining 15 images, then a local Plane draft for your review. Filing settings: Bug, Medium, Desk, Sprint 15, assignees as on NDC-2811.</li>
+<li>Your decision on items 5, 10, 11, 17, 18, 19, 20.</li>
+<li>Gmail: the top of the inbox above #1679, and Spam.</li>
+<li>As the owner: SL-15, 16, 20, 53, 65, NT-22, and deleting the 19 stuck QA AO tickets in Dept A. Then NT-19, the remaining rows, live Zoho for SL-30, and the next features.</li>
+</ul>
+</main>
+</body>
+</html>

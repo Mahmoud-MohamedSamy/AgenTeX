@@ -1,0 +1,60 @@
+{
+ "t2assign": 200,
+ "t2before": {
+  "owner": "-",
+  "team": "Team 2",
+  "dept": "Dept A"
+ },
+ "teamWorkload": "{\"success\":true,\"data\":{\"open_tickets\":2,\"open_activities\":0},\"error\":null,\"meta\":null}",
+ "off": 200,
+ "5 move B->A with team (off)": {
+  "s": 422,
+  "e": "UNPROCESSABLE: Team Assignment is off in the ticket's department, so team 434140a3-2145-428c-9e57-e6bc5cf2f8d0 cannot take it. Choose an agent. [{\"field\":\"team_id\",\"issue\":\"team_assignment_off\"}]"
+ },
+ "5 after": {
+  "owner": "O",
+  "team": "-",
+  "dept": "Dept B"
+ },
+ "5c move B->A with agent (off)": {
+  "s": 200,
+  "d": "{\"id\":\"d6ee634b-9f70-4b9b-b6f4-ef65675c41ce\",\"ticket_number\":1326,\"status\":\"Open\",\"department_id\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\",\"closed_at\":null,\"closed_by\":null,\"resolution\":null,\"counts\":{\"replies\":0,\"comments\":0,\"attachments\":0,\"time_entries\":0},\"total_time_seconds\":0,\"active_timer\":null"
+ },
+ "5c after": {
+  "owner": "A2",
+  "team": "-",
+  "dept": "Dept A"
+ },
+ "8 delete Team 2, reassign its tickets to Team A (off)": {
+  "s": 422,
+  "e": "UNPROCESSABLE: Team Assignment is off in the department of some open ticket, so team 434140a3-2145-428c-9e57-e6bc5cf2f8d0 cannot take it. Choose an agent. [{\"field\":\"reassign_team_id\",\"issue\":\"team_assignment_off\"}]"
+ },
+ "8 after": {
+  "owner": "-",
+  "team": "Team 2",
+  "dept": "Dept A"
+ },
+ "8 Team 2 now": 200,
+ "7 agent reassign (A1 Dept A work -> Team A, off)": {
+  "s": 400,
+  "e": "VALIDATION_ERROR: target.id is required for an agent or a team. [{\"field\":\"departments[0].target.id\",\"issue\":\"required\"}]"
+ },
+ "7b alt shape": {
+  "s": 422,
+  "e": "UNPROCESSABLE: Team Assignment is off in that department, so team 434140a3-2145-428c-9e57-e6bc5cf2f8d0 cannot take its work. Choose an agent. [{\"field\":\"departments[0].target.id\",\"issue\":\"team_assignment_off\"}]"
+ },
+ "7 A1 Dept A open after": [
+  "66 tickets / 62 activities"
+ ],
+ "on": 200,
+ "onRead": true,
+ "12 move B->A with team (on)": {
+  "s": 200,
+  "d": "{\"id\":\"c6660840-5a2e-49c9-8909-295d41217286\",\"ticket_number\":1324,\"status\":\"Open\",\"department_id\":\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\",\"closed_at\":null,\"closed_by\":null,\"resolution\":null,\"counts\":{\"replies\":0,\"comments\":0,\"attachments\":0,\"time_entries\":0},\"total_time_seconds\":0,\"active_timer\":null"
+ },
+ "12 after": {
+  "owner": "-",
+  "team": "Team A",
+  "dept": "Dept A"
+ }
+}

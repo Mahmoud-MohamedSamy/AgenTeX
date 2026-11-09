@@ -1,0 +1,13 @@
+const id='1ca764d4-2dfb-40dc-99ba-3ea6e2fd081f'; const st={};
+await page.goto(H+'/modules/'+T.LEADS+'/records/'+id,{waitUntil:'commit',timeout:120000});
+for(let i=0;i<50;i++){ await sleep(3000); const t=await text(); if(t.includes('QA RT r10 1948') && !/Loading\.\.\./.test(t) && /Add note/.test(t)) break; } await sleep(4000);
+st.tabs=(await page.getByRole('tab').allInnerTexts().catch(()=>[])).concat(await page.locator('text=/^(Overview|Timeline|Emails|Calls|Files)$/').allInnerTexts());
+const ed=page.locator('[contenteditable=true]').first(); await ed.click(); await ed.type('QA RT r10 1948 note by U1'); await sleep(800);
+await page.getByRole('button',{name:'Add note',exact:true}).first().click();
+await sleep(2500); await shot('2-1948-after-add-2s.png'.replace('2-','1948-'));
+const t1=await text(); st.after2s={posting:/Posting/.test(t1), noteShown:t1.includes('QA RT r10 1948 note by U1'), toast:(t1.match(/Note (added|saved)[^\n]*/)||[])[0]};
+await sleep(10000); const t2=await text(); st.after12s={posting:/Posting/.test(t2), noteShown:t2.includes('QA RT r10 1948 note by U1')};
+await page.reload({waitUntil:'commit'}); for(let i=0;i<50;i++){ await sleep(3000); const t=await text(); if(t.includes('QA RT r10 1948') && /Add note/.test(t)) break; } await sleep(4000);
+const t3=await text(); st.afterReload={noteShown:t3.includes('QA RT r10 1948 note by U1'), timelineTab:/\bTimeline\b/.test((t3.match(/Overview[\s\S]{0,80}/)||[''])[0])};
+const n=page.getByText('QA RT r10 1948 note by U1').first(); if(await n.count()){ await n.scrollIntoViewIfNeeded(); await sleep(1000);} await shot('1948-u1-after-reload.png');
+return st;

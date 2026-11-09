@@ -1,0 +1,38 @@
+{
+ "out": "NDC-2545-api.png",
+ "date": "26 Oct 2026",
+ "title": "NDC-2545 · Idle timeout 2 min — busy session vs idle session (automation SessionPolicyTest SP-04)",
+ "who": "automation (CRM Admin mahmoud.mahamed1515 · test user 1 nameb56175 · test user 2 valafo4080)",
+ "rows": [
+  [
+   "policy",
+   "PUT security policy idle_timeout_minutes = 2 (baseline: max concurrent 20, idle 60)",
+   "200",
+   "info"
+  ],
+  [
+   "busy session",
+   "GET /api/v1/iam/me every 30 s",
+   "200 at 30, 60, 90, 120, 150, 180, 210 s; at the end token 200 / refresh 200",
+   "ok"
+  ],
+  [
+   "idle session",
+   "no requests, then GET with token and refresh",
+   "token 401 / refresh 401 — signed out",
+   "ok"
+  ],
+  [
+   "restore",
+   "idle_timeout_minutes = 60",
+   "200 — max concurrent 20, idle 60 (= baseline)",
+   "info"
+  ],
+  [
+   "Login History",
+   "GET /api/v1/audit/login-history",
+   "500 (audit service down since ~14:30 UTC) — not checkable this round",
+   "info"
+  ]
+ ]
+}

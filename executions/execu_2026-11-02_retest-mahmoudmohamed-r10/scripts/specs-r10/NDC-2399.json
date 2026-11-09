@@ -1,0 +1,173 @@
+{
+ "out": "NDC-2399-retest-PARTIAL.png",
+ "ticket": "NDC-2399",
+ "title": "CRM - Desk Integration | No notice to the admin when the initial sync finishes",
+ "priority": "low",
+ "verdict": "PARTIAL",
+ "env": "staging-crm / staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · admin mahmoud.mahamed1515, agent fedelav803, owner ndc-staging-owner",
+ "date": "3 Nov 2026",
+ "panels": [
+  {
+   "img": "2399-ndc-7-after-connect.png",
+   "caption": "After Connect: integration connected again",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": []
+  },
+  {
+   "img": "2399-ndc-9-failure-skipped.png",
+   "caption": "Failure Log › Skipped: only \"Contract sync · 0 records skipped\"; customer sync missing",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": []
+  },
+  {
+   "img": "NDC-2399-api.png",
+   "caption": "API evidence — NDC-2399 · NDC-Staging Desk › CRM ⇄ Desk Integration, reconnect 3 Nov 12:29 UTC",
+   "crop": [
+    0,
+    0,
+    1600,
+    523
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      98,
+      1566,
+      139
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      145,
+      1566,
+      186
+     ],
+     "n": 2,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      192,
+      1566,
+      275
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      281,
+      1566,
+      343
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      349,
+      1566,
+      411
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      417,
+      1566,
+      458
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      924,
+      464,
+      1566,
+      505
+     ],
+     "n": 7,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "reconnect",
+   "—",
+   "connected, not paused, contacts / accounts / deals mapped",
+   "INFO"
+  ],
+  [
+   "2",
+   "runs",
+   "—",
+   "both finished (partially_completed) within ~35 s",
+   "INFO"
+  ],
+  [
+   "3",
+   "customer notice",
+   "Admin told, with counts",
+   "\"CRM customer sync finished: 11 added, 1 updated, 21 ignored, 40 could not sync\" + reasons (27 required field empty, 9 linked record in recycle bin, 4 already linked)",
+   "PASS"
+  ],
+  [
+   "4",
+   "contract notice",
+   "Admin told, with counts",
+   "\"CRM contract sync finished: 0 added, 0 updated, 0 ignored, 2 could not sync\" + reason (missing required values)",
+   "PASS"
+  ],
+  [
+   "5",
+   "Failure Log",
+   "Lists the records that could not sync",
+   "25 listed, newest 13:49 local (before the 14:29 connect); the 42 from this run not listed",
+   "FAIL"
+  ],
+  [
+   "6",
+   "Skipped filter",
+   "Lists the ignored records",
+   "only \"Contract sync · 0 skipped\"; the customer sync's 21 ignored not shown",
+   "FAIL"
+  ],
+  [
+   "7",
+   "email",
+   "Email with counts",
+   "not checked (no access)",
+   "INFO"
+  ]
+ ]
+}

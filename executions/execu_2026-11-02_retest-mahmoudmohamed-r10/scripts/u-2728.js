@@ -1,0 +1,10 @@
+const st={};
+await page.goto(H+'/settings/automation/actions',{waitUntil:'commit',timeout:120000});
+for(let i=0;i<50;i++){ await sleep(3000); if(/New Action/i.test(await text())) break; } await sleep(4000);
+st.tabs=(await page.getByRole('tab').allInnerTexts()).map(x=>x.trim());
+await shot('2728-1-actions.png');
+await page.getByRole('button',{name:/New Action/i}).first().click(); await sleep(3000); await shot('2728-2-new-action.png');
+st.dialog=(await page.getByRole('dialog').innerText().catch(()=>'')).replace(/\s+/g,' ').slice(0,800);
+const sel=page.getByRole('dialog').locator('select'); st.selects=await sel.evaluateAll(a=>a.map(x=>[...x.options].map(o=>o.text)));
+const opts=page.getByRole('dialog').getByRole('radio'); st.radios=await opts.evaluateAll(a=>a.map(x=>x.getAttribute('aria-label')||x.value||x.parentElement.innerText.trim()));
+return st;

@@ -1,0 +1,11 @@
+const wait = async () => { for (let i = 0; i < 40; i++) { await sleep(1500); const t = await page.innerText('body').catch(() => ''); if (!/^\s*Loading/.test(t) && t.length > 300) break; } await sleep(3000); };
+await page.goto('https://crm.zoho.com/crm/org943261092/tab/Home/begin', { waitUntil: 'domcontentloaded' }); await wait();
+out.url = page.url();
+await page.locator('body').click({ position: { x: 900, y: 600 } }).catch(() => {});
+await page.keyboard.press('Shift+Slash'); await sleep(2500);
+out.afterQ = (await page.innerText('body')).replace(/\s+/g, ' ').match(/.{0,80}(Keyboard Shortcut|Shortcut).{0,800}/i)?.[0] || 'no shortcut panel text';
+await page.screenshot({ path: RAW + 'z-shortcuts-q.png' });
+await page.keyboard.press('Escape'); await sleep(800);
+await page.keyboard.press('Control+k'); await sleep(2000);
+out.afterCtrlK = (await page.innerText('body')).replace(/\s+/g, ' ').slice(0, 300);
+await page.screenshot({ path: RAW + 'z-ctrlk.png' }); await page.keyboard.press('Escape');

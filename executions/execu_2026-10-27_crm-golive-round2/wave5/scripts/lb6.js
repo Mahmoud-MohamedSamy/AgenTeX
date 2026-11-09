@@ -1,0 +1,11 @@
+const res = {};
+const panel = page.locator('xpath=//*[normalize-space(text())="Field Properties"]/ancestor::*[.//button[normalize-space(.)="Apply"]][1]').first();
+await panel.locator('button, [role=tab]', { hasText: /^GENERAL$/ }).first().click(); await sleep(1000);
+const ins = async () => panel.locator('input, textarea').evaluateAll(is => is.map(i => (i.getAttribute('aria-label') || i.placeholder || i.name || i.id || '') + '=' + i.value + (i.readOnly ? ' (ro)' : '') + (i.disabled ? ' (disabled)' : '')));
+res.before = await ins();
+res.text = (await panel.innerText()).replace(/\s+/g, ' ').slice(0, 800);
+const nameInput = panel.locator('input').first();
+await nameInput.fill('Lookup Contacts R2W5'); await sleep(1000);
+res.after = await ins();
+await shot('c01-1873-general');
+return res;

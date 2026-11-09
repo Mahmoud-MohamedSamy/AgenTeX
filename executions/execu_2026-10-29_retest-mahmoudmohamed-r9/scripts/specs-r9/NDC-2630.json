@@ -1,0 +1,161 @@
+{
+ "out": "NDC-2630-retest-DECISION.png",
+ "ticket": "NDC-2630",
+ "title": "Email | A failed email send is shown as sent",
+ "priority": "high",
+ "verdict": "DECISION",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "2630-compose.png",
+   "caption": "Compose on the QA lead: the warning names the reason (1) and Send is disabled (2).",
+   "crop": [
+    352,
+    45,
+    896,
+    810
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      376,
+      126,
+      1224,
+      218
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      372,
+      806,
+      460,
+      844
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2630-api.png",
+   "caption": "API evidence — NDC-2630 · Sending from a QA lead as the owner (anyware.software has no working mail connection) — recipient on example.com",
+   "crop": [
+    0,
+    0,
+    1600,
+    407
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      159
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      165,
+      1566,
+      227
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      233,
+      1566,
+      274
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      280,
+      1566,
+      321
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      327,
+      1566,
+      389
+     ],
+     "n": 7,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Screen: compose warning",
+   "Says it can't send and why",
+   "\"You can't send email yet: no provider is connected for anyware.software…\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "Screen: Send button",
+   "Not offered when sending will fail",
+   "Disabled",
+   "PASS"
+  ],
+  [
+   "3",
+   "pre-check",
+   "Honest pre-check",
+   "can_send false, reason no_connection (r8: can_send true for a failing sender)",
+   "PASS"
+  ],
+  [
+   "4",
+   "send",
+   "Failure reported with the reason",
+   "422 MAIL_NO_CONNECTION \"No email provider is connected for 'anyware.software'…\"",
+   "PASS"
+  ],
+  [
+   "5",
+   "record Mails / Sent",
+   "Not shown as sent",
+   "Empty — nothing shown as sent; draft kept for a retry",
+   "PASS"
+  ],
+  [
+   "6",
+   "timeline",
+   "No EmailSent",
+   "RecordCreated, BlueprintStateChanged — no EmailSent",
+   "PASS"
+  ],
+  [
+   "7",
+   "r8 path not testable",
+   "Timeline doesn't log EmailSent for a provider failure",
+   "Only taviportal.com has a working connection on Anyware; no account on that domain",
+   "INFO"
+  ]
+ ]
+}

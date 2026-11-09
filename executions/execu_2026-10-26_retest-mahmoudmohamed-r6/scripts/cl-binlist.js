@@ -1,0 +1,2 @@
+let c = '', rows = []; for (let i = 0; i < 40; i++) { const r = await api('GET', `/audit/recycle-bin/items?app_key=crm&app_key=iam&app_key=files&app_key=reporting&app_key=workflow&app_key=mail&limit=200${c ? '&cursor=' + encodeURIComponent(c) : ''}`); const a = arr(r.j?.data); rows.push(...a.filter(x => /^QA (RT|WF)/.test(x.record_label || '')).map(x => ({ id: x.id, label: x.record_label, by: x.deleted_by_label, at: x.deleted_at }))); c = r.j?.meta?.next_cursor; if (!c || !a.length) break; }
+return done(rows);

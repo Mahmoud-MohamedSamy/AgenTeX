@@ -1,0 +1,312 @@
+{
+ "out": "NDC-2754-retest-PARTIAL.png",
+ "ticket": "NDC-2754",
+ "title": "Blueprint (with SLA tie-in): features Zoho Desk has that Desk is missing",
+ "verdict": "PARTIAL",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · admin + Desk Agent fedelav803 · retest of items 6 and 2 (dev note 7 Nov) + regression 1, 3, 4, 5, 15",
+ "date": "7 Nov 2026",
+ "panels": [
+  {
+   "img": "b5-admin-dept-search.png",
+   "caption": "Item 6 — admin, QA alt Share: the department list offers Dept B but not the ticket's own Dept A (search \"QA RT13\")",
+   "crop": [
+    664,
+    60,
+    936,
+    720
+   ],
+   "boxes": [
+    {
+     "b": [
+      736,
+      108,
+      912,
+      128
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      694,
+      614,
+      1310,
+      650
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1276,
+      166,
+      1584,
+      198
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "a2-agent-alt-form.png",
+   "caption": "Item 2 — Desk Agent fedelav803 opens an admin-owned ticket while owning QA alt: read-only notice, only their step; the Share item is refused with a message",
+   "crop": [
+    664,
+    60,
+    936,
+    840
+   ],
+   "boxes": [
+    {
+     "b": [
+      1500,
+      134,
+      1584,
+      166
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      680,
+      188,
+      1584,
+      234
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      680,
+      798,
+      1584,
+      834
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "a6-agent-my-transitions.png",
+   "caption": "Item 2 — agent's My Transitions lists the tickets where they own a step; My Team Transitions counts the team-owned one",
+   "crop": [
+    0,
+    56,
+    1600,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      264,
+      118,
+      1600,
+      256
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      38,
+      414,
+      250,
+      478
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "a4-agent-g1-after.png",
+   "caption": "Item 2 — after the agent ran QA rate (ticket now On Hold) the same ticket is no longer available to them",
+   "crop": [
+    320,
+    56,
+    1280,
+    844
+   ],
+   "boxes": [
+    {
+     "b": [
+      740,
+      426,
+      1180,
+      486
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1298,
+      820,
+      1574,
+      874
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2754-api.png",
+   "caption": "API evidence — items 6 and 2, regression",
+   "crop": [
+    0,
+    0,
+    1600,
+    700
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      340
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      350,
+      1564,
+      408
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      418,
+      1564,
+      476
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      486,
+      1564,
+      544
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      554,
+      1564,
+      612
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      622,
+      1564,
+      680
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "6",
+   "Share item: share to the ticket's own department",
+   "Refused, transition does not run; form does not offer it (dev 7 Nov)",
+   "422 \"A ticket cannot be shared with its own department.\" (also with Dept B added), state Open, no share; picker has no Dept A; Dept B share 200",
+   "PASS"
+  ],
+  [
+   "2",
+   "Agent owner opens the ticket",
+   "Desk Agent fedelav803 can open an admin-owned ticket while owning a step in its state (user or team owner)",
+   "403 before; 200 after Assign owners (user ×2, team ×1); listed in their ticket list and My Transitions",
+   "PASS"
+  ],
+  [
+   "2",
+   "Limits while owner",
+   "Can't edit fields, reply, or run steps they don't own",
+   "403 PERMISSION_DENIED / 403 \"view but not change\" / 403 BLUEPRINT_NOT_OWNER",
+   "PASS"
+  ],
+  [
+   "2",
+   "Run step, access ends",
+   "Run own step (incl. approval); access ends when ticket leaves the state",
+   "QA rate 200 (user + team), QA hold with approval 200; after agent's run or admin's QA go → 403, \"This ticket is not available\"",
+   "PASS"
+  ],
+  [
+   "2",
+   "Run step with required Share",
+   "A step owner can run their step including its required share (dev note 7 Nov; QA lead decision)",
+   "403 \"You are not allowed to add a share to this transition.\" — Desk Agent has no desk:ticket:share; screen asks to get access from an admin",
+   "FAIL"
+  ],
+  [
+   "1, 3, 4, 5, 15",
+   "Regression",
+   "Unchanged since 6 Nov",
+   "Strict edit 403 / status 422; button order follows the designer order (QA rate moved first); Amount 0 → 422, 5 → 200; approval required → 422 / 200; revoke agent 403, admin 200",
+   "PASS"
+  ],
+  [
+   "10",
+   "Rating trigger",
+   "Needs rating links on (dev)",
+   "Happiness rating is_enabled false on the tenant — not run",
+   "INFO"
+  ]
+ ]
+}

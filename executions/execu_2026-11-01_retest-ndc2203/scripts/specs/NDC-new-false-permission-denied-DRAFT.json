@@ -1,0 +1,221 @@
+{
+ "out": "NDC-new-false-permission-denied-DRAFT.png",
+ "ticket": "NEW BUG",
+ "label": "DRAFT — NEW BUG",
+ "verdict": "FAIL",
+ "date": "27 Oct 2026",
+ "env": "staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · mahmoud.mahamed1515 (Desk Administrator), fedelav803 (Desk Agent)",
+ "title": "Tickets | Save shows \"Permission denied.\" although the ticket is created — users save again and create duplicates",
+ "panels": [
+  {
+   "img": "i1-y7-filled.png",
+   "caption": "New Ticket form (admin, not an agent of Customer Support): Ticket Owner = a colleague (Customer Experience Specialists 2).",
+   "crop": [
+    284,
+    100,
+    996,
+    380
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      944,
+      416,
+      1224,
+      462
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      1203,
+      106,
+      1258,
+      143
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "i1-y7-after-2.png",
+   "caption": "After Save (twice): \"Permission denied.\" and the form is still open, as if nothing was saved.",
+   "crop": [
+    284,
+    100,
+    996,
+    610
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      975,
+      636,
+      1258,
+      698
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      282,
+      110,
+      400,
+      140
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "i1-agent-duplicates.png",
+   "caption": "The same tickets seen by the colleague (Desk Agent): both saves were stored — #676 and #677 — plus #675, #673, #672, #671.",
+   "crop": [
+    260,
+    56,
+    1020,
+    500
+   ],
+   "w": 1280,
+   "h": 720,
+   "boxes": [
+    {
+     "b": [
+      270,
+      115,
+      1275,
+      255
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      270,
+      258,
+      1275,
+      543
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "F1-permission-denied-api.png",
+   "caption": "Every save that leaves the ticket out of the saver's view answers 403, yet the write is committed.",
+   "crop": [
+    0,
+    0,
+    1600,
+    455
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      272,
+      95,
+      1570,
+      208
+     ],
+     "n": 7,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      210,
+      1570,
+      302
+     ],
+     "n": 8,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      304,
+      1570,
+      349
+     ],
+     "n": 9,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      272,
+      351,
+      1570,
+      396
+     ],
+     "n": 10,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      272,
+      398,
+      1570,
+      443
+     ],
+     "n": 11,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1–2",
+   "Create a ticket for a colleague (form)",
+   "Saved; a success message, then e.g. \"You don't have access to this ticket\" or stay on the list",
+   "Toast \"Permission denied.\", form stays open",
+   "FAIL"
+  ],
+  [
+   "3–5",
+   "Click Save again",
+   "No second ticket",
+   "Second ticket created (#676, #677)",
+   "FAIL"
+  ],
+  [
+   "7–8",
+   "API create with another owner / team; team rule",
+   "201 (or a clear \"created, not visible\" response)",
+   "403 PERMISSION_DENIED, record created",
+   "FAIL"
+  ],
+  [
+   "9",
+   "Rule assigns to a user after create",
+   "Creator told the ticket moved",
+   "201, silent loss of access",
+   "INFO"
+  ],
+  [
+   "10",
+   "Edit that moves the ticket away",
+   "Saved message",
+   "403, edit saved",
+   "FAIL"
+  ],
+  [
+   "11",
+   "Control: unassigned ticket",
+   "Saved",
+   "Saved and opened (#657)",
+   "PASS"
+  ]
+ ]
+}

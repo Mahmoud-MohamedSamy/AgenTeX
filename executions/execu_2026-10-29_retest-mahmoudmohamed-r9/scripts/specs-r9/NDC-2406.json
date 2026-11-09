@@ -1,0 +1,130 @@
+{
+ "out": "NDC-2406-retest-PASS.png",
+ "ticket": "NDC-2406",
+ "title": "CRM - Desk Integration | A Desk contact deleted by the integration is not in the recycle bin and cannot be restored",
+ "priority": "high",
+ "verdict": "PASS",
+ "env": "staging-crm.taviportal.com · tenant Anyware · Edge (headless) + API · anyware-staging-owner (Owner); test users U1 cetow80696, U2 setoroj338 (CRM User profile)",
+ "date": "29 Oct 2026",
+ "panels": [
+  {
+   "img": "NDC-2406-api.png",
+   "caption": "API evidence — NDC-2406 · Linked contact pair made from the Desk side → CRM contact deleted (on_crm_delete = delete) → Desk recycle bin",
+   "crop": [
+    0,
+    0,
+    1600,
+    412
+   ],
+   "w": 1600,
+   "h": 900,
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      924,
+      97,
+      1566,
+      138
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      924,
+      144,
+      1566,
+      185
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      191,
+      1566,
+      232
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      238,
+      1566,
+      279
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      285,
+      1566,
+      326
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      924,
+      332,
+      1566,
+      394
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "integration",
+   "Integration on, \"delete\" chosen",
+   "enabled, not paused; contacts two-way; on_crm_delete = delete",
+   "INFO"
+  ],
+  [
+   "2",
+   "linked pair",
+   "Linked pair",
+   "Linked to a new CRM contact within seconds (Desk → CRM sync)",
+   "PASS"
+  ],
+  [
+   "3",
+   "cross-delete",
+   "Desk contact deleted by the integration",
+   "Desk contact removed (404); CRM contact in the CRM recycle bin",
+   "PASS"
+  ],
+  [
+   "4",
+   "Desk recycle bin",
+   "In the Desk recycle bin",
+   "Item \"QA RT 2406 desk …\" (app desk, module desk_contacts)",
+   "PASS"
+  ],
+  [
+   "5",
+   "restore",
+   "Restorable",
+   "200 — Desk contact back (GET 200)",
+   "PASS"
+  ],
+  [
+   "6",
+   "observation",
+   "—",
+   "Never got a Desk partner (CRM → Desk contact sync doesn't create Desk contacts on Anyware)",
+   "INFO"
+  ]
+ ]
+}

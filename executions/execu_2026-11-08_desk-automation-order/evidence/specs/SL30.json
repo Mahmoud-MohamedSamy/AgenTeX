@@ -1,0 +1,28 @@
+{
+ "out": "SL-30-sla-not-reset-on-update-vs-zoho.png",
+ "ticket": "SL-30",
+ "title": "SLA with Ticket Create + Ticket Update does not restart when the ticket is updated",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 9 Nov 2026 (live, on screen) · Zoho: help article (live Zoho did not load on this network)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · SLA \"QA AO SL30evy6io3\" in QA AO Dept A, ticket #1769 · Zoho: help.zoho.com › Understanding and working with SLAs › Choose when to execute",
+ "panels": [
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/t30-policy-when.png", "w": 1440, "h": 900, "crop": [505, 240, 880, 180],
+   "caption": "TAVI: the SLA runs on Ticket Create and Ticket Update (1).",
+   "boxes": [{"b": [520, 290, 760, 334], "n": 1}, {"b": [520, 352, 760, 394], "n": 1}]},
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/t30-ticket-after-prio.png", "w": 1440, "h": 900, "crop": [370, 505, 290, 95],
+   "caption": "Ticket #1769, created 2:42 PM: Priority changed High → Medium on screen and saved at 2:54 PM (2).",
+   "boxes": [{"b": [380, 550, 520, 595], "n": 2}]},
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/t30-ticket-after.png", "w": 1440, "h": 900, "crop": [370, 580, 290, 170],
+   "caption": "After the update: Due Date still 4:42 PM and Response Due still 3:12 PM, i.e. still counted from creation (3). The SLA is still execution 1 (trigger: create) and the activity feed has no new SLA entry.",
+   "boxes": [{"b": [385, 586, 560, 656], "n": 3}, {"b": [385, 678, 560, 746], "n": 3}]},
+  {"side": "zoho", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/z30-doc-sla-reset.png", "w": 1440, "h": 900, "crop": [160, 0, 780, 520],
+   "caption": "Zoho Desk help, Choose when to execute: Ticket update runs whenever a field is edited (2); with several options selected, the SLA resets for each update (1, 3). From the help article; not seen live.",
+   "boxes": [{"b": [205, 28, 705, 52], "n": 2}, {"b": [205, 308, 890, 358], "n": 1}, {"b": [205, 362, 915, 438], "n": 3}]}
+ ],
+ "rows": [
+  [1, "SLA set to run on Ticket Create and Ticket Update", "\"If multiple options are selected, the SLA will reset for each update.\"", "Both Ticket Create and Ticket Update are selected on the policy.", "SAME"],
+  [2, "A field is edited on the ticket", "Ticket update fires \"whenever a field is edited or modified in the ticket\".", "Priority changed from High to Medium on screen 12 minutes after creation. No new SLA run: still execution 1 (trigger create); the activity feed shows only the first \"SLA applied\".", "DIFFERS"],
+  [3, "Response and resolution due times after the update", "The SLA resets, so times are counted again from the update (resolution due would move from 4:42 PM to 4:54 PM).", "Unchanged: Due Date 4:42 PM and Response Due 3:12 PM, both still from creation at 2:42 PM.", "DIFFERS"]
+ ]
+}

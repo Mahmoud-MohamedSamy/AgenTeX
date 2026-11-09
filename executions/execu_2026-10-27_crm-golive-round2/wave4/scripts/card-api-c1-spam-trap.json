@@ -1,0 +1,38 @@
+{
+ "out": "api-c1-spam-trap.png",
+ "title": "TAVI public web form — the hidden spam-trap field (\"Leave this field empty\"), 27 Oct 2026",
+ "lines": [
+  [
+   "Embedded form, browser, trap filled (\"i am a bot\")      -> \"Thank you…\"  lead QA R2W4 Spam created",
+   "bad"
+  ],
+  [
+   "Embedded form, browser, trap filled (\"http://spam.example\") -> lead QA R2W4 Spam 2 created",
+   "bad"
+  ],
+  [
+   "Embedded form, browser, trap filled (\"bot\")             -> lead QA R2W4 Spam 3 created",
+   "bad"
+  ],
+  [
+   "Request the form sends: POST /web-forms/public/{key}/submissions",
+   "info"
+  ],
+  [
+   "   {\"values\":{…}, \"page_origin\":null, \"elapsed_ms\":4496, \"visitor_id\":…, \"honeypot\":\"bot\"}",
+   "info"
+  ],
+  [
+   "Same body by API, trap \"bot\" (with and without elapsed_ms) -> 200, leads QA R2W4 HPA / HPB created",
+   "bad"
+  ],
+  [
+   "Control: page_origin set to the site, trap filled        -> 200 \"submitted\", NO lead",
+   "ok"
+  ],
+  [
+   "Normal submission, trap empty                             -> lead created (expected)",
+   "ok"
+  ]
+ ]
+}

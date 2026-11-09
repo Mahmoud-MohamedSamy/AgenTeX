@@ -1,0 +1,72 @@
+{
+ "env": "staging-crm.taviportal.com, build of 27 Oct (owner; public pages not signed in) vs Zoho CRM org943261092 (read-only, captured 26 Oct)",
+ "date": "27 Oct 2026",
+ "out": "R2W4-C1-spam-trap-vs-zoho.png",
+ "ticket": "R2W4-C1",
+ "verdict": "FAIL",
+ "label": "NEW CANDIDATE",
+ "title": "Web Forms | a submission with the hidden spam-trap field filled is still turned into a lead",
+ "panels": [
+  {
+   "img": "api-c1-spam-trap.png",
+   "w": 1600,
+   "h": 477,
+   "caption": "TAVI — the embedded form and the same request by API: the trap value is sent, the lead is created anyway.",
+   "crop": [
+    0,
+    0,
+    1600,
+    477
+   ],
+   "boxes": [
+    {
+     "b": [
+      0,
+      94,
+      1600,
+      236
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      0,
+      232,
+      1600,
+      374
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "z-webforms.png",
+   "w": 1600,
+   "h": 950,
+   "caption": "Zoho — Setup › Webforms (read-only). Zoho forms use a CAPTCHA and spam settings; submitting a Zoho form was not done.",
+   "crop": [
+    257,
+    66,
+    1327,
+    520
+   ],
+   "boxes": []
+  }
+ ],
+ "rows": [
+  [
+   "1",
+   "Submission with the hidden \"Leave this field empty\" field filled",
+   "Not checked live (would need a saved Zoho form)",
+   "3 browser submissions with the trap filled all became leads (QA R2W4 Spam, Spam 2, Spam 3)",
+   "FAIL"
+  ],
+  [
+   "2",
+   "Same request by API",
+   "Not checked live",
+   "With page_origin null (what the form sends) the lead is created; only with page_origin set is it refused",
+   "FAIL"
+  ]
+ ]
+}

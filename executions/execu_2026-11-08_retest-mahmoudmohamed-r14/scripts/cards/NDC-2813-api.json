@@ -1,0 +1,11 @@
+{ "out": "NDC-2813-api.png", "date": "8 Nov 2026", "host": "staging-desk.taviportal.com (tenant NDC-Staging)", "who": "admin (ndc-staging-owner)",
+  "title": "NDC-2813 · New Ticket form and API create — who owns a new ticket (metadata-engine #213), QA AS6 Dept A",
+  "rows": [
+   ["Form, owner untouched", "Create Ticket, Ticket Owner shows ndc-staging-owner, Save (POST has no owner field)", "#1348 owner ndc-staging-owner (was: Unassigned)", "ok"],
+   ["Form, owner cleared (NDC-2275 case)", "Clear selection → \"Assign to user…\", Save (POST owner = null), round robin matches", "#1356 → A1 · #1360 → A2 by \"QA AS6 RR seq\" (Triggered by a new ticket)", "ok"],
+   ["Form, owner cleared, no rule", "same, subject matches no rule", "#1359 Unassigned", "ok"],
+   ["Form, owner untouched + RR match", "untouched owner, subject matches round robin", "#1350 owner ndc-staging-owner (the shown owner wins)", "info"],
+   ["Form, owner untouched + direct rule", "direct rule \"QA RT14 2813 direct\" → A3", "#1351 → A3 (rule still decides)", "ok"],
+   ["API create, source api / web_form", "POST …/records {data, source:\"api\"|\"web_form\"}, no owner, RR match", "#1352 → A2 · #1353 → A3 (round robin)", "ok"],
+   ["API create, no source", "POST …/records {data}, no owner", "#1354 owner = creator (as the dev note says)", "info"]
+  ] }

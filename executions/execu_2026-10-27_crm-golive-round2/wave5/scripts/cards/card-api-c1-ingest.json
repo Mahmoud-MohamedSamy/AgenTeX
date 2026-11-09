@@ -1,0 +1,38 @@
+{
+ "out": "api-c1-ingest.png",
+ "title": "R2W5-C1 — ingest API (mobile app client) on the QA module, 28 Oct 2026",
+ "lines": [
+  [
+   "Client \"QA R2W5 Client\" (allowed module qa_r2w5_mod), token client_credentials -> 200, scope metadata.records.ingest",
+   "info"
+  ],
+  [
+   "Normal create of QA Number 50 (rule: must be 10 or less)  -> 422 VALIDATION_RULE_FAILED",
+   "ok"
+  ],
+  [
+   "POST /ingress/modules/qa_r2w5_mod/records {qa_num: 50}        -> 201 created, compliance_state \"valid\"",
+   "bad"
+  ],
+  [
+   "Normal create of Red + C (map: Red allows A, B)               -> 422 DEPENDENCY_VALUE_NOT_ALLOWED",
+   "ok"
+  ],
+  [
+   "POST /ingress/… {qa_pick: Red, qa_sub: C}                     -> 201 created, compliance_state \"valid\"",
+   "bad"
+  ],
+  [
+   "Record read back: QA Number = 50 stored",
+   "bad"
+  ],
+  [
+   "Also seen: \"name\" is dropped (dropped_fields [name]) although Name is on the layout; {} -> 201 \"incomplete\"",
+   "bad"
+  ],
+  [
+   "Repeated from scratch by Java R2W5SetupTest#ingestAppliesRules (fresh module, rule and map): same result",
+   "bad"
+  ]
+ ]
+}

@@ -1,0 +1,91 @@
+{
+ "label": "BUG",
+ "verdict": "FAIL",
+ "date": "2 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, org Anyware, owner, QA WF Dept R (QA records, deleted after) · Zoho: Zoho Desk Enterprise trial, Setup › Blueprint (read only)",
+ "out": "BP-P2-3-vs-zoho.png",
+ "ticket": "BP-P2-3",
+ "taviHead": "TAVI Desk (API log, designer)",
+ "zohoHead": "Zoho Desk (Add Transition panel)",
+ "title": "The API saves an automatic move that points at a transition from another state; it never runs",
+ "panels": [
+  {
+   "img": "P2-3-api.png",
+   "caption": "TAVI API: auto-move on Open pointing at Escalated → Closed saved (201) and never scheduled; the same mistake in the reply trigger is refused",
+   "crop": [
+    0,
+    0,
+    1600,
+    720
+   ],
+   "boxes": []
+  },
+  {
+   "img": "zoho-auto-transition-rating.png",
+   "caption": "Zoho: Auto Transition is a switch on the transition itself",
+   "crop": [
+    1130,
+    320,
+    470,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      1140,
+      335,
+      1500,
+      420
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "P2-3-ui.png",
+   "caption": "TAVI designer of the saved blueprint: Open shows a \"5m\" timer, no issue banner, no auto-move setting in the panel",
+   "crop": [
+    300,
+    60,
+    1300,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      486,
+      544,
+      524,
+      568
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      1254,
+      240,
+      1586,
+      330
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Automatic move set to a transition that starts at another state",
+   "Auto Transition is switched on inside the transition, so it always belongs to the state that transition starts from.",
+   "State Open with autoTransitionId \"esc2\" (Escalated → Closed) answers 201 Created and is saved. The same mistake in \"When the customer replies\" is refused: \"'esc2' is not a transition out of this state\".",
+   "BUG"
+  ],
+  [
+   2,
+   "A ticket in that state",
+   "Not possible to save.",
+   "The blueprint can be made active; the ticket enters at Open, auto_due_at stays null and after 100 s (move set to 1 minute) it is still at Open. The designer shows a \"5m\" timer on Open as if it works.",
+   "BUG"
+  ]
+ ]
+}
