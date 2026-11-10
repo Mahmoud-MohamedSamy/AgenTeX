@@ -1,0 +1,11 @@
+const L='841043e1-c078-41f9-8d6e-dfd61bee45c3';const D='../ndc-2628/evidence/raw/';const o={};
+await page.route('**/api/v1/**',q=>{const m=q.request().method();if(m!=='GET'&&!/iam\/auth|heartbeat|resolved-batch|realtime|search|query|records\/query|records\/search|list/.test(q.request().url()))return q.abort();return q.continue();});
+await page.setViewportSize({width:1440,height:950});
+await page.goto(H+'/modules/'+L,{waitUntil:'load',timeout:120000});await page.getByRole('button',{name:'Module actions'}).waitFor({timeout:90000});await page.waitForTimeout(3000);
+const grab=async()=>{const t=await page.locator('[role=menu],[role=menuitem],[role=dialog],[role=listbox]').allInnerTexts().catch(()=>[]);return [...new Set(t.join('\n').split('\n').map(s=>s.trim()).filter(Boolean))].slice(0,60);};
+await page.getByRole('button',{name:'Module actions'}).click();await page.waitForTimeout(1500);o.moduleActions=await grab();await page.screenshot({path:D+'module-actions.png'});await page.keyboard.press('Escape');await page.waitForTimeout(500);
+await page.getByRole('button',{name:'More views'}).click();await page.waitForTimeout(1500);o.moreViews=await grab();await page.screenshot({path:D+'more-views.png'});await page.keyboard.press('Escape');await page.waitForTimeout(500);
+await page.getByRole('button',{name:'More create options'}).click();await page.waitForTimeout(1500);o.moreCreate=await grab();await page.keyboard.press('Escape');await page.waitForTimeout(500);
+await page.getByRole('button',{name:'Open filter sidebar'}).click();await page.waitForTimeout(3000);await page.screenshot({path:D+'filter-sidebar.png'});
+const side=(await page.locator('body').innerText()).split('\n').map(s=>s.trim());const i=side.findIndex(s=>/system.?defined|filter/i.test(s));o.filterPanel=side.slice(Math.max(0,i-2),i+60).filter(Boolean);
+return o;

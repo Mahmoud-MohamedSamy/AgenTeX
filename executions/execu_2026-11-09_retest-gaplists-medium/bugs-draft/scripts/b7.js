@@ -1,0 +1,3 @@
+const out={};for(const M of ['d120a6c2-2596-4254-968b-a1bcd3a000bf','f7e488b5-0232-42fd-811c-1f24356af653']){const f=arr((await api('GET','/modules/'+M+'/fields')).j);out.keys=Object.keys(f[0]||{}).join(',');
+out[M.slice(0,4)]=f.filter(z=>z.required||z.isRequired||/ticket|related|what|depart|owner|contact|status|subject|type|start|direction/i.test(z.apiName||z.api_name||'')).map(z=>(z.apiName||z.api_name)+':'+(z.dataType||z.data_type||z.type||'')+((z.required||z.isRequired)?'*':'')+(z.pickListValues||z.options?' ['+JSON.stringify(z.pickListValues||z.options).slice(0,120)+']':''));}
+return out;

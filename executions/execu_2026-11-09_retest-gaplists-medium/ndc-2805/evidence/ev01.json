@@ -1,0 +1,19 @@
+{
+ "out": "annotated/01-skills-followups-tavi.png",
+ "id": "NDC-2805 recheck",
+ "title": "Skill where-used has no approval processes; Skills field note unchanged",
+ "verdict": "PARTIAL",
+ "date": "TAVI 9 Nov 2026 (NDC-Staging, ndc-staging-owner) · internal follow-ups, no Zoho side",
+ "panels": [
+  {"side":"TAVI","caption":"Setup → Skills → Delete escalation_handling (cancelled): usage lists assignment rules only, no approval processes","img":"raw/skill-delete-dialog.png","boxes":[{"n":1,"x":556,"y":290,"w":372,"h":170}]},
+  {"side":"TAVI","caption":"Layout editor → Skills → Edit Properties → ADVANCED: note doesn't mention the locked API name or the 10-item limit","img":"raw/props-advanced.png","boxes":[{"n":2,"x":1000,"y":166,"w":422,"h":52}]}
+ ],
+ "rows": [
+  {"n":"1","b":"Where-used before a skill delete","zoho":"Expected (NDC-2805): also list approval-process actions that add/remove the skill","tavi":"Assignment rules, workflow rules/actions, skills, agents, open tickets; no approval section (no Desk approval-process API found)","match":"FAIL"},
+  {"n":"2","b":"Read-only note on the Tickets Skills field","zoho":"Expected (NDC-2805): say the API name and the 10-item limit are locked too","tavi":"Note only says Desk manages the options; the option editor no longer flashes","match":"PARTIAL"}
+ ],
+ "notes": [
+  "Item 4 (restored department gets no skills) was not reproduced: a QA RT 2805 department deleted and restored now keeps its skill, type and preferences. The pre-4 Nov backfill case can't be tested without restoring someone else's department.",
+  "Items 2 and 3 are backend-only. The old /desk/skill-definitions and /desk/skill-settings endpoints return 404."
+ ]
+}

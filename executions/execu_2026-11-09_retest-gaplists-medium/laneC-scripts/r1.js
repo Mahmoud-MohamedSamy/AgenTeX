@@ -1,0 +1,14 @@
+const D='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-gaplists-medium/ndc-2636/evidence/raw/';
+const T='307cc0ce-bbc5-4507-ad7f-71370e8b93a0';
+const out={writes:[]};
+await page.route('**/api/v1/**',r=>{const m=r.request().method();const u=r.request().url();if(m!=='GET'&&/repl|send|thread|mail|forward|draft|comment/i.test(u)){out.writes.push(m+' '+u.replace(/.*api\/v1/,'').slice(0,80));return r.abort();}return r.continue();});
+await page.setViewportSize({width:1440,height:900});
+await page.goto(H+'/views/all/tickets/'+T,{waitUntil:'load',timeout:120000});await page.waitForTimeout(10000);
+await page.screenshot({path:D+'tavi-ticket.png'});
+out.btnNames=await page.locator('button').evaluateAll(es=>es.map(e=>(e.getAttribute('aria-label')||e.innerText).trim()).filter(t=>/reply|send|forward/i.test(t)));
+await page.locator('button').filter({hasText:/^Reply All$|^Reply$/}).first().click({timeout:20000});await page.waitForTimeout(4000);
+await page.screenshot({path:D+'tavi-composer.png'});
+out.toolbar=await page.locator('[role=toolbar] [aria-label],[role=toolbar] button[title]').evaluateAll(es=>[...new Set(es.map(e=>e.getAttribute('aria-label')||e.getAttribute('title')).filter(Boolean))]);
+out.lines=(await page.locator('body').innerText()).split('\n').filter(l=>/Subject|From|^To|Cc|Send|Draft|Re:/.test(l)).slice(0,25);
+out.sendBtns=await page.locator('button').evaluateAll(es=>es.map(e=>(e.getAttribute('aria-label')||e.innerText).trim()).filter(t=>/send|draft|schedul/i.test(t)));
+return out;

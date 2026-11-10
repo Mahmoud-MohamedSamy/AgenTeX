@@ -1,0 +1,10 @@
+const D='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-gaplists-medium/ndc-2635/evidence/raw/';
+const out={};
+const f=await api('GET','/modules/d120a6c2-2596-4254-968b-a1bcd3a000bf/fields');const dep=arr(f.j).find(z=>(z.apiName||z.api_name)==='department');out.deptField=JSON.stringify(dep).slice(0,700);
+const lay=await api('GET','/modules/d120a6c2-2596-4254-968b-a1bcd3a000bf/layouts');out.layouts=arr(lay.j).map(l=>({id:l.id,name:l.name,depts:l.departmentIds}));
+const r=await api('GET','/modules/d120a6c2-2596-4254-968b-a1bcd3a000bf/records?pageSize=5');out.recS=r.s;const recs=arr(r.j);out.recN=recs.length;out.rec0=JSON.stringify(recs[0]||{}).slice(0,600);
+await page.setViewportSize({width:1440,height:900});
+await page.goto(H+'/activities',{waitUntil:'load',timeout:120000});await page.waitForTimeout(9000);
+out.actUrl=page.url().replace(H,'');await page.screenshot({path:D+'tavi-activities.png'});
+out.actText=(await page.locator('body').innerText()).split('\n').slice(0,60).join(' | ').slice(0,1500);
+return out;

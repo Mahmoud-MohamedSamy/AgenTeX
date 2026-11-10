@@ -1,0 +1,11 @@
+const path=require('path');const P='D:/Software Testing/Automation/Agentex Installation/Agentex Installation';
+const {chromium}=require(path.join(P,'node_modules/playwright-core'));
+(async()=>{const b=await chromium.launch({headless:false,channel:'msedge'});
+const ctx=await b.newContext({storageState:process.env.ST,viewport:{width:1600,height:900}});const page=await ctx.newPage();
+await page.goto('https://desk.zoho.com/agent/techsolutionsegypt/tech/contacts/new',{waitUntil:'domcontentloaded',timeout:90000});
+await page.waitForTimeout(15000);
+console.log(page.url());
+await page.screenshot({path:'raw/contact-new.png'});
+const ins=await page.$$eval('input,textarea',els=>els.filter(e=>e.offsetParent).map(e=>[e.tagName,e.type,e.name,e.id,e.placeholder,e.getAttribute('data-id'),e.getAttribute('aria-label')].join('|')));
+console.log(ins.join('\n'));
+await b.close();})().catch(e=>{console.error('ERR',e.message);process.exit(1)});

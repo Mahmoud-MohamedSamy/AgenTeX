@@ -1,0 +1,11 @@
+const get=async n=>JSON.parse(await (await ctx.request.get(H+'/locales/en/'+n+'.json?_v=mw9af257')).text());
+const tk=await get('desk-tickets');const dk=await get('desk');
+const flat=(o,p,acc)=>{if(typeof o==='string')acc.push([p,o]);else if(o&&typeof o==='object')for(const k in o)flat(o[k],p?p+'.'+k:k,acc);return acc;};
+const a=flat(tk,'',[]),b=flat(dk,'',[]);
+const out={};
+out.composerSend=a.filter(([k])=>/^tickets\.composer\.(send|schedule)/i.test(k)).map(x=>x.join(' = ').slice(0,110)).slice(0,30);
+out.convStatus=a.filter(([k,v])=>/conversation\.(status|delivery|read|opened|sent|deliver)/i.test(k)).map(x=>x.join(' = ').slice(0,110)).slice(0,30);
+out.subjectNum=[...a,...b].filter(([k,v])=>/subject/i.test(k)&&/(ticket (number|id|#)|\[#|##)/i.test(v)).map(x=>x.join(' = ').slice(0,140)).slice(0,15);
+out.readReceipt=[...a,...b].filter(([k,v])=>/read receipt|opened|was read|seen by/i.test(v)).map(x=>x.join(' = ').slice(0,120)).slice(0,15);
+out.toolbar=a.filter(([k])=>/composer\.(toolbar|editor|format)/i.test(k)).map(x=>x.join(' = ').slice(0,90)).slice(0,40);
+return out;

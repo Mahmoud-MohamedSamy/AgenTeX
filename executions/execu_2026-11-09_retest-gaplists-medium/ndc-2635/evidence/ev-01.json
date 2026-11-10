@@ -1,0 +1,14 @@
+{"out":"annotated/ev-01-department-vs-zoho.png","id":"NDC-2635 recheck","title":"Department on activities: now required, but it does not limit owners or who can see the activity","verdict":"Differs","date":"TAVI 9 Nov 2026 (NDC-Staging, Desk Administrator mahmoud.mahamed1515) · Zoho capture 26 Oct 2026 + Zoho help",
+"panels":[
+{"side":"TAVI","caption":"Add Task: Department* is required","img":"raw/tavi-add-task.png","boxes":[{"n":1,"x":958,"y":244,"w":464,"h":56}]},
+{"side":"TAVI","caption":"Department \"QA AS6 Dept B\" chosen: owner list unchanged","img":"raw/owner-after-dept.png","boxes":[{"n":2,"x":960,"y":482,"w":462,"h":160}]},
+{"side":"TAVI","caption":"Tasks list: linked tickets the user cannot open (403)","img":"raw/tavi-bulk-bar.png","boxes":[{"n":3,"x":1135,"y":818,"w":282,"h":58}]},
+{"side":"Zoho","caption":"Add Task (portal taviportal, one department)","img":"raw/zoho-add-tasks.png","boxes":[]},
+{"side":"Zoho","caption":"Zoho help: department on activities","text":["Department is a required picklist on tasks, calls and events. It is chosen first and decides which agents can be assigned.","Tasks, calls and events are department-specific: an activity is seen only inside its department."],"sources":["https://help.zoho.com/portal/en/kb/desk/customization/modules/articles/standard-modules-and-fields-zoho-desk","https://help.zoho.com/portal/en/kb/desk/activities/articles/working-with-tasks-zoho-desk"]}
+],
+"rows":[
+{"n":"1a","b":"Department field","zoho":"Required","tavi":"Required on Task, Call and Event (fields API: required true)","match":"Same as Zoho"},
+{"n":"1b","b":"Owner list follows the department","zoho":"Only that department's agents","tavi":"After choosing Dept B (agents: Test User 1, ndc-staging-owner) the list is still me, Test User 1, Test User 2; ndc-staging-owner is not offered","match":"Gap"},
+{"n":"1c","b":"Activity seen only inside its department","zoho":"Yes","tavi":"A task in Dept B opens (200) for a user who is not a Dept B agent; the list shows activities of tickets that return 403 (\"Permission denied.\")","match":"Gap"}
+],
+"notes":["Throwaway task \"QA RT 2635 dept visibility\" (Dept B), deleted after the check.","The Zoho capture is from an org with one department, so its Department field is hidden."]}
