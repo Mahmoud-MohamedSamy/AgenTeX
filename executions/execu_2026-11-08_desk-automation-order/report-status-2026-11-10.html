@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desk Automation Status</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--text:#1d2330;--muted:#5d6678;--line:#e3e6ec;--done:#1f8a4c;--done-bg:#e6f5ec;--part:#a66300;--part-bg:#fff3df;--no:#6b7280;--no-bg:#eef0f3;--bug:#b42318;--bug-bg:#fdecea;--accent:#2557d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151b;--card:#1b1f27;--text:#e6e9ef;--muted:#9aa3b2;--line:#2c323d;--done:#5fd08f;--done-bg:#173525;--part:#f0b252;--part-bg:#3a2c12;--no:#a4abb8;--no-bg:#262b35;--bug:#ff8a7e;--bug-bg:#3d1c1a;--accent:#7aa2ff}}
+:root[data-theme="dark"]{--bg:#12151b;--card:#1b1f27;--text:#e6e9ef;--muted:#9aa3b2;--line:#2c323d;--done:#5fd08f;--done-bg:#173525;--part:#f0b252;--part-bg:#3a2c12;--no:#a4abb8;--no-bg:#262b35;--bug:#ff8a7e;--bug-bg:#3d1c1a;--accent:#7aa2ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:26px;margin:0 0 4px}
+h2{font-size:19px;margin:34px 0 10px}
+.sub{color:var(--muted);margin:0 0 22px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.tile b{display:block;font-size:24px}
+.tile span{color:var(--muted);font-size:13px}
+.bar{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--no-bg);margin-top:8px}
+.bar i{display:block;height:100%}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+.wrap{overflow-x:auto}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.done{color:var(--done);background:var(--done-bg)}.part{color:var(--part);background:var(--part-bg)}.no{color:var(--no);background:var(--no-bg)}.bug{color:var(--bug);background:var(--bug-bg)}
+ul{margin:6px 0;padding-left:20px}
+li{margin:3px 0}
+code{font-size:13px;background:var(--no-bg);padding:1px 5px;border-radius:4px}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<h1>Desk automation order: status</h1>
+<p class="sub">TAVI Desk vs Zoho Desk, NDC-Staging. Run started 8 Nov 2026; status as of 10 Nov 2026, 08:00 UTC.</p>
+
+<div class="tiles">
+  <div class="tile"><b>2 of 7</b><span>Part A features done (SLA, Notifications)</span>
+    <div class="bar"><i style="width:28.6%;background:var(--done)"></i></div></div>
+  <div class="tile"><b>96 of 97</b><span>SLA + Notification cases run (SL-18 blocked)</span>
+    <div class="bar"><i style="width:99%;background:var(--done)"></i></div></div>
+  <div class="tile"><b>0 of 2</b><span>Part B (pairs) and Part C (whole order) started</span>
+    <div class="bar"><i style="width:0"></i></div></div>
+  <div class="tile"><b>3 filed · 6 held</b><span>Plane items filed / bugs held for one batch</span>
+    <div class="bar"><i style="width:33%;background:var(--done)"></i><i style="width:67%;background:var(--bug)"></i></div></div>
+</div>
+
+<h2>Plan overview</h2>
+<div class="card wrap"><table>
+<tr><th>Part</th><th>Feature</th><th>Status</th><th>Notes</th></tr>
+<tr><td>A5</td><td>SLA (SL-01 to SL-67)</td><td><span class="pill done">Done</span></td><td>66 of 67 run. SL-18 blocked: Dept A has no inbound mailbox.</td></tr>
+<tr><td>A7</td><td>Notifications (NT-01 to NT-30)</td><td><span class="pill done">Done</span></td><td>All 30 run. NT-07 waits on the Gmail check <code>NT06ttl5</code>.</td></tr>
+<tr><td>A1–A3</td><td>Skills, Direct assignment, Round robin</td><td><span class="pill no">Not started</span></td><td>Includes NT-19 re-test and NDC-2811..2814 re-checks.</td></tr>
+<tr><td>A4</td><td>Workflow</td><td><span class="pill no">Not started</span></td><td>Includes re-check of B-1..B-9 and the 50-rule list cap.</td></tr>
+<tr><td>A6</td><td>Blueprint</td><td><span class="pill no">Not started</span></td><td>Current state only for NDC-2755..2788.</td></tr>
+<tr><td>A8</td><td>Macros</td><td><span class="pill no">Not started</span></td><td></td></tr>
+<tr><td>B</td><td>Pairs (OR-01 to OR-35)</td><td><span class="pill no">Not started</span></td><td>Some rows need live Zoho.</td></tr>
+<tr><td>C</td><td>Whole order (OR-22..27, E2E-1..4)</td><td><span class="pill no">Not started</span></td><td>Includes the 100-ticket timing and real-mail journeys.</td></tr>
+<tr><td>Z</td><td>Missing list vs Zoho</td><td><span class="pill done">Filed</span></td><td>NDC-2829: 15 gaps with images. 5 items need live Zoho.</td></tr>
+<tr><td>—</td><td>Live Zoho comparisons</td><td><span class="pill no">Not started</span></td><td>SL-30 and the <code>[zoho-live]</code> rows. Zoho mostly fails on this network.</td></tr>
+<tr><td>—</td><td>Visual checks (V-01..V-12)</td><td><span class="pill part">Partial</span></td><td>Most SLA and notification screens reviewed, no real defects. 1 retake, 6 captures unreviewed, dark theme not available.</td></tr>
+</table></div>
+
+<h2>A5 SLA: 67 cases</h2>
+<div class="card wrap"><table>
+<tr><th>Result</th><th>Count</th><th>Cases</th></tr>
+<tr><td><span class="pill done">Pass</span></td><td>50</td><td>SL-01–04, 06–11, 13–16, 19, 20, 23–26, 28, 29, 31–37, 39–43, 45, 47–50, 52, 53, 55, 56, 58, 59, 61, 63, 64, 66, 67</td></tr>
+<tr><td><span class="pill bug">Bug</span></td><td>6</td><td>SL-12 (NDC-2826), SL-30 (NDC-2825), SL-38, SL-54, SL-57, SL-62 — last four held</td></tr>
+<tr><td><span class="pill part">Finding / recorded</span></td><td>5</td><td>SL-21 (design question), SL-51, SL-60, SL-27, SL-65</td></tr>
+<tr><td><span class="pill part">Partial</span></td><td>2</td><td>SL-44, SL-46</td></tr>
+<tr><td><span class="pill no">API only (deferred)</span></td><td>2</td><td>SL-05, SL-17</td></tr>
+<tr><td><span class="pill part">Waiting on Gmail</span></td><td>1</td><td>SL-22</td></tr>
+<tr><td><span class="pill no">Blocked</span></td><td>1</td><td>SL-18 — needs a department with inbound mail</td></tr>
+</table></div>
+
+<h2>A7 Notifications: 30 cases</h2>
+<div class="card wrap"><table>
+<tr><th>Result</th><th>Count</th><th>Cases</th></tr>
+<tr><td><span class="pill done">Pass</span></td><td>22</td><td>NT-01–03, 05, 08–15, 17, 18, 20–22, 24, 25, 27–29 (some partial coverage)</td></tr>
+<tr><td><span class="pill bug">Bug</span></td><td>2</td><td>NT-16; NT-07 if Gmail confirms — both held</td></tr>
+<tr><td><span class="pill part">Recorded / partial</span></td><td>2</td><td>NT-06, NT-30</td></tr>
+<tr><td><span class="pill no">Not a bug / API only</span></td><td>2</td><td>NT-04, NT-23</td></tr>
+<tr><td><span class="pill no">Inconclusive</span></td><td>2</td><td>NT-19 (re-test with round robin), NT-26 (Slack channel not visible)</td></tr>
+</table></div>
+
+<h2>Plane</h2>
+<div class="card wrap"><table>
+<tr><th>Item</th><th>What</th><th>Status</th></tr>
+<tr><td>NDC-2825</td><td>SL-30: SLA set on Ticket Update does not restart on update (High)</td><td><span class="pill done">Filed</span></td></tr>
+<tr><td>NDC-2826</td><td>SL-12: no number/date operators in target conditions (Medium)</td><td><span class="pill done">Filed</span></td></tr>
+<tr><td>NDC-2829</td><td>Desk Automation missing list, 15 gaps</td><td><span class="pill done">Filed</span></td></tr>
+<tr><td>NT-16</td><td>Closing with a custom template bound logs no mail</td><td><span class="pill bug">Held</span></td></tr>
+<tr><td>NT-07</td><td>No closed mail to the CC (if Gmail confirms)</td><td><span class="pill bug">Held</span></td></tr>
+<tr><td>SL-54</td><td>A Before-due level longer than the target saves</td><td><span class="pill bug">Held</span></td></tr>
+<tr><td>SL-57</td><td>An escalation template in use can be deleted, no warning</td><td><span class="pill bug">Held</span></td></tr>
+<tr><td>SL-62</td><td>Countdown Mode: 6 of 7 columns fail (over 25 filter conditions)</td><td><span class="pill bug">Held</span></td></tr>
+<tr><td>SL-38</td><td>SLA still applied after the support plan allowance is used up</td><td><span class="pill bug">Held</span></td></tr>
+</table></div>
+
+<h2>Waiting on you</h2>
+<div class="card" style="padding:12px 16px"><ul>
+<li>Gmail: look for <code>NT06ttl5</code> (decides NT-07).</li>
+<li>SL-18: a department with inbound mail, if you want it run.</li>
+<li>Say when to file the held bug batch.</li>
+</ul></div>
+
+<h2>Left on the tenant</h2>
+<div class="card" style="padding:12px 16px"><ul>
+<li>QA AO Dept A and Dept B (still in use).</li>
+<li>19 QA AO tickets in Dept A the admin could not delete; the owner account can remove them.</li>
+<li>All other QA data from 8–10 Nov is deleted, including the SL-20 and SL-40 data kept overnight.</li>
+</ul></div>
+
+<p class="muted" style="margin-top:28px">Source: <code>PROGRESS.md</code> and <code>ledger.md</code> in executions/execu_2026-11-08_desk-automation-order.</p>
+</main>
+</body>
+</html>

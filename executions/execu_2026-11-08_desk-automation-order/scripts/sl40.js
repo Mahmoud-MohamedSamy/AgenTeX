@@ -1,0 +1,14 @@
+// SL-40: contract expiry notification. A QA contract ending tomorrow, notify Test User 1 one day before; read whether a notice appears.
+// Also removes the NT-10 ticket. Contract and account are kept until the notice check is done (see the ledger) when nothing shows yet.
+const A = '93949fbd-f9df-4e2e-ae45-00b8dc38385b', M = '88e8ea44-1658-4df3-9930-d0902b91073d', ACC = '784400e1-4a2a-42c2-b4f3-7ca56e79828a', CON = '0924eb24-e42a-4eab-8efd-e3428f19e882', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+const f = (k, v) => ({ field: k, value: { kind: 'string', value: v } }); const u = Math.random().toString(36).slice(2, 6), tag = 'SL40' + u; const R = { tag };
+const n10 = JSON.parse(fs.readFileSync('C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/6cad98b2-9d2f-4e48-af44-1193bcd58c1a/scratchpad/nt10.json', 'utf8')); 
+const acc = 'e5cce304-2aae-4c26-b145-13c46f183603';
+const pol = (await api('POST', '/desk/sla/policies', { department_id: A, name: 'QA AO ' + tag, description: null, is_active: true, triggers: { create: true, update: false, field_update: null, customer_reply: false, agent_response: false, private_thread: null, comment: null }, execute_only_with_account: false, resolution_from_created: false, targets: [{ name: 't', criteria: { conditions: [{ field_key: 'description', operator: 'contains', value: tag }], pattern: null }, response: { value: 60, unit: 'minutes' }, resolution: { value: 3, unit: 'hours' }, calendar_mode: 'calendar', business_hours_id: null, first_response_only: true, escalate_on_business_hours: false, escalations: { response: [], resolution: [] } }] })).j.data.id;
+const plan = (await api('POST', '/desk/sla/support-plans', { department_id: A, name: 'QA AO Plan ' + tag, description: null, type: 'unlimited', policy_id: pol })).j.data.id;
+const today = new Date(), d = n => new Date(today.getTime() + n * 86400000).toISOString().slice(0, 10);
+const c = await api('POST', '/modules/' + CON + '/records', { data: [f('contract_name', 'QA AO Contract ' + tag), f('department', A), f('account_id', acc), f('support_plan', plan), f('start_date', d(-30)), f('end_date', d(1)), { field: 'notify_agents', value: { kind: 'array', items: [{ kind: 'string', value: TU1 }] } }, { field: 'notify_before_days', value: { kind: 'number', value: 1 } }] });
+R.contract = c.s + (c.s >= 300 ? ' ' + c.t.slice(0, 300) : ''); R.ids = { acc, pol, plan, contract: c.j?.data?.id };
+if (c.j?.data?.id) { const back = (await api('GET', '/modules/' + CON + '/records/' + c.j.data.id)).j?.data?.data || []; R.saved = back.filter(x => /notify|end_date|status/.test(x.field)).map(x => x.field + '=' + JSON.stringify(x.value).slice(0, 80)); }
+fs.writeFileSync('C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/6cad98b2-9d2f-4e48-af44-1193bcd58c1a/scratchpad/sl40.json', JSON.stringify(R));
+return R;

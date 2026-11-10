@@ -112,3 +112,39 @@ Waiting on the user: Gmail list, owner access for business hours and cleanup, OK
 - Old → new numbers: 6→1, 15→2, 16→3, 21→4, 22→5, 23→6, 24→7, 25→8, 27→9, 28→10, 30→11, 31→12, 32→13, 33→14, 34→15. Dropped as built: 10, 11, 12, 13, 14, 29. Item 9 = NDC-2826. Item 4 not a gap. 5, 17, 18, 19, 20 listed under "Could not be checked" (need live Zoho). Item 26 works; item 3 API-only.
 - Blueprint "Tickets from Mail" confirmed unchanged (no issue banner, normal transition).
 - Bugs held for one batch (user): NT-16, NT-07, SL-54, SL-57, SL-62 (Countdown Mode).
+
+### 9 Nov, evening
+- SL-18 BLOCKED: the user replied to both agent mails, but no reply reached Desk (feeds show outbound only). Agent replies go out from the system no-reply sender; QA AO Dept A has no inbound mailbox; the only mail connection (Zoho Mail, anyware.software) reports a setup problem. The other user's "test workflow" rule also sends its own replies to the contact.
+- SL-20: calendar-time check passed (no escalation at 15:40 UTC, calendar would have fired 15:26). Business-time check scheduled 10 Nov 07:35 UTC.
+- SL-29 pass (manual due date replaces resolution due; hold/resume extends by hold time). SL-27 recorded (breached response stays breached through hold; resolution extended). SL-61 pass. SL-38 inconclusive (coverage says allowance_exhausted but the ticket still got the SLA, because the test policy matched directly; needs a plan-only policy). SL-60 finding: a Dept B plan can be attached to a Dept A contract (200). SL-42 pass (master keeps its SLA; merged ticket closed, its SLA cancelled).
+- NT-06 recorded: comment added 1 mail, comment deleted 1, closed 2 (contact + CC?). Gmail check NT06ttl5 decides; NT-07 on hold until then. Comment edit not tested (PATCH 405).
+- NT-10 pass for "reply not delivered" (bounce logged; Test User 1 got the notice). Rating received not run (needs a real customer rating).
+- SL-40: contract ending 10 Nov, notify Test User 1 one day before; no notice yet; check scheduled 10 Nov 07:45 UTC (data in ledger).
+- SL-44 partial: custom view conditions have Due Date, Response Due Date, SLA Escalated, SLA Name, SLA Violated; no "Is overdue" / "Is response overdue".
+- SL-55 not run: roles API not found; needs the SLA editor's role picker on screen.
+- SL-67 repeat (60 tickets, 3-minute wait): all 60 got their SLA; reapply queued all 60; created in 9 s. PASS. The earlier "half had no SLA" was a delay during the unstable period, not a bug. Removed that "possible bug" note from NDC-2829 (description patched 9 Nov). All 60 tickets and the policy deleted.
+
+### 10 Nov — SL-20 business-time escalation
+- Escalation fired at 2026-11-10 07:26:11 UTC, exactly the business-time due moment (calendar time would have fired 9 Nov 15:26 UTC; it did not, level was still 0 at 15:40). SL-20 business-time half: PASS. SL-20 is now PASS on both halves.
+- Cleanup: SL-20 ticket, policy and business hours deleted (204 each).
+
+### 10 Nov — SL-40 contract notice
+- Test User 1's bell: "Contract QA AO Contract SL40g7y5 expires today" (desk.contract.expiring) at 2026-11-10 00:03 UTC. PASS. The contract was created on 9 Nov after that day's 00:03 UTC run, so the "one day before" day was already past; the daily job sent one notice at its next run (expiry day). Not tested: a notice on the exact day before (needs a contract ending 2+ days out).
+- Cleanup: contract, plan, policy, account deleted (204 each).
+
+### 10 Nov — SL-55 escalation to a role
+- On screen (not saved): Whom to Escalate offers Agents, Teams, Roles, Ticket owner, Owner's manager, Department agents, Ticket contact. Roles lists CEO and Manager (from /iam/org-units). Screens: evidence/raw/s55-kind-menu.png, s55-roles.png.
+- Run 1 (role Manager only, unassigned ticket): fired at the due time; the role resolved to all 8 Manager users; every one skipped `no_access`; owner entry `no_recipients`.
+- Run 2 (control, agents Samy + Test User 1 named directly + role): same, named agents also `no_access`. So the skip is the access rule (same as SL-21), not the role kind.
+- Run 3 (ticket assigned to Mahmoud Samy, role only): Samy dropped from the role list (deduplicated) and notified as owner (`done`); the other 7 skipped `no_access`.
+- Verdict: PASS. Role recipients work and follow the same access rule as agents. Note for the SL-21 design question: in Zoho, escalation goes to the named people regardless; here only people who can see the ticket get it.
+- Note: the template picker in an agent escalation also offers "Test Email Template · Contact Notification" (a contact template). Minor, recorded only.
+- Cleanup: 3 tickets, 3 policies deleted (204).
+
+### 10 Nov — SL-38 redesigned (allowance used up)
+- Setup: policy with "execute only with account", allowance plan = 1 ticket/month, contract on a QA account. Script scripts/sl38b.js (cleans up).
+- Control x0 (no account): no SLA. PASS.
+- x1 (first ticket): SLA applied through the contract; usage 1/1, remaining 0. PASS.
+- x2 (second ticket): coverage says `allowance_exhausted`, but the SLA is still applied and both timers run. FAIL.
+- Zoho: once the plan's limit is reached, further tickets do not follow the plan's SLA (help.zoho.com support-plans article and SLA FAQ). No setting in TAVI changes this (sla/meta has none).
+- Added to the held bug batch. Evidence must be recaptured on screen (the ticket's SLA panel) when filing; the data was deleted.

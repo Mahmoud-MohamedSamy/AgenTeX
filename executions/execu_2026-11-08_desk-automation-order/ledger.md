@@ -200,5 +200,7 @@
 - 2026-11-08T20:55 ticket QA AO SL470faa2a c285ee49-79e8-486c-b15e-180830f9f922
 
 ## 9 Nov 2026 (kept on purpose)
-- SL-20 check: business hours ca536ae4-494b-4400-a71d-a330224cfde2, policy 00f991cb-49ac-41d5-a02b-b4c6b8464893, ticket 8519a0ab-cead-4c60-9395-2637f383923d (QA AO SL20…), plus holiday list for SL-16 deleted. Remove after the 10 Nov 07:26 UTC check.
+- SL-20 check: business hours ca536ae4-494b-4400-a71d-a330224cfde2, policy 00f991cb-49ac-41d5-a02b-b4c6b8464893, ticket 8519a0ab-cead-4c60-9395-2637f383923d (QA AO SL20…), plus holiday list for SL-16 deleted. Remove after the 10 Nov 07:26 UTC check. — DELETED 10 Nov 07:36 UTC.
 - SL-30 evidence: policy 47d0ed85-8cc2-4645-8990-bf2c07854aa6, ticket 32435b6e-83ad-4153-806e-2d4531174bf5 (#1769). Keep until NDC-2825 is retested or remove at cleanup.
+- SL-40 check (9 Nov): account e5cce304-2aae-4c26-b145-13c46f183603, policy a67512ff-07ad-4699-ba0e-ed468a9ba660, plan 0d818d96-9d34-48dc-b031-83858a52ce57, contract 897f7bab-9ab9-422f-9ef9-fcb48bdd1ce0 (QA AO SL40g7y5, ends 10 Nov, notify Test User 1 one day before). Remove after the 10 Nov check (delete contract, plan, policy, account in that order). — DELETED 10 Nov 07:50 UTC.
+- SL-55 (10 Nov): 3 QA AO SL55 policies + 3 tickets created and deleted same run.

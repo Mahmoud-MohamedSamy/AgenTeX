@@ -11,4 +11,4 @@ R.merge = m.s + ' ' + m.t.slice(0, 250); await sleep(8000);
 R.after = { master: await sum(a), merged: await sum(b) };
 const st = (await api('GET', '/modules/' + M + '/records/' + b)).j?.data; R.mergedRecord = st ? (st.data || []).filter(d => /status|merged/.test(d.field)).map(d => d.field + '=' + d.value?.value) : 'gone';
 R.cleanup = [(await api('DELETE', '/modules/' + M + '/records/' + a)).s, (await api('DELETE', '/modules/' + M + '/records/' + b)).s, (await api('DELETE', '/desk/sla/policies/' + p.j.data.id)).s];
-ret
+return R;

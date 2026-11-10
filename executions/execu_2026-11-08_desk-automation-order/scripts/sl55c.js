@@ -1,0 +1,3 @@
+const A='93949fbd-f9df-4e2e-ae45-00b8dc38385b';const ag=(await api('GET','/desk/queues/agents')).j;const AL=Array.isArray(ag?.data)?ag.data:(ag?.data?.agents||ag?.data?.items||[]);
+const ids=['18ba78c4-20c2-49e3-b159-55e1af2043ae','876ce871-2b02-4854-89a7-68050391c62b','2a7c1bc4-f6d4-4bd3-805e-0496ece13987','d23fb4e0-248d-41f6-af60-d28885a7007e','e82f62cb-9904-42c7-a13c-77a7449820b9','5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4','23f0f9d7-2fc0-429b-9334-9933fe5c429b','3445ec4a-020e-4f12-b156-dd2de7610164'];
+return ids.map(i=>{const a=AL.find(x=>x.user_id===i);return i.slice(0,8)+' '+(a?a.name+' inDeptA='+a.department_ids.includes(A)+' status='+a.status:'?');});
