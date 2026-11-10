@@ -1,0 +1,8 @@
+let step='bl';try{
+await page.goto(H+'/settings/data/bulk-actions',{waitUntil:'load',timeout:180000});await wt(/Initiated time/,120000);await page.waitForTimeout(5000);
+const t=await body();out.bl=t.slice(t.indexOf('Action\tModule')).split('\n').filter(l=>l.trim()).slice(0,8);await shot('k10-bulk-log-after');
+step='export';await page.goto(H+'/settings/data/export',{waitUntil:'load',timeout:180000});await wt(/Export/,120000);await page.waitForTimeout(8000);
+const e=await body();out.export=e.slice(e.lastIndexOf('Export')>0?e.indexOf('Data Administration'):0).split('\n').filter(l=>l.trim()).slice(-45);await page.screenshot({path:D+'k10-export-page.png',fullPage:true});
+out.buttons=(await page.getByRole('button').allInnerTexts()).map(s=>s.trim()).filter(Boolean).slice(-15);
+}catch(e){out.err=step+': '+String(e).slice(0,200);}
+return Object.assign(out,{calls:[...new Set(calls)]});

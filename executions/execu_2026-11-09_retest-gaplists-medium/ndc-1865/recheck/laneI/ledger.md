@@ -1,0 +1,23 @@
+# Lane I ledger (NDC-1865 recheck B + G, 10 Nov 2026, NDC-Staging, ndc-staging-owner)
+- 2026-11-10T13:14:06Z sign-in index 7 once (2nd attempt; 1st timed out before sign-in) → scratchpad laneI-owner.json
+- 2026-11-10T13:19:30.859Z CREATED ticket fffcde56-f91b-40f9-a22b-7cd894a77921 (QA RC 1865 API ticket, Tech, contact de7195a2 mmohamed@anyware.software — existing contact, not ours) via API → 201
+- 2026-11-10T13:32:06.484Z SENT reply 1 on ticket #2504 (fffcde56, API-created) To mmohamed@anyware.software (added by hand; Recipients was empty) From Tech <tech@help-staging.anyware.software>
+- 2026-11-10T14:04:19.446Z CREATED ticket e74924f9-6bb4-49ee-85ff-ebdf795d669f (QA RC 1865 UI ticket, Tech, contact de7195a2 mmohamed@anyware.software — existing contact) via New Ticket UI form
+- 2026-11-10T14:20:12.770Z SENT reply 1 on ticket #2543 (e74924f9, UI-created) To mmohamed@anyware.software (added by hand; Recipients was empty) From Tech <tech@help-staging.anyware.software>
+- 2026-11-10T14:39:39.760Z CREATED department 6a7a38a8-aaf5-4a9b-aa99-b5eaa676e7e7 (QA RC 1865 Dept) via UI form, "Display in Help Center" checked
+- 2026-11-10T14:40:54.817Z CREATED department b67c190b-0acf-4d15-9047-4df89daff1d2 (QA RC 1865 Dept API vis) via API with visibility:'public' → 201
+- 2026-11-10T14:40:55.681Z CREATED department 76ba390d-3b2c-47f1-be3d-71417b21ff50 (QA RC 1865 Dept API dihc) via API with display_in_help_center:true → 201
+- 2026-11-10T14:40:56.688Z CREATED department d852798e-94ef-4855-9dc0-112578f3a490 (QA RC 1865 Dept API none) via API with no visibility field → 201
+- 2026-11-10T14:40:58.216Z UPDATED department 6a7a38a8-aaf5-4a9b-aa99-b5eaa676e7e7 display_in_help_center false → 400
+- 2026-11-10T14:41:02.122Z UPDATED department 6a7a38a8-aaf5-4a9b-aa99-b5eaa676e7e7 display_in_help_center true → 400
+- 2026-11-10T14:41:03.938Z UPDATED department 6a7a38a8-aaf5-4a9b-aa99-b5eaa676e7e7 visibility:'private' (field test) → 400
+- 2026-11-10T14:42:18.797Z UPDATED department 6a7a38a8-aaf5-4a9b-aa99-b5eaa676e7e7 via UI: Display in Help Center OFF → private
+- 2026-11-10T14:42:32.611Z UPDATED department 6a7a38a8-aaf5-4a9b-aa99-b5eaa676e7e7 via UI: Display in Help Center ON → public
+- 2026-11-10T14:43:45.727Z DELETE ticket fffcde56-f91b-40f9-a22b-7cd894a77921 → 204
+- 2026-11-10T14:43:46.539Z DELETE ticket e74924f9-6bb4-49ee-85ff-ebdf795d669f → 204
+- 2026-11-10T14:43:47.368Z DELETE department 6a7a38a8-aaf5-4a9b-aa99-b5eaa676e7e7 → 200
+- 2026-11-10T14:43:47.684Z DELETE department b67c190b-0acf-4d15-9047-4df89daff1d2 → 200
+- 2026-11-10T14:43:48.289Z DELETE department 76ba390d-3b2c-47f1-be3d-71417b21ff50 → 200
+- 2026-11-10T14:43:48.699Z DELETE department d852798e-94ef-4855-9dc0-112578f3a490 → 200
+- 2026-11-10T14:43:53.960Z PURGE recycle-bin items 96b9a391-f6ab-4c52-a04a-d87ea14705be,35b6a0f9-481a-4e7f-8510-717a6e956cf3,aee7854c-5e87-471f-8f12-5c9751bd84e0,199f255a-7ef3-48c0-b0bb-a5a6981bf6d0,76dc1325-8576-4b97-b47c-c6872c4611e1,c35a9b86-697a-488c-8851-1a5cab42ebd6 → 200
+- 2026-11-10T14:44:47Z CLEANUP: 2 tickets + 4 departments deleted, 6 bin items purged, all 404, bin clear; contact de7195a2 untouched (200). Session file deleted.

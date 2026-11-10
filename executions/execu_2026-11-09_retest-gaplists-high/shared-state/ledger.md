@@ -1,0 +1,49 @@
+# Lane M ledger (shared-state tests, 10 Nov 2026, NDC-Staging, ndc-staging-owner)
+- 2026-11-10T16:00:45Z sign-in index 7 once → scratchpad laneM-owner.json
+- 2026-11-10T16:03:07Z C (NDC-2828): read-only. /iam/users now returns 201 (122 active + 79 invited) with meta; page/pageSize/cursor/offset/search work. No invite needed (tenant already >200).
+- 2026-11-10T16:19:09Z session signed out (SIGNED_OUT); re-signed in index 7 once
+- 2026-11-10T16:21:44.151Z CREATED invite QA SS A mmohamed+qass-a@anyware.software profile Sales Staff ou 95754ee7 → user f3632c1e-a3d7-4716-a942-24bb1af47d7c invitation db033ee5-07ad-4f24-bfaf-0ad74aef981e (email to approved mailbox)
+- 2026-11-10T16:21:44.691Z CREATED invite QA SS B mmohamed+qass-b@anyware.software profile Sales Staff ou 5533f730 → user 2d5c7d2a-696f-430b-8d74-2a851ec03a1d invitation ec0d4d8a-a3b4-4bc5-bed5-5584eacd8bb6 (email to approved mailbox)
+- 2026-11-10T16:21:45.283Z CREATED invite QA SS C mmohamed+qass-c@anyware.software profile Sales Staff ou 60aeb9ce → user 9bb617fd-e52b-468e-8623-e932b0264e5a invitation ec53f5db-c006-4866-aec4-a948bcf0c3c1 (email to approved mailbox)
+- 2026-11-10T16:23:00.454Z CREATED lead "QA SS 2417 LA" 62006527-c26c-497e-abf8-dcc3fd38c4c0 owned by QA SS A (Sales/Team 2, sub-unit)
+- 2026-11-10T16:23:00.955Z CREATED lead "QA SS 2417 LB" d3105e4d-9428-47c4-845c-cfe75ee3f74f owned by QA SS B (HR, sibling unit)
+- 2026-11-10T16:23:01.478Z CREATED lead "QA SS 2417 LC" 2f6d9dcb-b9d7-480e-8429-c2d76a07b8e5 owned by QA SS C (Sales, same unit)
+- 2026-11-10T16:23:02.911Z CREATED lead "QA SS 2417 LO" b5ab256c-365f-4e8a-b9cb-b8ac16d36694 owned by ndc-staging-owner (higher rank)
+- 2026-11-10T16:24:15.215Z CREATED invite QA SS D mmohamed+qass-d@anyware.software profile AI Agent (rank 10) ou Sales/Team 2 (sub-unit) → user 7ae1cbc7-46ac-4cd9-9466-761e37a12d0e invitation ac8a4878-c2da-473f-b163-54cbeb8f604d
+- 2026-11-10T16:24:16.433Z CREATED lead "QA SS 2417 LD" 946f7458-b82a-44ce-a731-55ee15af2605 owned by QA SS D (Sales/Team 2 (sub-unit))
+- 2026-11-10T16:24:16.741Z CREATED invite QA SS E mmohamed+qass-e@anyware.software profile AI Agent (rank 10) ou HR (sibling unit) → user a2bc76bc-bdf0-4f26-85b8-f99cf2b53e39 invitation 42685af6-c129-49ec-8488-56f30891a11c
+- 2026-11-10T16:24:19.090Z CREATED lead "QA SS 2417 LE" c4dde429-125b-4d92-89df-d7b33a4e639a owned by QA SS E (HR (sibling unit))
+- 2026-11-10T16:24:19.421Z CREATED invite QA SS F mmohamed+qass-f@anyware.software profile AI Agent (rank 10) ou Sales (same unit) → user 065bdb85-44b5-412f-bc24-128e41678422 invitation 952e9415-f990-4ca6-b33e-4eae19029ec9
+- 2026-11-10T16:24:21.051Z CREATED lead "QA SS 2417 LF" 5d69d595-4063-42f6-993a-b9550aecba71 owned by QA SS F (Sales (same unit))
+- 2026-11-10T16:24:56.184Z CREATED approval process "QA SS 2417 Levels" e688da64-1d1c-4c40-904a-164e0ebc04d4 on Leads (active, criteria first_name contains "QA SS 2417 AP", level approver Levels depth 2, process admin QA SS A)
+- 2026-11-10T16:24:56.687Z SET reporting manager of QA SS C → QA SS B (throwaway users; original none)
+- 2026-11-10T16:25:23.703Z SETTING reporting manager of Mahmoud Samy → QA SS C (ORIGINAL: none) — restore to none
+- 2026-11-10T16:25:56Z sign-in index 9 (Mahmoud Samy, CRM profile User, OU Sales) once → scratchpad laneM-samy.json
+- 2026-11-10T16:26:33.956Z CREATED (as Mahmoud Samy) lead "QA SS 2417 AP1" 17d3d9e0-c275-48cb-95e6-015583c2a136 — triggers approval process (submitter manager chain Samy→QA SS C→QA SS B)
+- 2026-11-10T16:27:12.054Z RESTORED reporting manager of Mahmoud Samy → none (204)
+- 2026-11-10T16:27:14.021Z CREATED (as owner, no manager) lead "QA SS 2417 AP2" dcf5ca90-a76a-401a-9de0-6fe28e89c426 — approval fallback check
+- 2026-11-10T16:27:47.770Z TRY Leads recordVisibility → public_read_only: PUT 200, value stays "hierarchy" (no change)
+- 2026-11-10T16:28:46.980Z TRY Leads record visibility → public_read_only: 400 {"success":false,"data":null,"error":{"code":"INVALID_RECORD_VISIBILITY","message":"Unknown record visibility mode 'publ; stays hierarchy
+- 2026-11-10T16:29:02Z TRY Leads record visibility → public_read_only via PUT /modules/{id}/record-visibility: 400 INVALID_RECORD_VISIBILITY (CRM allows only public, hierarchy). Nothing changed (stays hierarchy).
+- 2026-11-10T16:30:03.170Z DELETED lead LA 62006527-c26c-497e-abf8-dcc3fd38c4c0 (204)
+- 2026-11-10T16:30:03.451Z DELETED lead LB d3105e4d-9428-47c4-845c-cfe75ee3f74f (204)
+- 2026-11-10T16:30:03.797Z DELETED lead LC 2f6d9dcb-b9d7-480e-8429-c2d76a07b8e5 (204)
+- 2026-11-10T16:30:04.185Z DELETED lead LO b5ab256c-365f-4e8a-b9cb-b8ac16d36694 (204)
+- 2026-11-10T16:30:04.580Z DELETED lead LD 946f7458-b82a-44ce-a731-55ee15af2605 (204)
+- 2026-11-10T16:30:04.994Z DELETED lead LE c4dde429-125b-4d92-89df-d7b33a4e639a (204)
+- 2026-11-10T16:30:05.305Z DELETED lead LF 5d69d595-4063-42f6-993a-b9550aecba71 (204)
+- 2026-11-10T16:30:10.714Z PURGED 7 recycle-bin items by id (d9013c08,eec2cdc2,d186d47c,43fff43a,ca52be80,e139fb63,b47a3dc3)
+- 2026-11-10T16:30:11.236Z RESET reporting manager of QA SS C → none (204)
+- 2026-11-10T16:30:12.374Z CANCELLED invitation QA SS A db033ee5-07ad-4f24-bfaf-0ad74aef981e (204)
+- 2026-11-10T16:30:13.194Z CANCELLED invitation QA SS B ec0d4d8a-a3b4-4bc5-bed5-5584eacd8bb6 (204)
+- 2026-11-10T16:30:13.695Z CANCELLED invitation QA SS C ec53f5db-c006-4866-aec4-a948bcf0c3c1 (204)
+- 2026-11-10T16:30:14.011Z CANCELLED invitation QA SS D ac8a4878-c2da-473f-b163-54cbeb8f604d (204)
+- 2026-11-10T16:30:14.413Z CANCELLED invitation QA SS E 42685af6-c129-49ec-8488-56f30891a11c (204)
+- 2026-11-10T16:30:14.729Z CANCELLED invitation QA SS F 952e9415-f990-4ca6-b33e-4eae19029ec9 (204)
+- 2026-11-10T16:30:47.371Z REJECTED (admin takeover) approval 35750667-e26f-478c-9bae-8d9fbe092708 on AP1 for cleanup
+- 2026-11-10T16:30:49.532Z DELETED lead AP1 17d3d9e0-c275-48cb-95e6-015583c2a136 (204)
+- 2026-11-10T16:30:51.879Z REJECTED (admin takeover) approval 9602c534-5593-4830-b04b-c3e2453c86b6 on AP2 for cleanup
+- 2026-11-10T16:30:52.621Z DELETED lead AP2 dcf5ca90-a76a-401a-9de0-6fe28e89c426 (204)
+- 2026-11-10T16:30:52.934Z DELETED approval process e688da64-1d1c-4c40-904a-164e0ebc04d4 (204)
+- 2026-11-10T16:30:56.594Z PURGED 3 recycle-bin items by id
+- 2026-11-10T16:31:29.763Z VERIFY: leads {"LA":404,"LB":404,"LC":404,"LO":404,"LD":404,"LE":404,"LF":404,"AP1":404,"AP2":404}; process 404; bin items left 0; users total 201; QA SS left 0; Samy profiles "User, Desk Administrator" manager null; Leads visibility hierarchy

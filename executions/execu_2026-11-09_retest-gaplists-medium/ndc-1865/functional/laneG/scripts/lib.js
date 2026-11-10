@@ -1,0 +1,16 @@
+var fs=require('fs');const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-gaplists-medium/ndc-1865/functional/laneG';
+var T='88e8ea44-1658-4df3-9930-d0902b91073d';
+var IDS=fs.existsSync(RUN+'/ids.json')?JSON.parse(fs.readFileSync(RUN+'/ids.json','utf8')):{};
+var saveIds=()=>fs.writeFileSync(RUN+'/ids.json',JSON.stringify(IDS,null,1));
+var LED=(msg)=>fs.appendFileSync(RUN+'/ledger.md','- '+new Date().toISOString().slice(0,19)+'Z '+msg+'\n');
+var enc=v=>v===null?{kind:'null'}:typeof v==='number'?{kind:'number',value:v}:typeof v==='boolean'?{kind:'boolean',value:v}:Array.isArray(v)?{kind:'array',items:v.map(enc)}:(v&&typeof v==='object'&&v.kind)?v:{kind:'string',value:String(v)};
+var body=vals=>({data:Object.entries(vals).map(([f,v])=>({field:f,value:enc(v)}))});
+var fl=r=>{const o={id:r.id};for(const x of (r.data||[])){const v=x.value||{};o[x.field]=v.kind==='array'?(v.items||[]).map(i=>i.value!==undefined?i.value:i):v.value!==undefined?v.value:(v.kind==='null'?null:v);}return o;};
+var E=r=>r.j&&r.j.error?(r.j.error.code+': '+r.j.error.message+' '+JSON.stringify(r.j.error.details||'')).slice(0,400):undefined;
+var sh=r=>({s:r.s,e:E(r),d:r.j&&r.j.data?JSON.stringify(r.j.data).slice(0,400):r.t.slice(0,200)});
+var mkTicket=async(subject,extra={},tag='')=>{const r=await api('POST','/modules/'+T+'/records',body({subject,department:IDS.D,status:'Open',priority:'Medium',...extra}));const d=r.j&&r.j.data;const id=d&&(d.id||(d.record&&d.record.id));if(id){LED('CREATED ticket "'+subject+'" '+id+(tag?' '+tag:''));(IDS.tickets=IDS.tickets||[]).push(id);saveIds();}return{s:r.s,id,e:E(r)};};
+var getT=async id=>{const r=await api('GET','/modules/'+T+'/records/'+id);return r.j&&r.j.data?fl(r.j.data):{err:r.s,t:r.t.slice(0,200)};};
+var oid=o=>o&&typeof o==='object'?(o.id||o.value||o.user_id||JSON.stringify(o).slice(0,80)):o;
+var mkRule=async(b)=>{const r=await api('POST','/desk/assignment-rules',b);const id=r.j&&r.j.data&&(r.j.data.id||(r.j.data.rule&&r.j.data.rule.id));if(id){LED('CREATED assignment rule '+b.type+' "'+b.name+'" '+id);(IDS.rules=IDS.rules||[]).push(id);saveIds();}return{s:r.s,id,e:E(r)};};
+var C=(v)=>({conditions:[{field_key:'subject',operator:'contains',value:v}],pattern:null});
+var RES={}; var cs=async(id,fn)=>{try{RES[id]=await fn();}catch(e){RES[id]={ERR:String(e.message).slice(0,300)};}};

@@ -1,0 +1,69 @@
+# Lane N ledger (CRM-Desk delete Preferences, 10 Nov 2026, NDC-Staging, mahmoud.mahamed1515)
+- 2026-11-10T16:00:04Z sign-in index 8 once → scratchpad laneN-m.json
+- 2026-11-10T16:01:15Z ORIGINAL prefs (GET /desk/integrations/crm/config): on_crm_delete=keep, on_crm_account_delete=keep, on_desk_contact_delete=keep, on_desk_account_delete=keep (row_version 86214973). Overview now: Parked 168, Queued 2.
+- 2026-11-10T16:05:38.231Z CHANGED pref "On deleting a Desk contact": "Never delete the corresponding CRM contact" (on_desk_contact_delete=keep) → "Delete the corresponding CRM contact" (autosave?; now {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"})
+- 2026-11-10T16:05:38.749Z CREATED Desk contact 9f84ca2d-3086-417f-9c65-3aeb473daa73 (QA PREF D1) → 201
+- 2026-11-10T16:05:42.949Z SYNCED to CRM contact 320cbf4d-5da2-40c9-8cd7-2f221aa815db (link a8d95c93-e25e-4b30-a673-cf8745102247)
+- 2026-11-10T16:05:43.332Z DELETE Desk contact 9f84ca2d-3086-417f-9c65-3aeb473daa73 → 204
+- 2026-11-10T16:07:32.901Z RESTORED pref "On deleting a Desk contact" → "Never delete the corresponding CRM contact" ({"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"})
+- 2026-11-10T16:07:53Z NOTE first pref change attempt did NOT save (UI selector missed; config stayed keep). D1 test therefore ran under 'Never delete': Desk delete 204, CRM copy 320cbf4d stayed (as configured). Cleanup owed: CRM contact 320cbf4d-5da2-40c9-8cd7-2f221aa815db + Desk bin item for 9f84ca2d-3086-417f-9c65-3aeb473daa73.
+- 2026-11-10T16:10:13.568Z CHANGE ATTEMPT pref "On deleting a Desk contact": "Never delete…" (keep) → "Delete the corresponding CRM contact": no request; now {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"}; calls []
+- 2026-11-10T16:10:25.248Z RESTORED pref "On deleting a Desk contact" → Never delete: no request; now {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"}
+- 2026-11-10T16:12:40.612Z CHANGE ATTEMPT pref "On deleting a Desk contact": "Never delete…" (keep) → "Delete the corresponding CRM contact": clicked Save; now {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"delete","on_desk_account_delete":"keep"}; calls ["200 PUT /desk/integrations/crm/config"]
+- 2026-11-10T16:12:41.226Z CREATED Desk contact 705d3699-8056-42a7-9098-92adf1aba932 (QA PREF D2) → 201
+- 2026-11-10T16:12:45.736Z SYNCED to CRM contact 30f3c97d-3fbd-4365-8730-649ec711ee84
+- 2026-11-10T16:12:46.149Z DELETE Desk contact 705d3699-8056-42a7-9098-92adf1aba932 → 204
+- 2026-11-10T16:12:50.855Z CRM copy 30f3c97d-3fbd-4365-8730-649ec711ee84 after Desk delete: GET 404; in CRM bin: a64a65bc-3756-4a47-a5e8-a195885dc571
+- 2026-11-10T16:13:04.472Z RESTORED pref "On deleting a Desk contact" → Never delete: clicked Save; now {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"}
+- 2026-11-10T16:14:07.370Z CHANGED pref "On deleting a CRM contact": "Keep the Desk contact and flag its link for review" → "Delete the corresponding Desk contact": clicked Save; now on_crm_delete=delete
+- 2026-11-10T16:14:08.289Z CREATED CRM contact 640f903a-76b1-4eb0-89a7-cff626bf5012 (QA PREF C1) → 201
+- 2026-11-10T16:14:13.289Z SYNCED to Desk contact 0b017f5c-a76c-4855-836b-a1cd95b8a27a (link 43693e7c-b180-4559-9a12-5a665b20b6fe)
+- 2026-11-10T16:14:13.702Z DELETE CRM contact 640f903a-76b1-4eb0-89a7-cff626bf5012 → 204
+- 2026-11-10T16:14:20.662Z RESULT C1: Desk contact GET 404; link {"status":"unlinked","needs_attention":false,"crm":"640f903a-76b1-4eb0-89a7-cff626bf5012"}
+- 2026-11-10T16:14:34.796Z CHANGED pref "On deleting a CRM contact": "Delete the corresponding Desk contact" → "Delete the Desk contact only if nothing is linked to it": clicked Save; now on_crm_delete=delete_if_no_associates
+- 2026-11-10T16:14:35.306Z CREATED CRM contact dcf942b1-72a8-4ac9-95f3-a2de2f665fde (QA PREF C2) → 201
+- 2026-11-10T16:14:39.941Z SYNCED to Desk contact ce2ee902-0ba9-41d4-9a2c-1334025171e4 (link 5f10ee7e-d147-46b9-8e44-013cedf52bc2)
+- 2026-11-10T16:14:40.225Z CREATED ticket null (QA PREF C2 linked ticket, HR, contact ce2ee902-0ba9-41d4-9a2c-1334025171e4) → 422
+- 2026-11-10T16:14:40.533Z DELETE CRM contact dcf942b1-72a8-4ac9-95f3-a2de2f665fde → 204
+- 2026-11-10T16:14:45.552Z RESULT C2: Desk contact GET 404; link {"status":"unlinked","needs_attention":false,"crm":"dcf942b1-72a8-4ac9-95f3-a2de2f665fde"}
+- 2026-11-10T16:14:45.881Z CREATED CRM contact 9d28ab44-eac3-46f3-9126-33df1b704e66 (QA PREF C3) → 201
+- 2026-11-10T16:14:50.664Z SYNCED to Desk contact a9bfaf0e-3c85-45e4-872e-bf0bfd5c6197 (link 3c12879a-da73-48a7-b9e3-e5c6181c900f)
+- 2026-11-10T16:14:51.066Z DELETE CRM contact 9d28ab44-eac3-46f3-9126-33df1b704e66 → 204
+- 2026-11-10T16:14:55.784Z RESULT C3: Desk contact GET 404; link {"status":"unlinked","needs_attention":false,"crm":"9d28ab44-eac3-46f3-9126-33df1b704e66"}
+- 2026-11-10T16:15:07.875Z CHANGED pref "On deleting a CRM contact": "Delete the Desk contact only if nothing is linked to it" → "Keep the Desk contact but unlink it from the CRM": clicked Save; now on_crm_delete=unlink
+- 2026-11-10T16:15:08.419Z CREATED CRM contact 5f20fd89-30b3-4164-a1c2-330ce1c7d181 (QA PREF C4) → 201
+- 2026-11-10T16:15:13.089Z SYNCED to Desk contact aa5e7a60-6bdc-4b1d-97d9-a77b3361d2ae (link 0db992a5-b381-444d-ae7a-f457bc02a14b)
+- 2026-11-10T16:15:13.507Z DELETE CRM contact 5f20fd89-30b3-4164-a1c2-330ce1c7d181 → 204
+- 2026-11-10T16:16:49.953Z RESULT C4: Desk contact GET 200; link {"status":"unlinked","needs_attention":false,"crm":"5f20fd89-30b3-4164-a1c2-330ce1c7d181"}
+- 2026-11-10T16:17:05.218Z CHANGED pref "On deleting a CRM contact": "Keep the Desk contact but unlink it from the CRM" → "Keep the Desk contact and flag its link for review": clicked Save; now on_crm_delete=keep
+- 2026-11-10T16:17:06.131Z CREATED CRM contact 2743418f-373d-4ffd-8ff9-64a5f2425c52 (QA PREF C5) → 201
+- 2026-11-10T16:17:12.083Z SYNCED to Desk contact 8e73939d-ae72-4d9b-97d7-eca6c4047a80 (link 79e1bd82-026c-4e99-82e9-7b31101af0c4)
+- 2026-11-10T16:17:13.209Z DELETE CRM contact 2743418f-373d-4ffd-8ff9-64a5f2425c52 → 204
+- 2026-11-10T16:18:58.059Z RESULT C5: Desk contact GET 200; link {"status":"needs_attention","needs_attention":true,"crm":"2743418f-373d-4ffd-8ff9-64a5f2425c52"}
+- 2026-11-10T16:21:05.031Z CHANGED pref "On deleting a CRM contact" → "Delete the Desk contact only if nothing is linked to it": clicked Save; on_crm_delete=delete_if_no_associates
+- 2026-11-10T16:21:05.540Z CREATED CRM contact 60874f09-20d4-41be-89a4-1c4eb7769cf9 (QA PREF C6) → 201
+- 2026-11-10T16:21:10.901Z SYNCED to Desk contact 8621d252-cef7-44c7-ad8c-a9a3a4e3a2af
+- 2026-11-10T16:21:14.472Z CREATED ticket 12c99d24-907a-418f-a498-6977a8768ad3 (QA PREF C6 linked ticket, Tech, contact 8621d252-cef7-44c7-ad8c-a9a3a4e3a2af) → 201 
+- 2026-11-10T16:21:14.756Z DELETE CRM contact 60874f09-20d4-41be-89a4-1c4eb7769cf9 → 204
+- 2026-11-10T16:22:10.868Z RESULT C6 (with ticket): Desk contact GET 200; link {"status":"unlinked","na":false}
+- 2026-11-10T16:22:23.783Z RESTORED pref "On deleting a CRM contact" → keep+flag: clicked Save; {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"}
+- 2026-11-10T16:22:38.933Z CHANGED pref "On deleting a Desk account" → delete CRM account: clicked Save; on_desk_account_delete=delete
+- 2026-11-10T16:22:41.181Z CREATED Desk account 30bdf867-41d4-4d86-a901-9b7dd1cbc837 (QA PREF DA1) → 201 
+- 2026-11-10T16:22:45.593Z SYNCED to CRM account 93333eb7-e918-4332-bb83-4fed0bafdf37
+- 2026-11-10T16:22:45.798Z DELETE Desk account 30bdf867-41d4-4d86-a901-9b7dd1cbc837 → 204
+- 2026-11-10T16:22:50.602Z RESULT DA1: CRM account GET 404
+- 2026-11-10T16:23:16.715Z RESTORED pref "On deleting a Desk account" → Never delete: clicked Save; {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"}
+- 2026-11-10T16:23:31.062Z CHANGED pref "On deleting a CRM account" → delete Desk account: clicked Save; on_crm_account_delete=delete
+- 2026-11-10T16:23:31.892Z CREATED CRM account 1478261b-213f-4839-930b-fd2f47b02080 (QA PREF CA1) → 201 
+- 2026-11-10T16:23:36.595Z SYNCED to Desk account 73365e7d-6d54-4563-bab4-d654dcb095da
+- 2026-11-10T16:23:36.909Z DELETE CRM account 1478261b-213f-4839-930b-fd2f47b02080 → 204
+- 2026-11-10T16:23:41.183Z RESULT CA1: Desk account GET 404
+- 2026-11-10T16:23:57.987Z RESTORED pref "On deleting a CRM account" → keep+flag: clicked Save; {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"}
+- 2026-11-10T16:24:03.879Z RESTORED (all 4 verified): {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"}
+- 2026-11-10T16:25:12.225Z CLEANUP DELETE Desk contacts aa5e7a60-6bdc-4b1d-97d9-a77b3361d2ae → 204
+- 2026-11-10T16:25:12.732Z CLEANUP DELETE Desk contacts 8e73939d-ae72-4d9b-97d7-eca6c4047a80 → 204
+- 2026-11-10T16:25:13.169Z CLEANUP DELETE Desk contacts 8621d252-cef7-44c7-ad8c-a9a3a4e3a2af → 204
+- 2026-11-10T16:25:14.375Z CLEANUP DELETE CRM contacts 320cbf4d-5da2-40c9-8cd7-2f221aa815db → 204
+- 2026-11-10T16:25:25.429Z PURGE Desk bin 77f91723-276f-45f0-8866-b38032ffc82a,695849d3-9f41-41bd-bae0-9a190bb5fc99,420b4d2e-b217-4ddc-baff-00b87430108f,751aa590-92bc-4e2c-b8e8-184d58f82915,ebd4c313-61bb-4b2c-86c4-62d4b4b7e549,0e8891b0-f210-451f-a342-b865b1bb4adb,086dce8d-824e-458f-a72f-ad8780664aa4,fbfa1cca-77be-43f1-b69c-c6294e4ea3d1,2667a2f7-6871-4588-8114-f7158c70f8b2,4ccf136d-6294-48b1-912c-826203ac16f8,793a8ee7-f195-427d-b675-42f8dcc34e19 → 200
+- 2026-11-10T16:25:26.146Z PURGE CRM bin af6f1936-80ef-48dc-95c5-53abd561d79e,166a4e08-9edd-4927-b96f-159b8f38912b,4f8196f4-044c-43fe-9261-3c1fb26da4c7,bcd1d295-3839-49c2-b19e-3bc7a5bbcfdc,a7eff70a-3346-40db-8e45-a7d1a1085dc2,7ca8c2fb-c189-462c-a418-c8f797a12ebb,1befb01c-69af-4db5-b51a-e858e53c2965,314b500f-a66e-4f62-9345-4b922488df02,117022d7-618c-42e2-9f60-ab48f1001b3c,a64a65bc-3756-4a47-a5e8-a195885dc571 → 200
+- 2026-11-10T16:25:37.102Z VERIFY cleanup: desk {"9f84ca2d":404,"705d3699":404,"0b017f5c":404,"ce2ee902":404,"a9bfaf0e":404,"aa5e7a60":404,"8e73939d":404,"8621d252":404,"30bdf867":404,"73365e7d":404,"12c99d24":404} crm {"320cbf4d":404,"30f3c97d":404,"640f903a":404,"dcf942b1":404,"9d28ab44":404,"5f20fd89":404,"2743418f":404,"60874f09":404,"93333eb7":404,"1478261b":404}; desk bin left 0; crm bin left 0; prefs {"on_crm_delete":"keep","on_crm_account_delete":"keep","on_desk_contact_delete":"keep","on_desk_account_delete":"keep"}

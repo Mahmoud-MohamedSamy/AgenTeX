@@ -1,0 +1,18 @@
+# Lane K ledger (NDC-1865 Data Administration, 10 Nov 2026, NDC-Staging, mahmoud.mahamed1515)
+- 2026-11-10T13:12:30Z sign-in attempt 1 failed before submitting (login page never showed the password field; staging slow ~21 s) — no session created
+- 2026-11-10T13:17:10Z sign-in attempt 2 also timed out before the form showed (no session). Login page took ~90 s to render; wait raised to 300 s
+- 2026-11-10T13:20:10Z sign-in index 8 OK (one session) → scratchpad laneK-m.json
+- 2026-11-10T13:25:33Z CREATED import session 73c20717-3b98-42a0-b449-558d9f7bbe39 (Contacts, qa-ft-1865-k-contacts.csv, 2 rows) → 201; wizard left at Assign (browser closed)
+- 2026-11-10T13:31:22.151Z CREATED contact c12bc93e-3c1d-4e66-beb0-0a6aad058080 via import 73c20717
+- 2026-11-10T13:31:22.172Z CREATED contact 066f2af9-0ad0-4332-918f-f6d01d000091 via import 73c20717
+- 2026-11-10T13:39:35Z NOTE import created 2 Desk contacts that synced to CRM: Import 2 c12bc93e → CRM contact 50e614c4-bf2d-4013-86ce-cc50c6901eeb (link 4bca4b46); Import 1 CRM copy to be found — CRM side must be removed too
+- 2026-11-10T13:44:57Z NOTE Import 1 066f2af9 → CRM contact cda72981-b2a9-4003-9616-4dc10775dd1b (link 24205532) — remove too
+- 2026-11-10T13:46:14.412Z UPDATED (mass update) title="QA FT 1865 K bulk" on contacts c12bc93e, 066f2af9
+- 2026-11-10T13:55:14.120Z CREATED export job 01a1c5bd-8064-78e2-a238-e712b194e11d (Contacts CSV, all records)
+- 2026-11-10T14:00:40.533Z UNDO import 73c20717 via Import history → Manage → Undo: records c12bc93e 404, 066f2af9 404; bin items b149f77f-a05d-42a0-a050-779de94d8e73 c12bc93e, 840fc1b9-f626-45bf-9b2c-51f4bfca46c0 066f2af9
+- 2026-11-10T14:02:21.799Z PURGE Desk bin b149f77f-a05d-42a0-a050-779de94d8e73,840fc1b9-f626-45bf-9b2c-51f4bfca46c0 → 200
+- 2026-11-10T14:02:25.080Z DELETE CRM contact 50e614c4-bf2d-4013-86ce-cc50c6901eeb (created by sync from import) → 204
+- 2026-11-10T14:02:30.394Z DELETE CRM contact cda72981-b2a9-4003-9616-4dc10775dd1b (created by sync from import) → 204
+- 2026-11-10T14:02:35.746Z PURGE CRM bin 049382e8-cfd2-4cec-a830-04f220923bfb,d1814868-6731-42c9-989d-c8f1f101c5b3 → 200
+- 2026-11-10T14:02:45.580Z VERIFY desk c12bc93e 404, desk 066f2af9 404, crm 50e614c4 404, crm cda72981 404; desk bin left 0; crm bin left 0; search hits 0
+- 2026-11-10T14:03:05Z scratchpad state laneK-m.json deleted. Export job 01a1c5bd (history row) left: no delete in UI; file kept locally in evidence/

@@ -1,0 +1,11 @@
+page.on('request',r=>{if(/\/comments$/.test(r.url())&&r.method()==='POST')out.commentBody=(r.postData()||'').slice(0,600);});
+out.loaded=await openTicket();await wt(/QA FT 1865 H reply 1/);await page.waitForTimeout(2000);
+await page.mouse.click(1372,103);await wt(/Write a note only agents/);
+const ed=page.locator('[contenteditable=true]').first();await ed.click();await page.keyboard.type('QA FT 1865 H comment 2 mention ');await page.keyboard.type('@mahmoud.ma');await page.waitForTimeout(3000);
+await shot('c5-mention-suggest2');
+await page.keyboard.press('Enter');await page.waitForTimeout(1500);await page.keyboard.type(' please ignore.');await page.waitForTimeout(500);await shot('c6-mention-selected');
+out.editorText=await ed.innerText();out.editorHtml=(await ed.innerHTML()).slice(0,500);
+await page.locator('button:has-text("Comment")').filter({hasText:'Private'}).first().click();await page.waitForTimeout(8000);
+log('CREATED private comment 2 with @mention (Enter key) of mahmoud.mahamed1515 (self) on ticket #2484');
+out.after=await lines(/QA FT 1865 H comment|@mahmoud/i,10);await shot('c7-comment2-posted');
+return Object.assign(out,{calls:[...new Set(calls)]});

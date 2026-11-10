@@ -1,0 +1,39 @@
+# Lane H ledger (NDC-1865 functional, 10 Nov 2026, NDC-Staging, mahmoud.mahamed1515)
+- 2026-11-10T10:07:24Z sign-in index 8 once → scratchpad laneH-m.json
+- 2026-11-10T10:23:23Z session was signed out (SIGNED_OUT before any write); re-sign-in index 8 once
+- 2026-11-10T10:23:39.628Z CREATED ticket 5254adb3-80f2-4c12-9c6e-e7e7a1c7150a (QA FT 1865 H reply check, dept Tech, contact de7195a2 mmohamed@anyware.software — existing contact, not ours) → 201
+- 2026-11-10T10:23:41.145Z CREATED task 615ea9fb-e84b-4a10-8890-5c0d82c3de60 (ticket 5254adb3-80f2-4c12-9c6e-e7e7a1c7150a) → 201
+- 2026-11-10T10:23:42.675Z CREATED call c1c8cb5d-d469-4769-8930-9a623cba4072 (ticket 5254adb3-80f2-4c12-9c6e-e7e7a1c7150a) → 201
+- 2026-11-10T10:23:43.927Z CREATED event 6b4edebe-109d-4c22-a2af-51be30b6403b (ticket 5254adb3-80f2-4c12-9c6e-e7e7a1c7150a) → 201
+- 2026-11-10T10:23:54.872Z DELETE event 6b4edebe-109d-4c22-a2af-51be30b6403b (feature test: delete one activity) → 204
+- 2026-11-10T10:34:38.408Z SENT reply 1 on ticket #2484 (5254adb3) To mmohamed@anyware.software From Tech <tech@help-staging.anyware.software>, subject "Re: QA FT 1865 H reply check"
+- 2026-11-10T10:38:48.373Z CREATED private comment with @mention of mahmoud.mahamed1515 (self) on ticket #2484
+- 2026-11-10T10:41:50.102Z CREATED private comment 2 with @mention (Enter key) of mahmoud.mahamed1515 (self) on ticket #2484
+- 2026-11-10T11:03:16.816Z CREATED scheduled reply 01a1c520-468a-7955-995f-18845cfc08b6 on ticket #2484 To mmohamed@anyware.software, In 12 hours (to be cancelled)
+- 2026-11-10T11:09:27.260Z CANCEL scheduled reply 01a1c520-468a-7955-995f-18845cfc08b6 via UI (Discard)
+- 2026-11-10T11:10:46.016Z CREATED email template folder 58e55582-0908-4edf-b1b9-e09a56ee2149 (QA FT 1865 H folder, Tech) → 201
+- 2026-11-10T11:10:46.618Z CREATED email template 13f963bc-3bc1-4487-9634-bb338e04d383 (QA FT 1865 H template, folder 58e55582-0908-4edf-b1b9-e09a56ee2149) → 201
+- 2026-11-10T11:14:40.004Z SENT template reply on ticket #2484 To mmohamed@anyware.software From Tech <tech@help-staging.anyware.software> (template QA FT 1865 H template)
+- 2026-11-10T11:28:51.703Z CREATED public comment on ticket #2484 (Tech) — rule contact.comment_added is on, so a notification email may go to the contact mmohamed@anyware.software
+- 2026-11-10T11:30:18Z NOTE: history shows 'Reply queued' + 'Reply sent' at 13:28 right after the public comment = contact notification mail (contact.comment_added) To mmohamed@anyware.software From Tech. Emails so far: 3 (reply 1, template reply, public-comment notification)
+- 2026-11-10T11:39:03.767Z CREATED Team Feeds post in HR feed (QA FT 1865 H feed post, no mention)
+- 2026-11-10T11:40:26.295Z DELETE Team Feeds post (QA FT 1865 H feed post) via UI; still visible=false
+- 2026-11-10T12:14:29Z import wizard started twice (POST /modules/contacts/import 201 x2, session ids not returned to the script); 2nd run stuck on 'You have an import in progress' banner; no records imported
+- 2026-11-10T12:14:40.622Z RESTORE event 6b4edebe from bin (/audit/recycle-bin/restore) → 200
+- 2026-11-10T12:14:44.603Z CREATED contact f925d891-f557-409c-be3f-1043738b6dd8 (QA FT 1865 H Sync, no email) for CRM sync check → 201
+- 2026-11-10T12:17:56Z CRM sync: Desk contact f925d891 → CRM contact 8f791451-29bf-486a-b2a6-9cbd8b0e4967 created by sync (link e80b515a, status synced) — CRM side must be removed too
+- 2026-11-10T12:18:08.118Z UPDATE ticket #2484 status Closed (close-ticket check; rule contact.ticket_closed is on → closed mail may go to mmohamed@anyware.software) → 200
+- 2026-11-10T12:19:39.857Z IMPORT session cleanup via UI Start over: banner before=true after=false
+- 2026-11-10T12:19:40.916Z DELETE task 615ea9fb-e84b-4a10-8890-5c0d82c3de60 → 204
+- 2026-11-10T12:19:41.642Z DELETE call c1c8cb5d-d469-4769-8930-9a623cba4072 → 204
+- 2026-11-10T12:19:42.271Z DELETE event 6b4edebe-109d-4c22-a2af-51be30b6403b → 204
+- 2026-11-10T12:19:42.858Z DELETE ticket 5254adb3-80f2-4c12-9c6e-e7e7a1c7150a → 204
+- 2026-11-10T12:19:43.382Z DELETE contact f925d891-f557-409c-be3f-1043738b6dd8 → 204
+- 2026-11-10T12:19:44.568Z DELETE email template 13f963bc → 204
+- 2026-11-10T12:19:44.848Z DELETE template folder 58e55582 → 204
+- 2026-11-10T12:19:50.701Z PURGE bin ids fe210965-0d46-4024-8a6d-6194a74b736b,934bacce-3a77-4eef-afbe-d53075fac8dc,cf1c4baf-6903-4983-bc64-ead84ede5a81,cb4289cf-d40b-4996-bfc3-cabf819d2dab,6b63c6cd-3bcd-4976-a272-2afc3806533c → 200
+- 2026-11-10T12:19:57.092Z VERIFY task 404, call 404, event 404, ticket 404, contact 404, template 404; folderGone=true; bin left=0
+- 2026-11-10T12:20:40.893Z DELETE CRM contact 8f791451-29bf-486a-b2a6-9cbd8b0e4967 (created by sync) → 204
+- 2026-11-10T12:20:44.897Z PURGE CRM bin 2dfe6b7f-2a3e-4aeb-a898-10cd447931dc → 200
+- 2026-11-10T12:20:45.075Z VERIFY CRM contact 8f791451-29bf-486a-b2a6-9cbd8b0e4967 → 404
+- 2026-11-10T12:20:55Z scratchpad state laneH-m.json + bundle copy deleted

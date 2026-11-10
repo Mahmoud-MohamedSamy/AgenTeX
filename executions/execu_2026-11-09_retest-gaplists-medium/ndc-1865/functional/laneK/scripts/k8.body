@@ -1,0 +1,10 @@
+const IDS=['c12bc93e-3c1d-4e66-beb0-0a6aad058080','066f2af9-0ad0-4332-918f-f6d01d000091'];
+for(const q of ['desk_record_id=066f2af9-0ad0-4332-918f-f6d01d000091','recordId=066f2af9-0ad0-4332-918f-f6d01d000091','page_size=100']){const l=await api('GET','/desk/integrations/crm/links?'+q);const m=arr(l.j).filter(x=>IDS.includes(x.desk_record_id)).map(x=>x.desk_record_id+'→'+x.crm_record_id+' link '+x.id+' '+x.status);out['links '+q]=l.s+' n='+arr(l.j).length+' '+JSON.stringify(m);}
+let step='list';try{
+await page.goto(H+'/modules/43004ce2-577f-4eda-b00a-0750fe40c3d4',{waitUntil:'load',timeout:180000});await wt(/QA QA FT 1865 K Import 2/,120000);await page.waitForTimeout(3000);
+for(const n of ['QA QA FT 1865 K Import 1','QA QA FT 1865 K Import 2']){const row=page.locator('tr,[role=row],li,div').filter({hasText:n}).filter({has:page.locator('input[type=checkbox]')}).last();await row.locator('input[type=checkbox]').first().check({force:true});}
+await page.waitForTimeout(1500);out.sel=(await body()).split('\n').filter(l=>/selected/i.test(l)).slice(0,3);
+step='update';await page.getByRole('button',{name:/^Update$/}).first().click();await page.waitForTimeout(3000);
+const dlg=page.locator('[role=dialog]').last();out.dlg=(await dlg.innerText().catch(()=>'')).split('\n').filter(l=>l.trim()).slice(0,25);await shot('k8-update-dialog');
+}catch(e){out.err=step+': '+String(e).slice(0,200);await shot('k8-err-'+step);}
+return Object.assign(out,{calls:[...new Set(calls)]});

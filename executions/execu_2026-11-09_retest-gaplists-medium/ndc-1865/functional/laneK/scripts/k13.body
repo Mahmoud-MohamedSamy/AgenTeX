@@ -1,0 +1,6 @@
+const r=await api('GET','/audit/events?limit=50');out.s=r.s;const ev=arr(r.j);out.n=ev.length;out.sampleKeys=ev[0]?Object.keys(ev[0]):[];
+const since=Date.parse('2026-11-10T13:15:00Z');
+out.mine=ev.filter(e=>Date.parse(e.created_at||e.occurred_at||e.timestamp||0)>=since).map(e=>[(e.created_at||e.occurred_at||'').slice(11,19),e.action||e.event_type||e.type,e.entity_type||e.resource_type||e.module,(e.summary||e.description||e.entity_label||'').toString().slice(0,90),e.actor_label||e.actor_name||e.user_name||''].join(' | ')).slice(0,40);
+let step='ui';try{await page.goto(H+'/settings/security/audit-log',{waitUntil:'load',timeout:180000});await wt(/Audit/,120000);await page.waitForTimeout(10000);
+const t=await body();out.ui=t.split('\n').filter(l=>/mahmoud\.mahamed1515|Import|Export|Mass|QA FT 1865 K/i.test(l)).slice(0,25);await page.screenshot({path:D+'k13-audit-log.png'});}catch(e){out.err=step+': '+String(e).slice(0,200);}
+return out;

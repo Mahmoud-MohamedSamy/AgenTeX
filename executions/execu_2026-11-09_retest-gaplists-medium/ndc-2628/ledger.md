@@ -24,3 +24,6 @@
 
 ## Posted 10 Nov 2026
 Comment 88aa05a8-07d9-42b7-a4d6-89efb4e0ea2f + 1 image (01). State unchanged (Backlog).
+
+## Narrowed 10 Nov 2026
+Title → "Daily record work: \"#tag\" search returns no results (rest of the Zoho gap list is built)". Description: new "Narrowed" section on top (open: item 8 #tag; out of scope: item 5 Campaigns/Cadences; built: 1,2,3,4,6,7,9), original list kept below. Priority/state/assignees unchanged.

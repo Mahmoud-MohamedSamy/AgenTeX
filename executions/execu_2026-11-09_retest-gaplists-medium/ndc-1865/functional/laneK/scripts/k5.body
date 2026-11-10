@@ -1,0 +1,15 @@
+const all=[];page.on('response',r=>{const u=r.url();if(/api\/v1/.test(u)&&!/iam\/auth/.test(u)&&/import/i.test(u))all.push(r.status()+' '+r.request().method()+' '+u.replace(/.*api\/v1/,'').slice(0,120));});
+const tail=async(n=25)=>(await body()).split('\n').filter(l=>l.trim()).slice(-n);
+let step='nav';try{
+await page.goto(H+'/settings/data/import',{waitUntil:'load',timeout:180000});await wt(/Choose a module/,180000);await page.waitForTimeout(3000);
+await page.getByText('Choose a module').nth(1).click();await page.waitForTimeout(1000);await page.locator('[role=option]').filter({hasText:/^Contacts$/}).first().click();await page.waitForTimeout(800);
+await page.getByRole('button',{name:'Start import'}).click();await page.waitForTimeout(8000);
+step='resume';await page.getByRole('button',{name:'Resume'}).click();await page.waitForTimeout(8000);
+if(/Assign & approve/.test(await body())&&!/Review and submit/.test(await body())){await page.getByRole('button',{name:/Save & next/}).click();await page.waitForTimeout(10000);}
+step='confirm';await wt(/Review and submit/,60000);await page.getByText(/I confirm I have permission/).click();await page.waitForTimeout(800);
+step='submit';await page.getByRole('button',{name:/^Submit$/}).click({timeout:20000});
+await wt(/imported|completed|Undo|finished|failed/i,180000);await page.waitForTimeout(10000);out.result=await tail(30);await shot('k5-result');
+}catch(e){out.err=step+': '+String(e).slice(0,200);await shot('k5-err-'+step);out.errTail=await tail(20).catch(()=>null);}
+const c=await api('GET','/modules/43004ce2-577f-4eda-b00a-0750fe40c3d4/records?pageSize=10&q=QA%20FT%201865%20K%20Import');out.imported=arr(c.j).map(x=>x.id);
+for(const id of out.imported)log('CREATED contact '+id+' via import 73c20717');
+return Object.assign(out,{calls:[...new Set(calls)],importCalls:[...new Set(all)]});

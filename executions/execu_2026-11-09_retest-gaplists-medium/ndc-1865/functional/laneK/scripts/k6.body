@@ -1,0 +1,7 @@
+const tail=async(n=25)=>(await body()).split('\n').filter(l=>l.trim()).slice(-n);
+let step='nav';try{
+await page.goto(H+'/settings/data/bulk-actions-log',{waitUntil:'load',timeout:180000});await page.waitForTimeout(15000);out.blUrl=page.url();out.bl=(await body()).split('\n').filter(l=>l.trim()).slice(-25);await shot('k6-bulk-log-before');
+step='contacts';await page.goto(H+'/customers/contacts',{waitUntil:'load',timeout:180000});await page.waitForTimeout(15000);out.cUrl=page.url();
+out.cTop=(await body()).split('\n').filter(l=>l.trim()).slice(0,40);await shot('k6-contacts');
+}catch(e){out.err=step+': '+String(e).slice(0,200);}
+return Object.assign(out,{calls:[...new Set(calls)]});

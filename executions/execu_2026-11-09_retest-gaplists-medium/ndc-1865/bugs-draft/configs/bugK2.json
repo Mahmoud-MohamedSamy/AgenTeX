@@ -1,0 +1,85 @@
+{
+ "out": "../annotated/K2-audit-export-wording-vs-zoho.png",
+ "id": "Draft K2",
+ "title": "Audit Log | Export entries say \"exported the audit log\" and \"0 Contacts\" for a 16-contact export",
+ "verdict": "Differs",
+ "date": "TAVI 10 Nov 2026 (NDC-Staging, mahmoud.mahamed1515; contacts export at 15:54) · Zoho Desk trial (read-only)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Setup → Audit Log, filtered to mahmoud.mahamed1515",
+   "img": "../raw/tavi/k2-audit-export.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 458,
+     "y": 704,
+     "w": 450,
+     "h": 44
+    },
+    {
+     "n": 1,
+     "x": 458,
+     "y": 766,
+     "w": 450,
+     "h": 30
+    },
+    {
+     "n": 2,
+     "x": 458,
+     "y": 810,
+     "w": 500,
+     "h": 44
+    },
+    {
+     "n": 3,
+     "x": 458,
+     "y": 648,
+     "w": 610,
+     "h": 44
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Setup → Privacy and Security → Audit Log: each row = Details (record name) + Entity + Action",
+   "img": "../raw/zoho/k2-audit-log.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 20,
+     "y": 244,
+     "w": 1560,
+     "h": 24
+    }
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Entry for a Contacts export (16 records, CSV)",
+   "zoho": "Structured row: record name, Entity and Action columns; no free-text sentence to get wrong",
+   "tavi": "\"exported the audit log (16 Contacts (csv))\" — shown twice; it was a contacts export, not the audit log",
+   "match": "Differs"
+  },
+  {
+   "n": "2",
+   "b": "Entry for creating the export job",
+   "zoho": "Same structured row",
+   "tavi": "\"added a Desk data export named 0 Contacts (csv)\" — count 0 instead of 16",
+   "match": "Differs"
+  },
+  {
+   "n": "3",
+   "b": "Entry when the export finished",
+   "zoho": "-",
+   "tavi": "\"updated 16 Contacts (csv)'s status from blank value to completed\" — the job name reads like a record name",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Steps: Setup → Data Administration → Export → Contacts, CSV, all records (16) → Export; then Setup → Audit Log.",
+  "Expected: one clear entry such as \"exported 16 Contacts (CSV)\" with the right count."
+ ]
+}

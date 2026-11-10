@@ -1,0 +1,10 @@
+const D='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-gaplists-medium/ndc-1865/functional/laneH/evidence/raw/';
+const T='5254adb3-80f2-4c12-9c6e-e7e7a1c7150a';const out={};
+const wt=async(re,ms=90000)=>{const t0=Date.now();while(Date.now()-t0<ms){const t=await page.locator('body').innerText().catch(()=>'');if(re.test(t))return t;await page.waitForTimeout(2000);}return null;};
+await page.setViewportSize({width:1440,height:900});
+await page.goto(H+'/views/all/tickets/'+T,{waitUntil:'load',timeout:120000});
+let t=await wt(/QA FT 1865 H reply check[\s\S]*CONVERSATION/i);out.loaded=!!t;
+await page.waitForTimeout(3000);await page.screenshot({path:D+'a1-ticket.png'});
+t=await page.locator('body').innerText();out.tabLine=t.split('\n').filter(l=>/CONVERSATION|RESOLUTION|ACTIVIT|APPROVAL|TIME ENTRY|ATTACHMENT|HISTORY/i.test(l)).slice(0,14);
+out.ticketNo=(t.match(/#\d{3,6}/)||[])[0];
+return out;

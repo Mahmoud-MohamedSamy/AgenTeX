@@ -1,0 +1,8 @@
+let step='nav';try{
+await page.goto(H+'/settings/data/import',{waitUntil:'load',timeout:180000});await wt(/Choose a module/,180000);await page.waitForTimeout(3000);
+step='history';await page.getByRole('button',{name:/Import history/}).first().click();await page.waitForTimeout(6000);
+const t=await body();out.hist=t.split('\n').filter(l=>/qa-ft-1865-k|Undo|Completed|Rolled|undo/i.test(l)).slice(0,10);await shot('k15-history');
+const row=page.locator('tr,[role=row]').filter({hasText:'qa-ft-1865-k-contacts.csv'}).first();out.rowCount=await row.count();
+out.rowBtns=await row.locator('button,a,[role=button]').allInnerTexts().catch(()=>[]);out.rowAria=await row.locator('button').evaluateAll(b=>b.map(x=>x.getAttribute('aria-label')||x.title||x.innerText)).catch(()=>[]);
+}catch(e){out.err=step+': '+String(e).slice(0,200);await shot('k15-err-'+step);}
+return Object.assign(out,{calls:[...new Set(calls)]});

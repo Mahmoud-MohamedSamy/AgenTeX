@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gap-list rechecks report</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--ink:#1d1d1f;--mute:#5d5d63;--line:#dcdcd6;--red:#b42318;--amber:#a15c07;--green:#1a7f37;--blue:#1f5fbf;--chip:#efefea}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181a;--card:#202124;--ink:#ececec;--mute:#a4a4ab;--line:#37383c;--red:#f0786d;--amber:#e3a24a;--green:#5cc27a;--blue:#7aa7f0;--chip:#2b2c30}}
+:root[data-theme="dark"]{--bg:#17181a;--card:#202124;--ink:#ececec;--mute:#a4a4ab;--line:#37383c;--red:#f0786d;--amber:#e3a24a;--green:#5cc27a;--blue:#7aa7f0;--chip:#2b2c30}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,Arial,sans-serif}
+main{max-width:1080px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:40px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}h3{font-size:17px;margin:24px 0 8px}
+.sub{color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}th{color:var(--mute);font-weight:600}
+.wrap{overflow-x:auto}
+.chip{display:inline-block;background:var(--chip);border-radius:4px;padding:1px 7px;font-size:13px;margin:1px 2px 1px 0}
+.b{color:var(--green);font-weight:600}.p{color:var(--amber);font-weight:600}.m{color:var(--red);font-weight:600}.n{color:var(--mute);font-weight:600}
+.draft{border-left:4px solid var(--blue)}
+.fields{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:14px;margin:8px 0 12px}.fields div:nth-child(odd){color:var(--mute)}
+img{max-width:100%;border:1px solid var(--line);border-radius:6px;display:block;margin:10px 0}
+.note{background:var(--chip);border-radius:8px;padding:10px 14px;font-size:14px}
+ol,ul{padding-left:22px}li{margin:3px 0}
+code{background:var(--chip);padding:0 4px;border-radius:3px;font-size:13px}
+</style></head><body><main>
+<h1>Gap-list rechecks: NDC-2636, 2635, 2805, 2628</h1>
+<div class="sub">NDC-Staging, rechecked 9 Nov 2026, posted 10 Nov 2026 · two possible bugs drafted with Zoho Desk comparison (not filed)</div>
+
+<h2>1. Posted to Plane</h2>
+<div class="card wrap"><table>
+<tr><th>Ticket</th><th>Result</th><th>Comment</th><th>Images</th><th>State</th></tr>
+<tr><td>NDC-2636 Ticket Replies</td><td><span class="b">1 built</span> · <span class="p">1 partly</span> · <span class="m">3 missing</span></td><td>e9efed2e</td><td>2</td><td>Backlog (unchanged)</td></tr>
+<tr><td>NDC-2635 Activity Life Cycle</td><td><span class="b">1 built</span> · <span class="p">2 partly</span> · <span class="m">2 missing</span></td><td>f3d94515</td><td>3</td><td>Backlog (unchanged)</td></tr>
+<tr><td>NDC-2805 Desk Skills follow-ups</td><td><span class="m">1 missing</span> · <span class="p">1 partly</span> · <span class="n">1 not reproduced · 2 not checkable</span></td><td>70832cc8</td><td>1</td><td>unchanged</td></tr>
+<tr><td>NDC-2628 CRM daily record work</td><td><span class="b">7 built</span> · <span class="p">2 partly</span></td><td>88aa05a8</td><td>1</td><td>Backlog (unchanged)</td></tr>
+</table></div>
+
+<h2>2. What the results mean</h2>
+<div class="card">
+<h3>NDC-2636 Ticket Replies: still mostly open</h3>
+<ul><li><span class="b">Done:</span> drafts are now saved on the server, so a half-written reply survives a reload (NDC-2644 closed).</li>
+<li><span class="p">Half done:</span> a failed email is marked "Not delivered", but there is no "delivered" or "read" mark per recipient.</li>
+<li><span class="m">Missing:</span> send-and-set-status (only "Send and Close"), the ticket number in the email subject, and richer editor tools (inline image, strikethrough, fonts, spell check).</li></ul>
+<h3>NDC-2635 Activity Life Cycle: about half done</h3>
+<ul><li><span class="b">Done:</span> bulk delete.</li>
+<li><span class="p">Half done:</span> delete exists on list rows but not on the task, call or event page. Department is now required on every activity, but choosing it does not narrow the owner list, and other departments' agents can see the activity (bug B below).</li>
+<li><span class="m">Missing:</span> activity count on the ticket and an activities API.</li></ul>
+<h3>NDC-2805 Desk Skills follow-ups: mostly technical clean-up</h3>
+<ul><li><span class="n">Developer to confirm:</span> old skills tables removed; upper/lower-case department ids. Neither is visible from the app.</li>
+<li><span class="n">Not reproduced:</span> a department deleted and restored today kept its skills. The ticket's case (deleted before 4 Nov) would need restoring someone else's department.</li>
+<li><span class="m">Missing:</span> the delete warning doesn't list approval processes. Desk has no approval processes yet, so this can't happen today.</li>
+<li><span class="p">Half done:</span> the note on the Skills field doesn't say the API name and the 10-skill limit are locked.</li></ul>
+<h3>NDC-2628 CRM daily record work: practically done</h3>
+<ul><li>All 9 items exist. Only "#tag" search returns nothing (plain tag search works).</li>
+<li>The Campaigns and Cadences filters are missing because CRM has neither feature.</li>
+<li>Could reasonably be narrowed to "#tag search" alone.</li></ul>
+</div>
+<div class="note"><strong>Correction to the posted NDC-2635 comment.</strong> It says ndc-staging-owner is missing from the Add Task owner list. Re-checked 10 Nov as ndc-staging-owner: the list offers all 121 users before and after choosing a department, and the department's agents are in it; it is just not narrowed. The "missing" part was seen only under mahmoud.mahamed1515. A short follow-up comment can correct this (not posted).</div>
+
+<h2>3. Two possible bugs: drafts for review</h2>
+
+<div class="card draft">
+<h3>Bug B: Desk Activities | An agent can see and open tasks and calls of departments they are not in</h3>
+<div class="fields">
+<div>Suggested</div><div>Bug · <strong>High</strong> (data leak across departments) · MahmoudMohamed, Hegazy, mfathy, eahmed · module Desk · Sprint 15 · relates to NDC-2635</div>
+<div>Found</div><div>10 Nov 2026, NDC-Staging, staging-desk.taviportal.com</div>
+<div>Account</div><div>"Customer Experience Specialists 2", Desk Agent, in Customer Support, QA NDC Manual Invoice and QA RT14 2754 Dept A (not HR)</div></div>
+<p><strong>Steps</strong></p>
+<ol><li>As an admin, create a ticket in the HR department, then add a task and a call to it (department HR).</li>
+<li>Sign in as an agent who is not a member of HR.</li>
+<li>Open Activities → All Activities and search for the task's subject.</li>
+<li>Open the task. Then open its ticket.</li></ol>
+<p><strong>Expected (as in Zoho Desk)</strong>: activities belong to their department; an agent sees only activities of departments they have access to, the same as tickets.</p>
+<p><strong>Actual</strong></p>
+<ul><li>The HR task and call are listed for the agent. All Activities shows 527 for the agent, the same as the owner (tasks 397 for both).</li>
+<li>The task opens (API 200, same for the call) with its department, owner, status, comment box, Start timer and Mark as Complete.</li>
+<li>The task's ticket card shows only "Ticket" and a "Permission denied." toast appears.</li>
+<li>Opening the ticket itself is blocked: "This ticket is not available" (403). Tickets follow department access; activities do not.</li></ul>
+<p class="sub">Only reading was tried; editing or deleting the task as the agent was not attempted. Related, lower impact: after choosing a department in Add Task, the owner list still offers all 121 users instead of that department's agents (Zoho: the task takes the department from the top bar).</p>
+<img src="bugs-draft/evidence/annotated/bugB-activity-dept-visibility-vs-zoho.png" alt="Bug B: TAVI agent sees HR activities vs Zoho department-specific activities">
+</div>
+
+<div class="card draft">
+<h3>Bug A: Desk Replies | Reply composer says a reserved-domain address is "not a valid email address", though the contact holds it</h3>
+<div class="fields">
+<div>Suggested</div><div>Bug · <strong>Low</strong> · same assignees · module Desk · Sprint 15 · relates to NDC-2636</div>
+<div>Found</div><div>10 Nov 2026, NDC-Staging, throwaway ticket #2224 (HR)</div></div>
+<p><strong>Steps</strong></p>
+<ol><li>Create a contact with email <code>qa.rt2636@example.com</code>; it saves (201).</li>
+<li>Create a ticket for that contact. Contact Info shows the address.</li>
+<li>Open Reply All and enter the same address in Recipients.</li></ol>
+<p><strong>Expected (as in Zoho Desk)</strong>: a well-formed address is accepted. Zoho flags only malformed ones such as <code>qa.rt2636@</code> ("Please enter a valid Email"). If TAVI wants to block reserved test domains, the contact form should do the same and the message should say why.</p>
+<p><strong>Actual</strong>: "qa.rt2636@example.com is not a valid email address". The composer refuses any domain ending in <code>.example</code>, <code>.test</code>, <code>.invalid</code>, <code>localhost</code>, or <code>example.com/.net/.org</code> (subdomains too). The contact form and Contacts API accept them, so a ticket's own contact can't be replied to.</p>
+<ul><li>Refused: <span class="chip">qa.rt2636@example.com</span><span class="chip">qa2636@example.com</span><span class="chip">info@example.org</span><span class="chip">user@sub.example.com</span><span class="chip">user@mail.test</span><span class="chip">user@company.example</span><span class="chip">user@localhost</span></li>
+<li>Accepted: <span class="chip">qa.rt@anyware.software</span><span class="chip">first.last+tag@gmail.com</span><span class="chip">a@b.co</span></li></ul>
+<p class="sub">This is a deliberate rule in the shared email-address input (also used by Send as email, Schedule meeting and the Blueprint designer), not a broken check. Real customer addresses are not affected. Worth filing only for the wording and the mismatch with contact validation; you may prefer to drop it.</p>
+<img src="bugs-draft/evidence/annotated/bugA-composer-email-vs-zoho.png" alt="Bug A: TAVI composer rejects example.com vs Zoho accepts it">
+</div>
+
+<h2>4. Zoho Desk comparison</h2>
+<div class="card wrap"><table>
+<tr><th>Point</th><th>Zoho Desk</th><th>TAVI Desk</th><th>How Zoho was checked</th></tr>
+<tr><td>Address <code>qa.rt2636@example.com</code></td><td>Accepted, no message</td><td>Contact accepts it; reply composer refuses it</td><td>Trial account, Add Contact form, typed and cancelled (nothing saved)</td></tr>
+<tr><td>Malformed address <code>qa.rt2636@</code></td><td>"Please enter a valid Email"</td><td>Refused</td><td>Same form</td></tr>
+<tr><td>Reserved test domains</td><td>Not blocked: Zoho's own sample contacts use <code>@noemail.invalid</code></td><td>Blocked in the composer only</td><td>Trial contacts list</td></tr>
+<tr><td>Activities and departments</td><td>"Tickets, Knowledge Base, Activities, and Products are department-specific"; agents see only departments they have access to</td><td>An agent outside HR lists and opens HR tasks and calls</td><td>Zoho help (Organization Settings FAQ, Adding and Managing Agents) + Activities department switcher</td></tr>
+<tr><td>Department on Add Task</td><td>No Department field; the task takes the department from the top bar</td><td>Required Department field; owner list not narrowed by it</td><td>Trial Add Task form (cancelled)</td></tr>
+</table>
+<p class="sub">Limits: the Zoho trial has one agent only, so agent-side activity visibility comes from Zoho's help, not a screen. The Zoho reply composer was not typed into, because Zoho auto-saves drafts. NDC's own Zoho was not used.</p></div>
+
+<h2>Cleanup and open items</h2>
+<div class="card"><ul>
+<li>Bug checks (10 Nov): contact, ticket #2224, task and call deleted and purged from the Recycle Bin; all return 404. Nothing was sent. Session files are deleted.</li>
+<li>Rechecks (9 Nov): all test data deleted and purged, except one empty CRM import session "qa-rt-2628.csv" (0 records) that staging cannot delete (405).</li>
+<li>Waiting for you: file bug B and/or bug A; post the NDC-2635 correction; narrow or close NDC-2628.</li>
+</ul></div>
+</main></body></html>

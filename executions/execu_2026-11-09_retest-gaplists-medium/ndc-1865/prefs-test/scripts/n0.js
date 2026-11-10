@@ -1,0 +1,11 @@
+const D='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-gaplists-medium/ndc-1865/prefs-test/evidence/raw/';
+const out={};const body=()=>page.locator('body').innerText().catch(()=>'');
+const wt=async(re,ms=90000)=>{const t0=Date.now();while(Date.now()-t0<ms){const t=await body();if(re.test(t))return t;await page.waitForTimeout(1500);}return null;};
+await page.setViewportSize({width:1280,height:720});
+await page.goto(H+'/settings/integrations/crm',{waitUntil:'commit',timeout:120000});
+const t=await wt(/Parked/);await page.waitForTimeout(3000);
+out.overview=(await body()).split('\n').filter(l=>/Parked|Queued|Processing|Failed|Needs attention|^\d+$/.test(l)).slice(0,16);
+await page.screenshot({path:D+'14-crm-desk-integration-now.png'});
+const st=await api('GET','/desk/integrations/crm/status');out.status=st.s+' '+st.t.slice(0,600);
+const cf=await api('GET','/desk/integrations/crm/config');out.config=cf.s+' '+cf.t.slice(0,2500);
+return out;

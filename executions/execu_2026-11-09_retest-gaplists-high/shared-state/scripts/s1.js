@@ -1,0 +1,11 @@
+const fs=require('fs');const L='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-gaplists-high/shared-state/ledger.md'; const log=s=>fs.appendFileSync(L,`- ${new Date().toISOString()} ${s}
+`); const IDS='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-09_retest-gaplists-high/shared-state/ids.json'; const ids=fs.existsSync(IDS)?JSON.parse(fs.readFileSync(IDS,'utf8')):{};const save=()=>fs.writeFileSync(IDS,JSON.stringify(ids,null,1)); const SAMY='d23fb4e0-248d-41f6-af60-d28885a7007e',LEADS='841043e1-c078-41f9-8d6e-dfd61bee45c3',SALES='60aeb9ce-e602-4e95-aaef-de3ceba25a3e',TEAM2PFX='95754ee7',HR='5533f730-cd59-4432-970b-86090192787d',STAFF='8c38561e-d7e3-4550-9c1d-a97c10471eb4',USERP='11111111-1111-1111-1111-111111111103',SUPV='11111111-1111-1111-1111-111111111104'; 
+const out={};
+const ou=arr((await api('GET','/iam/org-units')).j.data);const T2=(ou.find(o=>(o.orgUnitId||o.id).startsWith(TEAM2PFX))||{}).orgUnitId;out.T2=T2;
+const all=arr((await api('GET','/iam/users')).j.data);const samy=all.find(u=>u.userId===SAMY);out.samyBefore={prof:samy.profileNames,ou:samy.orgUnitId,mgr:samy.reportingManagerId};
+ids.samyBefore=out.samyBefore;ids.T2=T2;
+const mk=[['A','qass-a',T2],['B','qass-b',HR],['C','qass-c',SALES]];
+for(const [k,tag,o] of mk){if(ids['user'+k])continue;const r=await api('POST','/iam/users/invite',{email:`mmohamed+${tag}@anyware.software`,profile_id:STAFF,display_name:`QA SS ${k}`,org_unit_id:o});
+ out['invite'+k]=r.s+' '+r.t.slice(0,300);const d=r.j&&r.j.data;const uid=d&&(d.userId||d.user_id||d.id);const inv=d&&(d.invitationId||d.invitation_id);
+ if(r.s<300){ids['user'+k]=uid;ids['inv'+k]=inv;log(`CREATED invite QA SS ${k} mmohamed+${tag}@anyware.software profile Sales Staff ou ${o.slice(0,8)} → user ${uid} invitation ${inv} (email to approved mailbox)`);}}
+save();return out;

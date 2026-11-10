@@ -1,0 +1,113 @@
+{
+ "out": "../annotated/B-reply-to-empty-vs-zoho.png",
+ "id": "Draft B",
+ "title": "Ticket replies | Reply and Reply All leave \"To\" empty on tickets created in Desk (form or API); the contact is not added",
+ "verdict": "Differs",
+ "date": "TAVI 10 Nov 2026 (NDC-Staging; #2543 New Ticket form, #2504 API, #2568 inbound email) · Zoho Desk trial 10 Nov 2026 (read-only, #115 web-form ticket, composer opened and closed without typing)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "#2543 (New Ticket form): first Reply All — contact in Contact Info, Recipients empty",
+   "img": "../../recheck/laneI/evidence/raw/b1-ui-replyall-1-before.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 383,
+     "y": 165,
+     "w": 265,
+     "h": 60
+    },
+    {
+     "n": 2,
+     "x": 668,
+     "y": 240,
+     "w": 760,
+     "h": 32
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "#2543 after reply 1: Recipients still empty, contact moved to Cc",
+   "img": "../../recheck/laneI/evidence/raw/b1-ui-replyall-2-after-reply1.png",
+   "boxes": [
+    {
+     "n": 2,
+     "x": 668,
+     "y": 240,
+     "w": 760,
+     "h": 32
+    },
+    {
+     "n": 3,
+     "x": 776,
+     "y": 282,
+     "w": 215,
+     "h": 28
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "Contrast — #2568 created by inbound email: Recipients filled",
+   "img": "../../recheck/lead/evidence/b3-email-replyall.png",
+   "boxes": [
+    {
+     "n": 4,
+     "x": 776,
+     "y": 270,
+     "w": 240,
+     "h": 28
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "#115 created inside Zoho (web form; contact mmohamed@anyware.software): Reply All puts the contact in To",
+   "img": "../raw/zoho/b-zoho-replyall.png",
+   "boxes": [
+    {
+     "n": 2,
+     "x": 745,
+     "y": 225,
+     "w": 215,
+     "h": 26
+    }
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Ticket has a contact with an email",
+   "zoho": "Contact Info shows mmohamed@anyware.software",
+   "tavi": "Contact Info shows mmohamed@anyware.software",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "Reply All / Reply on a ticket created inside the helpdesk",
+   "zoho": "To = the contact's email",
+   "tavi": "Recipients empty (form ticket #2543 and API ticket #2504; Reply also empty)",
+   "match": "Differs"
+  },
+  {
+   "n": "3",
+   "b": "Reply All after the first reply",
+   "zoho": "To = contact",
+   "tavi": "Recipients still empty; the contact sits in Cc",
+   "match": "Differs"
+  },
+  {
+   "n": "4",
+   "b": "Ticket created by inbound email",
+   "zoho": "To = sender",
+   "tavi": "#2568: Recipients = sender (works)",
+   "match": "Same as Zoho"
+  }
+ ],
+ "notes": [
+  "Every reply on a Desk-created ticket needs the customer's address typed by hand; after one reply the contact lands in Cc instead of To.",
+  "Zoho: opening the composer sent only Zoho's own 'agent is replying' collision signal; no draft or reply was saved or sent."
+ ]
+}

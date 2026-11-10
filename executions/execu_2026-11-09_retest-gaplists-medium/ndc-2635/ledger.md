@@ -9,3 +9,6 @@
 
 ## Posted 10 Nov 2026
 Comment f3d94515-da4a-4599-930f-54180577e8dc + 3 images (ev-01..03). State unchanged (Backlog).
+
+## Correction posted 10 Nov 2026
+Comment 850a92eb-1d90-4a2d-990a-83f4bb18b489: owner list not missing anyone (all 121 users, not narrowed); visibility filed as NDC-2830.

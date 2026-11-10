@@ -1,0 +1,85 @@
+{
+ "out": "annotated/bugA-composer-email-vs-zoho.png",
+ "id": "Possible bug A (from NDC-2636 recheck)",
+ "title": "Reply composer rejects a valid address that the same ticket's contact already has",
+ "verdict": "Differs",
+ "date": "TAVI 10 Nov 2026 (NDC-Staging, throwaway ticket #2224) · Zoho Desk trial 10 Nov 2026 (read-only, nothing saved)",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Reply All on #2224: contact has qa.rt2636@example.com, composer refuses it",
+   "img": "../evidence/raw/b1-rejected-example-com.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 383,
+     "y": 170,
+     "w": 265,
+     "h": 55
+    },
+    {
+     "n": 2,
+     "x": 768,
+     "y": 244,
+     "w": 320,
+     "h": 45
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Add Contact: same address, no message after leaving the field",
+   "img": "../zoho/raw/contact-email-valid.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 228,
+     "y": 286,
+     "w": 272,
+     "h": 30
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Add Contact: a broken address (qa.rt2636@) does get a message",
+   "img": "../zoho/raw/contact-email-invalid.png",
+   "boxes": [
+    {
+     "n": 2,
+     "x": 228,
+     "y": 286,
+     "w": 272,
+     "h": 50
+    }
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Address saved on the contact",
+   "zoho": "qa.rt2636@example.com accepted",
+   "tavi": "Accepted: the contact saved with it (201) and shows it under Contact Info",
+   "match": "Same as Zoho"
+  },
+  {
+   "n": "2",
+   "b": "Same address in the reply composer",
+   "zoho": "Accepted (only malformed addresses such as qa.rt2636@ get \"Please enter a valid Email\")",
+   "tavi": "\"qa.rt2636@example.com is not a valid email address\"; the reply cannot go to the ticket's own contact",
+   "match": "Differs"
+  },
+  {
+   "n": "-",
+   "b": "Which addresses the composer refuses",
+   "zoho": "Only malformed addresses",
+   "tavi": "Any domain ending in .example, .test, .invalid, localhost or example.com/.net/.org (also subdomains). Refused: qa.rt2636@example.com, info@example.org, user@sub.example.com, user@mail.test. Accepted: qa.rt@anyware.software, first.last+tag@gmail.com, a@b.co",
+   "match": "Differs"
+  }
+ ],
+ "notes": [
+  "Nothing was sent. The Zoho check typed into the Add Contact form only and cancelled without saving.",
+  "Cause: a deliberate reserved-domain rule in the shared EmailTagInput component (also used by Send as email, Schedule meeting and the Blueprint designer). Contact validation does not have the rule, so the two disagree."
+ ]
+}

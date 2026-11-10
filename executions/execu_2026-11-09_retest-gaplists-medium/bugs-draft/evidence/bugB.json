@@ -1,0 +1,132 @@
+{
+ "out": "annotated/bugB-activity-dept-visibility-vs-zoho.png",
+ "id": "Possible bug B (from NDC-2635 recheck)",
+ "title": "An agent outside the department can open that department's task, though its ticket is blocked",
+ "verdict": "Differs",
+ "date": "TAVI 10 Nov 2026 (NDC-Staging, agent \"Customer Experience Specialists 2\", not in HR) · Zoho Desk trial 10 Nov 2026 + Zoho help",
+ "panels": [
+  {
+   "side": "TAVI",
+   "caption": "Agent (not in HR): All Activities lists the HR call and task",
+   "img": "../evidence/raw/b2-agent-list-search.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 262,
+     "y": 112,
+     "w": 1178,
+     "h": 124
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "Agent (not in HR) opens the HR task \"QA RT BUG dept task\"",
+   "img": "../evidence/raw/b2-agent-task-detail.png",
+   "boxes": [
+    {
+     "n": 2,
+     "x": 572,
+     "y": 66,
+     "w": 330,
+     "h": 64
+    },
+    {
+     "n": 3,
+     "x": 268,
+     "y": 158,
+     "w": 285,
+     "h": 64
+    },
+    {
+     "n": 4,
+     "x": 1137,
+     "y": 818,
+     "w": 280,
+     "h": 58
+    }
+   ]
+  },
+  {
+   "side": "TAVI",
+   "caption": "Same agent opens the task's HR ticket",
+   "img": "../evidence/raw/b2-agent-ticket.png",
+   "boxes": [
+    {
+     "n": 5,
+     "x": 660,
+     "y": 425,
+     "w": 440,
+     "h": 110
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Activities are listed per department (switcher in the top bar)",
+   "img": "../zoho/raw/dept-switcher.png",
+   "boxes": [
+    {
+     "n": 1,
+     "x": 922,
+     "y": 95,
+     "w": 280,
+     "h": 185
+    }
+   ]
+  },
+  {
+   "side": "Zoho",
+   "caption": "Zoho help: department-based access",
+   "text": [
+    "\"Tickets, Knowledge Base, Activities, and Products are department-specific.\"",
+    "\"You can view tickets only from those departments that you've access to.\"",
+    "Agents get access per department; the Add Task form has no Department field, the task takes the department chosen in the top bar."
+   ],
+   "sources": [
+    "https://help.zoho.com/portal/en/kb/desk/faqs/organization-settings/articles/faqs-organization-setting",
+    "https://help.zoho.com/portal/en/kb/desk/user-management-and-security/agents-and-teams/articles/add-manage-desk-agents"
+   ]
+  }
+ ],
+ "rows": [
+  {
+   "n": "1",
+   "b": "Activities list for an agent outside HR",
+   "zoho": "Only activities of the agent’s departments",
+   "tavi": "The HR call and task are listed; All Activities shows 527, the same as the owner (tasks 397 both)",
+   "match": "Differs"
+  },
+  {
+   "n": "2",
+   "b": "Open a task of a department the agent is not in",
+   "zoho": "Not visible: activities are department-specific",
+   "tavi": "The HR task opens with department, owner, status, comment box, Start timer and Mark as Complete (API 200; same for the call)",
+   "match": "Differs"
+  },
+  {
+   "n": "3",
+   "b": "Linked ticket card on the task",
+   "zoho": "-",
+   "tavi": "Shows only \"Ticket\" with no number or subject",
+   "match": "Differs"
+  },
+  {
+   "n": "4",
+   "b": "Error on the task page",
+   "zoho": "-",
+   "tavi": "\"Permission denied.\" toast (the linked ticket call fails)",
+   "match": "Differs"
+  },
+  {
+   "n": "5",
+   "b": "Open the task’s ticket",
+   "zoho": "Not visible",
+   "tavi": "\"This ticket is not available\" (403): tickets follow department access, activities do not",
+   "match": "Same as Zoho"
+  }
+ ],
+ "notes": [
+  "The Zoho trial has one agent only, so agent-side visibility in Zoho comes from the help docs, not a screen. Nothing was saved in Zoho."
+ ]
+}

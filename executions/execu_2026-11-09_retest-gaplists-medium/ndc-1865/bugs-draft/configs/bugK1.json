@@ -1,0 +1,13 @@
+{"out":"../annotated/K1-bulk-log-mass-update-vs-zoho.png","id":"Draft K1","title":"Data Administration | Bulk Actions Log does not list a mass update, while it lists small imports, exports and deletes","verdict":"Differs","date":"TAVI 10 Nov 2026 (NDC-Staging, mahmoud.mahamed1515; mass update of 2 contacts at 15:45) · Zoho Desk trial (read-only)",
+"panels":[
+{"side":"TAVI","caption":"Bulk Actions Log: Import 15:31 and Export 15:54 listed, no Mass update at 15:45","img":"../../functional/laneK/evidence/raw/k17-bulk-log-final.png","boxes":[{"n":1,"x":293,"y":240,"w":1122,"h":168},{"n":3,"x":293,"y":408,"w":1122,"h":56}]},
+{"side":"TAVI","caption":"Audit Log: the mass update did happen (15:45, title → QA FT 1865 K bulk)","img":"../raw/tavi/k1-audit-massupdate.png","boxes":[{"n":2,"x":458,"y":752,"w":720,"h":100}]},
+{"side":"Zoho","caption":"Setup → Data Administration → Bulk Action Log (trial: no bulk actions yet)","img":"../raw/zoho/k1-bulk-action-log.png","boxes":[{"n":4,"x":250,"y":138,"w":1000,"h":42}]}
+],
+"rows":[
+{"n":"1","b":"Bulk actions of a few records","zoho":"Only actions on more than 50 records count as bulk actions","tavi":"Import of 2, export of 16 and mass deletes of 1–8 records are listed","match":"Differs"},
+{"n":"2","b":"Mass update of 2 contacts (Update → Title)","zoho":"Not logged (under 50 records)","tavi":"Done (Audit Log shows both changes) but not listed","match":"Differs"},
+{"n":"3","b":"Mass delete","zoho":"Listed when over 50 records","tavi":"Listed (Mass delete, Tickets)","match":"Same as Zoho"},
+{"n":"4","b":"Rule shown on the page","zoho":"\"Actions simultaneously initiated for more than 50 records are called bulk actions\"","tavi":"\"Bulk operations run on Desk modules\" — no threshold stated","match":"Differs"}
+],
+"notes":["Steps: Contacts list → select 2 contacts → Update → Title = \"QA FT 1865 K bulk\" → Update (\"2 records updated\"); then Setup → Data Administration → Bulk Actions Log.","Expected: the log treats all bulk operations the same way — either list mass updates like imports/exports/mass deletes, or apply a stated threshold (Zoho: more than 50 records). A mass update over 50 records was not tested."]}

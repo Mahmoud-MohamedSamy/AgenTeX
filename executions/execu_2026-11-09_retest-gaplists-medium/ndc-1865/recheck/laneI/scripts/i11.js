@@ -1,0 +1,10 @@
+const D1='6a7a38a8-aaf5-4a9b-aa99-b5eaa676e7e7';const posts=[];page.on('request',r=>{if(/\/desk\/departments\//.test(r.url())&&r.method()==='PATCH')posts.push((r.postData()||'').match(/"display_in_help_center":(true|false)/)?.[0]);});
+const vis=async()=>{const g=await api('GET','/desk/departments/'+D1);return (g.j&&(g.j.data||g.j)).visibility;};
+const toggle=async(want,tag)=>{await page.goto(H+'/settings/organization/departments/'+D1,{waitUntil:'commit',timeout:120000});await wt(/Department Name/,90000);await page.waitForTimeout(3000);
+ const cb=page.getByLabel('Display in Help Center');if((await cb.isChecked())!==want)await cb.click();await page.waitForTimeout(800);await shot('g5-edit-'+tag+'-before-save');
+ await page.locator('button').filter({hasText:/^Save$/}).last().click();await page.waitForTimeout(6000);
+ return {api:await vis()};};
+out.toPrivate=await toggle(false,'private');log(`UPDATED department ${D1} via UI: Display in Help Center OFF → ${out.toPrivate.api}`);
+out.toPublic=await toggle(true,'public');log(`UPDATED department ${D1} via UI: Display in Help Center ON → ${out.toPublic.api}`);
+await page.goto(H+'/settings/organization/departments/'+D1,{waitUntil:'commit',timeout:120000});await wt(/Department Name/,90000);await page.waitForTimeout(3000);out.reopen=await page.getByLabel('Display in Help Center').isChecked();await shot('g6-reopened-after-edits');
+out.posts=posts;return Object.assign(out,{calls:[...new Set(calls)]});

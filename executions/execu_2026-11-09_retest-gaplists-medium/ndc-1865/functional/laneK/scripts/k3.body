@@ -1,0 +1,11 @@
+const all=[];page.on('response',r=>{const u=r.url();if(/api\/v1/.test(u)&&!/iam\/auth/.test(u)&&/import/i.test(u))all.push(r.status()+' '+r.request().method()+' '+u.replace(/.*api\/v1/,'').slice(0,120));});
+const tail=async(n=25)=>(await body()).split('\n').filter(l=>l.trim()).slice(-n);
+let step='nav';out.steps={};try{
+await page.goto(H+'/settings/data/import',{waitUntil:'load',timeout:180000});await wt(/Choose a module/,180000);await page.waitForTimeout(3000);
+step='module';await page.getByText('Choose a module').nth(1).click();await page.waitForTimeout(1000);await page.locator('[role=option]').filter({hasText:/^Contacts$/}).first().click();await page.waitForTimeout(800);
+step='start';await page.getByRole('button',{name:'Start import'}).click();await page.waitForTimeout(8000);
+out.F_banner=/import in progress/i.test(await body());out.F_lines=(await body()).split('\n').filter(l=>/progress|resume|start over/i.test(l)).slice(0,6);await shot('k3-F-banner');
+out.F_stepShown=(await body()).match(/Upload your file|Map your columns|Assign & approve|Review/g);
+if(out.F_banner){step='resume';await page.getByRole('button',{name:'Resume'}).click();await page.waitForTimeout(8000);out.afterResume=await tail(15);await shot('k3-after-resume');}
+}catch(e){out.err=step+': '+String(e).slice(0,200);await shot('k3-err-'+step);}
+return Object.assign(out,{calls:[...new Set(calls)],importCalls:[...new Set(all)]});

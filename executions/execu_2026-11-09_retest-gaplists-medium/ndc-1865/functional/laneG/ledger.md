@@ -1,0 +1,80 @@
+# Lane G ledger (NDC-1865 functional, 10 Nov 2026, NDC-Staging, ndc-staging-owner)
+- 2026-11-10T10:07:20Z sign-in index 7 once → scratchpad laneG-owner.json
+- 2026-11-10T10:10:34Z CREATED department "QA FT 1865 Dept" 3bc126f7-026c-4225-8f92-52da2704156d (agents owner, Test User 1, QA Team 1)
+- 2026-11-10T10:11:07Z CREATED layout "QA FT 1865 Layout" 4ca6aa7d-e2ad-4249-b07c-50a10d75bd38 (dept QA FT 1865)
+- 2026-11-10T10:11:10Z CREATED field qa_ft1865_text de2bffaf-cced-49b4-ba73-684e47a0ae47
+- 2026-11-10T10:11:10Z CREATED field qa_ft1865_pick 1d3af630-1b3b-45e9-9a89-f18ed6f79ade
+- 2026-11-10T10:11:15Z UPDATED layout: added the 2 QA fields
+- 2026-11-10T10:11:16Z CREATED ticket "QA FT 1865 F1 fields" 5a7a0dc2-a7c6-4326-b50e-280177baf26c (F1)
+- 2026-11-10T10:11:42Z UPDATED QA FT dept RR prefs assign_to_offline_agents=true
+- 2026-11-10T10:11:42Z CREATED assignment rule direct "QA FT 1865 Direct" 9997498b-f173-4cbc-a81b-ef83e6d30b9e
+- 2026-11-10T10:11:42Z CREATED assignment rule round_robin "QA FT 1865 RR" 53cad6cc-38e0-4c16-a151-91a4f3867b3f
+- 2026-11-10T10:11:45Z CREATED ticket "QA FT 1865 DIR ticket" b40d4656-f586-4a48-be74-19b1e0f36bd9 (F3)
+- 2026-11-10T10:11:47Z CREATED ticket "QA FT 1865 RR ticket 1" 62484209-491c-4730-9fe0-ece36833e485 (F6)
+- 2026-11-10T10:11:49Z CREATED ticket "QA FT 1865 RR ticket 2" bd824f49-f9b5-4d49-9218-c64766774565 (F6)
+- 2026-11-10T10:11:52Z CREATED ticket "QA FT 1865 RR ticket 3" 01c1d821-e24c-454c-80e4-213137d66af8 (F6)
+- 2026-11-10T10:11:54Z CREATED ticket "QA FT 1865 RR ticket 4" e47ca304-5f5c-4f21-b7e7-9e422b812c00 (F6)
+- 2026-11-10T10:12:55Z CREATED ticket "QA FT 1865 RR ticket 5" a674f5ca-c5a6-4c77-9f57-95af3679e0fd (F6, owner:null)
+- 2026-11-10T10:12:58Z CREATED ticket "QA FT 1865 RR ticket 6" 0340a890-160f-4997-8dc9-4c82713d8ef5 (F6, owner:null)
+- 2026-11-10T10:13:01Z CREATED ticket "QA FT 1865 RR ticket 7" 145e3d7a-0762-45f3-a871-c23131684a02 (F6, owner:null)
+- 2026-11-10T10:13:03Z CREATED ticket "QA FT 1865 RR ticket 8" 3733071b-8b1d-4aee-baf3-eddd9387c5f2 (F6, owner:null)
+- 2026-11-10T10:13:39Z UPDATED tenant direct-rules master switch ON (was OFF; only active direct rule = QA FT 1865 Direct) — restore OFF
+- 2026-11-10T10:13:41Z CREATED ticket "QA FT 1865 DIR ticket 2" 9fc9a8c9-4d1e-4385-8f56-b51e3982f9d3 (F3, owner:null, master ON)
+- 2026-11-10T10:13:53Z CREATED ticket "QA FT 1865 other subject" ad48ad71-7bc9-424d-a706-2a2916c9ea0d (F3 negative)
+- 2026-11-10T10:14:02Z RESTORED tenant direct-rules master switch OFF: 200
+- 2026-11-10T10:22:36Z owner session revoked (SESSION_REVOKED 401) → re-signed in index 7 once
+- 2026-11-10T10:22:48Z UPDATED assignment rule 9997498b-f173-4cbc-a81b-ef83e6d30b9e deactivated: 200
+- 2026-11-10T10:22:48Z UPDATED assignment rule 53cad6cc-38e0-4c16-a151-91a4f3867b3f deactivated: 200
+- 2026-11-10T10:22:49Z CREATED tag "QA FT 1865 tag" 28c6c9b2-e344-4a28-874e-08870f67c604
+- 2026-11-10T10:22:52Z CREATED workflow saved action a976b368-63cb-466d-90d9-b0781ca518c2
+- 2026-11-10T10:22:54Z CREATED workflow rule "QA FT 1865 WF inline" 1c2383d0-dab0-412b-b36f-2cf1993f14bf
+- 2026-11-10T10:22:57Z CREATED workflow rule "QA FT 1865 WF saved" afa4aac7-eb7a-48fb-8b7e-a277f539e224
+- 2026-11-10T10:23:02Z CREATED ticket "QA FT 1865 WF ticket" 49b41e8b-62d5-49ad-88be-521e1a627e54 (F4)
+- 2026-11-10T10:25:16Z UPDATED workflow rule 1c2383d0-dab0-412b-b36f-2cf1993f14bf deactivated: 204
+- 2026-11-10T10:25:17Z UPDATED workflow rule afa4aac7-eb7a-48fb-8b7e-a277f539e224 deactivated: 204
+- 2026-11-10T10:25:19Z CREATED SLA policy "QA FT 1865 SLA" 7b5e2fbc-01fe-4b60-81d5-439ad74d3005
+- 2026-11-10T10:25:21Z CREATED ticket "QA FT 1865 SLA ticket" 7f175cb3-3ae1-45e6-a5f6-f409d1f26ce5 (F5)
+- 2026-11-10T10:30:43Z UPDATED SLA policy 7b5e2fbc-01fe-4b60-81d5-439ad74d3005 deactivated: 200
+- 2026-11-10T10:30:45Z CREATED blueprint "QA FT 1865 BP" 466a9a38-db99-476f-bbfa-531444e99e6e
+- 2026-11-10T10:30:49Z CREATED ticket "QA FT 1865 BP ticket" a3f6de13-a8fa-40f9-bede-2e70d9c4e1c6 (F7)
+- 2026-11-10T10:39:47Z UPDATED RR rule 53cad6cc-38e0-4c16-a151-91a4f3867b3f active=true: 200
+- 2026-11-10T10:40:56Z UPDATED RR rule 53cad6cc-38e0-4c16-a151-91a4f3867b3f active=false: 200
+- 2026-11-10T10:41:38Z UPDATED RR rule 53cad6cc-38e0-4c16-a151-91a4f3867b3f active=true: 200
+- 2026-11-10T10:42:33Z CREATED ticket "QA FT 1865 RR UI ticket" 49e86062-e20c-4817-99cd-0d75f4d558e9 (UI New Ticket form, default owner)
+- 2026-11-10T10:42:43Z UPDATED RR rule 53cad6cc-38e0-4c16-a151-91a4f3867b3f active=false: 200
+- 2026-11-10T10:43:19Z CLEANUP delete ticket 5a7a0dc2: 204
+- 2026-11-10T10:43:19Z CLEANUP delete ticket b40d4656: 204
+- 2026-11-10T10:43:19Z CLEANUP delete ticket 62484209: 204
+- 2026-11-10T10:43:20Z CLEANUP delete ticket bd824f49: 204
+- 2026-11-10T10:43:21Z CLEANUP delete ticket 01c1d821: 204
+- 2026-11-10T10:43:21Z CLEANUP delete ticket e47ca304: 204
+- 2026-11-10T10:43:22Z CLEANUP delete ticket a674f5ca: 204
+- 2026-11-10T10:43:22Z CLEANUP delete ticket 0340a890: 204
+- 2026-11-10T10:43:23Z CLEANUP delete ticket 145e3d7a: 204
+- 2026-11-10T10:43:23Z CLEANUP delete ticket 3733071b: 204
+- 2026-11-10T10:43:24Z CLEANUP delete ticket 9fc9a8c9: 204
+- 2026-11-10T10:43:25Z CLEANUP delete ticket ad48ad71: 204
+- 2026-11-10T10:43:25Z CLEANUP delete ticket 49b41e8b: 204
+- 2026-11-10T10:43:26Z CLEANUP delete ticket 7f175cb3: 204
+- 2026-11-10T10:43:26Z CLEANUP delete ticket a3f6de13: 204
+- 2026-11-10T10:43:27Z CLEANUP delete ticket 49e86062: 204
+- 2026-11-10T10:43:32Z CLEANUP delete blueprint: 204
+- 2026-11-10T10:43:33Z CLEANUP delete sla policy: 204
+- 2026-11-10T10:43:34Z CLEANUP delete workflow rule 1c2383d0: 204
+- 2026-11-10T10:43:37Z CLEANUP delete workflow rule afa4aac7: 204
+- 2026-11-10T10:43:38Z CLEANUP delete workflow action: 204
+- 2026-11-10T10:43:40Z CLEANUP delete tag: 422
+- 2026-11-10T10:43:41Z CLEANUP delete assignment rule 9997498b: 204
+- 2026-11-10T10:43:41Z CLEANUP delete assignment rule 53cad6cc: 204
+- 2026-11-10T10:43:42Z CLEANUP delete layout: 204
+- 2026-11-10T10:43:43Z CLEANUP delete field de2bffaf: 204
+- 2026-11-10T10:43:44Z CLEANUP delete field 1d3af630: 204
+- 2026-11-10T10:44:18Z CLEANUP delete tag (confirm): 204
+- 2026-11-10T10:44:32Z CLEANUP recycle bin purge (1): 19 own items by record id: 200
+- 2026-11-10T10:44:43Z CLEANUP delete department QA FT 1865 Dept: 422
+- 2026-11-10T10:45:18Z VERIFY after cleanup: {"binLeft":0,"dept":200,"fieldsLeft":0,"tagsLeft":false,"rulesLeft":false}
+- 2026-11-10T10:45:48Z UPDATED QA FT dept: agents removed (for delete): 200
+- 2026-11-10T10:45:48Z CLEANUP delete department QA FT 1865 Dept: 200
+- 2026-11-10T10:46:00Z CLEANUP recycle bin purge department: 200
+- 2026-11-10T10:46:18Z VERIFY department: GET 404, in list 0, bin items left 0
+- 2026-11-10T10:46:29Z scratchpad session file laneG-owner.json deleted

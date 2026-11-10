@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Open items after rechecks</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--ink:#1d1d1f;--mute:#5d5d63;--line:#dcdcd6;--ok:#1a7f37;--no:#b42318;--warn:#a15c07;--chip:#efefea}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181a;--card:#202124;--ink:#ececec;--mute:#a4a4ab;--line:#37383c;--ok:#5cc27a;--no:#f0786d;--warn:#e3a24a;--chip:#2b2c30}}
+:root[data-theme="dark"]{--bg:#17181a;--card:#202124;--ink:#ececec;--mute:#a4a4ab;--line:#37383c;--ok:#5cc27a;--no:#f0786d;--warn:#e3a24a;--chip:#2b2c30}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,Arial,sans-serif}main{max-width:1080px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:36px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}h3{font-size:17px;margin:0 0 6px}
+.sub{color:var(--mute)}.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+.bug{border-left:4px solid var(--no)}.low{border-left:4px solid var(--warn)}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 18px;min-width:150px}.stat b{font-size:26px;display:block}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}th{color:var(--mute)}
+.v{display:inline-block;font-size:12.5px;font-weight:600;padding:1px 8px;border-radius:4px;border:1px solid currentColor;white-space:nowrap}.v.ok{color:var(--ok)}.v.no{color:var(--no)}.v.warn{color:var(--warn)}
+.fields{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:14px;margin:6px 0 10px}.fields div:nth-child(odd){color:var(--mute)}
+img{max-width:100%;border:1px solid var(--line);border-radius:6px;display:block;margin-top:8px}.cap{color:var(--mute);font-size:12px;margin:2px 0 8px}
+code{background:var(--chip);padding:0 4px;border-radius:3px;font-size:13px}ul,ol{padding-left:22px}li{margin:3px 0}
+</style></head><body><main>
+<h1>Open items and new bugs after Lanes I, J and K</h1>
+<div class="sub">10 Nov 2026 · NDC-Staging (TAVI) + Zoho Desk trial (read-only) · follow-up to the NDC-1865 functional check · nothing filed or posted</div>
+<div class="stats"><div class="stat"><b style="color:var(--no)">1</b>bug to file (Medium)</div><div class="stat"><b style="color:var(--warn)">3</b>small bugs to file (Low)</div><div class="stat"><b style="color:var(--ok)">4</b>closed (not bugs)</div><div class="stat"><b>1</b>still untested case</div></div>
+
+<h2>Status of every finding</h2>
+<div class="card wrap"><table>
+<tr><th>#</th><th>Finding</th><th>Lane</th><th>Verdict</th><th>Next step</th></tr>
+<tr><td>A</td><td>Assignment rules skip a ticket that keeps the default owner</td><td>—</td><td><span class="v ok">Filed</span></td><td>Already NDC-2840</td></tr>
+<tr><td>B</td><td>Reply All / Reply leave "To" empty</td><td>I</td><td><span class="v no">Still reproduces</span></td><td>File (Medium)</td></tr>
+<tr><td>C</td><td>Email template subject not used in a reply</td><td>J</td><td><span class="v ok">Same as Zoho</span></td><td>Drop</td></tr>
+<tr><td>D</td><td>Deleting a Desk contact leaves the CRM copy</td><td>J + your screenshots</td><td><span class="v ok">Works as configured</span></td><td>Drop — Preferences "Never delete the corresponding CRM contact", same as Zoho</td></tr>
+<tr><td>E</td><td>CRM ⇄ Desk: 423 "Parked" on the page, 226 in the failures list</td><td>J</td><td><span class="v warn">Open, TAVI-only</span></td><td>File (Low)</td></tr>
+<tr><td>F</td><td>Unfinished import blocks the next one</td><td>K</td><td><span class="v ok">Not a bug</span></td><td>Drop — saved draft with Resume / Start over</td></tr>
+<tr><td>G</td><td>Department created as public saved as private</td><td>I + J</td><td><span class="v ok">Not reproduced in the app</span></td><td>Drop (API detail noted below)</td></tr>
+<tr><td>K1</td><td>Bulk Actions Log does not list mass updates</td><td>K</td><td><span class="v warn">New</span></td><td>File (Low)</td></tr>
+<tr><td>K2</td><td>Audit Log export entries worded wrongly</td><td>K</td><td><span class="v warn">New</span></td><td>File (Low)</td></tr>
+</table></div>
+
+<h2>Bugs to file</h2>
+
+<div class="card bug">
+<h3>B. Ticket replies: Reply All and Reply leave "To" empty; the ticket's contact is not added as recipient</h3>
+<div class="fields"><div>Suggested</div><div>Bug · <strong>Medium</strong> · Desk · relates to NDC-2636</div><div>Checked</div><div>10 Nov 2026, NDC-Staging, ndc-staging-owner, Tech department (From tech@help-staging.anyware.software), contact "mahmoud mohamed" &lt;mmohamed@anyware.software&gt;</div></div>
+<ol><li>Create a ticket in Tech for a contact that has an email (New Ticket form or API).</li><li>Open the ticket and click Reply All.</li><li>Send one reply (address typed by hand), reload, click Reply All again; also try Reply.</li></ol>
+<table><tr><th>Case</th><th>First Reply All</th><th>After reply 1</th></tr>
+<tr><td>#2543 New Ticket form</td><td>Recipients empty</td><td>Recipients empty, contact moved into Cc</td></tr>
+<tr><td>#2504 API</td><td>Recipients empty</td><td>Recipients empty, contact moved into Cc; plain Reply also empty</td></tr></table>
+<p><strong>Expected</strong> (Zoho Desk): Reply and Reply All put the ticket's contact in To; Reply All adds the other people on the thread in Cc. <strong>Effect:</strong> every reply needs the customer's address typed by hand.</p>
+<p class="sub">Not checked: a ticket that arrives by real inbound email (can't be created from here). Zoho composer not captured (typing in it auto-saves drafts); expected behaviour above is from the Zoho reply docs and needs a Zoho screenshot before filing.</p>
+<a href="laneI/evidence/raw/b1-ui-replyall-2-after-reply1.png" target="_blank"><img src="laneI/evidence/raw/b1-ui-replyall-2-after-reply1.png" alt="Reply All after reply 1"></a><div class="cap">#2543 after reply 1: Contact Info shows mmohamed@anyware.software, Recipients "Add a recipient", contact sits in Cc</div>
+<a href="laneI/evidence/raw/b1-ui-replyall-1-before.png" target="_blank"><img src="laneI/evidence/raw/b1-ui-replyall-1-before.png" alt="First Reply All"></a><div class="cap">#2543 first Reply All: Recipients empty</div>
+<a href="laneI/evidence/raw/b2-api-reply-only-after-reply1.png" target="_blank"><img src="laneI/evidence/raw/b2-api-reply-only-after-reply1.png" alt="Reply only"></a><div class="cap">#2504 plain Reply after reply 1: Recipients empty</div>
+</div>
+
+<div class="card low">
+<h3>E. CRM ⇄ Desk Integration: "Parked" count (423) does not match the failures list (226)</h3>
+<div class="fields"><div>Suggested</div><div>Bug · <strong>Low</strong> · Desk · CRM Integration · relates to NDC-2392</div></div>
+<p>The integration Overview shows Sync queue "Needs attention: 423 / Parked 423 — gave up after repeated failures", while the Failure Log returns 226 records. Most entries come from records deleted on one side (Desk record in the Recycle Bin, CRM record deleted) under the "never delete / keep and flag for review" preferences, plus a few data problems (deal imports missing required contract values, empty Last Name in CRM, email already linked to another contact).</p>
+<p><strong>Zoho comparison:</strong> Zoho shows Sync History (7 days, with failed counts) and a Failure Log with reason and "Try Again"; it has no "Parked" queue, so the counts it shows always come from the same list. <strong>Expected:</strong> the number on the Overview matches the list the user can open.</p>
+<a href="../evidence/raw/14-crm-desk-integration.png" target="_blank"><img src="../evidence/raw/14-crm-desk-integration.png" alt="Parked 423"></a><div class="cap">Overview: Parked 423</div>
+</div>
+
+<div class="card low">
+<h3>K1. Data Administration: Bulk Actions Log does not list mass updates</h3>
+<div class="fields"><div>Suggested</div><div>Bug · <strong>Low</strong> · Desk · Data Administration</div></div>
+<p>Contacts → select 2 → Update → Title → "2 records updated" (both read back). The Bulk Actions Log lists the import (2/2), the export (16), the undo and older mass deletes, but not this mass update. The Audit Log does record the field changes. Zoho's Bulk Action Log includes mass updates.</p>
+<a href="../functional/laneK/evidence/raw/k17-bulk-log-final.png" target="_blank"><img src="../functional/laneK/evidence/raw/k17-bulk-log-final.png" alt="Bulk Actions Log"></a><div class="cap">Bulk Actions Log after the mass update at ~15:4x: only Import, Export, Undo and older Mass deletes</div>
+</div>
+
+<div class="card low">
+<h3>K2. Audit Log: export entries are worded wrongly</h3>
+<div class="fields"><div>Suggested</div><div>Bug · <strong>Low</strong> · Desk · Audit Log</div></div>
+<p>After exporting 16 Contacts to CSV, the Audit Log shows "exported the audit log (16 Contacts (csv))" — it was a contacts export, not the audit log — and "added a Desk data export named 0 Contacts (csv)" — the count is 0 instead of 16.</p>
+<p class="sub">Evidence is the Audit Log text read by the lane; no screenshot of these two lines yet. One should be taken before filing. Also seen in the Audit Log (other testers' tickets): entries such as "User a7a7a7a7 updated … owner from blank value to 876ce871-…", showing a raw user id and record ids instead of names.</p>
+<a href="../functional/laneK/evidence/raw/k13-audit-log.png" target="_blank"><img src="../functional/laneK/evidence/raw/k13-audit-log.png" alt="Audit Log"></a><div class="cap">Audit Log: raw ids and "User a7a7a7a7" in owner changes</div>
+</div>
+
+<h2>Closed — not bugs</h2>
+<div class="card"><ul>
+<li><strong>C</strong>: Zoho also keeps the thread subject when a template is inserted into a reply (Zoho help: Using Ticket and Email Templates; community answer that the reply subject can't be changed).</li>
+<li><strong>D</strong>: TAVI has the same Preferences as Zoho (CRM ⇄ Desk Integration → Configuration). "On deleting a Desk contact: Never delete the corresponding CRM contact" is set, so the CRM copy staying is correct.</li>
+<li><strong>F</strong>: leaving the import wizard saves a draft; reopening Import offers Resume / Start over, and Resume completed the import.</li>
+<li><strong>G</strong>: "public" = "Display in Help Center", ticked by default; create and edit in the form both save correctly. The earlier result came from the API, where <code>visibility</code> is read-only and silently ignored (the writable field is <code>display_in_help_center</code>); the API also defaults to private while the form defaults to public. Noted, not worth a ticket alone.</li>
+</ul></div>
+
+<h2>Data Administration: final verdict</h2>
+<div class="card wrap"><table><tr><th>Part</th><th>Verdict</th></tr>
+<tr><td>Import (2 contacts, 0 errors) and Undo import</td><td><span class="v ok">Working</span></td></tr>
+<tr><td>Export (16 contacts, CSV, Export history)</td><td><span class="v ok">Working</span></td></tr>
+<tr><td>Mass update</td><td><span class="v ok">Working</span></td></tr>
+<tr><td>Recycle Bin delete / restore / purge</td><td><span class="v ok">Working</span></td></tr>
+<tr><td>Bulk Actions Log</td><td><span class="v warn">Partly (K1)</span></td></tr>
+<tr><td>Audit Log</td><td><span class="v warn">Working, wording issues (K2)</span></td></tr></table>
+<p class="sub">Small note: Import history shows the time the wizard started (15:24); Bulk Actions Log and Audit Log show the time it ran (15:31).</p></div>
+
+<h2>Emails, data and cleanup</h2>
+<div class="card"><ul>
+<li>Lane I: 2 replies to mmohamed@anyware.software from Tech. Creating the 2 Tech tickets also fires Tech's "ticket created" email rules (shared rules, not changed).</li>
+<li>Lane K: 1 export-ready email to the test account's own mailbox.</li>
+<li>Lane J: Zoho read-only; nothing saved, sent or created. Zoho settings pages would not render in the trial, so Zoho answers come from its help pages.</li>
+<li>All test tickets, departments and contacts (Desk and CRM) deleted, purged and checked 404. The existing contact for mmohamed@anyware.software was not touched. The Export history row can't be deleted (no option).</li>
+<li><strong>Do not commit</strong> <code>functional/laneK/evidence/desk_contacts-export-20261110-1354.csv</code> — it holds 16 staging contacts' details.</li>
+</ul></div>
+</main></body></html>
