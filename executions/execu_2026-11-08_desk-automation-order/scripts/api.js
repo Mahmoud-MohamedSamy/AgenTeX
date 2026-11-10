@@ -7,7 +7,7 @@ const P = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installat
 const SD = 'C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/6cad98b2-9d2f-4e48-af44-1193bcd58c1a/scratchpad';
 const API = 'https://staging-desk.taviportal.com/api/v1';
 const [label, file] = process.argv.slice(2);
-const store = path.join(SD, 'tok-' + label.replace(/[^a-z0-9]/gi, '_') + '.json');
+const store = path.join(SD, 'tok-' + label.replace(/[^a-z0-9]/gi, '_') + (process.env.LANE ? '_' + process.env.LANE : '') + '.json'); // LANE=x gives a parallel lane its own token store
 let tok = fs.existsSync(store) ? JSON.parse(fs.readFileSync(store, 'utf8')) : {};
 const H = { 'content-type': 'application/json', 'x-app-key': 'desk', 'x-tenant-id': 'a7a7a7a7-0000-0000-0000-000000000004' };
 async function login() {
