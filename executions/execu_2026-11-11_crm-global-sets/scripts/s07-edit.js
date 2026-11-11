@@ -1,0 +1,18 @@
+let g=await gs(I.T); const put=(b)=>api('PUT','/global-sets/'+I.T,b); const base=x=>({name:x.name,description:x.description,colors_enabled:x.colors_enabled,values:x.values,row_version:x.row_version});
+let r=await put({...base(g),values:g.values.concat([{label:'Platinum'}])}); g=await gs(I.T); let fL=await fieldOf(L,I.fL), fC=await fieldOf(I.C,I.fC);
+RES('D1', r.s===200&&fL.datatypeOptions.allowed_values.includes('Platinum')&&fC.datatypeOptions.allowed_values.includes('Platinum')?'Pass':'Fail', SR(r)+' leads='+fL.datatypeOptions.allowed_values.join('/')+' contacts='+fC.datatypeOptions.allowed_values.join('/'));
+const order=[...g.values].reverse(); r=await put({...base(g),values:order}); g=await gs(I.T); fL=await fieldOf(L,I.fL);
+RES('D2', r.s===200&&fL.datatypeOptions.allowed_values.join()===g.values.map(v=>v.value).join()?'Pass':'Fail', SR(r)+' set='+g.values.map(v=>v.value).join('/')+' field='+fL.datatypeOptions.allowed_values.join('/'));
+r=await put({...base(g),colors_enabled:true,values:g.values.map(v=>v.value==='Gold'?{...v,color:'#FFD700'}:v),description:'QA GS1111 edited'}); g=await gs(I.T); fL=await fieldOf(L,I.fL);
+RES('D4', r.s===200&&JSON.stringify(fL.datatypeOptions).includes('FFD700')?'Pass':'Fail', SR(r)+' field colours '+JSON.stringify(fL.datatypeOptions.option_colors||fL.datatypeOptions.colors||'none').slice(0,200));
+RES('D5', g.description==='QA GS1111 edited'?'Pass':'Fail', 'description now '+g.description);
+const stale=base(g); const a=await put({...stale,description:'QA GS1111 tab A'}); const b=await put({...stale,description:'QA GS1111 tab B'}); g=await gs(I.T);
+RES('D6', a.s===200&&b.s===409&&g.description==='QA GS1111 tab A'?'Pass':'Fail','first '+SR(a)+'; second '+SR(b)+'; stored '+g.description);
+const nb=base(g); delete nb.row_version; r=await put({...nb,description:'QA GS1111 no version'}); g=await gs(I.T);
+RES('D8', r.s>=400?'Pass':'Info', 'PUT without row_version → '+SR(r)+'; stored '+g.description);
+r=await put({...base(g),id:'00000000-0000-0000-0000-000000000000',field_count:99,fields:[],created_by_name:'hacker'}); const g2=await gs(I.T);
+RES('D9', g2.id===I.T&&g2.fields.length===2&&g2.created_by_name!=='hacker'?'Pass':'Fail', 'PUT with read-only keys → '+SR(r)+'; fields still '+g2.fields.length+', created_by '+g2.created_by_name);
+const body={name:'QA GS1111 Double',values:[{label:'A'}]}; const [d1,d2]=await Promise.all([api('POST','/global-sets',body),api('POST','/global-sets',body)]);
+const dbl=arr((await api('GET','/global-sets')).j.data).filter(x=>x.name==='QA GS1111 Double'); dbl.forEach(x=>{LED('set Double '+x.id);(I.neg=I.neg||[]).push(x.id)}); SAVE();
+RES('D7', dbl.length===1?'Pass':'Fail', 'parallel creates → '+d1.s+' / '+d2.s+'; sets with that name: '+dbl.length);
+return 'ok';

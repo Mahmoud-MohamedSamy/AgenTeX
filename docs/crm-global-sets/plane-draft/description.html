@@ -1,0 +1,51 @@
+<!-- DRAFT ONLY — not published. Title: "Global Sets: features Zoho CRM has that CRM is missing" -->
+<p><strong>Summary</strong></p>
+<p>We compared CRM's Global Sets with Zoho CRM. This ticket lists what Zoho has and CRM does not have yet. The feature spec is NDC-2806. Each item says where it sits in NDC-2806 (S1–S8 are its scope items).</p>
+<p><strong>Already done in CRM</strong></p>
+<ul>
+<li><p>Global Sets tab under Modules and Fields: list, search, create, edit, clone (X_Cloned, X_Cloned_2) and delete.</p></li>
+<li><p>Editor: name, description, colours, bulk add, drag to reorder, Sort A–Z, remove to Unused and move back (50 at a time).</p></li>
+<li><p>Convert a field's own pick list into a global set, and link an existing pick list with the mapping popup (records per value, Map to, Move to unused, View associated places).</p></li>
+<li><p>Used In per field: layouts, custom views, workflow rules, saved actions, approval and review processes, custom actions.</p></li>
+<li><p>Safeguards: more than 15 linked fields blocks delete and replace; locked fields (Approval Status, status fields) cannot use a set; duplicate names and values are refused; a stale save is refused.</p></li>
+<li><p>Permissions crm:global_set:view and crm:global_set:manage, plus audit entries.</p></li>
+<li><p>CRM also lets multi-select and radio-button fields use a set, which Zoho does not allow.</p></li>
+</ul>
+<p><strong>Missing — managing values</strong></p>
+<ol>
+<li>Replace that updates every place using the value. Today CRM refuses ("Change or remove it in those views first"). Zoho changes records, view and workflow criteria, field updates and field dependency, and moves the old value to Unused. NDC-2806 S3.</li>
+<li>Delete an unused value for good. Today a value can only go to Unused and back. Zoho deletes one value at a time from Unused and refuses values still in use.</li>
+<li>Saved sort order (Entered / Alphabetical) that list views, reports and dashboards follow. Today there is only a one-time Sort A–Z button. Not in NDC-2806.</li>
+<li>Add Predefined Choices in the values menu. Not in NDC-2806.</li>
+</ol>
+<p><strong>Missing — sets Zoho ships</strong></p>
+<ol start="5">
+<li>Ready-made Source and Industry sets. Today Lead Source and Industry are separate pick lists per module. Not in NDC-2806.</li>
+<li>Countries and States list behind every address Country/State field, with codes and a Configure page. Today country fields are free text. Not in NDC-2806.</li>
+</ol>
+<p><strong>Missing — where admins see a set is used</strong></p>
+<ol start="7">
+<li>Used In listing reports, field dependencies and blueprints. Today it says "Reports … are not listed here yet". NDC-2806 S6.</li>
+<li>Which value is used where (per value, e.g. which field update or workflow uses "Gold"). Today Used In is per field only.</li>
+<li>Created By column, and Used In showing module names as links. Today the list shows a field count and last modified only.</li>
+</ol>
+<p><strong>Missing — limits and API</strong></p>
+<ol start="10">
+<li>Limits per tenant: Zoho allows 30 sets (Enterprise), 15 linked pick lists per module, 30 fields per set, 500 unused values. CRM only has 1000 values and the 15-field rule.</li>
+<li>Replaced values history and a "done" notification for long replaces.</li>
+</ol>
+<p><strong>Could not be checked</strong></p>
+<ul>
+<li><p>Field dependency with a global-set field. A set field cannot be saved on a layout today (see the bug below). Please fix that first so we can test dependencies.</p></li>
+</ul>
+<p><strong>Additional notes</strong></p>
+<ul>
+<li><p>Not gaps: Zoho runs Replace in the background; Zoho Sandbox rules; Zoho's API accepting values that are not in the set (CRM should not copy this).</p></li>
+<li><p>Possible bug to check separately: a new pick list field set to "Use a global set" cannot be saved (400 "Option 'global_set_id' is not supported for datatype 'pick_list'").</p></li>
+<li><p>Possible bug to check separately: Replace leaves workflow rule criteria and field updates on the old value, which is now unused, and the rule then writes that value onto records.</p></li>
+<li><p>Possible bug to check separately: Replace is refused when a custom view filters on the value ("Change or remove it in those views first").</p></li>
+<li><p>Test spec: docs/crm-global-sets/spec-crm-global-sets.md in the QA repository.</p></li>
+<li><p>Nothing was changed on the tenant during the comparison. Zoho was checked in a test org with QA data that was removed afterwards.</p></li>
+</ul>
+<p><strong>Environment</strong></p>
+<p>staging-crm.taviportal.com (NDC-Staging), Edge, 11 November 2026, owner account. Zoho CRM Enterprise trial test org.</p>

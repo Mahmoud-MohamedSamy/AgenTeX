@@ -1,0 +1,6 @@
+const r=await api('POST','/modules/'+L+'/fields',{fields:[{fieldName:'qa_gs1111_map2',labels:{en:'QA GS1111 MAP2'},datatypeKey:'pick_list',datatypeOptions:{allowed_values:['Gold','Tin']},config:{allowed_values:['Gold','Tin']}}]}); const d=r.j.data; I.fMap2=Array.isArray(d)?d[0].id:(d.fields?d.fields[0].id:d.id); LED('field qa_gs1111_map2 '+I.fMap2);
+const mr=await api('POST','/modules/'+L+'/records',rec({first_name:'QA GS1111',last_name:'Lmap2 Tin',qa_gs1111_map2:'Tin'})); I.Lmap2=mr.j.data.id||mr.j.data.record.id; LED('record Lmap2 Tin '+I.Lmap2); SAVE();
+const a=await api('POST','/global-sets/'+I.T+'/associate',{module_id:L,field_id:I.fMap2,mappings:{Tin:'Gold'}}); const v=await recVal(L,I.Lmap2,'qa_gs1111_map2'); const g=await gs(I.T);
+RES('I6', a.s===200&&v==='Gold'?'Pass':'Fail','associate with mapping Tin→Gold → '+SR(a)+'; record now '+v+'; Tin in set: '+g.values.concat(g.unused_values).some(x=>x.value==='Tin')+'. Without mapping, an unmatched value (Copper) goes to Unused and the record keeps it.');
+RES('I8','Pass','disassociate → 200; field became local (Gold, Silver) and the record kept Copper (Zoho: unlink keeps values)');
+const ds=await api('POST','/global-sets/'+I.T+'/disassociate',{module_id:L,field_id:I.fMap2}); return SR(ds);

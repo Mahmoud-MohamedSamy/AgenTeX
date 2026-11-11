@@ -1,0 +1,12 @@
+{"out":"B2-replace-leaves-workflow-rules-on-old-value-vs-zoho.png","ticket":"Global Sets","title":"Replace does not update workflow rules; the rule keeps the old value that moved to Unused (TAVI vs Zoho CRM)","verdict":"FAIL","label":"BUG","date":"11 Nov 2026",
+"env":"TAVI NDC-Staging · set QA GS1111 Tier, rule QA GS1111 Bronze rule (off except during the run) · Zoho CRM test org org944965048 · set QA GS1111 Tier, field update QA GS1111 set Silver",
+"leftHead":"TAVI CRM (left)","rightHead":"Zoho CRM (right)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-11_crm-global-sets/evidence/raw/B2-api-card.png","full":true,"caption":"TAVI · API checks: replace succeeds but the rule criteria and action keep the old value","crop":[0,0,1600,520],"boxes":[{"b":[36,214,1564,272],"n":1,"kind":"FAIL"},{"b":[36,329,1564,366],"n":2,"kind":"FAIL"},{"b":[36,376,1564,413],"n":3,"kind":"FAIL"}]},
+{"side":"zoho","img":"executions/execu_2026-11-11_crm-global-sets/evidence/raw/gs-replace-filled.png","caption":"Zoho · Replace Values: \"replaced in all the used places (Records, Criteria, Workflow Actions, Field Dependency)\"","crop":[525,0,550,420],"boxes":[{"b":[556,166,1044,334],"n":1,"kind":"INFO"}]}
+],
+"rows":[
+[1,"Rule criteria uses the replaced value","Criteria follow the new value (Replace note: Criteria)","Criteria stay \"Bronze\" (now Unused); the rule silently stops matching","DIFFERS"],
+[2,"Rule field update uses the replaced value","Seen live: field update \"set Silver Plus\" changed to Gold after Replace","Action still sets \"Silver\" (now Unused)","DIFFERS"],
+[3,"Effect on records","—","Rule wrote \"Silver\" onto a new lead although Silver is no longer offered","DIFFERS"]
+]}

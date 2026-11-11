@@ -1,0 +1,6 @@
+{"out":"B4-api-card.png","title":"Global Sets — a save without row_version overwrites the set (CRM API, set \"QA GS1111 Tier\")","host":"staging-crm.taviportal.com","who":"owner account","date":"11 Nov 2026",
+"rows":[
+["Two saves with the same version","PUT /global-sets/{id}  {…, description:\"tab A\", row_version:N}  then the same with \"tab B\"","first 200 · second 409 GLOBAL_SET_VERSION_CONFLICT · stored \"tab A\"","ok"],
+["Save without the version","PUT /global-sets/{id}  {…, description:\"no version\"}  (row_version left out)","200 · stored \"no version\" — overwrote the newer data","bad"],
+["Read-only keys","PUT with id, field_count, fields, created_by_name changed","200 · ignored (fields still 2, created_by unchanged)","ok"]
+]}

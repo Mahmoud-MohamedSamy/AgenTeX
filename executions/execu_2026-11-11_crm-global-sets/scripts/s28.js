@@ -1,0 +1,2 @@
+const t=[]; for (const [m,p,b] of [['PATCH','/workflow/rules/'+I.W,{isActive:true}],['POST','/workflow/rules/'+I.W+'/activate',null],['PATCH','/workflow/rules/'+I.W+'/status',{isActive:true}],['POST','/workflow/rules/'+I.W+'/toggle',{isActive:true}]]) { const r=await api(m,p,b||undefined); const a=(await api('GET','/workflow/rules/'+I.W)).j.data.isActive; t.push(m+' '+p.replace(I.W,'{id}')+' → '+r.s+' active='+a); if(a) break; }
+return t;

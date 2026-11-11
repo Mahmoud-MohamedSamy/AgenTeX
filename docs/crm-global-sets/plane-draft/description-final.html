@@ -1,0 +1,48 @@
+<p><strong>Summary</strong></p>
+<p>We compared CRM's Global Sets with Zoho CRM. This ticket lists what Zoho has and CRM does not have yet. The feature spec is NDC-2806. Each item says where it sits in NDC-2806 (S1–S8 are its scope items).</p>
+<p><strong>Already done in CRM</strong></p>
+<ul>
+<li><p>Global Sets tab under Modules and Fields: list, search, create, edit, clone (X_Cloned, X_Cloned_2) and delete.</p></li>
+<li><p>Editor: name, description, colours, bulk add, drag to reorder, Sort A–Z, remove to Unused and move back (50 at a time).</p></li>
+<li><p>Convert a field's own pick list into a global set, and link an existing pick list with the mapping popup (records per value, Map to, Move to unused, View associated places).</p></li>
+<li><p>Used In per field: layouts, custom views, workflow rules, saved actions, approval and review processes, custom actions.</p></li>
+<li><p>Safeguards: more than 15 linked fields blocks delete and replace; locked fields (Approval Status, status fields) cannot use a set; duplicate names and values are refused; a stale save is refused.</p></li>
+<li><p>Permissions crm:global_set:view and crm:global_set:manage, plus audit entries.</p></li>
+<li><p>CRM also lets multi-select and radio-button fields use a set, which Zoho does not allow.</p></li>
+</ul>
+<p><strong>Missing — managing values</strong></p>
+<ol>
+<li>Replace that updates every place using the value. Today CRM refuses for views (NDC-2867) and skips workflows (NDC-2866). Zoho changes records, view and workflow criteria, field updates and field dependency, and moves the old value to Unused. NDC-2806 S3.</li>
+<li>Delete an unused value for good. Today a value can only go to Unused and back. Zoho deletes one value at a time from Unused and refuses values still in use.</li>
+<li>Saved sort order (Entered / Alphabetical) that list views, reports and dashboards follow. Today there is only a one-time Sort A–Z button. Not in NDC-2806.</li>
+<li>Add Predefined Choices in the values menu. Not in NDC-2806.</li>
+</ol>
+<p><strong>Missing — sets Zoho ships</strong></p>
+<ol start="5">
+<li>Ready-made Source and Industry sets. Today Lead Source and Industry are separate pick lists per module. Not in NDC-2806.</li>
+<li>Countries and States list behind every address Country/State field, with codes and a Configure page. Today country fields are free text. Not in NDC-2806.</li>
+</ol>
+<p><strong>Missing — where admins see a set is used</strong></p>
+<ol start="7">
+<li>Used In listing reports, field dependencies and blueprints. Today it says "Reports … are not listed here yet". NDC-2806 S6.</li>
+<li>Which value is used where (per value, e.g. which field update or workflow uses "Gold"). Today Used In is per field only.</li>
+<li>Created By column, and Used In showing module names as links. Today the list shows a field count and last modified only.</li>
+</ol>
+<p><strong>Missing — limits and API</strong></p>
+<ol start="10">
+<li>Limits per tenant: Zoho allows 30 sets (Enterprise), 15 linked pick lists per module, 30 fields per set, 500 unused values. CRM only has 1000 values and the 15-field rule; we created 51 sets without a limit.</li>
+<li>Replaced values history and a "done" notification for long replaces.</li>
+</ol>
+<p><strong>Could not be checked</strong></p>
+<ul>
+<li><p>Field dependency with a global-set field. A new field cannot be created from a set today (NDC-2865), and we did not change shared layouts to build dependency rules. Please fix NDC-2865 first so we can test field dependency with a set field.</p></li>
+</ul>
+<p><strong>Additional notes</strong></p>
+<ul>
+<li><p>Not gaps: Zoho runs Replace in the background; Zoho Sandbox rules; Zoho's API accepting values that are not in the set (CRM should not copy this).</p></li>
+<li><p>Bugs found while testing, filed separately: NDC-2865 (new field from a set cannot be saved), NDC-2866 (Replace leaves workflow rules on the old value), NDC-2867 (Replace refused when a custom view uses the value), NDC-2868 (save without version overwrites), NDC-2869 (two Arabic labels not translated).</p></li>
+<li><p>Test spec: docs/crm-global-sets/spec-crm-global-sets.md in the QA repository.</p></li>
+<li><p>The comparison changed nothing. Test runs used QA GS1111 data on NDC-Staging and in a Zoho test org; all of it was deleted afterwards.</p></li>
+</ul>
+<p><strong>Environment</strong></p>
+<p>staging-crm.taviportal.com (NDC-Staging), Edge, 11 November 2026, owner account. Zoho CRM Enterprise trial test org. Comparison images are attached.</p>

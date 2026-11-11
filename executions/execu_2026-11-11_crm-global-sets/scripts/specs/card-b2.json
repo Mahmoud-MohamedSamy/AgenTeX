@@ -1,0 +1,10 @@
+{"out":"B2-api-card.png","title":"Global Sets — Replace leaves workflow rules on the old value (CRM, set \"QA GS1111 Tier\", rule \"QA GS1111 Bronze rule\")","host":"staging-crm.taviportal.com","who":"owner account","date":"11 Nov 2026",
+"rows":[
+["Set-up","Rule criteria: QA GS1111 Tier = Bronze · action: set QA GS1111 Tier = Silver","Used In lists the rule under Workflow rules","info"],
+["Replace Bronze → Gold","POST /global-sets/{id}/values/replace  {Bronze: Gold}","200 · leads L2/L3 now Gold · Bronze moved to Unused","ok"],
+["Rule criteria after replace","GET /workflow/rules/{rule}","criteria still \"Bronze\" (a value now in Unused) — the rule can never match again","bad"],
+["Replace Silver → Gold","POST /global-sets/{id}/values/replace  {Silver: Gold}","200 · records moved · Silver moved to Unused","ok"],
+["Rule action after replace","GET /workflow/rules/{rule}","field update still sets \"Silver\" (now in Unused)","bad"],
+["Rule runs","rule on, new QA lead with Tier = Gold","lead saved with Tier = \"Silver\" — a value the set no longer offers","bad"],
+["Remove a value used by the rule","POST /global-sets/{id}/values/remove  {Bronze}","200 — no warning (only custom views are checked)","bad"]
+]}

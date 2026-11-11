@@ -1,0 +1,11 @@
+let g=await gs(I.T); const base=x=>({name:x.name,description:x.description,colors_enabled:x.colors_enabled,values:x.values,row_version:x.row_version});
+const r=await api('PUT','/global-sets/'+I.T,{...base(g),values:g.values.map(v=>v.value==='Silver'?{...v,label:'Silver Plus'}:v)}); g=await gs(I.T);
+const fL=await fieldOf(L,I.fL), fC=await fieldOf(I.C,I.fC);
+RES('E1', r.s===200?'Info':'Fail', SR(r)+' set='+g.values.map(v=>v.value+'='+v.label).join(', ')+' | leads field allowed='+fL.datatypeOptions.allowed_values.join('/')+' labels='+JSON.stringify(fL.datatypeOptions.option_labels||fL.datatypeOptions.labels||null)+' | contacts allowed='+fC.datatypeOptions.allowed_values.join('/'));
+const l1=await recVal(L,I.L1,'qa_gs1111_tier'), c1=await recVal(I.C,I.C1,'qa_gs1111_tier');
+RES('E2','Info','stored values after rename: L1='+l1+' C1='+c1+' (screen check in UI step)');
+const v=(await api('GET','/modules/'+L+'/views/'+I.V)).j.data; const rows=await api('GET','/modules/'+L+'/views/'+I.V+'/records?page=1&page_size=50'); 
+RES('E3','Info','view criteria '+JSON.stringify(v.settings.criteria)+' | view rows '+SR(rows)+' '+(rows.j?arr(rows.j.data).length:'?'));
+const w=(await api('GET','/workflow/rules/'+I.W)).j.data; RES('E4','Info','rule criteria '+JSON.stringify(w.criteria&&w.criteria.value&&w.criteria.value.stringValue)+' action '+JSON.stringify(w.actions&&w.actions[0]&&w.actions[0].fieldUpdates));
+fs.writeFileSync(RUN+'/out/fieldL-after-rename.json',JSON.stringify(fL.datatypeOptions,null,1));
+return 'ok';

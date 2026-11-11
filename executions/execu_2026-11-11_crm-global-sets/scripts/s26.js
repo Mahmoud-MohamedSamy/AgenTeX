@@ -1,0 +1,2 @@
+const crit={kind:'Comparison',field:'qa_gs1111_tier',operator:'Equal',negate:null,caseInsensitive:null,stringValue:null,value:{kind:'string',stringValue:'Bronze',intValue:null,doubleValue:null,boolValue:null,timestampValue:null,listValue:null},values:null,operands:null};
+const r=await api('PATCH','/workflow/rules/'+I.W,{criteria:crit}); const w=(await api('GET','/workflow/rules/'+I.W)).j.data; return {r:SR(r), crit:JSON.stringify(w.criteria).slice(0,300), active:w.isActive};

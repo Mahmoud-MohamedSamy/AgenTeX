@@ -1,0 +1,1 @@
+const w=(await api('GET','/workflow/rules/'+I.W)).j.data; if(w.isActive){ const d=await api('POST','/workflow/rules/'+I.W+'/deactivate'); return 'was active, deactivate '+d.s+' now '+(await api('GET','/workflow/rules/'+I.W)).j.data.isActive; } return 'inactive, criteria '+w.criteria.value.stringValue;
