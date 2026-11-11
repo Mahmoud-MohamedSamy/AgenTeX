@@ -1,0 +1,11 @@
+const o={}; const run=async()=>{const q=await api('POST','/reporting/reports/'+I.REP+'/query',{}); const d=q.j&&q.j.data&&(q.j.data.data||q.j.data); return q.s+' rows='+JSON.stringify(d&&d.rows);};
+const spec=async()=>{const g=await api('GET','/reporting/reports/'+I.REP); const d=g.j&&g.j.data&&(g.j.data.data||g.j.data); return JSON.stringify(d&&d.query_spec&&d.query_spec.filters);};
+o.before=await run();
+let g=await gs(I.RS); let r=await api('PUT','/global-sets/'+I.RS,{name:g.name,description:g.description,colors_enabled:false,values:g.values.map(v=>v.value==='Gold'?{...v,label:'Gold Star'}:v),row_version:g.row_version}); o.rename=SR(r);
+o.afterRename=await run(); o.specAfterRename=await spec();
+r=await api('POST','/global-sets/'+I.RS+'/values/replace',{replacements:{Gold:'Silver'}}); o.replace=SR(r); await sleep(2000);
+o.afterReplace=await run(); o.specAfterReplace=await spec();
+o.leads=[]; for(const id of I.RR) o.leads.push(await recVal(L,id,'qa_gs1111_rep'));
+const ok=/rows=\[\[.*Silver/.test(o.afterReplace)&&/Silver/.test(o.specAfterReplace);
+RES('J4b', ok?'Pass':'Fail','report "QA GS1111 Gold report" filters QA GS1111 Rep = Gold. Before: '+o.before.slice(0,80)+'. Rename Gold→"Gold Star" ('+o.rename+'): '+o.afterRename.slice(0,90)+'. Replace Gold→Silver ('+o.replace+', not blocked — reports are not tracked): leads now '+o.leads+'; report run '+o.afterReplace.slice(0,90)+'; report filter still '+o.specAfterReplace+'. Zoho: Replace updates reports');
+fs.writeFileSync(RUN+'/out/report-check.json',JSON.stringify(o,null,1)); return o;

@@ -11,9 +11,8 @@ const gs=async id=>{const r=await api('GET','/global-sets/'+id); return r.j&&r.j
 const fieldOf=async(mod,id)=>arr((await api('GET','/modules/'+mod+'/fields')).j.data).find(x=>x.id===id);
 const recVal=async(mod,id,f)=>{const d=(await api('GET','/modules/'+mod+'/records/'+id)).j; const s=JSON.stringify(d&&d.data); const m=s&&s.match(new RegExp('"'+f+'","value":\{"kind":"[a-z_]+","value":"?([^"}]*)')); return m?m[1]:(s||'').slice(0,200);};
 const o={}; const d=async p=>(await api('DELETE',p)).s;
-o.recs=[]; for(const id of I.R2) o.recs.push(await d('/modules/'+L+'/records/'+id));
-o.field=await d('/modules/'+L+'/fields/'+I.fR2);
-o.sets=[]; for(const s of arr((await api('GET','/global-sets')).j.data).filter(s=>/^QA GS1111/.test(s.name))) o.sets.push(s.name+':'+await d('/global-sets/'+s.id));
-const l=(await api('GET','/modules/'+L+'/layouts/'+I.LAY)).j.data; o.layoutRv=l.rowVersion; o.layoutHasField=JSON.stringify(l.views).includes('qa_gs1111_r2');
-const now=arr((await api('GET','/global-sets')).j.data).length; o.setsNow=now;
-LED('CLEANUP round 2 '+JSON.stringify(o)); return o;
+o.recs=[]; for(const id of (I.MSR||[])) if(id) o.recs.push(await d('/modules/'+L+'/records/'+id));
+if(I.MSA) o.recs.push(await d('/modules/'+L+'/records/'+I.MSA));
+o.field=await d('/modules/'+L+'/fields/'+I.fMS); o.set=await d('/global-sets/'+I.MSS);
+o.leftSets=arr((await api('GET','/global-sets')).j.data).map(s=>s.name); o.leftFields=arr((await api('GET','/modules/'+L+'/fields')).j.data).filter(f=>/qa_gs1111/.test(f.fieldName)).map(f=>f.fieldName);
+LED('CLEANUP round 4 '+JSON.stringify(o)); return o;

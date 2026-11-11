@@ -1,0 +1,13 @@
+const o={}; const lay=(await api('GET','/modules/'+L+'/layouts/'+I.LAY)).j.data; o.layoutRv=lay.rowVersion; o.layoutHasMS4=JSON.stringify(lay).includes('multi_select_4');
+let r=await api('POST','/global-sets',{name:'QA GS1111 MS',values:[{label:'Red'},{label:'Green'},{label:'Blue'}]}); I.MSS=r.j.data.id; LED('set QA GS1111 MS '+I.MSS);
+r=await api('POST','/modules/'+L+'/fields',{fields:[{fieldName:'qa_gs1111_ms',labels:{en:'QA GS1111 MS'},datatypeKey:'multi_select',datatypeOptions:{allowed_values:['Red','Green','Blue']},config:{allowed_values:['Red','Green','Blue']}}]}); const d=r.j.data; I.fMS=Array.isArray(d)?d[0].id:(d.fields?d.fields[0].id:d.id); LED('field qa_gs1111_ms '+I.fMS); SAVE();
+o.assoc=SR(await api('POST','/global-sets/'+I.MSS+'/associate',{module_id:L,field_id:I.fMS,mappings:{}}));
+const mk=async(t,vals)=>{const x=await api('POST','/modules/'+L+'/records',{data:[{field:'first_name',value:enc('QA GS1111')},{field:'last_name',value:enc(t)},{field:'qa_gs1111_ms',value:{kind:'list',value:vals}}]}); const id=x.j&&x.j.data&&(x.j.data.id||x.j.data.record&&x.j.data.record.id); if(id)LED('record '+t+' '+id); return [SR(x),id];};
+const a=await mk('MS RedBlue',['Red','Blue']); const b=await mk('MS RedGreen',['Red','Green']); o.recA=a[0]; o.recB=b[0]; I.MSR=[a[1],b[1]]; SAVE();
+const val=async id=>{const dd=(await api('GET','/modules/'+L+'/records/'+id)).j; const s=JSON.stringify(dd&&dd.data); const m=s&&s.match(/"qa_gs1111_ms","value":(\{[^}]*\})/); return m?m[1]:'?';};
+o.before=[await val(a[1]),await val(b[1])];
+o.replace=SR(await api('POST','/global-sets/'+I.MSS+'/values/replace',{replacements:{Red:'Blue'}})); await sleep(2000);
+o.after=[await val(a[1]),await val(b[1])];
+o.remove=SR(await api('POST','/global-sets/'+I.MSS+'/values/remove',{values:['Green']})); o.afterRemove=await val(b[1]);
+const ed=await api('PATCH','/modules/'+L+'/records/'+a[1],rec({last_name:'MS RedBlue edited'})); o.editA=SR(ed);
+fs.writeFileSync(RUN+'/out/multiselect-check.json',JSON.stringify(o,null,1)); return o;

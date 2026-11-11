@@ -41,6 +41,21 @@ const bugs = [
     expected: 'Every label is in Arabic; the page is right-to-left.',
     actual: 'The page is right-to-left and mostly translated, but "VALUES (2)" and "Move 0 to used values" stay in English.',
     note: 'Language was switched back to English after the check.', rows: 'L4', img: null },
+  { id: 'B6', sev: 'High', title: "Replace does not update reports: the filter keeps the old value and the result is stale",
+    steps: ["Create a Leads report filtering QA field = Gold (2 leads).","Replace Gold → Silver in the set.","Run the report again, then after another lead is edited."],
+    expected: "The report filter follows the new value and lists the leads under it. Zoho, seen live: the filter changed to \"IS Silver\" and the report showed all 3 leads. NDC-2806 S3 names reports.",
+    actual: "Replace is allowed (reports are not tracked). The filter stays \"Gold\"; for 70+ s the report kept returning 2 stale \"Gold\" rows, then 0 rows after an unrelated edit. After a rename the report shows the stored value, not the new label.",
+    note: "", rows: "J4, J4b", img: "B6-replace-does-not-update-reports-vs-zoho.png" },
+  { id: 'B7', sev: 'High', title: "Replace does not update field dependency maps",
+    steps: ["Create dependency maps with a set field as parent (Gold→X, Silver→Y) and as child (P→Gold, Silver).","Replace Gold → Bronze."],
+    expected: "The maps follow the new value. Zoho, seen live: Gold was removed from the map and its child values merged into the new value; records stayed valid.",
+    actual: "Both maps still use \"Gold\" (now unused). Bronze has no rule, so any child value is accepted, and an existing record now holds a combination the map forbids. Used In does not list dependency maps.",
+    note: "Set fields work as parent and as child before a replace (allowed combinations saved, wrong ones refused).", rows: "G4, J5b", img: "B7-replace-does-not-update-field-dependency-vs-zoho.png" },
+  { id: 'B8', sev: 'Low', title: "Removing a value used by an inactive blueprint leaves the blueprint broken",
+    steps: ["Create a blueprint (inactive) whose states are set values.","Remove one of those values to Unused.","Switch the blueprint on."],
+    expected: "A warning, or the removal is refused, as it is for an active blueprint.",
+    actual: "The removal is allowed with no warning; switching the blueprint on then fails: \"State 'Done' is not an allowed value of picklist\". Replace on an inactive blueprint does update its states (good). For an active blueprint both Replace and Remove are refused with clear messages.",
+    note: "Zoho blueprint behaviour not checked live (docs: blueprint values cannot be replaced or deleted).", rows: "J6, J6b", img: null },
 ];
 
 const gaps = [
@@ -203,7 +218,7 @@ a{color:var(--accent)}
       <div class="legend">${legend}<span class="muted" style="align-self:center">${total} spec rows · click a verdict to filter the table</span></div>
     </div>
     <div class="keyline">
-      <div class="key k-fail"><strong>5 bugs</strong><span class="muted">2 High, 1 Medium, 2 Low</span></div>
+      <div class="key k-fail"><strong>8 bugs</strong><span class="muted">4 High, 1 Medium, 3 Low</span></div>
       <div class="key k-gap"><strong>${nGap} missing features</strong><span class="muted">compared with Zoho CRM; 5 confirmed in the run</span></div>
       <div class="key k-pass"><strong>Core works</strong><span class="muted">create, edit, rename, unused values, clone, convert, associate, delete, permissions, audit</span></div>
     </div>
@@ -235,8 +250,7 @@ a{color:var(--accent)}
     <h2 id="h-rest">Not run, cleanup and next steps</h2>
     <div class="two">
       <div class="card"><h3>Not run or blocked</h3><ul class="list">
-        <li>Field dependency (J5): needs a set field on a shared layout plus dependency rules; not run.</li>
-        <li>Blueprint (J6): not set up for QA fields.</li>
+        <li>Round 3 (same day): 15-field rule, read-only user, reports, field dependency and blueprint — on TAVI and, for reports and dependency, live in Zoho.</li>
         <li>Low-user screen (A5): staging did not load the page within 150 s for the second session; API rows show 403.</li>
         <li>Associate popup screen (I7): passed in round 15 (10 Nov) and by API today.</li>
         <li>Round 2 (same day) ran list filter, mass update, import, Kanban summary, screen create, Arabic UI, keyboard use and layout Used In.</li></ul></div>
@@ -246,7 +260,7 @@ a{color:var(--accent)}
         <li>Zoho test org: workflow, field update, view, records, fields and sets deleted; records sit in Zoho's Recycle Bin.</li>
         <li>QA RT15 data belongs to round 15 and was left alone.</li></ul></div>
       <div class="card"><h3>Next steps</h3><ul class="list">
-        <li>File the gap ticket (draft in docs/crm-global-sets/plane-draft) and B1–B5 with images, once assignee, state, priority, module and sprint are chosen.</li>
+        <li>All filed: B1–B5 = NDC-2865…2869, B6–B8 = NDC-2917…2919, gap ticket NDC-2870 with images, once assignee, state, priority, module and sprint are chosen.</li>
         <li>After B1 is fixed, run field dependency and Used In for layouts.</li></ul></div>
     </div>
   </section>

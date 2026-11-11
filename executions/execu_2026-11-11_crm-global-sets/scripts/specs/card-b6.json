@@ -1,0 +1,9 @@
+{"out":"B6-api-card.png","title":"Global Sets — Replace does not update reports (CRM, report \"QA GS1111 Gold report\", set \"QA GS1111 R3 Rep\")","host":"staging-crm.taviportal.com","who":"owner account","date":"11 Nov 2026",
+"rows":[
+["Report set-up","POST /reporting/reports  filter QA GS1111 Rep = Gold","run → 2 rows: Rep Gold / Gold, Rep Gold / Gold","info"],
+["Rename Gold → \"Gold Star\"","PUT /global-sets/{id} (label only)","report still shows \"Gold\" (stored value, not the new label)","bad"],
+["Replace Gold → Silver","POST /global-sets/{id}/values/replace  {Gold: Silver}","200 — not blocked (reports are not tracked); all 3 leads now Silver","info"],
+["Report filter after replace","GET /reporting/reports/{id}","filter still value \"Gold\" (now an unused value)","bad"],
+["Report result after replace","POST /reporting/reports/{id}/query  (70 s later)","still 2 rows showing \"Gold\" — stale result","bad"],
+["Report result after an unrelated edit","edit another lead, run again","0 rows — the 2 replaced leads drop out of the report","bad"]
+]}

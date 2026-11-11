@@ -126,3 +126,61 @@
 - 2026-11-11T11:30:57 set QA GS1111 UI (screen) 932a000c-e3ad-463f-bf3c-592bfd0ae432
 - 2026-11-11T11:34:05 Leads Standard layout now holds qa_gs1111_r2 (rv 5) — removed when the field is deleted
 - 2026-11-11T11:53:55 CLEANUP round 2 {"recs":[204,204,204],"field":204,"sets":["QA GS1111 R2:204","QA GS1111 UI:204"],"layoutRv":5,"layoutHasField":false,"setsNow":5}
+- 2026-11-11T13:23:31 ROUND 3 (not-tested items, user OK to change settings and set back)
+- 2026-11-11T13:23:42 set R3 Many cc111fc4-796e-49fb-9405-c8b6bfd5c58b
+- 2026-11-11T13:23:44 field qa_gs1111_m1 c14db13a-f610-40f2-91d7-6acfe39c398d
+- 2026-11-11T13:23:47 field qa_gs1111_m2 bc1ceedf-0b0c-4e6d-a9cc-0324d35f762b
+- 2026-11-11T13:23:48 field qa_gs1111_m3 80bc7799-cbb9-4931-a30a-4dea98fe0397
+- 2026-11-11T13:23:49 field qa_gs1111_m4 8acd24d2-7a0c-4d01-a2a7-70881bd9f65a
+- 2026-11-11T13:23:50 field qa_gs1111_m5 eab44447-ce73-4922-99dc-efb96f4a5c18
+- 2026-11-11T13:23:53 field qa_gs1111_m6 043505bf-0d3a-4974-80dd-4eeb08d1832e
+- 2026-11-11T13:23:55 field qa_gs1111_m7 409d4d22-daa9-4cec-8844-3caf7645d694
+- 2026-11-11T13:23:57 field qa_gs1111_m8 1ea5c6dd-6de8-4220-bf3d-9483e983d891
+- 2026-11-11T13:23:59 field qa_gs1111_m9 0bc876ee-e7a4-4114-af41-5788e040c08a
+- 2026-11-11T13:24:00 field qa_gs1111_m10 a461ea7b-bf6b-4685-bc13-0440fbcea565
+- 2026-11-11T13:24:02 field qa_gs1111_m11 07fc00d3-0078-4578-8904-f45146ee8744
+- 2026-11-11T13:24:04 field qa_gs1111_m12 389fdade-e094-4cae-90c4-edc817d974bb
+- 2026-11-11T13:24:05 field qa_gs1111_m13 9048aef6-1bde-47af-9ac8-374eb3b5d06e
+- 2026-11-11T13:24:10 field qa_gs1111_m14 ab1e3145-5c65-4b0d-8f6b-f4c6056c4396
+- 2026-11-11T13:24:12 field qa_gs1111_m15 bf2f5741-58ad-4e47-bf67-f0ecf000b006
+- 2026-11-11T13:24:13 field qa_gs1111_m16 0c43f38b-0272-4685-8cf1-242d11e8d13d
+- 2026-11-11T13:25:09 GRANT crm:global_set:view to CRM profile User 204 (to be removed)
+- 2026-11-11T13:30:49 REVOKE crm:global_set:view from User: DELETE /iam/profiles/{p}/permissions/crm%3Aglobal_set%3Aview → 204 → matches baseline: true
+- 2026-11-11T13:34:13 set R3 Rep 1d4c800e-2d93-44e3-923a-1c99173b28fa
+- 2026-11-11T13:34:15 field qa_gs1111_rep 503d95e7-3658-4262-a8cf-e8c91cca8894
+- 2026-11-11T13:34:16 record Rep Gold 2b522c98-9bee-4fa2-8805-58c5bfea2a93
+- 2026-11-11T13:34:18 record Rep Gold 6cc04b44-745a-4e66-93f5-ca12efb45bb8
+- 2026-11-11T13:34:20 record Rep Silver c87391c6-2237-45c8-aca7-667b57e7c0fa
+- 2026-11-11T13:34:23 report QA GS1111 Gold report 4cbb022a-576f-4e0e-ac6c-9331c5197cf6
+- 2026-11-11T13:35:08 DELETED report 4cbb022a-576f-4e0e-ac6c-9331c5197cf6
+- 2026-11-11T13:35:09 report QA GS1111 Gold report c54cb476-3b62-415f-89c1-f2ab231461ce
+- 2026-11-11T13:37:29 report QA GS1111 All report 7a1e9e6a-b99e-40a6-b5fb-efecadec6791
+- 2026-11-11T13:39:31 set R3 Dep 03ff6dd3-8da8-40c0-b96d-198fd0fbf65e
+- 2026-11-11T13:39:32 field qa_gs1111_dp af5f4c2e-4106-465b-8f62-48418d1424a8
+- 2026-11-11T13:39:33 field qa_gs1111_dc 94d34203-98fe-450a-a44f-9c9014009611
+- 2026-11-11T13:39:33 field qa_gs1111_pp 7acbe0f2-123a-4abf-9e60-b7a5853961a9
+- 2026-11-11T13:39:34 field qa_gs1111_dc2 4ba1106d-9116-498f-b27b-968775a0ce5e
+- 2026-11-11T13:39:36 dependency map set-field parent 17ab2916-803e-413f-b8af-8c367d35d39a
+- 2026-11-11T13:39:36 dependency map set-field child 2ae6904e-2551-476c-b38c-65bd2e7ba394
+- 2026-11-11T13:39:39 record Dep GoldX 585c01fd-37dc-404c-a3c4-c211ddd46f28
+- 2026-11-11T13:39:43 record Dep PGold 5eb8bb2b-6910-4d0e-a647-96528dcf72b3
+- 2026-11-11T13:39:56 record Dep BronzeX 151f5823-e614-40d0-910c-89c51cbaeb7f
+- 2026-11-11T13:40:23 set R3 BP eeaeca3a-2016-44f1-a14e-e7ca6ad27190
+- 2026-11-11T13:40:24 field qa_gs1111_bp 2fe5935e-de55-4032-9d3f-96f46009f06b
+- 2026-11-11T13:40:26 blueprint QA GS1111 BP (inactive) 8603ad1d-451d-4d35-8595-5bbc729b6afb
+- 2026-11-11T13:40:55 blueprint 8603ad1d-451d-4d35-8595-5bbc729b6afb activation attempts: PATCH {bp} 405 active=false; POST {bp}/activate 404 active=false; PUT {bp}/active 404 active=false; POST {bp}/publish 200 active=false
+- 2026-11-11T13:40:57 record BP 1 6d2ec071-72a9-4a20-a09e-1d9343cad4f3
+- 2026-11-11T13:41:29 blueprint 8603ad1d-451d-4d35-8595-5bbc729b6afb switched ON (QA criteria last_name starts with "BP ") 422 BLUEPRINT_DEFINITION_INVALID: Blueprint definition validation failed.
+- 2026-11-11T13:41:30 record BP 2 73d45c39-0e43-47ed-b16c-5b0b99401aa1
+- 2026-11-11T13:41:42 blueprint 8603ad1d-451d-4d35-8595-5bbc729b6afb switched OFF 422 BLUEPRINT_DEFINITION_INVALID: Blueprint definition validation failed. active=false
+- 2026-11-11T13:42:11 blueprint 8603ad1d-451d-4d35-8595-5bbc729b6afb switched ON 200
+- 2026-11-11T13:42:12 record BP 3 e122cf15-36f0-46d5-a446-9cececa195e0
+- 2026-11-11T13:42:25 blueprint 8603ad1d-451d-4d35-8595-5bbc729b6afb switched OFF 200 active=false
+- 2026-11-11T13:57:42 CLEANUP round 3 {"reports":["4cbb022a:200/204","c54cb476:200/204","7a1e9e6a:200/204"],"bp":409,"maps":[204,204],"recs":["Rep Gold:204","Rep Gold:204","Rep Silver:204","Dep GoldX:204","Dep PGold:204","Dep BronzeX:204","BP 1:204","BP 2:204","BP 3:204"],"fields":["qa_gs1111_m1:204","qa_gs1111_m2:204","qa_gs1111_m3:204","qa_gs1111_m4:204","qa_gs1111_m5:204","qa_gs1111_m6:204","qa_gs1111_m7:204","qa_gs1111_m8:204","qa_gs1111_m9:204","qa_gs1111_m10:204","qa_gs1111_m11:204","qa_gs1111_m12:204","qa_gs1111_m13:204","qa_gs1111_m14:204","qa_gs1111_m15:204","qa_gs1111_m16:204","qa_gs1111_rep:204","qa_gs1111_dp:204","qa_gs1111_dc:204","qa_gs1111_pp:204","qa_gs1111_dc2:204","qa_gs1111_bp:204"],"sets":["QA GS1111 R3 BP:204","QA GS1111 R3 Dep:204","QA GS1111 R3 Many:204","QA GS1111 R3 Rep:204"]}
+- 2026-11-11T13:57:56 blueprint delete retry {"get":"200","active":false,"del1":"204 ","left":[]}
+- 2026-11-11T14:19:12 ROUND 4 multi-select check
+- 2026-11-11T14:19:17 set QA GS1111 MS 35f5f8fa-a489-4412-8c9a-b284d5d5f11d
+- 2026-11-11T14:19:18 field qa_gs1111_ms 236c42fe-30d5-4d23-9869-67e1fdf96acc
+- 2026-11-11T14:20:33 record MS RedBlue 5579f8b6-3208-48e3-82d5-613823a2905a
+- 2026-11-11T14:20:35 record MS RedGreen ca5a632c-af7e-445c-ad5a-0894cd994fbc
+- 2026-11-11T14:22:28 CLEANUP round 4 {"recs":[204,204],"field":204,"set":204,"leftSets":["Colors"],"leftFields":[]}

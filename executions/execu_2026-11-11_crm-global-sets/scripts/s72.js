@@ -1,0 +1,3 @@
+const P='11111111-1111-1111-1111-111111111103'; const now=arr((await api('GET','/iam/profiles/'+P+'/permissions')).j.data); const base=JSON.parse(fs.readFileSync(RUN+'/baseline/profile-user-permissions.json','utf8'));
+const reps=arr((await api('GET','/reporting/reports')).j.data.data).filter(r=>/QA GS1111/.test(r.name)).length; const maps=arr((await api('GET','/modules/'+L+'/dependency-maps')).j.data).length;
+return {userProfileSame: JSON.stringify(now.map(x=>x.permissionKey).sort())===JSON.stringify(base.map(x=>x.permissionKey).sort()), qaReports:reps, dependencyMapsOnLeads:maps, sets:arr((await api('GET','/global-sets')).j.data).map(s=>s.name)};

@@ -1,0 +1,9 @@
+{"out":"B7-api-card.png","title":"Global Sets — Replace does not update field dependency maps (CRM, set \"QA GS1111 R3 Dep\")","host":"staging-crm.taviportal.com","who":"owner account","date":"11 Nov 2026",
+"rows":[
+["Map 1 (set field is parent)","POST /modules/{leads}/dependency-maps  QA GS1111 DP → DC","{Gold:[X], Silver:[Y]} — Gold+X saved, Gold+Y refused 422","ok"],
+["Map 2 (set field is child)","POST /modules/{leads}/dependency-maps  PP → QA GS1111 DC2","{P:[Gold,Silver], Q:[Bronze]} — P+Gold saved, Q+Gold refused 422","ok"],
+["Replace Gold → Bronze","POST /global-sets/{id}/values/replace  {Gold: Bronze}","200; records now Bronze/X and P/Bronze","info"],
+["Maps after replace","GET /modules/{leads}/dependency-maps","still {Gold:[X], Silver:[Y]} and {P:[Gold,Silver], Q:[Bronze]} — Gold is unused","bad"],
+["Effect","new lead Bronze + X; existing lead P + Bronze","201 accepted (no rule for Bronze); P + Bronze breaks map 2 but stays","bad"],
+["Used In","GET /global-sets/{id}/used-in","no dependency maps listed","bad"]
+]}

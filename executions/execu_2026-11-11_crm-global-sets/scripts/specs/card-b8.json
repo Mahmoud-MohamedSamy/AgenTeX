@@ -1,0 +1,8 @@
+{"out":"B8-api-card.png","title":"Global Sets — removing a value used by an inactive blueprint breaks the blueprint (CRM, set \"QA GS1111 R3 BP\", blueprint \"QA GS1111 BP\")","host":"staging-crm.taviportal.com","who":"owner account","date":"11 Nov 2026",
+"rows":[
+["Inactive blueprint, Replace","POST /global-sets/{id}/values/replace  {Working: Spare}","200 · blueprint states and transitions updated to Spare (good)","ok"],
+["Inactive blueprint, Remove","POST /global-sets/{id}/values/remove  {Done} (a blueprint state)","200 — no warning","bad"],
+["Switch the blueprint on","PUT /modules/{leads}/blueprints/{id}  isActive: true","422 BLUEPRINT_DEFINITION_INVALID: \"State 'Done' is not an allowed value of picklist 'qa_gs1111_bp'\"","bad"],
+["Active blueprint, Replace","replace the state a QA lead is in","422 FIELD_OPTION_IN_BLUEPRINT \"…1 record(s) are in it… Revoke or exclude those records first\" (good)","ok"],
+["Active blueprint, Remove","remove a state value","422 \"…state of the active blueprint… switch the blueprint off first\" (good)","ok"]
+]}

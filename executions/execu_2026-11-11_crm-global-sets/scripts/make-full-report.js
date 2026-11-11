@@ -116,6 +116,15 @@ const bugs = [
   { id: 'B5', sev: 'Low', title: 'Two editor labels are not translated in Arabic', rows: 'L4',
     steps: ['Switch the language to العربية.', 'Open Global Sets and edit a set.'], exp: 'Every label in Arabic, page right-to-left.',
     act: 'Right-to-left and mostly translated, but "VALUES (2)" and "Move 0 to used values" stay in English.', note: 'The owner account was switched back to English.', img: null, raw: 'L4-ar-editor.png' },
+  { id: 'B6', sev: 'High', title: "Replace does not update reports: the filter keeps the old value and the result is stale", rows: "J4, J4b",
+    steps: ["Create a Leads report filtering QA field = Gold (2 leads).","Replace Gold → Silver in the set.","Run the report again, then after another lead is edited."], exp: "The report filter follows the new value and lists the leads under it. Zoho, seen live: the filter changed to \"IS Silver\" and the report showed all 3 leads. NDC-2806 S3 names reports.",
+    act: "Replace is allowed (reports are not tracked). The filter stays \"Gold\"; for 70+ s the report kept returning 2 stale \"Gold\" rows, then 0 rows after an unrelated edit. After a rename the report shows the stored value, not the new label.", note: "", img: "B6-replace-does-not-update-reports-vs-zoho.png" },
+  { id: 'B7', sev: 'High', title: "Replace does not update field dependency maps", rows: "G4, J5b",
+    steps: ["Create dependency maps with a set field as parent (Gold→X, Silver→Y) and as child (P→Gold, Silver).","Replace Gold → Bronze."], exp: "The maps follow the new value. Zoho, seen live: Gold was removed from the map and its child values merged into the new value; records stayed valid.",
+    act: "Both maps still use \"Gold\" (now unused). Bronze has no rule, so any child value is accepted, and an existing record now holds a combination the map forbids. Used In does not list dependency maps.", note: "Set fields work as parent and as child before a replace (allowed combinations saved, wrong ones refused).", img: "B7-replace-does-not-update-field-dependency-vs-zoho.png" },
+  { id: 'B8', sev: 'Low', title: "Removing a value used by an inactive blueprint leaves the blueprint broken", rows: "J6, J6b",
+    steps: ["Create a blueprint (inactive) whose states are set values.","Remove one of those values to Unused.","Switch the blueprint on."], exp: "A warning, or the removal is refused, as it is for an active blueprint.",
+    act: "The removal is allowed with no warning; switching the blueprint on then fails: \"State 'Done' is not an allowed value of picklist\". Replace on an inactive blueprint does update its states (good). For an active blueprint both Replace and Remove are refused with clear messages.", note: "Zoho blueprint behaviour not checked live (docs: blueprint values cannot be replaced or deleted).", img: null },
 ];
 const ANN = f => path.join(RUN, 'evidence', 'annotated', f), RAW = f => path.join(RUN, 'evidence', 'raw', f), ZO = f => path.join(RUN, 'evidence', 'zoho', f);
 const bugHtml = bugs.map(b => `<article class="bug" id="${b.id}"><header><span class="bid">${b.id}</span><span class="sev sev-${b.sev.toLowerCase()}">${b.sev}</span><h3>${esc(b.title)}</h3></header>
@@ -238,10 +247,10 @@ pre{font:12.5px/1.55 var(--mono);background:var(--soft);border-radius:6px;paddin
   <div class="meta"><span><b>TAVI</b> staging-crm.taviportal.com · tenant NDC-Staging · owner + "Mahmoud Samy" (CRM User)</span><span><b>Zoho</b> CRM test org org944965048 (Enterprise trial to 17 Nov 2026)</span><span><b>PRD</b> NDC-2806</span><span><b>Test data prefix</b> QA GS1111</span></div>
   <div class="card"><div class="bar" role="img" aria-label="Results by verdict">${bar}</div><div class="chips">${chips}<span class="muted">${total} rows (spec rows + extra checks) · click a verdict to filter the results</span></div></div>
   <div class="keys">
-    <div class="key k-fail"><strong>5 bugs</strong><span class="muted">2 High, 1 Medium, 2 Low</span></div>
+    <div class="key k-fail"><strong>8 bugs</strong><span class="muted">4 High, 1 Medium, 3 Low</span></div>
     <div class="key k-gap"><strong>11 missing features</strong><span class="muted">vs Zoho CRM; 5 confirmed by the run</span></div>
     <div class="key k-pass"><strong>${count.Pass || 0} rows pass</strong><span class="muted">create, edit, rename, unused values, clone, convert, associate, delete, import, mass update, permissions, audit, speed</span></div>
-    <div class="key k-info"><strong>2 rounds</strong><span class="muted">round 1 full run; round 2 the leftover rows; data cleaned after each</span></div>
+    <div class="key k-info"><strong>3 rounds</strong><span class="muted">round 1 full run; round 2 leftover rows; round 3 the untested areas with Zoho live checks; data cleaned after each</span></div>
   </div>
 </section>
 
@@ -259,7 +268,7 @@ pre{font:12.5px/1.55 var(--mono);background:var(--soft);border-radius:6px;paddin
 <section id="plane"><h2>Plane ticket draft</h2><p class="muted">Kept as docs/crm-global-sets/plane-draft/description.html. Not published.</p>
 <div class="ticket"><span class="draft">Draft · not published</span><span class="ttl">Global Sets: features Zoho CRM has that CRM is missing</span>${plane}</div></section>
 
-<section id="bugs"><h2>Bugs (drafts, not filed)</h2>${bugHtml}</section>
+<section id="bugs"><h2>Bugs</h2><p class="muted">Filed in Plane: B1–B5 = NDC-2865…NDC-2869, B6 = NDC-2917, B7 = NDC-2918, B8 = NDC-2919; gap ticket NDC-2870. Multi-select fields using a set are kept as a TAVI extra (NDC-2923 removed).</p>${bugHtml}</section>
 
 <section id="results"><h2>Spec and results</h2>
 <p class="muted">Each spec row with its steps, expected result, verdict and what actually happened. Shaded rows are extra checks run under a spec row.</p>
@@ -281,8 +290,8 @@ ${setupSecs.map(s => `<details><summary>${esc(s.title)}</summary><div class="pro
 
 <section id="cleanup"><h2>Cleanup and ledgers</h2>
 <div class="two">
-<div class="card"><h3>TAVI NDC-Staging</h3><ul class="prose" style="padding-left:20px;margin:0"><li>All QA GS1111 sets, fields, records, the custom view and the workflow rule deleted after each round.</li><li>Baseline diff: no sets or fields added or removed. Leads Standard layout at version 5 with the same fields as before (a QA field sat on it for a few minutes in round 2).</li><li>Deleted QA records and fields are still in the Recycle Bin: the purge was refused by the permission check.</li><li>Leads "first_name" and "phone" were changed by the owner account at 10:04 and 10:08 UTC; this run's calls don't touch them (likely another session).</li><li>The owner account's language was switched to Arabic for the L4 check and back to English.</li><li>QA RT15 data belongs to round 15 and was left alone.</li></ul></div>
-<div class="card"><h3>Zoho test org</h3><ul class="prose" style="padding-left:20px;margin:0"><li>Workflow rule, field update, custom view, records, fields and both QA sets deleted.</li><li>Deleting the Tier set turned its last linked field into a local pick list that kept its values (seen, then the field was deleted).</li><li>Deleted records sit in Zoho's Recycle Bin. The "QA RT15 GS Colors" set belongs to round 15.</li><li>Unsaved: a new Pick List field opened in the layout editor was discarded.</li></ul></div>
+<div class="card"><h3>TAVI NDC-Staging</h3><ul class="prose" style="padding-left:20px;margin:0"><li>All QA GS1111 sets, fields, records, the custom view and the workflow rule deleted after each round.</li><li>Baseline diff: no sets or fields added or removed. Leads Standard layout at version 5 with the same fields as before (a QA field sat on it for a few minutes in round 2).</li><li>Deleted QA records and fields are still in the Recycle Bin: the purge was refused by the permission check.</li><li>Leads "first_name" and "phone" were changed by the owner account at 10:04 and 10:08 UTC; this run's calls don't touch them (likely another session).</li><li>The owner account's language was switched to Arabic for the L4 check and back to English.</li><li>Round 3: the CRM "User" profile got crm:global_set:view for the read-only test and lost it again (permissions match the saved copy). QA reports, dependency maps, a QA blueprint (switched on for one QA-only test, then off), 22 fields and 4 sets were created and deleted.</li><li>QA RT15 data belongs to round 15 and was left alone.</li></ul></div>
+<div class="card"><h3>Zoho test org</h3><ul class="prose" style="padding-left:20px;margin:0"><li>Workflow rule, field update, custom view, records, fields and both QA sets deleted.</li><li>Deleting the Tier set turned its last linked field into a local pick list that kept its values (seen, then the field was deleted).</li><li>Deleted records sit in Zoho's Recycle Bin. The "QA RT15 GS Colors" set belongs to round 15.</li><li>Unsaved: a new Pick List field opened in the layout editor was discarded.</li><li>Round 3: a QA report (deleted, then purged from Recently Deleted), a map dependency, 2 fields, 3 leads and a set were created and deleted.</li></ul></div>
 </div>
 <details><summary>Baseline diff after cleanup (after/diff.json)</summary><pre>${esc(diff)}</pre></details>
 <details><summary>TAVI ledger (${ledger.split('\n').length} lines)</summary><pre>${esc(ledger)}</pre></details>

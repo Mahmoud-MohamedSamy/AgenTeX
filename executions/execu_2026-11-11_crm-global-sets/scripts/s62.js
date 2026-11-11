@@ -1,0 +1,10 @@
+await sleep(70000);
+const run=async()=>{const q=await api('POST','/reporting/reports/'+I.REP+'/query',{}); const d=q.j&&q.j.data&&(q.j.data.data||q.j.data); return JSON.stringify(d&&d.rows);};
+const o={}; o.after70s=await run();
+const p=await api('PATCH','/modules/'+L+'/records/'+I.RR[2],rec({qa_gs1111_rep:'Bronze'})); o.patch=SR(p);
+const dim=k=>({dataset_id:I.DS,field_key:k,grain:null});
+const r=await api('POST','/reporting/reports',{name:'QA GS1111 All report',folder_id:null,query_spec:{ir_version:14,base_dataset_id:I.DS,dimensions:[dim('last_name'),dim('qa_gs1111_rep')],measures:[],filters:[{dataset_id:I.DS,field_key:'last_name',operator:'starts_with',value:'Rep '}],sort:[],limit:100},viz_spec:{report_type:'tabular',config:{}}});
+const id=r.j&&r.j.data&&(r.j.data.data||r.j.data).id; I.REP2=id; SAVE(); LED('report QA GS1111 All report '+id); await sleep(20000);
+const q=await api('POST','/reporting/reports/'+id+'/query',{}); const d=q.j&&q.j.data&&(q.j.data.data||q.j.data); o.allReport=SR(q)+' '+JSON.stringify(d&&d.rows);
+o.leadsNow=[]; for(const x of I.RR) o.leadsNow.push(await recVal(L,x,'qa_gs1111_rep'));
+return o;
