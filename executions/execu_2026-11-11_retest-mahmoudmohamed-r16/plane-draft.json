@@ -1,0 +1,62 @@
+[
+ {
+  "ticket": "NDC-2635",
+  "id": "a3451c13-dda3-4367-a220-721ae246741e",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2635-retest-PARTIAL-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 11 Nov 2026</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: ndc-staging-owner (Tenant Owner)<br>Method: Manual browser + API; Zoho Desk checked live (one test task created on a Tech ticket, then deleted and purged)</p><p><strong>Checked:</strong></p><ul><li>1. Department on every activity: Department* is required, and the Task Owner list now follows it (QA AS6 Dept B → its 2 agents; Sales → its 4 agents). An agent outside the department gets 403 on its activities (NDC-2830, Done). Fixed.</li><li>3. Delete in the bulk bar: More › Delete → \"Delete 2 records? … move to the recycle bin\"; both tasks deleted. Fixed.</li></ul><p><strong>Still failing:</strong></p><ul><li>2. Delete on the task / call / event page: the task page still has only Start timer and Mark as Complete, no Delete. Zoho (seen live): task page ••• › Edit / Delete / Open in New Tab; Delete moves it to the recycle bin.</li><li>4. Activity count on the ticket: ticket #2878 with 3 tasks shows \"ACTIVITY\" without a count (0 CONVERSATION and 0 TIME ENTRY do have counts); GET /desk/tickets/{id} counts = replies, comments, attachments, time_entries. Zoho (seen live): the ticket tab reads \"1 ACTIVITY\" after adding one task.</li><li>5. Ticket-activities API and filters: /desk/tickets/{id}/activities, /desk/activities, /stats, /reports, /count and /desk/tasks/count all return 404. Zoho (API docs): GET /tickets/{id}/activities, dueDate filters, /tasks/count.</li></ul><p>Evidence: NDC-2635-retest-PARTIAL-vs-zoho.png</p>"
+ },
+ {
+  "ticket": "NDC-2844",
+  "id": "23624b84-1f63-493f-a099-4aeb5ecc4eaf",
+  "verdict": "PASS",
+  "state": "Done",
+  "attach": [
+   "NDC-2844-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 11 Nov 2026</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: ndc-staging-owner (Tenant Owner)<br>Method: Manual browser + API</p><p><strong>Checked:</strong></p><ul><li>Ticket #2880 created by API (Tech, contact \"mahmoud mohamed\" with an email): Reply All and Reply → Recipients = the contact; Cc empty.</li><li>Sent one reply, reloaded, Reply All again → Recipients still the contact, Cc empty (the contact is no longer moved to Cc).</li><li>Ticket #2881 created with the New Ticket form (same contact): Reply All and Reply → Recipients = the contact.</li><li>Control: inbound-email ticket #2568 → Recipients = the sender.</li></ul><p>Evidence: NDC-2844-retest-PASS.png</p>"
+ },
+ {
+  "ticket": "NDC-2846",
+  "id": "741976bd-e8e0-40b9-885b-9747a2d3c286",
+  "verdict": "PASS",
+  "state": "Done",
+  "attach": [
+   "NDC-2846-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 11 Nov 2026</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: ndc-staging-owner (Tenant Owner)<br>Method: Manual browser + API</p><p><strong>Checked:</strong></p><ul><li>Setup › Data Administration › Export › Contacts, CSV, all records → 18 records, Completed.</li><li>Audit Log: \"ndc-staging-owner exported 18 Contacts (CSV)\" and \"ndc-staging-owner downloaded the export 18 Contacts (CSV)\" — right object and count, each once.</li><li>No \"exported the audit log\", no \"added a Desk data export named 0 Contacts\", no \"status from blank value to completed\".</li></ul><p>Evidence: NDC-2846-retest-PASS.png</p>"
+ },
+ {
+  "ticket": "NDC-2845",
+  "id": "68fb0529-6366-484c-a700-76d8e6196a8d",
+  "verdict": "PASS",
+  "state": "Done",
+  "attach": [
+   "NDC-2845-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 11 Nov 2026</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: ndc-staging-owner (Tenant Owner)<br>Method: Manual browser + API</p><p><strong>Checked:</strong></p><ul><li>Contacts list › Select all › Update › Title on 2 contacts → both changed; Bulk Actions Log: \"Mass update · Contacts · 2 · 2 · 0 · Completed\".</li><li>Same on 51 contacts → 51 changed (checked by API); log: \"Mass update · Contacts · 51 · 51 · 0 · Completed\".</li><li>Observation (not a fail): the mass update runs from the open browser tab (\"0 of 51 done\"). A first 51-record run was cut off when the browser closed: 16 contacts changed, and that partial run is not in the Bulk Actions Log.</li></ul><p>Evidence: NDC-2845-retest-PASS.png</p>"
+ },
+ {
+  "ticket": "NDC-2840",
+  "id": "47aaacbf-eb10-414a-9b84-d53375ba1638",
+  "verdict": "PASS",
+  "state": "Done",
+  "attach": [
+   "NDC-2840-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 11 Nov 2026</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: ndc-staging-owner (Tenant Owner)<br>Method: Manual browser + API</p><p><strong>Checked:</strong></p><ul><li>Create Ticket › Ticket Owner picker: agents plus a pinned \"Mark as Unassigned — The department's assignment rules will route it\".</li><li>Chose it (QA AS6 Dept B, Status Open) → field shows \"Unassigned\" → saved as #2889 with no owner (API), still unassigned after 20 s (the tenant has no round-robin rules; routing itself is NDC-2813, Done).</li></ul><p>Evidence: NDC-2840-retest-PASS.png</p>"
+ },
+ {
+  "ticket": "NDC-2805",
+  "id": "1c1ed2bc-137f-4b31-91a0-a2ae1b0110cc",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2805-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 11 Nov 2026</strong></p><p>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: ndc-staging-owner (Tenant Owner)<br>Method: API + layout editor (read-only)</p><p><strong>Checked:</strong></p><ul><li>2. Old skills tables: not checkable from outside (old endpoints return 404).</li><li>3. Upper-case department id on rename/delete: not checkable (needs an imported ticket with an upper-case id).</li><li>4. Restored departments: not re-run. A new department has no skill types, and departments deleted before the 4 Nov backfill can't be made. The 9 Nov check (a department deleted and restored kept its skill) stands.</li></ul><p><strong>Still failing:</strong></p><ul><li>1. Where-used: GET /desk/skills/{id}/usage still lists assignment rules, workflow rules, skills, agents and open tickets only; no approval-process section.</li><li>5. Modules &amp; Fields note (Tickets › Skills › Edit Properties › ADVANCED): still only \"Desk manages these options. Add, rename and delete skills for each department on the Skills page.\" It does not say that the API name and the 10-item limit are locked; the 10-item limit is not shown anywhere.</li></ul><p>Evidence: NDC-2805-retest-PARTIAL.png</p>"
+ }
+]

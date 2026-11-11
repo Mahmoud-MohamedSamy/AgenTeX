@@ -1,0 +1,12 @@
+await page.goto(H + '/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records/new', { waitUntil: 'domcontentloaded' });
+for (let i = 0; i < 60; i++) { await sleep(2000); if (/Ticket Owner/.test(await text()) && /Department/.test(await text())) break; } await sleep(3000);
+await page.getByText('Sales', { exact: true }).first().click(); await sleep(1200);
+await page.getByRole('option', { name: /^QA AS6 Dept B$/ }).first().click().catch(async () => { await page.getByText('QA AS6 Dept B', { exact: true }).last().click(); }); await sleep(2500);
+await page.getByPlaceholder('Type or pick a subject').fill('QA RT16 2840 unassigned'); await page.keyboard.press('Tab'); await sleep(500);
+await page.getByText('Select', { exact: true }).first().click(); await sleep(1000); await page.getByRole('option', { name: /^Open$/ }).first().click().catch(() => page.getByText('Open', { exact: true }).last().click()); await sleep(1000);
+await page.getByText('ndc-staging-owner').first().click(); await sleep(2000);
+await page.locator('[role=option]', { hasText: 'Mark as Unassigned' }).first().click(); await sleep(1500);
+const t = await text(); log('owner field:', (t.match(/Ticket Owner\n[^\n]*\n?[^\n]*/) || [''])[0]);
+await shot('2840-form-unassigned.png');
+await page.getByRole('button', { name: 'Save', exact: true }).first().click(); await sleep(8000);
+log('url:', page.url()); await shot('2840-saved.png');

@@ -1,0 +1,10 @@
+await page.goto(H + '/settings/data/export', { waitUntil: 'domcontentloaded' });
+for (let i = 0; i < 40; i++) { await sleep(2000); if (/Export history/.test(await text())) break; } await sleep(2000);
+await page.locator('button:has-text("Choose a module")').first().click({ force: true }); await sleep(1200);
+await page.locator('li[role=option]', { hasText: /^Contacts$/ }).first().click(); await sleep(1500);
+await shot('2846-export-form.png');
+page.on('download', d => log('download', d.suggestedFilename()));
+await page.getByRole('button', { name: 'Export', exact: true }).last().click(); await sleep(15000);
+await page.getByRole('button', { name: 'Refresh history' }).click().catch(() => {}); await sleep(4000);
+const t = await text(); log('history top:', t.slice(t.indexOf('Module\tExported by'), t.indexOf('Module\tExported by') + 300));
+await shot('2846-export-done.png');
