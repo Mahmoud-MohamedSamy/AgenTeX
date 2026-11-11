@@ -200,7 +200,30 @@ public class SlaRuntimeTest {
         assertNotEquals(obligation(s, "resolution", "state"), "running");
     }
 
-    @Test(groups = "regression", description = "A selected trigger resets the SLA: new execution, times restart")
+    @Test(groups = {"regression", "NDC-2825"}, description = "NDC-2825: Create + Update SLA restarts when Priority is changed a minute later (response and resolution due move to the update time)")
+    @CaseId("SL-30b")
+    public void resetOnPriorityUpdate() {
+        String tag = "SL30b" + uid();
+        policyFor(tag, triggers("create", "update"), t(30, "minutes"), t(2, "hours"), null, DEPT_A);
+        String tk = api.ticket("QA AO " + tag, DEPT_A, "high");
+        JsonPath a = api.sla(tk, 30);
+        assertEquals(a.getString("data.state"), "applied");
+        sleep(60000);
+        OffsetDateTime updatedAt = OffsetDateTime.now();
+        ok(api.setField(tk, "priority", "medium"), "priority");
+        sleep(25000);
+        JsonPath b = api.sla(tk, 1);
+        System.out.println("[RECORD] NDC-2825 execution " + a.getString("data.execution.number") + " -> " + b.getString("data.execution.number")
+                + " trigger " + b.getString("data.execution.trigger")
+                + " response " + obligation(a, "first_response", "due_at") + " -> " + obligation(b, "first_response", "due_at")
+                + " resolution " + obligation(a, "resolution", "due_at") + " -> " + obligation(b, "resolution", "due_at") + " ticket " + tk);
+        assertTrue(b.getInt("data.execution.number") > a.getInt("data.execution.number"), "new execution after the update");
+        OffsetDateTime resp = OffsetDateTime.parse(obligation(b, "first_response", "due_at")), res = OffsetDateTime.parse(obligation(b, "resolution", "due_at"));
+        assertTrue(Math.abs(Duration.between(updatedAt.plusMinutes(30), resp).getSeconds()) < 120, "response due counted from the update: " + resp);
+        assertTrue(Math.abs(Duration.between(updatedAt.plusHours(2), res).getSeconds()) < 120, "resolution due counted from the update: " + res);
+    }
+
+    @Test(groups = {"regression", "NDC-2825"}, description = "A selected trigger resets the SLA: new execution, times restart")
     @CaseId("SL-30")
     public void resetOnTrigger() {
         String tag = "SL30" + uid();
