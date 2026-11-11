@@ -1,0 +1,13 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15';
+const T='88e8ea44-1658-4df3-9930-d0902b91073d'; const E=r=>r.j&&r.j.error?r.j.error.code+': '+r.j.error.message:'';
+const I=JSON.parse(fs.readFileSync(RUN+'/out/2205-tickets.json','utf8'));
+const enc=v=>({kind:'string',value:String(v)}); const body=vals=>({data:Object.entries(vals).map(([f,v])=>({field:f,value:enc(v)}))});
+const fl=r=>{const o={id:r.id};for(const x of (r.data||[])){const v=x.value||{};o[x.field]=v.kind==='array'?(v.items||[]).map(i=>i.value):v.value!==undefined?v.value:(v.kind==='null'?null:v);}return o;};
+const tags = async id => fl((await api('GET','/modules/'+T+'/records/'+id)).j.data).tags;
+const out={};
+out.p1 = (await api('PATCH','/modules/'+T+'/records/'+I.t1.id, body({priority:'Urgent'}))).s;
+out.p2 = (await api('PATCH','/modules/'+T+'/records/'+I.t2.id, body({subject:'QA RT15 2205 dept AO edited'}))).s;
+await sleep(20000);
+out.t1tags = await tags(I.t1.id); out.t2tags = await tags(I.t2.id);
+const tl = await api('GET','/desk/tickets/'+I.t2.id+'/activity'); out.t2activity = tl.s + ' ' + JSON.stringify(arr(tl.j&&tl.j.data).slice(0,12).map(a=>[a.type||a.event||a.action, a.summary||a.message||'', a.actor_label||a.actor||''])).slice(0,1500);
+return out;

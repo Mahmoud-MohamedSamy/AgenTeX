@@ -1,0 +1,190 @@
+{
+ "out": "NDC-2807-retest-PARTIAL.png",
+ "ticket": "NDC-2807",
+ "title": "Long mass actions keep running after leaving the page: delete yes, mass update no",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging CRM · owner · 450 leads \"QA RT15 2807 0001–0450\", private view \"QA RT15 2807 view\"",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "NDC-2807-card-counts.png",
+   "caption": "Record counts checked by API after each run",
+   "crop": [
+    0,
+    0,
+    1600,
+    380
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      204
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      251
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      319
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      329,
+      1564,
+      366
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2807-mu2-running.png",
+   "caption": "Leads › Mass Update (Lead Source = Referral, 200 selected) running, \"0 of 200 done\" — page left here",
+   "crop": [
+    20,
+    220,
+    1080,
+    670
+   ],
+   "boxes": [
+    {
+     "b": [
+      24,
+      803,
+      284,
+      876
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      908,
+      623,
+      1065,
+      663
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2807-md-confirm.png",
+   "caption": "Mass Delete: all 450 matching records selected, type DELETE to confirm",
+   "crop": [
+    370,
+    70,
+    1120,
+    540
+   ],
+   "boxes": [
+    {
+     "b": [
+      378,
+      248,
+      725,
+      280
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      578,
+      310,
+      1022,
+      590
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2807-bin-running.png",
+   "caption": "Recycle Bin batch: Delete (50) — \"You can keep using the page\"",
+   "crop": [
+    270,
+    60,
+    1330,
+    250
+   ],
+   "boxes": [
+    {
+     "b": [
+      1333,
+      70,
+      1444,
+      106
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      292,
+      252,
+      1576,
+      298
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Mass update, leave the page mid-run",
+   "All 200 records updated",
+   "Only 6 / 200 changed after 3 min; no job, no progress on return",
+   "FAIL"
+  ],
+  [
+   2,
+   "Mass delete 450, leave via Home",
+   "All 450 deleted",
+   "450 deleted, 0 failed, all in one bin batch",
+   "PASS"
+  ],
+  [
+   3,
+   "Recycle Bin: delete a selection, leave",
+   "Selection deleted",
+   "50 removed each time (450 → 400 → 350)",
+   "PASS"
+  ],
+  [
+   4,
+   "Empty Bin (ticket's main path)",
+   "Bin emptied after leaving",
+   "Not run: bin also holds 18 non-QA items",
+   "INFO"
+  ]
+ ]
+}

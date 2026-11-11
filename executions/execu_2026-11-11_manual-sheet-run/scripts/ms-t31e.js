@@ -1,0 +1,2 @@
+const L=require('./lib');module.exports=async()=>{const R={};await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+'/settings/data/recycle-bin',{waitUntil:'commit'}).catch(()=>{});await pg.waitForTimeout(8000);
+ const a=pg.locator('a,button').filter({hasText:/Bulk Actions Log|Bulk actions log/i}).first();R.link=await a.count();if(R.link){await a.click();await pg.waitForTimeout(8000);}R.url=pg.url();R.text=(await L.body_txt()).replace(/^.*?(Bulk Actions Log|Bulk actions log)/i,'').slice(0,700);await L.shot('t31-02-log');return R;};

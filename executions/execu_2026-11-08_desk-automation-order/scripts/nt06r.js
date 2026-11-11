@@ -1,0 +1,1 @@
+const r=(await api('GET','/desk/notification-rules/departments/93949fbd-f9df-4e2e-ae45-00b8dc38385b')).j.data.rules;return r.filter(x=>/comment_edited|comment_added/.test(x.key)).map(x=>x.key+' on='+x.is_enabled+' tpl='+x.template_id+' ch='+x.channels.join('+'));

@@ -47,11 +47,55 @@ public class ApiClient {
             String script = Config.get("api.tokenScript", "");
             if (!script.isEmpty() && DriverManager.has()) token = AuthManager.fromBrowser(DriverManager.get(), script);
         }
+        if ((token == null || token.isEmpty()) && !Config.get("api.loginPath", "").isEmpty()) token = apiToken();
         return token;
+    }
+
+    // --- API sign-in fallback (11 Nov 2026: Desk no longer keeps the access token in a readable cookie) ---
+    // One sign-in per JVM with credentials.file/account, then refresh-token renewals; values are never logged.
+    private static String apiAccess, apiRefresh;
+    private static long apiAt;
+    private static boolean apiStale;
+
+    private static synchronized String apiToken() {
+        boolean old = System.currentTimeMillis() - apiAt > 4 * 60_000L;
+        if (apiAccess != null && !apiStale && !old) return apiAccess;
+        if (apiRefresh != null) {
+            Response r = authCall(Config.get("api.refreshPath", "/iam/auth/refresh"), java.util.Map.of("refresh_token", apiRefresh));
+            if (r.statusCode() == 200 && r.jsonPath().getString("data.access_token") != null) return keep(r);
+        }
+        qa.core.auth.Credentials c = qa.core.auth.Credentials.load();
+        Response r = authCall(Config.get("api.loginPath"), java.util.Map.of("email", c.email, "password", c.password(),
+                "device_label", "qa-automation", "remember_me", true));
+        if (r.statusCode() == 429) throw new SkipException("API sign-in rate limited (429) - stop and tell the user");
+        if (r.statusCode() != 200 || r.jsonPath().getString("data.access_token") == null)
+            throw new SkipException("API sign-in failed: HTTP " + r.statusCode());
+        return keep(r);
+    }
+
+    private static String keep(Response r) {
+        apiAccess = r.jsonPath().getString("data.access_token");
+        String rt = r.jsonPath().getString("data.refresh_token");
+        if (rt != null) apiRefresh = rt;
+        apiAt = System.currentTimeMillis();
+        apiStale = false;
+        return apiAccess;
+    }
+
+    private static Response authCall(String path, Object body) {
+        RequestSpecification r = RestAssured.given().baseUri(Config.get("api.baseUrl", Config.baseUrl() + "/api/v1"))
+                .contentType(ContentType.JSON).relaxedHTTPSValidation();
+        String h = Config.get("api.headers", "") + ";" + Config.get("api.loginHeaders", "");
+        for (String pair : h.split(";")) {
+            int i = pair.indexOf(':');
+            if (i > 0) r.header(pair.substring(0, i).trim(), pair.substring(i + 1).trim());
+        }
+        return r.body(body).post(path); // no Allure filter here: the body holds the password and tokens
     }
 
     /** Call again after the app refreshed its token (401). */
     public void resetToken() {
+        apiStale = true;
         token = null;
     }
 

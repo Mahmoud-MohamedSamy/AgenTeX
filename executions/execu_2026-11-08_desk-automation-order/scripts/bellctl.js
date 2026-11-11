@@ -1,0 +1,2 @@
+const n=(await api('GET','/notifications?limit=20&category=general&modules=desk&apps=desk')).j?.data;const L=Array.isArray(n)?n:(n?.items||n?.notifications||n?.data||[]);
+return L.filter(x=>/MAILCTL|#2818/.test(JSON.stringify(x))).map(x=>(x.type||'')+' | '+(x.title||'').slice(0,90)+' | '+(x.created_at||'').slice(11,19)+' | channels '+JSON.stringify(x.channels||x.delivery||x.deliveries||'').slice(0,120));

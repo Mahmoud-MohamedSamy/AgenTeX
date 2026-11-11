@@ -1,0 +1,2 @@
+module.exports=async()=>{const R={pages:0,found:[]};let all=[];for(let p=1;p<10;p++){const r=await api('GET','/workflow/rules?moduleId='+T+'&page='+p+'&pageSize=50');const l=arr(r.j&&r.j.data);R.pages=p;R.meta=JSON.stringify(r.j&&r.j.meta).slice(0,150);all.push(...l);if(l.length<50)break;}
+ const q=all.filter(x=>/^QA MAN/.test(x.name));R.total=all.length;for(const x of q){const d=await api('DELETE','/workflow/rules/'+x.id);R.found.push(x.name+' '+d.s);LED('clean rule '+x.name+' '+d.s);}return R;};

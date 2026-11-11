@@ -1,0 +1,1 @@
+const q=await api("GET","/desk/queues/agents");const L=q.j?.data?.agents||q.j?.data||[];return L.map(x=>x.name+":"+(x.department_ids||[]).includes("93949fbd-f9df-4e2e-ae45-00b8dc38385b")+":"+x.user_id.slice(0,8));

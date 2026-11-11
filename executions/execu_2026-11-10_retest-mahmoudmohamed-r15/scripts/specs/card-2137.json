@@ -1,0 +1,6 @@
+{"out":"NDC-2137-card-timing.png","title":"NDC-2137 · Transactions Kanban (Kanban View, pipeline Standard), 1 warm-up + 8 reloads","host":"staging-crm.taviportal.com","who":"owner, Edge headless 1600×900","date":"10 Nov 2026","rows":[
+["Target (ticket)","p95 ≤ 2 s for column headers + first cards","6 Nov retest: headers p95 1.76 s, cards 500","info"],
+["Column headers (Probability + Amount)","Loads (s): 4.43, 11.47, 3.18, 9.85, 19.11, 5.14, 9.23, 3.90","p50 5.14 s · p95 19.11 s  → slower than 6 Nov","bad"],
+["First cards","8 of 8 reloads","Never shown — every column: \"Could not load these records. Try again\"","bad"],
+["Column record requests","GET …/records?…pipeline+stage…&skip_total=true  (134 calls)","134 × 500 INTERNAL_ERROR","bad"],
+["API check","GET /modules/{transactions|leads|tasks}/records?skip_total=true","500 on all three · same call without skip_total → 200 (unchanged since 6 Nov)","bad"]]}

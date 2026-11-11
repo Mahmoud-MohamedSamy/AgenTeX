@@ -1,0 +1,119 @@
+{
+ "out": "NDC-2205-retest-PASS.png",
+ "ticket": "NDC-2205",
+ "title": "Workflow rules: On Edit / field-change rules no longer run when a ticket is created",
+ "verdict": "PASS",
+ "env": "NDC-Staging · Desk · owner · 3 Tickets rules (subject starts with \"QA RT15 2205\"): On Create, On Edit, Subject changed · tickets #2560–#2562",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "2205-ticket-form-history.png",
+   "caption": "#2562 made from the New Ticket form: History shows only \"Workflow rule ran QA RT15 2205 On Create\"; tags = \"created\" only",
+   "crop": [
+    664,
+    60,
+    936,
+    740
+   ],
+   "boxes": [
+    {
+     "b": [
+      700,
+      148,
+      960,
+      174
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      700,
+      666,
+      1000,
+      792
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2205-ticket-edited-history.png",
+   "caption": "Control #2561: subject edited → On Edit and Subject changed run (tags \"edited\", \"fieldchanged\")",
+   "crop": [
+    664,
+    60,
+    936,
+    740
+   ],
+   "boxes": [
+    {
+     "b": [
+      700,
+      520,
+      1030,
+      644
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      700,
+      662,
+      1000,
+      786
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Create ticket from New Ticket form (#2562)",
+   "Only the On Create rule runs",
+   "Only \"QA RT15 created\" added; no edited / fieldchanged tag after 20 s",
+   "PASS"
+  ],
+  [
+   2,
+   "Ticket History at create",
+   "No On Edit / field-change rule ran",
+   "History: created → Ticket Number → Tags → \"Workflow rule ran QA RT15 2205 On Create\" only",
+   "PASS"
+  ],
+  [
+   3,
+   "Edit after create (control)",
+   "On Edit and Subject changed run on a real edit",
+   "#2561 subject edited → +edited +fieldchanged; #2560 priority → Urgent → +edited only",
+   "PASS"
+  ],
+  [
+   4,
+   "Create by API with and without department (#2560, #2561)",
+   "Default department set at create; no edit rules",
+   "#2560 got Customer Support at create; both only \"created\" tags",
+   "PASS"
+  ],
+  [
+   5,
+   "Note: rule API accepts bad tag ids",
+   "Refuse AddTags without a valid tag id",
+   "POST /workflow/rules 201 with error text as tagIds (rules deleted at once)",
+   "INFO"
+  ],
+  [
+   6,
+   "Note: AddTags with a tag of another department",
+   "Tag from the ticket's department",
+   "Customer Support ticket shows \"QA RT15 created\" twice",
+   "INFO"
+  ]
+ ],
+ "method": "API and screen (automation failed on a changed form locator)"
+}

@@ -1,0 +1,1 @@
+const L=require('./lib');module.exports=async()=>{const t=(await L.findTicket('QA MAN two editors'))[0];const o=fl((await api('GET','/modules/'+T+'/records/'+t.id)).j.data);return {id:t.id,owner:o.owner,dept:o.department};};

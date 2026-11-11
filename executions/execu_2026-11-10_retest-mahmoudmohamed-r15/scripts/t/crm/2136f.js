@@ -1,0 +1,1 @@
+const r=await api('GET','/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/views?kind=list'); const v=(r.j&&r.j.data&&r.j.data.views||[]); return {s:r.s, n:v.length, names:v.map(x=>x.name+(x.is_system?'(sys)':'')+':'+x.id.slice(0,8)).slice(0,30), err:r.s>=300?r.t.slice(0,300):''};

@@ -1,0 +1,174 @@
+{
+ "out": "NDC-2830-retest-PASS.png",
+ "ticket": "NDC-2830",
+ "title": "Activities: agents no longer see tasks/calls of departments they are not in",
+ "verdict": "PASS",
+ "env": "NDC-Staging · Desk › Activities · owner (made HR data) + Desk agent \"Customer Experience Specialists 2\" (not in HR) · ticket #2570",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "2830-owner-activities-search.png",
+   "caption": "Owner, search \"QA RT15 2830\": 3 activities (HR call, CS task, HR task)",
+   "crop": [
+    260,
+    60,
+    1340,
+    250
+   ],
+   "boxes": [
+    {
+     "b": [
+      274,
+      118,
+      1590,
+      172
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      270,
+      240,
+      1590,
+      296
+     ],
+     "n": 1,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2830-agent-activities-search.png",
+   "caption": "Agent (not in HR), same search: 1 activity — only the Customer Support task",
+   "crop": [
+    260,
+    60,
+    1340,
+    250
+   ],
+   "boxes": [
+    {
+     "b": [
+      306,
+      70,
+      690,
+      98
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      270,
+      116,
+      1590,
+      172
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2830-agent-open-task.png",
+   "caption": "Agent opens the HR task link: \"Permission denied.\"",
+   "crop": [
+    260,
+    790,
+    1340,
+    110
+   ],
+   "boxes": [
+    {
+     "b": [
+      1298,
+      820,
+      1574,
+      874
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  },
+  {
+   "img": "2830-api-card.png",
+   "caption": "API as the agent: HR records 403, not in lists; control task 200",
+   "crop": [
+    0,
+    0,
+    1600,
+    440
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      277
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      287,
+      1564,
+      418
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Owner sees all test activities",
+   "HR + Customer Support",
+   "3 found (HR call, CS task, HR task); All Activities 528",
+   "INFO"
+  ],
+  [
+   2,
+   "Agent not in HR: Activities list + search",
+   "No HR tasks/calls",
+   "1 found (CS task only); All Activities 526",
+   "PASS"
+  ],
+  [
+   3,
+   "Agent opens HR task by link",
+   "Access refused",
+   "\"Permission denied.\"",
+   "PASS"
+  ],
+  [
+   4,
+   "Agent API: read / edit HR task, call, ticket",
+   "Refused",
+   "GET 403 ×3, PATCH 403",
+   "PASS"
+  ],
+  [
+   5,
+   "Agent API lists + control",
+   "HR records hidden, own department visible",
+   "Task list 397 rows / call list 54 rows without HR items; CS task 200",
+   "PASS"
+  ],
+  [
+   6,
+   "Side note: Add Task owner list filtered by department",
+   "—",
+   "Not re-checked in this round",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,4 @@
+const S=JSON.parse(fs.readFileSync('../nt10r.json','utf8'));const M='88e8ea44-1658-4df3-9930-d0902b91073d';const R={};
+const d=(await api('GET','/modules/'+M+'/records/'+S.ticket)).j?.data?.data||[];const g=k=>d.find(x=>x.field===k)?.value?.value;R.rec={dept:g('department')==='93949fbd-f9df-4e2e-ae45-00b8dc38385b'?'QA AO Dept A':g('department'),subject:g('subject'),status:g('status')};
+for(const p of ['/desk/tickets/'+S.ticket+'/threads','/desk/tickets/'+S.ticket+'/conversations','/desk/tickets/'+S.ticket+'/replies']){const r=await api('GET',p);if(r.s<300){const t=r.t.replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+/g,'<e>');R[p.split('/').pop()]=r.s+' subj:'+(t.match(/"subject":"[^"]{0,120}"/g)||[]).join('|')+' link:'+/happiness/.test(t)+' '+(t.match(/happiness[^"\ ]{0,30}/g)||[]).slice(0,2).map(x=>x.replace(/[A-Za-z0-9_-]{16,}/g,'<tok>')).join(',');}else R[p.split('/').pop()]=r.s;}
+return R;

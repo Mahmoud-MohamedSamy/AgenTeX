@@ -1,0 +1,5 @@
+const fs=require('fs'),path=require('path');const DL='C:/Users/Dell/Downloads';const f=fs.readdirSync(DL).filter(n=>/^secret-key-\d+\.csv$/.test(n)).sort().pop();const KEY=(fs.readFileSync(path.join(DL,f),'utf8').match(/plane_[A-Za-z0-9_-]+/)||[])[0];
+(async()=>{const W='https://api.plane.so/api/v1/workspaces/ahmed-hegazy';const r=await fetch(W+'/work-items/NDC-'+process.argv[2]+'/?expand=state',{headers:{'x-api-key':KEY}});const j=await r.json();
+const strip=h=>String(h||'').replace(/<\/(p|li)>/g,'\n').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&quot;/g,'"');
+console.log(r.status,'NDC-'+j.sequence_id,j.name,'| state',j.state?.name||j.state,'| priority',j.priority,'| updated',String(j.updated_at).slice(0,16));console.log(strip(j.description_html).slice(0,2500));
+const c=await fetch(W+'/projects/'+j.project+'/work-items/'+j.id+'/comments/',{headers:{'x-api-key':KEY}});const cj=await c.json();for(const x of (cj.results||cj||[]).slice(-4))console.log('-- comment',String(x.created_at).slice(0,16),strip(x.comment_html).slice(0,400));})().catch(e=>console.log('ERR',String(e.message).replace(/plane_[A-Za-z0-9_-]+/g,'<key>')));

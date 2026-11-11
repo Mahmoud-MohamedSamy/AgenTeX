@@ -1,0 +1,87 @@
+# QA data ledger — round 15 (prefix QA RT15)
+- 2026-11-10T14:17:56 CRM Leads field qa_rt15_gs_a ba322a2c-6fea-4c49-9963-6a2c899d7b14
+- 2026-11-10T14:17:57 CRM Leads field qa_rt15_gs_b af2eab3d-fc84-4f21-aeb0-c3623bec0a79
+- 2026-11-10T14:17:57 global set QA RT15 GS Colors db9fb3a2-5ebd-498a-b914-e7ad1cfe0268
+- 2026-11-10T14:18:26 CRM lead QA RT15 2806 Red b7b27714-0093-46fc-bac3-27c4fa7cbea6
+- 2026-11-10T14:18:30 CRM lead QA RT15 2806 Green a0d44d4d-1a12-41c2-8de6-206724a2f241
+- 2026-11-10T14:18:31 CRM lead QA RT15 2806 Yellow 16b07295-63db-4e0f-bf29-c01a19a3f6b9
+- 2026-11-10T14:19:10 global set QA RT15 GS Regions (from field B) d3f4f79c-ff27-4208-baf7-a9b1cf19cb20
+- 2026-11-10T14:19:54 global set clone QA RT15 GS Colors_Cloned a896b5c2-ebf4-4e28-8054-1ff9b65fbb76
+- 2026-11-10T14:19:54 global set clone2 QA RT15 GS Colors_Cloned_2 c1a5dae0-5e51-4ed2-aabb-8cbc877d3823
+- 2026-11-10T14:21:39 CRM Leads view QA RT15 2806 Purple view 6548f7d2-7548-4fd7-8326-49711cc86a30
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x1 1f6eed3c-7c84-4fb4-9a01-d843ca71c415
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x2 bdf09db9-1231-468a-9755-449a329f96ca
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x3 dfc26893-0a35-4d8c-b387-6cb5610d044f
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x4 0adcabc4-4dfe-4fda-8f11-ffbace4aecdf
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x5 8622ff40-a884-4b91-9e9a-cfd984dc53d1
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x6 2d175ff5-d715-4dc2-b6a3-4c3854392986
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x7 5f9f3688-abfc-4ca7-88f3-b7f7681ea535
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x8 4cb8c002-30e1-4aa1-8d99-ba1d6b9d7569
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x9 06b24da9-7349-4650-a516-5e329cd370bf
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x10 13dbe335-9b21-454f-be2c-ac46769c3d9a
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x11 3f89f0e1-372c-47d0-8e01-6d0d2b475b2c
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x12 df15a3aa-6b59-4189-8c43-62e29beb7fba
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x13 514c36ea-8593-44d0-91d4-5222a27184c4
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x14 232f0131-785c-4879-9802-4011989131d6
+- 2026-11-10T14:22:23 CRM Leads field qa_rt15_gs_x15 5dbdefee-2cac-4992-a09b-fd71138eec7a
+- 2026-11-10T14:22:48 global set QA RT15 GS Big a55a63cd-ced0-474b-a379-356279214233
+- 2026-11-10T14:43:33 DESK workflow rule "QA RT15 2205 On Create" 97ca88d4-0817-4c4f-9742-eba78e12b6a0
+- 2026-11-10T14:43:33 DESK workflow rule "QA RT15 2205 On Edit" 7207ea60-b0ae-4bbb-9cf6-ecc0fe37819f
+- 2026-11-10T14:43:34 DESK workflow rule "QA RT15 2205 Subject changed" 4f0b41ee-f29d-43e7-9907-497808b2f341
+- 2026-11-10T14:43:45 DESK workflow rule 97ca88d4-0817-4c4f-9742-eba78e12b6a0 (bad tag ids) deactivate 204 delete 204
+- 2026-11-10T14:43:46 DESK workflow rule 7207ea60-b0ae-4bbb-9cf6-ecc0fe37819f (bad tag ids) deactivate 204 delete 204
+- 2026-11-10T14:43:46 DESK workflow rule 4f0b41ee-f29d-43e7-9907-497808b2f341 (bad tag ids) deactivate 204 delete 204
+- 2026-11-10T14:43:54 DESK tag "QA RT15 created" dept 7e1ac409 fbaca6d3-3066-4f54-83cb-cb0e1142e5ee
+- 2026-11-10T14:43:56 DESK tag "QA RT15 created" dept 93949fbd bd3bb0f0-5f70-40bf-ac37-ea5d696d4edb
+- 2026-11-10T14:43:56 DESK tag "QA RT15 edited" dept 7e1ac409 78442974-12ff-4f43-b387-648e20c45580
+- 2026-11-10T14:43:58 DESK tag "QA RT15 edited" dept 93949fbd faf8fcdd-8fc5-4c34-8ff2-919a7dde49cb
+- 2026-11-10T14:43:58 DESK tag "QA RT15 fieldchanged" dept 7e1ac409 1c46f022-0411-4a1e-aa32-be360d2073a2
+- 2026-11-10T14:43:59 DESK tag "QA RT15 fieldchanged" dept 93949fbd 5e36ecf8-3cd8-46fc-9ba7-3a0112c39997
+- 2026-11-10T14:44:00 DESK workflow rule "QA RT15 2205 On Create" 2d549710-0315-482b-9cf7-d59dff48f1c1
+- 2026-11-10T14:44:00 DESK workflow rule "QA RT15 2205 On Edit" e256b2d6-1ce7-4f32-9158-5febbcb78359
+- 2026-11-10T14:44:01 DESK workflow rule "QA RT15 2205 Subject changed" 35d7f733-8b6c-461a-9121-fc5398d63ace
+- 2026-11-10T14:45:04 DESK ticket "QA RT15 2205 no dept" a9bfd0be-ff18-48d3-b3a3-a0677184220d
+- 2026-11-10T14:45:08 DESK ticket "QA RT15 2205 dept AO" 1f8e6e33-174e-4065-872c-9e2f82f70d2d
+- 2026-11-10T14:53:17 DESK ticket "QA RT15 2205 form" 76c9b940-4734-4305-8277-f98956666ae7 (UI form)
+- 2026-11-10T14:57:33 DESK workflow rule "QA RT15 2204 role owner" (active) 5ccaada8-4e85-46e1-8b68-bf8e1b35d079
+- 2026-11-10T14:57:35 DESK ticket "QA RT15 2204 role 1" 797d66ea-d04d-4e53-9a05-5df091e3f42d
+- 2026-11-10T14:57:36 DESK ticket "QA RT15 2204 role 2" 456b698a-8335-47fa-9fc4-829803ca8d8d
+- 2026-11-10T14:57:36 DESK ticket "QA RT15 2204 role 3" b242d6b2-6836-4360-9463-3dcdb639e048
+- 2026-11-10T15:08:43 DESK workflow rule 5ccaada8 (2204 role owner) deactivated
+- 2026-11-10T15:09:46 DESK contact "QA RT15 2830 Contact" 0aafc57d-893b-4f34-ae4b-3e18f31f4d32
+- 2026-11-10T15:09:48 DESK ticket "QA RT15 2830 HR ticket" (HR) db3b9750-8f10-456d-9fca-9e5eff884f0e
+- 2026-11-10T15:09:51 DESK task "QA RT15 2830 HR task" (HR) 0178971d-eef5-4677-8244-e6167f017475
+- 2026-11-10T15:09:52 DESK call "QA RT15 2830 HR call" (HR) 4e7d40ae-7e76-4ad2-816f-a90914742de0
+- 2026-11-10T15:09:53 DESK task "QA RT15 2830 CS task" (Customer Support) 6fa16838-7a44-4fdc-a330-8cc9654598c8
+- 2026-11-10T15:29:48 DESK SLA policy "QA RT15 2825 SLA" (QA AO Dept A) 9e69beb4-fc78-4566-b010-52b3405e7bd8
+- 2026-11-10T15:29:49 DESK ticket "QA RT15 2825 ticket" e6603b06-c2b6-43d3-9446-c322e9e822c0
+- 2026-11-10T15:40:13 DESK UNINTENDED: field phone_2 (label 'Phone 2') 9604e2e1-53d8-4a4c-bad3-884f0bdee119 created by clicking palette 'Phone' and added to Standard layout 1b55c25d (layout saved 200). Must remove from layout + delete field. Backup: out/2815-standard-layout-backup.json
+- 2026-11-10T15:42:28 DESK Standard layout restored from backup (views layouts) PUT 200
+- 2026-11-10T15:42:29 DESK field phone_2 9604e2e1 deleted 204
+- 2026-11-10T15:45:32 DESK field phone label renamed 'Phone QA RT15' during 2816/2815 test, restored to 'Phone'
+- 2026-11-10T15:46:53 DESK Desk contact "QA RT15 2810 A" a1b0e842-a30c-486e-a227-4eadcaa107fd
+- 2026-11-10T15:46:54 DESK Desk contact "QA RT15 2810 B" 4a8fbdbb-42be-43be-b667-332fddcee4b9
+- 2026-11-10T15:47:51 CRM contact (synced from Desk) "QA RT15 2810 A" 72c6a491-00e8-42c4-957a-e0c93fa8a6c6
+- 2026-11-10T15:47:51 CRM contact (synced from Desk) "QA RT15 2810 B" 12eef614-d80c-4b16-82aa-b3a2f2a0fc55
+- 2026-11-10T15:48:18 CRM deleted CRM contact "QA RT15 2810 B" 12eef614-d80c-4b16-82aa-b3a2f2a0fc55 (module 6f553963-01d6-4b68-9fb3-143d23044c41) 204
+- 2026-11-10T15:48:20 DESK deleted Desk contact "QA RT15 2810 A" a1b0e842-a30c-486e-a227-4eadcaa107fd 204
+- 2026-11-10T15:55:50 DESK Standard layout restored from backup (views layouts) PUT 200
+- 2026-11-10T15:55:51 DESK Standard layout restored again from backup (layout-level label 'Phone QA RT15' left by 2816 stale save)
+- 2026-11-10T15:59:14 DESK layout QA NDC ADM assigned to QA NDC Accounting + default (backup out/2796-adm-layout-backup.json; restore departmentIds=[] defaultDepartmentIds=[])
+- 2026-11-10T16:00:49 DESK ticket "QA RT15 2796 accounting ticket" eb49b4a1-69e0-4785-bba7-c3893c3e1e6c
+- 2026-11-10T16:07:50 DESK layout QA NDC ADM departments restored to backup ([]) PUT 200
+- 2026-11-10T16:09:07 DESK team "QA RT15 2794 team" (QA AO Dept A) a0005a2a-de98-4c1a-9cef-039a5b4ce452
+- 2026-11-10T16:09:08 DESK workflow rule "QA RT15 2794 team+agent" 3c16f84a-110a-4ffd-b90c-2dc16ceb8b49
+- 2026-11-10T16:09:32 DESK ticket "QA RT15 2794 team+agent ticket" 984042a6-88f4-4106-9796-625447000903
+- 2026-11-10T16:11:45 DESK workflow rule 3c16f84a (2794 team+agent) deactivated
+- 2026-11-10T16:16:56 DESK SLA policy "QA RT15 2826 SLA" f8d1cdba-7e1d-4a82-9516-7d78fb050c11
+- 2026-11-10T16:16:57 DESK ticket "QA RT15 2826 amount 1500" 5874e14a-7ac8-4e67-848d-84c0772bc585
+- 2026-11-10T16:17:00 DESK ticket "QA RT15 2826 amount 500" e69a02f6-6d8a-4d59-b14e-ffa48a5263b6
+- 2026-11-10T16:17:00 DESK ticket "QA RT15 2826 date late" 2c82e0b1-92e9-4448-b47e-8d099c3024d9
+- 2026-11-10T16:17:01 DESK ticket "QA RT15 2826 date early" d4214987-27fa-4856-a808-b46155b879ad
+
+## CLEANUP 11 Nov 2026 (after Plane updates)
+- DESK: 5 workflow rules (2205 ×3, 2204, 2794) deleted; SLA policies 2825/2826 deleted; team QA RT15 2794 team deleted; 6 QA RT15 tags deleted (?confirm=true); 14 tickets, 2 contacts, 2 tasks, 1 call deleted; Desk recycle bin: 23 QA RT15 items purged (931 others untouched → 0 QA RT15 left). Layouts (Standard, QA NDC ADM) and Phone label already restored 10 Nov.
+- CRM: views 2806/2807, 2 mail drafts, 17 Leads fields, 5 global sets deleted; leads 2806 ×3, 2630 ×2, 1948 (+note) deleted; CRM contact 2810 A deleted; CRM recycle bin: 360 QA RT15 items purged (36 others untouched → 0 left). Verify: 0 QA RT15 views / fields / global sets. Timeline policy (Allow) and owner list prefs restored 10 Nov.
+- ZOHO: Desk techsolutionsegypt and CRM org944965048 QA RT15 data deleted + purged (ledger-zoho*.md).
+- Sessions/tokens deleted from scratchpad (r15-*, tok-*, state-z*).

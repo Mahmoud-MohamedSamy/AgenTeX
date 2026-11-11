@@ -1,0 +1,4 @@
+const L=require('./lib');module.exports=async()=>{const R={};const resp=[];pg.on('response',r=>{const u=r.url();if(/\/api\/v1\//.test(u)&&r.request().method()==='GET')resp.push(r.status()+' '+u.replace(H+'/api/v1',''));});
+ await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+'/settings',{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/Company/.test(document.body.innerText),null,{timeout:90000}).catch(()=>{});await pg.waitForTimeout(3000);
+ R.links=await pg.evaluate(()=>[...document.querySelectorAll('nav a, aside a')].map(a=>a.innerText.trim()+' '+a.getAttribute('href')).filter(t=>/sign|mail|email|channel|compan/i.test(t)));
+ await pg.getByText('Company',{exact:true}).first().click();await pg.waitForTimeout(6000);R.company=(await L.body_txt()).match(/.{0,80}[Ss]ignature.{0,150}/g);R.url=pg.url();await L.shot('t06-05-company');R.resp=resp.filter(x=>!/assets/.test(x)).slice(-12);return R;};

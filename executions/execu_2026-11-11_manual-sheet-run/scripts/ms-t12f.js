@@ -1,0 +1,12 @@
+// T-12-02 assign to a team (QA AS6 Dept A has team assignment on), owner empty; Team Queue check; T-12-07 reload.
+const L=require('./lib');const DA='b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6';
+module.exports=async()=>{const R={};let t=(await L.findTicket('QA MAN team 01'))[0];
+ if(!t){const c=await api('POST','/modules/'+T+'/records',L.body({subject:'QA MAN team 01',department:DA,status:'Open'}));t={id:c.j.data.id};LED('T-12-02 ticket "QA MAN team 01" (QA AS6 Dept A) '+t.id);}
+ R.un=(await api('POST','/desk/tickets/'+t.id+'/assign',{owner_id:null,team_id:null})).s;
+ await L.gotoTicket(t.id);await pg.getByText('Ticket Owner',{exact:true}).first().locator('xpath=..').click();await pg.waitForTimeout(2000);await pg.getByText(/^teams$/i).first().click();await pg.waitForTimeout(2000);
+ R.teamOpts=await pg.locator('[role=option]').allInnerTexts();await L.shot('t12-02-teams');
+ R.teamOpts=await pg.getByText('QA AS6 Team A',{exact:true}).count();if(R.teamOpts){await pg.getByText('QA AS6 Team A',{exact:true}).first().click();let s='';for(let i=0;i<12&&!s;i++){await pg.waitForTimeout(400);s=await pg.evaluate(()=>[...document.querySelectorAll('[data-sonner-toast],[role=alert]')].map(e=>e.innerText.trim()).filter(Boolean).join(' | '));}R.toast=s;await pg.waitForTimeout(2500);}
+ const o=fl((await api('GET','/modules/'+T+'/records/'+t.id)).j.data);R.rec={owner:o.owner||null,team:o.team||o.team_id||null};R.key=(await L.body_txt()).match(/Ticket Owner.{0,80}/)?.[0];
+ await pg.goto(H+'/views/all/tickets',{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/Team Queue/.test(document.body.innerText),null,{timeout:90000}).catch(()=>{});await pg.getByText('Team Queue',{exact:true}).first().click();await pg.waitForTimeout(8000);
+ R.queue=(await L.body_txt()).replace(/^.*?Scheduled Replies/,'').slice(0,600);R.inQueue=R.queue.includes('QA MAN team 01');R.queueSwitch=await pg.evaluate(()=>[...document.querySelectorAll('main button,main select')].map(b=>(b.getAttribute('aria-label')||b.innerText).trim().slice(0,40)).filter(t=>/team|queue|Customer Experience/i.test(t)));await L.shot('t12-02-teamqueue');
+ await L.gotoTicket(t.id);await pg.reload({waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/Ticket Owner/.test(document.body.innerText),null,{timeout:90000}).catch(()=>{});await pg.waitForTimeout(3000);R.reload=(await L.body_txt()).match(/Ticket Owner.{0,80}/)?.[0];return R;};

@@ -1,0 +1,2 @@
+const r=await api('POST','/desk/assignment-rules',{type:'round_robin',department_id:'4853562a-0b4d-45cb-ba34-9f2118fcd32c',name:'QA AO A13',description:'QA AO A13 original',is_active:false,execute_on:['create'],targets:[{criteria:{conditions:[{field_key:'description',operator:'contains',value:'QAAOA13never'}],pattern:null},method:'sequential',pool:{kind:'agents',user_ids:['5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4'],team_id:null,excluded_user_ids:[]}}]});
+return r.s+' '+(r.j?.data?.id||r.t.slice(0,200));

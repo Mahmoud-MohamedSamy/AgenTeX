@@ -1,0 +1,10 @@
+{"out":"AG-prefs-agent-can-read-rr-preferences.png","ticket":"Assignment Rules · Permissions (A-15)","title":"A Desk Agent without the assignment permission can still read Round Robin Preferences and Team Assignment through the API","verdict":"FAIL","label":"BUG",
+"date":"10 Nov 2026 11:42 UTC","env":"staging-desk.taviportal.com (NDC-Staging) · agent \"Customer Experience Specialists 2\", profile Desk Agent (no \"Manage assignment rules\") · department QA AS6 Dept A",
+"leftHead":"TAVI Desk (what happens now)","rightHead":"Expected (Zoho not checked live)","rightLabel":"Expected",
+"panels":[
+{"img":"executions/execu_2026-11-08_desk-automation-order/evidence/raw/ui-a15-agent.png","w":1440,"h":900,"caption":"On screen the agent is blocked: \"You can't manage assignment … need the Manage assignment rules permission\"","crop":[268,56,1172,200],"boxes":[{"b":[400,160,1310,210],"n":1}]},
+{"img":"executions/execu_2026-11-08_desk-automation-order/evidence/raw/agent-prefs-api.png","caption":"Same agent, API: rules 403 and saving preferences 403, but reading Round Robin Preferences (thresholds, backlog settings) and Team Assignment returns 200","crop":[0,0,1600,470],"boxes":[{"b":[24,92,1576,164],"n":1},{"b":[24,182,1576,272],"n":2},{"b":[24,290,1576,362],"n":1},{"b":[24,380,1576,452],"n":3}]}],
+"rows":[
+[1,"Rules page and rules API, saving preferences","Blocked without the permission","Blocked: screen message and 403 \"Missing required permission 'desk:assignment:manage'\"","PASS"],
+[2,"Reading Round Robin Preferences","Blocked like the rules: the screen says assignment rules, team assignment and assignment notifications need the permission","200: thresholds, agent thresholds, backlog and closure settings returned","FAIL"],
+[3,"Reading Team Assignment","Blocked (same page, same permission)","200: {\"enabled\":true}","FAIL"]]}

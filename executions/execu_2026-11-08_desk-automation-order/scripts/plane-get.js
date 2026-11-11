@@ -1,0 +1,2 @@
+const fs=require('fs'),path=require('path');const DL='C:/Users/Dell/Downloads';const f=fs.readdirSync(DL).filter(n=>/^secret-key-\d+\.csv$/.test(n)).sort().pop();const KEY=(fs.readFileSync(path.join(DL,f),'utf8').match(/plane_[A-Za-z0-9_-]+/)||[])[0];
+(async()=>{const r=await fetch('https://api.plane.so/api/v1/workspaces/ahmed-hegazy/work-items/NDC-'+process.argv[2]+'/',{headers:{'x-api-key':KEY}});const j=await r.json();console.log(r.status,'NDC-'+j.sequence_id,j.name,'| priority',j.priority,'| created',String(j.created_at).slice(0,16));})();

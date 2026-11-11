@@ -1,0 +1,141 @@
+{
+ "out": "NDC-2136-retest-FAIL.png",
+ "ticket": "NDC-2136",
+ "title": "List views still load the first page far slower than the 1.5 s target",
+ "verdict": "FAIL",
+ "env": "NDC-Staging CRM · owner · Edge headless 1600×900 · page open → first row with data · 1 warm-up + 10 loads",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "NDC-2136-card-timing.png",
+   "caption": "Measured load times",
+   "crop": [
+    0,
+    0,
+    1600,
+    380
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      298
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      308,
+      1564,
+      366
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2136-Leads-list.png",
+   "caption": "Leads › All Leads (1,193 records) — the measured list",
+   "crop": [
+    260,
+    60,
+    560,
+    170
+   ],
+   "boxes": [
+    {
+     "b": [
+      280,
+      102,
+      372,
+      122
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      286,
+      153,
+      368,
+      179
+     ],
+     "n": 1,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2136-Transactions-list.png",
+   "caption": "Transactions › All Transactions (67 records) — the measured list",
+   "crop": [
+    260,
+    60,
+    560,
+    170
+   ],
+   "boxes": [
+    {
+     "b": [
+      280,
+      102,
+      352,
+      122
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      286,
+      153,
+      404,
+      179
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Leads first page",
+   "p95 ≤ 1.5 s",
+   "p50 4.28 s, p95 13.53 s (4 Nov: 13.1 s)",
+   "FAIL"
+  ],
+  [
+   2,
+   "Transactions first page",
+   "p95 ≤ 1.5 s",
+   "p95 19.92 s (run A), 9.15 s (run B)",
+   "FAIL"
+  ],
+  [
+   3,
+   "Last-used private Leads view",
+   "List opens normally",
+   "Opens on \"Choose a view\" with 0 records",
+   "INFO"
+  ]
+ ],
+ "method": "Timing script (Edge, 1 warm-up + 10 loads)"
+}

@@ -1,0 +1,13 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15';
+const LED=m=>fs.appendFileSync(RUN+'/ledger.md','- '+new Date().toISOString().slice(0,19)+' DESK '+m+'\n');
+const T='88e8ea44-1658-4df3-9930-d0902b91073d'; const E=r=>r.j&&r.j.error?r.j.error.code+': '+r.j.error.message+' '+JSON.stringify(r.j.error.details||'').slice(0,300):'';
+const SM=(f,op,v)=>({kind:'StringMatch',field:f,operator:op,stringValue:v,caseInsensitive:false});
+const crit={kind:'Logical',operator:'And',operands:[SM('subject','StartsWith','QA RT15 2205')]};
+const mk = async (name, trigger, tag) => { const r = await api('POST','/workflow/rules',{moduleId:T,layoutId:'',name,description:'QA RT15 retest NDC-2205 - safe to delete',mode:'Recurring',isActive:true,trigger,criteria:crit,actions:[{type:'AddTags',order:0,delaySeconds:0,tags:[tag]}]}); const id=r.j&&r.j.data&&r.j.data.id; if(id) LED('workflow rule "'+name+'" '+id); return {s:r.s,id,e:E(r)}; };
+const base={fieldName:null,dateFieldName:null,offsetSeconds:null,offsetMode:null};
+const out={};
+out.create = await mk('QA RT15 2205 On Create', {...base, kind:'RecordCreated'}, 'qa-rt15-created');
+out.edit = await mk('QA RT15 2205 On Edit', {...base, kind:'RecordUpdated'}, 'qa-rt15-edited');
+out.fc = await mk('QA RT15 2205 Subject changed', {...base, kind:'SpecificFieldChanged', fieldName:'subject', fieldNames:['subject'], fieldMatch:'any', alsoOnCreate:false}, 'qa-rt15-fieldchanged');
+fs.writeFileSync(RUN+'/out/2205-ids.json', JSON.stringify(out,null,1));
+return out;

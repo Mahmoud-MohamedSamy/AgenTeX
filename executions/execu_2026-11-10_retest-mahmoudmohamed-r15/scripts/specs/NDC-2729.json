@@ -1,0 +1,43 @@
+{
+ "out": "NDC-2729-retest-FAIL.png",
+ "ticket": "NDC-2729",
+ "title": "Blueprint create-record actions: one owner setting, first-option defaults, lookups (CRM fixed; Desk blueprint still shows the old problems)",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · CRM blueprint AEX-01 (Transactions) + Desk blueprint \"Tickets from Mail\" · owner · actions added on screen, nothing saved",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "2729-crm-task-defaults.png",
+   "caption": "CRM · AEX-01 › NeedsAnalysisToProposal › After › Create task: no module picker, owner set only by ASSIGN TO, Reminder = None (first option)",
+   "crop": [1165, 340, 435, 420],
+   "boxes": [
+    { "b": [1180, 355, 1580, 525], "n": 1, "kind": "PASS" },
+    { "b": [1192, 690, 1568, 748], "n": 2, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2729-desk-newFU-Status.png",
+   "caption": "Desk · Tickets from Mail › Escalate Ticket › new Field update, field Status: value shows \"Value\" (not an option)",
+   "crop": [1165, 600, 435, 260],
+   "boxes": [
+    { "b": [1386, 812, 1578, 850], "n": 3, "kind": "FAIL" }
+   ]
+  },
+  {
+   "img": "2729-desk-newCT-dept.png",
+   "caption": "Desk · new Create task: Department* and Team are plain text boxes, not pick lists",
+   "crop": [1165, 600, 435, 260],
+   "boxes": [
+    { "b": [1198, 712, 1568, 790], "n": 4, "kind": "FAIL" },
+    { "b": [1198, 796, 1568, 846], "n": 5, "kind": "FAIL" }
+   ]
+  }
+ ],
+ "rows": [
+  [1, "CRM Create task / Meeting / Call: module picker and owner", "No module dropdown; owner set only by Assign to", "No module picker; ASSIGN TO only (user picker only for Specific user)", "PASS"],
+  [2, "CRM pick lists default (Task Reminder/Status/Priority, Meeting, Call)", "First option", "Reminder None, Status Not Started, Priority Low; Venue Office, Provider Zoom; Call Type Outbound, Status Scheduled", "PASS"],
+  [3, "Desk Field update value (Status, Skills)", "First real option, not \"Value\"", "\"Value\" (same as your 5 Nov retest)", "FAIL"],
+  [4, "Desk Create task › Department", "Pick list of departments", "Plain text box (required)", "FAIL"],
+  [5, "Desk Create task › Team", "Pick list of teams", "Plain text box", "FAIL"]
+ ]
+}

@@ -1,0 +1,8 @@
+{"out":"2816-api-card.png","title":"NDC-2816 · Field label is saved only after the layout is saved (refusal simulated in the browser)","host":"staging-desk.taviportal.com","who":"owner account","date":"10 Nov 2026",
+"rows":[
+["Simulated refusal","Browser route: PUT /modules/{Tickets}/layouts/{Standard} answered 422 \"Layout not saved: resolution cannot be removed…\"","Toast \"Layout not saved…\"; editor keeps the unsaved change (CREATE •)","ok"],
+["Requests sent after the refused PUT","label rename \"Phone\" → \"Phone QA RT15 fail\"","No PATCH /fields/{phone}/labels sent","ok"],
+["Field label after the refused save","GET /modules/{Tickets}/fields → phone","labels.en = \"Phone\" (old label kept)","ok"],
+["Successful save","PUT /layouts (200) then PATCH /fields/{id}/labels","Label saved together with the layout (order: layout first, then label)","ok"],
+["Restore","PATCH /fields/{phone}/labels {en:\"Phone\"}","Phone label back to \"Phone\"","info"]
+]}

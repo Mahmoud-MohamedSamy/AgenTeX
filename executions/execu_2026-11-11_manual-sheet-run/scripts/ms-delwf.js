@@ -1,0 +1,1 @@
+module.exports=async()=>{const R={};for(const id of process.env.IDSL.split(',')){const g=await api('GET','/workflow/rules/'+id);if(g.s!==200){R[id.slice(0,8)]='gone '+g.s;continue;}const d=await api('DELETE','/workflow/rules/'+id);R[id.slice(0,8)]=(g.j.data.name)+' '+d.s;LED('clean rule '+g.j.data.name+' '+id+' '+d.s);}return R;};

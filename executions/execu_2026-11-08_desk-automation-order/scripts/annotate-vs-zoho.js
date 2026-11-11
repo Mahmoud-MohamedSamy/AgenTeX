@@ -35,7 +35,7 @@ const panelHtml = SIDED ? ['tavi', 'zoho'].map(sd => `<div class="col">${spec.pa
 const half = (W - 48 - 16) / 2;
 const rows = spec.rows.map(r => `<div class="row"><div class="rt"><span class="num">${r[0]}</span><span class="beh">${esc(r[1])}</span>` +
   `<span class="pill" style="background:${VC[r[4]] || '#6b7280'}">${r[4]}</span></div>` +
-  `<div class="cells"><div class="cell" style="flex:1"><b>TAVI:</b> ${esc(r[3])}</div><div class="cell" style="flex:1"><b>Zoho:</b> ${esc(r[2])}</div></div></div>`).join('');
+  `<div class="cells"><div class="cell" style="flex:1"><b>TAVI:</b> ${esc(r[3])}</div><div class="cell" style="flex:1"><b>${esc(spec.rightLabel||"Zoho")}:</b> ${esc(r[2])}</div></div></div>`).join('');
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 *{box-sizing:border-box}body{margin:0;width:${W}px;background:#f4f5f7;font:14px/1.45 "Segoe UI",system-ui,sans-serif;color:#111827}
@@ -58,7 +58,7 @@ figcaption{margin-top:6px;color:#374151;font-size:13px}
 <header><span class="id">${esc(spec.ticket)}</span><span class="t">${esc(spec.title)}</span><span class="v">${esc(spec.label || "RETEST " + spec.verdict)}</span></header>
 <div class="meta">${esc(spec.env)} · ${esc(spec.date)}</div>
 <div class="panels">${panelHtml}</div>
-<div class="cmp"><div class="colhead"><div>TAVI Desk (left screenshot)</div><div>Zoho Desk (right screenshot)</div></div>${rows}</div>
+<div class="cmp"><div class="colhead"><div>${esc(spec.leftHead||"TAVI Desk (left screenshot)")}</div><div>${esc(spec.rightHead||"Zoho Desk (right screenshot)")}</div></div>${rows}</div>
 </body></html>`;
 
 (async () => {

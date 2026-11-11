@@ -1,0 +1,1 @@
+async (page) => { await page.mouse.click(758,412); await page.waitForTimeout(1500); await page.mouse.click(1043,285); await page.waitForTimeout(1500); await page.screenshot({path:'z/t19.png', clip:{x:680,y:250,width:800,height:360}}); return 'ok'; }

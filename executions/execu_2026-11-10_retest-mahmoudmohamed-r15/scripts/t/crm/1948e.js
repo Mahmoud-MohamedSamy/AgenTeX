@@ -1,0 +1,14 @@
+const L='841043e1-c078-41f9-8d6e-dfd61bee45c3'; const lead='2aafefc8-9846-4cb6-8ea6-9937cc5e3105';
+const reqs=[]; page.on('response', async r => { const u=r.url(); if (/api\/v1/.test(u) && /notes|timeline/.test(u) && !/iam\/auth/.test(u)) { let b=''; try{ b=(await r.text()).slice(0,240);}catch(e){} reqs.push(r.request().method()+' '+r.status()+' '+u.replace(/^https:\/\/[^/]+/,'').slice(0,140)+' '+b); } });
+const open = async () => { await page.goto(H + '/modules/'+L+'/records/'+lead, { waitUntil: 'domcontentloaded' }); for (let i=0;i<40;i++){ await sleep(2000); if (/1948 lead/.test(await text()) && !/Loading…/.test(await text()) && /Notes/.test(await text())) break; } await sleep(4000); };
+await open();
+log('loaded', !/Loading…/.test(await text())); const ph = await page.$$eval('textarea, input, [contenteditable=true]', es => es.map(e=>e.getAttribute('placeholder')||e.getAttribute('aria-label')||e.tagName)); log('inputs', ph); await shot('NDC-1948-u1-open.png');
+let t = await text(); log('notes before', (t.match(/No notes yet|QA RT15 1948 note/g)||[]).join(','));
+const box = page.locator('[contenteditable=true]').first(); log('notebox', await box.count());
+await box.click(); await page.keyboard.type('QA RT15 1948 note '+Date.now()%100000); await sleep(800);
+const save = page.getByRole('button', {name:/^(Save|Add note|Post)$/}).first(); log('savebtn', await save.count()); await save.click();
+await sleep(2000); t = await text(); log('at 2s', /Posting…/.test(t)?'POSTING':'no posting', (t.match(/QA RT15 1948 note \d+/g)||[]).join(','), /Note added/.test(t)?'toast':''); await shot('NDC-1948-u1-after-add.png');
+await sleep(10000); t = await text(); log('at 12s', /Posting…/.test(t)?'POSTING':'no posting', (t.match(/QA RT15 1948 note \d+/g)||[]).join(','));
+await open(); t = await text(); log('after reload', /No notes yet/.test(t)?'NO NOTES YET':'', (t.match(/QA RT15 1948 note \d+/g)||[]).join(',')); await shot('NDC-1948-u1-after-reload.png');
+const tl = page.getByRole('tab', {name:/Timeline/i}); log('timeline tab count', await tl.count());
+log(reqs.slice(-12));

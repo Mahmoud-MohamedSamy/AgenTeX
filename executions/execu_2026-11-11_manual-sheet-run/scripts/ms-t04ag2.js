@@ -1,0 +1,1 @@
+const L=require('./lib');module.exports=async()=>{await L.gotoTicket('f5a3d5de-0543-45d5-993f-45fabd7bacd0');const t=await L.body_txt();await L.shot('t04-02-agent-open');return {open:t.includes('QA MAN chat 01'),chat:/Chat/.test(t),dept:/Customer Support/.test(t)};};

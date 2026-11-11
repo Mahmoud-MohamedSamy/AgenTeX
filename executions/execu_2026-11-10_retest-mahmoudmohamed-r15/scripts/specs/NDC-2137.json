@@ -1,0 +1,130 @@
+{
+ "out": "NDC-2137-retest-FAIL.png",
+ "ticket": "NDC-2137",
+ "title": "Transactions Kanban: cards never load (500), headers slower than 6 Nov",
+ "verdict": "FAIL",
+ "env": "NDC-Staging CRM · owner · Transactions › Kanban View, pipeline Standard · 1 warm-up + 8 reloads",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "NDC-2137-card-timing.png",
+   "caption": "Measured times and API results",
+   "crop": [
+    0,
+    0,
+    1600,
+    380
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      204
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      251
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      366
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2137-kanban.png",
+   "caption": "Kanban: every column shows \"Could not load these records\", toast \"An unexpected error occurred\"",
+   "crop": [
+    260,
+    60,
+    1340,
+    830
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      288,
+      272,
+      562,
+      336
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      290,
+      360,
+      552,
+      425
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      590,
+      360,
+      852,
+      425
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      1172,
+      820,
+      1575,
+      876
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Column headers (Probability + Amount)",
+   "p95 ≤ 2 s",
+   "p50 5.14 s, p95 19.11 s (6 Nov: 1.76 s)",
+   "FAIL"
+  ],
+  [
+   2,
+   "First cards in each column",
+   "Shown within 2 s",
+   "Never shown in 8 of 8 reloads",
+   "FAIL"
+  ],
+  [
+   3,
+   "Column record requests (skip_total=true)",
+   "200",
+   "134 of 134 → 500; also 500 on Leads and Tasks",
+   "FAIL"
+  ]
+ ],
+ "method": "Timing script (Edge, 1 warm-up + 8 loads) + API"
+}

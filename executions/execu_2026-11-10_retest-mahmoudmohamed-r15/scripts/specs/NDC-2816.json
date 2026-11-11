@@ -1,0 +1,123 @@
+{
+ "out": "NDC-2816-retest-PASS.png",
+ "ticket": "NDC-2816",
+ "title": "Layout editor: a refused layout save no longer saves the field label anyway",
+ "verdict": "PASS",
+ "env": "NDC-Staging · Desk Setup › Tickets › Layouts › Standard · owner · server refusal simulated in the browser (NDC-2815 is fixed, so a real 422 can't be made) · label restored",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "2816-failed-save.png",
+   "caption": "Label renamed to \"Phone QA RT15 fail\" + Save, layout PUT refused (422): toast \"Layout not saved…\", CREATE • = unsaved change kept",
+   "crop": [
+    356,
+    110,
+    1220,
+    790
+   ],
+   "boxes": [
+    {
+     "b": [
+      356,
+      118,
+      432,
+      150
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      366,
+      506,
+      600,
+      548
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      400,
+      816,
+      1200,
+      876
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  },
+  {
+   "img": "2816-api-card.png",
+   "full": true,
+   "caption": "Requests: no label PATCH after the refused PUT; Fields still show the old label",
+   "crop": [
+    0,
+    0,
+    1600,
+    400
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      272
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      319
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Layout save refused by the server",
+   "Error shown, nothing saved",
+   "Toast \"Layout not saved: \"resolution\" cannot be removed…\"",
+   "PASS"
+  ],
+  [
+   2,
+   "Field label after the refused save",
+   "Not saved (old label kept)",
+   "No label request sent; Fields show \"Phone\", not \"Phone QA RT15 fail\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Editor after the refusal",
+   "Unsaved change kept so the user can fix it",
+   "CREATE tab still marked • (unsaved)",
+   "PASS"
+  ],
+  [
+   4,
+   "Successful save",
+   "Label saved with the layout",
+   "Layout PUT 200 first, then label PATCH",
+   "PASS"
+  ],
+  [
+   5,
+   "How tested",
+   "—",
+   "Refusal simulated in the browser (PUT answered 422), real server refusal no longer possible",
+   "INFO"
+  ]
+ ]
+}

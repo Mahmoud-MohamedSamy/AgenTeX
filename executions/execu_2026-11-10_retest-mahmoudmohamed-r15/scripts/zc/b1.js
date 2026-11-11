@@ -1,0 +1,9 @@
+module.exports = async ({ page, log, shot }) => {
+  await require('./nav.js').leads(page);
+  for (let k=0;k<3;k++){ await page.mouse.click(1497, 23); const bp = page.getByText('Blueprint',{exact:true}).locator('visible=true');
+    for (let i=0;i<30;i++){ await page.waitForTimeout(1500); if (await bp.count()) break; } if (await bp.count()) { await bp.first().click(); break; } }
+  const ln = page.getByText('Lead nurturing process',{exact:true}).locator('visible=true');
+  for (let i=0;i<40;i++){ await page.waitForTimeout(1500); if (await ln.count()) break; }
+  await shot('c-2729-bp-list'); await ln.first().click(); await page.waitForTimeout(15000);
+  await shot('c-2729-bp-editor'); log(((await page.innerText('body'))||'').replace(/\s+/g,' ').slice(-800));
+};

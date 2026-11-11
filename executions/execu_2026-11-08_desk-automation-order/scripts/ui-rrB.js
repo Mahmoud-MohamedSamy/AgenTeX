@@ -1,0 +1,1 @@
+return ((await api('GET','/desk/assignment-rules?type=round_robin&department_id=4853562a-0b4d-45cb-ba34-9f2118fcd32c')).j?.data?.rules||[]).map(r=>r.id+' '+r.name+' v'+r.version+' desc='+r.description+' active='+r.is_active);

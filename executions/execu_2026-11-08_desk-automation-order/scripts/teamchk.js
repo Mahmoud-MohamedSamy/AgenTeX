@@ -1,0 +1,5 @@
+const n=JSON.parse(fs.readFileSync('../nt30.json','utf8'));const A='93949fbd-f9df-4e2e-ae45-00b8dc38385b';const R={team_id:n.team};
+const tr=await api('GET','/desk/teams/'+n.team);R.teamGet=tr.s;const t=tr.j?.data;if(t)R.team=Object.fromEntries(Object.entries(t).filter(([k])=>!/created|updated|row_version/.test(k)).map(([k,v])=>[k,JSON.stringify(v).replace(/[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z.]+/g,'<email>').slice(0,120)]));
+const rr=await api('GET','/desk/notification-rules/departments/'+A);R.rulesGet=rr.s;const r=rr.j?.data?.rules?.find(x=>x.key==='team.ticket_assigned');R.rule=JSON.stringify(r).slice(0,500);
+const x=await api('GET','/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records?page=1&per_page=30&sort_by=created_at&sort_dir=desc');R.t2866=(x.j?.data||[]).filter(e=>/T6 team/.test(JSON.stringify(e.data))).map(e=>{const g=k=>e.data.find(d=>d.field===k)?.value?.value;return {num:g('ticket_number'),team:g('team')===n.team?'NT30 team':g('team'),owner:g('owner')||'none'};});
+return R;

@@ -1,0 +1,8 @@
+module.exports=async()=>{const R={};const m=s=>String(s).replace(/([A-Za-z0-9._%+-]{2})[A-Za-z0-9._%+-]*@(?!help-staging)/g,'$1***@');
+ let cur='',hits=[];for(let i=0;i<20;i++){const r=await api('GET','/audit/recycle-bin/items?app_key=desk&limit=200'+(cur?'&cursor='+encodeURIComponent(cur):''));for(const x of arr(r.j&&r.j.data)){const s=JSON.stringify(x);if(/EM-0|NT07z9ci|2495|2498/i.test(s))hits.push(m(s).slice(0,400));}cur=r.j&&r.j.meta&&r.j.meta.next_cursor;if(!cur)break;}R.binHits=hits;
+ for(const q of ['QA%20EM-06','QA%20EM-03','Check-in']){const r=await api('GET','/modules/'+T+'/records?q='+q+'&per_page=20');R['q_'+q]=arr(r.j&&r.j.data).map(fl).map(o=>o.ticket_number+':'+o.subject+':'+m(o.email||'')).join(' | ');}
+ const t=await api('GET','/modules/'+T+'/records?q=Re%3A%20QA%20EM-01&per_page=5');const o=arr(t.j&&t.j.data).map(fl).find(x=>String(x.ticket_number)==='2503');
+ if(o){const d=((await api('GET','/desk/tickets/'+o.id)).j||{}).data||{};const a=((await api('GET','/desk/tickets/'+o.id+'/activity')).j||{}).data;R.t2503={dept:d.department_name,email:m(o.email||''),created:o.created_at,act:(Array.isArray(a)?a:[]).map(x=>x.occurred_at.slice(11,19)+' '+x.action+' '+JSON.stringify(x.summary||{}).slice(0,200))};
+  try{await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+'/views/all/tickets/'+o.id,{waitUntil:'commit',timeout:60000});await pg.waitForFunction(()=>/Ticket Owner/.test(document.body.innerText),null,{timeout:60000}).catch(()=>{});await pg.waitForTimeout(5000);await pg.screenshot({path:OUT+'/../screenshots/raw/cl-em04-2503.png'});}catch(e){}}
+ const au=await api('GET','/audit/logs?limit=100&q=2495');R.audit=au.s+' '+m(au.t.slice(0,600));
+ return R;};

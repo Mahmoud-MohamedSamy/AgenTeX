@@ -1,0 +1,18 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15';
+const red = s => String(s).replace(/[\w.+-]+@[\w.-]+/g,'<email>');
+const L='841043e1-c078-41f9-8d6e-dfd61bee45c3';
+const enc=v=>({kind:'string',value:String(v)}); const body=vals=>({data:Object.entries(vals).map(([f,v])=>({field:f,value:enc(v)}))});
+const out={};
+let r = await api('POST','/modules/'+L+'/records', body({first_name:'QA RT15', last_name:'2630 send real', email:'mmohamed@anyware.software'}));
+const lead = r.j&&r.j.data&&r.j.data.id; out.lead = r.s+' '+lead;
+fs.appendFileSync(RUN+'/ledger-crm.md', '- '+new Date().toISOString().slice(0,19)+' CRM lead "QA RT15 2630 send real" '+lead+'\n');
+r = await api('POST','/mail/drafts',{to:['mmohamed@anyware.software'], subject:'QA RT15 2630 send result', body:'QA NDC-2630 send result check', body_html:'<p>QA NDC-2630 send result check</p>', record_type:'leads', record_id:lead, attachments:[]});
+const draft = r.j&&r.j.data&&r.j.data.id; out.draft = r.s+' '+draft;
+if (draft) fs.appendFileSync(RUN+'/ledger-crm.md', '- '+new Date().toISOString().slice(0,19)+' CRM mail draft '+draft+'\n');
+r = await api('POST','/mail/drafts/'+draft+'/send',{}); out.send = r.s+' '+red(r.t).slice(0,500);
+await sleep(15000);
+const mails = await api('GET','/mail/records/leads/'+lead+'/emails?box=mails&limit=10'); out.mails = red(JSON.stringify(arr(mails.j&&mails.j.data).map(m=>({status:m.status, err:m.last_error, subj:m.subject})))).slice(0,600);
+const sent = await api('GET','/mail/records/leads/'+lead+'/emails?box=sent&limit=10'); out.sent = red(JSON.stringify(arr(sent.j&&sent.j.data).map(m=>({status:m.status, subj:m.subject})))).slice(0,400);
+const tl = await api('GET','/timeline/records/leads/'+lead+'/feed'); out.timeline = (tl.t.match(/"entry_type":"\w+"/g)||[]).join(' ');
+fs.writeFileSync(RUN+'/out/2630b.json', JSON.stringify({lead, draft},null,1));
+return out;

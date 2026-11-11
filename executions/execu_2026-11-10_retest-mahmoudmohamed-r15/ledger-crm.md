@@ -1,0 +1,21 @@
+# QA data ledger — CRM lane round 15
+- 2026-11-10T15:15:58 CRM lead "QA RT15 2630 send" 4b08ce7b-7a0e-4e7a-b46c-11fd6048dffa
+- 2026-11-10T15:15:59 CRM mail draft 6af20cd9-af06-44e0-a9aa-6c2a193809c7
+- 2026-11-10T15:16:29 CRM lead "QA RT15 2630 send real" 5eab324e-fa2b-49fa-a63b-07e0bfe38a35
+- 2026-11-10T15:16:30 CRM mail draft 7901fd71-71d2-4e8b-8154-6a8b0710d51d
+- 2026-11-10T15:21:35 CRM lead "QA RT15 1948 lead" (owner Mahmoud Samy) 2aafefc8-9846-4cb6-8ea6-9937cc5e3105
+- 2026-11-10T15:22:53 Timeline Visibility policy default Allow → Deny via UI (TEST, restore after)
+- 2026-11-10T15:27:11 CRM Leads "QA RT15 2807 nnnn" created 447 records (ids in out/2807-leads.json)
+- 2026-11-10T15:29:11 CRM note 387770b4-4a67-4b7d-bcd8-38cffff22eda on lead 2aafefc8 (by Mahmoud Samy)
+- 2026-11-10T15:30:09 Timeline Visibility policy RESTORED Deny → Allow via UI
+- 2026-11-10T15:31:39 CRM Leads view "QA RT15 2807 view" 800057b7-6125-4d18-9fb7-1c295d98e5b7
+- 2026-11-10T15:39:32 CRM Mass Update Lead Source=web on up to 200 'QA RT15 2807' leads (test)
+- 2026-11-10T15:40:36 CRM Mass Update Lead Source=referral on page 2 (200) 'QA RT15 2807' leads, left page mid-run (test)
+- 2026-11-10T15:49:09 CRM Mass Update Lead Source=chat on page 2 'QA RT15 2807' leads, left via in-app Home link (test)
+- 2026-11-10T15:55:45 CRM Mass Delete of 450 'QA RT15 2807' leads (criteria Last Name starts with '2807 ') → Recycle Bin (test)
+- 2026-11-10T15:58:40 CRM Recycle Bin: permanent delete of mass-delete batch cd9bb581 (450 'QA RT15 2807' leads) only, left page mid-run (test)
+- 2026-11-10T16:00:31 CRM Recycle Bin: permanent delete of up to 200 more items of batch cd9bb581, left page via in-app link (test)
+- 2026-11-10T16:20:41 CRM owner list prefs: Leads view switched back to All Leads (from QA RT15 2807 view), Transactions switched Kanban → List view (2136 timing)
+- 2026-11-10T16:48:41 CRM owner Transactions mode set back to Kanban (as before 2136 timing)
+- CORRECTION 2807: leads total 450 (3 probe + 447; all ids in out/2807-leads.json). Bin purges were 50 + 50 items (not 450/200): 100 permanently deleted, 350 still in Recycle Bin batch cd9bb581-0f7c-4757-b7ea-5c36eef080fc (cleanup: purge that batch only). View 800057b7 still exists (delete at cleanup).
+- Sessions: scratchpad r15-crmlane-o.json (owner), r15-crmlane-u1.json (Mahmoud Samy) — delete at cleanup; API token store tok-crm-ndc_staging_owner_crm.json.

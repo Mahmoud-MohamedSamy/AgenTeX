@@ -1,0 +1,2 @@
+const d=(await api('GET','/help-centers/e74f2abb-e28d-400e-908c-f2c54862e389')).j.data;fs.writeFileSync('C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/6cad98b2-9d2f-4e48-af44-1193bcd58c1a/scratchpad/hc.json',JSON.stringify(d));
+const r=await fetch(d.home_url);const t=await r.text();return {status:r.status,server:r.headers.get('server'),title:(t.match(/<title>[^<]*/)||[''])[0],len:t.length,auth:d.auth_policy,access:{mode:d.access.mode,sign_up:d.access.sign_up,auto_invite:d.access.auto_invite}};

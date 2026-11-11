@@ -1,0 +1,89 @@
+[
+ {
+  "ticket": "NDC-2729",
+  "id": "4ead7a61-0fb1-4bf6-a102-bc218fc2703f",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2729-retest-FAIL-vs-zoho.png",
+   "NDC-2729-crm-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 10–11 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho Desk (techsolutionsegypt), checked live 11 Nov 2026; Zoho test data deleted afterwards.</p><p>CRM blueprint: fixed, and it now matches Zoho CRM (Task has a fixed module, one \"Assigned To\" where empty means the record owner, and Status/Priority start on the first option). Desk blueprint (\"Tickets from Mail\"): not fixed.</p><p>Working now:</p><ul><li>CRM Create task / Meeting / Call: no module picker, owner only through Assign to, pick lists start on the first option (same as Zoho CRM)</li></ul><p>Still failing:</p><ul><li><strong>Desk Field update: value of a pick list</strong>: expected Zoho Desk: starts at \"-None-\" and then the real options; actual TAVI shows \"Value\" as if it were an option</li><li><strong>Desk Field update: fields offered</strong>: expected Zoho Desk does not offer Status, Team, Department or Skills in a blueprint Field update; actual TAVI offers Status and Skills, and Department/Team as plain text \"Value\"</li><li><strong>Desk Create task: Department / Team</strong>: expected Zoho Desk has no Department/Team boxes; \"Assign to\" is a picker with Agents and Teams tabs; actual TAVI has Department* and Team as plain text boxes</li></ul><p>Correction to the expected result: Zoho Desk does not pick the first real option; it starts at \"-None-\".</p><p>Evidence: NDC-2729-retest-FAIL-vs-zoho.png, NDC-2729-crm-vs-zoho.png (attached; side-by-side images: TAVI left, Zoho right)</p>"
+ },
+ {
+  "ticket": "NDC-2806",
+  "id": "c6ce285f-7a2e-4b84-bd67-0dc87447a5e0",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2806-retest-PARTIAL-vs-zoho.png",
+   "NDC-2806-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 10–11 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.</p><p>Global Sets work for create, convert, clone, values (add, rename, colour, replace, unused, restore), association with mapping, safeguards and permissions. One gap remains against Zoho CRM.</p><p>Working now:</p><ul><li>Create / convert / clone, values, association + mapping, 50-field limit, locked and wrong-type fields refused, permissions and audit</li><li>Used In lists fields and custom views (Zoho lists fields only, so the earlier \"reports not listed\" point is dropped)</li></ul><p>Still failing:</p><ul><li><strong>Replace a value that a custom view filter uses</strong>: expected Zoho CRM allows it and replaces the value in records, criteria, workflow actions and field dependency (Green → Red: the lead and the view filter both changed, Green moved to unused); actual TAVI refuses with 409 GLOBAL_SET_VALUE_IN_USE \"Change or remove it in those views first\"</li></ul><p>Evidence: NDC-2806-retest-PARTIAL-vs-zoho.png, NDC-2806-retest-PARTIAL.png (attached; side-by-side images: TAVI left, Zoho right)</p>"
+ },
+ {
+  "ticket": "NDC-2807",
+  "id": "7e03a59d-626d-48e8-a41f-8f4468467b09",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2807-retest-PARTIAL-vs-zoho.png",
+   "NDC-2807-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 10–11 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.</p><p>Mass delete and Recycle Bin selection delete now finish after the user leaves the page. Mass update does not.</p><p>Working now:</p><ul><li>Mass delete of 450 records: finished after leaving the page (0 failed)</li><li>Recycle Bin: delete 50 selected, leave the page → done (twice)</li></ul><p>Still failing:</p><ul><li><strong>Mass update, leave the page 1 s after starting</strong>: expected Zoho CRM runs it as a background job (\"The mass update action is scheduled successfully\" + progress panel): 200/200 updated within 1 min after leaving; actual TAVI: 6 of 200 changed after 45 s and after 3 min; no job, nothing resumed</li></ul><p>Empty Recycle Bin (whole bin) was not run because the bin also holds other people's items.</p><p>Evidence: NDC-2807-retest-PARTIAL-vs-zoho.png, NDC-2807-retest-PARTIAL.png (attached; side-by-side images: TAVI left, Zoho right)</p>"
+ },
+ {
+  "ticket": "NDC-2630",
+  "id": "cd74d3ad-134c-433f-b719-c02babeb981c",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2630-retest-PARTIAL-vs-zoho.png",
+   "NDC-2630-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 10–11 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.</p><p>A failed send is now recorded honestly (422 MAIL_SEND_FAILED, Emails tab \"Not sent… Failed\" + Retry, no Email sent entry in the timeline). The screen still lets a sender who can't send try.</p><p>Working now:</p><ul><li>Send from a refused sender → 422, Emails tab Failed + Retry, no EmailSent in the timeline (both cases)</li></ul><p>Still failing:</p><ul><li><strong>Compose when the sender can't send</strong>: expected Zoho CRM blocks Send Email before Compose opens (\"Email Confirmation Required … so that you can send emails\"); actual TAVI opens Compose with no notice and Send enabled, although /emails/sendability already says can_send false</li><li><strong>Message dialog of a failed mail</strong>: expected Only the failed status; actual TAVI shows a blue \"Sent\" chip next to the red \"Failed\" chip</li></ul><p>How Zoho shows a failed send on the record was not compared (that needs a real failing send to an outside address).</p><p>Evidence: NDC-2630-retest-PARTIAL-vs-zoho.png, NDC-2630-retest-PARTIAL.png (attached; side-by-side images: TAVI left, Zoho right)</p>"
+ },
+ {
+  "ticket": "NDC-2810",
+  "id": "42730648-7cc5-4998-85fc-0d3f33c94ad8",
+  "verdict": "PARTIAL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2810-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 10–11 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk + staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Not compared with Zoho (see note).</p><p>Deleting a synced contact in Desk now unlinks it without a failure, and records in the Desk recycle bin are counted as Ignored. Deletions on the CRM side are still reported as failures.</p><p>Working now:</p><ul><li>Delete in Desk → link unlinked, no failure</li><li>Sync all customers: Desk-deleted records counted as Ignored</li></ul><p>Still failing:</p><ul><li><strong>Contact deleted in CRM</strong>: expected Unlinked and left out, not reported as a failure (ticket); actual Failure Log \"Needs attention · The CRM record was deleted.\"; the Desk contact stays</li><li><strong>Sync all customers</strong>: expected No failure for records that exist in neither app; actual 1 failure \"B04\" (Last Name empty), a record in neither customer list</li></ul><p>Not compared with Zoho: testing deletions would need writes in both Zoho apps; judged against the ticket's expected result.</p><p>Evidence: NDC-2810-retest-PARTIAL.png (attached; side-by-side images: TAVI left, Zoho right)</p>"
+ },
+ {
+  "ticket": "NDC-2794",
+  "id": "96b66641-68cc-40bb-a6e7-f0222ed21143",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2794-retest-FAIL-vs-zoho.png",
+   "NDC-2794-retest-FAIL.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 10–11 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho Desk (techsolutionsegypt), checked live 11 Nov 2026; Zoho test data deleted afterwards.</p><p>Same as 4–6 Nov. Zoho Desk confirms the expected result.</p><p>Working now:</p><ul><li>Rule with team + agent of that team saved (201); agent outside the team refused (400)</li></ul><p>Still failing:</p><ul><li><strong>Ticket matching a \"team + agent\" rule</strong>: expected Zoho Desk (\"Assign to an agent in a team\"): owner and team set in one update and both still there 15 s later; actual TAVI: owner = agent, then History \"Team was updated: QA RT15 2794 team → blank\"; ticket has no team</li></ul><p>Evidence: NDC-2794-retest-FAIL-vs-zoho.png, NDC-2794-retest-FAIL.png (attached; side-by-side images: TAVI left, Zoho right)</p>"
+ },
+ {
+  "ticket": "NDC-2136",
+  "id": "9f559025-4222-4823-933b-57eb3bff3635",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2136-retest-FAIL-vs-zoho.png",
+   "NDC-2136-retest-FAIL.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 10–11 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.</p><p>First page of the list is still far above the 1.5 s target, with slow outliers that Zoho does not have.</p><p>Still failing:</p><ul><li><strong>Leads list, first page (navigation → first real row)</strong>: expected Target p95 ≤ 1.5 s; Zoho CRM measured the same way: 6.7–8.0 s (median 7.46 s), no outliers; actual TAVI Leads p50 4.28 s, p95 13.53 s; Transactions p95 9.15 s and 19.92 s on two runs</li></ul><p>TAVI's median is faster than Zoho's, but its p95 (13.5–19.9 s) is well above Zoho's slowest load (8.0 s) and the 1.5 s target.</p><p>Evidence: NDC-2136-retest-FAIL-vs-zoho.png, NDC-2136-retest-FAIL.png (attached; side-by-side images: TAVI left, Zoho right)</p>"
+ },
+ {
+  "ticket": "NDC-2137",
+  "id": "533f6806-b5a3-410d-8ec9-ea4f67c174e7",
+  "verdict": "FAIL",
+  "state": "Bug",
+  "attach": [
+   "NDC-2137-retest-FAIL-vs-zoho.png",
+   "NDC-2137-retest-FAIL.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 10–11 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.</p><p>Kanban cards never load; it is worse than on 6 Nov.</p><p>Still failing:</p><ul><li><strong>Kanban first cards</strong>: expected Cards load (Zoho CRM: always loaded, 16.6–33.7 s on this trial); actual TAVI: every column shows \"Could not load these records\"; all 134 column requests return 500</li><li><strong>records?skip_total=true</strong>: expected 200; actual 500 on Transactions, Leads and Tasks (200 without skip_total)</li><li><strong>Kanban headers p95</strong>: expected ≤ 2 s; actual 19.11 s (6 Nov: 1.76 s)</li></ul><p>Evidence: NDC-2137-retest-FAIL-vs-zoho.png, NDC-2137-retest-FAIL.png (attached; side-by-side images: TAVI left, Zoho right)</p>"
+ }
+]

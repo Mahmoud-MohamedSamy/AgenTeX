@@ -23,8 +23,8 @@ public final class DeskWorkflowRulesFeature {
     public static final String CALLS_LAYOUT_ID = "fdb13486-6c74-4a80-8401-c9a25255dfe1";
     /** Default department "Customer Support" (tags are per department; API-created tickets land here). */
     public static final String DEFAULT_DEPARTMENT_ID = "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158";
-    /** Department for every QA ticket and tag: Tech (spec 1.2; teammates test assignment in Customer Support). */
-    public static final String QA_DEPARTMENT_ID = "19510fdc-91f3-4a7a-8888-153f1318b765";
+    /** Department for every QA ticket and tag: QA AO Dept A (desk automation order, 11 Nov 2026; was Tech). */
+    public static final String QA_DEPARTMENT_ID = "93949fbd-f9df-4e2e-ae45-00b8dc38385b";
     public static final String SETTINGS_ACTIONS_PATH = "/settings/automation/actions";
     /** Every QA rule, action, tag and ticket subject starts with this; every QA rule has the guard condition subject starts with it. */
     public static final String QA = "QA WF ";

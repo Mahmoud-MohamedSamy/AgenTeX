@@ -1,0 +1,15 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15';
+const I=JSON.parse(fs.readFileSync(RUN+'/out/2830-ids.json','utf8'));
+const TM='d120a6c2-2596-4254-968b-a1bcd3a000bf',CL='f7e488b5-0232-42fd-811c-1f24356af653',TK='88e8ea44-1658-4df3-9930-d0902b91073d';
+const out={};
+const me=await api('GET','/iam/me'); out.me=me.j&&(me.j.data||me.j).displayName;
+const g=async p=>{const r=await api('GET',p); return r.s+(r.s>=300?' '+(r.j&&r.j.error?r.j.error.code:''):'');};
+out.task=await g('/modules/'+TM+'/records/'+I.task.id);
+out.call=await g('/modules/'+CL+'/records/'+I.call.id);
+out.ticket=await g('/modules/'+TK+'/records/'+I.ticket.id);
+out.ctlTask=await g('/modules/'+TM+'/records/'+I.ctlTask.id);
+const list=async (mod,id)=>{let all=[];for(let p=1;p<=20;p++){const r=await api('GET','/modules/'+mod+'/records?page='+p+'&per_page=200');const a=arr(r.j&&r.j.data);all=all.concat(a);if(a.length<200)break;}return {rows:all.length, has:all.some(x=>x.id===id)};};
+out.taskList=await list(TM,I.task.id); out.taskListCtl=(await list(TM,I.ctlTask.id)).has;
+out.callList=await list(CL,I.call.id);
+out.patchTask=(await api('PATCH','/modules/'+TM+'/records/'+I.task.id,{data:[{field:'subject',value:{kind:'string',value:'QA RT15 2830 HR task (agent edit)'}}]})).s;
+return out;

@@ -1,0 +1,2 @@
+const L=require('./lib');module.exports=async()=>{const id=JSON.parse(require('fs').readFileSync(OUT+'/t07-id.json')).id;await L.gotoTicket(id);await pg.waitForFunction(()=>/QA MAN private keep/.test(document.body.innerText),null,{timeout:90000}).catch(()=>{});
+ const en=pg.locator('article, [data-entry-id], li').filter({hasText:'QA MAN private keep'}).last();return {entry:(await en.innerText().catch(()=>'')).replace(/\s+/g,' ').slice(0,140),pinnedAnywhere:/Pinned/.test(await L.body_txt())};};

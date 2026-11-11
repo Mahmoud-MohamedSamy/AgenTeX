@@ -1,0 +1,6 @@
+{"out":"2810-api-card.png","title":"NDC-2810 · CRM ⇄ Desk sync: deleted records","host":"staging-desk.taviportal.com","who":"Desk owner","date":"10 Nov 2026","rows":[
+["1 Delete in Desk","DELETE Desk contact \"QA RT15 2810 A\" (synced to CRM)","link → unlinked, no Failure Log entry","ok"],
+["2 Delete in CRM","DELETE CRM contact of \"QA RT15 2810 B\"","link → needs_attention; Failure Log: \"QA RT15 2810 B · Needs attention · The CRM record was deleted.\"; Desk contact B still there (200)","bad"],
+["3 Sync all customers","POST imports/customers → 202 (5:50 PM)","0 added, 37 updated, 11 ignored, 1 could not sync. Ignored: 9 linked Desk record in recycle bin, 2 already up to date","ok"],
+["4 The 1 failure","Failure Log entry \"B04\"","\"A field Desk requires is empty\" (Last Name). B04 is in neither customer list (CRM Customers 25 records, no B04)","bad"],
+["5 Failure Log size","Failure Log › Could not sync","167 (ticket said 372); 229 parked entries, newest today = 3× \"The CRM record was deleted.\" + mine","info"]]}

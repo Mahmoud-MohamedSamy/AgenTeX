@@ -1,0 +1,1 @@
+module.exports=async()=>{const me=await api('GET','/iam/me/permissions?app_key=desk');const s=JSON.stringify(me.j);return {s:me.s,len:s.length,ticket:[...new Set(s.match(/"[a-z_]*:?[a-z_.:]*ticket[a-z_.:]*"/gi)||[])].join(' ').slice(0,1200),head:s.slice(0,400)};};

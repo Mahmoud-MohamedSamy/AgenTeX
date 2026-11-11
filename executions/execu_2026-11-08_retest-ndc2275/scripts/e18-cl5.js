@@ -1,0 +1,2 @@
+module.exports=async()=>{const T1='33dfd714-5b9e-4c51-86f4-f33dd1fe9504';const o=fl((await api('GET','/modules/'+T+'/records/'+T1)).j.data);const p=(await api('GET','/desk/departments/'+IDS.DB+'/round-robin-preferences')).j.data;
+return {at:new Date().toISOString().slice(11,19),t1:{status:o.status,closed_time:o.closed_time,owner:(o.owner&&(o.owner.id||o.owner))===IDS.O,dept:o.department},prefs:p};};

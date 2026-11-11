@@ -1,0 +1,14 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15';
+const LED=m=>fs.appendFileSync(RUN+'/ledger.md','- '+new Date().toISOString().slice(0,19)+' DESK '+m+'\n');
+const TM='d120a6c2-2596-4254-968b-a1bcd3a000bf',CL='f7e488b5-0232-42fd-811c-1f24356af653',TK='88e8ea44-1658-4df3-9930-d0902b91073d',CT='43004ce2-577f-4eda-b00a-0750fe40c3d4';
+const HR='08fd8684-c5c0-4d4d-86f9-2be70cf61e53', CS='7e1ac409-58b0-41ab-97e1-0e7d5c8c5158';
+const S=v=>({kind:'string',value:v}); const E=r=>r.j&&r.j.error?r.j.error.code+': '+r.j.error.message+' '+JSON.stringify(r.j.error.details||'').slice(0,200):'';
+const mk = async (mod, label, data) => { const r = await api('POST','/modules/'+mod+'/records',{data}); const id=r.j&&r.j.data&&r.j.data.id; if(id) LED(label+' '+id); return {s:r.s,id,e:E(r)}; };
+const o={};
+o.contact = await mk(CT,'contact "QA RT15 2830 Contact"',[{field:'last_name',value:S('QA RT15 2830 Contact')},{field:'name',value:S('QA RT15 2830 Contact')},{field:'email',value:S('qa.rt15.2830@example.com')}]);
+o.ticket = await mk(TK,'ticket "QA RT15 2830 HR ticket" (HR)',[{field:'subject',value:S('QA RT15 2830 HR ticket')},{field:'department',value:S(HR)},{field:'status',value:S('Open')},{field:'contact_id',value:S(o.contact.id)}]);
+o.task = await mk(TM,'task "QA RT15 2830 HR task" (HR)',[{field:'subject',value:S('QA RT15 2830 HR task')},{field:'department',value:S(HR)},{field:'status',value:S('Not Started')},{field:'ticket_id',value:S(o.ticket.id)}]);
+o.call = await mk(CL,'call "QA RT15 2830 HR call" (HR)',[{field:'subject',value:S('QA RT15 2830 HR call')},{field:'department',value:S(HR)},{field:'call_type',value:S('Outbound')},{field:'call_status',value:S('Scheduled')},{field:'call_start_time',value:S(new Date(Date.now()+86400000).toISOString())},{field:'contact_id',value:S(o.contact.id)},{field:'ticket_id',value:S(o.ticket.id)}]);
+o.ctlTask = await mk(TM,'task "QA RT15 2830 CS task" (Customer Support)',[{field:'subject',value:S('QA RT15 2830 CS task')},{field:'department',value:S(CS)},{field:'status',value:S('Not Started')}]);
+fs.writeFileSync(RUN+'/out/2830-ids.json', JSON.stringify(o,null,1));
+return o;

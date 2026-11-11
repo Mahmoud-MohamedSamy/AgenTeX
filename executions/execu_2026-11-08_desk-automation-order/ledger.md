@@ -204,4 +204,76 @@
 - SL-30 evidence: policy 47d0ed85-8cc2-4645-8990-bf2c07854aa6, ticket 32435b6e-83ad-4153-806e-2d4531174bf5 (#1769). Keep until NDC-2825 is retested or remove at cleanup.
 - SL-40 check (9 Nov): account e5cce304-2aae-4c26-b145-13c46f183603, policy a67512ff-07ad-4699-ba0e-ed468a9ba660, plan 0d818d96-9d34-48dc-b031-83858a52ce57, contract 897f7bab-9ab9-422f-9ef9-fcb48bdd1ce0 (QA AO SL40g7y5, ends 10 Nov, notify Test User 1 one day before). Remove after the 10 Nov check (delete contract, plan, policy, account in that order). — DELETED 10 Nov 07:50 UTC.
 - SL-55 (10 Nov): 3 QA AO SL55 policies + 3 tickets created and deleted same run.
-- Filing lane 10 Nov: SL-54 evidence policy 1f2535af-39ec-4fe6-9704-572b406a3481 (QA AO SL54iuqp, inactive, Dept A). Delete after filing.
+- Filing lane 10 Nov: SL-54 evidence policy 1f2535af-39ec-4fe6-9704-572b406a3481 (QA AO SL54iuqp, inactive, Dept A). Delete after filing. — DELETED.
+- Filing lane 10 Nov: SL-57 evidence template e5a989e6-22f4-4d74-a21f-e9cabae8d803 (QA AO SL57h156 escalation template) + inactive policy ea75d2cb-cc86-440a-ad29-2da03f5c8ac4 (QA AO SL57h156, Dept A). Delete after filing. — DELETED (template on screen, policy 204).
+- 10 Nov A1–A3 lane: 5 QA AO RR rules + 45 tickets in QA AS6 Dept A, 1 holiday list — all deleted; borrowed skill 'QA AS6 sk1' criteria restored; AS6 Dept A prefs and Team Assignment restored; notify switches restored.
+- Filing lane 10 Nov: SL-38 evidence (QA AO SL38rpb8h): policy c0deaa14-da0c-40b8-ae78-98d3180cfbd1, account 9415abe1-04b0-4ef4-a2e2-7084c28a83c9, plan 5a506f14-66e1-4571-85c0-14bc563c211b, contract 4922707c-0be0-420e-8d23-76308d2f9f6b, tickets 7b652a9d-7eb7-464a-9a68-f839f425092a, e15ca9dd-b271-4e6c-beb0-f9d17ad411c2, eb53ade8-3958-455d-b9af-bef4dfb85e84. Delete after screenshots. — DELETED.
+- 2026-11-10T09:40:23 UI lane: QA AO A08 one/two RR rules (inactive) created on screen in QA AO Dept B (delete at end) — DELETED (on screen, A-11)
+- 2026-11-10T09:59:45 UI lane: RR rule 'QA AO A13' (inactive) in QA AO Dept B (delete at end) — DELETED (on screen)
+- 2026-11-10T10:07:49 UI lane: Skills in QA AO Dept B (QA AO type, QA AO H14 skill, QA AO <img> skill) — deleted by cH2 at end; verify — DELETED (H14 skill on screen, img skill by API, type on screen); Dept B now has no skills or types
+- 10 Nov A1–A3 runtime lane: 53 QA AO rules, 160 tickets, 2 contacts, 2 accounts deleted; 1 ticket delete 401 (QA AO, AS6 Dept A) — recheck at final cleanup.
+- 2026-11-10T11:38:23 NT-07 retest: ticket 44d68da1-79ef-4e95-9fd2-8ed7773b1889 (#2493, QA AO NT07z9ci), contact bde72b35-452b-461d-be79-322bdb3e60b3 — kept for the user mailbox check, delete after.
+- 2026-11-10T11:40:07 NT-07 retest: ticket 24a59b96-ce99-4997-b702-404693a4b42a (#2494, QA AO NT07z2ou), contact bff63579-ea3d-420d-bd39-4d322ce0a511 — kept for the user mailbox check, delete after.
+- 2026-11-10T11:41:50 NT-07 retest: ticket 523fd570-208c-4f47-9a10-ab0da19e6ef3 (#2497, QA AO NT07z7ab), contact 9a381223-604f-4b60-a359-cf529c104cff — kept for the user mailbox check, delete after.
+- NT-07 retest tickets #2493/#2494/#2497 + 3 contacts — DELETED 10 Nov.
+- 2026-11-10T12:10:23 SL-60 evidence: policy 240b0eab-676d-42bb-9d1f-4ed5e43ad542, plan 9aabf5fb-53e6-4a69-bbcc-26760fecb00c (Dept B), account 37cf87ff-f177-498f-8d00-2de51f3e7df1, contract 1304fda2-6bae-43bd-b071-d5e3cf0e4b55 (Dept A) — delete after the image.
+- 2026-11-10T12:27:33 ZOHO techsolutionsegypt: ticket QA AO Q1 owner on create (API) id 1475109000000541038 contact 1475109000000541001
+- SL-60 evidence data (wt0o + gxud leftovers) — DELETED 10 Nov.
+- 2026-11-10T12:52:50 ZOHO techsolutionsegypt: Q1 ticket #116 + contact moved to trash and purged ({"t":204,"c":204,"after":200}).
+- 2026-11-10T14:02:25 SL-51: invited "QA AO SL51 Throwaway" (Gmail +sl51), Desk Agent — delete after the test. 200
+- 2026-11-10T15:14:01 SL-51: throwaway added to QA AO Dept A; SLA policy "QA AO SL51dobcy" cf69073f-4584-4c73-95e1-79d1b3fafc59 names it in escalations. Delete both after.
+- 2026-11-10T15:20 policy QA AO SL300ddb9c f6437a8e-c08b-461c-bb26-3ba28eea9fc5
+- 2026-11-10T15:20 ticket QA AO SL300ddb9c 8868c3bc-2ce5-4111-8a6c-f3f4d08a7b41
+- 2026-11-10T15:22 policy QA AO SL30b80fd8a a3142a00-8717-4d07-8214-144009e21d32
+- 2026-11-10T15:23 ticket QA AO SL30b80fd8a d44ddf14-195e-4d6f-a436-548f3ae20c0e
+- 2026-11-10T15:27 policy QA AO SL30bbcbfbc c4410c3a-35f4-4ca0-8be7-ea8c564941c5
+- 2026-11-10T15:27 ticket QA AO SL30bbcbfbc 6da1988b-033d-430c-bdcb-14d0431e7d69
+- 2026-11-10T16:00:31 Filing evidence run ev5 (4oya): template, 2 SLA policies, contact, 4 tickets in QA AO Dept A — delete with ev5-clean.js.
+- 2026-11-10T16:21:10 ev5 cleanup: ticket 204, ticket 204, ticket 204, ticket 204, policy 204, policy 204, tpl 204, contact 204
+- 2026-11-11T08:35:23 SL-51 cleanup (user OK): "Test SL-51" removed from Desk via Reassign and remove (Customer Support ticket left unassigned); DELETE user 204; policy QA AO SL51dobcy already gone (404).
+- 2026-11-11T09:41:11 NT-30: invited "QA AO NT30 Throwaway" (Gmail +nt30), Desk Agent — delete after the test. 200
+- 2026-11-11T09:41:37 NT-30: invited "QA AO NT30 Throwaway" (Gmail +nt30), Desk Agent — delete after the test (re-invite; first invite revoked by deleting its user). 200
+- 2026-11-11T09:45:35 NT-19 team: direct switch on + team notice off/on for the test, restored 200; rule deleted; tickets 53acec5b-30bf-420d-953f-f0c3591bb7cb,c6275484-f20b-461b-9e54-617bed8f086f (delete after bell check).
+- 2026-11-11T09:46:26 NT-19 team tickets #2816/#2817 deleted {"53acec5b":204,"c6275484":204}
+- 2026-11-11T09:48:50 NT-10 rating: happiness settings ON scoped to QA AO Dept A (200); original in nt10h-orig.json — RESTORE after test.
+- 2026-11-11T09:49:00 NT-10 rating: contact + ticket #2818 in QA AO Dept A — delete with nt10r-clean.js.
+- 2026-11-11T09:59:52 D-14 web: direct switch ON (orig in d14w-orig.json, restore with d14w-off.js); rule ba9cefa0-95e2-4f9c-917f-01d85e8ffbcc key AOD14Wk0kb.
+- 2026-11-11T10:01:39 D-14 web: switches restored 200, rule deleted 204.
+- 2026-11-11T10:02:15 D-14 web cleanup {"te98104":204,"tafd2a8":204,"cfb28c0":204}
+- 2026-11-11T10:58:25 NT-10 cleanup: happiness settings restored 200 (diff []); ticket #2818 204, contact 204.
+- 2026-11-11T11:00:07 NT-30: invited "QA AO NT30 Throwaway" (Gmail +nt30), Desk Agent — delete after the test (resend 11 Nov; old leaked invite cancelled). 200
+- 2026-11-11T11:02:41 SL-18 portal: QA AO Dept A visibility private -> private (restore to private after).
+- 2026-11-11T11:02:58 SL-18 portal: QA AO Dept A visibility private -> private (restore to private after).
+- 2026-11-11T11:03:33 SL-18 portal: QA AO Dept A visibility private -> public (restore to private after).
+- 2026-11-11T11:04:29 SL-18 portal (gj3f): contact f664f406-8392-4453-9abe-01eeb9b5ed69, policies eace4024-ddca-4a83-bfd4-278b0413066b / 0fb5191c-7697-4bf4-951f-9ba7eb72d25a, tickets #2854 / #2855 in QA AO Dept A — delete after.
+- 2026-11-11T11:19:36 SL-18 portal cleanup {"ton":204,"pon":204,"toff":204,"poff":204,"hcAccount":204,"contact":204}
+- 2026-11-11T11:19:43 SL-18 portal: QA AO Dept A visibility public -> private (restored).
+- 2026-11-11T11:20:38 NT-30: invitation 7749e3b0-be90-4085-8c2f-54cd6551d1c1 resent 204
+- 2026-11-11T11:23:23 NT-30 agent added to QA AO Dept A 200
+- 2026-11-11T11:23:23 NT-30 team 12554546-98be-49d6-9721-6cd66d9654ac
+- 2026-11-11T11:23:32 NT-30 T1 #2856
+- 2026-11-11T11:23:33 NT-30 agent suspended 204
+- 2026-11-11T11:26:01 NT-30 control: agent reactivated, comment on T1, team ticket T4 #2858.
+- 2026-11-11T11:33:05 agent mail control ticket MAILCTL3puq af33931a-1336-417d-9ea6-c80324e7e34f owner Samy — delete with NT-30 cleanup.
+- 2026-11-11T12:12:28 NT-30 tpl rules bound to system templates in QA AO Dept A {"agent.ticket_assigned":"400 {\"success\":false,\"data\":null,\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"template_id must be a valid id.\",\"details\":[{\"field\":\"template_id\",\"issue\ (restore from nt30-rules-orig.json)
+- 2026-11-11T12:14:10 NT-30 tpl agent suspended
+- 2026-11-11T12:14:29 NT-30 tpl tickets #2861,#2862,#2863,#2864
+- 2026-11-11T12:14:45 NT-30 tpl template fb553659-5396-4034-8882-cc556b2bdf0f agent.ticket_assigned
+- 2026-11-11T12:14:48 NT-30 tpl template 3b558a31-c9fd-4d35-8817-639ee69ca914 agent.comment_added
+- 2026-11-11T12:14:50 NT-30 tpl template c3673af3-084c-4a9c-8939-db9c1f10c7c9 team.ticket_assigned
+- 2026-11-11T12:14:57 NT-30 tpl rules bound to QA templates in QA AO Dept A {"agent.ticket_assigned":"200 was {\"is_enabled\":true,\"template_id\":null}","agent.comment_added":"200 was {\"is_enabled\":true,\"template_id\":null}","team.ticket_assigned":"200 was {\"is_enabled\" (restore from nt30-rules-orig.json)
+- 2026-11-11T12:16:35 NT-30 tpl agent suspended
+- 2026-11-11T12:17:02 NT-30 tpl tickets #2865,#2866,#2867,#2868
+- 2026-11-11T12:28:49 NT-30 team redo: member set, #2869 active, #2871 suspended.
+- 2026-11-11T12:48:52 NT-30 cleanup {"rules":{"agent.ticket_assigned":200,"agent.comment_added":200,"team.ticket_assigned":200},"tickets":{"357562":204,"637856":204,"987744":204,"6446a7":204,"522fda":204,"1e3180":204,"74e27b":204,"c1aa33":204,"ee7cb4":204,"dcf700":204,"0abed5":204,"d9f4bd":204,"ed244e":204,"af3393":204},"rulesNow":["agent.ticket_assigned enabled=true tpl=null","agent.comment_added enabled=true tpl=null","team.ticket_assigned enabled=true tpl=null"],"tplfb5536":204,"tpl3b558a":204,"tplc3673a":204,"team":204,"dept":200,"user":204,"workloadAfter":200}
+- 2026-11-11T13:14:48 F-08 leftovers deleted {"#2511":204,"#2512":204}
+- 2026-11-11T13:18:22 NT-06 edit: contact + ticket df3908ba-1a8a-40f5-8d37-b5646be8f20c (NT06e5zil) — delete after the Gmail check.
+- 2026-11-11T13:27:19 SL-40 day-before (SL40d01ql): account 820f9223-39b4-45b6-8f52-ae1137b41329, policy 4f85146c-a3f6-4774-89be-e57e26e7cf8a, plan 0749424a-6161-4872-8b4d-3b57c201056f, contract a2fcaab9-113b-4018-ae91-f0c72e49558e ending 2026-11-13 — check Test User 1 bell on 12 Nov after 00:03 UTC, then delete.
+- 2026-11-11T13:32:02 F-08 leftovers deleted {"#2510":204,"#2509":204}
+- 2026-11-11T13:35:51 NT-06 edit cleanup #2886 {"ticket":204,"contact":204}
+- 2026-11-11T13:55:56.331Z A4 B14 rule "QA AO WF B14 limit 51" 15e7970d-7dd4-42b0-a8bc-bd1ec974bae5 (inactive)
+- 2026-11-11T13:55:57.149Z A4 B14 rule "QA AO WF B14 limit 52" 13ad7328-6053-4a5e-b6d2-86c9d53793ff (inactive)
+- 2026-11-11T13:57:12.219Z A4 B14 rules deleted {"51":204,"52":204,"after":50,"leftB14":0}
+- 2026-11-11T13:58:13 A4 I9: invited "QA AO WF Agent" (Gmail +wf), Desk Agent, user d84e18d2-bc99-4087-b1a7-cfb34777a498 inv f56966bb-4d14-4de1-b244-afa4f1cefc27 — delete after. 200
+- 2026-11-11T15:03:11 A4 user round: QA AO Dept A Display in Help Center ON (was private)
+- 2026-11-11T15:03:11 A4 user round: Customer Happiness ON, scoped to QA AO Dept A only (restore from a4/u1-orig.json)

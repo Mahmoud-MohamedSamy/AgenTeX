@@ -1,0 +1,5 @@
+const fs=require('fs'),path=require('path');const DL='C:/Users/Dell/Downloads';const f=fs.readdirSync(DL).filter(n=>/^secret-key-\d+\.csv$/.test(n)).sort().pop();const KEY=(fs.readFileSync(path.join(DL,f),'utf8').match(/plane_[A-Za-z0-9_-]+/)||[])[0];
+const BASE='https://api.plane.so/api/v1/workspaces/ahmed-hegazy/projects/efce4d84-5876-4015-b472-2efca7ad73f3';const call=async p=>(await fetch(BASE+p,{headers:{'x-api-key':KEY}})).json();
+(async()=>{const S=await call('/states/');const SN=Object.fromEntries((S.results||S).map(s=>[s.id,s.name]));let items=[];let cur=null;for(let i=0;i<15;i++){const r=await call('/work-items/?per_page=100&order_by=-created_at'+(cur?'&cursor='+cur:''));items.push(...(r.results||[]));if(!r.next_page_results)break;cur=r.next_cursor;}
+const re=/(notification|notif|e-?mail).*(agent|not (sent|delivered|received)|never)|agent.*(e-?mail|mail).*notif|bell.*(mail|email)|no (e-?mail|mail)/i;
+console.log('scanned',items.length);for(const x of items.filter(x=>re.test(x.name)))console.log('NDC-'+x.sequence_id,'|',SN[x.state],'|',x.name.slice(0,120));})().catch(e=>console.log('ERR',String(e.message).replace(/plane_[A-Za-z0-9_-]+/g,'<key>')));

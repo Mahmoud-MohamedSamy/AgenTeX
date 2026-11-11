@@ -1,0 +1,8169 @@
+[
+ {
+  "id": "T-04",
+  "name": "Create ticket (layout per department, templates, quick create)",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 1,
+  "status": "Built",
+  "partly": "",
+  "pre": "Signed in as Owner. Department Marketing (no SLA, no rule). Contact \"QA MAN Contact 1\" (create it in Contacts first, email = QA mailbox M1). Known: NDC-2661 (screen create said \"Permission denied\").",
+  "extra": "",
+  "why": "Every ticket starts here. NDC agents type phone and chat tickets by hand (54 % + 33 % of their volume).",
+  "cases": [
+   {
+    "tc": "T-04-01",
+    "type": "functional",
+    "title": "Create a phone ticket from the screen",
+    "steps": [
+     "Click \"+\" in the header › Ticket.",
+     "Department = Marketing.",
+     "Subject \"QA MAN phone 01\", Contact = QA MAN Contact 1, Channel = Phone, no priority.",
+     "Description \"Caller asks about refund\".",
+     "Click Save."
+    ],
+    "exp": "Success message (not \"Permission denied\"). Ticket page opens with a new ticket number. Channel shows Phone. Status is the default open status."
+   },
+   {
+    "tc": "T-04-02",
+    "type": "functional",
+    "title": "Create a chat ticket typed by an agent",
+    "steps": [
+     "Sign in as Agent C.",
+     "\"+\" › Ticket, department Customer Support.",
+     "Subject \"QA MAN chat 01\", Channel = Chat, contact QA MAN Contact 1.",
+     "Save."
+    ],
+    "exp": "Ticket created in Customer Support, owner rules as configured, channel Chat. Agent C can open it."
+   },
+   {
+    "tc": "T-04-03",
+    "type": "negative",
+    "title": "Required fields are enforced",
+    "steps": [
+     "\"+\" › Ticket.",
+     "Leave Subject empty.",
+     "Click Save.",
+     "Then clear Department (if possible) and Save."
+    ],
+    "exp": "Save is blocked. Each missing field shows an inline message. No ticket is created (check All Tickets)."
+   },
+   {
+    "tc": "T-04-04",
+    "type": "edge",
+    "title": "Very long and special-character subject",
+    "steps": [
+     "Create a ticket with a 255-character subject that starts \"QA MAN long\" and contains Arabic, emoji and <b>x</b>.",
+     "Save.",
+     "Then try a 1,000-character subject."
+    ],
+    "exp": "255 chars saves and shows as plain text (no bold, no script). 1,000 chars is refused with a clear limit message, or saved in full — record which. No \"unexpected error\"."
+   },
+   {
+    "tc": "T-04-05",
+    "type": "functional",
+    "title": "Layout follows the department",
+    "steps": [
+     "\"+\" › Ticket.",
+     "Pick Marketing, note the fields.",
+     "Switch department to Tech (or a QA NDC department with its own layout)."
+    ],
+    "exp": "The form changes to that department's layout. Values already typed in shared fields stay."
+   },
+   {
+    "tc": "T-04-06",
+    "type": "functional",
+    "title": "Create from a ticket template",
+    "steps": [
+     "Create template \"QA MAN template\" in Settings › Tickets › Templates (subject + priority Low).",
+     "\"+\" › Ticket › template picker › pick it.",
+     "Save."
+    ],
+    "exp": "Fields are pre-filled from the template. Ticket saves with those values."
+   },
+   {
+    "tc": "T-04-07",
+    "type": "persistence",
+    "title": "Ticket survives reload and sign-in",
+    "steps": [
+     "Open \"QA MAN phone 01\".",
+     "Reload the page.",
+     "Sign out, sign in again, search the ticket number."
+    ],
+    "exp": "All values are the same as saved."
+   },
+   {
+    "tc": "T-04-08",
+    "type": "permission",
+    "title": "Agent cannot create in a department he is not in",
+    "steps": [
+     "Sign in as Agent C (Customer Support only).",
+     "\"+\" › Ticket.",
+     "Open the Department list."
+    ],
+    "exp": "Only his departments are offered. He cannot save a ticket into Marketing."
+   },
+   {
+    "tc": "T-04-09",
+    "type": "ui-rtl",
+    "title": "Create form in Arabic",
+    "steps": [
+     "Switch the header language to Arabic.",
+     "\"+\" › Ticket.",
+     "Fill and save \"QA MAN AR 01\"."
+    ],
+    "exp": "Labels and buttons in Arabic, form right-to-left, no raw keys like desk.tickets.x, success message in Arabic."
+   },
+   {
+    "tc": "T-04-10",
+    "type": "integration",
+    "title": "Tenant workflow side effects",
+    "steps": [
+     "After T-04-01, open the ticket's Activity / History.",
+     "Check Activities and Tags for new items."
+    ],
+    "exp": "Note any task, tag or call that a tenant-wide workflow rule added. With no priority and channel Phone, none should appear. Record and clean any."
+   }
+  ]
+ },
+ {
+  "id": "T-05",
+  "name": "Ticket detail: properties, conversation, history, tabs, pins",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 1,
+  "status": "Built",
+  "partly": "",
+  "pre": "Ticket \"QA MAN phone 01\". Known: NDC-2660 (history raw ids); candidate \"Followers was updated\" shows raw user ids.",
+  "extra": "",
+  "why": "Agents live on this page all day.",
+  "cases": [
+   {
+    "tc": "T-05-01",
+    "type": "functional",
+    "title": "Page parts load",
+    "steps": [
+     "Open the ticket.",
+     "Click each tab: Conversation, Resolution, Time, Attachment, Parent-Child, Activity, Approval, History."
+    ],
+    "exp": "Header (subject, status, Reply, Comment, Close) and properties panel show. Every tab opens without error or raw keys."
+   },
+   {
+    "tc": "T-05-02",
+    "type": "functional",
+    "title": "Edit properties inline",
+    "steps": [
+     "Change Subject to \"QA MAN phone 01 edited\".",
+     "Set Due date to tomorrow 17:00.",
+     "Set priority Low."
+    ],
+    "exp": "Each change saves on its own. A success toast shows."
+   },
+   {
+    "tc": "T-05-03",
+    "type": "functional",
+    "title": "History records each change with names",
+    "steps": [
+     "Open History."
+    ],
+    "exp": "Create, subject, due date and priority changes are listed with the user's name and old → new values. No raw ids or arrays."
+   },
+   {
+    "tc": "T-05-04",
+    "type": "negative",
+    "title": "Due date in the past",
+    "steps": [
+     "Set Due date to yesterday."
+    ],
+    "exp": "Refused with a message, or saved and the ticket marked overdue — record which. No crash."
+   },
+   {
+    "tc": "T-05-05",
+    "type": "edge",
+    "title": "Unknown ticket link",
+    "steps": [
+     "Copy the ticket URL.",
+     "Change the last 4 characters of the id.",
+     "Open it."
+    ],
+    "exp": "\"Not found\" page. No data from another ticket."
+   },
+   {
+    "tc": "T-05-06",
+    "type": "edge",
+    "title": "Two people edit at once",
+    "steps": [
+     "Open the ticket in two browsers (Owner and Admin B).",
+     "B changes priority to Medium.",
+     "Owner, without reload, changes priority to Low."
+    ],
+    "exp": "The second save is refused with a \"changed by someone else\" message, or the last one wins and History shows both. Record which."
+   },
+   {
+    "tc": "T-05-07",
+    "type": "persistence",
+    "title": "Values kept after reload",
+    "steps": [
+     "Reload.",
+     "Sign in again."
+    ],
+    "exp": "Edited subject, due date, priority are still there."
+   },
+   {
+    "tc": "T-05-08",
+    "type": "permission",
+    "title": "Agent outside the department",
+    "steps": [
+     "Sign in as Agent C.",
+     "Paste the Marketing ticket URL."
+    ],
+    "exp": "Access refused / not found. No properties or conversation shown."
+   },
+   {
+    "tc": "T-05-09",
+    "type": "ui-rtl",
+    "title": "Detail page in Arabic",
+    "steps": [
+     "Switch to Arabic.",
+     "Open the ticket.",
+     "Tab through the header buttons with the keyboard."
+    ],
+    "exp": "Labels in Arabic, layout mirrored, dates readable, focus order follows the visual order."
+   }
+  ]
+ },
+ {
+  "id": "T-06",
+  "name": "Reply, reply all, forward, CC/BCC, signatures, send as email",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 1,
+  "status": "Built",
+  "partly": "Ticket replies run 26 Oct (docs/desk-ticket-replies). Focus here on NDC-Staging, CC/BCC, signature, real delivery.",
+  "pre": "Ticket \"QA MAN reply 01\" on contact QA MAN Contact 1 (mailbox M1). Second mailbox M2 for CC/forward. Signature set in My profile. Known: NDC-2636, NDC-2377.",
+  "extra": "",
+  "why": "The customer only sees what goes out by email.",
+  "cases": [
+   {
+    "tc": "T-06-01",
+    "type": "functional",
+    "title": "Reply reaches the customer",
+    "steps": [
+     "Open the ticket › Reply.",
+     "Type \"QA MAN reply body 01\".",
+     "Send.",
+     "Check mailbox M1."
+    ],
+    "exp": "Reply shows in the thread as outgoing. Email arrives in M1 from the support address, subject has the ticket number."
+   },
+   {
+    "tc": "T-06-02",
+    "type": "functional",
+    "title": "Reply all with CC and BCC",
+    "steps": [
+     "Reply all.",
+     "Add CC = M2, BCC = M2 alias (or a 3rd mailbox).",
+     "Send."
+    ],
+    "exp": "M1 gets it, CC gets it, BCC gets it but is not visible to others. Thread shows CC."
+   },
+   {
+    "tc": "T-06-03",
+    "type": "functional",
+    "title": "Forward",
+    "steps": [
+     "Forward the first message to M2 with a note.",
+     "Send."
+    ],
+    "exp": "M2 receives the forward with the original text. Thread marks it as a forward."
+   },
+   {
+    "tc": "T-06-04",
+    "type": "negative",
+    "title": "Invalid address and empty body",
+    "steps": [
+     "Reply with To = \"not-an-email\".",
+     "Send.",
+     "Reply with an empty body.",
+     "Send."
+    ],
+    "exp": "Both refused with a clear message. Nothing is saved as \"sent\"."
+   },
+   {
+    "tc": "T-06-05",
+    "type": "functional",
+    "title": "Signature is added",
+    "steps": [
+     "Set a signature in My profile.",
+     "Open a reply."
+    ],
+    "exp": "Signature is inserted once, under the text. Arabic signature keeps RTL."
+   },
+   {
+    "tc": "T-06-06",
+    "type": "edge",
+    "title": "Long reply with paste from Word",
+    "steps": [
+     "Paste a 3-page text with a table and an image.",
+     "Send."
+    ],
+    "exp": "Sent. Formatting is kept or cleanly simplified. Email in M1 is readable."
+   },
+   {
+    "tc": "T-06-07",
+    "type": "integration",
+    "title": "Customer replies back",
+    "steps": [
+     "From M1, answer the email.",
+     "Wait 2 minutes.",
+     "Reload the ticket."
+    ],
+    "exp": "Customer reply is threaded on the same ticket (not a new ticket). Status follows the rule (for example back to Open)."
+   },
+   {
+    "tc": "T-06-08",
+    "type": "persistence",
+    "title": "Sent reply kept after reload",
+    "steps": [
+     "Reload.",
+     "Sign in again."
+    ],
+    "exp": "Replies, CC and forward stay in the thread, in time order."
+   },
+   {
+    "tc": "T-06-09",
+    "type": "permission",
+    "title": "Agent without reply right",
+    "steps": [
+     "Share a Marketing ticket read-only with Customer Support.",
+     "Sign in as Agent C.",
+     "Open it."
+    ],
+    "exp": "Reply and Forward are hidden or refused."
+   },
+   {
+    "tc": "T-06-10",
+    "type": "ui-rtl",
+    "title": "Arabic reply",
+    "steps": [
+     "Write the reply in Arabic.",
+     "Send."
+    ],
+    "exp": "Composer is RTL for Arabic text. Email in M1 shows Arabic correctly (no \"????\")."
+   }
+  ]
+ },
+ {
+  "id": "T-07",
+  "name": "Private comments, mentions, comment visibility",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 1,
+  "status": "Built",
+  "partly": "comments in the 26 Oct replies run.",
+  "pre": "Ticket \"QA MAN reply 01\". Admin B in Marketing.",
+  "extra": "",
+  "why": "Internal handover between NDC teams runs on comments and mentions.",
+  "cases": [
+   {
+    "tc": "T-07-01",
+    "type": "functional",
+    "title": "Private comment",
+    "steps": [
+     "Click Comment.",
+     "Type \"QA MAN private note\".",
+     "Keep visibility Private.",
+     "Save."
+    ],
+    "exp": "Comment shows with a private mark. Customer does not get an email."
+   },
+   {
+    "tc": "T-07-02",
+    "type": "functional",
+    "title": "Edit and delete own comment",
+    "steps": [
+     "Edit the comment text.",
+     "Save.",
+     "Delete it."
+    ],
+    "exp": "Edit shows \"edited\". Delete removes it after a confirm."
+   },
+   {
+    "tc": "T-07-03",
+    "type": "integration",
+    "title": "Mention an agent",
+    "steps": [
+     "Comment \"@\" + Admin B name.",
+     "Save.",
+     "Sign in as B."
+    ],
+    "exp": "Mention chip shows. B gets a bell notification that opens the ticket."
+   },
+   {
+    "tc": "T-07-04",
+    "type": "negative",
+    "title": "Empty comment and script text",
+    "steps": [
+     "Save an empty comment.",
+     "Save <script>alert(1)</script><b>x</b>."
+    ],
+    "exp": "Empty refused. Script does not run; text is shown safely."
+   },
+   {
+    "tc": "T-07-05",
+    "type": "edge",
+    "title": "Public comment visibility",
+    "steps": [
+     "Add a comment with visibility Public (if offered).",
+     "Open the ticket on the Help Center as the contact."
+    ],
+    "exp": "Public comment visible to the customer; private ones never."
+   },
+   {
+    "tc": "T-07-06",
+    "type": "functional",
+    "title": "Pin a comment",
+    "steps": [
+     "Pin the comment for everyone.",
+     "Reload.",
+     "Unpin."
+    ],
+    "exp": "Pinned block shows on top after reload; gone after unpin."
+   },
+   {
+    "tc": "T-07-07",
+    "type": "permission",
+    "title": "Another agent cannot edit my comment",
+    "steps": [
+     "Sign in as Admin B.",
+     "Try to edit the Owner's comment."
+    ],
+    "exp": "Edit/delete hidden or refused (unless B's profile allows)."
+   },
+   {
+    "tc": "T-07-08",
+    "type": "edge",
+    "title": "Draft does not leak into comment",
+    "steps": [
+     "Start a reply draft.",
+     "Press Shift+C or the comment icon."
+    ],
+    "exp": "Comment editor opens empty (candidate bug: draft pre-fills it)."
+   },
+   {
+    "tc": "T-07-09",
+    "type": "ui-rtl",
+    "title": "Comment in Arabic",
+    "steps": [
+     "Add an Arabic comment with a mention."
+    ],
+    "exp": "RTL text, mention chip placed right, no broken order."
+   },
+   {
+    "tc": "T-07-10",
+    "type": "persistence",
+    "title": "Comment kept after reload",
+    "steps": [
+     "Add a private comment.",
+     "Reload.",
+     "Sign in again."
+    ],
+    "exp": "Comment, visibility and pin state unchanged."
+   }
+  ]
+ },
+ {
+  "id": "T-12",
+  "name": "Assign / reassign owner and team, pick up",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 2,
+  "status": "Built",
+  "partly": "",
+  "pre": "Unassigned ticket \"QA MAN assign 01\" in Marketing. Team in Marketing (or use Dev/QA team). Known: NDC-2355 (unassign 500).",
+  "extra": "",
+  "why": "NDC routes every ticket to an agent or team; wrong owner = lost ticket.",
+  "cases": [
+   {
+    "tc": "T-12-01",
+    "type": "functional",
+    "title": "Assign to an agent",
+    "steps": [
+     "Open the ticket.",
+     "Owner field › pick Admin B."
+    ],
+    "exp": "Owner = B. History row. B gets \"assigned to you\" notification."
+   },
+   {
+    "tc": "T-12-02",
+    "type": "functional",
+    "title": "Assign to a team",
+    "steps": [
+     "Team field › pick a team.",
+     "Leave owner empty."
+    ],
+    "exp": "Ticket shows under Team Queue for that team."
+   },
+   {
+    "tc": "T-12-03",
+    "type": "functional",
+    "title": "Pick up",
+    "steps": [
+     "Sign in as Admin B.",
+     "Open an unassigned ticket.",
+     "Click Pick up."
+    ],
+    "exp": "Owner = B at once. Button disappears."
+   },
+   {
+    "tc": "T-12-04",
+    "type": "negative",
+    "title": "Unassign",
+    "steps": [
+     "Clear the owner.",
+     "Save."
+    ],
+    "exp": "Saved as unassigned (no 500 error)."
+   },
+   {
+    "tc": "T-12-05",
+    "type": "negative",
+    "title": "Assign to an agent not in the department",
+    "steps": [
+     "Open Owner list.",
+     "Search Agent C (Customer Support only)."
+    ],
+    "exp": "C is not offered, or saving is refused with a message."
+   },
+   {
+    "tc": "T-12-06",
+    "type": "edge",
+    "title": "Two agents pick up at the same time",
+    "steps": [
+     "Owner and B open the same unassigned ticket.",
+     "Both click Pick up within 2 seconds."
+    ],
+    "exp": "Only one becomes owner. The other gets a clear message."
+   },
+   {
+    "tc": "T-12-07",
+    "type": "persistence",
+    "title": "Owner kept after reload",
+    "steps": [
+     "Reload.",
+     "Sign in again."
+    ],
+    "exp": "Owner and team unchanged."
+   },
+   {
+    "tc": "T-12-08",
+    "type": "permission",
+    "title": "Agent cannot reassign without right",
+    "steps": [
+     "Sign in as Agent C on a Customer Support ticket owned by another agent.",
+     "Try to change owner."
+    ],
+    "exp": "Allowed or hidden exactly as the Desk Agent profile says (check the profile first)."
+   },
+   {
+    "tc": "T-12-09",
+    "type": "ui-rtl",
+    "title": "Owner picker in Arabic",
+    "steps": [
+     "Switch to Arabic.",
+     "Open Owner picker and search an Arabic name."
+    ],
+    "exp": "Search works, list RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-13",
+  "name": "Status, priority, due date, on hold, close / reopen",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 2,
+  "status": "Built",
+  "partly": "",
+  "pre": "Ticket \"QA MAN status 01\" in Marketing.",
+  "extra": "",
+  "why": "NDC has 41 statuses that drive approvals and reports.",
+  "cases": [
+   {
+    "tc": "T-13-01",
+    "type": "functional",
+    "title": "Full status flow",
+    "steps": [
+     "Open → On Hold.",
+     "On Hold → Closed (close dialog).",
+     "Reopen."
+    ],
+    "exp": "Each change saved. Closed badge shows. Reopen sets an open status. History lists all."
+   },
+   {
+    "tc": "T-13-02",
+    "type": "functional",
+    "title": "Close dialog options",
+    "steps": [
+     "Click Close.",
+     "Fill resolution if asked.",
+     "Tick/untick \"notify customer\"."
+    ],
+    "exp": "Ticket closed. Customer email only when ticked."
+   },
+   {
+    "tc": "T-13-03",
+    "type": "functional",
+    "title": "Priority Low/Medium change",
+    "steps": [
+     "Change priority None → Low → Medium."
+    ],
+    "exp": "Saved. List shows the new priority."
+   },
+   {
+    "tc": "T-13-04",
+    "type": "negative",
+    "title": "Close a ticket that needs a mandatory field",
+    "steps": [
+     "Make a field mandatory on close (layout or blueprint, if configured).",
+     "Close without it."
+    ],
+    "exp": "Close blocked with a message naming the field."
+   },
+   {
+    "tc": "T-13-05",
+    "type": "edge",
+    "title": "Customer reply on a closed ticket",
+    "steps": [
+     "Close the ticket.",
+     "Reply from M1 to the last email."
+    ],
+    "exp": "Ticket reopens, or a new ticket is made — as the department setting says. Record which."
+   },
+   {
+    "tc": "T-13-06",
+    "type": "persistence",
+    "title": "Status after reload",
+    "steps": [
+     "Reload.",
+     "Open All Tickets with a Closed filter."
+    ],
+    "exp": "Ticket shows in the right view."
+   },
+   {
+    "tc": "T-13-07",
+    "type": "permission",
+    "title": "Agent close permission",
+    "steps": [
+     "Sign in as Agent C on his own Customer Support ticket.",
+     "Close it.",
+     "Reopen."
+    ],
+    "exp": "Allowed or hidden per profile. No silent failure."
+   },
+   {
+    "tc": "T-13-08",
+    "type": "ui-rtl",
+    "title": "Status names in Arabic",
+    "steps": [
+     "Switch to Arabic.",
+     "Open the status list."
+    ],
+    "exp": "Status names translated or shown as entered; close dialog RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-01",
+  "name": "List views: system, custom, starred, sort, filters",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 2,
+  "status": "Built",
+  "partly": "",
+  "pre": "At least 5 \"QA MAN\" tickets with different status, priority and created time.",
+  "extra": "",
+  "why": "Agents find their work through views.",
+  "cases": [
+   {
+    "tc": "T-01-01",
+    "type": "functional",
+    "title": "System views show the right tickets",
+    "steps": [
+     "Open Tickets › All Views.",
+     "Open All, My Open, On Hold, Closed, Unassigned."
+    ],
+    "exp": "Each view lists only matching tickets. Counts match the rows."
+   },
+   {
+    "tc": "T-01-02",
+    "type": "functional",
+    "title": "Create a custom view",
+    "steps": [
+     "New view \"QA MAN view\", criteria Subject contains \"QA MAN\" and Department = Marketing.",
+     "Save."
+    ],
+    "exp": "View lists only QA MAN Marketing tickets."
+   },
+   {
+    "tc": "T-01-03",
+    "type": "functional",
+    "title": "Sort really orders rows",
+    "steps": [
+     "Sort by Created time ascending, then descending.",
+     "Sort by Priority."
+    ],
+    "exp": "Rows change order correctly (check first and last row)."
+   },
+   {
+    "tc": "T-01-04",
+    "type": "negative",
+    "title": "Filter with no result",
+    "steps": [
+     "Filter Subject contains \"zzzz-no-match\"."
+    ],
+    "exp": "Empty state message, no error."
+   },
+   {
+    "tc": "T-01-05",
+    "type": "edge",
+    "title": "Star, clone and delete a view",
+    "steps": [
+     "Star \"QA MAN view\".",
+     "Clone it.",
+     "Delete the clone."
+    ],
+    "exp": "Starred list shows it. Clone works. Deleted clone is gone."
+   },
+   {
+    "tc": "T-01-06",
+    "type": "persistence",
+    "title": "View, sort and star kept",
+    "steps": [
+     "Sign out and in."
+    ],
+    "exp": "Starred view, last sort and columns kept."
+   },
+   {
+    "tc": "T-01-07",
+    "type": "permission",
+    "title": "Agent sees only his departments",
+    "steps": [
+     "Sign in as Agent C.",
+     "Open All Tickets.",
+     "Search \"QA MAN\"."
+    ],
+    "exp": "No Marketing tickets listed or found."
+   },
+   {
+    "tc": "T-01-08",
+    "type": "permission",
+    "title": "Agent cannot edit a shared admin view",
+    "steps": [
+     "Owner shares \"QA MAN view\" with all.",
+     "Agent C opens it and tries edit/delete."
+    ],
+    "exp": "View usable; edit/delete hidden or refused."
+   },
+   {
+    "tc": "T-01-09",
+    "type": "ui-rtl",
+    "title": "Views in Arabic",
+    "steps": [
+     "Switch to Arabic.",
+     "Open views list and a filter."
+    ],
+    "exp": "Labels Arabic, columns mirrored, sort arrows correct."
+   }
+  ]
+ },
+ {
+  "id": "T-02",
+  "name": "View modes: table, compact/classic, kanban board, peek",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 2,
+  "status": "Built",
+  "partly": "",
+  "pre": "\"QA MAN view\" with 5+ tickets.",
+  "extra": "",
+  "why": "Part of the list every agent uses.",
+  "cases": [
+   {
+    "tc": "T-02-01",
+    "type": "functional",
+    "title": "Switch modes",
+    "steps": [
+     "Switch Table › Classic › Board › back."
+    ],
+    "exp": "Each mode shows the same tickets."
+   },
+   {
+    "tc": "T-02-02",
+    "type": "functional",
+    "title": "Board drag changes status",
+    "steps": [
+     "Board mode, lanes by status.",
+     "Drag a QA MAN ticket from Open to On Hold."
+    ],
+    "exp": "Status changes and History records it."
+   },
+   {
+    "tc": "T-02-03",
+    "type": "negative",
+    "title": "Drag to a status that needs a field",
+    "steps": [
+     "Drag to Closed when a close field is required."
+    ],
+    "exp": "Drop refused or dialog asks for the field. No silent change."
+   },
+   {
+    "tc": "T-02-04",
+    "type": "functional",
+    "title": "Peek panel",
+    "steps": [
+     "Click the peek icon on a row.",
+     "Change priority in peek."
+    ],
+    "exp": "Side panel opens without leaving the list; change saved."
+   },
+   {
+    "tc": "T-02-05",
+    "type": "edge",
+    "title": "Board with many tickets",
+    "steps": [
+     "Board on All Tickets (hundreds of rows)."
+    ],
+    "exp": "Lanes load and scroll; no freeze over 10 s."
+   },
+   {
+    "tc": "T-02-06",
+    "type": "persistence",
+    "title": "Mode remembered",
+    "steps": [
+     "Choose Board.",
+     "Reload, sign in again."
+    ],
+    "exp": "Board mode kept."
+   },
+   {
+    "tc": "T-02-07",
+    "type": "ui-rtl",
+    "title": "Board in Arabic",
+    "steps": [
+     "Switch to Arabic.",
+     "Board mode."
+    ],
+    "exp": "Lanes right-to-left, drag still works."
+   }
+  ]
+ },
+ {
+  "id": "T-03",
+  "name": "Agent Queue / Team Queue / Tags tabs",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 2,
+  "status": "Built",
+  "partly": "",
+  "pre": "QA MAN tickets owned by Owner and Admin B; one with a team.",
+  "extra": "",
+  "why": "Supervisors balance load from the queues.",
+  "cases": [
+   {
+    "tc": "T-03-01",
+    "type": "functional",
+    "title": "Agent Queue counts",
+    "steps": [
+     "Open Agent Queue.",
+     "Compare each agent's count with \"Owner = agent\" filter in All Tickets."
+    ],
+    "exp": "Counts match."
+   },
+   {
+    "tc": "T-03-02",
+    "type": "functional",
+    "title": "Team Queue lanes",
+    "steps": [
+     "Open Team Queue."
+    ],
+    "exp": "Team lanes show the team's tickets."
+   },
+   {
+    "tc": "T-03-03",
+    "type": "functional",
+    "title": "Move a ticket between agents in the queue",
+    "steps": [
+     "In Agent Queue, drag a ticket from Owner to B (if drag is offered)."
+    ],
+    "exp": "Owner changes; History records it."
+   },
+   {
+    "tc": "T-03-04",
+    "type": "edge",
+    "title": "Empty team",
+    "steps": [
+     "Open a team with no tickets."
+    ],
+    "exp": "Clear empty state."
+   },
+   {
+    "tc": "T-03-05",
+    "type": "permission",
+    "title": "Agent sees only allowed queues",
+    "steps": [
+     "Sign in as Agent C.",
+     "Open Agent Queue."
+    ],
+    "exp": "Only his departments' agents/tickets."
+   },
+   {
+    "tc": "T-03-06",
+    "type": "ui-rtl",
+    "title": "Queues in Arabic",
+    "steps": [
+     "Switch to Arabic.",
+     "Open both queues."
+    ],
+    "exp": "RTL, names correct."
+   },
+   {
+    "tc": "T-03-07",
+    "type": "negative",
+    "title": "Drop on an agent outside the department",
+    "steps": [
+     "In Agent Queue drag a Marketing ticket onto an agent not in Marketing (if shown)."
+    ],
+    "exp": "Refused with a message; owner unchanged."
+   },
+   {
+    "tc": "T-03-08",
+    "type": "persistence",
+    "title": "Queue view kept",
+    "steps": [
+     "Filter Agent Queue to Marketing.",
+     "Reload."
+    ],
+    "exp": "Filter and counts the same."
+   }
+  ]
+ },
+ {
+  "id": "T-14",
+  "name": "Move ticket to another department (layout mapping)",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 3,
+  "status": "Built",
+  "partly": "",
+  "pre": "\"QA MAN move 01\" in Marketing with an owner. Target Sales. Candidate bug: moving to Sales cleared the owner.",
+  "extra": "",
+  "why": "NDC moves tickets between branches and finance teams.",
+  "cases": [
+   {
+    "tc": "T-14-01",
+    "type": "functional",
+    "title": "Move to Sales",
+    "steps": [
+     "More › Move.",
+     "Pick Sales.",
+     "Confirm."
+    ],
+    "exp": "Department = Sales. History row."
+   },
+   {
+    "tc": "T-14-02",
+    "type": "functional",
+    "title": "Layout mapping",
+    "steps": [
+     "Move to a department with a different layout."
+    ],
+    "exp": "Mapping dialog asks where values go; values kept as mapped."
+   },
+   {
+    "tc": "T-14-03",
+    "type": "edge",
+    "title": "Owner after move",
+    "steps": [
+     "Check owner after the move."
+    ],
+    "exp": "Owner kept if he is in Sales, cleared with a notice if not. Record."
+   },
+   {
+    "tc": "T-14-04",
+    "type": "negative",
+    "title": "Move to the same department",
+    "steps": [
+     "Move to Marketing while in Marketing."
+    ],
+    "exp": "Not offered or refused."
+   },
+   {
+    "tc": "T-14-05",
+    "type": "persistence",
+    "title": "Move survives reload",
+    "steps": [
+     "Reload; open Sales views."
+    ],
+    "exp": "Ticket listed in Sales, not Marketing."
+   },
+   {
+    "tc": "T-14-06",
+    "type": "permission",
+    "title": "Agent loses access after move out",
+    "steps": [
+     "Move a Customer Support ticket of Agent C to Sales.",
+     "Agent C reloads it."
+    ],
+    "exp": "C can no longer open it."
+   },
+   {
+    "tc": "T-14-07",
+    "type": "ui-rtl",
+    "title": "Move dialog in Arabic",
+    "steps": [
+     "Arabic; open Move dialog."
+    ],
+    "exp": "RTL, department names right."
+   }
+  ]
+ },
+ {
+  "id": "T-15",
+  "name": "Share ticket with departments (full / read-only / restricted)",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 3,
+  "status": "Built",
+  "partly": "",
+  "pre": "\"QA MAN share 01\" in Marketing. Agent C in Customer Support. Known: NDC-2303 (Done), NDC-2376.",
+  "extra": "",
+  "why": "75 of NDC's 92 workflows share tickets across branches; Quality and Finance work depends on it.",
+  "cases": [
+   {
+    "tc": "T-15-01",
+    "type": "functional",
+    "title": "Share read-only",
+    "steps": [
+     "More › Share.",
+     "Customer Support, Read only.",
+     "Save."
+    ],
+    "exp": "Share listed; banner on ticket."
+   },
+   {
+    "tc": "T-15-02",
+    "type": "permission",
+    "title": "Read-only agent cannot change",
+    "steps": [
+     "Agent C opens the ticket.",
+     "Try reply, comment, edit field, close."
+    ],
+    "exp": "C can read. All edits hidden or refused."
+   },
+   {
+    "tc": "T-15-03",
+    "type": "functional",
+    "title": "Change to Full access",
+    "steps": [
+     "Owner changes share to Full.",
+     "Agent C reloads and replies."
+    ],
+    "exp": "C can now reply and edit."
+   },
+   {
+    "tc": "T-15-04",
+    "type": "edge",
+    "title": "Restricted share",
+    "steps": [
+     "Change to Restricted (if offered).",
+     "Agent C opens."
+    ],
+    "exp": "Only the allowed parts are visible, as the dialog text says."
+   },
+   {
+    "tc": "T-15-05",
+    "type": "functional",
+    "title": "Unshare",
+    "steps": [
+     "Remove the share.",
+     "Agent C reloads."
+    ],
+    "exp": "C gets not found / no access."
+   },
+   {
+    "tc": "T-15-06",
+    "type": "negative",
+    "title": "Share with own department",
+    "steps": [
+     "Try to share with Marketing."
+    ],
+    "exp": "Not offered or refused."
+   },
+   {
+    "tc": "T-15-07",
+    "type": "integration",
+    "title": "Shared view lists it",
+    "steps": [
+     "Agent C opens the \"Shared\" system view."
+    ],
+    "exp": "Shared ticket listed while shared, gone after unshare."
+   },
+   {
+    "tc": "T-15-08",
+    "type": "persistence",
+    "title": "Share kept after reload",
+    "steps": [
+     "Share again; sign out/in."
+    ],
+    "exp": "Share and level unchanged."
+   },
+   {
+    "tc": "T-15-09",
+    "type": "ui-rtl",
+    "title": "Share dialog in Arabic",
+    "steps": [
+     "Arabic; open Share."
+    ],
+    "exp": "RTL, levels translated."
+   }
+  ]
+ },
+ {
+  "id": "T-16",
+  "name": "Merge tickets",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 3,
+  "status": "Built",
+  "partly": "",
+  "pre": "Two tickets \"QA MAN merge A\" and \"QA MAN merge B\", same contact, each with one reply.",
+  "extra": "",
+  "why": "Duplicates from phone + email must be merged; NDC has a \"Closed Duplicated\" status.",
+  "cases": [
+   {
+    "tc": "T-16-01",
+    "type": "functional",
+    "title": "Merge two tickets",
+    "steps": [
+     "Select both in the list › Merge.",
+     "Pick A as master.",
+     "Confirm."
+    ],
+    "exp": "B closed and points to A. A's thread holds B's messages."
+   },
+   {
+    "tc": "T-16-02",
+    "type": "functional",
+    "title": "Unmerge",
+    "steps": [
+     "On A, unmerge B."
+    ],
+    "exp": "B back as its own ticket with its thread."
+   },
+   {
+    "tc": "T-16-03",
+    "type": "negative",
+    "title": "Merge one ticket only",
+    "steps": [
+     "Select one ticket › Merge."
+    ],
+    "exp": "Button disabled or message."
+   },
+   {
+    "tc": "T-16-04",
+    "type": "edge",
+    "title": "Merge tickets of different departments/contacts",
+    "steps": [
+     "Merge a Marketing and a Sales ticket."
+    ],
+    "exp": "Allowed with a warning or refused — record. Data not lost."
+   },
+   {
+    "tc": "T-16-05",
+    "type": "persistence",
+    "title": "Merge kept after reload",
+    "steps": [
+     "Reload both."
+    ],
+    "exp": "State unchanged."
+   },
+   {
+    "tc": "T-16-06",
+    "type": "permission",
+    "title": "Agent merge right",
+    "steps": [
+     "Agent C tries to merge two Customer Support tickets."
+    ],
+    "exp": "Allowed or hidden per profile."
+   },
+   {
+    "tc": "T-16-07",
+    "type": "ui-rtl",
+    "title": "Merge dialog in Arabic",
+    "steps": [
+     "Arabic; open Merge."
+    ],
+    "exp": "RTL, text clear."
+   }
+  ]
+ },
+ {
+  "id": "T-10",
+  "name": "Snippets / canned responses and email templates in composer",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 3,
+  "status": "Built",
+  "partly": "placeholders in the 26 Oct replies run.",
+  "pre": "Ticket \"QA MAN reply 01\".",
+  "extra": "",
+  "why": "Fast, consistent replies; NDC uses templates in every department.",
+  "cases": [
+   {
+    "tc": "T-10-01",
+    "type": "functional",
+    "title": "Create and insert a snippet",
+    "steps": [
+     "Create snippet \"QA MAN snippet\" with text \"Dear ${contact name}, ticket ${ticket number}\".",
+     "In Reply, insert it."
+    ],
+    "exp": "Placeholders filled with the real contact name and number."
+   },
+   {
+    "tc": "T-10-02",
+    "type": "functional",
+    "title": "Insert an email template",
+    "steps": [
+     "In Reply, open Templates.",
+     "Pick a Desk template."
+    ],
+    "exp": "Template text inserted, placeholders filled."
+   },
+   {
+    "tc": "T-10-03",
+    "type": "negative",
+    "title": "Unknown placeholder",
+    "steps": [
+     "Snippet with ${not_a_field}.",
+     "Insert."
+    ],
+    "exp": "Left as text or blank with no error; reply still sends."
+   },
+   {
+    "tc": "T-10-04",
+    "type": "edge",
+    "title": "Search snippets",
+    "steps": [
+     "Type part of the name in the snippet search, also in Arabic."
+    ],
+    "exp": "Matching snippets only."
+   },
+   {
+    "tc": "T-10-05",
+    "type": "persistence",
+    "title": "Snippet kept",
+    "steps": [
+     "Sign out/in.",
+     "Open snippets."
+    ],
+    "exp": "Snippet still listed."
+   },
+   {
+    "tc": "T-10-06",
+    "type": "permission",
+    "title": "Personal vs shared snippet",
+    "steps": [
+     "Owner makes a personal snippet.",
+     "Agent C opens his snippet list."
+    ],
+    "exp": "Personal one not visible to C; shared one visible."
+   },
+   {
+    "tc": "T-10-07",
+    "type": "ui-rtl",
+    "title": "Arabic snippet",
+    "steps": [
+     "Snippet in Arabic; insert."
+    ],
+    "exp": "Text RTL in composer and email."
+   }
+  ]
+ },
+ {
+  "id": "T-21",
+  "name": "Delete / restore (Recycle Bin)",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 3,
+  "status": "Partly",
+  "partly": "",
+  "pre": "\"QA MAN delete 01\". Known: NDC-2248 (delete forever), NDC-2516, NDC-2517.",
+  "extra": "",
+  "why": "A wrong delete must be recoverable.",
+  "cases": [
+   {
+    "tc": "T-21-01",
+    "type": "functional",
+    "title": "Delete and restore",
+    "steps": [
+     "More › Delete › confirm.",
+     "Settings › Data › Recycle Bin.",
+     "Restore it."
+    ],
+    "exp": "Ticket gone from lists, in the bin, then back with thread and fields."
+   },
+   {
+    "tc": "T-21-02",
+    "type": "functional",
+    "title": "Delete forever",
+    "steps": [
+     "Delete again.",
+     "In the bin, Delete forever."
+    ],
+    "exp": "Removed from the bin. (Known fail NDC-2248 — record.)"
+   },
+   {
+    "tc": "T-21-03",
+    "type": "negative",
+    "title": "Cancel the confirm",
+    "steps": [
+     "Delete › Cancel."
+    ],
+    "exp": "Nothing deleted."
+   },
+   {
+    "tc": "T-21-04",
+    "type": "edge",
+    "title": "Open a deleted ticket link",
+    "steps": [
+     "Open the URL of a deleted ticket."
+    ],
+    "exp": "\"Deleted\" or not found; no edit possible."
+   },
+   {
+    "tc": "T-21-05",
+    "type": "permission",
+    "title": "Agent cannot delete",
+    "steps": [
+     "Agent C opens his own ticket."
+    ],
+    "exp": "Delete hidden/refused (Desk Agent cannot delete)."
+   },
+   {
+    "tc": "T-21-06",
+    "type": "ui-rtl",
+    "title": "Bin in Arabic",
+    "steps": [
+     "Arabic; open Recycle Bin."
+    ],
+    "exp": "Names readable (not ids), RTL."
+   },
+   {
+    "tc": "T-21-07",
+    "type": "persistence",
+    "title": "Restored ticket complete after sign-in",
+    "steps": [
+     "After restore, sign out and in.",
+     "Open the ticket."
+    ],
+    "exp": "Thread, attachments, owner and history all present."
+   }
+  ]
+ },
+ {
+  "id": "T-24",
+  "name": "Attachments (upload, preview, size limits)",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 3,
+  "status": "Partly",
+  "partly": "",
+  "pre": "Files: small .txt, 2 MB .jpg, 5 MB .pdf, 45 MB .zip, a renamed .exe, an Arabic file name. Known: NDC-2753 (no annotator, blueprint transition with file fails).",
+  "extra": "",
+  "why": "NDC finance tickets carry invoices and bank slips (40 MB / 40 files limit in Zoho).",
+  "cases": [
+   {
+    "tc": "T-24-01",
+    "type": "functional",
+    "title": "Upload and preview",
+    "steps": [
+     "Attachment tab › upload .jpg and .pdf.",
+     "Click each."
+    ],
+    "exp": "Listed with name and size; preview opens."
+   },
+   {
+    "tc": "T-24-02",
+    "type": "integration",
+    "title": "Attach to a reply",
+    "steps": [
+     "Reply with the .pdf attached.",
+     "Check M1."
+    ],
+    "exp": "Email arrives with the attachment, opens fine."
+   },
+   {
+    "tc": "T-24-03",
+    "type": "negative",
+    "title": "Over-size file",
+    "steps": [
+     "Upload the 45 MB .zip."
+    ],
+    "exp": "Refused with the size limit in the message."
+   },
+   {
+    "tc": "T-24-04",
+    "type": "negative",
+    "title": "Blocked type",
+    "steps": [
+     "Upload the .exe."
+    ],
+    "exp": "Refused, or accepted — record (security note)."
+   },
+   {
+    "tc": "T-24-05",
+    "type": "edge",
+    "title": "Arabic file name and 10 files at once",
+    "steps": [
+     "Select 10 files incl. the Arabic name."
+    ],
+    "exp": "All upload; names kept."
+   },
+   {
+    "tc": "T-24-06",
+    "type": "functional",
+    "title": "Delete attachment",
+    "steps": [
+     "Delete one file.",
+     "Reload."
+    ],
+    "exp": "Gone after reload."
+   },
+   {
+    "tc": "T-24-07",
+    "type": "permission",
+    "title": "Read-only agent cannot delete",
+    "steps": [
+     "Share read-only with Customer Support.",
+     "Agent C tries to delete a file."
+    ],
+    "exp": "Refused; download allowed."
+   },
+   {
+    "tc": "T-24-08",
+    "type": "ui-rtl",
+    "title": "Attachment panel in Arabic",
+    "steps": [
+     "Arabic; open the tab."
+    ],
+    "exp": "RTL, sizes readable."
+   },
+   {
+    "tc": "T-24-09",
+    "type": "persistence",
+    "title": "Files kept after sign-in",
+    "steps": [
+     "Sign out and in.",
+     "Open Attachment tab."
+    ],
+    "exp": "Same files, same sizes; downloads open."
+   }
+  ]
+ },
+ {
+  "id": "T-25",
+  "name": "Collision detection (others viewing / replying)",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 4,
+  "status": "Built",
+  "partly": "",
+  "pre": "Two browsers: Owner and Admin B. Known: NDC-1965.",
+  "extra": "",
+  "why": "Two agents answering the same caller is a real NDC risk.",
+  "cases": [
+   {
+    "tc": "T-25-01",
+    "type": "functional",
+    "title": "Viewing indicator",
+    "steps": [
+     "Owner and B open the same ticket."
+    ],
+    "exp": "Each sees \"X is also viewing\"."
+   },
+   {
+    "tc": "T-25-02",
+    "type": "functional",
+    "title": "Replying indicator",
+    "steps": [
+     "B starts typing a reply."
+    ],
+    "exp": "Owner sees \"B is replying\"."
+   },
+   {
+    "tc": "T-25-03",
+    "type": "edge",
+    "title": "Reply after the other sent",
+    "steps": [
+     "B sends.",
+     "Owner, with an old page, sends."
+    ],
+    "exp": "Owner warned that a new reply was added before sending."
+   },
+   {
+    "tc": "T-25-04",
+    "type": "negative",
+    "title": "Indicator clears",
+    "steps": [
+     "B closes the tab.",
+     "Wait 1 minute."
+    ],
+    "exp": "Indicator disappears."
+   },
+   {
+    "tc": "T-25-05",
+    "type": "ui-rtl",
+    "title": "Indicator in Arabic",
+    "steps": [
+     "Arabic; repeat T-25-01."
+    ],
+    "exp": "Message in Arabic, RTL."
+   },
+   {
+    "tc": "T-25-06",
+    "type": "persistence",
+    "title": "Reply not lost after the warning",
+    "steps": [
+     "Owner gets the \"new reply added\" warning while typing.",
+     "Reload."
+    ],
+    "exp": "Owner's unsent text is kept as a draft, or the warning said it would be lost."
+   }
+  ]
+ },
+ {
+  "id": "T-31",
+  "name": "Bulk actions (assign, status, mass update, mass delete, export)",
+  "prio": "P0",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 4,
+  "status": "Built",
+  "partly": "",
+  "pre": "3 QA MAN tickets in Marketing.",
+  "extra": "",
+  "why": "Supervisors fix many tickets at once (for example after a routing error).",
+  "cases": [
+   {
+    "tc": "T-31-01",
+    "type": "functional",
+    "title": "Bulk assign",
+    "steps": [
+     "Tick 3 tickets › Assign › Admin B."
+    ],
+    "exp": "All 3 owned by B."
+   },
+   {
+    "tc": "T-31-02",
+    "type": "functional",
+    "title": "Mass update priority",
+    "steps": [
+     "Tick 3 › Mass update › Priority Low."
+    ],
+    "exp": "All 3 updated; Settings › Data › Bulk actions log shows a row."
+   },
+   {
+    "tc": "T-31-03",
+    "type": "functional",
+    "title": "Bulk close",
+    "steps": [
+     "Tick 3 › Close."
+    ],
+    "exp": "All closed."
+   },
+   {
+    "tc": "T-31-04",
+    "type": "integration",
+    "title": "Bulk export",
+    "steps": [
+     "Tick 3 › Export CSV.",
+     "Open the file."
+    ],
+    "exp": "3 rows, right columns, Arabic readable (UTF-8)."
+   },
+   {
+    "tc": "T-31-05",
+    "type": "negative",
+    "title": "Nothing selected",
+    "steps": [
+     "Click a bulk action with nothing ticked."
+    ],
+    "exp": "Disabled or message."
+   },
+   {
+    "tc": "T-31-06",
+    "type": "edge",
+    "title": "Select all pages",
+    "steps": [
+     "Select all on a large view."
+    ],
+    "exp": "Count shown; action applies to the stated count only. Do not run a real mass change on non-QA tickets."
+   },
+   {
+    "tc": "T-31-07",
+    "type": "permission",
+    "title": "Agent bulk rights",
+    "steps": [
+     "Agent C ticks 2 of his tickets."
+    ],
+    "exp": "Only allowed actions shown (no mass delete)."
+   },
+   {
+    "tc": "T-31-08",
+    "type": "ui-rtl",
+    "title": "Bulk bar in Arabic",
+    "steps": [
+     "Arabic; tick tickets."
+    ],
+    "exp": "Bar RTL, counts readable."
+   },
+   {
+    "tc": "T-31-09",
+    "type": "persistence",
+    "title": "Bulk changes kept",
+    "steps": [
+     "After T-31-01..03 reload the view."
+    ],
+    "exp": "All 3 tickets show the new owner, priority and status."
+   }
+  ]
+ },
+ {
+  "id": "U-01",
+  "name": "Assignment rules: direct + round robin, criteria, order",
+  "prio": "P0",
+  "area": "Automation",
+  "wave": "3",
+  "day": 5,
+  "status": "Built",
+  "partly": "assignment-rules intake (6 Oct, spec + requirements NDC-2275); the runtime was never run on NDC-Staging. Focus on rules really firing.",
+  "pre": "Department \"QA NDC Routing\" (or any QA NDC dept) with Owner, Admin B and one more agent; a team. Settings › Automation › Assignment Rules.",
+  "extra": "",
+  "why": "NDC has 30 direct and 24 round-robin rules; routing is the first thing a new ticket needs.",
+  "cases": [
+   {
+    "tc": "U-01-01",
+    "type": "functional",
+    "title": "Direct rule assigns to an agent",
+    "steps": [
+     "New direct rule \"QA MAN direct\", dept QA NDC Routing, criteria Subject starts with \"QA MAN dir\", target Admin B.",
+     "Activate.",
+     "Create ticket \"QA MAN dir 01\" there."
+    ],
+    "exp": "Ticket owner = B within a minute. History says the rule assigned it."
+   },
+   {
+    "tc": "U-01-02",
+    "type": "functional",
+    "title": "Direct rule to a team",
+    "steps": [
+     "Edit target to the team.",
+     "Create \"QA MAN dir 02\"."
+    ],
+    "exp": "Team set, owner empty (or as rule says)."
+   },
+   {
+    "tc": "U-01-03",
+    "type": "functional",
+    "title": "Round robin spreads tickets",
+    "steps": [
+     "Round-robin rule \"QA MAN rr\" on Subject starts with \"QA MAN rr\", agents Owner + B.",
+     "Create 4 tickets \"QA MAN rr 01..04\"."
+    ],
+    "exp": "Owners alternate (2 each)."
+   },
+   {
+    "tc": "U-01-04",
+    "type": "functional",
+    "title": "Rule order decides",
+    "steps": [
+     "Two rules both match \"QA MAN ord\".",
+     "Put rule X first.",
+     "Create a ticket.",
+     "Swap order, create another."
+    ],
+    "exp": "First matching rule in the list wins each time."
+   },
+   {
+    "tc": "U-01-05",
+    "type": "negative",
+    "title": "Criteria do not match",
+    "steps": [
+     "Create \"QA MAN nomatch\" (no rule matches)."
+    ],
+    "exp": "Ticket stays unassigned; no error."
+   },
+   {
+    "tc": "U-01-06",
+    "type": "negative",
+    "title": "Inactive rule does nothing",
+    "steps": [
+     "Deactivate \"QA MAN direct\".",
+     "Create \"QA MAN dir 03\"."
+    ],
+    "exp": "Not assigned by that rule."
+   },
+   {
+    "tc": "U-01-07",
+    "type": "edge",
+    "title": "Ticket already owned",
+    "steps": [
+     "Create \"QA MAN dir 04\" with owner = Owner set on the form."
+    ],
+    "exp": "Direct rule does not overwrite the chosen owner (Zoho rule, NDC-2275)."
+   },
+   {
+    "tc": "U-01-08",
+    "type": "edge",
+    "title": "Target agent deactivated",
+    "steps": [
+     "Rule target an agent who is later removed from the department.",
+     "Create a ticket."
+    ],
+    "exp": "Ticket not assigned to the removed agent; clear history note."
+   },
+   {
+    "tc": "U-01-09",
+    "type": "persistence",
+    "title": "Rule kept after reload",
+    "steps": [
+     "Reload rules page; sign in again."
+    ],
+    "exp": "Rules, order and active state unchanged."
+   },
+   {
+    "tc": "U-01-10",
+    "type": "permission",
+    "title": "Agent cannot manage rules",
+    "steps": [
+     "Sign in as Agent C.",
+     "Open Settings › Assignment Rules (URL)."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "U-01-11",
+    "type": "ui-rtl",
+    "title": "Rules page in Arabic",
+    "steps": [
+     "Arabic; open and edit a rule."
+    ],
+    "exp": "RTL, criteria builder readable."
+   }
+  ]
+ },
+ {
+  "id": "U-02",
+  "name": "Round-robin preferences (thresholds, online-only, backlog)",
+  "prio": "P0",
+  "area": "Automation",
+  "wave": "3",
+  "day": 5,
+  "status": "Partly",
+  "partly": "",
+  "pre": "\"QA MAN rr\" rule from U-01. Two agents who can go online/offline.",
+  "extra": "",
+  "why": "Load balancing to online agents is how NDC spreads 2.5 M tickets; requirements in NDC-2275.",
+  "cases": [
+   {
+    "tc": "U-02-01",
+    "type": "functional",
+    "title": "Online-only",
+    "steps": [
+     "Turn on \"online agents only\".",
+     "Set B offline.",
+     "Create 2 \"QA MAN rr\" tickets."
+    ],
+    "exp": "Both go to the online agent only."
+   },
+   {
+    "tc": "U-02-02",
+    "type": "functional",
+    "title": "Threshold per agent",
+    "steps": [
+     "Set max open tickets = 1.",
+     "Each agent already owns 1 open QA ticket.",
+     "Create a new one."
+    ],
+    "exp": "New ticket not assigned (goes to backlog)."
+   },
+   {
+    "tc": "U-02-03",
+    "type": "functional",
+    "title": "Backlog drains",
+    "steps": [
+     "Close one agent's ticket."
+    ],
+    "exp": "Backlog ticket is assigned to that agent."
+   },
+   {
+    "tc": "U-02-04",
+    "type": "negative",
+    "title": "Threshold 0 or negative",
+    "steps": [
+     "Type 0, then -1 as threshold.",
+     "Save."
+    ],
+    "exp": "Refused with a message."
+   },
+   {
+    "tc": "U-02-05",
+    "type": "edge",
+    "title": "All agents offline",
+    "steps": [
+     "All offline.",
+     "Create a ticket."
+    ],
+    "exp": "Stays in backlog; assigned when someone comes online."
+   },
+   {
+    "tc": "U-02-06",
+    "type": "persistence",
+    "title": "Preferences kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Values unchanged."
+   },
+   {
+    "tc": "U-02-07",
+    "type": "ui-rtl",
+    "title": "Preferences in Arabic",
+    "steps": [
+     "Arabic; open preferences."
+    ],
+    "exp": "RTL, help texts Arabic."
+   }
+  ]
+ },
+ {
+  "id": "U-04",
+  "name": "Workflow rules (triggers, criteria, instant + time-based actions)",
+  "prio": "P0",
+  "area": "Automation",
+  "wave": "3",
+  "day": 5,
+  "status": "Built",
+  "partly": "workflow-rules run 12–14 Oct (82 pass, bugs B-1..B-9) and NDC-2203 retest 26 Oct. Focus on NDC patterns: field-change triggers, share ticket, assign, status set, (1 and 2) criteria, time-based.",
+  "pre": "QA NDC department; Settings › Automation › Workflow Rules. Known: NDC-2731 (Actions count), NDC-2764 (workflow sets Status → ticket leaves blueprint), D1 (team assignment ignored by Create rules).",
+  "extra": "",
+  "why": "NDC runs 90 active workflows; most share tickets or move them between teams.",
+  "cases": [
+   {
+    "tc": "U-04-01",
+    "type": "functional",
+    "title": "On create → share ticket",
+    "steps": [
+     "Rule \"QA MAN wf share\": on Create, Subject starts with \"QA MAN wf\", action Share with Sales (read only).",
+     "Create \"QA MAN wf 01\"."
+    ],
+    "exp": "Ticket shared with Sales automatically."
+   },
+   {
+    "tc": "U-04-02",
+    "type": "functional",
+    "title": "On field change",
+    "steps": [
+     "Rule on Edit when a custom field (e.g. \"Related Branch\" or Priority) changes to a value → field update Status = On Hold.",
+     "Change that field."
+    ],
+    "exp": "Status becomes On Hold only when that field changes."
+   },
+   {
+    "tc": "U-04-03",
+    "type": "functional",
+    "title": "Criteria pattern (1 and 2) or 3",
+    "steps": [
+     "Rule with 3 conditions and pattern \"(1 and",
+     "or 3\".",
+     "Make tickets that match 1+2, only 3, only 1."
+    ],
+    "exp": "Fires on the first two; not on \"only 1\"."
+   },
+   {
+    "tc": "U-04-04",
+    "type": "functional",
+    "title": "Time-based action",
+    "steps": [
+     "Rule with action \"5 minutes after create → add comment\".",
+     "Create a ticket; wait 6 minutes."
+    ],
+    "exp": "Comment added once after about 5 minutes."
+   },
+   {
+    "tc": "U-04-05",
+    "type": "negative",
+    "title": "Rule does not fire on non-matching",
+    "steps": [
+     "Create \"Other subject\" in the QA dept."
+    ],
+    "exp": "No action runs."
+   },
+   {
+    "tc": "U-04-06",
+    "type": "edge",
+    "title": "Loop guard",
+    "steps": [
+     "Two rules: A sets field X on edit, B sets field Y when X changes, A runs when Y changes.",
+     "Edit a ticket."
+    ],
+    "exp": "No endless loop; ticket stays usable; executions stop."
+   },
+   {
+    "tc": "U-04-07",
+    "type": "edge",
+    "title": "Cancel scheduled action",
+    "steps": [
+     "Create a ticket that schedules an action.",
+     "Close it before it runs (rule says \"cancel on close\" or criteria no longer true)."
+    ],
+    "exp": "Scheduled action does not run."
+   },
+   {
+    "tc": "U-04-08",
+    "type": "integration",
+    "title": "Execution history",
+    "steps": [
+     "Open the rule's Execution History."
+    ],
+    "exp": "Each run listed with ticket, time, result."
+   },
+   {
+    "tc": "U-04-09",
+    "type": "persistence",
+    "title": "Rule kept after reload",
+    "steps": [
+     "Reload; reopen the rule."
+    ],
+    "exp": "Triggers, criteria, actions unchanged; Actions count right (NDC-2731)."
+   },
+   {
+    "tc": "U-04-10",
+    "type": "permission",
+    "title": "Agent cannot edit rules",
+    "steps": [
+     "Agent C opens the rules URL."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "U-04-11",
+    "type": "ui-rtl",
+    "title": "Rule editor in Arabic",
+    "steps": [
+     "Arabic; build a rule."
+    ],
+    "exp": "RTL, operators readable."
+   }
+  ]
+ },
+ {
+  "id": "U-05",
+  "name": "Workflow action library (email, task, field update, webhook, custom function)",
+  "prio": "P0",
+  "area": "Automation",
+  "wave": "3",
+  "day": 6,
+  "status": "Built",
+  "partly": "12–14 Oct run (email, field update, webhook, custom action). Focus on actions NDC uses: Send email reply, Assign ticket (team + agent), field update that clears owner.",
+  "pre": "Settings › Automation › Actions. Mailbox M1.",
+  "extra": "",
+  "why": "The actions are what really changes the ticket.",
+  "cases": [
+   {
+    "tc": "U-05-01",
+    "type": "functional",
+    "title": "Send email reply action",
+    "steps": [
+     "Action \"QA MAN email reply\" to contact + CC M2.",
+     "Use it in an on-create rule.",
+     "Create a ticket for QA MAN Contact 1."
+    ],
+    "exp": "M1 and M2 get the email; it shows in the ticket thread."
+   },
+   {
+    "tc": "U-05-02",
+    "type": "functional",
+    "title": "Assign ticket to team + agent",
+    "steps": [
+     "Action Assign: team + agent.",
+     "Rule on create."
+    ],
+    "exp": "Both set."
+   },
+   {
+    "tc": "U-05-03",
+    "type": "functional",
+    "title": "Field update clears owner",
+    "steps": [
+     "Field update: Owner = empty, Team = X (NDC \"Waiting Top-Up Manager\" pattern)."
+    ],
+    "exp": "Owner cleared, team set."
+   },
+   {
+    "tc": "U-05-04",
+    "type": "functional",
+    "title": "Create task action",
+    "steps": [
+     "Action Create task due +1 day."
+    ],
+    "exp": "Task linked to the ticket, right due date."
+   },
+   {
+    "tc": "U-05-05",
+    "type": "negative",
+    "title": "Field update with wrong type",
+    "steps": [
+     "Try to set a date field to text in the action editor."
+    ],
+    "exp": "Not allowed."
+   },
+   {
+    "tc": "U-05-06",
+    "type": "edge",
+    "title": "Action used by a rule is deleted",
+    "steps": [
+     "Try deleting an action used by an active rule."
+    ],
+    "exp": "Blocked with a list of rules, or rule shows a clear broken action."
+   },
+   {
+    "tc": "U-05-07",
+    "type": "persistence",
+    "title": "Action kept after reload",
+    "steps": [
+     "Reload library."
+    ],
+    "exp": "Saved values unchanged."
+   },
+   {
+    "tc": "U-05-08",
+    "type": "ui-rtl",
+    "title": "Library in Arabic",
+    "steps": [
+     "Arabic; open an action."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "U-06",
+  "name": "Workflow triggers on customer reply / agent reply / rating",
+  "prio": "P0",
+  "area": "Automation",
+  "wave": "3",
+  "day": 6,
+  "status": "Built",
+  "partly": "NDC-1986 is Ready For Test.",
+  "pre": "QA dept, ticket from mailbox M1.",
+  "extra": "",
+  "why": "\"Customer replied → reopen / notify\" is daily NDC behaviour.",
+  "cases": [
+   {
+    "tc": "U-06-01",
+    "type": "functional",
+    "title": "On customer reply",
+    "steps": [
+     "Rule: on customer reply → Status Open + comment.",
+     "Put a ticket On Hold.",
+     "Reply from M1."
+    ],
+    "exp": "Status Open, comment added."
+   },
+   {
+    "tc": "U-06-02",
+    "type": "functional",
+    "title": "On agent reply",
+    "steps": [
+     "Rule: on agent reply → Status \"Waiting customer\" (or On Hold).",
+     "Agent replies."
+    ],
+    "exp": "Status changes."
+   },
+   {
+    "tc": "U-06-03",
+    "type": "functional",
+    "title": "On comment / private thread",
+    "steps": [
+     "Rule on comment added → tag/field.",
+     "Add a comment."
+    ],
+    "exp": "Fires once."
+   },
+   {
+    "tc": "U-06-04",
+    "type": "negative",
+    "title": "Agent reply does not fire customer trigger",
+    "steps": [
+     "With U-06-01 active, agent replies."
+    ],
+    "exp": "U-06-01 rule does not run."
+   },
+   {
+    "tc": "U-06-05",
+    "type": "edge",
+    "title": "On happiness rating Bad",
+    "steps": [
+     "Rule on rating = Bad → assign to supervisor.",
+     "Rate Bad from the email link."
+    ],
+    "exp": "Rule runs."
+   },
+   {
+    "tc": "U-06-06",
+    "type": "persistence",
+    "title": "Trigger kept",
+    "steps": [
+     "Reload rule."
+    ],
+    "exp": "Event selection unchanged."
+   },
+   {
+    "tc": "U-06-07",
+    "type": "ui-rtl",
+    "title": "Trigger list in Arabic",
+    "steps": [
+     "Arabic; open the rule \"When\" options."
+    ],
+    "exp": "Event names Arabic, RTL."
+   }
+  ]
+ },
+ {
+  "id": "U-07",
+  "name": "SLA policies (targets per priority, business hours, escalation)",
+  "prio": "P0",
+  "area": "Automation",
+  "wave": "3",
+  "day": 5,
+  "status": "Built",
+  "partly": "department SLA timing inside the blueprint runs 1–3 Nov (NDC-2774 Saturday counted, NDC-2788 warning actions never run). Focus on plain SLA without blueprint.",
+  "pre": "QA dept, a QA business-hours set (24x7 and Sun–Thu 9–17). Settings › Automation › SLA. Use minutes for targets.",
+  "extra": "",
+  "why": "NDC has 200 SLA records and an SLA dashboard.",
+  "cases": [
+   {
+    "tc": "U-07-01",
+    "type": "functional",
+    "title": "SLA applies on create",
+    "steps": [
+     "Policy \"QA MAN SLA\": High = first response 10 min, resolution 30 min, 24x7, criteria Subject starts with \"QA MAN sla\".",
+     "Create a High ticket."
+    ],
+    "exp": "SLA panel shows policy and due times = created + 10/30 min."
+   },
+   {
+    "tc": "U-07-02",
+    "type": "functional",
+    "title": "First response met",
+    "steps": [
+     "Reply within 10 min."
+    ],
+    "exp": "Response target \"met\"."
+   },
+   {
+    "tc": "U-07-03",
+    "type": "functional",
+    "title": "Violation and escalation",
+    "steps": [
+     "Escalation level 1 → notify Admin B.",
+     "Let the resolution target pass."
+    ],
+    "exp": "\"Violated\" shown; B gets the escalation notice."
+   },
+   {
+    "tc": "U-07-04",
+    "type": "edge",
+    "title": "Business hours count",
+    "steps": [
+     "Switch the policy to Sun–Thu 9–17.",
+     "Create a ticket Thursday 16:55 with 30 min target."
+    ],
+    "exp": "Due falls on Sunday 9:25, not Friday/Saturday."
+   },
+   {
+    "tc": "U-07-05",
+    "type": "edge",
+    "title": "Pause on On Hold",
+    "steps": [
+     "Put the ticket On Hold for 10 min.",
+     "Back to Open."
+    ],
+    "exp": "Due time moves later by the paused time (if \"pause on hold\" is on)."
+   },
+   {
+    "tc": "U-07-06",
+    "type": "functional",
+    "title": "Priority change recalculates",
+    "steps": [
+     "Change High → Low."
+    ],
+    "exp": "Due times recalculate to the Low targets."
+   },
+   {
+    "tc": "U-07-07",
+    "type": "negative",
+    "title": "Invalid target",
+    "steps": [
+     "Target 0 or negative minutes."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "U-07-08",
+    "type": "persistence",
+    "title": "Policy kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Targets, hours, escalation unchanged."
+   },
+   {
+    "tc": "U-07-09",
+    "type": "permission",
+    "title": "Agent cannot edit SLA",
+    "steps": [
+     "Agent C opens the SLA settings URL."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "U-07-10",
+    "type": "ui-rtl",
+    "title": "SLA panel in Arabic",
+    "steps": [
+     "Arabic; open the ticket SLA panel."
+    ],
+    "exp": "Times and labels readable, RTL."
+   }
+  ]
+ },
+ {
+  "id": "U-09",
+  "name": "Blueprints (states, transitions, before/during/after, SLA per state)",
+  "prio": "P0",
+  "area": "Automation",
+  "wave": "3",
+  "day": 6,
+  "status": "Built",
+  "partly": "Blueprint Phases 1–6 (1–3 Nov) covered designer rules, timers, webhook, custom action, emails, chat ticket. Not covered: agent-side transition rights (transition owner = team / ticket owner), NDC-style long approval chain end to end, Arabic.",
+  "pre": "QA dept; blueprint \"QA MAN BP\" with states New → Validation → Finance → Approved/Rejected; criteria Subject starts with \"QA MAN bp\". Known: NDC-2755..2758, 2761..2764, 2774, 2775, 2780, 2782, 2788.",
+  "extra": "",
+  "why": "NDC approval chains (ADM, Financial approvals, refunds) are blueprints.",
+  "cases": [
+   {
+    "tc": "U-09-01",
+    "type": "functional",
+    "title": "Ticket enters the blueprint",
+    "steps": [
+     "Publish \"QA MAN BP\".",
+     "Create \"QA MAN bp 01\"."
+    ],
+    "exp": "Ticket shows the blueprint strip at state New with its transitions."
+   },
+   {
+    "tc": "U-09-02",
+    "type": "permission",
+    "title": "Transition owner = team",
+    "steps": [
+     "Transition \"Send to Finance\" owner = a team without Agent C.",
+     "C opens the ticket (shared).",
+     "Owner/team member opens it."
+    ],
+    "exp": "C does not see the button; the team member does."
+   },
+   {
+    "tc": "U-09-03",
+    "type": "functional",
+    "title": "Mandatory field during transition",
+    "steps": [
+     "\"Reject\" asks for \"Rejection reason\" (required).",
+     "Click Reject, leave it empty.",
+     "Fill and save."
+    ],
+    "exp": "Blocked when empty; saved when filled; state = Rejected."
+   },
+   {
+    "tc": "U-09-04",
+    "type": "functional",
+    "title": "After-transition field update + email",
+    "steps": [
+     "After \"Approve\": Status = Approved, email to contact.",
+     "Run Approve."
+    ],
+    "exp": "Field updated, M1 gets the email."
+   },
+   {
+    "tc": "U-09-05",
+    "type": "negative",
+    "title": "Status edited outside the blueprint",
+    "steps": [
+     "Edit the Status field directly on a ticket in the blueprint."
+    ],
+    "exp": "Refused, or the ticket leaves the blueprint (NDC-2764) — record."
+   },
+   {
+    "tc": "U-09-06",
+    "type": "integration",
+    "title": "Full chain end to end",
+    "steps": [
+     "Run New → Validation → Finance → Approved with 3 different users."
+    ],
+    "exp": "Each step by the right user; History shows every transition with user and time."
+   },
+   {
+    "tc": "U-09-07",
+    "type": "persistence",
+    "title": "Blueprint kept after reload",
+    "steps": [
+     "Reload the ticket mid-chain."
+    ],
+    "exp": "Same state, same buttons."
+   },
+   {
+    "tc": "U-09-08",
+    "type": "ui-rtl",
+    "title": "Strip in Arabic",
+    "steps": [
+     "Arabic; open the ticket."
+    ],
+    "exp": "Strip RTL, state names right."
+   },
+   {
+    "tc": "U-09-09",
+    "type": "edge",
+    "title": "Two users run the same transition",
+    "steps": [
+     "Two transition owners open the ticket.",
+     "Both click \"Send to Finance\" within 2 seconds."
+    ],
+    "exp": "Runs once; the second user gets \"state changed\" and sees the new state."
+   }
+  ]
+ },
+ {
+  "id": "U-12",
+  "name": "Notification rules per department (customer / agent emails)",
+  "prio": "P0",
+  "area": "Automation",
+  "wave": "3",
+  "day": 4,
+  "status": "Built",
+  "partly": "",
+  "pre": "Settings › Customization › Notifications, QA dept. Mailbox M1 for customer, an agent mailbox you can read. Known: NDC-2389.",
+  "extra": "",
+  "why": "NDC uses assignment, comment, new/closed ticket and moved/shared notices per department.",
+  "cases": [
+   {
+    "tc": "U-12-01",
+    "type": "functional",
+    "title": "Customer \"new ticket\" acknowledgement",
+    "steps": [
+     "Turn on for the QA dept.",
+     "Email a new ticket from M1."
+    ],
+    "exp": "M1 gets the acknowledgement with the ticket number."
+   },
+   {
+    "tc": "U-12-02",
+    "type": "functional",
+    "title": "Agent \"assigned to you\" email",
+    "steps": [
+     "Turn on.",
+     "Assign a QA ticket to an agent with a readable mailbox."
+    ],
+    "exp": "Email arrives with a working link."
+   },
+   {
+    "tc": "U-12-03",
+    "type": "negative",
+    "title": "Turned off sends nothing",
+    "steps": [
+     "Turn off \"ticket closed\" for customer.",
+     "Close a ticket."
+    ],
+    "exp": "No email to M1."
+   },
+   {
+    "tc": "U-12-04",
+    "type": "edge",
+    "title": "Per department only",
+    "steps": [
+     "Rule on in QA dept, off in Marketing.",
+     "Same event in both."
+    ],
+    "exp": "Email only for the QA dept ticket."
+   },
+   {
+    "tc": "U-12-05",
+    "type": "functional",
+    "title": "Shared / moved notice",
+    "steps": [
+     "Turn on \"ticket shared\" for the target dept.",
+     "Share a QA ticket."
+    ],
+    "exp": "Target dept agents notified."
+   },
+   {
+    "tc": "U-12-06",
+    "type": "persistence",
+    "title": "Setting kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Toggles unchanged."
+   },
+   {
+    "tc": "U-12-07",
+    "type": "ui-rtl",
+    "title": "Page in Arabic",
+    "steps": [
+     "Arabic; open the page."
+    ],
+    "exp": "RTL, names Arabic."
+   }
+  ]
+ },
+ {
+  "id": "N-01",
+  "name": "Email: support addresses, forwarding, domains, outgoing addresses",
+  "prio": "P0",
+  "area": "Channels",
+  "wave": "4",
+  "day": 4,
+  "status": "Built",
+  "partly": "",
+  "pre": "Settings › Channels › Email (1 address, \"Mail is arriving\"). Mailbox M1. Ask the admin before adding a new address.",
+  "extra": "",
+  "why": "Email in/out must work on day one (NDC: 25 support addresses).",
+  "cases": [
+   {
+    "tc": "N-01-01",
+    "type": "functional",
+    "title": "Email creates a ticket",
+    "steps": [
+     "From M1 send \"QA MAN mail 01\" to the support address.",
+     "Wait 2 min."
+    ],
+    "exp": "New ticket in the mapped department, contact = M1, channel Email."
+   },
+   {
+    "tc": "N-01-02",
+    "type": "functional",
+    "title": "From address on replies",
+    "steps": [
+     "Reply from the ticket.",
+     "Check From in M1."
+    ],
+    "exp": "The department's support address, not a system address."
+   },
+   {
+    "tc": "N-01-03",
+    "type": "functional",
+    "title": "Add a support address",
+    "steps": [
+     "Add \"qa-man\" alias (if allowed), map to QA dept.",
+     "Verify.",
+     "Send a mail to it."
+    ],
+    "exp": "Verified; ticket goes to the QA dept."
+   },
+   {
+    "tc": "N-01-04",
+    "type": "negative",
+    "title": "Invalid address",
+    "steps": [
+     "Add \"abc@\" as support address."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "N-01-05",
+    "type": "edge",
+    "title": "Mail with Arabic subject and 5 attachments",
+    "steps": [
+     "Send it from M1."
+    ],
+    "exp": "Subject correct, all attachments on the ticket."
+   },
+   {
+    "tc": "N-01-06",
+    "type": "edge",
+    "title": "Reply-to in an old thread",
+    "steps": [
+     "Reply from M1 to a 2-day-old ticket email."
+    ],
+    "exp": "Threads on the same ticket."
+   },
+   {
+    "tc": "N-01-07",
+    "type": "persistence",
+    "title": "Settings kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Address, mapping unchanged."
+   },
+   {
+    "tc": "N-01-08",
+    "type": "permission",
+    "title": "Agent cannot edit channels",
+    "steps": [
+     "Agent C opens the URL."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "N-01-09",
+    "type": "ui-rtl",
+    "title": "Email settings in Arabic",
+    "steps": [
+     "Arabic; open the page."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "N-02",
+  "name": "Email: spam filter, blocked addresses, suppressions",
+  "prio": "P0",
+  "area": "Channels",
+  "wave": "4",
+  "day": 4,
+  "status": "Built",
+  "partly": "",
+  "pre": "Mailboxes M1 and M2.",
+  "extra": "",
+  "why": "Raised because it is part of email in (user rule N-01..N-04). A wrong block loses customer mail.",
+  "cases": [
+   {
+    "tc": "N-02-01",
+    "type": "functional",
+    "title": "Block an address",
+    "steps": [
+     "Add M2 to blocked.",
+     "Send a mail from M2."
+    ],
+    "exp": "No ticket created (or goes to spam)."
+   },
+   {
+    "tc": "N-02-02",
+    "type": "functional",
+    "title": "Unblock",
+    "steps": [
+     "Remove M2.",
+     "Send again."
+    ],
+    "exp": "Ticket created."
+   },
+   {
+    "tc": "N-02-03",
+    "type": "functional",
+    "title": "Mark spam from a ticket",
+    "steps": [
+     "Mark a QA ticket spam.",
+     "Open Spam view.",
+     "Not spam."
+    ],
+    "exp": "Listed in Spam, then back."
+   },
+   {
+    "tc": "N-02-04",
+    "type": "negative",
+    "title": "Block an invalid value",
+    "steps": [
+     "Add \"@@\" to blocked."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "N-02-05",
+    "type": "edge",
+    "title": "Suppression list",
+    "steps": [
+     "Open Suppressions.",
+     "Check a bounced address (if any)."
+    ],
+    "exp": "Listed with reason; remove works."
+   },
+   {
+    "tc": "N-02-06",
+    "type": "persistence",
+    "title": "Lists kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Entries unchanged."
+   },
+   {
+    "tc": "N-02-07",
+    "type": "ui-rtl",
+    "title": "Page in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "N-03",
+  "name": "Email providers (Gmail / Microsoft / SMTP connect)",
+  "prio": "P0",
+  "area": "Channels",
+  "wave": "4",
+  "day": 4,
+  "status": "Built",
+  "partly": "",
+  "pre": "Settings › Integrations › Email Providers. A test Gmail or SMTP account you control. Do not disconnect the live provider.",
+  "extra": "",
+  "why": "NDC may send through its own mail server.",
+  "cases": [
+   {
+    "tc": "N-03-01",
+    "type": "functional",
+    "title": "Connect SMTP",
+    "steps": [
+     "Add SMTP with host, port, user, password of the test account.",
+     "Test."
+    ],
+    "exp": "\"Connected\" / test mail arrives."
+   },
+   {
+    "tc": "N-03-02",
+    "type": "negative",
+    "title": "Wrong password",
+    "steps": [
+     "Enter a wrong password.",
+     "Test."
+    ],
+    "exp": "Clear error; not saved as connected."
+   },
+   {
+    "tc": "N-03-03",
+    "type": "integration",
+    "title": "Send through the provider",
+    "steps": [
+     "Map the QA address to the provider.",
+     "Reply from a QA ticket."
+    ],
+    "exp": "Mail sent via the provider (check headers in M1)."
+   },
+   {
+    "tc": "N-03-04",
+    "type": "edge",
+    "title": "Provider stops working",
+    "steps": [
+     "Change the test account password outside TAVI.",
+     "Send a reply."
+    ],
+    "exp": "Reply shows failed with a reason; nothing marked sent."
+   },
+   {
+    "tc": "N-03-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Provider listed; password not shown in clear."
+   },
+   {
+    "tc": "N-03-06",
+    "type": "ui-rtl",
+    "title": "Page in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "N-04",
+  "name": "Email templates (placeholders, per department, languages)",
+  "prio": "P0",
+  "area": "Channels",
+  "wave": "4",
+  "day": 4,
+  "status": "Built",
+  "partly": "",
+  "pre": "Settings › Organization › Email Templates. Known: NDC-2389, NDC-1984.",
+  "extra": "",
+  "why": "All customer and agent notices use these (NDC ~65 per department).",
+  "cases": [
+   {
+    "tc": "N-04-01",
+    "type": "functional",
+    "title": "Create a template",
+    "steps": [
+     "New \"QA MAN template EN\" for QA dept, subject \"Ticket ${ticket number}\", body with contact name.",
+     "Save."
+    ],
+    "exp": "Listed."
+   },
+   {
+    "tc": "N-04-02",
+    "type": "integration",
+    "title": "Placeholders filled",
+    "steps": [
+     "Use it in a notification or reply.",
+     "Check M1."
+    ],
+    "exp": "Real values, no ${...} left."
+   },
+   {
+    "tc": "N-04-03",
+    "type": "ui-rtl",
+    "title": "Arabic template",
+    "steps": [
+     "Arabic body.",
+     "Send."
+    ],
+    "exp": "M1 shows Arabic RTL."
+   },
+   {
+    "tc": "N-04-04",
+    "type": "negative",
+    "title": "Empty subject",
+    "steps": [
+     "Save with empty subject."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "N-04-05",
+    "type": "edge",
+    "title": "Template used by a rule is deleted",
+    "steps": [
+     "Delete a template used in a notification."
+    ],
+    "exp": "Blocked or rule shows a clear warning."
+   },
+   {
+    "tc": "N-04-06",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Content unchanged."
+   }
+  ]
+ },
+ {
+  "id": "N-05",
+  "name": "Web forms + feedback widget (embed code, hosted link)",
+  "prio": "P0",
+  "area": "Channels",
+  "wave": "4",
+  "day": 6,
+  "status": "Partly",
+  "partly": "NDC-2732 iframe retest (1 Nov). Focus on the full submit → ticket flow.",
+  "pre": "Settings › Channels › Web Forms. A signed-out browser window. Known: NDC-2751 (script embed CORS), NDC-1488 (hosted link 404).",
+  "extra": "",
+  "why": "NDC customers submit via web forms and feedback widgets.",
+  "cases": [
+   {
+    "tc": "N-05-01",
+    "type": "functional",
+    "title": "Create a form",
+    "steps": [
+     "New form \"QA MAN form\", fields name/email/subject/description, dept QA.",
+     "Save."
+    ],
+    "exp": "Listed with embed code."
+   },
+   {
+    "tc": "N-05-02",
+    "type": "functional",
+    "title": "Submit via hosted link",
+    "steps": [
+     "Open the hosted link signed out.",
+     "Submit \"QA MAN form 01\" with M1."
+    ],
+    "exp": "Thank-you message; ticket in QA dept with channel Web."
+   },
+   {
+    "tc": "N-05-03",
+    "type": "functional",
+    "title": "Submit via iframe",
+    "steps": [
+     "\"Test your form\" (iframe).",
+     "Submit."
+    ],
+    "exp": "Ticket created."
+   },
+   {
+    "tc": "N-05-04",
+    "type": "negative",
+    "title": "Required field empty",
+    "steps": [
+     "Submit without email."
+    ],
+    "exp": "Blocked with a message."
+   },
+   {
+    "tc": "N-05-05",
+    "type": "edge",
+    "title": "Script embed on another site",
+    "steps": [
+     "Paste the script code in a local HTML file.",
+     "Open it."
+    ],
+    "exp": "Form loads and submits (known CORS fail NDC-2751 — record)."
+   },
+   {
+    "tc": "N-05-06",
+    "type": "persistence",
+    "title": "Form kept",
+    "steps": [
+     "Reload settings."
+    ],
+    "exp": "Fields and dept unchanged."
+   },
+   {
+    "tc": "N-05-07",
+    "type": "ui-rtl",
+    "title": "Arabic form",
+    "steps": [
+     "Set form language Arabic (if offered).",
+     "Open hosted link."
+    ],
+    "exp": "Labels Arabic, RTL; Arabic input saved."
+   }
+  ]
+ },
+ {
+  "id": "N-06",
+  "name": "Help Center (portal, sign-up, ticket submit, my tickets, KB, branding)",
+  "prio": "P0",
+  "area": "Channels",
+  "wave": "4",
+  "day": 6,
+  "status": "Built",
+  "partly": "",
+  "pre": "Help Center URL from Settings › Channels › Help Center. A new email for sign-up (M2). Known: NDC-1990 (RFT), NDC-2263..2265.",
+  "extra": "",
+  "why": "NDC customers use a help center (Arabic configured).",
+  "cases": [
+   {
+    "tc": "N-06-01",
+    "type": "functional",
+    "title": "Sign up and sign in",
+    "steps": [
+     "Open the portal signed out.",
+     "Sign up with M2.",
+     "Confirm the email.",
+     "Sign in."
+    ],
+    "exp": "Account works; name shows."
+   },
+   {
+    "tc": "N-06-02",
+    "type": "functional",
+    "title": "Submit a ticket",
+    "steps": [
+     "Signed in, Submit ticket \"QA MAN portal 01\"."
+    ],
+    "exp": "Ticket in Desk with contact M2, channel Web/Portal."
+   },
+   {
+    "tc": "N-06-03",
+    "type": "integration",
+    "title": "My tickets and reply",
+    "steps": [
+     "Agent replies in Desk.",
+     "Customer opens My tickets.",
+     "Customer replies in the portal."
+    ],
+    "exp": "Agent reply visible; customer reply threads in Desk."
+   },
+   {
+    "tc": "N-06-04",
+    "type": "permission",
+    "title": "Customer sees only own tickets",
+    "steps": [
+     "Sign in as M1 contact.",
+     "Try the URL of M2's ticket."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "N-06-05",
+    "type": "negative",
+    "title": "Wrong password / unconfirmed email",
+    "steps": [
+     "Sign in with a wrong password."
+    ],
+    "exp": "Clear error, no detail leak."
+   },
+   {
+    "tc": "N-06-06",
+    "type": "edge",
+    "title": "Private comment hidden",
+    "steps": [
+     "Agent adds a private comment.",
+     "Customer reloads."
+    ],
+    "exp": "Not visible."
+   },
+   {
+    "tc": "N-06-07",
+    "type": "persistence",
+    "title": "Branding kept",
+    "steps": [
+     "Change portal title/colour.",
+     "Reload portal."
+    ],
+    "exp": "New look shown. Set back after."
+   },
+   {
+    "tc": "N-06-08",
+    "type": "ui-rtl",
+    "title": "Portal in Arabic",
+    "steps": [
+     "Switch the portal to Arabic."
+    ],
+    "exp": "Full RTL, menus Arabic."
+   }
+  ]
+ },
+ {
+  "id": "N-08",
+  "name": "Knowledge base (articles, categories, drafts, review, expiry, templates)",
+  "prio": "P0",
+  "area": "Channels",
+  "wave": "4",
+  "day": 7,
+  "status": "Built",
+  "partly": "",
+  "pre": "/knowledge-base. Known: NDC-2651.",
+  "extra": "",
+  "why": "NDC has 190 articles in ~50 categories; customers read them in the portal.",
+  "cases": [
+   {
+    "tc": "N-08-01",
+    "type": "functional",
+    "title": "Create and publish an article",
+    "steps": [
+     "New category \"QA MAN cat\".",
+     "New article \"QA MAN article\", body with image.",
+     "Publish."
+    ],
+    "exp": "Visible in KB and in the portal."
+   },
+   {
+    "tc": "N-08-02",
+    "type": "functional",
+    "title": "Draft not public",
+    "steps": [
+     "Save another article as draft.",
+     "Search it in the portal."
+    ],
+    "exp": "Not found in the portal."
+   },
+   {
+    "tc": "N-08-03",
+    "type": "functional",
+    "title": "Review flow",
+    "steps": [
+     "Send an article for review to Admin B.",
+     "B approves."
+    ],
+    "exp": "Published after approval."
+   },
+   {
+    "tc": "N-08-04",
+    "type": "edge",
+    "title": "Expiry date",
+    "steps": [
+     "Set expiry to 5 minutes from now.",
+     "Wait."
+    ],
+    "exp": "Article unpublished/marked expired."
+   },
+   {
+    "tc": "N-08-05",
+    "type": "negative",
+    "title": "Empty title",
+    "steps": [
+     "Publish without title."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "N-08-06",
+    "type": "permission",
+    "title": "Internal article",
+    "steps": [
+     "Set visibility Agents only.",
+     "Open in the portal."
+    ],
+    "exp": "Not visible to customers."
+   },
+   {
+    "tc": "N-08-07",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Body, images, category unchanged."
+   },
+   {
+    "tc": "N-08-08",
+    "type": "ui-rtl",
+    "title": "Arabic article",
+    "steps": [
+     "Write an Arabic article; publish.",
+     "View in the portal (Arabic)."
+    ],
+    "exp": "RTL, search finds Arabic words."
+   }
+  ]
+ },
+ {
+  "id": "C-01",
+  "name": "Contacts (CRUD, views, find duplicates, merge, portal access)",
+  "prio": "P0",
+  "area": "Customers",
+  "wave": "5",
+  "day": 7,
+  "status": "Built",
+  "partly": "",
+  "pre": "/modules/contacts.",
+  "extra": "",
+  "why": "Every ticket hangs on a contact; NDC syncs contacts from CRM.",
+  "cases": [
+   {
+    "tc": "C-01-01",
+    "type": "functional",
+    "title": "Create, edit, delete",
+    "steps": [
+     "New contact \"QA MAN Contact 2\", email, Arabic name, phone.",
+     "Edit phone.",
+     "Delete."
+    ],
+    "exp": "Each step saved; deleted goes to the bin."
+   },
+   {
+    "tc": "C-01-02",
+    "type": "functional",
+    "title": "Find duplicates and merge",
+    "steps": [
+     "Create \"QA MAN Dup\" twice with the same email.",
+     "Find duplicates.",
+     "Merge."
+    ],
+    "exp": "One contact left with both tickets."
+   },
+   {
+    "tc": "C-01-03",
+    "type": "negative",
+    "title": "Invalid email / duplicate email",
+    "steps": [
+     "Save email \"abc\".",
+     "Save a second contact with an existing email."
+    ],
+    "exp": "First refused; second refused or warned."
+   },
+   {
+    "tc": "C-01-04",
+    "type": "integration",
+    "title": "Give portal access",
+    "steps": [
+     "Enable portal access.",
+     "Check the invite mail."
+    ],
+    "exp": "Invite arrives; contact can sign in."
+   },
+   {
+    "tc": "C-01-05",
+    "type": "edge",
+    "title": "Very long name and special characters",
+    "steps": [
+     "200-char name with emoji."
+    ],
+    "exp": "Saved or limit message; list shows it cleanly."
+   },
+   {
+    "tc": "C-01-06",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload; search."
+    ],
+    "exp": "Values unchanged."
+   },
+   {
+    "tc": "C-01-07",
+    "type": "permission",
+    "title": "Agent rights",
+    "steps": [
+     "Agent C tries to delete a contact."
+    ],
+    "exp": "Allowed/refused per profile."
+   },
+   {
+    "tc": "C-01-08",
+    "type": "ui-rtl",
+    "title": "Contacts in Arabic",
+    "steps": [
+     "Arabic; list and form."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "C-02",
+  "name": "Accounts (CRUD, contacts under account, hierarchy)",
+  "prio": "P0",
+  "area": "Customers",
+  "wave": "5",
+  "day": 7,
+  "status": "Built",
+  "partly": "",
+  "pre": "/modules/accounts.",
+  "extra": "",
+  "why": "NDC agencies are accounts synced from CRM.",
+  "cases": [
+   {
+    "tc": "C-02-01",
+    "type": "functional",
+    "title": "Create account and link contacts",
+    "steps": [
+     "New \"QA MAN Account\".",
+     "Link QA MAN Contact 1."
+    ],
+    "exp": "Contact listed under the account; ticket shows the account."
+   },
+   {
+    "tc": "C-02-02",
+    "type": "functional",
+    "title": "Parent account",
+    "steps": [
+     "Set \"QA MAN Account\" as parent of \"QA MAN Sub\"."
+    ],
+    "exp": "Hierarchy shown."
+   },
+   {
+    "tc": "C-02-03",
+    "type": "negative",
+    "title": "Self as parent",
+    "steps": [
+     "Set an account as its own parent."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "C-02-04",
+    "type": "edge",
+    "title": "Delete account with contacts",
+    "steps": [
+     "Delete \"QA MAN Account\"."
+    ],
+    "exp": "Warned; contacts stay (unlinked) or as stated."
+   },
+   {
+    "tc": "C-02-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Values unchanged."
+   },
+   {
+    "tc": "C-02-06",
+    "type": "permission",
+    "title": "Agent rights",
+    "steps": [
+     "Agent C edits an account."
+    ],
+    "exp": "Per profile."
+   },
+   {
+    "tc": "C-02-07",
+    "type": "ui-rtl",
+    "title": "Accounts in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "I-01",
+  "name": "Headquarters dashboard (components, trends, unassigned)",
+  "prio": "P0",
+  "area": "Insight",
+  "wave": "5",
+  "day": 8,
+  "status": "Built",
+  "partly": "",
+  "pre": "/hq. Known: NDC-2346, NDC-2351, NDC-2352.",
+  "extra": "",
+  "why": "NDC managers open the Overview dashboard daily.",
+  "cases": [
+   {
+    "tc": "I-01-01",
+    "type": "functional",
+    "title": "Numbers match the list",
+    "steps": [
+     "Note \"Unassigned\" and \"Open\" counts.",
+     "Compare with All Tickets filters."
+    ],
+    "exp": "Same numbers."
+   },
+   {
+    "tc": "I-01-02",
+    "type": "functional",
+    "title": "Number moves with a new ticket",
+    "steps": [
+     "Create an unassigned QA ticket.",
+     "Refresh HQ."
+    ],
+    "exp": "Unassigned +1."
+   },
+   {
+    "tc": "I-01-03",
+    "type": "functional",
+    "title": "Department filter",
+    "steps": [
+     "Filter to Marketing."
+    ],
+    "exp": "Only Marketing numbers."
+   },
+   {
+    "tc": "I-01-04",
+    "type": "edge",
+    "title": "No data period",
+    "steps": [
+     "Pick a date range with no tickets."
+    ],
+    "exp": "Zero / empty, no error."
+   },
+   {
+    "tc": "I-01-05",
+    "type": "permission",
+    "title": "Agent sees own scope",
+    "steps": [
+     "Agent C opens HQ."
+    ],
+    "exp": "Only Customer Support data."
+   },
+   {
+    "tc": "I-01-06",
+    "type": "ui-rtl",
+    "title": "HQ in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "Charts and labels RTL."
+   },
+   {
+    "tc": "I-01-07",
+    "type": "negative",
+    "title": "End date before start date",
+    "steps": [
+     "Pick a custom range with end before start."
+    ],
+    "exp": "Refused or swapped; no error screen."
+   },
+   {
+    "tc": "I-01-08",
+    "type": "persistence",
+    "title": "Filter kept",
+    "steps": [
+     "Set Marketing filter.",
+     "Reload."
+    ],
+    "exp": "Filter kept (or reset by design — record)."
+   }
+  ]
+ },
+ {
+  "id": "I-02",
+  "name": "Reports (standard, custom, scheduled, export)",
+  "prio": "P0",
+  "area": "Insight",
+  "wave": "5",
+  "day": 9,
+  "status": "Not confirmed",
+  "partly": "",
+  "pre": "/analytics, /reports. Known: NDC-2364 (\"Loading your departments…\"), NDC-2068. If the page does not load, mark all cases Blocked.",
+  "extra": "",
+  "why": "NDC uses Request, SLA and TOPUP dashboards and 4 custom reports.",
+  "cases": [
+   {
+    "tc": "I-02-01",
+    "type": "functional",
+    "title": "Page loads",
+    "steps": [
+     "Open Analytics / Reports."
+    ],
+    "exp": "Department list and reports load within 10 s."
+   },
+   {
+    "tc": "I-02-02",
+    "type": "functional",
+    "title": "Standard report numbers",
+    "steps": [
+     "Open \"Tickets by status\".",
+     "Compare with list counts."
+    ],
+    "exp": "Match."
+   },
+   {
+    "tc": "I-02-03",
+    "type": "functional",
+    "title": "Custom report \"Tickets by department\"",
+    "steps": [
+     "New report grouped by department, last 30 days.",
+     "Save."
+    ],
+    "exp": "Saved; numbers right."
+   },
+   {
+    "tc": "I-02-04",
+    "type": "integration",
+    "title": "SLA report",
+    "steps": [
+     "Open the SLA report after U-07."
+    ],
+    "exp": "QA SLA tickets show met / violated correctly."
+   },
+   {
+    "tc": "I-02-05",
+    "type": "functional",
+    "title": "Export",
+    "steps": [
+     "Export to CSV/PDF."
+    ],
+    "exp": "File matches the screen."
+   },
+   {
+    "tc": "I-02-06",
+    "type": "edge",
+    "title": "Schedule a report",
+    "steps": [
+     "Schedule daily to M1."
+    ],
+    "exp": "Mail arrives next run."
+   },
+   {
+    "tc": "I-02-07",
+    "type": "permission",
+    "title": "Agent scope",
+    "steps": [
+     "Agent C opens reports."
+    ],
+    "exp": "Only allowed data."
+   },
+   {
+    "tc": "I-02-08",
+    "type": "ui-rtl",
+    "title": "Reports in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "I-02-09",
+    "type": "negative",
+    "title": "Report with no grouping",
+    "steps": [
+     "Save a custom report with no columns or grouping."
+    ],
+    "exp": "Refused with a message."
+   },
+   {
+    "tc": "I-02-10",
+    "type": "persistence",
+    "title": "Custom report kept",
+    "steps": [
+     "Reload; sign in again."
+    ],
+    "exp": "\"Tickets by department\" report still listed with the same settings."
+   }
+  ]
+ },
+ {
+  "id": "I-03",
+  "name": "Dashboards (standard + custom)",
+  "prio": "P0",
+  "area": "Insight",
+  "wave": "5",
+  "day": 9,
+  "status": "Not confirmed",
+  "partly": "",
+  "pre": "/dashboards (now redirects to /hq, NDC-2364). If no dashboard page, mark Blocked.",
+  "extra": "",
+  "why": "NDC dashboards Overview, Request, SLA, TOPUP must be rebuildable.",
+  "cases": [
+   {
+    "tc": "I-03-01",
+    "type": "functional",
+    "title": "Open dashboards library",
+    "steps": [
+     "Open /dashboards."
+    ],
+    "exp": "Library page, not HQ."
+   },
+   {
+    "tc": "I-03-02",
+    "type": "functional",
+    "title": "Build \"QA MAN TOPUP\" dashboard",
+    "steps": [
+     "New dashboard, add a chart \"tickets by status for department X\"."
+    ],
+    "exp": "Chart shows right numbers."
+   },
+   {
+    "tc": "I-03-03",
+    "type": "negative",
+    "title": "Empty dashboard name",
+    "steps": [
+     "Save without name."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "I-03-04",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Dashboard and charts kept."
+   },
+   {
+    "tc": "I-03-05",
+    "type": "permission",
+    "title": "Share with agents",
+    "steps": [
+     "Share to a role; Agent C opens."
+    ],
+    "exp": "Visible only if shared."
+   },
+   {
+    "tc": "I-03-06",
+    "type": "ui-rtl",
+    "title": "Dashboard in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "I-03-07",
+    "type": "edge",
+    "title": "Dashboard with 10 charts",
+    "steps": [
+     "Add 10 charts to \"QA MAN TOPUP\".",
+     "Reload."
+    ],
+    "exp": "All charts load within 10 s."
+   }
+  ]
+ },
+ {
+  "id": "D-01",
+  "name": "Import (CSV/Excel, mapping, validation, undo, history)",
+  "prio": "P0",
+  "area": "Data",
+  "wave": "5",
+  "day": 7,
+  "status": "Built",
+  "partly": "",
+  "pre": "CSV \"qa-man-contacts.csv\": 5 rows (names start \"QA MAN Imp\", 1 bad email, 1 Arabic name, 1 duplicate). Known: NDC-2512, 2513, 2515.",
+  "extra": "",
+  "why": "NDC data must be loaded before go-live.",
+  "cases": [
+   {
+    "tc": "D-01-01",
+    "type": "functional",
+    "title": "Import contacts",
+    "steps": [
+     "Settings › Data › Import › Contacts.",
+     "Upload CSV, map fields.",
+     "Run."
+    ],
+    "exp": "3–4 good rows imported; summary counts right."
+   },
+   {
+    "tc": "D-01-02",
+    "type": "negative",
+    "title": "Bad rows reported",
+    "steps": [
+     "Open the result."
+    ],
+    "exp": "Bad email row skipped with a reason file."
+   },
+   {
+    "tc": "D-01-03",
+    "type": "edge",
+    "title": "Duplicate handling",
+    "steps": [
+     "Choose \"skip\" then \"update\" for duplicates (two runs)."
+    ],
+    "exp": "Behaviour matches the choice."
+   },
+   {
+    "tc": "D-01-04",
+    "type": "functional",
+    "title": "Import tickets",
+    "steps": [
+     "Import 3 tickets \"QA MAN Imp T\" to QA dept."
+    ],
+    "exp": "Tickets created with right fields and contact."
+   },
+   {
+    "tc": "D-01-05",
+    "type": "functional",
+    "title": "Undo import",
+    "steps": [
+     "Undo the contact import."
+    ],
+    "exp": "Imported rows removed."
+   },
+   {
+    "tc": "D-01-06",
+    "type": "negative",
+    "title": "Wrong file type",
+    "steps": [
+     "Upload a .pdf."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "D-01-07",
+    "type": "persistence",
+    "title": "History kept",
+    "steps": [
+     "Reload Import history."
+    ],
+    "exp": "Runs listed."
+   },
+   {
+    "tc": "D-01-08",
+    "type": "permission",
+    "title": "Agent cannot import",
+    "steps": [
+     "Agent C opens Import."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "D-01-09",
+    "type": "ui-rtl",
+    "title": "Arabic file",
+    "steps": [
+     "Arabic UI; CSV with Arabic headers/values."
+    ],
+    "exp": "Arabic text not broken."
+   }
+  ]
+ },
+ {
+  "id": "D-02",
+  "name": "Export (module, view, fields, 7-day download)",
+  "prio": "P0",
+  "area": "Data",
+  "wave": "5",
+  "day": 8,
+  "status": "Built",
+  "partly": "",
+  "pre": "QA MAN tickets.",
+  "extra": "",
+  "why": "NDC needs reports and backups out of Desk. Known: NDC-2494.",
+  "cases": [
+   {
+    "tc": "D-02-01",
+    "type": "functional",
+    "title": "Export tickets with chosen fields",
+    "steps": [
+     "Settings › Data › Export › Tickets, view \"QA MAN view\", 5 fields.",
+     "Download."
+    ],
+    "exp": "File has only those rows and fields."
+   },
+   {
+    "tc": "D-02-02",
+    "type": "ui-rtl",
+    "title": "Arabic in export",
+    "steps": [
+     "Open in Excel."
+    ],
+    "exp": "Arabic readable (UTF-8)."
+   },
+   {
+    "tc": "D-02-03",
+    "type": "negative",
+    "title": "No fields chosen",
+    "steps": [
+     "Export with no fields."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "D-02-04",
+    "type": "edge",
+    "title": "Large export",
+    "steps": [
+     "Export All Tickets."
+    ],
+    "exp": "Finishes; link valid; row count matches."
+   },
+   {
+    "tc": "D-02-05",
+    "type": "persistence",
+    "title": "Link kept",
+    "steps": [
+     "Reload next day."
+    ],
+    "exp": "Download still listed (7 days)."
+   },
+   {
+    "tc": "D-02-06",
+    "type": "permission",
+    "title": "Agent cannot export",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   }
+  ]
+ },
+ {
+  "id": "D-07",
+  "name": "Recycle Bin (restore, delete forever, empty)",
+  "prio": "P0",
+  "area": "Data",
+  "wave": "5",
+  "day": 8,
+  "status": "Partly",
+  "partly": "",
+  "pre": "A deleted QA MAN contact and ticket.",
+  "extra": "",
+  "why": "Safety net for every module. Known: NDC-2248, 2516, 2517 (Empty Bin deletes all after one confirm — do not click Empty Bin).",
+  "cases": [
+   {
+    "tc": "D-07-01",
+    "type": "functional",
+    "title": "Restore a contact",
+    "steps": [
+     "Restore \"QA MAN Contact 2\"."
+    ],
+    "exp": "Back with its data."
+   },
+   {
+    "tc": "D-07-02",
+    "type": "functional",
+    "title": "Filter by module",
+    "steps": [
+     "Filter Tickets / Contacts."
+    ],
+    "exp": "Only that module."
+   },
+   {
+    "tc": "D-07-03",
+    "type": "functional",
+    "title": "Delete forever one item",
+    "steps": [
+     "Delete forever a QA item."
+    ],
+    "exp": "Gone (NDC-2248)."
+   },
+   {
+    "tc": "D-07-04",
+    "type": "edge",
+    "title": "Restore when the parent is gone",
+    "steps": [
+     "Delete an account, then its contact; restore the contact only."
+    ],
+    "exp": "Restored without broken link."
+   },
+   {
+    "tc": "D-07-05",
+    "type": "permission",
+    "title": "Agent sees only own deletes",
+    "steps": [
+     "Agent C opens the bin."
+    ],
+    "exp": "Only allowed items."
+   },
+   {
+    "tc": "D-07-06",
+    "type": "ui-rtl",
+    "title": "Bin in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "Names not ids; RTL."
+   },
+   {
+    "tc": "D-07-07",
+    "type": "negative",
+    "title": "Restore twice from two tabs",
+    "steps": [
+     "Open the bin in two tabs.",
+     "Restore the same item in both."
+    ],
+    "exp": "Second gets a clear \"already restored\" message; no duplicate record."
+   },
+   {
+    "tc": "D-07-08",
+    "type": "persistence",
+    "title": "Restored item kept",
+    "steps": [
+     "Reload and sign in again."
+    ],
+    "exp": "Restored contact is still in Contacts and not in the bin."
+   }
+  ]
+ },
+ {
+  "id": "X-01",
+  "name": "Modules and tabs (custom modules, web tabs, organize tabs)",
+  "prio": "P0",
+  "area": "Customization",
+  "wave": "5",
+  "day": 8,
+  "status": "Built",
+  "partly": "Modules & Fields runs 5–6 Oct (117 pass, 44 bugs NDC-2219..2262). Focus on what NDC needs: custom module with lookup from tickets, tab order per profile.",
+  "pre": "Settings › Modules and Fields.",
+  "extra": "",
+  "why": "NDC has custom modules (Airline-IATA Data, Training) linked from tickets.",
+  "cases": [
+   {
+    "tc": "X-01-01",
+    "type": "functional",
+    "title": "Custom module with lookup from tickets",
+    "steps": [
+     "New module \"QA MAN Airline\".",
+     "Add 2 records.",
+     "Add a lookup field on a QA layout of Tickets.",
+     "Pick a record on a ticket."
+    ],
+    "exp": "Lookup works; record shows the related ticket."
+   },
+   {
+    "tc": "X-01-02",
+    "type": "functional",
+    "title": "Organize tabs",
+    "steps": [
+     "Reorder tabs; hide one."
+    ],
+    "exp": "Order kept for users."
+   },
+   {
+    "tc": "X-01-03",
+    "type": "negative",
+    "title": "Duplicate module name",
+    "steps": [
+     "Create \"QA MAN Airline\" again."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "X-01-04",
+    "type": "edge",
+    "title": "Delete module with records",
+    "steps": [
+     "Delete \"QA MAN Airline\"."
+    ],
+    "exp": "Warning; lookup field handled."
+   },
+   {
+    "tc": "X-01-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Module and tabs unchanged."
+   },
+   {
+    "tc": "X-01-06",
+    "type": "permission",
+    "title": "Profile without module access",
+    "steps": [
+     "Agent C opens the module URL."
+    ],
+    "exp": "Hidden / refused unless granted."
+   },
+   {
+    "tc": "X-01-07",
+    "type": "ui-rtl",
+    "title": "Module in Arabic",
+    "steps": [
+     "Arabic name and labels."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "X-02",
+  "name": "Layouts and fields (per-dept layouts, field types, picklists)",
+  "prio": "P0",
+  "area": "Customization",
+  "wave": "5",
+  "day": 8,
+  "status": "Built",
+  "partly": "5–6 Oct runs. Focus on NDC sizes: big picklists, multiselect, currency, per-department layout.",
+  "pre": "QA layout on the QA dept.",
+  "extra": "",
+  "why": "NDC ticket has 183 fields and 80 layouts. Never edit the Standard layout; use \"QA MAN Layout\".",
+  "cases": [
+   {
+    "tc": "X-02-01",
+    "type": "functional",
+    "title": "Picklist with 200 values",
+    "steps": [
+     "Add picklist \"QA MAN Airline code\" with 200 values (paste list).",
+     "Use on a ticket; search a value."
+    ],
+    "exp": "Saved; search finds values fast."
+   },
+   {
+    "tc": "X-02-02",
+    "type": "functional",
+    "title": "Field types",
+    "steps": [
+     "Add multiselect, currency, decimal, date-time, email fields.",
+     "Fill on a ticket."
+    ],
+    "exp": "Each saves and shows in the right format."
+   },
+   {
+    "tc": "X-02-03",
+    "type": "negative",
+    "title": "Wrong value type",
+    "steps": [
+     "Type text in currency, bad email."
+    ],
+    "exp": "Refused with field messages."
+   },
+   {
+    "tc": "X-02-04",
+    "type": "edge",
+    "title": "Mandatory field",
+    "steps": [
+     "Make a field mandatory.",
+     "Create a ticket without it."
+    ],
+    "exp": "Blocked."
+   },
+   {
+    "tc": "X-02-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Layout, fields unchanged."
+   },
+   {
+    "tc": "X-02-06",
+    "type": "permission",
+    "title": "Field hidden by profile",
+    "steps": [
+     "Hide a field for Desk Agent profile.",
+     "Agent C opens a ticket."
+    ],
+    "exp": "Field not shown."
+   },
+   {
+    "tc": "X-02-07",
+    "type": "ui-rtl",
+    "title": "Layout in Arabic",
+    "steps": [
+     "Arabic labels."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "X-03",
+  "name": "Layout rules, validation rules, dependent picklists",
+  "prio": "P0",
+  "area": "Customization",
+  "wave": "5",
+  "day": 8,
+  "status": "Partly",
+  "partly": "",
+  "pre": "QA layout.",
+  "extra": "",
+  "why": "NDC has 10 layout rules and the validation \"Status = Reject needs a reason\". Known: NDC-2230, 2231 (saved, not applied), NDC-2535, NDC-1988.",
+  "cases": [
+   {
+    "tc": "X-03-01",
+    "type": "functional",
+    "title": "Layout rule shows a field",
+    "steps": [
+     "Rule: if Type = \"Refund\" show \"Refund amount\" and make it mandatory.",
+     "On a ticket choose Refund."
+    ],
+    "exp": "Field appears and is required."
+   },
+   {
+    "tc": "X-03-02",
+    "type": "functional",
+    "title": "Validation rule",
+    "steps": [
+     "Rule: Status = Reject needs \"Rejection reason\".",
+     "Set Reject without reason."
+    ],
+    "exp": "Save blocked with the rule message."
+   },
+   {
+    "tc": "X-03-03",
+    "type": "functional",
+    "title": "Dependent picklist",
+    "steps": [
+     "Country → City dependency.",
+     "Pick a country."
+    ],
+    "exp": "Only its cities offered."
+   },
+   {
+    "tc": "X-03-04",
+    "type": "negative",
+    "title": "Rule with no condition",
+    "steps": [
+     "Save a rule with no condition."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "X-03-05",
+    "type": "edge",
+    "title": "Value from API / import bypass",
+    "steps": [
+     "Import a ticket with Status Reject and no reason."
+    ],
+    "exp": "Validation applied or record — note."
+   },
+   {
+    "tc": "X-03-06",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Rules unchanged and still applied."
+   },
+   {
+    "tc": "X-03-07",
+    "type": "ui-rtl",
+    "title": "Rules in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "Messages Arabic."
+   }
+  ]
+ },
+ {
+  "id": "G-01",
+  "name": "CRM ⇄ Desk integration",
+  "prio": "P0",
+  "area": "Integrations",
+  "wave": "5",
+  "day": 7,
+  "status": "Built",
+  "partly": "full spec 18–22 Oct (18 bugs NDC-2393..2410). Focus on NDC flows: accounts, contacts and products from CRM; tickets in CRM related lists; retest open bugs only if Ready For Test.",
+  "pre": "Settings › Integrations › CRM (connected). CRM access as Owner.",
+  "extra": "",
+  "why": "NDC syncs accounts, contacts and products from CRM. Read-only on the connection: do not disconnect.",
+  "cases": [
+   {
+    "tc": "G-01-01",
+    "type": "functional",
+    "title": "CRM contact appears in Desk",
+    "steps": [
+     "In CRM create contact \"QA MAN CRM Contact\".",
+     "Wait for sync.",
+     "Search in Desk."
+    ],
+    "exp": "Contact in Desk with the mapped fields; \"Linked to CRM\"."
+   },
+   {
+    "tc": "G-01-02",
+    "type": "functional",
+    "title": "CRM account update flows",
+    "steps": [
+     "Change the account phone in CRM.",
+     "Update from CRM in Desk."
+    ],
+    "exp": "New value in Desk."
+   },
+   {
+    "tc": "G-01-03",
+    "type": "functional",
+    "title": "Product sync",
+    "steps": [
+     "Create product \"QA MAN Product\" in CRM (if CRM has products).",
+     "Check Desk Products."
+    ],
+    "exp": "Listed (or record \"CRM has no Products module\")."
+   },
+   {
+    "tc": "G-01-04",
+    "type": "integration",
+    "title": "Desk ticket in CRM related list",
+    "steps": [
+     "Create a ticket for the synced contact.",
+     "Open the contact in CRM."
+    ],
+    "exp": "Ticket shows in the Desk Tickets related list."
+   },
+   {
+    "tc": "G-01-05",
+    "type": "negative",
+    "title": "Sync failure shown",
+    "steps": [
+     "In CRM create a contact missing a field Desk requires."
+    ],
+    "exp": "Shows in Failure Log with a readable reason; Retry works."
+   },
+   {
+    "tc": "G-01-06",
+    "type": "edge",
+    "title": "Unlinked contact",
+    "steps": [
+     "Open a ticket of a Desk-only contact."
+    ],
+    "exp": "\"Not linked to a CRM record\" with search hint."
+   },
+   {
+    "tc": "G-01-07",
+    "type": "persistence",
+    "title": "Settings kept",
+    "steps": [
+     "Reload settings."
+    ],
+    "exp": "Mapping unchanged."
+   },
+   {
+    "tc": "G-01-08",
+    "type": "permission",
+    "title": "Agent CRM pane rights",
+    "steps": [
+     "Agent C opens a linked ticket."
+    ],
+    "exp": "CRM pane per profile (no access message, not endless loading)."
+   },
+   {
+    "tc": "G-01-09",
+    "type": "ui-rtl",
+    "title": "Pane in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "Labels Arabic, no raw synced keys."
+   }
+  ]
+ },
+ {
+  "id": "Q-03",
+  "name": "Notifications bell (in-app) and desktop notifications",
+  "prio": "P0",
+  "area": "Cross-cutting",
+  "wave": "2",
+  "day": 2,
+  "status": "Built",
+  "partly": "",
+  "pre": "Owner and Admin B.",
+  "extra": "",
+  "why": "Raised: agents learn about new assignments and mentions only from the bell.",
+  "cases": [
+   {
+    "tc": "Q-03-01",
+    "type": "functional",
+    "title": "Assignment notification",
+    "steps": [
+     "Owner assigns a ticket to B.",
+     "B looks at the bell."
+    ],
+    "exp": "Unread count +1; item names the ticket; click opens it."
+   },
+   {
+    "tc": "Q-03-02",
+    "type": "functional",
+    "title": "Mention notification",
+    "steps": [
+     "Owner mentions B in a comment."
+    ],
+    "exp": "B gets a bell item."
+   },
+   {
+    "tc": "Q-03-03",
+    "type": "functional",
+    "title": "Mark all read",
+    "steps": [
+     "B clicks Mark all read."
+    ],
+    "exp": "Count goes to 0."
+   },
+   {
+    "tc": "Q-03-04",
+    "type": "negative",
+    "title": "No self-notification",
+    "steps": [
+     "Owner assigns a ticket to himself."
+    ],
+    "exp": "Owner gets no bell item (or as the setting says)."
+   },
+   {
+    "tc": "Q-03-05",
+    "type": "edge",
+    "title": "Many notifications",
+    "steps": [
+     "Make 25 events for B.",
+     "Open the bell, scroll."
+    ],
+    "exp": "List pages/loads more; count right."
+   },
+   {
+    "tc": "Q-03-06",
+    "type": "persistence",
+    "title": "Read state kept",
+    "steps": [
+     "Reload; sign in again."
+    ],
+    "exp": "Read items stay read."
+   },
+   {
+    "tc": "Q-03-07",
+    "type": "functional",
+    "title": "Desktop notification",
+    "steps": [
+     "Allow browser notifications.",
+     "Assign a ticket to B while B's tab is in the background."
+    ],
+    "exp": "Desktop pop-up shows (or the setting explains it is off)."
+   },
+   {
+    "tc": "Q-03-08",
+    "type": "ui-rtl",
+    "title": "Bell in Arabic",
+    "steps": [
+     "Arabic; open the bell."
+    ],
+    "exp": "Text Arabic, no raw keys, times readable."
+   }
+  ]
+ },
+ {
+  "id": "Q-01",
+  "name": "Arabic UI and RTL on every Desk screen",
+  "prio": "P0",
+  "area": "Cross-cutting",
+  "wave": "5",
+  "day": 9,
+  "status": "Built",
+  "partly": "",
+  "pre": "Admin B with UI language Arabic.",
+  "extra": "",
+  "why": "NDC is in Egypt; Arabic agents and customers. Each feature above has its own RTL case; this one sweeps the screens no feature covers. Known: NDC-2488, NDC-2487.",
+  "cases": [
+   {
+    "tc": "Q-01-01",
+    "type": "functional",
+    "title": "Switch language",
+    "steps": [
+     "Header › EN/AR switch › Arabic."
+    ],
+    "exp": "Whole app turns Arabic and RTL without reload errors."
+   },
+   {
+    "tc": "Q-01-02",
+    "type": "ui-rtl",
+    "title": "Sweep left menu and settings hub",
+    "steps": [
+     "Open every left-menu item and every Settings hub tile once."
+    ],
+    "exp": "No raw keys, no English leftovers in labels, icons mirrored where needed. Note each screen with problems."
+   },
+   {
+    "tc": "Q-01-03",
+    "type": "edge",
+    "title": "Mixed text",
+    "steps": [
+     "Ticket subject \"QA MAN طلب 123 refund\"."
+    ],
+    "exp": "Number and English parts in the right order."
+   },
+   {
+    "tc": "Q-01-04",
+    "type": "edge",
+    "title": "Dates and numbers",
+    "steps": [
+     "Check dates, times and counts in lists in Arabic."
+    ],
+    "exp": "Readable, consistent format."
+   },
+   {
+    "tc": "Q-01-05",
+    "type": "persistence",
+    "title": "Language kept",
+    "steps": [
+     "Sign out and in."
+    ],
+    "exp": "Arabic kept for that user only; Owner still English."
+   },
+   {
+    "tc": "Q-01-06",
+    "type": "negative",
+    "title": "Unsupported language value",
+    "steps": [
+     "Change the URL/setting to an unsupported locale (if exposed)."
+    ],
+    "exp": "Falls back to English, no blank screen."
+   }
+  ]
+ },
+ {
+  "id": "Q-05",
+  "name": "Performance: list/detail under load targets",
+  "prio": "P0",
+  "area": "Cross-cutting",
+  "wave": "5",
+  "day": 9,
+  "status": "Not confirmed",
+  "partly": "",
+  "pre": "Owner; All Tickets view.",
+  "extra": "",
+  "why": "NDC will have millions of tickets and 478 agents; staging pages took > 5 s on 1 Nov. Manual timing only (stopwatch / browser DevTools Network tab). Run at a quiet hour.",
+  "cases": [
+   {
+    "tc": "Q-05-01",
+    "type": "functional",
+    "title": "List page load",
+    "steps": [
+     "Open All Tickets 3 times; time until rows show."
+    ],
+    "exp": "Median under 3 s (record numbers)."
+   },
+   {
+    "tc": "Q-05-02",
+    "type": "functional",
+    "title": "Ticket detail load",
+    "steps": [
+     "Open 3 different tickets; time."
+    ],
+    "exp": "Under 3 s each."
+   },
+   {
+    "tc": "Q-05-03",
+    "type": "functional",
+    "title": "Search time",
+    "steps": [
+     "Ctrl K search \"QA MAN\"; time."
+    ],
+    "exp": "Results under 2 s."
+   },
+   {
+    "tc": "Q-05-04",
+    "type": "edge",
+    "title": "Owner picker with many agents",
+    "steps": [
+     "Open the Owner picker in a large department; scroll to the end."
+    ],
+    "exp": "All agents reachable (not stopped at 200)."
+   },
+   {
+    "tc": "Q-05-05",
+    "type": "edge",
+    "title": "Slow network",
+    "steps": [
+     "DevTools › Network › Slow 3G.",
+     "Open a ticket and reply."
+    ],
+    "exp": "Loading states shown; no double send."
+   },
+   {
+    "tc": "Q-05-06",
+    "type": "permission",
+    "title": "Agent session",
+    "steps": [
+     "Repeat Q-05-01 as Agent C."
+    ],
+    "exp": "Similar times."
+   },
+   {
+    "tc": "Q-05-07",
+    "type": "negative",
+    "title": "Rapid double click on Send",
+    "steps": [
+     "Click Send on a reply 5 times fast."
+    ],
+    "exp": "Only one reply is sent and saved."
+   },
+   {
+    "tc": "Q-05-08",
+    "type": "persistence",
+    "title": "Cold start after sign-in",
+    "steps": [
+     "Sign out, clear cache, sign in.",
+     "Time All Tickets."
+    ],
+    "exp": "Record the time; under 5 s."
+   },
+   {
+    "tc": "Q-05-09",
+    "type": "ui-rtl",
+    "title": "Arabic list timing",
+    "steps": [
+     "Arabic UI; repeat Q-05-01."
+    ],
+    "exp": "Similar times; layout RTL."
+   }
+  ]
+ },
+ {
+  "id": "O-06",
+  "name": "Products (catalogue, per department, link to tickets)",
+  "prio": "P1",
+  "area": "Organisation",
+  "wave": "5",
+  "day": 12,
+  "status": "Built",
+  "partly": "",
+  "pre": "Settings › Organization › Products.",
+  "extra": "",
+  "why": "Raised: NDC syncs products from CRM and links them on tickets.",
+  "cases": [
+   {
+    "tc": "O-06-01",
+    "type": "functional",
+    "title": "Create product and link to a ticket",
+    "steps": [
+     "New product \"QA MAN Product\" for Marketing.",
+     "On a Marketing ticket pick it."
+    ],
+    "exp": "Saved; ticket shows the product."
+   },
+   {
+    "tc": "O-06-02",
+    "type": "edge",
+    "title": "Product limited to department",
+    "steps": [
+     "Open a Sales ticket's product list."
+    ],
+    "exp": "\"QA MAN Product\" not offered."
+   },
+   {
+    "tc": "O-06-03",
+    "type": "negative",
+    "title": "Duplicate / empty name",
+    "steps": [
+     "Save with empty name; then the same name again."
+    ],
+    "exp": "Both refused (or duplicate warned)."
+   },
+   {
+    "tc": "O-06-04",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Unchanged."
+   },
+   {
+    "tc": "O-06-05",
+    "type": "permission",
+    "title": "Agent cannot edit catalogue",
+    "steps": [
+     "Agent C opens the URL."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "O-06-06",
+    "type": "ui-rtl",
+    "title": "Arabic product name",
+    "steps": [
+     "Arabic name; view on a ticket."
+    ],
+    "exp": "RTL, readable."
+   }
+  ]
+ },
+ {
+  "id": "A-12",
+  "name": "Data retention and legal hold",
+  "prio": "P1",
+  "area": "Access",
+  "wave": "5",
+  "day": 12,
+  "status": "TAVI-only",
+  "partly": "",
+  "pre": "Settings › Data › Retention.",
+  "extra": "",
+  "why": "A wrong retention rule can delete real data. Test only with a QA-only scope; never save a rule that matches real tickets.",
+  "cases": [
+   {
+    "tc": "A-12-01",
+    "type": "functional",
+    "title": "Create a retention rule (QA scope)",
+    "steps": [
+     "New rule for closed tickets in QA dept older than 1 day.",
+     "Save, keep inactive."
+    ],
+    "exp": "Saved inactive; preview count shows only QA tickets."
+   },
+   {
+    "tc": "A-12-02",
+    "type": "functional",
+    "title": "Legal hold on a ticket",
+    "steps": [
+     "Put \"QA MAN status 01\" on legal hold.",
+     "Try to delete it."
+    ],
+    "exp": "Delete refused while on hold."
+   },
+   {
+    "tc": "A-12-03",
+    "type": "negative",
+    "title": "Invalid period",
+    "steps": [
+     "Period 0 or negative."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "A-12-04",
+    "type": "edge",
+    "title": "Remove hold",
+    "steps": [
+     "Remove hold; delete."
+    ],
+    "exp": "Delete allowed."
+   },
+   {
+    "tc": "A-12-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Rule and hold state unchanged."
+   },
+   {
+    "tc": "A-12-06",
+    "type": "permission",
+    "title": "Agent cannot see retention",
+    "steps": [
+     "Agent C opens the URL."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "A-12-07",
+    "type": "ui-rtl",
+    "title": "Page in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-08",
+  "name": "Reply drafts saved on the server",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 10,
+  "status": "Partly",
+  "partly": "",
+  "pre": "Ticket \"QA MAN reply 01\".",
+  "extra": "",
+  "why": "Agents switch PCs on shifts; lost drafts mean re-typing. Known: NDC-2644.",
+  "cases": [
+   {
+    "tc": "T-08-01",
+    "type": "persistence",
+    "title": "Draft survives reload",
+    "steps": [
+     "Type a reply, do not send.",
+     "Reload."
+    ],
+    "exp": "Draft restored."
+   },
+   {
+    "tc": "T-08-02",
+    "type": "persistence",
+    "title": "Draft on another browser",
+    "steps": [
+     "Open the same ticket in a second browser as the same user."
+    ],
+    "exp": "Draft shown (Zoho does; TAVI stores in browser only — record)."
+   },
+   {
+    "tc": "T-08-03",
+    "type": "functional",
+    "title": "Discard draft",
+    "steps": [
+     "Discard.",
+     "Reload."
+    ],
+    "exp": "Draft gone."
+   },
+   {
+    "tc": "T-08-04",
+    "type": "permission",
+    "title": "Draft of another agent",
+    "steps": [
+     "Admin B opens the ticket."
+    ],
+    "exp": "Owner's draft not visible to B."
+   },
+   {
+    "tc": "T-08-05",
+    "type": "edge",
+    "title": "Very long draft",
+    "steps": [
+     "Paste 20,000 characters; reload."
+    ],
+    "exp": "Restored fully or a clear limit."
+   },
+   {
+    "tc": "T-08-06",
+    "type": "ui-rtl",
+    "title": "Draft label in Arabic",
+    "steps": [
+     "Arabic; draft notice."
+    ],
+    "exp": "Arabic text."
+   },
+   {
+    "tc": "T-08-07",
+    "type": "negative",
+    "title": "Draft with only spaces",
+    "steps": [
+     "Type only spaces in Reply.",
+     "Reload."
+    ],
+    "exp": "No draft saved."
+   }
+  ]
+ },
+ {
+  "id": "T-09",
+  "name": "Scheduled replies (schedule, list, cancel, clear to draft)",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 10,
+  "status": "Built",
+  "partly": "",
+  "pre": "Ticket \"QA MAN reply 01\", mailbox M1.",
+  "extra": "",
+  "why": "NDC uses scheduled replies. Known: NDC-2184.",
+  "cases": [
+   {
+    "tc": "T-09-01",
+    "type": "functional",
+    "title": "Schedule a reply in 5 minutes",
+    "steps": [
+     "Reply › Schedule › now + 5 min.",
+     "Wait."
+    ],
+    "exp": "Sent at the time; M1 receives it."
+   },
+   {
+    "tc": "T-09-02",
+    "type": "functional",
+    "title": "List and cancel",
+    "steps": [
+     "Schedule +1 day.",
+     "Open Scheduled Replies.",
+     "Cancel."
+    ],
+    "exp": "Listed; after cancel not sent."
+   },
+   {
+    "tc": "T-09-03",
+    "type": "functional",
+    "title": "Clear to draft",
+    "steps": [
+     "Schedule, then \"move to draft\"."
+    ],
+    "exp": "Becomes a draft; not sent."
+   },
+   {
+    "tc": "T-09-04",
+    "type": "negative",
+    "title": "Time in the past",
+    "steps": [
+     "Schedule for yesterday."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-09-05",
+    "type": "edge",
+    "title": "Ticket closed before send",
+    "steps": [
+     "Schedule +5 min.",
+     "Close the ticket."
+    ],
+    "exp": "Sent or cancelled per rule — record."
+   },
+   {
+    "tc": "T-09-06",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload list."
+    ],
+    "exp": "Still scheduled."
+   },
+   {
+    "tc": "T-09-07",
+    "type": "ui-rtl",
+    "title": "Schedule picker in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "Date picker RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-11",
+  "name": "KB article suggestions in composer",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 10,
+  "status": "Partly",
+  "partly": "",
+  "pre": "Published \"QA MAN article\" (N-08). Ticket subject with a word from it.",
+  "extra": "",
+  "why": "Agents answer faster with articles; panel showed \"could not be loaded\" (NDC-2636).",
+  "cases": [
+   {
+    "tc": "T-11-01",
+    "type": "functional",
+    "title": "Suggestions load",
+    "steps": [
+     "Open Reply › Articles panel."
+    ],
+    "exp": "Matching articles listed (not \"could not be loaded\")."
+   },
+   {
+    "tc": "T-11-02",
+    "type": "functional",
+    "title": "Insert article",
+    "steps": [
+     "Insert a suggested article."
+    ],
+    "exp": "Link or content inserted."
+   },
+   {
+    "tc": "T-11-03",
+    "type": "negative",
+    "title": "No match",
+    "steps": [
+     "Ticket with a nonsense subject."
+    ],
+    "exp": "\"No article matches\"."
+   },
+   {
+    "tc": "T-11-04",
+    "type": "edge",
+    "title": "Draft article not suggested",
+    "steps": [
+     "Check the draft article."
+    ],
+    "exp": "Not suggested."
+   },
+   {
+    "tc": "T-11-05",
+    "type": "permission",
+    "title": "Agent-only article to customer",
+    "steps": [
+     "Insert an agents-only article."
+    ],
+    "exp": "Warned or link not public."
+   },
+   {
+    "tc": "T-11-06",
+    "type": "ui-rtl",
+    "title": "Arabic search",
+    "steps": [
+     "Arabic subject."
+    ],
+    "exp": "Arabic articles found."
+   },
+   {
+    "tc": "T-11-07",
+    "type": "persistence",
+    "title": "Inserted article kept in the sent reply",
+    "steps": [
+     "Send a reply with an inserted article.",
+     "Reload."
+    ],
+    "exp": "Link/content still in the sent reply; link opens the portal article."
+   }
+  ]
+ },
+ {
+  "id": "T-17",
+  "name": "Split ticket from a thread",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 10,
+  "status": "Built",
+  "partly": "",
+  "pre": "Ticket with 2 customer messages.",
+  "extra": "",
+  "why": "Customers raise two issues in one email.",
+  "cases": [
+   {
+    "tc": "T-17-01",
+    "type": "functional",
+    "title": "Split a customer message",
+    "steps": [
+     "On the 2nd customer message › Split."
+    ],
+    "exp": "New ticket with that message; link to the original."
+   },
+   {
+    "tc": "T-17-02",
+    "type": "negative",
+    "title": "Split an agent reply",
+    "steps": [
+     "Try Split on an agent reply."
+    ],
+    "exp": "Not offered."
+   },
+   {
+    "tc": "T-17-03",
+    "type": "edge",
+    "title": "Split with attachment",
+    "steps": [
+     "Split a message with a file."
+    ],
+    "exp": "File copied to the new ticket."
+   },
+   {
+    "tc": "T-17-04",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload both."
+    ],
+    "exp": "Link kept."
+   },
+   {
+    "tc": "T-17-05",
+    "type": "permission",
+    "title": "Read-only agent",
+    "steps": [
+     "Agent C on a read-only share."
+    ],
+    "exp": "Split hidden."
+   },
+   {
+    "tc": "T-17-06",
+    "type": "ui-rtl",
+    "title": "Dialog in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-19",
+  "name": "Parent / child tickets",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 10,
+  "status": "Built",
+  "partly": "",
+  "pre": "3 QA MAN tickets.",
+  "extra": "",
+  "why": "Used to group related cases (for example one PNR, many refunds).",
+  "cases": [
+   {
+    "tc": "T-19-01",
+    "type": "functional",
+    "title": "Link children",
+    "steps": [
+     "On ticket P › Parent-Child tab › add 2 children."
+    ],
+    "exp": "Listed; each child shows P."
+   },
+   {
+    "tc": "T-19-02",
+    "type": "functional",
+    "title": "Unlink",
+    "steps": [
+     "Unlink one."
+    ],
+    "exp": "Removed both sides."
+   },
+   {
+    "tc": "T-19-03",
+    "type": "negative",
+    "title": "Ticket as its own child / loop",
+    "steps": [
+     "Add P as child of itself, or of its child."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-19-04",
+    "type": "edge",
+    "title": "Close parent with open children",
+    "steps": [
+     "Close P."
+    ],
+    "exp": "Warned or allowed — record."
+   },
+   {
+    "tc": "T-19-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Links kept."
+   },
+   {
+    "tc": "T-19-06",
+    "type": "permission",
+    "title": "Child in another dept",
+    "steps": [
+     "Agent C opens P whose child is in Marketing."
+    ],
+    "exp": "C sees no data of the hidden child."
+   },
+   {
+    "tc": "T-19-07",
+    "type": "ui-rtl",
+    "title": "Tab in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-20",
+  "name": "Mark spam / spam view, blocked senders",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 10,
+  "status": "Built",
+  "partly": "",
+  "pre": "QA MAN ticket from M2.",
+  "extra": "",
+  "why": "Lowered: NDC's Zoho has 0 spam use; still needed for email hygiene. Overlaps N-02.",
+  "cases": [
+   {
+    "tc": "T-20-01",
+    "type": "functional",
+    "title": "Mark spam and block sender",
+    "steps": [
+     "More › Mark spam, tick block sender.",
+     "Send new mail from M2."
+    ],
+    "exp": "Ticket in Spam view; new mail goes to spam / blocked."
+   },
+   {
+    "tc": "T-20-02",
+    "type": "functional",
+    "title": "Not spam",
+    "steps": [
+     "Spam view › Not spam."
+    ],
+    "exp": "Back in normal views; sender unblocked if chosen."
+   },
+   {
+    "tc": "T-20-03",
+    "type": "permission",
+    "title": "Mark spam without permission",
+    "steps": [
+     "Agent C on his ticket."
+    ],
+    "exp": "Allowed/hidden per profile."
+   },
+   {
+    "tc": "T-20-04",
+    "type": "edge",
+    "title": "Spam ticket in reports",
+    "steps": [
+     "Check HQ counts."
+    ],
+    "exp": "Spam not counted as open."
+   },
+   {
+    "tc": "T-20-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "State kept."
+   },
+   {
+    "tc": "T-20-06",
+    "type": "ui-rtl",
+    "title": "Spam dialog in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "T-20-07",
+    "type": "negative",
+    "title": "Spam action on a spam ticket",
+    "steps": [
+     "Open a ticket already in Spam."
+    ],
+    "exp": "\"Mark spam\" not offered; only \"Not spam\"."
+   }
+  ]
+ },
+ {
+  "id": "T-23",
+  "name": "Follow ticket / followers",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 10,
+  "status": "Built",
+  "partly": "",
+  "pre": "QA MAN ticket.",
+  "extra": "",
+  "why": "Managers follow escalations. Candidate bug: History shows raw user ids for followers.",
+  "cases": [
+   {
+    "tc": "T-23-01",
+    "type": "functional",
+    "title": "Follow and get updates",
+    "steps": [
+     "Admin B clicks Follow.",
+     "Owner replies."
+    ],
+    "exp": "B gets a notification."
+   },
+   {
+    "tc": "T-23-02",
+    "type": "functional",
+    "title": "Unfollow",
+    "steps": [
+     "B unfollows.",
+     "Owner replies."
+    ],
+    "exp": "No notification."
+   },
+   {
+    "tc": "T-23-03",
+    "type": "edge",
+    "title": "History text",
+    "steps": [
+     "Open History."
+    ],
+    "exp": "\"Followers updated\" shows names, not ids."
+   },
+   {
+    "tc": "T-23-04",
+    "type": "negative",
+    "title": "Follow a ticket you cannot see",
+    "steps": [
+     "Agent C tries a Marketing ticket follow link."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-23-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Follow state kept."
+   },
+   {
+    "tc": "T-23-06",
+    "type": "ui-rtl",
+    "title": "Follow button in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-29",
+  "name": "Resolution field and resolution history",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 10,
+  "status": "Built",
+  "partly": "",
+  "pre": "QA MAN ticket.",
+  "extra": "",
+  "why": "Closure reason for audits.",
+  "cases": [
+   {
+    "tc": "T-29-01",
+    "type": "functional",
+    "title": "Save resolution",
+    "steps": [
+     "Resolution tab › text › save without notify."
+    ],
+    "exp": "Saved and shown."
+   },
+   {
+    "tc": "T-29-02",
+    "type": "functional",
+    "title": "Edit, history",
+    "steps": [
+     "Edit it."
+    ],
+    "exp": "History of versions shown."
+   },
+   {
+    "tc": "T-29-03",
+    "type": "negative",
+    "title": "Empty resolution",
+    "steps": [
+     "Save empty."
+    ],
+    "exp": "\"Resolution content is required.\""
+   },
+   {
+    "tc": "T-29-04",
+    "type": "edge",
+    "title": "Notify customer",
+    "steps": [
+     "Save with notify."
+    ],
+    "exp": "M1 gets it."
+   },
+   {
+    "tc": "T-29-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Same text."
+   },
+   {
+    "tc": "T-29-06",
+    "type": "permission",
+    "title": "Read-only agent",
+    "steps": [
+     "Agent C read-only share."
+    ],
+    "exp": "Cannot edit."
+   },
+   {
+    "tc": "T-29-07",
+    "type": "ui-rtl",
+    "title": "Arabic resolution",
+    "steps": [
+     "Arabic text."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-33",
+  "name": "Ticket number format (prefix/suffix per department)",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 11,
+  "status": "Built",
+  "partly": "",
+  "pre": "Settings › Tickets › Numbering.",
+  "extra": "",
+  "why": "NDC teams quote ticket numbers by phone. Tenant-wide: change only on a QA dept and set back.",
+  "cases": [
+   {
+    "tc": "T-33-01",
+    "type": "functional",
+    "title": "Department prefix",
+    "steps": [
+     "QA dept series prefix \"QAM-\", start 1000.",
+     "Create a ticket there."
+    ],
+    "exp": "Number \"QAM-1000\"."
+   },
+   {
+    "tc": "T-33-02",
+    "type": "edge",
+    "title": "Other departments unchanged",
+    "steps": [
+     "Create in Marketing."
+    ],
+    "exp": "Default series continues."
+   },
+   {
+    "tc": "T-33-03",
+    "type": "negative",
+    "title": "Invalid prefix",
+    "steps": [
+     "Prefix with spaces/emoji or start < current."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-33-04",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Unchanged."
+   },
+   {
+    "tc": "T-33-05",
+    "type": "permission",
+    "title": "Agent cannot edit",
+    "steps": [
+     "Agent C opens the URL."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "T-33-06",
+    "type": "ui-rtl",
+    "title": "Page in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-34",
+  "name": "Ticket templates",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 11,
+  "status": "Built",
+  "partly": "",
+  "pre": "Settings › Tickets › Templates.",
+  "extra": "",
+  "why": "Speeds up phone-ticket entry.",
+  "cases": [
+   {
+    "tc": "T-34-01",
+    "type": "functional",
+    "title": "Create and use",
+    "steps": [
+     "\"QA MAN tpl phone\" with Channel Phone, dept QA.",
+     "Use it in create."
+    ],
+    "exp": "Prefilled."
+   },
+   {
+    "tc": "T-34-02",
+    "type": "edge",
+    "title": "Template per department",
+    "steps": [
+     "Open the picker in Sales."
+    ],
+    "exp": "QA template not offered."
+   },
+   {
+    "tc": "T-34-03",
+    "type": "negative",
+    "title": "Empty name",
+    "steps": [
+     "Save with no name."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-34-04",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Unchanged."
+   },
+   {
+    "tc": "T-34-05",
+    "type": "permission",
+    "title": "Agent use only",
+    "steps": [
+     "Agent C uses but cannot edit."
+    ],
+    "exp": "As profile says."
+   },
+   {
+    "tc": "T-34-06",
+    "type": "ui-rtl",
+    "title": "Arabic template",
+    "steps": [
+     "Arabic subject."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-36",
+  "name": "Contract / SLA panel on ticket",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 11,
+  "status": "Built",
+  "partly": "",
+  "pre": "A ticket under \"QA MAN SLA\" (U-07).",
+  "extra": "",
+  "why": "Agents see SLA due times here; NDC uses SLA heavily.",
+  "cases": [
+   {
+    "tc": "T-36-01",
+    "type": "functional",
+    "title": "Panel shows SLA",
+    "steps": [
+     "Open the ticket's SLA panel."
+    ],
+    "exp": "Policy name, response and resolution due, status."
+   },
+   {
+    "tc": "T-36-02",
+    "type": "negative",
+    "title": "No SLA",
+    "steps": [
+     "Ticket in Marketing (no SLA)."
+    ],
+    "exp": "\"No SLA\" text, no error."
+   },
+   {
+    "tc": "T-36-03",
+    "type": "edge",
+    "title": "Overdue display",
+    "steps": [
+     "Let a target pass."
+    ],
+    "exp": "Red/overdue label and time."
+   },
+   {
+    "tc": "T-36-04",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Same times."
+   },
+   {
+    "tc": "T-36-05",
+    "type": "permission",
+    "title": "Agent view",
+    "steps": [
+     "Agent C on a CS ticket with SLA."
+    ],
+    "exp": "Panel visible, not editable."
+   },
+   {
+    "tc": "T-36-06",
+    "type": "ui-rtl",
+    "title": "Panel in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-37",
+  "name": "Customer happiness rating on ticket",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "4",
+  "day": 12,
+  "status": "Built",
+  "partly": "",
+  "pre": "Happiness on for QA dept (N-10). Mailbox M1.",
+  "extra": "",
+  "why": "NDC routes \"Bad\" ratings to supervisors.",
+  "cases": [
+   {
+    "tc": "T-37-01",
+    "type": "functional",
+    "title": "Rating shows on ticket",
+    "steps": [
+     "Rate Good from the email link.",
+     "Open the ticket."
+    ],
+    "exp": "Rating and comment shown."
+   },
+   {
+    "tc": "T-37-02",
+    "type": "edge",
+    "title": "Change rating",
+    "steps": [
+     "Rate again Bad."
+    ],
+    "exp": "Latest rating shown."
+   },
+   {
+    "tc": "T-37-03",
+    "type": "negative",
+    "title": "Rating link of another ticket",
+    "steps": [
+     "Edit the link id."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-37-04",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Rating kept."
+   },
+   {
+    "tc": "T-37-05",
+    "type": "permission",
+    "title": "Agent view",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "Read only."
+   },
+   {
+    "tc": "T-37-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-38",
+  "name": "AI on ticket: summary, sentiment, reply suggestion",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 11,
+  "status": "Partly",
+  "partly": "",
+  "pre": "Ticket with 3+ messages.",
+  "extra": "",
+  "why": "Raised: NDC uses Zia summary, sentiment and reply help. On 2 Nov every AI call returned 404.",
+  "cases": [
+   {
+    "tc": "T-38-01",
+    "type": "functional",
+    "title": "Summary",
+    "steps": [
+     "AI panel › Summary."
+    ],
+    "exp": "Summary of the thread, or clear \"AI not set up\" message."
+   },
+   {
+    "tc": "T-38-02",
+    "type": "functional",
+    "title": "Sentiment / triage",
+    "steps": [
+     "Run triage."
+    ],
+    "exp": "Sentiment and intent shown."
+   },
+   {
+    "tc": "T-38-03",
+    "type": "functional",
+    "title": "Reply suggestion",
+    "steps": [
+     "Suggest reply; insert."
+    ],
+    "exp": "Text inserted in composer."
+   },
+   {
+    "tc": "T-38-04",
+    "type": "negative",
+    "title": "Empty ticket",
+    "steps": [
+     "Summary on a ticket with only a subject."
+    ],
+    "exp": "Clear message, no \"Something went wrong\"."
+   },
+   {
+    "tc": "T-38-05",
+    "type": "ui-rtl",
+    "title": "Arabic thread",
+    "steps": [
+     "Summary of an Arabic thread."
+    ],
+    "exp": "Summary in Arabic or as set."
+   },
+   {
+    "tc": "T-38-06",
+    "type": "permission",
+    "title": "Agent access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "AI per profile."
+   },
+   {
+    "tc": "T-38-07",
+    "type": "edge",
+    "title": "Very long thread",
+    "steps": [
+     "Summary on a 50-message ticket."
+    ],
+    "exp": "Summary returned or a clear size message."
+   },
+   {
+    "tc": "T-38-08",
+    "type": "persistence",
+    "title": "Result after reload",
+    "steps": [
+     "Reload after a summary."
+    ],
+    "exp": "Summary kept or a \"regenerate\" option — record."
+   }
+  ]
+ },
+ {
+  "id": "T-40",
+  "name": "Keyboard shortcuts and global search (Ctrl K)",
+  "prio": "P1",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 11,
+  "status": "Built",
+  "partly": "",
+  "pre": "QA MAN tickets.",
+  "extra": "",
+  "why": "Agents find tickets by number from phone calls.",
+  "cases": [
+   {
+    "tc": "T-40-01",
+    "type": "functional",
+    "title": "Search by number",
+    "steps": [
+     "Ctrl K › type a ticket number."
+    ],
+    "exp": "Ticket first in results; opens."
+   },
+   {
+    "tc": "T-40-02",
+    "type": "functional",
+    "title": "Search by contact email / phone",
+    "steps": [
+     "Search M1 / phone."
+    ],
+    "exp": "Contact and tickets."
+   },
+   {
+    "tc": "T-40-03",
+    "type": "negative",
+    "title": "No result",
+    "steps": [
+     "Search \"zzzz\"."
+    ],
+    "exp": "Empty state."
+   },
+   {
+    "tc": "T-40-04",
+    "type": "edge",
+    "title": "Shortcut Shift+C / R",
+    "steps": [
+     "On a ticket press Shift+C."
+    ],
+    "exp": "Comment editor opens empty."
+   },
+   {
+    "tc": "T-40-05",
+    "type": "permission",
+    "title": "Search scope",
+    "steps": [
+     "Agent C searches \"QA MAN\" Marketing subject."
+    ],
+    "exp": "Not found."
+   },
+   {
+    "tc": "T-40-06",
+    "type": "ui-rtl",
+    "title": "Arabic search",
+    "steps": [
+     "Search an Arabic subject."
+    ],
+    "exp": "Found."
+   },
+   {
+    "tc": "T-40-07",
+    "type": "persistence",
+    "title": "Recent items kept",
+    "steps": [
+     "Open 3 tickets.",
+     "Reload.",
+     "Press Ctrl K."
+    ],
+    "exp": "Recent items listed (if the feature shows recents)."
+   }
+  ]
+ },
+ {
+  "id": "U-03",
+  "name": "Skills and skill-based routing",
+  "prio": "P1",
+  "area": "Automation",
+  "wave": "3",
+  "day": 11,
+  "status": "Partly",
+  "partly": "",
+  "pre": "Assignment Rules › Skills tab; QA dept.",
+  "extra": "",
+  "why": "NDC has one skill-based round robin. Gaps in NDC-2752.",
+  "cases": [
+   {
+    "tc": "U-03-01",
+    "type": "functional",
+    "title": "Skill on ticket by criteria",
+    "steps": [
+     "Skill \"QA MAN Arabic\", criteria Subject contains \"QA MAN skill\".",
+     "Create a ticket."
+    ],
+    "exp": "Skill added to the ticket."
+   },
+   {
+    "tc": "U-03-02",
+    "type": "functional",
+    "title": "Route to agent with skill",
+    "steps": [
+     "Give the skill to Admin B only.",
+     "Skill-based RR rule.",
+     "Create a ticket."
+    ],
+    "exp": "Assigned to B."
+   },
+   {
+    "tc": "U-03-03",
+    "type": "negative",
+    "title": "No agent has the skill",
+    "steps": [
+     "Remove skill from B; create."
+    ],
+    "exp": "Not assigned (backlog)."
+   },
+   {
+    "tc": "U-03-04",
+    "type": "edge",
+    "title": "More than 10 skills on a ticket",
+    "steps": [
+     "Add 11 skills."
+    ],
+    "exp": "Limit message or record."
+   },
+   {
+    "tc": "U-03-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Skills unchanged."
+   },
+   {
+    "tc": "U-03-06",
+    "type": "ui-rtl",
+    "title": "Tab in Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "U-16",
+  "name": "Auto-close / time-based ticket rules",
+  "prio": "P1",
+  "area": "Automation",
+  "wave": "3",
+  "day": 11,
+  "status": "Partly",
+  "partly": "",
+  "pre": "Blueprint state with time limit (U-09), QA dept.",
+  "extra": "",
+  "why": "Waiting-for-customer tickets must close by time. Only blueprint state limits and archiving exist (NDC-1973).",
+  "cases": [
+   {
+    "tc": "U-16-01",
+    "type": "functional",
+    "title": "Auto-close by blueprint state limit",
+    "steps": [
+     "State \"Waiting customer\" with 5-min limit → auto move to Closed.",
+     "Put a ticket there; wait."
+    ],
+    "exp": "Closed by the system; History says why."
+   },
+   {
+    "tc": "U-16-02",
+    "type": "edge",
+    "title": "Customer replies before limit",
+    "steps": [
+     "Reply from M1 within the limit."
+    ],
+    "exp": "Not closed."
+   },
+   {
+    "tc": "U-16-03",
+    "type": "negative",
+    "title": "Ticket outside blueprint",
+    "steps": [
+     "Open ticket in Marketing for 1 hour."
+    ],
+    "exp": "Not auto-closed (no general rule). Record as gap."
+   },
+   {
+    "tc": "U-16-04",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload settings."
+    ],
+    "exp": "Limit unchanged."
+   },
+   {
+    "tc": "U-16-05",
+    "type": "ui-rtl",
+    "title": "Message in Arabic",
+    "steps": [
+     "Arabic History text."
+    ],
+    "exp": "Arabic."
+   }
+  ]
+ },
+ {
+  "id": "N-07",
+  "name": "Community (forums, topics, moderation, categories)",
+  "prio": "P1",
+  "area": "Channels",
+  "wave": "4",
+  "day": 12,
+  "status": "Built",
+  "partly": "",
+  "pre": "/community; portal user M2.",
+  "extra": "",
+  "why": "NDC has community topics.",
+  "cases": [
+   {
+    "tc": "N-07-01",
+    "type": "functional",
+    "title": "Customer posts a topic",
+    "steps": [
+     "M2 in portal posts \"QA MAN topic\"."
+    ],
+    "exp": "Topic in moderation or live per setting."
+   },
+   {
+    "tc": "N-07-02",
+    "type": "functional",
+    "title": "Moderate",
+    "steps": [
+     "Agent approves.",
+     "Agent replies."
+    ],
+    "exp": "Live; reply visible."
+   },
+   {
+    "tc": "N-07-03",
+    "type": "negative",
+    "title": "Empty topic",
+    "steps": [
+     "Post with empty title."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "N-07-04",
+    "type": "edge",
+    "title": "Convert topic to ticket",
+    "steps": [
+     "Convert (if offered)."
+    ],
+    "exp": "Ticket with the topic text."
+   },
+   {
+    "tc": "N-07-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Topic kept."
+   },
+   {
+    "tc": "N-07-06",
+    "type": "permission",
+    "title": "Signed-out user cannot post",
+    "steps": [
+     "Signed out, try to post."
+    ],
+    "exp": "Asked to sign in."
+   },
+   {
+    "tc": "N-07-07",
+    "type": "ui-rtl",
+    "title": "Arabic topic",
+    "steps": [
+     "Arabic post."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "N-09",
+  "name": "KB translations and article versions",
+  "prio": "P1",
+  "area": "Channels",
+  "wave": "4",
+  "day": 12,
+  "status": "Not confirmed",
+  "partly": "",
+  "pre": "\"QA MAN article\".",
+  "extra": "",
+  "why": "NDC's help center is Arabic + English. First confirm it exists.",
+  "cases": [
+   {
+    "tc": "N-09-01",
+    "type": "functional",
+    "title": "Add Arabic translation",
+    "steps": [
+     "Article › Translations › Add Arabic.",
+     "Publish."
+    ],
+    "exp": "Portal in Arabic shows the Arabic version."
+   },
+   {
+    "tc": "N-09-02",
+    "type": "functional",
+    "title": "Versions",
+    "steps": [
+     "Edit and publish twice.",
+     "Open versions."
+    ],
+    "exp": "Older versions listed; restore works."
+   },
+   {
+    "tc": "N-09-03",
+    "type": "negative",
+    "title": "Translation without title",
+    "steps": [
+     "Save empty title."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "N-09-04",
+    "type": "edge",
+    "title": "Missing translation",
+    "steps": [
+     "Portal in Arabic, article without Arabic."
+    ],
+    "exp": "Falls back to English or hidden — record."
+   },
+   {
+    "tc": "N-09-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Both languages kept."
+   },
+   {
+    "tc": "N-09-06",
+    "type": "ui-rtl",
+    "title": "Editor in Arabic UI",
+    "steps": [
+     "Arabic UI."
+    ],
+    "exp": "RTL editor."
+   }
+  ]
+ },
+ {
+  "id": "N-10",
+  "name": "Customer happiness ratings (settings, email link, public page)",
+  "prio": "P1",
+  "area": "Channels",
+  "wave": "4",
+  "day": 12,
+  "status": "Built",
+  "partly": "",
+  "pre": "Settings › Organization › Customer Happiness; QA dept.",
+  "extra": "",
+  "why": "NDC uses rating links and routes \"Bad\" ratings. Known: NDC-1997, NDC-2170.",
+  "cases": [
+   {
+    "tc": "N-10-01",
+    "type": "functional",
+    "title": "Rating link in reply",
+    "steps": [
+     "Turn on rating link in replies for QA dept.",
+     "Reply.",
+     "Click Good in M1."
+    ],
+    "exp": "Public page thanks; rating on ticket."
+   },
+   {
+    "tc": "N-10-02",
+    "type": "functional",
+    "title": "Rating on close",
+    "steps": [
+     "Turn on \"send on close\".",
+     "Close."
+    ],
+    "exp": "M1 gets the rating mail."
+   },
+   {
+    "tc": "N-10-03",
+    "type": "negative",
+    "title": "Invalid link",
+    "steps": [
+     "Open the link with a changed token."
+    ],
+    "exp": "Error page, no rating saved."
+   },
+   {
+    "tc": "N-10-04",
+    "type": "edge",
+    "title": "Comment with Bad rating",
+    "steps": [
+     "Rate Bad with a long Arabic comment."
+    ],
+    "exp": "Saved fully."
+   },
+   {
+    "tc": "N-10-05",
+    "type": "persistence",
+    "title": "Settings kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Unchanged."
+   },
+   {
+    "tc": "N-10-06",
+    "type": "ui-rtl",
+    "title": "Public page in Arabic",
+    "steps": [
+     "Open the link with Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "C-03",
+  "name": "Customer 360: tickets, happiness, activities on the contact page",
+  "prio": "P1",
+  "area": "Customers",
+  "wave": "5",
+  "day": 12,
+  "status": "Built",
+  "partly": "",
+  "pre": "QA MAN Contact 1 with tickets, rating, task.",
+  "extra": "",
+  "why": "NDC installed \"Customer Ticket History\"; agents need past tickets on a call.",
+  "cases": [
+   {
+    "tc": "C-03-01",
+    "type": "functional",
+    "title": "Contact page shows all",
+    "steps": [
+     "Open the contact."
+    ],
+    "exp": "Tickets, ratings, activities listed and correct."
+   },
+   {
+    "tc": "C-03-02",
+    "type": "functional",
+    "title": "New ticket appears",
+    "steps": [
+     "Create a ticket; refresh."
+    ],
+    "exp": "Listed."
+   },
+   {
+    "tc": "C-03-03",
+    "type": "negative",
+    "title": "Contact with nothing",
+    "steps": [
+     "New contact."
+    ],
+    "exp": "Empty states."
+   },
+   {
+    "tc": "C-03-04",
+    "type": "permission",
+    "title": "Tickets in hidden depts",
+    "steps": [
+     "Agent C opens the contact."
+    ],
+    "exp": "Only tickets he may see."
+   },
+   {
+    "tc": "C-03-05",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Same."
+   },
+   {
+    "tc": "C-03-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "C-03-07",
+    "type": "edge",
+    "title": "Contact with 100+ tickets",
+    "steps": [
+     "Open a contact with many tickets."
+    ],
+    "exp": "List pages; counts right; loads under 5 s."
+   }
+  ]
+ },
+ {
+  "id": "C-05",
+  "name": "Tasks, calls, events (CRUD, reminders, overdue, complete)",
+  "prio": "P1",
+  "area": "Customers",
+  "wave": "5",
+  "day": 12,
+  "status": "Built",
+  "partly": "Activity life cycle run 26 Oct (bugs NDC-2637..2643). Focus: retest open bugs, reminders, ticket link on NDC-Staging.",
+  "pre": "/activities.",
+  "extra": "",
+  "why": "Follow-up calls to customers.",
+  "cases": [
+   {
+    "tc": "C-05-01",
+    "type": "functional",
+    "title": "Task on a ticket",
+    "steps": [
+     "From a ticket add task \"QA MAN task\" due in 10 min, reminder 5 min."
+    ],
+    "exp": "Linked; reminder fires."
+   },
+   {
+    "tc": "C-05-02",
+    "type": "functional",
+    "title": "Call log",
+    "steps": [
+     "Log a completed call 5 min."
+    ],
+    "exp": "Saved; on ticket and contact."
+   },
+   {
+    "tc": "C-05-03",
+    "type": "functional",
+    "title": "Event with invitee",
+    "steps": [
+     "Event with Admin B."
+    ],
+    "exp": "B sees it on calendar."
+   },
+   {
+    "tc": "C-05-04",
+    "type": "negative",
+    "title": "End before start",
+    "steps": [
+     "Event end < start."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "C-05-05",
+    "type": "edge",
+    "title": "Overdue",
+    "steps": [
+     "Task due passes."
+    ],
+    "exp": "In Overdue view."
+   },
+   {
+    "tc": "C-05-06",
+    "type": "persistence",
+    "title": "Kept after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Same."
+   },
+   {
+    "tc": "C-05-07",
+    "type": "permission",
+    "title": "Agent sees others' tasks",
+    "steps": [
+     "Agent C opens Activities."
+    ],
+    "exp": "Only allowed ones."
+   },
+   {
+    "tc": "C-05-08",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "D-03",
+  "name": "Data backup (ZIP of CSV, password)",
+  "prio": "P1",
+  "area": "Data",
+  "wave": "5",
+  "day": 13,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Safety copy before go-live. Known: NDC-2494.",
+  "cases": [
+   {
+    "tc": "D-03-01",
+    "type": "functional",
+    "title": "Create backup",
+    "steps": [
+     "Settings › Data › Backup › run with password.",
+     "Download."
+    ],
+    "exp": "ZIP opens only with the password; CSVs per module."
+   },
+   {
+    "tc": "D-03-02",
+    "type": "negative",
+    "title": "Weak/empty password",
+    "steps": [
+     "Empty password."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "D-03-03",
+    "type": "edge",
+    "title": "Second backup same day",
+    "steps": [
+     "Run again."
+    ],
+    "exp": "Allowed or clear limit message."
+   },
+   {
+    "tc": "D-03-04",
+    "type": "persistence",
+    "title": "Listed after reload",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Backup listed."
+   },
+   {
+    "tc": "D-03-05",
+    "type": "permission",
+    "title": "Agent cannot back up",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "D-03-06",
+    "type": "ui-rtl",
+    "title": "Arabic data in CSV",
+    "steps": [
+     "Open a CSV."
+    ],
+    "exp": "Arabic readable."
+   }
+  ]
+ },
+ {
+  "id": "D-04",
+  "name": "Migration from another help desk (Zwitch)",
+  "prio": "P1",
+  "area": "Data",
+  "wave": "5",
+  "day": 13,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "NDC's history comes from Zoho. Do not run a real import into NDC-Staging without the admin's OK; stop before the final step if no test source.",
+  "cases": [
+   {
+    "tc": "D-04-01",
+    "type": "functional",
+    "title": "Sources offered",
+    "steps": [
+     "Settings › Data › Migration."
+    ],
+    "exp": "Source list incl. Zoho Desk (record if missing)."
+   },
+   {
+    "tc": "D-04-02",
+    "type": "negative",
+    "title": "Wrong credentials",
+    "steps": [
+     "Enter fake API key."
+    ],
+    "exp": "Clear error."
+   },
+   {
+    "tc": "D-04-03",
+    "type": "functional",
+    "title": "Field mapping screen",
+    "steps": [
+     "With a test source, open mapping."
+    ],
+    "exp": "Fields mappable."
+   },
+   {
+    "tc": "D-04-04",
+    "type": "edge",
+    "title": "Partial / cancel",
+    "steps": [
+     "Cancel mid-way."
+    ],
+    "exp": "No half data, or clean rollback."
+   },
+   {
+    "tc": "D-04-05",
+    "type": "persistence",
+    "title": "History kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Runs listed."
+   },
+   {
+    "tc": "D-04-06",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "D-04-07",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "D-06",
+  "name": "Bulk actions log",
+  "prio": "P1",
+  "area": "Data",
+  "wave": "5",
+  "day": 13,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Audit for mass changes.",
+  "cases": [
+   {
+    "tc": "D-06-01",
+    "type": "functional",
+    "title": "Log row after mass update",
+    "steps": [
+     "After T-31-02 open Bulk actions log."
+    ],
+    "exp": "Row with user, count, time."
+   },
+   {
+    "tc": "D-06-02",
+    "type": "functional",
+    "title": "Details",
+    "steps": [
+     "Open the row."
+    ],
+    "exp": "Affected records listed."
+   },
+   {
+    "tc": "D-06-03",
+    "type": "negative",
+    "title": "Failed rows shown",
+    "steps": [
+     "Mass update including a record you cannot edit."
+    ],
+    "exp": "Failure count and reason."
+   },
+   {
+    "tc": "D-06-04",
+    "type": "edge",
+    "title": "Filter by date",
+    "steps": [
+     "Filter to yesterday."
+    ],
+    "exp": "Correct rows."
+   },
+   {
+    "tc": "D-06-05",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Same."
+   },
+   {
+    "tc": "D-06-06",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "D-06-07",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "X-05",
+  "name": "Languages (portal + agent UI, RTL)",
+  "prio": "P1",
+  "area": "Customization",
+  "wave": "5",
+  "day": 13,
+  "status": "Partly",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "NDC needs Arabic customer emails and portal; no Languages setup exists. Known: NDC-2488, 2487.",
+  "cases": [
+   {
+    "tc": "X-05-01",
+    "type": "functional",
+    "title": "Contact language drives email",
+    "steps": [
+     "Set QA MAN Contact 1 language Arabic.",
+     "Trigger an acknowledgement."
+    ],
+    "exp": "Arabic template used (or record gap)."
+   },
+   {
+    "tc": "X-05-02",
+    "type": "functional",
+    "title": "Portal default language",
+    "steps": [
+     "Set portal default Arabic (if offered)."
+    ],
+    "exp": "Portal opens in Arabic."
+   },
+   {
+    "tc": "X-05-03",
+    "type": "negative",
+    "title": "Missing translation",
+    "steps": [
+     "Language with no template."
+    ],
+    "exp": "Falls back to default."
+   },
+   {
+    "tc": "X-05-04",
+    "type": "edge",
+    "title": "Agent personal language",
+    "steps": [
+     "B Arabic, Owner English at the same time."
+    ],
+    "exp": "Each sees his own."
+   },
+   {
+    "tc": "X-05-05",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Kept."
+   },
+   {
+    "tc": "X-05-06",
+    "type": "ui-rtl",
+    "title": "RTL sweep of settings",
+    "steps": [
+     "Arabic; open Settings pages used in this plan."
+    ],
+    "exp": "No broken layout."
+   }
+  ]
+ },
+ {
+  "id": "G-06",
+  "name": "Analytics app (Tavi Analytics for Desk)",
+  "prio": "P1",
+  "area": "Integrations",
+  "wave": "5",
+  "day": 13,
+  "status": "Partly",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "NDC has Zoho Analytics on. Overlaps I-02; run after it. Known: NDC-2068, NDC-2364.",
+  "cases": [
+   {
+    "tc": "G-06-01",
+    "type": "functional",
+    "title": "Analytics tab loads",
+    "steps": [
+     "Open Analytics."
+    ],
+    "exp": "Departments load (not stuck)."
+   },
+   {
+    "tc": "G-06-02",
+    "type": "functional",
+    "title": "Data matches Desk",
+    "steps": [
+     "Compare a ticket count."
+    ],
+    "exp": "Same."
+   },
+   {
+    "tc": "G-06-03",
+    "type": "edge",
+    "title": "Data freshness",
+    "steps": [
+     "Create a ticket; time until it shows."
+    ],
+    "exp": "Record delay."
+   },
+   {
+    "tc": "G-06-04",
+    "type": "negative",
+    "title": "Invalid filter",
+    "steps": [
+     "Future date range."
+    ],
+    "exp": "Empty, no error."
+   },
+   {
+    "tc": "G-06-05",
+    "type": "permission",
+    "title": "Agent scope",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "Allowed data only."
+   },
+   {
+    "tc": "G-06-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "G-06-07",
+    "type": "persistence",
+    "title": "Saved filter kept",
+    "steps": [
+     "Set a filter in Analytics.",
+     "Reload."
+    ],
+    "exp": "Filter kept or reset by design — record."
+   }
+  ]
+ },
+ {
+  "id": "Q-04",
+  "name": "My profile, signatures, personal time zone/date format",
+  "prio": "P1",
+  "area": "Cross-cutting",
+  "wave": "1 (only partly checked)",
+  "day": 13,
+  "status": "Partly",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Agents in Egypt, UAE, KSA need their own time zone. Wave 1 found no personal time zone (NDC-1970); /settings/my-profile redirected to /hq.",
+  "cases": [
+   {
+    "tc": "Q-04-01",
+    "type": "functional",
+    "title": "Open My profile",
+    "steps": [
+     "Avatar › My profile."
+    ],
+    "exp": "Profile page opens (not HQ)."
+   },
+   {
+    "tc": "Q-04-02",
+    "type": "functional",
+    "title": "Signature per department",
+    "steps": [
+     "Add signature for Marketing and another for Sales.",
+     "Reply in each."
+    ],
+    "exp": "Right signature each time."
+   },
+   {
+    "tc": "Q-04-03",
+    "type": "edge",
+    "title": "Personal time zone",
+    "steps": [
+     "Set time zone Asia/Dubai (if offered).",
+     "Check ticket times."
+    ],
+    "exp": "Times shift by 2 h vs Cairo; record gap if missing."
+   },
+   {
+    "tc": "Q-04-04",
+    "type": "negative",
+    "title": "Empty name / huge photo",
+    "steps": [
+     "Save empty name; upload a 20 MB photo."
+    ],
+    "exp": "Refused with messages."
+   },
+   {
+    "tc": "Q-04-05",
+    "type": "persistence",
+    "title": "Kept after sign-in",
+    "steps": [
+     "Sign out/in."
+    ],
+    "exp": "Values kept."
+   },
+   {
+    "tc": "Q-04-06",
+    "type": "permission",
+    "title": "Cannot edit another user",
+    "steps": [
+     "Agent C edits own profile only."
+    ],
+    "exp": "No way to edit others."
+   },
+   {
+    "tc": "Q-04-07",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "O-08",
+  "name": "Multi-brand / custom portal domain",
+  "prio": "P2",
+  "area": "Organisation",
+  "wave": "4",
+  "day": 15,
+  "status": "Partly",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "One help center is enough for go-live; multi-brand is being built (NDC-1992).",
+  "cases": [
+   {
+    "tc": "O-08-01",
+    "type": "functional",
+    "title": "Portal URL works",
+    "steps": [
+     "Open the help center URL from settings."
+    ],
+    "exp": "Loads signed out."
+   },
+   {
+    "tc": "O-08-02",
+    "type": "functional",
+    "title": "Add a second brand",
+    "steps": [
+     "Try to add brand \"QA MAN Brand\"."
+    ],
+    "exp": "Saved or \"not available\" — record."
+   },
+   {
+    "tc": "O-08-03",
+    "type": "negative",
+    "title": "Invalid custom domain",
+    "steps": [
+     "Domain \"abc\"."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "O-08-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Unchanged."
+   },
+   {
+    "tc": "O-08-05",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "O-08-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "O-08-07",
+    "type": "edge",
+    "title": "Unknown portal page",
+    "steps": [
+     "Open the portal URL with \"/xyz\" added."
+    ],
+    "exp": "Portal \"page not found\", not a raw nginx 404."
+   }
+  ]
+ },
+ {
+  "id": "T-18",
+  "name": "Clone ticket",
+  "prio": "P2",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 14,
+  "status": "Not confirmed",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Nice to have; first confirm it exists (no clone string found).",
+  "cases": [
+   {
+    "tc": "T-18-01",
+    "type": "functional",
+    "title": "Find Clone",
+    "steps": [
+     "Ticket › More menu."
+    ],
+    "exp": "\"Clone\" present (if not: mark Not built, skip the rest)."
+   },
+   {
+    "tc": "T-18-02",
+    "type": "functional",
+    "title": "Clone copies fields",
+    "steps": [
+     "Clone."
+    ],
+    "exp": "New ticket \"… (Clone)\" with the same fields, new number, no thread."
+   },
+   {
+    "tc": "T-18-03",
+    "type": "permission",
+    "title": "Clone in a dept without rights",
+    "steps": [
+     "Agent C clones a read-only shared ticket."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-18-04",
+    "type": "edge",
+    "title": "Clone of a closed ticket",
+    "steps": [
+     "Clone a closed ticket."
+    ],
+    "exp": "New one is open."
+   },
+   {
+    "tc": "T-18-05",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload clone."
+    ],
+    "exp": "Saved."
+   },
+   {
+    "tc": "T-18-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "Menu item Arabic."
+   },
+   {
+    "tc": "T-18-07",
+    "type": "negative",
+    "title": "Clone a deleted ticket",
+    "steps": [
+     "Open a ticket in the Recycle Bin."
+    ],
+    "exp": "Clone not offered."
+   }
+  ]
+ },
+ {
+  "id": "T-22",
+  "name": "Tags (add/remove, tag page, AI tagging)",
+  "prio": "P2",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 14,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: NDC does not use tags.",
+  "cases": [
+   {
+    "tc": "T-22-01",
+    "type": "functional",
+    "title": "Add and remove a tag",
+    "steps": [
+     "Add \"qa-man-tag\".",
+     "Remove it."
+    ],
+    "exp": "Shows on ticket and Tags page; then gone."
+   },
+   {
+    "tc": "T-22-02",
+    "type": "functional",
+    "title": "Filter by tag",
+    "steps": [
+     "Tags page › click tag."
+    ],
+    "exp": "Only tagged tickets."
+   },
+   {
+    "tc": "T-22-03",
+    "type": "negative",
+    "title": "Empty / 200-char tag",
+    "steps": [
+     "Add empty, then 200 chars."
+    ],
+    "exp": "Refused or limit."
+   },
+   {
+    "tc": "T-22-04",
+    "type": "ui-rtl",
+    "title": "Arabic tag",
+    "steps": [
+     "Arabic tag."
+    ],
+    "exp": "Saved, RTL."
+   },
+   {
+    "tc": "T-22-05",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Tag kept."
+   },
+   {
+    "tc": "T-22-06",
+    "type": "permission",
+    "title": "Agent rights",
+    "steps": [
+     "Agent C on read-only share."
+    ],
+    "exp": "Cannot tag."
+   },
+   {
+    "tc": "T-22-07",
+    "type": "edge",
+    "title": "Same tag, different case",
+    "steps": [
+     "Add \"QA-MAN-TAG\" when \"qa-man-tag\" exists."
+    ],
+    "exp": "Same tag reused, not a duplicate."
+   }
+  ]
+ },
+ {
+  "id": "T-26",
+  "name": "Time entries and timer",
+  "prio": "P2",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 14,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: user confirmed NDC does not use time entries.",
+  "cases": [
+   {
+    "tc": "T-26-01",
+    "type": "functional",
+    "title": "Timer",
+    "steps": [
+     "Start, pause, resume, stop."
+    ],
+    "exp": "Entry with right duration."
+   },
+   {
+    "tc": "T-26-02",
+    "type": "functional",
+    "title": "Manual entry",
+    "steps": [
+     "Add 0:30, edit 0:45, delete."
+    ],
+    "exp": "Total updates."
+   },
+   {
+    "tc": "T-26-03",
+    "type": "negative",
+    "title": "Negative or > 24 h",
+    "steps": [
+     "Enter -1 h, 25 h."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-26-04",
+    "type": "edge",
+    "title": "Close with timer running",
+    "steps": [
+     "Close while timer runs."
+    ],
+    "exp": "Prompt to stop/save."
+   },
+   {
+    "tc": "T-26-05",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Entries kept."
+   },
+   {
+    "tc": "T-26-06",
+    "type": "permission",
+    "title": "Edit others' entries",
+    "steps": [
+     "Agent C edits Owner's entry."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-26-07",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-27",
+  "name": "Approvals on a ticket",
+  "prio": "P2",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 14,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: NDC runs approvals as blueprints, not ticket approvals. Candidate bug: approver outside the department can be chosen.",
+  "cases": [
+   {
+    "tc": "T-27-01",
+    "type": "functional",
+    "title": "Request and approve",
+    "steps": [
+     "Request approval from Admin B.",
+     "B approves."
+    ],
+    "exp": "Status Approved on ticket."
+   },
+   {
+    "tc": "T-27-02",
+    "type": "functional",
+    "title": "Reject",
+    "steps": [
+     "B rejects another request with a reason."
+    ],
+    "exp": "Rejected with reason."
+   },
+   {
+    "tc": "T-27-03",
+    "type": "negative",
+    "title": "Approver outside department",
+    "steps": [
+     "Pick Agent C (not in Marketing)."
+    ],
+    "exp": "Not offered / refused."
+   },
+   {
+    "tc": "T-27-04",
+    "type": "edge",
+    "title": "Cancel pending",
+    "steps": [
+     "Cancel before decision."
+    ],
+    "exp": "Removed; B can no longer act."
+   },
+   {
+    "tc": "T-27-05",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Decision kept."
+   },
+   {
+    "tc": "T-27-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-28",
+  "name": "Review (send reply for review before sending)",
+  "prio": "P2",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 14,
+  "status": "TAVI-only",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Useful for new agents; not a Zoho blocker.",
+  "cases": [
+   {
+    "tc": "T-28-01",
+    "type": "functional",
+    "title": "Send for review, approve",
+    "steps": [
+     "Agent sends reply for review to Admin B.",
+     "B approves."
+    ],
+    "exp": "Reply sent to M1 only after approval."
+   },
+   {
+    "tc": "T-28-02",
+    "type": "functional",
+    "title": "Reject review",
+    "steps": [
+     "B rejects."
+    ],
+    "exp": "Returned to the agent; nothing sent."
+   },
+   {
+    "tc": "T-28-03",
+    "type": "edge",
+    "title": "Withdraw",
+    "steps": [
+     "Withdraw before decision."
+    ],
+    "exp": "Nothing sent."
+   },
+   {
+    "tc": "T-28-04",
+    "type": "permission",
+    "title": "Reviewer cannot see ticket",
+    "steps": [
+     "Pick a reviewer outside dept."
+    ],
+    "exp": "Not offered."
+   },
+   {
+    "tc": "T-28-05",
+    "type": "negative",
+    "title": "Empty review body",
+    "steps": [
+     "Send empty."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-28-06",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Pending state kept."
+   },
+   {
+    "tc": "T-28-07",
+    "type": "ui-rtl",
+    "title": "Review banner in Arabic",
+    "steps": [
+     "Arabic; ticket with a pending review."
+    ],
+    "exp": "Banner Arabic, RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-30",
+  "name": "Print / export ticket",
+  "prio": "P2",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 14,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Occasional use.",
+  "cases": [
+   {
+    "tc": "T-30-01",
+    "type": "functional",
+    "title": "Print preview",
+    "steps": [
+     "More › Print."
+    ],
+    "exp": "Properties and conversation; options work."
+   },
+   {
+    "tc": "T-30-02",
+    "type": "edge",
+    "title": "Without private comments",
+    "steps": [
+     "Untick comments."
+    ],
+    "exp": "Not printed."
+   },
+   {
+    "tc": "T-30-03",
+    "type": "ui-rtl",
+    "title": "Arabic print",
+    "steps": [
+     "Arabic ticket."
+    ],
+    "exp": "RTL in preview/PDF."
+   },
+   {
+    "tc": "T-30-04",
+    "type": "permission",
+    "title": "Read-only agent print",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "Allowed for what he can see."
+   },
+   {
+    "tc": "T-30-05",
+    "type": "negative",
+    "title": "Very long thread",
+    "steps": [
+     "Print a 50-message ticket."
+    ],
+    "exp": "Preview loads; no cut text."
+   },
+   {
+    "tc": "T-30-06",
+    "type": "persistence",
+    "title": "Print options remembered",
+    "steps": [
+     "Untick comments; print.",
+     "Reload; print again."
+    ],
+    "exp": "Options remembered or reset by design — record."
+   }
+  ]
+ },
+ {
+  "id": "T-32",
+  "name": "Ticket archiving (rules, archived view, restore)",
+  "prio": "P2",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 14,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Matters later at volume. Candidate bug: an Open ticket can be archived and drops out of All Tickets.",
+  "cases": [
+   {
+    "tc": "T-32-01",
+    "type": "functional",
+    "title": "Archive a closed ticket",
+    "steps": [
+     "More › Archive.",
+     "Archived view."
+    ],
+    "exp": "Listed there; unarchive returns it."
+   },
+   {
+    "tc": "T-32-02",
+    "type": "negative",
+    "title": "Archive an open ticket",
+    "steps": [
+     "Try on an Open ticket."
+    ],
+    "exp": "Refused (candidate bug if allowed)."
+   },
+   {
+    "tc": "T-32-03",
+    "type": "edge",
+    "title": "Archiving rule (QA scope)",
+    "steps": [
+     "Rule: closed > 1 day in QA dept; keep inactive; preview."
+    ],
+    "exp": "Preview only QA tickets."
+   },
+   {
+    "tc": "T-32-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "State kept."
+   },
+   {
+    "tc": "T-32-05",
+    "type": "permission",
+    "title": "Agent rights",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "Per profile."
+   },
+   {
+    "tc": "T-32-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "T-35",
+  "name": "Macros (one-click updates)",
+  "prio": "P2",
+  "area": "Tickets",
+  "wave": "2",
+  "day": 14,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: NDC has 0 macros. Known: NDC-1987.",
+  "cases": [
+   {
+    "tc": "T-35-01",
+    "type": "functional",
+    "title": "Create and run",
+    "steps": [
+     "Macro \"QA MAN macro\": Status On Hold + comment.",
+     "Run on a ticket."
+    ],
+    "exp": "Both applied."
+   },
+   {
+    "tc": "T-35-02",
+    "type": "negative",
+    "title": "Macro with no actions",
+    "steps": [
+     "Save empty."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "T-35-03",
+    "type": "edge",
+    "title": "Run on 3 tickets",
+    "steps": [
+     "Bulk run."
+    ],
+    "exp": "All updated."
+   },
+   {
+    "tc": "T-35-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Kept."
+   },
+   {
+    "tc": "T-35-05",
+    "type": "permission",
+    "title": "Personal macro",
+    "steps": [
+     "Agent C list."
+    ],
+    "exp": "Owner's personal macro hidden."
+   },
+   {
+    "tc": "T-35-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "U-08",
+  "name": "Support plans and contracts (entitlements)",
+  "prio": "P2",
+  "area": "Automation",
+  "wave": "3",
+  "day": 15,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: NDC uses 0 contracts.",
+  "cases": [
+   {
+    "tc": "U-08-01",
+    "type": "functional",
+    "title": "Plan with SLA",
+    "steps": [
+     "Plan \"QA MAN Gold\" with an SLA.",
+     "Contract for QA MAN Account.",
+     "Ticket for its contact."
+    ],
+    "exp": "Contract SLA applied."
+   },
+   {
+    "tc": "U-08-02",
+    "type": "edge",
+    "title": "Expired contract",
+    "steps": [
+     "End date yesterday."
+    ],
+    "exp": "Not applied; warning on ticket."
+   },
+   {
+    "tc": "U-08-03",
+    "type": "negative",
+    "title": "End before start",
+    "steps": [
+     "Save."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "U-08-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Kept."
+   },
+   {
+    "tc": "U-08-05",
+    "type": "permission",
+    "title": "Agent no edit",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "U-08-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "U-13",
+  "name": "Custom functions and custom actions",
+  "prio": "P2",
+  "area": "Automation",
+  "wave": "3",
+  "day": 15,
+  "status": "TAVI-only",
+  "partly": "blueprint F7 custom action passed 3 Nov.",
+  "pre": "A safe test endpoint (webhook.site or similar).",
+  "extra": "",
+  "why": "Lowered: NDC uses 0 custom functions.",
+  "cases": [
+   {
+    "tc": "U-13-01",
+    "type": "functional",
+    "title": "Create a custom action",
+    "steps": [
+     "Source with base URL of the test endpoint.",
+     "Action \"QA MAN action\".",
+     "Use in a workflow; create a ticket."
+    ],
+    "exp": "Endpoint gets the call with ticket data."
+   },
+   {
+    "tc": "U-13-02",
+    "type": "negative",
+    "title": "Endpoint down",
+    "steps": [
+     "Point to a dead URL."
+    ],
+    "exp": "Failure logged; ticket unaffected."
+   },
+   {
+    "tc": "U-13-03",
+    "type": "edge",
+    "title": "Slow endpoint",
+    "steps": [
+     "Endpoint delays 30 s."
+    ],
+    "exp": "Timeout handled."
+   },
+   {
+    "tc": "U-13-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Kept."
+   },
+   {
+    "tc": "U-13-05",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "U-13-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "U-14",
+  "name": "Webhooks (outgoing) and public API keys",
+  "prio": "P2",
+  "area": "Automation",
+  "wave": "5",
+  "day": 15,
+  "status": "Partly",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: NDC uses 0 webhooks. Webhook exists only as a workflow action (NDC-2009).",
+  "cases": [
+   {
+    "tc": "U-14-01",
+    "type": "functional",
+    "title": "Webhook action fires",
+    "steps": [
+     "Workflow action Webhook to the test endpoint.",
+     "Create a QA ticket."
+    ],
+    "exp": "Payload received with ticket fields."
+   },
+   {
+    "tc": "U-14-02",
+    "type": "negative",
+    "title": "Invalid URL",
+    "steps": [
+     "URL \"abc\"."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "U-14-03",
+    "type": "ui-rtl",
+    "title": "Arabic data in payload",
+    "steps": [
+     "Arabic subject."
+    ],
+    "exp": "UTF-8 correct in payload."
+   },
+   {
+    "tc": "U-14-04",
+    "type": "edge",
+    "title": "API keys page",
+    "steps": [
+     "Look for an API keys page."
+    ],
+    "exp": "Record gap if missing."
+   },
+   {
+    "tc": "U-14-05",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Kept."
+   },
+   {
+    "tc": "U-14-06",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   }
+  ]
+ },
+ {
+  "id": "C-04",
+  "name": "Contracts (with support plan, validity)",
+  "prio": "P2",
+  "area": "Customers",
+  "wave": "5",
+  "day": 15,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: NDC uses 0 contracts. Run with U-08.",
+  "cases": [
+   {
+    "tc": "C-04-01",
+    "type": "functional",
+    "title": "Create contract",
+    "steps": [
+     "For QA MAN Account with plan QA MAN Gold."
+    ],
+    "exp": "Listed on account."
+   },
+   {
+    "tc": "C-04-02",
+    "type": "negative",
+    "title": "Missing account",
+    "steps": [
+     "Save without account."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "C-04-03",
+    "type": "edge",
+    "title": "Renew",
+    "steps": [
+     "Extend end date."
+    ],
+    "exp": "Updated."
+   },
+   {
+    "tc": "C-04-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Kept."
+   },
+   {
+    "tc": "C-04-05",
+    "type": "permission",
+    "title": "Agent rights",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "Per profile."
+   },
+   {
+    "tc": "C-04-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   }
+  ]
+ },
+ {
+  "id": "C-06",
+  "name": "Calendar (month / week / day, all users)",
+  "prio": "P2",
+  "area": "Customers",
+  "wave": "5",
+  "day": 15,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "NDC uses a calendar extension; low risk.",
+  "cases": [
+   {
+    "tc": "C-06-01",
+    "type": "functional",
+    "title": "Views",
+    "steps": [
+     "Month, week, day."
+    ],
+    "exp": "QA MAN events in the right slots."
+   },
+   {
+    "tc": "C-06-02",
+    "type": "functional",
+    "title": "Drag to reschedule",
+    "steps": [
+     "Drag an event."
+    ],
+    "exp": "Time updated."
+   },
+   {
+    "tc": "C-06-03",
+    "type": "negative",
+    "title": "Drag a completed call",
+    "steps": [
+     "Try."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "C-06-04",
+    "type": "permission",
+    "title": "All users view",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "Only allowed users."
+   },
+   {
+    "tc": "C-06-05",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Kept."
+   },
+   {
+    "tc": "C-06-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "Week starts right, RTL."
+   },
+   {
+    "tc": "C-06-07",
+    "type": "edge",
+    "title": "Event over midnight",
+    "steps": [
+     "Event 23:00–01:00."
+    ],
+    "exp": "Shows on both days correctly."
+   }
+  ]
+ },
+ {
+  "id": "I-04",
+  "name": "Team feeds (department feed, mentions, direct messages)",
+  "prio": "P2",
+  "area": "Insight",
+  "wave": "5",
+  "day": 15,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "NDC uses Cliq for chat; feeds are extra.",
+  "cases": [
+   {
+    "tc": "I-04-01",
+    "type": "functional",
+    "title": "Post in department feed",
+    "steps": [
+     "Post \"QA MAN feed\"."
+    ],
+    "exp": "Members see it."
+   },
+   {
+    "tc": "I-04-02",
+    "type": "functional",
+    "title": "Mention / DM",
+    "steps": [
+     "Mention B; DM B."
+    ],
+    "exp": "B notified."
+   },
+   {
+    "tc": "I-04-03",
+    "type": "negative",
+    "title": "Empty post",
+    "steps": [
+     "Post empty."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "I-04-04",
+    "type": "permission",
+    "title": "Non-member",
+    "steps": [
+     "Agent C opens Marketing feed."
+    ],
+    "exp": "Not visible."
+   },
+   {
+    "tc": "I-04-05",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Kept."
+   },
+   {
+    "tc": "I-04-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic post."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "I-04-07",
+    "type": "edge",
+    "title": "Long post with link and image",
+    "steps": [
+     "Post 2,000 characters with a link and an image."
+    ],
+    "exp": "Shown in full; link clickable."
+   }
+  ]
+ },
+ {
+  "id": "D-08",
+  "name": "Data archive",
+  "prio": "P2",
+  "area": "Data",
+  "wave": "5",
+  "day": 15,
+  "status": "TAVI-only",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Later, at volume.",
+  "cases": [
+   {
+    "tc": "D-08-01",
+    "type": "functional",
+    "title": "Page loads",
+    "steps": [
+     "Settings › Data › Archive."
+    ],
+    "exp": "Loads; lists archived data."
+   },
+   {
+    "tc": "D-08-02",
+    "type": "functional",
+    "title": "Restore one item",
+    "steps": [
+     "Restore a QA archived ticket."
+    ],
+    "exp": "Back in lists."
+   },
+   {
+    "tc": "D-08-03",
+    "type": "edge",
+    "title": "Search archive",
+    "steps": [
+     "Search \"QA MAN\"."
+    ],
+    "exp": "Found."
+   },
+   {
+    "tc": "D-08-04",
+    "type": "negative",
+    "title": "Invalid action",
+    "steps": [
+     "Restore an already restored item (second tab)."
+    ],
+    "exp": "Clear message."
+   },
+   {
+    "tc": "D-08-05",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "D-08-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "D-08-07",
+    "type": "persistence",
+    "title": "Restored item kept",
+    "steps": [
+     "After D-08-02 reload."
+    ],
+    "exp": "Ticket stays in normal lists."
+   }
+  ]
+ },
+ {
+  "id": "Q-02",
+  "name": "Accessibility settings (font size, contrast, motion)",
+  "prio": "P2",
+  "area": "Cross-cutting",
+  "wave": "5",
+  "day": 15,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Comfort, not a blocker.",
+  "cases": [
+   {
+    "tc": "Q-02-01",
+    "type": "functional",
+    "title": "Font size",
+    "steps": [
+     "Set large font."
+    ],
+    "exp": "All screens bigger, nothing cut."
+   },
+   {
+    "tc": "Q-02-02",
+    "type": "functional",
+    "title": "High contrast",
+    "steps": [
+     "Turn on."
+    ],
+    "exp": "Text readable."
+   },
+   {
+    "tc": "Q-02-03",
+    "type": "edge",
+    "title": "Reduced motion",
+    "steps": [
+     "Turn on."
+    ],
+    "exp": "No animations."
+   },
+   {
+    "tc": "Q-02-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Sign in again."
+    ],
+    "exp": "Kept per user."
+   },
+   {
+    "tc": "Q-02-05",
+    "type": "negative",
+    "title": "Keyboard only",
+    "steps": [
+     "Use Tab only on a ticket page."
+    ],
+    "exp": "Every action reachable, focus visible."
+   },
+   {
+    "tc": "Q-02-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic + large font."
+    ],
+    "exp": "No overlap."
+   }
+  ]
+ },
+ {
+  "id": "U-15",
+  "name": "AI tagging",
+  "prio": "P3",
+  "area": "Automation",
+  "wave": "3",
+  "day": 16,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: NDC does not use tags. Known: NDC-2003.",
+  "cases": [
+   {
+    "tc": "U-15-01",
+    "type": "functional",
+    "title": "AI tag on new ticket",
+    "steps": [
+     "Enable for QA dept.",
+     "Create a ticket about refunds."
+    ],
+    "exp": "Tag suggested/added, or clear \"AI not set up\"."
+   },
+   {
+    "tc": "U-15-02",
+    "type": "negative",
+    "title": "Turned off",
+    "steps": [
+     "Disable; create."
+    ],
+    "exp": "No tag."
+   },
+   {
+    "tc": "U-15-03",
+    "type": "ui-rtl",
+    "title": "Arabic ticket",
+    "steps": [
+     "Arabic text."
+    ],
+    "exp": "Tag or clear message."
+   },
+   {
+    "tc": "U-15-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Setting kept."
+   },
+   {
+    "tc": "U-15-05",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "U-15-06",
+    "type": "edge",
+    "title": "Ticket about two topics",
+    "steps": [
+     "Ticket text about refund and baggage."
+    ],
+    "exp": "Two tags or the best one — record."
+   }
+  ]
+ },
+ {
+  "id": "X-06",
+  "name": "Data types and capabilities catalogue",
+  "prio": "P3",
+  "area": "Customization",
+  "wave": "5",
+  "day": 16,
+  "status": "TAVI-only",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: admin reference pages; no NDC process uses them.",
+  "cases": [
+   {
+    "tc": "X-06-01",
+    "type": "functional",
+    "title": "Pages load",
+    "steps": [
+     "Open /settings/data-types and /settings/capabilities."
+    ],
+    "exp": "Load with content."
+   },
+   {
+    "tc": "X-06-02",
+    "type": "edge",
+    "title": "Search",
+    "steps": [
+     "Search \"date\"."
+    ],
+    "exp": "Matching rows."
+   },
+   {
+    "tc": "X-06-03",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "X-06-04",
+    "type": "negative",
+    "title": "Unknown item URL",
+    "steps": [
+     "Edit URL id."
+    ],
+    "exp": "Not found page."
+   },
+   {
+    "tc": "X-06-05",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "X-06-06",
+    "type": "persistence",
+    "title": "Same after sign-in",
+    "steps": [
+     "Sign in again; open both pages."
+    ],
+    "exp": "Same content."
+   }
+  ]
+ },
+ {
+  "id": "G-02",
+  "name": "Collaboration tools (Slack / Teams)",
+  "prio": "P3",
+  "area": "Integrations",
+  "wave": "5",
+  "day": 16,
+  "status": "Built",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: NDC uses Zoho Cliq, which TAVI does not offer. Needs a test Slack/Teams workspace; skip if none.",
+  "cases": [
+   {
+    "tc": "G-02-01",
+    "type": "functional",
+    "title": "Connect Slack",
+    "steps": [
+     "Connect a test workspace."
+    ],
+    "exp": "Connected."
+   },
+   {
+    "tc": "G-02-02",
+    "type": "integration",
+    "title": "Notify channel from workflow",
+    "steps": [
+     "Workflow action Slack message on QA ticket create."
+    ],
+    "exp": "Message arrives."
+   },
+   {
+    "tc": "G-02-03",
+    "type": "negative",
+    "title": "Revoked token",
+    "steps": [
+     "Revoke in Slack; trigger."
+    ],
+    "exp": "Failure logged."
+   },
+   {
+    "tc": "G-02-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Connected."
+   },
+   {
+    "tc": "G-02-05",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "G-02-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic text in message."
+    ],
+    "exp": "Readable."
+   },
+   {
+    "tc": "G-02-07",
+    "type": "edge",
+    "title": "Long Arabic message with link",
+    "steps": [
+     "Trigger a message with 1,000 Arabic characters and a ticket link."
+    ],
+    "exp": "Arrives in full; link opens the ticket."
+   }
+  ]
+ },
+ {
+  "id": "G-03",
+  "name": "API integration config page",
+  "prio": "P3",
+  "area": "Integrations",
+  "wave": "5",
+  "day": 16,
+  "status": "Partly",
+  "partly": "",
+  "pre": "",
+  "extra": "",
+  "why": "Lowered: link opens HQ; only confirm state.",
+  "cases": [
+   {
+    "tc": "G-03-01",
+    "type": "functional",
+    "title": "Link opens a page",
+    "steps": [
+     "Settings › API Integration."
+    ],
+    "exp": "Real page (not HQ) — record."
+   },
+   {
+    "tc": "G-03-02",
+    "type": "edge",
+    "title": "Direct URL",
+    "steps": [
+     "Open /settings/integration-config."
+    ],
+    "exp": "Same result."
+   },
+   {
+    "tc": "G-03-03",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "G-03-04",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "Label Arabic."
+   },
+   {
+    "tc": "G-03-05",
+    "type": "negative",
+    "title": "Unknown sub-path",
+    "steps": [
+     "Open /settings/integration-config/xyz."
+    ],
+    "exp": "Not found page, no blank screen."
+   },
+   {
+    "tc": "G-03-06",
+    "type": "persistence",
+    "title": "Same after sign-in",
+    "steps": [
+     "Sign in again; click the link."
+    ],
+    "exp": "Same behaviour as G-03-01."
+   }
+  ]
+ },
+ {
+  "id": "D-05",
+  "name": "Sandbox",
+  "prio": "P3",
+  "area": "Data",
+  "wave": "5",
+  "day": 16,
+  "status": "Partly",
+  "partly": "",
+  "pre": "",
+  "extra": "---",
+  "why": "Lowered: not needed for go-live; create never finishes (NDC-2514).",
+  "cases": [
+   {
+    "tc": "D-05-01",
+    "type": "functional",
+    "title": "Page loads",
+    "steps": [
+     "Settings › Data › Sandboxes."
+    ],
+    "exp": "No ERROR."
+   },
+   {
+    "tc": "D-05-02",
+    "type": "functional",
+    "title": "Create sandbox",
+    "steps": [
+     "Create \"QA MAN sandbox\"."
+    ],
+    "exp": "Finishes within 30 min (NDC-2514)."
+   },
+   {
+    "tc": "D-05-03",
+    "type": "negative",
+    "title": "Empty name",
+    "steps": [
+     "Save empty."
+    ],
+    "exp": "Refused."
+   },
+   {
+    "tc": "D-05-04",
+    "type": "persistence",
+    "title": "Kept",
+    "steps": [
+     "Reload."
+    ],
+    "exp": "Listed."
+   },
+   {
+    "tc": "D-05-05",
+    "type": "permission",
+    "title": "Agent no access",
+    "steps": [
+     "Agent C."
+    ],
+    "exp": "No access."
+   },
+   {
+    "tc": "D-05-06",
+    "type": "ui-rtl",
+    "title": "Arabic",
+    "steps": [
+     "Arabic."
+    ],
+    "exp": "RTL."
+   },
+   {
+    "tc": "D-05-07",
+    "type": "edge",
+    "title": "Two sandboxes at once",
+    "steps": [
+     "Start a second sandbox while one is pending."
+    ],
+    "exp": "Refused with a clear message, or both finish."
+   }
+  ]
+ }
+]

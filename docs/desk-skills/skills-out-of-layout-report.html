@@ -1,0 +1,212 @@
+<title>Skills Out of Layout</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600&display=swap">
+<style>
+/* Layout: one reading column; a status strip; two comparison tables; evidence figures at full column width */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5a6475; --line:#dde1e8;
+  --accent:#2f5bd3; --accent-soft:#e8eefc;
+  --ok:#1f7a4d; --ok-soft:#e3f3ea; --gap:#b4471f; --gap-soft:#fbeae2; --ask:#8a6a00; --ask-soft:#fbf3d6;
+  --display:"Fraunces",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --fg:#e4e8ef; --muted:#9aa4b5; --line:#2c3440;
+  --accent:#8aa8ff; --accent-soft:#1f2a44;
+  --ok:#6fd0a0; --ok-soft:#173326; --gap:#ff9a73; --gap-soft:#3a2018; --ask:#e8c55a; --ask-soft:#352c10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --fg:#e4e8ef; --muted:#9aa4b5; --line:#2c3440;
+  --accent:#8aa8ff; --accent-soft:#1f2a44;
+  --ok:#6fd0a0; --ok-soft:#173326; --gap:#ff9a73; --gap-soft:#3a2018; --ask:#e8c55a; --ask-soft:#352c10; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,4.5vw,40px);line-height:1.15;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:23px;margin:0 0 4px;text-wrap:balance}
+h3{font-size:16px;font-weight:600;margin:0}
+p{margin:0;max-width:72ch}
+.lede{color:var(--muted);font-size:16px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.meta div{background:var(--surface);padding:10px 14px;min-width:0}
+.meta dt{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.meta dd{margin:0;font-family:var(--mono);font-size:13px;overflow-wrap:anywhere}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.stat{padding:14px 16px;border-radius:6px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px}
+.s-ok{background:var(--ok-soft);color:var(--ok)} .s-gap{background:var(--gap-soft);color:var(--gap)} .s-ask{background:var(--ask-soft);color:var(--ask)} .s-n{background:var(--accent-soft);color:var(--accent)}
+section{display:flex;flex-direction:column;gap:14px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--mono);color:var(--muted);width:36px;font-variant-numeric:tabular-nums}
+td.fn{font-weight:600;width:22%}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.p-seen{background:var(--ok-soft);color:var(--ok)} .p-code{background:var(--accent-soft);color:var(--accent)} .p-docs{background:var(--ask-soft);color:var(--ask)} .p-gap{background:var(--gap-soft);color:var(--gap)}
+code{font-family:var(--mono);font-size:.88em;background:var(--accent-soft);color:var(--fg);padding:0 4px;border-radius:3px;overflow-wrap:anywhere}
+.qs{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.qs li{padding:12px 14px;border-left:3px solid var(--ask);background:var(--surface);border-radius:0 6px 6px 0}
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figure img{border:1px solid var(--line);border-radius:6px;display:block;width:100%;height:auto}
+figcaption{font-size:13px;color:var(--muted)}
+.figs{display:flex;flex-direction:column;gap:28px}
+ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.note{font-size:13px;color:var(--muted)}
+a{color:var(--accent)}
+.ticket{border:1px solid var(--line);border-radius:6px;background:var(--surface);overflow:hidden}
+.ticket-h{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.ticket-h .tt{font-size:19px;font-weight:600}
+.ticket-b{padding:6px 18px 18px;max-width:none}
+.ticket-b h2{font-family:var(--body);font-size:16px;margin:18px 0 6px}
+.ticket-b ul,.ticket-b ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.ticket-b p{max-width:none}
+.att{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.att li{border:1px solid var(--line);border-radius:6px;padding:8px 12px;background:var(--surface);font-family:var(--mono);font-size:12.5px;overflow-wrap:anywhere}
+.att li span{display:block;font-family:var(--body);font-size:12px;color:var(--muted)}
+</style>
+
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">TAVI Desk · Skills · Plane draft · 11 Nov 2026</div>
+  <h1>Take Skills out of the Tickets layout</h1>
+  <p class="lede">Skills is a normal field in the Tickets layout today. In Zoho Desk it isn't. This draft asks to remove the field and manage skills only from Settings → Skills and the ticket's Skills tab.</p>
+  <dl class="meta">
+    <div><dt>Project</dt><dd>NDC</dd></div>
+    <div><dt>Module · Label</dt><dd>Desk · Assignment Rules</dd></div>
+    <div><dt>Type</dt><dd>Bug or Improvement (to decide)</dd></div>
+    <div><dt>Priority (suggested)</dt><dd>Medium</dd></div>
+    <div><dt>Relates to</dt><dd>NDC-2752 · NDC-2827 · NDC-2821 · NDC-2275</dd></div>
+    <div><dt>Status</dt><dd>Draft, not filed</dd></div>
+  </dl>
+</header>
+
+<div class="strip">
+  <div class="stat s-gap"><b>1</b><span>field to remove: Tickets layout "Skills"</span></div>
+  <div class="stat s-ok"><b>2</b><span>places kept: Settings → Skills, ticket Skills tab</span></div>
+  <div class="stat s-n"><b>11</b><span>acceptance criteria (2 to confirm vs Zoho)</span></div>
+  <div class="stat s-ask"><b>3</b><span>comparison images still to make</span></div>
+</div>
+
+<section>
+  <h2>Where skills can be set</h2>
+  <p>The same ticket data can be changed from two places in TAVI. Only one of them checks the Skills rules.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Place</th><th>TAVI now</th><th>Zoho Desk</th><th>After this change</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1</td><td class="fn">Tickets layout editor</td><td><span class="pill p-gap">field</span> Skills, multi-select, order 5 in Ticket Information; can be moved, made required, deleted</td><td>Not a layout field</td><td><span class="pill p-gap">removed</span> not in sections or the field list</td></tr>
+      <tr><td class="n">2</td><td class="fn">New / Edit Ticket, quick create</td><td><span class="pill p-gap">shown</span> agents pick any skill by hand</td><td>Not on the form</td><td><span class="pill p-gap">removed</span></td></tr>
+      <tr><td class="n">3</td><td class="fn">Web form, help-center form</td><td>Can be offered as a layout field</td><td>Not offered</td><td><span class="pill p-gap">removed</span></td></tr>
+      <tr><td class="n">4</td><td class="fn">Settings → Skills</td><td><span class="pill p-seen">built</span> under Assignment Rules → Skills: skills, types, criteria, preferences</td><td>Setup → Customization → Skills (per Zoho help)</td><td><span class="pill p-seen">kept</span> no change</td></tr>
+      <tr><td class="n">5</td><td class="fn">Ticket page → Skills tab</td><td><span class="pill p-seen">built</span> Associate Skills; department + active skills only (NDC-2827)</td><td>Skills section on the ticket</td><td><span class="pill p-seen">kept</span> the only manual place</td></tr>
+      <tr><td class="n">6</td><td class="fn">Automatic paths</td><td><span class="pill p-seen">built</span> criteria, workflow skill actions, Assign by Skills</td><td>Same</td><td><span class="pill p-seen">kept</span></td></tr>
+      <tr><td class="n">7</td><td class="fn">Ticket API</td><td>Plain multi-select <code>skills</code>, no order</td><td><code>entitySkills</code>: up to 10 skill IDs, ordered (first = highest priority)</td><td><span class="pill p-code">keep + fix</span> keep in API, add limit and order</td></tr>
+      <tr><td class="n">8</td><td class="fn">Ticket list view filter</td><td>Layout field can be filtered</td><td><span class="pill p-docs">to confirm</span></td><td>Follow Zoho once checked</td></tr>
+      <tr><td class="n">9</td><td class="fn">Field update (workflow, blueprint), layout rules, import mapping</td><td>Skills can be offered as a plain field</td><td>Not a plain field</td><td><span class="pill p-gap">removed</span> skill workflow actions stay</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Ticket draft</h2>
+  <article class="ticket">
+    <div class="ticket-h">
+      <div class="eyebrow">Title</div>
+      <div class="tt">Desk Tickets: remove "Skills" from the module layout — manage ticket skills only from Settings → Skills and the ticket's Skills tab (like Zoho Desk)</div>
+    </div>
+    <div class="ticket-b">
+      <h2>Summary</h2>
+      <p>In TAVI Desk, <b>Skills</b> is a normal field in the Tickets layout. It shows on the New Ticket and Edit Ticket forms and in the layout editor like any other field. In Zoho Desk, skills are not a layout field: Zoho's list of 17 standard ticket fields has no Skills. They are set up on the Setup Skills page (Zoho help: Setup → Customization → Skills) and reach a ticket in three ways: automatically by skill criteria, manually from the Skills section on the ticket page ("Associate Skills"), or by a workflow Add Skills action.</p>
+      <p>Having Skills in two places is confusing, and the layout field lets users pick skills that don't follow the Skills rules (department, active state, skill type).</p>
+
+      <h2>Current behaviour (TAVI, NDC-Staging)</h2>
+      <ul>
+        <li>Tickets → Standard layout → section <b>Ticket Information</b> has the field <b>Skills</b> (<code>skills</code>, multi-select, order 5).</li>
+        <li>It is a plain field: not a system field, can be deleted, moved to other sections or made required.</li>
+        <li>It shows on the New Ticket and Edit Ticket forms, so agents set skills by hand there.</li>
+        <li>The ticket page also has the <b>Skills</b> tab (NDC-2827) with Associate Skills, which checks the ticket's department and active skills.</li>
+        <li>So the same data can be changed from two places with different rules.</li>
+      </ul>
+
+      <h2>Expected behaviour (Zoho Desk)</h2>
+      <ol>
+        <li><b>No Skills field in the layout.</b> Not in the layout editor, New Ticket, Edit Ticket, or the portal / web form.</li>
+        <li><b>The Setup Skills page stays the place to manage skills:</b> skill list per department, skill types, criteria, auto-add preferences, Active / Inactive.</li>
+        <li><b>The ticket Skills tab stays the place to set skills on one ticket:</b> associate and remove, only active skills of the ticket's department.</li>
+        <li><b>Automatic paths keep working:</b> skill criteria on create and update, workflow actions (Add / Remove / Recalculate Ticket Skills, Reassign by Skills), Assign by Skills in the ticket ⋯ menu.</li>
+        <li>Skills stay <b>visible</b> on the ticket Skills tab. Whether Zoho also offers Skills as a list-view filter is <b>to confirm</b>.</li>
+        <li><b>The ticket API still takes skills:</b> Zoho's <code>entitySkills</code> holds up to 10 skill IDs, in order (first = highest priority) for skill-based assignment.</li>
+      </ol>
+
+      <h2>Requested change</h2>
+      <ul>
+        <li>Remove the <code>skills</code> field from all Tickets layouts (Standard and custom), and stop it being added back from the field list.</li>
+        <li>Keep the stored skills data. Only the layout field goes. Existing tickets keep their skills and show them in the Skills tab.</li>
+        <li>Hide Skills from New Ticket, Edit Ticket, quick create, web forms and the help-center ticket form.</li>
+        <li>Keep skills in the ticket API (like Zoho <code>entitySkills</code>): up to 10 skill IDs, kept in order, with the same rules as the Skills tab. Today's multi-select keeps no order, which is a gap to close with this change.</li>
+        <li>Check other places that read layout fields: list columns and filters, import mapping, export, blueprint and workflow Field update, validation rules, layout rules.</li>
+      </ul>
+
+      <h2>Acceptance criteria</h2>
+      <ol>
+        <li>Tickets layout editor (Standard and custom): no Skills field in sections or in the available fields list.</li>
+        <li>New Ticket, Edit Ticket and quick create: no Skills input.</li>
+        <li>Web form builder and help-center form: Skills not offered.</li>
+        <li>Settings → Assignment Rules → Skills: unchanged, everything still works.</li>
+        <li>Ticket → Skills tab: associate and remove work; only active skills of the ticket's department are offered.</li>
+        <li>A ticket whose skills were set through the old layout field still shows them in the Skills tab.</li>
+        <li>Skill criteria, workflow skill actions and Assign by Skills still add skills and assign by them.</li>
+        <li>Workflow / blueprint Field update and layout rules don't list Skills as a normal field.</li>
+        <li>Ticket API accepts and returns up to 10 skills per ticket, in order; an 11th is refused.</li>
+        <li><i>To confirm vs Zoho:</i> import mapping doesn't offer Skills as a plain field.</li>
+        <li><i>To confirm vs Zoho:</i> ticket list view filter by Skills.</li>
+      </ol>
+
+      <h2>Steps to see the current state</h2>
+      <ol>
+        <li>Sign in to TAVI Desk (NDC-Staging) as owner.</li>
+        <li>Setup → Customization → Modules → Tickets → Layouts → Standard.</li>
+        <li>Section Ticket Information: field <b>Skills</b> is listed (multi-select) and can be moved, made required or deleted.</li>
+        <li>Open New Ticket: the Skills field is on the form.</li>
+        <li>Open any ticket → side rail Skills tab: Associate Skills is also there.</li>
+      </ol>
+
+      <h2>Evidence</h2>
+      <p>Standard layout config: <code>apiName: "skills"</code>, <code>datatypeKey: "multi_select"</code>, <code>isSystemField: false</code>, <code>isDeletable: true</code>, <code>fieldOrder: 5</code> in section Ticket Information. Source: layout backup saved during retest round 15 (10 Nov 2026).</p>
+      <h2>Zoho references</h2>
+      <ul>
+        <li><a href="https://help.zoho.com/portal/en/kb/desk/customization/modules/articles/standard-modules-and-fields-zoho-desk">Standard Modules and Fields</a>: 17 ticket fields, no Skills.</li>
+        <li><a href="https://help.zoho.com/portal/en/kb/desk/automation/assignment-rules-notification/articles/assigning-tickets-using-workflows-assignment-rule">Assigning Tickets using Workflow and Assignment Rules</a>: Setup → Customization → Skills, auto-add preference, manual or workflow.</li>
+        <li><a href="https://help.zoho.com/portal/en/kb/desk/faqs/automation/articles/faqs-workflow-rules">FAQs: Workflow Rules</a>: Add Skills action.</li>
+        <li><a href="https://desk.zoho.com/DeskAPIDocument#Tickets">Zoho Desk API, Tickets</a>: <code>entitySkills</code>, max 10, ordered.</li>
+        <li>Ticket Skills panel ("Associate Skills"): checked when NDC-2827 was filed, 9 Nov 2026.</li>
+      </ul>
+    </div>
+  </article>
+</section>
+
+<section>
+  <h2>Images to add before filing</h2>
+  <ul class="att">
+    <li>01-layout-skills-vs-zoho.png<span>TAVI layout editor with Skills highlighted vs Zoho layout editor without it</span></li>
+    <li>02-new-ticket-skills-vs-zoho.png<span>TAVI New Ticket form with Skills vs Zoho New Ticket form</span></li>
+    <li>03-ticket-skills-tab-vs-zoho.png<span>TAVI ticket Skills tab vs Zoho ticket Skills section (what stays)</span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Open before filing</h2>
+  <ul class="qs">
+    <li>Zoho side is now backed by Zoho's help and API docs (see references). Still to check live in Zoho (read-only): Settings path on screen, list-view Skills filter, import behaviour.</li>
+    <li>Type (Bug or Improvement), state, assignees and sprint are needed to file.</li>
+    <li>The three comparison images above aren't made yet.</li>
+  </ul>
+</section>
+
+</div>
+</body>

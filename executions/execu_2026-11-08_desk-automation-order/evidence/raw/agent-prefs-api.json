@@ -1,0 +1,38 @@
+{
+ "when": "2026-11-10T11:42:22.032Z",
+ "profile": [
+  {
+   "profile_id": "44444444-4444-4444-4444-444444444402",
+   "name": "Desk Agent",
+   "parent_profile_id": "44444444-4444-4444-4444-444444444404",
+   "rank": 100,
+   "is_tenant_wide": false,
+   "is_system": true,
+   "scope_id": "d46e0424-fd6f-914e-b4cf-f1597f7cbdcd"
+  }
+ ],
+ "hasAssignPerm": [
+  "desk:ticket:assign_unassigned",
+  "desk:ticket:view_unassigned"
+ ],
+ "rules": {
+  "req": "GET /api/v1/desk/assignment-rules?type=round_robin&department_id=…",
+  "status": 403,
+  "body": "{\"success\":false,\"data\":null,\"error\":{\"code\":\"forbidden\",\"message\":\"Missing required permission 'desk:assignment:manage'.\"},\"meta\":null}"
+ },
+ "prefs": {
+  "req": "GET /api/v1/desk/departments/{QA AS6 Dept A}/round-robin-preferences",
+  "status": 200,
+  "body": "{\"success\":true,\"data\":{\"assign_to_offline_agents\":false,\"department_threshold_enabled\":false,\"department_threshold\":40,\"agent_threshold_enabled\":false,\"agent_thresholds\":[],\"assign_backlogs\":false,\"backlog_limit\":10,\"backlog_order\":\"created_time\",\"assign_on_closure\":false,\"incoming_mode\":\"immediate\"},\"error\":null,\"meta\":null}"
+ },
+ "prefsWrite": {
+  "req": "PUT same (empty body)",
+  "status": 403,
+  "body": "{\"success\":false,\"data\":null,\"error\":{\"code\":\"forbidden\",\"message\":\"Missing required permission 'desk:assignment:manage'.\"},\"meta\":null}"
+ },
+ "teamAssignment": {
+  "req": "GET /api/v1/desk/departments/{…}/team-assignment",
+  "status": 200,
+  "body": "{\"success\":true,\"data\":{\"enabled\":true},\"error\":null,\"meta\":null}"
+ }
+}

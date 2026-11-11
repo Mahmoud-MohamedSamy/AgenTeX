@@ -1,0 +1,14 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15';
+const LED=m=>fs.appendFileSync(RUN+'/ledger-crm.md','- '+new Date().toISOString().slice(0,19)+' '+m+'\n');
+const L='841043e1-c078-41f9-8d6e-dfd61bee45c3'; const U1='d23fb4e0-248d-41f6-af60-d28885a7007e';
+const enc=v=>({kind:'string',value:String(v)}); const body=vals=>({data:Object.entries(vals).map(([f,v])=>({field:f,value:enc(v)}))});
+const out={};
+let r = await api('POST','/modules/'+L+'/records', body({first_name:'QA RT15', last_name:'1948 lead', owner:U1}));
+const lead = r.j&&r.j.data&&r.j.data.id; out.lead = r.s+' '+lead+' '+(r.s>=300?r.t.slice(0,300):''); if (lead) LED('CRM lead "QA RT15 1948 lead" (owner Mahmoud Samy) '+lead);
+const g = await api('GET','/timeline/admin/visibility-policy'); const v = g.j.data.version; out.before = JSON.stringify(g.j.data.policy)+' v'+v;
+fs.writeFileSync(RUN+'/out/1948-policy-backup.json', JSON.stringify(g.j.data));
+r = await api('PUT','/timeline/admin/visibility-policy',{policy:{rules:[],default_decision:'Deny'}, version:v}); out.put = r.s+' '+r.t.slice(0,300);
+if (r.s<300) LED('Timeline Visibility policy default Allow → Deny (TEST, restore after) v'+v);
+const g2 = await api('GET','/timeline/admin/visibility-policy'); out.after = JSON.stringify(g2.j.data.policy)+' v'+g2.j.data.version;
+fs.writeFileSync(RUN+'/out/1948.json', JSON.stringify({lead},null,1));
+return out;

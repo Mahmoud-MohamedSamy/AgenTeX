@@ -1,0 +1,6 @@
+const S=JSON.parse(fs.readFileSync('../nt10r.json','utf8'));const o=JSON.parse(fs.readFileSync('../nt10h-orig.json','utf8'));const M='88e8ea44-1658-4df3-9930-d0902b91073d',C='43004ce2-577f-4eda-b00a-0750fe40c3d4';const R={};
+const cur=(await api('GET','/desk/happiness/settings')).j.data;const ro=['expiry_days_min','expiry_days_max','question_max_length','public_page_configured','supervisors_max','closed_email_subject_max','closed_email_body_max','resend_after_hours_max','option_icons','option_label_max','option_text_max','option_image_max_bytes'];
+const body={...o,row_version:cur.row_version};for(const k of ro)delete body[k];R.put=(await api('PUT','/desk/happiness/settings',body)).s;
+const now=(await api('GET','/desk/happiness/settings')).j.data;const diff=Object.keys(o).filter(k=>k!=='row_version'&&JSON.stringify(o[k])!==JSON.stringify(now[k]));R.diffFromOriginal=diff;
+R.ticket=(await api('DELETE','/modules/'+M+'/records/'+S.ticket)).s;R.contact=(await api('DELETE','/modules/'+C+'/records/'+S.contact)).s;
+fs.appendFileSync('../ledger.md','- '+new Date().toISOString().slice(0,19)+' NT-10 cleanup: happiness settings restored '+R.put+' (diff '+JSON.stringify(diff)+'); ticket #'+S.num+' '+R.ticket+', contact '+R.contact+'.\n');return R;

@@ -1,0 +1,6 @@
+const L=require('./lib');const names=['QA MAN bulk 1','QA MAN bulk 2','QA MAN bulk 3 عربي'];
+module.exports=async()=>{const R={};const toast=async()=>{let s='';for(let i=0;i<15&&!s;i++){await pg.waitForTimeout(400);s=await pg.evaluate(()=>[...document.querySelectorAll('[data-sonner-toast],[role=alert]')].map(e=>e.innerText.trim()).filter(Boolean).join(' | '));}return s;};
+ await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+'/views/all/tickets',{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/QA MAN bulk 1/.test(document.body.innerText),null,{timeout:120000}).catch(()=>{});await pg.waitForTimeout(2500);
+ for(const n of names){await pg.locator('input[type=checkbox][aria-label$="'+n+'"]').first().check({force:true}).catch(()=>{});await pg.waitForTimeout(300);}
+ const b=process.env.BTN||'Assign To';await pg.getByRole('button',{name:new RegExp('^'+b+'$')}).first().click();await pg.waitForTimeout(2500);await L.shot('t31-ui-'+b.replace(/\W/g,''));
+ R.popup=await pg.evaluate(()=>{const ps=[...document.querySelectorAll('[role=dialog],[data-radix-popper-content-wrapper],[role=menu],[role=listbox]')];return ps.map(p=>p.innerText.replace(/\s+/g,' ').slice(0,300));});return R;};

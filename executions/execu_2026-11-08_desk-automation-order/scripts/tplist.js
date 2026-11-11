@@ -1,0 +1,2 @@
+const r=await api('GET','/desk/email-templates?per_page=200');const d=r.j?.data;const L=Array.isArray(d)?d:(d?.items||d?.templates||d?.data||Object.values(d||{}).find(Array.isArray)||[]);
+const want=/ticket_assigned|comment_added|team/;return {s:r.s,dataKeys:d&&!Array.isArray(d)?Object.keys(d):'array',total:L.length,keys:L[0]?Object.keys(L[0]).join(','):'',hits:L.filter(t=>want.test(t.use_case||'')).map(t=>[t.id?.slice(0,8),t.name,t.use_case,t.notification_type,t.is_system??t.system,t.module].join(' | '))};

@@ -1,0 +1,22 @@
+{"out":"NDC-2806-retest-PARTIAL.png","ticket":"NDC-2806","title":"Global Sets: shared pick list values (6 of 8 scope items met; replace of a value used in a view is blocked, Used In skips reports)","verdict":"PARTIAL",
+"env":"NDC-Staging · CRM Setup › Modules and Fields › Global Sets · owner · QA RT15 sets, 16 Leads fields, 3 leads, 1 view","date":"10 Nov 2026",
+"panels":[
+{"img":"2806-ui-list.png","caption":"Global Sets list: values / unused / used in / last modified; edit, clone (Colors_Cloned, _Cloned_2), delete","crop":[268,110,1332,360],
+ "boxes":[{"b":[288,262,1580,306],"n":1,"kind":"PASS"},{"b":[288,314,1580,412],"n":2,"kind":"PASS"}]},
+{"img":"2806-assoc-map.png","w":672,"h":516,"caption":"Field › Associate with global set: values, record counts, Map to / Move to unused, View associated places","crop":[0,0,672,516],
+ "boxes":[{"b":[20,190,652,392],"n":3,"kind":"PASS"}]},
+{"img":"2806-api-card.png","full":true,"caption":"API checks: replace blocked when a view uses the value (4); Used In does not track reports (5); safeguards (6)","crop":[0,0,1600,480],
+ "boxes":[{"b":[36,193,1564,251],"n":4,"kind":"FAIL"},{"b":[36,261,1564,298],"n":5,"kind":"FAIL"},{"b":[36,308,1564,413],"n":6,"kind":"PASS"}]},
+{"img":"2806-ui-usedin.png","caption":"Used In dialog: \"Reports that filter on these fields are not listed here yet.\"","crop":[464,321,672,258],
+ "boxes":[{"b":[484,480,800,502],"n":5,"kind":"FAIL"}]}
+],
+"rows":[
+[1,"Create a set from scratch / from a field / by clone","Set created, values and colours shared","Created (UI + API 201); convert field → \"Regions\"; clone → _Cloned, _Cloned_2","PASS"],
+[2,"Edit values (add, rename, colour, remove/restore, replace unused)","Linked fields follow the set","Field A values/colours follow; Green → Red moved the lead; removed → Unused, restore works; stale save 409","PASS"],
+[3,"Associate an existing pick list","Map values, see record counts","Popup with records + Map to / Move to unused; Yellow → Blue updated the lead","PASS"],
+[4,"Replace a value used by views/workflows/criteria","Change propagates to dependent places","409 GLOBAL_SET_VALUE_IN_USE \"Change or remove it in those views first\"","FAIL"],
+[5,"Used In shows every place (incl. reports)","Fields, views, workflows, reports","Fields + views only; reports \"not listed here yet\" (not_tracked: reports)","FAIL"],
+[6,"Safeguards (16 fields, 50 values on restore, locked/system fields)","Refused with a clear message","409 TOO_MANY_FIELDS; 422 \"At most 50\"; 422 FIELD_LOCKED / datatype; duplicate 409/422","PASS"],
+[7,"UI: list + edit dialog","Values, unused, used in, sort, reorder, bulk add","All present and working","PASS"],
+[8,"Permissions + audit","view/manage permissions, audit events","crm:global_set:view/manage; created/updated/deleted + value events","PASS"]
+]}

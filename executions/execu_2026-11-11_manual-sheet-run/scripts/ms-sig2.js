@@ -1,0 +1,1 @@
+module.exports=async()=>{const R={};for(const p of ['/mail/signatures','/mail/signatures/company','/mail/company-signature','/mail/signature-settings','/mail/settings','/iam/tenant/signature','/mail/signatures/settings']){const r=await api('GET',p);R[p]=r.s+' '+r.t.slice(0,250);}return R;};

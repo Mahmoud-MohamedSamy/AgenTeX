@@ -1,0 +1,17 @@
+// T-01-06 after a fresh sign-in: starred view, last sort, table view kept; T-01-09 Arabic list + filter.
+const L=require('./lib');const vid='aa86e48f-0c26-419c-ad79-62910f7b8aba';
+module.exports=async()=>{const R={};let step='';
+ const rows=async()=>pg.evaluate(()=>[...document.querySelectorAll('tbody tr')].map(r=>r.innerText.replace(/\s+/g,' ').trim()).filter(Boolean).map(t=>(t.match(/QA MAN view [A-E]/)||['?'])[0].slice(-1)));
+ try{
+ step='06';await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+'/views/all/tickets',{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/STARRED VIEWS/i.test(document.body.innerText),null,{timeout:120000}).catch(()=>{});await pg.waitForTimeout(2500);
+ R.starred=await pg.evaluate(()=>{const s=[...document.querySelectorAll('nav, aside')].map(n=>n.innerText).join(' ');const i=s.indexOf('STARRED VIEWS');return s.slice(i,i+80).replace(/\s+/g,' ');});
+ await pg.goto(H+'/views/custom:'+vid,{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/QA MAN view \(\d+\)/.test(document.body.innerText),null,{timeout:90000}).catch(()=>{});await pg.waitForTimeout(4000);
+ R.mode=(await pg.getByRole('button',{name:/Classic View|Compact View|Table View/}).first().innerText().catch(()=>'')).trim();R.headers=await pg.evaluate(()=>[...document.querySelectorAll('th')].map(t=>t.innerText.trim()).filter(Boolean));R.order=await rows();await L.shot('t01-06-after-signin');
+ step='09';await pg.getByRole('button',{name:/^EN$/}).first().click();await pg.waitForTimeout(1200);await pg.locator('[role=menuitem],[role=menuitemradio],[role=option],button').filter({hasText:'العربية'}).first().click();await pg.waitForTimeout(6000);
+ await pg.goto(H+'/views/custom:'+vid,{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/QA MAN view/.test(document.body.innerText),null,{timeout:90000}).catch(()=>{});await pg.waitForTimeout(4000);
+ R.ar={dir:await pg.evaluate(()=>document.documentElement.dir),side:await pg.evaluate(()=>[...document.querySelectorAll('nav, aside')].map(n=>n.innerText).join(' ').replace(/\s+/g,' ').slice(0,200)),headers:await pg.evaluate(()=>[...document.querySelectorAll('th')].map(t=>t.innerText.trim()).filter(Boolean)),thX:await pg.evaluate(()=>{const t=[...document.querySelectorAll('th')].filter(x=>x.innerText.trim());return t.map(x=>Math.round(x.getBoundingClientRect().x)).slice(0,4);})};await L.shot('t01-09-ar-list');
+ const fb=pg.locator('button[aria-label]').filter({hasText:''}).locator('xpath=.').first();
+ const flt=await pg.evaluate(()=>[...document.querySelectorAll('main button')].map(b=>b.getAttribute('aria-label')).filter(Boolean).slice(0,8));R.ar.btns=flt;
+ const f2=pg.locator('main button').nth(2);await f2.click().catch(()=>{});await pg.waitForTimeout(2000);R.ar.filterPanel=(await pg.evaluate(()=>{const p=document.querySelector('[role=dialog],[data-radix-popper-content-wrapper],aside[aria-label]');return p?p.innerText.replace(/\s+/g,' ').slice(0,250):null;}));await L.shot('t01-09-ar-filter');await pg.keyboard.press('Escape');
+ const back=pg.getByRole('button',{name:/^AR$/}).first();if(await back.count()){await back.click();await pg.waitForTimeout(1200);await pg.locator('[role=menuitem],[role=menuitemradio],[role=option],button').filter({hasText:'English'}).first().click();await pg.waitForTimeout(4000);}
+ }catch(x){R.err=step+': '+String(x.message).slice(0,160);await L.shot('t01-err');}return R;};

@@ -1,0 +1,4 @@
+async (page) => page.evaluate(async () => { const __z = async (m, u, body) => { const c = (document.cookie.match(/crmcsr=([^;]+)/)||[])[1]||""; const r = await fetch(u,{method:m,credentials:"include",headers:{orgId:"944875504","Content-Type":"application/json","X-ZCSRF-TOKEN":"crmcsrfparam="+c},body:body?JSON.stringify(body):undefined}); const t = await r.text(); let j=null; try{j=JSON.parse(t)}catch(e){} return {s:r.status,j,t:t.slice(0,600)}; };
+const a = await __z('GET','/api/v1/recycleBin?limit=100'); const t = await __z('GET','/api/v1/tickets/1475109000000556106'); const c = await __z('GET','/api/v1/contacts/1475109000000541087');
+return { bin: (a.j?.data||[]).map(x=>x.type+': '+x.displayName), ticket169: t.s, contact: c.s };
+ })

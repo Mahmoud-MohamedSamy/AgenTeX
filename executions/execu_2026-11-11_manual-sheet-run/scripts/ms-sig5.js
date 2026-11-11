@@ -1,0 +1,1 @@
+module.exports=async()=>{const r=await api('GET','/settings/hub?app=desk');const s=r.t;const hits=[];const re=/[^{}]{0,200}[Ss]ignature[^{}]{0,200}/g;let m;while((m=re.exec(s))&&hits.length<6)hits.push(m[0]);return {s:r.s,len:s.length,hits};};

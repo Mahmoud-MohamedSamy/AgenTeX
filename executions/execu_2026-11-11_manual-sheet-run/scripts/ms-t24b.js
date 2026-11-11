@@ -1,0 +1,1 @@
+module.exports=async()=>{const {id}=JSON.parse(require('fs').readFileSync(OUT+'/t24.json'));const r=await api('GET','/desk/tickets/'+id+'/attachments');return {files:arr(r.j&&r.j.data).map(f=>f.file_name+' '+f.size_bytes+' '+f.content_type)};};

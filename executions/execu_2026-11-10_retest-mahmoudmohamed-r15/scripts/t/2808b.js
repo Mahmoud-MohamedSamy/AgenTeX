@@ -1,0 +1,13 @@
+await page.goto(H + '/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records/new', { waitUntil: 'domcontentloaded' });
+for (let i=0;i<40;i++){ await sleep(2000); if ((await page.$$('input,textarea')).length > 4) break; } await sleep(2000);
+const sel = page.locator('select').filter({ has: page.locator('option', { hasText: 'Standard Template' }) }).first();
+const val = async l => (await page.getByText(l, {exact:true}).first().locator('xpath=following::button[1]').innerText()).replace(/\s+/g,' ').trim();
+const pickField = async (label, opt) => { await page.getByText(label, {exact:true}).first().locator('xpath=following::button[1]').click(); await sleep(1200); await page.getByRole('option', {name: opt, exact:true}).first().click(); await sleep(800); };
+await pickField('Priority', 'High'); await pickField('Channel', 'Phone').catch(e=>log('chErr', String(e).slice(0,80)));
+const out = { manual: {Priority: await val('Priority'), Channel: await val('Channel')} };
+const byText = async re => { const v = await sel.evaluate((s, src) => { const r = new RegExp(src); const o=[...s.options].find(x=>r.test(x.text)); return o && o.value; }, re.source); await sel.selectOption(v); await sleep(2500); };
+await byText(/^test template/); out.afterTest = {Priority: await val('Priority'), Channel: await val('Channel'), Language: await val('Language')};
+await byText(/^Standard Template/); out.afterStandard = {Priority: await val('Priority'), Channel: await val('Channel'), Language: await val('Language')};
+await sel.selectOption(await sel.evaluate(s=>s.options[0].value)); await sleep(2500); out.afterNone = {Priority: await val('Priority'), Channel: await val('Channel'), Language: await val('Language')};
+await shot('2808-4-manual-values.png');
+return out;

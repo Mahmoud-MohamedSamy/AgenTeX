@@ -1,0 +1,111 @@
+{
+ "out": "NDC-2828-retest-PASS.png",
+ "ticket": "NDC-2828",
+ "title": "Users API: no longer capped at 200 — paging, totals and search work (201 users)",
+ "verdict": "PASS",
+ "env": "NDC-Staging · IAM /api/v1/iam/users · owner · tenant with 201 users (122 active + 79 invited) · read-only",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "2828-api-card.png",
+   "full": true,
+   "caption": "GET /iam/users: paging, totals, search and status filters; all 201 users reachable",
+   "crop": [
+    0,
+    0,
+    1600,
+    530
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      298
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      308,
+      1564,
+      366
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      376,
+      1564,
+      413
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      423,
+      1564,
+      507
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Page size + total count",
+   "Pages of the asked size with a real total",
+   "5 rows; total_count 201, total_pages 41, next_cursor",
+   "PASS"
+  ],
+  [
+   2,
+   "Next pages / limit-offset",
+   "Users after no. 200 reachable",
+   "page 2 = 100 rows; last page 1 row, more_records false; offset 5 → rows 6–10",
+   "PASS"
+  ],
+  [
+   3,
+   "Search and status filters",
+   "Filter the whole list, not the first 200",
+   "Mahmoud 15; invited 79; active 122; combined 3 of 11",
+   "PASS"
+  ],
+  [
+   4,
+   "Walk every page (page and cursor)",
+   "All users once",
+   "201 unique, 0 duplicates; user 201 found",
+   "PASS"
+  ],
+  [
+   5,
+   "Notes",
+   "—",
+   "No params → all 201 rows with meta null; per_page and q ignored; cursor=x → 400; every invited user has userId 00000000-…",
+   "INFO"
+  ]
+ ],
+ "method": "API"
+}

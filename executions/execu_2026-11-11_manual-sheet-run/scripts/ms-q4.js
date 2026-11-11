@@ -1,0 +1,1 @@
+module.exports=async()=>{const r=await api('GET','/modules/'+T+'/records?page=1&per_page=5&q='+encodeURIComponent('QA MAN two editors'));return {s:r.s,n:arr(r.j&&r.j.data).length,t:r.t.slice(0,200)};};

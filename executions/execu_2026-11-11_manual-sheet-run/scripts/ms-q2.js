@@ -1,0 +1,1 @@
+module.exports=async()=>{const o={};for(const id of (process.env.IDS2||'').split(',')){const r=fl((await api('GET','/modules/'+T+'/records/'+id)).j.data);o[id]={no:r.ticket_number,subject:r.subject,description:r.description,priority:r.priority,channel:r.channel,status:r.status,department:r.department};}return o;};

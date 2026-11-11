@@ -1,0 +1,560 @@
+<title>Desk Approvals Sample</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: spec banner on top, then a full TAVI Desk app frame (navy sidebar + content), then the numbered annotation list. Pins inside the frame map to notes and requirement IDs. */
+:root {
+  --bg: #f3f5f9; --surface: #ffffff; --surface-2: #f7f9fc; --line: #e3e8f0; --fg: #172033; --muted: #5d6a80;
+  --nav: #1c2740; --nav-fg: #c9d3e6; --nav-active: #2b3a5c;
+  --accent: #2563eb; --accent-soft: #e8f0ff;
+  --ok: #15803d; --ok-soft: #e7f6ec; --bad: #c62828; --bad-soft: #fdecec; --warn: #b45309; --warn-soft: #fff4e0;
+  --wf: #7c3aed; --wf-soft: #f2ecff; --bp: #0e7490; --bp-soft: #e3f5f8;
+  --pin: #e8590c; --pin-fg: #ffffff; --shadow: 0 10px 30px rgba(20,30,60,.16);
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1420; --surface: #171e2d; --surface-2: #1c2436; --line: #2a3448; --fg: #e6ebf5; --muted: #98a4ba;
+  --nav: #0b101b; --nav-fg: #aeb9cf; --nav-active: #1f2b45;
+  --accent: #5b8cff; --accent-soft: #1d2b4d;
+  --ok: #4ade80; --ok-soft: #12301f; --bad: #f87171; --bad-soft: #3a1717; --warn: #fbbf24; --warn-soft: #382a0c;
+  --wf: #b794ff; --wf-soft: #2a1f47; --bp: #4fd1e8; --bp-soft: #0f2f36;
+  --pin: #ff8a3d; --pin-fg: #1a0e04; --shadow: 0 10px 30px rgba(0,0,0,.5); color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1420; --surface: #171e2d; --surface-2: #1c2436; --line: #2a3448; --fg: #e6ebf5; --muted: #98a4ba;
+  --nav: #0b101b; --nav-fg: #aeb9cf; --nav-active: #1f2b45;
+  --accent: #5b8cff; --accent-soft: #1d2b4d;
+  --ok: #4ade80; --ok-soft: #12301f; --bad: #f87171; --bad-soft: #3a1717; --warn: #fbbf24; --warn-soft: #382a0c;
+  --wf: #b794ff; --wf-soft: #2a1f47; --bp: #4fd1e8; --bp-soft: #0f2f36;
+  --pin: #ff8a3d; --pin-fg: #1a0e04; --shadow: 0 10px 30px rgba(0,0,0,.5); color-scheme: dark; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 14px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 1440px; margin: 0 auto; display: grid; gap: 18px; }
+
+/* Spec banner */
+.spec { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; }
+.spec h1 { margin: 0; font-size: 20px; text-wrap: balance; }
+.spec p { margin: 4px 0 0; color: var(--muted); max-width: 70ch; }
+.spec-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+.toggle { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--surface); padding: 7px 12px; border-radius: 8px; }
+.toggle[aria-pressed="true"] { border-color: var(--pin); color: var(--pin); }
+.sample-tag { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--warn); background: var(--warn-soft); padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+
+/* App frame */
+.frame { display: grid; grid-template-columns: 236px minmax(0,1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); box-shadow: var(--shadow); position: relative; min-height: 760px; }
+.side { background: var(--nav); color: var(--nav-fg); padding: 14px 10px; display: flex; flex-direction: column; gap: 4px; }
+.brand { display: flex; align-items: center; gap: 10px; color: #fff; font-weight: 600; padding: 4px 8px 14px; }
+.brand i { width: 30px; height: 30px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; font-style: normal; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; font-weight: 500; position: relative; }
+.nav-item svg { width: 18px; height: 18px; flex: none; }
+.nav-item.active { background: var(--accent); color: #fff; }
+.nav-item .count { margin-left: auto; background: var(--bad); color: #fff; font-size: 11px; font-weight: 700; border-radius: 10px; padding: 1px 7px; font-variant-numeric: tabular-nums; }
+.main { min-width: 0; display: flex; flex-direction: column; }
+.topbar { display: flex; align-items: center; gap: 22px; padding: 0 18px; height: 54px; border-bottom: 1px solid var(--line); overflow-x: auto; white-space: nowrap; }
+.topbar a { color: var(--muted); text-decoration: none; font-weight: 500; }
+.topbar a.on { color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); padding-block: 17px; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; display: inline-grid; place-items: center; font-size: 11px; font-weight: 700; flex: none; border: 2px solid var(--surface); }
+.avatar.t { background: var(--bp); border-radius: 8px; }
+.avatar.c2 { background: #9333ea; } .avatar.c3 { background: #0d9488; } .avatar.c4 { background: #d97706; }
+
+.content { padding: 16px 20px 24px; display: grid; gap: 14px; }
+.head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.head h2 { margin: 0; font-size: 19px; margin-right: auto; display: flex; align-items: center; gap: 8px; }
+.ctl { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 7px 10px; }
+.search { min-width: 0; width: 260px; max-width: 100%; }
+.iconbtn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; width: 34px; height: 34px; display: grid; place-items: center; }
+
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+.card { border: 1px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 10px 12px; text-align: left; display: grid; gap: 2px; position: relative; }
+.card b { font-size: 22px; font-variant-numeric: tabular-nums; }
+.card span { color: var(--muted); font-size: 12px; }
+.card.bad b { color: var(--bad); }
+.card[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tab { border: 0; background: none; padding: 9px 12px; font-weight: 600; color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap; display: inline-flex; gap: 6px; align-items: center; }
+.tab .n { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 0 7px; font-size: 12px; font-variant-numeric: tabular-nums; }
+.tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+.tab .lock { font-size: 11px; font-weight: 500; color: var(--muted); }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip { border: 1px solid var(--line); background: var(--surface); border-radius: 16px; padding: 4px 11px; font-size: 13px; display: inline-flex; gap: 6px; align-items: center; }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.linkbtn { border: 0; background: none; color: var(--accent); padding: 4px; }
+
+.src { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+.src.manual { background: var(--accent-soft); color: var(--accent); }
+.src.web_form { background: var(--wf-soft); color: var(--wf); }
+.src.blueprint { background: var(--bp-soft); color: var(--bp); }
+.sub { color: var(--muted); font-size: 12px; }
+.nat { font-size: 11px; color: var(--muted); border: 1px dashed var(--line); border-radius: 4px; padding: 0 5px; margin-left: 6px; white-space: nowrap; }
+.pill { font-size: 12px; font-weight: 600; border-radius: 12px; padding: 2px 9px; white-space: nowrap; }
+.pill.pending { background: var(--warn-soft); color: var(--warn); }
+.pill.approved { background: var(--ok-soft); color: var(--ok); }
+.pill.rejected { background: var(--bad-soft); color: var(--bad); }
+.pill.cancelled, .pill.expired { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; min-width: 1020px; }
+th { text-align: left; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 9px 10px; background: var(--surface-2); border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: var(--surface-2); }
+tbody tr.sel { background: var(--accent-soft); }
+tbody tr.stale { opacity: .55; cursor: default; }
+tbody tr:last-child td { border-bottom: 0; }
+.tnum { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+.title { font-weight: 600; }
+.avs { display: flex; align-items: center; flex-wrap: wrap; }
+.avs .avatar + .avatar { margin-left: -8px; }
+.mode { font-size: 11px; color: var(--muted); flex-basis: 100%; margin-top: 3px; }
+td { padding-inline: 8px; }
+.wait { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wait.over { color: var(--bad); font-weight: 600; }
+.acts { display: flex; gap: 6px; white-space: nowrap; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 7px; padding: 5px 11px; font-weight: 600; font-size: 13px; }
+.btn.pri { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.btn.no { color: var(--bad); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.foot { display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; flex-wrap: wrap; gap: 8px; }
+.empty { padding: 40px 16px; text-align: center; color: var(--muted); }
+
+.bulk { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--fg); color: var(--bg); padding: 10px 14px; border-radius: 10px; }
+.bulk .btn { background: var(--surface); color: var(--fg); }
+.bulk .btn.ok { background: var(--ok); color: #fff; border-color: var(--ok); }
+
+/* Drawer */
+.scrim { position: absolute; inset: 0; background: rgba(10,15,30,.28); z-index: 5; }
+.drawer { z-index: 6; position: absolute; top: 0; right: 0; bottom: 0; width: min(480px, 100%); background: var(--surface); border-left: 1px solid var(--line); box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.dh { padding: 14px 16px; border-bottom: 1px solid var(--line); display: grid; gap: 6px; }
+.dh-top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.dh h3 { margin: 0; font-size: 16px; text-wrap: balance; }
+.db { padding: 14px 16px; overflow-y: auto; display: grid; gap: 14px; align-content: start; flex: 1; }
+.blk { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 8px; position: relative; }
+.blk h4 { margin: 0; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.kv { display: grid; grid-template-columns: 120px minmax(0,1fr); gap: 5px 10px; font-size: 13px; }
+.kv dt { color: var(--muted); } .kv dd { margin: 0; overflow-wrap: anywhere; }
+.appr { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.appr .st { margin-left: auto; }
+.flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-weight: 600; }
+.flow .arrow { color: var(--muted); }
+.outcome { display: grid; gap: 4px; font-size: 13px; }
+.outcome div { padding: 6px 8px; border-radius: 6px; }
+.outcome .y { background: var(--ok-soft); } .outcome .n { background: var(--bad-soft); }
+.tl { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 13px; }
+.tl li { padding-left: 14px; position: relative; } .tl li::before { content: ""; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+.tl time { color: var(--muted); font-size: 12px; display: block; }
+textarea, .df select { width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px; }
+textarea { min-height: 70px; resize: vertical; }
+.df { display: flex; gap: 8px; } .df label { flex: 1; display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+.dfoot { border-top: 1px solid var(--line); padding: 12px 16px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.dfoot .left { margin-right: auto; display: flex; gap: 8px; }
+.hint { font-size: 12px; color: var(--muted); }
+.warnline { font-size: 12px; color: var(--warn); background: var(--warn-soft); padding: 6px 8px; border-radius: 6px; }
+
+/* Dialog + toast */
+.modal { z-index: 7; position: absolute; inset: 0; display: grid; place-items: center; background: rgba(10,15,30,.35); padding: 16px; }
+.dialog { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); width: min(440px, 100%); padding: 18px; display: grid; gap: 12px; position: relative; }
+.dialog h3 { margin: 0; font-size: 16px; }
+.err { color: var(--bad); font-size: 12px; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; }
+.toast { z-index: 8; position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-weight: 500; max-width: calc(100% - 32px); }
+
+/* Annotations */
+.pin { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--pin); color: var(--pin-fg); font-size: 11px; font-weight: 700; border: 2px solid var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.25); vertical-align: middle; flex: none; cursor: pointer; padding: 0; line-height: 1; }
+.pin.abs { position: absolute; top: -9px; right: -9px; z-index: 2; }
+body.no-pins .pin { display: none; }
+.notes { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.notes h2 { grid-column: 1 / -1; margin: 6px 0 0; font-size: 17px; }
+.note { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; grid-template-columns: auto minmax(0,1fr); align-items: start; }
+.note.flash { border-color: var(--pin); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pin) 25%, transparent); }
+.note h3 { margin: 0; font-size: 14px; }
+.note p { margin: 0; color: var(--muted); font-size: 13px; grid-column: 2; }
+.ids { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px; }
+.ids code { font-family: var(--mono); font-size: 11px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); }
+
+@media (max-width: 980px) {
+  .frame { grid-template-columns: minmax(0,1fr); }
+  .side { flex-direction: row; overflow-x: auto; padding: 8px; }
+  .side .brand, .side .opt { display: none; }
+  .nav-item { white-space: nowrap; }
+  .cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .topbar { display: none; }
+}
+@media (max-width: 520px) { .content { padding: 12px; } .search { width: 100%; } .kv { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: no-preference) { .drawer { animation: slide .18s ease-out; } @keyframes slide { from { transform: translateX(24px); opacity: .6; } } }
+</style>
+
+<div class="wrap">
+  <header class="spec">
+    <div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h1>Desk: Approvals page</h1><span class="sample-tag">Sample page · example data</span></div>
+      <p>A working sample of the missing page for tickets and web form submissions that wait for an approval. Click rows, tabs, filters, Approve and Reject. Orange numbered pins point to the notes below; each note gives the requirement IDs in <code>requirements-desk-pending-approvals.md</code>.</p>
+    </div>
+    <div class="spec-tools">
+      <button class="toggle" id="pinToggle" aria-pressed="true">● Show annotations</button>
+      <button class="toggle" id="roleToggle" aria-pressed="false" title="See the page as an agent without supervisor rights">View as: Supervisor (Sara Adel)</button>
+    </div>
+  </header>
+
+  <section class="frame" id="frame" aria-label="Sample Desk Approvals page">
+    <nav class="side" aria-label="Desk navigation">
+      <div class="brand"><i>◎</i> Desk</div>
+      <div class="nav-item opt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Headquarters</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v12H3z"/><path d="M3 7l3-4h12l3 4"/></svg>Views</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Agent Queue</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c1-3.5 3.5-5 7-5s6 1.5 7 5"/></svg>Team Queue</div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Approvals <span class="count" id="navCount">4</span><button class="pin abs" data-n="1" style="top:2px;right:-4px">1</button></div>
+      <div class="nav-item opt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>Tags</div>
+      <div class="nav-item opt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg>Scheduled Replies</div>
+    </nav>
+
+    <div class="main">
+      <div class="topbar" aria-hidden="true">
+        <a href="#" class="on" tabindex="-1">Tickets</a><a href="#" tabindex="-1">Customers</a><a href="#" tabindex="-1">Analytics</a><a href="#" tabindex="-1">Activities</a><a href="#" tabindex="-1">Chat</a><a href="#" tabindex="-1">Community</a>
+        <span style="margin-left:auto" class="avatar">SA</span>
+      </div>
+
+      <div class="content">
+        <div class="head">
+          <h2>Approvals</h2>
+          <select class="ctl" id="dept" aria-label="Department"><option value="">All departments</option><option>Customer Support</option><option>Billing</option><option>Tech</option></select>
+          <input class="ctl search" id="q" type="search" placeholder="Search ticket #, subject, contact, email" aria-label="Search approvals">
+          <button class="iconbtn" id="refresh" aria-label="Refresh" title="Refresh">↻</button>
+          <button class="pin" data-n="2">2</button>
+        </div>
+
+        <div class="cards" id="cards" style="position:relative">
+          <button class="card" data-card="mine" aria-pressed="false"><b id="cMine">4</b><span>Waiting for me</span></button>
+          <button class="card bad" data-card="overdue" aria-pressed="false"><b id="cOver">2</b><span>Overdue</span></button>
+          <button class="card" data-card="web_form" aria-pressed="false"><b id="cWf">2</b><span>Web form submissions</span></button>
+          <button class="card" data-card="blueprint" aria-pressed="false"><b id="cBp">2</b><span>Blueprint steps</span></button>
+          <button class="pin abs" data-n="3">3</button>
+        </div>
+
+        <div style="position:relative">
+          <div class="tabs" role="tablist" id="tabs">
+            <button class="tab" role="tab" data-tab="waiting" aria-selected="true">Waiting for me <span class="n" id="tWaiting">0</span></button>
+            <button class="tab" role="tab" data-tab="requested" aria-selected="false">Requested by me <span class="n" id="tRequested">0</span></button>
+            <button class="tab" role="tab" data-tab="all" aria-selected="false" id="tabAll">All pending <span class="n" id="tAll">0</span> <span class="lock">supervisor</span></button>
+            <button class="tab" role="tab" data-tab="decided" aria-selected="false">Decided <span class="n" id="tDecided">0</span></button>
+          </div>
+          <button class="pin abs" data-n="4" style="top:-6px;right:0">4</button>
+        </div>
+
+        <div class="filters" id="filters">
+          <span class="sub">Source</span>
+          <button class="chip" data-src="manual" aria-pressed="false"><span class="src manual" style="padding:0 4px">●</span>Manual request</button>
+          <button class="chip" data-src="web_form" aria-pressed="false"><span class="src web_form" style="padding:0 4px">●</span>Web form</button>
+          <button class="chip" data-src="blueprint" aria-pressed="false"><span class="src blueprint" style="padding:0 4px">●</span>Blueprint</button>
+          <select class="ctl" id="waitF" aria-label="Waiting time" style="padding:4px 8px"><option value="">Waiting: any</option><option value="4">More than 4 h</option><option value="24">More than 1 day</option><option value="over">Overdue only</option></select>
+          <button class="chip" disabled title="Sample only">+ More filters</button>
+          <button class="linkbtn" id="clearF">Clear all</button>
+          <button class="pin" data-n="5">5</button>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <thead><tr>
+              <th style="width:34px"><input type="checkbox" id="selAll" aria-label="Select all"></th>
+              <th>Item</th><th>Source <button class="pin" data-n="6">6</button></th><th>Contact · Department</th><th>Requested by</th>
+              <th>Approvers <button class="pin" data-n="8">8</button></th><th>Waiting <button class="pin" data-n="9">9</button></th><th>Status</th><th>Actions <button class="pin" data-n="10">10</button></th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <div class="empty" id="empty" hidden></div>
+        </div>
+        <div class="foot"><span id="showing"></span><span>Oldest first · 25 per page</span></div>
+
+        <div class="bulk" id="bulk" hidden>
+          <strong id="bulkN">0 selected</strong>
+          <button class="btn ok" id="bulkOk">Approve</button>
+          <button class="btn" id="bulkNo">Reject</button>
+          <button class="btn" id="bulkClear">Clear</button>
+          <span class="hint" style="color:inherit;opacity:.8" id="bulkNote"></span>
+          <button class="pin" data-n="11">11</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrim" id="scrim" hidden></div>
+    <aside class="drawer" id="drawer" hidden aria-label="Approval details" tabindex="-1"></aside>
+    <div class="modal" id="modal" hidden></div>
+    <div class="toast" id="toast" hidden role="status"></div>
+  </section>
+
+  <div class="legend"><span><span class="pin" style="display:inline-grid">#</span> annotation pin (click it to jump to the note)</span><span>Names, tickets and emails on this page are example data.</span></div>
+
+  <section class="notes" id="notes" aria-label="Annotations">
+    <h2>Annotations for developers</h2>
+  </section>
+</div>
+
+<script>
+const NOTES = [
+  [1, 'Sidebar entry and counter', 'New "Approvals" entry below Team Queue (route /approvals). The red counter is the number of items waiting for the signed-in user. Hidden at 0, "99+" above 99. Refreshes on focus and at least every 60 s. Bell and email links open /approvals?item={id} with the panel open.', ['PA-NAV-1','PA-NAV-2','PA-NAV-3','GET /desk/approvals/counts']],
+  [2, 'Header: department, search, refresh', 'Department picker works like the Tickets header and scopes the whole page, including cards and tab counts. Search covers ticket number (with or without #), subject, contact name or email, and web form submitter email. Server side, 300 ms after typing stops.', ['PA-NAV-4','PA-FLT-3','PA-FLT-4']],
+  [3, 'Summary cards', 'Counts for the selected department. Clicking a card applies the matching filter; click again to remove it. Overdue uses the limits in section 10 of the requirements.', ['PA-NAV-5','PA-OVD-3']],
+  [4, 'Tabs', 'Waiting for me (default), Requested by me, All pending (only with "View department approvals" or "Manage approvals"), Decided (last 90 days). Use "View as" above to see the tab disappear for a normal agent. Tab, filters and sort live in the URL query.', ['PA-TAB-1','PA-TAB-2','PA-TAB-3','PA-TAB-4','PA-PERM-1']],
+  [5, 'Filters', 'Source (multi), waiting time, plus requester, approver, date range, blueprint, web form and priority under "More filters". Active filters are removable chips with "Clear all". All filtering is done by the API.', ['PA-FLT-1','PA-FLT-2']],
+  [6, 'Source chip', 'Each row says where the approval came from: Manual request (ticket Approval tab), Web form (held submission) or Blueprint (Submit-for-approval step, shown with "From state → To state").', ['PA-LIST-1']],
+  [7, 'Web form item is not a ticket yet', 'A held submission has no ticket number. It shows the form name, the first line of the message and a "Not a ticket yet" label. It is excluded from ticket views, reports and SLA until approved.', ['PA-WF-2','PA-LIST-1']],
+  [8, 'Approvers and mode', 'Up to 3 avatars then "+n". A team approver shows as a square team badge; every current member can decide. With several approvers the row shows "Any one" or "All" ("1 of 2 approved"). Only show a mode the server enforces.', ['PA-ACT-5','PA-PERM-4']],
+  [9, 'Waiting time and overdue', 'Time since the request. Red with "overdue" once past the limit (blueprint step limit, web form "Decide within", or the Desk default 24 business hours). Approvers get one reminder at the limit, supervisors an escalation at 2×.', ['PA-OVD-1','PA-OVD-2','PA-OVD-3']],
+  [10, 'Row actions follow the server', 'Approve and Reject show only when the API item says can.approve / can.reject. Requesters see Remind (max once per hour). Reject always asks for a reason. The server still returns 403 APPROVAL_NOT_APPROVER to anyone else.', ['PA-ACT-1','PA-ACT-2','PA-ACT-4','PA-PERM-3','PA-API-2']],
+  [11, 'Bulk bar', 'Shows when rows are ticked. One comment or reason for all, max 50 rows. Blueprint items whose transition form needs fields from the approver are skipped with "Open to approve". The result lists failures with the reason.', ['PA-ACT-3','POST /desk/approvals/bulk']],
+  [12, 'Detail panel', 'Opens on row click. Request block with each approver\'s decision, ticket summary (read only), activity timeline and a comment box. Arrow keys move to the next item. Full screen at phone width.', ['PA-DTL-1','PA-DTL-2','PA-DTL-3','PA-DTL-6','PA-DTL-7','PA-DTL-9']],
+  [13, 'Web form submission block', 'All submitted fields in form order, attachments, duplicate hint. The approver can set the department and priority the new ticket will get. Third action "Mark as spam". Approve creates the ticket then runs assignment → workflow → SLA → notifications.', ['PA-DTL-4','PA-WF-4','PA-WF-5','PA-INT-5']],
+  [14, 'Blueprint step block', 'Blueprint name, From → To state, the values the agent entered in the transition form, and what each decision does: approve completes the transition, reject keeps the ticket in its state and tells the transition owner.', ['PA-DTL-5','PA-BP-1','PA-BP-3','§8.1']],
+  [15, 'Reject dialog', 'Reason is required (3 to 2000 characters). For web form items, an optional "Send this reason to the submitter" box. Dialogs are in-page and trap focus.', ['PA-ACT-2','PA-A11Y-1']],
+  [16, 'Decided by someone else', 'If another approver decides while the page is open, the row greys out with who and when, and loses its buttons. Acting on it returns 409 APPROVAL_ALREADY_DECIDED and the UI shows that message.', ['PA-LIST-5','PA-ACT-8']],
+];
+
+const ME = 'u_sara';
+const items = [
+  { id:'a1', src:'manual', num:1043, title:'Refund above limit for order 7781', contact:'Ali Mostafa', email:'ali.mostafa@example.com', dept:'Customer Support', reqBy:['Eslam Ahmed','EA',''], approvers:[['Sara Adel','SA','',ME]], mode:'any', waitH:3, limitH:24, status:'pending', prio:'High', desc:'Customer asks for a 4,200 EGP refund. Policy limit for agents is 2,000 EGP.' },
+  { id:'a2', src:'web_form', form:'Refund request', title:'I was charged twice for invoice INV-2209', contact:'Mona Hassan', email:'mona.h@example.com', dept:'Billing', reqBy:null, approvers:[['Billing Approvers','BA','t','team_billing']], mode:'any', waitH:5, limitH:24, status:'pending', prio:'Medium', fields:[['Name','Mona Hassan'],['Email','mona.h@example.com'],['Phone','+20 100 555 0192'],['Invoice number','INV-2209'],['Amount (EGP)','1,350.00'],['Message','I was charged twice for invoice INV-2209 on 9 Nov. Please refund one payment.']], files:[['bank-statement.pdf','312 KB']], dup:'This email has 1 open ticket (#1031)' },
+  { id:'a3', src:'blueprint', num:1050, bp:'Demo · Refund approval', from:'Validation', to:'Finance review', tr:'Send to Finance', title:'Order #1006 refund, damaged on delivery', contact:'Hoda Samir', email:'hoda.samir@example.com', dept:'Customer Support', reqBy:['Omar Khaled','OK','c3'], approvers:[['Sara Adel','SA','',ME]], mode:'any', waitH:26, limitH:8, status:'pending', prio:'High', form:[['Refund amount','2,750 EGP'],['Checklist','Photos received, order verified'],['Comment','Courier confirmed damage. Ready for Finance.']] },
+  { id:'a4', src:'manual', num:1038, title:'Replace damaged router, warranty exception', contact:'Tarek Nabil', email:'t.nabil@example.com', dept:'Tech', reqBy:['Youssef Ali','YA','c4'], approvers:[['Sara Adel','SA','',ME],['Hany Fathy','HF','c2','u_hany']], decided:{u_hany:'approved'}, mode:'all', waitH:50, limitH:24, status:'pending', prio:'Medium', desc:'Warranty ended 12 days ago. Customer is on the Gold plan.' },
+  { id:'a5', src:'web_form', form:'Partner onboarding', title:'New reseller in Alexandria, 3 branches', contact:'Karim Fawzy', email:'karim@fawzy-trading.example', dept:'Customer Support', reqBy:null, approvers:[['Sara Adel','SA','',ME],['Support Leads','SL','t','team_leads']], mode:'any', waitH:0.7, limitH:24, status:'pending', prio:'Low', fields:[['Company','Fawzy Trading'],['Contact name','Karim Fawzy'],['Email','karim@fawzy-trading.example'],['City','Alexandria'],['Branches','3'],['Message','We want to resell your service in our 3 branches.']], files:[], dup:'' },
+  { id:'a6', src:'blueprint', num:1061, bp:'Demo · Hardware RMA', from:'Inspection', to:'Ship replacement', tr:'Approve replacement', title:'Laptop does not boot after update', contact:'Nadia Fouad', email:'nadia.f@example.com', dept:'Tech', reqBy:['Hany Fathy','HF','c2'], approvers:[['Tech Supervisors','TS','t','team_tech']], mode:'any', waitH:0.3, limitH:8, status:'pending', prio:'High', needsForm:true, form:[['Fault found','Motherboard'],['Serial number','LT-88A-2210']] },
+  { id:'a7', src:'manual', num:1047, title:'Waive late fee for long-term customer', contact:'Samir Lotfy', email:'samir.l@example.com', dept:'Billing', reqBy:['Eslam Ahmed','EA',''], approvers:[['Sara Adel','SA','',ME]], mode:'any', waitH:1, limitH:24, status:'pending', prio:'Low', stale:'Cancelled by Eslam Ahmed 1 min ago', desc:'Customer since 2019, first late payment.' },
+  { id:'r1', src:'manual', num:1029, title:'Extend SLA for enterprise outage ticket', contact:'Dina Rashed', email:'dina.r@example.com', dept:'Tech', reqBy:['Sara Adel','SA','',ME], approvers:[['Hany Fathy','HF','c2','u_hany']], mode:'any', waitH:6, limitH:24, status:'pending', prio:'Urgent', mine:true, reminded:'20 min ago', desc:'Outage needs 48 h, SLA is 24 h.' },
+  { id:'r2', src:'blueprint', num:1022, bp:'Demo · Refund approval', from:'Finance review', to:'Paid', tr:'Mark paid', title:'Order #1003 refund approved', contact:'Laila Omar', email:'laila.o@example.com', dept:'Billing', reqBy:['Sara Adel','SA','',ME], approvers:[['Finance Team','FT','t','team_fin']], mode:'any', waitH:30, limitH:24, status:'pending', prio:'Medium', mine:true, form:[['Transfer ref','TRX-55190']] },
+  { id:'o1', src:'web_form', form:'Refund request', title:'Refund for cancelled booking', contact:'Rana Adel', email:'rana.a@example.com', dept:'Billing', reqBy:null, approvers:[['Finance Team','FT','t','team_fin']], mode:'any', waitH:12, limitH:24, status:'pending', prio:'Medium', other:true, fields:[['Name','Rana Adel'],['Message','Booking cancelled on 5 Nov.']], files:[], dup:'' },
+  { id:'d1', src:'manual', num:1012, title:'Courtesy credit for repeated outage', contact:'Mai Saeed', email:'mai.s@example.com', dept:'Tech', reqBy:['Youssef Ali','YA','c4'], approvers:[['Sara Adel','SA','',ME]], mode:'any', waitH:4, limitH:24, status:'approved', prio:'Medium', when:'10 Nov, 14:05', by:'Sara Adel' },
+  { id:'d2', src:'web_form', form:'Refund request', title:'Refund please', contact:'unknown', email:'xx91@example.net', dept:'Billing', reqBy:null, approvers:[['Sara Adel','SA','',ME]], mode:'any', waitH:2, limitH:24, status:'rejected', prio:'Low', when:'9 Nov, 11:20', by:'Sara Adel', reason:'No order or invoice given.' },
+  { id:'d3', src:'blueprint', num:1001, bp:'Demo · Refund approval', from:'Validation', to:'Finance review', title:'Order #1001 charged twice', contact:'Ola Kamal', email:'ola.k@example.com', dept:'Customer Support', reqBy:['Omar Khaled','OK','c3'], approvers:[['Sara Adel','SA','',ME]], mode:'any', waitH:3, limitH:8, status:'cancelled', prio:'Medium', when:'8 Nov, 09:40', by:'System', reason:'Ticket left the blueprint' },
+];
+
+const S = { tab:'waiting', srcs:new Set(), wait:'', dept:'', q:'', card:'', sel:new Set(), open:null, supervisor:true };
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const canDecide = it => it.status === 'pending' && !it.stale && !it.mine && !it.other && !(it.decided && it.decided[ME]);
+const fmtWait = h => h < 1 ? Math.round(h*60) + ' min' : h < 24 ? Math.round(h) + ' h' : Math.floor(h/24) + ' d ' + Math.round(h%24) + ' h';
+const over = it => it.status === 'pending' && it.waitH > it.limitH;
+const srcLabel = { manual:'Manual request', web_form:'Web form', blueprint:'Blueprint' };
+
+function inTab(it, tab) {
+  if (tab === 'waiting') return it.status === 'pending' && !it.mine && !it.other;
+  if (tab === 'requested') return !!it.mine;
+  if (tab === 'all') return it.status === 'pending';
+  if (tab === 'decided') return it.status !== 'pending';
+}
+function visible() {
+  return items.filter(it => inTab(it, S.tab)
+    && (!S.srcs.size || S.srcs.has(it.src))
+    && (!S.dept || it.dept === S.dept)
+    && (!S.wait || (S.wait === 'over' ? over(it) : it.waitH > +S.wait))
+    && (!S.card || (S.card === 'overdue' ? over(it) : S.card === 'mine' ? true : it.src === S.card))
+    && (!S.q || (String(it.num||'') + ' #' + (it.num||'') + ' ' + it.title + ' ' + it.contact + ' ' + it.email + ' ' + (it.form||'')).toLowerCase().includes(S.q.toLowerCase())));
+}
+function avatars(it) {
+  const shown = it.approvers.slice(0,3).map(a => `<span class="avatar ${a[2]==='t'?'t':a[2]}" title="${esc(a[0])}${a[2]==='t'?' (team)':''}">${esc(a[1])}</span>`).join('');
+  const more = it.approvers.length > 3 ? `<span class="sub">+${it.approvers.length-3}</span>` : '';
+  let mode = '';
+  if (it.approvers.length > 1) mode = it.mode === 'all' ? `<span class="mode">All · ${Object.values(it.decided||{}).filter(v=>v==='approved').length} of ${it.approvers.length} approved</span>` : '<span class="mode">Any one</span>';
+  return `<div class="avs">${shown}${more}${mode}</div>`;
+}
+function itemCell(it, first) {
+  if (it.src === 'web_form') return `<div class="title">Web form submission${first.wf ? '' : ''}<span class="nat">Not a ticket yet</span>${first.wf ? '<button class="pin" data-n="7">7</button>' : ''}</div><div class="sub">${esc(it.form)} · ${esc(it.title)}</div>`;
+  return `<div><span class="tnum">#${it.num}</span> <span class="title">${esc(it.title)}</span></div>` + (it.src === 'blueprint' ? `<div class="sub">${esc(it.bp)}</div>` : `<div class="sub">Priority ${esc(it.prio)}</div>`);
+}
+function srcCell(it) {
+  if (it.src === 'blueprint') return `<span class="src blueprint">Blueprint</span><div class="sub" style="margin-top:3px">${esc(it.from)} → ${esc(it.to)}</div>`;
+  return `<span class="src ${it.src}">${srcLabel[it.src]}</span>`;
+}
+function actCell(it, first) {
+  if (it.stale) return `<span class="sub">${esc(it.stale)}</span>${first.stale ? '<button class="pin" data-n="16">16</button>' : ''}`;
+  if (it.status !== 'pending') return `<span class="sub">${esc(it.by)} · ${esc(it.when)}</span>`;
+  if (it.mine) return `<div class="acts"><button class="btn" data-act="remind" data-id="${it.id}" ${it.reminded ? 'disabled title="One reminder per hour"' : ''}>${it.reminded ? 'Reminded ' + esc(it.reminded) : 'Remind'}</button>${it.src==='manual' ? `<button class="btn no" data-act="cancel" data-id="${it.id}">Cancel</button>` : ''}</div>`;
+  if (it.other) return `<div class="acts"><button class="btn" data-act="remind" data-id="${it.id}">Remind</button><button class="btn" data-act="reassign" data-id="${it.id}">Reassign</button></div>`;
+  if (it.needsForm) return `<div class="acts"><button class="btn" data-act="open" data-id="${it.id}" title="This transition needs fields from the approver">Open to approve</button></div>`;
+  return `<div class="acts"><button class="btn no" data-act="reject" data-id="${it.id}" aria-label="Reject ${it.num ? 'ticket #' + it.num : 'web form submission'}">Reject</button><button class="btn ok" data-act="approve" data-id="${it.id}" aria-label="Approve ${it.num ? 'ticket #' + it.num : 'web form submission'}">Approve</button></div>`;
+}
+function render() {
+  const list = visible();
+  const first = { wf:true, stale:true };
+  $('#rows').innerHTML = list.map(it => {
+    const f = { wf: it.src==='web_form' && first.wf, stale: it.stale && first.stale };
+    if (f.wf) first.wf = false; if (f.stale) first.stale = false;
+    const st = it.status === 'pending' ? (it.mode==='all' ? '<span class="pill pending">Pending</span>' : '<span class="pill pending">Pending</span>') : `<span class="pill ${it.status}">${it.status[0].toUpperCase()+it.status.slice(1)}</span>`;
+    const req = it.reqBy ? `<div class="appr"><span class="avatar ${it.reqBy[2]}">${esc(it.reqBy[1])}</span>${esc(it.reqBy[0])}</div>` : '<span class="sub">Web form</span>';
+    const pickable = S.tab !== 'decided' && canDecide(it) && !it.needsForm;
+    return `<tr data-id="${it.id}" class="${it.stale?'stale':''} ${S.sel.has(it.id)?'sel':''}">
+      <td>${S.tab !== 'decided' ? `<input type="checkbox" class="rowsel" data-id="${it.id}" ${pickable?'':'disabled'} ${S.sel.has(it.id)?'checked':''} aria-label="Select">` : ''}</td>
+      <td style="min-width:220px">${itemCell(it, f)}</td><td>${srcCell(it)}</td>
+      <td style="max-width:200px;overflow-wrap:anywhere"><div>${esc(it.contact)}</div><div class="sub">${esc(it.email)}</div><div class="sub">${esc(it.dept)}</div></td><td>${req}</td>
+      <td>${avatars(it)}</td>
+      <td class="wait ${over(it)?'over':''}">${fmtWait(it.waitH)}${over(it) ? `<div class="sub" style="color:inherit;white-space:normal">overdue by ${fmtWait(it.waitH-it.limitH)}</div>` : ''}</td>
+      <td>${st}</td><td>${actCell(it, f)}</td></tr>`;
+  }).join('');
+  const e = $('#empty');
+  e.hidden = list.length > 0;
+  if (!list.length) e.innerHTML = (S.tab === 'waiting' && !S.srcs.size && !S.q && !S.wait && !S.card && !S.dept) ? 'Nothing is waiting for your approval. <button class="linkbtn" data-goto="requested">See what you requested</button>' : 'No approvals match these filters. <button class="linkbtn" id="clr2">Clear filters</button>';
+  $('#showing').textContent = list.length ? `Showing 1–${list.length} of ${list.length}` : '';
+  const scope = it => !S.dept || it.dept === S.dept;
+  const w = items.filter(it => scope(it) && inTab(it,'waiting'));
+  $('#tWaiting').textContent = w.length;
+  $('#tRequested').textContent = items.filter(it => scope(it) && inTab(it,'requested')).length;
+  $('#tAll').textContent = items.filter(it => scope(it) && inTab(it,'all')).length;
+  $('#tDecided').textContent = items.filter(it => scope(it) && inTab(it,'decided')).length;
+  const mineN = w.filter(canDecide).length;
+  $('#cMine').textContent = mineN; $('#navCount').textContent = mineN; $('#navCount').hidden = mineN === 0;
+  $('#cOver').textContent = w.filter(over).length;
+  $('#cWf').textContent = w.filter(i => i.src==='web_form').length;
+  $('#cBp').textContent = w.filter(i => i.src==='blueprint').length;
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === S.tab)));
+  $('#tabAll').hidden = !S.supervisor;
+  document.querySelectorAll('[data-src]').forEach(c => c.setAttribute('aria-pressed', String(S.srcs.has(c.dataset.src))));
+  document.querySelectorAll('[data-card]').forEach(c => c.setAttribute('aria-pressed', String(S.card === c.dataset.card)));
+  [...S.sel].forEach(id => { if (!list.some(i => i.id === id)) S.sel.delete(id); });
+  $('#bulk').hidden = S.sel.size === 0;
+  $('#bulkN').textContent = S.sel.size + ' selected';
+  $('#selAll').checked = S.sel.size > 0 && S.sel.size === list.filter(i => canDecide(i) && !i.needsForm).length;
+  $('#bulkNote').textContent = list.some(i => i.needsForm) ? 'Items that need the transition form are skipped: "Open to approve".' : '';
+}
+
+/* Drawer */
+function drawer(it) {
+  S.open = it.id;
+  const apprRows = it.approvers.map(a => {
+    const d = (it.decided||{})[a[3]];
+    const st = it.status !== 'pending' && a[3]===ME ? `<span class="pill ${it.status}">${it.status}</span>` : d ? `<span class="pill approved">Approved · 10 Nov 16:12</span>` : '<span class="pill pending">Pending</span>';
+    return `<div class="appr"><span class="avatar ${a[2]==='t'?'t':a[2]}">${esc(a[1])}</span>${esc(a[0])}${a[2]==='t' ? ' <span class="sub">(team, any member)</span>' : ''}<span class="st">${st}</span></div>`;
+  }).join('');
+  let srcBlock = '';
+  if (it.src === 'web_form') srcBlock = `<div class="blk"><button class="pin abs" data-n="13">13</button><h4>Web form submission · ${esc(it.form)}</h4>
+    <dl class="kv">${(it.fields||[]).map(f => `<dt>${esc(f[0])}</dt><dd>${esc(f[1])}</dd>`).join('')}<dt>Submitted</dt><dd>${fmtWait(it.waitH)} ago · IP 41.235.x.x (Egypt)</dd>
+    <dt>Attachments</dt><dd>${(it.files||[]).length ? it.files.map(f => `📎 ${esc(f[0])} <span class="sub">${esc(f[1])}</span>`).join('<br>') : '<span class="sub">None</span>'}</dd></dl>
+    ${it.dup ? `<div class="warnline">${esc(it.dup)}</div>` : ''}
+    ${canDecide(it) ? `<div class="df"><label>New ticket department<select id="wfDept"><option>${esc(it.dept)}</option><option>Customer Support</option><option>Tech</option></select></label><label>New ticket priority<select id="wfPrio"><option>${esc(it.prio)}</option><option>High</option><option>Urgent</option><option>Low</option></select></label></div>
+    <div class="hint">On approval a ticket is created now; assignment, workflow, SLA and auto-reply run as for any web form ticket.</div>` : ''}</div>`;
+  if (it.src === 'blueprint') srcBlock = `<div class="blk"><button class="pin abs" data-n="14">14</button><h4>Blueprint step</h4>
+    <div class="sub">${esc(it.bp)} · transition "${esc(it.tr || '')}"</div>
+    <div class="flow"><span class="src blueprint">${esc(it.from)}</span><span class="arrow">→</span><span class="src blueprint">${esc(it.to)}</span></div>
+    ${it.form ? `<dl class="kv">${it.form.map(f => `<dt>${esc(f[0])}</dt><dd>${esc(f[1])}</dd>`).join('')}</dl>` : ''}
+    <div class="outcome"><div class="y">Approve: ticket moves to <b>${esc(it.to)}</b>, after-transition actions run.</div><div class="n">Reject: ticket stays in <b>${esc(it.from)}</b>; ${esc(it.reqBy ? it.reqBy[0] : 'the owner')} gets the reason and can run it again.</div></div>
+    ${it.needsForm ? '<div class="warnline">This transition needs fields from the approver. "Open ticket to approve" opens the transition form.</div>' : ''}</div>`;
+  const ticketBlock = it.src === 'web_form' ? '' : `<div class="blk"><h4>Ticket summary</h4><dl class="kv"><dt>Status</dt><dd>${it.src==='blueprint' ? esc(it.from) + ' (blueprint)' : 'Open'}</dd><dt>Priority</dt><dd>${esc(it.prio)}</dd><dt>Owner</dt><dd>${esc(it.reqBy ? it.reqBy[0] : '-')}</dd><dt>Department</dt><dd>${esc(it.dept)}</dd><dt>Contact</dt><dd>${esc(it.contact)} · ${esc(it.email)}</dd><dt>SLA due</dt><dd>${over(it) ? '<span style="color:var(--bad)">Overdue</span>' : 'in 5 h'}</dd></dl></div>`;
+  const reqBlock = `<div class="blk"><h4>Request</h4>${it.src==='manual' ? `<div class="title">${esc(it.title)}</div><div>${esc(it.desc||'')}</div>` : ''}
+    <div class="sub">Requested by ${it.reqBy ? esc(it.reqBy[0]) : 'web form'} · ${fmtWait(it.waitH)} ago${it.limitH ? ' · decide within ' + it.limitH + ' h' : ''}</div>
+    ${it.approvers.length > 1 ? `<div class="sub">${it.mode==='all' ? 'All approvers must approve' : 'Any one approver decides'}</div>` : ''}${apprRows}</div>`;
+  const tl = `<div class="blk"><h4>Activity</h4><ol class="tl">
+    <li>${it.src==='web_form' ? 'Submitted through web form "' + esc(it.form) + '"' : 'Approval requested by ' + esc(it.reqBy ? it.reqBy[0] : '')}<time>${fmtWait(it.waitH)} ago</time></li>
+    ${it.decided ? '<li>Hany Fathy approved: "OK from Tech side."<time>10 Nov, 16:12</time></li>' : ''}
+    ${over(it) ? `<li>Automatic reminder sent to approvers<time>${fmtWait(it.waitH - it.limitH)} ago</time></li>` : ''}
+    ${it.reminded ? `<li>Reminder sent by Sara Adel<time>${esc(it.reminded)}</time></li>` : ''}
+    ${it.status!=='pending' ? `<li>${it.status[0].toUpperCase()+it.status.slice(1)} by ${esc(it.by)}${it.reason ? ': "' + esc(it.reason) + '"' : ''}<time>${esc(it.when)}</time></li>` : ''}
+  </ol>${it.status==='pending' ? '<textarea id="cmt" placeholder="Add a comment without deciding" aria-label="Comment"></textarea><div style="display:flex;justify-content:flex-end"><button class="btn" id="addCmt">Add comment</button></div>' : ''}</div>`;
+  let footer = '';
+  if (canDecide(it) && it.needsForm) footer = `<button class="btn no" data-act="reject" data-id="${it.id}">Reject</button><button class="btn pri" data-act="open" data-id="${it.id}">Open ticket to approve</button>`;
+  else if (canDecide(it)) footer = `${it.src==='web_form' ? `<span class="left"><button class="btn" data-act="spam" data-id="${it.id}">Mark as spam</button></span>` : ''}<button class="btn no" data-act="reject" data-id="${it.id}">Reject</button><button class="btn ok" data-act="approve" data-id="${it.id}">Approve</button>`;
+  else if (it.mine) footer = `<button class="btn" data-act="remind" data-id="${it.id}" ${it.reminded?'disabled':''}>${it.reminded ? 'Reminded ' + esc(it.reminded) : 'Remind approvers'}</button>${it.src==='manual' ? `<button class="btn no" data-act="cancel" data-id="${it.id}">Cancel request</button>` : ''}`;
+  else if (it.other) footer = `<button class="btn" data-act="reassign" data-id="${it.id}">Reassign approver</button><button class="btn" data-act="remind" data-id="${it.id}">Remind</button>`;
+  else footer = '<span class="hint">Read only</span>';
+  $('#drawer').innerHTML = `<div class="dh"><button class="pin abs" data-n="12" style="top:8px;right:auto;left:-10px">12</button>
+      <div class="dh-top">${srcCell(it).replace('<div class="sub" style="margin-top:3px">', '<span class="sub">').replace('</div>', '</span>')}<span class="pill ${it.stale ? 'cancelled' : it.status}">${it.stale ? 'Cancelled' : it.status[0].toUpperCase()+it.status.slice(1)}</span>${over(it) ? '<span class="pill rejected">Overdue</span>' : ''}<button class="iconbtn" id="dClose" aria-label="Close" style="margin-left:auto">✕</button></div>
+      <h3>${it.num ? `<span class="tnum">#${it.num}</span> ` : ''}${esc(it.title)}</h3>
+      <div class="sub">${it.num ? '<a href="#" onclick="return false" style="color:var(--accent)">Open ticket ↗</a> · ' : 'Not a ticket yet · '}waiting ${fmtWait(it.waitH)} · ↑ ↓ next item</div></div>
+    <div class="db">${reqBlock}${srcBlock}${ticketBlock}${tl}</div>
+    <div class="dfoot">${footer}</div>`;
+  $('#drawer').hidden = false; $('#scrim').hidden = false; $('#drawer').focus();
+}
+function closeDrawer() { const id = S.open; S.open = null; $('#drawer').hidden = true; $('#scrim').hidden = true; const r = document.querySelector(`tr[data-id="${id}"]`); if (r) r.focus?.(); }
+
+/* Dialogs */
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 3200); }
+function dialog(kind, ids) {
+  const list = ids.map(id => items.find(i => i.id === id));
+  const one = list.length === 1 ? list[0] : null;
+  const name = one ? (one.num ? 'ticket #' + one.num : 'this web form submission') : list.length + ' items';
+  const reject = kind === 'reject';
+  const html = `<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlgT">${reject ? '<button class="pin abs" data-n="15">15</button>' : ''}
+    <h3 id="dlgT">${reject ? 'Reject' : kind==='spam' ? 'Mark as spam' : kind==='cancel' ? 'Cancel request' : 'Approve'} ${esc(name)}?</h3>
+    ${kind==='approve' && one && one.src==='web_form' ? '<div class="hint">A ticket will be created from the submission.</div>' : ''}
+    ${kind==='approve' && one && one.src==='blueprint' ? `<div class="hint">The ticket moves to ${esc(one.to)}.</div>` : ''}
+    ${kind==='spam' ? '<div class="hint">No ticket is created and the submission is deleted.</div><label class="check"><input type="checkbox" id="blk"> Block ' + esc(one ? one.email : '') + ' from future submissions</label>' : ''}
+    ${kind==='cancel' ? '<div class="hint">Approvers will be told the approval is no longer needed.</div>' : ''}
+    ${kind==='approve' || reject ? `<label style="display:grid;gap:4px"><span class="sub">${reject ? 'Reason (required)' : 'Comment (optional)'}</span><textarea id="dlgTxt" maxlength="2000"></textarea></label><div class="err" id="dlgErr" hidden>Enter a reason of at least 3 characters.</div>` : ''}
+    ${reject && list.some(i => i.src==='web_form') ? '<label class="check"><input type="checkbox" id="notify"> Send this reason to the submitter</label>' : ''}
+    <div style="display:flex;justify-content:flex-end;gap:8px"><button class="btn" id="dlgNo">Back</button><button class="btn ${reject||kind==='spam'||kind==='cancel'?'no':'ok'}" id="dlgYes">${reject ? 'Reject' : kind==='spam' ? 'Mark as spam' : kind==='cancel' ? 'Cancel request' : 'Approve'}</button></div></div>`;
+  const m = $('#modal'); m.innerHTML = html; m.hidden = false;
+  (m.querySelector('textarea') || m.querySelector('#dlgYes')).focus();
+  $('#dlgNo').onclick = () => { m.hidden = true; };
+  $('#dlgYes').onclick = () => {
+    const txt = $('#dlgTxt');
+    if (reject && (!txt || txt.value.trim().length < 3)) { $('#dlgErr').hidden = false; txt.focus(); return; }
+    m.hidden = true;
+    const now = 'just now';
+    let done = 0, failed = [];
+    list.forEach(it => {
+      if (it.stale || it.status !== 'pending') { failed.push(it); return; }
+      if (kind === 'cancel') { it.status = 'cancelled'; it.by = 'Sara Adel'; it.when = now; it.mine = true; }
+      else if (kind === 'spam') { it.status = 'rejected'; it.by = 'Sara Adel'; it.when = now; it.reason = 'Marked as spam'; }
+      else { it.status = reject ? 'rejected' : 'approved'; it.by = 'Sara Adel'; it.when = now; if (reject) it.reason = txt.value.trim(); }
+      done++;
+    });
+    S.sel.clear(); closeDrawer(); render();
+    if (failed.length) toast(`${done} ${reject ? 'rejected' : 'approved'}, ${failed.length} failed: #${failed[0].num || ''} was already decided`);
+    else if (kind === 'approve' && one && one.src === 'web_form') toast('Approved. Ticket #1068 created');
+    else toast(kind === 'cancel' ? 'Request cancelled' : kind === 'spam' ? 'Marked as spam' : list.length > 1 ? `${done} ${reject ? 'rejected' : 'approved'}` : reject ? 'Rejected' : 'Approved');
+  };
+}
+
+/* Events */
+document.addEventListener('click', e => {
+  const pin = e.target.closest('.pin');
+  if (pin && pin.dataset.n) { e.stopPropagation(); const n = document.getElementById('note-' + pin.dataset.n); n.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'center' }); n.classList.add('flash'); setTimeout(() => n.classList.remove('flash'), 1600); return; }
+  const act = e.target.closest('[data-act]');
+  if (act) { e.stopPropagation(); const it = items.find(i => i.id === act.dataset.id); const a = act.dataset.act;
+    if (a === 'approve' || a === 'reject' || a === 'spam' || a === 'cancel') dialog(a, [it.id]);
+    else if (a === 'remind') { it.reminded = 'just now'; render(); if (S.open) drawer(it); toast('Reminder sent to approvers'); }
+    else if (a === 'reassign') toast('Sample: opens a picker of agents and teams with access to ' + it.dept);
+    else if (a === 'open') toast('Sample: opens ticket #' + it.num + ' with the transition form');
+    return; }
+  if (e.target.closest('.rowsel') || e.target.closest('input')) return;
+  const tr = e.target.closest('#rows tr');
+  if (tr) { const it = items.find(i => i.id === tr.dataset.id); if (!it.stale) drawer(it); else toast(it.stale); return; }
+  const go = e.target.closest('[data-goto]'); if (go) { S.tab = go.dataset.goto; render(); return; }
+  if (e.target.id === 'clr2') { clearAll(); return; }
+});
+$('#tabs').addEventListener('click', e => { const t = e.target.closest('.tab'); if (!t) return; S.tab = t.dataset.tab; S.sel.clear(); S.card = ''; render(); });
+document.querySelectorAll('[data-src]').forEach(c => c.onclick = () => { const s = c.dataset.src; S.srcs.has(s) ? S.srcs.delete(s) : S.srcs.add(s); render(); });
+document.querySelectorAll('[data-card]').forEach(c => c.onclick = e => { if (e.target.closest('.pin')) return; const k = c.dataset.card; S.card = S.card === k ? '' : k; S.tab = 'waiting'; render(); });
+$('#waitF').onchange = e => { S.wait = e.target.value; render(); };
+$('#dept').onchange = e => { S.dept = e.target.value; render(); };
+let qt; $('#q').oninput = e => { clearTimeout(qt); qt = setTimeout(() => { S.q = e.target.value.trim(); render(); }, 300); };
+function clearAll() { S.srcs.clear(); S.wait = ''; S.card = ''; S.q = ''; S.dept = ''; $('#q').value = ''; $('#waitF').value = ''; $('#dept').value = ''; render(); }
+$('#clearF').onclick = clearAll;
+$('#refresh').onclick = () => toast('Refreshed');
+$('#rows').addEventListener('change', e => { if (!e.target.classList.contains('rowsel')) return; const id = e.target.dataset.id; e.target.checked ? S.sel.add(id) : S.sel.delete(id); render(); });
+$('#selAll').onchange = e => { S.sel.clear(); if (e.target.checked) visible().filter(i => canDecide(i) && !i.needsForm).forEach(i => S.sel.add(i.id)); render(); };
+$('#bulkOk').onclick = () => dialog('approve', [...S.sel]);
+$('#bulkNo').onclick = () => dialog('reject', [...S.sel]);
+$('#bulkClear').onclick = () => { S.sel.clear(); render(); };
+$('#scrim').onclick = closeDrawer;
+$('#drawer').addEventListener('click', e => { if (e.target.closest('#dClose')) closeDrawer(); if (e.target.id === 'addCmt') { const c = $('#cmt'); if (c.value.trim()) { toast('Comment added'); c.value = ''; } } });
+document.addEventListener('keydown', e => {
+  if (!$('#modal').hidden) { if (e.key === 'Escape') $('#modal').hidden = true; return; }
+  if (!S.open) return;
+  if (e.key === 'Escape') closeDrawer();
+  if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !e.target.closest('textarea,select,input')) {
+    e.preventDefault(); const list = visible().filter(i => !i.stale); const i = list.findIndex(x => x.id === S.open);
+    const nx = list[i + (e.key === 'ArrowDown' ? 1 : -1)]; if (nx) drawer(nx);
+  }
+});
+$('#pinToggle').onclick = e => { const on = e.currentTarget.getAttribute('aria-pressed') !== 'true'; e.currentTarget.setAttribute('aria-pressed', String(on)); document.body.classList.toggle('no-pins', !on); e.currentTarget.textContent = (on ? '● ' : '○ ') + 'Show annotations'; };
+$('#roleToggle').onclick = e => { S.supervisor = !S.supervisor; if (!S.supervisor && S.tab === 'all') S.tab = 'waiting'; e.currentTarget.textContent = 'View as: ' + (S.supervisor ? 'Supervisor (Sara Adel)' : 'Agent without supervisor rights'); e.currentTarget.setAttribute('aria-pressed', String(!S.supervisor)); render(); };
+
+$('#notes').insertAdjacentHTML('beforeend', NOTES.map(([n, t, p, ids]) => `<article class="note" id="note-${n}"><span class="pin" style="display:inline-grid;cursor:default">${n}</span><h3>${esc(t)}</h3><p>${esc(p)}</p><div class="ids">${ids.map(i => `<code>${esc(i)}</code>`).join('')}</div></article>`).join(''));
+render();
+</script>

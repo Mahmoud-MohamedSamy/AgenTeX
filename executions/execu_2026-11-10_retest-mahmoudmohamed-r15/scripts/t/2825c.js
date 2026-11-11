@@ -1,0 +1,23 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15';
+const LED=m=>fs.appendFileSync(RUN+'/ledger.md','- '+new Date().toISOString().slice(0,19)+' DESK '+m+'\n');
+const AO='93949fbd-f9df-4e2e-ae45-00b8dc38385b'; const T='88e8ea44-1658-4df3-9930-d0902b91073d';
+const E=r=>r.j&&r.j.error?r.j.error.code+': '+r.j.error.message+' '+JSON.stringify(r.j.error.details||'').slice(0,300):'';
+const trig={create:true,update:true,field_update:null,customer_reply:false,agent_response:false,private_thread:null,comment:null};
+const target={name:'t QA RT15 2825',criteria:{conditions:[{field_key:'subject',operator:'contains',value:'QA RT15 2825'}],pattern:null},response:{value:30,unit:'minutes'},resolution:{value:2,unit:'hours'},calendar_mode:'calendar',business_hours_id:null};
+let r = await api('POST','/desk/sla/policies',{department_id:AO,name:'QA RT15 2825 SLA',description:null,is_active:true,triggers:trig,execute_only_with_account:false,resolution_from_created:false,targets:[target]});
+const pid = r.j&&r.j.data&&r.j.data.id; if(pid) LED('SLA policy "QA RT15 2825 SLA" (QA AO Dept A) '+pid); if(!pid) return {policy:r.s, e:E(r)};
+const S=v=>({kind:'string',value:v});
+r = await api('POST','/modules/'+T+'/records',{data:[{field:'subject',value:S('QA RT15 2825 ticket')},{field:'department',value:S(AO)},{field:'status',value:S('Open')},{field:'priority',value:S('High')}]});
+const tk = r.j&&r.j.data&&r.j.data.id; if(tk) LED('ticket "QA RT15 2825 ticket" '+tk);
+await sleep(15000);
+const a = (await api('GET','/desk/tickets/'+tk+'/sla')).j.data;
+await sleep(120000);
+const updatedAt = new Date().toISOString();
+const p = await api('PATCH','/modules/'+T+'/records/'+tk,{data:[{field:'priority',value:S('Medium')}]});
+await sleep(25000);
+const b = (await api('GET','/desk/tickets/'+tk+'/sla')).j.data;
+const ob = (x,k)=>((x.obligations||[]).find(o=>o.kind===k)||{}).due_at;
+const out = {policy:pid, ticket:tk, created:a&&a.execution, updatedAt, patch:p.s, after:b&&b.execution,
+  response:[ob(a,'first_response'), ob(b,'first_response')], resolution:[ob(a,'resolution'), ob(b,'resolution')]};
+fs.writeFileSync(RUN+'/out/2825-result.json', JSON.stringify(out,null,1));
+return out;

@@ -1,0 +1,9 @@
+const fs=require('fs');const rows=fs.readFileSync(process.argv[2],'utf8').split(/\r?\n/).filter(Boolean).map(l=>l.split(',').map(v=>v.replace(/^"|"$/g,'')));
+const H={'X-API-Key':rows[1][rows[0].indexOf('Secret key')],'Content-Type':'application/json'};
+const API='https://api.plane.so/api/v1/workspaces/ahmed-hegazy/projects/efce4d84-5876-4015-b472-2efca7ad73f3/work-items/9b91e6e7-c554-4f70-8a9a-46ab39f95915';
+const html=`<p><strong>Correction — Retest FAIL — 11 Nov 2026</strong> → moved back to Bug<br>My comment of 11 Nov said the TAVI behaviour "matches Zoho". That was not checked live and is wrong. I compared it in Zoho Desk today.</p>
+<p>Zoho Desk (All Tickets, 57 tickets, loads 50 at a time): the header Select All ticks the 50 loaded tickets, and the bar then shows a <strong>"Select all tickets in this view"</strong> link. One more click shows "57 · All tickets selected · Clear selection", and Assign To / Update / Close / Delete apply to all 57.</p>
+<p>TAVI Desk (All Tickets, 433): Select all ticks the 50 loaded rows ("50 of 433 selected — scroll to load the rest of this view"). There is no option to select the whole view. Selecting all 433 needs scrolling through 9 pages and clicking again.</p>
+<p>Still failing:</p><ul><li>Select every ticket in the current view in one action: expected a "Select all N tickets in this view" option like Zoho's (bulk actions then apply to the whole view); actual: only the loaded rows can be selected.</li></ul>
+<p>Evidence: NDC-2823-zoho-check.png (attached; TAVI left, Zoho right)</p>`;
+(async()=>{const c=await fetch(API+'/comments/',{method:'POST',headers:H,body:JSON.stringify({comment_html:html})});const s=await fetch(API+'/',{method:'PATCH',headers:H,body:JSON.stringify({state:'34a7f4b6-7207-4955-b927-0d8d1dd3c666'})});console.log('comment',c.status,'state→Bug',s.status);})();

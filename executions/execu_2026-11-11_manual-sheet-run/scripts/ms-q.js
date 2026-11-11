@@ -1,0 +1,1 @@
+const L=require('./lib');module.exports=async()=>{const f=await L.findTicket(process.env.Q);return {found:f.map(o=>({id:o.id,no:o.ticket_number,subject:o.subject,priority:o.priority,dept:o.department,created:o.created_at}))};};

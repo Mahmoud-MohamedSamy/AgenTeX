@@ -1,0 +1,1 @@
+const L=require('./lib');module.exports=async()=>{const id=JSON.parse(require('fs').readFileSync(OUT+'/ms-t05a.json')).id;await L.gotoTicket(id);const t=await L.body_txt();await L.shot('t05-07-signin');return {subject:t.includes('QA MAN phone 01 edited'),due:(t.match(/Due Date [^A-Z]{0,30}/)||[''])[0],low:/Priority Low/.test(t)};};

@@ -1,0 +1,21 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15';
+const LED=m=>fs.appendFileSync(RUN+'/ledger.md','- '+new Date().toISOString().slice(0,19)+' DESK '+m+'\n');
+const AO='93949fbd-f9df-4e2e-ae45-00b8dc38385b', T='88e8ea44-1658-4df3-9930-d0902b91073d', OWNER='97be04b6-0a08-4883-aa51-e1650b11cab7';
+const E=r=>r.j&&r.j.error?r.j.error.code+': '+r.j.error.message+' '+JSON.stringify(r.j.error.details||'').slice(0,300):'';
+const d=(await api('GET','/desk/departments/'+AO)).j.data; const agents=d.agent_user_ids||[];
+const users=arr((await api('GET','/iam/users?status=active')).j.data); const nm=id=>(users.find(u=>u.userId===id)||{}).displayName;
+const pick = agents.filter(a=>a!==OWNER).slice(0,2);
+const out={deptAgents: agents.map(a=>nm(a)), teamMembers: pick.map(nm)};
+let r = await api('POST','/desk/teams',{name:'QA RT15 2794 team', description:'retest NDC-2794', department_id:AO, sources: pick.map(id=>({kind:'agent', ref_id:id}))});
+const team = r.j&&r.j.data&&(r.j.data.id||(r.j.data.team&&r.j.data.team.id)); out.team={s:r.s, id:team, e:E(r)}; if(team) LED('team "QA RT15 2794 team" (QA AO Dept A) '+team);
+const SM=(f,op,v)=>({kind:'StringMatch',field:f,operator:op,stringValue:v,caseInsensitive:false});
+const base={fieldName:null,dateFieldName:null,offsetSeconds:null,offsetMode:null};
+r = await api('POST','/workflow/rules',{moduleId:T,layoutId:'',name:'QA RT15 2794 team+agent',description:'QA RT15 retest NDC-2794 - safe to delete',mode:'Recurring',isActive:true,trigger:{...base,kind:'RecordCreated'},criteria:{kind:'Logical',operator:'And',operands:[SM('subject','StartsWith','QA RT15 2794')]},actions:[{type:'OwnerAssignment',order:0,delaySeconds:0,ownerTargetKind:'TeamWithAgent',ownerValue:team,ownerAgentId:pick[1]||pick[0],ownerOnlyOnlineUsers:false}]});
+const rule = r.j&&r.j.data&&r.j.data.id; out.rule={s:r.s,id:rule,e:E(r)}; if(rule) LED('workflow rule "QA RT15 2794 team+agent" '+rule);
+// negative: agent not in team
+const notIn = agents.find(a=>!pick.includes(a)) || OWNER;
+r = await api('POST','/workflow/rules',{moduleId:T,layoutId:'',name:'QA RT15 2794 bad agent',description:'QA RT15',mode:'Recurring',isActive:false,trigger:{...base,kind:'RecordCreated'},criteria:{kind:'Logical',operator:'And',operands:[SM('subject','StartsWith','QA RT15 2794 zz')]},actions:[{type:'OwnerAssignment',order:0,delaySeconds:0,ownerTargetKind:'TeamWithAgent',ownerValue:team,ownerAgentId:notIn,ownerOnlyOnlineUsers:false}]});
+out.badAgent={s:r.s,e:E(r)}; if(r.j&&r.j.data&&r.j.data.id) LED('workflow rule "QA RT15 2794 bad agent" (should have been refused) '+r.j.data.id);
+out.agentForRule = nm(pick[1]||pick[0]); out.teamId=team; out.agentId=pick[1]||pick[0];
+fs.writeFileSync(RUN+'/out/2794-ids.json', JSON.stringify(out,null,1));
+return out;

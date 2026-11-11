@@ -1,0 +1,25 @@
+{
+ "out": "SL-54-before-due-escalation-longer-than-target-vs-zoho.png",
+ "ticket": "SL-54",
+ "title": "A \"Before due\" escalation longer than the target time can be saved",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "TAVI 10 Nov 2026 (live, on screen) · Zoho: help article (live Zoho did not load on this network)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · SLA \"QA AO SL54iuqp (inactive)\", QA AO Dept A · Zoho: help.zoho.com › Understanding and working with SLAs › Escalations",
+ "panels": [
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/b54-target.png", "w": 1440, "h": 900, "crop": [405, 262, 1035, 300],
+   "caption": "Respond within 1 hour (1); response escalation level 1: Before due by 2 hours (2), i.e. one hour before the ticket exists.",
+   "boxes": [{"b": [440, 293, 755, 327], "n": 1, "tag": "left"}, {"b": [454, 520, 840, 555], "n": 2, "tag": "left"}]},
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/b54-saved.png", "w": 1440, "h": 900, "crop": [268, 56, 1172, 300],
+   "caption": "Save is accepted with no message; the SLA is created (3).",
+   "boxes": []},
+  {"side": "zoho", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/z54-doc-before.png", "w": 1440, "h": 900, "crop": [160, 300, 780, 90],
+   "caption": "Zoho Desk help, Escalations: escalate when the time \"is close to the due time\"; before, on or after (2). A limit on the Before offset is not documented; not seen live.",
+   "boxes": [{"b": [205, 306, 925, 386], "n": 2}]}
+ ],
+ "rows": [
+  [1, "Target response time", "Any value.", "1 hour.", "SAME"],
+  [2, "Before-due escalation offset", "An escalation \"close to the due time\" falls inside the target, so a Before offset longer than the target should be refused with a message.", "Before due by 2 hours is accepted although the target is 1 hour: the escalation would be due before the ticket is created.", "DIFFERS"],
+  [3, "Save", "Blocked with a clear message.", "Saved with no warning (the server accepts it too). Levels out of order are refused, so only this check is missing.", "DIFFERS"]
+ ]
+}

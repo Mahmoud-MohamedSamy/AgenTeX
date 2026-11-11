@@ -1,0 +1,28 @@
+{
+ "out": "SL-57-template-used-by-sla-deleted-without-warning-vs-zoho.png",
+ "ticket": "SL-57",
+ "title": "An escalation email template that an SLA uses can be deleted with no warning",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "TAVI 10 Nov 2026 (live, on screen) · Zoho: help article (live Zoho did not load on this network)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · template \"QA AO SL57h156 escalation template\" chosen in SLA \"QA AO SL57h156 (inactive)\", QA AO Dept A · Zoho: help.zoho.com › Managing email templates › Deleting Email Templates",
+ "panels": [
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/s57-before.png", "w": 1440, "h": 900, "crop": [437, 525, 1000, 65],
+   "caption": "Before: the SLA’s level 1 sends \"QA AO SL57h156 escalation template\" (1).",
+   "boxes": [{"b": [454, 549, 774, 582], "n": 1}]},
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/s57-confirm.png", "w": 1440, "h": 900, "crop": [528, 360, 384, 180],
+   "caption": "Email Templates › Delete: the dialog only says it can’t be undone. No mention that an SLA uses it (2).",
+   "boxes": [{"b": [540, 380, 900, 470], "n": 2}]},
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/s57-after.png", "w": 1440, "h": 900, "crop": [437, 505, 1000, 85],
+   "caption": "After: the SLA shows \"A template that no longer exists\"; the default email is used instead. The admin only finds out by opening this target (3).",
+   "boxes": [{"b": [454, 529, 774, 562], "n": 3}, {"b": [450, 566, 1138, 584], "n": 3}]},
+  {"side": "zoho", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/z57-doc-template-delete.png", "w": 1440, "h": 900, "crop": [160, 230, 780, 255],
+   "caption": "Zoho Desk help, Deleting Email Templates: lists the delete steps and that public templates cannot be deleted (2). What Zoho does for a template an SLA uses is not documented and was not seen live.",
+   "boxes": [{"b": [168, 285, 930, 333], "n": 2}]}
+ ],
+ "rows": [
+  [1, "Template chosen in an SLA escalation level", "A custom escalation template can be chosen per level.", "Chosen and saved.", "SAME"],
+  [2, "Deleting that template", "The admin is told the template is used by an SLA (TAVI already refuses to delete business hours an SLA uses).", "Deleted after a generic \"can’t be undone\" confirmation; no mention of the SLA. Zoho’s behaviour for in-use templates is not documented.", "DIFFERS"],
+  [3, "The SLA afterwards", "The SLA keeps a valid template, or the admin picks a new one at delete time.", "The SLA still points at the deleted template; escalations silently fall back to the default email. Shown only inside the target editor.", "DIFFERS"]
+ ]
+}

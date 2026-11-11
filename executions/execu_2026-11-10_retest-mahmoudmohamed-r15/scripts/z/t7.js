@@ -1,0 +1,1 @@
+async (page) => { await page.mouse.click(644,402); await page.waitForTimeout(800); await page.mouse.click(450,180); await page.keyboard.press('Control+A'); await page.keyboard.type('QA RT15 2794 team and agent'); await page.mouse.click(328,842); await page.waitForTimeout(6000); await page.screenshot({path:'z/t7.png'}); return 'ok'; }

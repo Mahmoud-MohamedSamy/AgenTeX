@@ -511,3 +511,45 @@
 - 2026-11-09T12:49:47 E18 E18c ticket #1 reopened + moved to Customer Support, owner kept (restore later to Marketing 2a73bbc0, Closed)
 - 2026-11-09T12:50:17 E18 E18c agent reply sent on #1 to mmohamed@anyware.software
 - 2026-11-09T14:13:30 E18 E18c ticket #1 restored {"steps":"200/200/200","status":"Closed","marketing":true,"ownerO":true,"closed_time":"2026-10-12T12:43:13.2306828+00:00"}
+- 2026-11-10T09:40:17 E18 CL ticket "QA EM-03 agent reply 11:40 Cairo" c8590aab-2f4d-46a5-81b8-bb096c8736fc
+- 2026-11-10T09:43:29 E18 CL ticket "QA EM-03 agent reply 11:42 Cairo" fe83f126-9176-40ce-9376-11145a3271f5
+- 2026-11-10T09:53:30 E18 CL EM-03 reply sent on #2382 to mmohamed@anyware.software
+- 2026-11-10T10:02:42 E18 CL rule round_robin "QA E18 manual" 1f857625-cd2b-4cef-bde3-6daf32a28599
+- 2026-11-10T10:02:42 E18 CL Dept B prefs: offline on, threshold 1, backlogs off
+- 2026-11-10T10:02:43 E18 CL ticket "QA E18 Check-in control" c27016bc-4079-40c7-97e0-6b7eb410630e
+- 2026-11-10T10:03:22 E18 CL ticket #1 reopened + moved to Dept B unassigned (restore to Marketing, owner O, Closed, closed_time 2026-11-09T14:13:30.0182181+00:00)
+- 2026-11-10T10:04:01 E18 CL Dept B: threshold off, assign backlogs on
+- 2026-11-10T10:32:09 E18 CL recovery cleanup {"cl":{"move":null,"close":null,"closedTime":null,"del":{"c27016bc":null,"fe83f126":null},"prefs":null,"bin":null},"t1":null,"ctl":null,"dup":null,"rule":null}
+- 2026-11-10T10:38:22 E18 CL recovery cleanup {"cl":{"move":200,"close":200,"closedTime":200,"ruleDel":204,"del":{"c27016bc":204,"fe83f126":204},"prefs":"200 {\"assign_to_offline_agents\":false,\"department_threshold_enabled\":false,\"department_threshold\":40,\"agent_threshold_enabled\":false,\"assign_backlogs\":false,\"assign_on_closure\":false,\"incoming_mode\":\"immediate\"}","bin":"2 200"},"t1":{"no":"1","owner":"ndc-staging-owner","status":"Closed","dept":"Marketing","in_backlog":false,"closed_time":"2026-10-12T12:43:13.2306828+00:00"},"ctl":404,"dup":404,"rule":false}
+- 2026-11-10T10:40:56 CHECKLIST run 10 Nov done: report-checklist-2026-11-10.html; kept #2382 (c8590aab) for user's EM-05 reply; all else restored
+- 2026-11-10T12:04:55 E18 CL EM-04 agent reply on #2495 to the user Gmail
+- 2026-11-10T12:05:10 E18 CL E18-04 ticket #1 reopened + moved to Customer Support, owner kept (restore: Marketing, owner O, Closed, closed_time 2026-10-12T12:43:13.2306828+00:00)
+- 2026-11-10T12:05:39 E18 CL E18-04 agent reply on #1 to mmohamed@anyware.software
+- 2026-11-10T12:33:50 E18 CL E18-04 rule "QA E18 manual" 22913783-1eaa-41cd-bdad-c55d421abfeb
+- 2026-11-10T12:33:51 E18 CL E18-04 Dept B prefs: offline on, threshold 1
+- 2026-11-10T12:33:55 E18 CL E18-04 #1 moved to Dept B unassigned
+- 2026-11-10T12:34:59 E18 CL E18-04 Dept B: threshold off, backlogs on
+- 2026-11-10T12:41:10 E18 CL E18-04 restore {"move":200,"close":200,"ct":200,"rule":204,"prefs":"baseline","t1":{"status":"Closed","closed_time":"2026-10-12T12:43:13.2306828+00:00","mk":true,"ownerO":true}}
+- 2026-11-10T13:31:49 CL EM-04 invalid (#2495 deleted 12:07 by automation contact cleanup; reply -> new #2503). E18-04 PASS, restored 12:41.
+- 2026-11-10T13:31:58 CL EM-04 invalid (#2495 deleted 12:07 by automation contact cleanup; reply -> new #2503). E18-04 PASS, restored 12:41.
+- 2026-11-10T14:55:07 E18 CL A2 Tech ticket "QA EM04 TAVI2TAVI 1455" 1223e44e-d4d6-45a2-a3fd-ada911cef2eb contact customer-support@help-staging.anyware.software
+- 2026-11-10T14:55:48 E18 CL A2 hop1 Tech reply to customer-support@help-staging.anyware.software
+- 2026-11-10T15:03:41 E18 CL A4 CS ticket "QA EM09 outside inbox 1503" 7293be1e-a1ec-478e-9bc7-bb1adf2ee24e contact mail.tm qa-em09-mwatli2g@fldubai.com
+- 2026-11-10T15:04:34 E18 CL A4 agent reply to mail.tm inbox
+- 2026-11-10T15:05:30 E18 CL A5 delete ticket 1223e44e-d4d6-45a2-a3fd-ada911cef2eb 204
+- 2026-11-10T15:05:34 E18 CL A5 delete ticket 7293be1e-a1ec-478e-9bc7-bb1adf2ee24e 204
+- 2026-11-10T15:05:46 E18 CL A5 recycle bin purge 2 200
+- 2026-11-10T15:07:14 E18 CL A2-A6: EM-04 TAVI-to-TAVI rerun (Tech #2564 -> CS) not received; EM-09 mail.tm outbound PASS; tickets #2564 + EM09 ticket deleted+purged, no contacts made; mail.tm inboxes qa-em09-mwatl3xe/mwatli2g left to expire
+- 2026-11-10T15:14:59 E18 CL C6 contact "QA CL6 contact u022c" 7d1fbe5f-c90e-4894-b221-ed5a6f7a9136
+- 2026-11-10T15:15:02 E18 CL C6 ticket 1 dc4fde1d-9030-48e1-a22d-e51956ab7a06
+- 2026-11-10T15:15:02 E18 CL C6 ticket 2 ef8bf779-abd5-4955-aeae-872ab444eab3
+- 2026-11-10T15:15:56 E18 CL C6 contact deleted by API 204
+- 2026-11-10T15:16:29 E18 CL C6 contact restored 200
+- 2026-11-10T15:17:33 E18 CL C6 cleanup {"tdc4fde":204,"tef8bf7":204,"c":204,"purge":200,"purged":3,"binLeft":0}
+- 2026-11-10T15:18:12 E18 CL C6b contact b9d6e419-4657-4440-9fbd-c1da76450371
+- 2026-11-10T15:18:13 E18 CL C6b ticket 4f1d09d8-33a9-4ac6-b85c-f2e259942a6b
+- 2026-11-10T15:19:30 E18 CL C6b cleanup {"t":204,"c":204,"purge":200,"purged":2}
+- 2026-11-10T15:19:51 E18 CL C6: contact-delete test done (API + UI), cascade to tickets confirmed, restore contact does not restore tickets; all data purged
+- 2026-11-10T15:47:05 E18 CL EM-04 rerun ticket #2661 8e62087e-ecb0-41cc-8293-8d7c68fda7af
+- 2026-11-10T15:47:43 E18 CL EM-04 rerun agent reply sent
+- 2026-11-10T15:50:45 E18 CL EM-04 rerun PASS; #2661 deleted 204 purge 200

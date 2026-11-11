@@ -1,0 +1,11 @@
+{"out":"2806-api-card.png","title":"NDC-2806 · Global Sets — API checks (CRM, set \"QA RT15 GS Colors\")","host":"staging-crm.taviportal.com","who":"owner account","date":"10 Nov 2026",
+"rows":[
+["Create set","POST /global-sets  {name:\"QA RT15 GS Colors\", values + colours}","201 Created",
+"ok"],
+["Replace value (not in use)","POST /global-sets/{id}/values/replace  {Green → Red}","200 · lead Green → Red, Green moved to Unused","ok"],
+["Replace value used in a view filter","POST /global-sets/{id}/values/replace  {Purple → Red}  (view \"QA RT15 2806 Purple view\" filters on Purple)","409 GLOBAL_SET_VALUE_IN_USE  \"Change or remove it in those views first\"  — not propagated to the view","bad"],
+["Used In (where the set is used)","GET /global-sets/{id}/used-in","fields + custom views listed; not_tracked: [reports]  → reports not listed","bad"],
+["Safeguard: 16 linked fields","DELETE /global-sets/{id}   ·   replace with 16 fields","409 GLOBAL_SET_TOO_MANY_FIELDS (both)","ok"],
+["Safeguard: field limits","restore 51 values / approval_status / lead_status / text field","422 \"At most 50\" (50 → 200) / 422 GLOBAL_SET_FIELD_LOCKED / 422 datatype / 422","ok"],
+["Stale edit","PUT /global-sets/{id} with old row_version","409 conflict","ok"]
+]}

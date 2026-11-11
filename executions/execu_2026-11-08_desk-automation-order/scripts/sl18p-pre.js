@@ -1,0 +1,4 @@
+const A='93949fbd-f9df-4e2e-ae45-00b8dc38385b';const R={};const d=(await api('GET','/desk/departments/'+A)).j.data;fs.writeFileSync('../sl18p-dept-orig.json',JSON.stringify({visibility:d.visibility}));R.before=d.visibility;
+for(const m of ['PATCH','PUT']){const r=await api(m,'/desk/departments/'+A,m==='PUT'?{...d,visibility:'public'}:{visibility:'public'});R[m]=r.s+(r.s>=300?' '+r.t.slice(0,160):'');if(r.s<300)break;}
+R.after=(await api('GET','/desk/departments/'+A)).j.data.visibility;R.served=(await api('GET','/help-centers/e74f2abb-e28d-400e-908c-f2c54862e389/served-departments')).j?.data?.department_ids?.includes(A);
+fs.appendFileSync('../ledger.md','- '+new Date().toISOString().slice(0,19)+' SL-18 portal: QA AO Dept A visibility '+R.before+' -> '+R.after+' (restore to private after).\n');return R;

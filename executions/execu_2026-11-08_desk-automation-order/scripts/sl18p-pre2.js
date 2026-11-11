@@ -1,0 +1,6 @@
+const A='93949fbd-f9df-4e2e-ae45-00b8dc38385b';const R={};const d=(await api('GET','/desk/departments/'+A)).j.data;
+let r=await api('PATCH','/desk/departments/'+A,{name:d.name,visibility:'public'});R.p1=r.s+(r.s>=300?' '+r.t.slice(0,220):'');
+if(r.s>=300){const b={...d,visibility:'public'};for(const k of ['id','created_by','created_at','updated_at','ticket_count','agent_user_ids','pending_scheduled_reply_count','effective_display_name','is_default','channels','view_only_agent_user_ids'])delete b[k];r=await api('PATCH','/desk/departments/'+A,b);R.p2=r.s+(r.s>=300?' '+r.t.slice(0,220):'');}
+const n=(await api('GET','/desk/departments/'+A)).j.data;R.after=n.visibility;R.sameOtherwise=['name','routing_strategy','is_active','cc_enabled','team_assignment_enabled','send_as_email_enabled'].every(k=>JSON.stringify(n[k])===JSON.stringify(d[k]))&&n.agent_user_ids.length===d.agent_user_ids.length;
+R.served=(await api('GET','/help-centers/e74f2abb-e28d-400e-908c-f2c54862e389/served-departments')).j?.data?.department_ids?.includes(A);
+fs.appendFileSync('../ledger.md','- '+new Date().toISOString().slice(0,19)+' SL-18 portal: QA AO Dept A visibility private -> '+R.after+' (restore to private after).\n');return R;

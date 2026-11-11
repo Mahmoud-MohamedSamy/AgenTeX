@@ -1,0 +1,157 @@
+{
+ "out": "NDC-2204-retest-PASS.png",
+ "ticket": "NDC-2204",
+ "title": "Workflow rule Owner Assignment: Roles tab lists Desk roles (not CRM roles/profiles); role round robin works",
+ "verdict": "PASS",
+ "env": "NDC-Staging · Desk › Setup › Workflow Rules › New rule (Tickets) › Owner Assignment · owner · rule \"QA RT15 2204 role owner\" (deactivated), tickets #2565–#2567",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "2204-owner-assign.png",
+   "caption": "Owner Assignment › Assign owner to: tabs Users, Teams, Roles, Profiles, User Fields",
+   "crop": [
+    370,
+    590,
+    500,
+    250
+   ],
+   "boxes": [
+    {
+     "b": [
+      392,
+      756,
+      724,
+      790
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2204-roles-list.png",
+   "caption": "Roles tab: CEO, Manager only — no CRM roles or profiles (CRM Admin, Sales Staff…)",
+   "crop": [
+    370,
+    590,
+    500,
+    250
+   ],
+   "boxes": [
+    {
+     "b": [
+      396,
+      714,
+      838,
+      790
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2204-desk-roles.png",
+   "caption": "Desk Setup › Roles: hierarchy CEO (Manager under it) = the list in the rule",
+   "crop": [
+    268,
+    56,
+    1020,
+    190
+   ],
+   "boxes": [
+    {
+     "b": [
+      296,
+      180,
+      1264,
+      222
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2204-agents-list-masked.png",
+   "caption": "Agents page Role column: only one agent shows CEO; most show Manager or — (emails hidden)",
+   "crop": [
+    292,
+    290,
+    1284,
+    600
+   ],
+   "boxes": [
+    {
+     "b": [
+      1222,
+      396,
+      1300,
+      442
+     ],
+     "n": 4,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      1222,
+      342,
+      1300,
+      388
+     ],
+     "n": 4,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      1222,
+      452,
+      1300,
+      888
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Owner Assignment shows assignment tabs",
+   "Users / Roles / Profiles / User Fields",
+   "Users, Teams, Roles, Profiles, User Fields",
+   "PASS"
+  ],
+  [
+   2,
+   "Roles tab lists Desk roles",
+   "Desk Setup › Roles hierarchy, not CRM roles",
+   "CEO, Manager (= Desk Roles, /iam/org-units app_key desk); no CRM roles/profiles",
+   "PASS"
+  ],
+  [
+   3,
+   "Rule with role round robin (CEO) on 3 new tickets",
+   "Tickets rotate between users of the role",
+   "#2565–#2567 went to 3 different users",
+   "PASS"
+  ],
+  [
+   4,
+   "Observation: who is in the CEO pool",
+   "Pool = agents shown with role CEO",
+   "Agents page shows CEO for 1 agent; tickets also went to an agent with Role \"—\" and one whose unit is CRM \"Sales\"; IAM says 8 users are CEO → pool may be CEO + subordinates, or the two role sources disagree",
+   "INFO"
+  ],
+  [
+   5,
+   "Automation WorkflowBugRetestTest.ownerAssignmentRolesAreDeskRoles",
+   "Pass",
+   "PASS 1/1 (-Dtags=NDC-2204)",
+   "PASS"
+  ]
+ ],
+ "method": "Automation (-Dtags=NDC-2204) + screen"
+}

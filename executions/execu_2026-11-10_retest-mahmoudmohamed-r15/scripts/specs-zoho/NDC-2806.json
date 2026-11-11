@@ -1,0 +1,159 @@
+{
+ "out": "NDC-2806-retest-PARTIAL-vs-zoho.png",
+ "ticket": "NDC-2806",
+ "title": "Global Sets vs Zoho CRM: replacing a value that a view filter uses",
+ "verdict": "PARTIAL",
+ "label": "RETEST PARTIAL vs ZOHO",
+ "date": "TAVI 10 Nov 2026 · Zoho 11 Nov 2026",
+ "env": "TAVI staging-crm (NDC-Staging, owner) · Zoho CRM org944965048 (Enterprise trial, admin) · set QA RT15 GS Colors, Leads field QA RT15 GS Color, view QA RT15 2806 Green view",
+ "leftHead": "TAVI CRM (left screenshots)",
+ "rightHead": "Zoho CRM (right screenshots)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/2806-tavi-card.png",
+   "w": 800,
+   "h": 287,
+   "crop": [
+    0,
+    0,
+    800,
+    287
+   ],
+   "caption": "TAVI API (10 Nov): replacing a value that a view filter uses is refused; Used In lists fields and views, reports not tracked",
+   "boxes": [
+    {
+     "b": [
+      18,
+      50,
+      782,
+      176
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      18,
+      180,
+      782,
+      263
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/2806-ui-usedin.png",
+   "caption": "TAVI Used In dialog: fields listed; \"Reports that filter on these fields are not listed here yet.\"",
+   "crop": [
+    464,
+    321,
+    672,
+    258
+   ],
+   "boxes": [
+    {
+     "b": [
+      484,
+      412,
+      1116,
+      474
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/zoho-c-2806-replace-dialog.png",
+   "caption": "Zoho › Edit Global Set › Replace Values Green → Red: \"Existing Value will be replaced in all the used places (Records, Criteria, Workflow Actions, Field Dependency)\"",
+   "crop": [
+    526,
+    0,
+    550,
+    450
+   ],
+   "boxes": [
+    {
+     "b": [
+      552,
+      168,
+      1048,
+      342
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/zoho-c-2806-view-after.png",
+   "caption": "After Save: the view filtered on Green now filters on Red (API criteria value \"Red\") and still lists the lead, now Red; Green moved to Unused",
+   "crop": [
+    300,
+    50,
+    1290,
+    190
+   ],
+   "boxes": [
+    {
+     "b": [
+      330,
+      56,
+      512,
+      86
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      470,
+      190,
+      1584,
+      226
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/zoho-c-2806-usedin.png",
+   "caption": "Zoho \"Associated places\": lists only fields by module and layout (no views, no reports)",
+   "crop": [
+    540,
+    0,
+    520,
+    210
+   ],
+   "boxes": [
+    {
+     "b": [
+      569,
+      109,
+      1031,
+      188
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Replace a value that a custom view filter uses",
+   "Allowed: the dialog says the value is replaced in records, criteria, workflow actions and field dependencies. Green → Red changed the lead and the view filter (criteria value now Red); Green moved to Unused.",
+   "Refused: 409 GLOBAL_SET_VALUE_IN_USE \"Change or remove it in those views first\" — the change is not carried to the view.",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "Used In / associated places",
+   "Lists the fields only (module › field › layout); no views, no reports.",
+   "Lists fields and custom views; says reports are not listed yet. TAVI shows more than Zoho, so this part is not a gap vs Zoho.",
+   "SAME"
+  ]
+ ]
+}

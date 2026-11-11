@@ -1,0 +1,11 @@
+{"out":"2828-api-card.png","title":"NDC-2828 · Users list beyond 200 — GET /iam/users (tenant has 201 users: 122 active + 79 invited)","host":"staging-desk.taviportal.com","who":"owner account","date":"10 Nov 2026",
+"rows":[
+["Page size","GET /iam/users?pageSize=5   (page_size=5 same)","200 · 5 rows · meta {page 1, page_size 5, total_count 201, total_pages 41, more_records true, next_cursor}","ok"],
+["Page 2","GET /iam/users?page=2&pageSize=100","200 · 100 rows (users 101–200)","ok"],
+["Last page","GET /iam/users?page=5&pageSize=50","200 · 1 row · more_records false","ok"],
+["Limit / offset","GET /iam/users?limit=5&offset=5","200 · rows 6–10 (page 2)","ok"],
+["Search + status","search=Mahmoud · status=invited · status=active · status=active&search=Mahmoud&pageSize=3","15 · 79 · 122 · 3 of total 11","ok"],
+["Walk all pages","pageSize=60 by page, and by next_cursor (4 pages)","201 unique users, 0 duplicates; user no. 201 reached","ok"],
+["No parameters","GET /iam/users","200 · all 201 rows (no 200 cap), meta null","info"],
+["Ignored / refused","per_page=5 · q=Mahmoud · cursor=x","ignored (201 rows) · ignored · 400","info"]
+]}

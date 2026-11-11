@@ -1,0 +1,1 @@
+const out = {}; for (const u of ['/api/v1/departments/1475109000000426945/teams','/api/v1/teams','/api/v1/workflows?module=tickets&departmentId=1475109000000426945']) { const r = await __z('GET',u); out[u] = r.s+' '+r.t.slice(0,500); } return out;

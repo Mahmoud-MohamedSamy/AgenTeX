@@ -1,0 +1,6 @@
+// U-02-06, U-07-08, U-12-06: open settings pages, read, reload, compare (no changes saved).
+const L=require('./lib');
+module.exports=async()=>{const R={};const snap=async()=>(await pg.evaluate(()=>(document.querySelector('main')||document.body).innerText.replace(/s+/g,' '))).replace(/\d+ (seconds?|minutes?|hours?) ago/g,'').slice(0,1800);
+ const pages=[['sla','/settings/automation/sla?department=95a6fd64-b877-435e-8e23-62c75717f95f'],['notif2','/settings/customization/notifications?department=95a6fd64-b877-435e-8e23-62c75717f95f'],['rr','/settings/organization/departments/ce1d8a43-07df-4b37-891c-cc8b2eceec6f']];
+ for(const [k,p] of pages){try{await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+p,{waitUntil:'commit'}).catch(()=>{});await pg.waitForTimeout(9000);await pg.mouse.wheel(0,2500);await pg.waitForTimeout(1500);const a=await snap();await L.shot('upers-'+k+'-1');await pg.reload({waitUntil:'commit'});await pg.waitForTimeout(9000);await pg.mouse.wheel(0,2500);await pg.waitForTimeout(1500);const b=await snap();await L.shot('upers-'+k+'-2');R[k]={url:pg.url(),same:a===b,head:a.slice(0,260)};if(a!==b){let i=0;while(i<a.length&&a[i]===b[i])i++;R[k].a=a.slice(i,i+100);R[k].b=b.slice(i,i+100);}}catch(e){R[k]={err:String(e.message).slice(0,100)};}}
+ return R;};

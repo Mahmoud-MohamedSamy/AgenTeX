@@ -1,0 +1,2 @@
+async (page) => { await page.mouse.click(1270,520); await page.waitForTimeout(1500); await page.screenshot({path:'z/b15-status.png', clip:{x:1130,y:480,width:470,height:260}}); await page.keyboard.press('Escape'); await page.waitForTimeout(500);
+ await page.mouse.click(1270,374); await page.waitForTimeout(1500); await page.screenshot({path:'z/b15-assign.png', clip:{x:1130,y:340,width:470,height:300}}); await page.keyboard.press('Escape'); return 'ok'; }

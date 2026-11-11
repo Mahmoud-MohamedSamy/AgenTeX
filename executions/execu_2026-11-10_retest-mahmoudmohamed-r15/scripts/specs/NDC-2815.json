@@ -1,0 +1,166 @@
+{
+ "out": "NDC-2815-retest-PASS.png",
+ "ticket": "NDC-2815",
+ "title": "Standard ticket layout: Save works and keeps the Detail view (no 422 \"resolution cannot be removed\")",
+ "verdict": "PASS",
+ "env": "NDC-Staging · Desk Setup › Modules & Fields › Tickets › Layouts › Standard · owner · layout backed up and restored",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "2815-after-save.png",
+   "caption": "Change on Create + Save → \"Layout saved successfully.\"",
+   "crop": [
+    356,
+    340,
+    1220,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      682,
+      836,
+      918,
+      876
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2815-detail-tab.png",
+   "caption": "Detail View after the save: Resolution (Detail-only field) still there",
+   "crop": [
+    356,
+    110,
+    1220,
+    720
+   ],
+   "boxes": [
+    {
+     "b": [
+      566,
+      118,
+      660,
+      156
+     ],
+     "n": 2,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      366,
+      714,
+      958,
+      806
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2815-label-saved.png",
+   "caption": "Label rename \"Phone 2\" → \"QA RT15 Phone 2\" + Save → saved",
+   "crop": [
+    356,
+    640,
+    1220,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      366,
+      714,
+      958,
+      760
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      682,
+      836,
+      918,
+      876
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2815-api-card.png",
+   "caption": "Layout read back by API before / after / restored",
+   "crop": [
+    0,
+    0,
+    1600,
+    390
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      293
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Change the Create view and Save",
+   "Layout saves",
+   "\"Layout saved successfully.\" (PUT 200, rowVersion 1 → 2)",
+   "PASS"
+  ],
+  [
+   2,
+   "Detail view after the save",
+   "Detail sections and Detail-only fields kept",
+   "3 sections incl. Integration; resolution, crm_deal_id, contract_id kept",
+   "PASS"
+  ],
+  [
+   3,
+   "Rename a field label + Save",
+   "Saved with the layout",
+   "\"QA RT15 Phone 2\" saved",
+   "PASS"
+  ],
+  [
+   4,
+   "Note: save from an editor opened before another save",
+   "Warn about a newer version",
+   "Accepted — last save wins (no version check)",
+   "INFO"
+  ],
+  [
+   5,
+   "Note: test field",
+   "—",
+   "My first click added a palette Phone field (\"Phone 2\"); removed — layout restored from backup, field deleted",
+   "INFO"
+  ]
+ ]
+}

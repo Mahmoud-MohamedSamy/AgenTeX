@@ -1,0 +1,1 @@
+const r=await api('GET','/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/views'); const v=(r.j.data.views||[]); const p=await api('GET','/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/list-preferences'); return {n:v.length, names:v.map(x=>x.name+(x.is_system?'(sys)':'')+':'+x.kind).slice(0,20), prefs:p.s+' '+p.t.slice(0,600)};

@@ -1,0 +1,2 @@
+const a = await __z('GET','/api/v1/teams?departmentId=1475109000000426945'); const b = await __z('GET','/api/v1/agents?limit=50&status=ACTIVE'); const c = await __z('GET','/api/v1/assignmentRules?departmentId=1475109000000426945&module=tickets');
+return { teams: a.s+' '+JSON.stringify((a.j?.teams||a.j?.data||[]).map(t=>({id:t.id,name:t.name}))), agents: b.s+' '+JSON.stringify((b.j?.data||[]).map(x=>({id:x.id,name:x.name,dept:x.associatedDepartmentIds}))), ar: c.s+' '+c.t.slice(0,300) };

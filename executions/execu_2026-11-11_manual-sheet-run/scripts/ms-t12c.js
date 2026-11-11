@@ -1,0 +1,1 @@
+module.exports=async()=>{const R={};for(const p of ['/desk/ticket-access','/desk/settings/ticket-access','/iam/profiles?app_key=desk','/iam/profiles','/desk/departments/b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6/team-assignment']){const r=await api('GET',p);R[p]=r.s+' '+r.t.slice(0,600);}return R;};

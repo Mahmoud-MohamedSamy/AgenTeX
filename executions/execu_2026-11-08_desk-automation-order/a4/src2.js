@@ -1,0 +1,10 @@
+const s=(await api('GET','/workflow/custom-actions/sources/07a210f6-0998-4d59-a4da-5ed9d731c70a')).j?.data||{};const o={};for(const [k,v] of Object.entries(s))o[k]=typeof v==='object'?JSON.stringify(v).slice(0,80):v;delete o.id;
+const W=JSON.parse(fs.readFileSync('../a4/webhook-token.json','utf8')).uuid;
+const spec=JSON.stringify({openapi:'3.0.0',info:{title:'QA AO WF P22',version:'1'},servers:[{url:'https://webhook.site/'}],paths:{['/'+W+'/qa-ao-wf-p22']:{get:{operationId:'qaEcho',responses:{'200':{description:'ok'}}}}}});const body={name:'QA AO WF P22 source',baseUrl:'https://webhook.site/',specFormat:'openapi3',origin:'paste',spec,specText:spec,content:spec,authKind:'none'};
+for(const k of Object.keys(body))if(body[k]===undefined)delete body[k];
+const r=await api('POST','/workflow/custom-actions/sources',body);const id=r.j?.data?.id;if(id)track('apiSource',id,'P22');
+let ca=null,CA=null;if(id){ca=await api('POST','/workflow/custom-actions',{sourceId:id,name:'QA AO WF P22 echo',description:'A4 P22, delete after',method:'GET',path:'/'+W+'/qa-ao-wf-p22',targetApps:['desk'],status:'active',inputBindings:[],dependencies:[],errorMappings:[],outputMappings:[]});CA=ca.j?.data?.id;if(CA)track('customAction',CA,'P22');}
+let pub=null,rule=null,t=null,ex=null;if(CA){pub=(await api('POST',`/workflow/custom-actions/${CA}/publish`,{})).s;rule=await mkRule('P22',{kind:'RecordCreated'},[{type:'RunCustomAction',customActionId:CA,customActionInputs:{}}]);t=await mkTicket('P22');await sleep(20000);
+ ex=arr2((await api('GET','/workflow/executions?recordId='+t.id)).j?.data).filter(e=>e.ruleId===rule.id).map(e=>e.outcome+' '+(e.dispatches||[]).map(d=>d.actionType+':'+d.status+' '+d.responseStatus+' '+String(d.responseBodyTruncated||d.lastError||'').slice(0,100)).join('|'));}
+let hits=null;if(CA){const h=await fetch('https://webhook.site/token/'+W+'/requests?sorting=newest');const j=await h.json();hits=(j.data||[]).filter(x=>/qa-ao-wf-p22/.test(x.url||'')).length;}
+return {srcFields:o,src:[r.s,id?null:r.t.slice(0,250)],ca:ca&&[ca.s,CA?null:ca.t.slice(0,200)],pub,rule:rule&&(rule.s+(rule.err||'')),ex,hits};

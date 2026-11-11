@@ -1,0 +1,21 @@
+// Skills regression in QA AS6 Dept A: NDC-2821 (types per dept), H-07/H-12/E-14 (skill added on create, skill RR same event). Restores the borrowed QA AS6 skill.
+const D='b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6',T='88e8ea44-1658-4df3-9930-d0902b91073d';const m=JSON.parse(fs.readFileSync('../ar1-made.json','utf8'));
+const A1='876ce871-2b02-4854-89a7-68050391c62b',A2='d23fb4e0-248d-41f6-af60-d28885a7007e',A3='5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4';const N={[A1]:'A1',[A2]:'A2',[A3]:'A3'};
+const R={};const u=Math.random().toString(36).slice(2,6);
+const types=async d=>((await api('GET','/desk/skill-types?department_id='+d)).j?.data?.types||[]).map(t=>t.name).join('|');
+R['NDC-2821']={AS6A:await types(D),AS6B:await types('ce1d8a43-07df-4b37-891c-cc8b2eceec6f'),AOA:await types('93949fbd-f9df-4e2e-ae45-00b8dc38385b')};
+const s=(await api('GET','/desk/skills?department_id='+D)).j?.data;const L=Array.isArray(s)?s:(s?.skills||[]);
+const sk=L.find(x=>x.is_active&&/^QA AS6/.test(x.name)&&!/img/.test(x.name));const orig=JSON.parse(JSON.stringify(sk));R.borrowed=sk.name+' agents='+sk.agent_ids.map(i=>N[i]||'x').join(',');
+const key='AOSKILL'+u;
+const put=await api('PUT','/desk/skills/'+sk.id,{name:sk.name,type_id:sk.type_id,description:sk.description,is_active:true,criteria:{conditions:[{field_key:'description',operator:'contains',value:key}],pattern:null},agent_ids:[A2]});
+R.skillPut=put.s+(put.s>=300?' '+put.t.slice(0,250):'');
+const rr=await api('POST','/desk/assignment-rules',{type:'round_robin',department_id:D,name:'QA AO RR skill '+u,description:'QA',is_active:true,execute_on:['create','update'],targets:[{criteria:{conditions:[{field_key:'description',operator:'contains',value:'AOSKR'+u}],pattern:null},method:'skill',pool:{kind:'agents',user_ids:[A1,A2,A3],team_id:null,excluded_user_ids:[]}}]});
+R.rule=rr.s;if(rr.j?.data?.id)m.rules.push(rr.j.data.id);
+const f=(k,v)=>({field:k,value:{kind:'string',value:v}});
+const tk=async(desc,i)=>{const r=await api('POST','/modules/'+T+'/records',{data:[f('subject','QA AO skill '+i),f('description','QA AO '+desc),f('department',D),f('status','Open'),f('priority','high'),{field:'owner',value:{kind:'null'}}]});const id=r.j?.data?.id;m.tickets.push(id);await sleep(6000);
+ const d=(await api('GET','/modules/'+T+'/records/'+id)).j?.data?.data||[];const v=d.find(x=>x.field==='owner')?.value?.value;
+ const sks=(await api('GET','/desk/tickets/'+id+'/skills')).t.match(/"name":"[^"]+"/g);return {owner:N[v]||v||'none',skills:sks};};
+R.withSkill=[];for(let i=1;i<=3;i++)R.withSkill.push(await tk(key+' AOSKR'+u+' '+i,i));
+R.noSkill=[];for(let i=4;i<=6;i++)R.noSkill.push(await tk('AOSKR'+u+' '+i,i));
+R.restore=(await api('PUT','/desk/skills/'+sk.id,{name:orig.name,type_id:orig.type_id,description:orig.description,is_active:orig.is_active,criteria:orig.criteria,agent_ids:orig.agent_ids})).s;
+fs.writeFileSync('../ar1-made.json',JSON.stringify(m));return R;

@@ -1,0 +1,1 @@
+const out = {}; for (const u of ['/api/v1/recycleBin?limit=100','/api/v1/recycleBin?module=tickets&limit=100','/api/v1/recycleBin/tickets?limit=100']) { const r = await __z('GET',u); out[u] = r.s+' '+(r.j?.data? 'items '+r.j.data.length+' sample '+JSON.stringify(r.j.data[0]).slice(0,300) : r.t.slice(0,200)); } return out;

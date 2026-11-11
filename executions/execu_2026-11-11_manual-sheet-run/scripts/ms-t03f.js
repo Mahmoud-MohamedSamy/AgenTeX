@@ -1,0 +1,8 @@
+const L=require('./lib');module.exports=async()=>{const R={};try{await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+'/views/all/tickets',{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/Agent Queue/.test(document.body.innerText),null,{timeout:120000}).catch(()=>{});
+ await pg.getByText('Agent Queue',{exact:true}).first().click();await pg.waitForTimeout(8000);R.url=pg.url();
+ R.side=await pg.evaluate(()=>[...document.querySelectorAll('aside a, nav a')].map(a=>a.innerText.replace(/\s+/g,' ').trim()).filter(t=>/\d+$/.test(t)&&!/Tickets|Views/.test(t)).slice(0,14));R.lanes=(await L.body_txt()).match(/(Open|On Hold|Escalated|Closed) \d+/g);await L.shot('t03-05-agent-queue');
+ if(process.env.AR){await pg.getByRole('button',{name:/^EN$/}).first().click();await pg.waitForTimeout(1200);await pg.locator('[role=menuitem],[role=menuitemradio],[role=option],button').filter({hasText:'العربية'}).first().click();await pg.waitForTimeout(6000);
+  await pg.goto(R.url,{waitUntil:'commit'});await pg.waitForTimeout(9000);R.arAgent={dir:await pg.evaluate(()=>document.documentElement.dir),text:(await L.body_txt()).replace(/^.*?(قائمة انتظار الوكيل)/,'$1').slice(0,250)};await L.shot('t03-06-ar-agent');
+  await pg.goto(H+'/team-queue',{waitUntil:'commit'}).catch(()=>{});await pg.waitForTimeout(9000);R.arTeam={url:pg.url(),text:(await L.body_txt()).slice(-350)};await L.shot('t03-06-ar-team');
+  const back=pg.getByRole('button',{name:/^AR$/}).first();if(await back.count()){await back.click();await pg.waitForTimeout(1200);await pg.locator('[role=menuitem],[role=menuitemradio],[role=option],button').filter({hasText:'English'}).first().click();await pg.waitForTimeout(4000);}}
+ }catch(x){R.err=String(x.message).slice(0,140);}return R;};

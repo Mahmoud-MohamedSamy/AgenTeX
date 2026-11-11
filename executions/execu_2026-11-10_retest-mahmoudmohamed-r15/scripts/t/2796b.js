@@ -1,0 +1,11 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15';
+const LED=m=>fs.appendFileSync(RUN+'/ledger.md','- '+new Date().toISOString().slice(0,19)+' DESK '+m+'\n');
+const T='88e8ea44-1658-4df3-9930-d0902b91073d', ACC='c0e05c3e-aa51-47ef-be50-53fd4c6edcb1', ADM='d1e6505d-ad05-45d0-bd8a-8f3f1eca96cb';
+const E=r=>r.j&&r.j.error?r.j.error.code+': '+r.j.error.message+' '+JSON.stringify(r.j.error.details||'').slice(0,300):'';
+const cur = (await api('GET','/modules/'+T+'/layouts/'+ADM)).j.data;
+fs.writeFileSync(RUN+'/out/2796-adm-layout-backup.json', JSON.stringify(cur));
+const body = JSON.parse(JSON.stringify(cur)); body.departmentIds=[ACC]; body.defaultDepartmentIds=[ACC];
+const r = await api('PUT','/modules/'+T+'/layouts/'+ADM, body);
+if (r.s<300) LED('layout QA NDC ADM assigned to QA NDC Accounting + default (backup out/2796-adm-layout-backup.json; restore departmentIds=[] defaultDepartmentIds=[])');
+const after = (await api('GET','/modules/'+T+'/layouts/'+ADM)).j.data;
+return {put:r.s, e:E(r), depts:after.departmentIds, defaults:after.defaultDepartmentIds};

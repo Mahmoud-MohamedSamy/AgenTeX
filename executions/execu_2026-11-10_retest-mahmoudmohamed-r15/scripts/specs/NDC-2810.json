@@ -1,0 +1,174 @@
+{
+ "verdict": "PARTIAL",
+ "title": "CRM ⇄ Desk sync: records deleted in either app should be unlinked, not reported as failures",
+ "env": "NDC-Staging · Desk (staging-desk) · owner · integration on (contacts/accounts/deals)",
+ "panels": [
+  {
+   "img": "2810-failure-log.png",
+   "caption": "Failure Log today: B04 \"A field Desk requires is empty\" and QA RT15 2810 B \"The CRM record was deleted.\" (Needs attention)",
+   "crop": [
+    383,
+    215,
+    1103,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      495,
+      380,
+      1470,
+      478
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      495,
+      500,
+      1470,
+      630
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      405,
+      225,
+      545,
+      255
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2810-history-after.png",
+   "caption": "Sync History 10 Nov after Sync all customers",
+   "crop": [
+    383,
+    215,
+    1103,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      1144,
+      222,
+      1302,
+      256
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2810-api-card.png",
+   "caption": "API steps",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    423
+   ],
+   "boxes": [
+    {
+     "b": [
+      32,
+      96,
+      1568,
+      141
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      143,
+      1568,
+      209
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      32,
+      211,
+      1568,
+      277
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      279,
+      1568,
+      345
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      32,
+      347,
+      1568,
+      413
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Delete a synced contact in Desk",
+   "Unlinked, not a failure",
+   "Link unlinked, no Failure Log entry",
+   "PASS"
+  ],
+  [
+   2,
+   "Delete a synced contact in CRM",
+   "Unlinked, not a failure",
+   "Link \"needs attention\", Failure Log \"The CRM record was deleted.\"; Desk contact kept",
+   "FAIL"
+  ],
+  [
+   3,
+   "Sync all customers: Desk-deleted records",
+   "Left out, not failures",
+   "Counted as Ignored (9 in recycle bin, 2 up to date)",
+   "PASS"
+  ],
+  [
+   4,
+   "Sync all customers: failures",
+   "Only real failures",
+   "1 failure \"B04\" (Last Name empty), a record in neither customer list",
+   "FAIL"
+  ],
+  [
+   5,
+   "Failure Log size",
+   "—",
+   "167 could not sync (ticket: 372)",
+   "INFO"
+  ]
+ ],
+ "ticket": "NDC-2810",
+ "date": "10 Nov 2026",
+ "out": "NDC-2810-retest-PARTIAL.png"
+}

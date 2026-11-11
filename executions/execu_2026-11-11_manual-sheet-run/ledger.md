@@ -1,0 +1,174 @@
+- 2026-11-11T11:51:39 MS setup contact "QA MAN Contact 1" bc1b1c62-c31a-40ec-a089-cfcdcc6864b1 (M1)
+- 2026-11-11T12:12:10 MS T-04-01 ticket "QA MAN phone 01" 46bcd097-ad0e-4901-941e-16a2cfcefc39 #2860
+- 2026-11-11T12:28:25 MS T-04-01 ticket "QA MAN phone 01" (Marketing) 2a652794-99be-4720-b805-4c54f91cfd5f #2870
+- 2026-11-11T12:30:08 MS T-04-03 ticket "QA MAN nodept" 17b78984-98ff-44b9-91b7-20e08577dc6c
+- 2026-11-11T12:30:41 MS T-04-04 ticket 255 3a5b8063-18ad-43c7-906f-4fc3e1a9552d
+- 2026-11-11T12:31:35 MS T-04-04 ticket 1000 23e8d1c6-a16e-44aa-b2a2-5a7aa999d01f
+- 2026-11-11T12:36:58 MS T-04-09 ticket "QA MAN AR 01" a48ba813-85ad-447a-b0f1-65468379d9f7
+- 2026-11-11T12:43:41 MS T-04-06 template "QA MAN template" 83ced9cf-ecd7-4b10-955f-e2d414cd457b
+- 2026-11-11T13:16:37 MS T-04-02 Agent C ticket "QA MAN chat 01" f5a3d5de-0543-45d5-993f-45fabd7bacd0
+- 2026-11-11T13:17:17 MS T-04-08 Agent C API ticket in Marketing 7a22612a-32f2-4760-97bc-5a52297ef970
+- 2026-11-11T13:22:08 MS clean ticket "QA MAN agent API Marketing" 7a22612a-32f2-4760-97bc-5a52297ef970 204
+- 2026-11-11T13:22:09 MS clean ticket "QA MAN agent into Marketing" 4fb6fd02-fd2d-41d1-98c9-311225b16cb3 204
+- 2026-11-11T13:22:09 MS clean ticket "QA MAN chat 01" f5a3d5de-0543-45d5-993f-45fabd7bacd0 204
+- 2026-11-11T13:22:10 MS clean ticket "QA MAN from template" 465c2852-1927-4e80-a2a7-c5cc068f717c 204
+- 2026-11-11T13:22:12 MS clean ticket "QA MAN AR 01" a48ba813-85ad-447a-b0f1-65468379d9f7 204
+- 2026-11-11T13:22:12 MS clean ticket "QA MAN long1000 zzzzzzzzzzzzzzzzzzzzzzzz" 23e8d1c6-a16e-44aa-b2a2-5a7aa999d01f 204
+- 2026-11-11T13:22:15 MS clean ticket "QA MAN long عربي 😀 <b>x</b> yyyyyyyyyyy" 3a5b8063-18ad-43c7-906f-4fc3e1a9552d 204
+- 2026-11-11T13:22:16 MS clean ticket "QA MAN nodept" 17b78984-98ff-44b9-91b7-20e08577dc6c 204
+- 2026-11-11T13:22:18 MS clean ticket "QA MAN phone 01" 2a652794-99be-4720-b805-4c54f91cfd5f 204
+- 2026-11-11T13:22:20 MS clean ticket "QA MAN phone 01" 46bcd097-ad0e-4901-941e-16a2cfcefc39 204
+- 2026-11-11T13:22:22 MS clean template 83ced9cf-ecd7-4b10-955f-e2d414cd457b 204
+- 2026-11-11T13:23:05 MS clean purged 10 from bin
+- 2026-11-11T13:25:35 MS T-05 ticket "QA MAN phone 01" 002c5edc-645a-4651-8cf1-da006381a619
+- 2026-11-11T13:42:16 MS T-05-06 ticket "QA MAN two editors" 27cfbbd9-656b-4de1-900d-6dfa192312ed
+- 2026-11-11T13:53:38 MS clean ticket "QA MAN two editors" 27cfbbd9-656b-4de1-900d-6dfa192312ed 204
+- 2026-11-11T13:53:38 MS clean ticket "QA MAN phone 01 edited" 002c5edc-645a-4651-8cf1-da006381a619 204
+- 2026-11-11T13:53:50 MS clean purged 2 from bin
+- 2026-11-11T13:55:26 MS T-06 ticket "QA MAN reply 01" 6aa58f84-b301-4379-910f-0576da880277
+- 2026-11-11T14:14:19 MS T-06-09 share ticket 6aa58f84-b301-4379-910f-0576da880277 read_only to Customer Support 405
+- 2026-11-11T14:19:04 MS T-06-09 share ticket 6aa58f84-b301-4379-910f-0576da880277 read_only to Customer Support 405
+- 2026-11-11T14:20:12 MS T-06-09 share read_only to CS on 6aa58f84-b301-4379-910f-0576da880277 via PUT
+- 2026-11-11T15:04:26 MS T-06-05 owner signature for Marketing set (to remove)
+- 2026-11-11T15:10:46 MS T-06-05 Marketing signature removal: {"success":true,"data":{"signatures":[]},"error":null,"meta":null}
+- 2026-11-11T15:25:50 MS clean ticket "QA MAN reply 01" 6aa58f84-b301-4379-910f-0576da880277 204
+- 2026-11-11T15:26:00 MS clean purged 1 from bin
+- 2026-11-11T15:29:28 MS T-07 ticket "QA MAN comment 01" acc2f8ca-4f3d-42ea-a3a1-65c4d79c6800
+- 2026-11-11T15:53:56 MS clean ticket "QA MAN comment 01" acc2f8ca-4f3d-42ea-a3a1-65c4d79c6800 204
+- 2026-11-11T15:54:06 MS clean purged 1 from bin
+- 2026-11-11T15:55:07 MS T-12 ticket "QA MAN assign 01" (Manual Invoice) 85a9cd12-a2ed-4330-9655-3a58513b75c3
+- 2026-11-11T16:05:16 MS T-12-02 ticket "QA MAN team 01" (QA AS6 Dept A) 19fbc047-5f2d-4687-b979-5d0e4012a7d9
+- 2026-11-11T16:08:38 MS clean ticket "QA MAN team 01" 19fbc047-5f2d-4687-b979-5d0e4012a7d9 204
+- 2026-11-11T16:08:39 MS clean ticket "QA MAN assign 01" 85a9cd12-a2ed-4330-9655-3a58513b75c3 204
+- 2026-11-11T16:08:49 MS clean purged 2 from bin
+- 2026-11-11T16:09:45 MS T-13 ticket "QA MAN status 01" b45447ca-9702-4d02-beff-f25ac79271fa
+- 2026-11-11T16:10:48 MS T-13 ticket "QA MAN status 02" 070b462f-cab5-4ef1-ab28-ff57fe9c6118
+- 2026-11-11T16:16:29 MS T-13-07 ticket "QA MAN agent close" 43acf6ea-3281-4be2-818e-bfa251e94172
+- 2026-11-11T16:17:53 MS clean ticket "QA MAN agent close" 43acf6ea-3281-4be2-818e-bfa251e94172 204
+- 2026-11-11T16:17:53 MS clean ticket "QA MAN status 02" 070b462f-cab5-4ef1-ab28-ff57fe9c6118 204
+- 2026-11-11T16:17:54 MS clean ticket "QA MAN status 01" b45447ca-9702-4d02-beff-f25ac79271fa 204
+- 2026-11-11T16:18:01 MS clean purged 3 from bin
+- 2026-11-11T16:18:42 MS T-01 ticket "QA MAN view A" 528cd1fb-1f16-446e-9483-8b9043f638cd
+- 2026-11-11T16:18:46 MS T-01 ticket "QA MAN view B" cfc6b2a4-bf2d-445f-b2a6-5aa3a38246d9
+- 2026-11-11T16:18:49 MS T-01 ticket "QA MAN view C" 56576a51-dd87-4541-b8db-38991b1591de
+- 2026-11-11T16:18:52 MS T-01 ticket "QA MAN view D" be1c9db4-2efe-4ed2-931e-c79b85d39036
+- 2026-11-11T16:18:55 MS T-01 ticket "QA MAN view E" 70400d7b-2404-47d4-a3ff-6dbd880a04e0
+- 2026-11-11T16:33:27 MS clean ticket "QA MAN view E" 70400d7b-2404-47d4-a3ff-6dbd880a04e0 204
+- 2026-11-11T16:33:28 MS clean ticket "QA MAN view D" be1c9db4-2efe-4ed2-931e-c79b85d39036 204
+- 2026-11-11T16:33:28 MS clean ticket "QA MAN view C" 56576a51-dd87-4541-b8db-38991b1591de 204
+- 2026-11-11T16:33:29 MS clean ticket "QA MAN view B" cfc6b2a4-bf2d-445f-b2a6-5aa3a38246d9 204
+- 2026-11-11T16:33:29 MS clean ticket "QA MAN view A" 528cd1fb-1f16-446e-9483-8b9043f638cd 204
+- 2026-11-11T16:33:36 MS clean purged 6 from bin
+- 2026-11-11T16:34:01 MS clean view QA MAN view aa86e48f 204
+- 2026-11-11T16:34:19 MS clean purged 1 from bin
+- 2026-11-11T16:35:11 MS T-02 ticket "QA MAN mode 1" 9524e132-eefa-4dd7-9eaa-03ace638b4d2
+- 2026-11-11T16:35:12 MS T-02 ticket "QA MAN mode 2" e00ca860-cc39-4dcf-bc8b-c2de3d4a04c0
+- 2026-11-11T16:35:13 MS T-02 ticket "QA MAN mode 3" b3933107-5325-4192-9f45-ee91b27a265a
+- 2026-11-11T16:35:14 MS T-02 ticket "QA MAN mode 4" 905d3a59-04f7-4227-8d52-b5520aed2d95
+- 2026-11-11T16:35:14 MS T-02 ticket "QA MAN mode 5" b1a3b6b3-a33e-4d22-a5ee-d9d85f327cfd
+- 2026-11-11T16:35:15 MS T-02 view "QA MAN modes" a4f4c75b-245c-4c74-9ac8-36275391708b
+- 2026-11-11T16:44:17 MS clean ticket "QA MAN mode 5" b1a3b6b3-a33e-4d22-a5ee-d9d85f327cfd 204
+- 2026-11-11T16:44:18 MS clean ticket "QA MAN mode 4" 905d3a59-04f7-4227-8d52-b5520aed2d95 204
+- 2026-11-11T16:44:18 MS clean ticket "QA MAN mode 3" b3933107-5325-4192-9f45-ee91b27a265a 204
+- 2026-11-11T16:44:18 MS clean ticket "QA MAN mode 2" e00ca860-cc39-4dcf-bc8b-c2de3d4a04c0 204
+- 2026-11-11T16:44:19 MS clean ticket "QA MAN mode 1" 9524e132-eefa-4dd7-9eaa-03ace638b4d2 204
+- 2026-11-11T16:44:25 MS clean purged 5 from bin
+- 2026-11-11T16:44:47 MS clean view a4f4c75b-245c-4c74-9ac8-36275391708b 204
+- 2026-11-11T16:45:13 MS T-03 ticket "QA MAN q owner 1" 089f0a94-69a0-4d7d-8b37-97c648ea9da0
+- 2026-11-11T16:45:14 MS T-03 ticket "QA MAN q owner 2" c41813cd-3329-43b9-b379-ba831051a6f9
+- 2026-11-11T16:45:15 MS T-03 ticket "QA MAN q adminb 1" 8c67ae10-7885-49a6-bc2d-23d0b1fd4f6b
+- 2026-11-11T16:45:18 MS T-03 ticket "QA MAN q adminb 2" 9ad63ef0-391e-4d8d-b26b-cfbc6ab5cba2
+- 2026-11-11T17:00:50 MS clean ticket "QA MAN q adminb 2" 9ad63ef0-391e-4d8d-b26b-cfbc6ab5cba2 204
+- 2026-11-11T17:00:50 MS clean ticket "QA MAN q adminb 1" 8c67ae10-7885-49a6-bc2d-23d0b1fd4f6b 204
+- 2026-11-11T17:00:51 MS clean ticket "QA MAN q owner 2" c41813cd-3329-43b9-b379-ba831051a6f9 204
+- 2026-11-11T17:00:52 MS clean ticket "QA MAN q owner 1" 089f0a94-69a0-4d7d-8b37-97c648ea9da0 204
+- 2026-11-11T17:00:59 MS clean purged 5 from bin
+- 2026-11-11T17:01:39 MS T-14 ticket "QA MAN move 01" d3d917b4-3d1c-49ba-a0b1-c55606d38620
+- 2026-11-11T17:03:42 MS T-14 ticket "QA MAN move 02" 6152f643-b1bd-4e89-8e6d-eb60fd180ea8
+- 2026-11-11T17:04:27 MS T-14 ticket "QA MAN move agent" c432a29b-b6b8-4c82-b5cd-a52fb778a5e4
+- 2026-11-11T17:09:52 MS clean ticket "QA MAN move agent" c432a29b-b6b8-4c82-b5cd-a52fb778a5e4 204
+- 2026-11-11T17:09:52 MS clean ticket "QA MAN move 02" 6152f643-b1bd-4e89-8e6d-eb60fd180ea8 204
+- 2026-11-11T17:09:52 MS clean ticket "QA MAN move 01" d3d917b4-3d1c-49ba-a0b1-c55606d38620 204
+- 2026-11-11T17:10:03 MS clean purged 3 from bin
+- 2026-11-11T17:10:49 MS T-15 ticket "QA MAN share 01" 44ffe36e-dd13-4084-b339-bb014a67e158
+- 2026-11-11T17:21:54 MS clean ticket "QA MAN share 01" 44ffe36e-dd13-4084-b339-bb014a67e158 204
+- 2026-11-11T17:22:00 MS clean purged 1 from bin
+- 2026-11-11T17:22:45 MS T-16 ticket "QA MAN merge A" 1dcf207e-77d1-4457-98da-83c7997bb037
+- 2026-11-11T17:22:47 MS T-16 ticket "QA MAN merge B" c290cd32-6061-40fd-8731-de317f739d08
+- 2026-11-11T17:22:48 MS T-16 ticket "QA MAN merge Sales" 34c46cc5-9569-49d4-be0a-3a3717753ce1
+- 2026-11-11T17:29:22 MS T-16-06 ticket "QA MAN agent merge 1" 4ca3572d-3439-4beb-abe4-896ab657873e
+- 2026-11-11T17:29:23 MS T-16-06 ticket "QA MAN agent merge 2" 864f2bc7-fdc3-4137-9735-e5e5f83b9b51
+- 2026-11-11T17:33:50 MS clean ticket "QA MAN agent merge 2" 864f2bc7-fdc3-4137-9735-e5e5f83b9b51 204
+- 2026-11-11T17:33:50 MS clean ticket "QA MAN agent merge 1" 4ca3572d-3439-4beb-abe4-896ab657873e 204
+- 2026-11-11T17:33:51 MS clean ticket "QA MAN merge Sales" 34c46cc5-9569-49d4-be0a-3a3717753ce1 204
+- 2026-11-11T17:33:51 MS clean ticket "QA MAN merge B" c290cd32-6061-40fd-8731-de317f739d08 204
+- 2026-11-11T17:33:51 MS clean ticket "QA MAN merge A" 1dcf207e-77d1-4457-98da-83c7997bb037 204
+- 2026-11-11T17:33:57 MS clean purged 5 from bin
+- 2026-11-11T17:34:40 MS T-10 ticket "QA MAN reply 01" 6563cfed-e48a-40a1-ad45-30b4d473caf5
+- 2026-11-11T17:36:47 MS T-10 snippet qa_man_snippet
+- 2026-11-11T17:38:30 MS T-10 snippet qa_man_unknown
+- 2026-11-11T17:43:18 MS T-10 snippet qa_man_ar
+- 2026-11-11T17:46:03 MS T-10-06 ticket 44f8b333-2b4f-4de6-a1ea-9ba6dc5e1166
+- 2026-11-11T17:48:32 MS clean snippet qa_man_ar 204
+- 2026-11-11T17:48:34 MS clean snippet qa_man_unknown 204
+- 2026-11-11T17:48:36 MS clean snippet qa_man_snippet 204
+- 2026-11-11T17:48:51 MS clean ticket "QA MAN agent snip" 44f8b333-2b4f-4de6-a1ea-9ba6dc5e1166 204
+- 2026-11-11T17:48:52 MS clean ticket "QA MAN reply 01" 6563cfed-e48a-40a1-ad45-30b4d473caf5 204
+- 2026-11-11T17:48:59 MS clean purged 2 from bin
+- 2026-11-11T17:49:43 MS T-21 ticket "QA MAN delete 01" 3c738c4b-d185-4999-8297-2c94f26ce27f
+- 2026-11-11T17:54:09 MS T-21-05 ticket 3f6f85eb-5bb5-4455-8d7a-2235b454631b
+- 2026-11-11T17:57:34 MS clean ticket "QA MAN agent delete" 3f6f85eb-5bb5-4455-8d7a-2235b454631b 204
+- 2026-11-11T17:57:40 MS clean purged 1 from bin
+- 2026-11-11T17:58:40 MS T-24 ticket "QA MAN attach 01" 0c4201f2-8b87-41af-bb9a-7ac58bcfde7a
+- 2026-11-11T18:23:41 MS clean ticket "QA MAN attach 01" 0c4201f2-8b87-41af-bb9a-7ac58bcfde7a 204
+- 2026-11-11T18:23:47 MS clean purged 1 from bin
+- 2026-11-11T18:25:19 MS T-25 ticket "QA MAN collision" 7df52a50-28cb-498b-9b6d-40f4e01a7a74
+- 2026-11-11T18:38:41 MS clean ticket "QA MAN collision" 7df52a50-28cb-498b-9b6d-40f4e01a7a74 204
+- 2026-11-11T18:38:46 MS clean purged 1 from bin
+- 2026-11-11T18:39:37 MS T-31 ticket "QA MAN bulk 1" c4d740b9-79c3-4a3b-85bc-0e80b3a9b658
+- 2026-11-11T18:39:38 MS T-31 ticket "QA MAN bulk 2" e6f54e92-7f79-4443-ac0a-b599070a5586
+- 2026-11-11T18:39:40 MS T-31 ticket "QA MAN bulk 3 عربي" e5bad916-7b02-49d3-963b-80cfb1b5d08e
+- 2026-11-11T18:46:19 MS T-31-07 ticket c49bcf2f-605f-4fb7-9286-6f1b34642f86
+- 2026-11-11T18:46:23 MS T-31-07 ticket b34033a3-8986-49cc-8682-ba4ab1fc668b
+- 2026-11-11T18:47:54 MS clean ticket "QA MAN agent bulk 2" b34033a3-8986-49cc-8682-ba4ab1fc668b 204
+- 2026-11-11T18:47:54 MS clean ticket "QA MAN agent bulk 1" c49bcf2f-605f-4fb7-9286-6f1b34642f86 204
+- 2026-11-11T18:47:54 MS clean ticket "QA MAN bulk 3 عربي" e5bad916-7b02-49d3-963b-80cfb1b5d08e 204
+- 2026-11-11T18:47:54 MS clean ticket "QA MAN bulk 2" e6f54e92-7f79-4443-ac0a-b599070a5586 204
+- 2026-11-11T18:47:55 MS clean ticket "QA MAN bulk 1" c4d740b9-79c3-4a3b-85bc-0e80b3a9b658 204
+- 2026-11-11T18:48:06 MS clean purged 5 from bin
+- 2026-11-11T19:00:03 MS U-04 rule "QA MAN wf share" a783b898-a799-4b56-bd43-6e034e35cde8
+- 2026-11-11T19:00:04 MS U-04 rule "QA MAN wf delayed" d7b12a05-4a92-49c6-9c4c-b8b2aeb75c1c
+- 2026-11-11T19:00:05 MS U-04 rule "QA MAN wf loop A" e3d7c2b8-13b7-44f3-b321-8da1fb7917ab
+- 2026-11-11T19:00:05 MS U-04 rule "QA MAN wf loop B" 21ec2a9f-2e14-4e01-9436-65cce960aca7
+- 2026-11-11T19:00:07 MS U-04 ticket "QA MAN wf 01" 1f947590-ffc7-4c67-a9b4-20f5a5a30a4e
+- 2026-11-11T19:00:07 MS U-04 ticket "QA MAN pat both" 61d51b79-0df9-4792-939c-23ea8fe8c6b2
+- 2026-11-11T19:00:09 MS U-04 ticket "Zq other 3" 77798b04-a761-41c9-b0a8-3945210c8ad1
+- 2026-11-11T19:00:10 MS U-04 ticket "QA MAN pat only1" c395149e-4dbb-4a9b-9452-b96f15afe35c
+- 2026-11-11T19:00:11 MS U-04 ticket "QA MAN delay 01" d91916bc-391c-452e-acf8-6e5a3dc752a9
+- 2026-11-11T19:00:12 MS U-04 ticket "QA MAN delay cancel" b24afa48-2933-4fc4-afc7-f7725c3b880d
+- 2026-11-11T19:00:13 MS U-04 ticket "Zq non matching subject" c54b21b6-aab7-425e-891b-7627a073162e
+- 2026-11-11T19:00:15 MS U-04 ticket "QA MAN loop 01" 5ebdb4d1-7ea4-4c5d-a64d-6adfbb5afadb
+- 2026-11-11T19:07:38 MS U-04 rule "QA MAN wf pattern" 21286ca4-d0fe-4780-93bc-6bb5c27e03f1
+- 2026-11-11T19:07:39 MS U-04 rule "QA MAN wf cancel" 214046e4-a2df-49ba-bd21-452fff29317f
+- 2026-11-11T19:07:40 MS U-04 ticket "QA MAN pat both" ea6ae62f-46a9-48de-bb73-88ae7d89816a
+- 2026-11-11T19:07:41 MS U-04 ticket "Zq other 3" b8d8c108-5ea0-4136-b5f7-3b4a56b17cea
+- 2026-11-11T19:07:41 MS U-04 ticket "QA MAN pat only1" 7a9e7c9b-0284-47f0-bf9d-c2af7f98e80e
+- 2026-11-11T19:07:43 MS U-04 ticket "QA MAN cancel 01" 71bc6def-4c19-4877-856b-a12df4e0557f
+- 2026-11-11T19:07:48 MS U-04 ticket "QA MAN cancel control" 4d1d46c7-ba38-406e-9e79-dfc80c255d0c
+- 2026-11-11T19:20:26 MS clean ticket "QA MAN cancel control" 4d1d46c7-ba38-406e-9e79-dfc80c255d0c 204
+- 2026-11-11T19:20:26 MS clean ticket "QA MAN cancel 01" 71bc6def-4c19-4877-856b-a12df4e0557f 204
+- 2026-11-11T19:20:29 MS clean ticket "QA MAN pat only1" 7a9e7c9b-0284-47f0-bf9d-c2af7f98e80e 204
+- 2026-11-11T19:20:30 MS clean ticket "QA MAN pat both" ea6ae62f-46a9-48de-bb73-88ae7d89816a 204
+- 2026-11-11T19:20:31 MS clean ticket "QA MAN loop 01" 5ebdb4d1-7ea4-4c5d-a64d-6adfbb5afadb 204
+- 2026-11-11T19:20:31 MS clean ticket "QA MAN delay cancel" b24afa48-2933-4fc4-afc7-f7725c3b880d 204
+- 2026-11-11T19:20:31 MS clean ticket "QA MAN delay 01" d91916bc-391c-452e-acf8-6e5a3dc752a9 204
+- 2026-11-11T19:20:32 MS clean ticket "QA MAN pat only1" c395149e-4dbb-4a9b-9452-b96f15afe35c 204
+- 2026-11-11T19:20:33 MS clean ticket "QA MAN pat both" 61d51b79-0df9-4792-939c-23ea8fe8c6b2 204
+- 2026-11-11T19:20:34 MS clean ticket "QA MAN wf 01" 1f947590-ffc7-4c67-a9b4-20f5a5a30a4e 204
+- 2026-11-11T19:20:44 MS clean purged 10 from bin
+- 2026-11-11T19:21:28 MS clean rule QA MAN wf pattern 21286ca4-d0fe-4780-93bc-6bb5c27e03f1 204
+- 2026-11-11T19:21:29 MS clean rule QA MAN wf cancel 214046e4-a2df-49ba-bd21-452fff29317f 204
+- 2026-11-11T19:21:29 MS clean rule QA MAN wf loop B 21ec2a9f-2e14-4e01-9436-65cce960aca7 204
+- 2026-11-11T19:21:30 MS clean rule QA MAN wf share a783b898-a799-4b56-bd43-6e034e35cde8 204
+- 2026-11-11T19:21:30 MS clean rule QA MAN wf delayed d7b12a05-4a92-49c6-9c4c-b8b2aeb75c1c 204
+- 2026-11-11T19:21:31 MS clean rule QA MAN wf loop A e3d7c2b8-13b7-44f3-b321-8da1fb7917ab 204

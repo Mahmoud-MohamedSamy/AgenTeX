@@ -1,0 +1,31 @@
+const L='841043e1-c078-41f9-8d6e-dfd61bee45c3'; const V='800057b7-6125-4d18-9fb7-1c295d98e5b7';
+const reqs=[]; const t0=Date.now(); page.on('request', r => { const u=r.url(); if (/mass-update/.test(u)) reqs.push('REQ +'+(Date.now()-t0)+'ms ids='+(((r.postData()||'').match(/[0-9a-f]{8}-[0-9a-f-]{27}/g)||[]).length)); });
+page.on('requestfailed', r => { if (/mass-update/.test(r.url())) reqs.push('FAILED +'+(Date.now()-t0)+'ms '+(r.failure()&&r.failure().errorText)); });
+page.on('response', r => { if (/mass-update/.test(r.url())) reqs.push('RES +'+(Date.now()-t0)+'ms '+r.status()); });
+await page.goto(H + '/modules/'+L+'?view='+V, { waitUntil: 'domcontentloaded' }); for (let i=0;i<40;i++){ await sleep(2000); if ((await page.$$('tbody tr')).length > 5) break; }
+await sleep(2000);
+await page.locator('select').filter({ has: page.locator('option', {hasText:'200'}) }).selectOption('200'); await sleep(6000);
+await page.getByRole('button', {name:'Next page'}).click(); for (let i=0;i<30;i++){ await sleep(2000); if (/201–400 of 450/.test(await text()) && (await page.$$('tbody tr')).length>100) break; } await sleep(3000);
+log('page', ((await text()).match(/\d+–\d+ of \d+/)||[''])[0]);
+await page.locator('thead input[type=checkbox]').first().click(); await sleep(2500);
+log('chip', ((await text()).match(/\d+ selected/)||[''])[0]);
+await page.getByRole('button', {name:'Module actions'}).click(); await sleep(1200);
+await page.getByRole('menuitem', {name:'Mass Update'}).click(); await sleep(3000);
+const d = page.locator('[role=dialog]').last();
+await d.getByText('Choose a field').click(); await sleep(1200);
+const opt = page.getByRole('option', {name:'Lead Source', exact:true}); if (await opt.count()) await opt.first().click(); else await page.getByText('Lead Source', {exact:true}).last().click();
+await sleep(1500);
+const box = d.getByText('Lead Source', {exact:true}).last().locator('xpath=following::*[1]'); await box.click(); await sleep(1200);
+const ro = page.getByRole('option', {name:/^Referral$/i}); if (await ro.count()) await ro.first().click(); else await page.getByText(/^Referral$/i).last().click();
+await sleep(800); await page.keyboard.press('Escape').catch(()=>{}); await sleep(300);
+log('dialog', (await d.innerText().catch(()=>'gone')).replace(/\n/g,' | ').slice(0,300)); await shot('NDC-2807-mu2-ready.png');
+const wr = page.waitForRequest(r => /mass-update/.test(r.url()), { timeout: 60000 });
+await d.getByRole('button', {name:'Update records'}).click({ noWaitAfter: true });
+await wr; log('request sent +'+(Date.now()-t0)+'ms');
+await sleep(500); await shot('NDC-2807-mu2-running.png');
+// leave mid-run with a full navigation (aborts the browser's request)
+await page.goto(H + '/', { waitUntil: 'commit' }); log('left at +'+(Date.now()-t0)+'ms');
+await sleep(45000);
+await page.goto(H + '/modules/'+L+'?view='+V, { waitUntil: 'domcontentloaded' }); for (let i=0;i<30;i++){ await sleep(2000); if ((await page.$$('tbody tr')).length > 5) break; } await sleep(3000);
+await shot('NDC-2807-mu2-back.png');
+log(reqs);

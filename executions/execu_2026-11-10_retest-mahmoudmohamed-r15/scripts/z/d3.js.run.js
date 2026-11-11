@@ -1,0 +1,5 @@
+async (page) => page.evaluate(async () => { const __z = async (m, u, body) => { const c = (document.cookie.match(/crmcsr=([^;]+)/)||[])[1]||""; const r = await fetch(u,{method:m,credentials:"include",headers:{orgId:"944875504","Content-Type":"application/json","X-ZCSRF-TOKEN":"crmcsrfparam="+c},body:body?JSON.stringify(body):undefined}); const t = await r.text(); let j=null; try{j=JSON.parse(t)}catch(e){} return {s:r.status,j,t:t.slice(0,600)}; };
+const l = await __z('GET','/api/v1/recycleBin?limit=100'); const qa = (l.j.data||[]).filter(x=>/^(#\d+ )?QA RT15 (2823|2794)/.test(x.displayName)); const others = (l.j.data||[]).filter(x=>!qa.includes(x)).map(x=>x.type+': '+x.displayName);
+const first = qa[0]; const r = await __z('DELETE','/api/v1/recycleBin?ids='+first.id);
+const after = await __z('GET','/api/v1/recycleBin?limit=100'); return { qa: qa.length, others, try: r.s+' '+r.t.slice(0,200), after: (after.j?.data||[]).length };
+ })

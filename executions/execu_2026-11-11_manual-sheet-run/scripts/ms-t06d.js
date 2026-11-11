@@ -1,0 +1,3 @@
+const L=require('./lib');module.exports=async()=>{const id=JSON.parse(require('fs').readFileSync(OUT+'/t06-id.json')).id;await L.gotoTicket(id);await pg.waitForTimeout(3000);
+ const acts=pg.getByRole('button',{name:'Conversation entry action'});const n=await acts.count();const vis=[];for(let i=0;i<n;i++)vis.push(await acts.nth(i).isVisible());
+ const html=await pg.evaluate(()=>[...document.querySelectorAll('button[aria-label="Conversation entry action"]')].map(b=>{const r=b.getBoundingClientRect();return Math.round(r.x)+','+Math.round(r.y)+' '+r.width;}));await L.shot('t06-0-thread');return {n,vis,html};};

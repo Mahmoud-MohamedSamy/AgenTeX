@@ -1,0 +1,3 @@
+const l = await __z('GET','/api/v1/recycleBin?limit=100'); const qa = (l.j.data||[]).filter(x=>/^(#\d+ )?QA RT15 (2823|2794)/.test(x.displayName)); const id = qa[0].id; const out = {};
+for (const [m,u,b] of [['POST','/api/v1/recycleBin/delete',{ids:[id]}],['POST','/api/v1/recycleBin/delete?ids='+id,undefined],['DELETE','/api/v1/recycleBin/'+id,undefined]]) { const r = await __z(m,u,b); out[m+' '+u.slice(0,60)] = r.s+' '+r.t.slice(0,150); if (r.s < 300) break; }
+const after = await __z('GET','/api/v1/recycleBin?limit=100'); out.after = (after.j?.data||[]).length; return out;

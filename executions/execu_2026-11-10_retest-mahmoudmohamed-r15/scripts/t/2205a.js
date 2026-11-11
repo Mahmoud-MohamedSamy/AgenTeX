@@ -1,0 +1,2 @@
+const r = await api('GET','/workflow/rules?take=100'); const rules = arr(r.j&&r.j.data); const kinds={}; rules.forEach(x=>{const k=JSON.stringify(x.trigger&&{kind:x.trigger.kind,fieldName:x.trigger.fieldName}); kinds[k]=(kinds[k]||0)+1;}); log(r.s, rules.length, kinds);
+const fc = rules.find(x=>x.trigger&&/Field/i.test(x.trigger.kind)); log(fc && JSON.stringify({trigger:fc.trigger, actions:fc.actions}).slice(0,700));

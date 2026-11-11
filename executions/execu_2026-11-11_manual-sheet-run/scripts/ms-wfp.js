@@ -1,0 +1,3 @@
+module.exports=async()=>{const r=await api('GET','/workflow/rules?moduleId='+T+'&pageSize=200');const l=arr(r.j&&r.j.data);const R={count:l.length,kinds:{},actTypes:{},samples:{}};
+ for(const x of l){const k=x.trigger&&x.trigger.kind;R.kinds[k]=(R.kinds[k]||0)+1;for(const a of (x.actions||[])){R.actTypes[a.type]=(R.actTypes[a.type]||0)+1;if(!R.samples[a.type])R.samples[a.type]=JSON.stringify(a).slice(0,250);}}
+ const withPat=l.find(x=>x.criteria&&x.criteria.pattern);R.critSample=JSON.stringify((withPat||l[0]||{}).criteria).slice(0,500);R.trigSamples=[...new Set(l.map(x=>JSON.stringify(x.trigger).slice(0,200)))].slice(0,6);R.delayed=JSON.stringify((l.find(x=>(x.actions||[]).some(a=>a.delaySeconds>0))||{}).actions||'').slice(0,300);return R;};

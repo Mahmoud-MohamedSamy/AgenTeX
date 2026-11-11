@@ -1,0 +1,3 @@
+module.exports=async()=>{const R={};const ID='8e62087e-ecb0-41cc-8293-8d7c68fda7af';R.del=(await api('DELETE','/modules/'+T+'/records/'+ID)).s;await W(5000);
+ const f=[];let cur='';for(let i=0;i<15;i++){const r=await api('GET','/audit/recycle-bin/items?app_key=desk&limit=200'+(cur?'&cursor='+encodeURIComponent(cur):''));for(const x of arr(r.j&&r.j.data))if(x.record_id===ID)f.push(x.id);cur=r.j&&r.j.meta&&r.j.meta.next_cursor;if(!cur)break;}
+ if(f.length)R.purge=(await api('POST','/audit/recycle-bin/delete',{ids:f})).s;R.after=(await api('GET','/modules/'+T+'/records/'+ID)).s;LED('CL EM-04 rerun PASS; #2661 deleted '+R.del+' purge '+R.purge);return R;};

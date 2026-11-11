@@ -1,0 +1,2 @@
+async (page) => { await page.mouse.click(644,402); await page.waitForTimeout(4000); await page.reload({waitUntil:'domcontentloaded'}); await page.waitForTimeout(35000); await page.screenshot({path:'z/r4.png'});
+ let ft=''; for (const f of page.frames()) { const x = await f.innerText('body').catch(()=>''); if (/Direct Assignment/.test(x)) ft += x; } return { hasRule: ft.includes('QA RT15 2794'), noRules: /no Direct Assignment Rules/i.test(ft) }; }

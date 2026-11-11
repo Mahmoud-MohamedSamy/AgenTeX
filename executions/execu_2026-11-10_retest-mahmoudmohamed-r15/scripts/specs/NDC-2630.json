@@ -1,0 +1,250 @@
+{
+ "out": "NDC-2630-retest-PARTIAL.png",
+ "ticket": "NDC-2630",
+ "title": "Email send result is honest when the provider refuses the sender (fixed); Compose still lets the user try",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging CRM · owner · Zoho mail connection that refuses this sender · leads \"QA RT15 2630 send real\" and \"QA RT15 2630 send\"",
+ "date": "10 Nov 2026",
+ "panels": [
+  {
+   "img": "NDC-2630-card-api.png",
+   "caption": "API calls during the retest (tokens omitted)",
+   "crop": [
+    0,
+    0,
+    1600,
+    380
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      319
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      329,
+      1564,
+      366
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2630-record-emails.png",
+   "caption": "Lead › Emails › Mails: \"Not sent: No Zoho account found…\", Status Failed + Retry",
+   "crop": [
+    290,
+    360,
+    1280,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      358,
+      572,
+      820,
+      592
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1352,
+      545,
+      1545,
+      582
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      360,
+      557,
+      535,
+      573
+     ],
+     "kind": "MASK",
+     "label": "recipient"
+    },
+    {
+     "b": [
+      600,
+      574,
+      814,
+      590
+     ],
+     "kind": "MASK",
+     "label": "account email"
+    },
+    {
+     "b": [
+      1040,
+      553,
+      1288,
+      573
+     ],
+     "kind": "MASK",
+     "label": "account email"
+    }
+   ],
+   "full": true
+  },
+  {
+   "img": "NDC-2630-email-detail.png",
+   "caption": "Message dialog: blue \"Sent\" chip next to the sender, beside the red \"Failed\" chip",
+   "crop": [
+    464,
+    250,
+    672,
+    330
+   ],
+   "boxes": [
+    {
+     "b": [
+      790,
+      342,
+      826,
+      362
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      926,
+      350,
+      972,
+      369
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      534,
+      342,
+      786,
+      362
+     ],
+     "kind": "MASK",
+     "label": "account email"
+    },
+    {
+     "b": [
+      552,
+      363,
+      726,
+      379
+     ],
+     "kind": "MASK",
+     "label": "recipient"
+    },
+    {
+     "b": [
+      494,
+      522,
+      740,
+      541
+     ],
+     "kind": "MASK",
+     "label": "account email"
+    }
+   ]
+  },
+  {
+   "img": "NDC-2630-compose.png",
+   "caption": "Compose Email while sending is refused: no warning, Send enabled",
+   "crop": [
+    352,
+    45,
+    896,
+    810
+   ],
+   "boxes": [
+    {
+     "b": [
+      365,
+      55,
+      1240,
+      105
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      370,
+      805,
+      462,
+      845
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      626,
+      143,
+      802,
+      161
+     ],
+     "kind": "MASK",
+     "label": "recipient"
+    },
+    {
+     "b": [
+      386,
+      726,
+      632,
+      745
+     ],
+     "kind": "MASK",
+     "label": "account email"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Sendability + send through refused sender",
+   "Send fails, no fake success",
+   "can_send false; both sends → 422 with the provider reason; no EmailSent on timeline",
+   "PASS"
+  ],
+  [
+   2,
+   "Record Emails tab",
+   "Shows the mail as not sent",
+   "\"Not sent: …\", Status Failed, Retry button",
+   "PASS"
+  ],
+  [
+   3,
+   "Message dialog status",
+   "Only \"Failed\"",
+   "Shows a blue \"Sent\" chip as well as red \"Failed\"",
+   "FAIL"
+  ],
+  [
+   4,
+   "Compose Email when sending is refused",
+   "Tells the user it can't send / blocks Send",
+   "No notice, Send enabled (same as 28 Oct)",
+   "FAIL"
+  ]
+ ]
+}

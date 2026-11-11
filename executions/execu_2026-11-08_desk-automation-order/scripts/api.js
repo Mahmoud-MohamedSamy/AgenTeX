@@ -39,10 +39,12 @@ const api = async (m, p, body) => {
 };
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const arr = x => Array.isArray(x) ? x : (x && (x.items || x.data || x.results || x.records)) || [];
-const log = (...a) => console.log(...a.map(x => typeof x === 'string' ? x : JSON.stringify(x)));
+// Hides secrets in anything printed: token/secret/password-like keys (also inside JSON strings) and JWTs.
+const redact = t => String(t).replace(/((?:token|secret|password|api_key)[A-Za-z_]*\\*"\s*:\s*\\*")[^"\\]+/gi, '$1<masked>').replace(/eyJ[A-Za-z0-9._-]{20,}/g, '<jwt>');
+const log = (...a) => console.log(redact(a.map(x => typeof x === 'string' ? x : JSON.stringify(x)).join(' ')));
 (async () => {
   const AF = Object.getPrototypeOf(async function () { }).constructor;
   const out = await new AF('api', 'sleep', 'arr', 'fs', 'log', fs.readFileSync(file, 'utf8'))(api, sleep, arr, fs, log);
   fs.writeFileSync(store, JSON.stringify(tok));
-  if (out !== undefined) console.log(JSON.stringify(out, null, 1).replace(/eyJ[A-Za-z0-9._-]{20,}/g, '<jwt>'));
+  if (out !== undefined) console.log(redact(JSON.stringify(out, null, 1)));
 })().catch(e => { console.error('ERR', String(e.message).replace(/eyJ[A-Za-z0-9._-]{20,}/g, '<jwt>')); process.exit(1); });

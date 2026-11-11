@@ -1,0 +1,1 @@
+module.exports=async()=>{const d=await api('DELETE','/modules/'+T+'/views/'+process.env.VID);LED('clean view '+process.env.VID+' '+d.s);const l=(await api('GET','/modules/'+T+'/views')).j.data;return {del:d.s,listKeys:Object.keys(l),count:(l.views||[]).length,sample:(l.views||[]).slice(0,3).map(v=>v.name+'/'+v.visibility)};};

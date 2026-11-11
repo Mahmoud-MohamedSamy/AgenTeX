@@ -1,0 +1,20 @@
+const fs=require('fs');const p=__dirname+'/checklist-verdicts.js';let s=fs.readFileSync(p,'utf8');
+const rep=(id,txt)=>{const a=s.indexOf("{id:'"+id+"'");const b=s.indexOf("\n{id:",a+5);if(a<0||b<0)throw id;s=s.slice(0,a)+txt+s.slice(b);};
+rep('EM-04',`{id:'EM-04',t:'Customer reply attaches to the same ticket (the bug)',v:'BLOCKED',k:'Not valid this time: #2495 was deleted by another test session before your Gmail reply arrived, so the reply became new ticket #2503. Needs a rerun.',
+ d:ul(['12:04 UTC: agent reply sent on #2495 to your Gmail, subject "Re: QA EM-01 new email Gmail &lt;1:38 PM&gt;".',
+ '12:07 UTC: the Desk automation session (NT-07 retest) deleted its test contact "QA AO NT07z9ci", which had <b>your Gmail address</b>. Deleting that contact also removed #2495 and #2498 (EM-06). Only the contact is listed in the Recycle Bin.',
+ '12:27:38 UTC: your Gmail reply was received (trusted, DKIM aligned) with <code>match: None</code> and opened a <b>new ticket #2503</b> "Re: QA EM-01 new email Gmail &lt;1:38 PM&gt;" in Customer Support. With the original ticket gone, a new ticket is the expected outcome, so this run does not show a bug.',
+ 'Reply threading itself works: EM-05 (11:11 UTC) and E18-04 (12:28 UTC) both attached your replies to the right ticket.'])+need('rerun when the automation session no longer uses your Gmail address: send a new Gmail email, Claude replies, you answer.')+img('cl-em04-2503.png','#2503: the Gmail reply opened a new ticket because #2495 no longer existed')},`);
+rep('E18-04',`{id:'E18-04',t:'A customer reply makes the old ticket assignable',v:'PASS',k:'After your reply today, #1 was assigned from the backlog 37 s after release (it was skipped for 32 min without a reply).',
+ d:ul(['12:05 UTC: #1 reopened and moved to Customer Support (owner kept); agent reply "Re: Check-in" sent to mmohamed@anyware.software.',
+ '12:28:15 UTC: your reply arrived on #1 as an incoming message (matched by the reply headers; marked untrusted, DKIM not aligned).',
+ 'Rule "QA E18 manual" made again; Dept B preferences: offline on, threshold 1. 12:33:56: #1 moved to QA AS6 Dept B, owner Unassigned; 30 s later still Unassigned, in the backlog.',
+ '12:34:59: threshold off, Assign backlogs on. Within <b>37 seconds</b> #1 was assigned to <b>Test User 1</b>. History: "Assigned automatically · Rule QA E18 manual · Round robin (Sequence) · Triggered by Taken from the backlog".',
+ 'Together with E18-03 (#1 skipped for 32 minutes with no customer reply), this shows the backlog rule depends on the last customer reply, not on the ticket\'s age.',
+ 'Restored at 12:41: #1 in Marketing, owner ndc-staging-owner, Closed, closed time 12 Oct; rule deleted; Dept B preferences equal the baseline.'])+img('cl-e1804-3-history.png','#1 History: assigned from the backlog after the customer reply')},`);
+s=s.replace("'<b>Kept:</b> #2382","'<b>Also restored after E18-04 (12:41 UTC):</b> #1, rule and Dept B preferences, same checks.','<b>Kept:</b> #2382");
+fs.writeFileSync(p,s);
+const b=__dirname+'/checklist-bugs.js';let t=fs.readFileSync(b,'utf8');
+t=t.replace('</tbody>',`<tr><td>6</td><td><b>Deleting a contact removed its tickets, including tickets the deleting session never created.</b> At 12:07 UTC the automation session deleted contact "QA AO NT07z9ci" (your Gmail address); #2495 and #2498, made from your emails, disappeared with it, and only the contact appears in the Recycle Bin.</td><td><span class="b info">CHECK</span></td><td>Not yet known whether the tickets come back if the contact is restored, or whether Desk warns before deleting a contact with tickets. Worth a separate test.</td></tr>
+<tr><td>7</td><td><b>Test interference:</b> the automation session uses your Gmail address for its test contacts, so your emails were linked to its contacts ("QA AO NT07z9ci", "QA AO SL18 6gt7") and removed by its cleanup.</td><td><span class="b blocked">PROCESS</span></td><td>Use a different address for automated contacts, or pause that session while testing by email.</td></tr></tbody>`);
+fs.writeFileSync(b,t);console.log('ok');

@@ -1,0 +1,6 @@
+const L=require('./lib');const MI='95a6fd64-b877-435e-8e23-62c75717f95f';
+module.exports=async()=>{const R={};
+ for(const [s,own] of [['QA MAN q owner 1','97be04b6-0a08-4883-aa51-e1650b11cab7'],['QA MAN q owner 2','97be04b6-0a08-4883-aa51-e1650b11cab7'],['QA MAN q adminb 1','e82f62cb-9904-42c7-a13c-77a7449820b9'],['QA MAN q adminb 2','e82f62cb-9904-42c7-a13c-77a7449820b9']]){let t=(await L.findTicket(s))[0];if(!t){const c=await api('POST','/modules/'+T+'/records',L.body({subject:s,department:MI,status:'Open'}));t={id:c.j.data.id};LED('T-03 ticket "'+s+'" '+t.id);}await api('POST','/desk/tickets/'+t.id+'/assign',{owner_id:own,team_id:null});}
+ await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+'/views/all/tickets',{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/Agent Queue/.test(document.body.innerText),null,{timeout:90000}).catch(()=>{});
+ await pg.getByText('Agent Queue',{exact:true}).first().click();await pg.waitForTimeout(9000);R.url=pg.url();R.text=(await L.body_txt()).replace(/^.*?Scheduled Replies/,'').slice(0,900);
+ R.btns=await pg.evaluate(()=>[...document.querySelectorAll('main button,main select')].filter(b=>b.offsetParent).map(b=>(b.getAttribute('aria-label')||b.innerText).trim().replace(/\s+/g,' ').slice(0,40)).filter(Boolean).slice(0,25));await L.shot('t03-0-agentqueue');return R;};

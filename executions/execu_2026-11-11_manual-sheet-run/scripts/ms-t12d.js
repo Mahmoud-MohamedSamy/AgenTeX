@@ -1,0 +1,2 @@
+module.exports=async()=>{const R={};for(const p of ['/iam/profiles/44444444-4444-4444-4444-444444444402/permissions','/iam/profiles/44444444-4444-4444-4444-444444444402']){const r=await api('GET',p);const s=r.t;R[p]=r.s+' len'+s.length+' '+(s.match(/desk:ticket[a-z_:.]*/g)||[]).filter((v,i,a)=>a.indexOf(v)===i).join(' ').slice(0,900);}
+ const me=await api('GET','/iam/me/permissions?app_key=desk');R.ownerPermsSample=me.s+' '+(me.t.match(/desk:ticket[a-z_:.]*/g)||[]).slice(0,5).join(' ');return R;};

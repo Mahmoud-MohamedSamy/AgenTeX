@@ -1,0 +1,2 @@
+module.exports=async()=>{await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+'/profile',{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/Landing page/.test(document.body.innerText),null,{timeout:120000}).catch(()=>{});await pg.waitForTimeout(2000);
+ await pg.getByRole('tab',{name:/Signatures/i}).click();await pg.waitForTimeout(5000);return {sels:await pg.evaluate(()=>[...document.querySelectorAll('select')].map(s=>[...s.options].map(o=>o.text).join('|').slice(0,300)))};};

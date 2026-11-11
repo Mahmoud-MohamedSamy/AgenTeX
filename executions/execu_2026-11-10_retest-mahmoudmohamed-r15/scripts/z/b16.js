@@ -1,0 +1,3 @@
+async (page) => { await page.keyboard.press('Escape'); await page.waitForTimeout(500); await page.mouse.click(1270,374); await page.waitForTimeout(1500); await page.screenshot({path:'../screenshots/raw/zoho-2729-task-assign.png'}); await page.keyboard.press('Escape'); await page.mouse.click(1100,700); await page.waitForTimeout(800);
+ await page.mouse.click(1290,844); await page.waitForTimeout(2000); await page.mouse.click(393,847); await page.waitForTimeout(4000); await page.screenshot({path:'z/b16.png'});
+ return (await page.innerText('body')).split('\n').filter(Boolean).filter(l=>/discard|leave|sure|cancel|yes/i.test(l)).slice(0,8); }

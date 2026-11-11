@@ -1,0 +1,1 @@
+const out = []; for (let i = 13; i <= 52; i++) { const r = await __z('POST','/api/v1/tickets',{subject:'QA RT15 2823 select-all '+String(i).padStart(2,'0'),departmentId:'1475109000000426945',contactId:'1475109000000541087'}); out.push(r.s>=300 ? r.s+' '+r.t.slice(0,150) : r.j.id+'#'+r.j.ticketNumber); if (r.s>=300) break; } return out.join(' ');

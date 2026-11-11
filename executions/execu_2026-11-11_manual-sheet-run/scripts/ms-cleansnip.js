@@ -1,0 +1,1 @@
+module.exports=async()=>{const R={};const l=((await api('GET','/desk/snippets')).j.data.snippets||[]).filter(s=>/^qa_man/.test(s.name));for(const s of l){const d=await api('DELETE','/desk/snippets/'+s.id);R[s.name]=d.s;LED('clean snippet '+s.name+' '+d.s);}return R;};

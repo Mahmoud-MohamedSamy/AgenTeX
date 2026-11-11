@@ -1,0 +1,25 @@
+{
+ "out": "SL-38-sla-applied-after-allowance-used-up-vs-zoho.png",
+ "ticket": "SL-38",
+ "title": "Support plan allowance used up, but the plan’s SLA still runs on the next ticket",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 10 Nov 2026 (live, on screen) · Zoho: help article (live Zoho did not load on this network)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · QA AO Dept A: SLA \"QA AO SL38rpb8h\" (execute only with an account), plan \"QA AO Plan SL38rpb8h\" (ticket-based, 1 ticket / month), contract on \"QA AO Account SL38rpb8h\"; tickets #2290 (first) and #2291 (second) · Zoho: help.zoho.com › Understanding and working with support plans › Plan types",
+ "panels": [
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/s38-x1-sla.png", "w": 1440, "h": 900, "crop": [370, 95, 290, 400],
+   "caption": "First ticket #2290: SLA from the contract’s plan; \"0 tickets left\" after it (3).",
+   "boxes": [{"b": [385, 355, 640, 437], "n": 3}]},
+  {"side": "tavi", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/s38-x2-sla.png", "w": 1440, "h": 900, "crop": [370, 95, 290, 400],
+   "caption": "Second ticket #2291, same account: the panel says the allowance is used up (2), yet the same SLA runs as a \"Department policy\" with both timers running (1).",
+   "boxes": [{"b": [385, 145, 640, 345], "n": 1}, {"b": [385, 355, 640, 437], "n": 2}]},
+  {"side": "zoho", "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/z38-doc-plan-limit.png", "w": 1440, "h": 900, "crop": [160, 250, 780, 90],
+   "caption": "Zoho Desk help, Plan types: a ticket-based plan applies the SLA to the set number of tickets; \"The remaining tickets will not adhere to the selected SLA\" (1, 2). From the help article; not seen live.",
+   "boxes": [{"b": [205, 256, 925, 333], "n": 2}]}
+ ],
+ "rows": [
+  [1, "SLA on the ticket after the allowance is used up", "The plan’s SLA is not applied: \"The remaining tickets will not adhere to the selected SLA.\"", "The same SLA is applied anyway, now as a \"Department policy\"; first response and resolution timers run and will escalate. (A ticket with no account gets no SLA from this policy.)", "DIFFERS"],
+  [2, "What the ticket shows", "No SLA from the plan once the limit is reached.", "\"The support plan’s ticket allowance is used up for this cycle.\" is shown, but has no effect.", "DIFFERS"],
+  [3, "First ticket uses the allowance", "SLA applied for tickets within the limit.", "Applied through the contract and plan; usage 1 of 1, \"0 tickets left\".", "SAME"]
+ ]
+}

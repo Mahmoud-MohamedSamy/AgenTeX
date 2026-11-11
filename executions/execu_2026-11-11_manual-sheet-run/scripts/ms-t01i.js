@@ -1,0 +1,11 @@
+// Agent C: T-01-07 search QA MAN in All Tickets; T-01-08 open shared "QA MAN view", check edit/delete.
+const L=require('./lib');const vid='aa86e48f-0c26-419c-ad79-62910f7b8aba';
+module.exports=async()=>{const R={};await pg.setViewportSize({width:1600,height:1000});await pg.goto(H+'/views/all/tickets',{waitUntil:'commit'}).catch(()=>{});await pg.waitForFunction(()=>/ALL VIEWS/i.test(document.body.innerText),null,{timeout:120000}).catch(()=>{});await pg.waitForTimeout(3000);
+ await pg.getByRole('button',{name:'Search in this view'}).first().click().catch(()=>{});await pg.waitForTimeout(800);const si=pg.locator('main input[type=search], main input[placeholder*="Search" i]').first();await si.fill('QA MAN');await pg.keyboard.press('Enter');await pg.waitForTimeout(5000);
+ R.searchRows=await pg.evaluate(()=>[...document.querySelectorAll('main [aria-label^="Select "]')].map(e=>e.getAttribute('aria-label').replace('Select ','')).filter(x=>x!=='all'));await L.shot('t01-07-agent-search');
+ R.apiSearch=arr(((await api('GET','/modules/'+T+'/records?page=1&per_page=50&q=QA%20MAN')).j||{}).data).map(fl).map(o=>o.subject);
+ R.sideHasView=await pg.evaluate(()=>[...document.querySelectorAll('nav a, aside a')].some(a=>/QA MAN view/.test(a.innerText)));
+ await pg.goto(H+'/views/custom:'+vid,{waitUntil:'commit'}).catch(()=>{});await pg.waitForTimeout(9000);R.viewHead=(await L.body_txt()).match(/QA MAN view \(\d+\)|not available|not found|denied[^.]{0,40}/i)?.[0];R.viewRows=await pg.evaluate(()=>[...document.querySelectorAll('main [aria-label^="Select "]')].map(e=>e.getAttribute('aria-label').replace('Select ','')).filter(x=>x!=='all'));
+ const act=pg.getByRole('button',{name:'Actions for QA MAN view'}).first();R.act=await act.count();if(R.act){await act.click();await pg.waitForTimeout(1000);R.menu=await pg.locator('[role=menuitem]').allInnerTexts();await L.shot('t01-08-agent-menu');await pg.keyboard.press('Escape');}
+ const v=await api('GET','/modules/'+T+'/views/'+vid);R.apiView=v.s+' can_edit='+(v.j&&v.j.data&&v.j.data.can_edit)+' can_delete='+(v.j&&v.j.data&&v.j.data.can_delete);
+ const p=await api('PATCH','/modules/'+T+'/views/'+vid,{name:'QA MAN view hacked'});R.apiPatch=p.s+' '+p.t.slice(0,120);const d=await api('DELETE','/modules/'+T+'/views/'+vid);R.apiDelete=d.s+' '+d.t.slice(0,120);return R;};

@@ -1,0 +1,19 @@
+// Evidence run for filing (10 Nov): SL-21 (recipient outside dept skipped), SL-22 (escalation mail to agent Mahmoud Samy = user's Gmail), NT-24 setup (2 tickets for UI bulk close). Saves ids to ../ev5.json; cleanup with ev5-clean.js.
+const A='93949fbd-f9df-4e2e-ae45-00b8dc38385b',M='88e8ea44-1658-4df3-9930-d0902b91073d',C='43004ce2-577f-4eda-b00a-0750fe40c3d4',SAMY='d23fb4e0-248d-41f6-af60-d28885a7007e';
+const G='mahmoud.mmohamedsamy@gmail.com';const u=Math.random().toString(36).slice(2,6);const S={u,made:[]};const R={};
+const mask=s=>String(s).replace(/mahmoud\.mmohamedsamy(\+[a-z0-9]+)?@gmail\.com/g,'<gmail$1>');
+const f=(k,v)=>({field:k,value:{kind:'string',value:v}});
+const q=await api('GET','/desk/queues/agents');const X=(q.j?.data?.agents||q.j?.data||[]).find(x=>x.name==='Mahmoud TAVIPortal');S.X=X.user_id;R.xInDept=(X.department_ids||[]).includes(A);
+const tpl=await api('POST','/desk/email-templates',{name:'QA AO Tpl SL22'+u,module:'desk_tickets',notification_type:'agent',use_case:'ticket.sla_escalation',subject:'QA AO SL22'+u+' custom: #{{ticket.number}} level {{sla.level}} ({{sla.timing}})',body_html:'<p>QA AO body [{{ticket.subject}}] level [{{sla.level}}]</p>'});S.tpl=tpl.j?.data?.id;S.made.push(['tpl',S.tpl]);
+const lvl=(timing,min,rc,ref)=>({timing,offset:timing==='at'?null:{value:min,unit:'minutes'},recipients:rc,template_ref:ref||null,actions:{assign_owner:null,assign_team:null,set_priority:null}});
+const pol=async(tag,levels)=>{const r=await api('POST','/desk/sla/policies',{department_id:A,name:'QA AO '+tag,description:null,is_active:true,triggers:{create:true,update:false,field_update:null,customer_reply:false,agent_response:false,private_thread:null,comment:null},execute_only_with_account:false,resolution_from_created:false,targets:[{name:'t '+tag,criteria:{conditions:[{field_key:'description',operator:'contains',value:tag}],pattern:null},response:{value:1,unit:'minutes'},resolution:{value:2,unit:'hours'},calendar_mode:'calendar',business_hours_id:null,first_response_only:true,escalate_on_business_hours:false,escalations:{response:levels,resolution:[]}}]});S.made.push(['policy',r.j?.data?.id]);return r.s;};
+R.p22=await pol('SL22'+u,[lvl('at',null,[{kind:'agent',id:SAMY}],S.tpl),lvl('after',1,[{kind:'agent',id:SAMY}])]);
+R.p21=await pol('SL21'+u,[lvl('at',null,[{kind:'agent',id:SAMY},{kind:'agent',id:S.X}])]);
+const ct=await api('POST','/modules/'+C+'/records',{data:[f('last_name','QA AO NT24'+u),f('email',G)]});S.contact=ct.j?.data?.id;
+const tk=async(tag,withC)=>{const d=[f('subject','QA AO '+tag),f('description','QA AO '+tag),f('department',A),f('status','Open'),f('priority','high')];if(withC){d.push(f('contact_id',S.contact),f('email',G));}const r=await api('POST','/modules/'+M+'/records',{data:d});S.made.push(['ticket',r.j?.data?.id]);return r.j?.data?.id;};
+S.t22=await tk('SL22'+u);S.t21=await tk('SL21'+u);S.nt24=[{tag:'NT24a'+u,id:await tk('NT24a'+u,true)},{tag:'NT24b'+u,id:await tk('NT24b'+u,true)}];
+fs.writeFileSync('../ev5.json',JSON.stringify(S,null,1));fs.appendFileSync('../ledger.md','- '+new Date().toISOString().slice(0,19)+' Filing evidence run ev5 ('+u+'): template, 2 SLA policies, contact, 4 tickets in QA AO Dept A — delete with ev5-clean.js.\n');
+await sleep(200000);
+for(const [k,id] of [['SL22',S.t22],['SL21',S.t21]]){const j=(await api('GET','/desk/tickets/'+id+'/activity')).j;const L=Array.isArray(j?.data)?j.data:(j?.data?.items||[]);R[k]=L.filter(e=>/sla\./.test(e.action)).map(e=>e.action+' @'+(e.occurred_at||'').slice(11,19)+' '+mask(JSON.stringify(e.summary||e.details||{})).slice(0,500));}
+const num=async id=>((await api('GET','/modules/'+M+'/records/'+id)).j?.data?.data||[]).find(x=>/ticket_number/.test(x.field))?.value?.value;
+R.numbers={t22:await num(S.t22),t21:await num(S.t21)};R.at=new Date().toISOString();return R;

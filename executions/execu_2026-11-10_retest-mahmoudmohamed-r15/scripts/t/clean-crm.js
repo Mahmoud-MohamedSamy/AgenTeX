@@ -1,0 +1,16 @@
+const AR = x => { let a = arr(x); for (let i = 0; i < 3 && !Array.isArray(a); i++) a = a && (a.items || a.data || a.results || a.views || a.fields); return Array.isArray(a) ? a : []; };
+const m = await api('GET', '/modules'); const mods = AR(m.j); const find = re => (mods.find(x => re.test(x.apiName || x.api_name || x.name || '')) || {}).id;
+const L = find(/^Leads$/i), C = '6f553963-01d6-4b68-9fb3-143d23044c41';
+const I = JSON.parse(fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-10_retest-mahmoudmohamed-r15/out/2806-ids.json', 'utf8'));
+const res = []; const del = async (label, p) => { const r = await api('DELETE', p); res.push(label + ' ' + r.s + (r.s >= 300 && r.s !== 404 ? ' ' + r.t.slice(0, 160) : '')); };
+res.push('Leads module ' + (L || 'NOT FOUND')); if (!L) return res;
+await del('view 2806', `/modules/${L}/views/${I.view}`); await del('view 2807', `/modules/${L}/views/800057b7-6125-4d18-9fb7-1c295d98e5b7`);
+for (const d of ['6af20cd9-af06-44e0-a9aa-6c2a193809c7', '7901fd71-71d2-4e8b-8154-6a8b0710d51d']) await del('draft ' + d.slice(0, 8), `/mail/drafts/${d}`);
+for (const id of [...Object.values(I.leads), '4b08ce7b-7a0e-4e7a-b46c-11fd6048dffa', '5eab324e-fa2b-49fa-a63b-07e0bfe38a35', '2aafefc8-9846-4cb6-8ea6-9937cc5e3105']) await del('lead ' + id.slice(0, 8), `/modules/${L}/records/${id}`);
+await del('crm contact 2810 A', `/modules/${C}/records/72c6a491-00e8-42c4-957a-e0c93fa8a6c6`);
+for (const f of [I.fA, I.fB, ...I.extra]) await del('field ' + f.slice(0, 8), `/modules/${L}/fields/${f}`);
+for (const g of [I.G, I.G2, I.G3, I.G4, I.G5]) await del('gs ' + g.slice(0, 8), `/global-sets/${g}`);
+const gl = await api('GET', '/global-sets'); res.push('global sets QA RT15 left: ' + JSON.stringify(AR(gl.j).filter(x => /QA RT15/.test(x.name || x.displayName || '')).map(x => x.name || x.displayName)));
+const v = await api('GET', `/modules/${L}/views`); res.push('views QA RT15 left: ' + JSON.stringify(AR(v.j).filter(x => /QA RT15/.test(x.name)).map(x => x.name)));
+const fl = await api('GET', `/modules/${L}/fields`); res.push('fields qa_rt15 left: ' + AR(fl.j).filter(x => /qa_rt15/i.test(x.apiName || x.api_name || '') || /QA RT15/.test(x.label || '')).length);
+return res;

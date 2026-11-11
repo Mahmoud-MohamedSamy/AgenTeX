@@ -1,0 +1,3 @@
+async (page) => page.evaluate(async () => { const __z = async (m, u, body) => { const c = (document.cookie.match(/crmcsr=([^;]+)/)||[])[1]||""; const r = await fetch(u,{method:m,credentials:"include",headers:{orgId:"944875504","Content-Type":"application/json","X-ZCSRF-TOKEN":"crmcsrfparam="+c},body:body?JSON.stringify(body):undefined}); const t = await r.text(); let j=null; try{j=JSON.parse(t)}catch(e){} return {s:r.status,j,t:t.slice(0,600)}; };
+const out = {}; for (const u of ['/api/v1/departments/1475109000000426945/teams','/api/v1/teams','/api/v1/workflows?module=tickets&departmentId=1475109000000426945']) { const r = await __z('GET',u); out[u] = r.s+' '+r.t.slice(0,500); } return out;
+ })
