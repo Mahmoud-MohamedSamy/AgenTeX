@@ -1,0 +1,25 @@
+{
+ "out": "SK-I03-J07-skill-pickers-deleted-inactive-other-dept-vs-zoho.png",
+ "ticket": "Desk Skills parity · SK-I03 / SK-J07",
+ "title": "Skill pickers offer DELETED, inactive and other departments' skills; a ticket saved with a deleted skill keeps it (Zoho offers only the department's active skills)",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 12 Nov 2026 · Zoho 12 Nov 2026 (live)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · workflow rule QA SK13 WF skills (Departments: QA SK13 Dept A), Create Ticket, ticket #3176 · the 32 QA SK12 skills were deleted on 12 Nov morning · Zoho Desk techsolutionsegypt, new workflow rule in Tech, Add Skills action",
+ "panels": [
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/tavi-wf-picker-dept-a.png", "caption": "TAVI workflow rule (Departments: QA SK13 Dept A), Add skills list: deleted QA SK12 skills, inactive QA SK13 Inact (ticked), QA SK13 HS of Dept B", "w": 1600, "h": 900, "crop": [240, 60, 860, 760], "boxes": [ { "b": [616, 110, 852, 138], "n": 1 }, { "b": [506, 186, 644, 488], "n": 2 }, { "b": [506, 727, 622, 748], "n": 3 }, { "b": [506, 748, 614, 769], "n": 4 } ] },
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/tavi-wf-rule-open.png", "caption": "Same list starts with other departments' skills (tier_1_support, billing…); 81 options in total", "w": 1600, "h": 900, "crop": [360, 590, 500, 250], "boxes": [ { "b": [506, 702, 668, 840], "n": 4 } ] },
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/tavi-create-ticket-deleted-chips.png", "caption": "TAVI Create Ticket, Skills field: the same 32 deleted QA SK12 skills are offered", "w": 1600, "h": 900, "crop": [780, 490, 660, 410], "boxes": [ { "b": [1104, 515, 1438, 898], "n": 5 } ] },
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/tavi-3176-deleted-skill.png", "caption": "TAVI #3176 QA SK13 Deleted skill: saved with the deleted skill QA SK12 S1 and keeps it", "w": 1600, "h": 900, "crop": [370, 60, 600, 490], "boxes": [ { "b": [380, 490, 640, 536], "n": 6 } ] },
+  { "side": "zoho", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/zoho-wf-picker-clean.png", "caption": "Zoho new workflow rule (department Tech), Add Skills list: only Tech's active skills", "w": 1600, "h": 900, "crop": [380, 48, 840, 370], "boxes": [ { "b": [410, 190, 910, 408], "n": 2 } ] },
+  { "side": "zoho", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/zoho-wf-picker-end.png", "caption": "End of the Zoho list: QA SK13 S9, then test. 13 options; QA SK13 Inact, QA SK13 HS and deleted skills are not offered", "w": 1600, "h": 900, "crop": [380, 48, 840, 370], "boxes": [ { "b": [410, 190, 910, 408], "n": 3 } ] }
+ ],
+ "rows": [
+  [1, "Which department's skills", "A workflow rule belongs to one department (Tech); its Add Skills list shows only that department's skills.", "The rule's Departments = QA SK13 Dept A, but the list is not narrowed to it.", "INFO"],
+  [2, "Deleted skills", "Not offered. A deleted skill is gone everywhere.", "32 skills deleted this morning (QA SK12 …) are still offered in the workflow Add/Remove skills list.", "DIFFERS"],
+  [3, "Inactive skills", "Not offered (QA SK13 Inact is missing from the list).", "QA SK13 Inact is offered and can be ticked. It is skipped when the rule runs (#3174 got 9 of 10).", "DIFFERS"],
+  [4, "Other departments' skills", "Not offered: 13 options, QA SK13 S1–S12 + test.", "QA SK13 HS (Dept B), tier_1_support, billing, QA AS6 … are offered: 81 options in total.", "DIFFERS"],
+  [5, "Create Ticket Skills field", "No Skills input on Add Ticket; the ticket Skills field never offers deleted skills.", "The same 32 deleted skills are offered as chips.", "DIFFERS"],
+  [6, "Ticket saved with a deleted skill", "Not possible; deleting a skill removes it from tickets.", "#3176 was saved with deleted QA SK12 S1 and still shows it.", "DIFFERS"]
+ ]
+}

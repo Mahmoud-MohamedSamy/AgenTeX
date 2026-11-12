@@ -1,0 +1,11 @@
+const F = '1475109000000139001', CT = '1475109000000570887', o = {};
+const sk = await z('GET', `/skills?departmentId=${DEPT}&limit=100`); const S1 = sk.j.data.find(s => s.name === 'QA SK13 S1').id;
+o.before = (await z('GET', `/agents/${F}/skills?departmentId=${DEPT}`)).t.slice(0, 300);
+const m = await z('POST', `/agents/${F}/mapSkills`, { departmentId: DEPT, skillIds: [S1] }); o.map = [m.s, m.t.slice(0, 200)];
+o.after = (await z('GET', `/agents/${F}/skills?departmentId=${DEPT}`)).t.slice(0, 300);
+const t = await z('POST', '/tickets', { subject: 'QA SK13 H thr', departmentId: DEPT, contactId: CT, entitySkills: [S1] }); o.t = [t.s, t.j?.id, t.j?.ticketNumber];
+await new Promise(r => setTimeout(r, 6000));
+const ex = await z('POST', `/tickets/${t.j.id}/executeSkillbasedAssignment`); o.exec3 = [ex.s, ex.t.slice(0, 200)];
+await new Promise(r => setTimeout(r, 6000));
+const g = await z('GET', `/tickets/${t.j.id}`); o.at3 = [g.j?.ticketNumber, g.j?.assigneeId, g.j?.entitySkills];
+return o;

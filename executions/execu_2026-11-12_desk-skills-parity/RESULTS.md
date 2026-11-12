@@ -32,7 +32,7 @@ Match: Same / Differs / Gap / TAVI extra / Not comparable
 | SK-H03 | Skill-based RR: ticket with NO skills | not assigned (#182) | ASSIGNED to pool agent (#3132) | Differs (bug) |
 | SK-H04 | Skill-based RR on create (rule + threshold free) | assigned (#174) | (B-series run on create) | Same |
 | SK-H05 | Assign by skills on one ticket | executeSkillbasedAssignment assigns when an agent has any one of the ticket skills | POST /skills/assign: "No agent of the department holds every skill on the ticket" for [S3,S1] | Differs (bug) |
-| SK-H06 | Department threshold blocks skill RR | yes (Fathy at 5 open, threshold 3, was skipped) | not re-run here (thresholds covered by the NDC-2824 run) | Not compared |
+| SK-H06 | Department threshold blocks skill RR | counts only the agent's open tickets IN THIS DEPARTMENT: Fathy 5 open in Tech + 1 elsewhere; threshold 3 → not assigned, threshold 6 → assigned (#189) | counts the agent's open tickets in ALL departments: Test User 1 has 2 open in QA SK13 Dept A but ~92 tenant-wide; threshold 1 and 40 → not assigned (#3177, #3181), 100 → assigned (#3182); threshold off → assigned (#3179) | Differs (bug, NDC-2970) |
 | SK-J01 | Skills as a ticket layout field | YES: standard field Skills (Lookup, entitySkills), Ticket Information, removable, not mandatory | YES: multi-select skills, Ticket Information, deletable | Same |
 | SK-J02 | Skills on the create form | not on Add Ticket | shown on Create Ticket | Differs (bug) |
 | SK-J03 | Skills on the ticket page | Ticket Properties › Ticket Information (chips, editable) | Ticket Properties › Ticket Information + a side-rail Skills tab | Same |
@@ -45,4 +45,9 @@ Match: Same / Differs / Gap / TAVI extra / Not comparable
 | SK-B08 | Skill name with HTML shown on the page | n/a (refused) | escaped, shown literally | Same |
 | SK-K01 | Desk Agent without automation permission | needs Help Desk Automation permission (docs) | 403 desk:assignment:manage on list/create/prefs/delete/recalc | Same |
 | SK-A02 | Skills list page | Name, Skill Type, Agents, Status; filters; Add Skill; Skill Preferences | same, plus Active skills n of 30, Recalculate, Agent Skills tab | Same |
-| SK-I01 | Workflow skill actions (Add / Remove / Recalculate / Reassign by skills) | not checked live | Add/Remove 1–10 skills, Recalculate, Reassign available | Not compared |
+| SK-I01 | Workflow skill actions available | Add Skills, Remove Skills, Recalculate Skills, Reassign ticket based on Skills | Add skills, Remove skills, Recalculate skills, Reassign ticket based on skills | Same |
+| SK-I02 | Add/Remove Skills: how many per action | 1–10 ("You have reached maximum number of skills.") | 1–10 (11th box disabled; hint "Choose 1 to 10 skills") | Same |
+| SK-I03 | Add/Remove Skills: which skills the picker offers | only the rule department's ACTIVE skills (13 Tech skills; inactive and other-department skills not listed) | 87 skills: every department's skills, inactive ones, and 31 skills already DELETED (QA SK12 …); choosing a department for the rule does not narrow the list | Differs (bug, NDC-2971) |
+| SK-I04 | Add Skills on a ticket that would pass 10 skills | ticket kept at 10; extra skills silently skipped (#187 → 10; #188 had 2 → 10) | ticket kept at 10; extra skills skipped (#3174; #3175 had 2 → 10) | Same |
+| SK-I05 | Add Skills action holding an inactive skill | cannot be chosen | can be chosen; skipped when the rule runs (#3174 got 9 of 10) | Same at run time (picker = SK-I03) |
+| SK-J07 | Deleted skill still offered on tickets | a deleted skill is gone everywhere | Create Ticket Skills field lists 32 deleted QA SK12 skills; a ticket saved with deleted "QA SK12 S1" keeps it (#3176) | Differs (bug, NDC-2971) |

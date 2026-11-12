@@ -28,6 +28,18 @@ const bugs = [
     tavi: 'Create Ticket and the inline Edit Skills on a ticket list every skill of every department, inactive ones included, whatever department the ticket is in. Saved values stay (#3145 kept QA SK12 Inact and QA AS6 sk1). The side-rail Skills tab (Associate Skills) is filtered correctly.',
     zoho: 'The Add Ticket form has no Skills input. Inactive and other-department skills set on a ticket are dropped on save (#170 kept only QA SK12 S1).' },
 ];
+const newBugs = [
+  { filed: 'NDC-2970', ids: 'SK-H06', title: 'The department threshold counts the agent\'s open tickets in every department',
+    tavi: 'QA SK13 Dept A, threshold on. Test User 1 had 2 open tickets in Dept A and about 92 across all departments. Threshold 1 and 40: not assigned (#3177, #3181). Threshold 100: assigned (#3182). Threshold off: assigned (#3179).',
+    zoho: 'Counts only the tickets in that department. Fathy had 5 open in Tech and 1 in another department. Threshold 3: not assigned. Threshold 6: assigned (#189).' },
+  { filed: 'NDC-2971', ids: 'SK-I03 · SK-I05 · SK-J07', title: 'Skill pickers offer deleted skills, and workflow actions offer every department\'s and inactive skills',
+    tavi: 'Workflow Add / Remove skills lists 87 skills: every department\'s, inactive ones, and 31 skills deleted this morning (QA SK12). Choosing a department for the rule does not narrow it. Create Ticket lists the 32 deleted skills too, and a ticket saved with deleted "QA SK12 S1" keeps it (#3176). At run time the action skips inactive skills and stops at 10, like Zoho.',
+    zoho: 'Add / Remove Skills lists only the rule department\'s active skills (13 in Tech). A deleted skill is gone everywhere.' },
+];
+const card2 = (b, n) => `<article class="finding" id="f${n}">
+  <header><span class="num">${n}</span><div><h3>${esc(b.title)}</h3><p class="ids">${b.ids} · found 12 Nov afternoon, filed as ${b.filed}</p></div></header>
+  <div class="cmp"><div><h4>TAVI</h4><p>${b.tavi}</p></div><div><h4>Zoho Desk</h4><p>${b.zoho}</p></div></div>
+</article>`;
 const differs = { img: 'SK-E01-default-skill-preferences-vs-zoho.png', ids: 'SK-E01', title: 'A new department starts with auto-add off',
   tavi: 'QA SK12 Dept B (new, untouched): "Add skills to tickets by their criteria" is off, so no skill is added until an admin turns it on.',
   zoho: 'Auto-add skills to tickets is on, and new skills go to the bottom (Tech, and Haytham Mohamed, which was never changed).' };
@@ -58,12 +70,12 @@ ${css}
 <header class="top read">
   <span class="eyebrow">TAVI Desk · QA parity run · 12 Nov 2026</span>
   <h1>Desk Skills: TAVI vs Zoho Desk</h1>
-  <p class="lede">Every Skills function was run on both products at runtime, with QA data created in each. Rows marked "Not compared" were not run on one side.</p>
+  <p class="lede">Every Skills function was run on both products at runtime, with QA data created in each. All rows are now compared on both sides.</p>
   <div class="meta"><span>TAVI: NDC-Staging, owner + Desk Agent</span><span>Zoho: Desk test portal, Enterprise trial, admin</span><span>${rows.length} behaviours compared</span></div>
 </header>
 
 <div class="answer read">
-  <strong>Not identical yet. Three bugs and one smaller difference remain.</strong>
+  <strong>Not identical yet. Five bugs and one smaller difference remain.</strong>
   <p>Setup now matches Zoho: per-department skills and types, Active/Inactive, filters, reorder, agents, limits and usage all behave the same. The gaps are in how skills reach tickets and how skill-based assignment picks an agent.</p>
   <div class="tally" role="group" aria-label="Filter the comparison table">
     <button type="button" data-f="bug" aria-pressed="false"><span class="dot bug"></span>Bug <b>${count('bug')}</b></button>
@@ -72,17 +84,18 @@ ${css}
     <button type="button" data-f="extra" aria-pressed="false"><span class="dot extra"></span>TAVI extra <b>${count('extra')}</b></button>
     <button type="button" data-f="nc" aria-pressed="false"><span class="dot nc"></span>Not compared <b>${count('nc')}</b></button>
   </div>
-  <p class="small">The ${count('bug')} bug rows in the table roll up into the three findings below.</p>
+  <p class="small">The ${count('bug')} bug rows in the table roll up into the five findings below. All five are filed: NDC-2931, NDC-2932, NDC-2933, NDC-2970 and NDC-2971.</p>
 </div>
 
 <section class="read" aria-labelledby="h-bugs">
   <h2 id="h-bugs">Bugs to fix</h2>
   ${bugs.map((b, i) => card(b, i + 1, '')).join('\n')}
+  ${newBugs.map((b, i) => card2(b, i + 4)).join('\n')}
 </section>
 
 <section class="read" aria-labelledby="h-diff">
   <h2 id="h-diff">Smaller difference</h2>
-  ${card(differs, 4, 'd')}
+  ${card(differs, 6, 'd')}
 </section>
 
 <section class="read" aria-labelledby="h-layout">
@@ -123,10 +136,10 @@ ${css}
 <section class="read" aria-labelledby="h-scope">
   <h2 id="h-scope">Scope, automation and open items</h2>
   <div class="grid2">
-    <div class="note"><h4>Not compared</h4><ul><li>Workflow skill actions (Add / Remove / Recalculate / Reassign) were not run against Zoho. TAVI allows 1–10 skills per action.</li><li>Round-robin thresholds with skills: covered by the NDC-2824 run, not repeated.</li></ul></div>
+    <div class="note"><h4>Added 12 Nov afternoon</h4><ul><li>Workflow skill actions run on both sides: same four actions, same 1–10 limit, same run-time result; the picker differs (finding 5).</li><li>Round-robin department threshold with skills: run on both sides (finding 4).</li></ul></div>
     <div class="note"><h4>Automation</h4><p>New feature <code>deskskills</code>, <code>DeskSkillsParityTest</code>: 16 API tests. 12 pass; the 4 tests in group <code>parity-bug</code> fail until findings 1–3 are fixed. Each run builds and removes its own QA department.</p></div>
   </div>
-  <div class="note"><h4>Test data still in place</h4><p>QA SK12 data remains on NDC-Staging and in the Zoho test portal for retesting. Zoho settings changed for the test (round-robin threshold of the Tech department raised from 3 to 10, skill order, a QA round-robin rule) are listed in the run ledger and will be put back at cleanup.</p></div>
+  <div class="note"><h4>Test data</h4><p>The morning's QA SK12 data was deleted on both sides. The afternoon's QA SK13 data (2 TAVI departments, 14 skills, 2 rules, 9 tickets; Zoho 14 skills, 1 workflow rule, 3 tickets, 1 contact) is still in place for evidence and is listed in the run ledger. The Zoho Tech threshold was raised to 6 for one check and is back at 3.</p></div>
 </section>
 </div>
 <script>

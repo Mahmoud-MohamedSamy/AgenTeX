@@ -96,3 +96,62 @@ Every object created in TAVI (NDC-Staging) and Zoho (techsolutionsegypt). Delete
 ## CLEANUP 12 Nov 2026 (user: "start the cleanup")
 - TAVI (scripts/clean-tavi.js, owner): 9 tickets, 1 rule, 33 skills, 1 skill type, 2 departments deleted (depts emptied, leftovers moved to QA AO Dept B); 0 failed; verified gone. Automation run objects: removed by the test's own cleanup + the 2 leftover QA SKA departments deleted earlier.
 - ZOHO: 13 tickets #170-#182 + contact QA SK12 Contact moved to trash and PURGED from recycle bin (other sessions' items #183, #101, #102, QA BP Contact left alone); 32 QA skills + 2 skill types deleted; RR rule QA SK12 RR skill deleted; Tech RR department threshold 10 -> 3 (verified); skill preferences unchanged (ACTIVE / AT_THE_END). Pre-existing skill "test" is the only Tech skill (orderId shows 4; Zoho refuses a one-item reorder, it is first in the list).
+
+## Remaining comparisons 12 Nov (SK-I01, SK-H06)
+- 2026-11-12T14:16 ZOHO skillType QA SK13 T 1475109000000570711
+- 2026-11-12T14:16 ZOHO skillType QA SK13 TH 1475109000000570844
+- 2026-11-12T14:16 ZOHO skill QA SK13 S1 1475109000000570714
+- 2026-11-12T14:16 ZOHO skill QA SK13 S2 1475109000000570724
+- 2026-11-12T14:16 ZOHO skill QA SK13 S3 1475109000000570734
+- 2026-11-12T14:16 ZOHO skill QA SK13 S4 1475109000000570744
+- 2026-11-12T14:16 ZOHO skill QA SK13 S5 1475109000000570754
+- 2026-11-12T14:16 ZOHO skill QA SK13 S6 1475109000000570764
+- 2026-11-12T14:16 ZOHO skill QA SK13 S7 1475109000000570774
+- 2026-11-12T14:16 ZOHO skill QA SK13 S8 1475109000000570784
+- 2026-11-12T14:16 ZOHO skill QA SK13 S9 1475109000000570794
+- 2026-11-12T14:16 ZOHO skill QA SK13 S10 1475109000000570804
+- 2026-11-12T14:16 ZOHO skill QA SK13 S11 1475109000000570814
+- 2026-11-12T14:16 ZOHO skill QA SK13 S12 1475109000000570824
+- 2026-11-12T14:16 ZOHO skill QA SK13 Inact 1475109000000570834
+- 2026-11-12T14:16 ZOHO skill QA SK13 HS 1475109000000570847
+- 2026-11-12T14:23 ZOHO workflowRule QA SK13 WF skills 1475109000000570858
+- 2026-11-12T14:23 ZOHO contact QA SK13 Contact 1475109000000570887
+- 2026-11-12T14:23 ZOHO ticket #187 QA SK13 WF1 (A) 1475109000000570924
+- 2026-11-12T14:23 ZOHO ticket #188 QA SK13 WF1 (B, S8+S9) 1475109000000570973
+- 2026-11-12T14:25 TAVI department QA SK13 Dept A f4bb810f-5da4-4750-bb1d-4b47d60322fb
+- 2026-11-12T14:25 TAVI department QA SK13 Dept B a58daec6-a18b-4b1a-82c4-478a53934495
+- 2026-11-12T14:25 TAVI skillType QA SK13 T f91f26db-baa4-453d-bd81-4404d3686cbd
+- 2026-11-12T14:25 TAVI skillType QA SK13 TB 642711d6-e101-4af8-ba72-6eeb0b3af0e6
+- 2026-11-12T14:25 TAVI skill QA SK13 S1 491e0402-1ca7-4dad-9a3d-53f6e094e539
+- 2026-11-12T14:25 TAVI skill QA SK13 S2 b18991e3-3dba-4d5d-93fb-bc4e8e6a05f9
+- 2026-11-12T14:25 TAVI skill QA SK13 S3 85050160-79b7-4756-98cc-2c66bd19188c
+- 2026-11-12T14:25 TAVI skill QA SK13 S4 12d32e8c-da59-4851-a120-ac4b7daeb68b
+- 2026-11-12T14:25 TAVI skill QA SK13 S5 403c6e4c-97d2-4ca7-a1c9-2196529a61b8
+- 2026-11-12T14:25 TAVI skill QA SK13 S6 4d4868d5-d9f4-415e-be80-2f0c8078cfb3
+- 2026-11-12T14:25 TAVI skill QA SK13 S7 2e7ff0e1-bf4c-449b-827f-d509fb64811a
+- 2026-11-12T14:25 TAVI skill QA SK13 S8 0d4ada7a-da3f-4d9d-bcd6-b8b603e1285a
+- 2026-11-12T14:25 TAVI skill QA SK13 S9 e0a6c542-696b-48c7-9304-aa8b8e83caa8
+- 2026-11-12T14:25 TAVI skill QA SK13 S10 eedbf364-3926-4e94-a408-60bbdf490583
+- 2026-11-12T14:25 TAVI skill QA SK13 S11 a9bc37cb-1c0a-4c1c-afc2-1c2bc54420a7
+- 2026-11-12T14:25 TAVI skill QA SK13 S12 c5cfdfe9-f3fd-46cf-83a4-ba0d55efee4b
+- 2026-11-12T14:25 TAVI skill QA SK13 Inact 3d277c08-2111-4225-81cf-599d252fc92a
+- 2026-11-12T14:25 TAVI skill QA SK13 HS cfd1745b-aa42-43fb-b847-e9995d20e1a6
+- 2026-11-12T14:29 TAVI workflowRule QA SK13 WF skills 11577372-a189-4557-9139-8fd080a15331
+- 2026-11-12T14:29 TAVI ticket QA SK13 WF1 A 51a197f6-a424-4249-b265-8c1d7d070ce0
+- 2026-11-12T14:29 TAVI ticket QA SK13 WF1 B efb78bf2-29a9-4a26-9f54-f40d2e485bec
+- 2026-11-12T14:30 TAVI ticket #3176 QA SK13 Deleted skill f789bc25-1f7a-456b-ac0c-4dedc8254f71
+- 2026-11-12T14:32 TAVI assignmentRule QA SK13 RR skill 724c0767-6a83-48d6-b644-56a6cb619194
+- 2026-11-12T14:32 TAVI ticket #3177 QA SK13 H1 af469840-b4dd-4a23-8000-12d3be5b3015
+- 2026-11-12T14:32 TAVI ticket #3178 QA SK13 H2 792072c2-200e-428d-bef8-5d51a6a9ae2d
+- 2026-11-12T14:32 TAVI change: Dept A agents [876ce871 Test User 1], skill QA SK13 S1 agent, RR prefs offline on + dept threshold 1
+- 2026-11-12T14:32 TAVI ticket #3179 QA SK13 H3 2dd405ba-4456-4eb1-9fd9-c58af2564b2a
+- 2026-11-12T14:33 TAVI ticket #3180 QA SK13 H4 addc22f6-bbde-4683-8e7e-edafdbc92967
+- 2026-11-12T14:33 TAVI ticket #3181 QA SK13 H5 66ce757e-886a-43be-bc62-1f26e590143d
+- 2026-11-12T14:34 TAVI ticket #3182 QA SK13 H6 9c5087d8-e1f2-405d-95d8-bca3555dcb2a
+- 2026-11-12T14:35 ZOHO ticket #189 QA SK13 H thr 1475109000000579027
+- 2026-11-12T14:35 ZOHO change: Fathy mapped to skill QA SK13 S1 (Tech) — goes away when skill deleted
+- 2026-11-12T14:37 ZOHO change: Tech RR department threshold 3 -> 6 (RESTORE to 3)
+- 2026-11-12T14:38 ZOHO restored: Tech RR department threshold 6 -> 3 (verified on reopen)
+- 2026-11-12T18:19 TAVI ticket QA SK13 H7 (evidence for filing, threshold 40 → unassigned) 045ffef3-5ba2-436b-950c-a4f776665fdd
+- 2026-11-12T18:19 TAVI change: Dept A RR department threshold 100 -> 40 (dept is QA, deleted at cleanup)
+- 2026-11-12T18:31 ZOHO CLEANUP (by ledger id): workflowRule 570858 deleted; tickets #187/#188/#189 + contact 570887 trashed then purged (exact ids, 4/4); 14 QA SK13 skills + 2 types deleted (Fathy mapping gone with S1). Tech now: skills [test], types [test]. Threshold still 3. TAVI QA SK13 data KEPT (user: keep for now).

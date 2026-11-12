@@ -39,3 +39,20 @@
 - All: state Bug, label Assignment Rules, module Desk, Sprint 15, assignees MahmoudMohamed + mfathy + Hegazy, relate to NDC-2752 + NDC-2275.
 - Images ATTACHED 12 Nov via scripts/plane-attach.js (key file D:/Learning & Work/Software Testing/Anyware Software/secret-key-1793537440144.csv): 2931<-SK-H02, 2932<-SK-H03, 2933<-SK-G02; verified is_uploaded true.
 - SK-E01 (auto-add default) not filed (user asked for 3 bugs only).
+
+## Remaining comparisons — 12 Nov afternoon (user: "run the remaining Zoho comparisons before the trial ends")
+- SK-I01..I05 workflow skill actions: same 4 actions, same 1–10 limit, same run-time result (cap 10, extras/inactive skipped). DIFFERS: TAVI picker lists 87 skills (all depts, inactive, 31 DELETED QA SK12) — Zoho only the rule dept's active skills (SK-I03).
+- SK-J07: Create Ticket also lists 32 deleted skills; ticket #3176 saved with deleted "QA SK12 S1" keeps it (extends NDC-2933). Cause: skills field datatypeOptions.allowed_values never cleaned.
+- SK-H06: TAVI dept threshold counts agent's open tickets in ALL depts (Test User 1: 2 in Dept A, ~92 total; thr 1/40 → unassigned, 100 → assigned). Zoho counts only that dept (Fathy 5 Tech + 1 other; thr 6 → assigned #189). Bug.
+- Zoho threshold 3 -> 6 -> 3 (verified). Report v2 published (5 findings, 4–5 not filed). Evidence raw: evidence/remaining/.
+- QA SK13 data LEFT IN PLACE (ledger "Remaining comparisons"): TAVI 2 depts, 14 skills, 2 types, WF rule, RR rule, tickets #3174–#3182; Zoho 14 skills, 2 types, WF rule, contact, tickets #187–#189, Fathy mapped to QA SK13 S1. Cleanup after user decides on filing.
+- Rows now: 48 — 31 Same, 11 Bug, 1 Differs, 5 TAVI extra, 0 not compared.
+
+## Filed 12 Nov evening (user: "yes, build the images and file both bugs")
+- Fresh evidence (evidence/remaining/): TAVI #3204 QA SK13 H7 created at threshold 40 → Unassigned (Test User 1: 3 open in Dept A, ~90 elsewhere); TAVI prefs/rule/picker/create-ticket/#3176 shots; Zoho #189, clean Add Skills picker (unsaved new rule, nothing saved).
+- Images: screenshots/annotated/SK-H06-dept-threshold-counts-all-departments-vs-zoho.png, SK-I03-J07-skill-pickers-deleted-inactive-other-dept-vs-zoho.png (specs evidence/spec-H06.json, spec-I03.json).
+- NDC-2970 (High) dept threshold counts all departments — SK-H06 · id 34d99e36-05fd-47ae-92fc-349c69b22e86
+- NDC-2971 (Medium) pickers offer deleted/inactive/other-dept skills; deleted skill kept on ticket — SK-I03/I05/J07 · id c2293b5f-636b-4b48-a7b2-a7340040452f
+- Both: Bug, Assignment Rules, Desk module, Sprint 15, 3 assignees, relate to NDC-2752 + NDC-2275 (2971 also NDC-2933); images attached (204). Report republished (all 5 filed).
+- QA SK13 data still in place (ledger) + #3204; Dept A threshold now 40. Cleanup pending user go.
+- 12 Nov evening: Zoho QA SK13 cleanup DONE (user: "clean up the Zoho data, keep TAVI for now") — rule, 3 tickets + contact (purged), 14 skills, 2 types; Tech back to skill/type "test" only. TAVI QA SK13 data kept for devs (#3176, #3204 repro) — clean later by ledger.

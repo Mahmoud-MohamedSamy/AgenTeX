@@ -79,21 +79,21 @@ code{font:13px var(--mono)}
 <header class="top read">
   <span class="eyebrow">TAVI Desk · QA parity run · 12 Nov 2026</span>
   <h1>Desk Skills: TAVI vs Zoho Desk</h1>
-  <p class="lede">Every Skills function was run on both products at runtime, with QA data created in each. Rows marked "Not compared" were not run on one side.</p>
-  <div class="meta"><span>TAVI: NDC-Staging, owner + Desk Agent</span><span>Zoho: Desk test portal, Enterprise trial, admin</span><span>43 behaviours compared</span></div>
+  <p class="lede">Every Skills function was run on both products at runtime, with QA data created in each. All rows are now compared on both sides.</p>
+  <div class="meta"><span>TAVI: NDC-Staging, owner + Desk Agent</span><span>Zoho: Desk test portal, Enterprise trial, admin</span><span>48 behaviours compared</span></div>
 </header>
 
 <div class="answer read">
-  <strong>Not identical yet. Three bugs and one smaller difference remain.</strong>
+  <strong>Not identical yet. Five bugs and one smaller difference remain.</strong>
   <p>Setup now matches Zoho: per-department skills and types, Active/Inactive, filters, reorder, agents, limits and usage all behave the same. The gaps are in how skills reach tickets and how skill-based assignment picks an agent.</p>
   <div class="tally" role="group" aria-label="Filter the comparison table">
-    <button type="button" data-f="bug" aria-pressed="false"><span class="dot bug"></span>Bug <b>8</b></button>
+    <button type="button" data-f="bug" aria-pressed="false"><span class="dot bug"></span>Bug <b>11</b></button>
     <button type="button" data-f="diff" aria-pressed="false"><span class="dot diff"></span>Differs <b>1</b></button>
-    <button type="button" data-f="same" aria-pressed="false"><span class="dot same"></span>Same <b>27</b></button>
+    <button type="button" data-f="same" aria-pressed="false"><span class="dot same"></span>Same <b>31</b></button>
     <button type="button" data-f="extra" aria-pressed="false"><span class="dot extra"></span>TAVI extra <b>5</b></button>
-    <button type="button" data-f="nc" aria-pressed="false"><span class="dot nc"></span>Not compared <b>2</b></button>
+    <button type="button" data-f="nc" aria-pressed="false"><span class="dot nc"></span>Not compared <b>0</b></button>
   </div>
-  <p class="small">The 8 bug rows in the table roll up into the three findings below.</p>
+  <p class="small">The 11 bug rows in the table roll up into the five findings below. All five are filed: NDC-2931, NDC-2932, NDC-2933, NDC-2970 and NDC-2971.</p>
 </div>
 
 <section class="read" aria-labelledby="h-bugs">
@@ -116,12 +116,20 @@ code{font:13px var(--mono)}
   <a class="shot" href="img/SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png" target="_blank" rel="noopener"><img src="img/SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png" alt="Annotated evidence: The ticket Skills field offers and keeps inactive skills and other departments' skills. TAVI left, Zoho right." loading="lazy"></a>
   <p class="cap">Evidence image, TAVI on the left and Zoho on the right. Full size: <a href="img/SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png" target="_blank" rel="noopener">SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png</a></p>
 </article>
+  <article class="finding" id="f4">
+  <header><span class="num">4</span><div><h3>The department threshold counts the agent's open tickets in every department</h3><p class="ids">SK-H06 · found 12 Nov afternoon, filed as NDC-2970</p></div></header>
+  <div class="cmp"><div><h4>TAVI</h4><p>QA SK13 Dept A, threshold on. Test User 1 had 2 open tickets in Dept A and about 92 across all departments. Threshold 1 and 40: not assigned (#3177, #3181). Threshold 100: assigned (#3182). Threshold off: assigned (#3179).</p></div><div><h4>Zoho Desk</h4><p>Counts only the tickets in that department. Fathy had 5 open in Tech and 1 in another department. Threshold 3: not assigned. Threshold 6: assigned (#189).</p></div></div>
+</article>
+<article class="finding" id="f5">
+  <header><span class="num">5</span><div><h3>Skill pickers offer deleted skills, and workflow actions offer every department's and inactive skills</h3><p class="ids">SK-I03 · SK-I05 · SK-J07 · found 12 Nov afternoon, filed as NDC-2971</p></div></header>
+  <div class="cmp"><div><h4>TAVI</h4><p>Workflow Add / Remove skills lists 87 skills: every department's, inactive ones, and 31 skills deleted this morning (QA SK12). Choosing a department for the rule does not narrow it. Create Ticket lists the 32 deleted skills too, and a ticket saved with deleted "QA SK12 S1" keeps it (#3176). At run time the action skips inactive skills and stops at 10, like Zoho.</p></div><div><h4>Zoho Desk</h4><p>Add / Remove Skills lists only the rule department's active skills (13 in Tech). A deleted skill is gone everywhere.</p></div></div>
+</article>
 </section>
 
 <section class="read" aria-labelledby="h-diff">
   <h2 id="h-diff">Smaller difference</h2>
-  <article class="finding d" id="f4">
-  <header><span class="num">4</span><div><h3>A new department starts with auto-add off</h3><p class="ids">SK-E01</p></div></header>
+  <article class="finding d" id="f6">
+  <header><span class="num">6</span><div><h3>A new department starts with auto-add off</h3><p class="ids">SK-E01</p></div></header>
   <div class="cmp"><div><h4>TAVI</h4><p>QA SK12 Dept B (new, untouched): "Add skills to tickets by their criteria" is off, so no skill is added until an admin turns it on.</p></div><div><h4>Zoho Desk</h4><p>Auto-add skills to tickets is on, and new skills go to the bottom (Tech, and Haytham Mohamed, which was never changed).</p></div></div>
   <a class="shot" href="img/SK-E01-default-skill-preferences-vs-zoho.png" target="_blank" rel="noopener"><img src="img/SK-E01-default-skill-preferences-vs-zoho.png" alt="Annotated evidence: A new department starts with auto-add off. TAVI left, Zoho right." loading="lazy"></a>
   <p class="cap">Evidence image, TAVI on the left and Zoho on the right. Full size: <a href="img/SK-E01-default-skill-preferences-vs-zoho.png" target="_blank" rel="noopener">SK-E01-default-skill-preferences-vs-zoho.png</a></p>
@@ -185,14 +193,19 @@ code{font:13px var(--mono)}
 <tr data-k="bug" data-area="H"><td class="id">SK-H03</td><td>Skill-based RR: ticket with NO skills</td><td>not assigned (#182)</td><td>ASSIGNED to pool agent (#3132)</td><td><span class="pill bug">Bug</span></td></tr>
 <tr data-k="same" data-area="H"><td class="id">SK-H04</td><td>Skill-based RR on create (rule + threshold free)</td><td>assigned (#174)</td><td>(B-series run on create)</td><td><span class="pill same">Same</span></td></tr>
 <tr data-k="bug" data-area="H"><td class="id">SK-H05</td><td>Assign by skills on one ticket</td><td>executeSkillbasedAssignment assigns when an agent has any one of the ticket skills</td><td>POST /skills/assign: "No agent of the department holds every skill on the ticket" for [S3,S1]</td><td><span class="pill bug">Bug</span></td></tr>
-<tr data-k="nc" data-area="H"><td class="id">SK-H06</td><td>Department threshold blocks skill RR</td><td>yes (Fathy at 5 open, threshold 3, was skipped)</td><td>not re-run here (thresholds covered by the NDC-2824 run)</td><td><span class="pill nc">Not compared</span></td></tr>
-<tr class="area" data-area="I"><th colspan="5" scope="colgroup">Workflow actions</th></tr><tr data-k="nc" data-area="I"><td class="id">SK-I01</td><td>Workflow skill actions (Add / Remove / Recalculate / Reassign by skills)</td><td>not checked live</td><td>Add/Remove 1–10 skills, Recalculate, Reassign available</td><td><span class="pill nc">Not compared</span></td></tr>
+<tr data-k="bug" data-area="H"><td class="id">SK-H06</td><td>Department threshold blocks skill RR</td><td>counts only the agent's open tickets IN THIS DEPARTMENT: Fathy 5 open in Tech + 1 elsewhere; threshold 3 → not assigned, threshold 6 → assigned (#189)</td><td>counts the agent's open tickets in ALL departments: Test User 1 has 2 open in QA SK13 Dept A but ~92 tenant-wide; threshold 1 and 40 → not assigned (#3177, #3181), 100 → assigned (#3182); threshold off → assigned (#3179)</td><td><span class="pill bug">Bug</span></td></tr>
+<tr class="area" data-area="I"><th colspan="5" scope="colgroup">Workflow actions</th></tr><tr data-k="same" data-area="I"><td class="id">SK-I01</td><td>Workflow skill actions available</td><td>Add Skills, Remove Skills, Recalculate Skills, Reassign ticket based on Skills</td><td>Add skills, Remove skills, Recalculate skills, Reassign ticket based on skills</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="I"><td class="id">SK-I02</td><td>Add/Remove Skills: how many per action</td><td>1–10 ("You have reached maximum number of skills.")</td><td>1–10 (11th box disabled; hint "Choose 1 to 10 skills")</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="bug" data-area="I"><td class="id">SK-I03</td><td>Add/Remove Skills: which skills the picker offers</td><td>only the rule department's ACTIVE skills (13 Tech skills; inactive and other-department skills not listed)</td><td>87 skills: every department's skills, inactive ones, and 31 skills already DELETED (QA SK12 …); choosing a department for the rule does not narrow the list</td><td><span class="pill bug">Bug</span></td></tr>
+<tr data-k="same" data-area="I"><td class="id">SK-I04</td><td>Add Skills on a ticket that would pass 10 skills</td><td>ticket kept at 10; extra skills silently skipped (#187 → 10; #188 had 2 → 10)</td><td>ticket kept at 10; extra skills skipped (#3174; #3175 had 2 → 10)</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="I"><td class="id">SK-I05</td><td>Add Skills action holding an inactive skill</td><td>cannot be chosen</td><td>can be chosen; skipped when the rule runs (#3174 got 9 of 10)</td><td><span class="pill same">Same</span></td></tr>
 <tr class="area" data-area="J"><th colspan="5" scope="colgroup">Layout and ticket page</th></tr><tr data-k="same" data-area="J"><td class="id">SK-J01</td><td>Skills as a ticket layout field</td><td>YES: standard field Skills (Lookup, entitySkills), Ticket Information, removable, not mandatory</td><td>YES: multi-select skills, Ticket Information, deletable</td><td><span class="pill same">Same</span></td></tr>
 <tr data-k="bug" data-area="J"><td class="id">SK-J02</td><td>Skills on the create form</td><td>not on Add Ticket</td><td>shown on Create Ticket</td><td><span class="pill bug">Bug</span></td></tr>
 <tr data-k="same" data-area="J"><td class="id">SK-J03</td><td>Skills on the ticket page</td><td>Ticket Properties › Ticket Information (chips, editable)</td><td>Ticket Properties › Ticket Information + a side-rail Skills tab</td><td><span class="pill same">Same</span></td></tr>
 <tr data-k="bug" data-area="J"><td class="id">SK-J04</td><td>New Ticket form Skills options</td><td>no Skills input on Add Ticket</td><td>Skills chips on Create Ticket list EVERY department's skills, incl. inactive (dept = Sales showed Customer Support, QA AS6, QA SK12 skills, QA AS6 sk3 inactive)</td><td><span class="pill bug">Bug</span></td></tr>
 <tr data-k="bug" data-area="J"><td class="id">SK-J05</td><td>Ticket page inline "Edit Skills" options</td><td>Skills field in Ticket Properties (Zoho drops inactive/other-dept on save)</td><td>lists every department's skills incl. inactive; long names overflow sideways</td><td><span class="pill bug">Bug</span></td></tr>
 <tr data-k="same" data-area="J"><td class="id">SK-J06</td><td>Ticket Skills tab › Associate Skills</td><td>Skills panel (Associate Skills, seen 9 Nov)</td><td>only active skills of the ticket's department</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="bug" data-area="J"><td class="id">SK-J07</td><td>Deleted skill still offered on tickets</td><td>a deleted skill is gone everywhere</td><td>Create Ticket Skills field lists 32 deleted QA SK12 skills; a ticket saved with deleted "QA SK12 S1" keeps it (#3176)</td><td><span class="pill bug">Bug</span></td></tr>
 <tr class="area" data-area="K"><th colspan="5" scope="colgroup">Permissions</th></tr><tr data-k="same" data-area="K"><td class="id">SK-K01</td><td>Desk Agent without automation permission</td><td>needs Help Desk Automation permission (docs)</td><td>403 desk:assignment:manage on list/create/prefs/delete/recalc</td><td><span class="pill same">Same</span></td></tr></tbody>
   </table></div>
 </section>
@@ -208,10 +221,10 @@ code{font:13px var(--mono)}
 <section class="read" aria-labelledby="h-scope">
   <h2 id="h-scope">Scope, automation and open items</h2>
   <div class="grid2">
-    <div class="note"><h4>Not compared</h4><ul><li>Workflow skill actions (Add / Remove / Recalculate / Reassign) were not run against Zoho. TAVI allows 1–10 skills per action.</li><li>Round-robin thresholds with skills: covered by the NDC-2824 run, not repeated.</li></ul></div>
+    <div class="note"><h4>Added 12 Nov afternoon</h4><ul><li>Workflow skill actions run on both sides: same four actions, same 1–10 limit, same run-time result; the picker differs (finding 5).</li><li>Round-robin department threshold with skills: run on both sides (finding 4).</li></ul></div>
     <div class="note"><h4>Automation</h4><p>New feature <code>deskskills</code>, <code>DeskSkillsParityTest</code>: 16 API tests. 12 pass; the 4 tests in group <code>parity-bug</code> fail until findings 1–3 are fixed. Each run builds and removes its own QA department.</p></div>
   </div>
-  <div class="note"><h4>Test data still in place</h4><p>QA SK12 data remains on NDC-Staging and in the Zoho test portal for retesting. Zoho settings changed for the test (round-robin threshold of the Tech department raised from 3 to 10, skill order, a QA round-robin rule) are listed in the run ledger and will be put back at cleanup.</p></div>
+  <div class="note"><h4>Test data</h4><p>The morning's QA SK12 data was deleted on both sides. The afternoon's QA SK13 data (2 TAVI departments, 14 skills, 2 rules, 9 tickets; Zoho 14 skills, 1 workflow rule, 3 tickets, 1 contact) is still in place for evidence and is listed in the run ledger. The Zoho Tech threshold was raised to 6 for one check and is back at 3.</p></div>
 </section>
 </div>
 <script>

@@ -1,0 +1,21 @@
+{
+ "out": "SK-H06-dept-threshold-counts-all-departments-vs-zoho.png",
+ "ticket": "Desk Skills parity · SK-H06",
+ "title": "Department threshold counts the agent's open tickets in EVERY department, so skill round robin stops assigning (Zoho counts only that department)",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 12 Nov 2026 · Zoho 12 Nov 2026 (live)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · QA SK13 Dept A, rule QA SK13 RR skill (Skill Based, Test User 1) · Zoho Desk techsolutionsegypt, dept Tech, skill-based round robin, Fathy Mehanna",
+ "panels": [
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/tavi-rr-prefs-threshold40.png", "caption": "TAVI Round Robin Preferences of QA SK13 Dept A: Department wise threshold ON, 40 open tickets per agent", "w": 1600, "h": 900, "crop": [464, 45, 672, 300], "boxes": [ { "b": [482, 228, 1104, 334], "n": 1 } ] },
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/tavi-rr-rule-list.png", "caption": "TAVI rule QA SK13 RR skill in QA SK13 Dept A: Skill Based Assignment, 1 agent (Test User 1, holds QA SK13 S1)", "w": 1600, "h": 900, "crop": [292, 330, 1284, 160], "boxes": [ { "b": [312, 400, 1556, 476], "n": 2 } ] },
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/tavi-h7-ticket.png", "caption": "TAVI #3204 QA SK13 H7 (skill QA SK13 S1, matches the rule): Ticket Owner Unassigned", "w": 1600, "h": 900, "crop": [370, 60, 600, 460], "boxes": [ { "b": [384, 444, 642, 506], "n": 3 } ] },
+  { "side": "zoho", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/zoho-rr-prefs-threshold3.png", "caption": "Zoho Round Robin Preferences: Department wise threshold, 'open tickets an agent in the department can handle' (shown after restoring Tech to 3; it was 6 for the test)", "w": 1600, "h": 900, "crop": [412, 140, 770, 135], "boxes": [ { "b": [422, 150, 1166, 262], "n": 1 } ] },
+  { "side": "zoho", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/zoho-189-ticket.png", "caption": "Zoho #189 QA SK13 H thr (skill QA SK13 S1, Tech): Ticket Owner Fathy Mehanna", "w": 1600, "h": 900, "crop": [336, 55, 640, 760], "boxes": [ { "b": [348, 288, 626, 348], "n": 3 }, { "b": [348, 744, 626, 802], "n": 2 } ] }
+ ],
+ "rows": [
+  [1, "Department threshold", "Department wise threshold: 'Maximum number of open tickets an agent in the department can handle'. Tech set to 6 for the test.", "Same setting, same wording. QA SK13 Dept A set to 40 (also tried 1 and 100).", "INFO"],
+  [2, "Rule and agent", "Skill-based round robin in Tech. Fathy holds QA SK13 S1, the ticket's skill.", "QA SK13 RR skill, Skill Based, pool Test User 1, who holds QA SK13 S1, the ticket's skill.", "INFO"],
+  [3, "Agent's open tickets, and result", "Fathy: 5 open in Tech + 1 in another department. Threshold 6 → ASSIGNED (#189). At 3 he was not assigned. Only tickets in Tech count.", "Test User 1: 3 open in QA SK13 Dept A, about 90 more in other departments. Threshold 40 → NOT assigned (#3204, and #3181 earlier); threshold 1 → not assigned (#3177); 100 → assigned (#3182); threshold off → assigned (#3179). Tickets in every department are counted.", "DIFFERS"]
+ ]
+}

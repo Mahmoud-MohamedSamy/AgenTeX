@@ -1,0 +1,12 @@
+const o = { sk: [] };
+const A = (await api('POST', '/desk/departments', { name: 'QA SK13 Dept A' })).j?.data?.id; track('department', A, 'QA SK13 Dept A');
+const B = (await api('POST', '/desk/departments', { name: 'QA SK13 Dept B' })).j?.data?.id; track('department', B, 'QA SK13 Dept B');
+const ta = (await api('POST', '/desk/skill-types', { department_id: A, name: 'QA SK13 T' })); const TA = ta.j?.data?.id; track('skillType', TA, 'QA SK13 T');
+const tb = (await api('POST', '/desk/skill-types', { department_id: B, name: 'QA SK13 TB' })); const TB = tb.j?.data?.id; track('skillType', TB, 'QA SK13 TB');
+const mk = async (dept, type, name, extra = {}) => { const r = await api('POST', '/desk/skills', { department_id: dept, skill_type_id: type, name, ...extra }); const id = r.j?.data?.id; if (id) track('skill', id, name); o.sk.push([name, r.s, r.s >= 300 ? r.t.slice(0, 200) : (r.j.data.is_active ?? r.j.data.status)]); return id; };
+for (let i = 1; i <= 12; i++) await mk(A, TA, 'QA SK13 S' + i);
+const ia = await mk(A, TA, 'QA SK13 Inact');
+o.deact = (await api('PUT', `/desk/skills/${ia}`, { is_active: false })).s;
+await mk(B, TB, 'QA SK13 HS');
+o.A = A; o.B = B; o.types = [ta.s, tb.s];
+return o;

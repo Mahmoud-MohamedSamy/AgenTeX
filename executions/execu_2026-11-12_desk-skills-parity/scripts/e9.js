@@ -1,0 +1,2 @@
+async (page) => page.evaluate(() => { const ls = [...document.querySelectorAll('label, span, div')].filter(e => e.childElementCount === 0 && e.offsetParent && /^(QA SK1[23]|tier_|QA AS6)/.test(e.textContent.trim()));
+  const names = ls.map(e => e.textContent.trim()); return { n: names.length, sk12: names.filter(x => /^QA SK12/.test(x)).length, sk13: names.filter(x => /^QA SK13/.test(x)), firstSk12: names.findIndex(x => /^QA SK12/.test(x)), idxInact: names.indexOf('QA SK13 Inact'), idxHS: names.indexOf('QA SK13 HS'), tail: names.slice(-45) }; })

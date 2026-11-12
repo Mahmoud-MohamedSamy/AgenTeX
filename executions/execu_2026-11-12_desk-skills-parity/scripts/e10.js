@@ -1,0 +1,4 @@
+async (page) => { const S = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX/executions/execu_2026-11-12_desk-skills-parity/evidence/remaining/';
+  await page.evaluate(() => { const e = [...document.querySelectorAll('label, span, div')].find(e => e.childElementCount === 0 && e.offsetParent && e.textContent.trim() === 'QA SK12 S4'); e.scrollIntoView({ block: 'center' }); });
+  await page.waitForTimeout(800); await page.screenshot({ path: S + 'tavi-wf-picker-dept-a.png' });
+  return page.evaluate(() => [...document.querySelectorAll('label, span, div')].filter(e => e.childElementCount === 0 && e.offsetParent && /^(QA SK1[23]|tier_|New Feature|test)/.test(e.textContent.trim())).map(e => { const r = e.getBoundingClientRect(); return [e.textContent.trim().slice(0, 24), Math.round(r.x), Math.round(r.y), Math.round(r.right), Math.round(r.bottom)]; }).filter(x => x[2] > 0 && x[2] < 900)); }
