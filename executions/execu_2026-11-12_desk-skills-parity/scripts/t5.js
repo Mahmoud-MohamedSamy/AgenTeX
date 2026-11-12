@@ -1,0 +1,16 @@
+const D='0c0e4194-8a21-44d8-a7cb-2daa011499b7', T='81b2c9de-b75c-412b-ad6a-eab6c787de82', S1='07eb6b9e-229c-4970-846c-45d56d47d16a', S2='029d39be-5e12-4055-80ff-4cb44bf8ed7d', S3='7ffffd47-cd50-44d8-999f-441e136e28c7';
+const A1='876ce871-2b02-4854-89a7-68050391c62b', A2='d23fb4e0-248d-41f6-af60-d28885a7007e';
+const o={};
+const all=(await api('GET',`/desk/skills?department_id=${D}`)).j.data.skills; const ids=all.map(s=>s.id);
+const ord=await api('PUT',`/desk/skills/order?department_id=${D}`,{skill_ids:[S3,S2,S1,...ids.filter(i=>![S1,S2,S3].includes(i))]}); o.order=[ord.s,ord.t.slice(0,150)];
+o.after=(await api('GET',`/desk/skills?department_id=${D}`)).j.data.skills.slice(0,4).map(s=>[s.name,s.sort_order]);
+o.partialOrder=await api('PUT',`/desk/skills/order?department_id=${D}`,{skill_ids:[S1]}); o.partialOrder=[o.partialOrder.s,o.partialOrder.t.slice(0,250)];
+o.rename=await api('PUT',`/desk/skill-types/${T}`,{name:'QA SK12 T1r'}); o.rename=[o.rename.s,o.rename.t.slice(0,200)];
+o.delInUse=await api('DELETE',`/desk/skill-types/${T}`); o.delInUse=[o.delInUse.s,o.delInUse.t.slice(0,250)];
+o.agents=await api('PUT',`/desk/skills/${S1}/agents`,{agent_ids:[A1]}); o.agents=[o.agents.s,o.agents.t.slice(0,250)];
+o.agentSkills=await api('GET',`/desk/agent-skills?department_id=${D}`); o.agentSkills=[o.agentSkills.s,o.agentSkills.t.slice(0,600)];
+o.agentPut=await api('PUT',`/desk/agents/${A2}/skills?department_id=${D}`,{skills:[S2,S3]}); o.agentPut=[o.agentPut.s,o.agentPut.t.slice(0,250)];
+const after=(await api('GET',`/desk/skills?department_id=${D}`)).j.data.skills; o.map=after.filter(s=>[S1,S2,S3].includes(s.id)).map(s=>[s.name,s.agent_ids]);
+o.outsider=await api('PUT',`/desk/skills/${S1}/agents`,{agent_ids:[A1,'5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4']}); o.outsider=[o.outsider.s,o.outsider.t.slice(0,300)];
+o.usage=await api('GET',`/desk/skills/${S1}/usage`); o.usage=[o.usage.s,o.usage.t.slice(0,400)];
+return o;

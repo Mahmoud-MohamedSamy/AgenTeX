@@ -1,0 +1,20 @@
+{
+ "out": "SK-H02-skill-rr-any-skill-vs-zoho.png",
+ "ticket": "Desk Skills parity · SK-H02",
+ "title": "Skill-based round robin leaves a ticket unassigned when the agent has only some of its skills (Zoho assigns it)",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 12 Nov 2026 · Zoho 12 Nov 2026 (live)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging, owner) · rule QA SK12 RR skill (Skill Based, pool Test User 1, Subject contains QASK12RR), dept QA SK12 Dept A · Zoho Desk techsolutionsegypt, rule QA SK12 RR skill (Skill Based, Fathy Mehanna), dept Tech",
+ "panels": [
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/tavi-E1-skills-tab.png", "caption": "TAVI #3143 QA SK12 E1 QASK12RR — ticket Skills tab: QA SK12 S4, QA SK12 S1", "w": 1600, "h": 900, "crop": [364, 60, 300, 220], "boxes": [ { "b": [398, 182, 602, 252], "n": 1 } ] },
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/tavi-E1-ticket.png", "caption": "TAVI #3143 Key Information: Ticket Owner = Unassigned (rule ran, no owner)", "w": 1600, "h": 900, "crop": [370, 440, 280, 80], "boxes": [ { "b": [386, 450, 640, 505], "n": 2 } ] },
+  { "side": "tavi", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/tavi-skills-page-qa-dept.png", "caption": "TAVI Skills (QA SK12 Dept A): QA SK12 S1 → 1 agent (TU = Test User 1, the rule's only agent); QA SK12 S4 has no agents", "w": 1600, "h": 900, "crop": [292, 322, 1270, 146], "boxes": [ { "b": [298, 414, 1556, 462], "n": 3 } ] },
+  { "side": "zoho", "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/zoho/zoho-ticket-properties-skills.png", "caption": "Zoho #181 QA SK12 B2 QASK12RR — Ticket Owner Fathy Mehanna; Skills QA SK12 S3, test (Fathy holds only \"test\")", "w": 1600, "h": 900, "crop": [336, 230, 300, 580], "boxes": [ { "b": [352, 742, 628, 800], "n": 1 }, { "b": [352, 288, 628, 345], "n": 2 } ] }
+ ],
+ "rows": [
+  [1, "Skills on the ticket", "QA SK12 S3 + test (#181)", "QA SK12 S4 + QA SK12 S1 (#3143)", "INFO"],
+  [2, "Owner after the skill-based round robin rule", "Assigned to Fathy Mehanna — he holds one of the two skills (\"test\"). Same with execute skill-based assignment. A ticket with ONLY skills he lacks stays unassigned (#180).", "Unassigned. API Assign by Skills: \"No agent of the department holds every skill on the ticket.\" UI text: \"assigns a ticket only to agents holding every active skill\".", "DIFFERS"],
+  [3, "Skills of the rule's agent", "Fathy: test (not QA SK12 S3)", "Test User 1: QA SK12 S1 (not QA SK12 S4)", "INFO"]
+ ]
+}

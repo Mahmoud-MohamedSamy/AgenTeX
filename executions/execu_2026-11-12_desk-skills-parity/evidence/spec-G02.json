@@ -1,0 +1,155 @@
+{
+ "out": "SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png",
+ "ticket": "Desk Skills parity · SK-G02 / G03 / J04 / J05",
+ "title": "Ticket Skills field offers and keeps inactive skills and other departments' skills (Zoho drops them; Add Ticket form has no Skills)",
+ "verdict": "FAIL",
+ "label": "BUG vs ZOHO",
+ "date": "TAVI 12 Nov 2026 · Zoho 12 Nov 2026 (live)",
+ "env": "TAVI staging-desk.taviportal.com (NDC-Staging) · dept QA SK12 Dept A (QA SK12 Inact = inactive; QA AS6 sk1 belongs to QA AS6 Dept A) · Zoho Desk techsolutionsegypt, dept Tech (QA SK12 Inact inactive; QA SK12 HS belongs to dept Haytham Mohamed)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/tavi-new-ticket-skills-all-departments.png",
+   "caption": "TAVI Create Ticket (Department = Sales): Skills chips list every department's skills — Customer Support, QA AS6 (incl. inactive QA AS6 sk3), QA SK12 …",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    1000,
+    360,
+    420,
+    540
+   ],
+   "boxes": [
+    {
+     "b": [
+      1100,
+      426,
+      1405,
+      895
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/tavi-ticket-inline-edit-skills-all-departments.png",
+   "caption": "TAVI ticket #3115 (QA SK12 Dept A) › Ticket Properties › Edit Skills: same unfiltered list, incl. QA SK12 Inact (inactive) and other departments; long names run off the panel",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    380,
+    100,
+    280,
+    470
+   ],
+   "boxes": [
+    {
+     "b": [
+      394,
+      130,
+      650,
+      560
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/tavi-E3-field.png",
+   "caption": "TAVI #3145 saved with QA SK12 Inact (inactive) + QA AS6 sk1 (other department) — both kept",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    370,
+    330,
+    280,
+    220
+   ],
+   "boxes": [
+    {
+     "b": [
+      380,
+      490,
+      640,
+      535
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/zoho/zoho-new-ticket-form.png",
+   "caption": "Zoho Add Ticket form (Tech layout): Ticket Information ends at Status / Ticket Owner / Product Name — no Skills input (Skills is a layout field shown only on the ticket after it is created)",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    188,
+    110,
+    890,
+    670
+   ],
+   "boxes": [
+    {
+     "b": [
+      600,
+      600,
+      880,
+      670
+     ],
+     "n": 1,
+     "color": "#16a34a"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_desk-skills-parity/evidence/zoho/zoho-170-manual-dropped.png",
+   "caption": "Zoho #170 after API set entitySkills = QA SK12 S1 + QA SK12 Inact (inactive) + QA SK12 HS (other dept): only QA SK12 S1 kept",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    336,
+    560,
+    300,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      352,
+      742,
+      628,
+      800
+     ],
+     "n": 3
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Skills on the create form",
+   "Not on Add Ticket (Skills is a removable layout field shown on the ticket's properties)",
+   "Shown on Create Ticket; options = all skills of all departments, incl. inactive, whatever the chosen department",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "Options when editing Skills on a ticket",
+   "Only skills of the ticket's department that can be stamped; inactive / other-dept dropped on save",
+   "Inline Edit Skills lists every department's skills incl. inactive (the side-rail Skills tab › Associate Skills IS filtered)",
+   "DIFFERS"
+  ],
+  [
+   3,
+   "Saving an inactive or other-department skill on a ticket",
+   "Silently dropped (#170 kept only QA SK12 S1)",
+   "Saved and kept (#3145: QA SK12 Inact, QA AS6 sk1); API PATCH accepts too",
+   "DIFFERS"
+  ]
+ ]
+}

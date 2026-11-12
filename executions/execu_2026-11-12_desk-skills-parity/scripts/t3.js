@@ -1,0 +1,16 @@
+const D='0c0e4194-8a21-44d8-a7cb-2daa011499b7';
+const o={};
+const ty=await api('POST','/desk/skill-types',{department_id:D,name:'QA SK12 T1'}); o.type=[ty.s,ty.t.slice(0,300)];
+const T=ty.j?.data?.id||ty.j?.data?.type?.id; o.T=T; if(T) track('skillType',T,'QA SK12 T1');
+o.dupType=await api('POST','/desk/skill-types',{department_id:D,name:'qa sk12 t1'}); o.dupType=[o.dupType.s,o.dupType.t.slice(0,250)];
+const crit=n=>({conditions:[{field_key:'subject',operator:'contains',value:n.replace(/ /g,'')}],pattern:null});
+const mk=async(name,extra={})=>{const r=await api('POST',`/desk/skills?department_id=${D}`,{name,type_id:T,is_active:true,description:null,criteria:crit(name),...extra}); const id=r.j?.data?.id||r.j?.data?.skill?.id; if(id) track('skill',id,name.slice(0,40)); return [r.s,id||r.t.slice(0,300)];};
+for(const n of ['QA SK12 S1','QA SK12 S2','QA SK12 S3']) o[n]=await mk(n);
+o.noType=await mk('QA SK12 NoType',{type_id:null});
+o.dup=await mk('QA SK12 S1'); o.dupCase=await mk('qa sk12 s1');
+o.len50=await mk('QA SK12 '+'L'.repeat(42)); o.len51=await mk('QA SK12 '+'M'.repeat(43)); o.len101=await mk('QA SK12 '+'N'.repeat(93));
+o.blank=await mk(''); o.spaces=await mk('   ');
+o.noCrit=await mk('QA SK12 NoCrit',{criteria:null});
+o.html=await mk('QA SK12 <b>x</b>');
+o.inactive=await mk('QA SK12 Inact',{is_active:false});
+return o;

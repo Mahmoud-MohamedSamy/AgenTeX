@@ -1,0 +1,243 @@
+<title>Desk Skills Parity</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (findings, evidence) that widens for the comparison matrix; verdict colors carry state, slate-blue accent */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#17202b; --muted:#5b6675; --line:#dfe3e9; --accent:#2f5d8a; --on-accent:#ffffff;
+  --bug:#b42318; --bug-bg:#fdecea; --diff:#a15c07; --diff-bg:#fdf3e2; --same:#1d7a46; --same-bg:#e7f5ec;
+  --extra:#3f5fbf; --extra-bg:#eaeffb; --nc:#59626e; --nc-bg:#eceef1;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11161d; --surface:#18202a; --fg:#e6eaf0; --muted:#9aa5b3; --line:#2a3542; --accent:#7fb0e0; --on-accent:#0d141c;
+  --bug:#ff8a7a; --bug-bg:#3a1a17; --diff:#f0b35b; --diff-bg:#352711; --same:#6fd39b; --same-bg:#143024;
+  --extra:#9fb5ff; --extra-bg:#1d2747; --nc:#aab3be; --nc-bg:#232b35; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11161d; --surface:#18202a; --fg:#e6eaf0; --muted:#9aa5b3; --line:#2a3542; --accent:#7fb0e0; --on-accent:#0d141c;
+  --bug:#ff8a7a; --bug-bg:#3a1a17; --diff:#f0b35b; --diff-bg:#352711; --same:#6fd39b; --same-bg:#143024;
+  --extra:#9fb5ff; --extra-bg:#1d2747; --nc:#aab3be; --nc-bg:#232b35; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--sans);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:1080px;margin:0 auto;display:grid;gap:40px}
+.read{max-width:760px;width:100%}
+h1,h2,h3{text-wrap:balance;line-height:1.25;margin:0}
+h1{font-size:30px;font-weight:700;letter-spacing:-.01em}
+h2{font-size:21px;font-weight:600}
+h3{font-size:17px;font-weight:600}
+h4{margin:0 0 4px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header.top{display:grid;gap:12px}
+.lede{font-size:17px;max-width:68ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;font:13px var(--mono);color:var(--muted)}
+.answer{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--bug);border-radius:8px;padding:18px 20px;display:grid;gap:10px}
+.answer strong{font-size:18px}
+.tally{display:flex;flex-wrap:wrap;gap:8px}
+.tally button{font:500 13px var(--sans);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:5px 12px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.tally button:hover{border-color:var(--accent)}
+.tally button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.tally b{font-variant-numeric:tabular-nums}
+.dot{width:9px;height:9px;border-radius:50%}
+.dot.bug{background:var(--bug)}.dot.diff{background:var(--diff)}.dot.same{background:var(--same)}.dot.extra{background:var(--extra)}.dot.nc{background:var(--nc)}
+section{display:grid;gap:16px}
+.finding{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px;display:grid;gap:16px;min-width:0}
+.finding header{display:flex;gap:14px;align-items:flex-start}
+.finding .num{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:600 14px var(--mono);color:var(--surface);background:var(--bug)}
+.finding.d .num{background:var(--diff)}
+.ids{font:12px var(--mono);color:var(--muted);margin-top:2px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cmp>div{min-width:0;border-top:1px solid var(--line);padding-top:10px}
+.shot{display:block;border:1px solid var(--line);border-radius:6px;overflow:hidden;max-height:520px;background:var(--bg)}
+.shot img{display:block;width:100%;height:auto}
+.cap{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;display:grid;gap:10px;min-width:0}
+.note.warn{border-left:4px solid var(--diff)}
+ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:860px;font-size:13.5px}
+table.narrow{min-width:520px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+thead th{font:600 12px var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--surface)}
+tr.area th{font:600 13px var(--sans);background:var(--bg);color:var(--fg)}
+td.id{font:12.5px var(--mono);white-space:nowrap;color:var(--muted)}
+td:nth-child(2){font-weight:500;min-width:170px}
+.pill{display:inline-block;font:600 11.5px var(--sans);padding:2px 9px;border-radius:999px;white-space:nowrap}
+.pill.bug{color:var(--bug);background:var(--bug-bg)}.pill.diff{color:var(--diff);background:var(--diff-bg)}.pill.same{color:var(--same);background:var(--same-bg)}.pill.extra{color:var(--extra);background:var(--extra-bg)}.pill.nc{color:var(--nc);background:var(--nc-bg)}
+.small{font-size:13.5px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid2>div{min-width:0}
+code{font:13px var(--mono)}
+@media (max-width:720px){.cmp,.grid2{grid-template-columns:1fr} h1{font-size:25px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+</style>
+<div class="wrap">
+<header class="top read">
+  <span class="eyebrow">TAVI Desk · QA parity run · 12 Nov 2026</span>
+  <h1>Desk Skills: TAVI vs Zoho Desk</h1>
+  <p class="lede">Every Skills function was run on both products at runtime, with QA data created in each. Rows marked "Not compared" were not run on one side.</p>
+  <div class="meta"><span>TAVI: NDC-Staging, owner + Desk Agent</span><span>Zoho: Desk test portal, Enterprise trial, admin</span><span>43 behaviours compared</span></div>
+</header>
+
+<div class="answer read">
+  <strong>Not identical yet. Three bugs and one smaller difference remain.</strong>
+  <p>Setup now matches Zoho: per-department skills and types, Active/Inactive, filters, reorder, agents, limits and usage all behave the same. The gaps are in how skills reach tickets and how skill-based assignment picks an agent.</p>
+  <div class="tally" role="group" aria-label="Filter the comparison table">
+    <button type="button" data-f="bug" aria-pressed="false"><span class="dot bug"></span>Bug <b>8</b></button>
+    <button type="button" data-f="diff" aria-pressed="false"><span class="dot diff"></span>Differs <b>1</b></button>
+    <button type="button" data-f="same" aria-pressed="false"><span class="dot same"></span>Same <b>27</b></button>
+    <button type="button" data-f="extra" aria-pressed="false"><span class="dot extra"></span>TAVI extra <b>5</b></button>
+    <button type="button" data-f="nc" aria-pressed="false"><span class="dot nc"></span>Not compared <b>2</b></button>
+  </div>
+  <p class="small">The 8 bug rows in the table roll up into the three findings below.</p>
+</div>
+
+<section class="read" aria-labelledby="h-bugs">
+  <h2 id="h-bugs">Bugs to fix</h2>
+  <article class="finding " id="f1">
+  <header><span class="num">1</span><div><h3>Skill-based assignment needs every skill on the ticket</h3><p class="ids">SK-H02 · SK-H05</p></div></header>
+  <div class="cmp"><div><h4>TAVI</h4><p>A ticket stays unassigned unless one agent holds <em>every</em> skill on it. #3143 (QA SK12 S4 + S1) stayed unassigned although the pool agent holds S1. Assign by Skills answers "No agent of the department holds every skill on the ticket."</p></div><div><h4>Zoho Desk</h4><p>Assigns to an agent who holds at least one of the ticket's skills. #181 (QA SK12 S3 + test) went to Fathy, who holds only "test". A ticket whose skills nobody holds stays unassigned (#180).</p></div></div>
+  <a class="shot" href="img/SK-H02-skill-rr-any-skill-vs-zoho.png" target="_blank" rel="noopener"><img src="img/SK-H02-skill-rr-any-skill-vs-zoho.png" alt="Annotated evidence: Skill-based assignment needs every skill on the ticket. TAVI left, Zoho right." loading="lazy"></a>
+  <p class="cap">Evidence image, TAVI on the left and Zoho on the right. Full size: <a href="img/SK-H02-skill-rr-any-skill-vs-zoho.png" target="_blank" rel="noopener">SK-H02-skill-rr-any-skill-vs-zoho.png</a></p>
+</article>
+<article class="finding " id="f2">
+  <header><span class="num">2</span><div><h3>A ticket with no skills is assigned by the skill-based rule, even outside the pool</h3><p class="ids">SK-H03</p></div></header>
+  <div class="cmp"><div><h4>TAVI</h4><p>#3144 had no skills and was assigned to Mahmoud Samy, who is not in the rule's pool (pool = Test User 1 only). In an earlier run #3132 went to the pool agent.</p></div><div><h4>Zoho Desk</h4><p>#182 with no skills, same rule: left unassigned.</p></div></div>
+  <a class="shot" href="img/SK-H03-skill-rr-no-skill-ticket-assigned-vs-zoho.png" target="_blank" rel="noopener"><img src="img/SK-H03-skill-rr-no-skill-ticket-assigned-vs-zoho.png" alt="Annotated evidence: A ticket with no skills is assigned by the skill-based rule, even outside the pool. TAVI left, Zoho right." loading="lazy"></a>
+  <p class="cap">Evidence image, TAVI on the left and Zoho on the right. Full size: <a href="img/SK-H03-skill-rr-no-skill-ticket-assigned-vs-zoho.png" target="_blank" rel="noopener">SK-H03-skill-rr-no-skill-ticket-assigned-vs-zoho.png</a></p>
+</article>
+<article class="finding " id="f3">
+  <header><span class="num">3</span><div><h3>The ticket Skills field offers and keeps inactive skills and other departments' skills</h3><p class="ids">SK-G02 · SK-G03 · SK-J02 · SK-J04 · SK-J05</p></div></header>
+  <div class="cmp"><div><h4>TAVI</h4><p>Create Ticket and the inline Edit Skills on a ticket list every skill of every department, inactive ones included, whatever department the ticket is in. Saved values stay (#3145 kept QA SK12 Inact and QA AS6 sk1). The side-rail Skills tab (Associate Skills) is filtered correctly.</p></div><div><h4>Zoho Desk</h4><p>The Add Ticket form has no Skills input. Inactive and other-department skills set on a ticket are dropped on save (#170 kept only QA SK12 S1).</p></div></div>
+  <a class="shot" href="img/SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png" target="_blank" rel="noopener"><img src="img/SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png" alt="Annotated evidence: The ticket Skills field offers and keeps inactive skills and other departments' skills. TAVI left, Zoho right." loading="lazy"></a>
+  <p class="cap">Evidence image, TAVI on the left and Zoho on the right. Full size: <a href="img/SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png" target="_blank" rel="noopener">SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png</a></p>
+</article>
+</section>
+
+<section class="read" aria-labelledby="h-diff">
+  <h2 id="h-diff">Smaller difference</h2>
+  <article class="finding d" id="f4">
+  <header><span class="num">4</span><div><h3>A new department starts with auto-add off</h3><p class="ids">SK-E01</p></div></header>
+  <div class="cmp"><div><h4>TAVI</h4><p>QA SK12 Dept B (new, untouched): "Add skills to tickets by their criteria" is off, so no skill is added until an admin turns it on.</p></div><div><h4>Zoho Desk</h4><p>Auto-add skills to tickets is on, and new skills go to the bottom (Tech, and Haytham Mohamed, which was never changed).</p></div></div>
+  <a class="shot" href="img/SK-E01-default-skill-preferences-vs-zoho.png" target="_blank" rel="noopener"><img src="img/SK-E01-default-skill-preferences-vs-zoho.png" alt="Annotated evidence: A new department starts with auto-add off. TAVI left, Zoho right." loading="lazy"></a>
+  <p class="cap">Evidence image, TAVI on the left and Zoho on the right. Full size: <a href="img/SK-E01-default-skill-preferences-vs-zoho.png" target="_blank" rel="noopener">SK-E01-default-skill-preferences-vs-zoho.png</a></p>
+</article>
+</section>
+
+<section class="read" aria-labelledby="h-layout">
+  <h2 id="h-layout">Correction to the 11 Nov "Skills out of layout" draft</h2>
+  <div class="note warn">
+    <p>The draft said Zoho has no Skills field in the ticket layout. That is wrong. Zoho lists <b>Skills</b> (Lookup, <code>entitySkills</code>) as a standard, removable field in Ticket Information, both in the layout editor and in Fields List, and shows it in the ticket's properties. Zoho only leaves it off the Add Ticket form.</p>
+    <p>So TAVI keeping Skills as a layout field matches Zoho. The real problem is finding 3: the create form shows the field, and its options are not limited to active skills of the ticket's department. The draft should be rewritten around finding 3 and not filed as it stands.</p>
+  </div>
+</section>
+
+<section class="read" aria-labelledby="h-extra">
+  <h2 id="h-extra">TAVI extras (not bugs)</h2>
+  <ul>
+    <li>Skill names up to 100 characters (Zoho 50). HTML characters are accepted and shown as plain text; Zoho refuses them.</li>
+    <li>A skill may have no criteria; it is then only added by hand or by a workflow. Zoho requires criteria.</li>
+    <li>"Where used" lists assignment rules, workflow rules and actions, other skills' criteria, agents and open tickets. Zoho lists related rules only. Approval processes are still missing from TAVI's list (NDC-2805).</li>
+    <li>Recalculate skills for many tickets from the Skills page, with progress. It runs on every open unowned ticket in <b>all</b> departments, not only the department shown on the page.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="h-matrix">
+  <h2 id="h-matrix" class="read">Full comparison</h2>
+  <p class="small read">Click a count above to filter. Values were seen in the live products on 12 Nov; ticket numbers are QA records.</p>
+  <div class="tablebox"><table>
+    <thead><tr><th scope="col">Case</th><th scope="col">Behaviour</th><th scope="col">Zoho Desk</th><th scope="col">TAVI</th><th scope="col">Result</th></tr></thead>
+    <tbody id="rows"><tr class="area" data-area="A"><th colspan="5" scope="colgroup">Skills list</th></tr><tr data-k="same" data-area="A"><td class="id">SK-A01</td><td>Reorder skills (whole list)</td><td>POST /skills/order, list follows</td><td>PUT /desk/skills/order, list follows; partial list → 409 stale</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="A"><td class="id">SK-A02</td><td>Skills list page</td><td>Name, Skill Type, Agents, Status; filters; Add Skill; Skill Preferences</td><td>same, plus Active skills n of 30, Recalculate, Agent Skills tab</td><td><span class="pill same">Same</span></td></tr>
+<tr class="area" data-area="B"><th colspan="5" scope="colgroup">Skill form</th></tr><tr data-k="same" data-area="B"><td class="id">SK-B01</td><td>Skill type required</td><td>422 skillTypeId missing</td><td>400 type_id required</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="B"><td class="id">SK-B02</td><td>Duplicate skill name (any case)</td><td>refused</td><td>409 SKILL_DUPLICATE</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="extra" data-area="B"><td class="id">SK-B03</td><td>Name max length</td><td>50 (51+ refused)</td><td>100 (51 accepted, 101 refused)</td><td><span class="pill extra">TAVI extra</span></td></tr>
+<tr data-k="same" data-area="B"><td class="id">SK-B04</td><td>Blank / spaces name</td><td>refused</td><td>refused</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="extra" data-area="B"><td class="id">SK-B05</td><td>Criteria required</td><td>yes (422 criteria missing)</td><td>optional ("never added automatically")</td><td><span class="pill extra">TAVI extra</span></td></tr>
+<tr data-k="extra" data-area="B"><td class="id">SK-B06</td><td>HTML characters in a skill name</td><td>refused ("does not match the allowed values")</td><td>accepted and shown as plain text (escaped, safe)</td><td><span class="pill extra">TAVI extra</span></td></tr>
+<tr data-k="same" data-area="B"><td class="id">SK-B07</td><td>Create skill as Inactive</td><td>allowed</td><td>allowed</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="B"><td class="id">SK-B08</td><td>Skill name with HTML shown on the page</td><td>n/a (refused)</td><td>escaped, shown literally</td><td><span class="pill same">Same</span></td></tr>
+<tr class="area" data-area="C"><th colspan="5" scope="colgroup">Skill types</th></tr><tr data-k="same" data-area="C"><td class="id">SK-C01</td><td>Duplicate skill type (any case)</td><td>refused 422</td><td>409 SKILL_TYPE_DUPLICATE</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="C"><td class="id">SK-C02</td><td>Rename skill type</td><td>allowed</td><td>allowed</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="C"><td class="id">SK-C03</td><td>Delete type that skills use</td><td>refused "has skill mappings"</td><td>409 "Skills still have this skill type"</td><td><span class="pill same">Same</span></td></tr>
+<tr class="area" data-area="D"><th colspan="5" scope="colgroup">Status, limits, delete</th></tr><tr data-k="same" data-area="D"><td class="id">SK-D01</td><td>Active ↔ Inactive toggle</td><td>allowed</td><td>allowed</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="D"><td class="id">SK-D02</td><td>30 active skills per department</td><td>31st refused (create or activate); inactive allowed</td><td>same, message "up to 30 active skills"</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="D"><td class="id">SK-D03</td><td>Delete a skill that tickets use</td><td>allowed; removed from ticket #181</td><td>allowed; removed from tickets; dialog lists where it is used first</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="extra" data-area="D"><td class="id">SK-D04</td><td>Where a skill is used</td><td>relatedRules (rules only)</td><td>usage: assignment rules, workflow rules/actions, other skills' criteria, agents, open tickets (no approval processes, NDC-2805)</td><td><span class="pill extra">TAVI extra</span></td></tr>
+<tr class="area" data-area="E"><th colspan="5" scope="colgroup">Preferences</th></tr><tr data-k="diff" data-area="E"><td class="id">SK-E01</td><td>Default preferences of a department</td><td>auto-add ON, AT_THE_END (both depts)</td><td>new dept: auto_add OFF, bottom</td><td><span class="pill diff">Differs</span></td></tr>
+<tr class="area" data-area="F"><th colspan="5" scope="colgroup">Agents</th></tr><tr data-k="same" data-area="F"><td class="id">SK-F01</td><td>Agents on a skill ↔ an agent's skills</td><td>skill agentIds; unconfirmed agent silently dropped</td><td>both directions stay in step; agent outside the department refused</td><td><span class="pill same">Same</span></td></tr>
+<tr class="area" data-area="G"><th colspan="5" scope="colgroup">Ticket skills</th></tr><tr data-k="same" data-area="G"><td class="id">SK-G01</td><td>Auto-add on create, order (placement end, list order S3,S2,S1)</td><td>S3,S2,S1 (+ matching 'test'); inactive not added</td><td>S3,S2,S1; inactive not added</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="bug" data-area="G"><td class="id">SK-G02</td><td>Manually set an INACTIVE skill on ticket</td><td>silently dropped</td><td>saved on ticket</td><td><span class="pill bug">Bug</span></td></tr>
+<tr data-k="bug" data-area="G"><td class="id">SK-G03</td><td>Manually set a skill of ANOTHER department</td><td>silently dropped</td><td>saved on ticket</td><td><span class="pill bug">Bug</span></td></tr>
+<tr data-k="same" data-area="G"><td class="id">SK-G04</td><td>Manual order of ticket skills kept</td><td>kept</td><td>kept</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="G"><td class="id">SK-G05</td><td>10 skills max per ticket</td><td>11 → 422 range 0-10</td><td>11 → 422 "more than 10"</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="G"><td class="id">SK-G06</td><td>Unknown skill</td><td>(ids)</td><td>422 not allowed value</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="G"><td class="id">SK-G07</td><td>Skill rename reaches tickets</td><td>ids, so yes</td><td>stored by name but rename updates tickets (seen)</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="G"><td class="id">SK-G08</td><td>Edit of another field re-adds matching skills</td><td>yes</td><td>yes</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="same" data-area="G"><td class="id">SK-G09</td><td>Recalculate one ticket</td><td>re-applies criteria: adds matching, removes non-matching (even manual)</td><td>same (adds S3/S1, drops S2); no-criteria manual skill kept</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="extra" data-area="G"><td class="id">SK-G10</td><td>Recalculate many tickets</td><td>no bulk action seen (per ticket / workflow action)</td><td>Skills page Recalculate skills: every open unowned ticket in ALL departments (96), progress + last run</td><td><span class="pill extra">TAVI extra</span></td></tr>
+<tr class="area" data-area="H"><th colspan="5" scope="colgroup">Skill-based assignment</th></tr><tr data-k="same" data-area="H"><td class="id">SK-H01</td><td>Skill-based RR: ticket skills [S3], pool agent lacks S3</td><td>not assigned (#180)</td><td>not assigned (#3130)</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="bug" data-area="H"><td class="id">SK-H02</td><td>Skill-based RR: ticket [S3,S1/test], agent has only one of them</td><td>ASSIGNED (#181) — agent needs at least one skill</td><td>NOT assigned (#3131) — TAVI needs every skill ("holding every active skill")</td><td><span class="pill bug">Bug</span></td></tr>
+<tr data-k="bug" data-area="H"><td class="id">SK-H03</td><td>Skill-based RR: ticket with NO skills</td><td>not assigned (#182)</td><td>ASSIGNED to pool agent (#3132)</td><td><span class="pill bug">Bug</span></td></tr>
+<tr data-k="same" data-area="H"><td class="id">SK-H04</td><td>Skill-based RR on create (rule + threshold free)</td><td>assigned (#174)</td><td>(B-series run on create)</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="bug" data-area="H"><td class="id">SK-H05</td><td>Assign by skills on one ticket</td><td>executeSkillbasedAssignment assigns when an agent has any one of the ticket skills</td><td>POST /skills/assign: "No agent of the department holds every skill on the ticket" for [S3,S1]</td><td><span class="pill bug">Bug</span></td></tr>
+<tr data-k="nc" data-area="H"><td class="id">SK-H06</td><td>Department threshold blocks skill RR</td><td>yes (Fathy at 5 open, threshold 3, was skipped)</td><td>not re-run here (thresholds covered by the NDC-2824 run)</td><td><span class="pill nc">Not compared</span></td></tr>
+<tr class="area" data-area="I"><th colspan="5" scope="colgroup">Workflow actions</th></tr><tr data-k="nc" data-area="I"><td class="id">SK-I01</td><td>Workflow skill actions (Add / Remove / Recalculate / Reassign by skills)</td><td>not checked live</td><td>Add/Remove 1–10 skills, Recalculate, Reassign available</td><td><span class="pill nc">Not compared</span></td></tr>
+<tr class="area" data-area="J"><th colspan="5" scope="colgroup">Layout and ticket page</th></tr><tr data-k="same" data-area="J"><td class="id">SK-J01</td><td>Skills as a ticket layout field</td><td>YES: standard field Skills (Lookup, entitySkills), Ticket Information, removable, not mandatory</td><td>YES: multi-select skills, Ticket Information, deletable</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="bug" data-area="J"><td class="id">SK-J02</td><td>Skills on the create form</td><td>not on Add Ticket</td><td>shown on Create Ticket</td><td><span class="pill bug">Bug</span></td></tr>
+<tr data-k="same" data-area="J"><td class="id">SK-J03</td><td>Skills on the ticket page</td><td>Ticket Properties › Ticket Information (chips, editable)</td><td>Ticket Properties › Ticket Information + a side-rail Skills tab</td><td><span class="pill same">Same</span></td></tr>
+<tr data-k="bug" data-area="J"><td class="id">SK-J04</td><td>New Ticket form Skills options</td><td>no Skills input on Add Ticket</td><td>Skills chips on Create Ticket list EVERY department's skills, incl. inactive (dept = Sales showed Customer Support, QA AS6, QA SK12 skills, QA AS6 sk3 inactive)</td><td><span class="pill bug">Bug</span></td></tr>
+<tr data-k="bug" data-area="J"><td class="id">SK-J05</td><td>Ticket page inline "Edit Skills" options</td><td>Skills field in Ticket Properties (Zoho drops inactive/other-dept on save)</td><td>lists every department's skills incl. inactive; long names overflow sideways</td><td><span class="pill bug">Bug</span></td></tr>
+<tr data-k="same" data-area="J"><td class="id">SK-J06</td><td>Ticket Skills tab › Associate Skills</td><td>Skills panel (Associate Skills, seen 9 Nov)</td><td>only active skills of the ticket's department</td><td><span class="pill same">Same</span></td></tr>
+<tr class="area" data-area="K"><th colspan="5" scope="colgroup">Permissions</th></tr><tr data-k="same" data-area="K"><td class="id">SK-K01</td><td>Desk Agent without automation permission</td><td>needs Help Desk Automation permission (docs)</td><td>403 desk:assignment:manage on list/create/prefs/delete/recalc</td><td><span class="pill same">Same</span></td></tr></tbody>
+  </table></div>
+</section>
+
+<section class="read" aria-labelledby="h-2752">
+  <h2 id="h-2752">NDC-2752 gap list, rechecked</h2>
+  <div class="tablebox"><table class="narrow">
+    <thead><tr><th scope="col">#</th><th scope="col">Gap (1 Nov)</th><th scope="col">Now</th><th scope="col">Against Zoho</th></tr></thead>
+    <tbody><tr><td class="id">1</td><td>Skills per department</td><td>Built</td><td>Same</td></tr><tr><td class="id">2</td><td>Active / Inactive</td><td>Built</td><td>Same</td></tr><tr><td class="id">3</td><td>Add Skill on the page, type required</td><td>Built</td><td>Same</td></tr><tr><td class="id">4</td><td>Agents on the skill form</td><td>Built</td><td>Same</td></tr><tr><td class="id">5</td><td>Search and filters</td><td>Built</td><td>Same</td></tr><tr><td class="id">6</td><td>Reorder skills</td><td>Built</td><td>Same</td></tr><tr><td class="id">7</td><td>Recalculate / assign on one ticket</td><td>Built</td><td>Assign by skills differs (finding 1)</td></tr><tr><td class="id">8</td><td>Where a skill is used</td><td>Built</td><td>TAVI extra; approval processes not listed (NDC-2805)</td></tr><tr><td class="id">9</td><td>Limits (30 active, 10 per ticket)</td><td>Built</td><td>Same</td></tr></tbody>
+  </table></div>
+</section>
+
+<section class="read" aria-labelledby="h-scope">
+  <h2 id="h-scope">Scope, automation and open items</h2>
+  <div class="grid2">
+    <div class="note"><h4>Not compared</h4><ul><li>Workflow skill actions (Add / Remove / Recalculate / Reassign) were not run against Zoho. TAVI allows 1–10 skills per action.</li><li>Round-robin thresholds with skills: covered by the NDC-2824 run, not repeated.</li></ul></div>
+    <div class="note"><h4>Automation</h4><p>New feature <code>deskskills</code>, <code>DeskSkillsParityTest</code>: 16 API tests. 12 pass; the 4 tests in group <code>parity-bug</code> fail until findings 1–3 are fixed. Each run builds and removes its own QA department.</p></div>
+  </div>
+  <div class="note"><h4>Test data still in place</h4><p>QA SK12 data remains on NDC-Staging and in the Zoho test portal for retesting. Zoho settings changed for the test (round-robin threshold of the Tech department raised from 3 to 10, skill order, a QA round-robin rule) are listed in the run ledger and will be put back at cleanup.</p></div>
+</section>
+</div>
+<script>
+(function () {
+  var buttons = [].slice.call(document.querySelectorAll('.tally button'));
+  var rows = [].slice.call(document.querySelectorAll('#rows tr'));
+  var active = null;
+  function apply() {
+    var shown = {};
+    rows.forEach(function (r) {
+      if (r.classList.contains('area')) return;
+      var show = !active || r.getAttribute('data-k') === active;
+      r.hidden = !show;
+      if (show) shown[r.getAttribute('data-area')] = 1;
+    });
+    rows.forEach(function (r) { if (r.classList.contains('area')) r.hidden = !shown[r.getAttribute('data-area')]; });
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === active)); });
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.getAttribute('data-f');
+      active = active === f ? null : f;
+      apply();
+      if (active) document.getElementById('h-matrix').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+})();
+
+</script>

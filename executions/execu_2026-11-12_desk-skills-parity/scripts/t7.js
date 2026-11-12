@@ -1,0 +1,10 @@
+const D='0c0e4194-8a21-44d8-a7cb-2daa011499b7', TK='88e8ea44-1658-4df3-9930-d0902b91073d';
+const o={};
+o.prefs=(await api('GET',`/desk/skill-preferences?department_id=${D}`)).j?.data;
+const f=(k,v)=>({field:k,value:{kind:'string',value:v}});
+const ex=fs.existsSync('out-t7.json'); const r=await api('POST',`/modules/${TK}/records`,{data:[f('subject','QA SK12 order QASK12S1 QASK12S2 QASK12S3 QASK12Inact'),f('department',D),f('status','Open')]});
+o.create=[r.s,r.j?.data?.id||r.t.slice(0,300)]; const id=r.j?.data?.id; if(id) track('ticket',id,'QA SK12 order');
+await sleep(6000);
+const g=await api('GET',`/modules/${TK}/records/${id}`); const vals=g.j?.data?.values||g.j?.data; o.rec=g.t.slice(0,1500);
+o.opts=await api('GET',`/desk/tickets/${id}/skills/options`); o.opts=[o.opts.s,o.opts.t.slice(0,800)];
+o.id=id; return o;

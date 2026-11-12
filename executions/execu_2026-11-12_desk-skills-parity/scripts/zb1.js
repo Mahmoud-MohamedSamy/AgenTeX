@@ -1,0 +1,10 @@
+const o = {};
+o.skills = await z('GET', `/skills?departmentId=${DEPT}&limit=100`);
+o.types = await z('GET', `/skillTypes?departmentId=${DEPT}&limit=100`);
+o.conf = await z('GET', `/skillConfiguration?departmentId=${DEPT}`);
+o.agents = await z('GET', `/agents?departmentIds=${DEPT}&limit=50`);
+o.agents = { s: o.agents.s, list: (o.agents.j?.data||[]).map(a => [a.id, a.name, a.status, a.roleId]) };
+o.crit = await z('GET', `/skills/criteriaFields?departmentId=${DEPT}`);
+o.crit = { s: o.crit.s, t: o.crit.t.slice(0, 800) };
+o.count = await z('GET', `/automationFeatureCount?departmentId=${DEPT}`);
+return o;

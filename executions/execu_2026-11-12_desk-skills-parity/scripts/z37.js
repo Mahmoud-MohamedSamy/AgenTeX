@@ -1,0 +1,1 @@
+async (page) => { await page.goto('https://desk.zoho.com/agent/techsolutionsegypt/tech/tickets/list/all-cases', { waitUntil: 'domcontentloaded' }).catch(()=>{}); await page.waitForTimeout(8000); return page.url().slice(0,80); }

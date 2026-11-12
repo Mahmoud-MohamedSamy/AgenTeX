@@ -1,0 +1,13 @@
+const o = {}; const T='1475109000000529136'; const S1='1475109000000529139', S2='1475109000000529149', S3='1475109000000529159';
+o.deact = await z('PATCH', `/skills/${S3}`, { status: 'INACTIVE' }); o.deact=[o.deact.s, o.deact.j?.status||o.deact.t.slice(0,200)];
+o.react = await z('PATCH', `/skills/${S3}`, { status: 'ACTIVE' }); o.react=[o.react.s, o.react.j?.status||o.react.t.slice(0,200)];
+o.renameType = await z('PATCH', `/skillTypes/${T}`, { name: 'QA SK12 T1r' }); o.renameType=[o.renameType.s, o.renameType.j?.name||o.renameType.t.slice(0,200)];
+o.delTypeInUse = await z('DELETE', `/skillTypes/${T}`); o.delTypeInUse=[o.delTypeInUse.s, o.delTypeInUse.t.slice(0,300)];
+const list = await z('GET', `/skills?departmentId=${DEPT}&limit=100`); const ids = (list.j?.data||[]).map(s=>s.id); o.before = (list.j?.data||[]).map(s=>[s.name.slice(0,14), s.orderId]);
+o.order = await z('POST', `/skills/order?departmentId=${DEPT}`, { skillIds: [S3, S2, S1, ...ids.filter(i=>![S1,S2,S3].includes(i))] }); o.order=[o.order.s, o.order.t.slice(0,300)];
+const l2 = await z('GET', `/skills?departmentId=${DEPT}&limit=100`); o.after=(l2.j?.data||[]).map(s=>[s.name.slice(0,14), s.orderId]);
+o.related = await z('GET', `/skills/${S1}/relatedRules`); o.related=[o.related.s, o.related.t.slice(0,400)];
+o.map = await z('POST', `/agents/1475109000000486007/mapSkills`, { departmentId: DEPT, skillIds: [S1] }); o.map=[o.map.s, o.map.t.slice(0,300)];
+o.agentSkills = await z('GET', `/agents/1475109000000486007/skills`); o.agentSkills=[o.agentSkills.s, o.agentSkills.t.slice(0,500)];
+const s1 = await z('GET', `/skills/${S1}`); o.s1agents = s1.j?.agentIds;
+return o;

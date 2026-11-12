@@ -1,0 +1,14 @@
+const D='0c0e4194-8a21-44d8-a7cb-2daa011499b7', TK='88e8ea44-1658-4df3-9930-d0902b91073d', id='79975bb2-56bc-4bc3-8f95-b6134e6411af';
+const o={};
+const arrv=names=>({field:'skills',value:{kind:'array',items:names.map(n=>({kind:'string',value:n}))}});
+const read=async()=>((await api('GET',`/modules/${TK}/records/${id}`)).j.data.data.find(x=>x.field==='skills')||{}).value?.items?.map(i=>i.value);
+const set=async(names)=>{const r=await api('PATCH',`/modules/${TK}/records/${id}`,{data:[arrv(names)]}); await sleep(4000); return [r.s, r.s>=400?r.t.slice(0,300):await read()];};
+o.inactive=await set(['QA SK12 Inact']);
+o.reorder=await set(['QA SK12 S1','QA SK12 S2','QA SK12 S3']);
+const lim=Array.from({length:8},(_,i)=>'QA SK12 Lim0'+(i+1));
+o.ten=await set(['QA SK12 S1','QA SK12 S2','QA SK12 S3',...lim.slice(0,7)]);
+o.eleven=await set(['QA SK12 S1','QA SK12 S2','QA SK12 S3',...lim.slice(0,8)]);
+o.otherDept=await set(['QA SK12 S1','QA AS6 sk1']);
+o.unknown=await set(['QA SK12 S1','No Such Skill']);
+o.empty=await set([]);
+return o;
