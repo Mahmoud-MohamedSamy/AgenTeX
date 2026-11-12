@@ -1,0 +1,1 @@
+import{bo as e}from"./index-DspzkmN4.js";var t=`pipeline`;function n(e){if(Array.isArray(e))return e.find(e=>(e.apiName??e.fieldName)===t)}function r(t,r,i,a){if(!a||!i||n(t))return t;let o=n(r);return[...t,o??e(i)]}export{r as n,t};

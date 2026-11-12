@@ -1,0 +1,14 @@
+const OI = JSON.parse(fs.readFileSync(RUN + '/out/ids-crm.json', 'utf8')); const mid = OI.mod_leads; const L = OI.layout; const rid = OI.r1;
+const me = await api('GET', '/iam/me'); log('me', me.s);
+const list = await api('GET', VR(mid)); const one = await getRule(mid, rid);
+const c = await api('POST', VR(mid), { name: P + ' A4 low', layoutId: L, primaryField: 'qa_vr_url', kind: 'criteria', mode: 'block', status: 'active', branches: [B(C('eq', 'qa_vr_url', 'https://a4.x'), 'QA A4')] });
+const g = one.j && one.j.data; const u = g ? await putRule(mid, rid, { ...g, description: 'A4 low edit' }) : { s: 'n/a' }; const d = await delRule(mid, rid);
+const v = await api('POST', VR(mid) + '/verify', { field: 'qa_vr_text', data: { qa_vr_text: 'BAD-low' }, layoutId: L, recordId: null });
+const rec = await api('POST', '/modules/' + mid + '/records', { data: Object.entries({ first_name: 'QA', last_name: P + ' A6 low', qa_vr_text: 'BAD-low' }).map(([k, x]) => ({ field: k, value: enc(x) })), layout_id: L });
+const rec2 = await api('POST', '/modules/' + mid + '/records', { data: Object.entries({ first_name: 'QA', last_name: P + ' A6 low ok', qa_vr_text: 'fine-low' }).map(([k, x]) => ({ field: k, value: enc(x) })), layout_id: L });
+fs.appendFileSync(RUN + '/out/low-recs.txt', (rec2.j && rec2.j.data && rec2.j.data.id || '') + '\n');
+const tsv = (id, v, f) => fs.appendFileSync(RUN + '/results.tsv', ['crm', id, v, f].join('\t') + '\n');
+tsv('A4', c.s === 403 && u.s === 403 && d.s === 403 ? 'PASS' : 'FAIL', `CRM User: POST ${c.s}, PUT ${u.s}, DELETE ${d.s}`);
+tsv('A5', 'INFO', `CRM User: GET list ${list.s}, GET one ${one.s}, verify ${v.s} ${v.t.slice(0, 120)}`);
+tsv('A6', rec.s === 422 && rec2.s < 300 ? 'PASS' : 'FAIL', `CRM User save with bad value -> ${rec.s} ${(rec.t.match(/"message":"([^"]*)"/g) || []).slice(1, 2)}; good value -> ${rec2.s} ${rec2.t.slice(0,150)}`);
+return { c: c.s, u: u.s, d: d.s, list: list.s, one: one.s, rec: rec.s, rec2: rec2.s };

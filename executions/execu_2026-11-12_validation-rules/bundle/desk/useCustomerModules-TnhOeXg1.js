@@ -1,0 +1,1 @@
+import{i as e}from"./rolldown-runtime-DWdDZTNf.js";import{b as t}from"./dnd-kit-DwRl-dS8.js";import{fo as n}from"./index-BsUG6nLg.js";var r=e(t(),1);function i(){let{tabs:e,isLoading:t}=n();return(0,r.useMemo)(()=>{let n=e.find(e=>e.id===`customers`)?.modules??[],r=new Set(n.map(e=>e.id));return{modules:n,isCustomer:e=>r.has(e),isLoading:t}},[e,t])}export{i as t};

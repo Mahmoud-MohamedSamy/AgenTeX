@@ -1,0 +1,1 @@
+async (page) => { const X = globalThis.__IDS; await openRec(X.mid, X.rec); await page.screenshot({ path: EV + 'crm-G14-record.png' }); return { url: page.url(), btns: (await page.getByRole('button').allInnerTexts()).map(s => s.trim()).filter(Boolean).slice(0, 60) }; }

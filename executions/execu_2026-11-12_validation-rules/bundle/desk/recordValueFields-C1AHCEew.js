@@ -1,0 +1,1 @@
+import{jm as e}from"./index-BsUG6nLg.js";var t=new Set([`lookup`,`multi_select_lookup`]),n=new Set([`related_record_id`]);function r(e){return e.datatypeKey===`single_line`&&n.has(e.fieldName??e.apiName??``)}function i(n){let r=n.find(e=>(e.fieldName??e.apiName)===`related_to`&&t.has(e.datatypeKey));return r?e(r).targetModules??[]:[]}export{r as n,i as r,t};

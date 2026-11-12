@@ -1,0 +1,1 @@
+var e=`default`,t=null;function n(){return t}function r(){return t??`default`}var i=new Map;function a(e,t){return i.set(e,t),()=>{i.get(e)===t&&i.delete(e)}}function o(){for(let e of i.values())try{if(e())return!0}catch{}return!1}export{r as a,a as i,n,o as r,e as t};

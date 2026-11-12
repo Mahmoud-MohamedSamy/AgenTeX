@@ -1,0 +1,1 @@
+const mid = await modId(); const fd = new FormData(); fd.append('file', new Blob(['a,b\n1,2\n'], { type: 'text/csv' }), 'x.csv'); const up = await rawForm('/modules/' + mid + '/import', fd); return up.t.slice(0, 800);

@@ -1,0 +1,1 @@
+const mid = await modId(); const g = (await getRule(mid, I.c7)).j.data; const d = await api('GET', '/desk/departments/' + I.c7dept); return { depts: g.departmentIds, dept: SR(d).slice(0, 80) + ' ' + JSON.stringify(d.j && d.j.data && { a: d.j.data.is_active, del: d.j.data.deleted_at || d.j.data.is_deleted }) };

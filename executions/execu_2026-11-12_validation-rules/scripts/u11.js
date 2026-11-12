@@ -1,0 +1,2 @@
+async (page) => { await page.goto(HOST + '/settings/modules-and-fields/841043e1-c078-41f9-8d6e-dfd61bee45c3?tab=validation', { waitUntil: 'domcontentloaded' }); await sleep(5000);
+ const sw = page.locator('tbody tr').filter({ hasText: 'QA VR1112 R4 pick' }).first().getByRole('switch'); const b = await sw.getAttribute('aria-checked'); await sw.click(); await sleep(3000); const a = await sw.getAttribute('aria-checked'); await shot('crm-B5-off', false); return { before: b, after: a }; }

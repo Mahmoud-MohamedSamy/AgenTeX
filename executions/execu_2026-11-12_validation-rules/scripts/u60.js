@@ -1,0 +1,1 @@
+async (page) => { await page.screenshot({ path: EV + 'desk-G18-state.png' }); return { url: page.url(), t: ((await bodyText()).match(/QA to Reject.{0,300}/g) || []).slice(0, 3), btns: (await page.getByRole('button').allInnerTexts()).filter(s => /Run|Reject|draft/i.test(s)) }; }

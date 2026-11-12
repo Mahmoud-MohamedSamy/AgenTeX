@@ -1,0 +1,1 @@
+function e(e){if(!e)return[];let t=[];for(let n of e.sections){t.push({id:n.id,categoryId:e.id,label:n.name,depth:0});for(let r of n.children)t.push({id:r.id,categoryId:e.id,label:`${n.name} › ${r.name}`,depth:1})}return t}function t(e,t){if(!(!e||!t))return e.categories.find(e=>e.id===t)}export{e as n,t};

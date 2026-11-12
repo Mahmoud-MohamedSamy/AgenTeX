@@ -1,0 +1,1 @@
+async (page, ctx, h) => { const r = await zf(page, 'GET', '/crm/v8/settings/validation_rules?module=Leads'); const d = await zdPage(ctx); const t = await zd(d, 'GET', '/validationRules?module=tickets'); return { crm: r.s + ' ' + r.t.slice(0, 600), desk: t.s + ' ' + t.t.slice(0, 600) }; }

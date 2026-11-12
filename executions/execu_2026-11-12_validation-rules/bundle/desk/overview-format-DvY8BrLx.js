@@ -1,0 +1,1 @@
+import{o as e}from"./format-Bp9m4ofg.js";function t(t){return t==null||!Number.isFinite(t)?null:e(Math.max(0,t),`duration`)}function n(e,t){return e==null||!Number.isFinite(e)?null:t(e/100,{style:`percent`,maximumFractionDigits:1})}export{n,t};

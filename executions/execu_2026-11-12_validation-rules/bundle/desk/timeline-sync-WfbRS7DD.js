@@ -1,0 +1,1 @@
+import{ib as e}from"./index-BsUG6nLg.js";var t=[2500,8e3];function n(n){let r=()=>void n.invalidateQueries({queryKey:e.all});r();for(let e of t)setTimeout(r,e)}export{n as t};

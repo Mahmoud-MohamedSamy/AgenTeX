@@ -1,0 +1,1 @@
+async (page, ctx) => { const ps = ctx.pages().map(p => p.url().slice(0, 80)); let p2 = await ctx.newPage(); let r; try { await p2.goto(HOST + '/', { waitUntil: 'commit', timeout: 60000 }); r = p2.url(); } catch (e) { r = 'ERR ' + e.message.slice(0, 100); } return { ps, r }; }

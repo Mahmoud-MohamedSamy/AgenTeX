@@ -1,0 +1,1 @@
+async (page) => { const X = globalThis.__IDS; await page.goto(HOST + '/modules/' + X.mid + '/records/' + X.rec, { waitUntil: 'domcontentloaded' }); await sleep(15000); return { url: page.url(), btns: (await page.getByRole('button').allInnerTexts()).filter(s => /QA|Reject/.test(s)) }; }

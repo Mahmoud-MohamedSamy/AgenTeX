@@ -1,0 +1,3 @@
+async (page) => { const R = {}; const resp = []; const h = r => { if (/\/api\/v1\/.*(email|mail|channel)/.test(r.url())) resp.push(r.url().replace(/.*api\/v1/, '') + ' ' + r.status()); }; page.on('response', h);
+  await page.goto(HOST + '/settings/channels/email', { waitUntil: 'domcontentloaded' }); await sleep(9000); page.off('response', h);
+  await page.screenshot({ path: EV + 'desk-G17-email-channel.png' }); R.url = page.url(); R.t = (await bodyText()).replace(/.*Setup Home/, '').slice(0, 700).replace(/[\w.+-]+@[\w.-]+/g, m => /example|vr1112/i.test(m) ? m : '<email len ' + m.length + '>'); R.api = resp.slice(0, 10); return R; }

@@ -1,0 +1,1 @@
+const o = {}; for (const p of ['/desk/settings/channels/email', '/desk/channels/email', '/settings/channels/email', '/desk/analytics/sender-addresses']) { const r = await api('GET', p); o[p] = r.s + ' ' + JSON.stringify(r.j && r.j.data).replace(/"[^"]*token[^"]*":"[^"]*"/gi, '"tok":"x"').slice(0, 500); } return o;

@@ -1,0 +1,2 @@
+const mid = await modId(); const n = await api('GET', '/modules/' + mid + '/records?limit=5&q=' + encodeURIComponent('BADMAIL'));
+return arr(n.j && n.j.data).map(x => ({ id: x.id, created: x.created_at, layout: x.layout_id || x.created_with_layout_id, vals: (x.data || []).filter(d => d.value && d.value.kind === 'string' && !/description|html|body|email|from/i.test(d.field)).map(d => d.field + '=' + String(d.value.value).slice(0, 40)).slice(0, 20) }));

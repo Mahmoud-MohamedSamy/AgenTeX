@@ -1,0 +1,1 @@
+async (page) => { const sw = page.locator('tbody tr').filter({ hasText: 'QA VR1112 R4 pick' }).first().getByRole('switch'); await sw.click(); await sleep(3000); return { after: await sw.getAttribute('aria-checked') }; }

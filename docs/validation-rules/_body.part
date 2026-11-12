@@ -1,0 +1,214 @@
+<div class="wrap">
+<header>
+ <h1>Validation Rules — test sheet</h1>
+ <p>Every case planned for TAVI CRM and TAVI Desk Validation Rules, compared with Zoho CRM and Zoho Desk. Change a case's status or add notes and it is saved for everyone who opens this page. Nothing has been run yet; execution starts when the QA lead says go.</p>
+ <div class="meta"><span>TAVI: <b>NDC-Staging, CRM + Desk</b></span><span>Zoho: <b>CRM test org org944965048 · Desk test account</b></span><span>Planned: <b>12 Nov 2026</b></span><span>Tickets: <b>NDC-1988, NDC-2535, NDC-2646, NDC-2536</b></span><span>Data prefix: <b>QA VR1112</b></span><span>Plane: <b>nothing filed</b></span></div>
+</header>
+
+<div class="sticky">
+ <div class="summary" id="summary"></div>
+ <div class="bar" id="bar" aria-hidden="true"></div>
+ <div class="tabs" role="tablist">
+  <button role="tab" id="tab-about" aria-selected="true">About the feature</button>
+  <button role="tab" id="tab-cases" aria-selected="false">Cases</button>
+  <button role="tab" id="tab-gaps" aria-selected="false">Missing vs Zoho</button>
+  <button role="tab" id="tab-plan" aria-selected="false">Plan</button>
+ </div>
+ <div class="filters" id="filters" hidden>
+  <input type="search" id="q" placeholder="Search id, title, steps, notes" aria-label="Search cases">
+  <select id="fa" aria-label="App"><option value="">CRM and Desk</option><option value="CRM">CRM</option><option value="Desk">Desk</option></select>
+  <select id="fg" aria-label="Group"><option value="">All groups</option></select>
+  <select id="fp" aria-label="Priority"><option value="">All priorities</option><option>P0</option><option>P1</option><option>P2</option></select>
+  <select id="fv" aria-label="Where"><option value="">UI, API and Zoho</option><option value="UI">UI</option><option value="API">API</option><option value="Zoho">Zoho</option></select>
+ </div>
+ <div class="note" id="dbnote">Connecting to saved results…</div>
+</div>
+
+<main id="view-about">
+ <div class="panel"><h3>What it is, in one line</h3>
+ <p>A validation rule checks one field's value <b>when a record is saved</b>. If the value is wrong, the record is not saved and the user sees the admin's message. In CRM the rule can also just warn and let the user save anyway.</p>
+ <div class="flow"><span>Field to check: "Serial number"</span><i>→</i><span>Check: must match AA-12345678</span><i>→</i><span>Wrong? Show "Serial number must look like AB-12345678" and don't save</span></div></div>
+
+ <div class="two">
+ <div class="panel"><h3>Why the business wants it</h3><ul>
+  <li><b>Clean data at the door.</b> Bad values never get in: a discount over the limit, a phone without the country code, an end date before the start date, a code in the wrong format.</li>
+  <li><b>Company rules in the system, not in people's heads.</b> "Retail deals can't have more than 15% discount" becomes a rule everyone meets, with the reason written in the message.</li>
+  <li><b>Hard stop or soft nudge (CRM).</b> "Don't save" for rules that must never break. "Warn and allow saving" for things that are usually wrong but sometimes fine.</li>
+  <li><b>NDC uses it today.</b> NDC's Zoho Desk has "Status = Reject needs a clear rejection reason". NDC's Zoho CRM has rules on Deals Stage and Calls status.</li>
+  <li><b>Customers too (Desk).</b> With "Apply to Help Center", tickets customers submit are checked the same way.</li>
+  <li><b>Outside checks (CRM).</b> A function rule can ask another system ("is this customer code real?") before the record is saved.</li></ul></div>
+ <div class="panel"><h3>How it works technically</h3><ul>
+  <li>A rule belongs to <b>one module</b> and <b>one layout</b> (CRM can pick "All layouts"). Desk rules can be limited to departments.</li>
+  <li>It checks <b>one field</b> (the "field to check"). It has one or more <b>conditions</b>, checked in order. Each condition has an optional <b>"Applies when"</b> on other fields, a <b>check</b> on the field (is, contains, length, regex, greater than…), <b>when to show the error</b> (check matches / does not match) and a message in English and Arabic. The first condition whose "Applies when" fits decides.</li>
+  <li><b>The server enforces it.</b> A save that breaks a rule gets <code>400 RECORD_VALIDATION_FAILED</code> with the field, message and rule id. A warn rule gets <code>RECORD_VALIDATION_WARNING</code>; the screen asks the user and sends the save again with <code>confirmed_warnings</code>.</li>
+  <li><b>Field verification (CRM)</b> checks the field while the user types (<code>POST …/validation-rules/verify</code>) and again on save.</li>
+  <li><b>Function rules (CRM)</b> send the record to your HTTPS address (500–10000 ms timeout, optional signing secret) and use its answer: success, or an error message. If it can't be reached, the record is not saved.</li>
+  <li>Rules live at <code>/modules/{id}/validation-rules</code>: list, get, create, update (with a version number), delete, plus <code>/verify</code> and <code>/{id}/test-function</code>.</li>
+  <li>It is not the same as <b>mandatory fields</b> (only "not empty"), <b>layout rules</b> (show / hide / require fields while typing) or <b>field permissions</b>. Those are separate features, in Zoho too.</li></ul></div>
+ </div>
+
+ <div class="panel"><h3>Zoho CRM, Zoho Desk and TAVI side by side</h3>
+ <div class="tbl"><table><thead><tr><th>Area</th><th>Zoho CRM</th><th>Zoho Desk</th><th>TAVI (12 Nov build)</th></tr></thead><tbody>
+  <tr><td>Scope</td><td>Per layout</td><td>Per department and layout</td><td>Per layout (CRM: or all layouts); Desk adds departments, several per rule</td></tr>
+  <tr><td>Rule types</td><td>Conditions, or a Deluge function written in CRM</td><td>Conditions only</td><td>Conditions; CRM also a function at your own HTTPS address</td></tr>
+  <tr><td>When broken</td><td>Stop with error, or Allow by alert; error on the field or at the top; optional Verify button</td><td>Stop only</td><td>CRM: Don't save / Warn, under the field / at the top, field verification while typing. Desk: Don't save only</td></tr>
+  <tr><td>Checks</td><td>Values, ranges, length, starts / ends with, empty; no regex</td><td>Same, plus regex (matches / not matches / contains), value tokens like ${CURRENTTIME}</td><td>Values, ranges, length, starts / ends with, contains, empty, one of / any of / all of, regex in both apps</td></tr>
+  <tr><td>Fields you can check</td><td>Most types incl. lookup; not multi-line, multi-select, formula, auto-number, image</td><td>Text, pick list, lookup, date, date-time, number, currency, checkbox, status</td><td>Text, multi-line, email, phone, URL, numbers, dates, pick list, radio, multi-select. Not lookup, checkbox, status, user</td></tr>
+  <tr><td>Limits</td><td>5 / 10 / 25 rules per layout by edition; 10 conditions, 5 secondary, 5 criteria</td><td>50 rules per department; one rule per field; message 150 characters</td><td>To check (I4–I6)</td></tr>
+  <tr><td>Runs on</td><td>Create, quick create, edit, inline edit, convert, Kanban, mobile</td><td>Agent forms; Help Center if switched on</td><td>To check (group G)</td></tr>
+  <tr><td>Skipped on</td><td>Import, workflow, approval, blueprint after-transition, web form (goes to approval), API unless asked</td><td>Import, workflow, blueprint after-transition, API, web forms</td><td>To check (G9–G14)</td></tr>
+  <tr><td>API for the rules</td><td>None public</td><td>List, get, create, update, delete, criteria fields</td><td>List, get, create, update, delete, verify, test function — both apps</td></tr>
+ </tbody></table></div>
+ <p class="note">Sources: Zoho help pages and API docs, collected 12 Nov 2026 in docs/validation-rules/reference/zoho-validation-rules-inventory.md (131 items with links). TAVI side from the 12 Nov staging code and API, read-only.</p></div>
+
+ <div class="panel"><h3>What is in TAVI today</h3><ul>
+  <li>A "Validation Rules" tab in module settings for every module, in CRM (15 modules) and Desk (10 modules), and a "Set Validation Rules" row menu.</li>
+  <li>List with search, filters (layout, status, mode, department), badges, Active switch, delete with confirm, and a "can't be applied" flag.</li>
+  <li>Editor: name, description, layout, field to check, departments and Help Center (Desk), rule type, behaviour, error placement, ordered conditions, regex gallery and tester, English and Arabic messages, function settings and a Test button.</li>
+  <li>Current data on NDC-Staging: CRM Leads has 1 rule ("QA LR1112 VR", left by the Layout Rules run). Desk Tickets has 1 rule ("QA NDC Reject needs a reason", 3 Nov), and the API flags it "A Desk validation rule applies to one layout; choose it." — checked in J7. The run leaves both as they are.</li>
+  <li>Older tickets: NDC-2646 (rules saved but never applied) and NDC-2536 (no rule on a pick list). The new build looks fixed for both; group R retests them first.</li></ul></div>
+</main>
+<main id="view-cases" hidden></main>
+<main id="view-gaps" hidden></main>
+<main id="view-plan" hidden></main>
+</div>
+
+<script>
+const DATA = /*DATA*/null;
+const STATUSES=[['none','Not run'],['pass','Pass'],['fail','Fail'],['blocked','Blocked'],['gap','Gap'],['info','Info']];
+const SL=Object.fromEntries(STATUSES);
+let results={}, extra=[], db=null, user=null, canWrite=true, names={}, statusFilter='';
+const groups=DATA.groups.map(([k,t,d])=>({k,t,d}));
+const base=DATA.cases.map(([id,g,app,t,s,e,p,via])=>({id,g,app,t,s,e,p,via}));
+const allCases=()=>base.concat(extra);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const FK=['q','fa','fg','fp','fv'];
+groups.forEach(g=>{const o=document.createElement('option');o.value=g.k;o.textContent=g.k+' · '+g.t;$('fg').appendChild(o)});
+try{const f=JSON.parse(localStorage.getItem('vr-filters')||'{}');FK.forEach(k=>{if(f[k])$(k).value=f[k]})}catch(e){}
+FK.forEach(k=>$(k).addEventListener('input',()=>{try{localStorage.setItem('vr-filters',JSON.stringify(Object.fromEntries(FK.map(x=>[x,$(x).value]))))}catch(e){}renderCases()}));
+
+function st(id){return (results[id]&&results[id].status)||'none'}
+function renderSummary(){
+ const cs=allCases(), n=cs.length, c={}; STATUSES.forEach(([k])=>c[k]=0); cs.forEach(x=>c[st(x.id)]++);
+ $('summary').innerHTML=`<span class="count" style="cursor:default"><strong>${n}</strong> cases</span>`+STATUSES.map(([k,l])=>`<button class="count s-${k}" data-s="${k}" aria-pressed="${statusFilter===k}"><strong>${c[k]}</strong>${l}</button>`).join('');
+ $('summary').querySelectorAll('button').forEach(b=>b.onclick=()=>{statusFilter=statusFilter===b.dataset.s?'':b.dataset.s;renderSummary();tab('cases')});
+ $('bar').innerHTML=STATUSES.filter(([k])=>k!=='none').map(([k])=>`<span class="s-${k}" style="width:${n?c[k]/n*100:0}%;background:var(--${k==='blocked'?'block':k})"></span>`).join('');
+}
+function matches(x){
+ const q=$('q').value.trim().toLowerCase(), r=results[x.id]||{}, a=$('fa').value;
+ if(a&&x.app!==a&&x.app!=='Both')return false;
+ if($('fg').value&&x.g!==$('fg').value)return false;
+ if($('fp').value&&x.p!==$('fp').value)return false;
+ if($('fv').value&&!(x.via||'').includes($('fv').value))return false;
+ if(statusFilter&&st(x.id)!==statusFilter)return false;
+ if(q&&!(x.id+' '+x.t+' '+x.s+' '+x.e+' '+(r.notes||'')+' '+(r.ref||'')).toLowerCase().includes(q))return false;
+ return true;
+}
+function stamp(r){if(!r||!r.at)return '';const who=r.by&&names[r.by]?names[r.by]:'someone';return `Last change ${new Date(r.at).toLocaleString()} by ${esc(who)}${r.byClaude?' (Claude run)':''}`}
+function caseRow(x){
+ const r=results[x.id]||{}, s=st(x.id);
+ return `<details class="case" data-id="${esc(x.id)}"><summary><span class="cid">${esc(x.id)}</span><span class="ctitle">${esc(x.t)}</span><span class="chip app">${esc(x.app||'Both')}</span><span class="chip ${x.p==='P0'?'p0':''}">${esc(x.p)}</span><span class="chip">${esc(x.via)}</span><span class="st s-${s}">${SL[s]}</span></summary>
+ <div class="body"><div><h4>Steps</h4><p>${esc(x.s)}</p></div><div><h4>Expected</h4><p>${esc(x.e)}</p></div>
+ <div class="edit"><label><h4>Status</h4><select data-f="status" ${canWrite?'':'disabled'}>${STATUSES.map(([k,l])=>`<option value="${k}" ${k===s?'selected':''}>${l}</option>`).join('')}</select></label>
+ <label><h4>Notes / actual result</h4><textarea data-f="notes" ${canWrite?'':'disabled'} placeholder="What happened, values seen, links">${esc(r.notes||'')}</textarea></label>
+ <div class="full"><input type="text" data-f="ref" ${canWrite?'':'disabled'} placeholder="Ticket or evidence (e.g. NDC-2930, image name)" value="${esc(r.ref||'')}" aria-label="Ticket or evidence">
+ <button class="btn" data-save ${canWrite?'':'disabled'}>Save notes</button><span class="stamp">${stamp(r)}${x.by?' · added case':''}</span></div></div></div></details>`;
+}
+let pending=false;
+function renderCases(){
+ const a=document.activeElement; if(a&&a.closest&&a.closest('details.case, #addpanel')&&/^(TEXTAREA|INPUT)$/.test(a.tagName)){pending=true;return}
+ pending=false;
+ const open=new Set([...document.querySelectorAll('details.case[open]')].map(d=>d.dataset.id));
+ const cs=allCases().filter(matches); let html='';
+ groups.forEach(g=>{const items=cs.filter(x=>x.g===g.k); if(!items.length)return;
+  html+=`<section class="group"><div class="ghead"><span class="gid">${g.k}</span><h2>${esc(g.t)}</h2><small>${esc(g.d)} · ${items.length}</small></div><div class="rows">${items.map(caseRow).join('')}</div></section>`});
+ if(!cs.length)html='<p class="empty">No case matches these filters.</p>';
+ html+=addForm();
+ $('view-cases').innerHTML=html;
+ document.querySelectorAll('details.case').forEach(d=>{if(open.has(d.dataset.id))d.open=true;wire(d)});
+ wireAdd();
+}
+function wire(d){
+ const id=d.dataset.id;
+ d.querySelector('[data-f=status]').addEventListener('change',e=>save(id,{status:e.target.value}));
+ d.querySelector('[data-save]').addEventListener('click',()=>save(id,{notes:d.querySelector('[data-f=notes]').value,ref:d.querySelector('[data-f=ref]').value}));
+}
+let me=null;
+async function save(id,patch){
+ const cur=results[id]||{}; const doc={status:cur.status||'none',notes:cur.notes||'',ref:cur.ref||'',...patch,at:new Date().toISOString(),by:me||null};
+ results[id]=doc; renderSummary();
+ if(!db){$('dbnote').textContent='Saving is not available in this view; changes stay on this screen only.';$('dbnote').className='note warn';renderCases();return}
+ try{await db.doc('results/'+id).set(doc);$('dbnote').textContent='Saved '+id+'.';$('dbnote').className='note'}
+ catch(e){if(e&&(e.code==='invalid_argument'||e.code==='permission_denied'||e.code==='not_granted')){canWrite=false;$('dbnote').textContent='You can view this sheet but not change it.'}else $('dbnote').textContent='Could not save '+id+' ('+(e&&e.code||'error')+'). Try again.';$('dbnote').className='note warn'}
+}
+function addForm(){
+ if(!canWrite)return '';
+ return `<div class="panel" id="addpanel"><h3>Add a case</h3><p class="note" style="margin:0 0 8px">For something you tested that is not in the list. It is saved with an id like U1.</p>
+ <form class="addform" id="addf"><select id="ag" aria-label="Group">${groups.map(g=>`<option value="${g.k}">${g.k} · ${esc(g.t)}</option>`).join('')}</select>
+ <select id="aa" aria-label="App"><option>Both</option><option>CRM</option><option>Desk</option></select>
+ <select id="ap" aria-label="Priority"><option>P1</option><option>P0</option><option>P2</option></select>
+ <select id="av" aria-label="Where"><option>UI</option><option>API</option><option>UI+API</option><option>Zoho</option></select>
+ <input id="at" class="wide" required placeholder="Title" aria-label="Title"><textarea id="as" class="wide" placeholder="Steps" aria-label="Steps"></textarea><textarea id="ae" class="wide" placeholder="Expected" aria-label="Expected"></textarea>
+ <div class="wide"><button class="btn" type="submit">Add case</button></div></form></div>`;
+}
+function wireAdd(){
+ const f=$('addf'); if(!f)return;
+ f.addEventListener('submit',async e=>{e.preventDefault(); if(!$('at').value.trim())return;
+  const n=extra.reduce((m,x)=>Math.max(m,+(String(x.id).slice(1))||0),0)+1;
+  const c={id:'U'+n,g:$('ag').value,app:$('aa').value,p:$('ap').value,via:$('av').value,t:$('at').value.trim(),s:$('as').value.trim(),e:$('ae').value.trim(),by:me||null,at:new Date().toISOString()};
+  if(!db){$('dbnote').textContent='Saving is not available in this view.';$('dbnote').className='note warn';return}
+  try{await db.doc('extra/'+c.id).set(c);$('dbnote').textContent='Added '+c.id+'.'}catch(err){$('dbnote').textContent='Could not add the case ('+(err&&err.code||'error')+').';$('dbnote').className='note warn'}
+ });
+}
+function renderGaps(){
+ const gz=base.filter(x=>x.g==='Z');
+ const conf=gz.filter(x=>/^Gap/.test(x.e)), chk=gz.filter(x=>!/^Gap/.test(x.e));
+ const li=x=>`<li><b>${esc(x.t)}</b> <span class="chip app">${esc(x.app)}</span> — ${esc(x.e)} <span class="note">(Zoho: ${esc(x.s)})</span> <span class="st s-${st(x.id)}">${SL[st(x.id)]}</span></li>`;
+ $('view-gaps').innerHTML=`<div class="panel"><h3>Confirmed gaps (seen in the build)</h3><p class="note" style="margin:0 0 6px">Not filed in Plane. Each is also a runnable case in group Z.</p><ol>${conf.map(li).join('')}</ol></div>
+ <div class="panel"><h3>Open questions — decided at execution</h3><p class="note" style="margin:0 0 6px">Zoho does these; the TAVI code does not show it either way. The linked case answers it.</p><ol start="${conf.length+1}">${chk.map(li).join('')}</ol></div>
+ <div class="panel"><h3>Not gaps</h3><ul>${DATA.gaps_not.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`;
+}
+function renderPlan(){
+ $('view-plan').innerHTML=`<div class="panel"><h3>How the run goes</h3><ol>
+ <li>Baseline: GET every module's validation rules in CRM and Desk (saved 12 Nov: CRM 1 rule on Leads, Desk 1 rule on Tickets; both left untouched).</li>
+ <li>Group R first (old tickets NDC-2646, NDC-2536). If rules still are not applied, stop and report before the rest.</li>
+ <li>Set up QA VR1112 test fields (one of each type), a test layout per app and a test department (Desk), so existing data is never touched.</li>
+ <li>Run groups A to M for CRM, then for Desk; then the X journeys; then Z side by side with Zoho; then N alone at the end.</li>
+ <li>Rules are tenant-wide setup: rule writes run one at a time, never in parallel lanes.</li>
+ <li>Each account signs in once per run: owner = ndc-staging-owner; low-privilege = the CRM User and a Desk Agent.</li>
+ <li>Function rules (F, X5) need a small test receiver on a public HTTPS address that answers success / error / slow / down on request.</li>
+ <li>Results go into this sheet as each case finishes; failures get an annotated TAVI vs Zoho image.</li>
+ <li>Nothing goes to Plane until the QA lead says so.</li></ol></div>
+ <div class="panel"><h3>Before starting</h3><ul>
+ <li>Zoho CRM test org org944965048 ends 17 Nov 2026, so CRM group Z must run before then. Writes in Zoho (a throwaway QA rule) need the QA lead's OK at go time.</li>
+ <li>Zoho Desk test account for the Desk side by side.</li>
+ <li>Help Center cases (G15, G16, X4) need the NDC-Staging Help Center ticket form reachable; if not, mark Blocked, not Fail.</li>
+ <li>A Desk Agent account for A3–A6 on Desk; if none, mark Blocked.</li>
+ <li>Function rules need a test HTTPS receiver; without one, F6–F9 and X5 are Blocked (F1–F5 and F10 can still run).</li></ul></div>
+ <div class="panel"><h3>Cleanup</h3><ul>
+ <li>Delete every QA VR1112 rule, record, layout, field, workflow and web form; purge from the Recycle Bin by exact match only.</li>
+ <li>Final GET compared with the baseline: CRM only "QA LR1112 VR", Desk only "QA NDC Reject needs a reason", both with the same rowVersion.</li>
+ <li>Zoho: delete anything created there and list what cannot be removed.</li></ul></div>`;
+}
+const TABS=['about','cases','gaps','plan'];
+function tab(name){TABS.forEach(t=>{$('tab-'+t).setAttribute('aria-selected',t===name);$('view-'+t).hidden=t!==name});$('filters').hidden=name!=='cases';if(name==='cases')renderCases();if(name==='gaps')renderGaps();if(name==='plan')renderPlan();try{localStorage.setItem('vr-tab',name)}catch(e){}}
+$('view-cases').addEventListener('focusout',()=>setTimeout(()=>{if(pending)renderCases()},0));
+TABS.forEach(t=>$('tab-'+t).onclick=()=>tab(t));
+
+renderSummary(); renderCases(); renderGaps(); renderPlan();
+try{const t=localStorage.getItem('vr-tab');if(t&&TABS.includes(t))tab(t)}catch(e){}
+
+(async()=>{
+ const timer=setTimeout(()=>{$('dbnote').textContent='Saved results cannot be reached yet; what you see may be out of date.';$('dbnote').className='note warn'},10000);
+ try{user=await window.claude?.use?.('user')}catch(e){user=null}
+ try{db=await window.claude?.use?.('db')}catch(e){db=null}
+ if(user){try{me=await user.id()}catch(e){} try{const w=await user.can('data.write'); if(w===false)canWrite=false}catch(e){}}
+ if(!db){clearTimeout(timer);$('dbnote').textContent='Saved results are not available in this view. You can still read every case.';$('dbnote').className='note warn';renderCases();return}
+ const resolveNames=async()=>{if(!user)return;const ids=[...new Set(Object.values(results).map(r=>r.by).concat(extra.map(x=>x.by)).filter(Boolean))];if(!ids.length)return;try{const ps=await user.profiles(ids);ids.forEach(i=>names[i]=(ps[i]&&ps[i].name)||'someone')}catch(e){}};
+ db.collection('results').onSnapshot(async snap=>{if(!snap.metadata.fromCache){clearTimeout(timer);$('dbnote').textContent=canWrite?'Changes save for everyone who opens this sheet.':'You can view this sheet but not change it.';$('dbnote').className='note'}
+  results={};snap.docs.forEach(d=>results[d.id]=d.data());await resolveNames();renderSummary();renderCases();if(!$('view-gaps').hidden)renderGaps()},
+  e=>{clearTimeout(timer);$('dbnote').textContent='Saved results could not be loaded ('+e.code+').';$('dbnote').className='note warn'});
+ db.collection('extra').onSnapshot(async snap=>{extra=snap.docs.map(d=>d.data()).filter(x=>x&&x.id&&x.g);await resolveNames();renderSummary();renderCases()},()=>{});
+})();
+</script>

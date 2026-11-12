@@ -1,0 +1,10 @@
+const mid = await modId(); const L = I.layout; const o = {};
+const a = await mkRec(mid, { ...I.base, subject: P + ' G22 master', qa_vr_text: 'fine-master' }, L);
+const b = await mkRec(mid, { ...I.base, subject: P + ' G22 dup', qa_vr_text: 'BAD-dup' }, L);
+o.recs = a.s + ' ' + a.err.slice(0, 150) + ' | ' + b.s + ' ' + b.err.slice(0, 150);
+const r = await mkRule(mid, { name: P + ' G22 text', layoutId: L, primaryField: 'qa_vr_text', branches: [B(C('startsWith', 'qa_vr_text', 'BAD'), 'QA G22 text cannot start with BAD')] });
+const m1 = await api('POST', '/desk/tickets/merge', { master_ticket_id: a.id, source_ticket_ids: [b.id], field_sources: { qa_vr_text: b.id } }); o.m1 = SR(m1).slice(0, 300);
+const g = await api('GET', '/modules/' + mid + '/records/' + a.id); o.master = JSON.stringify((g.j && g.j.data && g.j.data.data || []).filter(x => /qa_vr_text|subject/.test(x.field)).map(x => x.field + '=' + x.value.value));
+const gb = await api('GET', '/modules/' + mid + '/records/' + b.id); o.dup = gb.s + ' ' + JSON.stringify((gb.j && gb.j.data && gb.j.data.data || []).filter(x => /qa_vr_text|status/.test(x.field)).map(x => x.field + '=' + x.value.value));
+if (r.j && r.j.data) await delRule(mid, r.j.data.id);
+return o;

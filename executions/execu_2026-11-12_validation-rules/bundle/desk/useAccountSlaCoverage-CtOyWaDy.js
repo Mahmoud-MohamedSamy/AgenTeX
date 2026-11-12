@@ -1,0 +1,1 @@
+import{Dx as e,Ox as t,Xy as n,_x as r}from"./index-BsUG6nLg.js";function i(i,a=!0){return r({queryKey:n.accountCoverage(i),enabled:a&&!!i,retry:!1,queryFn:async()=>{let n=await t.accountCoverage(i);if(e(n))return null;if(!n.success||!n.data)throw Error(n.error?.message||`Failed to load the SLA coverage`);return n.data}})}export{i as t};

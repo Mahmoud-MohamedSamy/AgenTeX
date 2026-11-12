@@ -1,0 +1,1 @@
+import{h as e}from"./react-vendor-2tVcgncM.js";import{t}from"./FieldSelect-C72JI7Uh.js";var n=e();function r({value:e,teams:r,invalid:i,disabled:a,placeholder:o,onChange:s,testId:c}){return(0,n.jsx)(t,{ariaLabel:o,placeholder:o,value:e,options:r.map(e=>({value:e.id,label:e.name})),invalid:i,disabled:a,onChange:s,testId:c})}export{r as t};

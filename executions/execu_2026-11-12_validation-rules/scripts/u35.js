@@ -1,0 +1,1 @@
+async (page) => { await openCreate('841043e1-c078-41f9-8d6e-dfd61bee45c3', 'ae199caf-d3f6-4320-bee9-1ff1b83e9b1d'); await page.screenshot({ path: EV + 'crm-u35.png' }); return { url: page.url(), f: await page.evaluate(() => [...document.querySelectorAll('[data-rule-field]')].map(e => e.getAttribute('data-rule-field'))) }; }

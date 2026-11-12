@@ -1,0 +1,1 @@
+async (page) => { await page.getByRole('button', { name: 'QA to Reject' }).first().click(); await sleep(3000); await page.screenshot({ path: EV + 'desk-G18-click.png' }); return { dialogs: await page.locator('[role=dialog],[role=alertdialog]').count(), t: (await bodyText()).match(/QA to Reject.{0,300}/g) }; }

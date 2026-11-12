@@ -1,0 +1,1 @@
+const mid = await modId(); const r = await mkRule(mid, { name: P + ' M4 text', layoutId: I.layout, primaryField: 'qa_vr_text', branches: [B(C('startsWith', 'qa_vr_text', 'BAD'), 'QA M4 text cannot start with BAD')] }); I.m4 = r.j && r.j.data && r.j.data.id; SAVE(); return r.s;

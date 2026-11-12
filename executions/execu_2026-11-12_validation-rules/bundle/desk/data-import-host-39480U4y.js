@@ -1,0 +1,1 @@
+import{Tt as e,wt as t}from"./index-BsUG6nLg.js";var n=`module`;function r(t){return t?`${e}?${n}=${encodeURIComponent(t)}`:e}function i(e){return e?`${t}?${n}=${encodeURIComponent(e)}`:t}var a={recordsRoute:e=>`/modules/${encodeURIComponent(e)}`,importRoute:e=>r(e),historyRoute:e=>i(e),assignmentRules:{enabled:!1}};export{r as i,a as n,i as r,n as t};

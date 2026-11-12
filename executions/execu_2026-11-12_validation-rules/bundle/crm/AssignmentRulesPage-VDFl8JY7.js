@@ -1,0 +1,1 @@
+import{n as e}from"./react-vendor-DkHM6MDj.js";import{X_ as t,y as n}from"./index-DspzkmN4.js";var r=e();function i(){return(0,r.jsx)(t,{children:(0,r.jsx)(`div`,{className:`min-h-full`,style:{background:`var(--bg-main)`},children:(0,r.jsx)(n,{})})})}export{i as AssignmentRulesPage,i as default};

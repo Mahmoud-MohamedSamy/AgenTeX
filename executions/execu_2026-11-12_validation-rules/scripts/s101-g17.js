@@ -1,0 +1,4 @@
+const mid = await modId(); const o = { hits: [] };
+for (let p = 1; p <= 3; p++) { const r = await api('GET', '/modules/' + mid + '/records?limit=100&page=' + p + '&sort_by=created_at&sort_order=desc'); for (const x of arr(r.j && r.j.data)) { const subj = ((x.data || []).find(d => d.field === 'subject') || {}).value; if (/BADMAIL|VR1112/.test(subj && subj.value || '')) o.hits.push({ id: x.id, created: x.created_at, subj: subj.value, layout: x.layout_id || x.created_with_layout_id, vals: (x.data || []).filter(d => /channel|source|department|status|mode/.test(d.field)).map(d => d.field + '=' + (d.value && d.value.value)) }); } }
+const n = await api('GET', '/modules/' + mid + '/records?limit=5&q=' + encodeURIComponent('BADMAIL')); o.q = n.s + ' ' + arr(n.j && n.j.data).map(x => ((x.data || []).find(d => d.field === 'subject') || {}).value?.value).join(' | ');
+return o;

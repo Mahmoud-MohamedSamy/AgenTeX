@@ -1,0 +1,1 @@
+import{Vg as e,Wg as t,_x as n}from"./index-BsUG6nLg.js";var r=[`assignment-rules`],i={all:r,list:e=>[...r,`list`,e],detail:e=>[...r,`detail`,e]},a=e=>t(e);function o(t={},r={}){return n({queryKey:i.list(t),queryFn:()=>e.listRules(t),select:a,enabled:r.enabled??!0})}export{o as t};

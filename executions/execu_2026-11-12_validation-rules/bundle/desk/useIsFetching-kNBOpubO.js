@@ -1,0 +1,1 @@
+import{i as e}from"./rolldown-runtime-DWdDZTNf.js";import{b as t}from"./dnd-kit-DwRl-dS8.js";import{Sx as n,bx as r}from"./index-BsUG6nLg.js";var i=e(t(),1);function a(e,t){let a=r(t),o=a.getQueryCache();return i.useSyncExternalStore(i.useCallback(e=>o.subscribe(n.batchCalls(e)),[o]),()=>a.isFetching(e),()=>a.isFetching(e))}export{a as t};

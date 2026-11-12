@@ -1,0 +1,2 @@
+async (page) => { await page.goto(HOST + '/settings/modules-and-fields/841043e1-c078-41f9-8d6e-dfd61bee45c3?tab=validation', { waitUntil: 'domcontentloaded' }); await sleep(5000);
+ return page.evaluate(() => [...document.querySelectorAll('tbody tr')].map(r => r.querySelector('td').innerText.trim().slice(0, 30) + ' => ' + r.querySelector('[role=switch]')?.getAttribute('aria-checked') + '/' + r.querySelector('[role=switch]')?.getAttribute('data-state'))); }

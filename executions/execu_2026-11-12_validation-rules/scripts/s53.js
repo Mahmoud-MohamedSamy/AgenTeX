@@ -1,0 +1,2 @@
+const mid = await modId(); const b = arr((await api('GET', '/modules/' + mid + '/blueprints')).j.data).find(b => b.isActive); const d = b.definition;
+return { name: d.name, layout: d.layoutId, target: d.targetField, entry: JSON.stringify(d.entryCriteria).slice(0, 300), states: d.states.map(s => s.id), t0: JSON.stringify(d.transitions[0]).slice(0, 1500), n: d.transitions.length, nbp: arr((await api('GET', '/modules/' + mid + '/blueprints')).j.data).length };

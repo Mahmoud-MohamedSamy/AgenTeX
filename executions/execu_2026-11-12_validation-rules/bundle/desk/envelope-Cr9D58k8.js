@@ -1,0 +1,1 @@
+function e(e){let t=e.data;return typeof t==`object`&&t&&`success`in t&&`data`in t&&`error`in t&&typeof t.success==`boolean`?t:e}export{e as t};

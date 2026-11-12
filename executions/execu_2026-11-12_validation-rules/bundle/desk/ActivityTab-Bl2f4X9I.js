@@ -1,0 +1,1 @@
+import{sv as e}from"./index-BsUG6nLg.js";function t({moduleId:t,recordId:n,bundle:r}){let{renderActivityTab:i,placeholder:a}=e();return(i?i({moduleId:t,recordId:n,bundle:r}):a)??null}export{t as ActivityTab};

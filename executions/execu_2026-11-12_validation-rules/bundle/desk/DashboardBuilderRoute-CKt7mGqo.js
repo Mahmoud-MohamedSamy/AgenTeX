@@ -1,0 +1,1 @@
+import{h as e}from"./react-vendor-2tVcgncM.js";import{N as t}from"./index-BsUG6nLg.js";import{t as n}from"./dashboard-capabilities-AirWJO4r.js";var r=e();function i(){return(0,r.jsx)(t,{capabilities:n})}export{i as DashboardBuilderRoute,i as default};

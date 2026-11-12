@@ -1,0 +1,1 @@
+async (page) => { await openCreate('841043e1-c078-41f9-8d6e-dfd61bee45c3', '9f0069ec-a4a0-4f50-8342-44c1af1be1f5'); await shot('crm-form', false); return { url: page.url().replace(HOST, ''), fields: await page.evaluate(() => [...document.querySelectorAll('[data-rule-field]')].map(e => e.getAttribute('data-rule-field')).join(' ')) }; }

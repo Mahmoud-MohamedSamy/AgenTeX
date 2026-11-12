@@ -1,0 +1,2 @@
+const r = await api('GET', '/desk/channels/addresses'); const L = arr(r.j && r.j.data);
+return { n: L.length, rows: L.map(a => ({ dept: a.department_id === I.base.department ? 'CS' : 'other', kind: a.arrival && a.arrival.kind || a.kind, enabled: a.mail && a.mail.enabled, health: a.receiving_health && a.receiving_health.state || (a.receiving && a.receiving.receiving_health && a.receiving.receiving_health.state), addrDomain: String(a.address || '').split('@')[1], addrLen: String(a.address || '').length })) };

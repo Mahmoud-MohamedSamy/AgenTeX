@@ -1,0 +1,1 @@
+import{h as e}from"./react-vendor-2tVcgncM.js";import{n as t}from"./src-DpQ3HBXO.js";var n=e(),r=`desk`;function i(){return(0,n.jsx)(t,{appKey:r})}export{i as DeskProfilesPage};

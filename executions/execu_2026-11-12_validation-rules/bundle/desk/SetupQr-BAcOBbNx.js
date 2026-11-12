@@ -1,0 +1,1 @@
+import{h as e}from"./react-vendor-2tVcgncM.js";import{t}from"./QrCode-CY8h16hS.js";var n=e();function r(e){return(0,n.jsx)(t,{...e})}export{r as default};

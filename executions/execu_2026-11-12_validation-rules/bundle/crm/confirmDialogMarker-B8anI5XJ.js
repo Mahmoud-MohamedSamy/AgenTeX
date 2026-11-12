@@ -1,0 +1,1 @@
+var e=`data-aw-confirm-dialog`,t={[e]:``};function n(t){return(t??(typeof document<`u`?document:void 0))?.querySelector(`[${e}]`)!=null}export{t as n,n as t};

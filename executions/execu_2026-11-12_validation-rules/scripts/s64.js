@@ -1,0 +1,1 @@
+const mid = await modId(); const r = await mkRule(mid, { name: P + ' I8 session', layoutId: I.layout, primaryField: 'qa_vr_long', branches: [B(C('gt', 'qa_vr_long', 5), 'QA I8')] }); I.i8 = r.j.data.id; SAVE(); return r.s;

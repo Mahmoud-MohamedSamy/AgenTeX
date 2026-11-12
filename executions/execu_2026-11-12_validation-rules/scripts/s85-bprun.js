@@ -1,0 +1,14 @@
+const mid = await modId(); const L = I.layout; const o = {}; const isDesk = APP === 'desk';
+const r1 = await mkRule(mid, { name: P + ' BP text', layoutId: L, primaryField: 'qa_vr_text', branches: [B(C('startsWith', 'qa_vr_text', 'BAD'), 'QA BP text cannot start with BAD')] });
+const r2 = await mkRule(mid, { name: P + ' BP note', layoutId: L, primaryField: 'qa_vr_note', branches: [B(C('startsWith', 'qa_vr_note', 'BAD'), 'QA BP note cannot start with BAD')] });
+o.rules = r1.s + ' ' + r2.s;
+const rec = await mkRec(mid, { ...I.base, qa_vr_pick: 'Open' }, L); o.rec = rec.s + ' ' + rec.err.slice(0, 100);
+await sleep(2000);
+const st = await api('GET', '/modules/' + mid + '/records/' + rec.id + '/blueprint-transitions'); o.trs = JSON.stringify(st.j && st.j.data).slice(0, 300);
+const url = '/modules/' + mid + '/records/' + rec.id + '/blueprint-transitions/t_qa_1';
+const a = await api('POST', url, { qa_vr_text: 'BAD-bp' }); o.badForm = SR(a).slice(0, 400);
+const b = await api('POST', url, { qa_vr_text: 'fine-bp' }); o.goodForm = SR(b).slice(0, 400);
+await sleep(2000);
+const g = await api('GET', '/modules/' + mid + '/records/' + rec.id); o.after = JSON.stringify((g.j && g.j.data && g.j.data.data || []).filter(x => /qa_vr_(text|note|pick)/.test(x.field)).map(x => x.field + '=' + (x.value && x.value.value)));
+for (const r of [r1, r2]) if (r.j && r.j.data) await delRule(mid, r.j.data.id);
+return o;

@@ -1,0 +1,1 @@
+function e(){let e=globalThis.crypto;if(e?.randomUUID)try{return e.randomUUID()}catch{}let t=()=>Math.random().toString(36).slice(2,10);return`idk-${Date.now().toString(36)}-${t()}-${t()}-${t()}`}export{e as t};

@@ -1,0 +1,1 @@
+async (page) => { await page.goto(HOST + '/settings/modules-and-fields/88e8ea44-1658-4df3-9930-d0902b91073d?tab=validation', { waitUntil: 'domcontentloaded' }); await sleep(8000); await shot('desk-N3-list', false); return { url: page.url(), t: (await bodyText()).slice(0, 600) }; }

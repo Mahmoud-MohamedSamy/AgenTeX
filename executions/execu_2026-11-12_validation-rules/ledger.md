@@ -1,0 +1,206 @@
+- 2026-11-12T16:23:44 [crm] created field qa_vr_text
+- 2026-11-12T16:23:45 [crm] created field qa_vr_note
+- 2026-11-12T16:23:46 [crm] created field qa_vr_num
+- 2026-11-12T16:23:46 [crm] created field qa_vr_dec
+- 2026-11-12T16:23:46 [crm] created field qa_vr_cur
+- 2026-11-12T16:23:47 [crm] created field qa_vr_pct
+- 2026-11-12T16:23:47 [crm] created field qa_vr_long
+- 2026-11-12T16:23:47 [crm] created field qa_vr_date
+- 2026-11-12T16:23:48 [crm] created field qa_vr_dt
+- 2026-11-12T16:23:48 [crm] created field qa_vr_pick
+- 2026-11-12T16:23:48 [crm] created field qa_vr_multi
+- 2026-11-12T16:23:50 [crm] created field qa_vr_email
+- 2026-11-12T16:23:51 [crm] created field qa_vr_phone
+- 2026-11-12T16:23:56 [crm] created field qa_vr_url
+- 2026-11-12T16:23:57 [crm] created field qa_vr_ml
+- 2026-11-12T16:23:57 [crm] created field qa_vr_chk
+- 2026-11-12T16:23:57 [crm] created field qa_vr_radio
+- 2026-11-12T16:24:03 [crm] created layout 9f0069ec-a4a0-4f50-8342-44c1af1be1f5
+- 2026-11-12T16:24:17 [desk] created field qa_vr_text
+- 2026-11-12T16:24:17 [desk] created field qa_vr_note
+- 2026-11-12T16:24:17 [desk] created field qa_vr_num
+- 2026-11-12T16:24:17 [desk] created field qa_vr_dec
+- 2026-11-12T16:24:17 [desk] created field qa_vr_cur
+- 2026-11-12T16:24:18 [desk] created field qa_vr_pct
+- 2026-11-12T16:24:18 [desk] created field qa_vr_long
+- 2026-11-12T16:24:18 [desk] created field qa_vr_date
+- 2026-11-12T16:24:18 [desk] created field qa_vr_dt
+- 2026-11-12T16:24:18 [desk] created field qa_vr_pick
+- 2026-11-12T16:24:19 [desk] created field qa_vr_multi
+- 2026-11-12T16:24:19 [desk] created field qa_vr_email
+- 2026-11-12T16:24:19 [desk] created field qa_vr_phone
+- 2026-11-12T16:24:20 [desk] created field qa_vr_url
+- 2026-11-12T16:24:20 [desk] created field qa_vr_ml
+- 2026-11-12T16:24:20 [desk] created field qa_vr_chk
+- 2026-11-12T16:24:20 [desk] created field qa_vr_radio
+- 2026-11-12T16:24:22 [desk] created layout 40dced31-ff6e-4128-87c1-ffe95332389e
+- 2026-11-12T16:31:22 [desk] desk contact 3efe5cc7-2a9a-4ff9-82cb-a5da9578cde2
+- 2026-11-12T16:55:22 [crm] field qa_vr_j1 f360b273-f3d0-4c93-861b-d58ed7f8c0db
+- 2026-11-12T16:55:23 [crm] J1 field deleted after rule 204
+- 2026-11-12T16:55:24 [crm] field qa_vr_j2 79c41243-4455-461b-807a-d234e4aa5912
+- 2026-11-12T16:55:26 [crm] J4 radio values restored 200
+- 2026-11-12T16:55:29 [crm] layout J6 af54c9cb-4cbf-48b9-9a8e-29d9194ba83f
+- 2026-11-12T16:55:31 [desk] field qa_vr_j1 63965f4d-6934-4148-bedc-d115b9b74c61
+- 2026-11-12T16:55:31 [desk] J1 field deleted after rule 204
+- 2026-11-12T16:55:32 [desk] field qa_vr_j2 0cc07012-7a49-4060-844c-50492f3bbc7b
+- 2026-11-12T16:55:34 [desk] J4 radio values restored 200
+- 2026-11-12T16:55:35 [desk] layout J6 4023b3bc-2d34-4834-be5c-101cd2537e92
+- 2026-11-12T16:55:59 [crm] layout rule H4 b705ad82-2f89-429a-a3b8-276d1b1fa820
+- 2026-11-12T17:04:29 [desk] desk R4 disabled for X3
+- 2026-11-12T17:08:50 [crm] workflow rule d96b204f-7ccd-4f59-8d75-73951c41e449 (G13)
+- 2026-11-12T17:09:01 [crm] workflow rule deleted 204
+- 2026-11-12T17:09:37 [crm] import session 1be1803b-ee43-4e21-ad18-3c6e8fb932ce
+- 2026-11-12T17:13:08 [crm] J3 layout restored 200
+- 2026-11-12T17:13:25 [desk] J3 layout restored 200
+- 2026-11-12T17:16:02 [crm] cleanup {"recs":87,"recFail":0,"undo":"204","rules":7,"otherRules":0,"lr":204,"layout QA VR1112 Layout":422,"fieldsLeft":[],"rulesLeft":[]}
+- 2026-11-12T17:16:35 [desk] cleanup {"recs":62,"recFail":0,"rules":3,"otherRules":0,"layout QA VR1112 Layout":422,"fieldsLeft":[],"contact":204,"rulesLeft":["QA NDC Reject needs a reason"]}
+- 2026-11-12T21:19:41 [crm] purged 88 bin items (QA VR1112)
+- 2026-11-12T21:19:58 [desk] purged 69 bin items (QA VR1112)
+- 2026-11-12T21:25:58 [crm] purged 7 bin items by exact id
+- 2026-11-12T21:26:00 [crm] deleted layout 9f0069ec-a4a0-4f50-8342-44c1af1be1f5
+- 2026-11-12T21:26:11 [desk] purged 1 bin items by exact id
+- 2026-11-12T21:26:14 [desk] deleted layout 40dced31-ff6e-4128-87c1-ffe95332389e
+- 2026-11-12T21:26:32 [crm] created field qa_vr_text
+- 2026-11-12T21:26:35 [crm] created field qa_vr_note
+- 2026-11-12T21:26:35 [crm] created field qa_vr_num
+- 2026-11-12T21:26:36 [crm] created field qa_vr_dec
+- 2026-11-12T21:26:38 [crm] created field qa_vr_cur
+- 2026-11-12T21:26:39 [crm] created field qa_vr_pct
+- 2026-11-12T21:26:42 [crm] created field qa_vr_long
+- 2026-11-12T21:26:42 [crm] created field qa_vr_date
+- 2026-11-12T21:26:44 [crm] created field qa_vr_dt
+- 2026-11-12T21:26:45 [crm] created field qa_vr_pick
+- 2026-11-12T21:26:47 [crm] created field qa_vr_multi
+- 2026-11-12T21:26:48 [crm] created field qa_vr_email
+- 2026-11-12T21:26:49 [crm] created field qa_vr_phone
+- 2026-11-12T21:26:50 [crm] created field qa_vr_url
+- 2026-11-12T21:26:50 [crm] created field qa_vr_ml
+- 2026-11-12T21:26:51 [crm] created field qa_vr_chk
+- 2026-11-12T21:26:51 [crm] created field qa_vr_radio
+- 2026-11-12T21:27:05 [crm] created layout ae199caf-d3f6-4320-bee9-1ff1b83e9b1d
+- 2026-11-12T21:27:06 [desk] created field qa_vr_text
+- 2026-11-12T21:27:07 [desk] created field qa_vr_note
+- 2026-11-12T21:27:07 [desk] created field qa_vr_num
+- 2026-11-12T21:27:08 [desk] created field qa_vr_dec
+- 2026-11-12T21:27:08 [desk] created field qa_vr_cur
+- 2026-11-12T21:27:09 [desk] created field qa_vr_pct
+- 2026-11-12T21:27:09 [desk] created field qa_vr_long
+- 2026-11-12T21:27:10 [desk] created field qa_vr_date
+- 2026-11-12T21:27:11 [desk] created field qa_vr_dt
+- 2026-11-12T21:27:11 [desk] created field qa_vr_pick
+- 2026-11-12T21:27:12 [desk] created field qa_vr_multi
+- 2026-11-12T21:27:12 [desk] created field qa_vr_email
+- 2026-11-12T21:27:12 [desk] created field qa_vr_phone
+- 2026-11-12T21:27:13 [desk] created field qa_vr_url
+- 2026-11-12T21:27:14 [desk] created field qa_vr_ml
+- 2026-11-12T21:27:14 [desk] created field qa_vr_chk
+- 2026-11-12T21:27:14 [desk] created field qa_vr_radio
+- 2026-11-12T21:27:21 [desk] created layout 7388fa62-84ff-48cd-bb48-a97049ed4c27
+- 2026-11-12T21:27:55 [desk] desk contact 98f991a6-de4a-4fc6-96e3-8b8873f5e87d
+- 2026-11-12T21:34:07 [crm] field permission read_only 264c5525-32e9-4aa4-b5c6-1bebe771c749
+- 2026-11-12T21:34:27 [crm] field permission hidden 264c5525-32e9-4aa4-b5c6-1bebe771c749
+- 2026-11-12T21:34:40 [crm] H6/H7 field permission + rule removed
+- 2026-11-12T21:34:53 [desk] dept d2a27f92-6a33-4a6f-8fce-7b63c9fe0e1d
+- 2026-11-12T21:57:25 [crm] purged 11 bin items by exact id
+- 2026-11-12T21:57:27 [crm] deleted layout ae199caf-d3f6-4320-bee9-1ff1b83e9b1d
+- 2026-11-12T21:57:34 [desk] purged 6 bin items by exact id
+- 2026-11-12T21:57:36 [desk] deleted layout 7388fa62-84ff-48cd-bb48-a97049ed4c27
+- 2026-11-12T21:58:13 [crm] purged 1 bin items (QA VR1112)
+- 2026-11-12T21:58:21 [crm] final cleanup {"fieldsLeft":[],"rulesLeft":[],"layoutsLeft":[]}
+- 2026-11-12T21:58:29 [desk] final cleanup {"fieldsLeft":[],"contact":204,"rulesLeft":["QA NDC Reject needs a reason"],"layoutsLeft":[]}
+- 2026-11-12T21:58:36 [desk] purged desk contact 98f991a6-de4a-4fc6-96e3-8b8873f5e87d
+- 2026-11-12T21:59:49 [desk] purged 3 VR1112 bin items (other modules)
+- 2026-11-12T22:07:00 [crm] created field qa_vr_text
+- 2026-11-12T22:07:00 [crm] created field qa_vr_note
+- 2026-11-12T22:07:01 [crm] created field qa_vr_num
+- 2026-11-12T22:07:01 [crm] created field qa_vr_dec
+- 2026-11-12T22:07:01 [crm] created field qa_vr_cur
+- 2026-11-12T22:07:01 [crm] created field qa_vr_pct
+- 2026-11-12T22:07:02 [crm] created field qa_vr_long
+- 2026-11-12T22:07:02 [crm] created field qa_vr_date
+- 2026-11-12T22:07:02 [crm] created field qa_vr_dt
+- 2026-11-12T22:07:02 [crm] created field qa_vr_pick
+- 2026-11-12T22:07:02 [crm] created field qa_vr_multi
+- 2026-11-12T22:07:02 [crm] created field qa_vr_email
+- 2026-11-12T22:07:03 [crm] created field qa_vr_phone
+- 2026-11-12T22:07:03 [crm] created field qa_vr_url
+- 2026-11-12T22:07:04 [crm] created field qa_vr_ml
+- 2026-11-12T22:07:05 [crm] created field qa_vr_chk
+- 2026-11-12T22:07:05 [crm] created field qa_vr_radio
+- 2026-11-12T22:07:57 [crm] created layout 68ce1c85-b078-4e35-a5e3-d43989e8f4cc
+- 2026-11-12T22:08:02 [desk] created field qa_vr_text
+- 2026-11-12T22:08:02 [desk] created field qa_vr_note
+- 2026-11-12T22:08:02 [desk] created field qa_vr_num
+- 2026-11-12T22:08:02 [desk] created field qa_vr_dec
+- 2026-11-12T22:08:03 [desk] created field qa_vr_cur
+- 2026-11-12T22:08:03 [desk] created field qa_vr_pct
+- 2026-11-12T22:08:03 [desk] created field qa_vr_long
+- 2026-11-12T22:08:03 [desk] created field qa_vr_date
+- 2026-11-12T22:08:03 [desk] created field qa_vr_dt
+- 2026-11-12T22:08:03 [desk] created field qa_vr_pick
+- 2026-11-12T22:08:03 [desk] created field qa_vr_multi
+- 2026-11-12T22:08:04 [desk] created field qa_vr_email
+- 2026-11-12T22:08:04 [desk] created field qa_vr_phone
+- 2026-11-12T22:08:04 [desk] created field qa_vr_url
+- 2026-11-12T22:08:04 [desk] created field qa_vr_ml
+- 2026-11-12T22:08:05 [desk] created field qa_vr_chk
+- 2026-11-12T22:08:05 [desk] created field qa_vr_radio
+- 2026-11-12T22:08:07 [desk] created layout a761cbfc-4735-4942-8458-28fcfc9f372d
+- 2026-11-12T22:08:08 [desk] desk contact a0ae1f57-3c6d-44ef-b0a5-0ef0ff9db361
+- 2026-11-12T22:08:25 [crm] web form 5ae49bdf-0a1c-4f6f-a901-72240a8cbe97
+- 2026-11-12T22:14:18 [crm] blueprint faa12c05-f79c-47fb-87ec-256071966287
+- 2026-11-12T22:22:06 [desk] blueprint 2e0e969f-c861-44e2-ab66-66c49b9056f7
+- 2026-11-12T22:28:15 [crm] G17 email sent to support address (len 46)
+- 2026-11-12T22:29:42 [crm] purged 5 bin items by exact id
+- 2026-11-12T22:29:54 [desk] purged 3 bin items by exact id
+- 2026-11-12T22:30:27 [crm] final cleanup {"fieldsLeft":[],"rulesLeft":[],"layoutsLeft":[]}
+- 2026-11-12T22:30:44 [desk] final cleanup {"fieldsLeft":[],"contact":204,"rulesLeft":["QA NDC Reject needs a reason","QA VR1112 G17 subject"],"layoutsLeft":[]}
+- 2026-11-12T22:30:56 [desk] purged 4 VR1112 bin items (other modules)
+- 2026-11-12T22:38:47 [crm] created field qa_vr_text
+- 2026-11-12T22:38:47 [crm] created field qa_vr_note
+- 2026-11-12T22:38:47 [crm] created field qa_vr_num
+- 2026-11-12T22:38:47 [crm] created field qa_vr_dec
+- 2026-11-12T22:38:48 [crm] created field qa_vr_cur
+- 2026-11-12T22:38:48 [crm] created field qa_vr_pct
+- 2026-11-12T22:38:48 [crm] created field qa_vr_long
+- 2026-11-12T22:38:48 [crm] created field qa_vr_date
+- 2026-11-12T22:38:48 [crm] created field qa_vr_dt
+- 2026-11-12T22:38:48 [crm] created field qa_vr_pick
+- 2026-11-12T22:38:49 [crm] created field qa_vr_multi
+- 2026-11-12T22:38:49 [crm] created field qa_vr_email
+- 2026-11-12T22:38:49 [crm] created field qa_vr_phone
+- 2026-11-12T22:38:49 [crm] created field qa_vr_url
+- 2026-11-12T22:38:49 [crm] created field qa_vr_ml
+- 2026-11-12T22:38:49 [crm] created field qa_vr_chk
+- 2026-11-12T22:38:50 [crm] created field qa_vr_radio
+- 2026-11-12T22:38:51 [crm] created layout faadfb09-8afa-4052-97ee-9aaa7dd76227
+- 2026-11-12T22:40:54 [crm] purged 3 bin items by exact id
+- 2026-11-12T22:41:10 [crm] final cleanup {"fieldsLeft":[],"rulesLeft":[],"layoutsLeft":[]}
+- 2026-11-12T22:46:23 [desk] G17 rule + ticket 3390 removed/purged
+- 2026-11-12T22:47:54 [desk] Mahmoud Samy desk profile -> agent 400
+- 2026-11-12T22:48:08 [desk] Mahmoud Samy desk profile -> agent 204
+- 2026-11-12T22:48:16 [desk] created field qa_vr_text
+- 2026-11-12T22:48:16 [desk] created field qa_vr_note
+- 2026-11-12T22:48:16 [desk] created field qa_vr_num
+- 2026-11-12T22:48:16 [desk] created field qa_vr_dec
+- 2026-11-12T22:48:17 [desk] created field qa_vr_cur
+- 2026-11-12T22:48:17 [desk] created field qa_vr_pct
+- 2026-11-12T22:48:18 [desk] created field qa_vr_long
+- 2026-11-12T22:48:18 [desk] created field qa_vr_date
+- 2026-11-12T22:48:18 [desk] created field qa_vr_dt
+- 2026-11-12T22:48:18 [desk] created field qa_vr_pick
+- 2026-11-12T22:48:18 [desk] created field qa_vr_multi
+- 2026-11-12T22:48:18 [desk] created field qa_vr_email
+- 2026-11-12T22:48:19 [desk] created field qa_vr_phone
+- 2026-11-12T22:48:19 [desk] created field qa_vr_url
+- 2026-11-12T22:48:19 [desk] created field qa_vr_ml
+- 2026-11-12T22:48:19 [desk] created field qa_vr_chk
+- 2026-11-12T22:48:19 [desk] created field qa_vr_radio
+- 2026-11-12T22:48:23 [desk] created layout b7e09fb5-28e1-4a90-96f1-c42bccc4ba6b
+- 2026-11-12T22:48:23 [desk] desk contact 3fe45c5e-ff7a-4721-8060-d9c638088c18
+- 2026-11-12T22:48:43 [desk] field permission read_only 2da95d33-0866-4575-9be1-44c4d35f9521
+- 2026-11-12T22:48:52 [desk] field permission hidden 2da95d33-0866-4575-9be1-44c4d35f9521
+- 2026-11-12T22:49:36 [desk] Mahmoud Samy desk profile -> admin 204
+- 2026-11-12T22:49:44 [desk] H6/H7 field permission + rule removed
+- 2026-11-12T22:50:01 [desk] final cleanup {"fieldsLeft":[],"contact":204,"rulesLeft":["QA NDC Reject needs a reason"],"layoutsLeft":[]}
+- 2026-11-12T22:50:53 [desk] purged 1 VR1112 bin items (other modules)

@@ -1,0 +1,2 @@
+const g = await api('GET', '/web-forms/' + I.wf); const d = g.j.data; const sn = d.snippets || {};
+return { channel_enabled: d.channel_enabled, errs: JSON.stringify(d.definition_errors).slice(0, 300), snippetKeys: Object.keys(sn), iframe: String(sn.iframe || sn.embed_iframe || JSON.stringify(sn)).replace(/key=[^&"'\s]+/g, 'key=<k>').slice(0, 500), share: String(d.share_url || '').replace(/f\/[^"'\s]+/, 'f/<k>') };

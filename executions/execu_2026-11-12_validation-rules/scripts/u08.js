@@ -1,0 +1,1 @@
+async (page) => { const el = page.getByText('QA E2 no bad.com emails').first(); await el.scrollIntoViewIfNeeded(); await sleep(800); await shot('crm-E2-top-scrolled', false); return { visible: await el.isVisible() }; }
