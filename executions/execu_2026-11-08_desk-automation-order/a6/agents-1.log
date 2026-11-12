@@ -1,0 +1,20 @@
+setup {"t1InBlueprint":true}
+B ticket access {"B_GET_t1":{"status":200,"code":null,"msg":null},"A_GET_t1":{"status":200,"code":null,"msg":null}}
+D1-D4,D6,A5 visible transitions (t1 owner=A) {"owner":{"status":200,"code":null,"ids":["any","notify"]},"A":{"status":200,"code":null,"ids":["any","onlyA","team","towner","notify"]},"B":{"status":200,"code":null,"ids":["team"]},"C":{"status":200,"code":null,"ids":["tech"]}}
+A7 {"B_runs_onlyA":{"status":403,"code":"BLUEPRINT_NOT_OWNER","msg":"You are not an owner of this transition.","details":"{\"transition_id\":\"onlyA\"}"}}
+D2 {"C_runs_onlyA":{"status":403,"code":"BLUEPRINT_NOT_OWNER","msg":"You are not an owner of this transition.","details":"{\"transition_id\":\"onlyA\"}"}}
+D4 {"patchOwner":{"status":422,"code":"OWNERSHIP_MANAGED_BY_DESK","msg":"Ticket ownership and department are managed by Desk: assign, pick up, unassign or move the ticket through Desk.","details":"[{\"path\":\"data.owner\",\"type\":\"ownership_managed_by_desk\",\"message\":\"'owner' can only be changed through Desk's ticket assignment.\"}]"},"ownerNow":"9d182dfa-05f3-4af7-9685-8615a2fbe537","A":{"sta
+D3 {"owner_runs_team_on_t1":"skipped (would move t1)","note":"see visibility"}
+D3 {"A_runs_team":{"status":200,"code":null,"msg":null}}
+D6/J9 {"C_GET_ticket_before":200,"C_runs_tech":{"status":200,"code":null,"msg":null},"C_GET_ticket_after":403}
+A8 {"C_GET_ticket":{"status":403,"code":"PERMISSION_DENIED","msg":"Permission denied."},"C_GET_state_of_t1like":{"status":403,"code":"PERMISSION_DENIED","msg":"Permission denied."},"C_runs_on_t5":{"status":404,"code":"NOT_FOUND","msg":"Ticket d32581ef-cb2f-49be-90d1-197490756c80 was not found."}}
+A6 {"A_revoke":{"status":403,"code":"forbidden","msg":"Missing required permission 'desk:ticket:blueprint_revoke'."},"stillIn":true}
+F3/F6 {"owner_runs_notify":{"status":200,"code":null,"msg":null}}
+F3/F6 {"A_notifications_status":200,"A_got_notification":8,"distinctIds":8,"events":["blueprint.transition","desk.ticket.assigned","desk.ticket.escalated"],"notifTitle":"QA BP AG 062891 notif QA BP AG 062891 t7 notify","historyActions":["ticket.blueprint_transition","ticket.status_changed","ticket.blueprint_entered","ticket.department_changed"],"emailHistory":"[]"}
+D7 {"readOnly_requiredReply_save":{"status":422,"code":"BLUEPRINT_OWNER_CANNOT_REPLY","msg":"Tech cannot write the required reply of QA ro.","details":"{\"transition_id\":\"ro\",\"transition_name\":\"QA ro\",\"sub_transition_id\":null,\"sub_transition_name\":null,\"department_id\":\"19510fdc-91f3-4a7a-8888-153f1318b765\",\"department_name\":\"Tech\",\"access\":\"read_only\",\"item_kind\":\"reply\"}"}
+D7 {"restricted_requiredReply_save":{"status":422,"code":"BLUEPRINT_OWNER_CANNOT_REPLY","msg":"Tech cannot write the required reply of QA rs.","details":"{\"transition_id\":\"rs\",\"transition_name\":\"QA rs\",\"sub_transition_id\":null,\"sub_transition_name\":null,\"department_id\":\"19510fdc-91f3-4a7a-8888-153f1318b765\",\"department_name\":\"Tech\",\"access\":\"restricted\",\"item_kind\":\"reply\"
+E12 {"create":{"status":201,"code":null,"msg":null}}
+E12 {"C_transitions":{"status":200,"code":null,"ids":["rso"]},"C_runs_optional_no_reply":{"status":200,"code":null,"msg":null},"C_runs_with_reply":"not tried"}
+A3/A4 {"list":{"status":403,"code":"PERMISSION_DENIED","msg":"Permission denied."},"one":{"status":403,"code":"PERMISSION_DENIED","msg":"Permission denied."},"versions":{"status":403,"code":"PERMISSION_DENIED","msg":"Permission denied."},"create":{"status":403,"code":"PERMISSION_DENIED","msg":"Permission denied."},"put":{"status":403,"code":"PERMISSION_DENIED","msg":"Permission denied."},"draft":{"statu
+cleanup t204 t204 t204 t204 t204 t204 t204 bp204 bp204 bp204 left 8
+run1 exit 0

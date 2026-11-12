@@ -15,12 +15,12 @@ const IMG = { 'B01-K1-deleted-field.html': ['K1-deleted-field-rule-vs-zoho.png']
   'B05-H2-no-version-overwrite.html': ['H2-no-version-overwrite.png'], 'B06-H4-duplicate-names.html': ['H4-duplicate-names-vs-zoho.png'],
   'B07-C19-identical-conditions.html': ['C19-identical-conditions-vs-zoho.png'], 'B08-I6-D15-api-conditions.html': ['I6-api-conditions.png'],
   'B09-I3-B10-unknown-ids.html': ['I3-B10-unknown-ids.png'], 'B10-J6-error-focus.html': ['J6-error-focus.png'], 'B11-F9-audit-unreadable.html': ['F9-audit-unreadable.png'],
-  'B12-WF-hosted-link-404.html': ['WF-hosted-link-404.png'], 'gap-ticket.html': ['G1-update-old-records-vs-zoho.png', 'G2-record-scoring-section-vs-zoho.png', 'G3-conditions-and-pattern-vs-zoho.png'] };
+  'B12-WF-hosted-link-404.html': ['WF-hosted-link-404.png'], 'B13-DESK-no-permissions-page.html': ['DESK-no-permissions-page-vs-zoho.png'], 'gap-ticket.html': ['G1-update-old-records-vs-zoho.png', 'G2-record-scoring-section-vs-zoho.png', 'G3-conditions-and-pattern-vs-zoho.png'] };
 const items = [{ file: 'gap-ticket.html', name: 'Scoring Rules: features Zoho CRM has that CRM is missing', priority: 'medium', state: 'Backlog', html: fs.readFileSync(path.join(DRAFT, 'gap-ticket.html'), 'utf8') }];
 for (const f of fs.readdirSync(path.join(DRAFT, 'bugs')).sort()) {
   let t = fs.readFileSync(path.join(DRAFT, 'bugs', f), 'utf8'); const name = t.match(/Title: (.*?) -->/)[1]; const pr = t.match(/Priority: (\w+)/)[1].toLowerCase();
   t = t.replace(/<!--.*?-->\n?/g, '').replace(/<li>Evidence[^<]*<\/li>/g, '');
-  const ev = f.startsWith('B12-WF') ? `<li>Evidence: ${IMG[f].join(', ')} (attached).</li>` : `<li>Evidence (TAVI left, Zoho right where it was checked): ${IMG[f].join(', ')} (attached).</li>`;
+  const ev = f.startsWith('B13-DESK') ? '' : f.startsWith('B12-WF') ? `<li>Evidence: ${IMG[f].join(', ')} (attached).</li>` : `<li>Evidence (TAVI left, Zoho right where it was checked): ${IMG[f].join(', ')} (attached).</li>`;
   t = /<h2>Notes<\/h2><ul>/.test(t) ? t.replace(/(<h2>Notes<\/h2><ul>[\s\S]*?)<\/ul>/, `$1${ev}</ul>`) : t.replace(/<\/div>\s*$/, `<h2>Notes</h2><ul>${ev}</ul></div>`);
   items.push({ file: f, name, priority: pr, state: 'Bug', html: t.trim() });
 }
@@ -33,7 +33,7 @@ const attach = async (id, file) => { const buf = fs.readFileSync(file), name = p
 (async () => {
   for (const it of items) {
     if (!done[it.file]) {
-      const r = await fetch(`${B}/work-items/`, { method: 'POST', headers: H, body: JSON.stringify({ name: it.name, description_html: it.html, state: STATE[it.state], priority: it.priority, assignees: ASSIGNEES, labels: it.file.startsWith('B12-WF') ? ['113c8156-5066-4fdc-8f63-6c6f548507f7'] : LABELS, start_date: '2026-11-12' }) });
+      const r = await fetch(`${B}/work-items/`, { method: 'POST', headers: H, body: JSON.stringify({ name: it.name, description_html: it.html, state: STATE[it.state], priority: it.priority, assignees: ASSIGNEES, labels: it.file.startsWith('B12-WF') ? ['113c8156-5066-4fdc-8f63-6c6f548507f7'] : it.file.startsWith('B13-DESK') ? ['0ba4180a-71e4-48ce-9af8-7bb69089b244'] : LABELS, start_date: '2026-11-12' }) });
       const j = await r.json(); if (!r.ok) { console.log('CREATE FAIL', it.file, r.status, JSON.stringify(j).slice(0, 300)); continue; }
       done[it.file] = { id: j.id, seq: j.sequence_id, name: it.name, attached: [] }; fs.writeFileSync(OUT, JSON.stringify(done, null, 1));
     }

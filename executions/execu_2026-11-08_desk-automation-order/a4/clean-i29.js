@@ -1,0 +1,11 @@
+const s = JSON.parse(fs.readFileSync('../a4/i29.json')), c = JSON.parse(fs.readFileSync('../a4/i29c.json')), f = JSON.parse(fs.readFileSync('../a4/i29f.json')), o = JSON.parse(fs.readFileSync('../a4/j5-out.json'));
+const R = {};
+R.j5wall = (await execs(o.t)).filter(e => e.rule === o.jw).map(e => e.outcome); R.j5business = (await execs(o.t)).filter(e => e.rule === o.jb).map(e => e.outcome);
+for (const id of [s.rule, f.rule, o.jb, o.jw]) R['rule ' + id.slice(0, 8)] = (await api('DELETE', '/workflow/rules/' + id)).s;
+for (const id of [s.ticket, c.ctrl, o.t]) R['ticket ' + id.slice(0, 8)] = (await api('DELETE', `/modules/${T}/records/${id}`)).s;
+const orig = JSON.parse(fs.readFileSync('../a4/happiness-orig-i29.json')); const cur = (await api('GET', '/desk/happiness/settings')).j?.data;
+const pr = await api('PUT', '/desk/happiness/settings', { ...orig, row_version: cur.row_version }); R.restore = pr.s + (pr.s >= 300 ? ' ' + pr.t.slice(0, 200) : '');
+const now = (await api('GET', '/desk/happiness/settings')).j?.data; R.diff = Object.keys(orig).filter(k => k !== 'row_version' && JSON.stringify(orig[k]) !== JSON.stringify(now[k]));
+R.rulesLeft = arr2((await api('GET', '/workflow/rules?take=500')).j?.data).filter(r => /^QA AO WF/.test(r.name)).map(r => r.name);
+R.bh = (await api('GET', '/desk/business-hours')).j?.data?.preset;
+log(JSON.stringify(R));

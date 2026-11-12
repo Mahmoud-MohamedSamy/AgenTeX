@@ -1,0 +1,70 @@
+{
+ "key": "D-15",
+ "out": "WF-I9-owner-assignment-ignores-suspended-agent.png",
+ "ticket": "Workflow Rules · I9",
+ "title": "Owner Assignment ignores suspended agents and department membership",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "TAVI 12 Nov 2026 22:20 Cairo",
+ "env": "staging-desk.taviportal.com (NDC-Staging) · owner account · API",
+ "rightLabel": "Expected",
+ "leftHead": "TAVI Desk (API evidence)",
+ "rightHead": "Expected",
+ "panels": [
+  {
+   "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/api-i9-owner-suspended.png",
+   "w": 1440,
+   "h": 600,
+   "caption": "Same agent, same ticket setup: manual assign refuses, the workflow rule does not",
+   "crop": [
+    0,
+    0,
+    1440,
+    480
+   ],
+   "boxes": [
+    {
+     "b": [
+      22,
+      228,
+      1180,
+      254
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      22,
+      345,
+      1300,
+      392
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Rule assigns a suspended agent who is not in the ticket department",
+   "Refused like manual assign; run marked Failed with the reason.",
+   "Ticket assigned to the suspended agent; Execution History: Fired.",
+   "BUG"
+  ],
+  [
+   2,
+   "Rule assigns a suspended agent who is in the department",
+   "Run marked Failed with a reason (e.g. agent not active).",
+   "Ticket left unassigned, but Execution History says Fired, errorMessage empty, no dispatch.",
+   "BUG"
+  ],
+  [
+   3,
+   "Manual assign (control)",
+   "Refused.",
+   "Refused with 422 \"not an active agent of the ticket department\" (correct).",
+   "INFO"
+  ]
+ ]
+}

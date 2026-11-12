@@ -1,0 +1,21 @@
+const HOME = 'https://staging-crm.taviportal.com/help/hc1.a7a7a7a7000000000000000000000004.rDvrZfW_-TBcbb_XkySGodjzQfiQLj80dsTNfdLteDw/';
+const C1 = 'fc9e7878-c973-4787-b223-fd9bc6610062';
+let r = await api('POST', '/desk/kb/articles', { title: 'QA GL W4 agents only', body_html: '<p>QA GL W4 agents only. Search word: pangolin66.</p>', category_id: C1, visibility: 'agents_only' });
+if (r.j && r.j.data) { CREATED.push({ kind: 'kb-article', id: r.j.data.id, name: 'QA GL W4 agents only' }); await api('POST', '/desk/kb/articles/' + r.j.data.id + '/publish', {}); }
+const ctx = await page.context().browser().newContext(); const p = await ctx.newPage();
+let dialogs = []; p.on('dialog', d => { dialogs.push(d.message()); d.dismiss().catch(() => {}); });
+await p.goto(HOME + 'kb', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(8000);
+out.kb = (await p.innerText('body')).replace(/\s+/g, ' ').slice(0, 900); await p.screenshot({ path: SHOT + '/w4/W4-60-portal-kb.png', fullPage: true });
+out.links = (await p.locator('a').evaluateAll(as => as.map(a => a.innerText.trim() + ' -> ' + a.getAttribute('href')))).filter(s => /QA GL W4/.test(s)).map(s => s.replace(/hc1\.[\w.-]+/, 'HC'));
+const open = async (name) => { const l = p.getByRole('link', { name }).first(); if (!(await l.count())) return 'no link'; await l.click(); await p.waitForTimeout(6000); return p.url().replace(/hc1\.[\w.-]+/, 'HC') + ' :: ' + (await p.innerText('main').catch(() => p.innerText('body'))).replace(/\s+/g, ' ').slice(0, 400); };
+out.art = await open(/^QA GL W4 article/); out.img = await p.locator('main img').evaluateAll(is => is.map(i => (i.naturalWidth > 0 ? 'loaded ' : 'broken ') + i.getAttribute('src').replace(/\?.*$/, '?…').slice(-80) + ' file=' + i.getAttribute('data-file-id')));
+await p.screenshot({ path: SHOT + '/w4/W4-60-portal-article.png' });
+await p.goto(HOME + 'kb', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(6000);
+out.xssArt = await open(/^QA GL W4 script/); out.xssDom = await p.locator('main').evaluate(m => ({ scripts: m.querySelectorAll('script').length, onerr: m.querySelectorAll('[onerror]').length, js: [...m.querySelectorAll('a')].filter(a => /^javascript:/i.test(a.getAttribute('href') || '')).length })).catch(e => e.message.slice(0, 80));
+await p.waitForTimeout(2000); out.dialogs = dialogs.slice();
+await p.screenshot({ path: SHOT + '/w4/W4-64-portal-script.png' });
+const search = async q => { await p.goto(HOME + 'search?q=' + encodeURIComponent(q), { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(6000); return (await p.innerText('body')).replace(/\s+/g, ' ').slice(0, 260); };
+out.sZebra = await search('zebrafish42'); out.sAr = await search('زرافة٩٩'); out.sDraft = await search('quokka77'); out.sHidden = await search('narwhal55'); out.sAgents = await search('pangolin66');
+await p.screenshot({ path: SHOT + '/w4/W4-67-search.png' });
+await ctx.close();
+return fin({ out });

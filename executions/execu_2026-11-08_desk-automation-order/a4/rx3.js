@@ -1,0 +1,10 @@
+const CA = 'cf440741-0ffd-47dc-aaa4-4b6b93f2f956', SRC = 'f2cf7ef4-453e-47e0-8787-9f0e90225a10';
+track('customAction', CA, 'RX-P22'); track('apiSource', SRC, 'RX-P22');
+const W = JSON.parse(fs.readFileSync('../a4/webhook-token.json', 'utf8')).uuid;
+const a = (await api('GET', '/workflow/custom-actions/' + CA)).j?.data || {};
+const rule = await mkRule('P22', { kind: 'RecordCreated' }, [{ type: 'RunCustomAction', customActionId: CA, customActionInputs: {} }]);
+const t = await mkTicket('P22'); await sleep(20000);
+const ex = arr2((await api('GET', '/workflow/executions?recordId=' + t.id)).j?.data).map(e => e.outcome + ' ' + (e.dispatches || []).map(d => d.actionType + ':' + d.status + ' ' + (d.responseStatus || '') + ' ' + String(d.lastError || '').slice(0, 100)).join('|'));
+const h = await fetch('https://webhook.site/token/' + W + '/requests?sorting=newest&per_page=20').then(r => r.json()).catch(() => ({}));
+const hits = (h.data || []).filter(x => /qa-ao-wf-p22/.test(x.url || '') && Date.now() - new Date(x.created_at + 'Z') < 600000);
+log({ targetApps: a.targetApps, status: a.status, rule: rule.s + (rule.err || ''), ex, hits: hits.length, hitMethod: hits[0] && hits[0].method });

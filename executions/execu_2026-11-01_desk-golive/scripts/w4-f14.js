@@ -1,0 +1,15 @@
+const FID = '74fd3081-f5d2-4ad4-aa5d-8f1131254cb1';
+const KEY = 'fw1.a7a7a7a7000000000000000000000004.kdvoOsta5WvQD0ZFRv0QpASLmUQoAovJq_ARYTAqIE0';
+const IF = 'https://staging-crm.taviportal.com/embed/feedback/index.html?key=' + KEY + '&mode=frame';
+const l = await api('GET', '/web-forms'); out.list = l.s + ' ' + arr(D(l.j)).map(x => x.name + ':' + x.is_enabled + ':' + JSON.stringify(x.definition.allowed_origins)).join(' ; ');
+const get = async () => arr(D((await api('GET', '/web-forms')).j)).find(x => x.id === FID);
+const upd = async patch => { const f = await get(); const r = await api('PUT', '/web-forms/' + FID, { name: f.name, department_id: f.department_id, layout_id: f.layout_id, is_enabled: f.is_enabled, definition: f.definition, ...patch }, { 'if-match': String(f.row_version) }); return r.s + ' ' + r.t.slice(0, 160); };
+out.dis = await upd({ is_enabled: false });
+const ctx = await page.context().browser().newContext(); const p = await ctx.newPage();
+await p.goto(IF, { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(5000);
+out.disPage = (await p.innerText('body')).replace(/\s+/g, ' ').slice(0, 300); await p.screenshot({ path: SHOT + '/w4/W4-39-disabled.png' });
+const PN = []; p.on('response', async r => { if (r.request().method() === 'POST' && !/events/.test(r.url())) { let t = ''; try { t = (await r.text()).slice(0, 250); } catch (e) {} PN.push(r.url().replace(KEY, 'KEY').slice(-60) + ' ' + r.status() + ' ' + t); } }); await p.fill('[name="contact.last_name"]', 'QA GL W4'); await p.fill('[name=email]', 'mmohamed@anyware.software'); await p.fill('[name=subject]', 'QA GL W4 disabled submit'); await p.getByRole('button', { name: /^Send/ }).click(); await p.waitForTimeout(6000); out.disAfter = (await p.innerText('body')).replace(/s+/g, ' ').slice(0, 250); await p.screenshot({ path: SHOT + '/w4/W4-39-disabled-submit.png' });
+out.disPost = PN;
+out.en = await upd({ is_enabled: true });
+await ctx.close();
+return fin({ out });

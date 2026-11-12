@@ -1,0 +1,148 @@
+{
+ "out": "G9-threshold-input-vs-zoho-live.png",
+ "ticket": "Scoring Rules",
+ "title": "Workflow Rules: the score threshold accepts text or decimals with no message and keeps the last valid number (TAVI vs Zoho CRM, live)",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · Workflow Rules › New › Leads › Score value (draft cancelled) · Zoho CRM test org · Workflow Rules › New › Leads › Record Score › condition (cancelled, nothing saved)",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/ug9-threshold.png",
+   "caption": "TAVI · \"Only when it reaches\" with 999999999999: red box, no message",
+   "crop": [
+    576,
+    500,
+    448,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      733,
+      572,
+      832,
+      600
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      930,
+      695,
+      1004,
+      731
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/ug9-create-invalid.png",
+   "caption": "TAVI · with \"abc\" in the box, Create goes on and keeps -20",
+   "crop": [
+    230,
+    240,
+    1100,
+    90
+   ],
+   "boxes": [
+    {
+     "b": [
+      368,
+      268,
+      1263,
+      322
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/z-wf-score-trigger.png",
+   "caption": "Zoho · Record Score trigger: Increased, applied for All Scoring Rules — no threshold box",
+   "crop": [
+    190,
+    185,
+    520,
+    265
+   ],
+   "boxes": [
+    {
+     "b": [
+      450,
+      214,
+      654,
+      302
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/z-wf-number-invalid.png",
+   "caption": "Zoho · threshold as a condition: letters are not taken, 12.5 is refused with \"Please enter a valid No. of Employees.\"",
+   "crop": [
+    193,
+    0,
+    1012,
+    535
+   ],
+   "boxes": [
+    {
+     "b": [
+      560,
+      10,
+      1040,
+      64
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      628,
+      418,
+      1100,
+      454
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Type letters, a decimal or a huge number",
+   "Letters are not taken; a decimal is refused with \"Please enter a valid …\"",
+   "Box turns red but no message says what is wrong",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "Continue with an invalid value",
+   "Done is refused until the value is valid",
+   "Create goes on and the rule keeps the last valid number (\"rises to -20 or more\")",
+   "DIFFERS"
+  ],
+  [
+   3,
+   "Where the threshold lives",
+   "In a condition (Score >= N) after the trigger",
+   "In the trigger itself (\"Only when it reaches N\") — a TAVI extra, fine as long as it is validated",
+   "INFO"
+  ]
+ ]
+}

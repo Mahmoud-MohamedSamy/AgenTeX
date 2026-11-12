@@ -1,0 +1,65 @@
+### Ran Playwright code
+```js
+await (async page => { // Shared helpers for every group script. Never put secrets here (run-code may echo code into logs).
+const H = 'https://staging-desk.taviportal.com'; const API = H + '/api/v1';
+const RUN = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX/executions/execu_2026-11-01_desk-golive';
+const SHOT = RUN + '/evidence/raw' + (typeof SHOTDIR !== 'undefined' ? SHOTDIR : '');
+let hdr = null;
+const onReq = r => { const h = r.headers(); if (h.authorization && r.url().includes('/api/v1/')) hdr = { authorization: h.authorization, 'x-app-key': h['x-app-key'] || 'desk' }; };
+page.on('request', onReq);
+const sleep = ms => page.waitForTimeout(ms);
+const ensureAuth = async () => { if (!hdr) { await page.goto(H + '/hq', { waitUntil: 'commit', timeout: 90000 }).catch(() => {}); for (let i = 0; i < 200 && !hdr; i++) await sleep(500); if (!hdr) throw new Error('SIGNED_OUT: no authorised request on /hq (' + ((await txt()).includes('Sign in') ? 'sign-in page shown' : 'unknown') + ')'); } };
+const api = async (m, p, body, extra) => {
+  await ensureAuth();
+  const doit = () => page.context().request.fetch(API + p, { method: m, headers: { ...hdr, ...(body !== undefined ? { 'content-type': 'application/json' } : {}), ...(extra || {}) }, data: body !== undefined ? (typeof body === 'string' ? body : JSON.stringify(body)) : undefined, failOnStatusCode: false, timeout: 25000 });
+  let r = await doit();
+  if (r.status() === 401) { hdr = null; await page.goto(H + '/hq', { waitUntil: 'commit', timeout: 90000 }).catch(() => {}); await ensureAuth(); r = await doit(); }
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch (e) { }
+  return { s: r.status(), j, t: t.slice(0, 600) };
+};
+const R = []; const rec = (id, verdict, note, extra) => R.push({ id, verdict, note, ...(extra || {}) });
+const go = async (u, w) => { await page.goto(H + u, { waitUntil: 'domcontentloaded', timeout: 90000 }); await sleep(w || 6000); };
+const txt = async () => (await page.innerText('body'));
+const shot = async n => { try { await page.screenshot({ path: SHOT + '/' + n + '.png', timeout: 15000 }); return n + '.png'; } catch (e) { return 'screenshot failed: ' + String(e.message).slice(0, 40); } };
+const arr = x => Array.isArray(x) ? x : (x && (x.items || x.data || x.fields || x.layouts)) || [];
+const step = async (id, fn) => { try { await fn(); } catch (e) { rec(id, 'BLOCKED', 'script error: ' + String(e.message).slice(0, 200)); } try { await page.keyboard.press('Escape'); } catch (e) { } };
+const done = o => { page.off('request', onReq); return JSON.stringify(o === undefined ? R : o); };
+const onDlg = d => d.accept().catch(() => {}); page.on("dialog", onDlg);
+const BAD = /token|secret|password|cookie|authori[sz]ation|bearer/i;
+const scrub = v => Array.isArray(v) ? v.map(scrub) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => BAD.test(k) ? [k.replace(BAD, 'T_'), x == null ? x : '[hidden len ' + String(x).length + ']'] : [k, scrub(x)])) : typeof v === 'string' && BAD.test(v) ? v.replace(/token|secret|password|cookie|bearer|authori[sz]ation/gi, 'T_') : v;
+const CREATED = [];
+const NET = []; const onNet = async r => { try { const q = r.request(); const m = q.method(); const u = r.url(); if (m === 'GET' || !u.includes('/api/v1/')) return; let b = q.postData() || ''; let t = ''; try { t = (await r.text()).slice(0, 500); } catch (e) {} NET.push({ m, u: u.replace(API, ''), s: r.status(), b: b.slice(0, 500), t }); } catch (e) {} };
+page.on('response', onNet);
+const D = j => j && j.data !== undefined ? j.data : j;
+const fin = o => { page.off("dialog", onDlg); page.off("response", onNet); return done(scrub({ ...o, NET, CREATED })); };
+const TM = '88e8ea44-1658-4df3-9930-d0902b91073d';
+const flat = r => { const o = { id: r.id, created_at: r.created_at }; for (const f of (Array.isArray(r.data) ? r.data : [])) { let v = f.value; if (v && typeof v === 'object' && 'value' in v) v = v.value; o[f.field] = v; } return o; };
+const findT = async q => arr(D((await api('GET', '/modules/' + TM + '/records?limit=20&sort=-created_at&q=' + encodeURIComponent(q))).j)).map(flat);
+let out = {};
+try {
+const nn = n0 => NET.slice(n0).filter(x => !/heartbeat|resolved-batch|realtime/.test(x.u)).map(x => x.m + ' ' + x.u + ' ' + x.s + ' ' + x.t.slice(0, 250));
+const body = async () => { const t = (await txt()).replace(/\s+/g, ' '); const i = t.indexOf('5 Analytics'); return t.slice(i, i + 1300); };
+await go('/settings/channels/web-forms/advanced/new', 10000);
+const n0 = NET.length;
+await page.locator('main input[type=text]').first().fill('QA GL W4 form');
+await page.locator('#setup-department').click(); await sleep(1000); await page.getByRole('option', { name: /^Marketing/ }).first().click(); await sleep(2000);
+await page.locator('#setup-layout').click(); await sleep(1000); out.layoutOpts = await page.getByRole('option').allInnerTexts();
+const std = page.getByRole('option', { name: /Standard/ }).first(); if (await std.count()) await std.click(); else await page.getByRole('option').first().click(); await sleep(800);
+out.layout = (await page.locator('#setup-layout').innerText()).trim();
+out.steps = [];
+for (let i = 0; i < 5; i++) { const c = page.getByRole('button', { name: /^(Continue|Next|Save and continue|Publish|Create)/ }).last(); if (!(await c.count())) break; const lbl = (await c.innerText()).trim(); if (await c.isDisabled()) { out.steps.push('disabled ' + lbl + ' :: ' + await body()); break; } await c.click(); await sleep(4000); out.steps.push(lbl + ' -> ' + page.url().replace(H, '') + ' :: ' + (await body()).slice(0, 900)); }
+out.net = nn(n0);
+const l = arr(D((await api('GET', '/web-forms')).j)); const mine = l.find(f => f.name === 'QA GL W4 form'); if (mine) CREATED.push({ kind: 'web-form', id: mine.id, name: mine.name });
+out.mine = mine ? JSON.stringify({ id: mine.id, layout: mine.layout_id, enabled: mine.is_enabled, fields: mine.definition.fields.map(f => f.key), share: mine.definition.share_link_enabled, origins: mine.definition.allowed_origins, keys: Object.keys(mine) }) : 'none';
+out.limits = JSON.stringify(D((await api('GET', '/web-forms/limits')).j));
+const r = await api('POST', '/web-forms', { kind: 'advanced_form', name: 'QA GL W4 form 6th', department_id: '2a73bbc0-efb3-4250-bf9b-2fdc98236794', layout_id: mine && mine.layout_id });
+out.sixth = r.s + ' ' + r.t.slice(0, 300); if (r.j && r.j.data && r.j.data.id) CREATED.push({ kind: 'web-form', id: r.j.data.id, name: 'QA GL W4 form 6th' });
+await go('/settings/channels/web-forms', 10000);
+out.counter2 = ((await txt()).match(/(\d+) of (\d+) used/) || [''])[0];
+out.newBtnDisabled = await page.getByRole('button', { name: /^New advanced form/ }).isDisabled().catch(() => 'n/a');
+await shot('w4/W4-33-limit');
+return fin({ out });
+} catch (e) { out.ERR = String(e.message).replace(/\u001b\[[0-9;]*m/g, '').slice(0, 500); return fin({ out }); } })(page);
+```
+### Modal state
+- ["beforeunload" dialog with message ""]: can be handled by dialog-accept or dialog-dismiss

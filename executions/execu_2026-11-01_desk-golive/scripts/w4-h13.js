@@ -1,0 +1,15 @@
+const nn = n0 => NET.slice(n0).filter(x => !/heartbeat|resolved-batch|realtime/.test(x.u)).map(x => x.m + ' ' + x.u + ' ' + x.s + ' ' + x.t.slice(0, 260));
+await go('/settings/self-service/help-widgets', 12000);
+let n0 = NET.length;
+await page.getByRole('button', { name: /^New widget/ }).click(); await sleep(2500);
+const d = page.locator('[role=dialog]').last();
+await d.locator('input').first().fill('QA GL W4 widget'); await d.locator('select').first().selectOption({ label: 'Marketing' });
+await d.getByRole('button', { name: /^Generate widget/ }).click(); await sleep(5000);
+out.create = { net: nn(n0), url: page.url().replace(H, '') };
+out.after = (await page.locator('main').last().innerText()).replace(/\s+/g, ' ').slice(0, 1500);
+await shot('w4/W4-52-widget');
+const hc = arr(D((await api('GET', '/help-centers')).j))[0];
+const w = D((await api('GET', '/help-centers/' + hc.id + '/widgets')).j); const ws = (w && (w.widgets || w)) || [];
+out.widgets = (Array.isArray(ws) ? ws : []).map(x => x.id + ' | ' + x.name + ' | ' + x.department_id + ' | ' + Object.keys(x).join(','));
+for (const x of (Array.isArray(ws) ? ws : [])) if (/QA GL W4/.test(x.name)) CREATED.push({ kind: 'help-widget', id: x.id, name: x.name, hc: hc.id });
+return fin({ out });

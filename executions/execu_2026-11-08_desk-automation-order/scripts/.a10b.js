@@ -1,0 +1,13 @@
+const o = JSON.parse(fs.readFileSync('../a4/a10.json')); const T = 'TICKETS';
+const red = r => r.s + ' ' + r.t.slice(0, 160).replace(/[\w.+-]+@[\w.-]+/g, '<e>');
+const R = { me: red(await api('GET', '/iam/me')).slice(0, 60) };
+R.getRule = red(await api('GET', '/workflow/rules/' + o.rule));
+R.patchRule = red(await api('PATCH', '/workflow/rules/' + o.rule, { name: 'QA A10 hijack', isActive: false }));
+R.putRule = red(await api('PUT', '/workflow/rules/' + o.rule, { name: 'QA A10 hijack' }));
+R.deactivate = red(await api('POST', '/workflow/rules/' + o.rule + '/deactivate', {}));
+R.deleteRule = red(await api('DELETE', '/workflow/rules/' + o.rule));
+R.execByRecord = red(await api('GET', '/workflow/executions?recordId=' + o.t));
+const list = await api('GET', '/workflow/rules?take=500'); R.ruleListHasIt = list.s + ' ' + list.t.includes(o.rule);
+const ex = await api('GET', '/workflow/executions?take=500'); R.execListHasIt = ex.s + ' ' + (ex.t.includes(o.rule) || ex.t.includes(o.t));
+R.ticket = red(await api('GET', '/desk/tickets/' + o.t + '/replies'));
+log(JSON.stringify(R, null, 1));

@@ -1,0 +1,12 @@
+const FID = '74fd3081-f5d2-4ad4-aa5d-8f1131254cb1';
+const f = D((await api('GET', '/web-forms/' + FID)).j) || arr(D((await api('GET', '/web-forms')).j)).find(x => x.id === FID);
+out.snips = JSON.stringify(f.snippets).slice(0, 1500);
+const URLH = f.share_url;
+const ctx = await page.context().browser().newContext(); const p = await ctx.newPage();
+const PN = []; p.on('response', async r => { if (r.request().method() !== 'GET') { let t = ''; try { t = (await r.text()).slice(0, 300); } catch (e) {} PN.push(r.request().method() + ' ' + r.url().replace(/fw1\.[\w.-]+/, 'KEY') + ' ' + r.status() + ' ' + t); } });
+const resp = await p.goto(URLH, { waitUntil: 'domcontentloaded', timeout: 60000 }); await p.waitForTimeout(6000);
+out.hosted = resp.status() + ' :: ' + (await p.innerText('body')).replace(/\s+/g, ' ').slice(0, 600);
+await p.screenshot({ path: SHOT + '/w4/W4-34-hosted.png' });
+out.inputs = await p.locator('input,textarea,select,button').evaluateAll(es => es.map(e => [e.tagName, e.getAttribute('name'), e.getAttribute('type'), e.getAttribute('aria-label') || e.getAttribute('placeholder') || (e.innerText || '').trim().slice(0, 20), e.required].join('|')));
+out.PN = PN; await ctx.close();
+return fin({ out });

@@ -1,0 +1,1 @@
+const m = arr((await api('GET', '/modules?take=200')).j?.data); log(JSON.stringify(m.map(x => [x.id, x.name, x.singularName || x.singular_name, x.apiName || x.api_name, x.appKey || x.app_key]).slice(0, 12)));

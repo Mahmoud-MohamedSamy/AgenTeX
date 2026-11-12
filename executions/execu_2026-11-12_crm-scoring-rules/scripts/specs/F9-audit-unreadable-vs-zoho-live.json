@@ -1,0 +1,70 @@
+{
+ "out": "F9-audit-unreadable-vs-zoho-live.png",
+ "ticket": "Scoring Rules",
+ "title": "Audit Log shows scoring rule edits as \"EntriesJson: 1 item → 1 item\" (TAVI vs Zoho CRM, live)",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · owner · Zoho CRM test org · Setup › Audit Log after editing rule \"QA SR1112 audit\" (points 15 → 20)",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/F9-tavi-2.png",
+   "w": 780,
+   "h": 312,
+   "crop": [
+    0,
+    0,
+    780,
+    312
+   ],
+   "caption": "TAVI · the change line says nothing about what changed",
+   "boxes": [
+    {
+     "b": [
+      36,
+      118,
+      744,
+      274
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/z-audit-scoring.png",
+   "caption": "Zoho · \"Scoring Rule QA SR1112 audit for Leads was updated by …\" — no change detail either",
+   "crop": [
+    256,
+    60,
+    1344,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      256,
+      60,
+      1600,
+      480
+     ],
+     "n": 1,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Audit entry for an edited scoring rule",
+   "One line: \"Scoring Rule … was updated by …\" — no field-level detail",
+   "Field-level line, but meaningless: \"EntriesJson: value: 1 item → value: 1 item\"",
+   "DIFFERS"
+  ]
+ ]
+}

@@ -1,0 +1,13 @@
+const C1 = 'fc9e7878-c973-4787-b223-fd9bc6610062', CH = '17852f21-d689-4c6f-a1fa-c9083871aa20';
+const one = D((await api('GET', '/desk/kb/articles/0f683d99-2d89-4846-ae0a-ed741692cc83')).j); out.visibility = one && one.visibility; out.oneKeys = one && Object.keys(one).join(',');
+const mk = async (b, publish) => { const r = await api('POST', '/desk/kb/articles', { visibility: one.visibility, ...b }); let p = null; if (r.j && r.j.data && r.j.data.id) { CREATED.push({ kind: 'kb-article', id: r.j.data.id, name: b.title }); if (publish) { const q = await api('POST', '/desk/kb/articles/' + r.j.data.id + '/publish', {}); p = q.s + ' ' + q.t.slice(0, 160); } } return { s: r.s, id: r.j && r.j.data && r.j.data.id, body: r.j && r.j.data && r.j.data.body_html, t: r.t.slice(0, 220), pub: p }; };
+out.draft = await mk({ title: 'QA GL W4 draft', body_html: '<p>QA GL W4 draft body. Search word: quokka77.</p>', category_id: C1 }, false);
+out.ar = await mk({ title: 'QA GL W4 مقال عربي', body_html: '<p dir="rtl">هذا مقال اختبار. كلمة البحث: زرافة٩٩</p>', category_id: C1 }, true);
+out.xss = await mk({ title: 'QA GL W4 script', body_html: '<p>ok</p><script>alert(1)</script><img src=x onerror="alert(2)"><a href="javascript:alert(3)">x</a>', category_id: C1 }, true);
+out.hidden = await mk({ title: 'QA GL W4 hidden', body_html: '<p>QA GL W4 hidden category article. Search word: narwhal55.</p>', category_id: CH }, true);
+const exp = new Date(Date.now() + 4 * 60000).toISOString();
+out.exp = await mk({ title: 'QA GL W4 expiring', body_html: '<p>QA GL W4 expires soon. Search word: axolotl33.</p>', category_id: C1, expires_at: exp }, true); out.expAt = exp;
+out.notitle = await mk({ title: '', body_html: '<p>no title</p>', category_id: C1 }, true);
+out.agentsOnly = await mk({ title: 'QA GL W4 agents only', body_html: '<p>QA GL W4 agents only. Search word: pangolin66.</p>', category_id: C1, visibility: 'agents' }, true);
+const a = arr(D((await api('GET', '/desk/kb/articles?limit=50')).j)); out.arts = a.filter(x => /QA GL W4/.test(x.title)).map(x => x.title + ' | ' + x.status + ' | ' + x.visibility + ' | exp ' + x.expires_at);
+return fin({ out });

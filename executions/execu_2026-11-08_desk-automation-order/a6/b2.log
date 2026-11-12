@@ -1,0 +1,109 @@
+{
+ "C5_I3": {
+  "L1": "QA NDC Accounting",
+  "L2": "QA NDC ADM",
+  "ticketL1": {
+   "s": "422 RECORD_VALIDATION_FAILED This layout is not used by the ticket's department. Choose one of the department's layouts. [{\"path\":\"department\",\"type\":\"RECORD_FIELD_INVALID\",\"message\":\"This layout is not used by the ticket's department. Choose one of the department's layouts.\"}]",
+   "entered": false
+  },
+  "ticketL2": {
+   "id": "c0dea603-2844-45ac-992a-60160b3e2d6c",
+   "s": "201",
+   "entered": false
+  }
+ },
+ "J15": {
+  "continuousStored": true,
+  "run": "200",
+  "statesEvery5s": [
+   "Escalated",
+   "Escalated",
+   "Escalated",
+   "Escalated",
+   "Escalated",
+   "Escalated"
+  ],
+  "hist": [
+   "ticket.blueprint_transition",
+   "ticket.status_changed:status=Escalated",
+   "ticket.blueprint_entered",
+   "ticket.department_changed:department_id=7e1ac409-58b0-41ab-97e1-0e7d5c"
+  ]
+ },
+ "I15": {
+  "merge": "404 NOT_FOUND Ticket 00000000-0000-0000-0000-000000000000 was not found.",
+  "sourceState": [
+   "Open"
+  ],
+  "sourceHist": [
+   "ticket.blueprint_entered",
+   "ticket.department_changed:department_id=7e1ac409-58b0-41ab-97e1-0e7d5c"
+  ],
+  "targetState": null
+ },
+ "E2": {
+  "create": "201",
+  "noReply": "422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed. [{\"path\":\"reply\",\"type\":\"DESK_ITEM_REQUIRED\",\"message\":\"A reply to the contact is required.\"}]",
+  "withReply": "200",
+  "outbound": [
+   "Re: QA BP E2 form items | sent"
+  ]
+ },
+ "E4": {
+  "upload": "201 put 200 confirm 200",
+  "noFile": "422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed. [{\"path\":\"attachment\",\"type\":\"DESK_ITEM_REQUIRED\",\"message\":\"An attachment is required.\"}]",
+  "withFile": "200",
+  "state": [
+   "On Hold"
+  ]
+ },
+ "F5_F7": {
+  "run": "200",
+  "webhookHits": [
+   {
+    "at": "22:54:44",
+    "method": "POST",
+    "body": "{\"transitionId\":\"hook\",\"toStateId\":\"Closed\",\"moduleKey\":\"desk_tickets\",\"recordId\":\"436a051c-a960-42d9-b236-5337cfca4b25\",\"record\":{\"email\":\"mahmoud.mmohamedsamy"
+   }
+  ],
+  "customActionHits": [
+   {
+    "at": "22:54:44",
+    "method": "GET",
+    "body": ""
+   }
+  ],
+  "hist": [
+   "ticket.blueprint_left",
+   "ticket.blueprint_transition",
+   "ticket.status_changed:status=Closed",
+   "ticket.status_changed:status=On Hold",
+   "ticket.blueprint_transition",
+   "ticket.status_changed:status=Escalated"
+  ]
+ },
+ "K12_K13_due": {
+  "create": "422 BLUEPRINT_DEFINITION_INVALID Blueprint definition validation failed. [{\"path\":\"states[0].slaWarning\",\"type\":\"BLUEPRINT_DEFINITION_FIELD_INVALID\",\"message\":\"State 'Open': 'slaWarning' is not a state setting, so it would be ignored. The warning's actions go in slaPreExpi"
+ },
+ "K12_K13": {
+  "webhookAtLimit": [],
+  "customActionHitsSinceStart": 0,
+  "hist": [
+   "ticket.department_changed:department_id=7e1ac409-58b0-41ab-97e1-0e7d5c"
+  ]
+ },
+ "H12_M4": [
+  "audit.action.updated |  | "
+ ],
+ "N3": "422 BLUEPRINT_CUSTOM_ACTION_REFUSED Custom action 579c6d6a-0000-0000-0000-000000000000 does not exist. {\"field\":\"transitions[0].after.actions[0].customActionId\",\"transition_id\":\"x\",\"transition_name\":\"QA x\",\"state_id\":null,\"state_name\":null,\"custom_action_id\":\"579c6d6a-0000-0000-0000-000000000000\",\"cust",
+ "M6": {
+  "delete": "204",
+  "inBin": 1,
+  "restore": "200",
+  "restored": true,
+  "delete2": "204",
+  "purge": null,
+  "binAfter": 0
+ },
+ "cleanup": "204 204 204 204 204 204 204 bp204 bp204 bp204"
+}

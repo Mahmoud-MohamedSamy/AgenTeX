@@ -1,0 +1,11 @@
+const nn = n0 => NET.slice(n0).filter(x => !/heartbeat|resolved-batch|realtime/.test(x.u)).map(x => x.m + ' ' + x.u + ' ' + x.s + ' ' + x.b.slice(0, 200) + ' => ' + x.t.slice(0, 200));
+const ART = '0f683d99-2d89-4846-ae0a-ed741692cc83';
+await go('/knowledge-base/articles/' + ART, 12000);
+await page.locator('main button').filter({ hasText: /^Translations$/ }).first().click(); await sleep(2500);
+await page.locator('main button').filter({ hasText: /^Arabic/ }).first().click(); await sleep(4000);
+out.url = page.url().replace(H, '');
+out.view = (await page.locator('main').last().innerText()).replace(/\s+/g, ' ').slice(0, 900);
+out.ctrls = await page.locator('main input, main textarea, main [contenteditable=true], [role=dialog] input, [role=dialog] [contenteditable=true]').evaluateAll(es => es.map(e => [e.tagName, e.getAttribute('placeholder') || e.getAttribute('aria-label') || '', (e.value || e.innerText || '').slice(0, 30)].join('|')));
+out.btns = (await page.locator('main button, [role=dialog] button').allInnerTexts()).map(s => s.trim()).filter(Boolean).slice(0, 16);
+await shot('w4/W4-69-translation');
+return fin({ out });

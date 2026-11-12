@@ -1,0 +1,16 @@
+await page.setViewportSize({ width: 1600, height: 900 });
+await go('/settings/channels/email', 9000);
+await page.locator('[data-testid=desk-seg-domains]:visible').first().click().catch(async () => { await go('/settings/channels/email/domains', 8000); }); await sleep(4000);
+const j = page.getByText('exa mple.com').first(); await j.scrollIntoViewIfNeeded().catch(() => {}); await sleep(1000);
+out.url1 = page.url(); out.d1 = (await page.locator('body').innerText()).replace(/\s+/g, ' ').match(/.{0,150}(http:%2f%2fx\.com|exa mple\.com).{0,150}/g);
+await shot('w4/D1-domains');
+await go('/settings/organization/email-templates', 10000);
+await page.locator('tr').filter({ hasText: 'QA GL W4 reply ack' }).first().getByRole('button', { name: /^Actions for/ }).click(); await sleep(1500);
+await shot('w4/D9-template-menu'); await page.keyboard.press('Escape');
+await page.locator('tr').filter({ hasText: 'Reply acknowledgement' }).filter({ hasNotText: 'QA GL W4' }).first().getByRole('button', { name: /^Actions for/ }).click(); await sleep(1500);
+await page.getByRole('menuitem', { name: /^Activate/ }).hover().catch(() => {}); await sleep(1500);
+await shot('w4/D9-builtin-menu'); await page.keyboard.press('Escape');
+const d = await api('DELETE', '/desk/email-templates/0f472a78-e303-4644-9cd7-ef35c013382d'); out.d9del = d.s + ' ' + d.t.slice(0, 220);
+await go('/knowledge-base/gallery', 15000); await sleep(8000); out.d6 = (await page.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 300);
+await shot('w4/D6-gallery');
+return fin({ out });

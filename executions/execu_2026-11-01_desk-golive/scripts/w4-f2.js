@@ -1,0 +1,20 @@
+const nn = n0 => NET.slice(n0).filter(x => !/heartbeat|resolved-batch|realtime/.test(x.u)).map(x => x.m + ' ' + x.u + ' ' + x.s + ' ' + x.t.slice(0, 300));
+const mk = async (name) => {
+  await go('/settings/channels/web-forms', 10000); const n0 = NET.length;
+  await page.getByRole('button', { name: /^New feedback widget/ }).click(); await sleep(2500);
+  const d = page.locator('[role=dialog]').last();
+  await d.locator('input').first().fill(name);
+  await page.locator('#new-web-form-department').click(); await sleep(1000); await page.getByRole('option', { name: 'Marketing', exact: true }).click(); await sleep(600);
+  await d.getByRole('button', { name: /^Create and customize/ }).click(); await sleep(4000);
+  const msg = (await page.locator('[data-sonner-toast],[role=alert],.text-destructive').allInnerTexts()).join(' / ');
+  return { msg, url: page.url(), dlg: (await d.innerText().catch(() => 'closed')).replace(/\s+/g, ' ').slice(0, 300), net: nn(n0) };
+};
+out.w1 = await mk('QA GL W4 widget');
+out.w2 = await mk('QA GL W4 widget 2'); await shot('w4/W4-32-second-widget');
+const l = arr(D((await api('GET', '/web-forms')).j)); for (const f of l) if (/QA GL W4/.test(f.name)) CREATED.push({ kind: 'web-form', id: f.id, name: f.name });
+out.mine = l.filter(f => /QA GL W4/.test(f.name)).map(f => f.id + ' ' + f.kind + ' ' + f.name + ' ' + f.department_id);
+await go('/settings/channels/web-forms', 10000);
+await page.getByRole('button', { name: /^New advanced form/ }).click(); await sleep(3000);
+out.adv = page.url() + ' :: ' + ((await page.locator('[role=dialog]').last().innerText().catch(() => null)) || '').replace(/\s+/g, ' ').slice(0, 1200);
+out.advSel = await page.locator('[role=dialog] select').evaluateAll(ss => ss.map(s => Array.from(s.options).map(o => o.text).slice(0, 12).join('/'))).catch(() => []);
+return fin({ out });

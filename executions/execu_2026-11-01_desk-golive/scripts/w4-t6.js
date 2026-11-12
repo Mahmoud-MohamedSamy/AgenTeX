@@ -1,0 +1,15 @@
+const out = {};
+const G = []; const onG = r => { const u = r.url(); if (u.includes('/email-templates') && r.request().method() === 'GET') G.push(u.replace(API, '')); }; page.on('response', onG);
+const cnt = async () => { const t = (await txt()).replace(/\s+/g, ' '); return (t.match(/Templates (\d+) templates?/) || [])[1] + ' | ' + (t.match(/Templates \d+ templates? Template name Module Department Folder Used for Subject Status (.{0,300})/) || [, ''])[1]; };
+await go('/settings/organization/email-templates', 10000); out.all = await cnt();
+const sels = page.locator('main select');
+const n = await sels.count(); out.sels = [];
+for (let i = 0; i < n; i++) out.sels.push(await sels.nth(i).evaluate(s => Array.from(s.options).slice(0, 3).map(o => o.text).join('/')));
+const pick = async (first, label) => { for (let i = 0; i < n; i++) { const t = await sels.nth(i).evaluate(s => s.options[0] && s.options[0].text); if (t === first) { try { await sels.nth(i).selectOption({ label }, { timeout: 4000 }); } catch (e) { out['miss ' + label] = (await sels.nth(i).evaluate(s => Array.from(s.options).map(o => o.text).join('/'))).slice(0, 300); } await sleep(3000); return; } } };
+await pick('All departments', 'Marketing'); out.dept = await cnt(); await shot('w4/W4-23-filter-dept');
+await pick('All departments', 'All departments'); await pick('All folders', 'QA GL W4 folder (2)'); out.folder = await cnt();
+await pick('All folders', 'All folders'); await pick('Any use', 'Ticket closed'); out.use = await cnt();
+await pick('Any use', 'Any use'); await pick('All modules', 'Contacts'); out.mod = await cnt();
+await pick('All modules', 'All modules'); await pick('All templates', 'Starred only'); out.star = await cnt();
+page.off('response', onG); out.G = [...new Set(G)].slice(0, 12);
+return fin({ out });

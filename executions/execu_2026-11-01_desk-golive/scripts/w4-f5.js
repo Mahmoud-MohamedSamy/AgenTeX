@@ -1,0 +1,22 @@
+const nn = n0 => NET.slice(n0).filter(x => !/heartbeat|resolved-batch|realtime/.test(x.u)).map(x => x.m + ' ' + x.u + ' ' + x.s + ' ' + x.t.slice(0, 250));
+const body = async () => { const t = (await txt()).replace(/\s+/g, ' '); const i = t.indexOf('5 Analytics'); return t.slice(i, i + 1300); };
+await go('/settings/channels/web-forms/advanced/new', 10000);
+const n0 = NET.length;
+await page.locator('main input[type=text]').first().fill('QA GL W4 form');
+await page.locator('#setup-department').click(); await sleep(1000); await page.getByRole('option', { name: /^Marketing/ }).first().click(); await sleep(2000);
+await page.locator('#setup-layout').click(); await sleep(1000); out.layoutOpts = await page.getByRole('option').allInnerTexts();
+const std = page.getByRole('option', { name: /Standard/ }).first(); if (await std.count()) await std.click(); else await page.getByRole('option').first().click(); await sleep(800);
+out.layout = (await page.locator('#setup-layout').innerText()).trim();
+out.steps = [];
+for (let i = 0; i < 5; i++) { const c = page.getByRole('button', { name: /^(Continue|Next|Save and continue|Publish|Create)/ }).last(); if (!(await c.count())) break; const lbl = (await c.innerText()).trim(); if (await c.isDisabled()) { out.steps.push('disabled ' + lbl + ' :: ' + await body()); break; } await c.click(); await sleep(4000); out.steps.push(lbl + ' -> ' + page.url().replace(H, '') + ' :: ' + (await body()).slice(0, 900)); }
+out.net = nn(n0);
+const l = arr(D((await api('GET', '/web-forms')).j)); const mine = l.find(f => f.name === 'QA GL W4 form'); if (mine) CREATED.push({ kind: 'web-form', id: mine.id, name: mine.name });
+out.mine = mine ? JSON.stringify({ id: mine.id, layout: mine.layout_id, enabled: mine.is_enabled, fields: mine.definition.fields.map(f => f.key), share: mine.definition.share_link_enabled, origins: mine.definition.allowed_origins, keys: Object.keys(mine) }) : 'none';
+out.limits = JSON.stringify(D((await api('GET', '/web-forms/limits')).j));
+const r = await api('POST', '/web-forms', { kind: 'advanced_form', name: 'QA GL W4 form 6th', department_id: '2a73bbc0-efb3-4250-bf9b-2fdc98236794', layout_id: mine && mine.layout_id });
+out.sixth = r.s + ' ' + r.t.slice(0, 300); if (r.j && r.j.data && r.j.data.id) CREATED.push({ kind: 'web-form', id: r.j.data.id, name: 'QA GL W4 form 6th' });
+await go('/settings/channels/web-forms', 10000);
+out.counter2 = ((await txt()).match(/(\d+) of (\d+) used/) || [''])[0];
+out.newBtnDisabled = await page.getByRole('button', { name: /^New advanced form/ }).isDisabled().catch(() => 'n/a');
+await shot('w4/W4-33-limit');
+return fin({ out });

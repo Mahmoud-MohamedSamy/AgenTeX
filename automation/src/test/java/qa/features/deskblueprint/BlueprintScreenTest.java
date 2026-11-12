@@ -53,7 +53,8 @@ public class BlueprintScreenTest extends BaseTest {
         during.put("deskItems", List.of(Bp.deskItem("comment", true)));
         during.put("requiredFields", List.of(Bp.requiredField("priority", "pick_list")));
         during.put("itemOrder", List.of("message:m1", "checklist", "desk:comment", "field:priority"));
-        Map<String, Object> def = Bp.named(name + " " + X).state("Open").state("Escalated", esc).state("On Hold").terminal("Closed")
+        // NDC-2780 fix (13 Nov 2026): names refuse special characters, so the script text goes in the description and the message.
+        Map<String, Object> def = Bp.named(name).state("Open").state("Escalated", esc).state("On Hold").terminal("Closed")
                 .transition("go", "Open", "Escalated", Map.of(), during, List.of(Bp.setField("description", "QA after")))
                 .transition("noitems", "Escalated", "On Hold").transition("end", "On Hold", "Closed").build();
         def.put("entryCriteria", Bp.criteria("contains", "subject", DeskBlueprintFeature.QA + name + " "));

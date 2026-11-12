@@ -1,0 +1,139 @@
+{
+ "out": "I3-B10-unknown-ids-vs-zoho-live.png",
+ "ticket": "Scoring Rules",
+ "title": "Unknown scoring rule or module ids are answered as success (TAVI vs Zoho CRM, live)",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · owner · API and Scoring Rules page · Zoho CRM test org · API v8",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/I3-tavi-2.png",
+   "w": 780,
+   "h": 581,
+   "crop": [
+    0,
+    0,
+    780,
+    581
+   ],
+   "caption": "TAVI · DELETE and list answer success for ids that do not exist",
+   "boxes": [
+    {
+     "b": [
+      36,
+      118,
+      744,
+      253
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      263,
+      744,
+      398
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/ub10-bad-module.png",
+   "caption": "TAVI · ?module=<unknown id>: \"No scoring rules for  yet\", New Scoring Rule enabled",
+   "crop": [
+    292,
+    80,
+    1284,
+    410
+   ],
+   "boxes": [
+    {
+     "b": [
+      316,
+      142,
+      540,
+      176
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      840,
+      340,
+      1030,
+      368
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/I3-zoho.png",
+   "w": 780,
+   "h": 457,
+   "crop": [
+    0,
+    0,
+    780,
+    457
+   ],
+   "caption": "Zoho · both requests are refused with INVALID_DATA",
+   "boxes": [
+    {
+     "b": [
+      36,
+      118,
+      744,
+      253
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      263,
+      744,
+      419
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Delete a rule that does not exist",
+   "400 INVALID_DATA \"The id given seems to be invalid\"",
+   "204 (success)",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "List rules of a module that does not exist",
+   "400 INVALID_DATA (param module)",
+   "200 with an empty list",
+   "DIFFERS"
+  ],
+  [
+   3,
+   "Open the page for an unknown module",
+   "Not checked live",
+   "\"Choose a module\", \"No scoring rules for  yet\", New stays enabled",
+   "BUG"
+  ]
+ ]
+}

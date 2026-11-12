@@ -1,0 +1,16 @@
+const out = {};
+const msgs = async () => (await page.locator('[data-sonner-toast],[role=alert],.text-destructive').allInnerTexts()).map(s => s.trim()).filter(Boolean).slice(0, 6);
+const nn = n0 => NET.slice(n0).filter(x => !/heartbeat|resolved-batch|realtime/.test(x.u)).map(x => x.m + ' ' + x.u + ' ' + x.s + ' ' + x.t.slice(0, 300));
+const sel = async opt => { const s = page.locator('main select').filter({ has: page.locator('option', { hasText: opt }) }).first(); await s.selectOption({ label: opt }); };
+await go('/settings/organization/email-templates/new', 10000); const n0 = NET.length;
+await page.locator('main input[type=text]').nth(0).fill('QA GL W4 template');
+await sel('QA GL W4 folder'); await page.locator('main select').filter({ has: page.locator('option', { hasText: 'All departments' }) }).first().selectOption({ label: 'Marketing' });
+await page.locator('#desk-email-template-subject').fill('QA GL W4 [#{{ticket.number}}] {{ticket.subject}}');
+const ed = page.locator('[role=textbox][aria-label=Message], main [contenteditable=true]').first(); await ed.click(); await page.keyboard.type('Hello {{customer.name}}, this is QA GL W4 about ticket {{ticket.number}} with status {{ticket.status}}. Department {{department.name}}.');
+await page.getByRole('button', { name: /^Save$/ }).last().click(); await sleep(4000);
+out.create = { m: await msgs(), net: nn(n0), url: page.url() };
+await go('/settings/organization/email-templates', 10000); out.listHas = (await txt()).includes('QA GL W4 template'); await shot('w4/W4-24-list');
+const et = D((await api('GET', '/desk/email-templates?limit=200')).j).email_templates.filter(x => /QA GL W4/.test(x.name));
+out.mine = et.map(x => ({ id: x.id, name: x.name, dept: x.department_name, folder: x.folder_name, subject: x.subject, body: x.body_html, active: x.is_active, uc: x.use_case }));
+for (const x of et) CREATED.push({ kind: 'email-template', id: x.id, name: x.name });
+return fin({ out });

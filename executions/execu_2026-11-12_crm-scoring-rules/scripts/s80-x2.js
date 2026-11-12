@@ -1,0 +1,12 @@
+const L=await modId('leads'); await delAllQA();
+for(const w of arr((await api('GET','/workflow/rules?module_id='+L)).j.data)) if(String(w.name).startsWith('QA SR1112')) await api('DELETE','/workflow/rules/'+w.id);
+let r=await mkRule(L,{name:P+'X2 web',entries:[ent('lead_source','eq','web',10)]}); keepRule(r);
+r=await mkRule(L,{name:P+'X2 hot',entries:[ent('rating','eq','active',20)]}); keepRule(r);
+const act={type:'Task',order:0,delaySeconds:0,taskTitle:P+'X2 call hot lead',taskDescription:'QA',taskDueOffsetDays:1,taskStatus:'Not Started',taskPriority:'High'};
+const b={moduleId:L,appKey:'crm',name:P+'X2 reaches 30',description:'QA',trigger:{kind:'RecordScoreChanged',scoreChange:'increased',scoreThreshold:30},criteria:null,mode:'Recurring',actions:[act],conditions:[],isActive:true};
+const x=await api('POST','/workflow/rules',b); const wid=x.j&&x.j.data&&x.j.data.id; log('wf',SR(x).slice(0,300)); if(!wid) return 'no wf';
+I.x2wf=wid; const lead=await newRec(L,{first_name:P+'X2 lead',lead_source:'web'}); I.x2lead=lead; SAVE(); await sleep(15000);
+await upd(L,lead,{rating:'active'}); await sleep(25000); const s1=await recScore(L,lead);
+await upd(L,lead,{title:'again'}); await sleep(20000);
+const rl=await api('GET','/modules/'+L+'/records/'+lead+'/related-lists'); 
+return {score:s1, relatedStatus:rl.s, tasksMention:(rl.t.match(/QA SR1112 X2 call hot lead/g)||[]).length, sample:rl.t.slice(0,600)};

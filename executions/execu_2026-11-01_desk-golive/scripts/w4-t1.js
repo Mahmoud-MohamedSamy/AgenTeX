@@ -1,0 +1,12 @@
+const out = {};
+const et = D((await api('GET', '/desk/email-templates?limit=200')).j);
+out.n = et.email_templates.length; out.max = et.max_templates; out.use_cases = (et.use_cases || []).map(u => u.key || u.use_case || u.id || JSON.stringify(u).slice(0, 60)).slice(0, 60);
+out.sample = JSON.stringify(et.email_templates.find(x => !x.is_system) || et.email_templates[0]).slice(0, 1200);
+await go('/settings/organization/email-templates', 12000);
+await page.getByRole('button', { name: /^New template$/ }).first().click({ timeout: 8000 }); await sleep(4000);
+out.url = page.url();
+const t = (await txt()).replace(/\s+/g, ' '); const i = t.indexOf('New template'); out.form = t.slice(Math.max(0, i), i + 2000);
+out.inp = await page.locator('main input, main textarea, main [role=combobox], main [contenteditable=true], [role=dialog] input, [role=dialog] [role=combobox], [role=dialog] [contenteditable=true]').evaluateAll(es => es.map(e => [e.tagName, e.getAttribute('type'), e.getAttribute('name'), e.getAttribute('aria-label'), e.getAttribute('placeholder'), e.id, e.getAttribute('role')].join('|')));
+out.btn = (await page.locator('main button, [role=dialog] button').allInnerTexts()).map(s => s.trim()).filter(Boolean).slice(0, 50);
+await shot('w4/W4-24-new-template-form');
+return fin({ out });

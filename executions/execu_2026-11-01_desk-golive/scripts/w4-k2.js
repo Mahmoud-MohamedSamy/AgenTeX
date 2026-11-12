@@ -1,0 +1,20 @@
+const nn = n0 => NET.slice(n0).filter(x => !/heartbeat|resolved-batch|realtime/.test(x.u)).map(x => x.m + ' ' + x.u + ' ' + x.s + ' ' + x.b.slice(0, 400) + ' => ' + x.t.slice(0, 300));
+const mk = async (name, review, hide) => {
+  await go('/knowledge-base', 12000); const n0 = NET.length;
+  await page.getByText('Manage categories').first().click(); await sleep(3000);
+  await page.getByRole('button', { name: /^(New|Add|Create) (root )?categor/i }).first().click(); await sleep(2500);
+  const d = page.locator('[role=dialog]').last();
+  await d.locator('input[placeholder=Name]').fill(name); await d.locator('textarea').fill('QA GL W4 test category');
+  await d.getByRole('button', { name: /All departments|Department/ }).first().click(); await sleep(1000); await page.getByRole('option', { name: /^Marketing/ }).first().click().catch(async () => { await page.getByText('Marketing', { exact: true }).last().click(); }); await sleep(800);
+  const cbs = d.locator('input[type=checkbox]'); if (review) await cbs.nth(0).check({ force: true }); if (hide) await cbs.nth(1).check({ force: true });
+  await d.getByRole('button', { name: /^Save$/ }).click(); await sleep(4000);
+  return { msg: (await page.locator('[data-sonner-toast],[role=alert]').allInnerTexts()).join(' / ').slice(0, 200), net: nn(n0) };
+};
+out.c1 = await mk('QA GL W4 KB', false, false);
+out.c2 = await mk('QA GL W4 KB review', true, false);
+out.c3 = await mk('QA GL W4 KB hidden', false, true);
+const cats = D((await api('GET', '/desk/kb/categories')).j).categories || [];
+const flatc = (a, o = []) => { for (const c of a) { o.push(c); if (c.children) flatc(c.children, o); } return o; };
+out.cats = flatc(cats).map(c => JSON.stringify({ id: c.id, name: c.name, dept: c.department_id, review: c.review_required ?? c.requires_review, hidden: c.hidden_from_help_center ?? c.is_hidden, keys: Object.keys(c).join(',') }).slice(0, 400));
+for (const c of flatc(cats)) if (/QA GL W4/.test(c.name)) CREATED.push({ kind: 'kb-category', id: c.id, name: c.name });
+return fin({ out });

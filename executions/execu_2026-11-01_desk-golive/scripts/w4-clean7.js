@@ -1,0 +1,10 @@
+const CID = 'c857d003-b625-4a8d-b9bd-44500ad30f0a';
+await go('/settings/channels/community/categories', 10000);
+const row = page.locator('tr, li, [role=row]').filter({ hasText: 'QA GL W4 cat' }).first();
+const btn = row.getByRole('button').last(); await btn.click().catch(() => {}); await sleep(1500);
+out.menu = (await page.locator('[role=menu]').last().innerText().catch(() => '')).replace(/\s+/g, ' ');
+await page.keyboard.press('Escape');
+const r = await api('POST', '/desk/community/categories/' + CID + '/disable', {}); out.disable = r.s;
+const c = arr(D((await api('GET', '/desk/community/categories')).j)).find(x => x.id === CID); out.now = c && [c.name, c.disabled];
+await shot('w4/clean-community-cat');
+return fin({ out });

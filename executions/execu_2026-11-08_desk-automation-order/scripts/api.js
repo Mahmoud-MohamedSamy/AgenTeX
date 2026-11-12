@@ -9,7 +9,7 @@ const API = 'https://staging-desk.taviportal.com/api/v1';
 const [label, file] = process.argv.slice(2);
 const store = path.join(SD, 'tok-' + label.replace(/[^a-z0-9]/gi, '_') + (process.env.LANE ? '_' + process.env.LANE : '') + '.json'); // LANE=x gives a parallel lane its own token store
 let tok = fs.existsSync(store) ? JSON.parse(fs.readFileSync(store, 'utf8')) : {};
-const H = { 'content-type': 'application/json', 'x-app-key': 'desk', 'x-tenant-id': 'a7a7a7a7-0000-0000-0000-000000000004' };
+const H = { 'content-type': 'application/json', 'x-app-key': 'desk', 'x-tenant-id': process.env.TENANT || 'a7a7a7a7-0000-0000-0000-000000000004' };
 async function login() {
   const rows = fs.readFileSync(path.join(P, 'docs/Credentials/TAVI Desk Credentials.csv'), 'utf8').split(/\r?\n/).slice(1).filter(Boolean).map(l => l.split(','));
   const r = rows.find(x => x[0] === label); if (!r) throw new Error('no such label');

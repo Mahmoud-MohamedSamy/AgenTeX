@@ -1,0 +1,30 @@
+const onDlg = d => d.accept().catch(() => {}); page.on("dialog", onDlg);
+const BAD = /token|secret|password|cookie|authori[sz]ation|bearer/i;
+const scrub = v => Array.isArray(v) ? v.map(scrub) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => BAD.test(k) ? [k.replace(BAD, 'T_'), x == null ? x : '[hidden len ' + String(x).length + ']'] : [k, scrub(x)])) : typeof v === 'string' && BAD.test(v) ? v.replace(/token|secret|password|cookie|bearer|authori[sz]ation/gi, 'T_') : v;
+const CREATED = [];
+const NET = []; const onNet = async r => { try { const q = r.request(); const m = q.method(); const u = r.url(); if (m === 'GET' || !u.includes('/api/v1/')) return; let b = q.postData() || ''; let t = ''; try { t = (await r.text()).slice(0, 500); } catch (e) {} NET.push({ m, u: u.replace(API, ''), s: r.status(), b: b.slice(0, 500), t }); } catch (e) {} };
+page.on('response', onNet);
+const D = j => j && j.data !== undefined ? j.data : j;
+const fin = o => { page.off("dialog", onDlg); page.off("response", onNet); return done(scrub({ ...o, NET, CREATED })); };
+const TM = '88e8ea44-1658-4df3-9930-d0902b91073d';
+const flat = r => { const o = { id: r.id, created_at: r.created_at }; for (const f of (Array.isArray(r.data) ? r.data : [])) { let v = f.value; if (v && typeof v === 'object' && 'value' in v) v = v.value; o[f.field] = v; } return o; };
+const findT = async q => arr(D((await api('GET', '/modules/' + TM + '/records?limit=20&sort=-created_at&q=' + encodeURIComponent(q))).j)).map(flat);
+let out = {};
+try {
+await page.setViewportSize({ width: 1600, height: 900 });
+await go('/settings/channels/email', 9000);
+await page.locator('[data-testid=desk-seg-domains]:visible').first().click().catch(async () => { await go('/settings/channels/email/domains', 8000); }); await sleep(4000);
+const j = page.getByText('exa mple.com').first(); await j.scrollIntoViewIfNeeded().catch(() => {}); await sleep(1000);
+out.url1 = page.url(); out.d1 = (await page.locator('body').innerText()).replace(/\s+/g, ' ').match(/.{0,150}(http:%2f%2fx\.com|exa mple\.com).{0,150}/g);
+await shot('w4/D1-domains');
+await go('/settings/organization/email-templates', 10000);
+await page.locator('tr').filter({ hasText: 'QA GL W4 reply ack' }).first().getByRole('button', { name: /^Actions for/ }).click(); await sleep(1500);
+await shot('w4/D9-template-menu'); await page.keyboard.press('Escape');
+await page.locator('tr').filter({ hasText: 'Reply acknowledgement' }).filter({ hasNotText: 'QA GL W4' }).first().getByRole('button', { name: /^Actions for/ }).click(); await sleep(1500);
+await page.getByRole('menuitem', { name: /^Activate/ }).hover().catch(() => {}); await sleep(1500);
+await shot('w4/D9-builtin-menu'); await page.keyboard.press('Escape');
+const d = await api('DELETE', '/desk/email-templates/0f472a78-e303-4644-9cd7-ef35c013382d'); out.d9del = d.s + ' ' + d.t.slice(0, 220);
+await go('/knowledge-base/gallery', 15000); await sleep(8000); out.d6 = (await page.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 300);
+await shot('w4/D6-gallery');
+return fin({ out });
+} catch (e) { out.ERR = String(e.message).replace(/\u001b\[[0-9;]*m/g, '').slice(0, 500); return fin({ out }); }

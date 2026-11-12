@@ -1,0 +1,13 @@
+const P = '/desk/tickets/48326997-5fc4-49c4-8303-ce5c9429bad0';
+const sh = r => r.s + ' ' + String(JSON.stringify(r.j && (r.j.error || (r.j.data && r.j.data.id))) || r.t || '').slice(0, 200);
+out.comment = sh(await api('POST', P + '/comments', { body_html: '<p>QA GL W4 private note PRIVHIDDEN88</p>' }));
+const HC = 'https://staging-crm.taviportal.com/help/hc1.a7a7a7a7000000000000000000000004.rDvrZfW_-TBcbb_XkySGodjzQfiQLj80dsTNfdLteDw/';
+const ctx = await page.context().browser().newContext({ viewport: { width: 1366, height: 860 } }); const p2 = await ctx.newPage();
+await p2.goto(HC, { waitUntil: 'domcontentloaded' }); await p2.waitForTimeout(6000);
+out.links = (await p2.locator('a').evaluateAll(as => as.map(a => a.innerText.trim() + ' -> ' + a.getAttribute('href')))).filter(s => /sign|log|ticket|account/i.test(s)).slice(0, 10);
+await p2.goto(HC + 'sign-in', { waitUntil: 'domcontentloaded' }); await p2.waitForTimeout(6000);
+out.signinUrl = p2.url(); out.signin = (await p2.innerText('body')).replace(/\s+/g, ' ').slice(0, 300);
+out.captcha = await p2.locator('iframe[src*=challenges], .cf-turnstile, [data-sitekey]').count();
+await p2.screenshot({ path: SHOT + '/w4/W4-45-portal-signin.png' }).catch(e => out.se = e.message.slice(0, 80));
+await ctx.close();
+return fin({ out });

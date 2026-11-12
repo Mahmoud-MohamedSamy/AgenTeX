@@ -1,0 +1,10 @@
+const r = await api('GET', '/modules/' + TM + '/records/0b34176e-c1e5-420d-95c9-a54e125b2c0e'); const d = flat(D(r.j));
+out.fields = Object.fromEntries(Object.entries(d).filter(([k, v]) => /depart|contact|channel|subject|owner|desc|email|team|source/i.test(k)).map(([k, v]) => [k, String(v).slice(0, 80)]));
+const c = await api('GET', '/modules/43004ce2-577f-4eda-b00a-0750fe40c3d4/records?limit=10&q=' + encodeURIComponent('mmohamed@anyware.software'));
+out.contacts = arr(D(c.j)).map(x => { const f = flat(x); return [x.id, f.email, f.last_name, f.first_name, x.created_at].join(' | '); });
+let dialogs = 0; const cnt = () => dialogs++; page.on('dialog', cnt);
+await go('/views/all/tickets/0b34176e-c1e5-420d-95c9-a54e125b2c0e', 15000).catch(() => {});
+out.url = page.url(); out.title = (await txt()).replace(/\s+/g, ' ').match(/QA GL W4 form xss[^]{0,80}/)?.[0];
+out.imgs = await page.locator('img[src="x"]').count(); out.dialogs = dialogs; page.off('dialog', cnt);
+await shot('w4/W4-40-xss-ticket');
+return fin({ out });

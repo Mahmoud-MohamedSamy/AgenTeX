@@ -1,0 +1,10 @@
+const o = JSON.parse(fs.readFileSync('../a4/i9-out.json')); const AG = o.AG; const R = {};
+R.statusNow = arr((await api('GET', '/iam/users?take=200')).j?.data).find(x => x.userId === AG)?.status;
+const t = await mkTicket('I9 manual', {}, 'manual owner'); await sleep(3000);
+const p = await api('PATCH', `/modules/${T}/records/${t.id}`, { data: [{ field: 'owner', value: AG }] }); R.manualPatch = p.s + ' ' + p.t.slice(0, 200);
+await sleep(2000); R.manualOwnerSet = JSON.stringify(await getTicket(t.id)).includes(AG);
+const ag = await api('GET', '/desk/agents?take=200'); R.inAgentPicker = ag.s + ' ' + JSON.stringify(ag.j || '').includes(AG);
+fs.writeFileSync('../a4/i9-out.json', JSON.stringify({ ...o, manual: t.id }));
+const r = await api('PATCH', '/iam/users/' + AG, { status: 'active' }); await sleep(2000);
+R.reactivate = r.s; R.statusAfter = arr((await api('GET', '/iam/users?take=200')).j?.data).find(x => x.userId === AG)?.status;
+log(JSON.stringify(R, null, 1));

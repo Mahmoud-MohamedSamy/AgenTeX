@@ -1,0 +1,11 @@
+CREATED.push({ kind: 'web-form', id: 'c0f5ca78-1fb6-4649-905c-3056adc27555', name: 'QA GL W4 widget' });
+await go('/settings/channels/web-forms', 10000);
+await page.getByRole('button', { name: /^New feedback widget/ }).click(); await sleep(2500);
+await page.locator('#new-web-form-department').click(); await sleep(1000);
+out.opts = await page.getByRole('option').allInnerTexts(); await shot('w4/W4-32-dept-options');
+await page.keyboard.press('Escape');
+const fw = arr(D((await api('GET', '/web-forms')).j)).find(f => f.id === 'c0f5ca78-1fb6-4649-905c-3056adc27555');
+const r = await api('POST', '/web-forms', { kind: 'feedback_widget', name: 'QA GL W4 widget 2', department_id: '2a73bbc0-efb3-4250-bf9b-2fdc98236794' });
+out.api2 = r.s + ' ' + r.t.slice(0, 300); if (r.j && r.j.data && r.j.data.id) CREATED.push({ kind: 'web-form', id: r.j.data.id, name: 'QA GL W4 widget 2' });
+out.embed = fw && fw.embed_key ? 'key len ' + fw.embed_key.length : 'none';
+return fin({ out });

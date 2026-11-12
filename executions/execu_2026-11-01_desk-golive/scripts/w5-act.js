@@ -1,0 +1,11 @@
+const T = 'f64e2ab2-83ae-4ec8-9441-ee94d302d8bd', TKM = 'd120a6c2-2596-4254-968b-a1bcd3a000bf', CLM = 'f7e488b5-0232-42fd-811c-1f24356af653', EVM = '6fb19115-9356-40f0-b064-840d8f1fad93';
+const now = new Date(); const iso = (h) => new Date(now.getTime() + h * 3600e3).toISOString();
+out.task = await mk(TKM, 'task', 'QA GL W5 task', { subject: 'QA GL W5 task', due_date: iso(3), remind_at: iso(2), status: 'Not Started', priority: 'normal', ticket_id: T, related_to: TM + ':' + T, contact_id: C1, department: MK });
+out.call = await mk(CLM, 'call', 'QA GL W5 call', { subject: 'QA GL W5 call', call_type: 'Outbound', call_start_time: iso(-1), call_status: 'Completed', contact_id: C1, ticket_id: T, related_to: TM + ':' + T, department: MK, call_duration: '00:05' });
+out.event = await mk(EVM, 'event', 'QA GL W5 event', { title: 'QA GL W5 event', from_time: iso(24), to_time: iso(25), contact_id: C1, ticket_id: T, related_to: TM + ':' + T, department: MK });
+out.badEvent = await mk(EVM, 'event', 'QA GL W5 event bad', { title: 'QA GL W5 event bad', from_time: iso(30), to_time: iso(28), contact_id: C1, department: MK });
+if (out.task.id) { const p = await api('PATCH', '/modules/' + TKM + '/records/' + out.task.id, { data: [{ field: 'status', value: sv('Completed') }] }); out.complete = p.s + ' ' + (p.s >= 300 ? p.t.slice(0, 200) : ''); const g = await get(TKM, out.task.id); out.taskAfter = g.status + ' / completed_time ' + g.completed_time; }
+await go('/views/all/tickets/' + T, 9000); const at = page.locator('main').last().getByText(/^Activit/).first(); if (await at.count()) { await at.click().catch(() => {}); await sleep(4000); } out.ticketAct = (await mtxt()).match(/.{0,40}QA GL W5 (task|call|event).{0,200}/)?.[0]; await shot('w5/W5-19-ticket-activities');
+await go('/activities', 9000); out.actList = (await mtxt()).slice(0, 300); await shot('w5/W5-18-activities');
+await go('/calendar', 8000); for (const v of ['Week', 'Day', 'Month']) { await page.getByRole('button', { name: v, exact: true }).first().click().catch(() => {}); await sleep(2500); out['cal' + v] = /QA GL W5/.test(await page.locator('body').innerText()); await shot('w5/W5-22-calendar-' + v.toLowerCase()); }
+return fin({ out });

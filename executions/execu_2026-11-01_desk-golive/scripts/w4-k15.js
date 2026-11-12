@@ -1,0 +1,13 @@
+const HOME = 'https://staging-crm.taviportal.com/help/hc1.a7a7a7a7000000000000000000000004.rDvrZfW_-TBcbb_XkySGodjzQfiQLj80dsTNfdLteDw/';
+const ART = '0f683d99-2d89-4846-ae0a-ed741692cc83';
+let r = await api('PUT', '/desk/kb/articles/' + ART + '/translations/ar', { title: 'QA GL W4 مقال مترجم', summary: null, body_html: '<p>هذه الترجمة العربية لمقال الاختبار. كلمة البحث: فهد٤٤</p>' }); out.put = r.s;
+const tl = await api('GET', '/desk/kb/articles/' + ART + '/translations'); out.list = tl.s + ' ' + tl.t.slice(0, 300);
+const ctx = await page.context().browser().newContext(); const p = await ctx.newPage();
+await p.goto(HOME + 'kb/articles/qa-gl-w4-article', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(6000);
+await p.getByText('العربية', { exact: true }).first().click(); await p.waitForTimeout(7000);
+out.arView = { url: p.url().replace(/hc1\.[\w.-]+/, 'HC'), dir: await p.evaluate(() => document.documentElement.dir), main: (await p.innerText('main').catch(() => '')).replace(/\s+/g, ' ').slice(0, 300) };
+await p.screenshot({ path: SHOT + '/w4/W4-69-portal-ar.png' });
+await p.goto(HOME + 'kb/articles/qa-gl-w4-script', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(6000);
+out.fallback = (await p.innerText('main').catch(() => '')).replace(/\s+/g, ' ').slice(0, 200);
+await ctx.close();
+return fin({ out });

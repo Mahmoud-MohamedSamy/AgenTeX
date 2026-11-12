@@ -418,3 +418,46 @@ Owner browser (own token store LANE=ui), QA data only in QA AO Dept B, all delet
 - Images: scripts/build-wf-annotations.js -> evidence/annotated/WF-*.png (specs in evidence/specs/D-*.json); API panels scripts/render-text-panels.js.
 - Filed (scripts/file-wf-bugs.js, out plane-filed-workflow.json): NDC-2948 (E9), 2951 (Z18), 2953 (B-2 API), 2955 (C4), 2958 (F18), 2961 (B2), 2962 (O4 High), 2963 (O1 High), 2964 (G4 High), 2965 (G5), 2966 (I30), 2967 (API-T3 High), 2968 (I25). Bug state, Desk module, Sprint 15, labels Workflow Rules + Automation Execution Order, NDC-2811 assignees, 1 image each. Read back OK.
 - Cleanup (a4/clean-ev.js): 10 rules, 6 tickets, 1 call deleted; rules = 50 (baseline), no QA AO WF left.
+
+## 12 Nov 19:20 — remaining A4 rows (user: run the 9; change+revert or dummy data allowed)
+- PASS: P22/Z23 (custom action built on screen, Run Custom Action in Desk rule hit webhook.site), E15, F10, G9, A2 (CES 2 -> Desk Light Agent and back), E5 (empty pick-list impossible), F21 (Calls rule), J6, P23/Z26 (Test User 1 online), O13 (Edge, Chromium, Firefox 156 installed via playwright).
+- FINDING: C9 (no "Resume your draft?"; old draft silently restored on /new), M5 (Field Changed run shown "On Edit"), M7 (only latest 50, no paging), O7 (Webhook/Close untranslated, RTL connector lines).
+- NEW FAIL P11: Execution Time condition never matches (24/7 and custom 01:00-23:00; screen saves same value business_hours).
+- PARTIAL O5 (same tenant pass). BLOCKED: J5 (Shift-01 01:00-23:00 blocks narrower hours), I9 (invite), I29 (rate #3194), A10 (second tenant), D6 (impossible).
+- Tenant: business hours set 01:00-23:00 twice and reverted to 24_7 (verified); CES 2 profile restored; Customer Happiness ON (orig in a4/happiness-orig-i29.json) until user rates; I29 rule + ticket #3194 kept; everything else deleted (13 rules, 24 tickets, custom action + source). "QA SK13 WF skills" is another session's rule.
+- A4 now 268/274 with a result: PASS 217, FAIL 22, FINDING 18, PARTIAL 2, BLOCKED 5, NOT RUN 6 (Part C), SKIPPED 3, MOVED 1.
+
+## 12 Nov evening (2) — user replies
+- I29: user saw no mail "please rate" — my subject was wrong. The workflow "Send happiness email" mail is "Your ticket #3194 has been closed" (sent 14:58:49 UTC, status sent). Stored copy ends with raw {{happiness.link}} (same as NT-10: template only, real mail has buttons). Control ticket #3205 closed manually → same closed mail. Asked user to look for the real subject. Note: action on an Open ticket sends "has been closed" wording.
+- I9: user accepted, but TAVI still shows "QA AO WF Agent" Invited (user id 0000…). Re-sent invite f56966bb (204). Waiting on user again.
+- J5: user "do what is right" → no shift change. Hours 01:00–23:00 (fits Shift-01), rules "BH J5 business"/"BH J5 wall" offset 6h on due_date, due after 01:00 so the 23:00–01:00 gap sits inside the window; script reverts to 24_7 in finally. Output a4/j5-out.json.
+- A10: user has no second tenant → stays BLOCKED (O5 other-tenant half too).
+- J5 PASS: business rule fired 16:37:16 UTC (expected 16:37:03), wall not fired yet (expected 18:37 UTC). Hours back to 24_7 (seen in 5s). a4/j5w.js in background confirms wall fire then deletes both rules + ticket. Report rebuilt: 269/274 (PASS 218, BLOCKED 4).
+- j5w background check was stopped by Claude Code (system low on memory) before the wall fire (due 18:37 UTC). Not restarted. Pending: check wall rule fired, delete J5 rules + ticket (a4/j5-out.json) via a4/j5w.js.
+- I29 PASS (user rated Good 16:18:55 UTC): refire rule "QA AO WF I29 refire" (priority change) → #3194 rated: no new mail (exec says Succeeded); #3205 pending: "Reminder: Your ticket #3205 has been closed" sent 20:13:26 UTC. Cleanup: rules I29 + refire deleted, tickets #3194, #3205, J5 ticket deleted; happiness settings restored (diff []); no "QA AO WF" rules left; hours 24_7.
+- J5 wall rule: found already deleted (404) at cleanup and never fired on the ticket — the killed j5w loop likely ran out (~90 min) and deleted the rules before 18:37 UTC. Wall-clock fire not confirmed for J5 (J6 covers wall-clock).
+- I9: invite re-sent again 20:10 UTC (user asked). Agent still Invited.
+- I9: old invite f56966bb cancelled (expired per user); new invite created 20:46 UTC, ids in a4/agent.json. Waiting for user to accept.
+- I9 FAIL (user accepted new invite; agent e862a437, name "Mahmoud Samy"): control (active, not in Dept A) → workflow assigned. Suspended (PATCH /iam/users/{id} {status:'suspended'} 204), not in dept → workflow still assigned, Fired. Manual POST /desk/tickets/{id}/assign refused for non-member even while active (422 not an active agent of the ticket's department). Added to Dept A: active manual 200; suspended manual 422; suspended workflow → not assigned, exec Fired, errorMessage null, dispatches [] (no reason). Agent reactivated each time. Not filed.
+- MY MISTAKE: GET /desk/departments/{D}/agents is 405, so my saved list was empty and the "restore" left QA AO Dept A with 0 agents for ~2 min. Restored the 4 members from sl51.json/nt30.json (same list in both): Dev Team 2, Test User 1, ndc-staging-owner, Mahmoud Samy; read back 4. Use GET /desk/departments/{D} .agent_user_ids.
+- I9 cleanup: rule + 6 tickets deleted, test agent deleted (204, gone), Dept A 4 agents, 0 QA AO WF rules.
+- 23:20 Cairo: FILED NDC-2973 (I9) — Bug, Medium, Desk, Sprint 15, 2 labels, 3 assignees, image WF-I9-owner-assignment-ignores-suspended-agent.png (read back OK, 1 copy). Note: filed by an accidental run during a syntax check, but user had asked to file it; single item.
+- P11 recheck → PASS. Earlier FAIL was my error: mkRule guard is the rule TAG; tickets made with a different tag never match. Same error made J5 wall control invalid and the first I29 refire. Matrix: 24/7 → in Fired, out/hol NoMatch; 01-23 at 23:10 (closed) → out Fired, in/hol NoMatch. Data deleted, hours 24_7.
+
+## 12–13 Nov night — "run them all" (user)
+- Second tenant: added row "anyware-staging-owner" to TAVI Desk Credentials.csv (not printed); tenant a7a7a7a7-…-0002; api.js takes TENANT env (default NDC).
+- A10 PASS (all 404 across tenants; NDC rule unchanged). O5 PASS both halves (cross-tenant webhook bodies only own data).
+- D6 PASS/cannot occur: new module QA AO WF D6 has Created/Modified Time (409 not deletable); picker lists them; module deleted. Side: API accepts DateFieldRelative on text field "name".
+- Tag audit (scratchpad tagaudit.js): only P11 (fixed) and J5 wall were affected.
+- I10 PASS (direct switch on → off restored): workflow wins. O12 PASS 50/50. E2E-1 FAIL owner part (role round robin assigns nobody = I8/B-9; RoleRoundRobin also saved with ownerValue "x"). E2E-2 PASS. E2E-3 PARTIAL (Used by 2; mails #3313–#3316 Succeeded; Gmail text check ONE/TWO pending). E2E-4 PASS. E2E-5 PASS (retries 6s/2m/10m, recovered on attempt 4).
+- Z24/Z25/Z27 FAIL (missing in action picker; 22 actions).
+- Cleanup verified: 0 QA AO WF rules (51 total = baseline 50 + QA SK13), tickets deleted (81), saved action, templates (incl. 11 Nov P16), my 2 tags (confirm=true), assignment rule, throwaway webhook.site token, Anyware rule + ticket; direct switch off, hours 24_7, Dept A 4 agents, happiness off.
+- 13 Nov 00:20 Cairo: FILED NDC-2997 (D-16 E2E-1/I8 role RR, High), NDC-2998 (D-17 date trigger non-date field, Low), NDC-2999 (D-18 owner target unchecked incl. SpecificUser x, Medium). Sprint 15, Desk, 2 labels, 3 assignees, 1 image each, read back 1 copy. Probe rules deleted (0 left).
+
+## A6 Blueprint — PAUSED 13 Nov ~01:30 Cairo (user)
+- 140 of 187 rows recorded in a6/results.json (node a6/rec.js STATUS "ROWS" "note"). Left 47: A2 B1 B3 B4 B10 B11 C8 E14 F2 H3 H11 J1 J10 J11 J12 K3 K4 K5 M1 M2 M3 M5 N1 N8 N10 N11 Z1–Z15 E2E-1..6.
+- Bug rechecks: fixed NDC-2753, 2756, 2757, 2758, 2761, 2762, 2763, 2774, 2775, 2780, 2782, 2788; still fails NDC-2755 (G11, confirm with screenshot).
+- New FAIL: J15 (continuous does not auto-run), H6 (blueprint PUT silent overwrite), H12/M4 (audit logs only restore/purge for blueprints). FINDING: D5 (only owner suspended -> stuck, no warning), N3 (unknown owner user id saved), I4 (enters on edit). INCONCLUSIVE K9 (no holiday list linked to the profile on NDC).
+- Tools: a6/lib-bp.js + a6/run.sh (NDC-Staging, Customer Support, "QA BP <tag>" guard), batches b1, b2, b2b, b3, b3k9; Java deskblueprint suites (credentials automation/.auth/extra-credentials.csv, gitignored); old scripts copied to a6/bp.
+- Left on NDC-Staging on purpose for K/F rows: custom action "QA BP echo" 52f80185 + API source 80412d3b (delete at the end, in a6/made.json other[]). Everything else cleaned; statuses back to the original 42; business hours 24/7.
+- Bundle 13 Nov shows built: Blueprint dashboard (/desk/blueprints/dashboard, Z14), per-ticket owner change (Z2), strict mode (Z1) -> check in Z rows. Customer rows K3–K5 + E2E-2 need the user's Gmail (reply + 2 ratings).

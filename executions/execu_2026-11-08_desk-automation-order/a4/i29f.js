@@ -1,0 +1,14 @@
+const s = JSON.parse(fs.readFileSync('../a4/i29.json')), c = JSON.parse(fs.readFileSync('../a4/i29c.json'));
+const snap = async id => { const g = await getTicket(id); const rp = arr((await api('GET', `/desk/tickets/${id}/replies`)).j?.data).filter(r => r.direction === 'outbound');
+  const act = arr((await api('GET', `/desk/tickets/${id}/activity`)).j?.data).filter(a => /happiness/.test(a.action)).map(a => a.action + '@' + a.occurred_at.slice(11, 19));
+  return { num: g.ticket_number, link: g.happiness_link_status, rating: g.happiness_rating, outbound: rp.length, last: rp.map(r => r.subject + ' ' + r.status + ' ' + r.created_at.slice(11, 19)).slice(-1)[0], act }; };
+let R = {}; R = { ...R, before: { rated: await snap(s.ticket), pending: await snap(c.ctrl) } };
+const old = JSON.parse(fs.readFileSync('../a4/i29f.json')); R.delOld = (await api('DELETE', '/workflow/rules/' + old.rule)).s;
+const rule = await mkRule('I29', { kind: 'SpecificFieldChanged', fieldName: 'priority' }, [{ type: 'SendHappinessEmail' }], { name: 'QA AO WF I29 refire' }); R.rule = rule.s + (rule.err || '');
+fs.writeFileSync('../a4/i29f.json', JSON.stringify({ rule: rule.id }));
+await sleep(3000);
+R.p1 = await patchTicket(s.ticket, { priority: 'low' }); R.p2 = await patchTicket(c.ctrl, { priority: 'low' }); await sleep(25000);
+R.after = { rated: await snap(s.ticket), pending: await snap(c.ctrl) };
+const ex = async id => (await execs(id)).filter(e => e.rule === rule.id);
+R.exec = { rated: await ex(s.ticket), pending: await ex(c.ctrl) };
+log(JSON.stringify(R, null, 1));

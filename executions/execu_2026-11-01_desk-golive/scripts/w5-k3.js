@@ -1,0 +1,15 @@
+await go('/modules/' + KM + '/records/new', 9000);
+await page.getByLabel(/Contract Name/i).first().fill('QA GL W5 Contract UI');
+const pick = async (label, text) => { const f = page.getByText(new RegExp('^[*]?' + label + '$')).first().locator('xpath=following::*[self::button or @role="combobox" or self::input][1]'); await f.click(); await sleep(1500); const s = page.locator('[role=dialog] input, [role=listbox] input, [cmdk-input], input[placeholder*=earch]').last(); if (await s.count()) { await s.fill(text).catch(() => {}); await sleep(2000); } const o = page.getByRole('option', { name: new RegExp(text) }).first(); if (await o.count()) await o.click(); else await page.getByText(text, { exact: true }).last().click(); await sleep(1200); };
+try { await pick('Department', 'Tech'); out.dep = 'ok'; } catch (e) { out.depErr = e.message.slice(0, 80); }
+try { await page.getByText(/^[*]?Account$/).first().locator('xpath=following::*[self::button or @role="combobox" or self::input][1]').click(); await sleep(2500); const dl = page.locator('[role=dialog]').last(); await dl.getByRole('row').filter({ hasText: /^QA GL W5 Accounts/ }).first().getByRole('checkbox').check().catch(async () => { await dl.getByText('QA GL W5 Account', { exact: true }).click(); }); await sleep(800); await dl.getByRole('button', { name: 'Select' }).click(); await sleep(1500); out.acc = 'ok'; } catch (e) { out.accErr = e.message.slice(0, 80); }
+out.planOpts = ''; try { await page.getByText(/^[*]?Support Plan$/).first().locator('xpath=following::*[self::button or @role="combobox" or self::input][1]').click(); await sleep(2500); out.planOpts = (await page.locator('[role=listbox], [role=dialog], [role=menu]').last().innerText()).replace(/s+/g, ' ').slice(0, 300); await shot('w5/W5-16-plan-picker'); } catch (e) { out.planErr0 = e.message.slice(0, 80); }
+try { await page.getByText('QA Plan Gold').last().click(); await sleep(1200); out.plan = 'ok'; } catch (e) { out.planErr = e.message.slice(0, 80); }
+const sd = page.getByLabel(/Start Date/i).first(); await sd.fill('2026-11-01').catch(async () => { await sd.click(); await page.keyboard.type('11/01/2026'); });
+await shot('w5/W5-16-contract-ui-form');
+const n0 = NET.length; await page.getByRole('button', { name: /^Save$/ }).first().click(); await sleep(5000);
+const cr = NET.slice(n0).find(x => x.m === 'POST' && /records/.test(x.u)); out.create = cr ? cr.s + ' ' + cr.b.slice(0, 700) : 'none';
+out.after = page.url().replace(H, ''); out.msg = (await mtxt()).match(/.{0,80}(required|invalid|error).{0,80}/i)?.[0];
+const m = (cr && cr.t || '').match(/"id":"([0-9a-f-]{36})"/); if (m && cr.s < 300) CREATED.push({ kind: 'contract', id: m[1], name: 'QA GL W5 Contract UI' });
+await go('/modules/' + AM + '/customers/f823cd7a-1c34-4d84-9cc8-5b12509034b4', 9000); const tb = page.locator('main').getByText('SLA & Contract', { exact: true }).first(); if (await tb.count()) { await tb.click(); await sleep(4000); out.accK = (await mtxt()).slice(0, 500); await shot('w5/W5-16-account-contract-ui'); }
+return fin({ out });

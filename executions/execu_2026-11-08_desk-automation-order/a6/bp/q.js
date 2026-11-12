@@ -1,0 +1,4 @@
+// Read-only GETs with one API sign-in. Usage: P=... node q.js <path> [<path>...]  (prints JSON, trimmed)
+const H = 'https://staging-desk.taviportal.com/api/v1', BASE = { 'content-type': 'application/json', 'x-tenant-id': 'a7a7a7a7-0000-0000-0000-000000000002', 'x-app-key': 'desk' };
+(async () => { const tok = (await (await fetch(H + '/iam/auth/login', { method: 'POST', headers: BASE, body: JSON.stringify({ email: 'anyware-staging-owner@anyware.software', password: process.env.P, device_label: 'qa-automation', remember_me: true }) })).json()).data.access_token;
+  for (const p of process.argv.slice(2)) { const r = await fetch(H + p, { headers: { ...BASE, authorization: 'Bearer ' + tok } }); const t = await r.text(); require('fs').writeFileSync('q-out-' + p.replace(/[^A-Za-z0-9]+/g, '_').slice(0, 80) + '.json', t); console.log(r.status, p, t.length); } })();

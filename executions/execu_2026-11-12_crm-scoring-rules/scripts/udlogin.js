@@ -1,0 +1,5 @@
+async (page) => { const fs=require('fs'); const rows=fs.readFileSync('D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX/docs/Credentials/TAVI Desk Credentials.csv','utf8').split(/\r?\n/).slice(1).filter(Boolean).map(l=>l.split(','));
+ const r=rows.find(x=>x[0]===(process.env.WHO||'mahmoud.mahamed1515')); await page.goto('https://staging-desk.taviportal.com/login',{waitUntil:'domcontentloaded'}); await page.waitForTimeout(4000);
+ const inputs=await page.locator('input').evaluateAll(e=>e.map(x=>x.type+':'+(x.name||x.id||x.placeholder)));
+ await page.locator('input[type=email], input[name=email], input[type=text]').first().fill(r[1].trim()); await page.locator('input[type=password]').first().fill(r.slice(2).join(',').trim()); await page.keyboard.press('Enter');
+ await page.waitForTimeout(10000); const t=(await page.innerText('body')).replace(/\s+/g,' '); return {inputs, url:page.url(), msg:(t.match(/[^.]{0,80}(invalid|incorrect|error|denied|tenant|organization)[^.]{0,80}/i)||[''])[0], start:t.slice(0,200)}; }

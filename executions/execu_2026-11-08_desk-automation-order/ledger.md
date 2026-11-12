@@ -286,3 +286,11 @@
 - 12 Nov ~18:00 Zoho techsolutionsegypt (user OK): Notification Rules, dept Tech, Contact "Closing a ticket" EMAIL toggle turned ON for C3 test. MUST turn back OFF.
 - 12 Nov 18:35 Zoho: "Closing a ticket" notification turned back OFF; C3 rule, field update deleted; tickets #184-186 + contact trashed.
 - 12 Nov 19:30 evidence run created+deleted: 10 rules (EV*), 6 tickets (#3160-3165), 1 Call; rules back to 50. Plane: NDC-2948..2968 (13) created.
+- 12 Nov 19:20 TENANT CHANGES OPEN: Customer Happiness is_enabled=true (restore from a4/happiness-orig-i29.json after I29); rule QA AO WF I29 + ticket #3194 kept. Business hours back to 24_7; CES 2 back to Desk Agent.
+- 2026-11-12 evening: I29 control ticket #3205 (a4/i29c.json) — delete with I29 cleanup. J5 rules "QA AO WF BH J5 business/wall" + ticket (a4/j5-out.json) — delete after. Invite f56966bb re-sent.
+- 2026-11-12T20:46:06 I9 new invite for QA AO WF Agent (+wf), ids in a4/agent.json — delete user after I9.
+- 2026-11-12T20:57:36 I9 cleanup {"rule":204,"ctrl":204,"susp":204,"manual":204,"t1":204,"t2":204,"t3":204,"user":204,"userLeft":[],"deptA":4,"qaRules":0}
+- 2026-11-12T21:11:13 P11 recheck cleanup {"re5287b":204,"r172fed":204,"r8e6535":204,"r733fa0":204,"r8c3021":204,"tda1cfb":204,"t368384":204,"te80b5c":204,"qaRules":0,"bh":"24_7"}
+- 2026-11-12T21:57:51 night cleanup {"rules":{"204":12,"404":6},"tickets":{"204":81,"404":1},"savedAction":204,"templates":[204],"tags":[422,422],"assignRule":204,"webhookToken":204,"after":{"qaRules":0,"rulesTotal":51,"qaTags":11,"qaTpl":1,"qaActions":0,"directSwitch":false,"hours":"24_7","deptA":4,"happiness":false}}
+- 2026-11-12T21:58:39 night cleanup 2 {"tag 3bcb42c2":"204","tag 75d6842e":"204","p16tpl":"204","myTagsLeft":0,"qaTplLeft":0}
+uiprep orphan tickets (NDC): 7812c9e6-3aad-4b52-a58d-7616f3df8667 143e6bf5-cde2-47d2-9d82-a359d6df3824

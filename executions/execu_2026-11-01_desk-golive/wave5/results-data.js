@@ -1,0 +1,25 @@
+module.exports.R = {
+ "W5-01": ["pass", "Contacts list (28 → 33 with QA data), views, search; Find duplicates and New Contact in the header."],
+ "W5-02": ["pass", "QA GL W5 Contact 1 created through the form (201), opens the customer page."],
+ "W5-03": ["pass", "Empty Last Name: 'This field is required'; 'abc@': 'Invalid email format'; 300-char name: 422 'maximum is 255'."],
+ "W5-04": ["pass", "Phone edit saved; delete → Recycle Bin (label = name) → restore → record back (200)."],
+ "W5-05": ["pass", "Find duplicates groups by Name / Email / Secondary email / Phone; merge dialog lets you pick master + per-field values; merge kept the master, the other is 404. Note: same email allowed on two contacts (Zoho check pending)."],
+ "W5-06": ["pass", "Arabic last name and title saved and shown intact."],
+ "W5-07": ["pass", "Private view 'QA GL W5 view' (first name contains QA GL W5) created and lists only the QA rows."],
+ "W5-09": ["pass", "QA GL W5 Account created; Contact 1 linked; account Contacts tab lists it. Note: test contacts/accounts sync to CRM at once ('Synced')."],
+ "W5-10": ["check", "No parent-account field on Accounts (no hierarchy). Zoho check pending."],
+ "W5-11": ["pass", "Accounts Find duplicates (Name / Email / Phone): 'No duplicates'."],
+ "W5-12": ["check", "Sync badges (Synced / Unlinked / Needs attention) have no tooltip or help on hover."],
+ "W5-13": ["pass", "Contact 1 page shows its ticket #3403, counts, traffic, handling time."],
+ "W5-14": ["pass", "Account page: Overview, History, Activities, Tickets, SLA & Contract, Contacts, Happiness, Products, Attachments."],
+ "W5-15": ["pass", "Contracts list (6 → 9 with QA), statuses active / expired / upcoming."],
+ "W5-16": ["check", "API create works; the form needs a support plan and says 'the account's department has no active support plans' (Marketing has none; creating one is an SLA change, not approved). API accepted a plan from another department and the account page then shows 'No support plan'."],
+ "W5-17": ["fail", "End date before start date is accepted (saved as 'upcoming'); events refuse the same ('to_time must be on or after from_time'). Expired dates → 'expired' (pass)."],
+ "W5-18": ["pass", "Activities list loads (527 → 530), tabs All / Tasks / Calls / Events."],
+ "W5-19": ["pass", "Task with due date + reminder on ticket #3403; completed → status Completed with completed_time."],
+ "W5-20": ["pass", "Call and event saved on the ticket; event ending before it starts refused with a clear message."],
+ "W5-22": ["pass", "Calendar Week / Day show the QA items; Month groups per user per day on the right dates."],
+ "W5-23": ["pass", "Headquarters loads with department filter and components."],
+ "W5-33": ["pass", "Advanced Analytics: 'In Development' (G-06 stays Partly)."]
+};
+module.exports.BLOCK = "13 Nov ~01:00 Cairo: owner and admin B sessions revoked by another session signing in on the same accounts; paused before W5-24.";

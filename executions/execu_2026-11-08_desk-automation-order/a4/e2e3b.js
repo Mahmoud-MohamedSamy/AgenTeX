@@ -1,0 +1,13 @@
+const S = JSON.parse(fs.readFileSync('../a4/e2e134.json')); const TPL = S.made.tpl[0]; const AID = S.made.actions[0]; const [r3a, r3b] = S.e3.rulesIds;
+const R = {};
+const sa = (await api('GET', '/workflow/actions/' + AID)).j?.data; R.savedBefore = JSON.stringify(sa.action || sa).slice(0, 200);
+const p = await api('PATCH', '/workflow/actions/' + AID, { action: { ...(sa.action || {}), type: 'Email', order: 0, delaySeconds: 0, emailRecipients: [{ kind: 'contact' }], emailTemplateId: TPL, emailSubject: 'x', emailBody: 'x' } });
+R.patchSaved = p.s + (p.s >= 300 ? ' ' + p.t.slice(0, 250) : '');
+const mails = async id => arr((await api('GET', `/desk/tickets/${id}/replies`)).j?.data).filter(r => r.direction === 'outbound').map(r => (r.subject || '') + ' | ' + String(r.body_html || r.body_text || '').replace(/<[^>]+>/g, '').slice(0, 60) + ' | ' + r.status);
+const fire = async lbl => { const a = await mkTicket('E2E3a', {}, lbl); const b = await mkTicket('E2E3b', {}, lbl); await sleep(25000); return { a: await mails(a.id), b: await mails(b.id), ids: [a.id, b.id] }; };
+R.before = await fire('before edit');
+const tg = (await api('GET', '/desk/email-templates/' + TPL)).j?.data; const ed = await api('PUT', '/desk/email-templates/' + TPL, { name: tg.name, module: tg.module, notification_type: tg.notification_type, use_case: tg.use_case, subject: tg.subject, body_html: '<p>QA AO WF E2E version TWO</p>' });
+R.editTemplate = ed.s + (ed.s >= 300 ? ' ' + ed.t.slice(0, 200) : ''); await sleep(3000);
+R.after = await fire('after edit');
+R.usage = JSON.stringify((await api('GET', '/workflow/actions/' + AID + '/usage')).j?.data?.rules?.map(r => r.ruleName));
+S.e3b = R; fs.writeFileSync('../a4/e2e134.json', JSON.stringify(S, null, 1)); log(JSON.stringify(R, null, 1));

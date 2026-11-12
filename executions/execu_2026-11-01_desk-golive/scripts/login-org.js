@@ -6,7 +6,7 @@ const H = process.env.HOST || 'https://staging-desk.taviportal.com';
 const { chromium } = require(path.join(P, 'node_modules/playwright-core'));
 (async () => {
   const out = process.argv[2];
-  const b = await chromium.launch({ headless: true, channel: 'msedge' }); const ctx = await b.newContext({ viewport: { width: 1600, height: 900 } }); const page = await ctx.newPage();
+  const b = await chromium.launch({ headless: process.env.HEADED ? false : true, channel: 'msedge' }); const ctx = await b.newContext({ viewport: { width: 1600, height: 900 } }); const page = await ctx.newPage();
   await page.goto(H + '/login', { waitUntil: 'commit', timeout: 90000 }); try { await page.waitForSelector('input[type=password]', { timeout: 480000 }); } catch (e) { await page.screenshot({ path: out + '.nologin.png' }); console.log('PAGE:', (await page.innerText('body').catch(()=>'')).replace(/s+/g,' ').slice(0,300), page.url()); throw e; }
   await page.fill('input[autocomplete~="username"], input[type=email]', C.user); await page.fill('input[type=password]', C.pw);
   await page.locator('form button[type=submit]').first().click();

@@ -12,5 +12,7 @@ const short = r => ({ s: r.s, e: r.j && r.j.error ? (r.j.error.code + ': ' + r.j
 const fin = extra => done({ R, CREATED, ...(extra || {}) });
 const sh = r => ({ s: r.s, e: r.j && r.j.error ? (r.j.error.code + ': ' + r.j.error.message + ' ' + JSON.stringify(r.j.error.details || '')).slice(0, 260) : undefined, d: r.j && r.j.data ? JSON.stringify(r.j.data).slice(0, 260) : undefined });
 const wfx = async id => { const r = await api('GET', '/workflow/executions?recordId=' + id); return r.s + ' ' + JSON.stringify(arr(r.j && r.j.data).map(x => [x.ruleName || x.rule_name || x.ruleId, x.status])).slice(0, 300); };
-const r = await api('GET', '/mail/signature'); const d = r.j && r.j.data;
-return done({ s: r.s, keys: d && Object.keys(d), summary: d && Object.fromEntries(Object.entries(d).map(([k, v]) => [k, typeof v === 'string' ? v.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 300) : v])) });
+const b = await api('GET', '/audit/recycle-bin/items?limit=200&app=desk');
+const pick = arr(b.j && b.j.data).filter(x => x.record_id === '7bc907e3-7066-4e33-b1b6-3637c9dd193f' && x.record_label === 'QA GL W2 view');
+const o = { n: pick.length }; if (pick.length) o.purge = (await api('POST', '/audit/recycle-bin/delete', { item_ids: pick.map(x => x.id), ids: pick.map(x => x.id) })).s;
+const b2 = await api('GET', '/audit/recycle-bin/items?limit=200&app=desk'); o.left = arr(b2.j && b2.j.data).filter(x => /QA GL W2/.test(x.record_label || '')).length; return done(o);

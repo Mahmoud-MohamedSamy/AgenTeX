@@ -1,0 +1,10 @@
+const fs=require('fs'),path=require('path');
+const KEY=fs.readFileSync('D:/Learning & Work/Software Testing/Anyware Software/secret-key-1793537440144.csv','utf8').trim().split(/\r?\n/)[1].split(',')[3].replace(/"/g,'').trim();
+const B='https://api.plane.so/api/v1/workspaces/ahmed-hegazy/projects/efce4d84-5876-4015-b472-2efca7ad73f3'; const H={'X-API-Key':KEY,'Content-Type':'application/json'};
+const ANN=path.join(__dirname,'../evidence/annotated');
+const jobs=[['NDC-2938','cd35576f-4c1e-46f8-a2ae-f1a9818f907e','G9-threshold-input-vs-zoho-live.png'],['NDC-2943','06756404-c602-437d-a1a1-151519823a28','I3-B10-unknown-ids-vs-zoho-live.png'],['NDC-2944','258014fd-1ef3-443d-bdb6-72182354d5dd','J6-error-focus-vs-zoho-live.png'],['NDC-2945','4eb2fc4f-1604-4502-a01c-4d931c62e08c','F9-audit-unreadable-vs-zoho-live.png'],['NDC-2934','71bdfe80-f41e-433e-b91d-525b7110b096','G4-score-trigger-selective-rules-vs-zoho.png']];
+(async()=>{for(const [n,id,f] of jobs){try{const buf=fs.readFileSync(path.join(ANN,f));
+ const c=await fetch(`${B}/work-items/${id}/attachments/`,{method:'POST',headers:H,body:JSON.stringify({name:f,type:'image/png',size:buf.length})}); const cj=await c.json(); if(!c.ok) throw new Error('create '+c.status);
+ const fd=new FormData(); for(const [k,v] of Object.entries(cj.upload_data.fields||{})) fd.append(k,v); fd.append('file',new Blob([buf],{type:'image/png'}),f);
+ const u=await fetch(cj.upload_data.url,{method:'POST',body:fd}); if(!u.ok&&u.status!==204) throw new Error('upload '+u.status);
+ const aid=cj.asset_id||(cj.attachment&&cj.attachment.id); const p=await fetch(`${B}/work-items/${id}/attachments/${aid}/`,{method:'PATCH',headers:H,body:JSON.stringify({is_uploaded:true})}); console.log(n,f,'attached',p.status);}catch(e){console.log(n,'FAIL',e.message);}}})();

@@ -2,7 +2,7 @@
 // One page to follow the run. Update the data blocks below after each step, then: node scripts/build-progress-report.js
 const fs = require('fs'), path = require('path');
 const D = path.join(__dirname, '..');
-const UPDATED = '12 Nov 2026, 19:30 (Cairo)';
+const UPDATED = '13 Nov 2026, 00:20 (Cairo)';
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/`([^`]+)`/g, '<code>$1</code>');
 const C = { PASS: 'ok', FAIL: 'bad', BUG: 'bad', FINDING: 'warn', PARTIAL: 'warn', INCONCLUSIVE: 'warn', BLOCKED: 'grey', SKIPPED: 'grey', MOVED: 'grey', 'API ONLY': 'grey', 'NOT RUN': 'info', Done: 'ok', 'In progress': 'warn', 'Not started': 'info', Filed: 'ok', Partial: 'warn' };
 const pill = (t, c) => `<span class="pill ${c || C[t] || 'grey'}">${esc(t)}</span>`;
@@ -10,6 +10,10 @@ const table = (head, rows, cls = '') => `<div class="tw"><table class="${cls}"><
 
 // ---------- Latest activity (newest first) ----------
 const log = [
+  ['13 Nov 00:20', 'Filed NDC-2997 (E2E-1 role round robin, High), NDC-2998 (date trigger on non-date field, Low), NDC-2999 (owner target not checked, Medium) — Bug, Desk, Sprint 15, annotated images; read back OK.'],
+  ['13 Nov 00:10', 'Ran all remaining: A10 + O5 cross-tenant (Anyware) PASS, D6 cannot occur (module made + deleted), I10 workflow wins, O12 50/50, E2E-2/4/5 PASS, E2E-1 FAIL (role round robin = I8), E2E-3 waits on Gmail, Z24/Z25/Z27 missing. Tag audit: only P11 and J5-wall were affected. Everything reverted.'],
+  ['12 Nov 19:20', 'Remaining A4 rows run (your OK to change and revert): PASS P22/Z23, E15, F10, G9, A2, E5, F21, J6, P23/Z26, O13; FINDING C9, M5, M7, O7; NEW FAIL P11 (Execution Time condition never matches); O5 partial. Waiting on you: I9, I29 (rate ticket #3194), J5 (shift choice), A10 (second tenant). Business hours and the test agent profile reverted; Customer Happiness ON until you rate.'],
+  ['12 Nov 23:20', 'Filed NDC-2973 (I9, Owner Assignment ignores suspended / non-member agents) with annotated image. P11 rechecked: PASS — the earlier FAIL was my test error (subject guard did not match), so it was not filed. I29 PASS, J5 PASS.'],
   ['12 Nov 19:30', 'Your OK: filed 13 Workflow Rules bugs NDC-2948 … NDC-2968 (Bug, Desk, Sprint 15, labels Workflow Rules + Automation Execution Order, NDC-2811 assignees), each with one annotated image (TAVI vs Zoho where Zoho has the feature). Rechecked first on staging: D-07 (C3 history) dropped — TAVI history now shows "Status was updated Open → Closed" and "Workflow rule ran … by workflow rule"; Z18 narrowed to Field Update (two Tasks now allowed); B-2 narrowed to the API (the editor hides Created By). Evidence data deleted; rules back to 50.'],
   ['12 Nov 18:40', 'C3 checked in Zoho (your OK): a workflow Field Update that closes a ticket sends NO closed mail in Zoho either (#185 on Create, #186 on Edit); an agent close does (#184). So the missing mail is not a bug. Only difference: Zoho history shows "Ticket was updated through a Workflow Rule … Status changed from Open to Closed"; TAVI shows only "Workflow rule ran". Zoho cleaned, notification back off. New report: report-workflow-findings.html.'],
   ['12 Nov 17:30', 'All 22 workflow bug items checked against live Zoho Desk (techsolutionsegypt, nothing saved) and Zoho help: 6 differ from Zoho (expected result now = Zoho), 7 are real bugs Zoho has nothing to compare with, 8 are TAVI-only features, B-5 withdrawn (Zoho does the same). Bugs report report-workflow-bugs.html updated.'],
@@ -40,7 +44,7 @@ const log = [
 // ---------- Plan status ----------
 const plan = [
   ['A1–A3', 'Skills, Direct assignment, Round robin', 'Done', '~115 cases. All run. NDC-2824 still fails (you said to set it aside).'],
-  ['A4', 'Workflow (274 cases)', 'Done', '251 of 274 have a result (204 pass, 21 fail, 14 findings, 12 partial); 23 are blocked, skipped, moved or not run, each with a reason in the section below. 7 of the 9 old bugs still fail (B-3 fixed, B-5 withdrawn after the Zoho check). All 22 bug items checked vs Zoho.'],
+  ['A4', 'Workflow (274 cases)', 'Done', 'All 274 executed (12–13 Nov): 229 pass, 25 fail, 18 findings, 2 partial (E2E-3 Gmail text check, plus one earlier). Tenant reverted.'],
   ['A5', 'SLA (67 cases)', 'Done', 'All 67 run. SL-40 day-before notice PASS (12 Nov).'],
   ['A6', 'Blueprint', 'Not started', 'Recheck current state of NDC-2755..2788 too.'],
   ['A7', 'Notifications (30 cases)', 'Done', 'All 30 run.'],
@@ -53,7 +57,11 @@ const plan = [
 
 // ---------- Needs your decision / action ----------
 const decide = [
-  ['A4 agent', 'Accept or cancel?', '"QA AO WF Agent" (Gmail +wf) never accepted its invite, so I9 is blocked. Accept it in Gmail, or I cancel the invite.'],
+  ['I9 agent invite', 'Accept in Gmail', 'Open the TAVI Desk invite sent to mahmoud.mmohamedsamy+wf@gmail.com (QA AO WF Agent), accept, set any password.'],
+  ['I29 rating', 'Rate in Gmail', 'Open the happiness email for ticket #3194 "QA AO WF I29 please rate" (to +qaao) and click any smiley. Customer Happiness stays ON until then.'],
+  ['J5 business hours', 'Choose', 'Wait until 23:00 Cairo tonight (hours 01:00–23:00 fit Shift-01), or let me shorten Shift-01 for 15 minutes and restore it.'],
+  ['A10 second tenant', 'Add a login', 'A login on another TAVI tenant (row in TAVI Desk Credentials.csv); without it A10 and the cross-tenant half of O5 stay blocked.'],
+  ['P11 new FAIL', 'File it?', 'Execution Time condition (during / outside business hours / holiday) never matches.'],
   ['O4 security', 'File it?', 'Webhook header injection: a line break inside a header value adds a new header to the outgoing request (proved on webhook.site). Saved through the API; screen not tried yet.'],
   ['O1 security', 'File it?', 'An Add Comment action body saved through the API with <img onerror> runs script when an admin opens the rule in the editor. Screen input not tried, so it is API-only input; but the editor is the one rendering it. Evidence: evidence/raw/o1-editor-cm.png.'],
   ['NDC-1488', 'Post?', 'Hosted web form link still 404 (11 Nov). Not posted to Plane.'],
@@ -74,6 +82,10 @@ const filed = [
   ["NDC-2966", "I30", "Low", "Workflow Rules | \"Send happiness email\" is logged as Succeeded while ratings are off", "WF-I30-happiness-email-succeeded-while-off.png", '12 Nov'],
   ["NDC-2967", "API-T3 (B-1)", "High", "Records API | 500 error when \"kind\" is not the first key of a field value", "WF-API-500-value-key-order.png", '12 Nov'],
   ["NDC-2968", "I25 (B-8)", "Medium", "Workflow Rules | Create Record action skips required fields and leaves the new record without an owner", "WF-I25-create-record-skips-required-fields.png", '12 Nov'],
+  ["NDC-2973", "I9", "Medium", "Workflow Rules | Owner Assignment action assigns suspended agents and agents outside the department", "WF-I9-owner-assignment-ignores-suspended-agent.png", '12 Nov'],
+  ["NDC-2997", "E2E-1 / I8", "High", "Workflow Rules | Owner Assignment by role (round robin) never assigns anyone", "WF-E2E1-role-round-robin-assigns-nobody.png", '13 Nov'],
+  ["NDC-2998", "D6 side", "Low", "Workflow Rules | The rules API accepts a date trigger on a field that is not a date", "WF-D6-date-trigger-on-text-field.png", '13 Nov'],
+  ["NDC-2999", "E2E-1 side", "Medium", "Workflow Rules | Owner Assignment action saves any role or user value, even \"x\"", "WF-owner-target-not-checked.png", '13 Nov'],
   ['NDC-2825', 'SL-30', 'High', 'SLA | Updating a ticket does not restart an SLA set to run on Ticket Update', 'SL-30-sla-not-reset-on-update-vs-zoho.png', '9 Nov'],
   ['NDC-2826', 'SL-12', 'Medium', 'SLA | Target conditions offer no number or date operators', 'SL-12-sla-no-number-date-operators-vs-zoho.png', '9 Nov'],
   ['NDC-2829', 'Missing list', 'Medium', 'Desk Automation: features Zoho Desk has that Desk is missing (15 gaps)', '*', '9 Nov'],
@@ -233,6 +245,41 @@ set('NOT RUN', 'E2E-1 E2E-2 E2E-3 E2E-4 E2E-5', 'Whole journeys moved to Part C 
 set('PASS', 'E2E-6', 'Clean-up diff vs the 11 Nov baseline: none of the 50 rules or 8 saved actions missing or changed. 3 extra inactive Java retest leftovers then deleted with your OK; tenant now equals the baseline (50 rules, 8 actions).');
 set('NOT RUN', 'A2', 'Needs a user whose profile has no workflow view right; none exists, and making one changes tenant profiles (ask first).');
 set('NOT RUN', 'O5', 'Needs a second tenant / record to prove nothing else leaks into a webhook or email body; only one tenant here.');
+// ---- 12 Nov evening: remaining rows (user: run the 9 + change/revert or dummy data for the rest) ----
+set('PASS', 'P22', 'Custom action built on screen (Custom Actions › New action › Paste spec › Desk) and published; Run Custom Action in a Desk rule → Succeeded, webhook.site got the GET.');
+set('FINDING', 'C9', 'Draft is kept in the browser, but New Rule never asks "Resume your draft?" — it starts empty; opening /workflow-rules/new later silently restores an old draft (seen with the F10 draft).');
+set('PASS', 'E15', 'Arabic + emoji + <b>HTML</b> + zero-width joiner typed on screen: stored exactly (19 code points); a ticket with the exact text fires, the same text without the ZWJ does not.');
+set('FINDING', 'M5', 'Execution History shows a Field Changed rule run as "On Edit" (spec: "Field Changed"). TAVI-only page (Zoho has none).');
+set('FINDING', 'M7', 'Execution History shows the latest 50 runs only: no paging and no total on screen (API take/skip work). TAVI-only page.');
+set('FINDING', 'O7', 'Arabic: right-to-left, back arrow flipped, labels translated except "Webhook" and "Close"; flow connector lines sit outside the cards in RTL.');
+set('PASS', 'F10', 'localhost, 127.0.0.1, 169.254.169.254, metadata.google.internal, 10.x refused on save: "Actions[0].Url: Webhook Url must be a public http(s) endpoint; loopback, private, link-local, and internal hosts are not allowed." (raw "Actions[0].Url:" prefix, as F9). 2 kB public URL accepted.');
+set('PASS', 'G9', 'Session removed with the editor open, then Save: "Your session expired. Please sign in again." and the draft stays in the browser.');
+set('PASS', 'A2', 'Customer Experience Specialists 2 switched to Desk Light Agent (no workflow rights): no workflow menu items; the 3 pages by URL show "You do not have permission / access"; API 403; no rule data. Profile restored to Desk Agent.');
+set('PASS', 'E5', 'Not reachable: a pick-list cannot be created without options ("At least one allowed value is required"), so the editor state cannot occur.');
+set('PASS', 'F21', 'Calls rule › Field Update › Use a saved action: Tickets actions not offered; "No saved Field Update actions for this module yet — create one in Settings → Automation → Actions." (wording differs from spec).');
+set('PASS', 'J6', 'Tenant 24/7: "2 hours before due, business hours" fired together with the wall-clock rule, 2 h before due.');
+set('PASS', 'J5', 'Hours 01:00–23:00 (fits Shift-01), 6 business hours before due 02:37 Cairo: the business-hours rule fired 18:37 Cairo, skipping the 23:00–01:00 closed gap; the wall-clock control could not fire (my test error: its subject guard did not match the ticket), so the 2-hour difference was not shown side by side. Hours reverted to 24/7.');
+set('PASS', 'P11', "Rechecked 12 Nov 23:10: 24/7 → During business hours Fired, Outside and Holiday No match; hours 01:00–23:00 while closed → Outside Fired, During and Holiday No match. The earlier FAIL was my test error (rule subject guard did not match the ticket). Holiday positive not checked (no holiday today). Hours back to 24/7.");
+set('PASS', 'P23', 'Test User 1 (skill QA AS6 sk1) signed in: Reassign by skills → owner Test User 1 ("reassigned": true).');
+set('PARTIAL', 'O5', 'Same tenant: two tickets fired one webhook together; each body had only its own subject/description. Other-tenant half needs a second tenant.');
+set('PASS', 'O13', 'Edge, Chromium (Chrome engine) and Firefox 156: list, editor, save and search work the same.');
+set('PASS', 'I29', 'After your Good rating on #3194, firing the action again sent nothing (link stays rated). On #3205 with a pending link, it sent a new mail "Reminder: Your ticket #3205 has been closed". Note: Execution History shows Succeeded even when nothing was sent. Happiness settings restored (no diff); rules and tickets deleted.');
+set('FAIL', 'I9', "Owner Assignment ignores who can own the ticket. (1) Agent in the department, suspended: the ticket is left unassigned but Execution History says Fired with no error or reason (manual assign is refused: not an active agent of the department). (2) Agent not in the department: the rule assigns them anyway, even while suspended, though manual assign refuses it. Ticket stays usable. Filed NDC-2973."); set('BLOCKED', 'A10', 'No second TAVI tenant available (you, 12 Nov).');
+for (const [z, p] of Object.entries(zp)) if (A[p]) A[z] = [A[p][0], 'Built now; result of ' + p + '.'];
+// ---- 12 Nov night: user "run them all"
+set("PASS", "A10", "Second tenant (Anyware, signed in 12 Nov): GET/PATCH/deactivate/DELETE of an NDC rule id → 404 (PUT 405); NDC ticket replies 404; executions for the NDC ticket empty; NDC rule and run not in Anyware lists. Same with the NDC tenant header. NDC rule unchanged afterwards.");
+set("PASS", "O5", "Both halves: same tenant (two tickets, each body only its own); cross tenant: the same webhook rule in NDC and Anyware fired together — each body carried only its own ticket and department. Anyware rule + ticket deleted.");
+set("PASS", "D6", "Cannot occur: a new module (QA AO WF D6, created and deleted) still gets Created Time + Modified Time, which cannot be deleted (409 STANDARD_FIELD_NOT_DELETABLE); the date picker lists them. Side note: the rules API accepts a date trigger on the text field name (201); an unknown field is refused (400).");
+set("PASS", "I10", "Direct assignment rule (switch turned on for the test, then back off) + workflow Owner Assignment on create: assignment sets the owner first, then the workflow replaces it → workflow wins (Zoho order: assignment, then workflow). Assignment alone → Test User 1.");
+set("PASS", "O12", "3 active rules, 50 tickets created in 10 s: 50/50 tickets have exactly 3 runs, 0 duplicates, all actions Succeeded; field and tag applied 50/50; queue drained within ~3.5 min.");
+set("FAIL", "E2E-1", "Tag, Task (+1 day) and Email to owner all Succeeded, one run per ticket, only urgent tickets matched. Owner by role round robin (CEO role: Test User 1 online + Dev Team 2) assigned nobody on 6 tickets, also unowned ones — same as I8 (B-9). Run still says Fired. Filed NDC-2997.");
+set("PASS", "E2E-2", "Due + 10 min, Status Open: the open ticket got the Task and the Webhook at 21:46:09 (expected 21:45:43); the ticket closed before the due time got nothing.");
+set("PARTIAL", "E2E-3", "Saved Email action in 2 rules: Used by = 2 (list and usage API). Template edited once; both rules sent before (#3313, #3314) and after (#3315, #3316), all Succeeded. The text in the mails (ONE before, TWO after) needs a Gmail check (+qaao).");
+set("PASS", "E2E-4", "Field Changed Status → Add Tag: no tag on create or after editing priority and description; tag added only after the status change (history).");
+set("PASS", "E2E-5", "Receiver answering 500: retries 1→2→3 with growing gaps (6 s, ~2 min, ~10 min), each showing HTTP 500, status Pending; receiver fixed → next ticket Succeeded first time and the first ticket Succeeded on attempt 4. Rule stayed active, ticket usable.");
+set("FAIL", "Z24", "Missing: no chat notification actions (Cliq, Slack, Teams, Google Chat) in the action picker (22 actions listed, 12 Nov).");
+set("FAIL", "Z25", "Missing: no instant-messaging actions (WhatsApp, Telegram, SMS template message) in the action picker.");
+set("FAIL", "Z27", "Missing: no AI actions (field extraction / prediction, generate content, auto reply) in the action picker.");
 const count = rows => { const c = {}; rows.forEach(r => { const s = (A[r.id] || ['NOT RUN'])[0]; c[s] = (c[s] || 0) + 1; }); return c; };
 const ORDER = ['PASS', 'FAIL', 'FINDING', 'PARTIAL', 'INCONCLUSIVE', 'BLOCKED', 'SKIPPED', 'MOVED', 'NOT RUN'];
 const pills = c => ORDER.filter(k => c[k]).map(k => pill(k + ' ' + c[k], C[k])).join(' ');

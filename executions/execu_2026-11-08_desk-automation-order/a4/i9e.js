@@ -1,0 +1,10 @@
+const o = JSON.parse(fs.readFileSync('../a4/i9-out.json')); const AG = o.AG; const R = {};
+const t = await mkTicket('I9 owner', {}, 'suspended agent'); await sleep(20000);
+const g = await getTicket(t.id); R.ownerIsSuspended = JSON.stringify(g).includes(AG); R.ownerField = String(g.owner || g.owner_id || g.ticket_owner || '').slice(0, 8); R.status = g.status;
+const raw = arr2((await api('GET', `/workflow/executions?recordId=${t.id}`)).j?.data).filter(e => (e.ruleId || e.rule_id) === o.rule);
+R.exec = raw.map(e => ({ outcome: e.outcome || e.status, err: e.error || e.lastError || e.reason, d: (e.dispatches || e.actions || e.actionResults || []).map(a => ({ type: a.actionType || a.type, st: a.status, err: a.lastError || a.error || a.reason })) }));
+R.execRawKeys = raw[0] ? Object.keys(raw[0]).join(',') : '';
+const h = await api('GET', `/desk/tickets/${t.id}/history`); R.hist = arr(h.j?.data).map(x => x.action + ':' + (x.field_key || '') + ':' + (x.new_value || '').toString().slice(0, 40)).slice(0, 8);
+R.patchOk = await patchTicket(t.id, { priority: 'low' });
+fs.writeFileSync('../a4/i9-out.json', JSON.stringify({ ...o, susp: t.id }));
+log(JSON.stringify(R, null, 1));

@@ -196,7 +196,12 @@ public class BlueprintRunTest {
         assertEquals(rv.statusCode(), 200, err(rv));
         assertNull(api.stateOf(id), "still in a blueprint after revoke");
         assertEquals(api.fields(id).get("status"), "Open", "revoke changed the status");
-        assertTrue(api.history(id).stream().anyMatch(h -> "ticket.blueprint_revoked".equals(h.get("action"))), "no ticket.blueprint_revoked in history");
+        boolean revokedLogged = false; // the history line is written a moment after the revoke call returns
+        for (long end = System.currentTimeMillis() + 10000; !revokedLogged && System.currentTimeMillis() < end; ) {
+            revokedLogged = api.history(id).stream().anyMatch(h -> "ticket.blueprint_revoked".equals(h.get("action")));
+            if (!revokedLogged) try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        }
+        assertTrue(revokedLogged, "no ticket.blueprint_revoked in history within 10 s");
         Response p2 = api.patchTicket(id, "status", "Escalated");
         assertEquals(p2.statusCode() / 100, 2, "status still locked after revoke: " + p2.asString());
     }

@@ -1,0 +1,6 @@
+const out = {};
+const cut = t => { t = t.replace(/\s+/g, ' '); const i = t.lastIndexOf('Email Providers '); return (i > 0 ? t.slice(i + 16) : t).slice(0, 2500); };
+for (const p of ['/settings/channels/email', '/settings/channels/web-forms', '/settings/organization/email-templates', '/settings/organization/customer-happiness', '/settings/integrations', '/settings/self-service/help-widgets']) { try { await go(p, 12000); out[p] = cut(await txt()); } catch (e) { out[p] = 'ERR ' + e.message.slice(0, 80); } }
+const g = {};
+for (const p of ['/desk/channels/addresses', '/desk/channels/domains', '/desk/channels/from-addresses', '/desk/channels/sending-overview', '/mail/connections', '/web-forms', '/web-forms/limits', '/help-centers', '/desk/kb/categories', '/desk/kb/articles', '/desk/email-templates?limit=200', '/desk/email-templates/folders', '/desk/happiness/settings', '/desk/community/settings', '/desk/channels/spam', '/desk/channels/blocked', '/desk/channels/suppressions', '/desk/channels/blocked-addresses', '/mail/suppressions', '/desk/spam/settings']) { const r = await api('GET', p); g[p] = { s: r.s, n: Array.isArray(arr(r.j)) ? arr(r.j).length : null, keys: r.j && typeof r.j === 'object' ? Object.keys(r.j).slice(0, 25) : null, t: r.t.replace(/"(access|token|secret|password|api_key)[^"]*":"[^"]*"/gi, '"$1":"x"').slice(0, 350) }; }
+return done({ out, g });

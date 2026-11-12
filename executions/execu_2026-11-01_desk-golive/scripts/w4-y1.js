@@ -1,0 +1,11 @@
+const s0 = D((await api('GET', '/desk/happiness/settings')).j); out.s0 = JSON.stringify(s0).slice(0, 700);
+const put = async patch => { const cur = D((await api('GET', '/desk/happiness/settings')).j); const body = { ...cur, ...patch }; delete body.expiry_days_min; delete body.expiry_days_max; let r = await api('PUT', '/desk/happiness/settings', body); if (r.s === 405) r = await api('PATCH', '/desk/happiness/settings', patch); return r.s + ' ' + r.t.slice(0, 220); };
+out.exp0 = await put({ expiry_days: 0 });
+out.exp91 = await put({ expiry_days: 91 });
+out.qEmpty = await put({ question: '' });
+out.qLong = await put({ question: 'Q'.repeat(600) });
+out.on = await put({ is_enabled: true, trigger: 'on_every_response', department_scope_enabled: true, department_ids: ['2a73bbc0-efb3-4250-bf9b-2fdc98236794'] });
+out.s1 = JSON.stringify(D((await api('GET', '/desk/happiness/settings')).j)).slice(0, 500);
+await go('/settings/organization/customer-happiness', 12000); out.page = (await page.locator('main').last().innerText()).replace(/\s+/g, ' ').slice(0, 500);
+await shot('w4/W4-72-happiness-on');
+return fin({ out });
