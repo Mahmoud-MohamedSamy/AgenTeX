@@ -1,0 +1,1 @@
+var e=`aw.desk.list.view.`;function t(t,n){return`${e}${t??`anonymous`}.${n}`}function n(e,n){try{return window.localStorage.getItem(t(e,n))}catch{return null}}function r(e,n,r){try{window.localStorage.setItem(t(e,n),r)}catch{}}function i(e,n){try{window.localStorage.removeItem(t(e,n))}catch{}}export{n,r,i as t};

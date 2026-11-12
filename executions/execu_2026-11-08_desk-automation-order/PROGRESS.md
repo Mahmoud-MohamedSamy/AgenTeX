@@ -371,3 +371,50 @@ Owner browser (own token store LANE=ui), QA data only in QA AO Dept B, all delet
 - Group A: Desk Agent profile = workflow:rule:view, execution:view, custom_action view/run. Test User 1 API: rules/executions 200, actions 403, all writes 403 → A3/A4/A6/A7/A8 PASS. Screen (a5ui.js): New Rule hidden; row menu Edit/Activate/Delete disabled "Requires workflow:rule:manage", Test rule "Requires workflow:rule:execute"; editor URL "You don't have permission to author workflow rules"; Actions "You don't have access"; history loads → A5 PASS. Dev Team 2 has full workflow rights (its PATCH re-saved a QA NDC rule's own name, no change).
 - O3 SSRF PASS: metadata/loopback/private/file/decimal/IPv6 refused at save ("must be a public http(s) endpoint"); localtest.me saved but dispatch blocked "egress-blocked" (status shows Cancelled, B-4 family).
 - O1 FINDING (security): Add Comment action body with <img onerror> (saved through the API) EXECUTES when an admin opens the rule in the editor (window.__xss set; evidence/raw/o1-editor-cm.png). Name, description, task title, list, Execution History, ticket comment all render safely. Payload rules deleted (in Recycle Bin). API-only input → user to decide on filing.
+
+### 12 Nov — new PC, SL-40, I4
+- Repo now on another PC: scripts/api.js finds the repo from its own folder; tokens in %TEMP%/qa-tavi-tokens (or QA_TOKEN_DIR). Java: pass `-Dcredentials.file=../docs/Credentials/TAVI Desk Credentials.csv`; layout baseline must be re-saved (WorkflowDiagTest#standardLayoutBaseline) before qaLayoutSetup (target/ not in git).
+- SL-40 day-before PASS: Test User 1 bell 00:00:43 UTC "Contract QA AO Contract SL40d01ql expires tomorrow". Contract + account deleted (plan/policy already 404).
+- I4 PASS on retry: qa_wf_address.city Cairo → Giza, street/country kept. First try 11:45 Cairo: GET fields 503 "metadata-engine service is temporarily unavailable" → the 11 Nov 500 was a staging outage, not a bug. QA layout + fields deleted, Standard same as baseline.
+- Live progress report: report-progress.html (scripts/build-progress-report.js; LIST_NOT_RUN=1 prints A4 rows still to run).
+
+### 12 Nov — A4 API rows (a4/b1–b4, clean12)
+- Java API PASS: A9, A11, B13, E11, G7, K3, K5, K9. H14, K6, K7 (409 in use), L2, L3, L6, M4, M8, B12, G10/N4, N1, O2, O6 PASS. K8, M7 partial.
+- O4 FAIL (security, not filed): Webhook header 'X-QA: a\r\nInjected: 1' → webhook.site received x-qa: a AND injected: 1. Host override saved, dispatch Pending "SSL connection could not be established".
+- L1 FINDING: POST /workflow/rules/{id}/execute {recordId, triggerKind, fields} ignores recordId — matching ticket + empty fields → criteriaMatched false; typed fields → true. Body format from bundle pages-*.js (draft: /rules/evaluate {rule, sampleRecord}).
+- TRAP: rule values must be {kind:'string', stringValue}; {kind,value} is accepted and saved as "" (blanked description). Records API uses {kind, value}.
+- Cleanup: today's ledger items deleted (12 rules, 1 action, 14 tickets). 11 Nov Group P rules (QA AO WF P14a…) still there → end-of-A4 cleanup.
+
+### 12 Nov afternoon — A4 screen rows (Playwright + Edge, owner) and last API rows
+- Screen helper (not saved to repo): scratchpad ui/ui.js signs in once, steps s1–s28. Editor panels need dispatchEvent('click'); condition field buttons all have aria-label "— select field —"; pattern box appears after Edit Pattern, closes on Apply.
+- New FAIL: G4 double-click Save & Activate → 2 identical rules (2×). G5 stale save silently overwrites a change made meanwhile. M6 Execution History shows rule + record as raw ids, record not a link (rules exist). F18 ${recordId}/${moduleId} render empty in Field Update. Z18 one action per type per delay (gap stays).
+- New FINDING: B2 Trigger column internal field names + "1 days"; B11 raw-id toast; C4/C7 length limits only at save (200 / 2000); E9 unused condition silently ignored ("1 and 2" with 3 rows); F9/F12 raw server texts ("Actions[0].TaskTitle…"); I30 happiness email "Succeeded" while ratings off.
+- B-3 FIXED (Happiness Email in New Action). I19, I20 (Cancelled with clear reason), I21 PASS. Audit log side notes: "User a7a7a7a7", "&lt;img" double-escaped, ticket named by contact email.
+- Blocked / not run with reasons: A2, A10, D6, E5, F21, I9 (agent invite never accepted), I10 moved, I29, J5, J6, O5, O12, O13, P22, Z23–Z25, Z27, E2E-1..6 (Part C; E2E-6 needs the old-rule cleanup).
+- Cleanup: today's ledger + screen-made rules/actions deleted (clean12.js, clean12b.js); happiness restored (no diff) and Dept A private (b8.js). Bulk delete of the ~60 11 Nov "QA AO WF" rules was REFUSED by the auto-mode check → user OK needed.
+- Report: report-progress.html (A4 250/274 with a result; section "Not run / why").
+
+- 12 Nov 16:00 (user OK): deleted 57 "QA AO WF" rules (55 active) + 1 saved action (a4/clean11.js). E2E-6 PASS (a4/e2e6.js): baseline 50 rules / 8 actions intact; 3 extra inactive Java leftovers QA 2206 Date-Time 747251, QA 2205 On Edit control On Create 982741, QA 2205 On Edit 6985 — not deleted, asked user.
+- 12 Nov 16:10 (user OK): 3 Java leftovers deleted (a4/clean11b.js); E2E-6 rerun: 50/50 rules, 8/8 actions, no extra.
+- 12 Nov 16:30: bug-only report report-workflow-bugs.html (scripts/build-workflow-bugs-report.js, images evidence/a4-bugs/): WF-01..WF-14 (O4, O1, G4, G5, M6, F18, I30, E9, L1, F9/F12, C4/C7, B11, B2, Z18) + old B-1, B-2, B-4..B-9. Nothing filed.
+- 12 Nov 17:30: workflow bugs compared with Zoho Desk (live techsolutionsegypt via scripts/zd-server-8894.js, nothing saved; Zoho rules list still empty) + help.zoho.com. DIFFERS: WF-06 F18, WF-08 E9 ("Numbers in this pattern do not match with the numbers used in the Criteria Editor"), WF-11 name (Zoho maxlength 50), WF-13 B2, WF-14 Z18 (10 alerts/tasks/field updates), B-2 (Zoho field update offers 14 editable fields only). BUG no Zoho equiv: WF-01..04, WF-07, B-1, B-8. NO ZOHO (TAVI-only): WF-05, 09, 10, 12, B-4, B-6, B-7, B-9. WITHDRAW: B-5. Report report-workflow-bugs.html updated (Zoho-based expected results).
+
+## 12 Nov 17:30 — progress report updated with Zoho comparison
+- report-progress.html: new section "Workflow bugs vs Zoho Desk" (6 differ, 7 bugs no Zoho equivalent, 8 TAVI-only, B-5 withdrawn), link to report-workflow-bugs.html, row notes E9/C4/B2/F18/Z18/R2 carry Zoho behaviour, R5 (B-5) → PASS withdrawn. A4 now PASS 204, FAIL 21.
+
+## 12 Nov 17:50 — findings report
+- report-workflow-findings.html (scripts/build-workflow-findings-report.js): 10 cards covering the 14 FINDING rows (O1, E9, L1, F9/F12, C4/C7, B11, B2, I30, P18=Z19, C3/P25=Z28). vs Zoho: 3 differ, 2 bugs no equivalent, 3 TAVI-only, 2 not checked (P18, C3). Linked from report-progress.html.
+
+## 12 Nov 18:40 — C3 checked in Zoho (user OK)
+- Zoho techsolutionsegypt, dept Tech: contact notification "Closing a ticket" (email) turned ON. #184 closed by agent (API status=Closed) -> NotificationSent "Acknowledge Contact when the Ticket is closed". Rule "QA C3 close by workflow" (Create, later Create+Edit; Subject contains QA C3 WF; Field Update "QA C3 set Closed" Status=Closed): #185 (create) and #186 (edit) closed by workflow -> NO notification; history "Ticket was updated through a Workflow Rule / Rule Name / Assignment Name / Status changed from Open to Closed".
+- Verdict C3: missing closed mail = same as Zoho (not a bug). DIFFERS only in history (TAVI "Workflow rule ran", no status line). FN-16 now Low / DIFFERS.
+- Cleanup: rule deleted (204), field update deleted, tickets #184-186 + contact QA C3 Contact moved to Zoho trash, notification turned back OFF (Updated Successfully). Evidence: evidence/a4-bugs/C3-zoho-workflow-close-no-mail.png, C3-zoho-manual-close-mail-sent.png.
+
+## 12 Nov 18:55 — Plane drafts report
+- report-workflow-plane-drafts.html (scripts/build-workflow-plane-drafts.js): 14 drafts D-01..D-14 (7 differ from Zoho, 7 bugs). Not filed; waiting for user review. 12 still need an image made (or combined TAVI vs Zoho) before filing; D-13 is API-only (text, no image).
+
+## 12 Nov 19:30 — Workflow bugs filed (user OK)
+- Evidence rerun on staging (a4/ev1.js, ev2.js, screen ev1-ev5): F18, C3, O4, I30, I25, API-T3, G4, C4 reproduced; Z18 now only Field Update (two Tasks allowed); B-2 only via API (editor hides Created By); C3 history now shows status change + rule -> D-07 dropped (not filed).
+- Images: scripts/build-wf-annotations.js -> evidence/annotated/WF-*.png (specs in evidence/specs/D-*.json); API panels scripts/render-text-panels.js.
+- Filed (scripts/file-wf-bugs.js, out plane-filed-workflow.json): NDC-2948 (E9), 2951 (Z18), 2953 (B-2 API), 2955 (C4), 2958 (F18), 2961 (B2), 2962 (O4 High), 2963 (O1 High), 2964 (G4 High), 2965 (G5), 2966 (I30), 2967 (API-T3 High), 2968 (I25). Bug state, Desk module, Sprint 15, labels Workflow Rules + Automation Execution Order, NDC-2811 assignees, 1 image each. Read back OK.
+- Cleanup (a4/clean-ev.js): 10 rules, 6 tickets, 1 call deleted; rules = 50 (baseline), no QA AO WF left.

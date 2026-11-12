@@ -1,0 +1,1 @@
+async (page) => { await page.getByRole('button', { name: /^Continue$/ }).click(); await sleep(4000); return { msgs: ((await bodyText()).match(/[^.]{0,40}(saved|not one of|invalid|required|could not)[^.]{0,100}/gi) || []).slice(0, 3), err: await errs() }; }

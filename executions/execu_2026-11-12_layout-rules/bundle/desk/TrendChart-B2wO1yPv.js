@@ -1,0 +1,1 @@
+import{h as e}from"./react-vendor-2tVcgncM.js";import{t}from"./LineChart-DsY-5uUk.js";var n=e();function r({result:e}){return(0,n.jsx)(t,{result:e,variant:`line`,frame:!1,scrollBody:!0,animate:!1,compact:!0})}export{r as TrendChart};

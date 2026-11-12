@@ -1,0 +1,33 @@
+- 2026-11-12T10:59:10 [crm] created fields qa_lr_type,qa_lr_tier,qa_lr_filter,qa_lr_order,qa_lr_note,qa_lr_reason,qa_lr_text,qa_lr_amount,qa_lr_vip,qa_lr_date,qa_lr_email2,qa_lr_tags,qa_lr_radio
+- 2026-11-12T10:59:21 [crm] created layout 3847cbd4-508c-4402-9602-e63a72a0f1d7
+- 2026-11-12T10:59:32 [desk] created fields qa_lr_type,qa_lr_tier,qa_lr_filter,qa_lr_order,qa_lr_note,qa_lr_reason,qa_lr_text,qa_lr_amount,qa_lr_vip,qa_lr_date,qa_lr_email2,qa_lr_tags
+- 2026-11-12T10:59:36 [desk] created layout e8eb01f2-214d-4ce1-9790-8d8a93c2e953
+- 2026-11-12T11:19:29 [desk] restored desk basic rule after low-priv account (Desk Admin) deleted it: 2da26090-3b68-40da-8f68-689eb137f444
+- 2026-11-12T11:29:23 [zoho-crm] created layout rule 'QA LR1112 zoho text primary' 7687862000000765004 on Leads Standard (org944965048)
+- 2026-11-12T11:29:56 [zoho-crm] created rules 7687862000000765012 (Annual_Revenue primary), 7687862000000765020 (Email primary) on Leads Standard
+- 2026-11-12T11:30:22 [zoho-crm] lead 7687862000000765035 'QA LR1112 z G4'; rule 7687862000000765029
+- 2026-11-12T11:30:32 [zoho-crm] rule 765029 deleted; rule 7687862000000765041 'QA LR1112 z industry' (Industry=ASP -> show+mandatory Fax)
+- 2026-11-12T11:30:43 [zoho-crm] lead 7687862000000765047 'QA LR1112 z api1'
+- 2026-11-12T11:32:18 [zoho-crm] lead 7687862000000765050 'QA LR1112 z E6'
+- 2026-11-12T13:33:42 [crm] record 963f561c-0bb1-4703-a7b2-605d3381f38f 'QA LR1112 rec E7' (E7); layout order required on/off (restored false)
+- 2026-11-12T13:34:22 [crm] records G20 ba43fedc-53bd-4478-bf8b-ad37460955ce / null
+- 2026-11-12T13:38:01 [crm] record G6 33f5145a-fe4a-4577-9193-ed613006abef
+- 2026-11-12T13:56:03 [crm] layout J7 254009f6-5e26-4ea2-88cd-766b0e6f9793
+- 2026-11-12T13:57:07 [crm] field permission qa_lr_order read_only for profile User id a0c9dc49-08e3-4ee5-8baf-ee2533336bfe
+- 2026-11-12T13:57:08 [crm] field permission qa_lr_date hidden for profile User id 22d2e5b5-36a1-4fa8-9892-7816bad38708
+- 2026-11-12T13:58:47 [crm] record H7 low fdbcd8f8 (created by Mahmoud Samy), owner set date/order for K9
+- 2026-11-12T14:01:08 [crm] record F9 c2d050f0-cef6-4226-952c-ac06ad1497c8
+- 2026-11-12T14:01:35 [crm] record F4 c1ea55b7-0710-4904-aa7b-1d376685a492
+- 2026-11-12T14:05:46 [crm] 40 rules 'QA LR1112 N2 0..39' created and deleted (N2); records F9, F4 c1ea55b7; field perms User profile on order/date
+- 2026-11-12T14:06:52 [crm] Tasks layout 70fc6ce7-8ccc-490d-a68c-44853725d191
+- 2026-11-12T14:06:52 [crm] Tasks rule 00c316d9-c00d-4e45-a218-6fb2b0628698
+- 2026-11-12T14:08:01 [crm] task 'QA LR1112 task G23' created (Tasks module) during G23 probe
+- 2026-11-12T14:09:05 [crm] import session 24b0ee6b-c4bc-491f-bce3-5376eaad67e0
+- 2026-11-12T14:09:57 [crm] workflow rule 3c4bb938-778f-4e21-ba63-87c780a545d9 (G13)
+- 2026-11-12T14:09:58 [crm] record wf G13 2de7582f-b1ef-4070-958c-388903ffad15
+- 2026-11-12T14:11:20 [crm] records F21 2ca6bc00-4cbd-4d73-9f0c-08805e783556 b0820d1f-bf72-4699-b121-0c2dbf0458a9
+- 2026-11-12T14:13:22 [desk] desk rule X1 97284081-ab16-4020-a7b5-453628d8584b
+- 2026-11-12T14:13:51 [desk] ticket 'QA LR1112 X1 ticket' created (first X1 try)
+- 2026-11-12T14:14:13 [desk] ticket 188090e0 'QA LR1112 X1 ticket2'; rule X1 on QA layout
+- 2026-11-12T14:14:22 [crm] crm rule X3 ad53b509-6d4f-469d-ad7f-97f8ca72c385
+- 2026-11-12T14:14:57 [crm] record e4e1c588 'QA LR1112 rec X3'

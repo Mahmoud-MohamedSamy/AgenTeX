@@ -278,3 +278,11 @@
 - 2026-11-11T15:03:11 A4 user round: QA AO Dept A Display in Help Center ON (was private)
 - 2026-11-11T15:03:11 A4 user round: Customer Happiness ON, scoped to QA AO Dept A only (restore from a4/u1-orig.json)
 - 2026-11-11T22:57:23 A4 O1 XSS payload rules deleted: {"QA AO WF O1 <img src=x":204,"QA AO WF O1nm <img src":204,"QA AO WF O1ds":204,"QA AO WF O1cm":204,"QA AO WF O1tk":204}
+- 2026-11-12T11:22:54 A4 user round cleanup: happiness restored 200 diff []; Dept A visibility 200 now private (original private)
+- 2026-11-12T11:23:41 A4 screen-run cleanup: {"rules":["QA AO WF C5 عربي 😀  204","QA AO WF C5 عربي 😀  204","QA AO WF G4 dbl 204","QA AO WF G4 dbl 204"],"actions":["QA AO WF K10 <img sr 204","QA AO WF K10 عربي 😀 204","QA AO WF K8 inactive 204"]}
+- 2026-11-12T11:31:28 A4 old-rule cleanup (user OK): {"totalBefore":110,"qaAoWf":57,"activeAmongThem":55,"rules":{"204":57},"actions":{"204":1},"after":{"total":53,"active":0,"qaAoWfLeft":0,"groups":["QA NDC ADM","QA NDC Ticket","QA NDC R1","QA NDC R2","QA NDC GDS","QA NDC Technical","QA NDC LCC","QA NDC Involuntary-Ancillary","QA NDC NDC","QA NDC Sohag","QA NDC menia","QA NDC Banisweif","QA NDC UAE","QA NDC Airline","QA NDC WTU"]}}
+- 2026-11-12T11:34:33 Java leftovers deleted (user OK): {"deleted":["QA 2206 Date-Time 747251 204","QA 2205 On Edit control On Create 982741 204","QA 2205 On Edit 6985 204"],"after":50}
+
+- 12 Nov ~18:00 Zoho techsolutionsegypt (user OK): Notification Rules, dept Tech, Contact "Closing a ticket" EMAIL toggle turned ON for C3 test. MUST turn back OFF.
+- 12 Nov 18:35 Zoho: "Closing a ticket" notification turned back OFF; C3 rule, field update deleted; tickets #184-186 + contact trashed.
+- 12 Nov 19:30 evidence run created+deleted: 10 rules (EV*), 6 tickets (#3160-3165), 1 Call; rules back to 50. Plane: NDC-2948..2968 (13) created.

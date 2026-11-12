@@ -1,0 +1,1 @@
+import{t as e}from"./dashboard-capabilities-DX44I_xf.js";var t={...e,galleryComponents:!0,recordViewComponent:!0,analyticsEmbedComponent:!0},n={...t,dashboardFavorites:!1,defaultDashboard:!1},r=n;export{r as n,n as r,t};

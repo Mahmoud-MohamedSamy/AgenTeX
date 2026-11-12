@@ -1,0 +1,1 @@
+var e=`{{happiness.link}}`;export{e as t};

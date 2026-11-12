@@ -1,0 +1,1 @@
+function e(e){return/contact/i.test(e??``)?`contact`:`account`}export{e as t};

@@ -1,0 +1,1 @@
+function e(e){let t=e.error;if(!t||t.code!==`PIPELINE_VALIDATION_FAILED`&&t.code!==`RECORD_VALIDATION_FAILED`)return null;let n={};for(let e of t.details??[]){let t=e,r=t.path??t.field;r&&t.message&&(n[r]=t.message)}return{code:t.code,message:t.message,byPath:n}}export{e as t};

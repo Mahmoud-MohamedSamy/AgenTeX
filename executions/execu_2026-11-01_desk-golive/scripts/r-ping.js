@@ -1,0 +1,1 @@
+const o = {}; o.ticket = (await api('GET', '/desk/tickets/f2fa192d-843d-4deb-b967-7383e71e882f')).s; o.sig = (await api('GET', '/mail/signatures/me')).t.slice(0, 160); o.replies = (await api('GET', '/desk/tickets/9804a4f1-b4d3-4b76-8638-3837001ceedc/replies')).s; return done(o);

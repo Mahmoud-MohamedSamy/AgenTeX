@@ -1,0 +1,1 @@
+import{i as e}from"./rolldown-runtime-DWdDZTNf.js";import{b as t}from"./dnd-kit-DwRl-dS8.js";import{g as n}from"./react-vendor-2tVcgncM.js";import"./index-mv9lGE1X.js";import{r}from"./crm-markers-BeiDWy8X.js";var i=e(t(),1);function a(){let{t:e}=n(`crm-desk-integration`);return(0,i.useMemo)(()=>r.map(t=>({value:t,label:e(`syncStatus.${t}`)})),[e])}export{a as t};

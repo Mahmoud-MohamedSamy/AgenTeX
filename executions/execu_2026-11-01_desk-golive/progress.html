@@ -1,0 +1,316 @@
+<title>Desk Go-Live Progress</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600&display=swap">
+<style>
+/* Layout: one column read top-down: where we are now → waves → what is waiting on you → Wave 2 detail → filed tickets. */
+:root{
+  --bg:#f4f6f8;--panel:#ffffff;--fg:#18212d;--muted:#5a6473;--line:#dce1e8;--accent:#1d6b8f;--accent-bg:#e2f0f6;--code:#edf1f5;
+  --ok:#1d7a4b;--ok-bg:#e1f3e8;--bad:#b3262f;--bad-bg:#fbe3e4;--warn:#946000;--warn-bg:#faefd6;--todo:#4b5565;--todo-bg:#e9ecf1;
+  --display:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11161c;--panel:#192029;--fg:#e3e8ee;--muted:#98a2b1;--line:#2b3440;--accent:#6cc0e4;--accent-bg:#173342;--code:#212a35;
+  --ok:#6dd4a0;--ok-bg:#15352a;--bad:#ff8d94;--bad-bg:#3c1c21;--warn:#f0c062;--warn-bg:#3a2f15;--todo:#b4bdca;--todo-bg:#252d38;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11161c;--panel:#192029;--fg:#e3e8ee;--muted:#98a2b1;--line:#2b3440;--accent:#6cc0e4;--accent-bg:#173342;--code:#212a35;
+  --ok:#6dd4a0;--ok-bg:#15352a;--bad:#ff8d94;--bad-bg:#3c1c21;--warn:#f0c062;--warn-bg:#3a2f15;--todo:#b4bdca;--todo-bg:#252d38;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body)}
+.wrap{max-width:1120px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+.wrap>*{min-width:0}
+h1{font:600 clamp(26px,3.6vw,36px)/1.1 var(--display);margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font:600 20px/1.25 var(--display);margin:0 0 12px;text-wrap:balance}
+h3{font:600 15px/1.35 var(--body);margin:0}
+p{margin:0;max-width:78ch}
+.meta{color:var(--muted);font-size:14px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+code{font-family:var(--mono);font-size:12.5px;background:var(--code);border-radius:4px;padding:1px 5px}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.head{display:grid;gap:8px}
+.now{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 22px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.now>div{display:grid;gap:4px;align-content:start;min-width:0}
+.now b.big{font:600 18px/1.3 var(--display)}
+/* waves */
+.waves{display:grid;gap:10px}
+.wave{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px;display:grid;grid-template-columns:44px 1fr auto;gap:6px 16px;align-items:center}
+.wave .n{font:600 26px/1 var(--display);color:var(--muted);font-variant-numeric:tabular-nums}
+.wave .body{display:grid;gap:4px;min-width:0}
+.wave .scope{color:var(--muted);font-size:13.5px}
+.meter{grid-column:2/4;height:8px;border-radius:999px;background:var(--todo-bg);overflow:hidden;display:flex}
+.meter span{display:block;height:100%}
+.pill{font-size:12.5px;font-weight:600;border-radius:999px;padding:2px 11px;white-space:nowrap}
+.p-done{background:var(--ok-bg);color:var(--ok)}.p-paused{background:var(--warn-bg);color:var(--warn)}.p-wait{background:var(--todo-bg);color:var(--todo)}
+@media (max-width:560px){.wave{grid-template-columns:34px 1fr}.wave .pill{grid-column:2;justify-self:start}.meter{grid-column:1/3}}
+/* boxes */
+.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 22px}
+.box ul,.box ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.you{border-color:var(--accent);background:linear-gradient(var(--accent-bg),var(--accent-bg)) padding-box}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.grid2>*{min-width:0}
+/* tiles */
+.tiles{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;display:grid;min-width:104px}
+.tile b{font:500 22px var(--mono);font-variant-numeric:tabular-nums}.tile span{font-size:12.5px;color:var(--muted)}
+.tile.pass b{color:var(--ok)}.tile.fail b{color:var(--bad)}.tile.check b{color:var(--warn)}.tile.todo b{color:var(--todo)}.tile.blocked b{color:var(--warn)}
+/* candidates */
+.cands{display:grid;gap:10px}
+.cand{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:8px;padding:12px 16px;display:grid;gap:4px}
+.cand.recheck{border-left-color:var(--warn)}
+.cand header{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.cand .id{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.cand p{font-size:14px;color:var(--muted)}
+/* table */
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.bar button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:4px 12px;cursor:pointer}
+.bar button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.tbl{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding:8px 12px}
+td{border-bottom:1px solid var(--line);padding:8px 12px;vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);white-space:nowrap;font-size:12.5px}
+.v{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:500;white-space:nowrap}
+.v.pass{background:var(--ok-bg);color:var(--ok)}.v.fail{background:var(--bad-bg);color:var(--bad)}.v.check{background:var(--warn-bg);color:var(--warn)}.v.todo{background:var(--todo-bg);color:var(--todo)}.v.blocked{background:var(--warn-bg);color:var(--warn);outline:1px dashed var(--warn)}
+.filed{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.filed li{display:grid;grid-template-columns:92px 1fr;gap:10px}
+.filed .k{font-family:var(--mono);font-size:13px}
+.log{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.log li{display:grid;grid-template-columns:96px 1fr;gap:12px}
+.log time{font-family:var(--mono);font-size:12.5px;color:var(--muted);padding-top:2px}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <span class="eyebrow">TAVI Desk vs Zoho Desk · NDC-Staging (Wonder Travel)</span>
+    <h1>Desk go-live retest: progress</h1>
+    <p class="meta">Page updated 12 Nov 2026, about 15:20. NDC-Staging was down about 13:30–15:00 and is back; our test tickets survived. Wave 2 resumed today on NDC-Staging with fresh test tickets (#3105–#3120); the 2 Nov tickets had been deleted by someone in the meantime.</p>
+  </header>
+
+  <section class="now" aria-label="Where we are">
+    <div><span class="eyebrow">Now</span><b class="big">Wave 2: all 85 cases run</b><p class="meta">72 pass, 13 bug cases (9 candidates), nothing blocked. Zoho checked through its screens (read-only) and help docs.</p></div>
+    <div><span class="eyebrow">Next step</span><b class="big">Two answers from you</b><p class="meta">The split-test email (W2-40) and one look at the mmohamed@ inbox (C11). Then annotated images, cleanup and your review.</p></div>
+    <div><span class="eyebrow">Filed so far</span><b class="big">5 tickets, 2 retests closed</b><p class="meta">NDC-2760 gap list, NDC-2776..2779 bugs; NDC-2303 and NDC-2387 moved to Done.</p></div>
+  </section>
+
+  <section>
+    <h2>Waves</h2>
+    <div class="waves" id="waves"></div>
+  </section>
+
+  <section class="box you">
+    <h2>Waiting on you</h2>
+    <ul>
+      <li><b>One mistake to know about (12 Nov, about 11:50 Cairo time).</b> My delete-forever step searched the Recycle Bin for my own ticket, the search ignored the name, and the script purged the first item in the bin. That item had been deleted between 11:43 and 11:50 today, next to other QA test items ("QA AO", "QA WF"), so it was almost certainly QA data, but it cannot be recovered or named. The script now purges only an exact match.</li>
+      
+      <li><b>W2-40 done (15:49): pass.</b> Thanks for the two emails. Original request was: from mmohamed@anyware.software to customer-support@help-staging.anyware.software, subject "QA GL W2 split test", two short paragraphs.</li>
+      <li><b>C11 signature: confirmed bug</b> (your two emails, 12:05 and 15:16, both lack the saved signature line). Nothing more needed from you. Now running: annotated TAVI-vs-Zoho images, then cleanup of all Wave 2 test data.</li>
+      <li><b>Wave 2 report ready for your review (Gate 2):</b> <a href="https://claude.ai/artifact/HLR3cUFiurVcERXDaP3mdC">Wave 2 report</a>. 9 bug drafts with suggested severity; C10 needs your decision. Images are added to it as they are finished.</li>
+      <li>Bug candidates below are <b>not filed</b>. You review them before anything goes to Plane.</li>
+      <li>NDC-2305 passed on 1 Nov. I will comment and move it to Done once it reaches Ready For Test.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Wave 2 · Ticket daily work</h2>
+    <p class="meta" style="margin-bottom:12px">85 cases, department Marketing, owner (A) plus agent B (Desk Admin, Marketing) and agent C (Desk Agent, Customer Support only). Approved at Gate 1 on 2 Nov.</p>
+    <div class="tiles" id="tiles"></div>
+    <div class="grid2">
+      <div class="box">
+        <h3 style="margin-bottom:10px">Left to do</h3>
+        <ul>
+          <li>Done 12 Nov: Zoho checks from screens and docs. C3 and C12 withdrawn (Zoho behaves the same). W2-19 became C13.</li>
+          <li>Done 12 Nov: live Zoho check for C2 (Zoho ticket #183, deleted after; left in the Zoho Recycle Bin to expire). C10 cannot be tested with one admin account.</li>
+          <li>W2-40 split, once an incoming email exists.</li>
+          <li>Annotated TAVI-vs-Zoho image for each confirmed bug.</li>
+          <li>Clean up all QA GL W2 data and check nothing else changed.</li>
+          <li>Wave 2 report, then your review (Gate 2).</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3 style="margin-bottom:10px">Test data live now</h3>
+        <ul>
+          <li>Tickets #3105, #3106 (assigned to B), #3107 (shared read-only with Customer Support), #3108 (Customer Support), #3119, #3120 (Marketing). #3109 was deleted forever as part of W2-45.</li>
+          <li>#794 and the ticket template and snippet <code>qa_gl_w2</code> from 2 Nov. The other 2 Nov tickets, macro, tag and view are already gone.</li>
+          <li>A rejected review draft on #3106. The test signature was removed.</li>
+          <li>Ids in <code>wave2/raw-ndc/r-ids.json</code> and <code>r-a3.json</code>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Wave 2 bug candidates (not filed)</h2>
+    <div class="cands" id="cands"></div>
+  </section>
+
+  <section>
+    <h2>Wave 2 cases</h2>
+    <div class="bar" role="group" aria-label="Filter by result" id="bar"></div>
+    <div class="tbl"><table><thead><tr><th>Case</th><th>What</th><th>Result</th><th>Notes</th></tr></thead><tbody id="tb"></tbody></table></div>
+  </section>
+
+  <div class="grid2">
+    <section class="box">
+      <h2>Filed in Plane</h2>
+      <ul class="filed">
+        <li><span class="k">NDC-2760</span><span>Gap list: 14 features Zoho Desk has that Desk is missing (Backlog, High)</span></li>
+        <li><span class="k">NDC-2776</span><span>W1-B1 Company profile: long phone gives a server error (Low)</span></li>
+        <li><span class="k">NDC-2777</span><span>W1-B2 Departments: stale save undoes another admin's change (Medium)</span></li>
+        <li><span class="k">NDC-2778</span><span>W1-B3 Agents: inviting an active user's email makes a 2nd pending user (Medium)</span></li>
+        <li><span class="k">NDC-2779</span><span>W1-B4 Audit log: "time zone blank → UTC" when unchanged (Low)</span></li>
+        <li><span class="k">NDC-2303</span><span>Retest passed → Done</span></li>
+        <li><span class="k">NDC-2387</span><span>Retest passed → Done</span></li>
+      </ul>
+      <p class="meta" style="margin-top:10px">All bugs: state Bug, module Desk, Sprint 14, 4 assignees, annotated TAVI-vs-Zoho image.</p>
+    </section>
+    <section class="box">
+      <h2>Log</h2>
+      <ul class="log">
+        <li><time>1 Nov</time><span>Started. Inventory of 131 Desk features against Zoho (82 built, 20 partly, 16 missing).</span></li>
+        <li><time>1–2 Nov</time><span>Wave 1 on Anyware-Staging: 62 cases, 47 pass.</span></li>
+        <li><time>2 Nov</time><span>You moved testing to NDC-Staging. Wave 1 open cases rerun there: all pass. Wave 1 closed, 5 tickets filed.</span></li>
+        <li><time>2 Nov</time><span>Wave 2 started on NDC-Staging; paused by you about 14:20.</span></li>
+        <li><time>12 Nov</time><span>Progress page created. Wave 2 resumed: scripts moved to this machine, accounts signed in once each, fresh test tickets. 16 cases closed; C8 and C9 turned out to be test-script errors and were withdrawn; C10–C12 added.</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="box">
+    <h2>Links</h2>
+    <ul>
+      <li><a href="https://claude.ai/artifact/WhGLBEnM96aMy7NBf98yF4">Feature inventory (131 features)</a></li>
+      <li><a href="https://claude.ai/artifact/Ek3WG4cnizUKRHgHkR4VrM">Missing and partly built features (36)</a></li>
+      <li><a href="https://claude.ai/artifact/TqBi5o3ZRsWA52qAFdDj1f">Wave 1 report</a></li>
+      <li>Run folder: <code>executions/execu_2026-11-01_desk-golive/</code> (status in <code>PROGRESS.md</code>)</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+/* ---- data: edit these lists to update the page ---- */
+const WAVES = [
+  {n:1, name:"Organisation & access", scope:"Company, departments, business hours, agents, roles, profiles, audit log · O-01..O-05, A-01..A-09, Q-04", status:"done", label:"Done 2 Nov", pass:62, fail:0, check:0, todo:0, note:"62 cases. All pass after the NDC rerun; 4 bugs filed."},
+  {n:2, name:"Ticket daily work", scope:"Views, create, reply, comments, assign, status, merge, split, approvals, time, AI · T-01..T-40, Q-03", status:"paused", label:"Paused 2 Nov", auto:true},
+  {n:3, name:"Automation", scope:"Workflows, assignment, SLA, blueprints, macros run by rules · U-*", status:"wait", label:"Not started"},
+  {n:4, name:"Channels & self service", scope:"Email, web forms, help center, community · N-*, O-08, T-37", status:"wait", label:"Not started"},
+  {n:5, name:"Customers, data, insight, customization, integrations", scope:"Contacts, accounts, import/export, reports, fields, layouts, CRM link · C-*, I-*, D-*, X-*, G-*, Q-*", status:"wait", label:"Not started"}
+];
+/* result: pass | fail (bug candidate) | check (open check) | todo (not run yet) */
+const CASES = [
+ ["W2-01","System views with counts","pass","All, My, Open, On Hold, Escalated, Closed views listed with counts."],
+ ["W2-02","Custom view create, clone, delete","pass","Created, cloned, clone deleted; duplicate name refused (409). Original view still live."],
+ ["W2-03","Star / pin a view","pass","Pin and unpin both work."],
+ ["W2-04","Filter and sort the list","pass","12 Nov: list filtered by \"QA GL W2\" returns only QA tickets, newest first."],
+ ["W2-05","View modes","pass","Classic, Compact, Table, Handshake and a kanban custom view render."],
+ ["W2-06","Agent Queue","pass","Owner listed with 12 tickets."],
+ ["W2-07","Team Queue","pass","Team lanes load."],
+ ["W2-08","Tags page","pass","Tag list with counts."],
+ ["W2-09","Create by API","pass","201, numbers #781–#791 assigned."],
+ ["W2-10","Create without required fields","pass","Missing subject, missing status, bad priority: 422 with field errors."],
+ ["W2-11","Create on screen","pass","#794 created, no \"Permission denied\" (NDC-2661)."],
+ ["W2-12","Ticket number","pass","Default series, no prefix, in order."],
+ ["W2-13","Ticket template","pass","12 Nov: picking the template on the create form fills subject \"QA GL W2 from template\" and priority Low."],
+ ["W2-14","HTML in the subject","pass","Stored and shown as text; no script ran."],
+ ["W2-15","Ticket detail page","pass","Header, properties and all 8 tabs present."],
+ ["W2-16","Edit subject, priority, due date","pass","Saved; history rows added."],
+ ["W2-17","History tab","fail","\"Followers was updated\" shows a raw user-id list. See C1."],
+ ["W2-18","Reply","pass","Sent to the contact; shows as sent."],
+ ["W2-19","Reply all with CC","fail","CC kept on the reply, but \"Copied addresses\" stays empty. Zoho adds a CC from a reply to the ticket's CC list. See C13."],
+ ["W2-20","Forward","pass","Sent as forward."],
+ ["W2-21","Reply validation","pass","Bad address and empty body refused (400)."],
+ ["W2-22","Private comment add, edit, delete","pass","All work."],
+ ["W2-23","Mention in a comment","pass","Mention chip saved and shown."],
+ ["W2-24","Pin a comment","pass","Pin and unpin work."],
+ ["W2-25","Reply draft","pass","Draft saved and restored (NDC-2644)."],
+ ["W2-26","Scheduled reply","pass","Scheduled on an email ticket, listed, cancelled. Phone ticket and past time refused."],
+ ["W2-27","Snippet with placeholders","fail","Placeholders resolve, but #{{ticket_number}} gives \"##781\". See C7."],
+ ["W2-28","Email templates in the composer","pass","Templates listed."],
+ ["W2-29","KB article suggestions","pass","\"No article matches this subject\" (NDC-2636 message fixed)."],
+ ["W2-30","Signature on reply","fail","12 Nov: signature saved, but it is not in the reply composer and not in the stored reply. See C11."],
+ ["W2-31","Assign owner","pass","Assign to B, unassign work; agent C refused (not in the department)."],
+ ["W2-32","Pick up","pass","Owner becomes me."],
+ ["W2-33","Status flow","pass","Open → On Hold → Closed → reopened."],
+ ["W2-34","Bad status","pass","\"Bogus\" refused (422)."],
+ ["W2-35","Move department","fail","Move to Sales and back works, but the owner is cleared. See C6."],
+ ["W2-36","Share with a department","pass","Read only, full, unshare work; own department refused."],
+ ["W2-37","Agent C reads a shared ticket","pass","C sees \"Read-only for you\"; reply, edit and close refused (403); private comment allowed, same as Zoho read-only sharing."],
+ ["W2-38","Merge","pass","Child closed and points to the master; merge into itself refused."],
+ ["W2-39","Unmerge","pass","Child back as its own Open ticket."],
+ ["W2-40","Split a message","pass","12 Nov: your email became #3159; your reply to it was split on screen (message menu \"Split as New Ticket\") into #3166, same contact and department; the message moved off #3159. Split is offered only on later incoming messages: the opening message and agent replies are refused (409), same as Zoho. Both tickets deleted."],
+ ["W2-41","Clone","pass","#793 \"QA GL W2 child 2 (Clone)\" created with the same fields."],
+ ["W2-42","Parent and child","pass","Link, unlink work; self-parent and child-of-child refused."],
+ ["W2-43","Spam","pass","Mark spam and not spam work."],
+ ["W2-44","Delete and restore","pass","Gone after delete, restored intact."],
+ ["W2-45","Delete forever","pass","12 Nov: deleted, then deleted forever from the Recycle Bin; restore then fails (gone). NDC-2248 looks fixed."],
+ ["W2-46","Tags on a ticket","pass","Add and remove work; short and HTML names refused."],
+ ["W2-47","Follow","pass","Follow and unfollow work."],
+ ["W2-48","Attachment","pass","Uploaded, listed with size, deleted."],
+ ["W2-49","Attachment limits","pass","12 Nov: a 30 MB file is refused on screen: \"Each file can be at most 16 MB.\" The API upload is refused too (413)."],
+ ["W2-50","Viewer heartbeat","pass","Heartbeat works."],
+ ["W2-51","Collision warning","pass","\"mahmoud.mahamed1515 is also viewing this ticket\" shown to the owner."],
+ ["W2-52","Timer","pass","Start, pause, resume, stop add a time entry."],
+ ["W2-53","Manual time entry","pass","Add, edit, total updates."],
+ ["W2-54","Bad time entry","pass","Negative and over 24 h refused."],
+ ["W2-55","Approval request and cancel","pass","Request and cancel work. Approver outside the department is accepted; Zoho does not limit approvers to the department either."],
+ ["W2-56","Agent B approves / rejects","pass","12 Nov: B approved one request and rejected the other on screen, each on its own card."],
+ ["W2-57","Review before send, withdraw","pass","Submitted, withdrawn, nothing sent."],
+ ["W2-58","Agent B decides reviews","pass","12 Nov: B approved one review (reply sent) and rejected the other (shows rejected with B's note)."],
+ ["W2-59","Resolution","pass","Save, edit, delete; empty refused."],
+ ["W2-60","Print","pass","Print preview with options."],
+ ["W2-61","Bulk update","pass","Priority changed on 2 tickets."],
+ ["W2-62","Bulk assign and close","pass","Both tickets assigned to B and closed."],
+ ["W2-63","Archive","fail","An Open ticket can be archived and then leaves All Tickets. See C4."],
+ ["W2-64","Ticket number setup page","pass","12 Nov: Ticket Number page shows the default format (next #3130) and the department series section."],
+ ["W2-65","Macro","pass","Status set to On Hold and comment added."],
+ ["W2-66","SLA panel","pass","\"No SLA applies to this ticket.\""],
+ ["W2-67","AI summary","fail","404; screen shows \"Something went wrong\". See C5."],
+ ["W2-68","AI triage","fail","404. See C5."],
+ ["W2-69","AI reply suggestions, draft assist","fail","404. See C5."],
+ ["W2-70","Translate message","fail","404. See C5."],
+ ["W2-71","Global search","pass","Found by subject and by number."],
+ ["W2-72","Shift+C opens comment","fail","Opens, but filled with the reply draft. See C2."],
+ ["W2-73","Notifications bell","pass","12 Nov: bell lists notifications with All, Unread, Flagged and @Mentions tabs and Mark all read."],
+ ["W2-74","Mention notification for B","pass","12 Nov: a mention made on screen shows in B's @Mentions tab (\"You were mentioned on ticket #3105\")."],
+ ["W2-75","Assigned-to-you notification","pass","B got \"Ticket #781 assigned to you\"."],
+ ["W2-76","Agent C cannot read Marketing ticket","fail","12 Nov: C (Customer Support only) can open Marketing ticket #3105 and its comments because B owns it. See C10."],
+ ["W2-77","Agent C sees no hidden actions","pass","12 Nov: C cannot delete (403), share (403) or move a Customer Support ticket; with Tickets set to Private, C does not see unassigned tickets."],
+ ["W2-78","Arabic / RTL","pass","Arabic labels, right to left, no raw keys."],
+ ["W2-79","Keyboard focus","pass","Logical tab order, focus ring on every stop."],
+ ["W2-80","HTML in a comment","pass","Script not run; bold shown."],
+ ["W2-81","Unknown ticket id","pass","404, no data."],
+ ["W2-82","Two stale saves","pass","Second one refused (409 version conflict)."],
+ ["W2-83","List speed","pass","12 Nov: list API 0.1 to 1.1 s on staging; within the staging allowance."],
+ ["W2-84","Workflow side effects","pass","No tasks, tags or records made by tenant rules for QA tickets."],
+ ["W2-85","Agent C list scope","fail","12 Nov: C's list for \"QA GL W2\" includes Marketing tickets #3105 and #3106 (owned by B, not shared). See C10."]
+];
+const CANDS = [
+ {"id":"C1","t":"History shows \"Followers was updated\" with a raw user-id list","d":"Old [\"97be04b6-…\"] New blank, instead of the follower's name. Raw ids on screen are a bug on their own; Zoho logs follower events by name.","c":"W2-17","k":"bug"},
+ {"id":"C4","t":"An Open ticket can be archived and drops out of All Tickets","d":"Zoho: \"A ticket must be in closed state for 120 days\" and \"Tickets cannot be archived manually\". Zoho has no Archive on open or closed tickets (checked on screen).","c":"W2-63","k":"zoho"},
+ {"id":"C5","t":"AI summary, triage, suggestions, draft assist and translate all return 404","d":"The AI panel shows \"Something went wrong. The AI request failed.\" Broken on its own, whatever Zoho does.","c":"W2-67..70","k":"bug"},
+ {"id":"C6","t":"Moving a ticket to a department the owner belongs to clears the owner","d":"Owner is a member of Sales, yet the move to Sales left the ticket unassigned. Zoho keeps the owner when they are in the target department (Zoho staff answer in the Zoho community).","c":"W2-35","k":"zoho"},
+ {"id":"C7","t":"Snippet ticket-number placeholder adds its own #","d":"\"ticket #{{ticket_number}}\" becomes \"ticket ##781\". Zoho's ${Cases.Request Id} gives the number only (docs example \"support ticket number 116\").","c":"W2-27","k":"zoho"},
+ {"id":"C13","t":"A CC added on a reply is not kept on the ticket","d":"Reply all with CC sends to the CC, but \"Copied addresses\" still says nobody is copied. Zoho adds a CC from the reply to the ticket's CC (secondary contacts).","c":"W2-19","k":"zoho"},
+ {"id":"C2","t":"A saved reply draft fills the comment editor","d":"Shift+C or the comment icon opens the comment editor with the reply draft text in it. Zoho (live check 12 Nov, ticket #183): with a saved reply draft, the comment editor opens empty and the draft stays separate.","c":"W2-72","k":"zoho"},
+ {"id":"C10","t":"An agent can read tickets of a department they are not in, when a lower-role agent owns them","d":"Tickets sharing is Private. Agent C (Customer Support only) opens and lists Marketing tickets owned by agent B, but no other Marketing tickets. Zoho docs: Private gives \"the ticket owner and their manager\" access, silent on departments. Cannot be tested in Zoho with our single admin account (admins see everything).","c":"W2-76, W2-85","k":"live"},
+ {"id":"C11","t":"The agent signature is not added to replies","d":"Signature saved under My signatures. It is not in the reply composer or in the stored sent reply. Confirmed by both delivered emails (12:05 and 15:16): they end with a company block (Wonder Travel, phone, address, website, sender name and email) but not the saved signature text. Zoho adds the agent's own signature to outgoing replies (docs).","c":"W2-30","k":"zoho"}
+];
+/* ---- render ---- */
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const cnt=CASES.reduce((m,r)=>(m[r[2]]++,m),{pass:0,fail:0,check:0,blocked:0,todo:0});
+const LBL={pass:"Pass",fail:"Bug candidate",check:"Open check",blocked:"Blocked",todo:"Not run"};
+document.getElementById("tiles").innerHTML=`<div class="tile"><b>${CASES.length}</b><span>cases</span></div>`+
+ ["pass","fail","check","blocked","todo"].map(k=>`<div class="tile ${k}"><b>${cnt[k]}</b><span>${LBL[k].toLowerCase()}</span></div>`).join("");
+const pct=(x,t)=>(100*x/t).toFixed(1)+"%";
+document.getElementById("waves").innerHTML=WAVES.map(w=>{
+  const c=w.auto?cnt:w; const tot=(c.pass||0)+(c.fail||0)+(c.check||0)+(c.todo||0);
+  const meter=tot?`<span style="width:${pct(c.pass,tot)};background:var(--ok)"></span><span style="width:${pct(c.fail,tot)};background:var(--bad)"></span><span style="width:${pct(c.check,tot)};background:var(--warn)"></span>`:"";
+  const sub=w.auto?`${CASES.length} cases: ${cnt.pass} pass, ${cnt.fail} bug candidates, ${cnt.check} open checks, ${cnt.blocked} blocked, ${cnt.todo} not run.`:(w.note||"");
+  return `<div class="wave"><span class="n">${w.n}</span><div class="body"><h3>${esc(w.name)}</h3><span class="scope">${esc(w.scope)}</span>${sub?`<span class="scope">${esc(sub)}</span>`:""}</div><span class="pill p-${w.status}">${esc(w.label)}</span><div class="meter" role="img" aria-label="${esc(sub||w.label)}">${meter}</div></div>`;
+}).join("");
+document.getElementById("cands").innerHTML=CANDS.map(x=>`<article class="cand${x.k==="live"?" recheck":""}"><header><span class="id">${x.id} · ${esc(x.c)}</span><h3>${esc(x.t)}</h3>${x.k==="zoho"?'<span class="v fail">Zoho differs</span>':x.k==="bug"?'<span class="v fail">broken</span>':'<span class="v check">needs live check</span>'}</header><p>${esc(x.d)}</p></article>`).join("");
+const bar=document.getElementById("bar"),tb=document.getElementById("tb");
+const filters=[["","All "+CASES.length],["fail","Bug candidates "+cnt.fail],["check","Open checks "+cnt.check],["blocked","Blocked "+cnt.blocked],["todo","Not run "+cnt.todo],["pass","Pass "+cnt.pass]];
+bar.innerHTML=filters.map(([f,l],i)=>`<button type="button" data-f="${f}" aria-pressed="${i===0}">${l}</button>`).join("");
+tb.innerHTML=CASES.map(r=>`<tr data-v="${r[2]}"><td class="id">${r[0]}</td><td>${esc(r[1])}</td><td><span class="v ${r[2]}">${LBL[r[2]]}</span></td><td>${esc(r[3])}</td></tr>`).join("");
+const btns=[...bar.querySelectorAll("button")],rows=[...tb.querySelectorAll("tr")];
+btns.forEach(b=>b.addEventListener("click",()=>{btns.forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));const f=b.dataset.f;rows.forEach(t=>t.hidden=!!f&&t.dataset.v!==f);}));
+</script>

@@ -1,0 +1,1 @@
+const mid = await modId(); const g = (await getRule(mid, I.c1)).j.data; return g.branches.map((b, i) => i + ' ' + JSON.stringify(b.condition).slice(0, 60) + ' => ' + b.actions.map(a => a.type + ':' + JSON.stringify(a.relatedLists || a.fields || a.sections)).join(' ; '));

@@ -1,0 +1,1 @@
+const mid = await modId(); const g = (await getRule(mid, I.x1)).j.data; g.branches = [br(eq('status', 'QA NDC Rejected'), [show(['qa_lr_note']), req(['qa_lr_note'])])]; return SR(await putRule(mid, I.x1, g)).slice(0, 200);

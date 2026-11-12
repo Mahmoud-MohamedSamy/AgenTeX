@@ -1,0 +1,1 @@
+async (page) => { const R = {}; await shot('crm-F4-aftersave'); const t = await bodyText(); R.hasSaveBtn = await page.getByRole('button', { name: /^Save$/ }).count(); R.err = await errs(); R.snip = t.slice(t.indexOf('QA LR1112 Main'), t.indexOf('QA LR1112 Main') + 400); return R; }

@@ -1,0 +1,1 @@
+import{h as e,p as t}from"./react-vendor-2tVcgncM.js";import{t as n}from"./desk-web-forms-host-DYZPuDIy.js";import{t as r}from"./WebFormPage-Bx0idZ8r.js";var i=e();function a(){let{formId:e}=t();return(0,i.jsx)(n,{children:(0,i.jsx)(r,{formId:e})})}export{a as AdvancedWebFormPage};

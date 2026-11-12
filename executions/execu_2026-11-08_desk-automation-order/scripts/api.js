@@ -3,8 +3,8 @@
 // scratchpad (never printed), so repeated runs don't sign the account in again. The script body gets api(method, path, body),
 // sleep(ms), arr(x), fs, log(...).
 const fs = require('fs'), path = require('path');
-const P = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation';
-const SD = 'C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/6cad98b2-9d2f-4e48-af44-1193bcd58c1a/scratchpad';
+const P = path.resolve(__dirname, '../../..');
+const SD = process.env.QA_TOKEN_DIR || path.join(require('os').tmpdir(), 'qa-tavi-tokens'); fs.mkdirSync(SD, { recursive: true });
 const API = 'https://staging-desk.taviportal.com/api/v1';
 const [label, file] = process.argv.slice(2);
 const store = path.join(SD, 'tok-' + label.replace(/[^a-z0-9]/gi, '_') + (process.env.LANE ? '_' + process.env.LANE : '') + '.json'); // LANE=x gives a parallel lane its own token store

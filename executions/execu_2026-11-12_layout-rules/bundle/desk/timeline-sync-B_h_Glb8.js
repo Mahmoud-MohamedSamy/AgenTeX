@@ -1,0 +1,1 @@
+import{$y as e}from"./index-mv9lGE1X.js";var t=[2500,8e3];function n(n){let r=()=>void n.invalidateQueries({queryKey:e.all});r();for(let e of t)setTimeout(r,e)}export{n as t};

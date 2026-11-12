@@ -1,0 +1,2 @@
+const mid = await modId(); const g = (await getRule(mid, I.c1)).j.data; const out = { last: JSON.stringify(g.branches[g.branches.length - 1]) };
+const a = await mkRec(mid, { first_name: P + ' rec F21 partner', qa_lr_type: 'Partner' }, I.layout); const b = await mkRec(mid, { first_name: P + ' rec F21 question', qa_lr_type: 'Question' }, I.layout); LED('records F21 ' + a.id + ' ' + b.id); out.recs = [a.id, b.id]; return out;

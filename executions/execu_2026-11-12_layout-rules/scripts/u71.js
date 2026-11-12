@@ -1,0 +1,1 @@
+async (page) => { await page.locator('button', { hasText: /^AR$/ }).first().click(); await sleep(800); await page.locator('[role=menuitem],[role=option],[role=menuitemradio]', { hasText: /English/ }).first().click(); await sleep(4000); return await page.evaluate(() => document.documentElement.dir || 'ltr'); }

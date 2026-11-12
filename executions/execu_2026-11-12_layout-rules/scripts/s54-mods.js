@@ -1,0 +1,1 @@
+const ms = arr((await api('GET', '/modules')).j.data); const out = {}; for (const m of ms) { const r = await api('GET', '/modules/' + m.id + '/layout-rules'); out[m.moduleKey] = m.id + ' ' + r.s + ' n=' + arr(r.j && r.j.data).length; } return out;

@@ -1,0 +1,1 @@
+async (page) => { const R = {}; await openRec('841043e1-c078-41f9-8d6e-dfd61bee45c3', 'fdbcd8f8-c6dd-45ff-9d51-89c1764c9a6b'); const t = await bodyText(); R.dateLabel = t.includes('QA LR1112 date'); R.dateVal = t.includes('2026') && /May|05\/2026|2026-05/.test(t); await shot('crm-K9'); return R; }

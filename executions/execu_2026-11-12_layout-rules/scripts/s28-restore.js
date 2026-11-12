@@ -1,0 +1,11 @@
+const mid = await modId(); const lid = I.layout; const out = {};
+const keep = JSON.parse(fs.readFileSync(RUN + '/out/layout-keep-' + APP + '.json', 'utf8'));
+const cur = await getLayout(mid, lid); for (const [k, v] of Object.entries(cur.views)) if (keep.views[k]) v.layout = keep.views[k].layout;
+for (const v of Object.values(cur.views)) for (const s of v.layout.sections) for (const c of s.columns) c.fields = c.fields.filter(f => f.fieldName !== 'qa_lr_tmp');
+const b = { ...cur }; delete b.id; if (APP === 'crm') for (const k of ['displayInHelpCenter', 'helpCenterDisplayName', 'departmentIds', 'defaultDepartmentIds', 'ticketStatuses', 'allowNonDepartmentAgents']) delete b[k];
+out.layout = SR(await api('PUT', '/modules/' + mid + '/layouts/' + lid, b)).slice(0, 200);
+const g = (await getRule(mid, I.c1)).j.data; g.branches[0].actions = g.branches[0].actions.filter(a => !(a.fields || []).includes('qa_lr_tmp'));
+out.basic = SR(await putRule(mid, I.c1, g)).slice(0, 150);
+const v = (await getRule(mid, I.r3)).j.data; out.vipOn = SR(await putRule(mid, I.r3, { ...v, status: 'active' })).slice(0, 150);
+out.after = (await rules(mid, '?layoutId=' + lid)).map(r => r.name + ' ' + r.status + ' err=' + (r.definitionError ? 'Y' : 'n'));
+return out;

@@ -1,0 +1,1 @@
+const r = await api('GET', '/iam/profiles?app_key=crm'); const u = arr(r.j?.data).find(p => p.name === 'User'); return Object.fromEntries(Object.entries(u || {}).map(([k, v]) => [k, typeof v === 'string' ? v.slice(0, 40) : typeof v]));

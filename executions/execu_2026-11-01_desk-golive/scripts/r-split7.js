@@ -1,0 +1,3 @@
+const o = { polls: [] };
+for (let i = 0; i < 14; i++) { const l = await api('GET', '/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records?limit=8&sort=-created_at'); const rows = arr(l.j && l.j.data).map(fl); const hit = rows.find(x => /split/i.test(x.subject || '')); o.polls.push([new Date().toISOString().slice(11, 19), rows[0] && rows[0].ticket_number]); if (hit) { o.hit = [hit.id, hit.ticket_number, hit.subject, hit.department_id, hit.channel]; const r = await api('GET', `/desk/tickets/${hit.id}/replies`); o.msgs = arr(r.j && r.j.data).map(m => [m.id, m.direction, m.subject, m.body_text, m.created_at]); const t = await api('GET', `/desk/tickets/${hit.id}`); o.ticket = t.s + ' ' + t.t.slice(0, 1500); break; } await sleep(25000); }
+return done(o);

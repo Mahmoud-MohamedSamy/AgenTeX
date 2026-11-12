@@ -1,0 +1,1 @@
+const mid = await modId(); const r = await mkRule(mid, { name: P + ' X1 rejected', layoutId: I.layout, primaryField: 'status', departmentIds: [], applyToHelpCenter: false, branches: [br(eq('status', 'QA NDC Rejected'), [show(['qa_lr_reason']), req(['qa_lr_reason'])])] }); if (r.j.data) { I.x1 = r.j.data.id; SAVE(); LED('desk rule X1 ' + r.j.data.id); } return SR(r).slice(0, 300);

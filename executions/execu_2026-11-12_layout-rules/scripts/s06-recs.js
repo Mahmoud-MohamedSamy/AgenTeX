@@ -1,0 +1,10 @@
+const mid = await modId(); const lid = I.layout;
+const a = await mkRec(mid, { first_name: P + ' rec G2', qa_lr_type: 'Refund', qa_lr_order: 'QA existing order' }, lid);
+const b = await mkRec(mid, { first_name: P + ' rec G4', qa_lr_type: 'Question' }, lid);
+const c = await mkRec(mid, { first_name: P + ' rec API', qa_lr_type: 'Refund' }, lid);
+RES('G12', c.s < 300 ? 'INFO' : 'INFO', 'API create on QA layout with type=Refund and the rule-mandatory "order" missing -> ' + c.s + ' ' + c.err);
+const d = await mkRec(mid, { first_name: P + ' rec API2', qa_lr_type: 'Question', qa_lr_order: 'QA hidden via API' }, lid);
+I.G2 = a.id; I.G4 = b.id; I.G12 = c.id; I.G12b = d.id; SAVE();
+const gd = (await api('GET', '/modules/' + mid + '/records/' + d.id)).j; const ord = (gd?.data?.data || []).find(x => x.field === 'qa_lr_order');
+RES('G12b', 'INFO', 'API create with a value in a field the rule hides (type=Question, order set) -> ' + d.s + '; stored order=' + JSON.stringify(ord?.value?.value ?? null));
+return { a: a.s + ' ' + a.id, b: b.s, c: c.s + ' ' + c.err, d: d.s };

@@ -1,0 +1,1 @@
+const mid = await modId(); const o = (await rules(mid)).filter(x => x.name === P + ' J7 rule'); const out = {}; for (const x of o) out[x.id] = SR(await delRule(mid, x.id)); out.listUI = 'checked via API'; return out;

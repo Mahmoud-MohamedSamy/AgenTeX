@@ -1,6 +1,6 @@
 // Sign in to Zoho Desk (read-only reference) with the zoho entry of the session creds file; prints no secret.
 // Usage: CREDS=<creds.json> node login-zoho.js <outStateFile>
-const fs = require('fs'), path = require('path'); const P = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation';
+const fs = require('fs'), path = require('path'); const P = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX';
 const C = JSON.parse(fs.readFileSync(process.env.CREDS, 'utf8')).zoho; if (process.env.ZUSER) C.user = process.env.ZUSER;
 const { chromium } = require(path.join(P, 'node_modules/playwright-core'));
 (async () => {

@@ -1,0 +1,1 @@
+const mid = await modId(); const r = await mkRec(mid, { first_name: P + ' rec G6', qa_lr_type: 'Refund', qa_lr_order: 'ORD-6', qa_lr_tier: 'Gold', qa_lr_note: 'n' }, I.layout); LED('record G6 ' + r.id); I.G6 = r.id; SAVE(); return r;

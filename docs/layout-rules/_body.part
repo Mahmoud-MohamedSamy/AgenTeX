@@ -1,0 +1,211 @@
+
+<div class="wrap">
+<header>
+ <h1>Layout Rules — test sheet</h1>
+ <p>Every case planned for TAVI CRM and TAVI Desk Layout Rules, compared with Zoho CRM and Zoho Desk. Change a case's status or add notes and it is saved for everyone who opens this page. Nothing has been run yet; execution starts when the QA lead says go.</p>
+ <div class="meta"><span>TAVI: <b>NDC-Staging, CRM + Desk</b></span><span>Zoho: <b>CRM test org org944965048 · Desk test account</b></span><span>Planned: <b>12 Nov 2026</b></span><span>Tickets: <b>NDC-1988, NDC-2535</b></span><span>Data prefix: <b>QA LR1112</b></span><span>Plane: <b>nothing filed</b></span></div>
+</header>
+
+<div class="sticky">
+ <div class="summary" id="summary"></div>
+ <div class="bar" id="bar" aria-hidden="true"></div>
+ <div class="tabs" role="tablist">
+  <button role="tab" id="tab-about" aria-selected="true">About the feature</button>
+  <button role="tab" id="tab-cases" aria-selected="false">Cases</button>
+  <button role="tab" id="tab-gaps" aria-selected="false">Missing vs Zoho</button>
+  <button role="tab" id="tab-plan" aria-selected="false">Plan</button>
+ </div>
+ <div class="filters" id="filters" hidden>
+  <input type="search" id="q" placeholder="Search id, title, steps, notes" aria-label="Search cases">
+  <select id="fa" aria-label="App"><option value="">CRM and Desk</option><option value="CRM">CRM</option><option value="Desk">Desk</option></select>
+  <select id="fg" aria-label="Group"><option value="">All groups</option></select>
+  <select id="fp" aria-label="Priority"><option value="">All priorities</option><option>P0</option><option>P1</option><option>P2</option></select>
+  <select id="fv" aria-label="Where"><option value="">UI, API and Zoho</option><option value="UI">UI</option><option value="API">API</option><option value="Zoho">Zoho</option></select>
+ </div>
+ <div class="note" id="dbnote">Connecting to saved results…</div>
+</div>
+
+<main id="view-about">
+ <div class="panel"><h3>What it is, in one line</h3>
+ <p>A layout rule changes a record form while someone fills it in: when a chosen field (the <b>primary field</b>) gets a certain value, other fields or sections appear, become required, or (CRM only) get locked, pre-filled or narrowed.</p>
+ <div class="flow"><span>Layout</span><i>→</i><span>Primary field</span><i>→</i><span>Condition: "Status is Rejected"</span><i>→</i><span>Actions: show "Rejection reason", make it mandatory</span></div></div>
+
+ <div class="two">
+ <div class="panel"><h3>Why the business wants it</h3><ul>
+  <li><b>Shorter forms.</b> Agents and sales users only see the fields that matter for this case. A refund ticket shows "Order number"; a general question does not.</li>
+  <li><b>Complete data at the right moment.</b> A field becomes required only when it makes sense. NDC uses this today: a rejected ticket must have a rejection reason; a closed accounting ticket must have GL, amount and document number.</li>
+  <li><b>Fewer mistakes.</b> In CRM a rule can lock a field, fill in a value, suggest a value, show a warning message or ask the user to double-check key fields before saving.</li>
+  <li><b>One form, many cases.</b> Instead of building a separate layout for every situation, one layout adapts.</li>
+  <li><b>Customers too (Desk).</b> With "Apply to Help Center", the same rule shapes the ticket form customers fill in on the Help Center.</li></ul></div>
+ <div class="panel"><h3>How it works technically</h3><ul>
+  <li>A rule belongs to <b>one module and one layout</b>. In Desk it can also be limited to departments.</li>
+  <li>It has a <b>primary field</b> and one or more <b>conditions</b>. Each condition tests the primary field and can add rows on other fields joined with AND / OR.</li>
+  <li>Each condition has <b>actions</b>. "Show" actions mean the target is hidden until a condition shows it. There is no "hide" action.</li>
+  <li>Rules run <b>in the browser, live</b>, as the user changes values on the create, edit and record pages. Several rules on one layout run in the list order.</li>
+  <li>TAVI stores rules at <code>/modules/{id}/layout-rules</code> (list, get, create, update with a version number, delete, reorder) and warns when a field used by a rule is changed (<code>/rule-usage</code>).</li>
+  <li>They are not validation rules (those check values on save and show an error), not map dependency (nested pick lists) and not field permissions. Those are separate features, in Zoho too.</li></ul></div>
+ </div>
+
+ <div class="panel"><h3>Do Zoho CRM and Zoho Desk use the same layout rules?</h3>
+ <p>Same idea, two separate features. The shape is the same in both: primary field → conditions → actions, up to 25 conditions per rule, 5 rows per condition, 10 rules per layout, and no "hide" action. They differ in what the rules can do and where they run:</p>
+ <div class="tbl"><table><thead><tr><th>Area</th><th>Zoho CRM</th><th>Zoho Desk</th><th>TAVI (12 Nov build)</th></tr></thead><tbody>
+  <tr><td>Scope</td><td>Per layout</td><td>Per layout and department</td><td>Per layout; Desk adds departments (several per rule)</td></tr>
+  <tr><td>Actions</td><td>12: show fields, sections, subforms, related lists, buttons, links; mandatory; read-only; set value; suggest value; message; verify fields; filter pick-list options</td><td>3: show fields, show sections, make mandatory</td><td>Same split: 13 in CRM, the 3 core ones in Desk. One code base with a CRM and a Desk mode.</td></tr>
+  <tr><td>Profiles and preview</td><td>Actions can be limited to profiles; interactive preview</td><td>No</td><td>CRM profiles; preview in both</td></tr>
+  <tr><td>Actions per condition</td><td>40</td><td>25</td><td>To check (I8, F27)</td></tr>
+  <tr><td>Primary field types</td><td>Most types except owner, multi-select, lookups, formula, file, multi-line</td><td>Most types except owner, multi-select, multi-line</td><td>Only pick list, radio, checkbox, status, user (Desk also department, team) — gap Z1/Z2</td></tr>
+  <tr><td>Overlap limits</td><td>A field can be the primary field of one rule only</td><td>A target field can be in one rule only</td><td>Rules run in list order — to check (H2, H3)</td></tr>
+  <tr><td>Where it runs</td><td>Create, edit, record page, inline edit, kanban, pipeline, blueprint (mandatory only), task close</td><td>Agent create/edit, Help Center (switch), mobile app</td><td>To check (group G)</td></tr>
+  <tr><td>Not run on</td><td>Import, web forms, lead convert, workflow; API unless asked</td><td>Import, web forms, API</td><td>To check (G11–G15)</td></tr>
+  <tr><td>API for the rules</td><td>None public</td><td>List, get, create, update, delete</td><td>Full API in both, plus reorder</td></tr>
+ </tbody></table></div>
+ <p class="note">Sources: Zoho help pages and API docs, collected 12 Nov 2026 in docs/layout-rules/reference/zoho-layout-rules-inventory.md. Zoho CRM has layout rules only on Enterprise and Ultimate; Zoho Desk only on Enterprise.</p></div>
+
+ <div class="panel"><h3>What is in TAVI today</h3><ul>
+  <li>A "Layout Rules" tab in module settings, in both CRM and Desk, on every module (CRM 15 modules, Desk 10 answered the API on 12 Nov).</li>
+  <li>List with search, filters (layout, status, department), Active switch, delete with confirm, drag to reorder within one layout, and a "Rule not applied" flag.</li>
+  <li>Editor with name, description, layout, primary field, conditions with AND / OR rows (is, is not, is one of, regex, length and more), actions, preview.</li>
+  <li>Desk: departments and "Apply to Help Center". CRM: profiles, messages in English and Arabic.</li>
+  <li>Current data: CRM has 0 rules. Desk Tickets has 7 "QA NDC …" rules from the 3 Nov NDC setup. The run leaves them as they are.</li></ul></div>
+</main>
+<main id="view-cases" hidden></main>
+<main id="view-gaps" hidden></main>
+<main id="view-plan" hidden></main>
+</div>
+
+<script>
+const DATA = /*DATA*/null;
+const STATUSES=[['none','Not run'],['pass','Pass'],['fail','Fail'],['blocked','Blocked'],['gap','Gap'],['info','Info']];
+const SL=Object.fromEntries(STATUSES);
+let results={}, extra=[], db=null, user=null, canWrite=true, names={}, statusFilter='';
+const groups=DATA.groups.map(([k,t,d])=>({k,t,d}));
+const base=DATA.cases.map(([id,g,app,t,s,e,p,via])=>({id,g,app,t,s,e,p,via}));
+const allCases=()=>base.concat(extra);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const FK=['q','fa','fg','fp','fv'];
+groups.forEach(g=>{const o=document.createElement('option');o.value=g.k;o.textContent=g.k+' · '+g.t;$('fg').appendChild(o)});
+try{const f=JSON.parse(localStorage.getItem('lr-filters')||'{}');FK.forEach(k=>{if(f[k])$(k).value=f[k]})}catch(e){}
+FK.forEach(k=>$(k).addEventListener('input',()=>{try{localStorage.setItem('lr-filters',JSON.stringify(Object.fromEntries(FK.map(x=>[x,$(x).value]))))}catch(e){}renderCases()}));
+
+function st(id){return (results[id]&&results[id].status)||'none'}
+function renderSummary(){
+ const cs=allCases(), n=cs.length, c={}; STATUSES.forEach(([k])=>c[k]=0); cs.forEach(x=>c[st(x.id)]++);
+ $('summary').innerHTML=`<span class="count" style="cursor:default"><strong>${n}</strong> cases</span>`+STATUSES.map(([k,l])=>`<button class="count s-${k}" data-s="${k}" aria-pressed="${statusFilter===k}"><strong>${c[k]}</strong>${l}</button>`).join('');
+ $('summary').querySelectorAll('button').forEach(b=>b.onclick=()=>{statusFilter=statusFilter===b.dataset.s?'':b.dataset.s;renderSummary();tab('cases')});
+ $('bar').innerHTML=STATUSES.filter(([k])=>k!=='none').map(([k])=>`<span class="s-${k}" style="width:${n?c[k]/n*100:0}%;background:var(--${k==='blocked'?'block':k})"></span>`).join('');
+}
+function matches(x){
+ const q=$('q').value.trim().toLowerCase(), r=results[x.id]||{}, a=$('fa').value;
+ if(a&&x.app!==a&&x.app!=='Both')return false;
+ if($('fg').value&&x.g!==$('fg').value)return false;
+ if($('fp').value&&x.p!==$('fp').value)return false;
+ if($('fv').value&&!(x.via||'').includes($('fv').value))return false;
+ if(statusFilter&&st(x.id)!==statusFilter)return false;
+ if(q&&!(x.id+' '+x.t+' '+x.s+' '+x.e+' '+(r.notes||'')+' '+(r.ref||'')).toLowerCase().includes(q))return false;
+ return true;
+}
+function stamp(r){if(!r||!r.at)return '';const who=r.by&&names[r.by]?names[r.by]:'someone';return `Last change ${new Date(r.at).toLocaleString()} by ${esc(who)}${r.byClaude?' (Claude run)':''}`}
+function caseRow(x){
+ const r=results[x.id]||{}, s=st(x.id);
+ return `<details class="case" data-id="${esc(x.id)}"><summary><span class="cid">${esc(x.id)}</span><span class="ctitle">${esc(x.t)}</span><span class="chip app">${esc(x.app||'Both')}</span><span class="chip ${x.p==='P0'?'p0':''}">${esc(x.p)}</span><span class="chip">${esc(x.via)}</span><span class="st s-${s}">${SL[s]}</span></summary>
+ <div class="body"><div><h4>Steps</h4><p>${esc(x.s)}</p></div><div><h4>Expected</h4><p>${esc(x.e)}</p></div>
+ <div class="edit"><label><h4>Status</h4><select data-f="status" ${canWrite?'':'disabled'}>${STATUSES.map(([k,l])=>`<option value="${k}" ${k===s?'selected':''}>${l}</option>`).join('')}</select></label>
+ <label><h4>Notes / actual result</h4><textarea data-f="notes" ${canWrite?'':'disabled'} placeholder="What happened, values seen, links">${esc(r.notes||'')}</textarea></label>
+ <div class="full"><input type="text" data-f="ref" ${canWrite?'':'disabled'} placeholder="Ticket or evidence (e.g. NDC-2930, image name)" value="${esc(r.ref||'')}" aria-label="Ticket or evidence">
+ <button class="btn" data-save ${canWrite?'':'disabled'}>Save notes</button><span class="stamp">${stamp(r)}${x.by?' · added case':''}</span></div></div></div></details>`;
+}
+let pending=false;
+function renderCases(){
+ const a=document.activeElement; if(a&&a.closest&&a.closest('details.case, #addpanel')&&/^(TEXTAREA|INPUT)$/.test(a.tagName)){pending=true;return}
+ pending=false;
+ const open=new Set([...document.querySelectorAll('details.case[open]')].map(d=>d.dataset.id));
+ const cs=allCases().filter(matches); let html='';
+ groups.forEach(g=>{const items=cs.filter(x=>x.g===g.k); if(!items.length)return;
+  html+=`<section class="group"><div class="ghead"><span class="gid">${g.k}</span><h2>${esc(g.t)}</h2><small>${esc(g.d)} · ${items.length}</small></div><div class="rows">${items.map(caseRow).join('')}</div></section>`});
+ if(!cs.length)html='<p class="empty">No case matches these filters.</p>';
+ html+=addForm();
+ $('view-cases').innerHTML=html;
+ document.querySelectorAll('details.case').forEach(d=>{if(open.has(d.dataset.id))d.open=true;wire(d)});
+ wireAdd();
+}
+function wire(d){
+ const id=d.dataset.id;
+ d.querySelector('[data-f=status]').addEventListener('change',e=>save(id,{status:e.target.value}));
+ d.querySelector('[data-save]').addEventListener('click',()=>save(id,{notes:d.querySelector('[data-f=notes]').value,ref:d.querySelector('[data-f=ref]').value}));
+}
+let me=null;
+async function save(id,patch){
+ const cur=results[id]||{}; const doc={status:cur.status||'none',notes:cur.notes||'',ref:cur.ref||'',...patch,at:new Date().toISOString(),by:me||null};
+ results[id]=doc; renderSummary();
+ if(!db){$('dbnote').textContent='Saving is not available in this view; changes stay on this screen only.';$('dbnote').className='note warn';renderCases();return}
+ try{await db.doc('results/'+id).set(doc);$('dbnote').textContent='Saved '+id+'.';$('dbnote').className='note'}
+ catch(e){if(e&&(e.code==='invalid_argument'||e.code==='permission_denied'||e.code==='not_granted')){canWrite=false;$('dbnote').textContent='You can view this sheet but not change it.'}else $('dbnote').textContent='Could not save '+id+' ('+(e&&e.code||'error')+'). Try again.';$('dbnote').className='note warn'}
+}
+function addForm(){
+ if(!canWrite)return '';
+ return `<div class="panel" id="addpanel"><h3>Add a case</h3><p class="note" style="margin:0 0 8px">For something you tested that is not in the list. It is saved with an id like U1.</p>
+ <form class="addform" id="addf"><select id="ag" aria-label="Group">${groups.map(g=>`<option value="${g.k}">${g.k} · ${esc(g.t)}</option>`).join('')}</select>
+ <select id="aa" aria-label="App"><option>Both</option><option>CRM</option><option>Desk</option></select>
+ <select id="ap" aria-label="Priority"><option>P1</option><option>P0</option><option>P2</option></select>
+ <select id="av" aria-label="Where"><option>UI</option><option>API</option><option>UI+API</option><option>Zoho</option></select>
+ <input id="at" class="wide" required placeholder="Title" aria-label="Title"><textarea id="as" class="wide" placeholder="Steps" aria-label="Steps"></textarea><textarea id="ae" class="wide" placeholder="Expected" aria-label="Expected"></textarea>
+ <div class="wide"><button class="btn" type="submit">Add case</button></div></form></div>`;
+}
+function wireAdd(){
+ const f=$('addf'); if(!f)return;
+ f.addEventListener('submit',async e=>{e.preventDefault(); if(!$('at').value.trim())return;
+  const n=extra.reduce((m,x)=>Math.max(m,+(String(x.id).slice(1))||0),0)+1;
+  const c={id:'U'+n,g:$('ag').value,app:$('aa').value,p:$('ap').value,via:$('av').value,t:$('at').value.trim(),s:$('as').value.trim(),e:$('ae').value.trim(),by:me||null,at:new Date().toISOString()};
+  if(!db){$('dbnote').textContent='Saving is not available in this view.';$('dbnote').className='note warn';return}
+  try{await db.doc('extra/'+c.id).set(c);$('dbnote').textContent='Added '+c.id+'.'}catch(err){$('dbnote').textContent='Could not add the case ('+(err&&err.code||'error')+').';$('dbnote').className='note warn'}
+ });
+}
+function renderGaps(){
+ const gz=base.filter(x=>x.g==='Z');
+ const conf=gz.filter(x=>/^Gap/.test(x.e)), chk=gz.filter(x=>!/^Gap/.test(x.e));
+ const li=x=>`<li><b>${esc(x.t)}</b> <span class="chip app">${esc(x.app)}</span> — ${esc(x.e)} <span class="note">(Zoho: ${esc(x.s)})</span> <span class="st s-${st(x.id)}">${SL[st(x.id)]}</span></li>`;
+ $('view-gaps').innerHTML=`<div class="panel"><h3>Confirmed gaps (seen in the build)</h3><p class="note" style="margin:0 0 6px">Not filed in Plane. Each is also a runnable case in group Z.</p><ol>${conf.map(li).join('')}</ol></div>
+ <div class="panel"><h3>Open questions — decided at execution</h3><p class="note" style="margin:0 0 6px">Zoho does these; the TAVI code does not show it either way. The linked case answers it.</p><ol start="${conf.length+1}">${chk.map(li).join('')}</ol></div>
+ <div class="panel"><h3>Not gaps</h3><ul>${DATA.gaps_not.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`;
+}
+function renderPlan(){
+ $('view-plan').innerHTML=`<div class="panel"><h3>How the run goes</h3><ol>
+ <li>Baseline: GET every module's layout rules and layouts in CRM and Desk (saved 12 Nov: CRM 0 rules; Desk Tickets 7 QA NDC rules).</li>
+ <li>Set up test fields and a test layout per app (prefix QA LR1112) so the 7 NDC rules are never touched.</li>
+ <li>Run groups A to M for CRM, then for Desk, then the X journeys, then Z side by side with Zoho, then N alone.</li>
+ <li>Rules are tenant-wide config: writes run one at a time, never in parallel lanes.</li>
+ <li>Each account signs in once per run: owner = ndc-staging-owner; low-privilege = Mahmoud Samy (CRM User) and a Desk Agent.</li>
+ <li>Results are written into this sheet as each case finishes; failures get an annotated TAVI vs Zoho image.</li>
+ <li>Nothing goes to Plane until the QA lead says so.</li></ol></div>
+ <div class="panel"><h3>Before starting</h3><ul>
+ <li>Zoho CRM test org org944965048 ends 17 Nov 2026; CRM group Z needs it before then. Writes in Zoho (a throwaway QA rule) need the QA lead's OK at go time.</li>
+ <li>Zoho Desk test account (hmohamed@) for the Desk side by side.</li>
+ <li>Help Center cases (G17–G19, X2) need the NDC-Staging Help Center reachable; if not, mark Blocked, not Fail.</li>
+ <li>Group N (performance) runs alone at the end.</li></ul></div>
+ <div class="panel"><h3>Cleanup</h3><ul>
+ <li>Delete every QA LR1112 rule, record, layout, section, field, workflow and blueprint; purge from the Recycle Bin by exact match only.</li>
+ <li>Final GET compared with the baseline: CRM 0 rules, Desk only the 7 QA NDC rules, unchanged (same rowVersion).</li>
+ <li>Zoho: delete anything created there and list what cannot be removed.</li></ul></div>`;
+}
+const TABS=['about','cases','gaps','plan'];
+function tab(name){TABS.forEach(t=>{$('tab-'+t).setAttribute('aria-selected',t===name);$('view-'+t).hidden=t!==name});$('filters').hidden=name!=='cases';if(name==='cases')renderCases();if(name==='gaps')renderGaps();if(name==='plan')renderPlan();try{localStorage.setItem('lr-tab',name)}catch(e){}}
+$('view-cases').addEventListener('focusout',()=>setTimeout(()=>{if(pending)renderCases()},0));
+TABS.forEach(t=>$('tab-'+t).onclick=()=>tab(t));
+
+renderSummary(); renderCases(); renderGaps(); renderPlan();
+try{const t=localStorage.getItem('lr-tab');if(t&&TABS.includes(t))tab(t)}catch(e){}
+
+(async()=>{
+ const timer=setTimeout(()=>{$('dbnote').textContent='Saved results cannot be reached yet; what you see may be out of date.';$('dbnote').className='note warn'},10000);
+ try{user=await window.claude?.use?.('user')}catch(e){user=null}
+ try{db=await window.claude?.use?.('db')}catch(e){db=null}
+ if(user){try{me=await user.id()}catch(e){} try{const w=await user.can('data.write'); if(w===false)canWrite=false}catch(e){}}
+ if(!db){clearTimeout(timer);$('dbnote').textContent='Saved results are not available in this view. You can still read every case.';$('dbnote').className='note warn';renderCases();return}
+ const resolveNames=async()=>{if(!user)return;const ids=[...new Set(Object.values(results).map(r=>r.by).concat(extra.map(x=>x.by)).filter(Boolean))];if(!ids.length)return;try{const ps=await user.profiles(ids);ids.forEach(i=>names[i]=(ps[i]&&ps[i].name)||'someone')}catch(e){}};
+ db.collection('results').onSnapshot(async snap=>{if(!snap.metadata.fromCache){clearTimeout(timer);$('dbnote').textContent=canWrite?'Changes save for everyone who opens this sheet.':'You can view this sheet but not change it.';$('dbnote').className='note'}
+  results={};snap.docs.forEach(d=>results[d.id]=d.data());await resolveNames();renderSummary();renderCases();if(!$('view-gaps').hidden)renderGaps()},
+  e=>{clearTimeout(timer);$('dbnote').textContent='Saved results could not be loaded ('+e.code+').';$('dbnote').className='note warn'});
+ db.collection('extra').onSnapshot(async snap=>{extra=snap.docs.map(d=>d.data()).filter(x=>x&&x.id&&x.g);await resolveNames();renderSummary();renderCases()},()=>{});
+})();
+</script>

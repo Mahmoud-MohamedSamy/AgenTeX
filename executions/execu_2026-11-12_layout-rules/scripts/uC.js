@@ -1,0 +1,1 @@
+async (page) => { const R = {}; await pick('qa_lr_tier', 'Silver'); R.openFormOrderReq = await isReq('qa_lr_note'); await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForSelector('[data-rule-field]'); await sleep(3000); await pick('qa_lr_tier', 'Silver'); R.afterReload = await isReq('qa_lr_note'); await shot('crm-J10'); return R; }

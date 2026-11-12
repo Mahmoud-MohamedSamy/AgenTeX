@@ -1,0 +1,1 @@
+const o = {}; for (const [k, d] of [['Sales', DS], ['Marketing', DQ]]) { const r = await api('GET', '/desk/departments/' + d); o[k] = { ownerMember: (r.j.data.agent_user_ids || []).includes(ME) }; } return fin(o);

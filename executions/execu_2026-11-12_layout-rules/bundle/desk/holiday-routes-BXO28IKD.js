@@ -1,0 +1,1 @@
+import{Y_ as e}from"./index-mv9lGE1X.js";var t=`${e}/organization/holidays`,n=`${t}/new`;`${t}`;function r(e){return`${t}/${encodeURIComponent(e)}`}export{n,r,t};

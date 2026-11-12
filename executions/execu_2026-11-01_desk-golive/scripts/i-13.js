@@ -1,0 +1,11 @@
+const o = {}; const U = 'e4c207d8-cda7-43a1-946d-4d2626759b7e';
+const c = await api('POST', '/desk/snippets', { name: 'qa_gl_w2_img', title: 'QA GL W2 img snippet', content_html: '<p>Your ticket #{{ticket_number}} is with {{department_name}}.</p>', scope: 'personal' });
+o.create = c.s + ' ' + c.t.slice(0, 200); const sid = c.j && c.j.data && c.j.data.id; o.sid = sid;
+const r = await api('POST', `/desk/tickets/${U}/snippets/resolve`, { snippet_ids: [sid], snippet_id: sid }); o.resolve = r.s + ' ' + r.t.slice(0, 400);
+await page.goto(H + '/views/all/tickets/' + U, { waitUntil: 'commit' }).catch(() => {}); await sleep(12000);
+await page.locator('button', { hasText: /^Reply All/ }).first().click().catch(e => o.e1 = String(e).slice(0, 80)); await sleep(5000);
+await page.getByText('Snippets', { exact: true }).first().click().catch(e => o.e2 = String(e).slice(0, 80)); await sleep(3000);
+await page.getByText('QA GL W2 img snippet').first().click().catch(e => o.e3 = String(e).slice(0, 80)); await sleep(4000);
+o.composer = (await page.locator('[contenteditable=true]').last().innerText().catch(() => '')).slice(0, 300);
+o.shot = await shot('../wave2n/i-snippet-inserted');
+return done(o);

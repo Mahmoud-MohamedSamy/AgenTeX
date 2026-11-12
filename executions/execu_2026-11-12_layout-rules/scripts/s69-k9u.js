@@ -1,0 +1,1 @@
+const r = await api('GET', '/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/records/fdbcd8f8-c6dd-45ff-9d51-89c1764c9a6b'); const d = r.j.data.data; return { s: r.s, date: d.some(x => x.field === 'qa_lr_date'), order: JSON.stringify(d.find(x => x.field === 'qa_lr_order') || null), meta: JSON.stringify(r.j.data.field_meta || '').slice(0, 300) };

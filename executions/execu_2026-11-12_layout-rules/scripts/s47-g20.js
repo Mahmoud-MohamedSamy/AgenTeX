@@ -1,0 +1,1 @@
+const mid = await modId(); const r = await mkRec(mid, { first_name: P + ' rec G20', qa_lr_type: 'Refund' }, I.defLayout); const r2 = await mkRec(mid, { first_name: P + ' rec G20b', qa_lr_type: 'Refund' }, I.layout); LED('records G20 ' + r.id + ' / ' + r2.id); return { std: r, qa: r2 };

@@ -1,0 +1,1 @@
+const mid = await modId(); const all = (await rules(mid, '?layoutId=' + I.layout)).filter(r => r.name === P + ' I1 dbl'); for (const r of all) { (I.rules = I.rules || []).push(r.id); } SAVE(); return all.map(r => r.id + ' ' + r.status + ' ' + JSON.stringify(r.branches[0].actions));

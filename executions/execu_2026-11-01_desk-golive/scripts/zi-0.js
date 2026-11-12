@@ -1,0 +1,1 @@
+async (page, frame, ctx) => { const o = {}; try { o.pages = ctx.pages().length; const p = await ctx.newPage(); await p.goto('https://desk.zoho.com/agent/techsolutionsegypt/tech/tickets/list/all-cases', { waitUntil: 'domcontentloaded', timeout: 90000 }); await p.waitForTimeout(8000); o.url = p.url(); } catch (e) { o.err = String(e).slice(0, 200); } return o; }

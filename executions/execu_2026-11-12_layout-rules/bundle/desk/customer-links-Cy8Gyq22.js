@@ -1,0 +1,1 @@
+import{J_ as e}from"./index-mv9lGE1X.js";function t(t,n,r){let i=new URLSearchParams;return i.set(`prefill_field`,n),i.set(`prefill_value`,r),`${e}/${t}/records/new?${i.toString()}`}export{t};

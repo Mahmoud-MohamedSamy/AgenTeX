@@ -1,0 +1,1 @@
+import{a as e}from"./filter.helpers-_iEBeF54.js";import{J_ as t}from"./index-mv9lGE1X.js";import{i as n,p as r}from"./customer-tickets-DLhb3IZR.js";var i=`desk_contracts`;function a(e,t){return r(e,t)}function o(t,r,i=[]){return e([n(t,r),...i])}function s(e,n){return`${t}/${e}/records/${n}`}export{s as i,a as n,o as r,i as t};

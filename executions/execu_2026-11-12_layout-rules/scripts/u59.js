@@ -1,0 +1,1 @@
+async (page) => { await page.goto(HOST + '/settings/modules-and-fields/43004ce2-577f-4eda-b00a-0750fe40c3d4?tab=layout-rules', { waitUntil: 'domcontentloaded' }); await sleep(6000); return { url: page.url(), t: (await bodyText()).slice(0, 600) }; }

@@ -1,0 +1,1 @@
+const r=await api('DELETE','/workflow/rules/19fe442f-f458-4154-8c5b-bb898acfe060');return r.s;

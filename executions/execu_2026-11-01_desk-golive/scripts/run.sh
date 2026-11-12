@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Usage: run.sh <snippet.js> [outfile] — runs prelude.js + snippet in playwright-cli session ${SESSION:-gl}. Secrets filtered from output.
-P="D:/Software Testing/Automation/Agentex Installation/Agentex Installation"; E="$P/executions/execu_2026-11-01_desk-golive"
+P="D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX"; E="$P/executions/execu_2026-11-01_desk-golive"
 F='authorization|bearer|cookie|token'
 cd "$P"; OUT=$(timeout ${TMO:-170} node node_modules/@playwright/cli/playwright-cli.js -s=${SESSION:-gl} run-code "async page => { $(cat "$E/scripts/prelude.js" "$E/scripts/$1") }" </dev/null 2>&1 | grep -v -i -E "$F")
 J=$(printf '%s\n' "$OUT" | awk '/^### Result/{f=1;next} /^### /{f=0} f')

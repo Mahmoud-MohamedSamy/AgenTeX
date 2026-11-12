@@ -1,0 +1,2 @@
+const out = {}; for (const p of ['/profiles?app_key=crm', '/iam/profiles?app_key=crm', '/profiles', '/iam/profiles', '/settings/profiles?app=crm']) { const r = await api('GET', p); out[p] = r.s + ' ' + JSON.stringify(arr(r.j?.data).slice(0, 6).map(x => ({ id: x.id?.slice(0, 8), name: x.name, app: x.app_key || x.appKey }))).slice(0, 400); }
+const me = (await api('GET', '/iam/me')).j.data; out.mine = (me.profiles_by_app?.crm || []).map(p => p.name + ' ' + p.profile_id.slice(0, 8)); return out;

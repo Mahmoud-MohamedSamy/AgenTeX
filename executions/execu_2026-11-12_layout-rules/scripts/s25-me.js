@@ -1,0 +1,1 @@
+const me = await api('GET', '/iam/me'); return { s: me.s, t: (me.t || '').replace(/"[0-9a-f-]{36}"/g, '"<id>"').replace(/eyJ[^"]+/g, '<jwt>').slice(0, 300), mods: (await api('GET', '/modules')).t.slice(0, 200) };

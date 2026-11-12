@@ -1,0 +1,1 @@
+import{h as e}from"./react-vendor-2tVcgncM.js";import{vo as t}from"./index-mv9lGE1X.js";var n=e(),r=[`desk`];function i(){return(0,n.jsx)(t,{modules:r})}export{i as NotificationPreferencesPage,i as default};

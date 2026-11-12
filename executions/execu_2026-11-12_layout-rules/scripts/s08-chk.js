@@ -1,0 +1,1 @@
+const mid = await modId(); const g = (await api('GET', '/modules/' + mid + '/records/' + I.G4)).j; const o = {}; for (const x of (g?.data?.data || [])) if (/qa_lr_/.test(x.field)) o[x.field] = x.value?.value ?? null; return o;

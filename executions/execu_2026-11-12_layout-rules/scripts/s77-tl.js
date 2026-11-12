@@ -1,0 +1,5 @@
+const tm = 'a9d87b62-b704-4c2e-b2d5-1b745d7c2065'; const out = {}; const ls = arr((await api('GET', '/modules/' + tm + '/layouts')).j.data);
+const src = await getLayout(tm, ls[0].id); const b = JSON.parse(JSON.stringify(src)); delete b.id; b.name = P + ' Tasks'; for (const k of ['displayInHelpCenter','helpCenterDisplayName','departmentIds','defaultDepartmentIds','ticketStatuses','allowNonDepartmentAgents','rowVersion','createdAt','lastModifiedAt','isDefault','is_default']) delete b[k];
+const c = await api('POST', '/modules/' + tm + '/layouts', b); out.lay = SR(c).slice(0, 200); const lid = c.j.data && c.j.data.id; if (!lid) return out; I.taskLayout = lid; SAVE(); LED('Tasks layout ' + lid);
+const r = await mkRule(tm, { name: P + ' tasks', layoutId: lid, primaryField: 'priority', branches: [br(eq('priority', 'highest'), [req(['description'])])] }); out.rule = SR(r).slice(0, 300); if (r.j.data) { I.taskRule = r.j.data.id; SAVE(); LED('Tasks rule ' + r.j.data.id); }
+out.lid = lid; return out;

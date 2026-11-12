@@ -1,0 +1,1 @@
+return (await api('DELETE','/workflow/rules/8711668a-4606-4934-82cd-7a55cb69e54b')).s;

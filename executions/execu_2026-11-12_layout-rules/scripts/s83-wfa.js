@@ -1,0 +1,1 @@
+const a = await api('GET', '/workflow/actions/6d6528f7-fd1e-4b97-be01-9ee2faf3dc8a'); const d = a.j.data; return { fu: JSON.stringify(d.action ? d.action.fieldUpdates : d.fieldUpdates), keys: Object.keys(d).join(','), lim: JSON.stringify((await api('GET', '/workflow/rules/limits')).j.data).slice(0, 200) };

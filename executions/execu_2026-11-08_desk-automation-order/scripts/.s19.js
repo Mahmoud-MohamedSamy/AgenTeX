@@ -1,0 +1,1 @@
+return arr((await api('GET','/workflow/rules?take=500')).j?.data).filter(x=>/G6/.test(x.name)).map(x=>x.name+' '+x.id);

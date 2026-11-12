@@ -1,0 +1,1 @@
+const mid = await modId(); const g = (await getRule(mid, I.r3)).j.data; const out = { hc: g.applyToHelpCenter, rv: g.rowVersion }; if (process.env.OFF) { out.off = SR(await putRule(mid, I.r3, { ...g, applyToHelpCenter: false })); } return out;

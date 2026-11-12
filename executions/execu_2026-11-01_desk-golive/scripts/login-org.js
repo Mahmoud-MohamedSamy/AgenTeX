@@ -1,6 +1,6 @@
 // Sign in as the owner and pick an organisation by name (ORG env). With ORG=list, print the org names offered and stop.
 // Usage: CREDS=<creds.json> ORG=<name|list> node login-org.js <outStateFile>
-const fs = require('fs'), path = require('path'); const P = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation';
+const fs = require('fs'), path = require('path'); const P = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX';
 const C = JSON.parse(fs.readFileSync(process.env.CREDS, 'utf8'))[process.env.WHO || 'tavi']; const ORG = process.env.ORG || 'list';
 const H = process.env.HOST || 'https://staging-desk.taviportal.com';
 const { chromium } = require(path.join(P, 'node_modules/playwright-core'));

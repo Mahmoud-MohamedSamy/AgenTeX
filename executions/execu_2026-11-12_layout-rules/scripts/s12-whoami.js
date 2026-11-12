@@ -1,0 +1,1 @@
+const me = await api('GET', '/iam/me'); const d = me.j?.data || {}; return { tenant: String(d.tenant_id || d.tenantId || '').slice(-4), byApp: JSON.stringify(d.profiles_by_app || {}).replace(/"[0-9a-f-]{36}"/g, '"id"').slice(0, 300) };

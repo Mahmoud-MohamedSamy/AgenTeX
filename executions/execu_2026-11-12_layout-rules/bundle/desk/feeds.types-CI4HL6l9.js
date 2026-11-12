@@ -1,0 +1,1 @@
+var e=[`general`,`announcement`,`tip`,`known_issue`,`process_update`,`procedure`,`guidance`,`suggestion`,`notice`,`onboarding`,`question`],t={all:`all`,open_tickets:`open-tickets`,posts:`posts`,mentions:`mentions`,following:`following`};function n(e){let n=Object.entries(t).find(([,t])=>t===e);return n?n[0]:null}export{t as n,n as r,e as t};

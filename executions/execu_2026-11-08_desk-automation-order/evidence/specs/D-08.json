@@ -1,0 +1,63 @@
+{
+ "verdict": "FAIL",
+ "label": "SECURITY",
+ "key": "D-08",
+ "out": "WF-O4-webhook-header-injection.png",
+ "ticket": "Workflow Rules · O4",
+ "title": "Webhook header value with a line break adds an extra header",
+ "date": "TAVI 12 Nov 2026 13:43 UTC",
+ "env": "staging-desk.taviportal.com (NDC-Staging) · owner account · Edge · receiver webhook.site",
+ "rightLabel": "Expected",
+ "leftHead": "TAVI Desk (screenshot)",
+ "rightHead": "Expected",
+ "panels": [
+  {
+   "img": "executions/execu_2026-11-08_desk-automation-order/evidence/raw/api-d08-webhook-headers.png",
+   "w": 1440,
+   "h": 600,
+   "caption": "One configured header \"X-QA: a\\r\\nInjected: 1\" arrived as two headers",
+   "crop": [
+    0,
+    0,
+    1440,
+    460
+   ],
+   "boxes": [
+    {
+     "b": [
+      22,
+      90,
+      1418,
+      140
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      22,
+      225,
+      420,
+      248
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Header value with a line break",
+   "Refused at save (\"Header values can't contain line breaks\"); reserved headers like Host refused too.",
+   "Saved.",
+   "BUG"
+  ],
+  [
+   2,
+   "What the receiver gets",
+   "Only X-QA.",
+   "x-qa: a AND injected: 1 — an extra header was injected. Dispatch: Succeeded.",
+   "BUG"
+  ]
+ ]
+}

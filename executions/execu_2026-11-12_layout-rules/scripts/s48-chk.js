@@ -1,0 +1,1 @@
+const mid = await modId(); const g = (await getRule(mid, I.c1)).j.data; return { st: g.status, err: g.definitionError || null, br: g.branches.map(b => JSON.stringify(b.condition) + ' => ' + JSON.stringify(b.actions)) };

@@ -1,0 +1,1 @@
+var e=`system.ticket.sla_escalation`,t={policyStale:`SLA_POLICY_STALE`,policyInUseByPlan:`SLA_POLICY_IN_USE_BY_PLAN`,planInUse:`SUPPORT_PLAN_IN_USE`,planDiscontinued:`SUPPORT_PLAN_DISCONTINUED`,planStale:`SUPPORT_PLAN_STALE`};export{t as n,e as t};

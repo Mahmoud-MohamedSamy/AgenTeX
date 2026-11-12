@@ -1,0 +1,2 @@
+async (page) => { const t = await page.innerText('body'); const out = []; let i = -1; while ((i = t.indexOf('QA LR1112 date', i + 1)) >= 0 && out.length < 4) out.push(t.slice(Math.max(0, i - 150), i + 120).replace(/\s+/g, ' ')); 
+  await page.getByText('Timeline', { exact: true }).first().click().catch(() => {}); await sleep(3000); const t2 = await page.innerText('body'); const j = t2.indexOf('QA LR1112 date'); const tl = j < 0 ? 'not in timeline' : t2.slice(Math.max(0, j - 200), j + 150).replace(/\s+/g, ' '); await shot('crm-K9-timeline'); return { out, tl }; }

@@ -1,0 +1,1 @@
+import{t as e}from"./ColorSwatchPicker-C8QLGhCR.js";function t(t){let n=new Map;for(let e of t??[]){let t=e.color?.toUpperCase();t&&n.set(t,(n.get(t)??0)+1)}let r=e[0],i=1/0;for(let t of e){let e=n.get(t.toUpperCase())??0;e<i&&(r=t,i=e)}return r}export{t};

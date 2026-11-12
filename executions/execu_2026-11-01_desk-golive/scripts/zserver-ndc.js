@@ -1,7 +1,7 @@
 // READ-ONLY headed Edge for NDC's Zoho Desk (portal wondertravel). Every non-GET/HEAD/OPTIONS request to *.zoho.com is
 // aborted at the network layer and logged, so nothing in NDC's org can change. HTTP 127.0.0.1:8892 POST /run {code}
 // runs `async (page, ctx, blocked) => {...}`. Prints no secrets.  Usage: node zserver-ndc.js <stateFile>
-const http = require('http'), path = require('path'), fs = require('fs'); const P = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation';
+const http = require('http'), path = require('path'), fs = require('fs'); const P = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX';
 const { chromium } = require(path.join(P, 'node_modules/playwright-core'));
 const LOG = path.join(P, 'executions/execu_2026-11-01_desk-golive/ndc-zoho/blocked.log');
 (async () => {

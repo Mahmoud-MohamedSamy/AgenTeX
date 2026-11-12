@@ -1,0 +1,1 @@
+import{nE as e}from"./index-BNsUHyAB.js";function t(t,n,r){let i=t?.subFields?.find(e=>(e.apiName??e.fieldName??e.id)===n);return i&&e(i.labels,r)||void 0}function n(e,n,r,i){return t(e,n,i)||r(`fieldUpdate.address.${n}`)}export{t as n,n as t};

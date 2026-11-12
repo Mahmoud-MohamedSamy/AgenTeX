@@ -1,0 +1,1 @@
+import{mj as e}from"./index-mv9lGE1X.js";var t=e((e,t)=>({ticketId:null,ask:t=>e({ticketId:t}),consume:n=>t().ticketId===n?(e({ticketId:null}),!0):!1}));export{t};

@@ -1,0 +1,1 @@
+const mid = await modId(); const r = await api('GET', '/modules/' + mid + '/layouts/' + I.layout); return { s: r.s, t: (r.t || '').slice(0, 300), lid: I.layout, rules: (await rules(mid, '?layoutId=' + I.layout)).map(x => x.name + ' ' + x.sortOrder), tmp: (await fieldsOf(mid)).some(f => f.fieldName === 'qa_lr_tmp') };
