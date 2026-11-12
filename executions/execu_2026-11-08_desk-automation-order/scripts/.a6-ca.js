@@ -1,3 +1,0 @@
-const a = await api('GET', '/workflow/custom-actions?take=100'); const L = arr(a.j?.data);
-log('actions', a.s, L.length, JSON.stringify(L.map(x => ({ id: x.id?.slice(0, 8), n: x.name, app: x.appKey || x.app_key, st: x.status || x.isActive, mod: x.moduleKey || x.module_key, url: String(x.baseUrl || x.base_url || x.sourceBaseUrl || '').slice(0, 50) }))).slice(0, 1500));
-const s = await api('GET', '/workflow/custom-actions/sources?take=100'); log('sources', s.s, JSON.stringify(arr(s.j?.data).map(x => ({ id: x.id?.slice(0, 8), n: x.name, url: String(x.baseUrl || x.base_url || '').slice(0, 60) }))).slice(0, 800));

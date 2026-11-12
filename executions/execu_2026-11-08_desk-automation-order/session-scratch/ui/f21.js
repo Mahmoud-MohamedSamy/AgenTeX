@@ -1,0 +1,21 @@
+module.exports = async (h) => {
+  const { page, shot, log, go } = h;
+  await go('/settings/automation/workflow-rules'); await page.getByRole('row').nth(3).waitFor();
+  await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('workflow-rule-draft')).forEach(k => localStorage.removeItem(k)));
+  const dlg = page.getByRole('dialog').first();
+  await page.getByRole('button', { name: 'New Rule' }).click(); await dlg.waitFor();
+  await dlg.getByRole('button', { name: 'Select a module' }).click(); await page.waitForTimeout(500);
+  log('modules', await page.getByRole('option').allInnerTexts());
+  await page.getByRole('option', { name: /^Calls/ }).first().click();
+  await dlg.getByPlaceholder('e.g. High-Value Lead Notification').fill('QA AO WF F21 calls');
+  await dlg.getByRole('button', { name: 'Next' }).click(); await page.waitForTimeout(800);
+  await dlg.getByRole('group').getByRole('button', { name: 'Create', exact: true }).click();
+  await dlg.getByRole('button', { name: 'Create', exact: true }).last().click(); await page.waitForTimeout(2500);
+  const main = page.locator('main').last(); const clk = l => l.dispatchEvent('click');
+  await clk(main.getByRole('button', { name: 'Add action' }).first()); await page.waitForTimeout(600);
+  await clk(main.getByRole('button', { name: /^Field Update/ }).first()); await page.waitForTimeout(800);
+  await clk(main.getByText('Use a saved action', { exact: true }).first()); await page.waitForTimeout(1200);
+  const t = (await main.innerText()).split('Instant actions')[1] || ''; log('savedAction', t.slice(0, 600));
+  await shot('f21');
+  await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('workflow-rule-draft')).forEach(k => localStorage.removeItem(k)));
+};

@@ -1,0 +1,24 @@
+const { execSync } = require('child_process');
+const RUN = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX/executions/execu_2026-11-08_desk-automation-order';
+const api = (code) => { require('fs').writeFileSync(RUN + '/scripts/.s19.js', code); return execSync('node api.js ndc-staging-owner .s19.js', { cwd: RUN + '/scripts' }).toString().trim(); };
+const clk = l => l.dispatchEvent('click');
+const NL = String.fromCharCode(10);
+module.exports = async ({ page, go, shot, log }) => {
+  const id = api("const r=await api('POST','/workflow/rules',{moduleId:'88e8ea44-1658-4df3-9930-d0902b91073d',departmentIds:['93949fbd-f9df-4e2e-ae45-00b8dc38385b'],name:'QA AO WF G6 deleted',isActive:false,mode:'Recurring',trigger:{kind:'RecordCreated'},criteria:{kind:'StringMatch',field:'subject',operator:'StartsWith',stringValue:'QA AO WF G6 ',caseInsensitive:false},actions:[{order:0,delaySeconds:0,type:'FieldUpdate',fieldUpdates:{description:{kind:'string',stringValue:'g6'}}}]});return r.j.data.id;").replace(/"/g, '');
+  await go('/settings/automation/workflow-rules/' + id); await page.waitForTimeout(3000);
+  const main = page.locator('main').last();
+  await clk(main.getByRole('button', { name: 'Add Description' }).first()).catch(() => {}); await page.waitForTimeout(400);
+  await main.locator('textarea').first().fill('tab1 after delete');
+  log('G6_delete', api("return (await api('DELETE','/workflow/rules/" + id + "')).s;"));
+  log('G6_saveButtons', await main.getByRole('button').evaluateAll(b => b.map(x => x.innerText.trim()).filter(t => /save/i.test(t))));
+  await clk(main.getByRole('button', { name: 'Save', exact: true }).first()); await page.waitForTimeout(3000);
+  log('G6_after', { url: page.url(), toasts: await page.locator('[data-sonner-toast]').allInnerTexts(), stored: api("return arr((await api('GET','/workflow/rules?take=500')).j?.data).filter(x=>/G6/.test(x.name)).map(x=>x.name+' '+x.id);") });
+  await shot('s19-g6');
+  await go('/settings/automation/workflow-rules/' + id); await page.waitForTimeout(3000);
+  log('G6_reload', (await page.locator('main').last().innerText()).slice(0, 250)); await shot('s19-g6-reload');
+  const { openEditor } = require('./lib-ed');
+  await openEditor({ page, go }, 'QA AO WF C9 draft', 'Edit'); await page.waitForTimeout(1500);
+  await page.goto(page.url()); await page.waitForTimeout(3000);
+  log('C9_reload', (await page.locator('body').innerText()).split(NL).filter(l => /draft|resume|start fresh|discard/i.test(l)).slice(0, 6));
+  await shot('s19-c9');
+};

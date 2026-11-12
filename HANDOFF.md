@@ -21,4 +21,4 @@
 - Then tell Claude: "continue A6" — it should read `executions/execu_2026-11-08_desk-automation-order/PROGRESS.md` and `a6/results.json`.
 
 ## Paths that are machine-specific
-- Scripts point at `D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX` and a session scratchpad under `C:/Users/a/AppData/Local/Temp/claude/...` (screen-step scripts `ui/*.js` lived there and are not in the repo; `a6/bp/` and `a4/` scripts are). Adjust the root path if the repo sits elsewhere.
+- Scripts point at `D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX` and a session scratchpad under `C:/Users/a/AppData/Local/Temp/claude/...` (copies of the screen-step scripts are in `executions/execu_2026-11-08_desk-automation-order/session-scratch/ui` and `/z`; `a6/bp/` and `a4/` scripts are in place). Adjust the root path if the repo sits elsewhere.

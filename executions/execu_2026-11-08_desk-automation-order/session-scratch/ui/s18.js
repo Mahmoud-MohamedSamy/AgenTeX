@@ -1,0 +1,33 @@
+const { execSync } = require('child_process');
+const RUN = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX/executions/execu_2026-11-08_desk-automation-order';
+const api = (code) => { require('fs').writeFileSync(RUN + '/scripts/.s18.js', code); return execSync('node api.js ndc-staging-owner .s18.js', { cwd: RUN + '/scripts' }).toString().trim(); };
+const clk = l => l.dispatchEvent('click');
+const NL = String.fromCharCode(10);
+module.exports = async ({ page, go, shot, log }) => {
+  const id = api("const r=await api('POST','/workflow/rules',{moduleId:'88e8ea44-1658-4df3-9930-d0902b91073d',departmentIds:['93949fbd-f9df-4e2e-ae45-00b8dc38385b'],name:'QA AO WF G5 stale',isActive:false,mode:'Recurring',trigger:{kind:'RecordCreated'},criteria:{kind:'StringMatch',field:'subject',operator:'StartsWith',stringValue:'QA AO WF G5 ',caseInsensitive:false},actions:[{order:0,delaySeconds:0,type:'FieldUpdate',fieldUpdates:{description:{kind:'string',stringValue:'g5'}}}]});return r.j.data.id;").replace(/"/g, '');
+  log('G5_rule', id);
+  await go('/settings/automation/workflow-rules/' + id); await page.waitForTimeout(3000);
+  const main = page.locator('main').last();
+  await clk(main.getByRole('button', { name: 'Add Description' }).first()).catch(() => {}); await page.waitForTimeout(400);
+  const ta = main.locator('textarea').first(); log('G5_hasTextarea', await ta.count());
+  if (await ta.count()) await ta.fill('tab1 description');
+  log('G5_tab2api', api("return (await api('PATCH','/workflow/rules/" + id + "',{name:'QA AO WF G5 changed by tab2'})).s;"));
+  await clk(main.getByRole('button', { name: /^Save/ }).first()); await page.waitForTimeout(3000);
+  const stored = () => api("const r=arr((await api('GET','/workflow/rules?take=500')).j?.data).find(x=>x.id==='" + id + "');return r?(r.name+' | '+r.description):'gone';");
+  log('G5_tab1save', { toasts: await page.locator('[data-sonner-toast]').allInnerTexts(), dialog: await page.getByRole('dialog').first().innerText().catch(() => ''), stored: stored() });
+  await shot('s18-g5');
+  log('G6_delete', api("return (await api('DELETE','/workflow/rules/" + id + "')).s;"));
+  if (await ta.count()) await ta.fill('tab1 after delete');
+  await clk(main.getByRole('button', { name: /^Save/ }).first()); await page.waitForTimeout(3000);
+  log('G6_save', { toasts: await page.locator('[data-sonner-toast]').allInnerTexts(), stored: stored() });
+  await shot('s18-g6');
+  await go('/settings/automation/workflow-rules/' + id); await page.waitForTimeout(2500);
+  log('G6_reload', (await main.innerText()).slice(0, 200));
+  // C9 draft resume
+  const { openEditor } = require('./lib-ed');
+  await openEditor({ page, go }, 'QA AO WF C9 draft', 'Edit'); await page.waitForTimeout(1500);
+  const url = page.url();
+  await page.goto(url); await page.waitForTimeout(3000);
+  log('C9_reload', (await page.locator('body').innerText()).split(NL).filter(l => /draft|resume|start fresh|discard/i.test(l)).slice(0, 6));
+  await shot('s18-c9');
+};
