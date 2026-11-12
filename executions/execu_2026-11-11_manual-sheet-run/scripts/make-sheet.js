@@ -42,6 +42,12 @@ details.f>summary::-webkit-details-marker{display:none}.fid{font:500 13px var(--
 .pass{background:var(--passbg);color:var(--pass)}.fail{background:var(--failbg);color:var(--fail)}.blocked{background:var(--blkbg);color:var(--blk)}.notbuilt,.notrun{background:var(--nbbg);color:var(--nb)}
 .src{font-size:11px;color:var(--mute);border:1px solid var(--line);border-radius:9px;padding:0 6px}
 .steps-toggle{color:var(--accent);font-size:12.5px;cursor:pointer}
+.prog{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:12px 0}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0}
+.pcard h2{font:600 13px var(--body);text-transform:uppercase;letter-spacing:.05em;color:var(--mute);margin:0 0 6px}
+.pcard table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}.pcard td{padding:3px 4px;border-bottom:1px solid var(--line)}.pcard td.n{text-align:right}
+.chips{display:flex;flex-wrap:wrap;gap:4px}.chip{font:500 12px var(--mono);padding:1px 6px;border-radius:4px;border:1px solid var(--line)}.chip.done{background:var(--passbg);color:var(--pass);border-color:transparent}.chip.part{background:var(--blkbg);color:var(--blk);border-color:transparent}
+.fails .frow{border-top:1px solid var(--line);padding:8px 12px;display:grid;grid-template-columns:92px 1fr;gap:4px 12px;font-size:13.5px}.fails .frow .id{font:500 12.5px var(--mono)}
 @media (max-width:640px){details.f>summary{grid-template-columns:52px 1fr}.fr{grid-column:2;align-items:flex-start}.case{grid-template-columns:1fr}.res{grid-column:1}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -51,6 +57,8 @@ details.f>summary::-webkit-details-marker{display:none}.fid{font:500 13px var(--
 <div class="strip" id="strip"></div>
 <div class="meter" id="meter" aria-hidden="true"></div>
 <div class="now" id="now"></div>
+<div class="prog" id="prog"></div>
+<details class="f fails" id="failbox"><summary><span class="fid">FAIL</span><span class="fn">Failures found in this sheet run<small id="failsub"></small></span><span class="fr"></span></summary><div id="faillist"></div></details>
 <div class="bar">
 <select id="fp" aria-label="Priority"><option value="">All priorities</option><option>P0</option><option>P1</option><option>P2</option><option>P3</option></select>
 <select id="fa" aria-label="Area"><option value="">All areas</option></select>
@@ -70,7 +78,13 @@ const areas=[...new Set(DATA.F.map(f=>f.a))];for(const a of areas){const o=docum
 function summary(){const all=DATA.F.flatMap(f=>f.c.map(c=>st(c.t)));const n=all.length;const k={pass:0,fail:0,blocked:0,notbuilt:0,notrun:0};all.forEach(s=>k[s]++);
  $('#strip').innerHTML=[['Cases',n],['Done',n-k.notrun],['Pass',k.pass],['Fail',k.fail],['Blocked',k.blocked],['Not built',k.notbuilt],['Not run',k.notrun]].map(([l,v])=>'<div><b>'+v+'</b><span>'+l+'</span></div>').join('');
  $('#meter').innerHTML=['pass','fail','blocked','notbuilt'].map(s=>'<i style="width:'+(k[s]/n*100)+'%;background:'+COL[s]+'"></i>').join('');
- const p=DATA.prog||{};$('#now').innerHTML='<b>Progress:</b> '+esc(p.text||'Run not started yet.');}
+ const p=DATA.prog||{};$('#now').innerHTML='<b>Progress:</b> '+esc(p.text||'Run not started yet.');
+ const pr={};const fe=[];for(const f of DATA.F){const x=pr[f.p]=pr[f.p]||{n:0,d:0,f:0};let d=0;for(const c of f.c){x.n++;const s=st(c.t);if(s!=='notrun'){x.d++;d++;}if(s==='fail')x.f++;}fe.push({id:f.id,p:f.p,d,n:f.c.length});}
+ const rows=['P0','P1','P2','P3'].map(k=>{const x=pr[k]||{n:0,d:0,f:0};return '<tr><td>'+k+'</td><td class="n">'+x.d+' / '+x.n+'</td><td class="n">'+Math.round(x.d/x.n*100)+'%</td><td class="n">'+x.f+' fail</td></tr>';}).join('');
+ const chips=p0=>fe.filter(f=>f.p===p0).map(f=>'<span class="chip '+(f.d===f.n?'done':f.d?'part':'')+'" title="'+f.d+'/'+f.n+' done">'+f.id+'</span>').join('');
+ $('#prog').innerHTML='<div class="pcard"><h2>By priority</h2><table>'+rows+'</table></div><div class="pcard"><h2>P0 features (green = all cases done)</h2><div class="chips">'+chips('P0')+'</div></div><div class="pcard"><h2>P1 features</h2><div class="chips">'+chips('P1')+'</div></div>';
+ const fl=[];for(const f of DATA.F)for(const c of f.c){const r=DATA.R[c.t];if(r&&r.src==='run'&&r.s==='fail')fl.push('<div class="frow"><div class="id">'+c.t+'</div><div><b>'+esc(c.ti)+'</b> <span class="cnt">'+esc(f.n)+'</span><br>'+esc(r.note)+'</div></div>');}
+ $('#failsub').textContent=fl.length+' cases failed on NDC-Staging in this run (earlier automation fails are in the list below)';$('#faillist').innerHTML=fl.join('');}
 function render(){const fp=$('#fp').value,fa=$('#fa').value,fs=$('#fs').value,q=$('#fq').value.trim().toLowerCase();let shown=0;const out=[];
  for(const f of DATA.F){if(fp&&f.p!==fp)continue;if(fa&&f.a!==fa)continue;
   const cs=f.c.filter(c=>{if(fs&&st(c.t)!==fs)return false;if(!q)return true;const r=DATA.R[c.t]||{};return (c.t+' '+c.ti+' '+(r.note||'')+' '+(r.bug||'')+' '+f.n).toLowerCase().includes(q);});

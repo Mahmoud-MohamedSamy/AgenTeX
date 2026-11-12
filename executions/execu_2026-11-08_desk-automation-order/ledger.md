@@ -277,3 +277,4 @@
 - 2026-11-11T13:58:13 A4 I9: invited "QA AO WF Agent" (Gmail +wf), Desk Agent, user d84e18d2-bc99-4087-b1a7-cfb34777a498 inv f56966bb-4d14-4de1-b244-afa4f1cefc27 — delete after. 200
 - 2026-11-11T15:03:11 A4 user round: QA AO Dept A Display in Help Center ON (was private)
 - 2026-11-11T15:03:11 A4 user round: Customer Happiness ON, scoped to QA AO Dept A only (restore from a4/u1-orig.json)
+- 2026-11-11T22:57:23 A4 O1 XSS payload rules deleted: {"QA AO WF O1 <img src=x":204,"QA AO WF O1nm <img src":204,"QA AO WF O1ds":204,"QA AO WF O1cm":204,"QA AO WF O1tk":204}
