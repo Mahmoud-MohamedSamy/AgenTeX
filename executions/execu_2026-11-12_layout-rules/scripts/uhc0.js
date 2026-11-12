@@ -1,0 +1,1 @@
+async (page) => { const h = await api('GET', '/help-centers/e74f2abb-e28d-400e-908c-f2c54862e389'); const l = await api('GET', '/help-centers'); return { url: page.url(), s: h.s, t: h.t.slice(0, 200), list: l.s + ' ' + l.t.replace(/"help_center_key":"[^"]*"/g, '"help_center_key":"<k>"').slice(0, 300), login: await page.getByText('Forgot password?').count() }; }

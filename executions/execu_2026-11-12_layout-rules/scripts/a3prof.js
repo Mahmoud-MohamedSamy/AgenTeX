@@ -1,0 +1,1 @@
+const r = await api('GET', '/iam/profiles?app_key=desk'); const a = arr(r.j.data); return { keys: Object.keys(a[0]).join(','), ids: a.map(p => p.name + ' ' + JSON.stringify(Object.fromEntries(Object.entries(p).filter(([k]) => /id/i.test(k))))) };

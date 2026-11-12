@@ -1,0 +1,1 @@
+const me = (await api('GET', '/iam/me')).j.data; fs.writeFileSync(RUN + '/out/a3-user-before.json', JSON.stringify({ user_id: me.user_id, profiles_by_app: me.profiles_by_app })); return { uid: me.user_id, byApp: Object.fromEntries(Object.entries(me.profiles_by_app).map(([k, v]) => [k, v.map(p => p.name + ' ' + p.profile_id + (p.scope_id ? ' scope ' + p.scope_id : ''))])) };

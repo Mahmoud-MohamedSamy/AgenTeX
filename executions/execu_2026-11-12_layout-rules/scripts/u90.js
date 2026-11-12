@@ -1,0 +1,3 @@
+async (page) => { const mid = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; const out = {}; const urls = []; page.on('request', r => { if (/buttons|links/.test(r.url())) urls.push(r.url().slice(-60)); });
+  for (const [k, id] of [['partner', '2ca6bc00-4cbd-4d73-9f0c-08805e783556'], ['question', 'b0820d1f-bf72-4699-b121-0c2dbf0458a9']]) { await openRec(mid, id); await sleep(3000); out[k] = await page.evaluate(() => [...document.querySelectorAll('a,button')].filter(e => /QA LR1112 (btn|link)/.test(e.textContent)).map(e => e.tagName + ':' + e.textContent.trim() + ':' + Math.round(e.getBoundingClientRect().height))); }
+  out.urls = urls; return out; }

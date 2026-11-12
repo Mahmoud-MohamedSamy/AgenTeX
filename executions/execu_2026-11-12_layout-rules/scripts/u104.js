@@ -1,0 +1,4 @@
+async (page, ctx) => { const R = {}; const p = globalThis.__wfp; const net = []; p.on('response', async r => { if (r.request().method() === 'POST' && /submit|records|submissions/.test(r.url())) net.push(r.status() + ' ' + r.url().slice(-40) + ' :: ' + (await r.text().catch(() => '')).replace(/"[0-9a-f-]{36}"/g, '"<id>"').slice(0, 400)); });
+  await p.fill('input[name=subject]', 'QA LR1112 G14 webform'); await p.fill('input[name="contact.last_name"]', 'QA LR1112 G14'); await p.fill('input[name=email]', 'qa.lr1112.g14@example.com');
+  await p.selectOption('select[name=qa_lr_type]', 'Refund'); await p.waitForTimeout(800); R.orderVisAfterRefund = await p.locator('input[name=qa_lr_order]').isVisible();
+  await p.getByRole('button', { name: 'Send' }).click(); await p.waitForTimeout(6000); R.after = (await p.innerText('body')).replace(/\s+/g, ' ').slice(0, 200); R.net = net; await p.screenshot({ path: EV + 'desk-G14.png', fullPage: true }); return R; }

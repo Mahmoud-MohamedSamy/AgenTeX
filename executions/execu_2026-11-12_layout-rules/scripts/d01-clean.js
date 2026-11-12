@@ -1,0 +1,14 @@
+const out = {}; const Q = /QA LR1112|qa_lr/i; const mods = arr((await api('GET', '/modules')).j.data); const gone = [];
+const D = async (p, kind, id, label) => { const d = await api('DELETE', p); if (d.s < 300) { gone.push([kind, id, label]); return true; } if (d.s !== 404) log('DEL FAIL', kind, label, SR(d).slice(0, 200)); return false; };
+let n = 0; const kept = []; for (const m of mods) for (const x of arr(((await api('GET', '/modules/' + m.id + '/layout-rules')).j || {}).data)) { if (String(x.name).startsWith(P)) { if (await D('/modules/' + m.id + '/layout-rules/' + x.id, 'rule', x.id, x.name)) n++; } else kept.push(m.moduleKey + ':' + x.name); } out.rules = n; out.kept = kept;
+out.webform = I.webform ? (await D('/web-forms/' + I.webform, 'webform', I.webform, 'QA LR1112 G14 form')) : null;
+let rd = 0; const seen = new Set(); for (const [mid, id] of [...(I.recs || []), [I.mod_desk_tickets, '14c7e304-d511-45b6-bb22-b322a3db5010']]) { if (seen.has(id)) continue; seen.add(id); if (await D('/modules/' + mid + '/records/' + id, 'rec', id, 'known')) rd++; }
+const sw = {}; for (const m of mods) for (let p = 0; p < 10; p++) { const it = arr(((await api('GET', '/modules/' + m.id + '/records?q=' + encodeURIComponent('QA LR1112') + '&per_page=100')).j || {}).data).filter(x => JSON.stringify(x).includes('QA LR1112')); if (!it.length) break; let any = 0; for (const x of it) if (await D('/modules/' + m.id + '/records/' + x.id, 'rec', x.id, m.moduleKey)) { any++; sw[m.moduleKey] = (sw[m.moduleKey] || 0) + 1; } if (!any) { out['stuck_' + m.moduleKey] = it.length; break; } }
+out.records = { known: rd, swept: sw };
+// tickets created on the QA layout but without the prefix
+const T = I.mod_desk_tickets; const onLay = []; for (let pg = 1; pg <= 5; pg++) { const a = arr(((await api('GET', '/modules/' + T + '/records?per_page=100&sort_by=created_at&sort_order=desc&page=' + pg)).j || {}).data); if (!a.length) break; for (const x of a) if (x.created_with_layout_id === I.layout) onLay.push(x); if (a[a.length - 1].created_at < '2026-11-12') break; }
+out.onLayout = []; for (const x of onLay) { out.onLayout.push(x.id.slice(0, 8) + ' ' + x.created_at.slice(11, 16)); await D('/modules/' + T + '/records/' + x.id, 'rec', x.id, 'on QA layout'); }
+n = 0; for (const m of mods) for (const l of arr(((await api('GET', '/modules/' + m.id + '/layouts')).j || {}).data)) if (Q.test(l.name) || l.id === I.layout) { if (await D('/modules/' + m.id + '/layouts/' + l.id, 'layout', l.id, l.name)) n++; } out.layouts = n;
+n = 0; for (const m of mods) for (const f of arr(((await api('GET', '/modules/' + m.id + '/fields')).j || {}).data)) if (/^qa_lr/.test(f.fieldName)) { if (await D('/modules/' + m.id + '/fields/' + f.id, 'field', f.id, f.fieldName)) n++; } out.fields = n;
+fs.writeFileSync(RUN + '/out/cleanup-desk-gone.json', JSON.stringify(gone)); LED('CLEANUP desk deleted ' + gone.length + ' items (out/cleanup-desk-gone.json)');
+return out;

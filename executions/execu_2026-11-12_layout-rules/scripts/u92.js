@@ -1,0 +1,1 @@
+async (page) => { await openRec('841043e1-c078-41f9-8d6e-dfd61bee45c3', '2ca6bc00-4cbd-4d73-9f0c-08805e783556'); await shot('crm-F22-partner', false); await openRec('841043e1-c078-41f9-8d6e-dfd61bee45c3', 'b0820d1f-bf72-4699-b121-0c2dbf0458a9'); await shot('crm-F22-question', false); return 1; }

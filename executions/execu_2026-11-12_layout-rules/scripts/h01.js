@@ -1,0 +1,5 @@
+const out = {}; const hc = (await api('GET', '/help-centers/e74f2abb-e28d-400e-908c-f2c54862e389')).j.data; out.hcKeys = Object.keys(hc).join(',');
+const key = hc.portalKey || hc.portal_key || hc.key || hc.slug || hc.publicKey; out.keyField = Object.entries(hc).filter(([k, v]) => typeof v === 'string' && /key|slug|subdomain/i.test(k)).map(([k, v]) => k + ' len' + v.length);
+const deps = arr((await api('GET', '/departments')).j.data); out.deps = deps.map(d => d.name + ' ' + d.id.slice(0, 8) + ' hc=' + JSON.stringify(Object.fromEntries(Object.entries(d).filter(([k]) => /help|portal|visible/i.test(k)))));
+const mid = await modId(); out.layouts = []; for (const l of arr((await api('GET', '/modules/' + mid + '/layouts')).j.data)) { const g = await getLayout(mid, l.id); out.layouts.push(l.name + ' | depts ' + (g.departmentIds || []).map(x => (deps.find(d => d.id === x) || {}).name || x.slice(0, 8)).join('/') + ' | default ' + (g.defaultDepartmentIds || []).map(x => (deps.find(d => d.id === x) || {}).name || x.slice(0, 8)).join('/') + ' | HC ' + g.displayInHelpCenter + ' ' + (g.helpCenterDisplayName || '')); }
+return out;

@@ -1,0 +1,3 @@
+const ps = arr((await api('GET', '/iam/profiles')).j.data); const adm = ps.find(p => p.name === 'CRM Admin'); const A = arr((await api('GET', '/iam/profiles/' + adm.profileId + '/permissions')).j.data).filter(x => x.effect === 'GRANT').map(x => x.permissionKey);
+const U = new Set(arr((await api('GET', '/iam/profiles/11111111-1111-1111-1111-111111111103/permissions')).j.data).filter(x => x.effect === 'GRANT').map(x => x.permissionKey));
+const d = A.filter(k => !U.has(k)); return { nA: A.length, nU: U.size, diff: d.filter(k => /modul|custom|layout|setup|setting|admin|schema|field/i.test(k)).slice(0, 40), sample: d.slice(0, 40) };

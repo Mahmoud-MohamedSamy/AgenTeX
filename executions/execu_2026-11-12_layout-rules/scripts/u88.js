@@ -1,0 +1,2 @@
+async (page) => { const mid = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; await openRec(mid, 'b0820d1f-bf72-4699-b121-0c2dbf0458a9'); const out = {}; await page.getByRole('button', { name: /^Actions$/ }).first().click(); await sleep(1000); out.actions = (await page.locator('[role=menuitem]').allInnerTexts()).filter(s => /QA|btn/i.test(s)); await page.keyboard.press('Escape');
+ out.allBtns = (await page.getByRole('button').allInnerTexts()).map(s => s.trim()).filter(Boolean).slice(20, 45); return out; }

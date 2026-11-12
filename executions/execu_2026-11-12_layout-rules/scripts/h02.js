@@ -1,0 +1,4 @@
+const hc = (await api('GET', '/help-centers/e74f2abb-e28d-400e-908c-f2c54862e389')).j.data; const key = hc.help_center_key; fs.writeFileSync(RUN + '/out/.hckey', key);
+const out = {}; for (const p of ['/help-center/public/' + encodeURIComponent(key) + '/forms']) { const r = await fetch('https://staging-desk.taviportal.com/api/v1' + p); const t = await r.text(); out.s = r.status; let j; try { j = JSON.parse(t); } catch (e) { out.t = t.slice(0, 200); continue; }
+  const d = j.data || j; const deps = d.departments || d; out.shape = Object.keys(d).join(','); out.deps = arr(deps).map(x => x.name + ' ' + (x.id || '').slice(0, 8) + ' forms: ' + arr(x.forms).map(f => f.name + ' ' + (f.id || '').slice(0, 8) + ' layout ' + String(f.layoutId || f.layout_id || '').slice(0, 8)).join('; ')); out.formKeys = arr(deps)[0] && arr(arr(deps)[0].forms)[0] ? Object.keys(arr(deps)[0].forms[0]).join(',') : ''; }
+return out;

@@ -1,0 +1,1 @@
+const dm = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430'; const g = (await getRule(dm, I.g15rule)).j.data; g.branches = [br(eq('stage', 'proposal'), [req(['next_step'])])]; return SR(await putRule(dm, I.g15rule, g));

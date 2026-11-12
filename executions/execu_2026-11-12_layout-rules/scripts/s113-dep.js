@@ -1,0 +1,3 @@
+const mid = await modId(); const out = {}; const L = await getLayout(mid, I.layout); const b = { ...L }; delete b.id; for (const k of ['displayInHelpCenter','helpCenterDisplayName','departmentIds','defaultDepartmentIds','ticketStatuses','allowNonDepartmentAgents']) delete b[k];
+b.dependencies = process.env.OFF ? [] : [{ id: crypto.randomUUID(), parentFieldId: I.fields.qa_lr_type, parentValues: ['Question'], action: 'SHOW', childFieldIds: [I.fields.qa_lr_order] }];
+out.put = SR(await api('PUT', '/modules/' + mid + '/layouts/' + I.layout, b)).slice(0, 300); out.now = JSON.stringify((await getLayout(mid, I.layout)).dependencies); return out;

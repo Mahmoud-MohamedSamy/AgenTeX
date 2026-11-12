@@ -1,0 +1,1 @@
+async (page) => { await page.goto(HOST + '/login', { waitUntil: 'domcontentloaded' }); await sleep(4000); await shot('crm-login-state', false); return { url: page.url(), t: (await bodyText()).slice(0, 200), inputs: await page.locator('input').evaluateAll(es => es.map(e => e.type + ':' + (e.name || ''))) }; }

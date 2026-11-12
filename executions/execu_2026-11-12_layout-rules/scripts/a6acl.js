@@ -1,0 +1,3 @@
+const out = {}; const P0 = '11111111-1111-1111-1111-111111111103';
+if (process.env.UNDO) { const d = await api('DELETE', '/iam/profiles/' + P0 + '/permissions/metadata.acl.manage'); out.undo = SR(d).slice(0, 200); const now = arr((await api('GET', '/iam/profiles/' + P0 + '/permissions')).j.data); out.stillHas = now.some(x => x.permissionKey === 'metadata.acl.manage'); out.count = now.length; return out; }
+const r = await api('POST', '/iam/profiles/' + P0 + '/permissions', { permission_key: 'metadata.acl.manage', effect: 'GRANT' }); out.grant = SR(r).slice(0, 300); LED('A6: GRANT metadata.acl.manage to profile User (undo after; backup out/perm-user-before.json)'); return out;

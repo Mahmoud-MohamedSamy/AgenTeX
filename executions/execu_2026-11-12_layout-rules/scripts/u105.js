@@ -1,0 +1,2 @@
+async (page) => { const R = {}; await openRec('841043e1-c078-41f9-8d6e-dfd61bee45c3', 'e4e1c588-75f7-40c7-9715-f471db5e7b7c'); await page.getByRole('button', { name: /^Convert$/ }).first().click(); await sleep(4000);
+  R.url = page.url().slice(-80); const d = page.locator('[role=dialog]').first(); R.dlg = await d.count(); R.txt = ((R.dlg ? await d.innerText() : await bodyText())).replace(/\s+/g, ' ').slice(0, 1200); await shot('crm-G15-convert'); return R; }

@@ -1,6 +1,6 @@
 async (page, ctx) => {
   const { p } = globalThis.__hc;
-  await p.goto('https://staging-crm.taviportal.com/help/hc1.a7a7a7a7000000000000000000000004.rDvrZfW_-TBcbb_XkySGodjzQfiQLj80dsTNfdLteDw/tickets/new', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(7000);
+  await p.goto('https://staging-crm.taviportal.com/help/<hc-key from out/.hchome>/tickets/new', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(7000);
   const labels = await p.locator('label').allInnerTexts();
   const combos = await p.locator('select, button[role=combobox]').evaluateAll(es => es.map(e => (e.getAttribute('aria-label') || e.name || e.id || '').slice(0, 40)));
   await p.screenshot({ path: EV + 'desk-hc-form.png', fullPage: true });

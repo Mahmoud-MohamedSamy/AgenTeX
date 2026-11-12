@@ -1,0 +1,1 @@
+const d = (await api('GET', '/help-centers/e74f2abb-e28d-400e-908c-f2c54862e389')).j.data; fs.writeFileSync(RUN + '/out/.hchome', d.home_url || d.preview_url); return { len: (d.home_url || '').length, enabled: d.is_enabled, access: d.access, auth: d.auth_policy };

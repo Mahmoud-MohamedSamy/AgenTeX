@@ -1,0 +1,2 @@
+const out = {}; for (const p of ['/iam/permissions', '/iam/permissions/catalog', '/iam/permission-catalog']) { const r = await api('GET', p); const a = arr(r.j && r.j.data); out[p] = r.s + ' n=' + a.length; if (a.length) out.hits = a.filter(x => /layout|module|metadata\.(fields|schema|modules)|custom/i.test(JSON.stringify(x))).map(x => (x.permissionKey || x.permission_key || x.key) + ' | ' + String(x.description || '').slice(0, 90)); }
+const me = await api('GET', '/iam/me'); out.me = me.s; return out;

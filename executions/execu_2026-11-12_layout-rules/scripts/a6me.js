@@ -1,0 +1,2 @@
+const me = await api('GET', '/iam/me'); const d = me.j && me.j.data || {}; const pick = {}; for (const k of Object.keys(d)) if (/profile|role|rank|perm/i.test(k)) pick[k] = JSON.stringify(d[k]).slice(0, 300);
+const pp = await api('GET', '/iam/me/permissions'); return { keys: Object.keys(d).join(','), pick, myPerms: pp.s + ' ' + (pp.t || '').slice(0, 100), hasMM: /metadata\.modules\.manage/.test(pp.t || '') };

@@ -1,0 +1,1 @@
+async (page) => { await openRec('841043e1-c078-41f9-8d6e-dfd61bee45c3', '2ca6bc00-4cbd-4d73-9f0c-08805e783556'); await sleep(3000); await shot('crm-F22-partner2', false); return { url: page.url(), t: (await bodyText()).slice(0, 300) }; }

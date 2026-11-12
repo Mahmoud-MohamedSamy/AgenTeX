@@ -1,0 +1,4 @@
+const L = I.mod_leads; const out = { total: 0, hit: [] };
+for (const extra of ['', '&include_deleted=true']) for (let pg = 1; pg <= 80; pg++) { const r = await api('GET', '/modules/' + L + '/records?per_page=100&page=' + pg + extra); const a = arr(r.j && r.j.data); if (!a.length) break; if (!extra) out.total += a.length; for (const x of a) if (x.created_with_layout_id === I.layout || JSON.stringify(x).includes(I.layout)) out.hit.push(extra + ' ' + x.id + ' del=' + x.is_deleted + ' ' + JSON.stringify(x.data).slice(0, 150)); if (pg === 1 && extra) out.delMeta = JSON.stringify(r.j.meta || {}).slice(0, 200); }
+const lay = await api('GET', '/modules/' + L + '/layouts/' + I.layout); out.layKeys = Object.keys(lay.j.data || {}).join(','); out.recCount = lay.j.data && (lay.j.data.recordCount ?? lay.j.data.record_count);
+return out;

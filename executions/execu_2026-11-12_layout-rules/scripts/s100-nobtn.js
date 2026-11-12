@@ -1,0 +1,1 @@
+const mid = await modId(); const g = (await getRule(mid, I.c1)).j.data; const on = process.env.ON; g.branches[3].actions = on ? [...g.branches[3].actions.filter(a => a.type !== 'show_buttons'), { type: 'show_buttons', buttonIds: [I.fx_btn] }] : g.branches[3].actions.filter(a => a.type !== 'show_buttons'); return SR(await putRule(mid, I.c1, g));

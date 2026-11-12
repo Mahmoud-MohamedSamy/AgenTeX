@@ -1,0 +1,3 @@
+const mid = await modId(); const out = {}; out.del = SR(await api('DELETE', '/modules/' + mid + '/buttons/' + I.fx_btn));
+const b = await api('POST', '/modules/' + mid + '/buttons', { name: P + ' btn', label: { en: P + ' btn' }, actionType: 'url', actionTarget: 'https://example.com/qa-lr1112', placement: 'detail_view' }); out.mk = SR(b).slice(0, 200); I.fx_btn = b.j.data.id; SAVE(); LED('fixture btn (recreated) ' + I.fx_btn);
+const g = (await getRule(mid, I.c1)).j.data; g.branches[3].actions = g.branches[3].actions.map(a => a.type === 'show_buttons' ? { ...a, buttonIds: [I.fx_btn] } : a); out.rule = SR(await putRule(mid, I.c1, g)); return out;

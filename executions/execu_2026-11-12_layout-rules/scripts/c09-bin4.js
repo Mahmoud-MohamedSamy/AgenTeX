@@ -1,0 +1,4 @@
+const txt = fs.readFileSync(RUN + '/ledger.md', 'utf8') + JSON.stringify(I) + fs.readFileSync(RUN + '/results.tsv', 'utf8'); const full = new Set(txt.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g)); const short = new Set(txt.match(/\b[0-9a-f]{8}\b/g));
+let cursor = null; const hits = [];
+for (let p = 0; p < 30; p++) { const r = await api('GET', '/audit/recycle-bin/items?app_key=crm&limit=100' + (cursor ? '&cursor=' + encodeURIComponent(cursor) : '')); for (const i of arr(r.j.data && (r.j.data.items || r.j.data))) if (i.module_key === 'leads' && (full.has(i.record_id) || short.has(i.record_id.slice(0, 8)))) hits.push([i.id, i.record_id, i.record_label, i.deleted_at, full.has(i.record_id) ? 'full' : 'short']); cursor = r.j.meta && (r.j.meta.next_cursor || r.j.meta.nextCursor); if (!cursor) break; }
+return hits;

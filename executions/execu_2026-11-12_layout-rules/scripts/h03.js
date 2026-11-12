@@ -1,0 +1,7 @@
+const mid = await modId(); const CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158'; const out = {};
+const g = await getLayout(mid, I.layout); fs.writeFileSync(RUN + '/out/hc-layout-before.json', JSON.stringify({ departmentIds: g.departmentIds, displayInHelpCenter: g.displayInHelpCenter, helpCenterDisplayName: g.helpCenterDisplayName }));
+const u = await api('PUT', '/modules/' + mid + '/layouts/' + I.layout, { ...g, departmentIds: [CS], displayInHelpCenter: true, helpCenterDisplayName: 'QA LR1112 HC form' }); out.layout = SR(u).slice(0, 300); LED('HC: QA layout departmentIds=[CS], HC name QA LR1112 HC form');
+// HC rule: type=Refund -> show note + require note; reason hidden unless tier Gold
+const r1 = await mkRule(mid, { name: P + ' HC type', layoutId: I.layout, primaryField: 'qa_lr_type', status: 'active', applyToHelpCenter: true, departmentIds: [CS], branches: [br(eq('qa_lr_type', 'Refund'), [show(['qa_lr_note']), req(['qa_lr_note'])])] }); out.r1 = SR(r1).slice(0, 200); if (r1.j && r1.j.data) { I.hc_r1 = r1.j.data.id; LED('rule HC type ' + I.hc_r1); }
+const r2 = await mkRule(mid, { name: P + ' HC off', layoutId: I.layout, primaryField: 'qa_lr_tier', status: 'active', applyToHelpCenter: false, branches: [br(eq('qa_lr_tier', 'Gold'), [show(['qa_lr_order'])])] }); out.r2 = SR(r2).slice(0, 200); if (r2.j && r2.j.data) { I.hc_r2 = r2.j.data.id; LED('rule HC off ' + I.hc_r2); }
+SAVE(); return out;

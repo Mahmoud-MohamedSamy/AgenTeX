@@ -1,0 +1,1 @@
+const r = await api('GET', '/desk/departments'); const L = arr(r.j.data); const me = await api('GET', '/iam/me'); return { s: r.s, n: L.length, names: L.map(d => d.name).slice(0, 8), me: JSON.stringify(me.j && me.j.data && (me.j.data.departments || me.j.data.departmentIds || null)).slice(0, 300) };

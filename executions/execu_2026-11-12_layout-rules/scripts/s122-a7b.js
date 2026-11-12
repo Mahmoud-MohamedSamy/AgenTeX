@@ -1,0 +1,1 @@
+const ds = arr((await api('GET', '/desk/departments')).j.data); const out = { n: ds.length }; const k = Object.keys(ds[0] || {}); out.keys = k.join(','); out.memberField = JSON.stringify(ds[0]).slice(0, 400); return out;

@@ -1,0 +1,1 @@
+const dm = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430'; const d = (await api('GET', '/modules/' + dm + '/records/' + I.dealRec)).j.data.data; return d.filter(x => /^(stage|qa_lr_appnote|probability|discount)$/.test(x.field)).map(x => x.field + '=' + JSON.stringify(x.value.value));

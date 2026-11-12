@@ -1,0 +1,2 @@
+const mid = await modId(); const b = JSON.parse(fs.readFileSync(RUN + '/out/hc-layout-before.json', 'utf8')); const g = await getLayout(mid, I.layout);
+const u = await api('PUT', '/modules/' + mid + '/layouts/' + I.layout, { ...g, ...b }); LED('HC prep reverted on QA layout (' + u.s + ')'); const a = await getLayout(mid, I.layout); return { put: u.s, depts: a.departmentIds, hcName: a.helpCenterDisplayName };

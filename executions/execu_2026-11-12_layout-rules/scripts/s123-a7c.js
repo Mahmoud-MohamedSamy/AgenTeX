@@ -1,0 +1,1 @@
+const me = (await api('GET', '/iam/me')).j.data; const id = me && (me.id || me.userId || me.user_id); const ds = arr((await api('GET', '/desk/departments')).j.data); return { idLen: String(id).length, member: ds.filter(d => (d.agent_user_ids || []).includes(id)).map(d => d.name), total: ds.length };

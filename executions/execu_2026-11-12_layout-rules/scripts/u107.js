@@ -1,0 +1,6 @@
+async (page) => { const R = {}; await openRec('841043e1-c078-41f9-8d6e-dfd61bee45c3', 'e4e1c588-75f7-40c7-9715-f471db5e7b7c'); await page.getByRole('button', { name: /^Convert$/ }).first().click(); await sleep(4000);
+  await page.getByText('Create a new Transactions for this Customers').first().click(); await sleep(2500);
+  await page.getByPlaceholder('Deal name').fill('QA LR1112 deal G15');
+  const stageBtn = page.locator('main button[aria-haspopup], main button[role=combobox]').filter({ hasText: 'Select' }).first(); await stageBtn.click(); await sleep(700); R.opts = (await page.getByRole('option').allInnerTexts()).slice(0, 4); await page.getByRole('option', { name: 'test-02', exact: true }).first().click(); await sleep(800);
+  R.nextReq = await page.evaluate(() => { const i = document.querySelector('input[placeholder="Next Step"]'); if (!i) return 'no input'; const w = i.closest('div.group') || i.parentElement.parentElement; return (w.innerText || '').slice(0, 40) + ' req=' + (i.required || i.getAttribute('aria-required')); });
+  await page.getByRole('button', { name: /^Convert$/ }).last().click(); await sleep(6000); R.url = page.url().slice(-60); R.msgs = ((await bodyText()).match(/[^.]{0,50}(required|converted|success|error|could not)[^.]{0,100}/gi) || []).slice(0, 4); await shot('crm-G15'); return R; }

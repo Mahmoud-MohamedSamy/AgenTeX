@@ -1,0 +1,1 @@
+const mid = await modId(); const d = (await api('GET', '/modules/' + mid + '/records/' + I.bpRec)).j.data.data; return d.filter(x => /qa_lr_(type|order)/.test(x.field)).map(x => x.field + '=' + JSON.stringify(x.value.value));

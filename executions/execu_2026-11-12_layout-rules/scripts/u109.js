@@ -1,0 +1,3 @@
+async (page) => { const R = {}; await page.getByRole('option', { name: /Closed Lost to Competition/ }).first().click(); await sleep(900);
+  await page.getByPlaceholder('Deal name').fill('QA LR1112 deal G15'); R.nextLabel = await page.evaluate(() => { const i = document.querySelector('input[placeholder="Next Step"]'); return i ? (i.required || i.getAttribute('aria-required') || 'no') + '' : 'none'; });
+  await page.getByRole('button', { name: /^Convert$/ }).last().click(); await sleep(7000); R.url = page.url().slice(-60); R.msgs = ((await bodyText()).match(/[^.]{0,50}(required|converted|success|error|could not)[^.]{0,100}/gi) || []).slice(0, 4); await shot('crm-G15'); return R; }

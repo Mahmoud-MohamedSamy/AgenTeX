@@ -1,0 +1,2 @@
+const p = await api('GET', '/iam/profiles/11111111-1111-1111-1111-111111111103/permissions'); const t = JSON.stringify(p.j.data); fs.writeFileSync(RUN + '/out/perm-user-before.json', JSON.stringify(p.j.data));
+const keys = (t.match(/"[a-z_]+:[a-z_:.-]+"/g) || []); return { s: p.s, shape: t.slice(0, 600), custom: [...new Set(keys.filter(k => /custom|setting|layout|module/i.test(k)))].slice(0, 30) };

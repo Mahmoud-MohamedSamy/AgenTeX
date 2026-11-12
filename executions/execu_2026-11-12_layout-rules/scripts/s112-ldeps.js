@@ -1,0 +1,1 @@
+const mid = await modId(); const L = await getLayout(mid, I.layout); return { top: Object.keys(L).join(','), view: Object.keys(L.views.CREATE).join(','), deps: JSON.stringify(L.dependencies || L.views.CREATE.dependencies || null).slice(0, 300) };

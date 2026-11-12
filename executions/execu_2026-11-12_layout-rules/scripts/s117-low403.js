@@ -1,0 +1,1 @@
+const mid = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; const r = await api('POST', '/modules/' + mid + '/layout-rules', { name: 'QA LR1112 A6 probe', layoutId: '3847cbd4-508c-4402-9602-e63a72a0f1d7', primaryField: 'qa_lr_vip', status: 'disabled', branches: [] }); return { s: r.s, t: r.t.slice(0, 500) };

@@ -26,11 +26,11 @@ async function refresh() {
   else await login();
 }
 const ensure = async () => { if (!tok.a || Date.now() - (tok.at || 0) > 4 * 60000) await refresh(); fs.writeFileSync(store, JSON.stringify(tok)); };
-const api = async (m, p, body) => {
+const api = async (m, p, body, xh = {}) => {
   await ensure();
   for (let i = 0; i < 3; i++) {
     try {
-      const r = await fetch(API + p, { method: m, headers: { ...H, authorization: 'Bearer ' + tok.a }, body: body !== undefined ? JSON.stringify(body) : undefined });
+      const r = await fetch(API + p, { method: m, headers: { ...H, ...xh, authorization: 'Bearer ' + tok.a }, body: body !== undefined ? JSON.stringify(body) : undefined });
       const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch (e) { }
       if (r.status === 401 && i === 0) { await refresh(); continue; }
       return { s: r.status, j, t: t.slice(0, 4000) };

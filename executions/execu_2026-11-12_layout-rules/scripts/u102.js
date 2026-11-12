@@ -1,0 +1,2 @@
+async (page, ctx) => { const share = JSON.parse(require('fs').readFileSync('D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX/executions/execu_2026-11-12_layout-rules/out/webform.json', 'utf8')).share;
+  const p = await ctx.newPage(); await p.goto(share, { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(8000); const t = (await p.innerText('body')).replace(/\s+/g, ' ').slice(0, 500); const fr = p.frames().length; await p.screenshot({ path: EV + 'desk-G14-open.png' }); await p.close(); return { t, fr }; }

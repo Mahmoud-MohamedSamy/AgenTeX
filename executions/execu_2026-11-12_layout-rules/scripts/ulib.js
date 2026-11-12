@@ -3,8 +3,8 @@ const EV = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/Agen
 const HOST = 'https://staging-' + (globalThis.__APP || 'crm') + '.taviportal.com';
 const sleep = ms => page.waitForTimeout(ms);
 const dialogs = []; if (!page.__dlg) { page.__dlg = true; page.on('dialog', d => { (page.__dialogs = page.__dialogs || []).push(d.message()); d.dismiss().catch(() => {}); }); }
-const openCreate = async (mid, lid, extra = '') => { await page.goto(HOST + '/modules/' + mid + '/records/new?layout=' + lid + extra, { waitUntil: 'domcontentloaded' }); await page.waitForSelector('[data-rule-field]', { timeout: 30000 }).catch(() => {}); await sleep(2500); };
-const openRec = async (mid, id) => { await page.goto(HOST + '/modules/' + mid + '/records/' + id, { waitUntil: 'domcontentloaded' }); await sleep(7000); };
+let openCreate = async (mid, lid, extra = '') => { await page.goto(HOST + '/modules/' + mid + '/records/new?layout=' + lid + extra, { waitUntil: 'domcontentloaded' }); await page.waitForSelector('[data-rule-field]', { timeout: 30000 }).catch(() => {}); await sleep(2500); };
+let openRec = async (mid, id) => { await page.goto(HOST + '/modules/' + mid + '/records/' + id, { waitUntil: 'domcontentloaded' }); await sleep(7000); };
 const wrap = f => page.locator(`[data-rule-field="${f}"]`).first();
 // visible = wrapper exists and is rendered (offsetParent / bounding box)
 const vis = async f => page.evaluate(f => { const w = document.querySelector(`[data-rule-field="${f}"]`); if (!w) return false; const r = w.getBoundingClientRect(); const st = getComputedStyle(w); return r.height > 0 && st.display !== 'none' && st.visibility !== 'hidden'; }, f);
@@ -22,3 +22,8 @@ const bodyText = async () => (await page.innerText('body')).replace(/\s+/g, ' ')
 const errs = async () => page.evaluate(() => [...document.querySelectorAll('[role=alert], .text-red-600, .text-danger, [data-error], [aria-invalid=true]')].map(e => (e.innerText || e.getAttribute('name') || e.id || '').trim()).filter(Boolean).slice(0, 10));
 const shot = async (n, full = true) => { await page.screenshot({ path: EV + n + '.png', fullPage: full }); return n; };
 const api = async (m, p, b) => page.evaluate(async ({ m, p, b }) => { const r = await fetch('/api/v1' + p, { method: m, headers: { 'content-type': 'application/json' }, body: b ? JSON.stringify(b) : undefined, credentials: 'include' }); return { s: r.status, t: (await r.text()).slice(0, 3000) }; }, { m, p, b });
+// re-sign-in the browser if a page shows the login form (uses the server's own U/PW; never printed)
+const relogin = async () => { if (!(await page.getByText('Forgot password?').count())) return false; const em = page.locator('input[type=email], input[name=email]').first(); if (await em.count()) { await em.fill(U); if (!(await page.locator('input[type=password]').count())) await page.keyboard.press('Enter'); await page.waitForSelector('input[type=password]', { timeout: 30000 }); await page.locator('input[type=password]').fill(PW); await page.keyboard.press('Enter'); await page.waitForTimeout(8000); } return true; };
+const _oc = openCreate, _or = openRec;
+openCreate = async (...a) => { await _oc(...a); if (await relogin()) await _oc(...a); };
+openRec = async (...a) => { await _or(...a); if (await relogin()) await _or(...a); };

@@ -1,0 +1,217 @@
+<title>Layout Rules Run Report</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (max 1040px) — summary first, then bugs as cards, then lists and a filterable case table. */
+:root {
+  --bg: #f6f7f9; --surface: #ffffff; --fg: #1b2230; --muted: #5a6577; --line: #dfe3ea; --accent: #2a5bd7; --accent-soft: #e6edfc;
+  --pass: #1f7a4a; --pass-bg: #e3f4ea; --fail: #b42318; --fail-bg: #fde8e6; --gap: #8a4b00; --gap-bg: #fdf0dc;
+  --info: #3d5a80; --info-bg: #e7eef7; --blk: #6b4fa3; --blk-bg: #efe9f8; --none: #5a6577; --none-bg: #eceef2;
+  --high: #b42318; --med: #b25e00; --low: #4d6480;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12161d; --surface: #1a2029; --fg: #e5e9f0; --muted: #9aa5b6; --line: #2c3440; --accent: #7fa3f5; --accent-soft: #1f2a42;
+  --pass: #6fd39b; --pass-bg: #163225; --fail: #ff8f84; --fail-bg: #3a1c1a; --gap: #f2b766; --gap-bg: #382814;
+  --info: #9dbbe0; --info-bg: #1c2938; --blk: #c4adf0; --blk-bg: #2a2140; --none: #a3adbd; --none-bg: #252b35;
+  --high: #ff8f84; --med: #f2b766; --low: #a9bcd6; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e5e9f0; --muted: #9aa5b6; --line: #2c3440; --accent: #7fa3f5; --accent-soft: #1f2a42;
+  --pass: #6fd39b; --pass-bg: #163225; --fail: #ff8f84; --fail-bg: #3a1c1a; --gap: #f2b766; --gap-bg: #382814;
+  --info: #9dbbe0; --info-bg: #1c2938; --blk: #c4adf0; --blk-bg: #2a2140; --none: #a3adbd; --none-bg: #252b35;
+  --high: #ff8f84; --med: #f2b766; --low: #a9bcd6; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--sans); }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 40px }
+h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.25 }
+h1 { font-size: 28px; font-weight: 700 }
+h2 { font-size: 20px; font-weight: 600; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap }
+h2 .count { font: 500 13px var(--mono); color: var(--muted) }
+h3 { font-size: 16px; font-weight: 600 }
+p { margin: 0; max-width: 70ch }
+section { display: grid; gap: 16px; min-width: 0 }
+.eyebrow { font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent) }
+.lede { color: var(--muted) }
+.head { display: grid; gap: 10px }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: 13px }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 2px }
+.tile b { font: 600 24px var(--mono); font-variant-numeric: tabular-nums }
+.tile span { font-size: 12px; color: var(--muted); letter-spacing: .03em; text-transform: uppercase }
+.tile.t-pass b { color: var(--pass) } .tile.t-fail b { color: var(--fail) } .tile.t-gap b { color: var(--gap) } .tile.t-blk b { color: var(--blk) } .tile.t-info b { color: var(--info) }
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; font-size: 14px }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top }
+tr:last-child > * { border-bottom: 0 }
+thead th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; background: var(--bg) }
+.num td, .num th { font-variant-numeric: tabular-nums }
+.num td { font-family: var(--mono) }
+.explain { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; display: grid; gap: 10px }
+.explain ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-width: 75ch }
+.sev-legend { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted) }
+.bugs { display: grid; gap: 12px }
+.bug { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--low); border-radius: 8px; padding: 14px 16px; display: grid; gap: 8px; min-width: 0 }
+.bug:has(.sev-high) { border-left-color: var(--high) } .bug:has(.sev-medium) { border-left-color: var(--med) }
+.bug header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px }
+.bid { font: 600 13px var(--mono) }
+.sev { font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor }
+.sev-high { color: var(--high) } .sev-medium { color: var(--med) } .sev-low { color: var(--low) }
+.tag { color: var(--muted); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px }
+.cids { font-family: var(--mono); color: var(--muted) }
+dl { margin: 0; display: grid; grid-template-columns: 130px 1fr; gap: 6px 14px; font-size: 14px }
+dt { color: var(--muted); font-weight: 500 }
+dd { margin: 0; min-width: 0 }
+.ev { font-family: var(--mono); font-size: 12.5px; color: var(--muted); word-break: break-word }
+.list { list-style: none; margin: 0; padding: 0; display: grid; border: 1px solid var(--line); border-radius: 8px; background: var(--surface) }
+.list li { display: grid; grid-template-columns: 54px auto 1fr; gap: 10px; align-items: baseline; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 14px }
+.list li:last-child { border-bottom: 0 }
+.list.two li { grid-template-columns: 54px 1fr }
+.list .txt { min-width: 0 }
+.cid { font: 500 13px var(--mono); color: var(--accent) }
+.plain { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 80ch; font-size: 14px }
+.st { display: inline-block; font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; white-space: nowrap }
+.st-pass { color: var(--pass); background: var(--pass-bg) } .st-fail { color: var(--fail); background: var(--fail-bg) } .st-gap { color: var(--gap); background: var(--gap-bg) }
+.st-info { color: var(--info); background: var(--info-bg) } .st-blocked { color: var(--blk); background: var(--blk-bg) } .st-none { color: var(--none); background: var(--none-bg) }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.filters input, .filters select { font: inherit; font-size: 14px; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; min-width: 0 }
+.filters input { flex: 1 1 220px }
+.filters .shown { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+#cases td.notes { font-size: 13px; color: var(--muted); white-space: pre-line; min-width: 260px }
+#cases td.t { min-width: 180px }
+details summary { cursor: pointer; color: var(--accent); font-size: 13px }
+.note { background: var(--accent-soft); border-radius: 8px; padding: 12px 16px; font-size: 14px; display: grid; gap: 6px }
+@media (max-width: 560px) { dl { grid-template-columns: 1fr } dt { margin-top: 4px } .list li { grid-template-columns: 48px 1fr } .list li .tag { grid-column: 2 } .list li .txt { grid-column: 1 / -1 } h1 { font-size: 23px } }
+</style>
+
+<div class="wrap">
+<header class="head">
+  <div class="eyebrow">Test run · NDC-Staging · 12 Nov 2026</div>
+  <h1>Layout Rules: TAVI CRM and Desk compared with Zoho</h1>
+  <p class="lede">The full results of the layout rules run: {{TOTAL}} cases across TAVI CRM (Leads, Deals, Tasks) and TAVI Desk (Tickets), checked against live Zoho CRM and Zoho Desk test orgs. Nothing has been filed in Plane yet.</p>
+  <div class="meta"><span>Environment: NDC-Staging, Chromium + API</span><span>Reference: Zoho CRM test org, Zoho Desk test account</span><span>Live sheet: claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC</span></div>
+</header>
+
+<section aria-labelledby="sum">
+  <h2 id="sum">Summary</h2>
+  <div class="tiles">
+    <div class="tile"><b>{{TOTAL}}</b><span>Cases</span></div>
+    <div class="tile t-pass"><b>{{PASS}}</b><span>Pass</span></div>
+    <div class="tile t-fail"><b>{{FAIL}}</b><span>Fail</span></div>
+    <div class="tile t-gap"><b>{{GAP}}</b><span>Missing</span></div>
+    <div class="tile t-blk"><b>{{BLOCKED}}</b><span>Blocked</span></div>
+    <div class="tile t-info"><b>{{INFO}}</b><span>Info</span></div>
+    <div class="tile"><b>{{NONE}}</b><span>Not run</span></div>
+  </div>
+  <p>The {{FAIL}} failed cases come down to <b>{{NBUGS}} distinct bugs</b>: {{HIGH}} high, {{MED}} medium and {{LOW}} low. Several cases point at the same bug (for example D9 to D12). Many cases cover both apps, so the table below counts each app's verdict separately. A case counts for Desk only when it was actually run on Desk.</p>
+  <div class="tbl"><table class="num">
+    <thead><tr><th>App</th><th>Pass</th><th>Fail</th><th>Missing</th><th>Info</th><th>Blocked</th><th>Not run</th></tr></thead>
+    <tbody>{{SUMROWS}}</tbody>
+  </table></div>
+</section>
+
+<section aria-labelledby="what">
+  <h2 id="what">What layout rules are</h2>
+  <div class="explain">
+    <p>A layout rule changes a record form while the user fills it. When a chosen field (the <b>primary field</b>) gets a certain value, the form reacts: it shows extra fields or sections, makes fields mandatory, and in CRM it can also filter options, lock fields, set or suggest values, or show messages. Example: "when Type is Refund, show Order number and make it mandatory".</p>
+    <ul>
+      <li><b>CRM</b> has 13 actions. <b>Desk</b> has 3: show fields, show sections and make fields mandatory. Desk rules can also be limited to departments and to the Help Center.</li>
+      <li>Rules should run wherever a record is created or changed: the form, inline edit, the stage bar, Blueprint, mass update and web forms.</li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="bugs">
+  <h2 id="bugs">Bugs <span class="count">{{NBUGS}} bugs · {{FAIL}} failed cases</span></h2>
+  <div class="sev-legend"><span>Severity is a suggestion:</span><span class="sev sev-high">High</span>wrong data saved, a rule not running, or data leaked<span class="sev sev-medium">Medium</span>wrong but with a workaround<span class="sev sev-low">Low</span>missing guard or polish</div>
+  <div class="bugs">
+{{BUGS}}
+  </div>
+  <p class="lede">Evidence names refer to files in executions/execu_2026-11-12_layout-rules/evidence/.</p>
+</section>
+
+<section aria-labelledby="gaps">
+  <h2 id="gaps">Missing compared with Zoho <span class="count">{{NGAPS}} items</span></h2>
+  <p class="lede">The first five are features TAVI does not have. The last three are Zoho checks that TAVI lacks, and each is also listed as a bug above.</p>
+  <ul class="list">{{GAPS}}</ul>
+</section>
+
+<section aria-labelledby="blk">
+  <h2 id="blk">Blocked and not run <span class="count">{{NB}} blocked, {{NNR}} not run</span></h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Case</th><th>App</th><th>Title</th><th>State</th><th>Why</th><th>Needed to finish it</th></tr></thead>
+    <tbody>{{BLOCKED_ROWS}}</tbody>
+  </table></div>
+  <p class="lede">A4 counts as blocked overall because its Desk half is blocked; its CRM half passed.</p>
+</section>
+
+<section aria-labelledby="info">
+  <h2 id="info">Notes: worth knowing (not bugs) <span class="count">{{INFO}} cases</span></h2>
+  <p class="lede">These are behaviour differences, limits and environment notes. Where TAVI does more than Zoho, that is a TAVI extra, not a bug.</p>
+  <ul class="list two">{{INFO_ROWS}}</ul>
+</section>
+
+<section aria-labelledby="side">
+  <h2 id="side">Bugs outside layout rules</h2>
+  <p class="lede">Found during the run. They belong to other features.</p>
+  <ul class="plain">{{SIDE}}</ul>
+</section>
+
+<section aria-labelledby="notgaps">
+  <h2 id="notgaps">Not gaps</h2>
+  <ul class="plain">{{NOTGAPS}}</ul>
+</section>
+
+<section aria-labelledby="all">
+  <h2 id="all">All cases</h2>
+  <div class="filters">
+    <label class="sr" for="q" hidden>Search</label>
+    <input id="q" type="search" placeholder="Search id, title or notes" aria-label="Search cases">
+    <select id="fs" aria-label="Filter by result"><option value="">All results</option></select>
+    <select id="fa" aria-label="Filter by app"><option value="">All apps</option><option>CRM</option><option>Desk</option><option>Both</option></select>
+    <select id="fg" aria-label="Filter by group"><option value="">All groups</option></select>
+    <span class="shown" id="shown"></span>
+  </div>
+  <div class="tbl"><table id="cases">
+    <thead><tr><th>Case</th><th>App</th><th>Title</th><th>Result</th><th>Notes</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+</section>
+
+<section aria-labelledby="env">
+  <h2 id="env">Environment and test data</h2>
+  <div class="note">
+    <p>Run on NDC-Staging with the owner account, a CRM User account (profile User) and a second Desk Administrator account. Zoho writes were made only in the Zoho CRM test org and the Zoho Desk test account. NDC's real Zoho was not touched, and neither were the 7 "QA NDC" Desk rules.</p>
+    <p>All test data uses the prefix "QA LR1112". It is listed in ledger.md: fields, layouts, rules, records, buttons, links, a map dependency, a validation rule, a Blueprint, a web form, field permissions, and Zoho rules and leads. All of it was deleted on 12 Nov after the run, and this run's TAVI Recycle Bin items were purged by exact id. Final check: CRM has 0 layout rules, Desk Tickets has only the 7 "QA NDC" rules, and User profile permissions match the backup. In the Zoho test org, the 4 QA rules and 3 QA leads were deleted. Staging was down from 11:35 to 12:30 UTC, and no data was lost.</p>
+  </div>
+</section>
+</div>
+
+<script>
+const DATA = {{DATA}};
+(function () {
+  const tb = document.querySelector('#cases tbody'), q = document.getElementById('q'), fs = document.getElementById('fs'), fa = document.getElementById('fa'), fg = document.getElementById('fg'), shown = document.getElementById('shown');
+  for (const [k, v] of Object.entries(DATA.st)) { const o = document.createElement('option'); o.value = k; o.textContent = v; fs.appendChild(o); }
+  const groups = [...new Map(DATA.cases.map(c => [c.grp, c.grpName])).entries()];
+  for (const [g, name] of groups) { const o = document.createElement('option'); o.value = g; o.textContent = g + ' · ' + (name || ''); fg.appendChild(o); }
+  const rows = DATA.cases.map(c => {
+    const tr = document.createElement('tr');
+    const td = (t, cls) => { const d = document.createElement('td'); if (cls) d.className = cls; d.textContent = t; tr.appendChild(d); return d; };
+    td(c.id, 'cid'); td(c.app);
+    const t = td('', 't'); const b = document.createElement('div'); b.textContent = c.title; t.appendChild(b);
+    const det = document.createElement('details'); const s = document.createElement('summary'); s.textContent = 'Steps and expected'; det.appendChild(s);
+    const p = document.createElement('p'); p.style.fontSize = '13px'; p.textContent = c.steps + ' Expected: ' + c.exp; det.appendChild(p); t.appendChild(det);
+    const r = td(''); const chip = document.createElement('span'); chip.className = 'st st-' + c.st; chip.textContent = DATA.st[c.st]; r.appendChild(chip);
+    td(c.notes, 'notes');
+    tb.appendChild(tr);
+    return { tr, c, hay: (c.id + ' ' + c.title + ' ' + c.notes).toLowerCase() };
+  });
+  function apply() {
+    const s = q.value.trim().toLowerCase(); let n = 0;
+    for (const r of rows) { const ok = (!s || r.hay.includes(s)) && (!fs.value || r.c.st === fs.value) && (!fa.value || r.c.app === fa.value) && (!fg.value || r.c.grp === fg.value); r.tr.hidden = !ok; if (ok) n++; }
+    shown.textContent = n + ' of ' + rows.length + ' shown';
+  }
+  [q, fs, fa, fg].forEach(el => el.addEventListener('input', apply));
+  apply();
+})();
+</script>

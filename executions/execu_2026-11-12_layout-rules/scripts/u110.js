@@ -1,0 +1,6 @@
+async (page) => { const R = {}; await openRec('841043e1-c078-41f9-8d6e-dfd61bee45c3', 'e4e1c588-75f7-40c7-9715-f471db5e7b7c'); await page.getByRole('button', { name: /^Convert$/ }).first().click(); await sleep(4000);
+  await page.getByText('Create a new Transactions for this Customers').first().click(); await sleep(2500);
+  await page.getByPlaceholder('Deal name').fill('QA LR1112 deal G15');
+  const sb = page.locator('main').getByText('Stage', { exact: true }).first().locator('xpath=ancestor::div[2]//button').first(); await sb.click(); await sleep(900);
+  const o = page.getByRole('option', { name: /^Proposal$/ }); R.o = await o.count(); if (!R.o) { R.opts = await page.getByRole('option').allInnerTexts(); return R; } await o.first().click(); await sleep(900);
+  const net = []; page.on('response', async r => { if (r.request().method() === 'POST' && /convert/.test(r.url())) net.push(r.status() + ' ' + (await r.text().catch(() => '')).replace(/"[0-9a-f-]{36}"/g, '<id>').slice(0, 500)); }); await page.locator('main button', { hasText: /^Convert$/ }).last().click(); await sleep(7000); R.net = net; R.url = page.url().slice(-60); R.msgs = ((await bodyText()).match(/[^.]{0,50}(required|converted|success|error|could not)[^.]{0,100}/gi) || []).slice(0, 4); await shot('crm-G15'); return R; }

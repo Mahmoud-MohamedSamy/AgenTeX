@@ -1,0 +1,13 @@
+const mid = await modId(); const out = {}; const CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158';
+const def = await getLayout(mid, I.defLayout); const flds = await fieldsOf(mid);
+const onDef = new Set(); for (const v of Object.values(def.views || {})) for (const s of v.layout.sections) for (const c of s.columns) for (const f of c.fields) onDef.add(f.fieldName || f.field_name || f.name);
+const pf = flds.find(f => onDef.has(f.fieldName) && f.capabilities && f.capabilities.canCreateLayoutRule && !/^qa_lr/.test(f.fieldName) && (f.datatypeKey === 'pick_list'));
+out.defPrimary = pf && pf.fieldName; const optOf = f => ((f.datatypeOptions && f.datatypeOptions.allowed_values) || (f.config && f.config.allowed_values) || [])[0];
+const tgt = flds.find(f => onDef.has(f.fieldName) && f.fieldName !== (pf && pf.fieldName) && !f.required && ['single_line', 'text', 'phone', 'email'].includes(f.datatypeKey));
+const o = optOf(pf); const ov = typeof o === 'object' ? (o.value || o.key || o.label) : o; out.defVal = ov; out.defTarget = tgt && tgt.fieldName;
+const mk = async (key, body) => { const r = await mkRule(mid, body); out[key] = SR(r).slice(0, 200); if (r.j && r.j.data) { I['b4_' + key] = r.j.data.id; SAVE(); LED('rule ' + body.name + ' ' + r.j.data.id); } };
+await mk('active', { name: P + ' B4 active', layoutId: I.layout, primaryField: 'qa_lr_type', status: 'active', ...(APP === 'desk' ? { departmentIds: [CS] } : {}), branches: [br(eq('qa_lr_type', 'Refund'), [show(['qa_lr_note'])])] });
+await mk('disabled', { name: P + ' B4 disabled', layoutId: I.layout, primaryField: 'qa_lr_tier', status: 'disabled', branches: [br(eq('qa_lr_tier', 'Gold'), [show(['qa_lr_order'])])] });
+if (pf && tgt) await mk('def', { name: P + ' B4 default layout', layoutId: I.defLayout, primaryField: pf.fieldName, status: 'active', branches: [br(eq(pf.fieldName, ov), [show([tgt.fieldName])])] });
+out.list = (await rules(mid)).map(x => x.name + ' / ' + x.status + ' / ' + (x.layoutId === I.layout ? 'QA' : x.layoutId === I.defLayout ? 'DEF' : x.layoutId.slice(0, 8)));
+return out;

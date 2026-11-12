@@ -31,3 +31,58 @@
 - 2026-11-12T14:14:13 [desk] ticket 188090e0 'QA LR1112 X1 ticket2'; rule X1 on QA layout
 - 2026-11-12T14:14:22 [crm] crm rule X3 ad53b509-6d4f-469d-ad7f-97f8ca72c385
 - 2026-11-12T14:14:57 [crm] record e4e1c588 'QA LR1112 rec X3'
+- 2026-11-12T14:23:56 [crm] fixture dm 0054aecf-da49-4ee8-868a-554be676b5fb
+- 2026-11-12T14:24:06 [crm] fixture btn 86f1a024-6af7-4b23-b4a6-22758d20d7e8
+- 2026-11-12T14:24:06 [crm] fixture link 9967268c-c2f4-4511-ad62-911c2d348cdc
+- 2026-11-12T14:24:06 [crm] fixture vr ac297c1a-5bb1-42c8-9c2b-4550ee71e6dc
+- 2026-11-12T14:26:19 [crm] fixture btn (recreated) b34019a2-ad88-4c31-880e-ebd330a5510a
+- 2026-11-12T14:31:12 [crm] Deals field qa_lr_appnote
+- 2026-11-12T14:31:17 [crm] Deals layout ca63559f-2adf-4253-9b8d-8f227d96b078
+- 2026-11-12T14:31:33 [crm] Deals rule 03a1f637-26e6-4d60-b665-a93cd5b64e69
+- 2026-11-12T14:31:35 [crm] Deal record 17c034c8-e25c-42de-996e-2501ae196764
+- 2026-11-12T14:33:30 [crm] blueprint 5ef8a445-143d-46bc-bdfa-bdaba36ca0d4
+- 2026-11-12T14:33:37 [crm] record bp c10b2d37-1d12-406a-b7bc-8f9f3480f721
+- 2026-11-12T14:35:15 [desk] Desk web form b59c407e-1ba6-4d8d-8129-e445b232281f
+- 2026-11-12T14:38:33 [desk] Desk ticket from web form 14c7e304-d511-45b6-bb22-b322a3db5010
+- 2026-11-12T14:39:30 [crm] TEMP Deals Standard rule fd2630aa-2fd0-4737-82d8-909e463d5594 (stage test-02, delete right after G15)
+- 2026-11-12T14:42:07 [crm] TEMP Deals Standard rule 2e3fae88-e988-4f57-8c32-dc4515bbcb05 (stage test-02, delete right after G15)
+- 2026-11-12T14:42:22 [crm] TEMP Deals Standard rule 760d0950-244b-4cfd-a1b8-b15d6e60de6a (stage test-02, delete right after G15)
+- 2026-11-12T14:42:52 [crm] G15 convert of lead e4e1c588 'QA LR1112 rec X3' created Customer + Subscription 'QA LR1112 rec X3' + Deal 'QA LR1112 deal G15'; temp Deals Standard rule created/deleted 3x (stage closed_lost/proposal)
+- 2026-11-12T14:46:07 [crm] profile 6f2daba4-7087-4950-8ddc-92c3491a663a
+- 2026-11-12T16:24:12 [crm] CLEANUP crm deleted 57 items (out/cleanup-crm-gone.json)
+- 2026-11-12T16:29:15 [desk] CLEANUP desk deleted 25 items (out/cleanup-desk-gone.json)
+- 2026-11-12T16:31:22 [all] CLEANUP DONE: TAVI CRM + Desk + Zoho test org (see PROGRESS.md)
+- 2026-11-12T21:09:56 [crm] created fields qa_lr_type,qa_lr_tier,qa_lr_filter,qa_lr_order,qa_lr_note,qa_lr_reason,qa_lr_text,qa_lr_amount,qa_lr_vip,qa_lr_date,qa_lr_email2,qa_lr_tags,qa_lr_radio
+- 2026-11-12T21:10:04 [crm] created layout 8598a82c-6116-460e-95d9-2ff36118dd3a
+- 2026-11-12T21:10:11 [desk] created fields qa_lr_type,qa_lr_tier,qa_lr_filter,qa_lr_order,qa_lr_note,qa_lr_reason,qa_lr_text,qa_lr_amount,qa_lr_vip,qa_lr_date,qa_lr_email2,qa_lr_tags
+- 2026-11-12T21:10:15 [desk] created layout d05dffcd-325e-49cf-9387-255535b50399
+- 2026-11-12T21:10:34 [crm] rule QA LR1112 B4 active c7ee21cd-2ebf-4288-a97b-43a011a0f6dd
+- 2026-11-12T21:10:35 [crm] rule QA LR1112 B4 disabled 97a1711a-6948-40b5-b977-04af15be7d29
+- 2026-11-12T21:10:35 [crm] rule QA LR1112 B4 default layout 73beb6f1-97d6-4dff-8853-5e0889e79723
+- 2026-11-12T21:10:36 [desk] rule QA LR1112 B4 active 8af6ebeb-8050-4dd0-9c31-29a886f7f1f3
+- 2026-11-12T21:10:37 [desk] rule QA LR1112 B4 disabled 71f74d21-0530-43e4-83f5-bef7279af0a3
+- 2026-11-12T21:10:37 [desk] rule QA LR1112 B4 default layout 374d56f3-8ba1-43b2-aef4-0352823fca00
+- 2026-11-12T21:13:39 [crm] A6: GRANT metadata.modules.manage to profile User (undo after; backup out/perm-user-before.json)
+- 2026-11-12T21:14:35 [crm] A6: GRANT metadata.modules.manage to profile User (undo after; backup out/perm-user-before.json)
+- 2026-11-12T21:15:33 [crm] A6: GRANT metadata.acl.manage to profile User (undo after; backup out/perm-user-before.json)
+- 2026-11-12T21:15:34 [crm] A6 low user rule 89335214-675e-4408-a550-dbbdd195433c
+- 2026-11-12T21:17:03 [crm] A6: granted metadata.modules.manage then metadata.acl.manage to profile User, both reverted (perms = backup)
+- 2026-11-12T21:18:27 [desk] A3: user Mahmoud Mohamed desk profile -> Desk Agent (400)
+- 2026-11-12T21:18:50 [desk] A3: user Mahmoud Mohamed desk profile -> Desk Agent (204)
+- 2026-11-12T21:21:37 [desk] A3: user Mahmoud Mohamed desk profile -> Desk Administrator (204)
+- 2026-11-12T21:23:18 [desk] HC: QA layout departmentIds=[CS], HC name QA LR1112 HC form
+- 2026-11-12T21:23:19 [desk] rule HC off 32cbb86d-f7d6-4d94-b4df-d6fdf2fbf41d
+- 2026-11-12T21:28:27 [desk] HC prep reverted on QA layout (200)
+- 2026-11-12T21:34:11 [crm] CLEANUP crm deleted 17 items (out/cleanup-crm-gone.json)
+- 2026-11-12T21:34:25 [desk] CLEANUP desk deleted 17 items (out/cleanup-desk-gone.json)
+- 2026-11-12T21:37:19 [all] Session 4 fixtures deleted (CRM + Desk), User profile perms = backup, Desk user profile restored
+- 2026-11-12T21:39:59 [desk] created fields qa_lr_type,qa_lr_tier,qa_lr_filter,qa_lr_order,qa_lr_note,qa_lr_reason,qa_lr_text,qa_lr_amount,qa_lr_vip,qa_lr_date,qa_lr_email2,qa_lr_tags
+- 2026-11-12T21:40:11 [desk] created layout 8ffce05c-6d20-487e-97b3-c0989125933c
+- 2026-11-12T21:40:16 [desk] HC: QA layout on CS + Help Center
+- 2026-11-12T21:40:17 [desk] rule QA LR1112 HC type 82605708-b549-4885-982e-ce8bb005b1bb
+- 2026-11-12T21:40:18 [desk] rule QA LR1112 HC off 844f7852-d110-4627-9097-9394c203abf0
+- 2026-11-12T21:40:40 [desk] HC access.mode sign_in_to_submit -> open (temporary, user approved; restore after G17)
+- 2026-11-12T21:42:07 [desk] HC form (help_center_form) 3007a348-6708-497c-8c0c-e1b64af635e4 for CS on QA layout
+- 2026-11-12T21:44:09 [desk] HC access.mode open -> sign_in_to_submit (restored)
+- 2026-11-12T21:45:44 [desk] CLEANUP desk deleted 16 items (out/cleanup-desk-gone.json)
+- 2026-11-12T21:46:54 [desk] HC mode restored to sign_in_to_submit; HC form + QA layout/fields/rules deleted, bin purged

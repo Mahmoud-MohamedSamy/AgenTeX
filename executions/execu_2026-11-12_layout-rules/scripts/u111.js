@@ -1,0 +1,2 @@
+async (page) => { const R = {}; const net = []; page.on('response', async r => { if (r.request().method() === 'POST' && /convert/.test(r.url())) net.push(r.status() + ' ' + (await r.text().catch(() => '')).replace(/"[0-9a-f-]{36}"/g, '"<id>"').slice(0, 500)); });
+  await page.locator('main button', { hasText: /^Convert$/ }).last().click(); await sleep(6000); R.net = net; R.url = page.url().slice(-50); R.toast = ((await bodyText()).match(/[^.]{0,60}(required|converted|success|error|could not)[^.]{0,120}/gi) || []).slice(0, 4); await shot('crm-G15'); return R; }
