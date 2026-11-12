@@ -1,0 +1,137 @@
+{
+ "out": "A2-no-permission-screen-vs-zoho.png",
+ "ticket": "Scoring Rules",
+ "title": "Users without permission see the Scoring Rules page, the New button and the editor, then every call is refused",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · account Mahmoud Samy (CRM User profile) · Zoho side not checked live (no low-privilege user in the Zoho test org)",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/ul1-lowpriv-direct.png",
+   "caption": "TAVI · menu item and page open; \"You don't have permission…\" with New Scoring Rule enabled",
+   "crop": [
+    268,
+    60,
+    1332,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      548,
+      140,
+      716,
+      176
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      700,
+      295,
+      1170,
+      350
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/ul2-lowpriv-create.png",
+   "caption": "TAVI · the editor opens with the full field list",
+   "crop": [
+    960,
+    0,
+    640,
+    460
+   ],
+   "boxes": [
+    {
+     "b": [
+      980,
+      370,
+      1580,
+      448
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/A2-tavi.png",
+   "w": 780,
+   "h": 602,
+   "crop": [
+    0,
+    0,
+    780,
+    602
+   ],
+   "caption": "TAVI · the API refuses the same user (403); the page uses another permission",
+   "boxes": [
+    {
+     "b": [
+      36,
+      118,
+      744,
+      253
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      263,
+      744,
+      398
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      408,
+      744,
+      564
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "A user who may not manage scoring rules opens the page",
+   "Needs the Manage Automation permission (Zoho help; not checked live)",
+   "Menu, page, New Scoring Rule and the editor are all available",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "What the API allows that user",
+   "Not checked live",
+   "Every call refused with 403 PERMISSION_DENIED (no data leaks)",
+   "INFO"
+  ],
+  [
+   3,
+   "Which permission guards the page",
+   "One permission (Manage Automation)",
+   "Page: metadata.modules.manage; API: a different check; no scoring permission in Profiles",
+   "DIFFERS"
+  ]
+ ]
+}

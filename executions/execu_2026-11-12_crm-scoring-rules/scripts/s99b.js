@@ -1,0 +1,3 @@
+const out={}; for(const k of ['agency','services']){const mid=await modId(k); for(const x of arr((await api('GET','/scoring-rules?module_id='+mid)).j.data)) if(String(x.name).startsWith('QA SR1112')) out[x.name]=(await api('DELETE','/scoring-rules/'+x.id)).s;}
+const S=await modId('services'); await sleep(2000); const sf=(await fields(S)).find(x=>x.fieldName==='score'); out.servicesScore=sf?'still there':'removed';
+const mods=arr((await api('GET','/modules')).j.data); let n=0; for(const m of mods){n+=arr((await api('GET','/scoring-rules?module_id='+m.id)).j.data).length;} out.totalRules=n; return out;

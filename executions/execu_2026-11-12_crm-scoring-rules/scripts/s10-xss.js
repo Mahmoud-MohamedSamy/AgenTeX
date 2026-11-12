@@ -1,0 +1,2 @@
+const L=await modId('leads'); const l=arr((await api('GET','/scoring-rules?module_id='+L)).j.data); const ui=l.find(x=>x.name===P+'UI Web'); log('UI Web active', ui&&ui.is_active, 'points', ui&&ui.entries&&ui.entries[0].points, 'v', ui&&ui.row_version);
+const r=await mkRule(L,{name:P+'<img src=x onerror=alert(1)>',description:'<script>alert(2)</script>',entries:[ent('lead_source','eq','other',1)]}); I.xss=keepRule(r); SAVE(); log('xss rule', r.s);

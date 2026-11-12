@@ -1,0 +1,99 @@
+{
+ "out": "H4-duplicate-names-vs-zoho.png",
+ "ticket": "Scoring Rules",
+ "title": "Two creates at the same moment make two scoring rules with the same name",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · owner · API · Zoho test org org944965048 · API v8 (sequential duplicate only; a parallel create was not tried in Zoho)",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/H4-tavi.png",
+   "w": 780,
+   "h": 581,
+   "crop": [
+    0,
+    0,
+    780,
+    581
+   ],
+   "caption": "TAVI · the duplicate check misses parallel requests",
+   "boxes": [
+    {
+     "b": [
+      36,
+      118,
+      744,
+      253
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      263,
+      744,
+      398
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      408,
+      744,
+      543
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/H4-zoho.png",
+   "w": 780,
+   "h": 291,
+   "crop": [
+    0,
+    0,
+    780,
+    291
+   ],
+   "caption": "Zoho · duplicate names are refused",
+   "boxes": [
+    {
+     "b": [
+      36,
+      118,
+      744,
+      253
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Create a rule with a name that exists",
+   "Refused: DUPLICATE_DATA",
+   "Refused: \"already has a scoring rule named …\"",
+   "SAME"
+  ],
+  [
+   2,
+   "Two creates with the same name at the same moment",
+   "Not checked live",
+   "Both succeed; two rules share the name",
+   "BUG"
+  ]
+ ]
+}

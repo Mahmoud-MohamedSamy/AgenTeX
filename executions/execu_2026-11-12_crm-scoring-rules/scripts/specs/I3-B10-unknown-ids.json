@@ -1,0 +1,114 @@
+{
+ "out": "I3-B10-unknown-ids.png",
+ "ticket": "Scoring Rules",
+ "title": "Unknown scoring rule or module ids are answered as success; the page shows a blank module name",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · owner · Zoho not checked live",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/I3-tavi.png",
+   "w": 780,
+   "h": 726,
+   "crop": [
+    0,
+    0,
+    780,
+    726
+   ],
+   "caption": "TAVI · DELETE and list answer success for ids that do not exist",
+   "boxes": [
+    {
+     "b": [
+      36,
+      263,
+      744,
+      398
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      408,
+      744,
+      543
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      553,
+      744,
+      688
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/ub10-bad-module.png",
+   "caption": "TAVI · ?module=<unknown id>: \"No scoring rules for  yet\", New Scoring Rule enabled",
+   "crop": [
+    292,
+    80,
+    1284,
+    410
+   ],
+   "boxes": [
+    {
+     "b": [
+      316,
+      142,
+      540,
+      176
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      840,
+      340,
+      1030,
+      368
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Delete a rule that does not exist",
+   "Not checked live",
+   "204 instead of 404 SCORING_RULE_NOT_FOUND",
+   "BUG"
+  ],
+  [
+   2,
+   "List rules of a module that does not exist",
+   "Not checked live",
+   "200 [] instead of 404 MODULE_NOT_FOUND",
+   "BUG"
+  ],
+  [
+   3,
+   "Open the page for an unknown module",
+   "Not checked live",
+   "\"Choose a module\", \"No scoring rules for  yet\", New stays enabled",
+   "BUG"
+  ]
+ ]
+}

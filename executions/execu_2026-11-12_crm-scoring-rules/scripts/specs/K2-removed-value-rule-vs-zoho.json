@@ -1,0 +1,139 @@
+{
+ "out": "K2-removed-value-rule-vs-zoho.png",
+ "ticket": "Scoring Rules",
+ "title": "Removing a pick list value used by a scoring rule gives no warning, and records lose their points (TAVI vs Zoho CRM)",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · Leads · rule \"QA SR1112 K2\" · owner · Zoho CRM test org org944965048 · same field and rule, API v8 · all test data deleted",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/K2-tavi.png",
+   "w": 780,
+   "h": 753,
+   "crop": [
+    0,
+    0,
+    780,
+    753
+   ],
+   "caption": "TAVI · Alpha removed with no warning; the lead drops 4 → 0",
+   "boxes": [
+    {
+     "b": [
+      36,
+      290,
+      744,
+      425
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      435,
+      744,
+      570
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      580,
+      744,
+      715
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/uk2-removed-value-rule.png",
+   "caption": "TAVI · Edit Scoring Rule: \"QA SR1112 PL is\" with an empty value",
+   "crop": [
+    960,
+    300,
+    640,
+    180
+   ],
+   "boxes": [
+    {
+     "b": [
+      1268,
+      380,
+      1420,
+      418
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/K2-zoho.png",
+   "w": 780,
+   "h": 795,
+   "crop": [
+    0,
+    0,
+    780,
+    795
+   ],
+   "caption": "Zoho · the removed value moves to unused and the rule keeps it",
+   "boxes": [
+    {
+     "b": [
+      36,
+      477,
+      744,
+      612
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      622,
+      744,
+      757
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Remove a value that a scoring rule uses",
+   "Value moves to \"unused\"; the field still knows it",
+   "Value removed outright, no warning",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "The rule after the change",
+   "Criteria still \"Alpha\"",
+   "Entry still stores \"Alpha\"; the editor shows the value empty",
+   "DIFFERS"
+  ],
+  [
+   3,
+   "Scores of records holding the value",
+   "Not checked live (value kept, so the rule can still match)",
+   "Lead with Alpha drops from 4 to 0 on its next save",
+   "BUG"
+  ]
+ ]
+}

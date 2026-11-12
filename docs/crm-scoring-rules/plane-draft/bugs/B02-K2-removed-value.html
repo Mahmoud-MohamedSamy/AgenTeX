@@ -1,0 +1,8 @@
+<!-- Title: Scoring Rules | Removing a pick list value used by a scoring rule gives no warning, and records lose their points -->
+<!-- Priority: Low · Case K2 -->
+<div><h2>Summary</h2><p>A pick list value that a scoring rule uses can be removed from the field with no warning. The rule still stores the old value, the editor shows the value as empty, and records that hold the value lose their points on their next save.</p>
+<h2>Environment</h2><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account; Leads pick list "QA SR1112 PL" (Alpha, Beta); rule "QA SR1112 K2" (PL is Alpha → +4)</li></ul>
+<h2>Steps to reproduce</h2><ol><li>Create the pick list and the rule "PL is Alpha → +4".</li><li>Create a lead with PL = Alpha. Its Score is 4.</li><li>Edit the field and remove Alpha from the values.</li><li>Save the lead again, then open the rule.</li></ol>
+<h2>Expected result</h2><p>The admin is warned that a scoring rule uses the value. In Zoho CRM a removed value moves to "unused" and the rule keeps its condition.</p>
+<h2>Actual result</h2><ul><li>Alpha is removed (200) with no warning.</li><li>The lead's Score drops from 4 to 0 on its next save.</li><li>The rule still stores "Alpha"; the editor shows "QA SR1112 PL is" with an empty value.</li></ul>
+<h2>Notes</h2><ul><li>Test data deleted after the check.</li><li>Evidence: K2-removed-value-rule-vs-zoho.png.</li></ul></div>

@@ -1,0 +1,3 @@
+const r=await api('GET','/audit/events?entity_type=scoring_rule&per_page=100'); const ev=arr(r.j&&r.j.data); const c={}; ev.forEach(e=>{const k=e.action+(e.changes?' +changes':''); c[k]=(c[k]||0)+1;});
+const up1=ev.find(e=>/updat/.test(e.action)); const act=ev.find(e=>/activ/.test(e.action));
+RES('F9',(c['audit.action.created']||c['audit.action.created +changes'])&&Object.keys(c).some(k=>/delet/.test(k))&&Object.keys(c).some(k=>/updat/.test(k))?'pass':'info','audit events for scoring rules ('+ev.length+'): '+JSON.stringify(c)+'; update sample changes='+String(JSON.stringify(up1&&up1.changes)).slice(0,200)+'; activation event: '+(act?act.action:'none as its own action'));

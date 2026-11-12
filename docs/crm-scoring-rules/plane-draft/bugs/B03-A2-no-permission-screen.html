@@ -1,0 +1,8 @@
+<!-- Title: Scoring Rules | Users without permission see the page, the New button and the editor, then every call is refused -->
+<!-- Priority: Low · Cases A2, A6 -->
+<div><h2>Summary</h2><p>A CRM user who may not manage scoring rules still gets the Scoring Rules menu item, the page, an active New Scoring Rule button and the full editor. Every API call is then refused with 403. The page and the API check different permissions.</p>
+<h2>Environment</h2><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Account Mahmoud Samy (CRM User profile)</li></ul>
+<h2>Steps to reproduce</h2><ol><li>Sign in as the CRM User.</li><li>Open Settings › Automation › Scoring Rules.</li><li>Click New Scoring Rule and open the Field list.</li></ol>
+<h2>Expected result</h2><p>A user without the permission does not see the menu item, or sees a no-access page. In Zoho CRM scoring rules need the Manage Automation permission.</p>
+<h2>Actual result</h2><ul><li>The menu item and page open. The list says "The scoring rules could not be loaded — You don't have permission to manage scoring rules for this module."</li><li>New Scoring Rule is enabled and opens the editor with the full field list.</li><li>The API refuses list, create, update, activate and delete with 403 PERMISSION_DENIED, so no data leaks.</li><li>The page route is guarded by the Modules and Fields manage permission (metadata.modules.manage), while the API uses a different check. There is no separate scoring-rules permission in Profiles.</li></ul>
+<h2>Notes</h2><ul><li>Evidence: A2-lowpriv-page-and-editor.png.</li></ul></div>

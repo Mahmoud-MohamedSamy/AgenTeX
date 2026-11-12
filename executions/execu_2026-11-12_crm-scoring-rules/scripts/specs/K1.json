@@ -1,0 +1,129 @@
+{
+ "out": "K1-deleted-field-rule-vs-zoho.png",
+ "ticket": "Scoring Rules",
+ "title": "A field used by a scoring rule can be deleted, and the rule silently stops scoring (TAVI vs Zoho CRM)",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · Leads · rule \"QA SR1112 K1\" (QA SR1112 Num ≥ 5 → +9) · owner · Zoho CRM test org org944965048 · same field and rule, API v8 · all test data deleted",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/K1-tavi-api-card.png",
+   "w": 780,
+   "h": 898,
+   "caption": "TAVI · the field is deleted (204), the rule keeps the dead entry, the lead drops 9 → 0",
+   "crop": [
+    0,
+    0,
+    780,
+    898
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      290,
+      744,
+      425
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      435,
+      744,
+      570
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      580,
+      744,
+      715
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/uk1-deleted-field-rule.png",
+   "caption": "TAVI · Edit Scoring Rule: the field is empty; Save answers \"This field is not in the module.\"",
+   "crop": [
+    960,
+    300,
+    640,
+    180
+   ],
+   "boxes": [
+    {
+     "b": [
+      985,
+      372,
+      1572,
+      422
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/K1-zoho-api-card.png",
+   "w": 780,
+   "h": 753,
+   "caption": "Zoho · deleting the field is refused while the scoring rule uses it",
+   "crop": [
+    0,
+    0,
+    780,
+    753
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      435,
+      744,
+      570
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Delete a custom field that a scoring rule uses",
+   "Refused: 400 NOT_ALLOWED \"The custom field has already used in other places\"",
+   "Deleted (204) with no warning",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "The rule after the delete",
+   "Not reachable: the field cannot be deleted while used",
+   "Rule keeps an entry on a field that no longer exists; the list shows it as normal (+9); the editor shows an empty field and Save fails",
+   "DIFFERS"
+  ],
+  [
+   3,
+   "Scores of existing records",
+   "Keep scoring: the field and the rule stay intact",
+   "Lead with Num = 6 drops from 9 to 0 on its next save, with no message",
+   "DIFFERS"
+  ]
+ ]
+}

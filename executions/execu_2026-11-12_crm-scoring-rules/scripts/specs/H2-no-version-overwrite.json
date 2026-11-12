@@ -1,0 +1,64 @@
+{
+ "out": "H2-no-version-overwrite.png",
+ "ticket": "Scoring Rules",
+ "title": "A scoring rule save without a version overwrites the rule with no conflict check (same problem as NDC-2868)",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · owner · API · Zoho's update API has no version field (not comparable)",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/H2-tavi.png",
+   "w": 780,
+   "h": 581,
+   "crop": [
+    0,
+    0,
+    780,
+    581
+   ],
+   "caption": "TAVI · a missing row_version is not checked",
+   "boxes": [
+    {
+     "b": [
+      36,
+      263,
+      744,
+      398
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      408,
+      744,
+      543
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Save with an old version",
+   "Not comparable",
+   "Refused with 409, as it should be",
+   "SAME"
+  ],
+  [
+   2,
+   "Save with no version",
+   "Not comparable",
+   "Accepted (200) and overwrites another admin's change",
+   "DIFFERS"
+  ]
+ ]
+}

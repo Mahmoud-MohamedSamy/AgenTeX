@@ -1,0 +1,8 @@
+<!-- Title: Scoring Rules | Two creates at the same moment make two rules with the same name -->
+<!-- Priority: Low · Case H4 -->
+<div><h2>Summary</h2><p>The duplicate-name check is not safe when two create requests arrive together. Both succeed and the module ends up with two rules of the same name.</p>
+<h2>Environment</h2><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account, API</li></ul>
+<h2>Steps to reproduce</h2><ol><li>Send two POST /scoring-rules requests for Leads with the same name at the same time.</li><li>List the Leads rules.</li></ol>
+<h2>Expected result</h2><p>One rule is created and the other request is refused: "This module already has a scoring rule named …" (the answer a single second create gets).</p>
+<h2>Actual result</h2><ul><li>Both return 201 and the list shows two rules named "QA SR1112 dbl".</li></ul>
+<h2>Notes</h2><ul><li>A double click on Create in the screen did not reproduce it; this is an API race.</li></ul></div>

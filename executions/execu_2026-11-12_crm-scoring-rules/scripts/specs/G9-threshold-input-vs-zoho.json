@@ -1,0 +1,85 @@
+{
+ "out": "G9-threshold-input-vs-zoho.png",
+ "ticket": "Scoring Rules",
+ "title": "Workflow Rules: the score threshold accepts text or decimals with no message and keeps the last valid number",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · Workflow Rules › New › Leads › Score value (draft cancelled, nothing saved) · Zoho score trigger not checked live",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/ug9-threshold.png",
+   "caption": "TAVI · \"Only when it reaches\" with 999999999999: red box, no message",
+   "crop": [
+    576,
+    500,
+    448,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      733,
+      572,
+      832,
+      600
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      930,
+      695,
+      1004,
+      731
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/ug9-create-invalid.png",
+   "caption": "TAVI · with \"abc\" in the box, Create goes on and keeps -20",
+   "crop": [
+    230,
+    240,
+    1100,
+    90
+   ],
+   "boxes": [
+    {
+     "b": [
+      368,
+      268,
+      1263,
+      322
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Type abc, 12.5, empty or a huge number",
+   "Not checked live",
+   "Box turns red (aria-invalid) but no message says what is wrong",
+   "BUG"
+  ],
+  [
+   2,
+   "Press Create with an invalid value",
+   "Not checked live",
+   "Create goes on; the rule keeps the last valid number (\"rises to -20 or more\")",
+   "BUG"
+  ]
+ ]
+}

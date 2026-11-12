@@ -1,0 +1,6 @@
+{"out":"K1-zoho-api-card.png","title":"Zoho CRM — delete a field that a scoring rule uses (Leads, rule \"QA SR1112 K1\": QA SR1112 Num ≥ 5 → +9)","host":"crm.zoho.com · test org org944965048 · API v8","who":"admin account","date":"12 Nov 2026",
+"rows":[
+["Set-up","POST /crm/v8/settings/fields?module=Leads  {QA SR1112 Num, integer}","201 · field created (QA_SR1112_Num)","info"],
+["Scoring rule","POST /crm/v8/settings/automation/scoring_rules  {QA_SR1112_Num greater_equal 5 → 9}","201 · scoring rule created successfully","info"],
+["Delete the field","DELETE /crm/v8/settings/fields/{id}?module=Leads","400 NOT_ALLOWED · \"The custom field has already used in other places\"","ok"],
+["Clean-up","DELETE rule, then DELETE field","200 · field deleted once the rule is gone","ok"]]}

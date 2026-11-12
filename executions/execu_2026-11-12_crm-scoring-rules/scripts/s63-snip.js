@@ -1,0 +1,2 @@
+const g=await api('GET','/web-forms/'+I.webform); const s=g.j.data.snippets||{}; const ifr=(String(s.iframe||'').match(/src="([^"]+)"/)||[])[1]; if(ifr) fs.writeFileSync(RUN+'/out/wf-iframe.txt',ifr.replace(/&amp;/g,'&'));
+return {snippetKeys:Object.keys(s), iframeHost:ifr&&ifr.split('/').slice(0,3).join('/'), iframeLen:ifr&&ifr.length, inlineHost:(String(s.inline||'').match(/src="(https?:\/\/[^/"]+)/)||[])[1]};

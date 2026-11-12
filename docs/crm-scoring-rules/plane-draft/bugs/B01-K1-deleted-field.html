@@ -1,0 +1,8 @@
+<!-- Title: Scoring Rules | A field used by a scoring rule can be deleted, and the rule silently stops scoring -->
+<!-- Priority: Medium · Case K1 -->
+<div><h2>Summary</h2><p>A custom field that a scoring rule uses can be deleted with no warning. The rule keeps a condition on a field that no longer exists, the rules list shows nothing wrong, and records quietly lose those points on their next save. The rule can then no longer be saved.</p>
+<h2>Environment</h2><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account; Leads number field "QA SR1112 Num" used by rule "QA SR1112 K1" (QA SR1112 Num ≥ 5 → +9)</li></ul>
+<h2>Steps to reproduce</h2><ol><li>Create a Leads number field and a scoring rule "field ≥ 5 → +9".</li><li>Create a lead with the field = 6. Its Score is 9.</li><li>Delete the field in Modules and Fields.</li><li>Save the lead again, then open the rule in Scoring Rules.</li></ol>
+<h2>Expected result</h2><p>As in Zoho CRM, the delete is refused while the field is used: Zoho answers "The custom field has already used in other places". At the least, CRM should warn the admin and mark the rule as broken.</p>
+<h2>Actual result</h2><ul><li>The field is deleted (204) without any warning.</li><li>The rule list still shows the rule as normal, with 1 entry and +9.</li><li>The lead's Score drops from 9 to 0 on its next save.</li><li>Opening the rule shows an empty field; Save fails with "This field is not in the module."</li></ul>
+<h2>Notes</h2><ul><li>Test data deleted after the check.</li><li>Evidence: K1-deleted-field-rule-vs-zoho.png (TAVI rule editor left, Zoho refusal right).</li></ul></div>

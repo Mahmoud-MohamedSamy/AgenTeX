@@ -1,0 +1,3 @@
+const l=await api('GET','/web-forms?app=desk'); const items=arr(l.j&&l.j.data); const out={n:items.length,s:l.s};
+const one=items.find(x=>x.share_url)||items[0]; if(one){const g=await api('GET','/web-forms/'+one.id); const d=g.j&&g.j.data; const u=d&&d.share_url; out.name=d&&d.name; out.enabled=d&&d.is_enabled; if(u){fs.writeFileSync(RUN+'/out/desk-link.txt',u); out.pathShape=u.replace(/\/f\/.*/,'/f/<key>');} const ifr=(String(d&&d.snippets&&d.snippets.iframe||'').match(/src="([^"]+)"/)||[])[1]; if(ifr){fs.writeFileSync(RUN+'/out/desk-iframe.txt',ifr.replace(/&amp;/g,'&')); out.iframeShape=ifr.replace(/key=[^&]+/,'key=<key>');}}
+return out;

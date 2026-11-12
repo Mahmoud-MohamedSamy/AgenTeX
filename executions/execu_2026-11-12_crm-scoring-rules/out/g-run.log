@@ -1,0 +1,8 @@
+G2 pass score 20->40: increase wf title=UP, decrease wf company=-
+G3 pass score 40->10: decrease wf company=DOWN, increase wf title=-
+G5 pass save without score change (score 10): title=- company=-
+G4 pass any change: up -> ANY, down -> ANY
+G6 pass from 20 then 40/50/60 -> 40:-, 50:R50, 60:- (expect fire only on reaching 50)
+G7 pass from 60 then 30/20/10 -> 30:-, 20:-, 10:B20 (expect fire only on 20->10, "falls below 20")
+G8 pass from 10 then 60/30/40 -> 60:X50, 30:X50, 40:- (expect fire 10->60 and 60->30, not 30->40)
+G10 info increase wf writes employees=7 (score up again): final employees=2, score=20 — no loop, record saved; check the workflow log for a single run

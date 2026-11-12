@@ -1,0 +1,122 @@
+C1	pass	API create 201 active=true row_version=1
+C2	pass	empty name 422 SCORING_RULE_INVALID: A scoring rule needs a name. [{"path":"name","type":"required","message":"A scoring rule needs a name."}]
+C2b	pass	blank-space name 422 SCORING_RULE_INVALID: A scoring rule needs a name. [{"path":"name","type":"required","message":"A scoring rule needs a name."}]
+C3	pass	120 chars 201 | 121 chars 422 SCORING_RULE_INVALID: The name can be at most 120 characters. [{"path":"name","type":"too_long","message":"The name can be at most 120 characters."}]
+C4	pass	same 422 SCORING_RULE_INVALID: This module already has a scoring rule named 'QA SR1112 Web'. [{"path":"name","type":"duplicate","message":"This module already has a scoring rule named 'QA SR1112 Web'."}] | UPPER 422 SCORING_RULE_INVALID: This module already has a scoring rule named 'QA SR1112 WEB'. [{"path":"name","type":"duplicate","message":"This module already has a scoring rule named 'QA SR1112 WEB'."}] | spaces 422 SCORING_RULE_INVALID: This module already has a scoring rule named 'QA SR1112 Web'. [{"path":"name","type":"duplicate","message":"This module already has a scoring rule named 'QA SR1112 Web'."}]
+C5	pass	same name in Contacts 201
+C6	pass	500 201 | 501 422 SCORING_RULE_INVALID: The description can be at most 500 characters. [{"path":"description","type":"too_long","message":"The description can be at most 500 characters."}]
+C7	pass	no entries 422 SCORING_RULE_INVALID: A scoring rule needs at least one entry: a field condition and its points. [{"path":"entries","type":"required","message":"A scoring rule needs at least one entry: a field condition and its points."}]
+C9	fail	points zero=422 dec=422 str=422 strnum=201 max=201 over=422 negmax=201 negover=422 nul=422 UNEXPECTED: strnum=201
+C11	pass	26 422 SCORING_RULE_INVALID: A scoring rule can have at most 25 entries. [{"path":"entries","type":"too_many","message":"A scoring rule can have at most 25 entries."}] | 25 201
+C12	pass	create inactive 201
+C16	pass	score field in entry 422 SCORING_RULE_INVALID: 'Score' is filled in by the system and cannot be tested by a scoring rule. [{"path":"entries[0].field_key","type":"field_unsupported","message":"'Score' is filled in by the system and cannot be tested by a scoring rule."}]
+C19	info	two identical entries 201 (accepted; Zoho refuses with ALREADY_USED; scoring effect checked in E)
+C19	info	identical entries accepted (201); a chat lead scores 6 (counted twice). Zoho refuses identical criteria (ALREADY_USED).
+E1	pass	new web lead score=10 (expect 10)
+E2	pass	web->chat score=0 (expect 0)
+E3	pass	all four match score=20 (expect 10+5+20-15=20)
+E4	pass	only -15 matches score=-15
+E5	pass	before rule 0, after rule created (not saved) 0, after save 7 — TAVI scores only on next save (see Z6)
+E6	pass	deactivate 200; saved record 7->0; unsaved record stays 7->7
+E7	pass	delete 204; saved 7->0; unsaved 7->7 (Zoho removes at once, see Z14)
+E8	pass	edit +10->+25 200; score=25
+E12	pass	PATCH score=999 -> 200 score now 25; create with score=999 -> 201 score 0
+E13	pass	contact with web source, lead rules only: score=null
+E14	pass	50 entries x 10000 matched: score=500000 (expect 500000)
+D1	fail	WRONG: {"company":"acme","title":"CTO"} got 11 want 10 | {"company":"Acme","title":"CEO"}=>1 ; {"company":"acme","title":"CTO"}=>11 ; {"company":"Acmex"}=>10 (is case: "acme" vs "Acme" — see value)
+D2	fail	WRONG: {"company":"SOFTCO","title":"head ops"} got 1111 want 0 | {"company":"Microsoft","title":"Head of Ops"}=>1111 ; {"company":"badco","title":"Ops Head"}=>0 ; {"company":"SOFTCO","title":"head ops"}=>1111 (uppercase SOFTCO/head shows case rule)
+D3	fail	WRONG: {"email":"a@x.com"} got 0 want 10 | {"email":"a@qa.test","phone":"+201000","website":"https://qa=>111 ; {"email":"a@x.com"}=>0 (notContains on empty field counts? row2 expects 10?)
+D4	pass	{}=>1 ; {"company":"X","title":"Y"}=>10 
+D5	pass	{"no_of_employees":9}=>50 ; {"no_of_employees":10}=>41 ; {"no_of_employees":11}=>14 
+D6	pass	{"annual_revenue":99.5,"decimal":1.25}=>10 ; {"annual_revenue":99.51,"decimal":1.24}=>1 
+D7	pass	number value "ten" 422 SCORING_RULE_INVALID: 'ten' is not a number ('No. of Employees' is a number field). [{"path":"entries[0].value","type":"value_invalid","message":"'ten' is not a number ('No. of Employees' is a number field)."}]
+D8	pass	{"date":"2026-11-11"}=>100 ; {"date":"2026-11-12"}=>1 ; {"date":"2026-11-13"}=>10 
+D9	pass	{"date_time":"2026-11-12T09:59:00.000Z"}=>0 ; {"date_time":"2026-11-12T10:01:00.000Z"}=>1 (UTC values via API; zone shown in UI checked separately)
+D10	pass	{"lead_source":"web"}=>1 ; {"lead_source":"chat"}=>10 ; {}=>10 (is not on empty field)
+D11	pass	{"lead_source":"chat"}=>1 ; {"lead_source":"other"}=>10 
+D12	pass	pick list value not in list 422 SCORING_RULE_INVALID: 'NoSuchValue' is not one of the options of 'Lead Source'. [{"path":"entries[0].value","type":"value_invalid","message":"'NoSuchValue' is not one of the options of 'Lead Source'."}]
+D13	pass	{"multi_select":["option 1"]}=>11 ; {"multi_select":["option 1","option 2"]}=>111 ; {"multi_select":["option 3"]}=>0 
+D14	pass	{"email_opt_out":true}=>1 ; {"email_opt_out":false}=>10 
+D16	pass	{"radio_button":"option 2","lead_status":"Interested"}=>11 ; {"radio_button":"option 1"}=>0 
+D17	pass	contains on number 422 SCORING_RULE_INVALID: 'contains' cannot be used on 'No. of Employees' (number). Use one of: eq, neq, gt, gte, lt, lte, in, notIn, isNull, isNotNull. [{"path":"entries[0].operator","type":"operator_unsupported","message":"'contains' cannot be used on 'No. of Employees' (number). Use one of: eq, neq, gt, gte, lt, lte, in, notIn, isNull, isNotNull."} | gt on pick list 422 SCORING_RULE_INVALID: 'gt' cannot be used on 'Lead Source' (pick_list). Use one of: eq, neq, in, notIn, isNull, isNotNull. [{"path":"entries[0].operator","type":"operator_unsupported","message":"'gt' cannot be used on 'Lead Source' (pick_list). Use one of: eq, neq, in, notIn, isNull, isNotNull."}]
+D18	pass	operator between 422 SCORING_RULE_INVALID: 'between' is not a known operator. Use one of and, or, not, eq, neq, gt, gte, lt, lte, contains, notContains, startsWith, endsWith, in, notIn, containsAll, isNull, isNotNull, isEmpty, isNotEmpty, regexMatches, regexNotMatches, regexContains, lengthEq, lengthNeq, lengthGt, lengthGte, lengthLt, lengthLte. [{"path":"entries[0].operator","type":"operator_unknown","message":"'between' is not a known operator. Use one of and, or, not, eq, neq, gt, gte, lt, lte, contains, notContains, startsWith, endsWith, 
+D15	fail	user field eq 201 | isNotNull 201 (runtime match not checked: needs a user value)
+J3	pass	{"company":"شركة القاهرة"}=>1 ; {"company":"Alex"}=>0 
+D1	pass	Text is / is not work and ignore case (acme matches Acme; Zoho criteria also ignore case). Acme/CEO=>1, acme/CTO=>11, Acmex=>10.
+D2	pass	contains / does not contain / starts / ends work and ignore case. Microsoft+Head of Ops=>1111, badco+Ops Head=>0, SOFTCO+head ops=>1111.
+D3	pass	email contains, phone starts with, URL contains all accepted and matched (111); non-matching record 0 (first expectation was wrong).
+D15	fail	API accepts operator eq with value x on a User field (201), though the screen offers only is empty / is not empty and x is not a user. Low.
+I6	fail	operators not offered in the screen, sent by API: regexMatches:201 score(Acme Ltd)=0 | lengthEq:201 score(Acme Ltd)=1 | isEmpty:201 score(Acme Ltd)=0 | and:422 | not:422
+I2	info	type confusion: points "10"=201 (accepted) | value object=422 | entries object=422 | is_active "yes"=400 | name number=400
+I3	info	random id GET 404 PUT 404 DELETE 204 PATCH 404; unknown module list 200; non-uuid id 404
+I4	pass	field key that leads do not have 422 SCORING_RULE_INVALID: 'account_name' is not a field of this module. [{"path":"entries[0].field_key","type":"field_unknown","message":"'account_name' is not a field of this module."}]
+I5	pass	1000 values on "is any of": 422 SCORING_RULE_INVALID: "in" may list at most 100 values. [{"path":"entries[0].value","type":"too_many_values","message":"\"in\" may list at most 100 values." | 3 MB body 422
+I6b	pass	entry kind "signal" 422 SCORING_RULE_INVALID: Only field rules (kind "field_value") can score a record; activity (touch point) scoring is not available. [{"path":"entries[0].kind", | unknown top-level keys 201 (ignored)
+H2	fail	PUT without row_version 200
+H3	fail	fresh 200 then the same old row_version 200
+H6	pass	PUT with Contacts module_id 422 SCORING_RULE_INVALID: A scoring rule cannot move to another module; create a rule there instead. [{"path":"module_id","type":"immutable","message":"A scorin; module after=leads
+H7	pass	PUT with only name 422 SCORING_RULE_INVALID: A scoring rule needs at least one entry: a field condition and its points. [{"path":"entries","type":"required","message":"A scoring r; entries after=1
+H4	fail	two parallel creates with the same name: 201/201, rules saved=2 (API level; UI double-click checked separately)
+H8	pass	edit a deleted rule 404 SCORING_RULE_NOT_FOUND: No scoring rule b8e5e922-a286-4fb5-ae99-8abcb87bb0f6. []
+H5	pass	created 50; 51st 422 SCORING_RULE_LIMIT: A module can have at most 50 scoring rules. Delete one before adding another. []
+H3	pass	tab1 PUT points 5 with row_version 1 -> 200 (now v2); tab2 PUT points 9 with old row_version 1 -> 409 SCORING_RULE_VERSION_CONFLICT: The scoring rule was changed since it was loaded (it is now version 2). Reload it and apply the edit again. [{"path":"row_ver; stored points=5 v2
+H2	fail	PUT with no row_version -> 200; stored points=3 (overwrites without any version check; same class as NDC-2868)
+I3	info	GET/PUT/PATCH on unknown id 404; DELETE unknown id 204; delete twice 204/204 (DELETE answers 204 for ids that do not exist; low)
+G2	pass	score 20->40: increase wf title=UP, decrease wf company=-
+G3	pass	score 40->10: decrease wf company=DOWN, increase wf title=-
+G5	pass	save without score change (score 10): title=- company=-
+G4	pass	any change: up -> ANY, down -> ANY
+G6	pass	from 20 then 40/50/60 -> 40:-, 50:R50, 60:- (expect fire only on reaching 50)
+G7	pass	from 60 then 30/20/10 -> 30:-, 20:-, 10:B20 (expect fire only on 20->10, "falls below 20")
+G8	pass	from 10 then 60/30/40 -> 60:X50, 30:X50, 40:- (expect fire 10->60 and 60->30, not 30->40)
+G10	info	increase wf writes employees=7 (score up again): final employees=2, score=20 — no loop, record saved; check the workflow log for a single run
+K8	pass	delete 204 restore 200; score 10 -> 10
+E10	pass	mass update chat->web: 200; scores 10,10 (expect 10,10). Convert: lead score 10, convert 200. Import / web form / blueprint not run yet.
+K1	info	score with field 6 = 9; delete field used by a rule -> 204; rule after: 200 entries=[{"id":"de04107d-4827-46b5-abfe-a6ba349fcf97","kind":"field_value","field_key":"qa_sr1112_num","operator":"gte","value":; save record after -> 200 score 0; new record save ok
+K2	info	score with Alpha = 4; remove Alpha from the list -> 200; rule after: [{"id":"f680e8e7-92d2-42b5-9b4c-c220b1dd50d2","kind":"field_value","field_key":"qa_sr1112_pl","operator":"eq","value":"A; save record -> 200 score 0
+K5	pass	Services had score field before: false; create rule 201; score field after: number sys=true; record score 3
+K6	fail	own field "score" created: no (refused); create rule -> 201
+K4	pass	convert 200; contact created with email conv2@qa.test, Contacts rule "email contains qa.test +5": contact score 5. Lead score before convert 10
+K6	pass	A custom field named score is refused (422 FIELD_API_NAME_RESERVED: the api name score is reserved for the record score), so the conflict case cannot happen; rule creation then works.
+G10	pass	score 0->3 fires "increase" wf that sets Lead Source=web (score 3->13). Final lead_source=web, score=13; record id 52235358-3495-4240-a528-7cedb6fb2b98 (timeline count checked in UI)
+G11	pass	user edit to score 13 -> title=CRIT13 (score 13); control edit to score 3 then wf raises to 13 -> title=-
+F7	pass	GET record returns score as {kind:number} in data (seen in every E/G check, e.g. 500000, -15).
+E11	pass	A workflow field update that changes a scored field (Lead Source=web) rescored the record (3 -> 13) right after the workflow ran (G10).
+I7	pass	Every refusal seen in C/D/H/I has code (SCORING_RULE_INVALID / _LIMIT / _VERSION_CONFLICT / _NOT_FOUND / PERMISSION_DENIED), a readable message and details[{path,type,message}]; no stack traces.
+E9	pass	save with the same value: 200; score 10 -> 10
+X2	fail	web lead (10) edited to Hot (score 30), workflow "reaches 30" creates task: tasks found=0 (expect 1; a later edit above 30 must not add another)
+L2	pass	50 rules x 25 entries: score 1250 (expect 1250); save ms 860,1189,476,420,588 (median 588) vs no rules 468,429,830,719,1032 (median 719)
+X2	blocked	Workflow "increases, reaches 30" with a Task action saved and the lead reached 30 (10 -> 30), but the created task could not be found through the API (task list cannot be sorted by date; the copied task action uses a saved task template title). Threshold firing itself is proven in G6. Needs a UI check of the lead Activities.
+A6	info	No dedicated scoring permission found in profile permissions. The screen route is guarded by metadata.modules.manage (Modules and Fields manage), while the API refuses the same user (403) — the mismatch behind A2. Zoho uses the Manage Automation permission.
+A5	blocked	No separate scoring-rules permission key to grant (see A6), so grant/revoke could not be tested as written.
+B9	pass	Picker switch Leads -> Customers changes the URL (?module=6f553963…) and shows only that module (empty state for Customers).
+C10	pass	Add field rule twice gives 3 entries; Remove entry 2 leaves 2; drawer keeps the rest.
+C14	pass	Entry with No. of Employees "is greater than 5" switched to Title: condition resets to "is" and the value is cleared.
+J4	pass	Tab order in the drawer: name, description, Active, Field of entry 1, Points, Add field rule, Cancel, Create (condition/value become reachable once a field is chosen); Escape closes.
+J5	pass	Controls carry labels: Close, Active, Field/Condition/Points of entry 1, Remove entry 1; rows have "Actions for <name>" and switches "Active: <name>".
+J6	fail	After Create with errors, 4 controls get aria-invalid but focus stays on the Create button and does not move to the first error. Low.
+X3	pass	Covered by E6/E7/E8: after editing points, deactivating one rule and deleting another, saved leads use the new model and unsaved leads keep the old score until saved (by design; see Z6/Z13/Z14).
+X4	info	Recovery steps covered by H1 (conflict + Load their version), C2-C9 (clear messages), B8 (delete confirm). A rule deleted by mistake cannot be restored (no undo / recycle bin for rules).
+K3	pass	rename label 200 -> "QA K3 New"; rule still keyed qa_sr1112_k3; record with "xyz" scores 2 (drawer label checked in UI)
+K7	pass	A web (score 10) + B technology (score 5); merge 200; merged lead_source=web, industry=undefined, score 10 (expected from merged values 10)
+F5	pass	export (format=csv&scope=page&page=1&pageSize=50&q=QA%20SR1112&lang=en) 200; header has Score: true; header: Record ID,Name,Full Name,Last Name,Email,Phone,Company,Title,Mobile,Lead Source,Lead Status,Reason,Comment,Complaint Reason,Salutation,Secondary Email,Fax,Website,Industry,Rating,No. of Employees,Annu. Export of all leads (scope=all) timed out 504.
+L3	pass	500 chat leads, mass update to web in 3 requests (limit 200 per request: 400 TOO_MANY_RECORDS above that) took 59936/47186/21033 ms; scored 10: 500/500
+L3	pass	500 chat leads, mass update to web in 3 requests of up to 200 (above 200: 400 TOO_MANY_RECORDS); all 500 scored 10. Timing for 200 records: 39488 ms with the rule active vs 41670 ms with no scoring rules (200/200) — mass update is slow either way.
+G9	fail	Score threshold box: empty, abc, 12.5 and 999999999999999999 get aria-invalid but no message is shown; -20 is accepted ("rises to -20 or more"). With abc in the box, Create still moves on and the rule silently keeps the last valid value (-20) — invalid input is neither blocked nor explained. Low. Images ug9-threshold.png, ug9-create-invalid.png.
+B11	pass	With the rules API blocked: "The scoring rules could not be loaded — The server could not be reached. Check your connection and try again." Try again reloads the list once the API is back. Image ub11-load-failed.png.
+B12	pass	Customers with 50 rules: banner "This module has 50 scoring rules, the most it can have. Delete one before adding another." and New Scoring Rule is disabled. Image ub12-limit.png.
+K3	pass	Field label renamed "QA K3 Old" -> "QA K3 New": rule keeps field key qa_sr1112_k3, still scores (xyz -> 2), drawer shows "QA K3 New contains".
+K7	pass	Merge lead A (web, 10) with B (technology, 5) into A: merged record keeps A values (lead_source web, industry empty) and scores 10, matching its merged values.
+K9	pass	Field QA K9 Secret hidden for the CRM User profile; lead owned by that user with value secret scores 6. The user GETs the lead: field and value not returned, score 6 visible; the user edits another field and the score stays 6.
+A7	pass	CRM User sees the score (6) on a lead they own; the score cannot be set by hand (see E12).
+F5	pass	Export CSV (page scope, search QA SR1112) has a Score column with values. Export of all leads (scope=all) timed out with 504 on this tenant (not scoring-specific).
+F6	pass	Import: Score is not offered as a target field (not in the import field list), so a Score column of 999 is ignored; imported leads get their computed scores (0 with 999 in file).
+F8	info	At 400px the Leads list shows the Score column and the Scoring Rules page and drawer fit with no sideways scroll (images uf8-phone*.png). Kanban cards do not show Score (cards show their own configured fields). Image uf8-kanban.png.
+L1	pass	Import of 1000 leads with 5 rules x 10 entries active: completed in 305 s, all 1000 read back with exactly the expected score (0 wrong). The comparison import without rules could not finish: staging went down during it (fetch failed), so the time cost of scoring on import is not measured.
+F4	blocked	Report API accepted a Leads report with Score as a column and filter (201), but the filter value shape was wrong in my first try (422); the retry could not run because staging went down (every signed-in call 404 after the new deploy index-C_wkzBy1). Retry when staging is back.
+H9	blocked	Not run: staging went down before the session-expiry check.
+X1	blocked	Web form part not possible: Leads has no web form on NDC-Staging. Import part covered by L1 (1000 imported leads scored correctly) and F3 (Score >= filter). Staging went down before the end-to-end view check.
+F4	pass	Leads report with columns Full Name + Score and filter Score >= 15 (filter {operator:gte, value:15}) returns exactly the 3 QA leads that score 15 (X1 A, B, G); Score is offered as a report column/filter. Report deleted after. (First try failed only because my filter used values:[...] instead of value.)
+H9	pass	Owner filled a new rule (Lead Source is web, 7) then the session was ended (cookies and stored tokens removed) and Create was pressed: the app went to /login?reason=expired with "Your session expired. Please sign in again". No QA SR1112 H9 rule was saved. The filled form is not kept for after sign-in. Image uh9-session-expired.png.
+X1	pass	Marketing journey: rules Web +10, Industry technology +5, Rating market_failed -20. 6 leads imported (import completed, 6 created) + 2 created by hand. Scores A15 B15 C10 D-5 E5 F0 G15 H5, all as expected. Leads list search QA SR1112 X1 shows 8; filter Score >= 15 shows exactly A, B, G; the report (F4) shows the same 3. Web form step not covered: Leads has no web form on NDC-Staging. Image ux1-hot-leads.png.
+X1	pass	Marketing journey: rules Web +10, Industry technology +5, Rating market_failed -20. 6 leads imported + 2 created by hand scored A15 B15 C10 D-5 E5 F0 G15 H5 (all as expected); list filter Score >= 15 and the report (F4) both show exactly A, B, G. Web form step: created Leads web form QA SR1112 Lead form (Full Name + Lead Source) with a Web +10 rule; submitted it signed out through its iframe address: "Thank you. Your request has been submitted." and lead QA SR1112 WF visitor was created (source web_form, Lead Source web) with Score 10. The hosted link itself answers nginx 404 Not Found (outside scoring; NDC-2732 says it is tracked in NDC-1488, which is Done). Form, lead and rule deleted. Images ux1-hot-leads.png, uw15-filled.png, uw15-sent.png.

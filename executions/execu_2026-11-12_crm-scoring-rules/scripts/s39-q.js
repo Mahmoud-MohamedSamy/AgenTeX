@@ -1,0 +1,3 @@
+const L=await modId('leads'); const q=encodeURIComponent('QA SR1112 IMPB'); const out={};
+for(const p of ['/modules/'+L+'/records?q='+q+'&per_page=5','/modules/'+L+'/records?search='+q+'&per_page=5','/modules/'+L+'/records/search?q='+q,'/modules/'+L+'/records/export?format=csv&scope=page&page=1&pageSize=5&q='+q+'&lang=en','/modules/'+L+'/records/export?format=csv&scope=page&page=1&pageSize=5&search='+q+'&lang=en']){const r=await api('GET',p); out[p.split(L)[1].slice(0,60)]=r.s+' '+(r.t.match(/IMPB/g)||[]).length+' hits';}
+const fl=await api('GET','/modules/'+L+'/import/'+I.imp_IMPB+'/fields'); out.scoreInImportFields=/"field_name":"score"/.test(fl.t); return out;

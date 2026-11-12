@@ -1,0 +1,1 @@
+const r=await api('GET','/iam/me'); const j=r.j.data; const m=await api('GET','/modules'); return {is_sandbox:j.is_sandbox,parent:j.parent_tenant_id?'set':'null',sandbox:JSON.stringify(j.sandbox).slice(0,200),profiles_by_app:Object.keys(j.profiles_by_app||{}),modules:m.s+' '+m.t.slice(0,200)};

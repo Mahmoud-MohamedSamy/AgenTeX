@@ -1,0 +1,4 @@
+const L=await modId('leads'); const ids=(I.recs||[]).filter(x=>x[0]===L).map(x=>x[1]).slice(-500);
+const times=[]; let okreq=0; for(let i=0;i<ids.length;i+=200){const t0=Date.now(); const mu=await api('POST','/modules/'+L+'/records/mass-update',{record_ids:ids.slice(i,i+200),data:[{field:'lead_source',value:{kind:'string',value:'web'}}]}); times.push(Date.now()-t0); if(mu.s<300)okreq++; else log('mu',SR(mu).slice(0,200));}
+await sleep(8000); let ok=0,bad=[]; for(let i=0;i<ids.length;i+=10){const ss=await Promise.all(ids.slice(i,i+10).map(id=>recScore(L,id))); ss.forEach((s,k)=>{if(s===10)ok++; else if(bad.length<5)bad.push(ids[i+k].slice(0,8)+'='+s);});}
+RES('L3',(okreq===3&&ok===500)?'pass':'fail','500 chat leads, mass update to web in 3 requests (limit 200 per request: 400 TOO_MANY_RECORDS above that) took '+times.join('/')+' ms; scored 10: '+ok+'/'+ids.length+(bad.length?' e.g. '+bad.join(','):''));

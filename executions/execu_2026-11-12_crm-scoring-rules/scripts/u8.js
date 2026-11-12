@@ -1,0 +1,1 @@
+async (page) => { await page.getByRole('button',{name:/^AR/}).first().click(); await page.waitForTimeout(800); await page.locator('[role=menuitem], [role=option], [role=menuitemradio]').filter({hasText:/English/}).first().click(); await page.waitForTimeout(3000); return await page.evaluate(()=>document.documentElement.dir||'ltr'); }

@@ -1,0 +1,61 @@
+A1	pass	Owner opens Settings › Automation › Scoring Rules; module picker, New Scoring Rule, list. Image u1-list.png.
+A2	fail	CRM User (Mahmoud Samy) still sees the Scoring Rules menu item, the page with "The scoring rules could not be loaded — You don't have permission to manage scoring rules for this module", an active New Scoring Rule button and the full drawer (fields list). No data leaks (API 403), but the screen should be hidden or show a no-access page. Low. Images ul1-lowpriv-direct.png, ul2-lowpriv-create.png.
+A3	pass	CRM User: create, GET, PUT, PATCH /active, DELETE on an owner rule all 403 PERMISSION_DENIED; rule unchanged (v1).
+A4	pass	CRM User: GET /scoring-rules?module_id=leads → 403 (no read access). Zoho also needs Manage Automation.
+A8	pass	Test User 1 (no CRM access): GET/PUT/PATCH/DELETE all 403.
+A7	blocked	The CRM User cannot open the owner's lead ("Record not found / Permission denied"), so score visibility for a low user needs a lead the user owns. Not run.
+B1	info	Picker lists 15 modules: Leads, Customers, Transactions, Agency Code, Tasks, Calls, Meetings, Subscriptions, Agency, Services, Daily Move, Cases, Purchase Orders, Sales Orders, NDCAgencies. Zoho offers Leads, Contacts, Accounts, Deals and custom modules only — scoring activities (Tasks, Calls, Meetings) is a TAVI extra.
+B2	pass	Opening the page with no ?module= selects Leads and adds ?module=<id> to the URL.
+B3	pass	Transactions (no rules): "No scoring rules for Transactions yet — Add a rule to give Transactions records points … +10 when the Lead Source is Web." Image ub3-empty.png.
+B4	pass	Columns Rule, Entries, Points, Active, Last modified ("12/11/2026 12:19 PM by ndc-staging-owner"), row actions.
+B5	pass	Points column shows the gain total (+70 for 7×10; +20 after edit).
+B6	pass	Toggle off/on from the list; toast "… is inactive. Records drop its points on their next save."; API shows is_active true after switching back.
+B7	pass	Row menu shows Edit and Delete; Edit opens "Edit Scoring Rule" filled in.
+B8	pass	Delete dialog "Delete this scoring rule? … Scores already saved change on each record's next save." Cancel keeps the rule, Delete removes it with toast "… was deleted.".
+B10	fail	?module=<unknown id> shows "Choose a module" and "No scoring rules for  yet" with an empty module name, and New Scoring Rule stays enabled; API GET /scoring-rules?module_id=<unknown> answers 200 []. Low. Image ub10-bad-module.png.
+C1	pass	UI: New › name, Lead Source is web, points 10 › Create → toast "The scoring rule was created.", row appears active (+10). API create also 201.
+C2	pass	UI empty Create shows "Required." under name, field and condition. API: empty and blank name 422.
+C8	pass	UI: empty field/condition show "Required.".
+C9	pass	UI: 0, 1.5, abc, 10001 each show "A whole number other than 0, at most 10000 either way."; API refuses 0, 1.5, "abc", ±10001, null and accepts ±10000. API also accepts the text "7" and stores 7 (see I2).
+C13	pass	UI edit points and save: "The scoring rule was saved."; row_version goes up.
+C15	pass	Field list has no Score and no system fields; 450 entries in this tenant, many with the same label (e.g. several "Checkbox 2", "WF"), so similar fields are hard to tell apart (tenant data, not a scoring bug).
+C17	pass	Escape closes the drawer without saving (points stayed +20); no "discard changes?" prompt.
+C18	pass	Drawer hints present: "Only active rules score records.", "Each entry adds its points …", "Scores are worked out when a record is saved … Workflow Rules › Score value".
+F1	fail	Score is not shown on the lead page: it is in no layout by default (field layouts=[]), so a lead with score 30 shows no score; only the Timeline says "Score was updated from 10 to 30". Admin can add it to a layout. Zoho shows a Scoring Rules section on every scored record (Z10). Image uf1-record.png.
+F2	pass	Leads list › Manage columns › Score › Show › Apply adds a Score column; sort ascending/descending works (500,000 first when descending). Image uf4-score-column.png.
+F3	pass	Filter sidebar offers Score with Equals/Not equal/Greater/Less/≥/≤/empty; Score ≥ 1000 returns exactly the 3 matching QA leads. Image uf6-filter-score.png.
+F9	pass	Audit events exist for scoring rules: created 15, updated 6, deleted 29. Weak spot: an edit is logged as "EntriesJson: value: 1 item → value: 1 item", so the actual change (points 15→20) is not visible. Low.
+F10	pass	Lead timeline shows "Score was updated from 0 to 3" and "from 3 to 13", plus the workflow that ran.
+F11	pass	Zoho side by side: record page has a "Scoring Rules" section with a row per rule and columns Positive, Negative, Positive/Negative/Total Touch Points, Score. TAVI shows only one Score number, and only if added to the layout. Image z-record-scoring-section.png.
+G1	pass	Workflow trigger "On Score Change" exists; rules created by API show in the list as "On Score Change: Increases".
+G12	pass	Workflow list row: "QA SR1112 G loop · Leads · On Score Change: Increases · Recurring · Active".
+G13	info	Zoho (docs + help): Score trigger has Increased / Decreased / Updated with an optional condition. TAVI has the same three plus a threshold ("only when it reaches / falls below / crosses N") — TAVI extra.
+H1	pass	Two tabs editing the same rule: tab 2 saved first, tab 1 then shows "Another admin saved this rule after you opened it." and "Load their version" (loads 15); saving again works. Tab 2 briefly showed "You don't have access to Settings" while loading. Image u5-conflict.png.
+I1	pass	Rule named <img src=x onerror=alert(1)> with <script> description shows as plain text in list, delete dialog and toast; no script ran.
+J1	pass	Arabic: list, drawer, hints, buttons all translated (قواعد التقييم, قاعدة تقييم جديدة, إنشاء…); only the module name "Leads" (tenant label) stays English. Image u7-ar-list.png, u7-ar-drawer.png.
+J2	pass	Arabic: dir=rtl, table, toggle and points mirrored; numbers in Arabic digits.
+K1	fail	A custom field used by a scoring rule can be deleted (204). The rule keeps the dead entry, the list shows nothing wrong, records quietly lose those points (9 → 0) on their next save, and opening the rule shows an empty field that cannot be saved ("This field is not in the module."). Zoho refuses the delete: "The custom field has already used in other places". Medium. Image uk1-deleted-field-rule.png.
+K2	fail	A pick list value used by a scoring rule ("Alpha") can be removed with no warning; the rule still stores "Alpha", records holding it lose their points (4 → 0) on next save, and the editor shows the value empty. Zoho keeps a removed value as "unused" and the rule keeps it. Low. Image uk2-removed-value-rule.png.
+Z1	gap	Zoho live: create popup has Layout (Standard / All Layouts); list shows a Layout column. TAVI rules are per module only. Images z-create-popup.png, z-rules-list.png.
+Z2	gap	Zoho editor: "Leads Fields › Add Criteria" filter decides which records a rule scores. TAVI has none.
+Z3	gap	Zoho live: one scoring line holds several conditions joined by AND with "Criteria Pattern (1 and 2) Edit Pattern". TAVI: one condition per entry. Image z-criteria-and-pattern.png.
+Z4	gap	Zoho live: number conditions = != < <= > >= between, not between, empty; date conditions include between, Today, Current Month, Age in Days, Due in Days and more relative dates; pick list adds contains / starts with / ends with. TAVI has no between and no relative dates (API: "'between' is not a known operator").
+Z5	gap	Zoho editor has "Add channel" (touch-point scoring). TAVI API: "Only field rules (kind field_value) can score a record; activity (touch point) scoring is not available."
+Z6	gap	Zoho live: saving a rule asks "Update old records? … new scores will be calculated for records that are created or have last activity within past 6 months" (Update old records / Continue without updating). TAVI scores only on next save (E5). Image z-update-old-records.png.
+Z7	gap	Zoho live: Entity scores per rule — Neg rule −25 and Web rule +10 kept as separate rows. TAVI: one combined Score.
+Z8	gap	Zoho live: Positive_Score 10 / Negative_Score −25 per rule, plus touch-point scores. TAVI: total only.
+Z9	gap	Zoho editor: "Would you like to add score fields to the records? Yes, proceed". TAVI: one fixed Score field.
+Z10	gap	Zoho lead page: "Scoring Rules" section (Rule Name, Positive, Negative, touch points, Score). TAVI: no section; Score not even in the layout by default (F1).
+Z11	gap	Zoho list has row checkboxes and clone (help/API). TAVI row menu = Edit, Delete only.
+Z12	gap	Zoho list: Search box, "All Modules" filter, Status filter. TAVI: module picker only, no search or status filter.
+Z13	gap	Zoho live: after deactivating the Web rule the lead keeps +10, even after the lead is edited. TAVI drops the points on the next save (E6).
+Z14	gap	Zoho live: deleting the Neg rule removed its −25 from the lead within minutes without editing the lead. TAVI keeps the old score until each record is saved (E7).
+Z15	gap	Zoho Enterprise allows 30 criteria per rule; TAVI 25 per rule.
+Z16	gap	Zoho API has clone, run_scoring_rules, Entity_Scores__s, activate/deactivate actions; TAVI has list/get/create/update/active/delete only (recalculate, stats, export 404).
+C19	fail	Two identical entries in one rule are accepted (201) and a matching lead scores 6 instead of 3 (counted twice). Zoho refuses: ALREADY_USED "The criteria is already given in the same rule under different index". Low.
+I2	info	Type confusion: points "10" (text) accepted and stored as a number; value object, entries object refused 422; is_active "yes" and numeric name refused 400. Zoho also returns INVALID_DATA for bad score.
+I3	fail	GET/PUT/PATCH on an unknown rule id → 404, but DELETE on an unknown id (and deleting the same rule twice) answers 204 instead of 404. Low.
+I6	fail	API saves conditions the screen does not offer: regexMatches, lengthEq, isEmpty (201), and they score (regex "Acme.*" matched). The editor cannot show them, and regex input is a performance risk. Low.
+D15	fail	API accepts operator "eq" with value "x" on a User field (201); the screen offers only is empty / is not empty and "x" is not a user. Low.
+H2	fail	PUT without row_version is accepted and overwrites the rule (points 5 → 3) with no version check — same problem as NDC-2868. Low.
+H4	fail	Two creates with the same name sent at the same moment both succeed (201/201) and two rules with the same name exist. Low (API race; UI double-click not reproduced).

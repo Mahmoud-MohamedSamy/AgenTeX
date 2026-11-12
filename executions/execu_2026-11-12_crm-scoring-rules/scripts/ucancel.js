@@ -1,0 +1,1 @@
+async (page) => { await page.getByRole('button',{name:/^Cancel$/}).last().click(); await page.waitForTimeout(1500); const d=page.locator('[role=alertdialog],[role=dialog]').last(); if(await d.count()){const b=d.getByRole('button',{name:/Discard|Leave|Yes|Cancel without/i}).first(); if(await b.count()) await b.click();} await page.waitForTimeout(1500); return page.url(); }

@@ -1,0 +1,2 @@
+const T=await modId('tasks'); const tl=await api('GET','/modules/'+T+'/records?per_page=10&sort_by=created_at&sort_order=desc'); const rs=arr(tl.j&&tl.j.data);
+return rs.slice(0,6).map(t=>{const d=t.data||[];const g=f=>{const e=d.find(x=>x.field===f);return e&&e.value&&(e.value.value||e.value.display||JSON.stringify(e.value).slice(0,60));};return [t.id.slice(0,8),t.created_at||g('created_at'),g('subject')||g('name')||g('title'),String(g('what_id')||g('related_to')||'').slice(0,60)].join(' | ');});

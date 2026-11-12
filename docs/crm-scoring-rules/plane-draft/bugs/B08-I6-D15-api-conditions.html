@@ -1,0 +1,7 @@
+<!-- Title: Scoring Rules | The API saves conditions the screen cannot show (regex, length, any value on User fields) -->
+<!-- Priority: Low · Cases I6, D15 -->
+<div><h2>Summary</h2><p>The scoring-rules API accepts conditions that the editor does not offer and cannot display: regexMatches, lengthEq and isEmpty on text fields, and "is x" on a User field with a value that is not a user. Such rules score records, but an admin opening them in the screen cannot see or fix the condition.</p>
+<h2>Environment</h2><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account, API</li></ul>
+<h2>Steps to reproduce</h2><ol><li>POST /scoring-rules with an entry {field_key: company, operator: regexMatches, value: "Acme.*", points: 1}.</li><li>Create a lead with Company "Acme Ltd".</li><li>POST a rule with {field_key: user, operator: eq, value: "x", points: 1}.</li></ol>
+<h2>Expected result</h2><p>Only the conditions the editor offers per field type are accepted (text: is, is not, contains, doesn't contain, starts with, ends with, is empty, is not empty; user and lookup: is empty, is not empty), and values are checked against the field.</p>
+<h2>Actual result</h2><ul><li>regexMatches, lengthEq and isEmpty are saved (201) and score records ("Acme.*" matches Acme Ltd).</li><li>"user is x" is saved (201).</li><li>A free regex from the API is also a slow-query risk.</li></ul></div>

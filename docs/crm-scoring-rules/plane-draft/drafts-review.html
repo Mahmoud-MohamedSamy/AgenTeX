@@ -1,0 +1,137 @@
+<title>Scoring Rules Plane Drafts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600&display=swap">
+<style>
+/* Layout: one reading column; a compact index, then each ticket as a card that looks like the Plane description. */
+:root{--bg:#f6f7f9;--panel:#fff;--ink:#18202b;--muted:#5d6878;--line:#dde2ea;--accent:#2f5bd3;--soft:#e7edfc;--warn:#9a5b00;--warnbg:#fdf1dc;--sans:"IBM Plex Sans",system-ui,sans-serif;--display:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11151b;--panel:#181d25;--ink:#e6eaf0;--muted:#9aa5b4;--line:#2a313c;--accent:#7e9dff;--soft:#1e2740;--warn:#f2b55c;--warnbg:#352711;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#11151b;--panel:#181d25;--ink:#e6eaf0;--muted:#9aa5b4;--line:#2a313c;--accent:#7e9dff;--soft:#1e2740;--warn:#f2b55c;--warnbg:#352711;color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans)}
+.w{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 56px}
+h1{font-family:var(--display);font-size:28px;margin:0}
+.lead{color:var(--muted);margin:6px 0 0;max-width:70ch}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0}
+.nav a{font-size:13px;color:var(--accent);background:var(--soft);padding:3px 9px;border-radius:5px;text-decoration:none}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-top:18px}
+.card h2{font-family:var(--display);font-size:18px;margin:0 0 4px;text-wrap:balance}
+.meta{font-size:13px;color:var(--muted);margin-bottom:8px}
+.pr{font-weight:600;color:var(--warn);background:var(--warnbg);padding:1px 7px;border-radius:4px;margin-right:6px}
+.card h4{font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
+.card p,.card li{max-width:72ch;overflow-wrap:anywhere}
+.card ul,.card ol{padding-left:22px;margin:4px 0}
+</style>
+<div class="w"><h1>Scoring Rules — Plane drafts</h1><p class="lead">Drafts for review: 1 gap ticket (16 items) and 11 bug tickets from the 12 Nov 2026 run on NDC-Staging. Nothing is in Plane yet. Assignee, state, module, sprint and final priority are chosen at filing.</p><div class="nav"><a href="#gap">Gap ticket</a><a href="#b1">1. A field used by a scoring rule can be deleted, and the rule </a><a href="#b2">2. Removing a pick list value used by a scoring rule gives no w</a><a href="#b3">3. Users without permission see the page, the New button and th</a><a href="#b4">4. Score threshold accepts text or decimals with no message and</a><a href="#b5">5. A save without a version overwrites the rule with no conflic</a><a href="#b6">6. Two creates at the same moment make two rules with the same </a><a href="#b7">7. The same condition twice in one rule is accepted and counted</a><a href="#b8">8. The API saves conditions the screen cannot show (regex, leng</a><a href="#b9">9. Unknown rule or module ids are answered as success</a><a href="#b10">10. After a failed Create, focus stays on the button instead of </a><a href="#b11">11. Scoring rule edits show "EntriesJson: 1 item → 1 item", so t</a></div><div class="card" id="gap"><h2>Scoring Rules: features Zoho CRM has that CRM is missing</h2><div class="meta"><span class="pr">Gap list</span>state Backlog · links NDC-2030</div><p><strong>Summary</strong></p>
+<p>We compared CRM's Scoring Rules with Zoho CRM (Setup › Automation › Scoring Rules, manual score). This ticket lists what Zoho has and CRM does not have yet. The work item for the feature is NDC-2030; it has no detailed spec, so every item below is "not in NDC-2030".</p>
+<p><strong>Already done in CRM</strong></p>
+<ul>
+<li><p>Settings › Automation › Scoring Rules per module: list, create, edit, delete, Active switch, empty state and the 50-rules-per-module limit with a banner.</p></li>
+<li><p>Field rules: field, condition, value and points (−10000 to +10000, not 0), up to 25 per rule, for text, number, date, date-time, pick list, multi-select, checkbox, user and lookup fields.</p></li>
+<li><p>One Score field, worked out on every save (form, inline, mass update, import, API, lead conversion, workflow field update); it cannot be typed by hand.</p></li>
+<li><p>Score as a list column, sort, filter, export and in reports (column and filter); score changes in the record timeline.</p></li>
+<li><p>Workflow trigger "On Score Change" (increases, decreases, either) and workflow conditions on Score.</p></li>
+<li><p>Edit conflict check between two admins, permission checks in the API, audit entries, Arabic and right-to-left.</p></li>
+<li><p>CRM also has things Zoho does not: a threshold on the score trigger ("only when it reaches 50"), scoring on any module (Tasks, Calls, Services…), a 120-character rule name and ±10000 points (Zoho: 25 characters, ±100).</p></li>
+</ul>
+<p><strong>Missing — building a rule</strong></p>
+<ol>
+<li>Rule per layout. Zoho asks for a layout (one layout or All Layouts) when the rule is created. Today a rule covers the whole module.</li>
+<li>Which records a rule scores. Zoho has "Add Criteria under Leads Fields": only matching records are scored. Today every record of the module is checked.</li>
+<li>Several conditions in one scoring line, joined with AND/OR and an editable pattern ("Criteria Pattern (1 and 2)"). Today each line has one condition.</li>
+<li>More conditions: between and not between (numbers, dates), relative dates (Today, Current Month, Previous Week, Age in Days, Due in Days…), and contains / starts with / ends with on pick lists. Today the API answers "'between' is not a known operator".</li>
+<li>Channel (touch point) scoring: points for emails opened, clicked or bounced, calls, campaigns, Desk tickets, missed chats, surveys and social, with Add / Subtract and time windows ("more than 10 emails in the last 15 days"). Today the API answers "Only field rules can score a record; activity (touch point) scoring is not available".</li>
+<li>Clone a rule. Today the row menu has Edit and Delete only.</li>
+<li>Up to 30 conditions per rule (Zoho Enterprise; 50 on Ultimate). Today 25.</li>
+</ol>
+<p><strong>Missing — how scores are kept</strong></p>
+<ol start="8">
+<li>Update old records. When a rule is saved Zoho asks "Update old records?" and rescores records created or active in the last 6 months, and it has a Run Scoring Rules action. Today a record is scored only when it is saved again, so old records keep score 0.</li>
+<li>A separate score per rule. Zoho keeps each rule's score on the record (for example Web +10 and Quality −25 as two rows). Today there is one combined Score.</li>
+<li>Positive score and negative score (plus touch-point scores) next to the total. Today only the total.</li>
+<li>Score fields per rule: Zoho offers "Would you like to add score fields to the records? Yes, proceed" (label + score type), removed with the rule. Today there is one fixed Score field.</li>
+<li>Switching a rule off keeps the scores it already gave (Zoho). Today the points are dropped on each record's next save.</li>
+<li>Deleting a rule removes its scores at once (Zoho, without editing the records). Today old scores stay until each record is saved.</li>
+</ol>
+<p><strong>Missing — where users see scores</strong></p>
+<ol start="14">
+<li>Scoring Rules section on the record page: one row per rule with Positive, Negative, touch-point columns and Score. Today the record page shows no score at all, because Score is in no layout by default; only the timeline mentions score changes.</li>
+<li>Search and status filter on the rules list (Zoho: search box, All Modules filter, Status filter). Today there is only the module picker.</li>
+</ol>
+<p><strong>Missing — API</strong></p>
+<ol start="16">
+<li>Clone, run scoring rules (background job), per-rule scores of a record, activate and deactivate actions. Today the API has list, get, create, update, active and delete; /scoring-rules/recalculate, /stats and /export return 404.</li>
+</ol>
+<p><strong>Could not be checked</strong></p>
+<ul>
+<li><p>Web form leads: Leads has no web form on NDC-Staging. Please add one so we can test that web-form leads are scored.</p></li>
+</ul>
+<p><strong>Additional notes</strong></p>
+<ul>
+<li><p>Not gaps: Zia Score (Zoho's AI scoring is a separate feature); the extras listed above.</p></li>
+<li><p>Bugs found in the same run are filed separately (see the comments).</p></li>
+<li><p>Test sheet with all 149 cases and results: CRM Scoring Rules test sheet (Claude artifact) and docs/crm-scoring-rules/cases.js in the QA repository.</p></li>
+<li><p>All test data was removed from NDC-Staging and the Zoho test org.</p></li>
+</ul>
+<p><strong>Environment</strong></p>
+<p>staging-crm.taviportal.com (NDC-Staging), Edge, 12 November 2026, owner account. Zoho CRM Enterprise trial test org. Comparison images are attached.</p>
+</div><div class="card" id="b1"><h2>1. Scoring Rules | A field used by a scoring rule can be deleted, and the rule silently stops scoring</h2><div class="meta"><span class="pr">Medium</span>Case K1 · B01-K1-deleted-field.html</div><div><h4>Summary</h4><p>A custom field that a scoring rule uses can be deleted with no warning. The rule keeps a condition on a field that no longer exists, the rules list shows nothing wrong, and records quietly lose those points on their next save. The rule can then no longer be saved.</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account; Leads number field "QA SR1112 Num" used by rule "QA SR1112 K1" (QA SR1112 Num ≥ 5 → +9)</li></ul>
+<h4>Steps to reproduce</h4><ol><li>Create a Leads number field and a scoring rule "field ≥ 5 → +9".</li><li>Create a lead with the field = 6. Its Score is 9.</li><li>Delete the field in Modules and Fields.</li><li>Save the lead again, then open the rule in Scoring Rules.</li></ol>
+<h4>Expected result</h4><p>As in Zoho CRM, the delete is refused while the field is used: Zoho answers "The custom field has already used in other places". At the least, CRM should warn the admin and mark the rule as broken.</p>
+<h4>Actual result</h4><ul><li>The field is deleted (204) without any warning.</li><li>The rule list still shows the rule as normal, with 1 entry and +9.</li><li>The lead's Score drops from 9 to 0 on its next save.</li><li>Opening the rule shows an empty field; Save fails with "This field is not in the module."</li></ul>
+<h4>Notes</h4><ul><li>Test data deleted after the check.</li><li>Evidence: K1-deleted-field-rule-vs-zoho.png (TAVI rule editor left, Zoho refusal right).</li></ul></div>
+</div><div class="card" id="b2"><h2>2. Scoring Rules | Removing a pick list value used by a scoring rule gives no warning, and records lose their points</h2><div class="meta"><span class="pr">Low</span>Case K2 · B02-K2-removed-value.html</div><div><h4>Summary</h4><p>A pick list value that a scoring rule uses can be removed from the field with no warning. The rule still stores the old value, the editor shows the value as empty, and records that hold the value lose their points on their next save.</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account; Leads pick list "QA SR1112 PL" (Alpha, Beta); rule "QA SR1112 K2" (PL is Alpha → +4)</li></ul>
+<h4>Steps to reproduce</h4><ol><li>Create the pick list and the rule "PL is Alpha → +4".</li><li>Create a lead with PL = Alpha. Its Score is 4.</li><li>Edit the field and remove Alpha from the values.</li><li>Save the lead again, then open the rule.</li></ol>
+<h4>Expected result</h4><p>The admin is warned that a scoring rule uses the value. In Zoho CRM a removed value moves to "unused" and the rule keeps its condition.</p>
+<h4>Actual result</h4><ul><li>Alpha is removed (200) with no warning.</li><li>The lead's Score drops from 4 to 0 on its next save.</li><li>The rule still stores "Alpha"; the editor shows "QA SR1112 PL is" with an empty value.</li></ul>
+<h4>Notes</h4><ul><li>Test data deleted after the check.</li><li>Evidence: K2-removed-value-rule-vs-zoho.png.</li></ul></div>
+</div><div class="card" id="b3"><h2>3. Scoring Rules | Users without permission see the page, the New button and the editor, then every call is refused</h2><div class="meta"><span class="pr">Low</span>Cases A2, A6 · B03-A2-no-permission-screen.html</div><div><h4>Summary</h4><p>A CRM user who may not manage scoring rules still gets the Scoring Rules menu item, the page, an active New Scoring Rule button and the full editor. Every API call is then refused with 403. The page and the API check different permissions.</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Account Mahmoud Samy (CRM User profile)</li></ul>
+<h4>Steps to reproduce</h4><ol><li>Sign in as the CRM User.</li><li>Open Settings › Automation › Scoring Rules.</li><li>Click New Scoring Rule and open the Field list.</li></ol>
+<h4>Expected result</h4><p>A user without the permission does not see the menu item, or sees a no-access page. In Zoho CRM scoring rules need the Manage Automation permission.</p>
+<h4>Actual result</h4><ul><li>The menu item and page open. The list says "The scoring rules could not be loaded — You don't have permission to manage scoring rules for this module."</li><li>New Scoring Rule is enabled and opens the editor with the full field list.</li><li>The API refuses list, create, update, activate and delete with 403 PERMISSION_DENIED, so no data leaks.</li><li>The page route is guarded by the Modules and Fields manage permission (metadata.modules.manage), while the API uses a different check. There is no separate scoring-rules permission in Profiles.</li></ul>
+<h4>Notes</h4><ul><li>Evidence: A2-lowpriv-page-and-editor.png.</li></ul></div>
+</div><div class="card" id="b4"><h2>4. Workflow Rules | Score threshold accepts text or decimals with no message and keeps the last valid number</h2><div class="meta"><span class="pr">Low</span>Case G9 · B04-G9-threshold-input.html</div><div><h4>Summary</h4><p>In a workflow rule with the "Score value" trigger, the threshold box accepts "abc", "12.5", an empty value or a huge number. The box is marked invalid but no message explains why, and Create still goes on, silently keeping the last valid number.</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account; new workflow rule on Leads (not saved)</li></ul>
+<h4>Steps to reproduce</h4><ol><li>Workflow Rules › New, module Leads, Next.</li><li>Pick "Score value", tick "Only when it reaches". The box shows 50.</li><li>Type -20, then replace it with abc.</li><li>Click Create.</li></ol>
+<h4>Expected result</h4><p>A clear message ("Enter a whole number") and Create blocked until the value is valid.</p>
+<h4>Actual result</h4><ul><li>Empty, abc, 12.5 and 999999999999999999 are marked invalid (red) with no message; -20 is accepted.</li><li>With abc in the box, Create opens the next step and the summary reads "This rule will be executed when the score of a record in Leads rises to -20 or more".</li></ul>
+<h4>Notes</h4><ul><li>The draft rule was cancelled, nothing was saved.</li><li>Evidence: G9-threshold-invalid.png.</li></ul></div>
+</div><div class="card" id="b5"><h2>5. Scoring Rules | A save without a version overwrites the rule with no conflict check</h2><div class="meta"><span class="pr">Low</span>Case H2 · B05-H2-no-version-overwrite.html</div><div><h4>Summary</h4><p>PUT /scoring-rules/{id} is accepted without row_version and overwrites the rule. Another admin's change can be lost without warning. The screen sends row_version and is protected; any other client is not. This is the same problem as NDC-2868 (Global Sets).</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account, API</li></ul>
+<h4>Steps to reproduce</h4><ol><li>Create a rule (points 1) and save it with points 5 and the current row_version (200, version 2).</li><li>Send PUT with points 3 and no row_version.</li></ol>
+<h4>Expected result</h4><p>The save is refused because no version was sent, the same way a stale version is refused with 409 SCORING_RULE_VERSION_CONFLICT.</p>
+<h4>Actual result</h4><ul><li>200; the rule now has points 3. A stale row_version is refused correctly (409), only a missing one is not checked.</li></ul></div>
+</div><div class="card" id="b6"><h2>6. Scoring Rules | Two creates at the same moment make two rules with the same name</h2><div class="meta"><span class="pr">Low</span>Case H4 · B06-H4-duplicate-names.html</div><div><h4>Summary</h4><p>The duplicate-name check is not safe when two create requests arrive together. Both succeed and the module ends up with two rules of the same name.</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account, API</li></ul>
+<h4>Steps to reproduce</h4><ol><li>Send two POST /scoring-rules requests for Leads with the same name at the same time.</li><li>List the Leads rules.</li></ol>
+<h4>Expected result</h4><p>One rule is created and the other request is refused: "This module already has a scoring rule named …" (the answer a single second create gets).</p>
+<h4>Actual result</h4><ul><li>Both return 201 and the list shows two rules named "QA SR1112 dbl".</li></ul>
+<h4>Notes</h4><ul><li>A double click on Create in the screen did not reproduce it; this is an API race.</li></ul></div>
+</div><div class="card" id="b7"><h2>7. Scoring Rules | The same condition twice in one rule is accepted and counted twice</h2><div class="meta"><span class="pr">Low</span>Case C19 · B07-C19-identical-conditions.html</div><div><h4>Summary</h4><p>A rule can hold two identical lines (same field, condition, value and points). Both count, so a matching record gets double points.</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account</li></ul>
+<h4>Steps to reproduce</h4><ol><li>Create a Leads rule with two lines: Lead Source is chat → +3, and again Lead Source is chat → +3.</li><li>Create a lead with Lead Source = chat.</li></ol>
+<h4>Expected result</h4><p>The rule is refused as in Zoho CRM: ALREADY_USED "The criteria is already given in the same rule under different index".</p>
+<h4>Actual result</h4><ul><li>The rule is saved (201) and the lead scores 6 instead of 3.</li></ul></div>
+</div><div class="card" id="b8"><h2>8. Scoring Rules | The API saves conditions the screen cannot show (regex, length, any value on User fields)</h2><div class="meta"><span class="pr">Low</span>Cases I6, D15 · B08-I6-D15-api-conditions.html</div><div><h4>Summary</h4><p>The scoring-rules API accepts conditions that the editor does not offer and cannot display: regexMatches, lengthEq and isEmpty on text fields, and "is x" on a User field with a value that is not a user. Such rules score records, but an admin opening them in the screen cannot see or fix the condition.</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account, API</li></ul>
+<h4>Steps to reproduce</h4><ol><li>POST /scoring-rules with an entry {field_key: company, operator: regexMatches, value: "Acme.*", points: 1}.</li><li>Create a lead with Company "Acme Ltd".</li><li>POST a rule with {field_key: user, operator: eq, value: "x", points: 1}.</li></ol>
+<h4>Expected result</h4><p>Only the conditions the editor offers per field type are accepted (text: is, is not, contains, doesn't contain, starts with, ends with, is empty, is not empty; user and lookup: is empty, is not empty), and values are checked against the field.</p>
+<h4>Actual result</h4><ul><li>regexMatches, lengthEq and isEmpty are saved (201) and score records ("Acme.*" matches Acme Ltd).</li><li>"user is x" is saved (201).</li><li>A free regex from the API is also a slow-query risk.</li></ul></div>
+</div><div class="card" id="b9"><h2>9. Scoring Rules | Unknown rule or module ids are answered as success</h2><div class="meta"><span class="pr">Low</span>Cases I3, B10 · B09-I3-B10-unknown-ids.html</div><div><h4>Summary</h4><p>Deleting a scoring rule id that does not exist answers 204, and listing rules for a module id that does not exist answers 200 with an empty list. The page for an unknown module shows "No scoring rules for  yet" with a blank module name and an active New Scoring Rule button.</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account</li></ul>
+<h4>Steps to reproduce</h4><ol><li>DELETE /scoring-rules/00000000-0000-0000-0000-000000000002 (or delete the same rule twice).</li><li>GET /scoring-rules?module_id=00000000-0000-0000-0000-000000000009.</li><li>Open /settings/automation/scoring-rules?module=00000000-0000-0000-0000-000000000009.</li></ol>
+<h4>Expected result</h4><p>404 SCORING_RULE_NOT_FOUND and 404 MODULE_NOT_FOUND (both codes exist and GET/PUT already use the first), and the page shows "This module no longer exists."</p>
+<h4>Actual result</h4><ul><li>DELETE answers 204 (twice in a row for the same rule as well).</li><li>The list answers 200 [].</li><li>The page shows "Choose a module" and "No scoring rules for  yet"; New Scoring Rule stays enabled.</li></ul>
+<h4>Notes</h4><ul><li>Evidence: B10-unknown-module.png.</li></ul></div>
+</div><div class="card" id="b10"><h2>10. Scoring Rules | After a failed Create, focus stays on the button instead of the first error</h2><div class="meta"><span class="pr">Low</span>Case J6 · B10-J6-error-focus.html</div><div><h4>Summary</h4><p>When Create fails validation in the scoring rule editor, the fields with errors are marked, but keyboard focus stays on the Create button. Keyboard and screen-reader users are not taken to the first problem.</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account</li></ul>
+<h4>Steps to reproduce</h4><ol><li>Scoring Rules › New Scoring Rule.</li><li>Leave the name and the field rule empty and press Create.</li></ol>
+<h4>Expected result</h4><p>Focus moves to the first field with an error (Rule name).</p>
+<h4>Actual result</h4><ul><li>"Required." messages appear and 4 controls get aria-invalid, but focus stays on Create.</li></ul></div>
+</div><div class="card" id="b11"><h2>11. Audit Log | Scoring rule edits show "EntriesJson: 1 item → 1 item", so the change cannot be seen</h2><div class="meta"><span class="pr">Low</span>Case F9 · B11-F9-audit-unreadable.html</div><div><h4>Summary</h4><p>Scoring rule changes are logged, but an edit to a rule's lines is shown as "EntriesJson: value: 1 item → value: 1 item". The admin cannot see what changed (for example points 15 → 20).</p>
+<h4>Environment</h4><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account</li></ul>
+<h4>Steps to reproduce</h4><ol><li>Edit a scoring rule and change one line's points from 15 to 20.</li><li>Open Audit Log and find the scoring rule "updated" entry.</li></ol>
+<h4>Expected result</h4><p>The entry shows the old and new line (field, condition, value, points), or at least "points 15 → 20".</p>
+<h4>Actual result</h4><ul><li>Changes: EntriesJson "value: 1 item" → "value: 1 item", RowVersion 4 → 5, UpdatedAt.</li><li>Created and deleted entries are logged correctly.</li></ul></div>
+</div></div>

@@ -1,0 +1,7 @@
+{"out":"K1-tavi-api-card.png","title":"TAVI CRM — delete a field that a scoring rule uses (Leads, rule \"QA SR1112 K1\": QA SR1112 Num ≥ 5 → +9)","host":"staging-crm.taviportal.com","who":"owner account","date":"12 Nov 2026",
+"rows":[
+["Set-up","POST /scoring-rules  {entries:[qa_sr1112_num gte 5 → 9]}","201 · lead with QA SR1112 Num = 6 scores 9","info"],
+["Delete the field","DELETE /modules/{leads}/fields/{qa_sr1112_num}","204 · field deleted, no warning","bad"],
+["Rule after delete","GET /scoring-rules/{K1}","200 · entry still points at qa_sr1112_num; list shows the rule as normal (+9)","bad"],
+["Lead saved again","PATCH /modules/{leads}/records/{lead}","200 · Score 9 → 0, no message","bad"],
+["Open and save the rule","Scoring Rules › Edit › Save","Field shows empty · Save: \"This field is not in the module.\"","bad"]]}

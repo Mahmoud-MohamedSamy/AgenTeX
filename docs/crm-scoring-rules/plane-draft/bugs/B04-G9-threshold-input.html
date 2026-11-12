@@ -1,0 +1,8 @@
+<!-- Title: Workflow Rules | Score threshold accepts text or decimals with no message and keeps the last valid number -->
+<!-- Priority: Low · Case G9 -->
+<div><h2>Summary</h2><p>In a workflow rule with the "Score value" trigger, the threshold box accepts "abc", "12.5", an empty value or a huge number. The box is marked invalid but no message explains why, and Create still goes on, silently keeping the last valid number.</p>
+<h2>Environment</h2><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account; new workflow rule on Leads (not saved)</li></ul>
+<h2>Steps to reproduce</h2><ol><li>Workflow Rules › New, module Leads, Next.</li><li>Pick "Score value", tick "Only when it reaches". The box shows 50.</li><li>Type -20, then replace it with abc.</li><li>Click Create.</li></ol>
+<h2>Expected result</h2><p>A clear message ("Enter a whole number") and Create blocked until the value is valid.</p>
+<h2>Actual result</h2><ul><li>Empty, abc, 12.5 and 999999999999999999 are marked invalid (red) with no message; -20 is accepted.</li><li>With abc in the box, Create opens the next step and the summary reads "This rule will be executed when the score of a record in Leads rises to -20 or more".</li></ul>
+<h2>Notes</h2><ul><li>The draft rule was cancelled, nothing was saved.</li><li>Evidence: G9-threshold-invalid.png.</li></ul></div>

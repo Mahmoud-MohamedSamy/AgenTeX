@@ -1,0 +1,89 @@
+{
+ "out": "C19-identical-conditions-vs-zoho.png",
+ "ticket": "Scoring Rules",
+ "title": "The same condition twice in one scoring rule is accepted and counted twice",
+ "verdict": "FAIL",
+ "label": "BUG",
+ "date": "12 Nov 2026",
+ "env": "TAVI NDC-Staging · owner · API · Zoho test org org944965048 · API v8 · all test data deleted",
+ "leftHead": "TAVI CRM (left)",
+ "rightHead": "Zoho CRM (right)",
+ "panels": [
+  {
+   "side": "tavi",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/C19-tavi.png",
+   "w": 780,
+   "h": 436,
+   "crop": [
+    0,
+    0,
+    780,
+    436
+   ],
+   "caption": "TAVI · saved, and the lead scores 6 instead of 3",
+   "boxes": [
+    {
+     "b": [
+      36,
+      118,
+      744,
+      253
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      263,
+      744,
+      398
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "side": "zoho",
+   "img": "executions/execu_2026-11-12_crm-scoring-rules/evidence/raw/C19-zoho.png",
+   "w": 780,
+   "h": 312,
+   "crop": [
+    0,
+    0,
+    780,
+    312
+   ],
+   "caption": "Zoho · refused",
+   "boxes": [
+    {
+     "b": [
+      36,
+      118,
+      744,
+      274
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Save a rule with the same line twice",
+   "Refused: ALREADY_USED",
+   "Saved (201)",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "Score of a matching record",
+   "Not reachable (rule refused)",
+   "Points counted twice: 6 instead of 3",
+   "DIFFERS"
+  ]
+ ]
+}

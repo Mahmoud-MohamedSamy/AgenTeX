@@ -1,0 +1,8 @@
+async (page, ctx) => { const EV='D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX/executions/execu_2026-11-12_crm-scoring-rules/evidence/';
+ const fs=require('fs'); const link=fs.readFileSync('D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX/executions/execu_2026-11-12_crm-scoring-rules/out/wf-iframe.txt','utf8').trim();
+ const anon=await ctx.browser().newContext({viewport:{width:900,height:900}}); const p=await anon.newPage(); const st=[]; p.on('response',r=>{if(/embed|web-form|submi/.test(r.url()))st.push(r.request().method()+' '+r.status()+' '+r.url().replace(/f[w]?\d*\.[A-Za-z0-9._-]+/,'<key>').slice(0,100));});
+ await p.goto(link,{waitUntil:'domcontentloaded'}); await p.waitForTimeout(8000); const out={title:await p.title(), body:(await p.innerText('body').catch(()=>'')).replace(/\s+/g,' ').slice(0,200), inputs:await p.locator('input,select').count()};
+ if(out.inputs){await p.getByLabel(/Full Name/).fill('QA SR1112 WF visitor'); const sel=p.locator('select'); if(await sel.count()){out.opts=await sel.first().locator('option').allInnerTexts(); await sel.first().selectOption({label:'web'}).catch(()=>{});} else {const cb=p.locator('[role=combobox]'); if(await cb.count()){await cb.first().click(); await p.waitForTimeout(500); await p.locator('[role=option]').filter({hasText:/^web$/}).first().click();}}
+  await p.screenshot({path:EV+'uw15-filled.png'}); await p.getByRole('button',{name:/^Send$/}).click(); await p.waitForTimeout(6000); out.after=(await p.innerText('body')).replace(/\s+/g,' ').slice(0,200); await p.screenshot({path:EV+'uw15-sent.png'});}
+ else await p.screenshot({path:EV+'uw15-iframe.png'});
+ out.st=st.slice(0,8); await anon.close(); return out; }

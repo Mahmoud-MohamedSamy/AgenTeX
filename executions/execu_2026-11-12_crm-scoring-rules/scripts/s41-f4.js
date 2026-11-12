@@ -1,0 +1,9 @@
+const o={}; const ds=arr((await api('GET','/reporting/semantic-layer/datasets')).j.data.data).find(x=>x.module_key==='leads'); o.ds=ds&&ds.display_name;
+const det=await api('GET','/reporting/semantic-layer/datasets/'+ds.id); o.scoreInDataset=/"(field_key|key)":"score"/.test(det.t); o.scoreFieldSample=(det.t.match(/.{0,80}"score".{0,120}/)||[''])[0];
+const dim=k=>({dataset_id:ds.id,field_key:k,grain:null});
+const tries=[{dataset_id:ds.id,field_key:'score',operator:'gte',value:15},{dataset_id:ds.id,field_key:'score',operator:'gte',value:{kind:'number',value:15}}];
+let rid=null; for(const f of tries){const r=await api('POST','/reporting/reports',{name:'QA SR1112 score report',folder_id:null,query_spec:{ir_version:14,base_dataset_id:ds.id,dimensions:[dim('first_name'),dim('score')],measures:[],filters:[f],sort:[],limit:2000},viz_spec:{report_type:'tabular',config:{}}}); o['create '+JSON.stringify(f.values)]=SR(r).slice(0,200); rid=r.j&&r.j.data&&(r.j.data.data||r.j.data).id; if(rid){const q=await api('POST','/reporting/reports/'+rid+'/query',{}); o['run '+JSON.stringify(f.value)]=q.s+' qa='+(q.t.match(/QA SR1112 X1/g)||[]).length+' '+q.t.slice(0,240); if(q.s===200)break; const g=await api('GET','/reporting/reports/'+rid); const rev=g.j&&g.j.data&&((g.j.data.data||g.j.data).revision); await api('DELETE','/reporting/reports/'+rid+'?expected_revision='+rev); rid=null;}}
+if(rid){I.rep=rid; SAVE(); const q=await api("POST","/reporting/reports/"+rid+"/query",{}); o.rowsQA=(q.t.match(/QA SR1112 X1/g)||[]).length; o.sample=q.t.slice(0,700);
+ const g=await api('GET','/reporting/reports/'+rid); const rev=g.j&&g.j.data&&((g.j.data.data||g.j.data).revision); const d=await api('DELETE','/reporting/reports/'+rid+'?expected_revision='+rev); o.deleted=d.s;}
+// grouping by score as a measure
+return o;

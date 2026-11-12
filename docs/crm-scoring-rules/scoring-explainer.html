@@ -1,0 +1,78 @@
+<title>Scoring Rules Explained</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Mono&display=swap">
+<style>
+/* Layout: single reading column, one worked example box, two-column TAVI/Zoho comparison that stacks on phones. */
+:root{--bg:#f6f7f9;--panel:#fff;--ink:#18202b;--muted:#5d6878;--line:#dde2ea;--accent:#2f5bd3;--soft:#e7edfc;--plus:#1d7a46;--minus:#b42318;
+--sans:"IBM Plex Sans",system-ui,"Segoe UI",sans-serif;--display:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;--mono:"IBM Plex Mono",Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11151b;--panel:#181d25;--ink:#e6eaf0;--muted:#9aa5b4;--line:#2a313c;--accent:#7e9dff;--soft:#1e2740;--plus:#5fd394;--minus:#ff8a7e;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#11151b;--panel:#181d25;--ink:#e6eaf0;--muted:#9aa5b4;--line:#2a313c;--accent:#7e9dff;--soft:#1e2740;--plus:#5fd394;--minus:#ff8a7e;color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans)}
+.w{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+h1{font-family:var(--display);font-size:30px;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-size:19px;margin:30px 0 8px;text-wrap:balance}
+p,li{max-width:68ch}.lead{color:var(--muted);margin-top:6px}
+ul{padding-left:20px}li{margin:4px 0}
+.ex{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-top:10px}
+.ex table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+.ex td{padding:5px 6px;border-bottom:1px solid var(--line)}.ex td:last-child{text-align:right;font-family:var(--mono)}
+.p{color:var(--plus)}.m{color:var(--minus)}.tot td{font-weight:600;border-bottom:0}
+.cmp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:10px}
+.cmp>div{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
+.cmp h3{margin:0 0 4px;font-size:14px;letter-spacing:.5px;text-transform:uppercase;color:var(--accent)}
+code{font-family:var(--mono);font-size:13px;background:var(--soft);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+@media (max-width:640px){.cmp{grid-template-columns:minmax(0,1fr)}}
+</style>
+<div class="w">
+<h1>CRM Scoring Rules, explained</h1>
+<p class="lead">What the feature is for, how it works in TAVI, and how it differs from Zoho CRM. Written 12 Nov 2026 from the TAVI build on NDC-Staging and Zoho's documentation.</p>
+
+<h2>The business idea</h2>
+<p>A sales team has more leads than it can call. Scoring gives each lead a number that says how promising it is, so people call the best ones first. The admin decides what "promising" means by writing rules: a lead from the website gets points, a lead in the target industry gets more, a lead marked Junk loses points.</p>
+<ul>
+<li><b>Sales</b> sort or filter by score ("Hot leads: score 30 or more").</li>
+<li><b>Marketing</b> sees which sources bring good leads.</li>
+<li><b>Automation</b> reacts when a score passes a line, for example creating a call task for the owner when a lead reaches 30.</li>
+</ul>
+
+<h2>A worked example</h2>
+<div class="ex"><table>
+<tr><td>Rule "Web leads": Lead Source is Web</td><td class="p">+10</td></tr>
+<tr><td>Rule "Web leads": Industry is IT</td><td class="p">+5</td></tr>
+<tr><td>Rule "Quality": Rating is Hot</td><td class="p">+20</td></tr>
+<tr><td>Rule "Quality": Status is Junk</td><td class="m">−15</td></tr>
+<tr class="tot"><td>A web lead in IT, rated Hot, not Junk</td><td>35</td></tr>
+</table></div>
+<p>The score is the sum of every line the record matches, across all active rules of its module.</p>
+
+<h2>How TAVI does it</h2>
+<ul>
+<li><b>Where:</b> Settings › Automation › Scoring Rules. Pick a module, then add rules.</li>
+<li><b>A rule</b> has a name, a description, an Active switch and up to 25 "field rules". Each field rule is one field, one condition (is, contains, greater than, is empty…), a value and points from −10,000 to +10,000 (not 0). A module holds up to 50 rules.</li>
+<li><b>The result</b> is one system field called <b>Score</b> on Leads, Contacts, Deals and Accounts.</li>
+<li><b>When it changes:</b> each time a record is saved, TAVI adds up the points of every active rule and writes the Score. A new or changed rule does nothing to old records until they are saved again.</li>
+<li><b>Automation:</b> a workflow rule can start "On Score Change" — when the score goes up, goes down, or crosses a number such as 50.</li>
+</ul>
+
+<h2>How it works technically</h2>
+<ul>
+<li>The screen talks to <code>/api/v1/scoring-rules</code>: list by module, read one, create, update (with a <code>row_version</code> so two admins cannot overwrite each other), switch active on/off, delete.</li>
+<li>A rule is stored as a list of entries: <code>field_key</code>, <code>operator</code>, <code>value</code>, <code>points</code>.</li>
+<li>On every record save the server evaluates the entries against the record and writes the total into the <code>score</code> field. The score is computed, so users should not be able to type it.</li>
+<li>If the score changed, the workflow engine gets a <code>RecordScoreChanged</code> event with the old and new value, which is how the "crosses 50" trigger works.</li>
+</ul>
+
+<h2>TAVI compared with Zoho CRM</h2>
+<div class="cmp">
+<div><h3>Same idea</h3><ul>
+<li>Rules per module that add or subtract points for field values.</li>
+<li>Active / inactive, edit, delete.</li>
+<li>Workflow when the score changes.</li></ul></div>
+<div><h3>Zoho has more</h3><ul>
+<li>Points for customer actions (emails opened, calls, campaigns, tickets, chats), not only field values.</li>
+<li>Can rescore old records straight away.</li>
+<li>Separate score per rule, plus positive and negative scores.</li>
+<li>Rule per layout, filter for which records a rule scores, AND/OR conditions, clone.</li></ul></div>
+</div>
+<p>The full list of 16 gaps and the 149 test cases are in the test sheet.</p>
+</div>

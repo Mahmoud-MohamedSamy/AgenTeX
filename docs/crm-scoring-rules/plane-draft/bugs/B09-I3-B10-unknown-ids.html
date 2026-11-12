@@ -1,0 +1,8 @@
+<!-- Title: Scoring Rules | Unknown rule or module ids are answered as success -->
+<!-- Priority: Low · Cases I3, B10 -->
+<div><h2>Summary</h2><p>Deleting a scoring rule id that does not exist answers 204, and listing rules for a module id that does not exist answers 200 with an empty list. The page for an unknown module shows "No scoring rules for  yet" with a blank module name and an active New Scoring Rule button.</p>
+<h2>Environment</h2><ul><li>Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026</li><li>Owner account</li></ul>
+<h2>Steps to reproduce</h2><ol><li>DELETE /scoring-rules/00000000-0000-0000-0000-000000000002 (or delete the same rule twice).</li><li>GET /scoring-rules?module_id=00000000-0000-0000-0000-000000000009.</li><li>Open /settings/automation/scoring-rules?module=00000000-0000-0000-0000-000000000009.</li></ol>
+<h2>Expected result</h2><p>404 SCORING_RULE_NOT_FOUND and 404 MODULE_NOT_FOUND (both codes exist and GET/PUT already use the first), and the page shows "This module no longer exists."</p>
+<h2>Actual result</h2><ul><li>DELETE answers 204 (twice in a row for the same rule as well).</li><li>The list answers 200 [].</li><li>The page shows "Choose a module" and "No scoring rules for  yet"; New Scoring Rule stays enabled.</li></ul>
+<h2>Notes</h2><ul><li>Evidence: B10-unknown-module.png.</li></ul></div>

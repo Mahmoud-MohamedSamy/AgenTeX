@@ -1,0 +1,2 @@
+const L=await modId('leads'); const rec=I.k9rec; const d=(await api('GET','/modules/'+L+'/records/'+rec)).j.data.data; const own=d.find(x=>/owner/.test(x.field)); log('owner field',own&&own.field, JSON.stringify(own&&own.value).slice(0,120));
+const u=await api('PATCH','/modules/'+L+'/records/'+rec,{data:[{field:own.field,value:{kind:own.value.kind,value:'d23fb4e0-248d-41f6-af60-d28885a7007e'}}]}); log('reassign',SR(u).slice(0,200)); return {score:await recScore(L,rec)};
