@@ -1,0 +1,84 @@
+# NDC-2137 Custom Views | Kanban headers + first cards p95 5.1 s (target 2 s)
+Summary
+Kanban headers + first cards p95 5.1 s (target 2 s).
+Found by test case CVS-L09 - Kanban column headers and first cards render within 2 s at p95.
+Steps to Reproduce
+Before you start:
+- Logged in as the Owner (Tenant Owner).
+- Deals Kanban view 'QA CV perf-board' by Stage with Amount aggregate exists.
+- Open 'QA CV perf-board' and reload it 20 times.
+- For each load, record the time until every column header (count and sum) and the first cards are shown.
+- Compute the p95.
+Test data:
+- Loads: 20
+- Target: p95 ≤ 2 s
+Expected Results
+The 95th-percentile time to headers and first cards is within 2 seconds.
+Actual Results
+- Deals Kanban 'QA CV deals-by-stage' (Stage, Amount; 12 columns), 20 reloads until all column headers with Amount totals and at least one card are shown: p95 5100 ms, median 2290, min 1261, max 26045.
+- Target 2 s p95 missed.
+Environment
+staging-crm.taviportal.com, tenant NDC-Staging (time zone Africa/Cairo), Chromium, 5 October 2026. Accounts: CRM Admin (in place of the Owner role), test user 1 (User profile, has Manage Shared Views), test user 2 (profile "test", no Manage Shared Views). Test case CVS-L09, run execu_2026-10-05_11-20-40.
+Attachments
+- L09-vs-zoho.png: annotated screenshot (TAVI on the left, with the comparison table).
+- L08-L09-timings.png: original TAVI screenshot (20 reloads).
+
+
+== COMMENTS (6)
+--- comment 2026-11-11T13:55:41.233327+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 10–11 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.
+Kanban cards never load; it is worse than on 6 Nov.
+Still failing:
+- Kanban first cards: expected Cards load (Zoho CRM: always loaded, 16.6–33.7 s on this trial); actual TAVI: every column shows "Could not load these records"; all 134 column requests return 500
+- records?skip_total=true: expected 200; actual 500 on Transactions, Leads and Tasks (200 without skip_total)
+- Kanban headers p95: expected ≤ 2 s; actual 19.11 s (6 Nov: 1.76 s)
+Evidence: NDC-2137-retest-FAIL-vs-zoho.png, NDC-2137-retest-FAIL.png (attached; side-by-side images: TAVI left, Zoho right)
+
+--- comment 2026-11-06T14:02:47.724317+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 6 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner
+Method: API and screen
+Column headers now load within target, but the cards never load: every column request ends with skip_total=true and returns 500 INTERNAL_ERROR ("An unexpected error occurred"). The same 500 happens on any CRM records list called with skip_total=true (Leads, Deals, Contacts, Tasks); without it the same calls return 200.
+Checked:
+- Column headers with Amount → p95 1.76 s, p50 1.28 s (20 reloads) [PASS]
+- First cards → Never shown: each column call returns 500 (skip_total=true) [FAIL]
+- Scope of the 500 → Any records list with skip_total=true fails (Leads, Deals, Contacts, Tasks) [INFO]
+Still failing:
+- First cards: expected p95 ≤ 2 s, actual Never shown: each column call returns 500 (skip_total=true)
+Evidence: NDC-2137-retest-FAIL.png (attached)
+
+--- comment 2026-11-03T21:54:28.257602+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 3 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge (headless) + API; account: ndc-staging-owner (Owner)
+Method: API and screen
+Deals (Transactions) Kanban, 20 reloads: column headers with Amount and first cards appear at p50 6.2 s, p95 12.5 s (min 3.1, max 13.5). The app frame is up in about 1 s, so the board itself takes p95 10.2 s. Target p95 2 s.
+Checked:
+- p95 headers + cards → 12.5 s (p50 6.2 s, min 3.1 s, max 13.5 s) [FAIL]
+- board after app frame → p95 10.2 s, p50 5.3 s [FAIL]
+- app frame → 0.7–4.8 s [INFO]
+- history → slower today [INFO]
+Still failing:
+- p95 headers + cards: expected p95 ≤ 2 s, actual 12.5 s (p50 6.2 s, min 3.1 s, max 13.5 s)
+- board after app frame: expected ≤ 2 s, actual p95 10.2 s, p50 5.3 s
+Evidence: NDC-2137-retest-FAIL.png (attached)
+
+--- comment 2026-11-02T15:36:05.539360+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest BLOCKED — 2 Nov 2026 (not fully testable today — state unchanged)
+Environment: staging-crm.taviportal.com, tenant Anyware, Edge (headless) + API; accounts: owner, test users (CRM User profile)
+Method: API and screen
+Could not time the board with real data: switching list → Kanban took 0.65–0.71 s, but the board was filtered to 0 cards; full reloads took 28–90 s on staging today.
+Checked:
+- switch to Kanban → 0.65 / 0.65 / 0.71 s (board filtered to 0 cards) [INFO]
+- reload → 28–90 s per page [INFO]
+Evidence: NDC-2137-retest-BLOCKED.png (attached)
+
+--- comment 2026-10-26T13:20:43.843289+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest 26 Oct 2026 — still fails
+Transactions kanban, three reloads: column headers after 2.4, 2.4 and 3.4 seconds, first cards after 3.0, 4.5 and 4.2 seconds. The target is 2 seconds (it was 5.1), so it is better but not there yet.
+Also seen on 26 Oct, not part of this ticket: every kanban column says "This value is no longer an option of the field", columns show keys such as Closed_won, and cards show "Resolving owner…".
+Environment: staging-crm.taviportal.com, owner account; timings from the manual run on 25 Oct (case KB-04).
+Annotated TAVI-vs-Zoho image attached: NDC-2137-retest.png
+
+--- comment 2026-10-14T03:08:08.536025+03:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+<p><b>Triage (code review, 2026-10-14): one demonstrable over-fetch, but the spread needs measuring.</b></p><p>Confirmed from the code: opening a board issues one summary request plus one request per column, each asking for 100 records — so a 12-column board makes 13 calls and fetches up to 1,200 rows to paint first cards. That is a fair thing to cut (a smaller first page per column, with the existing infinite scroll filling in).</p><p>What I cannot conclude from code is the reported spread: a 2.3 s median against a 26 s maximum looks like server or contention variance, not a fixed client cost.</p><p><b>Please attach:</b> (1) per-request timing for the summary and the column calls (HAR), (2) the same board with <code>per_page=25</code> versus <code>100</code> for server-side comparison, and (3) whether the 26 s case coincided with other load. I will then reduce the first-page size and, if the time is server-side, hand the query plan to metadata-engine.</p>

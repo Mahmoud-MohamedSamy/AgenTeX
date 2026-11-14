@@ -1,0 +1,33 @@
+{
+ "out": "2807-api-card.png",
+ "title": "NDC-2807 counts after leaving (API)",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  [
+   "Mass update + full navigation",
+   "Lead Source = referral on 200, then page.goto(\"/\") 1 s later",
+   "10 / 200 changed after 45 s (client sends 10 ids per call)",
+   "bad"
+  ],
+  [
+   "Mass update + in-app link",
+   "Lead Source = Chat on 200, close dialog, Home link",
+   "200 / 200 changed",
+   "ok"
+  ],
+  [
+   "Mass delete + full navigation",
+   "Mass Delete, criteria Last Name starts \"2807 \", 200 records",
+   "POST …/mass-delete: matched 200, deleted 200, failed 0",
+   "ok"
+  ],
+  [
+   "Recycle Bin delete + full navigation",
+   "Batch view, Delete (50), leave 2.6 s after request",
+   "0 / 50 removed (200 still in bin)",
+   "bad"
+  ]
+ ]
+}

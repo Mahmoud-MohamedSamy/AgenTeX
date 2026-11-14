@@ -1,0 +1,1 @@
+const TK='d120a6c2-2596-4254-968b-a1bcd3a000bf'; const a=await api('GET','/modules/'+TK+'/records/'+I.A35.tasks[0]); const c=await api('GET','/desk/tickets/'+I.A35.ticket+'/activities/count'); LED('desk task A deleted via task page UI'); return {taskA:a.s, count:c.t.slice(0,140)};

@@ -1,0 +1,2 @@
+const d = DEF('G11', [ST('Open', { position: { x: 0, y: 0 } }), ST('On Hold', { position: { x: 300, y: 0 }, autoTransitionAfterMinutes: 4320, autoTransitionId: 'end' }), ST('Closed', { isTerminal: true, position: { x: 600, y: 0 } })], [TR('hold', 'Open', 'On Hold'), TR('end', 'On Hold', 'Closed')]);
+const { r, id } = await mkBp(d, false); log('id', id, E(r)); const b = await getBp(id); log('saved', JSON.stringify(b.definition.states[1]).slice(0, 300));

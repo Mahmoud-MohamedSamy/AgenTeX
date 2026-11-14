@@ -1,0 +1,14 @@
+{
+ "out": "bulkclose-api-card.png",
+ "title": "Desk bulk Close on a whole view — per-ticket close requests",
+ "host": "staging-desk.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  ["Run 1 (60 selected)", "Close 60 tickets → 60 × POST /desk/tickets/{id}/close", "Many 500 INTERNAL \"An unexpected error occurred.\" · toast \"0 updated, 60 failed.\" · read back: 10 actually closed", "bad"],
+  ["Run 2 (61 selected)", "Close 61 tickets (same view, run again)", "39 × 500 + 12 × 409 (already closed) · 10 more closed", "bad"],
+  ["Run 3 (61 selected)", "Close 61 tickets (run again)", "14 × 500 + 37 × 409 · 10 more closed · some tickets still Open", "bad"],
+  ["Same tickets by API", "POST /desk/tickets/{id}/close one by one, and 10 in parallel", "200 for every ticket", "info"],
+  ["Bulk Update on the same 61", "Update › Priority = Medium (mass-update, batched)", "7 × POST mass-update 200 → 61/61 Medium", "ok"]
+ ]
+}

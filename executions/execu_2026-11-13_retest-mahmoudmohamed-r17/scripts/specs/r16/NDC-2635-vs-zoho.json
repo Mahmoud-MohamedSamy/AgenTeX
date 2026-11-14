@@ -1,0 +1,14 @@
+{"out":"NDC-2635-retest-PARTIAL-vs-zoho.png","ticket":"NDC-2635","title":"Activity Life Cycle gaps: owner list by department and bulk delete fixed; Delete on the activity page, ticket activity count and API still missing","verdict":"PARTIAL","env":"TAVI: NDC-Staging, staging-desk, ndc-staging-owner, ticket #2878 with 3 QA tasks · Zoho Desk (live, techsolutionsegypt, Tech): one QA task on ticket #111, deleted and purged after","date":"11 Nov 2026",
+"panels":[
+ {"side":"tavi","img":"executions/execu_2026-11-11_retest-mahmoudmohamed-r16/screenshots/raw/2635-task-page.png","caption":"TAVI task page: only Start timer and Mark as Complete, no Delete or ⋮ menu","crop":[560,56,1040,330],"boxes":[{"b":[1466,78,1590,116],"n":2,"kind":"DIFFERS"}]},
+ {"side":"tavi","img":"executions/execu_2026-11-11_retest-mahmoudmohamed-r16/screenshots/raw/2635-ticket-tabs.png","caption":"TAVI ticket #2878 with 3 tasks: ACTIVITY tab has no count (0 CONVERSATION and 0 TIME ENTRY do)","crop":[664,56,936,330],"boxes":[{"b":[1246,158,1314,186],"n":4,"kind":"DIFFERS"}]},
+ {"side":"zoho","img":"executions/execu_2026-11-11_retest-mahmoudmohamed-r16/screenshots/raw/zoho-2635-task-more.png","caption":"Zoho task page › ••• : Edit, Delete, Open in New Tab (Delete → \"This Task will be moved to the recycle bin\")","crop":[966,56,634,330],"boxes":[{"b":[1356,146,1566,178],"n":2,"kind":"SAME"}]},
+ {"side":"zoho","img":"executions/execu_2026-11-11_retest-mahmoudmohamed-r16/screenshots/raw/zoho-2635-task-saved.png","caption":"Zoho ticket #111 with 1 task: tab reads \"1 ACTIVITY\"","crop":[652,56,948,330],"boxes":[{"b":[1180,143,1256,170],"n":4,"kind":"SAME"}]}
+],
+"rows":[
+ [1,"Department on every activity limits the owner list and visibility","Department required, owner list = that department's agents (Zoho help, not checked live today)","Department* required; owner list follows it (QA AS6 Dept B → its 2 agents, Sales → its 4); agent outside the department gets 403 (NDC-2830, Done)","SAME"],
+ [2,"Delete on the task / call / event page","••• › Delete, moves to the recycle bin (seen live)","No Delete on the page; only from the list","DIFFERS"],
+ [3,"Delete in the bulk bar","Mass Delete (Zoho help; not tried live)","More › Delete → \"Delete 2 records? … move to the recycle bin\"; both deleted","SAME"],
+ [4,"Activity count on the ticket","\"1 ACTIVITY\" on the ticket tab (seen live); API taskCount (docs)","ACTIVITY tab without a count; ticket API counts = replies, comments, attachments, time entries","DIFFERS"],
+ [5,"Ticket-activities API and filters","GET /tickets/{id}/activities, dueDate filters, /tasks/count (Zoho API docs, not live)","/desk/tickets/{id}/activities, /desk/activities(/stats,/reports,/count), /desk/tasks/count → 404","GAP"]
+]}

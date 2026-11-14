@@ -1,0 +1,5 @@
+const RID = (await (async () => { for (const q of ['?moduleId=' + TM + '&departmentId=' + MK, '?moduleId=' + TM + '&search=QA%20GL%20W3', '?moduleId=' + TM + '&departmentIds=' + MK, '?moduleId=' + TM + '&page=2', '?moduleId=' + TM + '&offset=50&limit=50']) { const r = D((await api('GET', '/workflow/rules' + q)).j); const a = Array.isArray(r) ? r : (r?.items || []); const m = a.find(x => /QA GL W3 WF/.test(x.name)); out['q' + q.slice(0, 40)] = a.length + (m ? ' FOUND' : ''); if (m) return m; } return null; })());
+out.rule = RID ? JSON.stringify({ id: RID.id, isActive: RID.isActive, actions: RID.actions }).slice(0, 700) : 'not found';
+await go('/settings/automation/workflow-rules?department=' + MK, 12000); out.page = ((await mtxt()).match(/QA GL W3 WF.{0,300}/) || ['not on page'])[0]; await shot('w3/W3-20-rule-after-delete');
+const row = page.getByText('QA GL W3 WF uses echo 2').first(); if (await row.count()) { await row.click(); await sleep(5000); out.ruleView = ((await mtxt()).match(/(Actions|Run Custom Action|custom action).{0,400}/i) || [''])[0]; await shot('w3/W3-20-rule-open'); }
+return fin({ out });

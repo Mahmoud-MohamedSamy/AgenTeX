@@ -1,0 +1,11 @@
+const cap = []; page.on('request', r => { const u = r.url(); if (['POST','PUT','PATCH'].includes(r.method()) && /api\/v1\/desk\/skill/.test(u)) cap.push(r.method() + ' ' + u.replace(/^.*api\/v1/, '') + ' ' + (r.postData() || '').slice(0, 300)); });
+page.on('response', async r => { if (['POST','PUT','PATCH'].includes(r.request().method()) && /api\/v1\/desk\/skill/.test(r.url())) cap.push('  -> ' + r.status()); });
+await page.goto(H + '/settings/customization/skills', { waitUntil: 'domcontentloaded' });
+for (let i = 0; i < 60; i++) { await sleep(2000); if (/Add Skill/.test(await text())) break; } await sleep(2000);
+await page.getByText('Customer Support', { exact: true }).first().click(); await sleep(1200);
+await page.getByRole('option', { name: 'QA RT16 2805 dept' }).first().click().catch(() => page.getByText('QA RT16 2805 dept', { exact: true }).last().click()); await sleep(3000);
+await page.getByRole('button', { name: 'Add Skill' }).click(); await sleep(2000);
+const d = page.locator('[role=dialog]').last(); log('dialog:', (await d.innerText().catch(() => '')).slice(0, 600)); await shot('2805-add-skill.png');
+const inp = d.locator('input').first(); await inp.fill('QA RT16 2805 skill'); await sleep(500);
+await d.getByRole('button', { name: /^(Save|Add|Create)/ }).last().click(); await sleep(4000);
+log('cap', cap); log('after:', ((await text()).match(/Active skills[^\n]*/) || [''])[0]); await shot('2805-skill-added.png');

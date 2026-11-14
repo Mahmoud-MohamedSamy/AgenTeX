@@ -1,0 +1,2 @@
+const r=await api('GET','/modules/'+L+'/layouts/'+I.LAY); fs.writeFileSync(RUN+'/out/layout-standard-before.json',JSON.stringify(r.j,null,1)); LED('backup Leads Standard layout '+I.LAY+' -> out/layout-standard-before.json');
+const f=arr((await api('GET','/modules/'+L+'/fields')).j.data).filter(x=>/^pick_list/.test(x.fieldName||x.field_name)).map(x=>x.fieldName||x.field_name); return {s:r.s,keys:Object.keys(r.j.data||{}),picklists:f};

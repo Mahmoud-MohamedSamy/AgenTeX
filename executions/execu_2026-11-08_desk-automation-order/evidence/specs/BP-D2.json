@@ -1,0 +1,86 @@
+{
+ "verdict": "FAIL",
+ "key": "BP-D2",
+ "label": "BUG",
+ "out": "BP-H6-second-editor-overwrites-first-silently.png",
+ "ticket": "Blueprint · H6",
+ "title": "Two people editing the same blueprint: the second save silently replaces the first person's change",
+ "date": "TAVI 13 Nov 2026 (21:00 Cairo) · Zoho not checked live",
+ "env": "staging-desk.taviportal.com (NDC-Staging) · owner account · Edge",
+ "panels": [
+  {
+   "img": "executions/execu_2026-11-08_desk-automation-order/evidence/bp-bugs/d2-tab1-renamed.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "Tab 1 renames the blueprint to \"QA BP D2 tabs RENAMED IN TAB 1\" and presses Save and Publish (published)",
+   "crop": [
+    1300,
+    120,
+    300,
+    250
+   ],
+   "boxes": [
+    {
+     "b": [
+      1316,
+      210,
+      1586,
+      250
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "executions/execu_2026-11-08_desk-automation-order/evidence/bp-bugs/d2-tab2-after-publish.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "Tab 2 (opened before tab 1 saved) changes only the description and publishes: no warning. Result, also after reload: Version 2, name back to \"QA BP D2 tabs\"; tab 1's rename is lost",
+   "crop": [
+    1000,
+    60,
+    600,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      1316,
+      210,
+      1586,
+      250
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      1316,
+      286,
+      1586,
+      348
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Tab 1 renames and publishes",
+   "Saved",
+   "Saved and published",
+   "INFO"
+  ],
+  [
+   2,
+   "Tab 2, opened earlier, changes the description and publishes",
+   "Tab 2 is told the blueprint changed since it was opened and can reload (no change lost)",
+   "Saved with no message; the rename from tab 1 is silently undone (same as NDC-2965 for Workflow Rules)",
+   "BUG"
+  ]
+ ],
+ "leftHead": "TAVI Desk (screenshots)",
+ "rightHead": "Expected (Zoho not checked live)",
+ "rightLabel": "Expected"
+}

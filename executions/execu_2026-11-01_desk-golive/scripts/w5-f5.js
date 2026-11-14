@@ -1,0 +1,13 @@
+await go('/team-feeds/' + MK + '/all', 10000);
+await page.getByRole('button', { name: 'New message' }).click(); await sleep(2000);
+const d = page.locator('[role=dialog]').last();
+await d.locator('input').first().fill('mahmoud.mahamed1515'); await sleep(2500);
+await d.getByText('mahmoud.mahamed1515@gmail.com').first().click(); await sleep(1000);
+out.dlg = (await dtxt()).slice(0, 300);
+const msg = d.locator('textarea, [contenteditable=true]').last(); await msg.click(); await page.keyboard.type('QA GL W5 DM to B', { delay: 20 });
+const n0 = NET.length; await d.getByRole('button', { name: 'Send message' }).click(); await sleep(4000);
+out.net = NET.slice(n0).filter(x => /feed|conversation|message/.test(x.u)).map(x => x.m + ' ' + x.u.split('?')[0] + ' ' + x.s + ' ' + x.t.slice(0, 160));
+const m = out.net.join(' ').match(/"id":"([0-9a-f-]{36})"/); if (m) CREATED.push({ kind: 'dm', id: m[1], name: 'QA GL W5 DM' });
+out.url = page.url().replace(H, ''); out.after = (await mtxt()).slice(0, 300);
+await shot('w5/W5-32-dm');
+return fin({ out });

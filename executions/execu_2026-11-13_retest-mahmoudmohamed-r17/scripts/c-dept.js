@@ -1,0 +1,1 @@
+const a=await api('PATCH','/desk/departments/'+I.D74,{name:'QA RT17 2174 Dept',agent_user_ids:[]}); const r=await api('DELETE','/desk/departments/'+I.D74); LED('CLEANUP desk department '+SR(r)); return 'patch '+SR(a)+' | delete '+SR(r);

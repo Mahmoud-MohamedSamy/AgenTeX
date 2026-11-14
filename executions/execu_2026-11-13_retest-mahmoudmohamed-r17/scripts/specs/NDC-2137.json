@@ -1,0 +1,76 @@
+{
+ "out": "NDC-2137-retest-FAIL.png",
+ "ticket": "NDC-2137",
+ "priority": "low",
+ "title": "Custom Views | Kanban headers are fast now, but cards never load (every column request returns 500)",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless + API · Transactions Kanban (Standard pipeline), 8 timed loads",
+ "date": "13 Nov 2026",
+ "panels": [
+  {
+   "img": "2137-kanban.png",
+   "caption": "Transactions Kanban: columns show \"Could not load these records\" + \"An unexpected error occurred.\"",
+   "crop": [
+    276,
+    260,
+    1324,
+    640
+   ],
+   "boxes": [
+    {
+     "b": [
+      578,
+      360,
+      862,
+      425
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      1172,
+      820,
+      1574,
+      875
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      280,
+      268,
+      562,
+      336
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Kanban first cards",
+   "Load (target p95 2 s)",
+   "Never load; 140/140 column requests 500",
+   "FAIL"
+  ],
+  [
+   2,
+   "records?skip_total=true",
+   "200",
+   "500 on Transactions, Leads, Tasks (200 without)",
+   "FAIL"
+  ],
+  [
+   3,
+   "Kanban headers",
+   "p95 ≤ 2 s",
+   "p50 1.15 s, p95 1.59 s (11 Nov: 19.11 s)",
+   "PASS"
+  ]
+ ]
+}

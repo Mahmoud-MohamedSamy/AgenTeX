@@ -57,6 +57,7 @@ Lens: UI · API · NEG · PERM · I18N · SEC · PERF · SET (tenant-wide settin
 | W5-42 | D-04 | Migration | Open Migration, read sources and existing runs (no new run) | Page loads; sources listed | UI |
 | W5-43 | D-05 | Sandboxes | Open Sandboxes; read state (create only with your OK) | Still ERROR / never finishes (NDC-2514)? record | UI |
 | W5-44 | D-06 | Bulk actions log | Do a bulk status change on 2 QA GL W5 tickets; open the log | Entry with count and who | UI |
+| W5-44b | D-06 | Mass update with no value *(found during the run)* | Add a field in Mass Update and leave the value empty | Refused, or asks to confirm clearing | NEG |
 | W5-45 | D-07 | Recycle Bin *(regression)* | Delete a QA GL W5 contact; restore; delete forever (exact match) | Works; NDC-2248/2516/2517 symptoms noted | UI |
 | W5-46 | D-08 | Data archive | Read archive rule and "find an archived ticket" (no new rule) | Page loads; search works | UI |
 | W5-47 | A-12 | Data retention | Read Closed tickets / Finished activities / Contacts settings and legal hold (no change) | Settings shown with clear wording | UI |

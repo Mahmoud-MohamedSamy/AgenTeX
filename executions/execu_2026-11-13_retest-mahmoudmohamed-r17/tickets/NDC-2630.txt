@@ -1,0 +1,65 @@
+# NDC-2630 Email | A failed email send is shown as sent
+Summary
+When an email sent from a record fails, the app tells the user it was sent. The screen shows "Sent" and the timeline logs "EmailSent", but the email never left: its status in the API is "failed". The record's Mails tab shows "No emails yet" and no notification follows, so the user has no way to know.
+Steps to Reproduce
+- Open a QA lead that has an email address.
+- Click Send Email, pick the taviportal.com Zoho Mail connection, write a subject and body, and send.
+- Look at the toast, the Timeline tab and the Mails tab.
+- Read the email's status through the API.
+Expected Result
+- When sending fails, the screen says it failed and why, the timeline does not log a sent email, and the email shows as failed on the record so the user can retry. Zoho shows failed emails with a reason on the record.
+Actual Result
+- Toast "Sent"; the timeline logs "EmailSent".
+- Mails tab: "No emails yet". No notification.
+- API status "failed": "No Zoho account found for sender 'ndc-staging-owner@taviportal.com' … set the 'zoid' org id on the connection".
+- The connection itself still reports health "ok" and can_send = true.
+Environment
+- Tenant: NDC-Staging — staging-crm.taviportal.com
+- Account: ndc-staging-owner (Owner)
+- Observed: 26 Oct 2026, CRM go-live Wave 4 (case M02). The test email to mahmoud.mmohamedsamy@gmail.com was not received.
+- Related: NDC-2496, NDC-1479 (the connection's missing Zoho org id is the reason this send failed).
+- Evidence: annotated TAVI-vs-Zoho image attached.
+
+
+== COMMENTS (3)
+--- comment 2026-11-11T13:54:10.295788+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 10–11 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.
+A failed send is now recorded honestly (422 MAIL_SEND_FAILED, Emails tab "Not sent… Failed" + Retry, no Email sent entry in the timeline). The screen still lets a sender who can't send try.
+Working now:
+- Send from a refused sender → 422, Emails tab Failed + Retry, no EmailSent in the timeline (both cases)
+Still failing:
+- Compose when the sender can't send: expected Zoho CRM blocks Send Email before Compose opens ("Email Confirmation Required … so that you can send emails"); actual TAVI opens Compose with no notice and Send enabled, although /emails/sendability already says can_send false
+- Message dialog of a failed mail: expected Only the failed status; actual TAVI shows a blue "Sent" chip next to the red "Failed" chip
+How Zoho shows a failed send on the record was not compared (that needs a real failing send to an outside address).
+Evidence: NDC-2630-retest-PARTIAL-vs-zoho.png, NDC-2630-retest-PARTIAL.png (attached; side-by-side images: TAVI left, Zoho right)
+
+--- comment 2026-11-06T14:01:29.874304+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest BLOCKED — 5 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner
+Method: API and screen
+The original case (a connected mail provider whose send fails) could not be retested: NDC-Staging no longer has the Zoho connection for taviportal.com, and an SMTP connection with a wrong host or password is refused on save. Moved to Bug per QA lead so a working test setup can be provided. The no-provider case works.
+Checked:
+- Mail connections on the tenant → Only the system SMTP for anyware.software; the Zoho connection is gone [INFO]
+- Pre-check for a sender with no provider → can_send false, reason no_connection [PASS]
+- Send → 422 MAIL_NO_CONNECTION with the reason [PASS]
+- Record Mails / Sent → Both empty [PASS]
+- Timeline → RecordCreated only [PASS]
+- Original case: provider connected but the send fails → Not testable: no Zoho connection; an SMTP connection is checked on save (fake host / wrong password refused, nothing saved) [BLOCKED]
+Evidence: NDC-2630-retest-BLOCKED.png (attached)
+
+--- comment 2026-10-28T09:36:25.705366+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 27–28 Oct 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, NDC-Staging, Edge (headless) + API; accounts: CRM Admin, test user 1, owner account through the automation
+Sent as the owner (taviportal.com sender, Zoho connection without zoid): the send now answers 422 MAIL_SEND_FAILED with the reason, and the Mails list shows the email as "failed" with the error.
+Checked:
+- pre-check → can_send true, provider zoho — the sender is let through [FAIL]
+- send → 422 MAIL_SEND_FAILED "No Zoho account found for sender 'ndc-staging-owner@…'" — no longer "Sent" [PASS]
+- record Mails → status "failed", last_error with the reason [PASS]
+- timeline → EmailSent, RecordCreated — the failed email is logged as sent [FAIL]
+- own account (Gmail) → Compose says "You can't send email yet: no provider is connected for gmail.com…" [INFO]
+Still failing:
+- The timeline still logs "EmailSent" for the failed email.
+- GET /emails/sendability still answers can_send true for this sender, so the screen lets the user try.
+Evidence: NDC-2630-retest-PARTIAL.png (attached)
+

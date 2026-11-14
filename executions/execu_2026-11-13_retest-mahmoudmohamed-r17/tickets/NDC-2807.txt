@@ -1,0 +1,43 @@
+# NDC-2807 Bulk Operations | Bulk operations (mass update, mass delete, empty Recycle Bin) stop when you leave the page
+Summary
+Bulk operations (mass update, mass delete and emptying the Recycle Bin) should keep running in the background until they finish, wherever the user goes in the app. Right now they only run while the user stays on the page where they started. If the user navigates away, the operation quietly stops partway, leaving part of the records updated or deleted and the rest untouched. The user then has to start it again. The steps below use Empty Recycle Bin, which is how it was recorded; the same applies to mass update and mass delete.
+Steps to Reproduce
+- Go to Settings → Data Administration → Recycle Bin (the bin has 942 items).
+- Click Empty Bin, type DELETE and confirm.
+- A banner appears: "Deleting… 200 of 942 items done. You can keep using the page."
+- While it's still deleting, click Tickets in the top menu, then open Settings → Recycle Bin again.
+- Look at the Recycle Bin page.
+- Repeat with a mass update or mass delete on a large list of records, leaving the page while it's in progress.
+Expected Result
+- Any bulk operation (mass update, mass delete, empty Recycle Bin) keeps running after the user leaves its page or moves to a different page.
+- Coming back to the page shows the operation's progress, or the finished result once it's done.
+- A bulk operation can't be started a second time on the same records while one is still running.
+Actual Result
+- The progress banner is gone and the deletion has stopped.
+- The bin still shows 842 items, and Empty Bin can be clicked again as if nothing were running.
+- Starting it again begins from the remaining count, and parts of it fail without any message.
+- Mass update and mass delete are exposed to the same interruption when the user leaves the page mid-run.
+Environment
+- App: TAVI Desk — staging-desk.taviportal.com/settings/data/recycle-bin
+- Browser: Chrome 156.0.8078.80
+- OS: Windows 10
+- Viewport: 1272×866
+- Reporter: noles40331
+- Captured: 5 Nov 2026, 12:10 UTC
+Attachment
+Attachment
+
+
+== COMMENTS (1)
+--- comment 2026-11-11T13:53:36.587099+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 10–11 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.
+Mass delete and Recycle Bin selection delete now finish after the user leaves the page. Mass update does not.
+Working now:
+- Mass delete of 450 records: finished after leaving the page (0 failed)
+- Recycle Bin: delete 50 selected, leave the page → done (twice)
+Still failing:
+- Mass update, leave the page 1 s after starting: expected Zoho CRM runs it as a background job ("The mass update action is scheduled successfully" + progress panel): 200/200 updated within 1 min after leaving; actual TAVI: 6 of 200 changed after 45 s and after 3 min; no job, nothing resumed
+Empty Recycle Bin (whole bin) was not run because the bin also holds other people's items.
+Evidence: NDC-2807-retest-PARTIAL-vs-zoho.png, NDC-2807-retest-PARTIAL.png (attached; side-by-side images: TAVI left, Zoho right)
+

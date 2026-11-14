@@ -1,0 +1,1 @@
+for (const p of ['/iam/permissions', '/iam/permission-tree']) { const r = await api('GET', p); const s = JSON.stringify(r.j?.data || r.j); log(p, r.s, s.length, (s.match(/"[^"]{0,60}blueprint[^"]{0,60}"/gi) || []).filter((v, i, a) => a.indexOf(v) === i).slice(0, 20).join(' ')); }

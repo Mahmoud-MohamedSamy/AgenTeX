@@ -1,0 +1,22 @@
+# NDC-2868 Global Sets | Saving a set without its version number overwrites it
+Summary
+The set API protects against two people saving at once only when the request carries the version number. A save without the version is accepted and overwrites whatever is stored.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 11 Nov 2026
+- Owner account, API
+Steps to reproduce
+- GET /global-sets/{id} and note the description.
+- Change the set in another tab or call, so the stored version moves on.
+- PUT /global-sets/{id} with a changed description and without row_version.
+Expected result
+The save is refused like a stale save (409 GLOBAL_SET_VERSION_CONFLICT), or row_version is required.
+Actual result
+- 200, and the set is overwritten.
+- With an old row_version the save is correctly refused (409), so only requests that leave the version out are affected.
+Notes
+- The screen always sends the version, so this affects API clients only. Low priority.
+- Test data was deleted.
+
+
+== COMMENTS (0)
+

@@ -1,0 +1,100 @@
+{
+ "date": "13–14 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel) · Zoho Desk: test org techsolutionsegypt, read only · Edge",
+ "out": "w3/F4-vs-zoho.png",
+ "ticket": "F4",
+ "verdict": "FAIL",
+ "label": "BUG · High",
+ "title": "Ticket Archiving | Any agent can change the company-wide archiving, spam-deletion and parent/child rules",
+ "panels": [
+  {
+   "img": "w3/W3-35-agentC-archiving.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    268,
+    56,
+    760,
+    664
+   ],
+   "caption": "TAVI · agent C (profile Desk Agent) › Setup › Ticket Archiving: every switch enabled, saves accepted (200)",
+   "boxes": [
+    {
+     "b": [
+      300,
+      200,
+      1004,
+      248
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      300,
+      600,
+      1004,
+      640
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      920,
+      456,
+      1000,
+      502
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "zw3/z-agent-profile-setup.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    0,
+    0,
+    1280,
+    600
+   ],
+   "caption": "Zoho · default \"Agent\" profile, Setup permissions (read live from Zoho's API)",
+   "boxes": [
+    {
+     "b": [
+      27,
+      116,
+      1254,
+      184
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      27,
+      354,
+      1254,
+      388
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Who may change ticket automation settings (archiving, spam, parent/child)",
+   "The default Agent profile has \"automation\", \"featureConfig\" and 39 other Setup permissions off; only Recycle Bin, import history, move records, snippets and masking are on. Not tried as an agent (the test org has one admin user).",
+   "Agent C (Desk Agent, no settings permissions) sees the page with every switch enabled.",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "Saving as an agent",
+   "Settings need a Setup permission the Agent profile does not have.",
+   "PUT archive / spam / parent-child settings as agent C → 200 each (existing values written back). GET support plans as agent C → 403, so other settings pages are protected.",
+   "DIFFERS"
+  ]
+ ]
+}

@@ -1,0 +1,10 @@
+await openBuilder();
+await page.getByRole('button', { name: 'Edit row groups' }).click(); await sleep(2000);
+out.rowDlg = (await dtxt()).slice(0, 1500);
+out.rowCtl = await page.locator('[role=dialog]').last().locator('button, input, [role=checkbox], [role=option]').evaluateAll(es => es.slice(0, 40).map(e => e.tagName + ':' + (e.getAttribute('aria-label') || e.innerText || e.placeholder || '').trim().slice(0, 40)));
+await shot('w5/W5-26-rowgroups');
+await page.keyboard.press('Escape'); await sleep(1000);
+await page.getByRole('tab', { name: 'Filters' }).click(); await sleep(1500);
+out.filters = (await mtxt()).slice(0, 1200);
+out.fBtns = await page.locator('main').getByRole('button').evaluateAll(es => es.map(e => (e.getAttribute('aria-label') || e.innerText || '').trim().slice(0,40)).filter(Boolean));
+return fin({ out });

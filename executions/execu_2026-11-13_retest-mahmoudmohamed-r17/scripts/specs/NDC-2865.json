@@ -1,0 +1,35 @@
+{
+ "out": "NDC-2865-retest-PASS.png",
+ "ticket": "NDC-2865",
+ "priority": "high",
+ "title": "Global Sets | A new pick list field set to \"Use a global set\" can now be saved",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › Standard layout · set \"QA RT17 GS Tier\" · QA test field, removed at cleanup",
+ "date": "13 Nov 2026",
+ "panels": [
+  {
+   "img": "2865-5-picked.png",
+   "caption": "New Pick List › Edit Properties › Advanced: \"Use a global set\" → QA RT17 GS Tier; options come from the set",
+   "crop": [1140, 0, 460, 400],
+   "boxes": [
+    { "b": [1160, 140, 1580, 268], "n": 1, "kind": "PASS" },
+    { "b": [1160, 308, 1580, 384], "n": 2, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2865-7-saved.png",
+   "caption": "Apply → Save: the layout saves (POST /fields 201, PUT layout 200) and the field shows on the form",
+   "crop": [356, 395, 760, 270],
+   "boxes": [
+    { "b": [366, 559, 1566, 605], "n": 3, "kind": "PASS" }
+   ]
+  }
+ ],
+ "rows": [
+  [1, "Point a new Pick List at a global set", "Field linked to the set (as in Zoho)", "Advanced shows \"Values come from the global set QA RT17 GS Tier\" + Disassociate", "PASS"],
+  [2, "Options of the new field", "The set's values", "Gold, Bronze (the set's used values)", "PASS"],
+  [3, "Apply, then Save the layout", "Field created and saved (was: 400 \"Option 'global_set_id' is not supported\")", "POST /modules/{Leads}/fields 201 (global_set_id set) + PUT layout 200; field on the form", "PASS"],
+  [4, "API: POST field with datatypeOptions.global_set_id", "201, linked", "201; record with Gold 201, with \"Nope\" 422", "PASS"],
+  [5, "Used In of the set", "Lists the new field and its layout", "qa_rt17_2865_ui · layouts: Standard", "PASS"]
+ ]
+}

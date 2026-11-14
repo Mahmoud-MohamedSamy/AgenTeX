@@ -4,7 +4,7 @@
 //         panels: [{ img, caption, crop?: [x,y,w,h], boxes: [{ b: [x1,y1,x2,y2], n, color? }] }],
 //         rows: [[n, check, expected, now, result]] }   // result: PASS | FAIL | PARTIAL | INFO
 const path = require('path'); const fs = require('fs');
-const P = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX';
+const P = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation';
 const { chromium } = require(path.join(P, 'node_modules/playwright-core'));
 const RUN = path.join(P, 'executions/execu_2026-11-01_desk-golive');
 const spec = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));

@@ -1,0 +1,73 @@
+{
+ "date": "13–14 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel) · Zoho Desk: test org techsolutionsegypt, read only · Edge",
+ "out": "w3/F3-vs-zoho.png",
+ "ticket": "F3",
+ "verdict": "FAIL",
+ "label": "BUG · Medium",
+ "title": "Custom Actions | Deleting an action used by a workflow rule gives no warning and leaves the rule broken",
+ "panels": [
+  {
+   "img": "w3/W3-20-delete-used-by-rule.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    400,
+    260,
+    480,
+    200
+   ],
+   "caption": "TAVI · Custom Actions › QA GL W3 echo 2 › Delete: no mention of the rule that uses it",
+   "boxes": [
+    {
+     "b": [
+      486,
+      298,
+      830,
+      362
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "w3/W3-20-rule-open.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    60,
+    56,
+    1220,
+    620
+   ],
+   "caption": "TAVI · Workflow rule \"QA GL W3 WF uses echo 2\" after the delete",
+   "boxes": [
+    {
+     "b": [
+      222,
+      598,
+      700,
+      638
+     ],
+     "n": 2
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Delete an action used by a workflow rule",
+   "Not checked live: the Zoho trial Setup pages do not open (404 / spinner) on 14 Nov, and the custom functions API returns 403 in this trial org.",
+   "Dialog: \"This permanently deletes … Any surface offering it will stop showing it immediately.\" → \"Action deleted\" (DELETE → 204).",
+   "BUG"
+  ],
+  [
+   2,
+   "The rule afterwards",
+   "Not checked live.",
+   "Rule shows \"Function (custom action) (unavailable)\". By contrast, deleting an action another action depends on is refused (409 \"is a prerequisite of other custom actions\").",
+   "BUG"
+  ]
+ ]
+}

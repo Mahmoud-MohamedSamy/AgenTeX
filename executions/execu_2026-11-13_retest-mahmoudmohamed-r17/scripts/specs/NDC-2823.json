@@ -1,0 +1,121 @@
+{
+ "out": "NDC-2823-retest-PARTIAL.png",
+ "ticket": "NDC-2823",
+ "priority": "medium",
+ "title": "Tickets | \"Select all N in this view\" is built; bulk Close on the whole view fails",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Edge headless + API · 60 tickets \"QA RT17 2823 01–60\" + private view",
+ "date": "13 Nov 2026",
+ "panels": [
+  {
+   "img": "2823-2-selectall.png",
+   "caption": "Select all → \"50 of 557 selected · Select all 557 in this view\" (same on the 60-ticket view)",
+   "crop": [
+    270,
+    62,
+    700,
+    46
+   ],
+   "boxes": [
+    {
+     "b": [
+      396,
+      72,
+      676,
+      96
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2823-5-after-close.png",
+   "caption": "Bulk Close on all 60: toast \"0 updated, 60 failed.\" — while 10 did close",
+   "crop": [
+    1100,
+    800,
+    500,
+    100
+   ],
+   "boxes": [
+    {
+     "b": [
+      1297,
+      820,
+      1575,
+      875
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2823-api-card.png",
+   "caption": "Statuses / priorities read back",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    322
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      251
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Select every ticket of the view in one action",
+   "Like Zoho \"Select all tickets in this view\"",
+   "\"Select all 60 in this view\" → whole view selected",
+   "PASS"
+  ],
+  [
+   2,
+   "Bulk Update on the whole view",
+   "Applies to all",
+   "61/61",
+   "PASS"
+  ],
+  [
+   3,
+   "Bulk Close on the whole view",
+   "Applies to all",
+   "Many 500 INTERNAL; toast \"0 updated, 60 failed\" while some closed",
+   "FAIL"
+  ]
+ ]
+}

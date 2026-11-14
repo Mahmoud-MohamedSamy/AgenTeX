@@ -1,0 +1,27 @@
+# NDC-2917 Global Sets | Replace does not update reports: the filter keeps the old value and results go stale
+Summary
+Replacing a set value does not touch reports. A report that filters on the old value keeps that filter, keeps showing stale rows for a while, and then shows nothing, even though the records now hold the new value. Replace is not blocked either, because reports are not tracked in Used In.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 11 Nov 2026
+- Owner account; set "QA GS1111 R3 Rep" (Gold, Silver, Bronze) linked to a Leads field; report "QA GS1111 Gold report"
+Steps to reproduce
+- Create a Leads report that filters QA GS1111 Rep = Gold. It returns the 2 Gold leads.
+- Rename Gold to "Gold Star" and run the report.
+- Replace Gold → Silver in the set. All 3 leads now hold Silver.
+- Run the report again, and again after editing any other lead.
+Expected result
+As in Zoho CRM, the report filter follows the new value and the report lists the records under it. Seen in our Zoho test org: after Replace Gold → Silver the report filter read "IS Silver" and the report showed all 3 leads. NDC-2806 says replace propagates to "workflows, criteria, reports".
+Actual result
+- The report filter still says "Gold", a value that is now unused.
+- For more than 70 seconds the report kept returning the 2 old rows showing "Gold".
+- After another lead was edited, the report returned 0 rows.
+- After the rename, the report showed the stored value "Gold", not the new label "Gold Star".
+Notes
+- A report created after the replace shows the correct values, so the old report's filter and cached result are the problem.
+- Related: NDC-2866 (workflows) and NDC-2867 (custom views), and item 7 of NDC-2870.
+- Test data was deleted.
+- Evidence (TAVI left, Zoho right): B6-replace-does-not-update-reports-vs-zoho.png
+
+
+== COMMENTS (0)
+

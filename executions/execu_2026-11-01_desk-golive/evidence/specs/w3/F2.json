@@ -1,0 +1,98 @@
+{
+ "date": "13–14 Nov 2026",
+ "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel) · Zoho Desk: test org techsolutionsegypt, read only · Edge",
+ "out": "w3/F2-vs-zoho.png",
+ "ticket": "F2",
+ "verdict": "FAIL",
+ "label": "BUG · Medium",
+ "title": "Custom Actions | Authentication set on an API source is not sent when the imported spec declares no security",
+ "panels": [
+  {
+   "img": "w3/W3-12-apikey-reopen.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    304,
+    110,
+    672,
+    500
+   ],
+   "caption": "TAVI · Custom Actions › API sources › Edit: API key saved; the form says \"Sent with every request the actions of this source make.\"",
+   "boxes": [
+    {
+     "b": [
+      340,
+      312,
+      940,
+      350
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      340,
+      362,
+      940,
+      424
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "w3/W3-12-receiver-headers.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    0,
+    0,
+    1280,
+    320
+   ],
+   "caption": "TAVI · what the receiver (webhook.site) got on each run",
+   "boxes": [
+    {
+     "b": [
+      27,
+      116,
+      1254,
+      252
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      27,
+      252,
+      1254,
+      286
+     ],
+     "n": 3
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Form promise",
+   "Not compared: Zoho Desk custom functions use Connections, a different design. The custom functions API returns 403 in this trial org.",
+   "\"Sent with every request the actions of this source make.\"",
+   "INFO"
+  ],
+  [
+   2,
+   "API key / Bearer / Basic on a source whose spec has no security",
+   "Not checked live.",
+   "Saved (\"Credentials saved\", hasCredential true) but no auth header on 4 runs (API key ×2, Bearer, Basic).",
+   "BUG"
+  ],
+  [
+   3,
+   "Same key, spec declares an apiKey scheme",
+   "Not checked live.",
+   "Header x-qa-gl-w3-key is sent. So the credential only works when the spec declares security, and the screen does not say so.",
+   "BUG"
+  ]
+ ]
+}

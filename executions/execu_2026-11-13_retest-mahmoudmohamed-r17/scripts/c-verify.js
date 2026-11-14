@@ -1,0 +1,11 @@
+const o={};
+o.sets=arr((await api('GET','/global-sets')).j.data).filter(x=>/QA RT17/.test(x.name)).length;
+o.leadFields=arr((await api('GET','/modules/'+L+'/fields')).j.data).filter(x=>/^qa_rt17_/.test(x.fieldName||'')).length;
+o.custFields=arr((await api('GET','/modules/'+I.CU+'/fields')).j.data).filter(x=>/^qa_rt17_/.test(x.fieldName||'')).length;
+o.leadViews=((await api('GET','/modules/'+L+'/views?kind=list')).j.data.views||[]).filter(v=>/QA RT17/.test(v.name)).length;
+o.rules=arr((await api('GET','/workflow/rules?limit=500')).j.data).filter(r=>/QA RT17/.test(r.name)).length;
+o.reports=JSON.stringify((await api('GET','/reporting/reports?limit=200')).j).match(/QA RT17/g)?.length||0;
+o.blueprints=JSON.stringify((await api('GET','/modules/'+L+'/blueprints')).j).match(/QA RT17/g)?.length||0;
+let live=0; for(const id of [...I.R07.slice(0,20),...I.recs]) if((await api('GET','/modules/'+L+'/records/'+id)).s===200) live++; o.leadsLiveSample=live;
+o.layoutRef=JSON.stringify((await api('GET','/modules/'+L+'/layouts/'+I.LAY)).j.data.views).includes('qa_rt17');
+return o;

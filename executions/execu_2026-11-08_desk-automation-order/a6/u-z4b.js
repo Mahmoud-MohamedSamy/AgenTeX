@@ -1,0 +1,18 @@
+await go('/settings/automation/blueprints/new'); await sleep(8000);
+const canvas = page.locator('.react-flow').first(); const D = page.locator('[draggable=true]');
+await D.nth(0).dragTo(canvas, { targetPosition: { x: 200, y: 250 } }); await sleep(1200);
+await D.nth(2).dragTo(canvas, { targetPosition: { x: 600, y: 250 } }); await sleep(1200);
+await page.getByRole('button', { name: 'Save and Publish' }).click({ force: true }); await sleep(1500);
+await page.locator('li').filter({ hasText: /needs a name/ }).last().locator('button').first().click(); await sleep(1500);
+const addItem = page.locator('select').filter({ has: page.locator('option', { hasText: 'Add item' }) }).first();
+await addItem.selectOption('field'); await sleep(1200);
+const fsel = page.locator('select').filter({ has: page.locator('option', { hasText: 'Choose a field' }) }).first();
+await fsel.selectOption({ label: 'Subject' }); await sleep(1500);
+const col = page.getByText('What the agent fills in').locator('xpath=ancestor::div[2]');
+await col.getByRole('button', { name: 'Add a check' }).click(); await sleep(1200);
+const dlg = page.locator('[role=dialog]').last(); const scope = (await dlg.count()) ? dlg : col;
+log('check ui', (await scope.innerText()).replace(/\s+/g, ' ').slice(0, 900));
+log('check controls', await scope.locator('input,select,textarea').evaluateAll(a => a.map(x => x.tagName + ':' + (x.getAttribute('aria-label') || x.placeholder || '') + (x.options ? ' [' + [...x.options].map(o => o.text).join('/') + ']' : ''))));
+await shot('z4-add-check');
+const rs = col.locator('select').first(); await rs.selectOption({ index: 1 }).catch(e => log('rs err', String(e).slice(0, 100))); await sleep(1200);
+log('required-for some', (await col.innerText()).replace(/\s+/g, ' ').slice(0, 700)); await shot('z9-required-some');

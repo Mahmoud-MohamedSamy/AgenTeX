@@ -1,0 +1,82 @@
+{
+ "out": "W2-C10-vs-zoho-live.png",
+ "ticket": "C10",
+ "verdict": "FAIL",
+ "label": "BUG · High",
+ "date": "12 Nov (TAVI) · 14 Nov 2026 (Zoho live)",
+ "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel) · Zoho Desk: test org TechEgySolutions (Enterprise), live as test agent 2, test data deleted after · Edge",
+ "title": "Access | With Private ticket sharing, an agent can open tickets of a department they are not in when a lower-role agent owns them",
+ "panels": [
+  {
+   "img": "w2/r-c-marketing.png",
+   "w": 1280,
+   "h": 720,
+   "crop": [
+    0,
+    56,
+    1280,
+    664
+   ],
+   "caption": "TAVI · agent C (Customer Support only) opens Marketing ticket #3105 owned by agent B",
+   "boxes": [
+    {
+     "b": [
+      738,
+      107,
+      850,
+      129
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      391,
+      505,
+      620,
+      531
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "zw3/zc10-ag2-denied.png",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    300,
+    100,
+    1000,
+    560
+   ],
+   "caption": "Zoho · test agent 2 (role CEO, not in QA C10 Marketing) opens ticket #101 owned by test agent 1 (role Manager)",
+   "boxes": [
+    {
+     "b": [
+      560,
+      430,
+      1040,
+      520
+     ],
+     "n": 1
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Higher-role agent opens a lower-role agent's ticket in a department they are not in",
+   "Refused: \"Permission denied. You do not have sufficient permissions to perform this operation.\" API GET ticket → 403; department ticket list → 403; search finds nothing.",
+   "Agent C lists and opens Marketing tickets #3105 and #3106 owned by agent B (lower role), with comments.",
+   "DIFFERS"
+  ],
+  [
+   2,
+   "Same agent once added to the department (control)",
+   "Opens #101 (200) — so the department, not the role, is what blocks access.",
+   "Access comes from the role hierarchy alone; department membership is not checked.",
+   "INFO"
+  ]
+ ]
+}

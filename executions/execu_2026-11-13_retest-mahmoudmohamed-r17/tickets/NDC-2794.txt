@@ -1,0 +1,49 @@
+# NDC-2794 Workflow Rules | Can't assign a ticket to a team and an agent of that team in one rule
+What is missing
+A rule's Owner Assignment action takes users or teams, not both. With Teams the editor says "The ticket goes to the team and loses its owner." Owner Assignment can be added only once per rule ("A rule can have only one OwnerAssignment action"), and the Add action list doesn't offer it again.
+Tested 3 Nov on NDC-Staging: one rule with Field Update Team = QA NDC Accounting team, plus Owner Assignment to a user. The ticket ended with the team set and no owner.
+How NDC uses it (NDC's Zoho Desk)
+Zoho's workflow action "Assign Ticket" with Assignee = Team with Agent puts the ticket in a team and gives it to a named agent of that team in one step. 19 NDC rules use it, e.g. Accounting → "ADM Assignment Airline OPS": when Status is Dep Manager and Responsible area is Airline OPS, it assigns the team and the agent and shares the ticket. This keeps the team queue right and also has one agent accountable.
+Expected
+- One rule can set both the team and an agent of that team. For example, Owner Assignment gets a "Team with agent" option, and the ticket keeps both values.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner, 3 Nov 2026. NDC's Zoho Desk viewed read-only. Part of NDC-2787 (item A-2).
+Attachment
+A-2-vs-zoho.png
+
+
+== COMMENTS (3)
+--- comment 2026-11-11T13:54:58.623403+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 10–11 Nov 2026 → moved to Bug
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho Desk (techsolutionsegypt), checked live 11 Nov 2026; Zoho test data deleted afterwards.
+Same as 4–6 Nov. Zoho Desk confirms the expected result.
+Working now:
+- Rule with team + agent of that team saved (201); agent outside the team refused (400)
+Still failing:
+- Ticket matching a "team + agent" rule: expected Zoho Desk ("Assign to an agent in a team"): owner and team set in one update and both still there 15 s later; actual TAVI: owner = agent, then History "Team was updated: QA RT15 2794 team → blank"; ticket has no team
+Evidence: NDC-2794-retest-FAIL-vs-zoho.png, NDC-2794-retest-FAIL.png (attached; side-by-side images: TAVI left, Zoho right)
+
+--- comment 2026-11-06T14:01:43.220930+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 5–6 Nov 2026 → moved to Bug
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner · department QA RT11 Dept A, team QA RT12 2275 team (fedelav803, Mahmoud Samy)
+Method: API and screen
+The rule saves "Team with agent" correctly, but when it fires the team is set and then cleared: the ticket ends with the agent and no team.
+Checked:
+- Owner Assignment → Teams + "Also assign an agent of this team" → ownerTargetKind TeamWithAgent, ownerValue = team, ownerAgentId = agent [PASS]
+- Agent who is not in the team → 400 "Team with agent: the agent is not a member of the team." [PASS]
+- Rule fires on a new ticket → Team set → cleared ("Team was updated: QA RT12 2275 team → blank"), owner = Mahmoud Samy; still no team after 30 s [FAIL]
+Still failing:
+- Rule fires on a new ticket: expected The ticket keeps the team and goes to the agent (editor text: "The ticket keeps the team and goes to this agent"), actual Team set → cleared ("Team was updated: QA RT12 2275 team → blank"), owner = Mahmoud Samy; still no team after 30 s
+Evidence: NDC-2794-retest-FAIL.png (attached)
+
+--- comment 2026-11-04T11:44:47.940867+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 04 Nov 2026
+Environment: staging-desk.taviportal.com, NDC-Staging (Wonder Travel), Edge; accounts: owner + a team member agent. Method: manual browser + API.
+Checked:
+- Owner Assignment → Teams now has "Also assign an agent of this team"; it saves as ownerTargetKind TeamWithAgent with the agent id.
+- Picking an agent who is not in the team is refused: "Team with agent: the agent is not a member of the team." (The picker still lists every agent, not only the team's members.)
+Still failing:
+- The rule fired on ticket #929 (QA NDC Quality Assurance, team QA NDC Quality assurance, agent mahmoud.mahamed1515). The ticket got owner = the agent but team = empty.
+Expected (also the editor's own text): "The ticket keeps the team and goes to this agent."
+Evidence: NDC-2794-retest-FAIL.png
+

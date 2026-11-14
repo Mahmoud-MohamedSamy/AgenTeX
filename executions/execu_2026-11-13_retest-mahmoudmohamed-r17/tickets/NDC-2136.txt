@@ -1,0 +1,75 @@
+# NDC-2136 Custom Views | List first page p95 far above 1.5 s (Leads 9.1 s, Deals 3.3 s)
+Summary
+List first page p95 far above 1.5 s (Leads 9.1 s, Deals 3.3 s).
+Found by test case CVS-L08 - A list view's first page loads within 1.5 s at p95 on Leads and Deals.
+Steps to Reproduce
+Before you start:
+- Logged in as the Owner (Tenant Owner).
+- Open All Leads and reload it 20 times.
+- For each load, record the time from navigation to the first page of rows shown.
+- Repeat steps 1–2 on All Deals.
+- Compute the p95 for each module and note the record counts.
+Test data:
+- Loads: 20 per module
+- Target: p95 ≤ 1.5 s (PRD)
+Expected Results
+The 95th-percentile first-page time is within 1.5 seconds on both Leads and Deals.
+Actual Results
+- 20 reloads each, navigation -> first row with content (Chromium, cache on, another operator active on the tenant).
+- All Leads (128 records): p95 9125 ms, median 4122, min 2851, max 10116.
+- All Deals (50 records): p95 3300 ms, median 2585, min 1945, max 3696.
+- Target p95 <= 1.5 s missed on both (4 Oct: Leads p95 6826, Deals 3885).
+Environment
+staging-crm.taviportal.com, tenant NDC-Staging (time zone Africa/Cairo), Chromium, 5 October 2026. Accounts: CRM Admin (in place of the Owner role), test user 1 (User profile, has Manage Shared Views), test user 2 (profile "test", no Manage Shared Views). Test case CVS-L08, run execu_2026-10-05_11-20-40.
+Attachments
+- L08-vs-zoho.png: annotated screenshot (TAVI on the left, with the comparison table).
+- L08-L09-timings.png: original TAVI screenshot (20 reloads each).
+
+
+== COMMENTS (5)
+--- comment 2026-11-11T13:55:16.165528+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 10–11 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.
+First page of the list is still far above the 1.5 s target, with slow outliers that Zoho does not have.
+Still failing:
+- Leads list, first page (navigation → first real row): expected Target p95 ≤ 1.5 s; Zoho CRM measured the same way: 6.7–8.0 s (median 7.46 s), no outliers; actual TAVI Leads p50 4.28 s, p95 13.53 s; Transactions p95 9.15 s and 19.92 s on two runs
+TAVI's median is faster than Zoho's, but its p95 (13.5–19.9 s) is well above Zoho's slowest load (8.0 s) and the 1.5 s target.
+Evidence: NDC-2136-retest-FAIL-vs-zoho.png, NDC-2136-retest-FAIL.png (attached; side-by-side images: TAVI left, Zoho right)
+
+--- comment 2026-11-06T14:02:35.329019+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 4 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge (headless) + API; owner
+Method: API and screen
+Retested 4 Nov (no change since). Leads list p95 13.1 s, Transactions 5.3 s; target 1.5 s.
+Checked:
+- Leads first page → p50 4.2 s, p95 13.1 s [FAIL]
+- Transactions first page → p50 2.3 s, p95 5.3 s [FAIL]
+Still failing:
+- Leads first page: expected p95 ≤ 1.5 s, actual p50 4.2 s, p95 13.1 s
+- Transactions first page: expected p95 ≤ 1.5 s, actual p50 2.3 s, p95 5.3 s
+Evidence: NDC-2136-retest-FAIL.png (attached)
+
+--- comment 2026-11-02T15:36:00.150391+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 2 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant Anyware, Edge (headless) + API; accounts: owner, test users (CRM User profile)
+Method: API and screen
+Leads list first rows took 28–47 s (one load >120 s) against a 1.5 s target. Staging was unusually slow all day, so the numbers also reflect the environment.
+Checked:
+- load 1 → >120 s (timeout) [FAIL]
+- load 2 → 47.3 s [FAIL]
+- load 3 → 27.9 s [FAIL]
+- environment → all pages 60–90 s; one metadata-engine outage [INFO]
+Still failing:
+- load 1: expected ≤ 1.5 s p95, actual >120 s (timeout)
+- load 2: expected ≤ 1.5 s, actual 47.3 s
+- load 3: expected ≤ 1.5 s, actual 27.9 s
+Evidence: NDC-2136-retest-FAIL.png (attached)
+
+--- comment 2026-10-26T13:20:35.707634+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest 26 Oct 2026 — still fails
+The automated screen test timed three loads of the Leads list (Standard layout, 171 records): first rows after 15.5, 11.8 and 16.2 seconds. The target is 1.5 seconds; the ticket said 9.1 seconds, and the manual run on 25 Oct saw 13.4–25.5 seconds.
+Environment: staging-crm.taviportal.com, owner account. Automation: RecordScreensUiTest#leadsListSpeed.
+Annotated TAVI-vs-Zoho image attached: NDC-2136-retest.png
+
+--- comment 2026-10-14T03:08:07.603636+03:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+<p><b>Triage (code review, 2026-10-14): a real smell found, but the numbers need measuring before I change anything.</b></p><p>What the code does show: the first <code>/records</code> request waits behind three sequential reads (layouts + fields → module views → records), and the records page fires a 1+N request fan-out for pipeline options (the layout list plus one call per layout) on every module page. Both are worth fixing. Neither explains 9 seconds on ~128 rows, so fixing them blind risks "optimising" the wrong layer.</p><p><b>Please attach:</b> (1) a HAR for three cold reloads of the Leads list with per-request timing, (2) the server-side duration of the <code>/records</code> call itself (so we can split client wait from server work), and (3) whether the tenant was otherwise idle. If the time is in the server, this belongs on metadata-engine with the SQL plan; if it is in the waterfall, I will collapse the gate and the fan-out.</p>

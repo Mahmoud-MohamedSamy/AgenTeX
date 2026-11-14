@@ -1,0 +1,24 @@
+# NDC-2867 Global Sets | Replace is refused when a custom view filters on the value
+Summary
+Replacing a set value that a custom view filters on is blocked with an error. The admin has to edit every such view by hand first. Zoho changes the view filter to the new value instead.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 11 Nov 2026
+- Owner account; set "QA GS1111 Tier"; Leads view "QA GS1111 Silver view"
+Steps to reproduce
+- Create a Leads custom view that filters on Tier = Gold.
+- Open Setup › Modules and Fields › Global Sets and edit the set.
+- Under Replace a value choose Gold → Silver Plus and click Replace.
+Expected result
+As in Zoho CRM, the replace runs, the view filter changes to the new value and the view still shows the records (seen in our Zoho test org). NDC-2806 asks for the change to carry over to criteria.
+Actual result
+- Error: "\"Gold\" is used by custom view filters. Change or remove it in those views first." (409 GLOBAL_SET_VALUE_IN_USE)
+- Removing the value to Unused is refused the same way.
+- After changing the view by hand, Replace works and the records move.
+Notes
+- Also seen in the NDC-2806 retest on 10 Nov.
+- Test data was deleted.
+- Evidence (TAVI left, Zoho right): B3-replace-blocked-by-custom-view-vs-zoho.png
+
+
+== COMMENTS (0)
+

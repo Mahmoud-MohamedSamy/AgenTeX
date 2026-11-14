@@ -6,7 +6,7 @@ o.composer = await page.$$eval('[contenteditable=true]', es => es.filter(e => e.
 o.sigShown = /QA GL W2 signature line/.test(await txt()); o.shotSig = await shot('../wave2n/r-signature-composer2');
 // 30 MB file through the composer attach button
 const fi = page.locator('input[type=file]').last(); o.fileInputs = await page.locator('input[type=file]').count();
-if (o.fileInputs) { await fi.setInputFiles('C:/Users/a/AppData/Local/Temp/claude/a6a908e6f46fe25f/f8ef493a-ea8b-46bf-90e4-4def7dea2502/scratchpad/qa-gl-w2-30mb.txt').catch(e => o.setErr = e.message.slice(0, 80)); await sleep(8000); o.afterAttach = ((await txt()).match(/[^\n]{0,80}(MB|too large|limit|exceed|size)[^\n]{0,80}/gi) || []).slice(0, 4); o.shotBig = await shot('../wave2n/r-attach-30mb'); }
+if (o.fileInputs) { await fi.setInputFiles('C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/3d6c9864-52e6-4e9d-95a9-14042dfac39c/scratchpad/qa-gl-w2-30mb.txt').catch(e => o.setErr = e.message.slice(0, 80)); await sleep(8000); o.afterAttach = ((await txt()).match(/[^\n]{0,80}(MB|too large|limit|exceed|size)[^\n]{0,80}/gi) || []).slice(0, 4); o.shotBig = await shot('../wave2n/r-attach-30mb'); }
 // leave without sending: discard draft
 await page.keyboard.press('Escape'); await sleep(800);
 for (const re of [/^Discard/, /^Cancel$/]) { const b = page.locator('button', { hasText: re }).first(); if (await b.count()) { await b.click().catch(() => {}); await sleep(1200); } }

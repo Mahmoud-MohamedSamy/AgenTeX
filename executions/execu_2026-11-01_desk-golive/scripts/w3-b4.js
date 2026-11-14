@@ -1,0 +1,12 @@
+const T1 = '3ecf52a9-f3cd-41c6-a60f-931582cac7cd';
+await go('/views/all/tickets/' + T1, 12000);
+await page.locator('#main-content').getByRole('button', { name: 'Actions', exact: true }).click(); await sleep(1200);
+await page.getByRole('menuitem', { name: 'QA GL W3 echo' }).click().catch(() => page.getByText('QA GL W3 echo').last().click()); await sleep(3000);
+const d = page.locator('[role=dialog]').last(); out.dlg = (await d.innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 900); await shot('w3/W3-14-run-dialog');
+out.inputs = await d.locator('input:visible,textarea:visible').evaluateAll(es => es.map(e => [e.type, e.placeholder, e.getAttribute('aria-label'), e.name, e.value].join('|')));
+const ins = d.locator('input:visible,textarea:visible'); const n = await ins.count();
+const vals = ['QAREF1', 'QA GL W3 run from ticket', '3']; for (let i = 0; i < Math.min(n, 3); i++) await ins.nth(i).fill(vals[i]);
+await shot('w3/W3-14-run-filled');
+await d.getByRole('button', { name: /^Run/ }).last().click(); await sleep(7000);
+out.result = (await d.innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 900); out.toast = (await page.locator('[data-sonner-toast],[role=status],[role=alert]').allInnerTexts().catch(() => [])).join(' | '); await shot('w3/W3-14-run-result');
+return fin({ out });

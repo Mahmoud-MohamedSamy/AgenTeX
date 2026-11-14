@@ -1,6 +1,6 @@
 // Files Wave 4 bugs D1–D9 (user approved 13 Nov 2026). Same fields as Wave 2 (NDC-2947…): Bug, Desk, Sprint 15, 4 assignees. One annotated image each.
 const fs = require('fs'), path = require('path');
-const KEY = (fs.readFileSync('D:/Learning & Work/Software Testing/Anyware Software/secret-key-1793537440144.csv', 'utf8').match(/plane_[A-Za-z0-9_-]+/) || [])[0];
+const KEY = (fs.readFileSync('C:/Users/Dell/Downloads/secret-key-1793537440144.csv', 'utf8').match(/plane_[A-Za-z0-9_-]+/) || [])[0];
 const BASE = 'https://api.plane.so/api/v1/workspaces/ahmed-hegazy/projects/efce4d84-5876-4015-b472-2efca7ad73f3';
 const BUG = '34a7f4b6-7207-4955-b927-0d8d1dd3c666', MODULE_DESK = '274a73de-564a-4b8c-8b51-74fe8304e7c2', CYCLE_15 = '3a5ac486-3f65-4632-ab05-8f790e61c7b0';
 const ASSIGNEES = ['e1364b0b-d3cd-4167-8261-6194577a480a', '82cf7a79-0707-4f47-97ca-f8926587b6db', '9529016b-e67d-42b9-815c-263f673b8252', '9c2ff309-bbdb-4be3-b819-3022d9cf3c3b'];
@@ -40,7 +40,7 @@ async function attach(id, file) {
       + (b.request ? '<p>' + esc(b.request).replace(/\n/g, '<br>') + '</p>' : '')
       + '<h2>Zoho Desk</h2><p>' + md(b.zoho) + '</p>' + (m.note ? '<h2>Note</h2><p>' + esc(m.note) + '</p>' : '')
       + '<h2>Environment</h2><p>staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner and a customer mailbox, Edge, 12 Nov 2026.</p><h2>Attachment</h2><p>Annotated evidence: ' + esc(m.img) + '.</p></div>';
-    const name = 'W4-' + key + ' ' + m.area + ' | ' + b.title;
+    const name = m.area + ' | ' + b.title; // user format: Feature | Descriptive Bug Title
     const cr = await call('POST', '/work-items/', { name, description_html: html, priority: b.sev.toLowerCase(), state: BUG, labels: m.labels.map(lid).filter(Boolean), assignees: ASSIGNEES, start_date: '2026-11-13' });
     if (!cr.j || !cr.j.id) { console.log(key, 'create failed', cr.s, JSON.stringify(cr.j).slice(0, 300)); continue; }
     const id = cr.j.id; done[key] = ['NDC-' + cr.j.sequence_id, id]; fs.writeFileSync(OUTF, JSON.stringify(done));

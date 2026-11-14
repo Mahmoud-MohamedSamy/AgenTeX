@@ -1,0 +1,10 @@
+await page.goto(H+'/settings/modules-and-fields',{waitUntil:'domcontentloaded'}); await sleep(6000);
+await page.locator('[role=tab]').nth(2).click(); await sleep(4000);
+await page.locator('tr',{hasText:'QA RT17 GS Tier'}).locator('button').first().click(); await sleep(4000);
+const u=page.getByText(/القيم غير المستخدمة/).first(); await u.scrollIntoViewIfNeeded(); await page.getByText(/إلى القيم المستخدمة/).first().scrollIntoViewIfNeeded(); await sleep(800);
+await shot('2869-ar-editor-unused.png');
+await page.keyboard.press('Escape'); await sleep(1500);
+await page.locator('header button:has-text("AR"), button[aria-label*="anguage" i]').first().click(); await sleep(1000);
+await page.getByText(/^English$/).first().click(); await sleep(5000);
+log('dir after', await page.evaluate(()=>document.documentElement.dir), (await text()).includes('Global Sets'));
+return {};

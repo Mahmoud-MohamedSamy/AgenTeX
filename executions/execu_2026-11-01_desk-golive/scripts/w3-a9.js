@@ -1,0 +1,10 @@
+const PA = '1623a133-8cc1-4dc2-8f93-c6483f9cd2f9';
+const pol2 = { department_id: MK, name: 'QA GL W3 SLA 2', description: null, is_active: true, triggers: { create: true, update: false, field_update: null, customer_reply: false, agent_response: false, private_thread: null, comment: null }, execute_only_with_account: false, resolution_from_created: false, targets: [{ name: 'QA GL W3 target 2', criteria: { conditions: [{ field_key: 'description', operator: 'contains', value: 'QAGLW3SLA' }], pattern: null }, response: { value: 30, unit: 'minutes' }, resolution: { value: 2, unit: 'hours' }, calendar_mode: 'calendar', business_hours_id: null, first_response_only: true, escalate_on_business_hours: false, escalations: { response: [], resolution: [] } }] };
+const pr = await api('POST', '/desk/sla/policies', pol2); out.pol2 = pr.s; const p2 = pr.j?.data?.id; if (p2) CREATED.push({ kind: 'sla_policy', id: p2, name: pol2.name });
+await go('/settings/automation/support-plans?department=' + MK, 10000);
+const row = page.locator('#main-content').locator('tr,li,[role=row],div').filter({ hasText: 'QA GL W3 Allowance' }).last();
+out.rowText = (await row.innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300);
+const kebab = row.locator('button').last(); await kebab.click().catch(e => out.kErr = String(e.message).slice(0, 80)); await sleep(1500);
+out.menu = (await page.locator('[role=menu]').last().innerText().catch(() => 'no menu')).replace(/\s+/g, ' ');
+await shot('w3/W3-07-row-menu'); await page.keyboard.press('Escape');
+return fin({ out });

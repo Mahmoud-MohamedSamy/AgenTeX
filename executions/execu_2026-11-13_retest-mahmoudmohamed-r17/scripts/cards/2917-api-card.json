@@ -1,0 +1,33 @@
+{
+ "out": "2917-api-card.png",
+ "title": "NDC-2917 Replace vs reports (API)",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  [
+   "Report",
+   "POST /reporting/reports filter qa_rt17_rep eq \"Gold\"",
+   "201",
+   "info"
+  ],
+  [
+   "Replace Gold → Silver",
+   "POST /global-sets/{id}/values/replace {Gold:\"Silver\"}",
+   "200; report filter now eq \"Silver\"",
+   "ok"
+  ],
+  [
+   "Run report",
+   "POST /reporting/reports/{id}/query",
+   "after 3 s: 1 row; after 25 s: 3 rows, all Silver (11 Nov: stale 2 rows > 70 s, then 0)",
+   "ok"
+  ],
+  [
+   "Rename label",
+   "PUT set: Silver label → \"Silver Star\"",
+   "200; report rows still \"Silver\" (stored value)",
+   "bad"
+  ]
+ ]
+}

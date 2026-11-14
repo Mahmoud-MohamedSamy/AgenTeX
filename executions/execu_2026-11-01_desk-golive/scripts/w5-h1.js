@@ -1,0 +1,12 @@
+await go('/settings/customization/home-page', 12000);
+await page.getByText('Overview Dashboard', { exact: true }).first().click(); await sleep(1000);
+let n0 = NET.length; await page.getByRole('button', { name: /^Save$/ }).last().click(); await sleep(4000);
+out.save = NET.slice(n0).map(x => x.m + ' ' + x.u + ' ' + x.s + ' ' + x.b.slice(0, 200));
+await page.locator('header a[href="/"], header button').first().click().catch(() => {}); await go('/', 10000); out.home = page.url().replace(H, '') + ' | ' + (await mtxt()).slice(0, 200); await shot('w5/W5-67-home-overview');
+await go('/settings/customization/home-page', 12000);
+await page.getByText(/Headquarters \(default\)/).first().click(); await sleep(1000);
+n0 = NET.length; await page.getByRole('button', { name: /^Save$/ }).last().click(); await sleep(4000);
+out.restore = NET.slice(n0).map(x => x.m + ' ' + x.u + ' ' + x.s + ' ' + x.b.slice(0, 200));
+const g = await api('GET', '/desk/tab-settings'); out.homeAfter = JSON.stringify((D(g.j) || {}).home);
+await go('/', 10000); out.home2 = page.url().replace(H, '');
+return fin({ out });

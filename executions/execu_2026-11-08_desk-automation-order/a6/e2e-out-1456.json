@@ -1,0 +1,91 @@
+{
+ "E1 publish": "201",
+ "E1 entered": [
+  "Open"
+ ],
+ "E1 verify without items": "422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed. [{\"path\":\"__checklist.k1\",\"type\":\"BLUEPRINT_FIELD_INVALID\",\"message\":\"Checklist item 'QA receipt checked' is required.\"},{\"path\":\"comment\",\"type\":\"DESK_ITEM_REQUIRED\",\"message\":\"An internal comment is required.\"}]",
+ "E1 verify": "200",
+ "E1 B approves": "404 NOT_FOUND Ticket af28643c-7dcf-418b-9f86-f96e51702906 was not found.",
+ "E1 A approves": "200",
+ "E1 after-action + resolution": {
+  "description": "QA E1 refund approved",
+  "status": "Escalated"
+ },
+ "E1 close": "200",
+ "E1 completed": {
+  "state": null,
+  "status": "Closed"
+ },
+ "E1 history": [
+  "ticket.department_changed:department_id=7e1ac409-58b0-41ab-97e1-0e7d5c",
+  "ticket.blueprint_entered",
+  "comment.added",
+  "ticket.blueprint_transition",
+  "ticket.status_changed:status=On Hold",
+  "resolution.added:resolution=QA refund ok",
+  "ticket.field_changed:description=QA E1 refund approved",
+  "ticket.status_changed:status=Escalated",
+  "ticket.blueprint_transition",
+  "ticket.blueprint_left",
+  "ticket.blueprint_transition",
+  "ticket.status_changed:status=Closed"
+ ],
+ "E4 publish (state share)": "422 BLUEPRINT_DEFINITION_INVALID Blueprint definition validation failed. [{\"path\":\"states[1].share\",\"type\":\"BLUEPRINT_DEFINITION_FIELD_INVALID\",\"message\":\"State 'Escalated': 'share' is not a state setting, so it would be ignored. The warning's actions go in slaPreExpiryEscalation and the time-out's in slaEscalat",
+ "E4 publish (share item + C owner)": "201",
+ "E4 C reads before": 403,
+ "E4 toTech": "200",
+ "E4 shares": [
+  "Tech:full"
+ ],
+ "E4 C reads while shared": 200,
+ "E4 C runs techDone": "200",
+ "E4 shares after": [
+  "Tech:full"
+ ],
+ "E4 C reads after": 200,
+ "E5 broken publish": "422 BLUEPRINT_DEFINITION_INVALID Blueprint definition validation failed. [{\"path\":\"states\",\"type\":\"BLUEPRINT_DEFINITION_FIELD_INVALID\",\"message\":\"State 'Closed' is unreachable (no transition leads to it).\"}]",
+ "E5 fixed publish": "201",
+ "E5 go": "200",
+ "E5 hold": "200",
+ "E5 draft without On Hold": "409 BLUEPRINT_STATE_OCCUPIED State \"On Hold\" has 1 record(s) in it, so \"QA BP E5\" cannot drop it. Revoke those records first. {\"blueprint_id\":\"3bb4b6c8-d712-434c-967f-766598663ae9\",\"blueprint_name\":\"QA BP E5\",\"states\":[{\"state_id\":\"On Hold\",\"name\":\"On Hold\",\"record_count\":1}],\"transitions\":[]}",
+ "E5 publish removing occupied state": "200",
+ "E5 revoke": "200",
+ "E5 ticket after revoke": {
+  "state": null,
+  "status": "On Hold"
+ },
+ "E5 publish after revoke": "200",
+ "E5 versions": [
+  "2:0",
+  "1:0"
+ ],
+ "E5 restore v1": "200",
+ "E5 final": {
+  "states": [
+   "Open",
+   "Escalated",
+   "On Hold",
+   "Closed"
+  ],
+  "hasDraft": true,
+  "active": true
+ },
+ "E6 publish": "201",
+ "E6 deactivate": "200",
+ "E6 new ticket enters while inactive": false,
+ "E6 old ticket continues": "200",
+ "E6 draft v2": "200",
+ "E6 publish v2": "200",
+ "E6 old ticket sees v2 transitions": [
+  "hold",
+  "end"
+ ],
+ "E6 delete with tickets inside": "409 BLUEPRINT_IN_PROGRESS \"QA BP E6\" has 2 record(s) in progress, so it cannot be deleted. Revoke those records first. {\"blueprint_id\":\"d5906ea0-b21a-42c5-86a9-d3a06111437c\",\"blueprint_name\":\"QA BP E6\",\"record_count\":2}",
+ "E6 revoke all": "200",
+ "E6 after revoke": {
+  "t1": null,
+  "t2": null
+ },
+ "E6 delete when empty": "204",
+ "cleanup": "204 204 204 204 204 204 bp204 bp204 bp204"
+}

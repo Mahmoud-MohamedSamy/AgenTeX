@@ -1,0 +1,15 @@
+await page.goto(H+'/settings/modules-and-fields',{waitUntil:'domcontentloaded'}); await sleep(7000);
+await page.locator('[role=tab]').nth(2).click(); await sleep(4000);
+await page.locator('tr',{hasText:'QA RT17 GS 2867'}).locator('button').first().click(); await sleep(4000);
+const dlg=page.locator('[role=dialog]').last();
+await dlg.getByText(/Replace a value/i).first().scrollIntoViewIfNeeded();
+const combos=dlg.locator('button[role=combobox], [role=combobox], select'); log('combos', await combos.count());
+const rep=dlg.getByText(/Value to replace/i).first(); await rep.click(); await sleep(800); await page.getByRole('option',{name:'Silver'}).first().click().catch(async()=>{await page.getByText('Silver',{exact:true}).last().click();}); await sleep(600);
+await dlg.getByText(/Replace with/i).first().click(); await sleep(800); await page.getByRole('option',{name:'Bronze'}).first().click().catch(async()=>{await page.getByText('Bronze',{exact:true}).last().click();}); await sleep(600);
+await shot('2867-ui-1-filled.png');
+const resp=[]; page.on('response',async r=>{ if(/global-sets/.test(r.url())&&r.request().method()!=='GET') resp.push(r.request().method()+' '+r.url().replace(H,'')+' '+r.status()+' '+(await r.text().catch(()=>'')).slice(0,200)); });
+await dlg.getByRole('button',{name:/^Replace$/}).click(); await sleep(2500);
+await shot('2867-ui-2-confirm.png'); const c=await page.locator('[role=dialog], [role=alertdialog]').last().innerText(); log('confirm', c.slice(0,500));
+const btn=page.locator('[role=alertdialog] button, [role=dialog] button').filter({hasText:/^(Replace|Confirm|Yes)/}).last(); await btn.click().catch(e=>log('no confirm btn')); await sleep(4000);
+await shot('2867-ui-3-done.png'); log('toast',(await text()).match(/(replaced|used by|Change or remove)[^\n]{0,150}/ig)); log('resp',resp);
+return {};

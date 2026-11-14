@@ -1,0 +1,1 @@
+let live=0; for(const id of I.R07){ const r=await api('GET','/modules/'+L+'/records/'+id); if(r.s===200) live++; } LED('NDC-2807 mass delete test: '+(200-live)+' of 200 RT17 2807 leads deleted (to bin)'); return {live};

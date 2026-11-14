@@ -1,0 +1,11 @@
+const alerts = []; page.on('dialog', async d => { alerts.push(d.type() + ':' + d.message()); await d.dismiss(); });
+await go('/views/all/tickets/31b6b175-5e84-4b49-9d26-a85d41f557d9'); await sleep(8000);
+log('title', (await page.locator('h1, h2').allInnerTexts()).slice(0, 3));
+log('buttons', await page.locator('[data-testid=desk-ticket-blueprint-buttons]').innerText());
+await page.locator('[data-testid=desk-ticket-blueprint-buttons]').getByRole('button').first().click(); await sleep(2500);
+log('form', ((await text()).match(/QA (go|msg)[^\n]{0,80}|QA <img[^\n]{0,60}/g) || []).slice(0, 6)); await shot('n1-ticket-form');
+log('img injected', await page.locator('img[src=x]').count());
+await go('/settings/automation/blueprints/abcf8156-3136-4cd9-bef5-1169df7f1ccd'); await sleep(9000);
+await page.locator('.react-flow__edge-text, .react-flow__edge').first().click({ force: true }).catch(() => {}); await sleep(1500);
+log('designer', ((await text()).match(/QA go[^\n]{0,60}|QA msg[^\n]{0,60}/g) || []).slice(0, 6)); await shot('n1-designer');
+log('img injected 2', await page.locator('img[src=x]').count()); log('alerts', alerts);

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blueprint Execution Report</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#1d2330;--muted:#5d6577;--line:#e2e5eb;--pass:#1f8a4c;--fail:#c62f2f;--warn:#b26a00;--info:#2f5fc6;--chip:#eef1f6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171c;--card:#1d2128;--text:#e7e9ee;--muted:#9aa2b2;--line:#2e3440;--chip:#262b34;--pass:#4cc27f;--fail:#ef6b6b;--warn:#e0a03a;--info:#7aa2f7}}
+:root[data-theme="dark"]{--bg:#14171c;--card:#1d2128;--text:#e7e9ee;--muted:#9aa2b2;--line:#2e3440;--chip:#262b34;--pass:#4cc27f;--fail:#ef6b6b;--warn:#e0a03a;--info:#7aa2f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1060px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:34px 0 10px}h3{font-size:16px;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 18px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.tile b{display:block;font-size:24px}.tile span{color:var(--muted);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--chip);font-weight:600}
+.wrap{overflow-x:auto}
+.chip{display:inline-block;padding:1px 8px;border-radius:999px;background:var(--chip);font-size:12px;font-weight:600;margin-right:4px}
+.pass{color:var(--pass)}.fail{color:var(--fail)}.warn{color:var(--warn)}.info{color:var(--info)}
+.bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:14px 0 4px}
+.bar i{display:block}
+dl{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;margin:8px 0 0}dt{color:var(--muted)}dd{margin:0}
+ol,ul{margin:4px 0 4px 20px;padding:0}
+code{background:var(--chip);padding:0 4px;border-radius:4px;font-size:13px}
+@media (max-width:600px){dl{grid-template-columns:1fr}dt{margin-top:6px}}
+</style>
+</head>
+<body>
+<main>
+<h1>Desk Blueprint (A6): execution report</h1>
+<p class="sub">TAVI Desk vs Zoho Desk · NDC-Staging · run 12–13 Nov 2026 · spec <code>docs/desk-blueprint/spec-desk-blueprint.md</code> · all 187 spec rows done · 11 bugs filed NDC-3029..3039</p>
+
+<div class="tiles">
+<div class="tile"><b>187 / 187</b><span>spec rows run</span></div>
+<div class="tile"><b class="pass">158</b><span>passed</span></div>
+<div class="tile"><b class="info">13</b><span>gaps now built (work)</span></div>
+<div class="tile"><b class="fail">4</b><span>failed (3 bugs)</span></div>
+<div class="tile"><b class="warn">7</b><span>findings</span></div>
+<div class="tile"><b>3</b><span>still missing vs Zoho</span></div>
+<div class="tile"><b>2</b><span>could not run</span></div>
+</div>
+<div class="bar" aria-label="158 pass, 13 built, 7 findings, 4 fail, 3 missing, 2 inconclusive">
+<i style="width:84.5%;background:var(--pass)"></i><i style="width:7%;background:var(--info)"></i><i style="width:3.7%;background:var(--warn)"></i><i style="width:2.1%;background:var(--fail)"></i><i style="width:1.6%;background:var(--muted)"></i><i style="width:1.1%;background:var(--line)"></i>
+</div>
+<p class="sub">Overall: <b>Blueprint is close to ready.</b> Building, publishing, running transitions, required items, timers, business hours, customer reply and rating triggers, permissions and the 3 browsers all work. All 13 earlier Blueprint bugs are fixed. What is left: 3 bugs (audit log, two editors overwrite each other, continuous blueprint), 8 smaller issues, and 3 Zoho features not built yet.</p>
+
+<h2>Status by group</h2>
+<div class="wrap"><table>
+<tr><th>Group</th><th>What it covers</th><th>Pass</th><th>Other</th></tr>
+<tr><td>A</td><td>Access, settings page</td><td class="pass">11</td><td></td></tr>
+<tr><td>B</td><td>Blueprint list</td><td class="pass">11</td><td></td></tr>
+<tr><td>C</td><td>Designer: states, transitions, canvas</td><td class="pass">23</td><td></td></tr>
+<tr><td>D</td><td>Transition owners (Before)</td><td class="pass">9</td><td><span class="warn">1 finding</span> D5</td></tr>
+<tr><td>E</td><td>During items (fields, checklist, reply, approval…)</td><td class="pass">13</td><td><span class="info">1 built</span> E14</td></tr>
+<tr><td>F</td><td>After actions</td><td class="pass">10</td><td>F2 run with a QA address field (added and deleted)</td></tr>
+<tr><td>G</td><td>State timers, auto-move, customer triggers</td><td class="pass">11</td><td></td></tr>
+<tr><td>H</td><td>Save, publish, versions</td><td class="pass">9</td><td><span class="fail">2 fail</span> H6, H12 · <span class="warn">1 finding</span> H11</td></tr>
+<tr><td>I</td><td>Entry into a blueprint</td><td class="pass">14</td><td><span class="warn">1 finding</span> I4 (Zoho check)</td></tr>
+<tr><td>J</td><td>Ticket side: running steps</td><td class="pass">14</td><td><span class="fail">1 fail</span> J15</td></tr>
+<tr><td>K</td><td>Time limits, business hours, customer reply / rating</td><td class="pass">16</td><td>K9 could not run (no holiday list linked)</td></tr>
+<tr><td>M</td><td>History, audit, reports</td><td class="pass">3</td><td><span class="fail">1 fail</span> M4 · <span class="warn">1 finding</span> M1 · <span class="info">1 built</span> M5</td></tr>
+<tr><td>N</td><td>Security, size, browsers</td><td class="pass">8</td><td><span class="warn">2 findings</span> N3, N8 · N10 could not run (no IM channel)</td></tr>
+<tr><td>Z</td><td>Zoho gaps (NDC-2754 / NDC-2799)</td><td></td><td><span class="info">11 built</span> · <span class="warn">Z10 half built</span> · 3 missing</td></tr>
+<tr><td>E2E</td><td>6 end-to-end journeys</td><td class="pass">6</td><td></td></tr>
+</table></div>
+
+<h2>Earlier Blueprint bugs: all fixed</h2>
+<div class="card">NDC-2753, 2755, 2756, 2757, 2758, 2761, 2762, 2763, 2774, 2775, 2780, 2782, 2788 checked again on 12–13 Nov. <b class="pass">All 13 fixed.</b> NDC-2755: the state panel now shows the 3-day automatic close ("Moves on by itself", 72 hours, "3d" badge).</div>
+
+<h2>Customer rows (your Gmail, 13 Nov)</h2>
+<div class="wrap"><table>
+<tr><th>Row</th><th>Result</th></tr>
+<tr><td>K3 reply trigger</td><td class="pass">Pass: the Help Center reply on #3463 moved On Hold → Open at once. History: "Moved by QA BP K when the customer replied". A Gmail reply sent from an address that is not the contact's is kept as untrusted and moves nothing, which is correct.</td></tr>
+<tr><td>K4 no trigger</td><td class="pass">Pass: a reply on an on-hold state with no trigger reopened #3464 to Open the normal way.</td></tr>
+<tr><td>K5 rating trigger</td><td class="pass">Pass: Good moved #3465; Bad moved #3467 (state takes any rating); Bad on #3466 was saved but did not move it (state takes Good only). The rating counts after Submit on the rating page.</td></tr>
+<tr><td>E2E-2</td><td class="pass">Pass: "ask documents" needs a reply to the customer; customer reply → back to Open; a ticket with no reply closed itself after 3.5 min.</td></tr>
+</table></div>
+
+<h2>Bugs (filed 13 Nov as NDC-3029 to NDC-3039, Sprint 16, with side-by-side images)</h2>
+<p class="sub">Severity is my suggestion. Each one says which spec row found it. Images: screenshots are in <code>a6/evidence/ui/</code>. The side-by-side Zoho images will be made when you approve filing.</p>
+
+<div class="card"><h3>D-1 → NDC-3029 · Blueprint | Creating, editing, publishing or deleting a blueprint leaves no entry in the Audit Log</h3>
+<span class="chip fail">FAIL</span><span class="chip">Medium</span><span class="chip">H12, M4</span>
+<dl><dt>Steps</dt><dd><ol><li>Create a blueprint, edit it, publish it, delete it.</li><li>Open Settings › Audit Log and filter on Blueprint.</li></ol></dd>
+<dt>Expected</dt><dd>One readable entry for each create, update, publish, restore and delete (Zoho logs blueprint changes).</dd>
+<dt>Actual</dt><dd>Only "restored" and "purged" entries exist for blueprints. None of the creates, updates, publishes or deletes from 12–13 Nov are there.</dd>
+<dt>Related</dt><dd>Earlier fix NDC-1643 (blueprint audit).</dd></dl></div>
+
+<div class="card"><h3>D-2 → NDC-3030 · Blueprint | Two people editing the same blueprint: the second save silently replaces the first person's change</h3>
+<span class="chip fail">FAIL</span><span class="chip">Medium</span><span class="chip">H6</span>
+<dl><dt>Steps</dt><dd><ol><li>Open the same blueprint in two tabs (or as two admins).</li><li>Change something different in each and save both.</li></ol></dd>
+<dt>Expected</dt><dd>The second save is warned that the blueprint changed and can reload, as in Zoho.</dd>
+<dt>Actual</dt><dd>Both saves succeed, and the first change is lost without any message.</dd>
+<dt>Related</dt><dd>Same problem as NDC-2965 (Workflow Rules).</dd></dl></div>
+
+<div class="card"><h3>D-3 → NDC-3031 · Blueprint | A continuous blueprint does not run the next step by itself</h3>
+<span class="chip fail">FAIL</span><span class="chip">Medium</span><span class="chip">J15</span>
+<dl><dt>Steps</dt><dd><ol><li>Make a blueprint with "Continuous" on, whose second transition has no During items.</li><li>Run the first transition on a ticket.</li></ol></dd>
+<dt>Expected</dt><dd>The second transition runs on its own straight after (Zoho continuous blueprint).</dd>
+<dt>Actual</dt><dd>The setting is saved, but the ticket stays in the middle state; the second step never runs (waited 30 s and more).</dd></dl></div>
+
+<div class="card"><h3>D-4 → NDC-3032 · Blueprint | Field changes made by a blueprint are missing from the ticket's History tab</h3>
+<span class="chip warn">FINDING</span><span class="chip">Medium</span><span class="chip">F2, M1</span>
+<dl><dt>Steps</dt><dd><ol><li>Make a transition with an After action "set field" (e.g. Description, or an address).</li><li>Run it on a ticket and open the ticket's History tab.</li></ol></dd>
+<dt>Expected</dt><dd>A line "Description was updated, Old / New", marked as done by the blueprint.</dd>
+<dt>Actual</dt><dd>History shows the status change and "ran QA F2 desc" but no field change. The server does keep it (<code>ticket.field_changed</code>, source blueprint). A manual change of the same field shows normally.</dd>
+<dt>Evidence</dt><dd><code>f2d-history.png</code>, <code>f2-history2.png</code></dd></dl></div>
+
+<div class="card"><h3>D-5 → NDC-3033 · Ticket History | Address field change is shown as raw code text</h3>
+<span class="chip warn">FINDING</span><span class="chip">Low</span><span class="chip">F2</span>
+<dl><dt>Actual</dt><dd>History reads: Old <code>{"zip": "11511", "city": "Cairo", …}</code> New <code>{"street":"1 QA Street","city":"Tanta",…}</code>. Expected: readable parts, e.g. "City: Cairo → Tanta".</dd>
+<dt>Evidence</dt><dd><code>f2-history-manual.png</code></dd></dl></div>
+
+<div class="card"><h3>D-6 → NDC-3034 · Ticket History | Blueprint lines show the internal name "BlueprintStateChanged" and text like "QA BP JU|entered|Open"</h3>
+<span class="chip warn">FINDING</span><span class="chip">Low</span><span class="chip">M1</span>
+<dl><dt>Actual</dt><dd>Next to the readable lines ("Entered blueprint … at Open", "Moved by … when the customer replied") there are extra lines titled "BlueprintStateChanged", with details such as "QA BP K: QA back" or "QA BP F2U|entered|Open". Expected: no internal names; one readable line per event.</dd>
+<dt>Evidence</dt><dd><code>m-history.png</code>, <code>k-K3b-history.png</code></dd></dl></div>
+
+<div class="card"><h3>D-7 → NDC-3035 · Blueprint designer | Unsaved changes are lost when the session expires</h3>
+<span class="chip warn">FINDING</span><span class="chip">Medium</span><span class="chip">H11</span>
+<dl><dt>Steps</dt><dd><ol><li>Edit a blueprint and leave it unsaved until the session expires.</li><li>Press Save and Publish, sign in again.</li></ol></dd>
+<dt>Expected</dt><dd>After signing in, the change is still there (or the user is warned first).</dd>
+<dt>Actual</dt><dd>"Your session expired. Please sign in again." After sign-in the designer opens without the change; there is no warning and no local copy.</dd>
+<dt>Evidence</dt><dd><code>h11-before.png</code>, <code>h11-after-signin.png</code></dd></dl></div>
+
+<div class="card"><h3>D-8 → NDC-3036 · Blueprint | If the only owner of a transition is deactivated, nobody can run it and no warning is shown</h3>
+<span class="chip warn">FINDING</span><span class="chip">Medium</span><span class="chip">D5</span>
+<dl><dt>Actual</dt><dd>A transition owned only by agent A: A is deactivated → the blueprint shows no warning and saves fine; admins get "not the owner"; tickets in that state cannot move. Expected: a warning on the blueprint, or the step falls back to admins.</dd></dl></div>
+
+<div class="card"><h3>D-9 → NDC-3037 · Blueprint | A transition owner that does not exist is accepted</h3>
+<span class="chip warn">FINDING</span><span class="chip">Low</span><span class="chip">N3</span>
+<dl><dt>Actual</dt><dd>A user id that does not exist is saved as a transition owner (an id from another tenant is refused correctly). Expected: refused.</dd>
+<dt>Related</dt><dd>Same type as NDC-2999 (Workflow Rules).</dd></dl></div>
+
+<div class="card"><h3>D-10 → NDC-3038 · Blueprint designer | On a large blueprint the transition labels and buttons overlap; Firefox takes 43 s to open it</h3>
+<span class="chip warn">FINDING</span><span class="chip">Low</span><span class="chip">N8</span>
+<dl><dt>Actual</dt><dd>30 states and 80 transitions: create 0.8 s, publish 0.9 s (fine). Designer opens in 9 s (Edge), 10.7 s (Chrome), <b>43 s (Firefox)</b>. Labels and their + / delete buttons cover each other and are hard to click.</dd>
+<dt>Evidence</dt><dd><code>n8-big-edge.png</code>, <code>n8-big-firefox.png</code></dd></dl></div>
+
+<div class="card"><h3>D-11 → NDC-3039 · Blueprint designer | Issue list before publishing: the "name" line can't be clicked, and a missing department isn't counted</h3>
+<span class="chip warn">NOTE</span><span class="chip">Low</span><span class="chip">H3</span>
+<dl><dt>Actual</dt><dd>"3 issues to fix before publishing": transition issues jump to the item, but "The blueprint needs a name" is plain text; an empty Department is red on the field but not in the count.</dd>
+<dt>Evidence</dt><dd><code>h3-issues.png</code></dd></dl></div>
+
+<h2>Open questions (not bugs yet)</h2>
+<div class="card"><ul>
+<li><b>I4:</b> checked live in Zoho 13 Nov: Zoho also applies the blueprint when a ticket is edited to match. Same as TAVI, so PASS.</li>
+<li><b>K9:</b> the holiday is not skipped on NDC-Staging, because no holiday list is linked to its business hours there. It passed on Anyware on 2 Nov.</li>
+<li><b>N10:</b> no IM channel is connected, so this couldn't run.</li>
+</ul></div>
+
+<h2>Zoho gaps (NDC-2754 / NDC-2799)</h2>
+<div class="wrap"><table>
+<tr><th>Status</th><th>Items</th></tr>
+<tr><td class="info">Built and working (13 Nov)</td><td>Z1 strict mode · Z2 change transition owners per ticket · Z3 transition order · Z4 field checks with own message · Z5 approval item · Z6 share item · Z8 save transition form as draft · Z9 required for some agents/teams · Z13 blueprint views · Z14 blueprint dashboard · Z15 separate revoke permission</td></tr>
+<tr><td class="warn">Half built</td><td>Z10: filter by rating (Good / Okay / Bad) is built; filter by public or private reply is not</td></tr>
+<tr><td>Still missing</td><td>Z7 widgets in the transition form · Z11 several escalation levels per state · Z12 choose a business-hours set per state</td></tr>
+</table></div>
+<p class="sub">NDC-2799 lists items 8, 9, 13 and 14 as not built. All four are now built (Z8, Z9, Z13, Z14), so that ticket can be updated when you approve.</p>
+
+<h2>Tenant state</h2>
+<div class="card">All QA data from this run is deleted: blueprints, tickets, the test contact, the workflow rule, the QA address field, the custom action "QA BP echo" and its API source. Customer Happiness is back to its original settings (checked, no difference). Left alone: blueprint "QA RT14 2754 share" (not from this run).</div>
+</main>
+</body>
+</html>

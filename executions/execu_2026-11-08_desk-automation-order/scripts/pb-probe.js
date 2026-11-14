@@ -1,0 +1,11 @@
+eval(fs.readFileSync('lib-as.js','utf8'));const R={};
+const cf=(await api('GET','/desk/assignment-rules/criteria-fields')).j?.data?.fields||[];R.daFields=cf.map(f=>f.key||f.field_key).join(',');
+const id=await tk('PBPROBE'+U);await sleep(3000);R.recFields=Object.keys(await rec(id)).join(',');
+const sk=(await api('GET','/desk/tickets/'+id+'/skills'));R.skillsShape=sk.t.slice(0,200);
+const mk=async(k,c)=>{const r=await api('POST','/workflow/rules',{moduleId:T,departmentIds:[DA],name:'QA AO PB probe '+k,isActive:false,mode:'Recurring',trigger:{kind:'RecordCreated'},criteria:c,actions:[{order:0,delaySeconds:0,type:'AddTicketComment',commentBody:'x',commentIsPublic:false}]});let o=r.s+' '+(r.j?.error?.message||'');if(r.j?.data?.id)o+=' del '+(await api('DELETE','/workflow/rules/'+r.j.data.id)).s;return o;};
+R.ownerCmp=await mk('o',{kind:'Comparison',field:'owner',operator:'Equals',value:{kind:'string',stringValue:A1}});
+R.skillsMem=await mk('s',{kind:'Membership',field:'skills',negate:false,values:[{kind:'string',stringValue:'x'}]});
+R.skillsStr=await mk('s2',{kind:'StringMatch',field:'skills',operator:'Contains',stringValue:'x',caseInsensitive:false});
+const sl=(await api('GET','/desk/skills?department_id='+DA)).j?.data;const L=Array.isArray(sl)?sl:(sl?.skills||[]);R.skills=L.map(s=>s.name+(s.is_active?'':'(off)')+' agents='+(s.agent_ids||[]).map(nm).join('/')+' crit='+JSON.stringify(s.criteria).slice(0,80));
+R.del=(await api('DELETE','/modules/'+T+'/records/'+id)).s;
+return R;

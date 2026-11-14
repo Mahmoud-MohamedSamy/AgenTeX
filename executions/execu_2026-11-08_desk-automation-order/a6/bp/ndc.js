@@ -1,10 +1,10 @@
 // NDC-Staging Desk API helper. One sign-in per account (token cached in the scratchpad, refreshed only when it stops working).
 // Passwords come from docs/Credentials/TAVI Desk Credentials.csv and are never printed. Stops on 429.
 const fs = require('fs'), path = require('path');
-const P = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX';
+const P = path.resolve(__dirname, '../../../..');
 const H = 'https://staging-desk.taviportal.com/api/v1';
 const TENANT = 'a7a7a7a7-0000-0000-0000-000000000004';
-const SCR = process.env.SCR || 'C:/Users/Dell/AppData/Local/Temp/claude/D--Software-Testing-Automation-Agentex-Installation-Agentex-Installation/e12f27e4-edb0-452a-a10f-0861faf81818/scratchpad';
+const SCR = process.env.SCR || require('os').tmpdir() + '/qa-tavi-tokens';
 const U = { owner: 'ndc-staging-owner@anyware.software', A: 'fedelav803@meinvr.com', B: 'kinase5517@meinvr.com', C: 'pacox68754@meinvr.com' };
 const ID = { owner: '97be04b6-0a08-4883-aa51-e1650b11cab7', A: '9d182dfa-05f3-4af7-9685-8615a2fbe537', B: '2a7c1bc4-f6d4-4bd3-805e-0496ece13987', C: '876ce871-2b02-4854-89a7-68050391c62b' };
 const CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158', TECH = '19510fdc-91f3-4a7a-8888-153f1318b765';

@@ -1,0 +1,11 @@
+await go('/settings/automation/blueprints/new'); await sleep(8000);
+const canvas = page.locator('.react-flow').first(); const D = page.locator('[draggable=true]');
+log('pub enabled at start', await page.getByRole('button', { name: 'Save and Publish' }).isEnabled());
+await D.nth(0).dragTo(canvas, { targetPosition: { x: 200, y: 250 } }); await sleep(1200);
+await D.nth(2).dragTo(canvas, { targetPosition: { x: 600, y: 250 } }); await sleep(1200);
+log('pub enabled after drop', await page.getByRole('button', { name: 'Save and Publish' }).isEnabled());
+await page.getByRole('button', { name: 'Save and Publish' }).click({ force: true }); await sleep(2000);
+const items = page.locator('li').filter({ hasText: /needs a name/ }); log('issue items', await items.count(), await items.evaluateAll(a => a.map(x => x.tagName + ' ' + (x.querySelector('button,a') ? 'clickable' : 'plain') + ' ' + getComputedStyle(x).cursor)));
+log('btn', await items.last().locator('button,a').first().innerText()); await items.last().locator('button,a').first().click(); await sleep(1500); log('pub title', await page.getByRole('button', { name: 'Save and Publish' }).getAttribute('title'));
+const rp = (await page.locator('body').innerText()).split('Ticket status').shift().split('100%').pop().replace(/\s+/g, ' '); log('right panel after click', rp.slice(0, 300));
+await shot('h3-after-issue-click');

@@ -1,0 +1,27 @@
+# NDC-2866 Global Sets | Replace leaves workflow rules on the old value, so rules stop matching and write an unused value
+Summary
+Replacing a value in a global set moves the records, but workflow rules that use the value are not updated. Their criteria and field updates keep the old value, which is now in Unused. The rule stops matching, and when it runs it writes a value the set no longer offers.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 11 Nov 2026
+- Owner account; set "QA GS1111 Tier" (Gold, Silver, Bronze) linked to Leads and Customers; rule "QA GS1111 Bronze rule" on Leads
+Steps to reproduce
+- Create a Leads workflow rule: criteria Tier = Bronze, action Field update Tier = Silver. Used In lists the rule.
+- Edit the set and Replace Bronze → Gold.
+- Open the rule: the criteria still say Bronze.
+- Replace Silver → Gold, then open the rule: the action still sets Silver.
+- Set the criteria to Gold, switch the rule on and create a lead with Tier = Gold.
+Expected result
+As in Zoho CRM, Replace changes the value "in all the used places (Records, Criteria, Workflow Actions, Field Dependency)". In our Zoho test org a field update that set the old value was changed to the new value by Replace. NDC-2806 says replacing "propagates the change across existing records and dependent components (workflows, criteria, reports)".
+Actual result
+- Records move to the new value and the old value goes to Unused.
+- The rule criteria stay "Bronze" and the field update stays "Silver", both now unused. The rule can no longer match.
+- When it runs, the rule saved the lead with Tier = "Silver", a value the field no longer offers.
+- Removing a value that a workflow rule uses gives no warning (only custom views are checked).
+Notes
+- Custom views behave differently: there Replace is refused instead (separate ticket).
+- The rule was switched off after the check, and all test data was deleted.
+- Evidence (TAVI left, Zoho right): B2-replace-leaves-workflow-rules-on-old-value-vs-zoho.png
+
+
+== COMMENTS (0)
+

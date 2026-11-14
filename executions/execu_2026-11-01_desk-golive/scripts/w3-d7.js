@@ -1,0 +1,13 @@
+const P = '796b7d8f-39c4-46ba-9edd-65285999e383', C1 = '245b7f53-0e09-4352-9ba5-ca8a1affbcbc', C2 = 'b2b25c82-475c-4381-8e9e-2f8b12f9f10a'; const PS = '/desk/tickets/parent-child/settings';
+const S = async () => { const r = {}; for (const [k, id] of [['P', P], ['C1', C1], ['C2', C2]]) r[k] = (await get(TM, id)).status; return JSON.stringify(r); };
+out.set = (await api('PUT', PS, { parent_close_behavior: 'block_while_children_open', auto_close_parent: false })).s;
+out.start = await S();
+await go('/views/all/tickets/' + C1, 12000);
+const sb = page.locator('#main-content').getByRole('button', { name: /^Status: Closed/ }).first(); out.sbCount = await sb.count(); await sb.click(); await sleep(1500);
+out.opts = (await page.locator('[role=listbox],[role=menu]').last().innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 200);
+await page.getByRole('option', { name: 'Open', exact: true }).first().click().catch(() => page.getByRole('menuitem', { name: 'Open', exact: true }).first().click()); await sleep(5000);
+out.toast = (await page.locator('[data-sonner-toast],[role=status],[role=alert]').allInnerTexts().catch(() => [])).join(' | ').slice(0, 200); await shot('w3/W3-31-reopen-child-ui');
+await sleep(5000); out.after = await S();
+out.netStatus = NET.filter(n => /tickets\//.test(n.u)).map(n => n.m + ' ' + n.u.replace(/[0-9a-f-]{36}/g, '{id}') + ' ' + n.s + ' ' + n.b.slice(0, 80)).slice(0, 6);
+out.restore = (await api('PUT', PS, { parent_close_behavior: 'none', auto_close_parent: false })).s; out.final = (await api('GET', PS)).t.slice(0, 120);
+return fin({ out });

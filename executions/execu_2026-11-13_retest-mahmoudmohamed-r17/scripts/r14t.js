@@ -1,0 +1,3 @@
+const T='88e8ea44-1658-4df3-9930-d0902b91073d', A='31feced6-4027-4a6b-9dc3-8b5f934e0609'; const hits=[]; let cur='';
+for (let i=0;i<30;i++){ const r=await api('GET','/modules/'+T+'/records?limit=200'+(cur?'&cursor='+encodeURIComponent(cur):'')); for (const x of arr(r.j&&r.j.data||r.j)) { const f=Object.fromEntries((x.data||[]).map(d=>[d.field,d.value&&d.value.value])); if (f.department===A) hits.push({id:x.id,n:f.ticket_number,s:f.subject}); } cur=r.j&&r.j.meta&&r.j.meta.next_cursor; if(!cur) break; }
+const d=await api('GET','/desk/departments/'+A); return {tickets:hits, agents:d.j.data.agent_user_ids};

@@ -1,0 +1,15 @@
+const A = 'c0e196f8-7ad6-4978-a910-7ae0bf8513ca', T1 = '3ecf52a9-f3cd-41c6-a60f-931582cac7cd';
+const toast = async () => (await page.locator('[data-sonner-toast],[role=status],[role=alert]').allInnerTexts().catch(() => [])).join(' | ').slice(0, 200);
+const newVar = async (name, val, secret) => { await go('/settings/developer/custom-actions', 10000); await page.locator('#main-content').getByText('Variables', { exact: true }).first().click(); await sleep(2500);
+  await page.getByRole('button', { name: /New variable/ }).first().click(); await sleep(2000); const d = page.locator('[role=dialog]').last();
+  await d.getByRole('textbox', { name: 'Name' }).fill(name); await d.locator('textarea').first().fill(val); if (secret) await d.locator('input[type=checkbox]').check(); const sv0 = d.getByRole('button', { name: 'Save' }); if (await sv0.isDisabled()) return { saveDisabled: true, hint: ((await d.innerText()).replace(/s+/g, ' ').match(/Name.{0,160}/) || [''])[0] }; await sv0.click(); await sleep(2500);
+  return { open: await page.locator('[role=dialog]').count(), toast: await toast(), err: ((await d.innerText().catch(() => '')).match(/[^.]*(must|invalid|already|required)[^.]*/gi) || []).join(' ') }; };
+out.bad = await newVar('1 bad-name', 'x', false); await shot('w3/W3-16-bad-name'); await page.keyboard.press('Escape');
+out.plain = await newVar('qa_gl_w3_plain', 'QA-PLAIN-VALUE-1', false);
+out.secret = await newVar('qa_gl_w3_secret', 'qa-gl-w3-dummy-secret-999', true);
+out.dup = await newVar('qa_gl_w3_plain', 'again', false); await page.keyboard.press('Escape');
+await go('/settings/developer/custom-actions', 9000); await page.locator('#main-content').getByText('Variables', { exact: true }).first().click(); await sleep(2500);
+out.list = (await page.locator('#main-content').innerText()).replace(/\s+/g, ' ').match(/Name Scope Value Updated.*/)?.[0]?.replace(/qa-gl-w3-dummy-secret-999/g, '<<PLAINTEXT SECRET>>').slice(0, 500); await shot('w3/W3-16-variables-list');
+out.varNet = NET.filter(n => /variable/.test(n.u)).map(n => n.m + ' ' + n.u + ' ' + n.s + ' ' + n.t.replace(/qa-gl-w3-dummy-secret-999/g, '<<PLAINTEXT SECRET>>').slice(0, 160));
+const vl = await api('GET', '/workflow/custom-actions/variables'); out.varApi = vl.s + ' ' + vl.t.replace(/qa-gl-w3-dummy-secret-999/g, '<<PLAINTEXT SECRET>>').slice(0, 500);
+return fin({ out });

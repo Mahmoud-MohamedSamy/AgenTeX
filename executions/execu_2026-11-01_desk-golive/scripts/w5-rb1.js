@@ -1,0 +1,13 @@
+const ID = '98ab10b1-ac40-4d5f-919b-0c4e11360b82';
+await go('/modules/' + CM, 10000);
+await page.getByRole('button', { name: /^Delete$/ }).nth(0).waitFor({ timeout: 20000 }).catch(() => {});
+const row = page.locator('[role=row], tr, li').filter({ hasText: 'QA GL W5 Delete me' }).first();
+await row.getByRole('button', { name: 'Delete' }).click().catch(e => out.dErr = e.message.slice(0, 60)); await sleep(1500);
+const cd = page.locator('[role=alertdialog], [role=dialog]').last(); out.conf = (await cd.innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 200);
+await cd.getByRole('button', { name: /Delete|Move/ }).last().click().catch(e => out.cErr = e.message.slice(0, 60)); await sleep(3000);
+out.afterDel = (await api('GET', '/modules/' + CM + '/records/' + ID)).s;
+await go('/settings/data/recycle-bin', 10000);
+const br = page.locator('tr, [role=row]').filter({ hasText: 'QA GL W5 Delete me' }).first(); out.binRow = (await br.innerText().catch(() => '')).replace(/\s+/g, ' ');
+out.binBtns = await br.getByRole('button').evaluateAll(es => es.map(e => (e.getAttribute('aria-label') || e.innerText || '').trim()));
+await shot('w5/W5-45-bin');
+return fin({ out });

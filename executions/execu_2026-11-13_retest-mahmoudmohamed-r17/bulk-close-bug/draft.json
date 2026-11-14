@@ -1,0 +1,14 @@
+{
+ "name": "Tickets | Bulk Close on many selected tickets fails with 500 errors and shows a wrong result",
+ "fields": {
+  "state": "Bug",
+  "priority": "high",
+  "module": "Desk",
+  "cycle": "Sprint 15 (same as the Desk bugs filed 13 Nov)",
+  "assignees": "same 4 as the Desk go-live bugs (NDC-2947 / W4 filing)",
+  "labels": ["Tickets"],
+  "relation": "relates_to NDC-2823",
+  "attachment": "Desk-bulk-close-500-FAIL.png"
+ },
+ "description_html": "<div><h2>Summary</h2><p>In Desk, when many tickets are selected (for example the whole view with \"Select all N in this view\") and <strong>Close</strong> is used, most tickets do not close. The app sends one <code>POST /desk/tickets/{id}/close</code> per ticket and many of these return <strong>500 INTERNAL \"An unexpected error occurred.\"</strong> The result message is also wrong: it said <strong>\"0 updated, 60 failed.\"</strong> although 10 tickets had closed. Found while retesting NDC-2823 (the select-all part of that ticket works).</p><h2>Steps</h2><ol><li>Sign in to Desk as an admin. Have a view with 60 open tickets (we used a private view with 60 test tickets).</li><li>Tick the header checkbox, then click <strong>Select all 60 in this view</strong>.</li><li>Click <strong>Close</strong> in the toolbar, then <strong>Close 60 tickets</strong>.</li><li>Read the message, then reload the view and check the ticket statuses.</li><li>Select the whole view again and click Close again (repeat once more).</li></ol><h2>Expected</h2><p>All selected tickets close. The message shows the real result (how many closed, how many failed and why). Running Close again is not needed.</p><h2>Actual</h2><ul><li>Run 1 (60 tickets): many close requests return 500; the message says \"0 updated, 60 failed.\" but 10 tickets closed.</li><li>Run 2 (61 tickets): 39 × 500, 12 × 409 (already closed), 10 more closed.</li><li>Run 3 (61 tickets): 14 × 500, 37 × 409, 10 more closed; some tickets are still Open (e.g. #3535).</li><li>So only about 10 tickets close per run, and the user cannot tell which ones.</li></ul><h2>Notes</h2><ul><li>The same tickets close fine through the API, one by one and also 10 in parallel (200 for every ticket), so the tickets themselves can be closed.</li><li>Bulk <strong>Update</strong> (Priority = Medium) on the same 61 tickets works: it uses the batched mass-update request (7 × 200, 61/61 updated). Bulk Close does not use a batched request.</li><li>Zoho Desk bulk Close was not checked in this round.</li></ul><h2>Environment</h2><p>staging-desk.taviportal.com, NDC-Staging, owner account, Edge, 13 Nov 2026. Test data deleted after the round.</p><h2>Attachment</h2><p>Annotated evidence: Desk-bulk-close-500-FAIL.png.</p></div>"
+}

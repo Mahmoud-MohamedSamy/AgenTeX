@@ -1,0 +1,39 @@
+{
+ "out": "2810-api-card.png",
+ "title": "NDC-2810 sync (API)",
+ "host": "staging-desk.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  [
+   "Setup",
+   "POST Desk contacts A, B → wait 45 s",
+   "Both synced to CRM (links synced)",
+   "info"
+  ],
+  [
+   "Delete in CRM",
+   "DELETE CRM contact B",
+   "204 → link \"unlinked\", no failure; Desk B stays (11 Nov: Needs attention \"The CRM record was deleted.\")",
+   "ok"
+  ],
+  [
+   "Delete in Desk",
+   "DELETE Desk contact A",
+   "204 → link \"unlinked\", no failure",
+   "ok"
+  ],
+  [
+   "Sync all customers",
+   "POST /desk/integrations/crm/imports/customers → run 00d4c4ab",
+   "requested 118, added 0, updated 10, ignored 108 (deleted in Desk 94, unchanged 14), failed 0, needs attention 0",
+   "ok"
+  ],
+  [
+   "Failure log",
+   "GET /desk/integrations/crm/failures",
+   "nothing new since the run; \"B04\" no longer listed",
+   "ok"
+  ]
+ ]
+}

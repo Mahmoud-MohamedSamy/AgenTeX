@@ -1,0 +1,13 @@
+await openBuilder();
+const pick = async (btn, field) => { await page.getByRole('button', { name: btn }).click(); await sleep(1500); const d = page.locator('[role=dialog]').last();
+  await d.getByPlaceholder('Search fields…').fill(field); await sleep(800); await d.getByText(new RegExp('^' + field + '$')).first().click(); await sleep(800);
+  out['dlg_' + btn] = (await dtxt()).slice(0, 300); const ok = d.getByRole('button', { name: /^(Apply|Done|Save|OK)$/ }); if (await ok.count()) await ok.last().click(); else await page.keyboard.press('Escape'); await sleep(1500); };
+await pick('Edit columns', 'Ticket Number');
+await pick('Edit row groups', 'Status');
+await page.getByRole('button', { name: 'Edit aggregate columns' }).click(); await sleep(1500); out.aggDlg = (await dtxt()).slice(0, 600); await shot('w5/W5-26-agg'); await page.keyboard.press('Escape'); await sleep(1000);
+await page.getByRole('tab', { name: 'Filters' }).click(); await sleep(1000);
+await page.getByRole('button', { name: 'Add Filter' }).click(); await sleep(1500);
+out.filterUi = (await mtxt()).slice(0, 800); out.fdlg = (await dtxt()).slice(0, 400);
+out.fCtl = await page.locator('main').locator('button, input, [role=combobox]').evaluateAll(es => es.map(e => e.tagName + ':' + (e.getAttribute('aria-label') || e.innerText || e.placeholder || '').trim().slice(0, 40)).filter(x => x.length > 6));
+await shot('w5/W5-26-filter');
+return fin({ out });

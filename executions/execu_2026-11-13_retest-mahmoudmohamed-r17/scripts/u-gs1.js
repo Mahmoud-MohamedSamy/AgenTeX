@@ -1,0 +1,13 @@
+await page.goto(H+'/settings/modules-and-fields',{waitUntil:'domcontentloaded'}); await sleep(6000);
+await page.getByRole('tab',{name:/global sets/i}).first().click().catch(async()=>{await page.getByText(/^Global Sets$/).first().click();}); await sleep(4000);
+const btn=page.getByRole('button',{name:/new global set/i}).first();
+const bb=await btn.boundingBox(); const info=await btn.evaluate(e=>{const cs=getComputedStyle(e);return {text:e.innerText,lines:e.innerText.split('\n').length,h:e.getBoundingClientRect().height,w:e.getBoundingClientRect().width,ws:cs.whiteSpace,disp:cs.display,flexDir:cs.flexDirection,bg:cs.backgroundColor};});
+log('btn',info,bb);
+const others=await page.$$eval('button',bs=>bs.filter(b=>b.offsetParent&&/^(\+|New|Create|Add)/.test(b.innerText.trim())).map(b=>b.innerText.replace(/\n/g,'⏎')+' h='+Math.round(b.getBoundingClientRect().height)));
+log('other buttons',others);
+await shot('2916-globalsets-1600.png');
+await page.setViewportSize({width:1280,height:984}); await sleep(1500);
+const info2=await btn.evaluate(e=>({text:e.innerText,h:e.getBoundingClientRect().height,w:e.getBoundingClientRect().width})); log('btn1280',info2);
+await shot('2916-globalsets-1280.png');
+await btn.screenshot({path:'../screenshots/raw/2916-button-crop.png'});
+return {url:page.url()};

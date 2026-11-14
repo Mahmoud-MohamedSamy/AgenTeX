@@ -1,0 +1,166 @@
+{
+ "out": "Desk-bulk-close-500-FAIL.png",
+ "ticket": "Desk Tickets",
+ "title": "Bulk Close on many selected tickets fails with 500 errors and shows a wrong result",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · staging-desk.taviportal.com · ndc-staging-owner · Edge headless + API · 60 tickets \"QA RT17 2823 01–60\" + 1 control in a private view (deleted at cleanup)",
+ "date": "13 Nov 2026 (found while retesting NDC-2823)",
+ "panels": [
+  {
+   "img": "2823-4-close-confirm.png",
+   "caption": "Whole view selected (60) › Close › confirm \"Close 60 tickets\"",
+   "crop": [
+    600,
+    355,
+    400,
+    190
+   ],
+   "boxes": [
+    {
+     "b": [
+      852,
+      481,
+      970,
+      517
+     ],
+     "n": 1,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2823-5-after-close.png",
+   "caption": "Result: \"0 updated, 60 failed.\" — but 10 tickets did close (read back by API)",
+   "crop": [
+    1100,
+    790,
+    500,
+    110
+   ],
+   "boxes": [
+    {
+     "b": [
+      1297,
+      820,
+      1575,
+      875
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2823-10-close-third.png",
+   "caption": "After the 3rd run on the same view, some tickets are still Open (e.g. QA RT17 2823 57)",
+   "crop": [
+    270,
+    120,
+    1330,
+    370
+   ],
+   "boxes": [
+    {
+     "b": [
+      278,
+      404,
+      1592,
+      468
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ],
+   "full": true
+  },
+  {
+   "img": "bulkclose-api-card.png",
+   "caption": "Network: each ticket gets its own POST /desk/tickets/{id}/close; many return 500. The same tickets close by API (200).",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    360
+   ],
+   "boxes": [
+    {
+     "b": [
+      26,
+      99,
+      1574,
+      251
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      26,
+      261,
+      1574,
+      298
+     ],
+     "n": 5,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      26,
+      308,
+      1574,
+      345
+     ],
+     "n": 6,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Select the whole view (60) › Close › Close 60 tickets",
+   "All 60 tickets close",
+   "Only 10 close per run; the rest fail",
+   "FAIL"
+  ],
+  [
+   2,
+   "Result message",
+   "Shows how many closed and how many failed",
+   "\"0 updated, 60 failed.\" while 10 closed",
+   "FAIL"
+  ],
+  [
+   3,
+   "Run Close again on the same view (2nd, 3rd time)",
+   "Remaining tickets close",
+   "Still only 10 more each run; tickets still Open after run 3",
+   "FAIL"
+  ],
+  [
+   4,
+   "Server response per ticket",
+   "200",
+   "Many 500 INTERNAL \"An unexpected error occurred.\" (+409 for already closed)",
+   "FAIL"
+  ],
+  [
+   5,
+   "Same tickets closed by API, one by one and 10 in parallel",
+   "200",
+   "200 for every ticket",
+   "INFO"
+  ],
+  [
+   6,
+   "Bulk Update (Priority) on the same 61 tickets",
+   "All updated",
+   "61/61 updated (mass-update, batched)",
+   "PASS"
+  ]
+ ],
+ "label": "BUG",
+ "priority": "high"
+}

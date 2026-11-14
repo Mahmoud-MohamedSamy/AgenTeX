@@ -1,0 +1,135 @@
+{
+ "out": "NDC-2635-retest-PARTIAL.png",
+ "ticket": "NDC-2635",
+ "priority": "medium",
+ "title": "Activity Life Cycle — Delete on the activity page and the activity count are built; global activities API still missing",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Edge headless + API · ticket \"QA RT17 2635 ticket\" #3540 with tasks A/B/C + call",
+ "date": "13 Nov 2026",
+ "panels": [
+  {
+   "img": "2635-task-delete-confirm.png",
+   "caption": "Task page › Delete: \"will be moved to the Recycle Bin\" → deleted (204)",
+   "crop": [
+    608,
+    362,
+    384,
+    178
+   ],
+   "boxes": [
+    {
+     "b": [
+      620,
+      380,
+      980,
+      525
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2635-ticket-tabs-after.png",
+   "caption": "Ticket tabs: \"1 ACTIVITY\" (count shown; 2 before the delete)",
+   "crop": [
+    664,
+    150,
+    860,
+    45
+   ],
+   "boxes": [
+    {
+     "b": [
+      1248,
+      160,
+      1324,
+      184
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2635-api-card.png",
+   "caption": "API",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    254
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      230
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   2,
+   "Delete on task / call page",
+   "Delete to Recycle Bin (Zoho)",
+   "Delete button on task and call pages; works",
+   "PASS"
+  ],
+  [
+   4,
+   "Activity count on the ticket",
+   "\"N ACTIVITY\"",
+   "\"2 ACTIVITY\" → \"1 ACTIVITY\"",
+   "PASS"
+  ],
+  [
+   5,
+   "Ticket activities API + filters",
+   "Endpoint and due filters",
+   "/desk/tickets/{id}/activities + /count",
+   "PASS"
+  ],
+  [
+   5,
+   "Global activities / tasks count API",
+   "As Zoho",
+   "404",
+   "FAIL"
+  ],
+  [
+   1,
+   "Department / bulk delete (items 1, 3)",
+   "—",
+   "Passed 11 Nov",
+   "INFO"
+  ]
+ ]
+}

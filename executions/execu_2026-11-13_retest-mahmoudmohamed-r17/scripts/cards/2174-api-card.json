@@ -1,0 +1,33 @@
+{
+ "out": "2174-api-card.png",
+ "title": "NDC-2174 default status (API)",
+ "host": "staging-desk.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  [
+   "Layout statuses",
+   "PUT /modules/{Tickets}/layouts/{id}/ticket-statuses {Open,Escalated,Closed; default Escalated}",
+   "200",
+   "info"
+  ],
+  [
+   "Create without status",
+   "POST /modules/{Tickets}/records {subject, department}",
+   "201 → status Escalated (9 Nov: 422 \"Status is required.\")",
+   "ok"
+  ],
+  [
+   "Create with Open",
+   "POST … status Open",
+   "201 → Open",
+   "ok"
+  ],
+  [
+   "Status not on layout",
+   "POST … status On Hold",
+   "422 \"'On Hold' is not one of this layout's statuses: Open, Escalated, Closed.\"",
+   "ok"
+  ]
+ ]
+}

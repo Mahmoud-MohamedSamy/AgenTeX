@@ -1,0 +1,25 @@
+# NDC-2865 Global Sets | A new pick list field set to "Use a global set" cannot be saved
+Summary
+In the layout editor a new Pick List field can be pointed at a global set, and the set's values appear. But saving the layout fails, so a new field can never be created from a global set. Only an existing local pick list can be linked afterwards with Associate.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 11 Nov 2026
+- Owner account; Leads › Standard layout; global set "QA GS1111 Tier"
+Steps to reproduce
+- Open Setup › Modules and Fields › Leads › Standard layout.
+- Drag a Pick List field into the layout.
+- Open the field's Edit Properties › Advanced › Global set and choose a set. The set's values are listed under Options.
+- Click Apply, then Save.
+Expected result
+As in Zoho CRM, the field is created and linked to the set (Zoho: Pick List Type = Global Set; seen in our Zoho test org, the field was created and linked). NDC-2806 asks for "linking new or existing picklists".
+Actual result
+- The save fails with: "Field 'pick_list_6qa_gs1111_new': Option 'global_set_id' is not supported for datatype 'pick_list'."
+- Nothing is saved. The same 400 DATATYPE_OPTION_UNKNOWN comes back from POST /modules/{id}/fields when global_set_id is sent.
+Notes
+- Workaround: create a local pick list with the same values, then use Associate with global set.
+- Placing an existing, already linked field on the layout saves fine, and Used In then lists the layout.
+- The layout change was cancelled; nothing was left on the Standard layout.
+- Evidence (TAVI left, Zoho right): B1-new-field-from-global-set-vs-zoho.png
+
+
+== COMMENTS (0)
+

@@ -67,7 +67,7 @@ public class BlueprintUiBugTest extends BaseTest {
         StringBuilder problems = new StringBuilder();
         if (!published) problems.append("(Save and Publish did not publish - data-loss part not proven.) ");
         if (!"autoclose".equals(kept)) problems.append("Save state + Save and Publish REMOVED the automatic close (autoTransitionId now ").append(kept).append("). ");
-        if (!shown) problems.append("Panel does not show 'When it runs out' for the 3-day auto-close (time limit field: '").append(limit).append("'). ");
+        if (!shown) problems.append("Panel does not show the automatic move ('Moves on by itself') for the 3-day auto-close (time limit field: '").append(limit).append("'). ");
         assertTrue(problems.length() == 0, problems.toString());
     }
 

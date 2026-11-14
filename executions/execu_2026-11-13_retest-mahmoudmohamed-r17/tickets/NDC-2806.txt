@@ -1,0 +1,45 @@
+# NDC-2806 CRM Global Sets
+Summary
+Bring CRM Global Sets to parity with Zoho CRM by building on top of the shared core metadata engine already established in Zoho Desk. This replaces the original one-line description and covers all requirements from the "Global Sets: our build vs Zoho" analysis.
+Scope
+- Target & Scope: Global Sets (reusable picklist option pools) can be referenced across custom and standard CRM modules. Editing a Global Set updates option values, colors, and display labels across all linked module fields simultaneously.
+- Creation & Conversion Workflows: Support three creation paths:
+- Creating a global set from scratch.
+- Converting an existing set of local picklist values to a global set via field properties.
+- Cloning an existing global set (X_Cloned).
+- Value Management & Unused Pool:
+- Support adding, renaming, and replacing options. Replacing an option automatically propagates the change across existing records and dependent components (workflows, criteria, reports).
+- Removed items move to an Unused Values section (managed via the gear icon) rather than hard-deleting immediately.
+- Field Association & Value Mapping:
+- Support linking new or existing picklists.
+- When associating an existing picklist with un-matched local values, provide an Associate Picklist with Global Set popup for manual or automatic mapping, highlighting dependent rules via a View associated places link.
+- System Safeguards & Limits:
+- Block deletion or value replacement if a global set is associated with more than 15 fields.
+- Enforce batch limits (e.g., moving max 50 values from unused to used per request when past the threshold).
+- Prevent association on locked system fields (e.g., Lead Status, Deal Stage, Case Status).
+- Usage & Dependency Tracker: A dedicated "Used In" metadata view showing every module, layout, rule, and report using the global set.
+- Step Wizard / Management Interface:
+- Access path: Setup > Customization > Modules and Fields > Global Sets.
+- Management views for master list, values reordering, color code toggles, and cloning.
+- Permissions: crm:global_set:view and crm:global_set:manage seeded in IAM, along with a CRM Settings menu entry.
+- Audit Log & Recycle Bin: Comprehensive audit logging matching Zoho’s exact action entries (e.g., tracking additions, renames, replacements, and option deletions) alongside ticket NDC-1858.
+
+
+== COMMENTS (3)
+--- comment 2026-11-11T16:07:55.477479+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+More bugs from a second pass on reports, field dependency and blueprints (each compared live with Zoho where Zoho could be checked): NDC-2917 (Replace does not update reports), NDC-2918 (Replace does not update field dependency maps), NDC-2919 (removing a value used by an inactive blueprint breaks it). The 15-field rule and a view-only user were also checked and work as expected.
+
+--- comment 2026-11-11T15:04:06.536878+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+The gaps between the current CRM build and Zoho CRM Global Sets are listed in NDC-2870 (11 missing functions, each mapped to its scope item of this specification). Bugs found while testing it: NDC-2865 (new field from a set cannot be saved), NDC-2866 (Replace leaves workflow rules on the old value), NDC-2867 (Replace refused when a custom view uses the value), NDC-2868 (save without version overwrites), NDC-2869 (two Arabic labels not translated). Field dependency with a set field could not be tested until NDC-2865 is fixed.
+
+--- comment 2026-11-11T13:51:17.932942+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 10–11 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho CRM (org944965048, Enterprise), checked live 11 Nov 2026; Zoho test data deleted afterwards.
+Global Sets work for create, convert, clone, values (add, rename, colour, replace, unused, restore), association with mapping, safeguards and permissions. One gap remains against Zoho CRM.
+Working now:
+- Create / convert / clone, values, association + mapping, 50-field limit, locked and wrong-type fields refused, permissions and audit
+- Used In lists fields and custom views (Zoho lists fields only, so the earlier "reports not listed" point is dropped)
+Still failing:
+- Replace a value that a custom view filter uses: expected Zoho CRM allows it and replaces the value in records, criteria, workflow actions and field dependency (Green → Red: the lead and the view filter both changed, Green moved to unused); actual TAVI refuses with 409 GLOBAL_SET_VALUE_IN_USE "Change or remove it in those views first"
+Evidence: NDC-2806-retest-PARTIAL-vs-zoho.png, NDC-2806-retest-PARTIAL.png (attached; side-by-side images: TAVI left, Zoho right)
+

@@ -1,0 +1,4 @@
+let pick = []; for (let p = 0; p < 6; p++) { const rb = await api('GET', '/audit/recycle-bin/items?limit=200' + (p ? '&page=' + (p + 1) : '')); const it = arr(D(rb.j)); pick.push(...it.filter(i => i.record_id === 'a3ed5647' || String(i.record_id).startsWith('a3ed5647') || i.record_label === 'QA GL W3 WF uses echo 2')); if (it.length < 200) break; }
+out.found = pick.map(i => i.record_id + ' ' + i.record_label); if (pick.length) out.purge = (await api('POST', '/audit/recycle-bin/delete', { item_ids: pick.map(x => x.id), ids: pick.map(x => x.id) })).s;
+await sleep(2000); let left = []; for (let p = 0; p < 6; p++) { const rb = await api('GET', '/audit/recycle-bin/items?limit=200' + (p ? '&page=' + (p + 1) : '')); const it = arr(D(rb.j)); left.push(...it.filter(i => /QA GL W3|qa-gl-w3/.test(JSON.stringify(i)))); if (it.length < 200) break; } out.left = left.length;
+return fin({ out });

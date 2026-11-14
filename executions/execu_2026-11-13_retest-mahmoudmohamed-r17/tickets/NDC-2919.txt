@@ -1,0 +1,24 @@
+# NDC-2919 Global Sets | Removing a value used by an inactive blueprint leaves the blueprint broken
+Summary
+An active blueprint protects its state values well. An inactive one does not: a state value can be moved to Unused with no warning, and the blueprint can then not be switched on.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 11 Nov 2026
+- Owner account; set "QA GS1111 R3 BP"; Leads blueprint "QA GS1111 BP" on a set field (QA-only entry criteria)
+Steps to reproduce
+- Create an inactive blueprint whose states are set values (Open, Working, Done).
+- In the set, remove Done (move it to Unused).
+- Switch the blueprint on.
+Expected result
+The removal is refused or warned about, as it is for an active blueprint. Zoho's API documentation says values tied to a blueprint cannot be replaced or deleted (not checked live).
+Actual result
+- Removing Done is allowed with no warning.
+- Switching the blueprint on fails: "State 'Done' is not an allowed value of picklist 'qa_gs1111_bp'." It works again only after the value is restored.
+- Used In does not list blueprints.
+Notes
+- Works well: on an inactive blueprint, Replace updates the blueprint's states and transitions; on an active blueprint, Replace and Remove are refused with clear messages.
+- The blueprint was only switched on for a QA-only test, then off, then deleted with its test data.
+- Evidence: B8-inactive-blueprint-broken-by-remove.png
+
+
+== COMMENTS (0)
+

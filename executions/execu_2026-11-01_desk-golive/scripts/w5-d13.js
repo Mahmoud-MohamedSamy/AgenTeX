@@ -1,0 +1,18 @@
+await go('/analytics/dashboards', 10000);
+await page.getByRole('button', { name: 'Switch folder' }).click(); await sleep(1000); await page.getByText('My Dashboards').last().click(); await sleep(4000);
+out.my = (await mtxt()).slice(0, 500);
+const row = page.locator('tr, [role=row]').filter({ hasText: 'QA GL W5 dashboard' }); out.rows = await row.count();
+let n0 = NET.length; await row.first().getByRole('button', { name: 'Add to favorites' }).click().catch(e => out.starErr = e.message.slice(0, 80)); await sleep(3000);
+out.star = NET.slice(n0).map(x => x.m + ' ' + x.u.split('?')[0] + ' ' + x.s);
+await page.getByRole('button', { name: 'Switch folder' }).click(); await sleep(1000); await page.getByText('Starred Dashboards').last().click(); await sleep(4000);
+out.starred = (await mtxt()).slice(0, 400); await shot('w5/W5-30-starred');
+const r2 = page.locator('tr, [role=row]').filter({ hasText: 'QA GL W5 dashboard' }).first();
+await r2.getByRole('button', { name: /^Actions for QA GL W5 dashboard/ }).click().catch(e => out.actErr = e.message.slice(0, 80)); await sleep(1500);
+out.menu = (await page.locator('[role=menu]').last().innerText().catch(() => '')).replace(/\s+/g, ' ');
+await page.getByRole('menuitem', { name: /Delete/ }).click().catch(e => out.delErr = e.message.slice(0, 80)); await sleep(1500);
+const cd = page.locator('[role=alertdialog], [role=dialog]').last(); out.conf = (await cd.innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300);
+n0 = NET.length; await cd.getByRole('button', { name: /^Delete/ }).last().click().catch(e => out.cErr = e.message.slice(0, 80)); await sleep(4000);
+out.del = NET.slice(n0).map(x => x.m + ' ' + x.u.split('?')[0] + ' ' + x.s);
+const g = await api('GET', '/reporting/dashboards/8f751dad-7d45-4764-badd-2caab0e16318'); out.after = g.s;
+const all = await api('GET', '/reporting/dashboards'); out.qa = arr(D(D(all.j))).filter(d => /QA GL W5/.test(d.name)).map(d => d.name + '=' + d.id);
+return fin({ out });

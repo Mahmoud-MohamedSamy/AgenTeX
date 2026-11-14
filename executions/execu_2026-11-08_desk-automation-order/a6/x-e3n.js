@@ -1,0 +1,1 @@
+const r = await api('GET', '/notifications?limit=50'); const a = (r.j?.data?.data || []).filter(x => /QA BP E3|QA E3/.test(JSON.stringify(x))); log(a.length, JSON.stringify(a.map(x => [x.event_type, x.title, x.created_at])));

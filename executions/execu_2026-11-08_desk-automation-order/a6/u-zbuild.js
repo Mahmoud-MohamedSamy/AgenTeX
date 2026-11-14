@@ -1,0 +1,27 @@
+const resp = []; page.on('response', async r => { if (/blueprints/.test(r.url()) && r.request().method() !== 'GET') resp.push(r.request().method() + ' ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 300)); });
+await go('/settings/automation/blueprints/new'); await sleep(8000);
+const canvas = page.locator('.react-flow').first(); const D = page.locator('[draggable=true]');
+await D.nth(0).dragTo(canvas, { targetPosition: { x: 200, y: 250 } }); await sleep(1200);
+await D.nth(2).dragTo(canvas, { targetPosition: { x: 600, y: 250 } }); await sleep(1200);
+// details
+await page.locator('input').nth(1).fill('QA BP Z4 designer'); await sleep(500);
+const dsel = page.locator('select').filter({ has: page.locator('option', { hasText: 'Choose a department' }) }).first(); log('dsel', await dsel.count()); if (await dsel.count()) await dsel.selectOption({ label: 'Customer Support' }); else { await page.getByText('Choose a department').click(); await sleep(800); await page.getByRole('option', { name: 'Customer Support' }).first().click(); } await sleep(800);
+await page.getByRole('button', { name: 'Save and Publish' }).click({ force: true }); await sleep(1500);
+await page.locator('li').filter({ hasText: /needs a name/ }).last().locator('button').first().click(); await sleep(1500);
+await page.locator('input').filter({ hasNot: page.locator('xpath=..') }).first(); 
+log('vis inputs', await page.locator('input').evaluateAll(a => a.filter(x => x.offsetParent).map(x => x.id + '|' + x.placeholder + '|' + x.value + '|' + Math.round(x.getBoundingClientRect().y)))); await shot('zb-dbg');
+const tname = page.locator('input').filter({ visible: true }).nth(1); await tname.fill('QA go');
+const addItem = () => page.locator('select').filter({ has: page.locator('option', { hasText: 'Add item' }) }).first();
+await addItem().selectOption('field'); await sleep(1000);
+await page.locator('select').filter({ has: page.locator('option', { hasText: 'Choose a field' }) }).first().selectOption({ label: 'Subject' }); await sleep(1000);
+const col = page.getByText('What the agent fills in').locator('xpath=ancestor::div[2]');
+await col.getByRole('button', { name: 'Add a check' }).click(); await sleep(1000);
+const sels = await col.locator('select').evaluateAll(a => a.map(s => [...s.options].map(o => o.value + '=' + o.text).join('/'))); log('col selects', sels);
+const ins = col.locator('input'); log('inputs', await ins.count());
+await ins.first().fill('ok'); await col.getByPlaceholder('Message when it fails').fill('QA Z4: subject must contain ok');
+await addItem().selectOption('desk:approval'); await sleep(1200); log('approval ui', (await col.innerText()).replace(/\s+/g, ' ').split('Submit for approval').slice(-2).join(' || ').slice(0, 600)); await shot('z5-approval-item');
+await addItem().selectOption('desk:share'); await sleep(1200); log('share ui', (await col.innerText()).replace(/\s+/g, ' ').slice(-700)); await shot('z6-share-item');
+await shot('zbuild-before-save');
+await page.getByRole('button', { name: 'Save transition' }).click(); await sleep(1200);
+await page.getByRole('button', { name: 'Save Draft' }).click(); await sleep(4000);
+log('url', page.url().replace(H, '')); log('resp', resp); await shot('zbuild-saved');

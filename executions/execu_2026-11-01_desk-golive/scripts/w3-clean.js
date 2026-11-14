@@ -1,0 +1,19 @@
+const by = {"sla_policy":["4283701b-5654-4d3c-a168-7dd7a7860af4","f65cb29f-7ee5-4af9-9191-bf59a3ebc692"],"support_plan":["1623a133-8cc1-4dc2-8f93-c6483f9cd2f9","cf48ae47-db59-48c3-b787-3c48bd20ea75","ed191aad-a869-4c63-a55b-9cb526dddb19","9d28316a-2259-4f7e-9e09-bd892912f6b4","ac5a1d37-9191-46ec-bf8b-8a8f3dd3e77e"],"account":["03e7893b-dc27-4a01-be0e-ac2f955a3b8d","b41f6588-356f-4fe6-a633-df03f042cb34","88eb3bb7-001c-441f-8b7e-047bc54612f0"],"contact":["01402bf2-8d93-4924-bf77-13dab577ea57","4fe1027a-f72b-4960-b5aa-56438aa55086","56a34aa1-d6d1-4fac-82da-6bacc2f41a88","6900cc83-9712-4a5d-89ff-536a79e08434"],"contract":["c5a8482a-0bce-4fb0-94b5-ee7b939e72ac","b4cd6764-7e07-4a8c-ac6b-7a6e25093963","b446127f-cff8-4071-9e9d-4d541e317345","0762649f-d12f-4d1a-b0ae-0faf4258c183"],"ticket":["3ecf52a9-f3cd-41c6-a60f-931582cac7cd","53c188f7-9e88-42b3-8d3a-515dfdc31f61","00c591eb-e6b7-4dd0-9adb-203096fd3671","13ca1d86-c3f7-4a9f-9114-edc48e7c2ed3","b998d2e6-35b0-411e-85ee-9305ba534d20","bd8d5644-bd5f-4839-8ffc-70c8481af19d","796b7d8f-39c4-46ba-9edd-65285999e383","245b7f53-0e09-4352-9ba5-ca8a1affbcbc","b2b25c82-475c-4381-8e9e-2f8b12f9f10a"],"ca_source":["56a69b17-df26-4ecc-a5f6-77c95f75f39c","6e9fadbf-441e-405d-9f23-f60e09b7737b"],"custom_action":["c0e196f8-7ad6-4978-a910-7ae0bf8513ca","272be0bb-fe93-442c-aa76-d50a1bad4fb6","eaf5a661-14b7-4d93-828d-c44e018b0a6d","905b3635-1f78-4ca0-899d-73bd308a3d05"],"ca_variable":["bfd2d198-b860-4b68-83ba-4f12fd8d50b5","23afcc74-aaf2-4245-b4dd-d50fe8752ae3"],"wf_rule":["a3ed5647-3274-4717-855f-737dbdc12051"]};
+out.del = {}; const del = async (k, p) => { const r = await api("DELETE", p); out.del[k] = (out.del[k] || "") + r.s + " "; return r.s; };
+for (const id of by.ticket || []) await del("ticket", "/modules/" + TM + "/records/" + id);
+for (const id of by.contract || []) await del("contract", "/modules/" + KM + "/records/" + id);
+for (const id of by.contact || []) await del("contact", "/modules/" + CM + "/records/" + id);
+for (const id of by.account || []) await del("account", "/modules/" + AM + "/records/" + id);
+await sleep(3000);
+const ids = new Set([...(by.ticket||[]), ...(by.contract||[]), ...(by.contact||[]), ...(by.account||[])]);
+let pick = []; for (const q of ["?limit=200&app=desk", "?limit=200"]) { for (let p = 0; p < 6; p++) { const rb = await api("GET", "/audit/recycle-bin/items" + q + (p ? "&page=" + (p + 1) : "")); const items = arr(D(rb.j)); pick.push(...items.filter(i => ids.has(i.record_id))); if (items.length < 200) break; } }
+pick = [...new Map(pick.map(i => [i.id, i])).values()]; out.binFound = pick.length + "/" + ids.size;
+if (pick.length) out.purge = (await api("POST", "/audit/recycle-bin/delete", { item_ids: pick.map(x => x.id), ids: pick.map(x => x.id) })).s;
+for (const id of by.wf_rule || []) await del("rule", "/workflow/rules/" + id);
+for (const id of by.support_plan || []) await del("plan", "/desk/sla/support-plans/" + id);
+for (const id of by.sla_policy || []) await del("policy", "/desk/sla/policies/" + id);
+for (const id of (by.custom_action || []).filter(x => !x.startsWith("c0e196f8"))) await del("action", "/workflow/custom-actions/" + id);
+await del("action", "/workflow/custom-actions/c0e196f8-7ad6-4978-a910-7ae0bf8513ca");
+for (const id of by.ca_source || []) await del("source", "/workflow/custom-actions/sources/" + id);
+for (const id of by.ca_variable || []) await del("variable", "/workflow/custom-actions/variables/" + id);
+return fin({ out });

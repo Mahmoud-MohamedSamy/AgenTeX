@@ -1,0 +1,10 @@
+await go('/hq', 9000);
+const heads = page.locator('main h2, main h3'); const n = await heads.count();
+const last = heads.nth(n - 1); out.lastHead = await last.innerText();
+const box = last.locator('xpath=ancestor::*[.//button][1]');
+out.boxBtns = await box.getByRole('button').evaluateAll(es => es.map(e => (e.getAttribute('aria-label') || e.innerText || '').trim()));
+await shot('w5/W5-24-widget');
+await go('/analytics/reports/builder', 9000);
+out.btns = await page.getByRole('button').evaluateAll(es => es.map(e => (e.getAttribute('aria-label') || e.innerText || '').trim()).filter(Boolean));
+out.ds = await page.getByText(/Select a dataset/).first().evaluate(e => { let p = e; for (let i = 0; i < 3; i++) p = p.parentElement; return p.outerHTML.slice(0, 700); }).catch(e => e.message.slice(0, 80));
+return fin({ out });

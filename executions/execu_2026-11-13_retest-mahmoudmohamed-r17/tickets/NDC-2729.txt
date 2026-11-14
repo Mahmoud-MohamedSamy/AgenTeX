@@ -1,0 +1,74 @@
+# NDC-2729 Blueprint | Create Task, Meeting, Call and other create-record actions in After Transition Actions allow another module, duplicate owner settings, "Value" defaults and a text-only Related record
+Summary
+In a blueprint, a transition's After Transition Actions can include a Create task action, which should always create a task with a single, clear way to set its owner, sensible default values and fields that behave like their real field types. Instead, the action has four problems:
+- It has a module dropdown that starts on "Tasks" but lists every module in the CRM, so the action can be pointed at a module that isn't Tasks.
+- It sets the task's owner in two places: an Assign to choice (Record owner, Person who performed the transition, Specific user) and a separate Task Owner field, so it's unclear which one decides who gets the task.
+- Its dropdown fields (Reminder, Status, Priority) show "Value" by default, which isn't one of their options, instead of defaulting to the first real option.
+- Its Related record field is a plain text box, instead of a lookup that lets the user search for and pick a record.
+The same behavior happens in every after-transition action that creates a record, not just Create task: Create meeting, Create call and any other create-record action.
+Steps to reproduce
+- Go to Settings › Blueprints and open blueprint "AEX-01_Deals" (Deals, Standard layout, Stage field).
+- Click a transition, for example "NeedsAnalysisToProposal", and open the Transition tab on the right.
+- Under the after-transition actions, add or open a Create task action.
+- Click the module dropdown at the top of the action (it shows "Tasks") and look at the options listed.
+- Look at the Assign to options, then at the Task Owner field below them.
+- Scroll down to the Reminder, Status and Priority dropdowns and look at what each one shows before anything is picked.
+- Click the Related record field and try to pick a record.
+- Repeat steps 3–7 with a Create meeting action, a Create call action and any other action that creates a record.
+Expected result
+- The Create task action always creates a record in the Tasks module.
+- There is no module dropdown, or it shows Tasks and can't be changed.
+- The task's owner is set in one place only. Assign to (Record owner, Person who performed the transition, Specific user) decides the owner, and a user picker appears only when "Specific user" is chosen.
+- Each dropdown (Reminder, Status, Priority) defaults to its first available option.
+- Related record works as a lookup, like Contact Name and Related To: the user searches for and picks an existing record ("Choose a record…").
+- All of the above applies to every create-record action (tasks, meetings, calls and any other created record): each is locked to its own module, sets the owner in one place, defaults dropdowns to their first option and uses lookups for record fields.
+Actual result
+- The module dropdown lists every module: Leads, Contacts, Deals, Accounts, Calls, Meetings, Subscriptions and custom modules (for example "qa1026_ts Mod B", "inventory", "QA Mod 1025"), and the user can switch the Create task action to any of them.
+- The action shows both Assign to, with "Record owner" selected, and a separate Task Owner field ("Choose a user…") underneath, so the owner can be set in two conflicting places.
+- The Reminder, Status and Priority dropdowns all show "Value", which isn't one of their options, instead of their first option.
+- Related record is a plain text box (placeholder "Value") where any text can be typed, with no way to search for or pick a record.
+- The same problems appear in the Create meeting, Create call and other create-record actions.
+Environment
+- staging-crm.taviportal.com › Settings › Blueprints › AEX-01_Deals (Deals; Standard layout; Stage field) › Transition › Create task / meeting / call
+- Edge; Windows; 1280×984
+- Reporter Nada Ahmed; captured 29 Oct 2026, 1:38 PM and 1:46 PM (Cairo)
+Attachment
+Annotated screenshots are attached to this work item.
+
+
+== COMMENTS (3)
+--- comment 2026-11-11T13:50:45.867615+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 10–11 Nov 2026 → moved to Bug
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: admin. Zoho reference: Zoho Desk (techsolutionsegypt), checked live 11 Nov 2026; Zoho test data deleted afterwards.
+CRM blueprint: fixed, and it now matches Zoho CRM (Task has a fixed module, one "Assigned To" where empty means the record owner, and Status/Priority start on the first option). Desk blueprint ("Tickets from Mail"): not fixed.
+Working now:
+- CRM Create task / Meeting / Call: no module picker, owner only through Assign to, pick lists start on the first option (same as Zoho CRM)
+Still failing:
+- Desk Field update: value of a pick list: expected Zoho Desk: starts at "-None-" and then the real options; actual TAVI shows "Value" as if it were an option
+- Desk Field update: fields offered: expected Zoho Desk does not offer Status, Team, Department or Skills in a blueprint Field update; actual TAVI offers Status and Skills, and Department/Team as plain text "Value"
+- Desk Create task: Department / Team: expected Zoho Desk has no Department/Team boxes; "Assign to" is a picker with Agents and Teams tabs; actual TAVI has Department* and Team as plain text boxes
+Correction to the expected result: Zoho Desk does not pick the first real option; it starts at "-None-".
+Evidence: NDC-2729-retest-FAIL-vs-zoho.png, NDC-2729-crm-vs-zoho.png (attached; side-by-side images: TAVI left, Zoho right)
+
+--- comment 2026-11-05T12:37:14.686046+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest of NDC-2729 Failed on 5th Nov. 2026
+
+--- comment 2026-11-02T15:41:58.983395+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 2 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant Anyware, Edge (headless) + API; accounts: owner, test users (CRM User profile)
+Method: API and screen
+Module dropdown, double owner setting and the text-only Related record are fixed for Create task / Meeting / Call; the dropdowns still don't default to their first option.
+Checked:
+- module dropdown → none (Create record keeps its module picker) [PASS]
+- owner → only ASSIGN TO; user picker appears only for Specific user [PASS]
+- Related record → "This record"; Contact Name / Related To are lookups [PASS]
+- Task Status / Priority → "Select…" [FAIL]
+- Meeting / Call pick lists → "Select…" [FAIL]
+- Reminder → "15 minutes before" (first is "None") [FAIL]
+- observation → plain "Value" text box; raw option keys (outbound, scheduled, zoom…) [INFO]
+Still failing:
+- Task Status / Priority: expected First option (Not Started / low), actual "Select…"
+- Meeting / Call pick lists: expected First option, actual "Select…"
+- Reminder: expected First option, actual "15 minutes before" (first is "None")
+Evidence: NDC-2729-retest-PARTIAL.png (attached)
+

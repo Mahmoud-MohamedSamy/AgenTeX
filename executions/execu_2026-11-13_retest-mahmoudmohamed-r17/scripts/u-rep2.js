@@ -1,0 +1,10 @@
+await page.goto(H+'/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3?view=53653f38-0571-42bd-a70e-eb9cd5de9448',{waitUntil:'domcontentloaded'}); await sleep(12000);
+const kb=await page.locator('text=Could not load these records').count(); log('kanban errors',kb);
+await page.locator('button[aria-label*="List" i], button[title*="List" i]').first().click().catch(async()=>{ const b=await page.locator('text=Filter').boundingBox(); }); await sleep(6000);
+const t2=await text(); log('rows', (t2.match(/2867 Gold [AB]/g)||[]), (t2.match(/Silver/g)||[]).length);
+await shot('2867-view-list.png');
+await page.locator('button[aria-label*="Kanban" i], button[title*="Kanban" i]').first().click().catch(()=>log('no kanban btn')); await sleep(3000);
+await page.goto(H+'/reports',{waitUntil:'domcontentloaded'}); await sleep(10000);
+const ln=page.getByText('QA RT17 2917 Gold report B').first(); log('report link count', await ln.count()); await ln.click(); await sleep(15000); log('url',page.url());
+const t=await text(); log('has', ['Silver Star','Silver','Gold'].map(k=>k+':'+(t.split(k).length-1)));
+await shot('2917-report-ui.png'); return {};

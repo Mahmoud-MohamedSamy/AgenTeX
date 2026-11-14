@@ -1,0 +1,10 @@
+await go('/settings/data/import', 12000);
+await page.getByRole('button', { name: /Choose a module/ }).first().click().catch(async () => await page.getByText('Choose a module').nth(1).click()); await sleep(1500);
+out.mods = (await page.locator('[role=listbox], [role=menu]').last().innerText().catch(() => '')).replace(/\s+/g, ' ');
+await page.getByRole('option', { name: /^Contacts/ }).first().click(); await sleep(1000);
+const fi = page.locator('input[type=file]'); out.fileInputs = await fi.count();
+await fi.first().setInputFiles(RUN + '/wave5/files/w5-contacts.csv'); await sleep(2000);
+await page.getByRole('button', { name: /Start import/ }).click().catch(e => out.sErr = e.message.slice(0, 60)); await sleep(8000);
+out.step = (await page.locator('body').innerText()).replace(/\s+/g, ' ').slice(-1500); out.url = page.url().replace(H, '');
+await shot('w5/W5-35-mapping');
+return fin({ out });

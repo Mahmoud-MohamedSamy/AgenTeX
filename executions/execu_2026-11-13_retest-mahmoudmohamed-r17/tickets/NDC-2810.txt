@@ -1,0 +1,44 @@
+# NDC-2810 CRM ⇄ Desk sync fails on contacts and accounts that no longer exist in either app
+Summary
+When an admin syncs customers between CRM and Desk, the sync doesn't create or update anything. It reports failures for contacts and accounts that don't exist in CRM or Desk anymore, and the Failure Log fills up with them. The same records fail again on every run, so the sync never finishes cleanly.
+Steps to Reproduce
+- In Desk, open Customers → Contacts (1 contact) and Accounts (no accounts).
+- In CRM, open Customers (no records).
+- In CRM, go to Settings → CRM ⇄ Desk Integration → Sync History.
+- Click Sync all customers and wait for it to finish.
+- Open the Failure Log tab.
+Expected Result
+- The sync only looks at contacts and accounts that exist in CRM or Desk right now.
+- Records deleted in either app are unlinked and left out, not reported as failures.
+- With nothing new to sync, the run finishes with no failures.
+Actual Result
+- The sync picks up 11 records, creates or updates none, and marks 9 as "Needs attention".
+- The Failure Log lists 372 records, such as "B04", "test test", "zxc asd", "1" and "2". None of them appear in CRM's or Desk's customer lists.
+- Most say "The linked Desk record is in the recycle bin". One says Last Name is missing.
+- Every run gives the same result: the earlier runs today all ended with 9 records needing attention.
+- Sync History shows hundreds of failed contacts and accounts per day.
+Environment
+- App: TAVI CRM (staging-crm.taviportal.com/settings/integrations/desk) and TAVI Desk (staging-desk.taviportal.com)
+- Browser: Edge 156.0.8078.80
+- OS: Windows 10
+- Viewport: 1272×866
+- Reporter: noles40331
+- Captured: 5 Nov 2026, 12:35 UTC
+Attachment
+Attachment
+
+
+== COMMENTS (1)
+--- comment 2026-11-11T13:54:45.059248+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 10–11 Nov 2026 → moved to Bug
+Environment: staging-desk + staging-crm.taviportal.com, tenant NDC-Staging, Edge; account: admin. Not compared with Zoho (see note).
+Deleting a synced contact in Desk now unlinks it without a failure, and records in the Desk recycle bin are counted as Ignored. Deletions on the CRM side are still reported as failures.
+Working now:
+- Delete in Desk → link unlinked, no failure
+- Sync all customers: Desk-deleted records counted as Ignored
+Still failing:
+- Contact deleted in CRM: expected Unlinked and left out, not reported as a failure (ticket); actual Failure Log "Needs attention · The CRM record was deleted."; the Desk contact stays
+- Sync all customers: expected No failure for records that exist in neither app; actual 1 failure "B04" (Last Name empty), a record in neither customer list
+Not compared with Zoho: testing deletions would need writes in both Zoho apps; judged against the ticket's expected result.
+Evidence: NDC-2810-retest-PARTIAL.png (attached; side-by-side images: TAVI left, Zoho right)
+

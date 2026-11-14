@@ -1,0 +1,22 @@
+const V = JSON.parse(require('fs').readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-13_retest-mahmoudmohamed-r17/out/ids.json', 'utf8')).V23;
+await page.goto(H + '/views', { waitUntil: 'domcontentloaded' }); for (let i = 0; i < 30; i++) { await sleep(2000); if (/All Tickets/.test(await text())) break; } const lk = page.getByText('QA RT17 2823 view', { exact: true }).first(); log('view link', await lk.count()); await lk.scrollIntoViewIfNeeded(); await lk.click();
+for (let i = 0; i < 40; i++) { await sleep(2000); if (/QA RT17 2823 \d\d/.test(await text())) break; }
+await sleep(3000); log('url', page.url());
+const t0 = await text(); log('count text', (t0.match(/\d+ (tickets|records)[^\n]*|of \d+[^\n]*/gi) || []).slice(0, 4), 'rows', (t0.match(/QA RT17 2823 \d\d/g) || []).length);
+await shot('2823-1-view.png');
+const sa = page.getByRole('checkbox', { name: /select all/i }).first();
+log('select-all checkbox', await sa.count());
+if (await sa.count()) await sa.click(); else await page.locator('thead input[type=checkbox], [aria-label*="Select all" i]').first().click();
+await sleep(2000);
+const t1 = await text(); log('after select all', (t1.match(/[^\n]*selected[^\n]*|Select all[^\n]*/gi) || []).slice(0, 6));
+await shot('2823-2-selectall.png');
+const link = page.getByText(/Select all \d+|all tickets in this view|Select all (tickets|records) in/i).first();
+log('whole-view option', await link.count(), await link.innerText().catch(() => ''));
+await link.click(); await sleep(2000);
+const t2 = await text(); log('after whole view', (t2.match(/[^\n]*selected[^\n]*/gi) || []).slice(0, 4)); await shot('2823-3-all60.png');
+const wr = page.waitForResponse(r => /api\/v1/.test(r.url()) && r.request().method() !== 'GET' && /bulk|mass|close|records/.test(r.url()), { timeout: 60000 }).catch(() => null);
+await page.getByRole('button', { name: /^Close$/ }).first().click(); await sleep(2000);
+const dlg = page.locator('[role=dialog], [role=alertdialog]').last(); log('close dialog', (await dlg.innerText().catch(() => 'none')).replace(/\n/g, ' | ').slice(0, 300)); await shot('2823-4-close-confirm.png');
+const cb = dlg.getByRole('button', { name: /^(Close|Close tickets|Close \d+.*|Confirm|Yes)/ }).last(); if (await cb.count()) await cb.click();
+const resp = await wr; log('write', resp && (resp.request().method() + ' ' + resp.url().replace(/^.*api\/v1/, '') + ' ' + resp.status()));
+await sleep(15000); await shot('2823-5-after-close.png'); const t3 = await text(); log('after close', (t3.match(/[^\n]*(closed|done|updated)[^\n]*/gi) || []).slice(0, 4));

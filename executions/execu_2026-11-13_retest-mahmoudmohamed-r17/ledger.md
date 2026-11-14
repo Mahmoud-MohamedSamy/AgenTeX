@@ -1,0 +1,106 @@
+- 2026-11-13T08:25:33 set QA RT17 GS 2868 19b15005-f108-45df-96c2-cf44b970e4ea
+- 2026-11-13T08:25:34 set QA RT17 GS Tier 0e407fd4-6d73-4cbe-87a6-db1c0dc7349e
+- 2026-11-13T08:25:34 field Leads qa_rt17_tier (from set) 0f2061bd-8f20-4ec7-be62-8fd93c7b2bc2
+- 2026-11-13T08:25:35 lead 2865 Gold 13e757e9-44b9-40c4-a4c7-14358d7fb407
+- 2026-11-13T08:26:01 workflow rule QA RT17 2866 Bronze rule (inactive) 907d729d-0516-4fe0-9c85-4e15b6ac952f
+- 2026-11-13T08:26:02 lead 2866 Bronze cdab1f87-1dc3-4453-ae4d-bded51016c49
+- 2026-11-13T08:26:11 set QA RT17 GS 2867 c9b18129-855a-473d-aa85-bf7dd7dde4e2
+- 2026-11-13T08:26:12 field Leads qa_rt17_cv 70440993-6a11-4743-9797-88869a04e3c8
+- 2026-11-13T08:26:12 lead 2867 Gold A 7ce6b51c-2bca-4978-bbda-6019bbbe7bcb
+- 2026-11-13T08:26:12 lead 2867 Gold B 2549ab78-00c3-4b59-9ba0-9718a868ddb4
+- 2026-11-13T08:26:12 Leads view QA RT17 2867 Gold view 53653f38-0571-42bd-a70e-eb9cd5de9448
+- 2026-11-13T08:26:38 rule 907d729d-0516-4fe0-9c85-4e15b6ac952f switched ON
+- 2026-11-13T08:26:38 lead 2866 run Gold a4e0faaf-09c9-4853-9b77-d3fca7bcdd20
+- 2026-11-13T08:26:50 rule 907d729d-0516-4fe0-9c85-4e15b6ac952f switched OFF 200
+- 2026-11-13T08:27:09 rule 907d729d-0516-4fe0-9c85-4e15b6ac952f ON
+- 2026-11-13T08:27:10 lead 2866 run2 Gold 480d5636-c080-498d-a6d8-a5945c51e31b
+- 2026-11-13T08:27:44 rule 907d729d-0516-4fe0-9c85-4e15b6ac952f OFF
+- 2026-11-13T08:28:24 set QA RT17 GS 2917 35c15b1e-8cf5-4585-bccf-e147c025f692
+- 2026-11-13T08:28:25 field Leads qa_rt17_rep acb47e6a-dcbc-4a88-85c1-e5e2ca5133e8
+- 2026-11-13T08:28:26 lead 2917 Gold 19a4c7bc-ad4b-4b49-a249-af0409651a9b
+- 2026-11-13T08:28:26 lead 2917 Gold 467a861b-0afb-48dd-990e-88b71759917e
+- 2026-11-13T08:28:27 lead 2917 Silver 909d8798-340e-48d7-82ec-922bcaf2585c
+- 2026-11-13T08:29:02 report QA RT17 2917 Gold report bab8912b-0750-47c6-8dcb-03b56c9e918e
+- 2026-11-13T08:29:55 report QA RT17 2917 Gold report B 55428e5a-7143-45e8-992a-b33bc99bca89
+- 2026-11-13T08:30:47 set QA RT17 GS 2918 c7c09a0e-810c-429d-9355-737b2fd72752
+- 2026-11-13T08:30:48 field Leads qa_rt17_dp 73926b11-b899-4a2f-b327-3b957b5702a4
+- 2026-11-13T08:30:48 field Leads qa_rt17_dc 06c4b2fc-4ba1-4e3d-9d83-5d27dfcbc951
+- 2026-11-13T08:30:49 field Leads qa_rt17_pp 73f841f8-a999-4449-a53f-5156e186e989
+- 2026-11-13T08:30:49 field Leads qa_rt17_dc2 130c6856-48c0-46db-88b4-373f328253f9
+- 2026-11-13T08:30:50 dependency map e736f089-c839-48b8-8e38-a9bb8d176c73
+- 2026-11-13T08:30:50 dependency map dd3dbd5a-5221-45a0-972a-3bf87d0dd00b
+- 2026-11-13T08:30:51 lead 2918 GoldX 091f60ca-caec-4c85-b444-cd13b799430c
+- 2026-11-13T08:30:52 lead 2918 PGold 43bc41df-c52a-4772-85d7-b06c04a97a26
+- 2026-11-13T08:30:58 lead 2918 BronzeX b52dd3f5-5c46-41f7-aa0c-9a823e992fcd
+- 2026-11-13T08:31:14 set QA RT17 GS 2919 fb9ec7c4-e9ac-439e-837e-0c8256e89501
+- 2026-11-13T08:31:15 field Leads qa_rt17_bp 85ffe70b-f67a-470b-8003-bc5a3349ba1a
+- 2026-11-13T08:31:15 blueprint QA RT17 2919 BP (inactive) 72ad2046-2684-4ac9-91a0-989c3f7d6621
+- 2026-11-13T08:31:18 blueprint 72ad2046-2684-4ac9-91a0-989c3f7d6621 ON
+- 2026-11-13T08:31:18 blueprint 72ad2046-2684-4ac9-91a0-989c3f7d6621 OFF 200
+- 2026-11-13T08:35:42 backup Leads Standard layout bf971461-2edc-45f2-b6e4-6e180aa64288 -> out/layout-standard-before.json
+- 2026-11-13T08:40:43 field Leads qa_rt17_2865_ui 9da05112-30c1-48be-8023-338850976c6f (UI, on Standard layout bf971461 CREATE view)
+- 2026-11-13T08:44:15 field Leads qa_rt17_map 5918c671-e9e4-4f3d-8268-8a094bafb7d1
+- 2026-11-13T08:44:15 lead 2806 Copper d2e0ca5a-5d8a-466b-8214-6120880e1cc0
+- 2026-11-13T08:44:17 set clone QA RT17 GS Tier_Cloned 8117b652-5336-4887-9d82-d87feb5e999a
+- 2026-11-13T08:44:21 DELETED set clone 8117b652-5336-4887-9d82-d87feb5e999a
+- 2026-11-13T08:44:54 set from field QA RT17 GS converted 5a81e738-deb8-4968-9bb3-6740609d3c41
+- 2026-11-13T08:44:54 set QA RT17 GS Limit de9d2406-0aae-44d5-bdcb-45ac89766117
+- 2026-11-13T08:44:54 field Leads qa_rt17_lim_0 fd3d57ba-d2cc-43a4-a2b9-7f02ca8edbd9
+- 2026-11-13T08:44:54 field Leads qa_rt17_lim_1 dab5171b-a982-4524-a194-54e6c87329ed
+- 2026-11-13T08:44:54 field Leads qa_rt17_lim_2 113edee9-1202-4a04-86c8-331f8fe570aa
+- 2026-11-13T08:44:55 field Leads qa_rt17_lim_3 afe125a2-1286-484d-a04b-61dd053a46f6
+- 2026-11-13T08:44:55 field Leads qa_rt17_lim_4 987f7f03-0df7-4702-a5b1-6fcc48b37902
+- 2026-11-13T08:44:55 field Leads qa_rt17_lim_5 ec14376b-c3e9-4cb1-90da-a6463f5a6ab2
+- 2026-11-13T08:44:55 field Leads qa_rt17_lim_6 ecbb5505-f9f7-4fb6-b5bc-ccc83bcaca8b
+- 2026-11-13T08:44:55 field Leads qa_rt17_lim_7 137442e9-5f5f-4bfe-88ae-2f8e91c2c356
+- 2026-11-13T08:44:55 field Leads qa_rt17_lim_8 53d30cec-6dd9-4b87-869d-e779942784d2
+- 2026-11-13T08:45:16 set QA RT17 GS Limit2 a52071e8-99ea-4b31-9fd0-b68579a48da1
+- 2026-11-13T08:45:17 field Customers qa_rt17_lim_c0 f4d5dd37-3620-4fd8-8c7c-553218c1f307
+- 2026-11-13T08:45:18 field Customers qa_rt17_lim_c1 b0cc444f-a995-4765-a107-68eb8dfda9d0
+- 2026-11-13T08:45:18 field Customers qa_rt17_lim_c2 91e81394-06e2-4268-8241-4ea68efbadb0
+- 2026-11-13T08:45:18 field Customers qa_rt17_lim_c3 3846854e-a34f-4d01-af79-838318596f93
+- 2026-11-13T08:45:18 field Customers qa_rt17_lim_c4 bd0834d8-31ec-4ea3-8060-d69833ad93fe
+- 2026-11-13T08:45:18 field Customers qa_rt17_lim_c5 01b1dda6-244a-4d78-b1e9-1b8376e6685f
+- 2026-11-13T08:45:18 field Customers qa_rt17_lim_c6 d4081d73-66cc-4c73-9239-f3ce5a0f300a
+- 2026-11-13T08:45:20 field Customers qa_rt17_lim_c7 6e370cdf-2b4d-4c41-855d-e6ab641ec78f
+- 2026-11-13T08:47:50 desk department QA RT17 2174 Dept 9dcbbd31-c248-4386-b64c-c83797a626e5
+- 2026-11-13T08:47:50 desk layout QA RT17 2174 Layout f9d54792-a08e-4fcb-9f03-f55472972ec4
+- 2026-11-13T08:47:50 layout f9d54792-a08e-4fcb-9f03-f55472972ec4 statuses Open/Escalated/Closed default Escalated
+- 2026-11-13T08:48:03 desk ticket QA RT17 2174 no status 6256a5a7-8919-482b-90b7-e7309f90ba4a
+- 2026-11-13T08:48:04 desk ticket QA RT17 2174 Open bada799a-b6a2-4f2f-b52e-90a3cdefbfb8
+- 2026-11-13T08:51:15 leads QA RT17 2807 0001-0200: 200 (ids in out/ids.json R07)
+- 2026-11-13T08:51:15 Leads view QA RT17 2807 view 705a2841-a7dc-4acf-bf72-911f99b94f60
+- 2026-11-13T08:53:49 backup Leads list-preferences -> out/leads-prefs-before.json
+- 2026-11-13T09:09:52 NDC-2807 mass delete test: 200 of 200 RT17 2807 leads deleted (to bin)
+- 2026-11-13T09:14:04 lead 2630 send b64bed3b-2394-4d7f-91f7-e5d96b28dac1
+- 2026-11-13T09:15:31 lead 2630 send real 383e3fc5-6154-4cf5-8117-f3b9f3a05abc
+- 2026-11-13T09:16:55 Desk contact QA RT17 2810 A e4c505e0-51b7-4728-8a77-083bfce80f4c
+- 2026-11-13T09:16:56 Desk contact QA RT17 2810 B 8b0aa868-0215-4e59-97c3-794596bcbef1
+- 2026-11-13T09:17:44 CRM contact (synced) QA RT17 2810 A 0f0b4153-6e5e-452c-ab43-5b8a899d571b
+- 2026-11-13T09:17:44 CRM contact (synced) QA RT17 2810 B 2e5be52a-1b9a-43dc-bab6-0c53e8ef589b
+- 2026-11-13T09:17:54 deleted CRM contact (Customers) QA RT17 2810 B 2e5be52a-1b9a-43dc-bab6-0c53e8ef589b 204
+- 2026-11-13T09:17:55 deleted Desk contact QA RT17 2810 A e4c505e0-51b7-4728-8a77-083bfce80f4c 204
+- 2026-11-13T09:21:08 desk team QA RT17 2794 team 42f230e2-ece0-48c2-8773-4bcb4cb3b902
+- 2026-11-13T09:21:09 desk workflow rule QA RT17 2794 team+agent (ACTIVE) bebe32ef-9709-4a38-b445-2d2c64bf67f5
+- 2026-11-13T09:21:09 desk ticket QA RT17 2794 team+agent ticket 952e3f24-c0f2-4ba2-ab52-9fc6fcf9cc3e
+- 2026-11-13T09:22:01 desk rule bebe32ef-9709-4a38-b445-2d2c64bf67f5 deactivated 204
+- 2026-11-13T09:31:59 desk tickets QA RT17 2823 01-60: 60 (ids T23), dept QA RT17 2174 Dept
+- 2026-11-13T09:32:00 desk view QA RT17 2823 view 8a8702b0-3b31-4a08-9fea-cd08057b0219
+- 2026-11-13T09:35:11 desk ticket QA RT17 2823 control e0fb77b1-3c37-47d5-8466-eff703b8b351
+- 2026-11-13T09:40:41 desk ticket QA RT17 2635 ticket bbc21254-62b5-49f4-b87e-ee2b9455f234
+- 2026-11-13T09:40:42 desk task QA RT17 2635 task A 217ed31e-8c86-4878-88f3-c43233929f86
+- 2026-11-13T09:40:42 desk task QA RT17 2635 task B 3bc46a47-14e4-4125-a5c2-3981bca4dcbc
+- 2026-11-13T09:40:43 desk task QA RT17 2635 task C fb773bc4-330d-4ddb-9672-acc9f1af950f
+- 2026-11-13T09:40:45 desk task C deleted via API 204
+- 2026-11-13T09:43:20 desk task A deleted via task page UI
+- 2026-11-13T09:43:36 desk call QA RT17 2635 call 788fe81c-0421-4c48-bd70-d99af6ec0337
+- 2026-11-13T09:44:22 backup Transactions list-preferences -> out/transactions-prefs-before.json
+- 2026-11-13T14:08:16 CLEANUP CRM {"layoutHadField":true,"stillHas":false,"layoutPut":"422 LAYOUT_SETTING_UNSUPPORTED: These layout settings are available on Desk modules only. {\"success\":false,\"data\":null,\"error\":{\"code\":\"LAYOUT_SETTING_UNSUPPORTED\",\"message\":\"These layout settings are available on Desk modules only.\",\"details\":[{\"path\":\"helpCenter\",\"type\":\"unsupported\",\"me","rule":204,"bp":204,"views":[204,204],"reports":[400,400],"maps":[204,204],"leads":{"204":15},"crmContactA":204,"sets":{"QA RT17 GS 2867":204,"QA RT17 GS 2868":204,"QA RT17 GS 2917":204,"QA RT17 GS 2918":204,"QA RT17 GS 2919":204,"QA RT17 GS converted":204,"QA RT17 GS Limit2":204},"fields":{"qa_rt17_tier":204,"qa_rt17_cv":204,"qa_rt17_rep":204,"qa_rt17_dp":204,"qa_rt17_dc":204,"qa_rt17_pp":204,"qa_rt17_dc2":204,"qa_rt17_bp":204,"qa_rt17_2865_ui":204,"qa_rt17_map":204,"qa_rt17_lim_0":204,"qa_rt17_lim_1":204,"qa_rt17_lim_2":20
+- 2026-11-13T14:08:33 CLEANUP CRM2 {"layoutStillRefs":false,"del bab8912b":"204","del 55428e5a":"204"}
+- 2026-11-13T14:08:48 CLEANUP prefs {"Leads":"200 lastView now kanban","Transactions":"unchanged"}
+- 2026-11-13T14:09:00 CLEANUP DESK {"rule":204,"team":204,"view":204,"tickets":{"204":65},"taskB":204,"call":204,"contactB":204,"layout":204,"dept":"422 UNPROCESSABLE: This department still has 1 agent and 63 tickets. Choose an active department to transfer them to."}
+- 2026-11-13T14:09:24 CLEANUP recycle bin: scanned 4958, mine 257, purged 257
+- 2026-11-13T14:09:38 CLEANUP recycle bin: scanned 4701, mine 0, purged 0
+- 2026-11-13T14:09:39 CLEANUP desk department 422 UNPROCESSABLE: This department still has 1 agent. Choose an active department to transfer them to.
+- 2026-11-13T14:09:48 CLEANUP desk department 200
+- 2026-11-13T14:10:12 CLEANUP verified zero: CRM sets/fields/views/rules/reports/blueprints/leads 0, layout clean, prefs restored; Desk depts/teams/views/layouts/tickets 0; bins purged (257 own items); saved sign-in state deleted

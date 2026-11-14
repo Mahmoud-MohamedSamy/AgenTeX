@@ -1,0 +1,85 @@
+{
+ "out": "NDC-2628-retest-PASS.png",
+ "ticket": "NDC-2628",
+ "priority": "medium",
+ "title": "Global search \"#tag\" now finds records by tag (last open item of the daily-record-work gap list)",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Ctrl K global search · existing Leads tag \"Rule A Done\" (4 leads, from GET /modules/Leads/tags) · read-only",
+ "date": "11 Nov 2026",
+ "panels": [
+  {
+   "img": "2628-hashPartial.png",
+   "caption": "Typing \"#Rule\": a TAGS group suggests \"#Rule A Done · 4 records\" above the record hits",
+   "crop": [
+    512,
+    108,
+    576,
+    490
+   ],
+   "boxes": [
+    {
+     "b": [
+      524,
+      185,
+      1076,
+      258
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2628-tag-click.png",
+   "caption": "Choosing the tag runs #\"Rule A Done\": RECORDS 4 — exactly the 4 leads with that tag",
+   "crop": [
+    512,
+    108,
+    576,
+    400
+   ],
+   "boxes": [
+    {
+     "b": [
+      524,
+      185,
+      1076,
+      420
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Type # and part of a tag name",
+   "Tags are offered / searched",
+   "TAGS: \"#Rule A Done · 4 records\" (suggestions API returns the tag and its count)",
+   "PASS"
+  ],
+  [
+   2,
+   "Search by the tag",
+   "Records with that tag (was: \"No results\")",
+   "#\"Rule A Done\" → 4 records, all tagged Rule A Done; matches the tag's usage count 4",
+   "PASS"
+  ],
+  [
+   3,
+   "Exact tag search in another module and for a one-word tag",
+   "Records with that tag",
+   "#\"Completed\" (Tasks) → 5 = tag count 5; #\"test\" → 2 tagged leads only (not other records named test); #\"Excel Imported\" → 1, #\"New\" → 1",
+   "PASS"
+  ],
+  [
+   "—",
+   "Typed \"#Rule A Done\" / \"#Workflow Completed\" without picking the suggestion",
+   "Results, not \"No results\"",
+   "13 and 44 record hits, tagged records first; also matches names/words (the ticket says Zoho # searches record name or tags)",
+   "INFO"
+  ]
+ ]
+}

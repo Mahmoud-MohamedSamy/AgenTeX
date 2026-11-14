@@ -1,0 +1,4 @@
+const pages = { products: '/settings/organization/products', import: '/settings/data/import', export: '/settings/data/export', backup: '/settings/data/backup', contracts: '/modules/' + KM };
+for (const [k, u] of Object.entries(pages)) { await go(u, 14000); const t = (await page.locator('body').innerText()).replace(/\s+/g, ' '); const i = t.search(/DATA ADMINISTRATION|Data Administration|PRIVACY/); out[k] = page.url().replace(H, '') + ' | ' + t.slice(-700); out[k + '_btns'] = await page.locator('main').last().getByRole('button').evaluateAll(es => es.map(e => (e.getAttribute('aria-label') || e.innerText || '').trim().slice(0, 30)).filter(Boolean).slice(-15)); await shot('w5/W5-74-' + k + '-agentC'); }
+const me = await api('GET', '/iam/me'); out.me = me.s + ' ' + (me.t.match(/"(profile_name|role_name|profile)":"[^"]*"/g) || []).join(',');
+return fin({ out });

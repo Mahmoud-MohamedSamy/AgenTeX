@@ -1,7 +1,7 @@
 // Customer (Help Center) lane. Signs in ONCE, keeps state in scratchpad/state-portal.json.
 // Usage: node portal.js <step.js> <outname>   step.js body gets (page, ctx, HC, out, shot)
-const fs = require('fs'), path = require('path'); const P = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX';
-const S = 'C:/Users/a/AppData/Local/Temp/claude/a6a908e6f46fe25f/f8ef493a-ea8b-46bf-90e4-4def7dea2502/scratchpad';
+const fs = require('fs'), path = require('path'); const P = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation';
+const S = 'C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/3d6c9864-52e6-4e9d-95a9-14042dfac39c/scratchpad';
 const RUN = P + '/executions/execu_2026-11-01_desk-golive';
 const HC = 'https://staging-crm.taviportal.com/help/hc1.a7a7a7a7000000000000000000000004.rDvrZfW_-TBcbb_XkySGodjzQfiQLj80dsTNfdLteDw/';
 const { chromium } = require(path.join(P, 'node_modules/playwright-core'));

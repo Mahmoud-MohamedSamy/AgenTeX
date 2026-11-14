@@ -1,0 +1,11 @@
+await go('/analytics/dashboards', 10000);
+await page.getByRole('button', { name: 'Switch folder' }).click(); await sleep(1000); await page.getByText('My Dashboards').last().click(); await sleep(4000);
+const r2 = page.locator('tr, [role=row]').filter({ hasText: 'QA GL W5 dashboard' }).first();
+await r2.getByRole('button', { name: /^Actions for QA GL W5 dashboard/ }).click(); await sleep(1500);
+await page.getByRole('menuitem', { name: /Delete/ }).click(); await sleep(1500);
+let n0 = NET.length; await page.getByRole('button', { name: 'Move to Recycle Bin' }).click(); await sleep(4000);
+out.del = NET.slice(n0).filter(x => /dashboard/.test(x.u)).map(x => x.m + ' ' + x.u.split('?')[0] + ' ' + x.s);
+out.list = (await mtxt()).slice(0, 300);
+const g = await api('GET', '/reporting/dashboards/8f751dad-7d45-4764-badd-2caab0e16318'); out.after = g.s + ' ' + g.t.slice(0, 120);
+const rb = await api('GET', '/audit/recycle-bin/items?q=' + encodeURIComponent('QA GL W5')); out.bin = arr(D(rb.j)).map(i => i.module_label + ':' + i.record_label + ':' + i.record_id);
+return fin({ out });

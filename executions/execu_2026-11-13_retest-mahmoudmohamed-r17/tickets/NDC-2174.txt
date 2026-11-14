@@ -1,0 +1,87 @@
+# NDC-2174 Modules and Fields Missings
+Summary
+We compared TAVI Desk's Modules and Fields (modules, tabs, layouts and fields) with Zoho Desk. This ticket lists what Zoho Desk has and TAVI Desk does not have yet. Time Entry was not checked. Six items are already filed in NDC-1879 and one in NDC-1866; they are listed at the end and not repeated. Each item has an attached image: TAVI on the left, Zoho Desk on the right, with numbered boxes and a short comparison table.
+Missing — tabs and modules
+- Tab bar set by the admin for everyone. In Zoho a hidden module is hidden for every user, and at least one module must stay. Today TAVI's Organize Tabs changes only your own tab bar ("Changes apply to you only"). Image 01.
+- Rename any tab. Zoho has a Rename Tabs page with 19 names, including Knowledge Base, Customers, Activities, Analytics, Reports, Dashboards, Community, Social, Chat and IM. Today TAVI can rename only record modules. Image 02.
+Missing — fields
+- Protect the standard fields. In Zoho, core fields are "Non-removable", system-mandatory fields cannot be made optional, other standard fields can only go to Unused Fields, and only custom fields are marked as custom. Today every seeded field is marked "Custom Field"; Subject on Calls, Events and Tasks, Product Name and Contract Name can be deleted; Ticket Subject and Status can be made optional and removed; Contact, Department, Email, Description, Due Date, Priority, Channel, Ticket Owner and Resolution can be removed from the ticket layout (API flags isCustomField, canMarkRequired, canRemoveFromLayout). Image 04.
+- Layouts per department and the Department field. In Zoho, Tickets, Tasks, Calls, Events and Contracts have one layout per department; Department cannot be removed there and is mandatory on Tasks, Calls, Events and Contracts; Products has a mandatory multi-select Department. Today TAVI layouts are assigned to profiles only, and Department is optional and not on the Tasks, Calls or Events layouts. Image 05.
+- Missing or different standard fields: Tickets Category and Sub Category (with a dependency); Accounts Annual Revenue and separate Street, City, State and Code; Products Department, and Manufacturer as a pick list; Tasks Remind At; Calls and Events Remind me; Contact Name mandatory on Calls and Events; Call Status mandatory on Calls; Contracts Account Name, Start Date and Support Plan mandatory, plus SLA Name. Image 06.
+- Picklist tools: Add Values in Bulk (predefined lists, typed values or a file), Sort A–Z, clear all values, and Replace Values at any time, which updates existing records. Today values are added, moved and removed one at a time, and replacement is offered only when removing a used option. Image 07.
+- Rounding for Decimal and Currency fields (Normal, Round off, Round down, Round up). Today only precision and scale. Zoho side from the help docs. Image 08.
+- Lookup options: filter which records can be picked (up to 5 criteria), search by up to 6 fields, show up to 6 fields in the pop-up, sort, and fill up to 5 fields from the chosen record. Today only target module, display field, related list title and multi-module. Zoho side from the help docs. Image 09.
+Missing — layouts and setup pages
+- Help Center settings on a layout: Display in Help Center (a column on the Tickets layouts list), Display Name in Help Center, Description, and Allow non-department agents. Today a new layout has a name only. Image 10.
+- Ticket Status page, per department: add statuses and give each one a type (Open, On Hold, Closed), so that On Hold pauses the SLA clock. Today Status is a plain pick list. Image 11.
+- Agents as a customisable module. In Zoho, Agents has its own layout, 15 field types and 240 custom fields. TAVI has no Agents module in Modules and Fields (check NDC-1878 for overlap). Image 12.
+Missing — found in functional testing (added 13 Oct 2026)
+- Default value for a field. In Zoho a text, pick list or checkbox field can have a default value, which is filled in on new records only (the Priority value list shows a "Default" tag). Today TAVI's Field Properties (General, Validation, Permissions, Advanced) have no default-value setting, and a defaultValue saved into the layout through the API is ignored: the create form opens empty and a record created through the API with no values is saved empty. Spec rows I19 and I24. Image 13.
+Already filed (still missing, seen live in Zoho on 5 Oct 2026)
+- NDC-1879 item 1: Layout Rules page.
+- NDC-1879 item 2: Validation Rules page.
+- NDC-1879 item 3: picklist values per layout.
+- NDC-1879 item 4: Help Center access per field ("Hide from Help Center", "Editable for End Users").
+- NDC-1879 item 5: nested and colour-coded picklists.
+- NDC-1879 item 6: field encryption.
+- NDC-1866 item 16: ticket number format (Zoho Ticket Id is an Autonumber; TAVI Ticket Number is a read-only single line).
+Could not be checked
+- No Light Agent or Reviewer test account is available. Please give us one account for each of these profiles so we can test field permissions and Light Agent limits for them.
+- Some standard fields are already soft-deleted on the tenant (Contacts Mailing Address and Description; Accounts Industry, Fax, Address and Description; last changed 14 Sep 2026). Please confirm whether this was done on purpose, so we know whether to restore them before checking item 6.
+- Zoho's new-field dialogs are drag-only and we did not drag anything in the Zoho org, so items 8 and 9 come from Zoho's help docs. Please confirm if a live check in Zoho is needed.
+Additional notes
+- Not gaps: department access for custom modules (locked to "All Departments" in live Zoho), Products tab (Zoho has none in the bar either), the IM tab (part of the IM channel), Zoho field limits, and import/export of custom module records (Zoho does not support it either).
+- Different values, not gaps: Ticket Priority and Ticket Channel values differ from Zoho, but both are editable lists.
+- Possible bug to check separately: Tickets layout builder, gear → Rename Module crashes the page ("Cannot read properties of undefined (reading 'trim')"). See image 02, box 3.
+- Possible bug to check separately: seeded standard fields are flagged as custom and can be permanently deleted.
+- Possible bug to check separately: the layout preview shows stored option keys (low, email) instead of labels.
+- Possible bug to check separately: every module has a required "Name" field that is on no layout (for example Tickets).
+- Possible bug to check separately: Desk shows CRM wording ("Set up your CRM", "inside the CRM").
+- Possible bug to check separately: Last Modified shows "UN" for every seeded module.
+- Possible bug to check separately: the Create module dialog has no Arabic name ("Registers a new module (English label)").
+- Test spec and full missing list: docs/desk-modules-fields/ in the QA repository (spec-desk-modules-fields.md, desk-modules-fields-missing-list.md, evidence/).
+- The comparison was read-only. Nothing was changed on the TAVI tenant or in the Zoho org.
+- Item 13 was found in functional test run 2 (6–7 Oct 2026) on a QA test module, which was deleted afterwards. Nothing was changed in the Zoho org.
+Environment
+staging-desk.taviportal.com, Chromium (TAVI) and Edge (Zoho Desk), 5 October 2026, admin accounts. Item 13: functional run 2, 6–7 October 2026.
+
+
+== COMMENTS (2)
+--- comment 2026-11-09T14:02:25.111712+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 9 Nov 2026 (stays in Backlog)
+Environment: staging-desk / staging-crm.taviportal.com · tenant NDC-Staging · Edge (headless) + API · admin mahmoud.mahamed1515
+Method: screen + API, on a throwaway department (QA RT9 2174 Dept) with its own ticket layout and throwaway fields; all deleted afterwards.
+Every item still open on 3 Nov is now built and works. One small gap is left: the default status chosen for a department's layout is not applied to new tickets.
+Checked:
+- 10 statuses per department → Ticket Status › "Statuses by department and layout": pick department + layout, "Use only the statuses picked below", default status; saved [PASS]
+- 10 only picked statuses usable → ticket page and new-ticket form offer Open / Escalated / Closed only; API refuses On Hold: "'On Hold' is not one of this layout's statuses: Open, Escalated, Closed." [PASS]
+- 10 default status → default set to Escalated, but the new-ticket form shows "Select" and an API create without a status answers "Status is required." [FAIL]
+- 6 pick-list tools → Add values in bulk ("3 new values. 1 already in the list and skipped."), Sort A–Z, Replace values, Clear all; sorted order saved and shown on the form; a value not in the list is refused [PASS]
+- 7 rounding → Normal / Round off / Round down / Round up + decimal places; Round off, 2 places: 12.345 → 12.35, 7.3449 → 7.34, 1.005 → 1.01 [PASS]
+- 8 lookup options → filter, search by up to 6 fields, pop-up fields, sort, fill fields; filter "Email contains qa.webform" → the picker lists only those 5 contacts [PASS]
+- 12 default value → pre-filled on the new-ticket form and stored when left empty; a typed value is kept [PASS]
+Still failing:
+- 10 default status: expected a new ticket in the department to start on the layout's default status (Escalated); actual the form shows "Select" and the API requires a status.
+Notes: the API accepts a lookup value outside the lookup filter (the screen picker applies it). The ADVANCED tab says "No advanced configuration available for <field>" above options that are there. Not tested: what happens to a ticket moved onto the layout (fallback to default).
+Evidence: NDC-2174-retest-PARTIAL.png (attached)
+
+--- comment 2026-11-03T13:54:14.849833+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 3 Nov 2026 → moved to Bug
+Environment: staging-crm / staging-desk.taviportal.com · tenant NDC-Staging · Edge (headless) + API · admin mahmoud.mahamed1515, agent fedelav803, owner ndc-staging-owner
+Method: API and screen
+Most gaps are now built (admin tab bar for everyone, Rename Tabs, protected standard fields, Department on activities, missing standard fields, Help Center layout settings, Ticket Status types, Agents module). Still open: ticket statuses are not per department; pick-list tools, rounding, lookup options and default values could not be confirmed (layout editor timed out; not present in the API data).
+Checked:
+- 1 tab bar → "Changes apply to every agent in your organization" [PASS]
+- 2 rename tabs → every top-bar tab, EN + AR [PASS]
+- 3 standard fields → core fields not deletable; Subject/Status required; only real custom fields marked custom [PASS]
+- 4 department → Department required; Products Departments multi [PASS]
+- 5 standard fields → Category + Sub Category, Annual Revenue + address, Manufacturer pick list, Remind At, required contact / call status / contract fields, SLA Name [PASS]
+- 9 Help Center → displayInHelpCenter, helpCenterDisplayName, allowNonDepartmentAgents [PASS]
+- 10 Ticket Status → Open / On Hold (pauses SLA) / Closed [PASS]
+- 10 per department → "Statuses apply to every department. A separate status list per department is not available yet." [FAIL]
+- 11 Agents → Agents module listed (11 fields) [PASS]
+- 6 / 7 / 8 / 12 → not confirmed: editor timed out; API shows no rounding, lookup filter/search/fill or default value [INFO]
+Still failing:
+- 10 per department: expected Per department, actual "Statuses apply to every department. A separate status list per department is not available yet."
+Evidence: NDC-2174-retest-PARTIAL.png (attached)
+

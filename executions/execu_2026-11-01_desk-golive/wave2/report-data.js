@@ -5,7 +5,7 @@ module.exports = {
  "decisions": [
   "**Filed 12 Nov (your approval: all except C10):** NDC-2947 (C5, High), NDC-2949 (C2), NDC-2950 (C4), NDC-2952 (C6), NDC-2954 (C11), NDC-2956 (C13) (Medium), NDC-2957 (C1), NDC-2960 (C7) (Low). State Bug, MahmoudMohamed + mfathy + Hegazy + eahmed, module Desk, Sprint 15. Annotated image attached to all except NDC-2954.",
   "**NDC-2954 (C11) is probably not a bug:** NDC-Staging has a company signature with **required = on** (set 7 Sep by the owner). TAVI says a required company signature replaces the agent signature, which is exactly what the emails showed. Your call: cancel NDC-2954, or let me switch required off for a few minutes and send one more test email.",
-  "**C10 not filed:** waiting for a live Zoho check (two Zoho agents and a temporary Private sharing setting).",
+  "**C10 checked live in Zoho 14 Nov:** Zoho refuses (Permission denied / 403); **filed 14 Nov as NDC-3045** (Bug, High, Desk, Sprint 16). Zoho test data deleted; department QA C10 Marketing left disabled (Zoho has no delete).",
   "**Withdrawn, not filed:** C3 (approver outside the department, Zoho allows it too), C12 (read-only share can still add a private comment, same in Zoho), C8 and C9 (my test-script errors).",
   "**Next:** C10 Zoho check, then Wave 3 (automation) on NDC-Staging."
  ],
@@ -164,7 +164,7 @@ module.exports = {
   {
    "id": "C10",
    "sev": "High",
-   "title": "Access | With Private ticket sharing, an agent can read tickets of a department they are not in when a lower-role agent owns them (needs your decision)",
+   "title": "Access | With Private ticket sharing, an agent can open tickets of a department they are not in when a lower-role agent owns them",
    "cases": "W2-76, W2-85",
    "where": "Setup › Data sharing (Tickets = Private); agent C ticket list and ticket page",
    "steps": [
@@ -174,10 +174,10 @@ module.exports = {
    ],
    "expected": "C cannot see Marketing tickets (403/404), as C is not in Marketing (case expectation, NDC-2196).",
    "actual": "C **lists and opens #3105 and #3106 with their comments**; no other Marketing tickets. Access comes from the role hierarchy (C above B).",
-   "zoho": "Zoho docs: Private gives \"the ticket owner and their manager\" access; silent on departments. Not testable live with one admin account.",
+   "zoho": "**Checked live 14 Nov** (Zoho test org TechEgySolutions, Enterprise; Tickets sharing set to Private for the test, then set back). Test agent 2 (role CEO, not in the department) tried ticket #101 owned by test agent 1 (role Manager, in department QA C10 Marketing): **\"Permission denied. You do not have sufficient permissions to perform this operation.\"**; API GET ticket → 403; department ticket list → 403; search finds nothing. Control: once agent 2 was added to the department, #101 opened (200). So in Zoho the department comes first and the role hierarchy only works inside the agent's departments.",
    "evidence": "Raw: `evidence/wave2n/r-c-marketing.png`, `r-c-cs.png`, `r-roles.png`, `r-data-sharing.png`.",
    "images": [
-    "evidence/annotated/W2-C10-vs-zoho.png"
+    "evidence/annotated/W2-C10-vs-zoho-live.png"
    ]
   }
  ],

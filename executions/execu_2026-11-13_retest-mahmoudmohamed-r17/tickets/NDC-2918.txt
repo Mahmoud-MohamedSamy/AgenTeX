@@ -1,0 +1,26 @@
+# NDC-2918 Global Sets | Replace does not update field dependency maps
+Summary
+A global-set field can be the parent or the child of a field dependency, and the rules work. But after Replace, the dependency maps still use the old value, which is now unused. The new value has no rule, so any combination is accepted, and existing records end up breaking the map.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 11 Nov 2026
+- Owner account; set "QA GS1111 R3 Dep" (Gold, Silver, Bronze); Leads dependency maps
+Steps to reproduce
+- Create a dependency with the set field as parent: Gold → X, Silver → Y. Gold + X saves; Gold + Y is refused.
+- Create a dependency with the set field as child: P → Gold, Silver; Q → Bronze. P + Gold saves; Q + Gold is refused.
+- Replace Gold → Bronze in the set.
+- Read both dependency maps, and create a lead with Bronze + X.
+Expected result
+As in Zoho CRM, the dependency follows the new value. Seen in our Zoho test org: after Replace Gold → Silver the map changed from Gold → X, Silver → Y to Silver → X, Y (Gold removed, its child values merged), and all records stayed valid. Zoho's Replace note lists "Field Dependency".
+Actual result
+- Both maps still contain "Gold" (now unused); Bronze has no rule in the first map.
+- A new lead with Bronze + any child value is accepted.
+- The existing lead with P + Gold now holds P + Bronze, which the second map forbids.
+- Used In does not list dependency maps, so the admin is not warned.
+Notes
+- Related: NDC-2866 (workflows), NDC-2867 (custom views), and item 1 of NDC-2870.
+- Test data was deleted.
+- Evidence (TAVI left, Zoho right): B7-replace-does-not-update-field-dependency-vs-zoho.png
+
+
+== COMMENTS (0)
+

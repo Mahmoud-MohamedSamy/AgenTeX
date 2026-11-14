@@ -1,0 +1,14 @@
+const setLang=async(re)=>{await page.locator('header button:has-text("EN"), header button:has-text("AR"), button[aria-label*="anguage" i]').first().click(); await sleep(1000); await page.getByText(re).first().click(); await sleep(5000);};
+await page.goto(H+'/settings/modules-and-fields',{waitUntil:'domcontentloaded'}); await sleep(6000);
+await setLang(/العربية/); log('dir', await page.evaluate(()=>document.documentElement.dir));
+await page.goto(H+'/settings/modules-and-fields',{waitUntil:'domcontentloaded'}); await sleep(6000);
+await page.locator('[role=tab]').nth(2).click(); await sleep(4000);
+await shot('2869-ar-list.png');
+const row=page.locator('tr',{hasText:'QA RT17 GS Tier'}); await row.locator('button').first().click(); await sleep(4000);
+await shot('2869-ar-editor.png');
+const t=await page.locator('[role=dialog], aside, .drawer, [class*=Drawer], [class*=Modal]').last().innerText().catch(()=>text());
+const latin=(t.match(/[A-Za-z][A-Za-z ()0-9]{2,}/g)||[]).filter(s=>!/QA RT17|Gold|Silver|Bronze|GS Tier/.test(s));
+log('latin strings', latin);
+log('editor text', t.slice(0,1500));
+await page.mouse.wheel(0,800); await sleep(1000); await shot('2869-ar-editor-2.png');
+return {};

@@ -1,0 +1,10 @@
+await go('/settings/modules-and-fields', 12000);
+await page.getByRole('button', { name: 'Open menu for QA GL W5 Module' }).click(); await sleep(1500);
+await page.getByText('Delete', { exact: true }).last().click(); await sleep(2000);
+const cd = page.locator('[role=alertdialog], [role=dialog]').last();
+const n0 = NET.length; await cd.getByRole('button', { name: /Delete module/ }).click(); await sleep(4000);
+out.del = NET.slice(n0).filter(x => !/heartbeat/.test(x.u)).map(x => x.m + ' ' + x.u.split('?')[0] + ' ' + x.s + ' ' + x.t.slice(0, 300));
+out.toast = (await page.locator('[data-sonner-toast], [role=status], [role=alert]').allInnerTexts().catch(() => [])).join(' | ');
+out.dlgAfter = (await dtxt()).slice(0, 300);
+await shot('w5/W5-51-delete-refused');
+return fin({ out });

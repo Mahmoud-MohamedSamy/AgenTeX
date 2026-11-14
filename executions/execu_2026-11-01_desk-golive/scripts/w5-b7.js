@@ -1,0 +1,3 @@
+const TM = '88e8ea44-1658-4df3-9930-d0902b91073d';
+for (const id of ['a9a4c545-cd24-451a-ae7d-6025f16b4797', '4d03a01e-9d79-488f-a45e-5be055069a66']) { const r = await api('GET', '/modules/' + TM + '/records/' + id); const x = D(r.j) || {}; const o = {}; for (const d of x.data || []) if (/priority|status/.test(d.field)) o[d.field] = d.value; out[id.slice(0, 4)] = o; const h = await api('GET', '/desk/tickets/' + id + '/history'); out['h' + id.slice(0, 4)] = arr(D(h.j)).slice(0, 3).map(e => e.action + ' ' + e.field_key + ' ' + JSON.stringify(e.old_value) + '→' + JSON.stringify(e.new_value)); }
+const b6 = NET; return fin({ out });

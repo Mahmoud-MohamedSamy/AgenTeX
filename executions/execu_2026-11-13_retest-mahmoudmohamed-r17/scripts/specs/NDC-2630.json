@@ -1,0 +1,124 @@
+{
+ "out": "NDC-2630-retest-PARTIAL.png",
+ "ticket": "NDC-2630",
+ "priority": "high",
+ "title": "Email — failed sends are honest and Compose is blocked; the message still carries a \"Sent\" chip",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless + API · leads \"QA RT17 2630 send\" / \"send real\"",
+ "date": "13 Nov 2026",
+ "panels": [
+  {
+   "img": "2630-compose.png",
+   "caption": "Compose Email for a sender the provider refuses: warning with the reason; Send disabled (was open with Send enabled)",
+   "crop": [
+    352,
+    45,
+    896,
+    810
+   ],
+   "boxes": [
+    {
+     "b": [
+      376,
+      126,
+      1224,
+      219
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      372,
+      807,
+      460,
+      843
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2630-record-emails-refused.png",
+   "caption": "Record › Emails: \"Not sent: No Zoho account found…\", Failed + Retry",
+   "crop": [
+    306,
+    532,
+    700,
+    62
+   ],
+   "boxes": [
+    {
+     "b": [
+      310,
+      538,
+      1000,
+      590
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2630-email-detail.png",
+   "caption": "Message dialog: blue \"Sent\" chip beside the red status chip",
+   "crop": [
+    480,
+    330,
+    640,
+    60
+   ],
+   "boxes": [
+    {
+     "b": [
+      792,
+      342,
+      824,
+      362
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Compose when the sender can't send",
+   "Blocked with a reason (Zoho)",
+   "Warning + reason; Send disabled",
+   "PASS"
+  ],
+  [
+   2,
+   "Send (API) as refused sender",
+   "Failed with reason",
+   "422 MAIL_SEND_FAILED; Emails tab Failed + Retry",
+   "PASS"
+  ],
+  [
+   3,
+   "Timeline",
+   "No \"email sent\"",
+   "RecordCreated only",
+   "PASS"
+  ],
+  [
+   4,
+   "Message dialog of a failed mail",
+   "Only the failed status",
+   "Blue \"Sent\" chip next to red Failed / Bounced",
+   "FAIL"
+  ],
+  [
+   5,
+   "Hard bounce (reserved domain)",
+   "Shown as failed",
+   "\"Bounced\" with reason in API; no Retry",
+   "INFO"
+  ]
+ ]
+}

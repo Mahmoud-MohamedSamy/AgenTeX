@@ -1,0 +1,5 @@
+const fs=require('fs'); const rows=fs.readFileSync('C:/Users/Dell/Downloads/secret-key-1793537440144.csv','utf8').trim().split(/\r?\n/).map(l=>l.split(','));
+const ki=rows[0].findIndex(h=>/secret key/i.test(h)); const H={'X-API-Key':rows[1][ki>=0?ki:rows[0].length-1].trim()};
+const B='https://api.plane.so/api/v1/workspaces/ahmed-hegazy/projects/efce4d84-5876-4015-b472-2efca7ad73f3';
+const S={'11f2d31f-9d01-4463-a1de-ce99521b97aa':'Done','34a7f4b6-7207-4955-b927-0d8d1dd3c666':'Bug','f5299bf6-0dfc-4d40-9223-da9c1fab09b1':'RFT'};
+(async()=>{const d=require('../plane-draft.json'); const out=[]; for(const x of d){const w=await (await fetch(`${B}/work-items/${x.id}/`,{headers:H})).json(); const a=await (await fetch(`${B}/work-items/${x.id}/attachments/`,{headers:H})).json(); const at=(Array.isArray(a)?a:a.results||[]).filter(f=>(f.attributes&&f.attributes.name||f.name||'')===x.image).length; out.push(x.ticket+' '+(S[w.state]||w.state)+(S[w.state]===x.state?' ✓':' ✗')+' img '+at);} console.log(out.join('\n'));})();

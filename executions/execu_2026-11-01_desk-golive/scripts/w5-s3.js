@@ -1,0 +1,6 @@
+const items = { 'W5-66': 'Signals', 'W5-59a': 'Data Types', 'W5-59b': 'Capabilities', 'W5-52r': 'Organize Tabs', 'W5-67': 'Home Page', 'W5-45r': 'Recycle Bin', 'W5-39r': 'Export', 'W5-44': 'Bulk Actions Log', 'W5-41': 'Data Backup', 'W5-42': 'Migration', 'W5-47': 'Data Retention', 'W5-43': 'Sandboxes', 'W5-46': 'Data Archive', 'W5-68': 'Audit Log', 'W5-62': 'Collaboration Tools', 'W5-63b': 'Custom Actions', 'W5-61': 'CRM ⇄ Desk Integration', 'W5-50': 'Modules and Fields', 'W5-60r': 'Products' };
+const body = async () => { const t = (await page.locator('body').innerText()).replace(/\s+/g, ' '); const cut = t.indexOf('Email Providers'); return t.slice(cut > 0 ? cut + 15 : 0, (cut > 0 ? cut + 15 : 0) + 900); };
+for (const [k, label] of Object.entries(items)) { try { await go('/settings/data/import', 6000); await page.getByRole('button', { name: label, exact: true }).first().click().catch(async () => { await page.getByText(label, { exact: true }).first().click(); });
+  const t0 = Date.now(); for (let i = 0; i < 12; i++) { await sleep(1500); const b = await body(); if (b.length > 100 && !/Loading/.test(b.slice(0, 200))) break; }
+  out[k] = Math.round((Date.now() - t0) / 1000) + 's ' + page.url().replace(H, '') + ' | ' + await body(); await shot('w5/' + k); } catch (e) { out[k] = 'ERR ' + e.message.slice(0, 80); } }
+return fin({ out });

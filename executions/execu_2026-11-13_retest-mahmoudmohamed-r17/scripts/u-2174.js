@@ -1,0 +1,11 @@
+await page.goto(H+'/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records/new',{waitUntil:'domcontentloaded'});
+await page.getByText('Ticket Information',{exact:true}).first().waitFor({timeout:240000}); await sleep(3000);
+const statusInfo=()=>page.evaluate(()=>{const lab=[...document.querySelectorAll('label,span,div')].find(e=>e.childElementCount<=1&&/^\*?\s*Status\s*\*?$/.test(e.textContent.trim()));if(!lab)return 'no label';
+ let c=lab;for(let i=0;i<5;i++){c=c.parentElement;const ctl=c.querySelector('select,button[role=combobox],[role=combobox],button[aria-haspopup]');if(ctl){return {tag:ctl.tagName,text:(ctl.tagName==='SELECT'?ctl.options[ctl.selectedIndex]?.text:ctl.innerText).trim()};}}return 'no ctl';});
+log('before dept', await statusInfo());
+await page.locator('xpath=//*[normalize-space(text())="Department"]/following::*[normalize-space(text())="Sales"][1]').first().click(); await sleep(1500); await page.keyboard.type('QA RT17 2174'); await sleep(3000);
+await page.getByText('QA RT17 2174 Dept').last().click(); await sleep(6000);
+log('after dept', await statusInfo()); await shot('2174-new-ticket-default-status.png');
+await page.locator('xpath=(//*[normalize-space(text())="Status"])[1]/following::button[1]').click().catch(e=>log('sErr',e.message.slice(0,80))); await sleep(2000);
+log('opts', await page.locator('[role=option],[role=menuitem],[role=menuitemradio]').allInnerTexts()); await shot('2174-new-ticket-status-opts.png'); await page.keyboard.press('Escape');
+return {};

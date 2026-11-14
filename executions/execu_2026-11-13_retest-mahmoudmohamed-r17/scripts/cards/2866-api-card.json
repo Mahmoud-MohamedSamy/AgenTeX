@@ -1,0 +1,45 @@
+{
+ "out": "2866-api-card.png",
+ "title": "NDC-2866 Replace vs workflow rules (API)",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  [
+   "Setup",
+   "POST /workflow/rules  criteria Tier = Bronze, action Field update Tier = Silver",
+   "201; Used In lists the rule",
+   "info"
+  ],
+  [
+   "Replace Bronze → Gold",
+   "POST /global-sets/{id}/values/replace {Bronze:\"Gold\"}",
+   "200; rule criteria now \"Gold\"; record Bronze → Gold",
+   "ok"
+  ],
+  [
+   "Replace Silver → Gold",
+   "POST …/replace {Silver:\"Gold\"}",
+   "200; rule field update now \"Gold\"",
+   "ok"
+  ],
+  [
+   "Remove a value a rule uses",
+   "POST …/values/remove {values:[\"Silver\"]} (rule action = Silver)",
+   "409 \"\\\"Silver\\\" is used by workflow rules or processes. Change or remove it there first, or use Replace.\"",
+   "ok"
+  ],
+  [
+   "Replace Silver → Bronze",
+   "POST …/replace {Silver:\"Bronze\"}",
+   "200; rule action now \"Bronze\"",
+   "ok"
+  ],
+  [
+   "Rule run",
+   "switch rule on, create lead Tier = Gold",
+   "No execution recorded for the rule in 40 s (not observed)",
+   "info"
+  ]
+ ]
+}

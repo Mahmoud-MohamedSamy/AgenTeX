@@ -1,0 +1,14 @@
+const TM = '88e8ea44-1658-4df3-9930-d0902b91073d', CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158';
+const c = await api('POST', '/desk/departments', { name: 'QA GL W5 Dept', visibility: 'private', description: 'QA GL W5 repro, delete after' }); out.dept = c.s; const DID = c.j && c.j.data && c.j.data.id; out.did = DID; if (DID) CREATED.push({ kind: 'department', id: DID, name: 'QA GL W5 Dept' });
+await sleep(2000);
+const t = await mk(TM, 'ticket', 'QA GL W5 dept repro', { subject: 'QA GL W5 dept repro', department: DID, status: 'Open', email: 'qa-gl-w5-c1@example.com' }); out.ticket = t;
+const recDept = async () => { const r = await api('GET', '/modules/' + TM + '/records/' + t.id); return ((D(r.j).data || []).find(d => d.field === 'department') || {}).value; };
+const deskDept = async () => (D((await api('GET', '/desk/tickets/' + t.id)).j) || {}).department_id;
+out.before = { rec: await recDept(), desk: await deskDept() };
+out.targets = (await api('GET', '/desk/departments/' + DID + '/transfer-targets')).s;
+const dis = await api('POST', '/desk/departments/' + DID + '/disable', { transfer_department_id: CS, target_department_id: CS }); out.disable = dis.s + ' ' + dis.t.slice(0, 200);
+await sleep(4000); out.afterDisable = { rec: await recDept(), desk: await deskDept() };
+const del = await api('DELETE', '/desk/departments/' + DID, { transfer_department_id: CS, target_department_id: CS }); out.del = del.s + ' ' + del.t.slice(0, 200);
+await sleep(4000); out.afterDelete = { rec: await recDept(), desk: await deskDept() };
+const f = [{ field: 'department', operator: 'equals', value: CS }, { field: 'subject', operator: 'contains', value: 'QA GL W5 dept repro' }]; const l = await api('GET', '/modules/' + TM + '/records?page=1&per_page=5&filters=' + encodeURIComponent(JSON.stringify(f))); out.inCSList = (l.j && l.j.meta && l.j.meta.total_count);
+return fin({ out });

@@ -1,0 +1,4 @@
+const o={}; const lay=(await api('GET','/modules/'+L+'/layouts/'+I.LAY)).j.data; o.layoutStillRefs=JSON.stringify(lay.views).includes('9da05112');
+if(o.layoutStillRefs){ const nv=JSON.parse(JSON.stringify(lay.views),(k,val)=>Array.isArray(val)?val.filter(x=>!(x&&typeof x==='object'&&JSON.stringify(x).includes('9da05112')&&!(x.fields||x.sections||x.rows))):val); const r=await api('PUT','/modules/'+L+'/layouts/'+I.LAY,{name:lay.name,views:nv,dependencies:lay.dependencies||[],row_version:lay.rowVersion||lay.row_version}); o.put=SR(r)+' '+r.t.slice(0,200); }
+for(const id of ['bab8912b-0750-47c6-8dcb-03b56c9e918e',I.REPB]){ const g=(await api('GET','/reporting/reports/'+id)).j.data; const d=g.data||g; const rev=d.revision??d.row_version??d.version; const r=await api('DELETE','/reporting/reports/'+id+'?expected_revision='+rev); o['del '+id.slice(0,8)]=SR(r); }
+LED('CLEANUP CRM2 '+JSON.stringify(o)); return o;

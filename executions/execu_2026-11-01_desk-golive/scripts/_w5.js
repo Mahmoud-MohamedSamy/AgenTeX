@@ -15,19 +15,31 @@ const sv = v => ({ kind: 'string', value: v });
 const mk = async (mod, kind, name, fields) => { const r = await api('POST', '/modules/' + mod + '/records', { data: Object.entries(fields).map(([f, v]) => ({ field: f, value: (v && v.kind) ? v : sv(v) })) }); const id = r.j && r.j.data && r.j.data.id; if (id) CREATED.push({ kind, id, name }); return { s: r.s, id, err: r.s >= 300 ? JSON.stringify(r.j && r.j.error || r.t).slice(0, 220) : '' }; };
 const get = async (mod, id) => flat(D((await api('GET', '/modules/' + mod + '/records/' + id)).j) || {});
 const mtxt = async () => (await page.locator('main').last().innerText().catch(() => '')).replace(/\s+/g, ' ');
+const openBuilder = async () => {
+  await go('/analytics/reports/builder', 4000); await page.getByRole('button', { name: 'Select Primary Module' }).waitFor({ timeout: 60000 });
+  await page.getByLabel('Report Name').fill('QA GL W5 report');
+  await page.getByRole('button', { name: 'Select Primary Module' }).click(); await sleep(1500);
+  await page.getByRole('option', { name: /^Tickets/ }).first().click(); await sleep(1000);
+  await page.getByRole('button', { name: /^Create$/ }).click();
+  for (let i = 0; i < 20; i++) { await sleep(2000); if (/Continue/.test(await mtxt())) break; }
+  await page.getByRole('button', { name: /^Continue$/ }).click();
+  for (let i = 0; i < 15; i++) { await sleep(2000); if (/Run Preview|Edit columns/.test(await mtxt())) break; }
+};
+const dtxt = async () => (await page.locator('[role=dialog]').last().innerText().catch(() => '')).replace(/\s+/g, ' ');
+const pickF = async (btn, field) => { await page.getByRole('button', { name: btn }).click(); await sleep(1500); const d = page.locator('[role=dialog]').last();
+  await d.getByPlaceholder('Search fields…').fill(field); await sleep(800); await d.getByText(new RegExp('^' + field + '$')).first().click(); await sleep(800);
+  await d.getByRole('button', { name: /^Done$/ }).last().click(); await sleep(1500); };
 let out = {};
 try {
-await go('/analytics/reports/builder', 9000);
-await page.getByLabel(/Report Name/i).first().fill('QA GL W5 report').catch(async () => { await page.locator('main input').first().fill('QA GL W5 report'); });
-const sel = page.locator('main').getByText(/Select a dataset/).first(); await sel.click(); await sleep(2000);
-out.datasets = (await page.locator('[role=listbox], [role=menu], [role=dialog]').last().innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 500);
-await shot('w5/W5-25-datasets');
-const opt = page.getByRole('option', { name: /^Tickets/ }).first(); if (await opt.count()) await opt.click(); else await page.getByText(/^Tickets$/).last().click();
-await sleep(1500);
-const n0 = NET.length; await page.getByRole('button', { name: /^Create$/ }).click(); await sleep(8000);
-out.net = NET.slice(n0).filter(x => /reporting/.test(x.u)).map(x => x.m + ' ' + x.u.split('/').slice(-2).join('/') + ' ' + x.s + ' ' + x.t.slice(0, 160));
-const m = out.net.join(' ').match(/"id":"([0-9a-f-]{36})"/); if (m) { CREATED.push({ kind: 'report', id: m[1], name: 'QA GL W5 report' }); out.rid = m[1]; }
-out.url = page.url().replace(H, ''); out.body = (await page.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 1500);
-await shot('w5/W5-26-builder');
+await go('/settings/organization/products', 12000); await sleep(2000);
+await page.getByRole('button', { name: 'New Product' }).click(); await sleep(3500);
+await page.getByLabel('Product Name').fill('QA GL W5 Ev Product'); await page.getByLabel('Product Code').fill('QA-GL-W5-EV');
+const n0 = NET.length; await page.getByRole('button', { name: /^Save$/ }).last().click(); await sleep(1500);
+await shot('w5/W5-60-save-error'); await sleep(2500);
+out.net = NET.slice(n0).filter(x => /records/.test(x.u)).map(x => x.m + ' ' + x.s + ' ' + x.t.slice(0, 200));
+out.msg = (await page.locator('[role=alert], [data-sonner-toast], [class*=toast], [class*=error]').allInnerTexts().catch(() => [])).join(' | ').slice(0, 400);
+const m = out.net.join(' ').match(/"id":"([0-9a-f-]{36})"/); if (m) { CREATED.push({ kind: 'product', id: m[1], name: 'QA GL W5 Ev Product', mod: PM }); out.pid = m[1]; }
+const dep = page.getByText('Departments', { exact: false }).last(); if (await dep.count()) { await dep.scrollIntoViewIfNeeded().catch(() => {}); await sleep(800); await shot('w5/W5-60-save-error-field'); }
+out.fieldTxt = (await mtxt()).match(/.{0,120}not a valid department.{0,80}/)?.[0];
 return fin({ out });
 } catch (e) { out.ERR = String(e.message).replace(/\u001b\[[0-9;]*m/g, '').slice(0, 500); return fin({ out }); }

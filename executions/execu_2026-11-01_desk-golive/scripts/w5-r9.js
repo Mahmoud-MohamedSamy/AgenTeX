@@ -1,0 +1,14 @@
+await page.goto(H + '/hq'); await sleep(6000);
+await page.getByRole('button', { name: 'Department scope' }).click(); await sleep(1500);
+out.scope = (await page.locator('[role=menu], [role=listbox], [role=dialog]').last().innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 400);
+await shot('w5/W5-26-scope');
+await page.keyboard.press('Escape');
+await openBuilder();
+await pickF('Edit columns', 'Ticket Number'); await pickF('Edit row groups', 'Status'); await pickF('Edit aggregate columns', 'Record count');
+await page.getByRole('tab', { name: 'Filters' }).click(); await sleep(1000);
+await page.getByRole('button', { name: 'Add Filter' }).click(); await sleep(1500);
+const d = page.locator('[role=dialog]').last(); await d.getByRole('button', { name: /Add criterion/ }).click(); await sleep(1500);
+out.crit = (await dtxt()).slice(0, 600);
+out.critCtl = await d.locator('button, input, [role=combobox]').evaluateAll(es => es.map(e => e.tagName + ':' + (e.getAttribute('aria-label') || e.innerText || e.placeholder || '').trim().slice(0, 40)));
+await shot('w5/W5-26-criterion');
+return fin({ out });

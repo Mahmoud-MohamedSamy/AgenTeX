@@ -1,0 +1,60 @@
+# NDC-2635 Activity Life Cycle: features Zoho Desk has that Desk is missing
+Summary
+We compared Desk's Activity Life Cycle (tasks, calls and events) with Zoho Desk Activities. This ticket lists what Zoho has and Desk does not have yet. There is no single PRD for activities; this is item "Activity Life Cycle" of NDC-1865. Earlier activity gaps are in NDC-1782 (only SMS reminders left) and NDC-2008 (Phase 3), and are not repeated here.
+Already done in Desk
+- Tasks, calls and events can be added from the Activities page, from a ticket's ACTIVITY tab (ticket pre-filled) and from contacts and accounts.
+- Task statuses match Zoho. Mark as Complete fills Completed Time; Reopen Task goes back to Not Started.
+- Calls: Start Call, End Call with outcome (notes go to the ticket as a private comment), Mark as missed, Cancel Call, Reopen Call, Reschedule. A completed call is locked on its page.
+- Events: Mark as Completed, Cancel, Reopen Event. An event does not close by itself when its time passes, same as Zoho.
+- Overdue badge on open activities whose time has passed.
+- 18 task views (Open, Overdue, Today's, Tomorrow's, Today + Overdue, Next 7 Days + Overdue, My …, Spam and more) showing the right records, plus custom views.
+- Classic, Compact and Table layouts, sort, search, filter, Export and bulk Update.
+- Reminders: up to 5 per activity, pop-up and email, with clear messages for every wrong value. The pop-up arrived 5 seconds after the due time.
+- Comments (with @mention, edit, delete), attachments, time entry and timer on activities.
+- Desk also has a Calendar, event invitees with RSVP and a timer, which Zoho Desk does not have.
+Missing — settings
+- Department on every activity. In Zoho it is required, it limits the owner list to that department, and an activity is only seen inside its department. Desk forms have no Department, and an admin outside Customer Support can open and edit the activities of Customer Support tickets that are 404 for them.
+Missing — list and page actions
+- Delete on the task, call or event page (Zoho: Delete, goes to the Recycle Bin). Desk can only delete through the API.
+- Delete in the bulk bar (Zoho mass actions: Update, Delete, Assign To). Desk's bulk bar has Update only.
+Missing — where activities show
+- Activity count on the ticket (Zoho returns taskCount). Desk ticket counts are replies, comments, attachments and time entries only.
+Missing — API
+- A ticket-activities endpoint and ready-made filters (Zoho: GET /tickets/{id}/activities, dueDate=Overdue / Today / Tomorrow, /tasks/count). Desk only has the generic records API; /desk/activities, /desk/activities/stats and /desk/activities/reports return 404.
+Environment
+staging-desk.taviportal.com, Edge, 26 October 2026, Desk Agent and Desk Admin accounts.
+
+
+== COMMENTS (3)
+--- comment 2026-11-11T17:03:51.810090+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 11 Nov 2026
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: ndc-staging-owner (Tenant Owner)
+Method: Manual browser + API; Zoho Desk checked live (one test task created on a Tech ticket, then deleted and purged)
+Checked:
+- 1. Department on every activity: Department* is required, and the Task Owner list now follows it (QA AS6 Dept B → its 2 agents; Sales → its 4 agents). An agent outside the department gets 403 on its activities (NDC-2830, Done). Fixed.
+- 3. Delete in the bulk bar: More › Delete → "Delete 2 records? … move to the recycle bin"; both tasks deleted. Fixed.
+Still failing:
+- 2. Delete on the task / call / event page: the task page still has only Start timer and Mark as Complete, no Delete. Zoho (seen live): task page ••• › Edit / Delete / Open in New Tab; Delete moves it to the recycle bin.
+- 4. Activity count on the ticket: ticket #2878 with 3 tasks shows "ACTIVITY" without a count (0 CONVERSATION and 0 TIME ENTRY do have counts); GET /desk/tickets/{id} counts = replies, comments, attachments, time_entries. Zoho (seen live): the ticket tab reads "1 ACTIVITY" after adding one task.
+- 5. Ticket-activities API and filters: /desk/tickets/{id}/activities, /desk/activities, /stats, /reports, /count and /desk/tasks/count all return 404. Zoho (API docs): GET /tickets/{id}/activities, dueDate filters, /tasks/count.
+Evidence: NDC-2635-retest-PARTIAL-vs-zoho.png
+
+--- comment 2026-11-10T10:56:02.490998+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Correction to item 1 of the 9 Nov recheck (checked again 10 Nov 2026 as ndc-staging-owner)
+- The owner list is not missing anyone. In Add Task it offers all 121 users before and after choosing a department, including ndc-staging-owner and the department's agents. It is just not narrowed to the chosen department's agents (checked for HR and QA AS6 Dept B). The shorter list seen on 9 Nov was under a different account (mahmoud.mahamed1515).
+- The cross-department visibility part is confirmed with an ordinary agent outside the department and is filed as NDC-2830 (High): the agent lists and opens that department's tasks and calls, while the linked ticket is blocked.
+
+--- comment 2026-11-10T10:18:59.219338+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Recheck on staging, 9 Nov 2026 (tenant NDC-Staging)
+Every item was checked again. Numbers follow this ticket. Result: 1 built, 2 partly built, 2 still missing. Related bugs NDC-2637, 2638, 2639, 2640, 2641, 2642 and 2643 are all Done.
+Built now
+- 3. Delete in the bulk bar: Bulk bar: Assign To, Update, Close, More, Delete.
+Partly built
+- 1. Department on every activity: Department is now a required field on Task, Call and Event (Add Task shows "Department*"). But it does not limit the owner list: after choosing "QA AS6 Dept B" (agents Test User 1 and ndc-staging-owner) the owner list is still me, Test User 1 and Test User 2, and ndc-staging-owner is missing. A task in Dept B opens (200) for a user who is not a Dept B agent and who sees only 2 tickets; the Tasks list loads linked tickets that return 403 and shows "Permission denied."
+- 2. Delete on the task, call or event page: The activity page still has no Delete (only Start timer and Mark as Complete). Each list row now has a Delete icon.
+Still missing
+- 4. Activity count on the ticket: Ticket counts are replies, comments, attachments and time entries only.
+- 5. Ticket-activities endpoint and ready-made filters: /desk/tickets/{id}/activities, /desk/activities, /stats, /reports, /count and /desk/tasks/count all return 404.
+Checked on NDC-Staging as mahmoud.mahamed1515 (Desk Administrator), with a throwaway task "QA RT 2635 dept visibility" in Dept B. It was deleted and purged from the Recycle Bin. Item 1 visibility was checked with an admin account only; an agent of another department was not used.
+Evidence (TAVI left, Zoho right): ev-01-department-vs-zoho.png, ev-02-delete-vs-zoho.png, ev-03-count-api-vs-zoho.png.
+

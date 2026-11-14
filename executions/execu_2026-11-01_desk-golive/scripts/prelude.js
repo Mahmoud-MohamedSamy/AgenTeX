@@ -1,6 +1,6 @@
 // Shared helpers for every group script. Never put secrets here (run-code may echo code into logs).
 const H = 'https://staging-desk.taviportal.com'; const API = H + '/api/v1';
-const RUN = 'D:/Learning & Work/Software Testing/Anyware Software/Automation/AgenTeX/executions/execu_2026-11-01_desk-golive';
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-01_desk-golive';
 const SHOT = RUN + '/evidence/raw' + (typeof SHOTDIR !== 'undefined' ? SHOTDIR : '');
 let hdr = null;
 const onReq = r => { const h = r.headers(); if (h.authorization && r.url().includes('/api/v1/')) hdr = { authorization: h.authorization, 'x-app-key': h['x-app-key'] || 'desk' }; };

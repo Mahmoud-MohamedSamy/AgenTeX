@@ -1,0 +1,2 @@
+const n = require('./bp/ndc'); const { call } = n; const M = require('./k-made.json');
+(async () => { for (const k of ['K3a', 'K3b', 'K4']) { for (const p of [`/desk/tickets/${M.tickets[k].id}/conversations`, `/desk/tickets/${M.tickets[k].id}/replies`]) { const r = await call('owner', 'GET', p); const s = JSON.stringify(r.json?.data ?? '').replace(/mahmoud\.mmohamedsamy/g, 'G').replace(/[\w.+-]+@anyware[\w.-]*/g, '<staff>'); console.log(k, p.split('/').pop(), r.status, s.slice(0, 700)); } } })();

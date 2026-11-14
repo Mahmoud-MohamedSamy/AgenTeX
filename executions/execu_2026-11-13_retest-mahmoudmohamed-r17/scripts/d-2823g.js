@@ -1,0 +1,1 @@
+const T='88e8ea44-1658-4df3-9930-d0902b91073d'; const c={}; for(const id of I.T23.concat([I.T23c])){ const s=JSON.stringify((await api('GET','/modules/'+T+'/records/'+id)).j.data); const p=(s.match(/"priority","value":\{"kind":"[a-z]+","value":"([^"]*)"/)||[])[1]; c[p]=(c[p]||0)+1; } return c;

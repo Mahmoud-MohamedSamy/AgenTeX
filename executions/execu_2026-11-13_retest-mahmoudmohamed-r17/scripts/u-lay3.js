@@ -1,0 +1,20 @@
+await page.goto(H+'/settings/modules-and-fields/841043e1-c078-41f9-8d6e-dfd61bee45c3/layouts/bf971461-2edc-45f2-b6e4-6e180aa64288',{waitUntil:'domcontentloaded'}); await sleep(12000);
+const a=await page.locator('text="Pick List"').first().boundingBox(); const b=await page.locator('text="Company"').first().boundingBox();
+await page.mouse.move(a.x+a.width/2,a.y+a.height/2); await page.mouse.down(); await sleep(300);
+for(let i=1;i<=25;i++){await page.mouse.move(a.x+(b.x+200-a.x)*i/25, a.y+(b.y+6-a.y)*i/25); await sleep(40);} await sleep(500); await page.mouse.up(); await sleep(3000);
+let t=await text(); const name=(t.match(/Named "([^"]+)"/)||[])[1]; log('new field', name, (t.match(/Named "[^\n]*/)||[''])[0]);
+await shot('2865-1-dropped.png');
+if(!name) return {err:'not dropped'};
+const row=page.locator('div',{has:page.locator(`text="${name}"`)}).filter({has:page.locator('input, [role=combobox], button')}).last();
+await page.locator(`text="${name}"`).first().hover(); await sleep(500);
+const rb=await page.locator(`text="${name}"`).first().boundingBox();
+// click the ... at the end of that row
+const dots=page.locator('button[aria-label*="ptions" i], button:has-text("⋯"), button:has-text("...")');
+const cands=await dots.evaluateAll((els,y)=>els.map((e,i)=>({i,y:e.getBoundingClientRect().y,h:e.getBoundingClientRect().height,l:e.getAttribute('aria-label')})).filter(o=>Math.abs(o.y-y)<30),rb.y);
+log('dots',cands);
+if(cands.length) await dots.nth(cands[0].i).click(); else await page.mouse.click(1521, rb.y+rb.height/2);
+await sleep(1500); await shot('2865-2-menu.png'); log('menu',(await text()).match(/Edit Properties|Mark as Required|Remove Field|Delete/g));
+await page.getByText(/Edit Properties/).first().click(); await sleep(2500); await shot('2865-3-props.png');
+await page.getByRole('tab',{name:/advanced/i}).first().click().catch(()=>page.getByText(/^Advanced$/).last().click()); await sleep(1500);
+await shot('2865-4-advanced.png'); const dlg=await page.locator('[role=dialog]').last().innerText().catch(()=>''); log('dialog',dlg.slice(0,1200));
+return {name};

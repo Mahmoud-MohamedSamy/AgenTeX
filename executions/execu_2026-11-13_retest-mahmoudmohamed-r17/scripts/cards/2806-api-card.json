@@ -1,0 +1,69 @@
+{
+ "out": "2806-api-card.png",
+ "title": "NDC-2806 Global Sets regression (API)",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  [
+   "Create + negatives",
+   "POST /global-sets (empty name / duplicate name / duplicate value)",
+   "201 · 422 \"needs a name\" · 409 NAME_TAKEN · 422 \"'A' appears more than once\"",
+   "ok"
+  ],
+  [
+   "Convert / associate",
+   "POST /global-sets/{id}/associate {mappings:{Copper:\"Gold\"}} · POST /global-sets/from-field",
+   "200, record Copper → Gold · 201 set from local field, field linked",
+   "ok"
+  ],
+  [
+   "Field on two sets / unlink",
+   "associate to 2nd set · POST /disassociate",
+   "409 GLOBAL_SET_FIELD_ALREADY_LINKED · 200, field local, record keeps Gold",
+   "ok"
+  ],
+  [
+   "Clone",
+   "POST /global-sets/{id}/clone",
+   "201 \"QA RT17 GS Tier_Cloned\", same values",
+   "ok"
+  ],
+  [
+   "Values follow",
+   "PUT add Platinum (colour) · reorder",
+   "Linked field: Gold,Bronze,Platinum · order Platinum,Bronze,Gold = set",
+   "ok"
+  ],
+  [
+   "Unused / restore",
+   "POST /values/remove Platinum · new record Platinum · /values/restore",
+   "200 · 422 (unused value refused) · 200",
+   "ok"
+  ],
+  [
+   "Locked / wrong type",
+   "associate lead_status, first_name",
+   "422 GLOBAL_SET_FIELD_DATATYPE (status / single_line)",
+   "ok"
+  ],
+  [
+   "> 15 fields",
+   "16 linked fields (Leads 9 + Customers 7): replace, delete",
+   "409 GLOBAL_SET_TOO_MANY_FIELDS for both",
+   "ok"
+  ],
+  [
+   "Delete",
+   "DELETE unused set · DELETE set used by ≤15 fields",
+   "204 then 404 · 204, fields become local and keep values (same as Zoho)",
+   "ok"
+  ],
+  [
+   "Permissions + audit",
+   "GET /iam/permissions · GET /audit/events?entity_type=global_set",
+   "crm:global_set:view + manage · 32 events today",
+   "ok"
+  ]
+ ]
+}

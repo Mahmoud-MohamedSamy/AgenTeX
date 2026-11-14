@@ -1,0 +1,39 @@
+{
+ "out": "2918-api-card.png",
+ "title": "NDC-2918 Replace vs field dependency (API)",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  [
+   "Maps",
+   "POST /modules/{Leads}/dependency-maps  set field parent {Gold:[X],Silver:[Y]} · child {P:[Gold,Silver],Q:[Bronze]}",
+   "201, 201; Gold+X 201, Gold+Y 422, P+Gold 201, Q+Gold 422",
+   "info"
+  ],
+  [
+   "Used In",
+   "GET /global-sets/{id}/used-in",
+   "dependency_maps: \"QA RT17 DP → QA RT17 DC\", \"QA RT17 PP → QA RT17 DC2\"",
+   "ok"
+  ],
+  [
+   "Replace Gold → Bronze",
+   "POST …/values/replace {Gold:\"Bronze\"}",
+   "200",
+   "info"
+  ],
+  [
+   "Maps after",
+   "GET /modules/{Leads}/dependency-maps",
+   "{Bronze:[X],Silver:[Y]} · {P:[Bronze,Silver],Q:[Bronze]} (no Gold left)",
+   "ok"
+  ],
+  [
+   "Records after",
+   "existing leads edited; new Bronze+X / +Y / +Z",
+   "old leads Bronze+X, P+Bronze, edits 200; new 201 / 422 / 422",
+   "ok"
+  ]
+ ]
+}

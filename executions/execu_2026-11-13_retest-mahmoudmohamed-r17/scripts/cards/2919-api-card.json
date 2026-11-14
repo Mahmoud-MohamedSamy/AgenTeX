@@ -1,0 +1,33 @@
+{
+ "out": "2919-api-card.png",
+ "title": "NDC-2919 inactive blueprint (API)",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  [
+   "Setup",
+   "POST /modules/{Leads}/blueprints isActive:false, states Open/Working/Done on the set field",
+   "201; Used In blueprints: [\"QA RT17 2919 BP\"]",
+   "ok"
+  ],
+  [
+   "Remove Done",
+   "POST /global-sets/{id}/values/remove {values:[\"Done\"]}",
+   "409 \"\\\"Done\\\" is a state of a blueprint. Remove the state from the blueprint first.\" (was 200)",
+   "ok"
+  ],
+  [
+   "Replace Working → Spare",
+   "POST …/values/replace",
+   "200; blueprint states Open, Spare, Done; transitions follow",
+   "ok"
+  ],
+  [
+   "Switch on",
+   "PUT blueprint isActive:true, then off",
+   "200 / 200 (was: \"State 'Done' is not an allowed value\")",
+   "ok"
+  ]
+ ]
+}

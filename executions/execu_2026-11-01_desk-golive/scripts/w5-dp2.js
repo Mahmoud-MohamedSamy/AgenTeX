@@ -1,0 +1,10 @@
+const TM = '88e8ea44-1658-4df3-9930-d0902b91073d', CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158', DID = '086be2e9-2a8d-4195-9944-3fa06284eea7', TID = '251d8190-ffbc-4439-b1d4-9c0fa56cbae9';
+const recDept = async () => { const r = await api('GET', '/modules/' + TM + '/records/' + TID); return ((D(r.j).data || []).find(d => d.field === 'department') || {}).value; };
+const deskDept = async () => (D((await api('GET', '/desk/tickets/' + TID)).j) || {}).department_id;
+const dis = await api('POST', '/desk/departments/' + DID + '/disable', { transfer_to_department_id: CS }); out.disable = dis.s + ' ' + dis.t.slice(0, 200);
+await sleep(5000); out.afterDisable = { rec: (await recDept() || {}).value, desk: await deskDept() };
+const del = await api('DELETE', '/desk/departments/' + DID, { transfer_to_department_id: CS }); out.del = del.s + ' ' + del.t.slice(0, 200);
+await sleep(5000); out.afterDelete = { rec: (await recDept() || {}).value, desk: await deskDept() };
+const f = [{ field: 'department', operator: 'equals', value: CS }, { field: 'subject', operator: 'contains', value: 'QA GL W5 dept repro' }]; const l = await api('GET', '/modules/' + TM + '/records?page=1&per_page=5&filters=' + encodeURIComponent(JSON.stringify(f))); out.inCSList = l.j && l.j.meta && l.j.meta.total_count;
+const h = await api('GET', '/desk/tickets/' + TID + '/history'); out.hist = arr(D(h.j)).slice(0, 3).map(e => e.action + ' ' + e.source + ' ' + JSON.stringify(e.old_value) + '→' + JSON.stringify(e.new_value));
+return fin({ out });

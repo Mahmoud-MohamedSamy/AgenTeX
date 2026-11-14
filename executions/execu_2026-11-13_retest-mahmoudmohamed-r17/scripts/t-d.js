@@ -1,0 +1,14 @@
+const o={};
+let r=await api('POST','/global-sets/'+I.T+'/values/restore',{values:['Silver']}); o.restore=SR(r)+' '+(r.s>=300?r.t.slice(0,200):'');
+let g=await gs(I.T); o.set=g.values.map(v=>v.value)+' | unused '+g.unused_values.map(v=>v.value);
+let w=(await api('GET','/workflow/rules/'+I.W)).j.data; o.act=w.actions[0].fieldUpdates.qa_rt17_tier.stringValue;
+r=await api('POST','/global-sets/'+I.T+'/values/remove',{values:['Silver']}); o.removeRuleAction=SR(r)+' '+(r.s>=300?r.t.slice(0,300):'');
+g=await gs(I.T); if(g.unused_values.some(v=>v.value==='Silver')) await api('POST','/global-sets/'+I.T+'/values/restore',{values:['Silver']});
+r=await api('POST','/global-sets/'+I.T+'/values/replace',{replacements:{Silver:'Bronze'}}); o.rep=SR(r)+' '+(r.s>=300?r.t.slice(0,300):''); await sleep(2500);
+w=(await api('GET','/workflow/rules/'+I.W)).j.data; o.actAfter=w.actions[0].fieldUpdates.qa_rt17_tier.stringValue; o.crit=w.criteria.value.stringValue;
+r=await api('PATCH','/workflow/rules/'+I.W,{...w,isActive:true}); o.on=SR(r); LED('rule '+I.W+' ON');
+const x=await mkRec('2866 run2 Gold',{qa_rt17_tier:'Gold'}); let v; for(let i=0;i<8;i++){await sleep(4000); v=await recVal(L,x[1],'qa_rt17_tier'); if(v!=='Gold')break;} o.runResult=v;
+const ex=await api('GET','/workflow/rules/'+I.W+'/executions?limit=5'); o.exec=SR(ex)+' '+JSON.stringify(ex.j&&ex.j.data).slice(0,300);
+w=(await api('GET','/workflow/rules/'+I.W)).j.data; r=await api('PATCH','/workflow/rules/'+I.W,{...w,isActive:false}); o.off=SR(r); LED('rule '+I.W+' OFF');
+g=await gs(I.T); o.set3=g.values.map(v=>v.value)+' | unused '+g.unused_values.map(v=>v.value);
+fs.writeFileSync(RUN+'/out/2866c.json',JSON.stringify(o,null,1)); return o;

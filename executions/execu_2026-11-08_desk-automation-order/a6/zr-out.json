@@ -1,0 +1,68 @@
+{
+ "create": "201",
+ "saved": {
+  "strict": {
+   "scope": "all",
+   "actions": [],
+   "fields": []
+  },
+  "dyn": true,
+  "z4": [
+   {
+    "field": "priority",
+    "rule": {
+     "op": "eq",
+     "field": "priority",
+     "value": "high"
+    },
+    "message": "QA Z4 priority must be high"
+   }
+  ],
+  "z5": [
+   {
+    "kind": "approval",
+    "mandatory": true,
+    "approverUserIds": [
+     "2a7c1bc4-f6d4-4bd3-805e-0496ece13987"
+    ]
+   }
+  ],
+  "z6": [
+   {
+    "kind": "share",
+    "mandatory": true,
+    "departmentId": "19510fdc-91f3-4a7a-8888-153f1318b765",
+    "access": "full"
+   }
+  ],
+  "z9": {
+   "field:description": {
+    "userIds": [
+     "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+    ],
+    "teamIds": []
+   }
+  }
+ },
+ "t4 in": true,
+ "Z4 bad": "422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed. [{\"path\":\"priority\",\"type\":\"BLUEPRINT_FIELD_INVALID\",\"message\":\"Datatype 'picklist' is not supported.\"}]",
+ "Z4 state after bad": [
+  "Open"
+ ],
+ "Z4 good": "422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed. [{\"path\":\"priority\",\"type\":\"BLUEPRINT_FIELD_INVALID\",\"message\":\"Datatype 'picklist' is not supported.\"}]",
+ "Z5 none": "422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed. [{\"path\":\"approval\",\"type\":\"DESK_ITEM_REQUIRED\",\"message\":\"An approval request is required.\"}]",
+ "Z5 with": "200 {\"run_id\":\"cdd6f5a5-98f0-4a71-a0d0-8c71d3b5f2cb\",\"from_state\":\"Open\",\"to_state\":\"Escalated\",\"reply_id\":null,\"comment_id\":null,\"resolution_set\":false,\"approval_id\":\"c1cd392f-82c3-462e-8d67-e7578e05a5fd\"}",
+ "Z5 approvals": "200 [{\"id\":\"c1cd392f-82c3-462e-8d67-e7578e05a5fd\",\"ticket_id\":\"df629172-e07e-4f3a-b45b-569581c63da3\",\"subject\":\"QA BP ZR approval\",\"description\":\"QA\",\"status\":\"pending\",\"requested_by\":\"97be04b6-0a08-4883-aa51-e1650b11cab7\",\"requested_at\":\"2026-11-12T23:46:14.743789+00:00\",\"approver_user_ids\":[\"2a7c1bc4-f6d4-4bd3-805e-0496ece13987\"],\"decided_by\":null,\"decided_at\":null,\"decision_comment\":null,\"cancelled",
+ "Z6 none": "422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed. [{\"path\":\"share\",\"type\":\"DESK_ITEM_REQUIRED\",\"message\":\"A share with another department is required.\"}]",
+ "Z6 with": "200",
+ "Z6 shares": "200 [{\"department_id\":\"19510fdc-91f3-4a7a-8888-153f1318b765\",\"department_name\":\"Tech\",\"access\":\"full\",\"shared_by\":\"97be04b6-0a08-4883-aa51-e1650b11cab7\",\"shared_at\":\"2026-11-12T23:46:20.254502+00:00\",\"updated_by\":null,\"updated_at\":null}]",
+ "Z6 C can read": 200,
+ "Z9 owner without desc": "200",
+ "Z9 A without desc": "422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed. [{\"path\":\"description\",\"type\":\"BLUEPRINT_FIELD_INVALID\",\"message\":\"Field is required.\"}]",
+ "Z9 A with desc": "200",
+ "Z1 A field edit": "403 BLUEPRINT_STRICT_MODE QA BP ZR allows this only through a transition. {\"action\":\"fields\",\"field\":\"priority\",\"refused_fields\":[\"priority\"],\"blueprint_id\":\"6d86707e-33e2-4f59-8709-a9907cbd8f8f\",\"blueprint_name\":\"QA BP ZR\"}",
+ "Z1 A comment": "400 VALIDATION_ERROR Comment body is required. [{\"field\":\"body_html\",\"issue\":\"Comment body is required.\"}]",
+ "Z1 owner field edit": "403 BLUEPRINT_STRICT_MODE QA BP ZR allows this only through a transition. {\"action\":\"fields\",\"field\":\"priority\",\"refused_fields\":[\"priority\"],\"blueprint_id\":\"6d86707e-33e2-4f59-8709-a9907cbd8f8f\",\"blueprint_name\":\"QA BP ZR\"}",
+ "ERROR": "TypeError: Cannot read properties of undefined (reading 'slice')\n    at rec (D:\\Software Testing\\Automation\\Agentex Installation\\Agentex Installation\\executions\\execu_2026-11-08_desk-automation-order\\a6\\zr.js:6:81)\n    at D:\\Software Testing\\Automation\\Agentex Installation\\Agentex Installation\\executions\\execu_2026-11-08_desk-automation-order\\a6\\zr.js:73:5\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+ "cleanup": "204 204 204 204 204 204 bp204"
+}

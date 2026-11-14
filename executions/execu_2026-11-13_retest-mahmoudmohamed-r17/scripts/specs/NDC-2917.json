@@ -1,0 +1,106 @@
+{
+ "out": "NDC-2917-retest-PARTIAL.png",
+ "ticket": "NDC-2917",
+ "priority": "high",
+ "title": "Global Sets | Replace now updates the report filter; a renamed value still shows its old stored value in the report",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless + API · set \"QA RT17 GS 2917\", report \"QA RT17 2917 Gold report B\"",
+ "date": "13 Nov 2026",
+ "panels": [
+  {
+   "img": "2917-api-card.png",
+   "caption": "Report definition and results read back",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    322
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      251
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      298
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2917-report-ui.png",
+   "caption": "Report screen after Replace + rename: 3 rows, value shown as \"Silver\", not the label \"Silver Star\"",
+   "crop": [
+    276,
+    60,
+    1310,
+    230
+   ],
+   "boxes": [
+    {
+     "b": [
+      293,
+      170,
+      1566,
+      268
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Replace Gold → Silver",
+   "Report filter follows (Zoho: \"IS Silver\")",
+   "Filter now eq Silver",
+   "PASS"
+  ],
+  [
+   2,
+   "Report results after Replace",
+   "All records under the new value",
+   "3 rows Silver (after ~25 s)",
+   "PASS"
+  ],
+  [
+   3,
+   "After an edit",
+   "Still correct",
+   "3 rows",
+   "PASS"
+  ],
+  [
+   4,
+   "Rename a value",
+   "Report shows the new label",
+   "Still \"Silver\" (stored value), not \"Silver Star\"",
+   "FAIL"
+  ]
+ ]
+}

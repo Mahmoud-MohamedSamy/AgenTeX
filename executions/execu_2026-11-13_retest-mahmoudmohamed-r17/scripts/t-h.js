@@ -1,0 +1,16 @@
+const o={}; let r;
+const mkF=async(n,dto,k)=>{const r=await api('POST','/modules/'+L+'/fields',{fields:[{fieldName:n,labels:{en:n.toUpperCase().replace(/_/g,' ')},datatypeKey:'pick_list',datatypeOptions:dto,config:dto.allowed_values?{allowed_values:dto.allowed_values}:{}}]}); const id=fid(r); if(id){I[k]=id;SAVE();LED('field Leads '+n+' '+id);} else o['err'+n]=SR(r); return id;};
+await mkSet('QA RT17 GS 2918',['Gold','Silver','Bronze'],'S18');
+await mkF('qa_rt17_dp',{global_set_id:I.S18},'fDP'); await mkF('qa_rt17_dc',{allowed_values:['X','Y','Z']},'fDC'); await mkF('qa_rt17_pp',{allowed_values:['P','Q']},'fPP'); await mkF('qa_rt17_dc2',{global_set_id:I.S18},'fDC2');
+r=await api('POST','/modules/'+L+'/dependency-maps',{controllingFieldId:I.fDP,dependentFieldId:I.fDC,valueMap:{Gold:['X'],Silver:['Y']}}); o.map1=SR(r); I.MAP1=r.j&&r.j.data&&r.j.data.id; if(I.MAP1)LED('dependency map '+I.MAP1);
+r=await api('POST','/modules/'+L+'/dependency-maps',{controllingFieldId:I.fPP,dependentFieldId:I.fDC2,valueMap:{P:['Gold','Silver'],Q:['Bronze']}}); o.map2=SR(r); I.MAP2=r.j&&r.j.data&&r.j.data.id; if(I.MAP2)LED('dependency map '+I.MAP2); SAVE();
+const a1=await mkRec('2918 GoldX',{qa_rt17_dp:'Gold',qa_rt17_dc:'X'}), a2=await mkRec('2918 GoldY',{qa_rt17_dp:'Gold',qa_rt17_dc:'Y'}), b1=await mkRec('2918 PGold',{qa_rt17_pp:'P',qa_rt17_dc2:'Gold'}), b2=await mkRec('2918 QGold',{qa_rt17_pp:'Q',qa_rt17_dc2:'Gold'});
+o.before=[a1[0],a2[0],b1[0],b2[0]].join(',');
+const u=await api('GET','/global-sets/'+I.S18+'/used-in'); o.usedIn=JSON.stringify(u.j.data.fields.map(f=>({f:f.field.field_name,maps:f.dependency_maps})));
+r=await api('POST','/global-sets/'+I.S18+'/values/replace',{replacements:{Gold:'Bronze'}}); o.replace=SR(r)+' '+(r.s>=300?r.t.slice(0,300):''); await sleep(3000);
+const maps=arr((await api('GET','/modules/'+L+'/dependency-maps')).j.data).filter(m=>[I.MAP1,I.MAP2].includes(m.id)).map(m=>JSON.stringify(m.valueMap||m.value_map)); o.maps=maps;
+o.recA=[await recVal(L,a1[1],'qa_rt17_dp'),await recVal(L,a1[1],'qa_rt17_dc')]; o.recB=[await recVal(L,b1[1],'qa_rt17_pp'),await recVal(L,b1[1],'qa_rt17_dc2')];
+const n1=await mkRec('2918 BronzeX',{qa_rt17_dp:'Bronze',qa_rt17_dc:'X'}), n2=await mkRec('2918 BronzeY',{qa_rt17_dp:'Bronze',qa_rt17_dc:'Y'}), n3=await mkRec('2918 BronzeZ',{qa_rt17_dp:'Bronze',qa_rt17_dc:'Z'});
+o.newBronze='X '+n1[0]+', Y '+n2[0]+', Z '+n3[0];
+const e1=await api('PATCH','/modules/'+L+'/records/'+a1[1],rec({last_name:'2918 GoldX edited'})), e2=await api('PATCH','/modules/'+L+'/records/'+b1[1],rec({last_name:'2918 PGold edited'})); o.editOld=e1.s+','+e2.s;
+fs.writeFileSync(RUN+'/out/2918.json',JSON.stringify(o,null,1)); return o;

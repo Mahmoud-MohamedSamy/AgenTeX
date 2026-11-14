@@ -1,0 +1,11 @@
+const fs=require('fs');const rows=fs.readFileSync('C:/Users/Dell/Downloads/secret-key-1793537440144.csv','utf8').trim().split(/\r?\n/).map(l=>l.split(','));
+const ki=rows[0].findIndex(h=>/secret key/i.test(h));const KEY=rows[1][ki>=0?ki:rows[0].length-1].trim();
+const B='https://api.plane.so/api/v1/workspaces/ahmed-hegazy/projects/efce4d84-5876-4015-b472-2efca7ad73f3';
+const g=async(m,p,b)=>{const r=await fetch(B+p,{method:m,headers:{'x-api-key':KEY,'content-type':'application/json'},body:b?JSON.stringify(b):undefined});const t=await r.text();return [r.status,t.slice(0,400)];};
+(async()=>{const id='b2298482-cf7a-464f-96e9-8cf9b860e063';
+console.log('retry cycle',await g('POST','/cycles/3a5ac486-3f65-4632-ab05-8f790e61c7b0/cycle-issues/',{issues:[id]}));
+const [s,t]=await g('GET','/cycles/?per_page=50');const cy=JSON.parse(t.length<400?t:'{}');
+const all=await (await fetch(B+'/cycles/?per_page=50',{headers:{'x-api-key':KEY}})).json();
+console.log((all.results||all).map(c=>c.name+' '+c.id+' '+c.start_date+'..'+c.end_date+' '+(c.status||'')).join('\n'));
+const w=await (await fetch(B+'/work-items/'+id+'/',{headers:{'x-api-key':KEY}})).json();console.log('state',w.state,'prio',w.priority,'labels',w.labels,'assignees',w.assignees.length,'module',w.module_ids||w.modules,'cycle',w.cycle_id);
+const a=await (await fetch(B+'/work-items/'+id+'/attachments/',{headers:{'x-api-key':KEY}})).json();console.log('attachments',(a.results||a).map(x=>x.attributes&&x.attributes.name));})();

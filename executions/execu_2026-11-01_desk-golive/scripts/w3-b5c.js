@@ -1,0 +1,10 @@
+const A = 'c0e196f8-7ad6-4978-a910-7ae0bf8513ca', T1 = '3ecf52a9-f3cd-41c6-a60f-931582cac7cd';
+const tag = (typeof process === 'undefined') ? '' : '';
+await go('/views/all/tickets/' + T1, 12000);
+await page.locator('#main-content').getByRole('button', { name: 'Actions', exact: true }).click(); await sleep(1200);
+await page.getByRole('menuitem', { name: 'QA GL W3 echo' }).click(); await sleep(2500);
+const d = page.locator('[role=dialog]').last(); const ins = d.locator('input:visible'); await ins.nth(0).fill('QAREF-ERR'); await ins.nth(1).fill('QA GL W3 error case');
+await d.getByRole('button', { name: /^Run/ }).last().click(); await sleep(12000);
+out.ui = (await d.innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 700); out.toast = (await page.locator('[data-sonner-toast],[role=status],[role=alert]').allInnerTexts().catch(() => [])).join(' | '); await shot('w3/W3-15-' + ('500'));
+const r = NET.find(n => /\/run$/.test(n.u)); out.api = r ? r.s + ' ' + r.t.slice(0, 400) : 'no run call';
+return fin({ out });

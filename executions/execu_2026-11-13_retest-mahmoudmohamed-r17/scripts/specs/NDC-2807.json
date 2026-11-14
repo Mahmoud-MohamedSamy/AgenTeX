@@ -1,0 +1,152 @@
+{
+ "out": "NDC-2807-retest-PARTIAL.png",
+ "ticket": "NDC-2807",
+ "priority": "high",
+ "title": "Bulk operations — survive in-app navigation; mass update and bin delete still stop on a full page navigation",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless + API · 200 leads \"QA RT17 2807 0001–0200\", private view",
+ "date": "13 Nov 2026",
+ "panels": [
+  {
+   "img": "2807-5b-home.png",
+   "caption": "In-app Home link during a mass update: progress panel keeps running (\"30 of 200 done\") → 200/200 updated",
+   "crop": [
+    0,
+    780,
+    700,
+    120
+   ],
+   "boxes": [
+    {
+     "b": [
+      24,
+      803,
+      284,
+      875
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2807-9-second-open.png",
+   "caption": "Second Mass Update while one runs: \"A mass update is already running for this module.\" Update disabled",
+   "crop": [
+    512,
+    270,
+    576,
+    360
+   ],
+   "boxes": [
+    {
+     "b": [
+      537,
+      365,
+      1063,
+      395
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2807-api-card.png",
+   "caption": "Record / bin counts read by API",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    322
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      230
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      240,
+      1564,
+      298
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Leave via in-app navigation during mass update",
+   "Keeps running, progress shown",
+   "Progress panel; 200/200",
+   "PASS"
+  ],
+  [
+   2,
+   "Start a second run on the same records",
+   "Blocked",
+   "\"already running… Wait until it finishes\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Mass delete then leave",
+   "Finishes",
+   "200 deleted, 0 failed (server side)",
+   "PASS"
+  ],
+  [
+   4,
+   "Mass update then reload / leave the app",
+   "Keeps running (Zoho: background job)",
+   "10 of 200 done; stops",
+   "FAIL"
+  ],
+  [
+   5,
+   "Recycle Bin delete then reload / leave",
+   "Keeps running",
+   "0 of 50 removed",
+   "FAIL"
+  ],
+  [
+   6,
+   "Empty whole bin",
+   "—",
+   "Not run (bin holds other people's items)",
+   "INFO"
+  ]
+ ]
+}

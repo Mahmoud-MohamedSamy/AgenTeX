@@ -1,0 +1,11 @@
+const pol = { department_id: MK, name: 'QA GL W3 SLA', description: null, is_active: true, triggers: { create: true, update: false, field_update: null, customer_reply: false, agent_response: false, private_thread: null, comment: null }, execute_only_with_account: false, resolution_from_created: false, targets: [{ name: 'QA GL W3 target', criteria: { conditions: [{ field_key: 'description', operator: 'contains', value: 'QAGLW3SLA' }], pattern: null }, response: { value: 60, unit: 'minutes' }, resolution: { value: 4, unit: 'hours' }, calendar_mode: 'calendar', business_hours_id: null, first_response_only: true, escalate_on_business_hours: false, escalations: { response: [], resolution: [] } }] };
+const pr = await api('POST', '/desk/sla/policies', pol); out.pol = pr.s + ' ' + (pr.s >= 300 ? pr.t.slice(0, 300) : ''); const pid = pr.j?.data?.id; if (pid) CREATED.push({ kind: 'sla_policy', id: pid, name: pol.name }); out.pid = pid;
+await go('/settings/automation/support-plans?department=' + MK, 10000);
+let t = await mtxt(); const i = t.lastIndexOf('Email Providers'); out.w301_active = t.slice(i + 15, i + 700); await shot('w3/W3-01-plans-active');
+await page.getByText('Discontinued', { exact: true }).first().click().catch(e => out.e1 = 'no Discontinued'); await sleep(3000); t = await mtxt(); out.w301_disc = t.slice(t.lastIndexOf('Email Providers') + 15).slice(0, 400);
+await page.getByText('Active', { exact: true }).first().click().catch(() => {}); await sleep(2000);
+await page.getByRole('button', { name: /New Plan/i }).first().click().catch(e => out.e2 = 'no New Plan'); await sleep(4000);
+const dlg = page.locator('[role=dialog], form').last(); out.form = (await dlg.innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 1500);
+out.inputs = await dlg.locator('input,textarea,select,[role=combobox],[role=radio],button').evaluateAll(es => es.map(e => [e.tagName, e.getAttribute('type'), e.getAttribute('name'), e.getAttribute('placeholder'), e.getAttribute('aria-label'), (e.innerText || '').trim().slice(0, 30)].join('|'))).catch(() => []);
+await shot('w3/W3-02-new-plan-form');
+return fin({ out });

@@ -1,0 +1,39 @@
+# NDC-2823 Tickets | No option to select all tickets at once in the ticket list view. (Zoho Desk offers a "Select All" master checkbox)
+TAVI Desk's ticket list has no master checkbox and no "Select All" option. Once one or more tickets are ticked, the selection chip offers only Clear selection; there is no control in the list header, in the selection chip, or under More that selects every ticket in the current view. Tickets must be ticked one row at a time.
+On the All Tickets view (377 records on staging), selecting the whole view would take 377 individual clicks, which makes the bulk actions — Assign To, Update, Close, Merge — unusable at list scale.
+Zoho Desk places a master checkbox at the far left of the bulk-action bar; hovering it reads "Select All" and one click selects every ticket in the view.
+Steps to reproduce
+- Sign in to staging-desk.taviportal.com
+- Open Tickets → Views → All Tickets (377 records)
+- Tick any single ticket to reveal the bulk-action bar
+- Look for a select-all control in the list header, in the selection chip, and under More
+Actual result
+No master checkbox and no "Select All" entry anywhere. The selection chip shows only the selected count and Clear selection.
+Expected result
+A master checkbox in the ticket list header selects every ticket shown in the current view in one action, with the selected count displayed and all bulk actions (Assign To, Update, Reply, Comment, Close, Merge, More) applying to the whole selection — matching Zoho Desk.
+Environment
+TAVI Desk — staging (staging-desk.taviportal.com/views) · Chrome · Tenant Owner profile
+
+
+== COMMENTS (2)
+--- comment 2026-11-11T11:15:43.721091+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Correction — Retest FAIL — 11 Nov 2026 → moved back to Bug
+My comment of 11 Nov said the TAVI behaviour "matches Zoho". That was not checked live and is wrong. I compared it in Zoho Desk today.
+Zoho Desk (All Tickets, 57 tickets, loads 50 at a time): the header Select All ticks the 50 loaded tickets, and the bar then shows a "Select all tickets in this view" link. One more click shows "57 · All tickets selected · Clear selection", and Assign To / Update / Close / Delete apply to all 57.
+TAVI Desk (All Tickets, 433): Select all ticks the 50 loaded rows ("50 of 433 selected — scroll to load the rest of this view"). There is no option to select the whole view. Selecting all 433 needs scrolling through 9 pages and clicking again.
+Still failing:
+- Select every ticket in the current view in one action: expected a "Select all N tickets in this view" option like Zoho's (bulk actions then apply to the whole view); actual: only the loaded rows can be selected.
+Evidence: NDC-2823-zoho-check.png (attached; TAVI left, Zoho right)
+
+--- comment 2026-11-11T10:23:01.105969+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PASS — 10 Nov 2026
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge; account: admin (ndc-staging-owner)
+Method: Screen and API
+The ticket list has a "Select all" checkbox. One click selects the loaded rows ("50 of 433 selected — scroll to load the rest of this view") and shows the bulk actions. After scrolling, clicking again selects 100 of 433. Accepted by QA (10 Nov) as matching Zoho, whose checkbox selects the tickets shown on the page.
+Checked:
+- Click Select all → 50 of 433 selected (the loaded rows) + hint to scroll [PASS]
+- Scroll to load more → 50 stay selected, header checkbox mixed [PASS]
+- Click Select all again → 100 of 433 selected [PASS]
+- Bulk actions → Assign To, Update, Comment, Close, Merge, More (not run) [INFO]
+Evidence: NDC-2823-retest-PASS.png (attached)
+

@@ -1,0 +1,10 @@
+const o={}; const sb=await api('GET','/emails/sendability'); o.sendability=SR(sb)+' '+sb.t.replace(/[\w.+-]+@[\w.-]+/g,'<email>').slice(0,300);
+const cn=await api('GET','/mail/connections'); o.connections=SR(cn)+' '+JSON.stringify(arr(cn.j&&cn.j.data).map(c=>({p:c.provider,d:c.domain,h:c.health||c.status}))).slice(0,300);
+const x=await mkRec('2630 send',{email:'qa.rt17.2630@example.com'}); o.lead=x[1];
+const body={to:['qa.rt17.2630@example.com'],subject:'QA RT17 2630 send result',body:'QA NDC-2630 send result check',body_html:'<p>QA NDC-2630 send result check</p>',record_type:'leads',record_id:x[1],attachments:[]};
+const d=await api('POST','/mail/drafts',body); const did=d.j&&d.j.data&&d.j.data.id; o.draft=SR(d);
+const s=await api('POST','/mail/drafts/'+did+'/send',{}); o.send=SR(s).replace(/[\w.+-]+@[\w.-]+/g,'<email>');
+await sleep(15000);
+const m=await api('GET','/mail/records/leads/'+x[1]+'/emails?box=mails&limit=10'); o.mails=JSON.stringify(arr(m.j&&m.j.data).map(e=>({status:e.status,err:(e.last_error||'').replace(/[\w.+-]+@[\w.-]+/g,'<email>').slice(0,120)})));
+const tl=await api('GET','/timeline/records/leads/'+x[1]+'/feed'); o.timeline=(tl.t.match(/"entry_type":"(\w+)"/g)||[]).join(' ');
+I.L2630=x[1]; SAVE(); return o;

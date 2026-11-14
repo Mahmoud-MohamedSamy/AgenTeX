@@ -1,0 +1,3 @@
+const CS='7e1ac409-58b0-41ab-97e1-0e7d5c8c5158'; const o={}; const before=(await api('GET','/desk/departments/'+CS)).j.data.agent_user_ids.length;
+for (const [n,id] of [['A','31feced6-4027-4a6b-9dc3-8b5f934e0609'],['B','7b0ba6f0-6d2d-4c87-9605-65e21cc97b8d']]) { let r=await api('DELETE','/desk/departments/'+id); if (r.s>=300) r=await api('DELETE','/desk/departments/'+id+'?transfer_to_department_id='+CS); o[n]=r.s+(r.s>=300?' '+r.t.slice(0,200):''); fs.appendFileSync('ledger.md','- '+new Date().toISOString().slice(0,19)+' DESK deleted old r14 department "QA RT14 2754 Dept '+n+'" '+id+' → '+r.s+'\n'); }
+o.csAgents=before+' → '+(await api('GET','/desk/departments/'+CS)).j.data.agent_user_ids.length; return o;

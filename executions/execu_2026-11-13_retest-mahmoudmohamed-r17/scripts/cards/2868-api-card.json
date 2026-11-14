@@ -1,0 +1,33 @@
+{
+ "out": "2868-api-card.png",
+ "title": "NDC-2868 row_version (API)",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "13 Nov 2026",
+ "rows": [
+  [
+   "Normal save",
+   "PUT /global-sets/{id} {description:\"edit one\", row_version:1}",
+   "200 → row_version 2",
+   "ok"
+  ],
+  [
+   "Save without version",
+   "PUT /global-sets/{id} {description:\"no version save\"} (no row_version)",
+   "400 GLOBAL_SET_VERSION_REQUIRED \"row_version is required. Reload the global set…\" (was 200)",
+   "ok"
+  ],
+  [
+   "Stale save",
+   "PUT … row_version:1",
+   "409 GLOBAL_SET_VERSION_CONFLICT",
+   "ok"
+  ],
+  [
+   "Stored",
+   "GET /global-sets/{id}",
+   "description still \"edit one\"",
+   "ok"
+  ]
+ ]
+}

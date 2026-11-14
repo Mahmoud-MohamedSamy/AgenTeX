@@ -1,25 +1,319 @@
 module.exports.R = {
- "W5-01": ["pass", "Contacts list (28 → 33 with QA data), views, search; Find duplicates and New Contact in the header."],
- "W5-02": ["pass", "QA GL W5 Contact 1 created through the form (201), opens the customer page."],
- "W5-03": ["pass", "Empty Last Name: 'This field is required'; 'abc@': 'Invalid email format'; 300-char name: 422 'maximum is 255'."],
- "W5-04": ["pass", "Phone edit saved; delete → Recycle Bin (label = name) → restore → record back (200)."],
- "W5-05": ["pass", "Find duplicates groups by Name / Email / Secondary email / Phone; merge dialog lets you pick master + per-field values; merge kept the master, the other is 404. Note: same email allowed on two contacts (Zoho check pending)."],
- "W5-06": ["pass", "Arabic last name and title saved and shown intact."],
- "W5-07": ["pass", "Private view 'QA GL W5 view' (first name contains QA GL W5) created and lists only the QA rows."],
- "W5-09": ["pass", "QA GL W5 Account created; Contact 1 linked; account Contacts tab lists it. Note: test contacts/accounts sync to CRM at once ('Synced')."],
- "W5-10": ["check", "No parent-account field on Accounts (no hierarchy). Zoho check pending."],
- "W5-11": ["pass", "Accounts Find duplicates (Name / Email / Phone): 'No duplicates'."],
- "W5-12": ["check", "Sync badges (Synced / Unlinked / Needs attention) have no tooltip or help on hover."],
- "W5-13": ["pass", "Contact 1 page shows its ticket #3403, counts, traffic, handling time."],
- "W5-14": ["pass", "Account page: Overview, History, Activities, Tickets, SLA & Contract, Contacts, Happiness, Products, Attachments."],
- "W5-15": ["pass", "Contracts list (6 → 9 with QA), statuses active / expired / upcoming."],
- "W5-16": ["check", "API create works; the form needs a support plan and says 'the account's department has no active support plans' (Marketing has none; creating one is an SLA change, not approved). API accepted a plan from another department and the account page then shows 'No support plan'."],
- "W5-17": ["fail", "End date before start date is accepted (saved as 'upcoming'); events refuse the same ('to_time must be on or after from_time'). Expired dates → 'expired' (pass)."],
- "W5-18": ["pass", "Activities list loads (527 → 530), tabs All / Tasks / Calls / Events."],
- "W5-19": ["pass", "Task with due date + reminder on ticket #3403; completed → status Completed with completed_time."],
- "W5-20": ["pass", "Call and event saved on the ticket; event ending before it starts refused with a clear message."],
- "W5-22": ["pass", "Calendar Week / Day show the QA items; Month groups per user per day on the right dates."],
- "W5-23": ["pass", "Headquarters loads with department filter and components."],
- "W5-33": ["pass", "Advanced Analytics: 'In Development' (G-06 stays Partly)."]
+ "W5-01": [
+  "pass",
+  "Contacts list (28 → 33 with QA data), views, search; Find duplicates and New Contact in the header."
+ ],
+ "W5-02": [
+  "pass",
+  "QA GL W5 Contact 1 created through the form (201), opens the customer page."
+ ],
+ "W5-03": [
+  "pass",
+  "Empty Last Name: 'This field is required'; 'abc@': 'Invalid email format'; 300-char name: 422 'maximum is 255'."
+ ],
+ "W5-04": [
+  "pass",
+  "Phone edit saved; delete → Recycle Bin (label = name) → restore → record back (200)."
+ ],
+ "W5-05": [
+  "pass",
+  "Find duplicates groups by Name / Email / Secondary email / Phone; merge dialog lets you pick master + per-field values; merge kept the master, the other is 404. Note: same email allowed on two contacts (Zoho check pending)."
+ ],
+ "W5-06": [
+  "pass",
+  "Arabic last name and title saved and shown intact."
+ ],
+ "W5-07": [
+  "pass",
+  "Private view 'QA GL W5 view' (first name contains QA GL W5) created and lists only the QA rows."
+ ],
+ "W5-08": [
+  "check",
+  "Contact › More actions › 'Invite to Help Center' (dialog: name, language) → invitation 200, outcome 'invited', portal account created. After inviting, the contact menu still offers 'Invite to Help Center' and shows no access status or Revoke (Zoho shows portal status + revoke on the contact). Help Center users page not checked."
+ ],
+ "W5-09": [
+  "pass",
+  "QA GL W5 Account created; Contact 1 linked; account Contacts tab lists it. Note: test contacts/accounts sync to CRM at once ('Synced')."
+ ],
+ "W5-10": [
+  "check",
+  "No parent-account field on Accounts (no hierarchy). Zoho check pending."
+ ],
+ "W5-11": [
+  "pass",
+  "Accounts Find duplicates (Name / Email / Phone): 'No duplicates'."
+ ],
+ "W5-12": [
+  "check",
+  "Sync badges (Synced / Unlinked / Needs attention) have no tooltip or help on hover."
+ ],
+ "W5-13": [
+  "pass",
+  "Contact 1 page shows its ticket #3403, counts, traffic, handling time."
+ ],
+ "W5-14": [
+  "pass",
+  "Account page: Overview, History, Activities, Tickets, SLA & Contract, Contacts, Happiness, Products, Attachments."
+ ],
+ "W5-15": [
+  "pass",
+  "Contracts list (6 → 9 with QA), statuses active / expired / upcoming."
+ ],
+ "W5-16": [
+  "check",
+  "API create works; the form needs a support plan and says 'the account's department has no active support plans' (Marketing has none; creating one is an SLA change, not approved). API accepted a plan from another department and the account page then shows 'No support plan'."
+ ],
+ "W5-17": [
+  "fail",
+  "End date before start date is accepted (saved as 'upcoming'); events refuse the same ('to_time must be on or after from_time'). Expired dates → 'expired' (pass)."
+ ],
+ "W5-18": [
+  "pass",
+  "Activities list loads (527 → 530), tabs All / Tasks / Calls / Events."
+ ],
+ "W5-19": [
+  "pass",
+  "Task with due date + reminder on ticket #3403; completed → status Completed with completed_time."
+ ],
+ "W5-20": [
+  "pass",
+  "Call and event saved on the ticket; event ending before it starts refused with a clear message."
+ ],
+ "W5-21": [
+  "check",
+  "Reused, not re-run: NDC-2635 retested 11 Nov (round 16) → PARTIAL, moved to Bug (Delete on the activity page, ticket activity count, activities API still missing); NDC-2637..2643 stay as filed. Today: task/call/event create + complete worked (W5-19/20)."
+ ],
+ "W5-22": [
+  "pass",
+  "Calendar Week / Day show the QA items; Month groups per user per day on the right dates."
+ ],
+ "W5-23": [
+  "pass",
+  "Headquarters loads with department filter and components."
+ ],
+ "W5-24": [
+  "pass",
+  "Add Component lists 8 widgets; clicking one adds it to HQ at once; card menu Settings / Remove; removed and layout kept after reload."
+ ],
+ "W5-25": [
+  "pass",
+  "Reports page: My Reports, Add Report → Create Report dialog with 19 datasets (Tickets, Contacts, Contracts, Happiness Ratings, Ticket Metrics …), then related modules step, then builder (Columns / Filters / row + column groups / aggregates / preview)."
+ ],
+ "W5-26": [
+  "pass",
+  "'QA GL W5 report' Tickets by Status with Record count saved (201). Customer Support scope: Closed 48, Open 18, total 66 = records API (66; list view 65 hides 1 spam/archived). Note: the department scope of the top bar is the only department filter used."
+ ],
+ "W5-27": [
+  "pass",
+  "Export dialog: Formatted / Detailed, Excel / PDF / CSV, record-id option; Excel downloaded (QA_GL_W5_report.xlsx). Report actions has Schedule… (5-step wizard: What, Recipients, When, Delivery, Review), Email, Print, Save As, Create Chart. Not saved (needs a recipient)."
+ ],
+ "W5-28": [
+  "pass",
+  "Agent C (no Reports permission): report URL and Reports page show 'You need permission to read reports…'; API 403 'reporting:report:read'."
+ ],
+ "W5-29": [
+  "pass",
+  "Folders: My / Starred / Popular / Time Based / Module Dashboards. Ticket Status, SLA, Overview, Customer Happiness, Leadership, Blueprints dashboards each open in ~2 s with data or a clear empty state."
+ ],
+ "W5-30": [
+  "pass",
+  "Builder: name, Reports / Gallery / Elements / Widgets panel; added QA GL W5 report + Tickets Overall, saved (PUT 200); starred (favorite 204) → listed in Starred Dashboards; Delete → 'Move to Recycle Bin' (204), dashboard 404, in Recycle Bin. Note: builder keeps an unsaved draft on the device (Restore / Discard banner)."
+ ],
+ "W5-31": [
+  "fail",
+  "Candidate E7: Overview/Ticket Status dashboards show Customer Support 'Open Tickets Now 19' vs 18 in records/report (17 in list). Reproduced: ticket 'QA GL W5 dept repro' in temp dept 'QA GL W5 Dept' → disable dept with transfer to Customer Support → Desk ticket department = Customer Support (history 'department_changed desk_api'), but the ticket record's Department stays the deleted dept → not in Customer Support's list (0) yet counted by dashboards. Same state on round-14 leftovers #1363-#1366."
+ ],
+ "W5-32": [
+  "pass",
+  "Team Feeds: post 'QA GL W5 feed …' in Marketing with @mention (suggestion list by name/email) → 201; DM via New message → conversation 201. Agent B sees it under Mentions, the DM thread, and two notifications ('mentioned you in Team Feeds', 'sent you a message')."
+ ],
+ "W5-33": [
+  "pass",
+  "Advanced Analytics: 'In Development' (G-06 stays Partly)."
+ ],
+ "W5-34": [
+  "pass",
+  "Import page: choose one module (CSV/XLS/XLSX up to 25 MB / 30,000 rows, checked before writing, undo for 30 days), ZIP import of several modules, Import history."
+ ],
+ "W5-35": [
+  "pass",
+  "Wizard Upload → Operation → Map fields (auto-map 4/4) → Assign (automation off by default) → Review: 'Rows that will import 2, Rows with errors 1' with row 4 Email 'not a valid email address'; confirm checkbox + Submit → 'Import complete: 2 Added, 1 Errors', Download error rows. Arabic last name 'Imp 2 محمد' intact. Note: the ZIP picker on the page refuses a CSV ('That file is not a ZIP archive')."
+ ],
+ "W5-36": [
+  "pass",
+  "Import history row menu: View details / Download error rows / Undo import → confirm 'records … moved to the recycle bin. Updates can't be undone' → undo 204, row 'Undone', both contacts 404."
+ ],
+ "W5-37": [
+  "pass",
+  ".txt → 'Only Excel (.xlsx, .xls) or CSV (.csv) files are supported', Next disabled. Empty CSV → shows '0 B', Next disabled but no message saying why (minor). Earlier: a CSV in the ZIP picker → 'That file is not a ZIP archive'."
+ ],
+ "W5-38": [
+  "pass",
+  "Tickets import: layout picker (Default + department layouts), operation, auto-map 5/5 (Subject, Department, Status, Priority, Email), review 2/0 → 'Import complete 2 Added'. #3460 High / #3461 Low, Open, Marketing (record and Desk ticket agree)."
+ ],
+ "W5-40": [
+  "pass",
+  "Agent C on Export: 'You don't have access to Export — needs the Export Records permission.'"
+ ],
+ "W5-41": [
+  "pass",
+  "Backup page: full backup limited to one per 30 days (next 23/11), custom backup (≤31 days), attachments + AES password options, scheduled backups, logs. Custom backup for 13 Nov → 202 queued → completed in ~10 s; log shows 'Backup requested' + 'Ready to download'. Note: the logs Refresh button did not show the new rows; a page reload did."
+ ],
+ "W5-42": [
+  "pass",
+  "Migration: 'No migrations yet', Freshdesk connector described (tickets, notes, attachments, contacts, companies; agents matched by email). No run started."
+ ],
+ "W5-43": [
+  "pass",
+  "Sandboxes: 0 of 2 in use, clear description; none created (read only by default), so NDC-2514 not rechecked."
+ ],
+ "W5-44": [
+  "pass",
+  "Mass update (Update on the list bar) of #3460/#3461 → Bulk Actions Log 'Mass update · Tickets · ndc-staging-owner · 2 · 2 · 0 · Completed'; imports and the undo are logged too. Note: bulk Close from the list bar sends one close per ticket and writes no log entry."
+ ],
+ "W5-46": [
+  "pass",
+  "Data Archive: rule (move tickets archived N days to encrypted archive files; legal hold skipped) and find/bring-back section. Read only."
+ ],
+ "W5-47": [
+  "pass",
+  "Data Retention: closed tickets / finished activities / contacts+accounts without tickets, each with years/months/days and 'Off' wording; legal hold skipped. Read only."
+ ],
+ "W5-49": [
+  "pass",
+  "No Privacy page in Setup (/settings/privacy → /hq), but contacts have record-level 'Export personal data' and 'Erase personal data' plus 'Put on legal hold' in the record menu. No data-subject request queue, read receipts or attachment controls (as in NDC-2760)."
+ ],
+ "W5-50": [
+  "pass",
+  "Modules: 10 (Agents, Tickets, Contacts, Accounts, Products, Calls, Events, Tasks, Contracts, Time Entries) + tabs Ticket Status, Web Tabs, Global Sets, Custom Module, Team Module."
+ ],
+ "W5-51": [
+  "pass",
+  "Create module dialog (plural/singular names, org vs department storage, profiles) → 201 'QA GL W5 Modules' (teamspace module); added a record (201), list shows it. Delete is refused while a record exists (409 MODULE_HAS_RECORDS, matching the dialog text); after deleting the record, 'Delete module' on the screen → 204, toast 'Module deleted'. Note: a direct API DELETE answered 409 MODULE_HAS_DESCENDANTS (default layout/fields) while the screen path succeeded."
+ ],
+ "W5-52": [
+  "pass",
+  "Organize Tabs: 'Hide Contracts' saves at once (tab-settings hidden += module:contracts), 'Show Contracts' puts it back; arrangement equal to baseline (wave5/baseline/tab-settings.json). Top bar here overflows into 'More modules', so the hide was checked through the saved arrangement."
+ ],
+ "W5-53": [
+  "pass",
+  "Contacts picklist field 'QA GL W5 field' (Alpha/Beta/Gamma) created (201), value Beta saved on QA GL W5 Contact 1 and shown on the contact page; 'Zeta' refused 'not one of the allowed values'; field deleted (204). Notes: fields created this way were not labelled on the contact page layout (value visible); after deleting the fields the contact record still carries the old qa_gl_w5_* values in its data."
+ ],
+ "W5-54": [
+  "pass",
+  "Number, date, URL, email, multi-select, checkbox fields created (201 each). Good values saved together (200). Bad values each refused 422 with a clear message: 'Expected number value', 'not a valid date (expected yyyy-MM-dd)', 'must be an absolute HTTP or HTTPS URL', 'Email value is invalid', multi 'Nine not one of the allowed values', 'Expected boolean value'. All 7 fields deleted (204)."
+ ],
+ "W5-55": [
+  "check",
+  "Reused, not re-run: NDC-2174 retest 9 Nov — per-department layouts, fields and lookups work; the layout default status is still not applied (form shows 'Select'). Known open item, nothing new filed."
+ ],
+ "W5-57": [
+  "pass",
+  "Modules and Fields › Tickets has tabs Layouts / Layout Rules / Validation Rules / Fields / Map Dependency Fields / Workflow Rules / Summary — field dependency setup exists."
+ ],
+ "W5-58": [
+  "pass",
+  "Confirmed missing: no Languages page in Setup; /settings/languages → /hq (EN/AR switch only). Already in NDC-2760."
+ ],
+ "W5-59": [
+  "pass",
+  "Data Types (catalog with category/source and capability flags) and Capabilities (flag list with 'On N datatypes', system entries protected) both load and explain themselves."
+ ],
+ "W5-61": [
+  "pass",
+  "CRM ⇄ Desk Integration: Connected; Overview / Configuration / Details / Permissions / Sync History / Failure Log; Pause sync + Disconnect (not touched)."
+ ],
+ "W5-62": [
+  "pass",
+  "Collaboration Tools: Slack (Enabled), Google Drive, Microsoft Teams with what each does. Nothing installed."
+ ],
+ "W5-74": [
+  "pass",
+  "Agent C: Modules and Fields 'You don't have permission to view this page'; Import / Export refused with the permission named; Backup 'Only the account owner can use Data Backup'. Note: C still sees the whole Setup menu (Agents, Roles, Departments …)."
+ ],
+ "W5-77": [
+  "pass",
+  "Confirmed missing: no Buttons, Marketplace or Developer space pages (/settings/buttons, /marketplace, /developer → /hq); Radar / mobile app not offered. Already in NDC-2760."
+ ],
+ "W5-44b": [
+  "fail",
+  "Candidate E1: Mass Update with a field added (Priority) but no value picked ('Select') is accepted and sends value null → priority cleared on both tickets (history High→null, Low→null), no warning. Zoho check pending."
+ ],
+ "W5-39": [
+  "pass",
+  "Export: module, CSV, Records = saved view 'QA GL W5 view', fields, date range, password ZIP option; file desk_contacts-export-…csv has exactly the 4 QA GL W5 contacts, Arabic intact (BOM); history keeps files 7 days. Candidate E2: the 'Name' column is empty on every row. Note: file name time is UTC (0025 at 02:25 Cairo)."
+ ],
+ "W5-45": [
+  "pass",
+  "Contact 'QA GL W5 Delete me': list Delete (confirm 'moves to the recycle bin') → 404 → Recycle Bin row (Desk · Contacts · who · when · 'Expires in 60 days') → Restore → 200 → delete again → 'Delete forever' (confirm 'can't be undone') → gone from bin."
+ ],
+ "W5-48": [
+  "pass",
+  "Retention › Legal holds: Add hold (Ticket / Contact / Account picker, reason) → 201, listed with who/when → Release (confirm explains effect) → removed. By design a hold only stops AUTOMATIC deletion: deleting the held ticket by hand worked (204, then restored) — the page says so; case expectation 'delete blocked' does not apply."
+ ],
+ "W5-56": [
+  "pass",
+  "Reused: Layout Rules and Validation Rules (CRM + Desk) full runs vs Zoho on 12 Nov (commits cd902ca1, 3cdfdfe5) with their own Plane filings — no separate recheck here."
+ ],
+ "W5-60": [
+  "fail",
+  "Candidate E4: New Product form cannot be saved. It pre-fills Departments with 'Sales'; Save → 422 'Departments: [\"<id>\"] is not a valid department id' (same with Marketing). The form sends departments as a list; the server accepts only one id (created via API with a single id → 201). Linked to #3403 via Product field → shows 'Product QA GL W5 Product' on the ticket. Deleted (by agent C, see W5-73)."
+ ],
+ "W5-63": [
+  "pass",
+  "Old hub link /settings/integration-config → /hq (redirect). Custom Actions page (/settings/developer/custom-actions) loads: tabs Actions / Variables / API sources, list of NDC booking actions with endpoint, apps, auth, access, AI, status."
+ ],
+ "W5-64": [
+  "pass",
+  "Custom action wizard: Import spec (URL / upload / paste OpenAPI) → select operations → configure (name, apps CRM/SalesIQ/Desk, timeout, inputs, responses, API source base URL + auth) → usage guide → 'Save & publish 1 action': source 201, action 201, publish 200; listed on Custom Actions. Did not find it on the ticket page (no Custom actions menu seen) — placement not confirmed. Action + source deleted (204, then 404)."
+ ],
+ "W5-65": [
+  "pass",
+  "Setup has no Webhooks or API keys page (/settings/webhooks, /settings/api-keys → /hq); outgoing calls only through Custom Actions (API sources) and workflow actions. Public API key page still missing (NDC-2009)."
+ ],
+ "W5-66": [
+  "pass",
+  "Setup › General › Signals opens My Notifications (/settings/notifications/preferences): channels In-app / Email / WhatsApp / SMS and per-signal delivery (mentions, new ticket, SLA, approvals, …). Note: the menu label 'Signals' lands on a page titled 'My Notifications'; /settings/organization/signals → /hq."
+ ],
+ "W5-67": [
+  "pass",
+  "Home Page: chose Overview Dashboard → PUT tab-settings/home {standard, overview} → '/' opens the Overview Dashboard; set back to Headquarters (default) → home null (baseline)."
+ ],
+ "W5-68": [
+  "pass",
+  "Audit Log: filters All Entities / Departments / Users / Actions (Added, Deleted, Executed, Exported, Imported, logged in/out, Merged, Purged, Restored, Updated) / time; today's QA GL W5 actions listed with who, when, IP. Candidate E3 (Low): entries show internal field names ('cleared Ticket's EngineDeletedAt') and name an imported ticket by the contact email ('deleted a Ticket named qa-gl-w5-c1@example.com') instead of #3460 / subject."
+ ],
+ "W5-69": [
+  "pass",
+  "Arabic: html dir=rtl lang=ar; Contacts, Accounts, Contracts, Activities, Calendar, Dashboards, Reports, Import, Modules and Fields all RTL with Arabic labels, no raw i18n keys. English left = record data (names, subjects). Note: on Modules and Fields the system module names stay English (Agents, Tickets, Products …). Set back to English."
+ ],
+ "W5-70": [
+  "pass",
+  "Profile › Accessibility: text size 100/115/130/150 %, high contrast, reduce motion, underline links, keyboard focus highlight, with live preview. 115 % applied at once (root font 16 → 18.4 px), set back to 100 % (16 px); not saved."
+ ],
+ "W5-71": [
+  "check",
+  "My Profile: Overview (personal stats), Account information (name, alias, birth date, contacts, address, 2FA), Signatures, landing page after sign-in, Accessibility. No personal time zone or date format setting found on the profile or account pages (the API reads general.user.locale.timezone / date_format, all 'Default'). Zoho has these in the personal profile."
+ ],
+ "W5-72": [
+  "check",
+  "3 loads each (s): Contacts list 1.4/2.0/1.8; contact page 2.0/4.3/2.3; Analytics Overview dashboard 3.8/2.8/3.5; Activities 4.5/1.6/2.8. Overview is over the 3 s target on average; others mostly under."
+ ],
+ "W5-73": [
+  "check",
+  "Agent C sees Contacts (32), the contact page, Contracts (9) and Products (21). C could EDIT (PATCH 200) and DELETE (204) the QA product through the API, and the Products page shows 'Edit field' to C. Needs C's profile Products permission to decide if this is wrong."
+ ],
+ "W5-75": [
+  "pass",
+  "GET a contact id that does not exist here → 404; GET records of another tenant's contacts module id → 403. No data returned."
+ ],
+ "W5-76": [
+  "pass",
+  "Contact last name '<img src=x onerror=alert(1)>' saved (201); shown as plain text in the Contacts list and in global search results; no <img> element created, no alert fired."
+ ],
+ "W5-78": [
+  "pass",
+  "Cleanup: 21 records deleted + purged by exact id (QA GL W5 contacts, accounts, contracts, task/call/event, tickets #3403/#3460/#3461/repro, product, imported contacts, xss contact, round-14 leftovers #1363-#1366), view, 2 reports, dashboard, backup, feed post, Help Center account, temp department, fields, module, custom action + source, legal hold. Diff: zero QA GL W5 records/fields/depts/actions/holds; tab arrangement + Home Page equal baseline. Left: the DM conversation (no delete endpoint, 404)."
+ ]
 };
 module.exports.BLOCK = "13 Nov ~01:00 Cairo: owner and admin B sessions revoked by another session signing in on the same accounts; paused before W5-24.";
