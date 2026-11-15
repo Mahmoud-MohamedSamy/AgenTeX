@@ -1,0 +1,11 @@
+const fs=require('fs'); const I=JSON.parse(fs.readFileSync('../out/ids-crm9.json','utf8'));
+const b=ctx.browser(); const c2=await b.newContext({viewport:{width:1600,height:900}}); const p=await c2.newPage();
+const net=[]; p.on('response',r=>{ if(/web-forms\/public/.test(r.url())&&r.request().method()==='POST') net.push(r.request().method()+' '+r.url().replace(/public\/[^/?]+/,'public/<k>').replace(/^https:\/\/[^/]+/,'')+' '+r.status()); });
+await p.goto(I.wfShare,{waitUntil:'domcontentloaded'}); await p.waitForTimeout(6000);
+await p.getByLabel(/Full Name/).fill('QA RT18 2959 hosted');
+await p.locator('select').first().selectOption('web').catch(e=>log('sel',String(e).slice(0,80)));
+await p.screenshot({path:'../screenshots/raw/2959-1-crm-hosted.png'});
+await p.getByRole('button',{name:/^Send$/}).click();
+await p.waitForTimeout(6000); log('after', (await p.innerText('body')).slice(0,300).replace(/\s+/g,' '));
+await p.screenshot({path:'../screenshots/raw/2959-2-crm-submitted.png'});
+await c2.close(); return net;

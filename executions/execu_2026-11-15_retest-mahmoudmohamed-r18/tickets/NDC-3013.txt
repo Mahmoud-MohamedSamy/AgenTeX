@@ -1,0 +1,24 @@
+# NDC-3013 Validation Rules | Old Desk rule says it "can't be applied" for the wrong reason, and is still applied
+Summary
+The existing Desk rule "QA NDC Reject needs a reason" has no layout. The list and editor say "This rule can't be applied (a field it uses changed or was deleted)". The real cause is the missing layout, and the server still applies the rule.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; Tickets › Validation Rules, rule "QA NDC Reject needs a reason" (created 3 Nov, no layout)
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Open Settings › Modules and Fields › Tickets › Validation Rules.
+- Look at the rule "QA NDC Reject needs a reason" and open it.
+- Set a ticket to status "QA NDC Reject" without a reason and save.
+Expected result
+The warning names the real problem (no layout chosen) and matches what the server does.
+Actual result
+- List and editor: "This rule can't be applied (a field it uses changed or was deleted). Edit it to rebuild it."
+- The editor opens with Layout empty; no field was changed or deleted.
+- The ticket save is still refused with "Please add a clear rejection reason", so the rule is being applied.
+Notes
+- Case J7. The API gives conditionError "A Desk validation rule applies to one layout; choose it."
+- Evidence: desk-B8-list.png, desk-J7-editor.png (attached).
+
+
+== COMMENTS (0)
+

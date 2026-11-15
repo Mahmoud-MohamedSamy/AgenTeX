@@ -1,0 +1,22 @@
+# NDC-3002 Email | Invalid domains are saved, and others get "try again" instead of a validation message
+Summary
+Email domains: bad values are saved, others get "try again" instead of a validation message. Found in the Desk go-live retest, Wave 4 (W4-08), NDC-Staging, 12 Nov 2026. Where: Setup › Channels › Email › Your domains › Add domain.
+Steps
+- Add domain "http://x.com".
+- Add domain "exa mple.com" (with a space).
+- Add domain "abc", then add a domain that is already in the list.
+- Remove one of the bad domains.
+Expected
+Invalid values are refused with a clear message; a duplicate says it already exists; Remove removes it.
+Actual
+"http://x.com" is saved as http:%2f%2fx.com and "exa mple.com" is saved, both waiting for DNS proof. "abc" and the duplicate get 503 "our side, please try again". Remove only marks the domain retired, so the junk stays listed.
+Zoho Desk
+Not checked live in Zoho (it would need test data in the Zoho account, which is read only). This is TAVI failing its own feature, so no Zoho comparison is needed to call it a bug.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner and a customer mailbox, Edge, 12 Nov 2026.
+Attachment
+Annotated evidence: W4-D1-email-domains-validation.png.
+
+
+== COMMENTS (0)
+

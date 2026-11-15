@@ -1,0 +1,158 @@
+{
+ "out": "NDC-2996-retest-PARTIAL.png",
+ "ticket": "NDC-2996",
+ "priority": "medium",
+ "title": "Layout Rules | Gap list: 1 of 6 items done (blueprint), 5 still missing",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 Layout · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2996-api-card.png",
+   "caption": "Gap items 1, 2, 3 and 6 checked through the API",
+   "crop": [
+    0,
+    80,
+    1600,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      293
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      303,
+      1564,
+      361
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2977-1-transition-dialog.png",
+   "caption": "Item 4: blueprint transition form now shows the rule-mandatory field (NDC-2977)",
+   "crop": [
+    520,
+    190,
+    560,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      565,
+      350,
+      1035,
+      405
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2996-6-suggest-again.png",
+   "caption": "Item 5: owner pressed Ignore on \"Suggested: 42\" and saved; reopening Edit shows it again",
+   "crop": [
+    290,
+    410,
+    1290,
+    280
+   ],
+   "boxes": [
+    {
+     "b": [
+      455,
+      637,
+      1549,
+      676
+     ],
+     "n": 5,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "CRM primary field: text, number, email, phone …",
+   "Any type except owner, multi-select, lookups, auto number, formula, file, multi-line",
+   "422 \"cannot be the primary field of a layout rule\" for text, number, email, phone, Company",
+   "FAIL"
+  ],
+  [
+   2,
+   "Desk primary field: text, number, date, email",
+   "Allowed",
+   "422 for Email, Due Date, Phone, Description",
+   "FAIL"
+  ],
+  [
+   3,
+   "Move a record to another layout",
+   "Layout picker on Edit; new layout's rules apply",
+   "No picker; PATCH layout_id 200 but created_with_layout_id unchanged",
+   "FAIL"
+  ],
+  [
+   4,
+   "Blueprint transition shows rule-mandatory fields",
+   "Shown",
+   "QA RT18 order* in the form, Execute blocked while empty (NDC-2977)",
+   "PASS"
+  ],
+  [
+   5,
+   "Suggest-value pop-up remembered after Ignore",
+   "Not shown again",
+   "Shown again on reopen (owner)",
+   "FAIL"
+  ],
+  [
+   6,
+   "Profile permission for a non-admin to manage rules",
+   "A Customize / Manage layouts permission",
+   "No such key among 354 permissions; runtime check with a CRM User not run (no User-profile account in this lane)",
+   "FAIL"
+  ],
+  [
+   7,
+   "Z9 (comment): Help Center form must include the primary field",
+   "Warn / require",
+   "Not checked this round (needs a Desk Help Center form fixture)",
+   "INFO"
+  ]
+ ]
+}

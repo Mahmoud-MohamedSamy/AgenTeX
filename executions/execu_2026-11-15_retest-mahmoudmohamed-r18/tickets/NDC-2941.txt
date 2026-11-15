@@ -1,0 +1,19 @@
+# NDC-2941 Scoring Rules | The same condition twice in one rule is accepted and counted twice
+Summary
+A rule can hold two identical lines (same field, condition, value and points). Both count, so a matching record gets double points.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026
+- Owner account
+Steps to reproduce
+- Create a Leads rule with two lines: Lead Source is chat → +3, and again Lead Source is chat → +3.
+- Create a lead with Lead Source = chat.
+Expected result
+The rule is refused as in Zoho CRM: ALREADY_USED "The criteria is already given in the same rule under different index".
+Actual result
+- The rule is saved (201) and the lead scores 6 instead of 3.
+Notes
+- Evidence (TAVI left, Zoho right where it was checked): C19-identical-conditions-vs-zoho.png (attached).
+
+
+== COMMENTS (0)
+

@@ -1,0 +1,14 @@
+{"out":"NDC-2807-retest-PARTIAL-vs-zoho.png","ticket":"NDC-2807","title":"Mass update when the user leaves the page: Zoho finishes as a background job, TAVI stops","verdict":"PARTIAL","label":"RETEST PARTIAL vs ZOHO","date":"TAVI 10 Nov 2026 · Zoho 11 Nov 2026",
+"env":"TAVI staging-crm (NDC-Staging, owner, 200 of 450 QA RT15 2807 leads) · Zoho CRM org944965048 (Enterprise trial, admin, 200 QA RT15 2807 leads, view QA RT15 2807 view)",
+"leftHead":"TAVI CRM (left screenshots)","rightHead":"Zoho CRM (right screenshots)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/2807-tavi-card.png","w":800,"h":287,"crop":[0,0,800,287],"caption":"TAVI: record counts checked by API after the run","boxes":[{"b":[18,50,782,176],"n":1},{"b":[18,180,782,263],"n":2}]},
+{"side":"tavi","img":"executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/NDC-2807-mu2-running.png","caption":"TAVI Leads › Mass Update (Lead Source = Referral, 200 selected) running, \"0 of 200 done\" — page left here","crop":[20,220,1080,670],"boxes":[{"b":[24,803,284,876],"n":1},{"b":[908,623,1065,663],"n":1}]},
+{"side":"zoho","img":"executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/2807-zoho-card.png","w":800,"h":287,"crop":[0,0,800,287],"caption":"Zoho: what the screen said, and record counts by API","boxes":[{"b":[18,50,782,176],"n":1},{"b":[18,180,782,263],"n":1}]},
+{"side":"zoho","img":"executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/zoho-c-2807-mu-1s.png","caption":"Zoho, 1 s after Update: \"The mass update action is scheduled successfully.\" and \"Mass update in progress — 0 out of 200 Leads updated\" (then left the page)","crop":[580,0,1020,880],"boxes":[{"b":[596,12,1004,52],"n":1},{"b":[1215,724,1595,852],"n":1}]},
+{"side":"zoho","img":"executions/execu_2026-11-10_retest-mahmoudmohamed-r15/screenshots/raw/zoho-c-2807-back.png","caption":"Zoho, back on the view after 3 min: all 200 leads show Lead Source = Cold Call","crop":[470,150,1120,700],"boxes":[{"b":[908,190,1210,815],"n":1}]}
+],
+"rows":[
+[1,"Mass update on 200 records, user leaves the page right after starting","Runs as a scheduled background job (\"scheduled successfully\", progress panel). Left the page after 2 s: 200 / 200 updated within 1 min, still 200 / 200 at 3 min.","Left the page 1 s after starting: only 6 / 200 changed after 45 s and 3 min; no job, nothing resumed, no progress on return.","DIFFERS"],
+[2,"Mass update with the page kept open","(not needed — Zoho finishes even when the page is left)","200 / 200 updated after 26 s","SAME"]
+]}

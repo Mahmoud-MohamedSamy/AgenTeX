@@ -1,0 +1,28 @@
+# NDC-3028 Tickets | Bulk Close on many selected tickets fails with 500 errors and shows a wrong result
+Summary
+In Desk, when many tickets are selected (for example the whole view with "Select all N in this view") and Close is used, most tickets do not close. The app sends one POST /desk/tickets/{id}/close per ticket and many of these return 500 INTERNAL "An unexpected error occurred." The result message is also wrong: it said "0 updated, 60 failed." although 10 tickets had closed. Found while retesting NDC-2823 (the select-all part of that ticket works).
+Steps
+- Sign in to Desk as an admin. Have a view with 60 open tickets (we used a private view with 60 test tickets).
+- Tick the header checkbox, then click Select all 60 in this view.
+- Click Close in the toolbar, then Close 60 tickets.
+- Read the message, then reload the view and check the ticket statuses.
+- Select the whole view again and click Close again (repeat once more).
+Expected
+All selected tickets close. The message shows the real result (how many closed, how many failed and why). Running Close again is not needed.
+Actual
+- Run 1 (60 tickets): many close requests return 500; the message says "0 updated, 60 failed." but 10 tickets closed.
+- Run 2 (61 tickets): 39 × 500, 12 × 409 (already closed), 10 more closed.
+- Run 3 (61 tickets): 14 × 500, 37 × 409, 10 more closed; some tickets are still Open (e.g. #3535).
+- So only about 10 tickets close per run, and the user cannot tell which ones.
+Notes
+- The same tickets close fine through the API, one by one and also 10 in parallel (200 for every ticket), so the tickets themselves can be closed.
+- Bulk Update (Priority = Medium) on the same 61 tickets works: it uses the batched mass-update request (7 × 200, 61/61 updated). Bulk Close does not use a batched request.
+- Zoho Desk bulk Close was not checked in this round.
+Environment
+staging-desk.taviportal.com, NDC-Staging, owner account, Edge, 13 Nov 2026. Test data deleted after the round.
+Attachment
+Annotated evidence: Desk-bulk-close-500-FAIL.png.
+
+
+== COMMENTS (0)
+

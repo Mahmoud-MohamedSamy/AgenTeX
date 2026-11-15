@@ -1,0 +1,22 @@
+{
+ "verdict": "FAIL", "key": "OR13", "label": "BUG",
+ "out": "OR-13-round-robin-cannot-see-sla-on-new-ticket.png",
+ "ticket": "Assignment Rules × SLA · OR-13",
+ "title": "A round-robin rule whose condition is the SLA name does not assign a new ticket; it assigns only after the ticket is edited",
+ "date": "TAVI 14 Nov 2026 (15:33–15:45 Cairo) · Zoho from help only, not checked live",
+ "env": "staging-desk.taviportal.com (NDC-Staging) · owner account · Edge · QA AS6 Dept A · ticket #3922 (QA, deleted after) · agents online",
+ "leftHead": "TAVI Desk (screenshots)", "rightHead": "Expected (TAVI page text + Zoho help)", "rightLabel": "Expected",
+ "panels": [
+  { "img": "executions/execu_2026-11-08_desk-automation-order/a6/evidence/ui/pr13-rule.png", "w": 1600, "h": 900, "caption": "Round-robin rule, Dept A: runs on Ticket Create and Ticket Update; condition 2 is SLA Name is \"QA AO OR13 SLA fi1u\"", "crop": [960, 60, 640, 760], "boxes": [{ "b": [980, 330, 1300, 395], "n": 1 }, { "b": [1028, 745, 1500, 782], "n": 1 }] },
+  { "img": "executions/execu_2026-11-08_desk-automation-order/a6/evidence/ui/pr13-rr-list.png", "w": 1600, "h": 900, "caption": "Round Robin page text: \"Round robin runs after workflows and SLAs\"", "crop": [292, 240, 960, 90], "boxes": [{ "b": [306, 300, 912, 319], "n": 5 }] },
+  { "img": "executions/execu_2026-11-08_desk-automation-order/a6/evidence/ui/pr13-history.png", "w": 1600, "h": 900, "caption": "Ticket #3922 created 3:33 PM: SLA \"QA AO OR13 SLA fi1u\" applied on create, but Ticket Owner is Unassigned and History has no assignment", "crop": [370, 250, 1230, 570], "boxes": [{ "b": [700, 605, 1045, 805], "n": 2 }, { "b": [385, 448, 640, 505], "n": 3 }] },
+  { "img": "executions/execu_2026-11-08_desk-automation-order/a6/evidence/ui/pr13-history-after.png", "w": 1600, "h": 900, "caption": "3:45 PM: the ticket is edited (priority) and the same rule assigns it to Test User 1 at once, trigger \"The ticket was edited\"", "crop": [370, 250, 1230, 420], "boxes": [{ "b": [700, 282, 1045, 450], "n": 4 }] }
+ ],
+ "rows": [
+  [1, "Round-robin rule on Ticket Create, condition SLA Name is the policy", "Saved and active", "Saved and active", "INFO"],
+  [2, "New ticket matches the SLA policy", "SLA applied", "SLA applied on create (3:33 PM)", "INFO"],
+  [3, "Owner of the new ticket", "Assigned by the round-robin rule (the SLA is already set)", "Unassigned; no assignment entry in History", "BUG"],
+  [4, "Same ticket after one edit", "Already assigned", "Assigned to Test User 1 by the same rule (12 min later, only because of the edit)", "BUG"],
+  [5, "Order stated in TAVI and in Zoho's help", "SLA first, then round robin, so round robin can use the SLA", "Not true on create: round robin does not see the SLA", "BUG"]
+ ]
+}

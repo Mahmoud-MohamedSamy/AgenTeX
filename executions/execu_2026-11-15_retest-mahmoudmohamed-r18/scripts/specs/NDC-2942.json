@@ -1,0 +1,109 @@
+{
+ "out": "NDC-2942-retest-PASS.png",
+ "ticket": "NDC-2942",
+ "priority": "low",
+ "title": "Scoring Rules | API now accepts only the conditions the editor offers per field type",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · API · Leads · QA RT18 SR I6 rules",
+ "panels": [
+  {
+   "img": "2942-api-card.png",
+   "caption": "API calls and answers",
+   "crop": [
+    0,
+    90,
+    1600,
+    307
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      178
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      188,
+      1564,
+      225
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      340
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      350,
+      1564,
+      387
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "regexMatches on Company",
+   "Refused",
+   "422 operator_unsupported, lists eq…isNotNull",
+   "PASS"
+  ],
+  [
+   2,
+   "lengthEq on Company",
+   "Refused",
+   "422 operator_unsupported",
+   "PASS"
+  ],
+  [
+   3,
+   "isEmpty on Company",
+   "Only editor conditions",
+   "201, stored as isNull (the editor's \"is empty\")",
+   "PASS"
+  ],
+  [
+   4,
+   "User / Lead Owner \"is x\"",
+   "Refused (only is empty / is not empty)",
+   "422 \"use one of: isNull, isNotNull\"",
+   "PASS"
+  ],
+  [
+   5,
+   "Conditions the editor offers",
+   "Accepted",
+   "contains, isNull, user isNotNull → 201",
+   "PASS"
+  ]
+ ]
+}

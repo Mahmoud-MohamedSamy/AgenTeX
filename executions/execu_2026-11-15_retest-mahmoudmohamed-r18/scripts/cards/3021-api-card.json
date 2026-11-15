@@ -1,0 +1,51 @@
+{
+ "out": "3021-api-card.png",
+ "title": "NDC-3021 Validation Rules gap list — recheck",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "Function code inside the product",
+   "POST rule kind=function with code, no url",
+   "422 \"A function rule needs the https address to call.\" — still outside URL only",
+   "bad"
+  ],
+  [
+   "Relative dates",
+   "POST date rule value today / ${CURRENTTIME} / ${TODAY}",
+   "422 \"… is not a date (use yyyy-MM-dd)\" — still fixed dates only",
+   "bad"
+  ],
+  [
+   "Show every failing condition",
+   "Rule with 2 branches; save BADX9 (fails both)",
+   "422 with 1 message (\"cannot start with BAD\") — still first match only",
+   "bad"
+  ],
+  [
+   "Desk: prompt on removing checked field",
+   "Desk layout",
+   "not rechecked (CRM-only lane)",
+   "info"
+  ],
+  [
+   "Web forms (G12)",
+   "POST /web-forms/public/{key}/session, 4 forms",
+   "404 NOT_FOUND for every form — still cannot test",
+   "bad"
+  ],
+  [
+   "Possible bug: internal function URLs",
+   "POST function rule url 169.254.169.254 / localhost / 10.0.0.5",
+   "201 for all three (deleted right away) — still accepted at save",
+   "bad"
+  ],
+  [
+   "Help Center, Kanban, merge, replay",
+   "—",
+   "not rechecked (CAPTCHA / separate ticket NDC-2993 / no receiver)",
+   "info"
+  ]
+ ]
+}

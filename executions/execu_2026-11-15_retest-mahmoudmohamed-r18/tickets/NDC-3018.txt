@@ -1,0 +1,24 @@
+# NDC-3018 Validation Rules | Screen readers are not told why a save was refused
+Summary
+When a validation rule refuses a save, the message appears under the field but is not linked to it or announced, so screen-reader users get no feedback.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; Leads and Tickets record forms
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Create a rule that refuses a value.
+- Open a new record, type the refused value and click Save.
+- Inspect the field and the message in the page.
+Expected result
+The field has aria-invalid="true", aria-describedby points to the message, the message is announced (role="alert" or a live region), and focus goes to the refused field.
+Actual result
+- No aria-invalid and no aria-describedby on the input (CRM and Desk).
+- No role="alert" or aria-live region.
+- CRM moves focus to the refused field; Desk moves focus to Subject instead.
+Notes
+- Case M4.
+- Evidence: crm-M4-refused.png, desk-M4-refused.png (attached).
+
+
+== COMMENTS (0)
+

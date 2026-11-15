@@ -1,0 +1,29 @@
+# NDC-2938 Workflow Rules | Score threshold accepts text or decimals with no message and keeps the last valid number
+Summary
+In a workflow rule with the "Score value" trigger, the threshold box accepts "abc", "12.5", an empty value or a huge number. The box is marked invalid but no message explains why, and Create still goes on, silently keeping the last valid number.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026
+- Owner account; new workflow rule on Leads (not saved)
+Steps to reproduce
+- Workflow Rules › New, module Leads, Next.
+- Pick "Score value", tick "Only when it reaches". The box shows 50.
+- Type -20, then replace it with abc.
+- Click Create.
+Expected result
+A clear message ("Enter a whole number") and Create blocked until the value is valid.
+Actual result
+- Empty, abc, 12.5 and 999999999999999999 are marked invalid (red) with no message; -20 is accepted.
+- With abc in the box, Create opens the next step and the summary reads "This rule will be executed when the score of a record in Leads rises to -20 or more".
+Notes
+- The draft rule was cancelled, nothing was saved.
+- Evidence (TAVI left, Zoho right where it was checked): G9-threshold-input-vs-zoho.png (attached).
+
+
+== COMMENTS (1)
+--- comment 2026-11-12T18:24:11.325582+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Compared with Zoho CRM live — 12 Nov 2026
+- Zoho's "Record Score" trigger has no threshold box: Increased / Decreased / Updated, applied for All or Selective Scoring Rules. A threshold is set as a condition after the trigger (for example Score >= 50).
+- In that condition, Zoho's number box does not take letters, and a decimal is refused with "Please enter a valid No. of Employees." — Done stays blocked until the value is valid.
+- TAVI's "Only when it reaches N" box is a TAVI extra and is fine, but it needs the same check: a clear message for text, decimals and too-large numbers, and no way to continue with an invalid value.
+- Image with TAVI left and Zoho right: G9-threshold-input-vs-zoho-live.png (attached).
+

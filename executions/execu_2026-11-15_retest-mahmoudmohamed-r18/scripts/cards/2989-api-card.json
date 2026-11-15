@@ -1,0 +1,21 @@
+{
+ "out": "2989-api-card.png",
+ "title": "NDC-2989 conflicting actions on one field",
+ "rows": [
+  [
+   "Set value + suggest value, same field",
+   "POST layout-rules  actions: set_value note=\"a\" + recommend_value note=\"b\"",
+   "422 conflicting_actions: \"'QA RT18 note' already gets a value from a set value action in this condition; keep one of them.\"",
+   "ok"
+  ],
+  [
+   "Mandatory + read-only, same field",
+   "POST layout-rules  actions: require_fields [note] + read_only_fields [note]",
+   "422 conflicting_actions: \"'QA RT18 note' cannot be both mandatory and read-only in the same condition (it is already mandatory).\"",
+   "ok"
+  ]
+ ],
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026"
+}

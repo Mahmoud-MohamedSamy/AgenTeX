@@ -1,0 +1,23 @@
+# NDC-2972 Desk Profiles | There is no page to see or edit a profile's permissions
+Summary
+TAVI Desk has no screen where an admin can see or change what a profile is allowed to do. The Profiles page and the Edit profile dialog both say "Permissions live on the Profiles page", but no Desk page shows them. The "View permissions" button sends the admin to the Desk home page. The permissions do exist behind the scenes (83 Desk permissions; the Desk Agent profile holds 52), so today nobody can review or change them from Desk.
+Environment
+- Staging, staging-desk.taviportal.com, tenant NDC-Staging, 12 Nov 2026
+- Admin account; Settings › User Management › Profiles
+Steps to reproduce
+- Open Desk › Settings and look under User Management: Agents, Teams, Data Sharing, Roles, Profiles, Ticket Access. There is no Permissions item.
+- Open Profiles. The page says "Manage profile hierarchy, rank, and assignees. Permissions live on the Profiles page."
+- On the "Desk Administrator" row, click the key icon ("View permissions on the Profiles page").
+- Go back to Profiles and click the pencil icon ("Edit profile").
+- Open /settings/security/permissions directly.
+Expected result
+As in Zoho Desk (Setup › Profiles › click a profile), the admin opens a profile and sees its permissions with toggles — module permissions (view, create, edit, delete per module), ticket permissions (send emails, change owner, close, merge…), administrative permissions (manage agents, teams, permissions, automation…) and multi-department permissions — and can change and save them.
+Actual result
+- The key icon "View permissions on the Profiles page" lands on Desk Headquarters (/hq). No permissions are shown.
+- Edit profile lets the admin change only the name, parent profile and rank, and says "Permissions stay editable on the Profiles page".
+- /settings/security/permissions (and /settings/security/profiles) are not served in Desk and redirect to Headquarters. CRM has these pages.
+- The permissions exist in the API: GET /iam/permissions lists 83 Desk permissions, and the Desk Agent profile has 52 (32 of them Desk, e.g. desk:community:reply, desk:feeds:post). None of them can be seen or changed in Desk.
+
+
+== COMMENTS (0)
+

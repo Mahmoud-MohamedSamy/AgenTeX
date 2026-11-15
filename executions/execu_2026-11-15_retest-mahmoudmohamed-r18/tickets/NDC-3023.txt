@@ -1,0 +1,22 @@
+# NDC-3023 Products | New Product cannot be saved from the screen: the departments value is rejected as not a valid department id
+Summary
+New Product cannot be saved from the screen. Found in the Desk go-live retest, Wave 5 (W5-60), NDC-Staging, 12–13 Nov 2026. Where: Setup › Products › New Product.
+Steps
+- Open Setup › Products › New Product.
+- Enter Product Name and a code (Departments is pre-filled with Sales).
+- Save; then replace Sales with Marketing and Save again.
+Expected
+The product is saved for the chosen department(s).
+Actual
+Both saves fail: 'Departments: ["<id>"] is not a valid department id' (422). The form sends departments as a list; the server accepts only a single id (an API call with one id → 201).
+POST /modules/{products}/records … {field: departments, value: {kind: array, items: [{kind: string, value: <Marketing>}]}} → 422 DEPARTMENT_VALUE_INVALID
+Zoho Desk
+Not checked live: the Zoho trial Setup › Products page stayed on the loading spinner (13 Nov). The defect stands on its own: the screen cannot create any product.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner, Edge, 13 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): W5-E4-vs-zoho.png.
+
+
+== COMMENTS (0)
+

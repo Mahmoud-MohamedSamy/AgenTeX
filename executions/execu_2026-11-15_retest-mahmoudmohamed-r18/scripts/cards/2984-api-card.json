@@ -1,0 +1,33 @@
+{
+ "out": "2984-api-card.png",
+ "title": "NDC-2984 deleting a layout that has a rule",
+ "rows": [
+  [
+   "Set-up",
+   "POST layout \"QA RT18 J7 Layout\" + rule \"QA RT18 J7 rule\" on it",
+   "201 / 201",
+   "info"
+  ],
+  [
+   "Delete the layout",
+   "DELETE /modules/{Leads}/layouts/{J7 layout}",
+   "204",
+   "info"
+  ],
+  [
+   "Rule after layout delete",
+   "GET /modules/{Leads}/layout-rules/{J7 rule}",
+   "404 LAYOUT_RULE_NOT_FOUND (rule removed with the layout)",
+   "ok"
+  ],
+  [
+   "Rule list",
+   "GET /modules/{Leads}/layout-rules",
+   "J7 rule not listed; layout GET 404",
+   "ok"
+  ]
+ ],
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026"
+}

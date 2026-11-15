@@ -1,0 +1,45 @@
+{
+ "out": "3010-api-card.png",
+ "title": "NDC-3010 rule on a field read-only / hidden for profile User",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner + Mahmoud Samy (CRM User)",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "Rule",
+   "QA RT18 H6 note required (qa_rt18v_note is empty → refuse), QA RT18 VR Layout",
+   "active",
+   "info"
+  ],
+  [
+   "Read-only for User: owner saves without note",
+   "POST records (owner)",
+   "422 \"QA RT18 H6 note is required\" (rule still runs for editors)",
+   "ok"
+  ],
+  [
+   "Read-only: CRM User saves without note",
+   "effective qa_rt18v_note=read_only; POST records",
+   "201 (API) and UI Save → \"Record saved successfully\"",
+   "ok"
+  ],
+  [
+   "Hidden for User: owner saves without note",
+   "POST records (owner)",
+   "422 \"QA RT18 H6 note is required\"",
+   "ok"
+  ],
+  [
+   "Hidden: CRM User saves without note",
+   "effective qa_rt18v_note=hidden; POST records",
+   "201 (API) and UI Save → 201",
+   "ok"
+  ],
+  [
+   "Other rules still apply to the CRM User",
+   "POST records with qa_rt18v_text=BAD-u1",
+   "422 \"QA RT18 text cannot start with BAD\" (both modes)",
+   "ok"
+  ]
+ ]
+}

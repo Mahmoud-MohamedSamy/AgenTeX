@@ -1,0 +1,23 @@
+# NDC-3014 Validation Rules | A field used in a rule's "Applies when" can be deleted, and the rule stays Active but broken
+Summary
+The field a rule checks is protected from deletion, but a field used only in the rule's "Applies when" part can be deleted with no warning. The rule stays Active and silently stops working.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; Leads and Tickets
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Create a rule on field A with "Applies when" field B equals a value.
+- Delete field B in Modules and Fields.
+- Open the rule list and save a record that the rule should refuse.
+Expected result
+The delete is refused (or warns) the same way it is for the checked field (FIELD_IN_USE_BY_RULE), or the rule is switched off and clearly flagged.
+Actual result
+- The field is deleted (204) with no warning.
+- The rule stays Active; GET shows conditionError "'qa_vr_j2' is not a field of this module".
+- Records the rule should refuse are saved.
+Notes
+- Case J2. Same family: removing a pick-list value used by a rule (J4) and removing the checked field from the layout (J3) also leave the rule Active with no warning.
+
+
+== COMMENTS (0)
+

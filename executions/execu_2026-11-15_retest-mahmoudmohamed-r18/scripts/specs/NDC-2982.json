@@ -1,0 +1,127 @@
+{
+ "out": "NDC-2982-retest-PASS.png",
+ "ticket": "NDC-2982",
+ "priority": "high",
+ "title": "Layout Rules | A missing target no longer switches the whole rule off",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 Layout · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2982-1-form-vip-ticked.png",
+   "caption": "date removed from the layout; vip ticked: note is still mandatory",
+   "crop": [
+    420,
+    150,
+    1010,
+    740
+   ],
+   "boxes": [
+    {
+     "b": [
+      451,
+      428,
+      1409,
+      482
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      451,
+      833,
+      1409,
+      861
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2982-4-editor.png",
+   "caption": "Editor: only the missing target is flagged, \"the rest of the rule still applies\"",
+   "crop": [
+    290,
+    240,
+    1290,
+    90
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      250,
+      1576,
+      318
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2982-5-after-section-option-delete.png",
+   "caption": "After also deleting Sec B (J6) and option Other (J8): Refund still makes order mandatory",
+   "crop": [
+    420,
+    150,
+    1010,
+    740
+   ],
+   "boxes": [
+    {
+     "b": [
+      451,
+      374,
+      1409,
+      428
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      451,
+      617,
+      1409,
+      677
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Remove date (vip rule: show date + require note) from the layout, tick vip",
+   "Rest of the rule keeps working",
+   "note mandatory (aria-required true); Save blocked \"This field is required\"",
+   "PASS"
+  ],
+  [
+   2,
+   "Rule list / editor",
+   "Only the missing target flagged",
+   "Banner: \"Parts of this rule no longer exist — they are skipped, the rest of the rule still applies: 'QA RT18 date' is no longer on this layout\"; API staleTargets lists only date",
+   "PASS"
+  ],
+  [
+   3,
+   "Other rules that mention date in one row (basic)",
+   "Keep working",
+   "basic still active; Refund → order shown + mandatory",
+   "PASS"
+  ],
+  [
+   4,
+   "J6 section deleted / J8 option deleted",
+   "Same: only the missing part skipped",
+   "staleTargets section_unknown / option_retired; Refund → order mandatory, radio Yes → email2 mandatory, vip → note mandatory",
+   "PASS"
+  ]
+ ]
+}

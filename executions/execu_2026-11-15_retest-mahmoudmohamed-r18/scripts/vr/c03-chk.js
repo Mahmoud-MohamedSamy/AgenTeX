@@ -1,0 +1,1 @@
+const mid=I.mod_leads; const out={}; for(const n of ['3021 two ui','3021 two ui2','3021 two rules','3021 three rules','3021 one rule']){ const fl=encodeURIComponent(JSON.stringify([{field:'last_name',operator:'equals',value:n}])); const r=await api('GET','/modules/'+mid+'/records?page=1&per_page=5&filters='+fl); out[n]=r.s+' n='+arr(r.j&&r.j.data).length; } return out;

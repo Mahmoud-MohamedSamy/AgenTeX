@@ -1,4 +1,4 @@
-# Wave 4 results (NDC-Staging, 12-13 Nov 2026)
+| W4-83 | PASS | 15 Nov: reply-ack template deactivated + deleted (NDC-3003 fix); junk domains no longer listed (NDC-3002). Only leftover: community category "QA GL W4 cat" (TAVI has no delete, 405; disabled). |
 
 | Id | Verdict | Note |
 |---|---|---|
@@ -13,7 +13,7 @@
 | W4-09 | PASS | Replies tab: acknowledgement wording + quote position 'Agent's reply on top' match /desk/channels/settings (ack on, quote above); no change made. |
 | W4-10 | PASS | Agent C: settings page says 'You cannot view the email channel'; GET addresses 403; POST address 403 (desk:channel:manage). |
 | W4-11 | PASS | Email settings in Arabic (as admin B): full RTL, Arabic labels, no raw keys; language set back to English. |
-| W4-12 | INCONCLUSIVE | Block/unblock of a spare address works. Live mail part not run: both test mailboxes have open tickets from other tests and blocking closes them. |
+| W4-12 | PASS | 15 Nov retest: work address blocked; mail "QA GL W4 blocked" created no ticket; unblocked; "QA GL W4 unblocked" became #3956 (deleted). None of its 7 open tickets were closed by the block (a mistaken Gmail block closed #2568, #1273). |
 | W4-13 | FAIL | '*@example.com' accepted and listed as blocked although the page says Desk blocks one address at a time, not a domain. Empty: Block disabled; '@@': browser email check; same address twice: no duplicate. Unblock works. |
 | W4-14 | PASS | Spam filter options read (Deliver everything / Deliver and mark / Hold for review / Hold from new senders; policy off). Policy not changed: other sessions receive mail now. Mark spam / not spam passed as W2-43 today. |
 | W4-15 | PASS | Suppressions: empty, clear text on how entries appear and that they can be released. |
@@ -73,15 +73,14 @@
 | W4-69 | FAIL | Arabic translation shown on the Arabic portal and missing translations fall back to the original - but the translation Body editor reverses typed text ('abc def 123' -> '321 fed cba'); pasting works. |
 | W4-70 | PASS | 3 versions listed; Restore version 1 brings back the original (becomes newest). Note: every version shows the same time (5:52 PM). |
 | W4-71 | PASS | Expiry 0 / 91: 'between 1 and 90 days'; empty question: required; 600 chars: '500 characters or fewer'. |
-| W4-72 | INCONCLUSIVE | Happiness was OFF by 23:15 (another session switched it on and off). For W4-73 it was switched on for Marketing only, #3280 reopened and closed, then restored to off (checked). |
-| W4-73 | FAIL | #3280 closed (23:16 Cairo) with ratings on for Marketing, trigger on close: you got the closing mail, but it has no rating question or Good/Okay/Bad links. Ratings restored to off (checked). See D8. |
-| W4-74 | NOT RUN | Blocked: needs a rating link, and no rating mail is sent (W4-73). |
-| W4-75 | NOT RUN | Blocked: needs a rating link, and no rating mail is sent (W4-73). |
-| W4-76 | NOT RUN | Blocked: needs a rating link, and no rating mail is sent (W4-73). |
-| W4-77 | NOT RUN | Blocked: needs a rating link, and no rating mail is sent (W4-73). |
-| W4-78 | NOT RUN | Blocked: no rating can be given (no rating link in the closing mail, W4-73). |
+| W4-72 | PASS | 15 Nov retest: Happiness on for Marketing only (other departments unaffected: Customer Support closing mail had no rating); restored to off (checked). |
+| W4-73 | PASS | 15 Nov retest (NDC-3000 fix): closing mail shows Bad/Okay/Good; rating saved after Submit (Good + comment). |
+| W4-74 | PASS | Link locks after the first answer ("You rated this: Good"); a second rating is not possible. Zoho not checked live for this point. |
+| W4-75 | PASS | Tampered link: "This rating link is not valid."; nothing saved. |
+| W4-76 | PASS | 823-character Arabic comment saved whole. Rating page stays English and the comment box left-to-right; Zoho checked live 15 Nov behaves the same (English, ltr, even with lang=ar-EG) — not filed (user decision). |
+| W4-77 | PASS | After ratings switched off, an unanswered link shows "Ratings are no longer being collected."; nothing saved. |
+| W4-78 | PASS | Agent B (ticket assigned) sees "Good · Rating for ndc-staging-owner · On close" + comment, read only. Agent C no longer in Marketing (assign 422). |
 | W4-79 | PASS | Arabic file downloaded, imported back unchanged, saved: downloaded again it is byte-identical. English is the base (download only). Note: no message after import or Save. |
 | W4-80 | PASS | Second Help Center refused: 'This organization already has a Help Center'; own domain 'Coming soon' (O-08 stays Partly; recorded, not filed). |
 | W4-81 | PASS | Agent C: Help Center, Web Forms, Customer Happiness, Email Templates settings refused with clear messages; Community setup view-only. |
 | W4-82 | PASS | Live chat + Social 'In Development'; no Phone / IM / Guided conversations; HC SSO Coming soon (NDC-2760 list holds). ASAP-like Help widgets now exist (W4-52). |
-| W4-83 | INCONCLUSIVE | Cleanup done: 13 tickets, 3 topics, 8 KB articles, 3 KB categories, KB template, help widget, 2 web forms, 4 email templates + folder, address and blocked address deleted; 29 Recycle Bin items purged by exact id. Left: reply-ack template (cannot be deleted, D9), community category (no delete in TAVI, disabled), 2 retired junk domains (D1). Diff vs baseline otherwise clean except changes by other sessions (Help Center access mode, their own templates/forms). |

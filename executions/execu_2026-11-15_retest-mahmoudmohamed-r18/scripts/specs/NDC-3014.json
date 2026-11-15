@@ -1,0 +1,67 @@
+{
+ "out": "NDC-3014-retest-PASS.png",
+ "ticket": "NDC-3014",
+ "priority": "medium",
+ "title": "Validation Rules | A field used in a rule's \"Applies when\" can no longer be deleted",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 VR Layout · rule \"QA RT18 J2 rule\" · field qa_rt18v_j2 · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3014-api-card.png",
+   "caption": "API: the delete is refused with FIELD_IN_USE_BY_RULE naming the rule; field and rule unchanged",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    320
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      246
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      256,
+      1564,
+      293
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Delete field qa_rt18v_j2 (used only in \"Applies when\")",
+   "Refused like the checked field (was: 204)",
+   "422 FIELD_IN_USE_BY_RULE naming \"QA RT18 J2 rule\"",
+   "PASS"
+  ],
+  [
+   2,
+   "Rule after",
+   "Not broken",
+   "Field still exists; rule Active, conditionError null; record with j2 = y and no email → 422 (rule works)",
+   "PASS"
+  ],
+  [
+   3,
+   "Same family (J3/J4, Desk)",
+   "—",
+   "Not rechecked: removing a pick value was blocked by the blueprint first; Desk not in this lane",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,1 @@
+const M=JSON.parse(fs.readFileSync('../e1.json','utf8'));const me=(await api('GET','/iam/me')).j?.data?.display_name;const r=await api('POST','/desk/tickets/'+M.ctl+'/close',{});return {me,close:r.s+' '+(r.j?.error?.message||'').slice(0,200),at:new Date().toISOString()};

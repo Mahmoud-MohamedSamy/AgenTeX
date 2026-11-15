@@ -1,0 +1,25 @@
+# NDC-3011 Validation Rules | A value typed in a blueprint transition form skips the validation rules (CRM)
+Summary
+A blueprint transition that asks for a field lets the user save a value that an active validation rule refuses. Neither the transition form nor the server checks the rules.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; QA blueprint on a QA Leads layout: transition "QA to Reject" asks for the text field; active rule "text cannot start with BAD"
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Create a Leads validation rule on a text field: starts with "BAD" → "Text cannot start with BAD", Don't save, active.
+- Create a blueprint on the same layout whose transition asks for that text field.
+- Open a lead in the first state and click the transition button.
+- Type "BAD-bp" in the text field and click Execute.
+Expected result
+The transition is refused with "Text cannot start with BAD", the same as a normal save.
+Actual result
+- The transition succeeds (POST …/blueprint-transitions/{id} → 200).
+- The lead now holds "BAD-bp" and has moved to the next state.
+- No verify call is made from the transition form.
+Notes
+- Case G14. The after-transition field update also writes a value past an active rule; Zoho lets after-transition updates through too, so that part is not reported as a bug.
+- Evidence: crm-G14-bad.png (attached).
+
+
+== COMMENTS (0)
+

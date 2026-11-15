@@ -1,0 +1,35 @@
+# NDC-2953 Workflow Rules | The rules API accepts a Field Update on the system field Created By
+Summary
+The rule editor correctly does not offer Created By in a Field Update, but the rules API accepts it and saves the rule. Other system fields such as Ticket Number are refused.
+Steps to Reproduce
+- Send POST /api/v1/workflow/rules with a Field Update action on created_by.
+- Send the same with ticket_number.
+- In the rule editor, add a Field Update and search the field list for "Created".
+Expected Result
+- created_by is refused like ticket_number ("Field is read-only and cannot be changed").
+- As in Zoho Desk, only editable ticket fields can be set by a Field Update.
+Actual Result
+- created_by: HTTP 201, the rule is saved.
+- ticket_number: HTTP 422 "Field 'ticket_number' is read-only and cannot be changed." (correct).
+- Editor: "Created" gives "No results found" (correct).
+Zoho Desk
+The live Field Update field list offers only the 14 editable ticket fields (Contact Name … Language); Created By and other system fields are not offered.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026. Compared live with Zoho Desk (test account, nothing left behind) and Zoho Desk help articles.
+Attachment
+Annotated evidence attached (WF-B2-field-update-created-by-vs-zoho.png).
+
+
+== COMMENTS (3)
+--- comment 2026-11-14T20:20:52.110907+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging-desk (tavi) on 14 Nov, 18:18 UTC.
+Checked live through the rules API on NDC-Staging: a Field Update on created_by or modified_by answers 422 "Field 'created_by' is read-only and cannot be changed.", the same as ticket_number. A Field Update on subject still saves.
+
+--- comment 2026-11-14T19:44:40.645627+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Merged to staging: anyware.workflow #134 (merge 727a0c9). It is not deployed to staging-desk yet, so the steps in this ticket still behave as before on the server. Please retest after the deploy; I will check it there too.
+
+--- comment 2026-11-14T19:41:02.212061+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix in review: anyware.workflow #134.
+A Field Update on Created By, Modified By, Created At or Modified At is now refused at save with "Field 'created_by' is read-only and cannot be changed.", the same 422 as Ticket Number. The same check covers Create Record and Update Related Record mappings and approval Update-Fields.
+How it was checked: before the fix I sent your payloads to the rules API on NDC-Staging (staging-desk) and got 201 as you did. The fix has tests that fail without it, and the full suites match staging. Not yet checked on staging after the fix: it is not merged or deployed, and tavi's Desk API was answering 404 during the work.
+

@@ -1,0 +1,25 @@
+# NDC-3041 Custom Actions | Authentication set on an API source is not sent when the imported spec declares no security
+Summary
+Custom Actions | Authentication set on an API source is not sent when the imported spec declares no security. Found in the Desk go-live retest, Wave 3 (W3-12), NDC-Staging, 13 Nov 2026. Where: Setup › Custom Actions › API sources › Edit (Authentication).
+Steps
+- Create an action by pasting an OpenAPI spec that has no `securitySchemes` (many simple specs don't).
+- Edit its API source: Authentication = API key, header X-QA-GL-W3-Key, a key; Save ('Credentials saved').
+- Run the action from a ticket and look at the request the receiver got. Repeat with Bearer and Basic.
+Expected
+The key is sent, as the form says: 'Sent with every request the actions of this source make.'
+Actual
+No auth header on 4 runs (API key, Bearer, Basic; from the screen and the API). The same API key on a second source whose spec declares an apiKey scheme is sent (header x-qa-gl-w3-key). So the credential only works when the spec itself declares security, and nothing on screen says so. The supplier then answers 401/403 and the agent sees a generic failure.
+PUT /workflow/custom-actions/sources/{src}/credential {authKind: api_key, config:{headerName: X-QA-GL-W3-Key}, …} → 200, hasCredential true
+POST /workflow/custom-actions/{action}/run → 200 succeeded
+receiver headers: content-length, content-type, traceparent, accept-encoding, host  (no X-QA-GL-W3-Key)
+secured spec source, same credential → receiver headers include x-qa-gl-w3-key
+Zoho Desk
+Not checked live: Zoho Desk custom functions use Connections (a different design), the Setup pages do not open in the trial org and its custom functions API returns 403.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner and agent C (Desk Agent), Edge, 13 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): F2-vs-zoho.png.
+
+
+== COMMENTS (0)
+

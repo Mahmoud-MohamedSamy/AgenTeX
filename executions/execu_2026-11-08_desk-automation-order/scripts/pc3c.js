@@ -1,0 +1,2 @@
+eval(fs.readFileSync('lib-as.js','utf8'));const M=JSON.parse(fs.readFileSync('../pc3.json','utf8'));const s=((await api('GET','/modules/'+T+'/records/'+M.t2+'/blueprint-state')).j?.data?.states||[])[0];
+return {state:s?.activeStates,owner:nm((await rec(M.t2)).owner),status:(await rec(M.t2)).status,history:(await feed(M.t2)).reverse().slice(-4).map(e=>(e.occurred_at||'').slice(11,19)+' '+e.action+' '+JSON.stringify(e.summary||{}).slice(0,90))};

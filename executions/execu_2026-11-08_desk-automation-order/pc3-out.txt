@@ -1,0 +1,66 @@
+{
+ "E2E-2 setup": {
+  "owner": "A2",
+  "sla": {
+   "obl": []
+  },
+  "bp": "QA AO PC E2E2 vxf0 › Open"
+ },
+ "E2E-3 setup + move": {
+  "before": {
+   "owner": "A1",
+   "sla": {
+    "obl": [
+     "resolution:running due 21:16:09",
+     "first_response:running due 12:16:09"
+    ]
+   },
+   "bp": "QA AO PC E2E3 vxf0 › Open"
+  },
+  "move": "200",
+  "rrB": "400 VALIDATION_ERROR The assignment rule is invalid.",
+  "after": {
+   "dept": "AS6-B",
+   "owner": "none",
+   "status": "Open",
+   "sla": {
+    "obl": [
+     "resolution:cancelled due 21:16:09",
+     "first_response:cancelled due 12:16:09"
+    ]
+   },
+   "bp": null
+  },
+  "history": [
+   "11:16:09 ticket.blueprint_entered",
+   "11:16:09 ticket.created",
+   "11:16:09 ticket.department_changed",
+   "11:16:09 ticket.auto_assigned(created)→A1",
+   "11:16:09 ticket.owner_changed→A1",
+   "11:16:09 sla.applied(create)",
+   "11:16:18 ticket.moved",
+   "11:16:18 ticket.blueprint_revoked",
+   "11:16:18 ticket.owner_changed",
+   "11:16:18 sla.cancelled"
+  ]
+ },
+ "E2E-4 broken rule, fix, reapply": {
+  "broken": {
+   "owner": "none",
+   "bp": null
+  },
+  "fix": 200,
+  "reapplyEdit": "200",
+  "after": {
+   "owner": "A1",
+   "bp": "QA AO PC E2E4 vxf0 › Open"
+  },
+  "history": [
+   "11:16:34 ticket.created",
+   "11:16:34 ticket.department_changed",
+   "11:16:51 ticket.auto_assigned(updated)→A1",
+   "11:16:51 ticket.blueprint_entered",
+   "11:16:51 ticket.owner_changed→A1"
+  ]
+ }
+}

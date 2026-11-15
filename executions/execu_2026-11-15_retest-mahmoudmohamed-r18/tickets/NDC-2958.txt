@@ -1,0 +1,30 @@
+# NDC-2958 Workflow Rules | ${recordId} and ${moduleId} come out empty in a Field Update
+Summary
+The editor help says ${recordId} and ${moduleId} are always available, but they are replaced with nothing when the rule runs.
+Steps to Reproduce
+- Create a rule On Create with a Field Update: Description = R[${recordId}] M[${moduleId}] S[${subject}].
+- Create a matching ticket.
+- Open the ticket.
+Expected Result
+- ${recordId} and ${moduleId} are replaced with the ticket's ID and the module.
+- As in Zoho Desk, where ${Cases.Request Id} gives the ticket number, no listed placeholder comes out empty.
+Actual Result
+- Ticket #3160 shows "R[] M[] S[QA AO WF EV5 ticket]": the two placeholders are empty; ${subject} works.
+Zoho Desk
+Help "Creating and managing email templates": ${Cases.Request Id} is replaced with the ticket's ID/number.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026. Compared live with Zoho Desk (test account, nothing left behind) and Zoho Desk help articles.
+Attachment
+Annotated evidence attached (WF-F18-recordid-moduleid-empty.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-15T05:50:50.172661+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging-desk (tavi) on 15 Nov, 03:11 UTC. Checked there in the browser as the NDC-Staging owner (English, 1440 px), on test rules I deleted afterwards.
+An active test rule (scoped to one test subject) with your Field Update template, and a new ticket created through the API: its description was "R[<the ticket's id>] M[<the Tickets module id>] S[<subject>]". Both deleted afterwards.
+
+--- comment 2026-11-14T20:41:19.032401+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix in review: anyware.workflow #137.
+${recordId} and ${moduleId} now fill a Field Update written when the ticket is saved; your template gives "R[<ticket id>] M[<module id>] S[subject]". A test runs your exact template.
+Checked with tests only. Not checked on staging: it is not merged or deployed, and staging's Desk screens that read module fields cannot load right now (its gateway sends metadata calls to the wrong service).
+

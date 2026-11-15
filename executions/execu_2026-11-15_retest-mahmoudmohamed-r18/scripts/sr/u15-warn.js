@@ -1,0 +1,18 @@
+const out = { req: [] };
+page.on('response', async r => { const m = r.request().method(); if (m !== 'GET' && /\/(fields|layouts)\//.test(r.url())) out.req.push(m + ' ' + r.url().replace(/.*\/api\/v1/, '') + ' ' + r.status()); });
+await go('/settings/modules-and-fields/' + MID + '/layouts/' + I.layout, 10000);
+const el = page.getByText('QA RT18SR PL3', { exact: true }).first(); await el.scrollIntoViewIfNeeded(); await sleep(500);
+const card = el.locator('xpath=ancestor::*[.//button][1]'); await el.hover(); await sleep(600);
+await card.getByRole('button', { name: 'Field options' }).click(); await sleep(800);
+await page.getByText('Edit Properties', { exact: true }).last().click(); await sleep(2000);
+await page.getByText('ADVANCED', { exact: true }).last().click(); await sleep(1200);
+out.opts = (await page.locator('body').innerText()).replace(/\s+/g, ' ').match(/Clear all.{0,40}/)?.[0];
+await page.mouse.click(1557, 335); await sleep(1200);
+await page.getByRole('button', { name: 'Apply' }).last().click(); await sleep(2000);
+out.dlg = (await bodyText()).match(/Scoring rules use these values.{0,400}/)?.[0];
+const dl = page.getByText('Scoring rules use these values').first(); out.dlgBox = await box(dl.locator('xpath=ancestor::*[.//button][1]'));
+await shot('2936-5-warning.png');
+await page.getByRole('button', { name: 'Keep the values' }).click(); await sleep(1500);
+out.afterKeep = (await page.locator('body').innerText()).replace(/\s+/g, ' ').match(/Clear all.{0,40}/)?.[0];
+await shot('2936-5c-kept.png');
+return out;

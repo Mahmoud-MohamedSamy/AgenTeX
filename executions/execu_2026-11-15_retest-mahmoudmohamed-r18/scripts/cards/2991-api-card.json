@@ -1,0 +1,39 @@
+{
+ "out": "2991-api-card.png",
+ "title": "NDC-2991 delete a rule through another module",
+ "rows": [
+  [
+   "Rule",
+   "QA RT18 K3 on Leads (disabled)",
+   "201",
+   "info"
+  ],
+  [
+   "GET / PUT via Contacts",
+   "GET + PUT /modules/{Contacts}/layout-rules/{K3}",
+   "404 / 404",
+   "info"
+  ],
+  [
+   "DELETE via Contacts",
+   "DELETE /modules/{Contacts}/layout-rules/{K3}",
+   "404 LAYOUT_RULE_NOT_FOUND (was 204)",
+   "ok"
+  ],
+  [
+   "Rule still there",
+   "GET /modules/{Leads}/layout-rules/{K3}",
+   "200 (not deleted)",
+   "ok"
+  ],
+  [
+   "DELETE unknown id",
+   "DELETE /modules/{Leads}/layout-rules/00000000-...",
+   "404 LAYOUT_RULE_NOT_FOUND",
+   "ok"
+  ]
+ ],
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026"
+}

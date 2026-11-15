@@ -1,0 +1,208 @@
+{
+ "out": "NDC-2807-retest-PARTIAL.png",
+ "ticket": "NDC-2807",
+ "priority": "high",
+ "title": "Bulk Operations | Mass update and Recycle Bin delete now finish after leaving the page; mass delete stops at 100 of 200",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless + API · 200 leads \"QA RT18 2807 0001–0200\" in private view \"QA RT18 2807 view\"",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2807-2-mu-running.png",
+   "caption": "Update records: \"The update runs on the server — you can close this dialog, leave or reload the page and it keeps going.\"; toast \"scheduled\"",
+   "crop": [
+    0,
+    280,
+    1600,
+    610
+   ],
+   "boxes": [
+    {
+     "b": [
+      537,
+      292,
+      1063,
+      338
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1156,
+      810,
+      1576,
+      876
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2807-3-mu-back.png",
+   "caption": "After leaving with a full navigation and coming back: every row shows referral",
+   "crop": [
+    260,
+    190,
+    1340,
+    700
+   ],
+   "boxes": [
+    {
+     "b": [
+      590,
+      280,
+      800,
+      886
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2807-api-card.png",
+   "caption": "Requests and read-back",
+   "crop": [
+    0,
+    0,
+    1600,
+    390
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      230
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      240,
+      1564,
+      298
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      308,
+      1564,
+      366
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2807-4-md-running.png",
+   "caption": "Mass delete: 200 selected, Delete running — then a full navigation; only 100 reached the Recycle Bin",
+   "crop": [
+    370,
+    190,
+    1120,
+    410
+   ],
+   "boxes": [
+    {
+     "b": [
+      370,
+      196,
+      1490,
+      288
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2807-5-bin-running.png",
+   "caption": "Recycle Bin batch › Delete (50) › Delete forever: \"Deleting… 0 of 50\" — left with a full navigation; all 50 removed",
+   "crop": [
+    292,
+    60,
+    1290,
+    250
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      252,
+      1576,
+      298
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Start a mass update of 200 leads",
+   "Runs on the server",
+   "One POST mass-update-jobs (200 ids) → 202 queued; dialog + toast say it keeps running",
+   "PASS"
+  ],
+  [
+   2,
+   "Mass update, leave with a full navigation 1.3 s after start",
+   "All 200 updated (13 Nov: 10/200)",
+   "Job completed 200/200, failed 0; API referral 200/200",
+   "PASS"
+  ],
+  [
+   3,
+   "Mass update, close the browser 0.5 s after start",
+   "All 200 updated",
+   "API recount: chat 200/200",
+   "PASS"
+  ],
+  [
+   4,
+   "Mass delete 200, leave with a full navigation at +11 s",
+   "All 200 moved to the Recycle Bin (13 Nov: 200/200)",
+   "100 in the bin (group 2bad85f3), 100 still live",
+   "FAIL"
+  ],
+  [
+   5,
+   "Recycle Bin › Delete forever 50, full navigation 3.7 s after the request",
+   "All 50 removed (13 Nov: 0/50)",
+   "50/50 removed; the other 50 of the batch stay",
+   "PASS"
+  ]
+ ]
+}

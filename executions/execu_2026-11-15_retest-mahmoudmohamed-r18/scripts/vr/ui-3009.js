@@ -1,0 +1,15 @@
+const MID = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; const R = { puts: [] }; const URL = H + '/settings/modules-and-fields/' + MID + '?tab=validation';
+const watch = (p, tag) => p.on('response', async r => { if (r.request().method() === 'PUT' && /validation-rules\//.test(r.url())) { let rv = null; try { rv = JSON.parse(r.request().postData() || '{}').rowVersion; } catch (e) {} R.puts.push(tag + ' PUT ' + r.status() + ' sentRowVersion=' + rv + ' ' + (await r.text().catch(() => '')).slice(0, 200)); } });
+watch(page, 'A');
+const openEdit = async (p) => { await p.goto(URL, { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(7000); const row = p.locator('tbody tr').filter({ hasText: 'QA RT18 K3' }).first(); const eb = row.getByRole('button', { name: /edit/i }); if (await eb.count()) await eb.first().click(); else await row.click(); await p.waitForTimeout(2500); return p.locator('[role=dialog]').last(); };
+const p2 = await ctx.newPage(); watch(p2, 'B');
+const d1 = await openEdit(page); const d2 = await openEdit(p2);
+R.descA0 = await d1.locator('textarea').first().inputValue().catch(() => null);
+await d2.locator('textarea').first().fill('changed in tab 2'); await d2.getByRole('button', { name: 'Save', exact: true }).click(); await p2.waitForTimeout(3500);
+R.tab2DialogOpen = await p2.locator('[role=dialog]').count();
+await d1.locator('textarea').first().fill('changed in tab 1 (stale)'); await d1.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(3500);
+R.tab1DialogOpen = await page.locator('[role=dialog]').count();
+R.tab1Msg = ((await text()).replace(/\s+/g, ' ').match(/.{0,100}(someone else|changed by|reload|conflict|out of date|newer).{0,120}/i) || [null])[0];
+await shot('3009-1-tab1-stale-save.png');
+await p2.close();
+return R;

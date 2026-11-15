@@ -1,0 +1,117 @@
+<title>Desk Automation Chain</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column; verdict tiles, the chain itself drawn as a timed sequence, then decisions, then the case table */
+:root{--bg:#f5f7f8;--surface:#fff;--fg:#17202a;--muted:#5a6672;--line:#dbe1e6;--accent:#0f6b78;--accent-soft:#e2f1f3;
+--ok:#1f7a4d;--ok-soft:#e3f3ea;--warn:#9a5b00;--warn-soft:#fbefd9;--bad:#b3261e;--bad-soft:#fbe5e3;--mute-soft:#eceff2;
+--f-d:"Space Grotesk",system-ui,sans-serif;--f-b:"IBM Plex Sans",system-ui,"Segoe UI",sans-serif;--f-m:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#11161a;--surface:#182026;--fg:#e4eaee;--muted:#98a5b0;--line:#2a343c;--accent:#5cc4d2;--accent-soft:#16323a;--ok:#6fd19c;--ok-soft:#173326;--warn:#f0b65a;--warn-soft:#3a2b12;--bad:#ff8a80;--bad-soft:#3d1b19;--mute-soft:#232c33;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#11161a;--surface:#182026;--fg:#e4eaee;--muted:#98a5b0;--line:#2a343c;--accent:#5cc4d2;--accent-soft:#16323a;--ok:#6fd19c;--ok-soft:#173326;--warn:#f0b65a;--warn-soft:#3a2b12;--bad:#ff8a80;--bad-soft:#3d1b19;--mute-soft:#232c33;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--f-b)}
+.wrap{max-width:1000px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+h1,h2{font-family:var(--f-d);margin:0;line-height:1.25;text-wrap:balance}h1{font-size:1.9rem}h2{font-size:1.3rem}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+p{margin:0;max-width:72ch}.muted{color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:.85rem;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:2px}
+.stat b{font-family:var(--f-d);font-size:1.7rem;font-variant-numeric:tabular-nums}.stat span{font-size:.8rem;color:var(--muted)}
+.stat.ok b{color:var(--ok)}.stat.bad b{color:var(--bad)}.stat.warn b{color:var(--warn)}.stat.mute b{color:var(--muted)}
+.chain{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:4px;align-content:start;min-width:0}
+.step .n{font-family:var(--f-m);font-size:.72rem;color:var(--accent)}
+.step b{font-size:.88rem}.step span{font-size:.78rem;color:var(--muted)}
+.step .t{font-family:var(--f-m);font-size:.72rem;color:var(--fg);font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 20px;display:grid;gap:10px}
+.card.bad{border-left:4px solid var(--bad)}.card.warn{border-left:4px solid var(--warn)}
+ul{margin:0;padding-left:1.2em}li{margin:3px 0}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:780px;font-size:.88rem}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+.id{font-family:var(--f-m);font-size:.8rem;white-space:nowrap}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:.72rem;font-weight:600;white-space:nowrap}
+.p-pass{background:var(--ok-soft);color:var(--ok)}.p-fail{background:var(--bad-soft);color:var(--bad)}.p-note{background:var(--warn-soft);color:var(--warn)}.p-nr{background:var(--mute-soft);color:var(--muted)}
+code{font-family:var(--f-m);font-size:.84em;background:var(--bg);padding:1px 5px;border-radius:4px}
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:180px 1fr 70px;gap:10px;align-items:center;font-size:.85rem}
+.track{height:12px;background:var(--mute-soft);border-radius:6px;overflow:hidden}
+.fill{height:100%;border-radius:6px}
+.num{font-family:var(--f-m);font-variant-numeric:tabular-nums;text-align:right}
+@media (max-width:760px){.chain{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.bar{grid-template-columns:1fr 60px}.bar .track{grid-column:1/-1;order:3}h1{font-size:1.5rem}}
+</style>
+<div class="wrap">
+<header style="display:grid;gap:10px">
+ <div class="eyebrow">TAVI Desk vs Zoho Desk · Automation execution order · Part C</div>
+ <h1>The whole chain on one ticket</h1>
+ <div class="meta"><span>NDC-Staging · staging-desk.taviportal.com</span><span>Run 14 Nov 2026, 11:08–11:30 UTC</span><span>QA AS6 Dept A / Dept B, agents A1, A2, A3</span></div>
+ <p>Each step depends on an earlier step's result, so the ticket can only finish the chain if every step saw what it needed. The SLA and round robin both depend on the workflow's Urgent, not on each other; the SLA → round robin link is tested separately in OR-13 (NDC-3046). History timestamps and each agent's notifications were the second check.</p>
+</header>
+
+<div class="stats">
+ <div class="stat ok"><b>7</b><span>Pass (E2E-1 with 2 findings)</span></div>
+ <div class="stat bad"><b>1</b><span>Fail (under load)</span></div>
+ <div class="stat warn"><b>2</b><span>Channels blocked on staging</span></div>
+ <div class="stat bad"><b>2</b><span>Findings from E2E-1 (NDC-3053, NDC-3054)</span></div>
+</div>
+
+<section style="display:grid;gap:12px">
+ <h2>OR-22: one new ticket through all seven steps</h2>
+ <p class="muted">Ticket #3601, created in Dept B. Times are from the ticket history (UTC, 14 Nov). Zoho's documented order is assignment rules, workflow, SLA, round robin, blueprint. This chain does not prove the SLA → round robin part: round robin here needed only Urgent and sk2, so it would match whichever ran first. When round robin's condition is the SLA itself, it does not match on a new ticket (Part B OR-13, filed as NDC-3046).</p>
+ <div class="chain">
+  <div class="step"><div class="n">1 · Direct rule</div><b>Moved to Dept A</b><span>unassigned</span><div class="t">11:08:46.892</div></div>
+  <div class="step"><div class="n">2 · Skills</div><b>sk2 added</b><span>needs the key</span><div class="t">same event</div></div>
+  <div class="step"><div class="n">3 · Workflow</div><b>Priority → Urgent</b><span>needs Dept A</span><div class="t">11:08:46.870</div></div>
+  <div class="step"><div class="n">4 · SLA</div><b>Urgent target, 30 min</b><span>needs Urgent</span><div class="t">11:08:46.910</div></div>
+  <div class="step"><div class="n">5 · Round robin</div><b>Skill-based → A2</b><span>needs Urgent + sk2</span><div class="t">11:08:48.142</div></div>
+  <div class="step"><div class="n">6 · Blueprint</div><b>Entered, Open</b><span>needs owner A2</span><div class="t">11:08:48.142</div></div>
+  <div class="step"><div class="n">7 · Notification</div><b>A2 told once</b><span>nobody else</span><div class="t">11:08:49</div></div>
+ </div>
+ <p class="muted" style="font-size:.85rem">The workflow's log line carries a time a few milliseconds before the move's line, but its condition needed Dept A and it fired, so it ran after the move; the lines are written by different services. Rerun on #3917 gave the same result.</p>
+</section>
+
+<section style="display:grid;gap:12px">
+ <h2>What needs your decision</h2>
+ <div class="card bad">
+  <div><span class="pill p-fail">Fail</span> <b class="id">OR-27</b> · Owner takes up to 30 s when tickets arrive quickly</div>
+  <div class="bars">
+   <div class="bar"><span>1 ticket per second</span><div class="track"><div class="fill" style="width:100%;background:var(--ok)"></div></div><span class="num">100/100</span></div>
+   <div class="bar"><span>~3 per second, run 1</span><div class="track"><div class="fill" style="width:6%;background:var(--bad)"></div></div><span class="num">6/100</span></div>
+   <div class="bar"><span>~3 per second, run 2</span><div class="track"><div class="fill" style="width:22%;background:var(--bad)"></div></div><span class="num">22/100</span></div>
+  </div>
+  <p>Share of 100 tickets whose round-robin owner was set within 5 seconds of creation (target: 95). At a steady 1 per second the median is 1.5 s and the slowest 2.6 s. At about 3 per second the delay builds up: median 22 s and 12 s, slowest 32 s and 29 s. Every ticket was assigned in the end and the split was fair (34 / 33 / 33).</p>
+  <p class="muted">The 95-of-100 target comes from NDC-2275, which is in Bug. Suggest adding this to NDC-2275 as a comment rather than a new ticket. Zoho not checked (no way to load-test the trial).</p>
+ </div>
+ <div class="card bad">
+  <div><span class="pill p-note">Pass, 2 findings</span> <b class="id">E2E-1</b> · Customer journey with real mail, run with you on 15 Nov</div>
+  <p>Ticket #3935 from the web form (signed out, customer +qae1 in Gmail): contact created, skill sk2, Urgent, SLA "urgent 30", owner Mahmoud Samy by skill round robin, blueprint Open, one notice to A2. A2 ran "Ask customer" with a reply: email arrived in Gmail (from no-reply@anyware.software), status On Hold, resolution SLA paused. The customer replied in the Help Center: back to Open by the blueprint, SLA resumed (due moved 2:59 → 3:04 PM, the 5 minutes on hold), A2 told once, History "Reply received from the Help Center" (NDC-3044 looks fixed). A2 closed through the blueprint: Closed, resolution SLA met. The first-reply breach at 11:29 was our wait, logged correctly.</p>
+  <p><b>Finding 1:</b> the contact rule "Closing a ticket" (on in Dept A) sends nothing while Customer Happiness is off (#3944, #3953); with Happiness on the same close sends "Your ticket … has been closed" with the rating (#3945, #3954). Zoho (live, 12 Nov) sends "Acknowledge Contact when the Ticket is closed" from its own rule.</p>
+  <p><b>Finding 2:</b> closing through a blueprint transition never logs "Ticket closed", so no closed email or rating request is sent even with Happiness on (#3935, #3946, #3955). Zoho not checked live.</p>
+  <p class="muted">Filed 15 Nov with annotated evidence: Finding 1 = NDC-3053, Finding 2 = NDC-3054 (Medium, Bug, Sprint 16). Other notes: the History reply line shows only the contact's first name ("from QA"); "BlueprintStateChanged" line is NDC-3034. The customer's portal account from 13 Nov (+qaao) could not be used, so a fresh address +qae1 was invited.</p>
+ </div>
+</section>
+
+<section style="display:grid;gap:12px">
+ <h2>All cases</h2>
+ <div class="tw"><table>
+ <thead><tr><th>Case</th><th>Scenario</th><th>What happened</th><th>Result</th></tr></thead>
+ <tbody>
+ <tr><td class="id">OR-22</td><td>One new ticket triggers all seven steps</td><td>Chain above (#3601, rerun #3917): moved, skill, Urgent, 30-min SLA, A2, blueprint, one notice to A2.<br><span class="muted">Covers each step reading the result it needs. Round robin reading the SLA is not covered here: see OR-13 / NDC-3046.</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-23</td><td>Same chain from an update</td><td>#3602 created blank in Dept B, nothing ran. Editing the description ran the update rules: moved to Dept A, sk2, Urgent, SLA, A2, blueprint, one notice. The create-only control rules (round robin to A3, a comment) did not run.</td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-24</td><td>Same chain on each channel</td><td>API (#3907), agent screen (#3908) and the public web form signed out (#3909, channel "web") all got sk2, Urgent, the 30-min SLA, A2 and the blueprint, and A2 got one notice each.<br><span class="muted">Email and chat: blocked (no receiving mailbox, no chat channel on NDC-Staging). Help Center: needs a customer sign-in. Import: not rerun; NDC-2275 already records that import runs no rules.</span></td><td><span class="pill p-pass">Pass</span> <span class="pill p-nr">2 blocked</span></td></tr>
+ <tr><td class="id">OR-27</td><td>100 tickets, owner within 5 s</td><td>See above: pass at 1/s, fail at ~3/s (6/100 and 22/100).</td><td><span class="pill p-fail">Fail</span></td></tr>
+ <tr><td class="id">E2E-1</td><td>Customer emails … closes</td><td>Run with you on 15 Nov via the web form (no receiving mailbox): #3935 through skill, Urgent, SLA, A2, blueprint, reply by email, Help Center reply, close. All steps correct; closed email missing (NDC-3053, NDC-3054).</td><td><span class="pill p-note">Pass, 2 findings</span></td></tr>
+ <tr><td class="id">E2E-2</td><td>SLA breach, escalation, new owner, blueprint continues</td><td>#3903 owned by A2, 1-minute response target. Breached 11:17:02, escalation fired and moved it to A3 at 11:17:04. A3 got the escalation and the assignment notice. A2 can no longer open the ticket (404); A3 ran the next blueprint step and it moved to On Hold (SLA paused).</td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">E2E-3</td><td>Move department mid-way</td><td>#3904 in Dept A with owner A1, SLA and blueprint, moved to Dept B: blueprint revoked, owner cleared, Dept A SLA cancelled. Dept B's SLA applied only when its policy also runs on update (#3906: reapplied at the move, 15-min target); a create-only policy does not pick up a moved ticket.</td><td><span class="pill p-pass">Pass</span> <span class="pill p-note">note</span></td></tr>
+ <tr><td class="id">E2E-4</td><td>Rule broken, admin fixes, reapply</td><td>#3905 created while the round-robin rule was inactive: stayed unassigned, not in the blueprint. Rule turned on, ticket edited: assigned A1 and entered the blueprint (needs owner A1).</td><td><span class="pill p-pass">Pass</span></td></tr>
+ </tbody></table></div>
+ <p class="muted" style="font-size:.85rem">The 6 workflow end-to-end cases moved here from A4 already ran on 12–13 Nov (E2E-1 workflow part failed as NDC-2997 role round robin; others pass) and are not repeated.</p>
+</section>
+
+<section style="display:grid;gap:8px">
+ <h2>Cleanup</h2>
+ <p>Deleted in TAVI: 9 workflow rules, 31 assignment rules, 10 SLA policies, 8 blueprints, 320 tickets (including the 300 timing tickets) and the web-form contact. Skills sk1/sk2 restored, direct-rule switch off. Recheck: 0 left. E2E-1 (15 Nov): all its tickets, rules, SLA, blueprints and both contacts deleted; Customer Happiness and Dept A Help Center visibility restored; agents A1–A3 signed out. Recheck: 0 left.</p>
+</section>
+</div>

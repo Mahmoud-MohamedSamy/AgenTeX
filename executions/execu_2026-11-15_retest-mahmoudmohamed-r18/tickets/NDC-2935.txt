@@ -1,0 +1,25 @@
+# NDC-2935 Scoring Rules | A field used by a scoring rule can be deleted, and the rule silently stops scoring
+Summary
+A custom field that a scoring rule uses can be deleted with no warning. The rule keeps a condition on a field that no longer exists, the rules list shows nothing wrong, and records quietly lose those points on their next save. The rule can then no longer be saved.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026
+- Owner account; Leads number field "QA SR1112 Num" used by rule "QA SR1112 K1" (QA SR1112 Num ≥ 5 → +9)
+Steps to reproduce
+- Create a Leads number field and a scoring rule "field ≥ 5 → +9".
+- Create a lead with the field = 6. Its Score is 9.
+- Delete the field in Modules and Fields.
+- Save the lead again, then open the rule in Scoring Rules.
+Expected result
+As in Zoho CRM, the delete is refused while the field is used: Zoho answers "The custom field has already used in other places". At the least, CRM should warn the admin and mark the rule as broken.
+Actual result
+- The field is deleted (204) without any warning.
+- The rule list still shows the rule as normal, with 1 entry and +9.
+- The lead's Score drops from 9 to 0 on its next save.
+- Opening the rule shows an empty field; Save fails with "This field is not in the module."
+Notes
+- Test data deleted after the check.
+- Evidence (TAVI left, Zoho right where it was checked): K1-deleted-field-rule-vs-zoho.png (attached).
+
+
+== COMMENTS (0)
+

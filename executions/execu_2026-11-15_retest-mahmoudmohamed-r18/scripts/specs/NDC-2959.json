@@ -1,0 +1,43 @@
+{
+ "out": "NDC-2959-retest-PASS.png",
+ "ticket": "NDC-2959",
+ "priority": "medium",
+ "title": "Web Forms | The hosted link now opens the form (CRM and Desk) and a lead is created from it",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · signed-out browser · CRM form \"QA RT18 2959 form\" (Leads, Standard) + Desk \"Tech Webform\" · QA form removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2959-1-crm-hosted.png",
+   "caption": "CRM hosted link …/embed/feedback/f/<key> opened signed out: the form loads (was \"404 Not Found (nginx)\")",
+   "crop": [500, 20, 600, 270],
+   "boxes": [
+    { "b": [517, 33, 1083, 269], "n": 1, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2959-3-desk-hosted.png",
+   "caption": "Desk \"Tech Webform\" hosted link opened signed out: the form loads",
+   "crop": [500, 20, 600, 400],
+   "boxes": [
+    { "b": [517, 40, 1083, 160], "n": 3, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2959-api-card.png",
+   "caption": "Requests seen during the check",
+   "crop": [0, 0, 1600, 320],
+   "boxes": [
+    { "b": [36, 99, 1564, 157], "n": 1, "kind": "PASS" },
+    { "b": [36, 167, 1564, 204], "n": 2, "kind": "PASS" },
+    { "b": [36, 214, 1564, 251], "n": 3, "kind": "PASS" }
+   ]
+  }
+ ],
+ "rows": [
+  [1, "Open the CRM form's hosted link signed out", "The form on its own page", "200, form shows Full Name + Lead Source (was nginx 404)", "PASS"],
+  [2, "Send the form from the hosted page", "Lead created", "\"QA RT18 2959 thank you\"; lead \"QA RT18 2959 hosted\" created, Lead Source web", "PASS"],
+  [3, "Open the Desk \"Tech Webform\" hosted link signed out", "The form on its own page", "200, form shows Subject, Last Name, Email …", "PASS"],
+  [4, "Iframe address of both forms", "Still loads", "200", "INFO"]
+ ]
+}

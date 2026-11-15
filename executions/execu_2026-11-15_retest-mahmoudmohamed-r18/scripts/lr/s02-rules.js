@@ -1,0 +1,11 @@
+const mid = await modId(); const lid = I.layout; const out = {}; const f = x => FP + x;
+const mk = async (key, body) => { if (I[key]) return out[key] = 'exists'; const r = await mkRule(mid, { layoutId: lid, ...body }, 'Leads'); out[key] = SR(r).slice(0, 300); if (r.j && r.j.data) { I[key] = r.j.data.id; SAVE(); } };
+await mk('rBasic', { name: P + ' basic', primaryField: f('type'), branches: [br(eq(f('type'), 'Refund'), [show([f('order'), f('tmp')]), req([f('order')])]), br({ op: 'in', field: f('type'), values: ['Question', 'Partner'] }, [secs(['sec-qa-rt18-b'])]), br({ op: 'and', children: [eq(f('type'), 'Other'), { op: 'gt', field: f('amount'), value: 10 }] }, [show([f('order')])])] });
+await mk('rVip', { name: P + ' vip', primaryField: f('vip'), branches: [br(eq(f('vip'), true), [show([f('date')]), req([f('note')])])] });
+await mk('rRadio', { name: P + ' radio', primaryField: f('radio'), branches: [br(eq(f('radio'), 'Yes'), [req([f('email2')])]), br({ op: 'and', children: [eq(f('radio'), 'No'), { op: 'isEmpty', field: f('email2') }] }, [show([f('reason')])])] });
+await mk('rFilter', { name: P + ' filter', primaryField: f('filter'), branches: [br(eq(f('filter'), 'X'), [{ type: 'filter_options', field: f('tier'), options: ['Gold', 'Silver'] }])] });
+const me = (await api('GET', '/iam/me')).j; out.meKeys = Object.keys((me && me.data) || {}).join(','); I.meId = me && me.data && (me.data.id || (me.data.user && me.data.user.id)); SAVE();
+await mk('rOwner', { name: P + ' owner', primaryField: 'owner', branches: [br(eq('owner', I.meId), [show([f('order')])])] });
+out.list = (await rules(mid, '?layoutId=' + lid)).map(r => r.name + ' ' + r.status + ' err=' + JSON.stringify(r.definitionError || null));
+const rr = (await getRule(mid, I.rRadio)).j.data; out.radioRow2 = JSON.stringify(rr.branches[1].condition);
+return out;

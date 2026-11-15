@@ -1,0 +1,9 @@
+const MID = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; const LID = 'c5bbf73c-0a86-48b4-a8bc-4f394b4e11e5'; const R = {};
+await page.goto(H + '/modules/' + MID + '/records/new?layout=' + LID, { waitUntil: 'domcontentloaded' }); await page.waitForSelector('[data-rule-field]', { timeout: 30000 }).catch(() => {}); await sleep(3000);
+await page.locator('[data-rule-field="first_name"] input').first().fill('QA RT18 M4 ui');
+const t = page.locator('[data-rule-field="qa_rt18v_text"] input').first(); await t.scrollIntoViewIfNeeded(); await t.fill('BAD-m4'); await t.press('Tab'); await sleep(500);
+await page.getByRole('button', { name: /^Save$/ }).last().click(); await sleep(4000);
+R.a = await page.evaluate(() => { const w = document.querySelector('[data-rule-field="qa_rt18v_text"]'); const i = w && w.querySelector('input'); const db = i && i.getAttribute('aria-describedby'); const ids = (db || '').split(/\s+/).filter(Boolean); return { fieldText: w.innerText.replace(/\s+/g, ' ').slice(0, 120), ariaInvalid: i.getAttribute('aria-invalid'), describedby: db, describedTexts: ids.map(id => { const e = document.getElementById(id); return e ? id + ' => ' + e.innerText.trim().slice(0, 80) + ' [role=' + e.getAttribute('role') + ' live=' + e.getAttribute('aria-live') + ']' : id + ' => MISSING'; }), alerts: [...document.querySelectorAll('[role=alert],[aria-live]')].map(e => (e.getAttribute('role') || '') + '/' + (e.getAttribute('aria-live') || '') + ': ' + e.innerText.trim().slice(0, 60)).filter(s => /BAD/.test(s)), focused: (document.activeElement.closest('[data-rule-field]') || {}).getAttribute?.('data-rule-field') || document.activeElement.tagName, focusedIsInput: document.activeElement === i }; });
+R.outer = await page.evaluate(() => { const i = document.querySelector('[data-rule-field="qa_rt18v_text"] input'); return i.outerHTML.slice(0, 400); });
+await shot('3018-1-refused.png');
+return R;

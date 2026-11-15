@@ -1,0 +1,7 @@
+{"out":"2942-api-card.png","title":"NDC-2942 API conditions the editor cannot show","host":"staging-crm.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["regexMatches on Company","POST entry {company, regexMatches, \"Acme.*\"}","422 operator_unsupported \"'regexMatches' cannot be used on 'Company' in a scoring rule; use one of: eq, neq, contains, notContains, startsWith, endsWith, isNull, isNotNull.\"","ok"],
+["lengthEq on Company","POST entry {company, lengthEq, 8}","422 operator_unsupported (same list)","ok"],
+["isEmpty on Company","POST entry {company, isEmpty}","201, stored as operator isNull (= the editor's \"is empty\")","ok"],
+["User field is x","POST entry {user, eq, \"x\"} / {owner, eq, \"x\"}","422 \"'eq' cannot be used on 'User1' / 'Lead Owner' in a scoring rule; use one of: isNull, isNotNull.\"","ok"],
+["Offered conditions still work","company contains / isNull, user isNotNull","201","ok"]]}

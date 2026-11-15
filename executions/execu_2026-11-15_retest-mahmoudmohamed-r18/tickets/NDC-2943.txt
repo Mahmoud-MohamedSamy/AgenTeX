@@ -1,0 +1,27 @@
+# NDC-2943 Scoring Rules | Unknown rule or module ids are answered as success
+Summary
+Deleting a scoring rule id that does not exist answers 204, and listing rules for a module id that does not exist answers 200 with an empty list. The page for an unknown module shows "No scoring rules for  yet" with a blank module name and an active New Scoring Rule button.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026
+- Owner account
+Steps to reproduce
+- DELETE /scoring-rules/00000000-0000-0000-0000-000000000002 (or delete the same rule twice).
+- GET /scoring-rules?module_id=00000000-0000-0000-0000-000000000009.
+- Open /settings/automation/scoring-rules?module=00000000-0000-0000-0000-000000000009.
+Expected result
+404 SCORING_RULE_NOT_FOUND and 404 MODULE_NOT_FOUND (both codes exist and GET/PUT already use the first), and the page shows "This module no longer exists."
+Actual result
+- DELETE answers 204 (twice in a row for the same rule as well).
+- The list answers 200 [].
+- The page shows "Choose a module" and "No scoring rules for  yet"; New Scoring Rule stays enabled.
+Notes
+- Evidence (TAVI left, Zoho right where it was checked): I3-B10-unknown-ids.png (attached).
+
+
+== COMMENTS (1)
+--- comment 2026-11-12T18:24:13.557242+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Compared with Zoho CRM live — 12 Nov 2026
+- Zoho refuses a delete of a scoring rule that does not exist: 400 INVALID_DATA "The id given seems to be invalid". TAVI answers 204.
+- Zoho refuses a list for a module that does not exist: 400 INVALID_DATA (param module). TAVI answers 200 with an empty list.
+- Image with TAVI left and Zoho right: I3-B10-unknown-ids-vs-zoho-live.png (attached).
+

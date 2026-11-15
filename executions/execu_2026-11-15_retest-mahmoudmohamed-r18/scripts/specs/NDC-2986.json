@@ -1,0 +1,109 @@
+{
+ "out": "NDC-2986-retest-PASS.png",
+ "ticket": "NDC-2986",
+ "priority": "medium",
+ "title": "Layout Rules | A CRM User without customize permission can no longer see the rule list",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · Mahmoud Samy (CRM profile User) · Leads › Layout Rules · rules from the QA RT18 lane exist on Leads",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2986-1-u1-rule-list.png",
+   "caption": "CRM User opens Settings › Modules and Fields › Leads › Layout Rules by URL: no list, \"You can't manage layout rules\" + \"Permission denied.\"",
+   "crop": [
+    268,
+    60,
+    1332,
+    840
+   ],
+   "boxes": [
+    {
+     "b": [
+      362,
+      140,
+      460,
+      178
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      712,
+      362,
+      1156,
+      570
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1298,
+      822,
+      1574,
+      874
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2986-api-card.png",
+   "caption": "API as the same user: list and single rule both 403; normal record read 200",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    262
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      204
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Open Leads › Layout Rules by URL as a CRM User",
+   "Only users with Customize permission reach Layout Rules",
+   "Tab opens but shows no rules",
+   "PASS"
+  ],
+  [
+   2,
+   "Rule names, layouts, primary fields, counts",
+   "Not shown to this profile (was: full list shown)",
+   "Empty state \"You can't manage layout rules — can be viewed and changed only by users who can customize this module\"; no QA RT18 rule names in the page",
+   "PASS"
+  ],
+  [
+   3,
+   "Server answer",
+   "Refused",
+   "Toast \"Permission denied.\"; GET /layout-rules 403 PERMISSION_DENIED; GET one rule 403",
+   "PASS"
+  ]
+ ]
+}

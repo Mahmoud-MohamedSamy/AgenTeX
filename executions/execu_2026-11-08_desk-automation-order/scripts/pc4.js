@@ -1,0 +1,24 @@
+// OR-24 channels. PHASE=setup: chain on SUBJECT key in Dept A (skill sk2 → workflow Urgent → SLA urgent target → skill RR → A2 → blueprint owner A2) + API ticket.
+// Screen and web-form tickets are made by a6/u-pc4.js. PHASE=check: read every ticket whose subject has the key.
+eval(fs.readFileSync('lib-as.js','utf8'));eval(fs.readFileSync('lib-pb.js','utf8'));
+const PH=process.env.PHASE;const F='../pc4.json';const M=fs.existsSync(F)?JSON.parse(fs.readFileSync(F,'utf8')):{};const save=()=>fs.writeFileSync(F,JSON.stringify(M,null,1));
+const sl=(await api('GET','/desk/skills?department_id='+DA)).j?.data;const SL=Array.isArray(sl)?sl:(sl?.skills||[]);const S2=SL.find(s=>s.name==='QA AS6 sk2');const SO=JSON.parse(fs.readFileSync('../pb-skill-orig.json','utf8'));
+const c=(f,op,v)=>({field_key:f,operator:op,value:v});const R={};
+if(PH==='setup'){const k='PC24'+U;M.k=k;save();
+ R.skill=(await api('PUT','/desk/skills/'+S2.id+'?department_id='+DA,{name:S2.name,type_id:S2.type_id,description:S2.description,is_active:true,criteria:{conditions:[c('subject','contains',k)],pattern:null},agent_ids:S2.agent_ids})).s;
+ await wrule('PC24',{kind:'RecordCreated'},{kind:'StringMatch',field:'subject',operator:'Contains',stringValue:k,caseInsensitive:false},[{type:'FieldUpdate',fieldUpdates:{priority:{kind:'string',stringValue:'urgent'}}}]);
+ const p=await api('POST','/desk/sla/policies',{department_id:DA,name:'QA AO PC24 '+U,description:null,is_active:true,triggers:{create:true,update:false,field_update:null,customer_reply:false,agent_response:false,private_thread:null,comment:null},execute_only_with_account:false,resolution_from_created:true,
+  targets:[{name:'urgent 30',criteria:{conditions:[c('subject','contains',k),c('priority','equals','urgent')],pattern:'1 and 2'},response:{value:30,unit:'minutes'},resolution:{value:240,unit:'minutes'},calendar_mode:'calendar',business_hours_id:null,first_response_only:true,escalate_on_business_hours:false,escalations:{response:[],resolution:[]}},
+   {name:'other 300',criteria:{conditions:[c('subject','contains',k)],pattern:null},response:{value:300,unit:'minutes'},resolution:{value:900,unit:'minutes'},calendar_mode:'calendar',business_hours_id:null,first_response_only:true,escalate_on_business_hours:false,escalations:{response:[],resolution:[]}}]});if(p.j?.data?.id){pbm.sla.push(p.j.data.id);pbSave();}R.sla=p.s;
+ const rr=await prule('round_robin','PC24 rr',[{criteria:{conditions:[c('subject','contains',k),c('priority','equals','urgent')],pattern:'1 and 2'},method:'skill',pool:{kind:'agents',user_ids:[A1,A2,A3],team_id:null,excluded_user_ids:[]}}],{on:['create']});M.rr=rr.id;
+ const b=await api('POST','/modules/'+T+'/blueprints',{definition:{name:'QA AO PC24 '+U,description:'QA',moduleKey:'desk_tickets',targetField:'status',departmentId:DA,entryCriteria:{op:'and',children:[{op:'contains',field:'subject',value:k},{op:'eq',field:'owner',value:A2}]},states:[{id:'Open',name:'Open',position:{x:0,y:0},slaClock:'calendar'},{id:'Closed',name:'Closed',position:{x:300,y:0},slaClock:'calendar',isTerminal:true}],transitions:[{id:'end',name:'QA end',fromStateId:'Open',toStateId:'Closed',before:{},during:{},after:{actions:[]}}]},isActive:true});if(b.j?.data?.id){pbm.bp.push(b.j.data.id);pbSave();}R.bp=b.s;
+ const r=await api('POST','/modules/'+T+'/records',{data:fields({subject:'QA AO '+k+' api',description:'QA AO OR-24 API channel',department:DA,status:'Open',priority:'high',owner:null})});if(r.j?.data?.id){pbm.tickets.push(r.j.data.id);pbSave();}M.api=r.j?.data?.id;save();
+ fs.writeFileSync('../pc4-setup-result.json',JSON.stringify(R,null,1));return R;}
+if(PH==='check'){const k=M.k;const s=(await api('GET','/modules/'+T+'/records?limit=50&search='+encodeURIComponent(k))).j?.data;const L=Array.isArray(s)?s:(s?.items||s?.records||[]);
+ const val=v=>!v?undefined:v.kind==='array'?(v.items||[]).map(val):v.value;
+ for(const x of L){const id=x.id;if(!pbm.tickets.includes(id)){pbm.tickets.push(id);pbSave();}const o={};for(const d of (x.data||[]))o[d.field]=val(d.value);
+  const sa=(await api('GET','/desk/tickets/'+id+'/sla')).j?.data;const bs=((await api('GET','/modules/'+T+'/records/'+id+'/blueprint-state')).j?.data?.states||[])[0];const r2=await rec(id);
+  R[o.subject]={num:r2.ticket_number,channel:r2.channel||o.channel,skills:await skillsOf(id),priority:r2.priority,sla:(sa?.obligations||[]).map(q=>q.kind+' due '+(q.due_at||'').slice(11,16)),owner:nm(r2.owner),blueprint:bs?bs.activeStates:null,history:await feedS(id)};}
+ try{await setA(M.rr,false);}catch(e){}
+ const o=[];for(const x of SO)o.push((await api('PUT','/desk/skills/'+x.id+'?department_id='+DA,{name:x.name,type_id:x.type_id,description:x.description,is_active:x.is_active,criteria:x.criteria,agent_ids:x.agent_ids})).s);R.skillRestore=o;
+ fs.writeFileSync('../pc4-check-result.json',JSON.stringify(R,null,1));return R;}

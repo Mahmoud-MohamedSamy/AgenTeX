@@ -1,0 +1,43 @@
+# NDC-2934 Scoring Rules: features Zoho CRM has that CRM is missing
+Summary
+We compared CRM's Scoring Rules with Zoho CRM (Setup › Automation › Scoring Rules, manual score). This ticket lists what Zoho has and CRM does not have yet. The work item for the feature is NDC-2030; it has no detailed spec, so every item below is "not in NDC-2030".
+Already done in CRM
+- Settings › Automation › Scoring Rules per module: list, create, edit, delete, Active switch, empty state and the 50-rules-per-module limit with a banner.
+- Field rules: field, condition, value and points (−10000 to +10000, not 0), up to 25 per rule, for text, number, date, date-time, pick list, multi-select, checkbox, user and lookup fields.
+- One Score field, worked out on every save (form, inline, mass update, import, web form, API, lead conversion, workflow field update); it cannot be typed by hand.
+- Score as a list column, sort, filter, export and in reports (column and filter); score changes in the record timeline.
+- Workflow trigger "On Score Change" (increases, decreases, either) and workflow conditions on Score.
+- Edit conflict check between two admins, permission checks in the API, audit entries, Arabic and right-to-left.
+- CRM also has things Zoho does not: a threshold on the score trigger ("only when it reaches 50"), scoring on any module (Tasks, Calls, Services…), a 120-character rule name and ±10000 points (Zoho: 25 characters, ±100).
+Missing — building a rule
+- Rule per layout. Zoho asks for a layout (one layout or All Layouts) when the rule is created. Today a rule covers the whole module.
+- Which records a rule scores. Zoho has "Add Criteria under Leads Fields": only matching records are scored. Today every record of the module is checked.
+- Several conditions in one scoring line, joined with AND/OR and an editable pattern ("Criteria Pattern (1 and 2)"). Today each line has one condition.
+- More conditions: between and not between (numbers, dates), relative dates (Today, Current Month, Previous Week, Age in Days, Due in Days…), and contains / starts with / ends with on pick lists. Today the API answers "'between' is not a known operator".
+- Channel (touch point) scoring: points for emails opened, clicked or bounced, calls, campaigns, Desk tickets, missed chats, surveys and social, with Add / Subtract and time windows ("more than 10 emails in the last 15 days"). Today the API answers "Only field rules can score a record; activity (touch point) scoring is not available".
+- Clone a rule. Today the row menu has Edit and Delete only.
+- Up to 30 conditions per rule (Zoho Enterprise; 50 on Ultimate). Today 25.
+Missing — how scores are kept
+- Update old records. When a rule is saved Zoho asks "Update old records?" and rescores records created or active in the last 6 months, and it has a Run Scoring Rules action. Today a record is scored only when it is saved again, so old records keep score 0.
+- A separate score per rule. Zoho keeps each rule's score on the record (for example Web +10 and Quality −25 as two rows). Today there is one combined Score.
+- Positive score and negative score (plus touch-point scores) next to the total. Today only the total.
+- Score fields per rule: Zoho offers "Would you like to add score fields to the records? Yes, proceed" (label + score type), removed with the rule. Today there is one fixed Score field.
+- Switching a rule off keeps the scores it already gave (Zoho). Today the points are dropped on each record's next save.
+- Deleting a rule removes its scores at once (Zoho, without editing the records). Today old scores stay until each record is saved.
+Missing — where users see scores
+- Scoring Rules section on the record page: one row per rule with Positive, Negative, touch-point columns and Score. Today the record page shows no score at all, because Score is in no layout by default; only the timeline mentions score changes.
+- Search and status filter on the rules list (Zoho: search box, All Modules filter, Status filter). Today there is only the module picker.
+Missing — API
+- Clone, run scoring rules (background job), per-rule scores of a record, activate and deactivate actions. Today the API has list, get, create, update, active and delete; /scoring-rules/recalculate, /stats and /export return 404.
+Missing — automation
+- Score workflow for selected scoring rules only. Zoho's "Record Score" trigger has "This rule should be applied for: All Scoring Rules / Selective Scoring Rules". Today a TAVI "On Score Change" workflow always reacts to the one combined score of all rules. Not in NDC-2030.
+Environment
+staging-crm.taviportal.com (NDC-Staging), Edge, 12 November 2026, owner account. Zoho CRM Enterprise trial test org. Comparison images are attached.
+
+
+== COMMENTS (1)
+--- comment 2026-11-12T18:24:40.748569+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Added item 17 after a live Zoho check — 12 Nov 2026
+- Score workflow for selected scoring rules only: Zoho's "Record Score" trigger offers Increased / Decreased / Updated and "This rule should be applied for: All Scoring Rules / Selective Scoring Rules". TAVI's "On Score Change" always uses the one combined score.
+- Image with TAVI left and Zoho right: G4-score-trigger-selective-rules-vs-zoho.png (attached).
+

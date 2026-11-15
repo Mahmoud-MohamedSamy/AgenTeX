@@ -1,0 +1,26 @@
+# NDC-3010 Validation Rules | A user is blocked by a rule on a field they cannot edit or cannot see
+Summary
+If the field a rule checks is read-only or hidden for a user's profile, the rule still runs for that user. The user cannot type a value, so they cannot save the record at all. Zoho CRM skips a validation rule when the field is read-only for the user's profile.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; CRM: CRM User with profile "User"; Desk: test user switched to Desk Agent for the check, then switched back
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- On Leads (or Tickets), add a rule on a custom text field: "is empty" → "Note is required", Don't save, active.
+- In Field permissions, make that field read-only for the profile User (Desk: Desk Agent).
+- Sign in as a user with that profile and create a record without the note (they cannot edit it).
+- Repeat with the field hidden for that profile.
+Expected result
+The user is not blocked by a field they cannot change or see. The rule still runs for users who can edit the field.
+Actual result
+- Read-only field: the save is refused with "QA H6 note is required" (CRM and Desk).
+- Hidden field: the save is refused with the same message, for a field the user cannot even see (CRM and Desk).
+- Effective permissions confirm the field is read_only / hidden for that user.
+- For the owner the rule still blocks, which is correct.
+Notes
+- Cases H6 and H7 (Zoho item Z11).
+- API checks; no screenshot.
+
+
+== COMMENTS (0)
+

@@ -1,0 +1,99 @@
+{
+ "out": "NDC-3011-retest-PASS.png",
+ "ticket": "NDC-3011",
+ "priority": "high",
+ "title": "Validation Rules | A value typed in a blueprint transition form is now checked by the validation rules",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 VR Layout · blueprint \"QA RT18 VR BP\" (Open → Reject asks QA RT18 v text) · rule \"text cannot start with BAD\" · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3011-2-execute-bad.png",
+   "caption": "Transition \"QA to Reject\": typed BAD-bp, Execute → refused in the form with the rule's message",
+   "crop": [
+    544,
+    170,
+    512,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      570,
+      268,
+      1030,
+      324
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      570,
+      420,
+      1030,
+      456
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "3011-api-card.png",
+   "caption": "API: BAD value 422, record stays in Open; good value 200",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Execute the transition with \"BAD-bp\"",
+   "Refused with \"Text cannot start with BAD\" (was: 200, value saved)",
+   "POST transition 422 BLUEPRINT_VALIDATION_FAILED; form shows \"Transition field validation failed. • qa_rt18v_text: QA RT18 text cannot start with BAD\"; record stays Open",
+   "PASS"
+  ],
+  [
+   2,
+   "Message wording",
+   "Same as a normal save",
+   "Rule text shown, prefixed with the API name \"qa_rt18v_text:\" instead of the field label (minor)",
+   "INFO"
+  ],
+  [
+   3,
+   "Execute with a good value",
+   "Transition works",
+   "200; record moves to Reject with \"fine-bp\"",
+   "PASS"
+  ]
+ ]
+}

@@ -1,0 +1,5 @@
+eval(fs.readFileSync('lib-as.js','utf8'));const o=JSON.parse(fs.readFileSync('../e1-happiness-orig.json','utf8'));
+const ro=['expiry_days_min','expiry_days_max','question_max_length','public_page_configured','supervisors_max','closed_email_subject_max','closed_email_body_max','resend_after_hours_max','option_icons','option_label_max','option_text_max','option_image_max_bytes'];
+const cur=(await api('GET','/desk/happiness/settings')).j.data;const b={...o};for(const k of ['row_version','version','etag'])if(k in cur)b[k]=cur[k];for(const k of ro)delete b[k];const p=await api('PUT','/desk/happiness/settings',b);const n=(await api('GET','/desk/happiness/settings')).j.data;
+const diff=Object.keys(o).filter(k=>!['updated_at','row_version','version','updated_by'].includes(k)&&JSON.stringify(o[k])!==JSON.stringify(n[k]));
+fs.appendFileSync('../ledger.md','- '+new Date().toISOString().slice(0,19)+' E2E-1 7c: Customer Happiness restored (diff: '+diff.join(',')+').\n');return {put:p.s,enabled:n.is_enabled,scoped:n.department_scope_enabled,depts:n.department_ids?.length,diff};

@@ -1,0 +1,27 @@
+# NDC-3022 Departments | Disabling a department with ticket transfer leaves the ticket record on the old department, so the ticket is missing from the new department's list
+Summary
+Disabling a department with ticket transfer leaves the ticket record on the old department. Found in the Desk go-live retest, Wave 5 (W5-31), NDC-Staging, 12–13 Nov 2026. Where: Setup › Departments › disable/delete with transfer; Tickets list; Analytics dashboards.
+Steps
+- Create a department and a ticket in it.
+- Disable (then delete) the department and choose Customer Support as the transfer target.
+- Open Customer Support's ticket list and the Overview dashboard.
+Expected
+The ticket moves to Customer Support everywhere: list, views, reports and dashboards agree.
+Actual
+The Desk ticket says Customer Support (history 'department changed', source desk_api) but the ticket record's Department still holds the deleted department. The ticket is missing from Customer Support's list (0 found) while dashboards count it (Open Tickets 19 vs 18 in the list/report). Four round-14 tickets (#1363–#1366) were in the same state.
+POST /desk/departments/{dept}/disable {transfer_to_department_id: Customer Support} → 200
+GET /desk/tickets/{t} → department_id = Customer Support
+GET /modules/{tickets}/records/{t} → department = <deleted dept>
+records filter department = Customer Support → total_count 0
+Zoho Desk
+Not checked live: the Zoho trial Setup › Departments page stayed on the loading spinner (13 Nov). The defect stands on its own: TAVI's list, records and dashboards disagree about the same ticket.
+Note
+Reproduced on 13 Nov with a temporary department (deleted afterwards). Four older test tickets (#1363–#1366) were in the same state and made the Customer Support Overview dashboard show 19 open tickets while the list and report showed 18; they have been deleted since.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner, Edge, 13 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): W5-E7-vs-zoho.png.
+
+
+== COMMENTS (0)
+

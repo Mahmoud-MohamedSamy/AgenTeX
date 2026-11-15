@@ -1,0 +1,10 @@
+const G = 'mahmoud.mmohamedsamy@gmail.com';
+const open = async () => { const r = arr(D((await api('GET', '/modules/' + TM + '/records?limit=100&q=' + encodeURIComponent(G))).j)).map(flat); return r.filter(t => String(t.email || '').toLowerCase() === G).map(t => ({ id: t.id, n: t.ticket_number, st: t.status, s: String(t.subject || '').slice(0, 40) })); };
+const before = await open(); out.before = before; out.openBefore = before.filter(t => t.st !== 'Closed').length;
+const sp = await api('GET', '/desk/channels/spam-contacts?limit=200'); out.alreadyBlocked = JSON.stringify(D(sp.j)).includes(G);
+const b = await api('POST', '/desk/channels/spam-contacts', { address: G }); out.block = b.s + ' ' + b.t.slice(0, 250);
+await sleep(8000);
+const after = await open(); out.openAfter = after.filter(t => t.st !== 'Closed').length; out.closedNow = after.filter(t => t.st === 'Closed' && (before.find(x => x.id === t.id) || {}).st !== 'Closed').map(t => t.n);
+out.blockedNow = JSON.stringify(D((await api('GET', '/desk/channels/spam-contacts?limit=200')).j)).includes(G);
+await go('/settings/channels/email/blocked', 8000).catch(() => {}); await shot('w4/W4-12-blocked');
+return fin({ out });

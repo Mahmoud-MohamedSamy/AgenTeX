@@ -1,0 +1,24 @@
+# NDC-3012 Validation Rules | A value typed in a ticket blueprint step skips the validation rules (Desk)
+Summary
+On a Desk ticket, a blueprint step that asks for a field saves a value that an active validation rule refuses.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; QA blueprint (Customer Support) on a QA Tickets layout; step "QA to Reject" asks for the text field; active rule "text cannot start with BAD"
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Create a Tickets validation rule on a text field: starts with "BAD", Don't save, active.
+- Create a blueprint on the same layout whose step asks for that field.
+- Open a ticket in the first state, click the step "QA to Reject".
+- Type "BAD-bp" and click Run.
+Expected result
+The step is refused with the rule message and the ticket stays in its state.
+Actual result
+- No field check is shown while typing or on Run.
+- The step succeeds (200, body {"fields":{"qa_vr_text":"BAD-bp"}}) and the ticket moves to Reject with "BAD-bp" saved.
+Notes
+- Case G18.
+- Evidence: desk-G18-typed.png, desk-G18-after.png (attached).
+
+
+== COMMENTS (0)
+

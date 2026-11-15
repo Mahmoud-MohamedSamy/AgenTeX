@@ -1,0 +1,13 @@
+const MID = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; const R = {}; R.net = [];
+page.on('response', r => { const u = r.url(); if (/\/layouts\//.test(u) && r.request().method() !== 'GET') R.net.push(r.request().method() + ' ' + r.status() + ' ' + u.replace(/^https:\/\/[^/]+/, '')); });
+await page.goto(H + '/settings/modules-and-fields/' + MID + '?tab=layouts', { waitUntil: 'domcontentloaded' }); await sleep(7000);
+await page.getByRole('button', { name: 'Open menu for QA RT18 J6b Layout' }).click(); await sleep(1200);
+await page.getByText(/^Delete( layout)?$/i).last().click(); await sleep(2000);
+await page.locator('[role=alertdialog],[role=dialog]').last().getByRole('button', { name: /^Delete$/ }).click(); await sleep(4000);
+R.toast = ((await text()).replace(/\s+/g, ' ').match(/.{0,60}(deleted|rule).{0,120}/gi) || []).slice(0, 4);
+await shot('3015-4-after-delete.png');
+await page.goto(H + '/settings/modules-and-fields/' + MID + '?tab=validation', { waitUntil: 'domcontentloaded' }); await sleep(8000);
+R.rows = (await page.locator('tbody tr').allInnerTexts()).map(s => s.replace(/\s+/g, ' ').slice(0, 220));
+R.toggles = await page.locator('tbody tr').evaluateAll(trs => trs.map(tr => { const s = tr.querySelector('[role=switch]'); return tr.innerText.slice(0, 22) + ':' + (s ? s.getAttribute('aria-checked') + (s.disabled ? '(disabled)' : '') : '-'); }));
+await shot('3015-5-rule-list.png');
+return R;

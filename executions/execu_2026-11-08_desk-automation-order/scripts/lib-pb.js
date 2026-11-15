@@ -1,0 +1,16 @@
+// Part B helpers (eval'd after lib-as.js inside api.js scripts). QA AS6 Dept A (DA) with agents A1..A3 held online by ag-keep.js.
+// Everything made is tracked in ../pb-made.json and removed by pb-clean.js.
+var PBF='../pb-made.json';var pbm=fs.existsSync(PBF)?JSON.parse(fs.readFileSync(PBF,'utf8')):{wf:[],rules:[],tickets:[],skills:[],sla:[],bp:[],other:[]};var pbSave=()=>fs.writeFileSync(PBF,JSON.stringify(pbm,null,1));
+var PBL=m=>fs.appendFileSync('../pb-log.md','- '+new Date().toISOString().slice(0,19)+' '+m+'\n');
+// ticket in DA; key goes in subject + description so every rule can match on it
+var ptk=async(key,extra={},dept=DA)=>{const r=await api('POST','/modules/'+T+'/records',{data:fields({subject:'QA AO PB '+key,description:'QA AO PB '+key,department:dept,status:'Open',priority:'high',owner:null,...extra})});const id=r.j?.data?.id;if(id){pbm.tickets.push(id);pbSave();return id;}throw new Error('ticket '+r.s+' '+r.t.slice(0,200));};
+var wcon=k=>({kind:'StringMatch',field:'description',operator:'Contains',stringValue:k,caseInsensitive:false});
+var wand=(...o)=>({kind:'Logical',operator:'And',operands:o});
+var wrule=async(name,trigger,criteria,actions,o={})=>{const r=await api('POST','/workflow/rules',{moduleId:T,departmentIds:[o.dept||DA],name:'QA AO PB '+name+' '+U,isActive:true,mode:'Recurring',trigger,criteria,actions:actions.map((a,i)=>({order:i,delaySeconds:0,...a}))});const id=r.j?.data?.id;if(id){pbm.wf.push(id);pbSave();return id;}throw new Error('wf '+name+' '+r.s+' '+(r.j?.error?.message||r.t).slice(0,200));};
+var prule=async(...a)=>{const r=await rule(...a);if(r.j?.data?.id){pbm.rules.push(r.j.data.id);pbSave();return r.j.data;}throw new Error('rule '+a[1]+' '+E(r));};
+var execsOf=async id=>{const j=(await api('GET','/workflow/executions?recordId='+id)).j?.data;const L=Array.isArray(j)?j:(j?.items||[]);return L.map(e=>(e.ruleName||e.ruleId||'').replace('QA AO PB ','')+':'+(e.outcome||e.status)+'['+(e.dispatches||e.actions||e.actionResults||[]).map(a=>(a.actionType||a.type)+'='+a.status+(a.lastError?'('+String(a.lastError).slice(0,60)+')':'')).join(',')+']');};
+var feedS=async id=>(await feed(id)).map(e=>e.action+(e.summary?.trigger?'('+e.summary.trigger+')':'')+(e.summary?.to_owner_id||e.summary?.owner_id?'→'+nm(e.summary.to_owner_id||e.summary.owner_id):'')).reverse().join(' > ');
+var skillsOf=async id=>{const s=(await rec(id)).skills;return Array.isArray(s)?s:(s?[s]:[]);};
+var pskill=async(name,key,agents)=>{const ty=(await api('GET','/desk/skill-types?department_id='+DA)).j?.data?.types||[];const r=await api('POST','/desk/skills?department_id='+DA,{name:'QA AO PB '+name+' '+U,type_id:ty[0]?.id,description:'QA',is_active:true,criteria:{conditions:[{field_key:'description',operator:'contains',value:key}],pattern:null},agent_ids:agents,department_id:DA});const d=r.j?.data;const id=d?.id||d?.skill?.id;if(id){pbm.skills.push(id);pbSave();return {id,name:'QA AO PB '+name+' '+U};}throw new Error('skill '+r.s+' '+r.t.slice(0,250));};
+var waitRec=async(id,pred,s=20)=>{let o;for(let i=0;i<s/2;i++){o=await rec(id);if(pred(o))return o;await sleep(2000);}return o;};
+var cs=async(R,id,fn)=>{try{R[id]=await fn();}catch(e){R[id]='ERR '+String(e.message).slice(0,240);}PBL(id+': '+JSON.stringify(R[id]).slice(0,400));};

@@ -1,0 +1,33 @@
+{
+ "out": "3009-api-card.png",
+ "title": "NDC-3009 two editor tabs save the same rule (network)",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "Before",
+   "GET rule \"QA RT18 K3\"",
+   "rowVersion 1, description empty",
+   "info"
+  ],
+  [
+   "Tab B saves first",
+   "PUT …/validation-rules/{id} (sent rowVersion=1)",
+   "200, description \"changed in tab 2\", rowVersion 2",
+   "ok"
+  ],
+  [
+   "Tab A (stale) saves",
+   "PUT …/validation-rules/{id} (sent rowVersion=1)",
+   "409 VALIDATION_RULE_CONFLICT \"This validation rule was changed by someone else; reload it and try again.\"",
+   "ok"
+  ],
+  [
+   "After",
+   "GET rule",
+   "rowVersion 2, description \"changed in tab 2\" (tab B kept)",
+   "ok"
+  ]
+ ]
+}

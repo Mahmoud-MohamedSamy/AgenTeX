@@ -1,0 +1,100 @@
+{
+ "out": "NDC-2987-retest-PASS.png",
+ "ticket": "NDC-2987",
+ "priority": "high",
+ "title": "Layout Rules | A value typed into a field the rule then hides is now kept on create",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 Layout · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2987-1-typed.png",
+   "caption": "Create form, type Refund: \"QA keep me\" typed in order",
+   "crop": [
+    420,
+    290,
+    1010,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      451,
+      362,
+      1409,
+      400
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2987-2-hidden-before-save.png",
+   "caption": "type changed to Question: order hidden, then Save",
+   "crop": [
+    420,
+    260,
+    1010,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      451,
+      462,
+      1409,
+      506
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2987-api-card.png",
+   "caption": "Record read back",
+   "crop": [
+    0,
+    80,
+    1600,
+    140
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      204
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Type \"QA keep me\" in order (type Refund)",
+   "—",
+   "order visible and filled",
+   "INFO"
+  ],
+  [
+   2,
+   "Change type so order is hidden, Save",
+   "Saved",
+   "POST /records 201",
+   "PASS"
+  ],
+  [
+   3,
+   "Read the record",
+   "Typed value kept (Zoho)",
+   "qa_rt18_order = \"QA keep me\" (was empty)",
+   "PASS"
+  ]
+ ]
+}

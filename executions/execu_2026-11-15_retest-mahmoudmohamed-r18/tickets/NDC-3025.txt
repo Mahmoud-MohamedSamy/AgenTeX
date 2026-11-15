@@ -1,0 +1,22 @@
+# NDC-3025 Mass Update | Choosing a field but no value silently clears that field on every selected ticket
+Summary
+Mass Update with a field but no value silently clears that field. Found in the Desk go-live retest, Wave 5 (W5-44b), NDC-Staging, 12–13 Nov 2026. Where: Tickets list › select tickets › Update.
+Steps
+- Select 2 tickets in a list and click Update.
+- Choose a field (Priority) and leave the value as 'Select'.
+- Click Update records.
+Expected
+Refused ('choose a value') or a clear confirmation that the field will be emptied.
+Actual
+Accepted: 2 updated; both tickets' Priority went from High/Low to empty (history 'priority High → null'). No warning.
+POST /modules/{tickets}/records/mass-update {record_ids:[2], data:[{field: priority, value:{kind: null}}]} → 200 updated 2
+Zoho Desk
+Zoho (live, 13 Nov): the value list shows the empty choice as a labelled, pre-selected option -None-, so the agent sees the field will be set to none. TAVI shows the placeholder Select, which reads as nothing chosen. Saving in Zoho was not tried (it would change Zoho data).
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner, Edge, 13 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): W5-E1-vs-zoho.png.
+
+
+== COMMENTS (0)
+

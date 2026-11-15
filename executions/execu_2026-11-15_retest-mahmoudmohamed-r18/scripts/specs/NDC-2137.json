@@ -1,0 +1,36 @@
+{
+ "out": "NDC-2137-retest-PARTIAL.png",
+ "ticket": "NDC-2137",
+ "priority": "medium",
+ "title": "Custom Views | Kanban cards load again (no more 500), but headers + first cards still miss the 2 s p95 target",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless · Transactions (Deals) › Kanban View by Stage, Standard pipeline · 10 + 20 timed loads",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2993-1-deals-kanban.png",
+   "caption": "Deals Kanban: every column shows its header totals and cards (13 Nov: \"Could not load these records\")",
+   "crop": [270, 250, 1330, 600],
+   "boxes": [
+    { "b": [286, 270, 560, 495], "n": 1, "kind": "PASS" },
+    { "b": [1186, 270, 1460, 495], "n": 1, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2137-api-card.png",
+   "caption": "Column requests and timings",
+   "crop": [0, 0, 1600, 360],
+   "boxes": [
+    { "b": [36, 99, 1564, 136], "n": 2, "kind": "PASS" },
+    { "b": [36, 146, 1564, 204], "n": 2, "kind": "PASS" },
+    { "b": [36, 214, 1564, 251], "n": 3, "kind": "FAIL" },
+    { "b": [36, 261, 1564, 298], "n": 3, "kind": "FAIL" }
+   ]
+  }
+ ],
+ "rows": [
+  [1, "Open Deals Kanban", "Headers with totals and first cards", "Shown in every column, every load", "PASS"],
+  [2, "Column requests (skip_total=true)", "200 (13 Nov: 500)", "224/224 → 200", "PASS"],
+  [3, "p95 time to headers + first cards", "≤ 2 s", "Run 1 (10 loads): p50 1.74 s, p95 5.46 s; run 2 (20 loads, busier staging): p50 8.92 s, p95 31.93 s", "FAIL"]
+ ]
+}

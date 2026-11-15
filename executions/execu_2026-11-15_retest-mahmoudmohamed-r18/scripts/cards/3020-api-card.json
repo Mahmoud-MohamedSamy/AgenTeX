@@ -1,0 +1,39 @@
+{
+ "out": "3020-api-card.png",
+ "title": "NDC-3020 rule addressed through another module",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "GET via Contacts",
+   "GET /modules/{Contacts}/validation-rules/{Leads rule}",
+   "404 VALIDATION_RULE_NOT_FOUND",
+   "ok"
+  ],
+  [
+   "DELETE via Contacts",
+   "DELETE /modules/{Contacts}/validation-rules/{Leads rule}",
+   "404 VALIDATION_RULE_NOT_FOUND (was 204)",
+   "ok"
+  ],
+  [
+   "PUT via Contacts",
+   "PUT /modules/{Contacts}/validation-rules/{Leads rule}",
+   "404; description unchanged",
+   "ok"
+  ],
+  [
+   "Rule on Leads",
+   "GET /modules/{Leads}/validation-rules/{id}",
+   "200 (still there)",
+   "info"
+  ],
+  [
+   "Unknown id",
+   "DELETE /modules/{Leads}/validation-rules/{random}",
+   "404",
+   "ok"
+  ]
+ ]
+}

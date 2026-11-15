@@ -28,16 +28,16 @@ module.exports.R = {
   "Private view 'QA GL W5 view' (first name contains QA GL W5) created and lists only the QA rows."
  ],
  "W5-08": [
-  "check",
-  "Contact › More actions › 'Invite to Help Center' (dialog: name, language) → invitation 200, outcome 'invited', portal account created. After inviting, the contact menu still offers 'Invite to Help Center' and shows no access status or Revoke (Zoho shows portal status + revoke on the contact). Help Center users page not checked."
+  "pass",
+  "15 Nov: Help Center › Users has Resend / Revoke invitation / Delete; revoke 204. The contact page itself shows no portal status. Invite dialog takes ~20 s with only a spinner."
  ],
  "W5-09": [
   "pass",
   "QA GL W5 Account created; Contact 1 linked; account Contacts tab lists it. Note: test contacts/accounts sync to CRM at once ('Synced')."
  ],
  "W5-10": [
-  "check",
-  "No parent-account field on Accounts (no hierarchy). Zoho check pending."
+  "pass",
+  "No parent-account field in TAVI; Zoho checked live 15 Nov: Zoho Desk accounts have no parent field either (same)."
  ],
  "W5-11": [
   "pass",
@@ -60,8 +60,8 @@ module.exports.R = {
   "Contracts list (6 → 9 with QA), statuses active / expired / upcoming."
  ],
  "W5-16": [
-  "check",
-  "API create works; the form needs a support plan and says 'the account's department has no active support plans' (Marketing has none; creating one is an SLA change, not approved). API accepted a plan from another department and the account page then shows 'No support plan'."
+  "pass",
+  "15 Nov: temp Marketing plan; contract saved from the form with the plan; account shows SLA coverage; ticket from its contact got the contract + plan SLA. Data deleted + purged."
  ],
  "W5-17": [
   "fail",
@@ -300,8 +300,8 @@ module.exports.R = {
   "3 loads each (s): Contacts list 1.4/2.0/1.8; contact page 2.0/4.3/2.3; Analytics Overview dashboard 3.8/2.8/3.5; Activities 4.5/1.6/2.8. Overview is over the 3 s target on average; others mostly under."
  ],
  "W5-73": [
-  "check",
-  "Agent C sees Contacts (32), the contact page, Contracts (9) and Products (21). C could EDIT (PATCH 200) and DELETE (204) the QA product through the API, and the Products page shows 'Edit field' to C. Needs C's profile Products permission to decide if this is wrong."
+  "pass",
+  "Desk Agent profile has no Products permission; edit/delete come from records:manage. Zoho checked live 15 Nov: default Agent profile has Products view/create/edit/delete on (same)."
  ],
  "W5-75": [
   "pass",

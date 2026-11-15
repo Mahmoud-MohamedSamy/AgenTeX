@@ -1,0 +1,33 @@
+{
+ "out": "NDC-2630-retest-PASS.png",
+ "ticket": "NDC-2630",
+ "priority": "medium",
+ "title": "Email | A failed or bounced send now shows only its failed status — no \"Sent\" chip",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless + API · leads \"QA RT18 2630 send\" (example.com, bounce) and \"QA RT18 2630 send real\" (refused sender) · automation NDC-2630 not run (it signs the owner in)",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2630-B-email-detail-refused.png",
+   "caption": "Refused sender: message dialog shows only red \"Failed\" + \"Not sent: No Zoho account found…\" (13 Nov: blue \"Sent\" chip beside it)",
+   "crop": [464, 229, 672, 443],
+   "boxes": [
+    { "b": [480, 318, 1118, 412], "n": 1, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2630-A-email-detail.png",
+   "caption": "Bounced send: only \"Bounced\" + reason, no \"Sent\" chip",
+   "crop": [464, 229, 672, 443],
+   "boxes": [
+    { "b": [480, 318, 1118, 412], "n": 2, "kind": "PASS" }
+   ]
+  }
+ ],
+ "rows": [
+  [1, "Open the message of a send the provider refused", "Only the failed status", "Red \"Failed\" + \"Not sent: No Zoho account found for sender…\"; no \"Sent\" chip (send 422 MAIL_SEND_FAILED; list Failed + Retry)", "PASS"],
+  [2, "Open the message of a bounced send (example.com)", "Only the bounced status", "\"Bounced\" + 550 5.4.4 reason; no \"Sent\" chip", "PASS"],
+  [3, "Timeline after failed sends", "No \"email sent\" entry", "RecordCreated only (both leads)", "PASS"],
+  [4, "Compose while the sender cannot send", "Warning, Send blocked", "\"You can't send email yet…\" + reason; Send disabled", "PASS"]
+ ]
+}

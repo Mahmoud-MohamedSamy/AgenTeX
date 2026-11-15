@@ -1,0 +1,137 @@
+<title>Desk Automation Pairs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column; verdict tiles, then what to look at, then the full case table grouped by the automation each pair feeds */
+:root{--bg:#f5f7f8;--surface:#fff;--fg:#17202a;--muted:#5a6672;--line:#dbe1e6;--accent:#0f6b78;--accent-soft:#e2f1f3;
+--ok:#1f7a4d;--ok-soft:#e3f3ea;--warn:#9a5b00;--warn-soft:#fbefd9;--bad:#b3261e;--bad-soft:#fbe5e3;--info:#4f46b5;--info-soft:#ebe9fb;--mute-soft:#eceff2;
+--f-d:"Space Grotesk",system-ui,sans-serif;--f-b:"IBM Plex Sans",system-ui,"Segoe UI",sans-serif;--f-m:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#11161a;--surface:#182026;--fg:#e4eaee;--muted:#98a5b0;--line:#2a343c;--accent:#5cc4d2;--accent-soft:#16323a;--ok:#6fd19c;--ok-soft:#173326;--warn:#f0b65a;--warn-soft:#3a2b12;--bad:#ff8a80;--bad-soft:#3d1b19;--info:#b3a8ff;--info-soft:#262046;--mute-soft:#232c33;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#11161a;--surface:#182026;--fg:#e4eaee;--muted:#98a5b0;--line:#2a343c;--accent:#5cc4d2;--accent-soft:#16323a;--ok:#6fd19c;--ok-soft:#173326;--warn:#f0b65a;--warn-soft:#3a2b12;--bad:#ff8a80;--bad-soft:#3d1b19;--info:#b3a8ff;--info-soft:#262046;--mute-soft:#232c33;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--f-b)}
+.wrap{max-width:1000px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+h1,h2{font-family:var(--f-d);margin:0;line-height:1.25;text-wrap:balance}h1{font-size:1.9rem}h2{font-size:1.3rem}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+p{margin:0;max-width:72ch}.muted{color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:.85rem;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:2px}
+.stat b{font-family:var(--f-d);font-size:1.7rem;font-variant-numeric:tabular-nums}.stat span{font-size:.8rem;color:var(--muted)}
+.stat.ok b{color:var(--ok)}.stat.bad b{color:var(--bad)}.stat.warn b{color:var(--warn)}.stat.mute b{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 20px;display:grid;gap:10px}
+.card.bad{border-left:4px solid var(--bad)}.card.warn{border-left:4px solid var(--warn)}.card.info{border-left:4px solid var(--info)}
+ul{margin:0;padding-left:1.2em}li{margin:3px 0}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:.88rem}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;background:var(--surface);position:sticky;top:0}
+tr.grp td{background:var(--mute-soft);font-weight:600;font-size:.8rem;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+.id{font-family:var(--f-m);font-size:.8rem;white-space:nowrap}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:.72rem;font-weight:600;white-space:nowrap}
+.p-pass{background:var(--ok-soft);color:var(--ok)}.p-same{background:var(--ok-soft);color:var(--ok)}.p-diff{background:var(--bad-soft);color:var(--bad)}.p-note{background:var(--warn-soft);color:var(--warn)}.p-nr{background:var(--mute-soft);color:var(--muted)}
+.z-live{background:var(--accent-soft);color:var(--accent)}.z-set{background:var(--info-soft);color:var(--info)}.z-docs{background:var(--warn-soft);color:var(--warn)}.z-no{background:var(--mute-soft);color:var(--muted)}
+code{font-family:var(--f-m);font-size:.84em;background:var(--bg);padding:1px 5px;border-radius:4px}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}h1{font-size:1.5rem}}
+</style>
+<div class="wrap">
+<header style="display:grid;gap:10px">
+ <div class="eyebrow">TAVI Desk vs Zoho Desk · Automation execution order · Part B</div>
+ <h1>Two automations working together</h1>
+ <div class="meta"><span>NDC-Staging · staging-desk.taviportal.com</span><span>Run 14 Nov 2026, 10:25–11:00 UTC</span><span>QA AS6 Dept A, agents A1 Test User 1, A2 Mahmoud Samy, A3 Dev Team 2 (kept online)</span><span>Zoho: techsolutionsegypt test org</span></div>
+ <p>Each case makes a later automation depend on what an earlier one did on the same ticket. If the later one reacts, the order is right. Ticket history and workflow execution logs were the second check. Every TAVI case ran on real tickets. Zoho was checked live where its Setup screens worked.</p>
+</header>
+
+<div class="stats">
+ <div class="stat ok"><b>35</b><span>Pass or same as Zoho</span></div>
+ <div class="stat bad"><b>1</b><span>Differs from Zoho</span></div>
+ <div class="stat warn"><b>1</b><span>Side finding</span></div>
+ <div class="stat mute"><b>2</b><span>Not run</span></div>
+</div>
+
+<section style="display:grid;gap:12px">
+ <h2>What needs your decision</h2>
+ <div class="card bad">
+  <div><span class="pill p-diff">Differs</span> <b class="id">OR-13</b> · Round robin cannot see the SLA on a new ticket · filed <b>NDC-3046</b></div>
+  <p>A round-robin rule whose condition is "SLA name equals the policy" did not assign the new ticket, although the SLA applied to it (history: <code>ticket.created › sla.applied(create)</code>, no assignment). After a later edit, the same rule assigned A1 at once. So on create, round robin does not see the SLA result (it either runs first or checks an earlier copy of the ticket). Rechecked on #3922 the same afternoon with screenshots: same result. The Round Robin page itself says "Round robin runs after workflows and SLAs".</p>
+  <p><b>Zoho:</b> Zoho's help gives the order Assignment rules › Workflow › <b>SLA › Round robin</b> › Blueprint. Not checked live: Zoho's round-robin form could not be completed in the trial (see Zoho coverage).</p>
+  <p class="muted">Effect: a round-robin rule that depends on the SLA (name, violated, due) never matches on create. Filed 14 Nov as NDC-3046 (Medium, Bug, Sprint 16) with annotated evidence.</p>
+ </div>
+ <div class="card warn">
+  <div><span class="pill p-note">Side finding</span> <b class="id">L6</b> · Workflow log says "Succeeded" for a change the blueprint blocked</div>
+  <p>A delayed workflow action set Status to Closed on a ticket inside a blueprint. The blueprint correctly kept the ticket in Open, but the execution log shows <code>FieldUpdate = Succeeded</code>, so an admin reading the log would think the status changed. Zoho not checked. Low.</p>
+ </div>
+ <div class="card info">
+  <div><b>Leftover from an earlier session</b></div>
+  <p>QA AS6 Dept A holds 27 active skills named "QA AS6 cap 1…29" from the 6–7 Nov skill-limit test, so the department is at its 30-skill limit and no new skill can be made. Today's run borrowed "QA AS6 sk1/sk2" instead and restored them. Shall I delete the "cap" skills?</p>
+ </div>
+</section>
+
+<section style="display:grid;gap:12px">
+ <h2>Zoho coverage</h2>
+ <ul>
+  <li><span class="pill z-live">Run live</span> L7: a ticket in the (temporarily activated) Default Blueprint was moved to another department: move allowed, ticket left the blueprint, status kept. Same as TAVI.</li>
+  <li><span class="pill z-set">Seen live</span> OR-03: Zoho's workflow actions include "Recalculate Skills" and "Reassign ticket based on Skills". OR-10: Zoho's round-robin form says "The rule will not re-assign tickets that were assigned via other automations." OR-14: Zoho's SLA has "due date calculated from SLA applied time". OR-34: Zoho's default "Assigning a ticket" email has no due-date placeholder.</li>
+  <li><span class="pill z-docs">Zoho help only</span> OR-13 (order SLA before round robin), OR-15 (first matching rule in list order).</li>
+  <li><span class="pill z-no">Not checked</span> OR-19, OR-20, OR-26. Zoho's API refused creating workflows and round-robin rules, and two Setup forms broke (the field-update panel and the round-robin target step), so no live rule could be built. The trial ends tomorrow (15 Nov).</li>
+ </ul>
+ <p class="muted">Zoho cleanup: Default Blueprint set back to inactive; tickets #192 and #193 moved to the Recycle Bin; no workflow or round-robin rule was saved.</p>
+</section>
+
+<section style="display:grid;gap:12px">
+ <h2>All cases</h2>
+ <div class="tw"><table>
+ <thead><tr><th>Case</th><th>Pair</th><th>What happened in TAVI</th><th>Zoho</th><th>Result</th></tr></thead>
+ <tbody>
+ <tr class="grp"><td colspan="5">Skills, direct rules, workflow and round robin</td></tr>
+ <tr><td class="id">OR-01 · H-12</td><td>Skills › Round robin</td><td>Skill added by criteria (sk2 → A2) and the skill-based rule assigned A2 in the same event.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-02</td><td>Skills › Workflow</td><td>Workflow condition "skills include sk2" fired on create and on update. The condition matches the skill name; a skill id does not match.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-03</td><td>Workflow › Skills</td><td>Workflow set Priority = Low; a skill needing Low was not added in that event. With the "Recalculate skills" action after it, the skill was added at once.</td><td><span class="pill z-set">Seen live</span> Zoho also has an explicit "Recalculate Skills" action</td><td><span class="pill p-same">Same</span></td></tr>
+ <tr><td class="id">OR-04 · D-15</td><td>Direct › Workflow</td><td>Direct rule set A1; workflow "owner is A1" fired in the same create event and added its comment.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-05 · D-16</td><td>Direct › Workflow</td><td>Direct set A1, workflow then set A2. Final owner A2; history shows A1 then A2 (#3559).</td><td><span class="pill z-docs">Help</span> workflow after assignment</td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-06</td><td>Direct › Workflow alert</td><td>Workflow email to "Record owner" went out after the direct rule set A1 (dispatch target <code>UserField:owner</code>, Succeeded).</td><td><span class="pill z-docs">Help</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-10 · D-17</td><td>Workflow › Round robin</td><td>Workflow set A3; the matching round-robin rule did nothing (no auto-assign in history).</td><td><span class="pill z-set">Seen live</span> "will not re-assign tickets assigned via other automations"</td><td><span class="pill p-same">Same</span></td></tr>
+ <tr><td class="id">OR-11</td><td>Workflow › Round robin</td><td>Workflow set Priority = Low; the rule needing Low assigned A1 in the same event.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-12</td><td>Direct › Round robin</td><td>Direct rule moved the ticket from Dept B to Dept A unassigned; Dept A's round robin assigned A1 ("moved").</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-15 · E-15</td><td>Round robin methods</td><td>Two matching rules (sequential A1, load A3): first in list assigned A1; after reordering, A3. Never both.</td><td><span class="pill z-docs">Help</span> first matching rule in list order</td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-28</td><td>Skills › Direct</td><td>Direct rule with "skills contains sk2" saw the skill stamped in the same event and assigned A3.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr class="grp"><td colspan="5">SLA</td></tr>
+ <tr><td class="id">OR-07</td><td>Workflow › SLA</td><td>Workflow raised Priority to Urgent; the SLA used the Urgent target (first response due 30 min).</td><td><span class="pill z-docs">Help</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-08</td><td>Workflow › SLA</td><td>Workflow set Low; the second policy (Low, 240 min) applied instead of the High one.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-09</td><td>Direct › SLA</td><td>Direct rule moved the ticket to Dept A; Dept A's policy applied.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-13</td><td>SLA › Round robin</td><td>Round robin on "SLA name" did not match on create, did on a later edit: round robin does not see the SLA on create. NDC-3046.</td><td><span class="pill z-docs">Help</span> SLA before round robin</td><td><span class="pill p-diff">Differs</span></td></tr>
+ <tr><td class="id">OR-14</td><td>SLA timer › Round robin</td><td>Timer counts from when the SLA applied (creation); a policy with the update trigger restarts at the edit that assigned the ticket.</td><td><span class="pill z-set">Seen live</span> "calculated from SLA applied time"</td><td><span class="pill p-same">Same</span></td></tr>
+ <tr><td class="id">OR-18</td><td>SLA + Blueprint</td><td>Ticket got the SLA policy (first response 60 min) and the blueprint state timer (30 min); both running.</td><td><span class="pill z-docs">Help</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-29</td><td>Skills › SLA</td><td>SLA target "skills contains sk2" (20 min) applied over the fallback (400 min).</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr class="grp"><td colspan="5">Blueprint (including Group L)</td></tr>
+ <tr><td class="id">OR-16 · L1</td><td>Workflow › Blueprint</td><td>Workflow changed the subject on create; the ticket entered the blueprint whose criteria need that subject.</td><td><span class="pill z-docs">Help</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-17 · L2</td><td>Round robin › Blueprint</td><td>Round robin set A1; blueprint with "owner is A1" entry took the ticket. Transition owner = ticket owner: the admin was refused (403 BLUEPRINT_NOT_OWNER).</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-30</td><td>Skills › Blueprint</td><td>Blueprint entry "skills contains sk2" took the ticket.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-31</td><td>Direct › Blueprint</td><td>Direct rule moved to Dept A and set A2; blueprint "owner is A2" in Dept A took the ticket.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">L3</td><td>Workflow sets Status</td><td>Workflow set Status = Closed on a ticket in a blueprint: skipped, ticket stays Open in the blueprint.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">L4</td><td>API sets Status</td><td>Refused: 422 "Governed picklist field can only change via blueprint transition execution."</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">L5</td><td>Macro sets Status</td><td>Not run: macros skipped by your instruction.</td><td><span class="pill z-no">—</span></td><td><span class="pill p-nr">Not run</span></td></tr>
+ <tr><td class="id">L6</td><td>Time-based change</td><td>Delayed (60 s) workflow Status change: blocked, ticket stays Open. Log says Succeeded (side finding).</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-note">Pass + note</span></td></tr>
+ <tr><td class="id">L7</td><td>Department move</td><td>Desk move to Dept B allowed; ticket left the blueprint (<code>blueprint_revoked</code>), status kept Open.</td><td><span class="pill z-live">Run live</span> same: move 200, blueprint gone, status Open</td><td><span class="pill p-same">Same</span></td></tr>
+ <tr><td class="id">L8</td><td>Approval process</td><td>Not run: needs an approval process set up end to end; left for Part C if you want it.</td><td><span class="pill z-no">—</span></td><td><span class="pill p-nr">Not run</span></td></tr>
+ <tr class="grp"><td colspan="5">Notifications and later events</td></tr>
+ <tr><td class="id">OR-19 · NOT-1</td><td>All › Notifications</td><td>Direct A1 then workflow A2 (#3559): only A2 got "assigned to you"; A1 got nothing.</td><td><span class="pill z-no">Not checked</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-20</td><td>Round robin / team › Notifications</td><td>Team target, no owner (#3593): each team member (A2, A3) got one "assigned to team" notice; A1 (not in team) none.</td><td><span class="pill z-no">Not checked</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-32</td><td>Direct › Notifications</td><td>Only a direct rule assigned A3 (#3592): A3 told once, nobody else.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-33</td><td>Workflow › Notifications</td><td>Workflow set owner A3 (#3594): A3 told once.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-34</td><td>SLA › Notifications</td><td>"Assigned to you" notice has no due time; SLA reminders and escalations arrive later as their own notices.</td><td><span class="pill z-set">Seen live</span> Zoho's default assignment email has no due date either</td><td><span class="pill p-same">Same</span></td></tr>
+ <tr><td class="id">OR-35</td><td>Blueprint › Notifications</td><td>Round robin assigned A1 and the ticket entered a blueprint in the same event (#3599): A1 told once.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">G-06</td><td>No owner change</td><td>A later Priority edit on #3599 sent no new assignment notice.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-21</td><td>Later events</td><td>SLA escalation reassigned #3596 from A2 to A3 (A3 notified). Blueprint after-action changed #3599's owner A1 → A2 (A2 notified). Macro part skipped.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr class="grp"><td colspan="5">Failures and loops</td></tr>
+ <tr><td class="id">OR-25</td><td>A step fails</td><td>Webhook to a failing address logged as an error, the next action (comment) still ran, round robin still assigned, the inactive SLA policy did not apply.</td><td><span class="pill z-no">n/a</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ <tr><td class="id">OR-26</td><td>Loops</td><td>Two rules that undo each other (Low → High, High → Low) ran once each and stopped (2 executions after 50 s).</td><td><span class="pill z-no">Not checked</span></td><td><span class="pill p-pass">Pass</span></td></tr>
+ </tbody></table></div>
+ <p class="muted" style="font-size:.85rem">Note on OR-21: the SLA escalation's named recipient (A1) got no escalation notice. This is the known access rule already filed as NDC-2852, not a new issue.</p>
+</section>
+
+<section style="display:grid;gap:8px">
+ <h2>Cleanup</h2>
+ <p>Deleted in TAVI: 26 workflow rules, 30 assignment rules, 12 SLA policies, 12 blueprints, 43 tickets. Borrowed skills "QA AS6 sk1/sk2" restored to their original criteria. Direct-rule switch back to off. Recheck after cleanup: 0 left of each. Agents A1–A3 are still held online for Part C.</p>
+</section>
+</div>

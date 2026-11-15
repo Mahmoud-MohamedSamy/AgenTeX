@@ -1,0 +1,6 @@
+{"out":"2917-api-card.png","title":"NDC-2917 Replace and rename vs a saved report (API)","host":"staging-crm.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Setup","set \"QA RT18 GS 2917\" (Gold, Silver, Bronze), field qa_rt18_rep, leads Gold/Gold/Silver, report filter eq \"Gold\"","run: 2 rows Gold","info"],
+["Replace Gold → Silver","POST /global-sets/{id}/values/replace {Gold:\"Silver\"}","200; report filter now eq \"Silver\"; run after 3 s and 25 s: 3 rows","ok"],
+["Rename Silver → \"Silver Star\"","PUT /global-sets/{id} (label only)","200; query: rows keep stored \"Silver\" + columns.value_labels [{Silver → Silver Star}]","ok"],
+["Report screen","Reports › QA RT18 2917 Gold report","3 rows show \"Silver Star\" (13 Nov: \"Silver\")","ok"]]}

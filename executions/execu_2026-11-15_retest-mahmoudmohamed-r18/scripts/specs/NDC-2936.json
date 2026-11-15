@@ -1,0 +1,130 @@
+{
+ "out": "NDC-2936-retest-PASS.png",
+ "ticket": "NDC-2936",
+ "priority": "low",
+ "title": "Scoring Rules | Removing a pick list value used by a rule now warns, and the rule keeps the value marked \"Needs attention\"",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads · QA RT18 SR Layout · pick lists qa_rt18sr_pl2/pl3 · rules QA RT18 SR K2b / K2 ui",
+ "panels": [
+  {
+   "img": "2936-5-warning.png",
+   "caption": "Edit Properties › remove Alpha › Apply: \"Scoring rules use these values\" lists QA RT18 SR K2 ui — Alpha (Keep the values / Remove anyway)",
+   "crop": [
+    560,
+    330,
+    480,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      576,
+      343,
+      1024,
+      557
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2936-3-rule-editor.png",
+   "caption": "Rule editor after the value was removed: banner + \"Alpha (removed…)\" value",
+   "crop": [
+    960,
+    80,
+    640,
+    460
+   ],
+   "boxes": [
+    {
+     "b": [
+      982,
+      92,
+      1580,
+      174
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1272,
+      481,
+      1418,
+      512
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2936-5b-replace-dialog.png",
+   "caption": "Remove anyway → \"Replace removed options\" (Leave empty / Beta) for the 1 record holding Alpha",
+   "crop": [
+    560,
+    330,
+    480,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      576,
+      341,
+      1024,
+      560
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Remove a value a rule uses (screen)",
+   "Admin is warned",
+   "Pop-up \"Scoring rules use these values\" naming the rule and value",
+   "PASS"
+  ],
+  [
+   2,
+   "Remove it through the API",
+   "—",
+   "PUT field 200 with no warning in the answer; rule gets stale_entries option_retired",
+   "INFO"
+  ],
+  [
+   3,
+   "Rule state after removal",
+   "Rule keeps its condition (Zoho: value \"unused\")",
+   "List shows \"Needs attention (1)\"; editor banner \"Entry 1 tests a value that was removed…\"",
+   "PASS"
+  ],
+  [
+   4,
+   "Rule value",
+   "Kept",
+   "Stored value still \"Alpha\"; editor shows \"Alpha (removed from the field)\"",
+   "PASS"
+  ],
+  [
+   5,
+   "Record holding Alpha saved again",
+   "Keeps its points (was 4 → 0)",
+   "K2b lead keeps Alpha, score 4 after save",
+   "PASS"
+  ],
+  [
+   6,
+   "Screen path: Leave empty for that record",
+   "—",
+   "Value cleared, but score stayed 6 until the record was saved again (then 2)",
+   "INFO"
+  ]
+ ]
+}

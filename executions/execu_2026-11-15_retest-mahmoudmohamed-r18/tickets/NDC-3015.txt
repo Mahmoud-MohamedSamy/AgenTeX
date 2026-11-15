@@ -1,0 +1,22 @@
+# NDC-3015 Validation Rules | Deleting a layout leaves its rules in the list, Active, pointing to a missing layout
+Summary
+A layout that has active validation rules can be deleted. Its rules stay in the list and stay Active, pointing to a layout that no longer exists.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; Leads and Tickets
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Create a layout and an active rule for it.
+- Delete the layout.
+- Open the Validation Rules list and the rule.
+Expected result
+The layout delete warns about the rules, and the rules are removed or switched off and flagged.
+Actual result
+- The layout is deleted (204) with no warning.
+- The rule stays listed and Active; GET shows conditionError "Layout … is not a layout of this module".
+Notes
+- Case J6.
+
+
+== COMMENTS (0)
+

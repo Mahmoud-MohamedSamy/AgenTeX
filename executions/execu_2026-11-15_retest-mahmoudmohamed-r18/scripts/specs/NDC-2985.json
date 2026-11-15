@@ -1,0 +1,41 @@
+{
+ "out": "NDC-2985-retest-PASS.png",
+ "ticket": "NDC-2985",
+ "priority": "medium",
+ "title": "Layout Rules | A field hidden by field permission no longer leaks its value in the record timeline",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · Mahmoud Samy (CRM profile User) vs ndc-staging-owner · Leads › QA RT18 Layout · lead \"QA RT18 2985 timeline\" · qa_rt18_date hidden for profile User during the test, restored after",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2985-4-owner-timeline.png",
+   "caption": "Owner (control): Timeline shows the change the owner made — \"QA RT18 date was updated from blank value to 2026-05-01\"",
+   "crop": [290, 100, 1280, 630],
+   "boxes": [
+    { "b": [432, 502, 812, 546], "n": 1, "kind": "INFO" }
+   ]
+  },
+  {
+   "img": "2985-3-u1-timeline.png",
+   "caption": "CRM User, same record, Timeline: only \"Lead created\" — the hidden field's change is not listed",
+   "crop": [290, 100, 1280, 530],
+   "boxes": [
+    { "b": [432, 502, 620, 546], "n": 2, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2985-5-u1-recent-activity.png",
+   "caption": "CRM User, Overview › Recent activity: only \"Lead created\"; no date value",
+   "crop": [290, 630, 910, 230],
+   "boxes": [
+    { "b": [300, 700, 1190, 816], "n": 3, "kind": "PASS" }
+   ]
+  }
+ ],
+ "rows": [
+  [1, "Owner hides QA RT18 date for profile User and sets it to 2026-05-01", "Change is recorded", "PATCH 200; owner timeline feed has FieldChanged qa_rt18_date → 2026-05-01", "INFO"],
+  [2, "CRM User opens the record › Timeline", "Hidden field's value not shown anywhere (was: \"QA RT18 date was updated from blank value to 2026-05-01\")", "Only \"Lead created by Mahmoud Samy\"; GET timeline feed returns 1 entry (RecordCreated), no qa_rt18_date", "PASS"],
+  [3, "CRM User › Overview › Recent activity", "Not shown", "Only \"Lead created\"", "PASS"],
+  [4, "Record API and field panel for the CRM User", "Hidden", "effective permission qa_rt18_date = hidden; GET record has no qa_rt18_date; no 2026-05-01 anywhere in the page", "PASS"]
+ ]
+}

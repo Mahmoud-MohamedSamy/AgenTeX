@@ -1,0 +1,105 @@
+{
+ "OR-07 workflow raises priority, SLA per-priority target": {
+  "created": "10:32:59",
+  "priority": "urgent",
+  "sla": {
+   "policy": "QA AO PB OR07 msfb",
+   "target": "urgent 30",
+   "state": "applied",
+   "obl": [
+    "first_response:running start 10:33:00 due 11:03:00",
+    "resolution:running start 10:33:00 due 12:33:00"
+   ]
+  },
+  "execs": [
+   "3371bb51-bc30-4a7e-a87a-a6347493602f:Fired[]"
+  ]
+ },
+ "OR-08 workflow makes ticket match another policy": {
+  "priority": "low",
+  "sla": {
+   "policy": "QA AO PB OR08 low msfb",
+   "target": "low 240",
+   "state": "applied",
+   "obl": [
+    "resolution:running start 10:33:22 due 10:33:22",
+    "first_response:running start 10:33:22 due 14:33:22"
+   ]
+  },
+  "policies": [
+   "QA AO PB OR08 high msfb",
+   "QA AO PB OR08 low msfb"
+  ]
+ },
+ "OR-09 direct moves dept, SLA uses final values": {
+  "dept": "AS6-A",
+  "sla": {
+   "policy": "QA AO PB OR09 in A msfb",
+   "target": "A 45",
+   "state": "applied",
+   "obl": [
+    "resolution:running start 10:33:45 due 15:33:45",
+    "first_response:running start 10:33:45 due 11:18:45"
+   ]
+  },
+  "feed": "ticket.created > ticket.auto_assigned(created) > sla.applied(create)"
+ },
+ "OR-13 SLA › RR (RR criteria on sla_name)": {
+  "owner": "none",
+  "sla": {
+   "policy": "QA AO PB OR13 msfb",
+   "target": "t",
+   "state": "applied",
+   "obl": [
+    "first_response:running start 10:34:07 due 11:34:07",
+    "resolution:running start 10:34:07 due 20:34:07"
+   ]
+  },
+  "feed": "ticket.department_changed > ticket.created > sla.applied(create)"
+ },
+ "OR-14 resolution timer from assignment (RR on update)": {
+  "created": "10:34:36",
+  "assignedAround": "10:35:48",
+  "owner": "A1",
+  "before": {
+   "policy": "QA AO PB OR14 msfb",
+   "target": "t",
+   "state": "applied",
+   "obl": [
+    "resolution:running start 10:34:37 due 12:34:37",
+    "first_response:running start 10:34:37 due 11:34:37"
+   ]
+  },
+  "after": {
+   "policy": "QA AO PB OR14 msfb",
+   "target": "t",
+   "state": "applied",
+   "obl": [
+    "resolution:running start 10:35:51 due 12:35:51",
+    "first_response:running start 10:35:51 due 11:35:51"
+   ]
+  },
+  "feed": "ticket.department_changed > ticket.created > sla.applied(create) > ticket.auto_assigned(updated)→A1 > ticket.owner_changed > sla.reapplied(update) > sla.reapplied(update)"
+ },
+ "OR-18 SLA policy + blueprint state timer": {
+  "bp": 201,
+  "sla": {
+   "policy": "QA AO PB OR18 msfb",
+   "target": "t",
+   "state": "applied",
+   "obl": [
+    "resolution:running start 10:35:59 due 20:35:59",
+    "first_response:running start 10:35:59 due 11:35:59"
+   ]
+  },
+  "blueprint": {
+   "state": [
+    "Open"
+   ],
+   "due": "2026-11-14T11:05:59.613703+00:00"
+  }
+ },
+ "OR-29 skill › SLA criteria": "ERR skill 400 {\"success\":false,\"data\":null,\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"A department can have up to 30 active skills.\",\"details\":[{\"field\":\"is_active\",\"issue\":\"SKILL_ACTIVE_LIMIT\"}]},\"meta\":null}",
+ "switchRestore": 200,
+ "switchNow": false
+}

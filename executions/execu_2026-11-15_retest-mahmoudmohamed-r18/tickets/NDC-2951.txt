@@ -1,0 +1,35 @@
+# NDC-2951 Workflow Rules | A rule can have only one Field Update action
+Summary
+A rule cannot hold a second Field Update action (with the same delay). Zoho Desk allows several field updates in one rule.
+Steps to Reproduce
+- Create a workflow rule for Tickets.
+- Add a Field Update action, then add a second instant Field Update action.
+- Save.
+Expected Result
+- Several actions of the same type are allowed, as in Zoho Desk: up to 10 field updates, 10 alerts and 10 tasks per rule.
+- One Field Update can also set several fields.
+Actual Result
+- Error 400: "A rule can have only one 'FieldUpdate' action with the same delay."
+- Two Task actions are now accepted, so only Field Update (and other one-per-type actions) are limited.
+Zoho Desk
+Help "Creating Workflow Rule": up to 10 alerts, 10 tasks and 10 field updates per rule. In the live editor the Field Update dialog has a "+" to set more fields.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026. Compared live with Zoho Desk (test account, nothing left behind) and Zoho Desk help articles.
+Attachment
+Annotated evidence attached (WF-Z18-one-action-per-type-vs-zoho.png).
+
+
+== COMMENTS (3)
+--- comment 2026-11-15T05:50:39.355240+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging-desk (tavi) on 15 Nov, 03:11 UTC. Checked there in the browser as the NDC-Staging owner (English, 1440 px), on test rules I deleted afterwards.
+On a rule that already has a Field Update, the Add action list still offers Field Update. Through the API: two Field Updates on different fields save; the same field twice is refused by name.
+
+--- comment 2026-11-14T20:20:58.704464+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging-desk (tavi) on 14 Nov, 18:18 UTC.
+Merged (anyware.workflow #136, client-engine #827). Checked live through the rules API on NDC-Staging: a rule with two Field Updates on different fields saves (201); two that set the same field are refused with "Field 'description' is set by two Field Updates at the same moment. Set it in one of them." Not checked yet: adding the second Field Update in the editor, which cannot load right now (staging's gateway sends metadata calls to the wrong service).
+
+--- comment 2026-11-14T19:53:53.601457+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix in review: anyware.workflow #136 and client-engine #827.
+A rule (and each later condition) may now hold several Field Update actions, up to the rule's 10-action limit, as in Zoho Desk. The editor keeps offering Field Update after the first one. Two Field Updates that set the same field at the same moment are refused with "Field 'status' is set by two Field Updates at the same moment. Set it in one of them." Owner Assignment stays one per rule moment.
+Checked with tests only (the save accepts several, the save stage writes all of them); not yet on staging, it is not merged or deployed.
+

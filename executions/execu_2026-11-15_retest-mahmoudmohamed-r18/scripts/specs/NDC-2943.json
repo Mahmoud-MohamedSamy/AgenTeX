@@ -1,0 +1,121 @@
+{
+ "out": "NDC-2943-retest-PASS.png",
+ "ticket": "NDC-2943",
+ "priority": "low",
+ "title": "Scoring Rules | Unknown rule / module ids now answer 404, and the page says \"This module no longer exists.\"",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · API + screen · Leads",
+ "panels": [
+  {
+   "img": "2943-api-card.png",
+   "caption": "API calls and answers",
+   "crop": [
+    0,
+    90,
+    1600,
+    218
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      251
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      298
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2943-1-unknown-module.png",
+   "caption": "Scoring Rules with an unknown module id in the link",
+   "crop": [
+    290,
+    80,
+    1290,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      640,
+      250,
+      1230,
+      345
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "DELETE unknown rule id",
+   "404 SCORING_RULE_NOT_FOUND",
+   "404 SCORING_RULE_NOT_FOUND",
+   "PASS"
+  ],
+  [
+   2,
+   "Delete the same rule twice",
+   "2nd → 404",
+   "204, then 404",
+   "PASS"
+  ],
+  [
+   3,
+   "List for unknown module",
+   "404 MODULE_NOT_FOUND",
+   "404 MODULE_NOT_FOUND",
+   "PASS"
+  ],
+  [
+   4,
+   "Create for unknown module",
+   "—",
+   "404 MODULE_NOT_FOUND",
+   "PASS"
+  ],
+  [
+   5,
+   "Page ?module=<unknown>",
+   "\"This module no longer exists.\"",
+   "\"This module no longer exists.\" + hint; no New Scoring Rule button",
+   "PASS"
+  ]
+ ]
+}

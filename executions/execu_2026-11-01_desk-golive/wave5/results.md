@@ -1,4 +1,4 @@
-# Wave 5 results (NDC-Staging, 12-13 Nov 2026)
+| W5-73 | PASS | Desk Agent profile has no Products permission; edit/delete come from records:manage. Zoho checked live 15 Nov: default Agent profile has Products view/create/edit/delete on (same). |
 
 | Id | Verdict | Note |
 |---|---|---|
@@ -9,20 +9,20 @@
 | W5-05 | PASS | Find duplicates groups by Name / Email / Secondary email / Phone; merge dialog lets you pick master + per-field values; merge kept the master, the other is 404. Note: same email allowed on two contacts (Zoho check pending). |
 | W5-06 | PASS | Arabic last name and title saved and shown intact. |
 | W5-07 | PASS | Private view 'QA GL W5 view' (first name contains QA GL W5) created and lists only the QA rows. |
-| W5-08 | INCONCLUSIVE | Contact › More actions › 'Invite to Help Center' (dialog: name, language) → invitation 200, outcome 'invited', portal account created. After inviting, the contact menu still offers 'Invite to Help Center' and shows no access status or Revoke (Zoho shows portal status + revoke on the contact). Help Center users page not checked. |
+| W5-08 | PASS | 15 Nov: Help Center › Users has Resend / Revoke invitation / Delete; revoke 204. The contact page itself shows no portal status. Invite dialog takes ~20 s with only a spinner. |
 | W5-09 | PASS | QA GL W5 Account created; Contact 1 linked; account Contacts tab lists it. Note: test contacts/accounts sync to CRM at once ('Synced'). |
-| W5-10 | INCONCLUSIVE | No parent-account field on Accounts (no hierarchy). Zoho check pending. |
+| W5-10 | PASS | No parent-account field in TAVI; Zoho checked live 15 Nov: Zoho Desk accounts have no parent field either (same). |
 | W5-11 | PASS | Accounts Find duplicates (Name / Email / Phone): 'No duplicates'. |
-| W5-12 | INCONCLUSIVE | Sync badges (Synced / Unlinked / Needs attention) have no tooltip or help on hover. |
+| W5-12 | INCONCLUSIVE | Sync badges (Synced / Unlinked / Needs attention) have no tooltip or help on hover. 15 Nov: still no tooltip. |
 | W5-13 | PASS | Contact 1 page shows its ticket #3403, counts, traffic, handling time. |
 | W5-14 | PASS | Account page: Overview, History, Activities, Tickets, SLA & Contract, Contacts, Happiness, Products, Attachments. |
 | W5-15 | PASS | Contracts list (6 → 9 with QA), statuses active / expired / upcoming. |
-| W5-16 | INCONCLUSIVE | API create works; the form needs a support plan and says 'the account's department has no active support plans' (Marketing has none; creating one is an SLA change, not approved). API accepted a plan from another department and the account page then shows 'No support plan'. |
+| W5-16 | PASS | 15 Nov: temp Marketing plan; contract saved from the form with the plan; account shows SLA coverage; ticket from its contact got the contract + plan SLA. Data deleted + purged. |
 | W5-17 | FAIL | End date before start date is accepted (saved as 'upcoming'); events refuse the same ('to_time must be on or after from_time'). Expired dates → 'expired' (pass). |
 | W5-18 | PASS | Activities list loads (527 → 530), tabs All / Tasks / Calls / Events. |
 | W5-19 | PASS | Task with due date + reminder on ticket #3403; completed → status Completed with completed_time. |
 | W5-20 | PASS | Call and event saved on the ticket; event ending before it starts refused with a clear message. |
-| W5-21 | INCONCLUSIVE | Reused, not re-run: NDC-2635 retested 11 Nov (round 16) → PARTIAL, moved to Bug (Delete on the activity page, ticket activity count, activities API still missing); NDC-2637..2643 stay as filed. Today: task/call/event create + complete worked (W5-19/20). |
+| W5-21 | INCONCLUSIVE | Reused, not re-run: NDC-2635 retested 11 Nov (round 16) → PARTIAL, moved to Bug (Delete on the activity page, ticket activity count, activities API still missing); NDC-2637..2643 stay as filed. Today: task/call/event create + complete worked (W5-19/20). 15 Nov recheck: the activity page now has Delete and GET /desk/activities returns 200 (NDC-2635 items look fixed; not retested formally). |
 | W5-22 | PASS | Calendar Week / Day show the QA items; Month groups per user per day on the right dates. |
 | W5-23 | PASS | Headquarters loads with department filter and components. |
 | W5-24 | PASS | Add Component lists 8 widgets; clicking one adds it to HQ at once; card menu Settings / Remove; removed and layout kept after reload. |
@@ -57,7 +57,7 @@
 | W5-52 | PASS | Organize Tabs: 'Hide Contracts' saves at once (tab-settings hidden += module:contracts), 'Show Contracts' puts it back; arrangement equal to baseline (wave5/baseline/tab-settings.json). Top bar here overflows into 'More modules', so the hide was checked through the saved arrangement. |
 | W5-53 | PASS | Contacts picklist field 'QA GL W5 field' (Alpha/Beta/Gamma) created (201), value Beta saved on QA GL W5 Contact 1 and shown on the contact page; 'Zeta' refused 'not one of the allowed values'; field deleted (204). Notes: fields created this way were not labelled on the contact page layout (value visible); after deleting the fields the contact record still carries the old qa_gl_w5_* values in its data. |
 | W5-54 | PASS | Number, date, URL, email, multi-select, checkbox fields created (201 each). Good values saved together (200). Bad values each refused 422 with a clear message: 'Expected number value', 'not a valid date (expected yyyy-MM-dd)', 'must be an absolute HTTP or HTTPS URL', 'Email value is invalid', multi 'Nine not one of the allowed values', 'Expected boolean value'. All 7 fields deleted (204). |
-| W5-55 | INCONCLUSIVE | Reused, not re-run: NDC-2174 retest 9 Nov — per-department layouts, fields and lookups work; the layout default status is still not applied (form shows 'Select'). Known open item, nothing new filed. |
+| W5-55 | INCONCLUSIVE | Reused, not re-run: NDC-2174 retest 9 Nov — per-department layouts, fields and lookups work; the layout default status is still not applied (form shows 'Select'). Known open item, nothing new filed. 15 Nov: no layout has a default status configured, so it could not be checked. |
 | W5-56 | PASS | Reused: Layout Rules and Validation Rules (CRM + Desk) full runs vs Zoho on 12 Nov (commits cd902ca1, 3cdfdfe5) with their own Plane filings — no separate recheck here. |
 | W5-57 | PASS | Modules and Fields › Tickets has tabs Layouts / Layout Rules / Validation Rules / Fields / Map Dependency Fields / Workflow Rules / Summary — field dependency setup exists. |
 | W5-58 | PASS | Confirmed missing: no Languages page in Setup; /settings/languages → /hq (EN/AR switch only). Already in NDC-2760. |
@@ -73,9 +73,8 @@
 | W5-68 | PASS | Audit Log: filters All Entities / Departments / Users / Actions (Added, Deleted, Executed, Exported, Imported, logged in/out, Merged, Purged, Restored, Updated) / time; today's QA GL W5 actions listed with who, when, IP. Candidate E3 (Low): entries show internal field names ('cleared Ticket's EngineDeletedAt') and name an imported ticket by the contact email ('deleted a Ticket named qa-gl-w5-c1@example.com') instead of #3460 / subject. |
 | W5-69 | PASS | Arabic: html dir=rtl lang=ar; Contacts, Accounts, Contracts, Activities, Calendar, Dashboards, Reports, Import, Modules and Fields all RTL with Arabic labels, no raw i18n keys. English left = record data (names, subjects). Note: on Modules and Fields the system module names stay English (Agents, Tickets, Products …). Set back to English. |
 | W5-70 | PASS | Profile › Accessibility: text size 100/115/130/150 %, high contrast, reduce motion, underline links, keyboard focus highlight, with live preview. 115 % applied at once (root font 16 → 18.4 px), set back to 100 % (16 px); not saved. |
-| W5-71 | INCONCLUSIVE | My Profile: Overview (personal stats), Account information (name, alias, birth date, contacts, address, 2FA), Signatures, landing page after sign-in, Accessibility. No personal time zone or date format setting found on the profile or account pages (the API reads general.user.locale.timezone / date_format, all 'Default'). Zoho has these in the personal profile. |
-| W5-72 | INCONCLUSIVE | 3 loads each (s): Contacts list 1.4/2.0/1.8; contact page 2.0/4.3/2.3; Analytics Overview dashboard 3.8/2.8/3.5; Activities 4.5/1.6/2.8. Overview is over the 3 s target on average; others mostly under. |
-| W5-73 | INCONCLUSIVE | Agent C sees Contacts (32), the contact page, Contracts (9) and Products (21). C could EDIT (PATCH 200) and DELETE (204) the QA product through the API, and the Products page shows 'Edit field' to C. Needs C's profile Products permission to decide if this is wrong. |
+| W5-71 | INCONCLUSIVE | My Profile: Overview (personal stats), Account information (name, alias, birth date, contacts, address, 2FA), Signatures, landing page after sign-in, Accessibility. No personal time zone or date format setting found on the profile or account pages (the API reads general.user.locale.timezone / date_format, all 'Default'). Zoho has these in the personal profile. 15 Nov: still missing. |
+| W5-72 | INCONCLUSIVE | 3 loads each (s): Contacts list 1.4/2.0/1.8; contact page 2.0/4.3/2.3; Analytics Overview dashboard 3.8/2.8/3.5; Activities 4.5/1.6/2.8. Overview is over the 3 s target on average; others mostly under. 15 Nov: Overview 6.7 / 3.4 / 3.0 s (still over 3 s). |
 | W5-74 | PASS | Agent C: Modules and Fields 'You don't have permission to view this page'; Import / Export refused with the permission named; Backup 'Only the account owner can use Data Backup'. Note: C still sees the whole Setup menu (Agents, Roles, Departments …). |
 | W5-75 | PASS | GET a contact id that does not exist here → 404; GET records of another tenant's contacts module id → 403. No data returned. |
 | W5-76 | PASS | Contact last name '<img src=x onerror=alert(1)>' saved (201); shown as plain text in the Contacts list and in global search results; no <img> element created, no alert fired. |

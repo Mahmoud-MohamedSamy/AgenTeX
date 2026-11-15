@@ -1,0 +1,12 @@
+const MID = '841043e1-c078-41f9-8d6e-dfd61bee45c3'; const ID = 'fd64d1ea-3004-4c01-960d-f21ce74d1bde'; const R = { net: [] };
+page.on('response', async r => { const u = r.url(); if (r.request().method() === 'POST' && /blueprint-transitions|validation-rules\/verify/.test(u)) R.net.push(r.status() + ' ' + u.replace(/^https:\/\/[^/]+/, '').slice(0, 130) + ' ' + (await r.text().catch(() => '')).slice(0, 200)); });
+await page.goto(H + '/modules/' + MID + '/records/' + ID, { waitUntil: 'domcontentloaded' }); await sleep(9000);
+await page.getByRole('button', { name: /QA to Reject/ }).first().click(); await sleep(2500);
+const d = page.locator('[role=dialog]').last();
+const inp = d.locator('input[type=text], input:not([type]), textarea').first(); await inp.fill('BAD-bp'); await sleep(500);
+await shot('3011-1-form-filled.png');
+await d.getByRole('button', { name: /execute|save|submit|confirm/i }).last().click(); await sleep(4000);
+R.dialogOpen = await page.locator('[role=dialog]').count();
+R.msg = ((await text()).replace(/\s+/g, ' ').match(/.{0,80}cannot start with BAD.{0,60}/) || [null])[0];
+await shot('3011-2-execute-bad.png');
+return R;

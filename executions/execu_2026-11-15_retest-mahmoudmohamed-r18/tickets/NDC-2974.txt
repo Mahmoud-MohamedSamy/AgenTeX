@@ -1,0 +1,21 @@
+# NDC-2974 Layout Rules | Mass update of the primary field skips rule-mandatory fields
+Summary
+Mass update of the primary field skips rule-mandatory fields. Both records are saved as Refund with order empty (200).
+Environment
+- NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2; the same setup on Desk Tickets. Test data was deleted after the run.
+Steps to reproduce
+- Set up a rule: type = Refund makes "order" mandatory.
+- In the list, select 2 records and mass-update type to Refund, leaving order empty.
+Expected result
+Zoho blocks mass update of a field that is the primary field of a layout rule.
+Actual result
+- Both records are saved as Refund with order empty (200).
+- The single-record API refuses the same change (422).
+Notes
+- Test cases G7, Z6 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- CRM and Desk share the same rule engine, so this applies to both apps.
+
+
+== COMMENTS (0)
+

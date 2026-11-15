@@ -1,0 +1,33 @@
+{
+ "out": "3015-api-card.png",
+ "title": "NDC-3015 delete a layout that has an active rule",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "API delete",
+   "DELETE /layouts/{QA RT18 J6 Layout}",
+   "204, no warning",
+   "bad"
+  ],
+  [
+   "Rule after (API)",
+   "GET rule QA RT18 J6 rule",
+   "status disabled; conditionError \"Layout … is not a layout of this module.\"",
+   "ok"
+  ],
+  [
+   "UI delete",
+   "Layouts › menu › Delete \"QA RT18 J6b Layout\"",
+   "Dialog: \"This permanently deletes the layout and its access settings…\" — no mention of rules; DELETE 204",
+   "bad"
+  ],
+  [
+   "Rule list after",
+   "Validation Rules list",
+   "both rules: Active off, \"(deleted layout)\", warning \"This rule's layout was deleted, so the rule is not applied…\"",
+   "ok"
+  ]
+ ]
+}

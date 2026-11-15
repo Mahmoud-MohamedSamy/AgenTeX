@@ -1,0 +1,114 @@
+{
+ "out": "NDC-3015-retest-PARTIAL.png",
+ "ticket": "NDC-3015",
+ "priority": "medium",
+ "title": "Validation Rules | Deleting a layout now switches its rules off and flags them, but still gives no warning",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 VR Layout · layouts \"QA RT18 J6 / J6b Layout\" + one rule each · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3015-3-delete-dialog.png",
+   "caption": "Layouts › Delete \"QA RT18 J6b Layout\": the dialog does not mention the active validation rule",
+   "crop": [
+    540,
+    330,
+    520,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      646,
+      376,
+      1000,
+      462
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "3019-3-list-reload.png",
+   "caption": "After the delete: both rules switched off, \"(deleted layout)\" and a warning under the name",
+   "crop": [
+    292,
+    540,
+    1284,
+    112
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      546,
+      1570,
+      650
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3015-api-card.png",
+   "caption": "API and UI delete both 204 with no warning; the rule is disabled and flagged",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    340
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      251
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Delete a layout that has an active rule",
+   "Delete warns about the rules",
+   "API 204 with no warning; UI dialog only says \"permanently deletes the layout and its access settings\"",
+   "FAIL"
+  ],
+  [
+   2,
+   "Rules after the delete",
+   "Removed, or switched off and flagged (was: Active, orphaned)",
+   "Active switched off; list shows \"(deleted layout)\" + \"This rule's layout was deleted, so the rule is not applied. Edit it to choose another layout, or delete it.\"; GET status disabled",
+   "PASS"
+  ]
+ ]
+}

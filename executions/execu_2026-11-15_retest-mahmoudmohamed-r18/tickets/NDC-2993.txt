@@ -1,0 +1,23 @@
+# NDC-2993 Kanban View | Kanban view of Leads and Deals does not load: every column shows "Could not load these records"
+Summary
+The Kanban view does not load on Leads or Deals. Every column shows "Could not load these records" because the records request for each column fails with 500.
+Environment
+- NDC-Staging (staging-crm.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads (17 columns by Lead Status) and Deals (7 columns by Stage). Seen on 12 Nov in the morning and again in the afternoon.
+Steps to reproduce
+- Open Leads.
+- Switch to the Kanban view.
+- Do the same on Deals.
+Expected result
+Each column loads its records, as in Zoho CRM's Kanban view.
+Actual result
+- Every column shows "Could not load these records".
+- GET /modules/{id}/records?page=1&per_page=25&filters=[{"field":"lead_status","operator":"equals",...}] returns 500 INTERNAL_ERROR (the "is_empty" column too).
+- On Deals the same request with "pipeline" equals returns 500.
+Notes
+- This blocks Layout Rules cases G8 and Z4 (rules on Kanban drag), so they could not be tested.
+- Evidence: crm-kanban-leads.png, crm-kanban-deals.png (attached).
+
+
+== COMMENTS (0)
+

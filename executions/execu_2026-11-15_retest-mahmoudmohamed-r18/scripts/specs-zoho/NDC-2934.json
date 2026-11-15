@@ -1,0 +1,32 @@
+{"out":"NDC-2934-retest-PARTIAL-vs-zoho.png","ticket":"NDC-2934","title":"Scoring Rules gap list vs live Zoho CRM: 12 open items confirmed in Zoho; Clone, search and filter match","verdict":"PARTIAL","label":"RETEST PARTIAL vs ZOHO","date":"TAVI 15 Nov 2026 · Zoho 15 Nov 2026",
+"env":"TAVI staging-crm (NDC-Staging, owner, QA RT18 SR rules) · Zoho CRM org946877290 (Enterprise trial, admin, Leads, rule QA RT18 SR (Lead Source is Advertisement +10) on 1 QA lead; rule, workflow draft and lead removed)",
+"leftHead":"TAVI CRM (left screenshots)","rightHead":"Zoho CRM (right screenshots)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/2934-2-row-menu.png","caption":"TAVI rules list: search + status filter, row menu Edit · Clone · Delete","crop":[280,190,1300,710],"boxes":[{"b":[292,228,732,262],"n":3},{"b":[1362,728,1556,798],"n":1}]},
+{"side":"tavi","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/2934-api-card.png","caption":"TAVI API probes of the open gap items","crop":[0,90,1600,450],"boxes":[{"b":[36,99,1564,157],"n":4},{"b":[36,167,1564,204],"n":6},{"b":[36,214,1564,272],"n":7},{"b":[36,282,1564,319],"n":8},{"b":[36,376,1564,413],"n":9},{"b":[36,423,1564,460],"n":11},{"b":[36,470,1564,528],"n":14}]},
+{"side":"tavi","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/2934-8-record-page.png","caption":"TAVI lead with Score 9: no score section on the record page","crop":[1210,350,390,500],"boxes":[{"b":[1220,356,1568,830],"n":13}]},
+{"side":"tavi","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/2938-3-create.png","caption":"TAVI workflow Score trigger: no All / Selective Scoring Rules","crop":[576,440,448,260],"boxes":[{"b":[596,510,1004,590],"n":15}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-2934-11-row-menu.png","caption":"Zoho list: Search, All Modules + Status filters, Layout column, row menu Clone · Delete, status switch; toast \"Scoring Rule(s) updated the score of 3 Leads\"","crop":[280,180,1310,700],"boxes":[{"b":[287,195,508,229],"n":3},{"b":[470,340,598,412],"n":1},{"b":[1101,778,1580,870],"n":9}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-2934-2-layout-picker.png","caption":"Zoho Create Scoring Rule: Layout = Standard or All Layouts","crop":[522,0,560,430],"boxes":[{"b":[655,242,1045,352],"n":4}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-2934-6-two-conditions.png","caption":"Zoho Choose Criteria: several conditions in one line, Criteria Pattern (1 and 2) + Edit Pattern, relative date Current Month = ${THISMONTH}, Add / Subtract points","crop":[375,0,850,340],"boxes":[{"b":[400,90,1200,252],"n":6},{"b":[654,94,808,130],"n":7},{"b":[400,288,680,320],"n":10}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-2934-8-score-fields.png","caption":"Zoho editor: Add criteria (which records), Add channel (Calls, Emails), score fields per rule: Positive / Negative / Touch Point scores","crop":[290,230,1000,500],"boxes":[{"b":[304,238,1280,322],"n":5},{"b":[302,340,414,372],"n":8},{"b":[608,516,858,718],"n":10}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-2934-9-after-save.png","caption":"Zoho Save: \"Update old records?\" (rescore existing records)","crop":[550,0,500,225],"boxes":[{"b":[570,20,1030,200],"n":9}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-2934-12-record-score.png","caption":"Zoho lead page: Scoring Rules section, one row per rule (Positive, Negative, Touch Points, Score 10)","crop":[470,180,1120,110],"boxes":[{"b":[474,184,1586,284],"n":13}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-2934-13-workflow-score.png","caption":"Zoho workflow \"Record Score\" trigger: applied for All / Selective Scoring Rules (draft cancelled)","crop":[190,190,510,250],"boxes":[{"b":[452,320,668,432],"n":15}]}
+],
+"rows":[
+[1,"Clone a rule","Row menu Clone · Delete","Row menu Edit · Clone · Delete, Clone 201","SAME"],
+[3,"Search + status filter","Search box, All Modules filter, Status filter","Search box + All / Active / Inactive","SAME"],
+[4,"Rule per layout","Layout picker: one layout or All Layouts; Layout column in list","No layout; API layout_id not stored","GAP"],
+[5,"Which records a rule scores","\"Add Criteria\" under Leads Fields","No criteria; API criteria ignored","GAP"],
+[6,"Several conditions per line + pattern","+ adds conditions, Criteria Pattern (1 and 2), Edit Pattern","One condition per line; conditions[] 422","GAP"],
+[7,"between / relative dates / pick list contains","Date ops include before/after, between, Today … Current Month, Age in Days, Due in Days; pick list has contains / starts with / ends with","422 for between, relative dates and pick list contains","GAP"],
+[8,"Touch point (channel) scoring","\"Add channel\" (Calls, Emails in this org)","422 \"activity (touch point) scoring is not available\"","GAP"],
+[9,"Rescore existing records","Save asks \"Update old records?\"; chose update → \"updated the score of 3 Leads\"; QA lead created before the rule got 10","Old lead not rescored, no prompt, no run action","GAP"],
+[10,"Separate scores / positive and negative","Add or Subtract points; optional score fields per rule: Score, Positive, Negative, Touch Point scores","One score field; points only per line","GAP"],
+[11,"Switch a rule off keeps its scores","Deactivate: lead still showed QA RT18 SR score 10","Off + save: 8 → 1","GAP"],
+[12,"Delete a rule removes its scores at once","Delete: the lead's Scoring Rules section was gone right away","Deleted rule's points stay until the record is saved","GAP"],
+[13,"Scores on the record page","Scoring Rules section, row per rule with Positive / Negative / Touch Points / Score","No score anywhere on the lead page","GAP"],
+[14,"API clone / run / activate","Not checked (no API calls in this lane)","404 / 405","Not comparable"],
+[15,"Score workflow for selected rules","Record Score trigger › applied for All Scoring Rules / Selective Scoring Rules","Increases / Decreases / Either + threshold only","GAP"]
+]}

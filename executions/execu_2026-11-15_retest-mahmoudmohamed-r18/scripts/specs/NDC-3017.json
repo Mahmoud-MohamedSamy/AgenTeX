@@ -1,0 +1,78 @@
+{
+ "out": "NDC-3017-retest-PASS.png",
+ "ticket": "NDC-3017",
+ "priority": "medium",
+ "title": "Validation Rules | A \"top of the form\" message is now scrolled into view",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 VR Layout · rule \"QA RT18 E2 top\" (pick = Reject, Show the error: At the top of the form) · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3017-1-before-save.png",
+   "caption": "New lead, scrolled down to QA RT18 v pick = Reject, Save clicked from here",
+   "crop": [
+    420,
+    330,
+    1022,
+    290
+   ],
+   "boxes": [
+    {
+     "b": [
+      452,
+      508,
+      1410,
+      552
+     ],
+     "n": 1,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "3017-2-after-save.png",
+   "caption": "After Save: the page scrolls to the top and the message is in view (role=\"alert\", focus moved to it)",
+   "crop": [
+    418,
+    100,
+    1024,
+    360
+   ],
+   "boxes": [
+    {
+     "b": [
+      418,
+      154,
+      1442,
+      200
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Scroll to the checked field, pick a refused value, click Save",
+   "Setup",
+   "page scrolled 757 px down; no request sent (refused client-side)",
+   "INFO"
+  ],
+  [
+   2,
+   "Where the user sees the message",
+   "Page scrolls to the message (or field marked) (was: out of view, page did not move)",
+   "Scroll 757 → 32 px; \"QA RT18 E2 pick cannot be Reject\" at the top in view; banner has role=\"alert\"; focus on the banner",
+   "PASS"
+  ],
+  [
+   3,
+   "Field mark",
+   "Optional (\"or\")",
+   "Pick field not marked (no aria-invalid / red border)",
+   "INFO"
+  ]
+ ]
+}

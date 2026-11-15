@@ -1,0 +1,33 @@
+{
+ "out": "2974-api-card.png",
+ "title": "NDC-2974 mass update of a layout rule primary field",
+ "rows": [
+  [
+   "Single record (control)",
+   "PATCH /modules/{Leads}/records/{mass1}  qa_rt18_type = Refund, order empty",
+   "422 RECORD_VALIDATION_FAILED: \"QA RT18 order is required.\"",
+   "info"
+  ],
+  [
+   "Mass update primary field",
+   "POST /modules/{Leads}/records/mass-update  record_ids [mass1, mass2]  qa_rt18_type = Refund",
+   "422 LAYOUT_RULE_PRIMARY_FIELD: \"QA RT18 type cannot be mass updated: it is the primary field of the layout rule 'QA RT18 basic'. Edit the records one at a time.\"",
+   "ok"
+  ],
+  [
+   "Read back",
+   "GET both records",
+   "qa_rt18_type = Question, qa_rt18_order = null on both (nothing saved)",
+   "ok"
+  ],
+  [
+   "Mass update other field (control)",
+   "mass-update qa_rt18_note = \"QA mass note\"",
+   "200, saved",
+   "info"
+  ]
+ ],
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026"
+}

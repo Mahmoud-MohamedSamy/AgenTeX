@@ -1,0 +1,32 @@
+{
+ "out": "NDC-2993-retest-PASS.png",
+ "ticket": "NDC-2993",
+ "priority": "high",
+ "title": "Kanban View | Leads and Deals Kanban columns load their records again",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless · Leads Kanban \"test\" (Lead Status, 17 columns) + Transactions Kanban View (Stage, 7 columns) · Leads list preference restored after",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2993-2-leads-kanban.png",
+   "caption": "Leads Kanban: columns show counts and cards; 17/17 column requests 200",
+   "crop": [270, 250, 1330, 560],
+   "boxes": [
+    { "b": [286, 268, 1462, 410], "n": 1, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2993-1-deals-kanban.png",
+   "caption": "Deals Kanban: columns show totals and cards; 7/7 column requests 200",
+   "crop": [270, 250, 1330, 560],
+   "boxes": [
+    { "b": [286, 268, 1462, 495], "n": 2, "kind": "PASS" }
+   ]
+  }
+ ],
+ "rows": [
+  [1, "Open Leads › Kanban", "Each column loads its records", "No \"Could not load these records\"; 17 column requests 200 (No Answer 5, Busy 15, Switched Off 4 …)", "PASS"],
+  [2, "Open Deals › Kanban", "Each column loads its records", "Qualification 56, Needs_analysis 1, Proposal 1, Negotiation 5 …; all column requests 200 over 31 loads", "PASS"],
+  [3, "API filter request that failed", "200", "records?filters=[lead_status equals] and [stage equals] → 200; skip_total=true → 200", "PASS"]
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "out": "2996-api-card.png",
+ "title": "NDC-2996 gap list checks (API)",
+ "rows": [
+  [
+   "1 CRM primary field types",
+   "POST layout-rules primaryField = text / number / email / phone / Company",
+   "422 field_unsupported \"... cannot be the primary field of a layout rule\" for all 5",
+   "bad"
+  ],
+  [
+   "2 Desk primary field types",
+   "POST layout-rules (Desk Tickets) primaryField = Email / Due Date / Phone / Description",
+   "422 field_unsupported for all 4 (Standard layout has no text, number or date field)",
+   "bad"
+  ],
+  [
+   "3 Move record to another layout",
+   "PATCH /records/{mass2} layout_id = Standard",
+   "200 but created_with_layout_id unchanged (QA RT18 Layout); no layout picker on Edit",
+   "bad"
+  ],
+  [
+   "6 Permission for non-admin",
+   "GET /iam/permissions (354 keys)",
+   "no layout/customize permission key (only metadata.modules.manage, metadata.acl.manage …); runtime check not run (no CRM User account in this lane)",
+   "info"
+  ]
+ ],
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026"
+}

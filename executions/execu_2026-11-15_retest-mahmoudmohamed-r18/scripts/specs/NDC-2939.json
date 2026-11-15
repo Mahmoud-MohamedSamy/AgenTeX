@@ -1,0 +1,75 @@
+{
+ "out": "NDC-2939-retest-PASS.png",
+ "ticket": "NDC-2939",
+ "priority": "low",
+ "title": "Scoring Rules | A save without row_version is now refused (400) and the rule is not overwritten",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · API · rule QA RT18 SR H2 (deleted later in the run)",
+ "panels": [
+  {
+   "img": "2939-api-card.png",
+   "caption": "API calls and answers",
+   "crop": [
+    0,
+    90,
+    1600,
+    213
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      225
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      293
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "PUT with the current row_version",
+   "200",
+   "200, version 2, points 5",
+   "PASS"
+  ],
+  [
+   2,
+   "PUT with no row_version",
+   "Refused",
+   "400 SCORING_RULE_VERSION_REQUIRED; points stay 5",
+   "PASS"
+  ],
+  [
+   3,
+   "PUT with a stale row_version",
+   "409",
+   "409 SCORING_RULE_VERSION_CONFLICT; points stay 5",
+   "PASS"
+  ]
+ ]
+}

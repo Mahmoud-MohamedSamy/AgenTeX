@@ -1,0 +1,1 @@
+eval(fs.readFileSync('lib-as.js','utf8'));const o={};for(const f of ['../pc-or22.json','../pc-or23.json']){const x=JSON.parse(fs.readFileSync(f,'utf8'));const r=await rec(x.id);o[f]={num:r.ticket_number,created:(await feed(x.id)).find(e=>e.action==='ticket.created')?.occurred_at};}return o;

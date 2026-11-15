@@ -1,0 +1,80 @@
+{
+ "out": "NDC-3018-retest-PARTIAL.png",
+ "ticket": "NDC-3018",
+ "priority": "medium",
+ "title": "Validation Rules | The refused field is now marked and linked to its message, but the message is still not announced",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 VR Layout · rule \"QA RT18 text no BAD\" · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3018-1-refused.png",
+   "caption": "New lead, QA RT18 v text = BAD-m4, Save: message under the field, focus in the field",
+   "crop": [
+    420,
+    440,
+    1022,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      602,
+      508,
+      1410,
+      546
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      600,
+      550,
+      800,
+      568
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "aria-invalid on the input",
+   "aria-invalid=\"true\" (was: missing)",
+   "aria-invalid=\"true\"",
+   "PASS"
+  ],
+  [
+   2,
+   "aria-describedby → message",
+   "Points to the message (was: missing)",
+   "aria-describedby=\"live-field-…-error\" → \"QA RT18 text cannot start with BAD\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Message announced",
+   "role=\"alert\" or a live region",
+   "Field message has no role and no aria-live; no alert / live region on the page contains it",
+   "FAIL"
+  ],
+  [
+   4,
+   "Focus",
+   "Goes to the refused field",
+   "Focus on the QA RT18 v text input",
+   "PASS"
+  ],
+  [
+   5,
+   "Desk ticket form (focus went to Subject)",
+   "—",
+   "Not rechecked (CRM-only lane)",
+   "INFO"
+  ]
+ ]
+}

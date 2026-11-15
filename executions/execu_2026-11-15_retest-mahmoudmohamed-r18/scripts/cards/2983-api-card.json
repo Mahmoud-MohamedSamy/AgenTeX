@@ -1,0 +1,27 @@
+{
+ "out": "2983-api-card.png",
+ "title": "NDC-2983 deleting a field that a layout rule uses",
+ "rows": [
+  [
+   "Rule set-up",
+   "QA RT18 basic: Refund -> show order + tmp, require order; QA RT18 radio: No + email2 not empty -> show tmp",
+   "both active",
+   "info"
+  ],
+  [
+   "Delete the target field",
+   "DELETE /modules/{Leads}/fields/{qa_rt18_tmp}",
+   "422 FIELD_IN_USE_BY_RULE: \"qa_rt18_tmp\" is used by layout rule \"QA RT18 basic\", layout rule \"QA RT18 radio\" ... Remove the field from those rules (or delete them) before deleting the field.",
+   "ok"
+  ],
+  [
+   "Read back",
+   "GET fields + GET rule basic",
+   "field still exists; rule active, definitionError null",
+   "ok"
+  ]
+ ],
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026"
+}

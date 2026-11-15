@@ -1,0 +1,18 @@
+const out = { req: [] };
+page.on('response', async r => { const m = r.request().method(); if (m !== 'GET' && /\/api\/v1\//.test(r.url())) out.req.push(m + ' ' + r.url().replace(/.*\/api\/v1/, '').replace(/[0-9a-f-]{36}/g, '{id}') + ' ' + r.status() + ' ' + (await r.text().catch(() => '')).slice(0, 250)); });
+await go('/settings/modules-and-fields/' + MID + '/layouts/' + I.layout, 10000);
+const el = page.getByText('QA RT18SR PL3', { exact: true }).first(); await el.scrollIntoViewIfNeeded(); await sleep(500);
+const card = el.locator('xpath=ancestor::*[.//button][1]'); await el.hover(); await sleep(600);
+await card.getByRole('button', { name: 'Field options' }).click(); await sleep(800);
+await page.getByText('Edit Properties', { exact: true }).last().click(); await sleep(2000);
+await page.getByText('ADVANCED', { exact: true }).last().click(); await sleep(1200);
+await page.mouse.click(1557, 335); await sleep(1500);
+out.afterX = (await page.locator('body').innerText()).replace(/\s+/g, ' ').match(/OPTIONS.{0,400}/)?.[0];
+await shot('2936-4-remove-alpha.png');
+await page.getByRole('button', { name: 'Apply' }).last().click(); await sleep(2000);
+out.afterApply = 1; await page.getByRole('button', { name: 'Remove anyway' }).click(); await sleep(2000); await shot('2936-5b-replace-dialog.png'); out.replaceDlg = (await bodyText()).match(/Replace removed options.{0,250}/)?.[0]; await page.getByRole('button', { name: 'Replace and apply' }).click(); await sleep(2500);
+await shot('2936-5-applied.png');
+await page.getByRole('button', { name: 'Save', exact: true }).last().click(); await sleep(5000);
+out.afterSave = (await bodyText()).match(/.{0,100}(scoring|in use|used by|saved|Saved|warning).{0,250}/gi)?.slice(0, 4);
+await shot('2936-6-saved.png');
+return out;

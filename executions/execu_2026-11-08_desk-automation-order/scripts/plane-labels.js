@@ -1,0 +1,2 @@
+const fs=require('fs');const KEY=(fs.readFileSync('C:/Users/Dell/Downloads/secret-key-1793537440144.csv','utf8').match(/plane_[A-Za-z0-9_-]+/)||[])[0];
+fetch('https://api.plane.so/api/v1/workspaces/ahmed-hegazy/projects/efce4d84-5876-4015-b472-2efca7ad73f3/labels/?per_page=200',{headers:{'x-api-key':KEY}}).then(r=>r.json()).then(j=>{for(const l of (j.results||j))if(/notif|mail|blueprint|happi|automation/i.test(l.name))console.log(l.id,l.name);});

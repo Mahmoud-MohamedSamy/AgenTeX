@@ -1,0 +1,25 @@
+# NDC-2945 Audit Log | Scoring rule edits show "EntriesJson: 1 item → 1 item", so the change cannot be seen
+Summary
+Scoring rule changes are logged, but an edit to a rule's lines is shown as "EntriesJson: value: 1 item → value: 1 item". The admin cannot see what changed (for example points 15 → 20).
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026
+- Owner account
+Steps to reproduce
+- Edit a scoring rule and change one line's points from 15 to 20.
+- Open Audit Log and find the scoring rule "updated" entry.
+Expected result
+The entry shows the old and new line (field, condition, value, points), or at least "points 15 → 20".
+Actual result
+- Changes: EntriesJson "value: 1 item" → "value: 1 item", RowVersion 4 → 5, UpdatedAt.
+- Created and deleted entries are logged correctly.
+Notes
+- Evidence (TAVI left, Zoho right where it was checked): F9-audit-unreadable.png (attached).
+
+
+== COMMENTS (1)
+--- comment 2026-11-12T18:24:17.957819+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Compared with Zoho CRM live — 12 Nov 2026
+- Zoho's Audit Log shows a scoring rule edit as one line, "Scoring Rule QA SR1112 audit for Leads was updated by …", with no detail of what changed either.
+- So TAVI is not behind Zoho here. The issue is only that TAVI's change line "EntriesJson: value: 1 item → value: 1 item" tells the admin nothing. Either show the real change (e.g. points 15 → 20) or show a plain "rule updated" line like Zoho.
+- Image with TAVI left and Zoho right: F9-audit-unreadable-vs-zoho-live.png (attached).
+

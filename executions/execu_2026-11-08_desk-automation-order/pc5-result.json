@@ -1,0 +1,29 @@
+{
+ "a direct move + RR": {
+  "num": "3910",
+  "owner": "A2",
+  "feed": "ticket.created > ticket.auto_assigned(created) > ticket.auto_assigned(moved)→A2 > ticket.owner_changed"
+ },
+ "b + blueprint (owner A2)": {
+  "num": "3911",
+  "owner": "A2",
+  "feed": "ticket.blueprint_entered > ticket.auto_assigned(created) > ticket.created > ticket.auto_assigned(moved)→A2 > ticket.owner_changed"
+ },
+ "c + workflow sets Urgent": {
+  "num": "3912",
+  "owner": "A2",
+  "feed": "ticket.created > ticket.auto_assigned(created) > ticket.auto_assigned(moved)→A2 > ticket.owner_changed > ticket.workflow_rule_ran(RecordCreated)"
+ },
+ "d + SLA policy": {
+  "num": "3913",
+  "owner": "A2",
+  "feed": "ticket.created > ticket.auto_assigned(created) > ticket.auto_assigned(moved)→A2 > ticket.owner_changed > sla.applied(create)"
+ },
+ "switch": 200,
+ "nums": {
+  "a": "3910",
+  "b": "3911",
+  "c": "3912",
+  "d": "3913"
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "out": "3011-api-card.png",
+ "title": "NDC-3011 blueprint transition value vs validation rule",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "Setup",
+   "Blueprint \"QA RT18 VR BP\" (Open → Reject asks qa_rt18v_text); rule \"text cannot start with BAD\"",
+   "published, active",
+   "info"
+  ],
+  [
+   "Transition with BAD value",
+   "POST …/blueprint-transitions/t_qa_1 {qa_rt18v_text:\"BAD-api\"}",
+   "422 BLUEPRINT_VALIDATION_FAILED · VALIDATION_RULE_FAILED \"QA RT18 text cannot start with BAD\"; record stays Open, text empty",
+   "ok"
+  ],
+  [
+   "Transition with good value",
+   "POST … {qa_rt18v_text:\"fine-bp\"}",
+   "200; record now Reject, text \"fine-bp\"",
+   "ok"
+  ]
+ ]
+}

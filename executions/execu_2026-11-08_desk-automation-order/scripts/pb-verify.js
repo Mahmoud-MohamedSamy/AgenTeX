@@ -1,0 +1,10 @@
+eval(fs.readFileSync('lib-as.js','utf8'));const o={};const L=x=>Array.isArray(x)?x:(x?.items||x?.rules||x?.policies||x?.data||[]);
+const wf=[...L((await api('GET','/workflow/rules?take=200')).j?.data),...L((await api('GET','/workflow/rules?isActive=false&take=200')).j?.data)];o.wf=wf.filter(r=>/QA AO P[BC]/.test(r.name)).length;
+o.rr=L((await api('GET','/desk/assignment-rules?type=round_robin&department_id='+DA)).j?.data?.rules).filter(r=>/QA AO P[BC]/.test(r.name)).length;
+o.direct=L((await api('GET','/desk/assignment-rules?type=direct')).j?.data?.rules).filter(r=>/QA AO P[BC]/.test(r.name)).length;
+o.sla=L((await api('GET','/desk/sla/policies?department_id='+DA)).j?.data).filter(r=>/QA AO P[BC]/.test(r.name)).length;
+o.bp=L((await api('GET','/modules/'+T+'/blueprints')).j?.data).filter(b=>/QA AO P[BC]/.test(b.name||b.definition?.name||'')).length;
+o.direct_switch=(await notif()).direct_rules_enabled;
+const sl=(await api('GET','/desk/skills?department_id='+DA)).j?.data;const SL=Array.isArray(sl)?sl:(sl?.skills||[]);const SO=JSON.parse(fs.readFileSync('../pb-skill-orig.json','utf8'));
+o.skillsRestored=SO.map(x=>{const n=SL.find(s=>s.id===x.id);return x.name+':'+(JSON.stringify(n?.criteria)===JSON.stringify(x.criteria)&&n?.is_active===x.is_active);});
+o.capSkills=SL.filter(s=>/QA AS6 cap/.test(s.name)).length;return o;

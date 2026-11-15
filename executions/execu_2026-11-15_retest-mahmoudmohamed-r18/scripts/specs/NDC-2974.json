@@ -1,0 +1,112 @@
+{
+ "out": "NDC-2974-retest-PASS.png",
+ "ticket": "NDC-2974",
+ "priority": "high",
+ "title": "Layout Rules | Mass update of a rule's primary field is now blocked",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 Layout · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2974-3-field-disabled.png",
+   "caption": "Leads list › 2 records selected › Mass Update › Choose a field: the rule primary fields are greyed out",
+   "crop": [
+    512,
+    292,
+    580,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      555,
+      498,
+      885,
+      543
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      555,
+      586,
+      885,
+      631
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2974-api-card.png",
+   "caption": "API: mass-update of the primary field refused, nothing saved",
+   "crop": [
+    0,
+    80,
+    1600,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      225
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Mass Update field list",
+   "Primary field of a layout rule cannot be mass updated (as in Zoho)",
+   "\"QA RT18 type\" disabled: \"Drives a layout rule — edit these records one at a time\"",
+   "PASS"
+  ],
+  [
+   2,
+   "Another rule primary field in the list",
+   "Blocked",
+   "\"QA RT18 filter\" (primary of rule QA RT18 filter) disabled too",
+   "PASS"
+  ],
+  [
+   3,
+   "POST records/mass-update type = Refund (order empty)",
+   "Refused (was 200, both saved)",
+   "422 LAYOUT_RULE_PRIMARY_FIELD \"QA RT18 type cannot be mass updated: it is the primary field of the layout rule 'QA RT18 basic'\"",
+   "PASS"
+  ],
+  [
+   4,
+   "Records after the call",
+   "Unchanged",
+   "Both still Question, order empty",
+   "PASS"
+  ],
+  [
+   5,
+   "Mass update of a normal field (control)",
+   "Still works",
+   "qa_rt18_note → 200, saved",
+   "INFO"
+  ]
+ ]
+}

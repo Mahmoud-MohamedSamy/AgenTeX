@@ -1,0 +1,21 @@
+# NDC-2983 Layout Rules | Deleting a field used by a rule is allowed, and the whole rule stops
+Summary
+Deleting a field used by a rule is allowed, and the whole rule stops. DELETE returns 204.
+Environment
+- NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2; the same setup on Desk Tickets. Test data was deleted after the run.
+Steps to reproduce
+- Delete a field that is one target of the "basic" rule.
+Expected result
+Zoho Desk blocks deleting a field a rule uses.
+Actual result
+- DELETE returns 204.
+- The whole rule stops: order is always visible and no longer mandatory for Refund.
+- Same root as B-09.
+Notes
+- Test cases J4 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- CRM and Desk share the same rule engine, so this applies to both apps.
+
+
+== COMMENTS (0)
+

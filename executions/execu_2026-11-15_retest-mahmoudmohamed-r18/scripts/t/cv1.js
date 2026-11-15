@@ -1,0 +1,3 @@
+if(!I.l2994){ const x=await api('POST','/modules/'+L+'/records',Object.assign(rec({first_name:'QA RT18',last_name:'2994 convert',company:'QA RT18 2994 Co'}),{layout_id:'bf971461-2edc-45f2-b6e4-6e180aa64288'})); const id=x.j&&x.j.data&&(x.j.data.id||(x.j.data.record&&x.j.data.record.id)); if(!id) return SR(x)+x.t.slice(0,400); I.l2994=id; SAVE(); LED('lead "QA RT18 2994 convert" '+id+' (Leads, Standard)'); }
+const st=arr((await api('GET','/modules/'+D+'/fields')).j.data).find(f=>f.fieldName==='stage'||f.field_name==='stage'); 
+return {id:I.l2994, stage: st && JSON.stringify(st.datatypeOptions||st.config||{}).slice(0,600)};

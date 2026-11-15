@@ -1,0 +1,174 @@
+{
+ "out": "NDC-3010-retest-PASS.png",
+ "ticket": "NDC-3010",
+ "priority": "high",
+ "title": "Validation Rules | A CRM User is no longer blocked by a rule on a field that is read-only or hidden for them",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner + Mahmoud Samy (CRM profile User) · Leads › QA RT18 VR Layout · rule \"QA RT18 H6 note required\" · field permission set for the test, removed after",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3010-1-u1-form-read_only.png",
+   "caption": "CRM User, note read-only: the field is greyed with a lock; Full Name filled, note left empty",
+   "crop": [
+    420,
+    330,
+    1020,
+    340
+   ],
+   "boxes": [
+    {
+     "b": [
+      470,
+      508,
+      1410,
+      546
+     ],
+     "n": 1,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "3010-2-u1-saved-read_only.png",
+   "caption": "Save → POST 201, \"Record saved successfully\" (was: refused \"note is required\")",
+   "crop": [
+    1100,
+    780,
+    500,
+    120
+   ],
+   "boxes": [
+    {
+     "b": [
+      1298,
+      822,
+      1574,
+      874
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3010-3-u1-form-hidden.png",
+   "caption": "CRM User, note hidden: the field is not on the form; Save → 201",
+   "crop": [
+    420,
+    500,
+    1020,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      452,
+      570,
+      1410,
+      722
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3010-api-card.png",
+   "caption": "API: the rule still refuses the owner (who can edit the field), and other rules still apply to the CRM User",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      293
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      371,
+      1564,
+      429
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      439,
+      1564,
+      497
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Field qa_rt18v_note read-only for profile User",
+   "Setup",
+   "effective permission read_only for Mahmoud Samy",
+   "INFO"
+  ],
+  [
+   2,
+   "CRM User saves a lead without the note (read-only)",
+   "Not blocked (was: 422 \"note is required\")",
+   "UI Save → 201 \"Record saved successfully\"; API 201",
+   "PASS"
+  ],
+  [
+   3,
+   "Same with the field hidden for User",
+   "Not blocked (was: 422)",
+   "Field not on the form; UI 201, API 201",
+   "PASS"
+  ],
+  [
+   4,
+   "Owner (can edit the field) saves without the note",
+   "Rule still runs",
+   "422 \"QA RT18 H6 note is required\" in both modes",
+   "PASS"
+  ],
+  [
+   5,
+   "CRM User breaks a rule on a field they can edit",
+   "Still refused",
+   "422 \"QA RT18 text cannot start with BAD\"",
+   "PASS"
+  ],
+  [
+   6,
+   "Desk (Desk Agent)",
+   "—",
+   "Not rechecked (CRM-only lane)",
+   "INFO"
+  ]
+ ]
+}

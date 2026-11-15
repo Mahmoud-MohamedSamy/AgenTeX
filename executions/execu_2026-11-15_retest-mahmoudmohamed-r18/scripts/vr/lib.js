@@ -1,0 +1,23 @@
+// ---- r18 validation-rules helpers (prepended by vrun.sh). APP=crm
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-15_retest-mahmoudmohamed-r18';
+const LED = m => fs.appendFileSync(RUN + '/ledger.md', '- ' + new Date().toISOString().slice(0, 19) + ' ' + m + '\n');
+const E = r => r && r.j && r.j.error ? (r.j.error.code + ': ' + r.j.error.message + (r.j.error.details ? ' ' + JSON.stringify(r.j.error.details).slice(0, 400) : '')) : '';
+const SR = r => r.s + (E(r) ? ' ' + E(r) : '');
+const IDS = RUN + '/out/ids-vr18.json'; const I = fs.existsSync(IDS) ? JSON.parse(fs.readFileSync(IDS, 'utf8')) : {}; const SAVE = () => fs.writeFileSync(IDS, JSON.stringify(I, null, 1));
+const P = 'QA RT18';
+const enc = v => v === null ? { kind: 'null' } : typeof v === 'number' ? { kind: 'number', value: v } : typeof v === 'boolean' ? { kind: 'boolean', value: v } : Array.isArray(v) ? { kind: 'array', items: v.map(enc) } : { kind: 'string', value: String(v) };
+const modId = async (k = 'leads') => { if (I['mod_' + k]) return I['mod_' + k]; const m = arr((await api('GET', '/modules')).j.data).find(x => x.moduleKey === k); I['mod_' + k] = m.id; SAVE(); return m.id; };
+const fieldsOf = async mid => arr((await api('GET', '/modules/' + mid + '/fields')).j.data);
+const getLayout = async (mid, lid) => (await api('GET', '/modules/' + mid + '/layouts/' + lid)).j.data;
+const VR = mid => '/modules/' + mid + '/validation-rules';
+const rules = async (mid) => arr((await api('GET', VR(mid))).j.data);
+const mkRule = async (mid, body) => { const r = await api('POST', VR(mid), { status: 'active', kind: 'criteria', mode: 'block', errorPlacement: 'field', fieldVerification: false, applyToHelpCenter: false, ...body }); const id = r.j && r.j.data && r.j.data.id; if (id) LED('validation rule "' + body.name + '" ' + id + ' (Leads)'); return r; };
+const putRule = async (mid, id, body) => api('PUT', VR(mid) + '/' + id, body);
+const delRule = async (mid, id) => api('DELETE', VR(mid) + '/' + id);
+const getRule = async (mid, id) => api('GET', VR(mid) + '/' + id);
+const B = (check, en, extra = {}) => ({ when: null, check, message: { en, ar: 'عربي ' + en }, triggerOn: 'match', ...extra });
+const C = (op, field, value) => value === undefined ? { op, field } : Array.isArray(value) ? { op, field, values: value } : { op, field, value };
+const mkRec = async (mid, vals, lid) => { const r = await api('POST', '/modules/' + mid + '/records', { data: Object.entries(vals).map(([k, v]) => ({ field: k, value: enc(v) })), ...(lid ? { layout_id: lid } : {}) }); const id = r.j && r.j.data && r.j.data.id; if (id) LED('record "' + (vals.last_name || '') + '" ' + id + ' (Leads)'); return { s: r.s, id, err: E(r), r }; };
+const updRec = async (mid, id, vals, extra = {}) => { const r = await api('PATCH', '/modules/' + mid + '/records/' + id, { data: Object.entries(vals).map(([k, v]) => ({ field: k, value: enc(v) })), ...extra }); return { s: r.s, r, err: E(r) }; };
+const recVals = async (mid, id) => { const r = await api('GET', '/modules/' + mid + '/records/' + id); if (!r.j || !r.j.data) return { _s: r.s }; const o = {}; for (const d of r.j.data.data || []) o[d.field] = d.value && (d.value.value !== undefined ? d.value.value : d.value.items ? d.value.items.map(x => x.value) : d.value.kind === 'null' ? null : d.value); return o; };
+const ruleState = async (mid, id) => { const g = await getRule(mid, id); return g.s === 200 ? `status=${g.j.data.status} conditionError=${g.j.data.conditionError} warnings=${JSON.stringify(g.j.data.warnings)}` : 'GET ' + g.s; };

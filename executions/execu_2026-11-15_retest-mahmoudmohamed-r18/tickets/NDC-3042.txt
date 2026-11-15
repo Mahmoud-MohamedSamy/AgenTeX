@@ -1,0 +1,23 @@
+# NDC-3042 Custom Actions | Deleting an action used by a workflow rule gives no warning and leaves the rule broken
+Summary
+Custom Actions | Deleting an action used by a workflow rule gives no warning and leaves the rule broken. Found in the Desk go-live retest, Wave 3 (W3-20), NDC-Staging, 13 Nov 2026. Where: Setup › Custom Actions › action menu › Delete; Workflow Rules.
+Steps
+- Create a workflow rule whose action is 'Run Custom Action' with action A.
+- In Custom Actions, open A's menu › Delete.
+- Open the workflow rule.
+Expected
+A warning that the action is used by the rule (or a refusal, as when another action depends on it).
+Actual
+The dialog only says 'This permanently deletes "QA GL W3 echo 2". Any surface offering it will stop showing it immediately.' → 'Action deleted'. The rule now shows 'Function (custom action) (unavailable)'. Deleting an action that another action depends on *is* refused (409 'is a prerequisite of other custom actions. Remove those dependencies first.'), so rules get less protection than actions.
+DELETE /workflow/custom-actions/{used-by-rule} → 204 (no check)
+DELETE /workflow/custom-actions/{prerequisite} → 409 CONFLICT
+Zoho Desk
+Not checked live: the Zoho trial Setup pages do not open and its custom functions API returns 403; trying it would need a Zoho function and rule (a write).
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner and agent C (Desk Agent), Edge, 13 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): F3-vs-zoho.png.
+
+
+== COMMENTS (0)
+

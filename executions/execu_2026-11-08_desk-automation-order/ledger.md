@@ -294,3 +294,12 @@
 - 2026-11-12T21:57:51 night cleanup {"rules":{"204":12,"404":6},"tickets":{"204":81,"404":1},"savedAction":204,"templates":[204],"tags":[422,422],"assignRule":204,"webhookToken":204,"after":{"qaRules":0,"rulesTotal":51,"qaTags":11,"qaTpl":1,"qaActions":0,"directSwitch":false,"hours":"24_7","deptA":4,"happiness":false}}
 - 2026-11-12T21:58:39 night cleanup 2 {"tag 3bcb42c2":"204","tag 75d6842e":"204","p16tpl":"204","myTagsLeft":0,"qaTplLeft":0}
 uiprep orphan tickets (NDC): 7812c9e6-3aad-4b52-a58d-7616f3df8667 143e6bf5-cde2-47d2-9d82-a359d6df3824
+- 2026-11-15T08:55:20 E2E-1: QA AS6 Dept A visibility private -> public (restore after).
+- 2026-11-15T09:22:17 E2E-1: contact 3e25a376-b1b8-4915-84b6-2177a180478e email -> +qae1 and portal invite (delete contact + portal user after).
+- 2026-11-15T10:08:20 E2E-1 7c: Customer Happiness ON scoped to QA AS6 Dept A (restore ../e1-happiness-orig.json).
+- 2026-11-15T10:11:47 E2E-1 7c: Customer Happiness restored (diff: is_enabled,department_scope_enabled,department_ids).
+- 2026-11-15T10:11:55 E2E-1 7c: Customer Happiness restored (diff: ).
+- 2026-11-15T10:13:32 E2E-1 cleanup: contact deleted (204), sk1/sk2 restored, Dept A public -> private (200).
+- 2026-11-15T10:16:36 E2E-1 evidence: Happiness ON Dept A for ~1 min, restored (diff ); contact + 3 tickets + bp kept for screenshots.
+- 2026-11-15T10:22:46 E2E-1 evidence cleanup: contact 204, tickets/bp via pb-clean.
+- 2026-11-15T10:27:50 Deleted 27 "QA AS6 cap" skills from QA AS6 Dept A (user OK). Left: 0.

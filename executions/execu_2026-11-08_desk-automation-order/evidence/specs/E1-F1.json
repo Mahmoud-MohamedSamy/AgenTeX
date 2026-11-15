@@ -1,0 +1,19 @@
+{"verdict":"FAIL","label":"BUG","key":"E1-F1","out":"E1-F1-closed-email-needs-customer-happiness-vs-zoho.png",
+"ticket":"Notifications · Closing a ticket · E2E-1",
+"title":"The contact \"Closing a ticket\" email is sent only when Customer Happiness is on; with Happiness off nothing is sent",
+"date":"TAVI 15 Nov 2026 (12:04–12:16 Cairo) · Zoho 12 Nov 2026 (live, techsolutionsegypt)",
+"env":"staging-desk.taviportal.com (NDC-Staging) · owner account + Mahmoud Samy · Edge · QA AS6 Dept A · contact +qae1 (QA Gmail) · tickets #3944, #3945, #3953, #3954 (QA, deleted after)",
+"panels":[
+ {"side":"tavi","img":"executions/execu_2026-11-08_desk-automation-order/a6/evidence/ui/e1ev-notif-dA.png","w":1600,"h":900,"caption":"Setup › Notifications, department QA AS6 Dept A: Contact Notifications › \"Closing a ticket\" is ON (Email), default template","crop":[292,140,1290,760],"boxes":[{"b":[314,174,716,205],"n":1},{"b":[308,835,1560,875],"n":1}]},
+ {"side":"tavi","img":"executions/execu_2026-11-08_desk-automation-order/a6/evidence/ui/e1ev-happy.png","w":1600,"h":900,"caption":"Setup › Customer Happiness: \"Collect customer ratings\" is off (tenant setting at the time of #3944 and #3953)","crop":[292,140,720,140],"boxes":[{"b":[310,205,500,228],"n":2}]},
+ {"side":"tavi","img":"executions/execu_2026-11-08_desk-automation-order/a6/evidence/ui/e1ev-A-history.png","w":1600,"h":900,"caption":"#3953 closed with Happiness off: History has \"Ticket closed\" and Status → Closed, but no Reply queued / Reply sent; no email reached Gmail (same for #3944 at 12:04)","crop":[664,240,936,560],"boxes":[{"b":[700,280,1000,340],"n":3}]},
+ {"side":"tavi","img":"executions/execu_2026-11-08_desk-automation-order/a6/evidence/ui/e1ev-B-history.png","w":1600,"h":900,"caption":"#3954, same contact and rule, closed with Happiness on (Dept A only): \"Ticket closed\", Reply queued, Reply sent, Happiness link sent","crop":[664,240,936,360],"boxes":[{"b":[700,282,1000,520],"n":4},{"b":[700,530,1000,590],"n":4}]},
+ {"side":"tavi","img":"executions/execu_2026-11-08_desk-automation-order/a6/evidence/ui/e1-gmail-3945-closed.png","w":1280,"h":984,"caption":"Gmail (+qae1): \"Your ticket #3945 has been closed\" with the rating question; it arrives only while Customer Happiness is on","crop":[260,230,944,400],"boxes":[{"b":[330,245,672,275],"n":4},{"b":[330,445,710,520],"n":4}]},
+ {"side":"zoho","img":"executions/execu_2026-11-08_desk-automation-order/evidence/a4-bugs/C3-zoho-manual-close-mail-sent.png","w":1600,"h":900,"caption":"Zoho Desk (live, 12 Nov): manual close of #184 → \"Notification Rule Applied · Acknowledge Contact when the Ticket is closed · EmailNotification\" to the contact (contact notification \"Closing a ticket\" on; Happiness setting not recorded)","crop":[700,240,900,240],"boxes":[{"b":[745,295,1180,380],"n":1}]}
+],
+"rows":[
+ [1,"Contact notification \"Closing a ticket\" is on","An email goes to the contact when the ticket is closed (Zoho: \"Acknowledge Contact when the Ticket is closed\" sent on close)","Rule on, Email on, default template, in QA AS6 Dept A","INFO"],
+ [2,"Customer Happiness","Not needed for the closed notification (separate setting)","Off","INFO"],
+ [3,"Ticket closed with the normal Close action, Happiness off (#3944, #3953)","Closed email sent to the contact","\"Ticket closed\" logged, but no email queued or sent; nothing in Gmail","BUG"],
+ [4,"Same close with Happiness on (#3945, #3954)","Closed email sent","Email \"Your ticket #… has been closed\" with the rating question sent: the closed email exists only as the rating email","INFO"]
+]}

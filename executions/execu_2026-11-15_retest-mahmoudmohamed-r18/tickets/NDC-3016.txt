@@ -1,0 +1,25 @@
+# NDC-3016 Validation Rules | A deleted department shows as a raw id in the Desk rule list, and the rule gives no warning
+Summary
+When a department used by a Desk validation rule is deleted, the rule list shows the department's raw id, the editor hides it, and the rule stays Active with no warning.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; Tickets › Validation Rules, rule for "QA VR1112 C7 dept" + Customer Support
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Create a department and a Tickets rule for that department and Customer Support.
+- Delete the department.
+- Open the Validation Rules list, then open the rule and save it.
+Expected result
+The list and editor show "(deleted department)", as planned in the UI text; the rule still loads and saves.
+Actual result
+- List: Departments column shows "d2a27f92-6a33-4a6f-8fce-7b63c9fe0e1d, Customer Support".
+- Editor: only Customer Support is ticked; the deleted department is not shown anywhere.
+- Save works (200) and the deleted id is kept in the rule.
+- No warning on the rule.
+Notes
+- Case C7.
+- Evidence: desk-N3-list.png, desk-C7-editor.png (attached).
+
+
+== COMMENTS (0)
+

@@ -1,0 +1,1 @@
+const c={}; let live=0; for(const id of I.R07){ const r=await api('GET','/modules/'+L+'/records/'+id); if(r.s!==200){c['status'+r.s]=(c['status'+r.s]||0)+1; continue;} live++; const s=JSON.stringify(r.j.data); const m=s.match(/"lead_source","value":\{"kind":"[a-z_]+","value":"?([^"}]*)/); const v=m?m[1]:'?'; c[v]=(c[v]||0)+1; } c.live=live; return c;

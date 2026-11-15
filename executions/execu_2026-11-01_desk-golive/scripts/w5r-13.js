@@ -1,0 +1,11 @@
+const CON = '4b90180b-cd0d-44e5-914b-9c9fe2c85f45';
+await go('/modules/' + CM + '/customers/' + CON, 12000);
+await page.locator('main').getByRole('button', { name: /More|actions/i }).first().click(); await sleep(1200);
+await page.getByRole('menuitem', { name: /Invite to Help Center/i }).first().click(); await sleep(2500);
+const d = page.locator('[role=dialog]').last();
+const btn = d.getByRole('button', { name: 'Send invitations' }); out.btnEnabled = await btn.isEnabled(); out.count = await btn.count();
+const n0 = NET.length; await btn.click({ force: true }); await sleep(10000);
+out.net = NET.slice(n0).map(x => x.m + ' ' + x.u.replace(/^https:\/\/[^/]+/, '').slice(0, 90) + ' ' + x.s + ' ' + (x.m !== 'GET' ? x.t.slice(0, 250) : ''));
+out.dlgOpen = await page.locator('[role=dialog]').count(); out.toast = (await page.locator('[role=status],[data-sonner-toast],[role=alert]').allInnerTexts().catch(() => [])).join(' | ').slice(0, 300);
+await shot('w5r/W5-08-after-send');
+return fin({ out });

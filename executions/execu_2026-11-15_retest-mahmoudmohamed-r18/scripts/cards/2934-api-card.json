@@ -1,0 +1,10 @@
+{"out":"2934-api-card.png","title":"NDC-2934 scoring rules gap list — API checks","host":"staging-crm.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["1 Rule per layout / 2 record criteria","POST rule with layout_id / criteria","201 but both keys ignored (rule has no layout or criteria field)","bad"],
+["3 Several conditions in one line","entry {conditions:[…], pattern:\"1 and 2\"}","422 \"Name the field the entry tests in field_key\"","bad"],
+["4 between / relative dates / pick list contains","between, notBetween, today, currentMonth, inLastDays, ${TODAY}; Lead Source contains/startsWith","all 422 (\"'between' is not a known operator\", \"cannot be used on 'Lead Source' (pick_list)\")","bad"],
+["5 Touch point scoring","entry kind touch_point (email opened)","422 \"Only field rules … activity (touch point) scoring is not available\"","bad"],
+["7 Up to 30 conditions","30 / 31 entries","30 → 201; 31 → 422 \"at most 30 entries\" (was 25)","ok"],
+["8 Update old records","old lead, then new rule matching it, no save","score not changed (still 1, rule +6 not applied)","bad"],
+["12 / 13 Switch off / delete","rule +7 on a lead (score 8): off + save; delete, no save","off → points dropped on save (8→1); delete → score stays 8","bad"],
+["16 API actions","clone, duplicate, run, recalculate, stats, export, activate, deactivate, record /scores","404 / 405 (Clone exists only in the screen)","bad"]]}

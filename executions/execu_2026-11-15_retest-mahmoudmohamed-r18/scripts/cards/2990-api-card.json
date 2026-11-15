@@ -1,0 +1,33 @@
+{
+ "out": "2990-api-card.png",
+ "title": "NDC-2990 limit on actions per condition",
+ "rows": [
+  [
+   "CRM 40 actions",
+   "POST layout-rules (Leads) with 40 actions in one condition",
+   "201 (allowed)",
+   "info"
+  ],
+  [
+   "CRM 41 actions",
+   "POST layout-rules (Leads) with 41 actions",
+   "422 too_many: \"A condition may have at most 40 actions; this one has 41.\"",
+   "ok"
+  ],
+  [
+   "CRM 500 actions",
+   "POST layout-rules (Leads) with 500 actions",
+   "422 too_many: \"... at most 40 actions; this one has 500.\"",
+   "ok"
+  ],
+  [
+   "Desk 25 / 26 actions",
+   "POST layout-rules (Desk Tickets, Standard) with 25 / 26 actions",
+   "25 -> 201; 26 -> 422 \"A condition may have at most 25 actions; this one has 26.\"",
+   "ok"
+  ]
+ ],
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026"
+}

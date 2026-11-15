@@ -1,0 +1,24 @@
+# NDC-3020 Validation Rules | Deleting a rule through another module's address answers "deleted" but deletes nothing
+Summary
+DELETE /modules/{other module}/validation-rules/{id} answers 204 for a rule that belongs to a different module, but the rule is not deleted. GET through the wrong module correctly answers 404.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; API, Leads rule addressed through Contacts (and Tickets through Desk Contacts)
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Take a Leads rule id.
+- Send GET /modules/{contacts id}/validation-rules/{rule id}.
+- Send DELETE /modules/{contacts id}/validation-rules/{rule id}.
+- Send GET /modules/{leads id}/validation-rules/{rule id}.
+Expected result
+The wrong-module DELETE answers 404, the same as GET.
+Actual result
+- GET via the other module: 404 (correct).
+- DELETE via the other module: 204.
+- The rule is still there (GET on Leads 200).
+Notes
+- Case K3. Same on Desk.
+
+
+== COMMENTS (0)
+

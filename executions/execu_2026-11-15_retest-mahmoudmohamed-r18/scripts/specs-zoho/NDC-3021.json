@@ -1,0 +1,17 @@
+{"out":"NDC-3021-retest-FAIL-vs-zoho.png","ticket":"NDC-3021","title":"Validation Rules gap list vs live Zoho CRM: in-product Deluge functions and several messages at once confirmed; relative dates not in Zoho CRM","verdict":"FAIL","label":"RETEST FAIL vs ZOHO","date":"TAVI 15 Nov 2026 · Zoho 15 Nov 2026",
+"env":"TAVI staging-crm (NDC-Staging, owner, Leads, API probes) · Zoho CRM org946877290 (Enterprise trial, admin, Leads › QA RT18 L2 rules + Deals rule editor not saved; all removed)",
+"leftHead":"TAVI CRM (left screenshot)","rightHead":"Zoho CRM (right screenshots)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/3021-api-card.png","caption":"TAVI item-by-item recheck of the gap list","crop":[0,0,1600,530],"boxes":[{"b":[36,99,1564,157],"n":1},{"b":[36,167,1564,204],"n":2},{"b":[36,214,1564,251],"n":3},{"b":[36,329,1564,366],"n":5},{"b":[36,376,1564,434],"n":6}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-3021-1-validation-type.png","caption":"Zoho Create Validation Rule: type \"Based on Criteria\" or \"Using function\"","crop":[485,0,630,370],"boxes":[{"b":[840,182,980,212],"n":1}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-3021-1c-deluge-editor.png","caption":"Zoho › Using function › Configure Function › Write your own: Create Function, Language = Deluge (written inside Zoho, no outside URL). Cancelled, nothing saved","crop":[0,0,1100,520],"boxes":[{"b":[670,240,1062,278],"n":1},{"b":[50,410,300,452],"n":1}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-3021-2-date-operators.png","caption":"Zoho Deals › Closing Date criteria: operators is / isn't / is empty / is not empty, value dd/MM/yyyy only (no relative dates). Cancelled","crop":[40,480,1000,260],"boxes":[{"b":[290,536,842,690],"n":2}]},
+{"side":"zoho","img":"executions/execu_2026-11-15_retest-mahmoudmohamed-r18/screenshots/raw/zoho-3018-1-refused.png","caption":"Zoho lead failing 2 rules (Title, Website): both messages shown at once","crop":[400,410,1160,190],"boxes":[{"b":[471,459,658,479],"n":3},{"b":[1151,567,1349,587],"n":3}]}
+],
+"rows":[
+[1,"Function code inside the product","\"Using function\" › Write your own › Create Function, Language Deluge: the check is written and run inside Zoho","Function rule still needs an outside https URL (422 without it)","GAP"],
+[2,"Relative dates in date rules","Zoho CRM date criteria: only is / isn't / is empty / is not empty with a fixed dd/MM/yyyy date (Zoho Desk ${CURRENTTIME} not checked)","Only fixed dates; today / ${CURRENTTIME} / ${TODAY} 422","SAME"],
+[3,"Show every failing message","2 failing rules on one save: both messages shown, each under its field","Record failing 2 branches of one rule gets 1 message (TAVI 2-rule case not run)","Not comparable"],
+[5,"Rules on web form submissions","Not checked in Zoho (needs a public web form submit)","Public web-form session 404 for all 4 forms, cannot test","Not comparable"],
+[6,"Internal addresses as function URL","Not applicable: Zoho functions are Deluge code, there is no URL to give","169.254.169.254, localhost, 10.0.0.5 saved (201)","Not comparable"]
+]}

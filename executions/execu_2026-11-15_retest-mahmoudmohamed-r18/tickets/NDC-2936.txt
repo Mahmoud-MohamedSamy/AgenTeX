@@ -1,0 +1,24 @@
+# NDC-2936 Scoring Rules | Removing a pick list value used by a scoring rule gives no warning, and records lose their points
+Summary
+A pick list value that a scoring rule uses can be removed from the field with no warning. The rule still stores the old value, the editor shows the value as empty, and records that hold the value lose their points on their next save.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026
+- Owner account; Leads pick list "QA SR1112 PL" (Alpha, Beta); rule "QA SR1112 K2" (PL is Alpha → +4)
+Steps to reproduce
+- Create the pick list and the rule "PL is Alpha → +4".
+- Create a lead with PL = Alpha. Its Score is 4.
+- Edit the field and remove Alpha from the values.
+- Save the lead again, then open the rule.
+Expected result
+The admin is warned that a scoring rule uses the value. In Zoho CRM a removed value moves to "unused" and the rule keeps its condition.
+Actual result
+- Alpha is removed (200) with no warning.
+- The lead's Score drops from 4 to 0 on its next save.
+- The rule still stores "Alpha"; the editor shows "QA SR1112 PL is" with an empty value.
+Notes
+- Test data deleted after the check.
+- Evidence (TAVI left, Zoho right where it was checked): K2-removed-value-rule-vs-zoho.png (attached).
+
+
+== COMMENTS (0)
+

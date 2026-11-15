@@ -1,0 +1,307 @@
+{
+ "out": "NDC-2934-retest-PARTIAL.png",
+ "ticket": "NDC-2934",
+ "priority": "medium",
+ "title": "Scoring Rules gap list | 3 of 15 items built (Clone, 30 conditions, search + status filter); 12 still missing",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › Scoring Rules · QA RT18 SR rules · API + screen",
+ "panels": [
+  {
+   "img": "2934-2-row-menu.png",
+   "caption": "Rules list: search box + status filter (All / Active / Inactive) and row menu Edit · Clone · Delete",
+   "crop": [
+    280,
+    190,
+    1300,
+    710
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      228,
+      732,
+      262
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1362,
+      728,
+      1556,
+      798
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2934-6-clone-saved.png",
+   "caption": "Clone opens \"Clone Scoring Rule\" with \"Copy of QA RT18 SR K1\"; Create → 201, new rule in the list",
+   "crop": [
+    292,
+    280,
+    1290,
+    600
+   ],
+   "boxes": [
+    {
+     "b": [
+      296,
+      330,
+      1570,
+      378
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2934-api-card.png",
+   "caption": "API probes of the remaining gap items",
+   "crop": [
+    0,
+    90,
+    1600,
+    450
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      204
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      272
+     ],
+     "n": 7,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      319
+     ],
+     "n": 8,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      329,
+      1564,
+      366
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      376,
+      1564,
+      413
+     ],
+     "n": 9,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      423,
+      1564,
+      460
+     ],
+     "n": 11,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      470,
+      1564,
+      528
+     ],
+     "n": 14,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2934-8-record-page.png",
+   "caption": "Lead with Score 9 (API): the record page shows no score and no Scoring Rules section",
+   "crop": [
+    1210,
+    350,
+    390,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      1220,
+      356,
+      1568,
+      830
+     ],
+     "n": 13,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2938-3-create.png",
+   "caption": "Workflow \"Score value\" trigger: no All / Selective Scoring Rules choice",
+   "crop": [
+    576,
+    440,
+    448,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      596,
+      510,
+      1004,
+      590
+     ],
+     "n": 15,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Clone a rule",
+   "Clone in the row menu (Zoho)",
+   "Row menu Edit · Clone · Delete; Clone pre-fills \"Copy of …\", Create 201",
+   "PASS"
+  ],
+  [
+   2,
+   "Up to 30 conditions per rule",
+   "30 (Zoho Enterprise)",
+   "30 entries 201; 31 → 422 \"at most 30 entries\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Search + status filter on the list",
+   "Search box and Status filter",
+   "\"Search by name or description\" (K2 → 2 rows) + All / Active / Inactive (Inactive → only F9 audit)",
+   "PASS"
+  ],
+  [
+   4,
+   "Rule per layout",
+   "Layout picker (one / All Layouts)",
+   "No layout in the editor; API layout_id accepted but not stored",
+   "FAIL"
+  ],
+  [
+   5,
+   "Which records a rule scores (criteria)",
+   "Add Criteria",
+   "No criteria in the editor; API criteria ignored",
+   "FAIL"
+  ],
+  [
+   6,
+   "Several conditions in one line + pattern",
+   "AND/OR + editable pattern",
+   "Still one condition per line; conditions[] → 422",
+   "FAIL"
+  ],
+  [
+   7,
+   "between / relative dates / pick list contains",
+   "Offered",
+   "422 \"'between' is not a known operator\"; today/currentMonth/inLastDays unknown; pick list contains/startsWith refused",
+   "FAIL"
+  ],
+  [
+   8,
+   "Touch point (channel) scoring",
+   "Emails, calls, campaigns…",
+   "422 \"activity (touch point) scoring is not available\"",
+   "FAIL"
+  ],
+  [
+   9,
+   "Update old records / Run Scoring Rules",
+   "Rescore existing records",
+   "No prompt on save; old lead not rescored (score 1, rule +6 not applied); no run action",
+   "FAIL"
+  ],
+  [
+   10,
+   "Score per rule, positive/negative, score fields per rule",
+   "Kept per rule",
+   "Record still has one \"score\" field only",
+   "FAIL"
+  ],
+  [
+   11,
+   "Switch a rule off keeps its scores",
+   "Points kept",
+   "Off + save: 8 → 1 (points dropped)",
+   "FAIL"
+  ],
+  [
+   12,
+   "Delete a rule removes its scores at once",
+   "Removed without editing records",
+   "Deleted rule (+7): lead still 8 until saved",
+   "FAIL"
+  ],
+  [
+   13,
+   "Scoring Rules section on the record page",
+   "Row per rule with Score",
+   "No score anywhere on the lead page",
+   "FAIL"
+  ],
+  [
+   14,
+   "API: clone, run, per-rule scores, activate/deactivate",
+   "Available",
+   "clone/duplicate/run/recalculate/stats/export/activate/deactivate/records/{id}/scores → 404/405",
+   "FAIL"
+  ],
+  [
+   15,
+   "Score workflow for selected scoring rules only",
+   "All / Selective Scoring Rules",
+   "Trigger offers Increases / Decreases / Either + threshold only",
+   "FAIL"
+  ]
+ ]
+}

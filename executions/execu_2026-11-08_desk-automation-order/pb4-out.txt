@@ -1,0 +1,64 @@
+{
+ "notifSettings": {
+  "notify_agent_on_assignment": true,
+  "notify_team_on_assignment": true,
+  "direct_rules_enabled": false,
+  "round_robin_rules_enabled": true
+ },
+ "team": " members=",
+ "presence": "A3:on A2:on A1:on",
+ "OR-32 only a direct rule assigns": {
+  "owner": "A3",
+  "num": "3592",
+  "feed": "ticket.created > ticket.department_changed > ticket.auto_assigned(created)→A3"
+ },
+ "OR-20 team target, no owner": {
+  "owner": "none",
+  "team": "TeamA",
+  "num": "3593",
+  "feed": "ticket.created > ticket.auto_assigned(created) > ticket.department_changed"
+ },
+ "OR-33 workflow sets owner": {
+  "owner": "A3",
+  "feed": ""
+ },
+ "OR-35 RR assigns + blueprint entry in the same event; G-06 later edit": {
+  "bp": "422 Blueprint definition does not match the expected schema.",
+  "owner": "A1",
+  "run": "422 BLUEPRINT_VALIDATION_FAILED Unknown or invalid transition for the current blueprint state.",
+  "ownerAfterTransition": "A1",
+  "num": "3595",
+  "feed": "ticket.created > ticket.department_changed > ticket.auto_assigned(created)→A1 > ticket.owner_changed"
+ },
+ "OR-21 SLA escalation reassigns": {
+  "saved": "{\"response\":[{\"level\":1,\"timing\":\"at\",\"offset\":null,\"recipients\":[{\"kind\":\"agent\",\"id\":\"876ce871-2b02-4854-89a7-68050391c62b\",\"name\":null}],\"template_ref\":null,\"actions\":{\"assign_owner\":\"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4\",\"assign_team\":null,\"set_priority\":null}}],\"resolution\":[],\"third_party\":[]}",
+  "owner0": "A2"
+ },
+ "OR-25 a step fails (webhook fails, RR and SLA still run)": {
+  "wf2": "201 ",
+  "owner": "A1",
+  "sla": "none",
+  "execs": [
+   "05a52e6d-a810-4f1c-ab87-a5c2a661b1d5:Fired[AddTicketComment=Succeeded,Webhook=Pending(An error occurred while sending the request.)]"
+  ],
+  "feed": "ticket.created > ticket.department_changed > ticket.auto_assigned(created)→A1 > ticket.owner_changed > ticket.workflow_rule_ran(RecordCreated) > comment.added"
+ },
+ "OR-26 two workflow rules that re-trigger each other": {
+  "priority": "low",
+  "execsAt30s": 2,
+  "execsAt50s": 2,
+  "execs": [
+   "aa0495f3-7952-405d-8e37-792b6307be8d:Fired[]",
+   "67b3e850-97c9-408c-946e-218ad0ec61cd:Fired[]"
+  ],
+  "feed": "ticket.department_changed > ticket.created > ticket.workflow_rule_ran(RecordUpdated) > ticket.workflow_rule_ran(RecordUpdated)"
+ },
+ "switchRestore": 200,
+ "switchNow": false,
+ "nums": {
+  "OR-19/D-16 (A1 then A2)": "3559",
+  "OR-32 direct → A3": "3592",
+  "OR-20 team only": "3593",
+  "OR-35 RR → A1 + blueprint": "3595"
+ }
+}

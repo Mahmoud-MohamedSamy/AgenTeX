@@ -1,0 +1,116 @@
+{
+ "out": "NDC-3009-retest-PASS.png",
+ "ticket": "NDC-3009",
+ "priority": "high",
+ "title": "Validation Rules | A stale save from a second editor tab is now refused with \"changed by someone else\"",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 VR Layout · rule \"QA RT18 K3\" · two tabs, same owner session · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3009-1-tab1-stale-save.png",
+   "caption": "Tab A (old copy) changes the description and saves after tab B: the editor stays open and shows the conflict message",
+   "crop": [
+    340,
+    40,
+    1250,
+    850
+   ],
+   "boxes": [
+    {
+     "b": [
+      352,
+      176,
+      1248,
+      228
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      1158,
+      812,
+      1574,
+      874
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3009-api-card.png",
+   "caption": "Network: both tabs send rowVersion 1; tab B 200, tab A 409; the rule keeps tab B's text",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    320
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      251
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      298
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Open the same rule in tab A and tab B; tab A types \"changed in tab 1 (stale)\"",
+   "Setup",
+   "Both editors loaded with rowVersion 1",
+   "INFO"
+  ],
+  [
+   2,
+   "Tab A saves after tab B",
+   "Refused with a clear message (was: saved silently)",
+   "PUT 409 VALIDATION_RULE_CONFLICT; toast \"This validation rule was changed by someone else; reload it and try again.\"; editor stays open",
+   "PASS"
+  ],
+  [
+   3,
+   "Editor sends the version",
+   "rowVersion in the PUT",
+   "Both PUTs carry rowVersion=1; tab B 200",
+   "PASS"
+  ],
+  [
+   4,
+   "Reload the rule",
+   "Tab B's change kept",
+   "description \"changed in tab 2\", rowVersion 2 (was 5 → 7 with both written)",
+   "PASS"
+  ]
+ ]
+}

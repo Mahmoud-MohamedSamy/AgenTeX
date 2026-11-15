@@ -1,0 +1,3 @@
+eval(fs.readFileSync('lib-as.js','utf8'));const s=(await api('GET','/modules/'+CON+'/records?limit=20&search='+encodeURIComponent('pc24web'))).j?.data;const L=Array.isArray(s)?s:(s?.items||[]);
+const hits=L.filter(x=>JSON.stringify(x.data||[]).includes('qa.ao.pc24web@example.net'));const o={found:hits.length};o.del=[];for(const h of hits)o.del.push((await api('DELETE','/modules/'+CON+'/records/'+h.id)).s);
+const s2=(await api('GET','/modules/'+CON+'/records?limit=20&search='+encodeURIComponent('pc24web'))).j?.data;o.left=(Array.isArray(s2)?s2:(s2?.items||[])).filter(x=>JSON.stringify(x.data||[]).includes('qa.ao.pc24web@example.net')).length;return o;

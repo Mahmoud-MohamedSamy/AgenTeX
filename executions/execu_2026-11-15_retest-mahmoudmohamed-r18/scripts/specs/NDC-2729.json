@@ -1,0 +1,53 @@
+{
+ "out": "NDC-2729-retest-PARTIAL.png",
+ "ticket": "NDC-2729",
+ "priority": "urgent",
+ "title": "Blueprint | Desk Create task fixed (Assign to only, first options); Desk Field update no longer offers any pick list",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm (AEX-01 › NeedsAnalysisToProposal) + staging-desk (\"Tickets from Mail\" › Escalate Ticket) · ndc-staging-owner · Edge headless · actions added in the editor only, nothing saved",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2729-2-crm-task-defaults.png",
+   "caption": "CRM Create task: ASSIGN TO only, no module picker / Task Owner, Reminder \"None\" (unchanged since 13 Nov)",
+   "crop": [1170, 340, 420, 500],
+   "boxes": [
+    { "b": [1186, 378, 1570, 520], "n": 1, "kind": "PASS" },
+    { "b": [1198, 710, 1562, 746], "n": 1, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2729-9-desk-ct-specific.png",
+   "caption": "Desk Create task: Assign to + Agent or team picker; no Department / Team text boxes",
+   "crop": [1170, 590, 420, 250],
+   "boxes": [
+    { "b": [1186, 598, 1584, 836], "n": 2, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2729-8-desk-ct-status.png",
+   "caption": "Desk Create task: Status \"Not Started\", Priority \"Highest\" (first options)",
+   "crop": [1170, 710, 420, 130],
+   "boxes": [
+    { "b": [1204, 714, 1564, 828], "n": 3, "kind": "PASS" }
+   ]
+  },
+  {
+   "img": "2729-api-card.png",
+   "caption": "Desk Field update: what is offered now",
+   "crop": [0, 0, 1600, 440],
+   "boxes": [
+    { "b": [36, 99, 1564, 157], "n": 4, "kind": "PASS" },
+    { "b": [36, 167, 1564, 225], "n": 5, "kind": "FAIL" },
+    { "b": [36, 235, 1564, 293], "n": 4, "kind": "PASS" }
+   ]
+  }
+ ],
+ "rows": [
+  [1, "CRM Create task / Call in After actions", "No module picker; owner only via Assign to; first options", "ASSIGN TO only, no Task Owner, Reminder None (as on 13 Nov)", "PASS"],
+  [2, "Desk Create task: Department / Team", "Zoho: no Department/Team boxes; Assign to picker", "Ticket owner / performer / A specific agent or team → \"Agent or team\" picker; \"The task belongs to the ticket's department.\" (13 Nov: Department* + Team text boxes)", "PASS"],
+  [3, "Desk Create task: Status / Priority", "Real options, no \"Value\"", "Not Started / Highest", "PASS"],
+  [4, "Desk Field update: Status / Department / Team / Skills", "Not offered (Zoho)", "Gone; Ticket Owner = user picker, dates = date-time, checkbox = Yes/No", "PASS"],
+  [5, "Desk Field update: pick list fields", "Offered, value starts at \"-None-\" (Zoho)", "No pick list offered at all — Priority, Channel, Classification, Category, Language and the 47 QA NDC pick lists are missing from the field list", "FAIL"]
+ ]
+}

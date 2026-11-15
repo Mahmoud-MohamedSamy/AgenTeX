@@ -1,0 +1,15 @@
+- 12:56 created layout_rule (Zoho Leads) QA RT18 LR related 7666662000000708005
+- 13:03 NOT deleted layout_rule (Zoho Leads) QA RT18 LR related 7666662000000708005 — Zoho session signed out, cannot delete; delete by hand (Setup › Modules and Fields › Leads › Layout Rules)
+- 13:09 deleted layout_rule (Zoho Leads) QA RT18 LR related 7666662000000708005 (screen: row menu › Delete › Yes; list now empty)
+- 13:11 created layout (Zoho Leads, clone of Standard, Administrator) QA RT18 L2 7666662000000714015
+- 13:13 created layout_rule (Zoho Leads/Standard) QA RT18 LR suggest 7666662000000714135
+- 13:15 created lead (Zoho, Standard) QA RT18 LR suggest lead 7666662000000714149
+- 13:22 created validation_rule (Zoho Leads/QA RT18 L2) Title starts with BAD 'QA RT18 Title cannot start with BAD'
+- 13:25 created validation_rule (Zoho Leads/QA RT18 L2) Website contains BAD 'QA RT18 Website cannot contain BAD'
+- 13:28 deleted layout (Zoho Leads) QA RT18 L2 7666662000000714015 (screen: Delete Layout › transfer records to Standard); lead QA RT18 LR suggest lead moved to Standard
+- 13:28 deleted validation_rule (Zoho Leads/QA RT18 L2) Title starts with BAD — removed by Zoho together with the layout (list empty)
+- 13:28 deleted validation_rule (Zoho Leads/QA RT18 L2) Website contains BAD — removed by Zoho together with the layout (list empty)
+- 13:38 created scoring_rule (Zoho Leads/Standard) QA RT18 SR (Lead Source is Advertisement +10)
+- 13:45 deleted scoring_rule (Zoho Leads) QA RT18 SR (screen: row menu › Delete › Yes, delete; after deactivate)
+- 13:46 deleted lead (Zoho) QA RT18 LR suggest lead 7666662000000714149 (screen: record › … › Delete; now in Zoho Recycle Bin)
+- 13:46 deleted layout_rule (Zoho Leads/Standard) QA RT18 LR suggest 7666662000000714135 (screen: row menu › Delete › Yes; list empty)

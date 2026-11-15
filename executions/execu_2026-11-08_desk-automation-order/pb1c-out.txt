@@ -1,0 +1,39 @@
+{
+ "OR-02 skill › workflow (create, update, control)": {
+  "skills": [
+   "QA AS6 sk2"
+  ],
+  "onCreate": [
+   "06a2938a-57ed-49a4-b47c-26b3257e1c1c:Fired[AddTicketComment=Succeeded]",
+   "d82fa7b2-a341-4dcc-a15a-9305267dd3e0:Fired[AddTicketComment=Succeeded]"
+  ],
+  "afterUpdate": [
+   "1f9fc0c2-fe53-4ff5-bd74-dbd44b01b5ee:Fired[AddTicketComment=Succeeded]",
+   "06a2938a-57ed-49a4-b47c-26b3257e1c1c:Fired[AddTicketComment=Succeeded]",
+   "d82fa7b2-a341-4dcc-a15a-9305267dd3e0:Fired[AddTicketComment=Succeeded]"
+  ],
+  "feed": "ticket.created > ticket.department_changed > ticket.workflow_rule_ran(RecordCreated) > ticket.workflow_rule_ran(RecordCreated) > comment.added > comment.added > ticket.workflow_rule_ran(RecordUpdated) > comment.added"
+ },
+ "put3": 200,
+ "OR-03 workflow sets the field a skill needs": {
+  "priority": "low",
+  "skills": [],
+  "owner": "A1",
+  "execs": [
+   "ac504028-47f6-4c32-8f21-d73d33ffe577:Fired[]"
+  ],
+  "feed": "ticket.created > ticket.department_changed > ticket.auto_assigned(created)→A1 > ticket.workflow_rule_ran(RecordCreated) > ticket.owner_changed"
+ },
+ "OR-11 workflow sets the field RR needs": {
+  "priority": "low",
+  "owner": "A1",
+  "execs": [
+   "7363915a-2a3d-4758-a651-843fdbf87047:Fired[]"
+  ],
+  "feed": "ticket.department_changed > ticket.created > ticket.workflow_rule_ran(RecordCreated) > ticket.auto_assigned(created)→A1 > ticket.owner_changed"
+ },
+ "skillRestore": [
+  200,
+  200
+ ]
+}

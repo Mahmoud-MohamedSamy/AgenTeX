@@ -1,0 +1,21 @@
+# NDC-3024 Contracts | A contract is saved with an end date earlier than its start date, with no error
+Summary
+Contract end date before start date is accepted. Found in the Desk go-live retest, Wave 5 (W5-17), NDC-Staging, 12–13 Nov 2026. Where: Customers › Contracts.
+Steps
+- Create a contract with End date earlier than Start date.
+Expected
+Refused with a message (events already refuse the same: 'to_time must be on or after from_time').
+Actual
+Saved (201), stored start 2026-12-01, end 2026-11-01, status 'upcoming'; no message.
+Zoho Desk
+Zoho (live, 13 Nov, Contracts › Add Contract, nothing saved): refused with Contract Start Date should be less than Contract End Date (and also Contract end date cannot be less than current date).
+Note
+Events already refuse the same case (to_time must be on or after from_time).
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner, Edge, 13 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): W5-17-vs-zoho.png.
+
+
+== COMMENTS (0)
+

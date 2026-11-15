@@ -1,0 +1,1 @@
+eval(fs.readFileSync('lib-as.js','utf8'));const M=JSON.parse(fs.readFileSync('../e1-ev.json','utf8'));const o=await rec(M.t3);const f=await feed(M.t3);return {num:o.ticket_number,status:o.status,ev:f.reverse().map(e=>e.action).filter(a=>!/department_changed|created/.test(a))};

@@ -1,0 +1,32 @@
+# NDC-3021 Validation Rules: features Zoho CRM and Zoho Desk have that TAVI is missing
+Summary
+We compared TAVI CRM and Desk Validation Rules with Zoho CRM and Zoho Desk (live test orgs and docs) and ran 174 test cases on NDC-Staging on 12–13 Nov 2026. This ticket lists what Zoho has and TAVI does not have yet. The bugs found in the same run are filed as separate tickets. Related: NDC-2646 (rules not applied, now fixed), NDC-2536, NDC-1988, NDC-2535.
+Already done in TAVI
+- Rules block or warn on create, edit, inline edit, mass update, import and API saves, in CRM and Desk.
+- Lookup, checkbox, owner and Status fields can be checked (were missing at intake).
+- Lead convert runs the rules of the target module, like Zoho.
+- Function rules call an outside HTTPS address with a signed request; a slow, failing or offline function refuses the save safely.
+- TAVI also has regex checks, English + Arabic messages, warn-and-save-anyway, "trigger when it does not match", All-layouts rules, a full rules API, bigger limits (25 conditions, 1000-character messages) and protection against deleting a checked field. Zoho does not have these.
+Missing — rule types and values
+- Function code inside the product. Zoho CRM lets the admin write the check as a Deluge function inside Zoho. TAVI only calls an outside HTTPS address, so the customer needs their own server.
+- Relative dates in date rules (Zoho Desk accepts ${CURRENTTIME}). TAVI takes only fixed dates; the API refuses "today" and ${CURRENTTIME}.
+Missing — behaviour
+- Show every failing condition. Zoho CRM shows all alerts when several conditions fail; TAVI stops at the first matching condition.
+- Prompt when removing the checked field from a Desk layout. Zoho Desk asks and then switches the rule off; TAVI allows it with no prompt and the rule stays Active.
+Could not be checked
+- Help Center ticket forms: the public form needs a CAPTCHA. Please run cases G15, G16 and X4 by hand, or give QA a Help Center customer login.
+- Web forms: POST /api/v1/web-forms/public/<key>/session answers 404 for every form on NDC-Staging (same area as NDC-2732). Please fix so we can test rules on web form submissions (G12; Zoho sends such records to approval).
+- Kanban moves: the Leads Kanban does not load (NDC-2993). Please fix so we can test rules on Kanban moves (G6).
+Additional notes
+- Not gaps: Zoho also lets after-transition and workflow field updates write values that break a rule; TAVI does the same.
+- Possible bug to check separately: a function rule accepts internal addresses (https://localhost, 169.254.169.254, 10.x) at save. Please confirm the server refuses to call private addresses.
+- Possible bug to check separately: merging records or tickets keeps a value that an active rule refuses.
+- Possible bug to check separately: the function request has no timestamp in its signature, so a captured request could be replayed; the layout id is not sent.
+- Test sheet with all 174 cases and results: https://claude.ai/artifact/Dqx4bfePnFaL1DZUu5tS1u
+- All test data was deleted after the run.
+Environment
+NDC-Staging (staging-crm / staging-desk.taviportal.com), Chromium, 12–13 Nov 2026, owner account; Zoho CRM and Zoho Desk test orgs.
+
+
+== COMMENTS (0)
+

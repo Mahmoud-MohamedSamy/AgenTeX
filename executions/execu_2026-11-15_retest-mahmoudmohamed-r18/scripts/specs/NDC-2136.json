@@ -1,0 +1,34 @@
+{
+ "out": "NDC-2136-retest-FAIL.png",
+ "ticket": "NDC-2136",
+ "priority": "medium",
+ "title": "Custom Views | Leads list first page still far above the 1.5 s p95 target (p95 15.6 s today)",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless · Leads › All Leads (1,196 records) · 1 warm-up + 20 full navigations · other QA lanes active",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2136-1-Leads-list.png",
+   "caption": "All Leads, the page timed: navigation → first row with content",
+   "crop": [260, 60, 1340, 420],
+   "boxes": [
+    { "b": [262, 320, 1598, 376], "n": 1, "kind": "INFO" }
+   ]
+  },
+  {
+   "img": "2136-api-card.png",
+   "caption": "20 timed loads",
+   "crop": [0, 0, 1600, 270],
+   "boxes": [
+    { "b": [36, 99, 1564, 157], "n": 1, "kind": "INFO" },
+    { "b": [36, 167, 1564, 204], "n": 2, "kind": "FAIL" },
+    { "b": [36, 214, 1564, 251], "n": 3, "kind": "INFO" }
+   ]
+  }
+ ],
+ "rows": [
+  [1, "Open All Leads 20 times (full navigation)", "First page of rows each time", "Rows shown every time (0 failures)", "INFO"],
+  [2, "p95 of navigation → first row", "≤ 1.5 s", "p50 5.06 s, p95 15.62 s, fastest 2.58 s (13 Nov: p95 4.03 s)", "FAIL"],
+  [3, "Staging load", "—", "Other QA lanes running; Deals Kanban in the same hour also slowed (p50 1.74 → 8.92 s)", "INFO"]
+ ]
+}

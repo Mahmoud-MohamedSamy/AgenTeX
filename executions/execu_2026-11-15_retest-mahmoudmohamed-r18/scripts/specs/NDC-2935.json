@@ -1,0 +1,114 @@
+{
+ "out": "NDC-2935-retest-PASS.png",
+ "ticket": "NDC-2935",
+ "priority": "medium",
+ "title": "Scoring Rules | A field used by a scoring rule can no longer be deleted (API 422, screen lists the rules)",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads · field qa_rt18sr_num · rules QA RT18 SR K1 + Copy of K1",
+ "panels": [
+  {
+   "img": "2935-4-confirm.png",
+   "caption": "Layout editor › Unused Fields › delete QA RT18SR NUM: \"This field is in use and cannot be deleted\" with the scoring rules listed; Delete Permanently disabled",
+   "crop": [
+    560,
+    270,
+    480,
+    360
+   ],
+   "boxes": [
+    {
+     "b": [
+      600,
+      396,
+      1000,
+      542
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      869,
+      562,
+      1000,
+      594
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2935-api-card.png",
+   "caption": "API: the delete is refused and the rule is untouched",
+   "crop": [
+    0,
+    90,
+    1600,
+    215
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      246
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      256,
+      1564,
+      293
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Rule \"QA RT18SR NUM ≥ 5 → +9\", lead with 6",
+   "Score 9",
+   "Score 9",
+   "PASS"
+  ],
+  [
+   2,
+   "DELETE the field (API)",
+   "Refused while used (Zoho: \"already used in other places\")",
+   "422 FIELD_IN_USE_BY_RULE naming \"QA RT18 SR K1\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Delete in the screen",
+   "Warn the admin",
+   "Dialog \"This field is in use and cannot be deleted\" › Scoring rules: Copy of QA RT18 SR K1, QA RT18 SR K1; Delete Permanently disabled",
+   "PASS"
+  ],
+  [
+   4,
+   "Rule and records after",
+   "Rule not broken",
+   "Field kept; rule 1 entry +9, active; no \"needs attention\"",
+   "PASS"
+  ]
+ ]
+}

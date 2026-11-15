@@ -1,0 +1,27 @@
+# NDC-3009 Validation Rules | Two admins editing the same rule: the second save silently wipes out the first
+Summary
+When two admins have the same validation rule open, the one who saves last overwrites the other's change without any message. The server can already detect this (it answers "This validation rule was changed by someone else" when it gets an old version), but the rule editor does not send the version, so the check never runs.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; Leads › Validation Rules, two browser tabs
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Open Settings › Modules and Fields › Leads › Validation Rules.
+- Open the same rule for editing in tab A and in tab B.
+- In tab B change the description to "changed in tab 2" and click Save.
+- In tab A (still showing the old copy) change the description to "changed in tab 1" and click Save.
+- Reload the rule.
+Expected result
+Tab A's save is refused with a clear message such as "This rule was changed by someone else. Reload it and try again", as the API already does.
+Actual result
+- Tab A's save is accepted with no message.
+- Tab B's change is lost; the rule now holds "changed in tab 1".
+- The rule's version jumps from 5 to 7, showing both saves were written.
+- A PUT with the old rowVersion through the API is correctly refused with 409 VALIDATION_RULE_CONFLICT, so only the editor is missing the check.
+Notes
+- Case I1. The Desk rule editor uses the same component.
+- Evidence: crm-I1-conflict.png (attached).
+
+
+== COMMENTS (0)
+

@@ -1,0 +1,5 @@
+{"out":"2939-api-card.png","title":"NDC-2939 scoring rule save without row_version","host":"staging-crm.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Save with current version","PUT /scoring-rules/{QA RT18 SR H2} points 5, row_version 1","200 → version 2, points 5","ok"],
+["Save with NO version","PUT /scoring-rules/{id} points 3, no row_version","400 SCORING_RULE_VERSION_REQUIRED \"Send the scoring rule's rowVersion (the one you loaded) with the save, or If-Match\" → stored points still 5, version 2","ok"],
+["Save with stale version","PUT /scoring-rules/{id} points 9, row_version 1","409 SCORING_RULE_VERSION_CONFLICT \"changed by someone else … (current version 2)\" → points still 5","ok"]]}

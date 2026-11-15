@@ -1,0 +1,66 @@
+{
+ "out": "NDC-2991-retest-PASS.png",
+ "ticket": "NDC-2991",
+ "priority": "low",
+ "title": "Layout Rules | DELETE through another module now returns 404",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 Layout · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2991-api-card.png",
+   "caption": "Rule on Leads, DELETE sent through Contacts",
+   "crop": [
+    0,
+    80,
+    1600,
+    260
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      230
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      240,
+      1564,
+      277
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "DELETE /modules/{Contacts}/layout-rules/{Leads rule}",
+   "404 like GET and PUT",
+   "404 LAYOUT_RULE_NOT_FOUND (was 204)",
+   "PASS"
+  ],
+  [
+   2,
+   "Rule after the call",
+   "Not deleted",
+   "GET on Leads 200",
+   "PASS"
+  ],
+  [
+   3,
+   "Other tenant's owner deletes this tenant's rule (K2)",
+   "404",
+   "Not checked: no other-tenant account in this round",
+   "INFO"
+  ]
+ ]
+}

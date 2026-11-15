@@ -1,0 +1,6 @@
+{"out":"3021b-api-card.png","title":"NDC-3021 gap item 3 — one save that breaks two separate validation rules (Leads, QA RT18 VR Layout)","host":"staging-crm.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Rules used (active, existing)","\"QA RT18 text no BAD\" (field placement) + \"QA RT18 E2 top\" (pick = Reject, top placement)","—","info"],
+["API: text \"BAD three\" + pick Reject","POST /modules/{Leads}/records (layout QA RT18 VR)","422 RECORD_VALIDATION_FAILED, details n=2: \"QA RT18 E2 pick cannot be Reject\" (top) + \"QA RT18 text cannot start with BAD\" (field)","ok"],
+["API control: only text \"BAD one\"","same","422, details n=1 (text message only)","info"],
+["Screen: same two values, Save","Create Lead › QA RT18 VR Layout","red banner at the top \"QA RT18 E2 pick cannot be Reject\" (role=alert) + under the field \"QA RT18 text cannot start with BAD\"; no record saved","ok"]]}

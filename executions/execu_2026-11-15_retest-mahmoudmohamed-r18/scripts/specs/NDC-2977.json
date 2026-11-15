@@ -1,0 +1,78 @@
+{
+ "out": "NDC-2977-retest-PASS.png",
+ "ticket": "NDC-2977",
+ "priority": "high",
+ "title": "Layout Rules | Blueprint transition form now shows the rule-mandatory field",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Leads › QA RT18 Layout · QA test data, removed at cleanup",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2977-1-transition-dialog.png",
+   "caption": "Lead \"QA RT18 bp rec\" › transition \"QA to Refund\": QA RT18 order* is in the form",
+   "crop": [
+    520,
+    190,
+    560,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      565,
+      350,
+      1035,
+      405
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2977-2-execute-empty.png",
+   "caption": "Execute with order empty: \"This field is required\", form stays open",
+   "crop": [
+    520,
+    180,
+    560,
+    540
+   ],
+   "boxes": [
+    {
+     "b": [
+      565,
+      355,
+      1035,
+      435
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Open transition Question → Refund (rule: Refund makes order mandatory)",
+   "Layout rule's mandatory fields inside the transition form (Zoho)",
+   "Form shows message, QA RT18 order*, attachment, note",
+   "PASS"
+  ],
+  [
+   2,
+   "Execute with order empty",
+   "Blocked",
+   "\"This field is required.\"; no request sent, dialog stays",
+   "PASS"
+  ],
+  [
+   3,
+   "Fill order, Execute",
+   "Record moves with the value",
+   "POST …/blueprint 200; API: Refund / \"QA RT18 G10 order\"",
+   "PASS"
+  ]
+ ]
+}

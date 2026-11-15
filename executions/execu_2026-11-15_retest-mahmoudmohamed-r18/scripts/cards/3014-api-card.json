@@ -1,0 +1,27 @@
+{
+ "out": "3014-api-card.png",
+ "title": "NDC-3014 delete a field used only in \"Applies when\"",
+ "host": "staging-crm.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "Rule",
+   "QA RT18 J2 rule: check qa_rt18v_email is empty, Applies when qa_rt18v_j2 = y",
+   "active; record with j2=y and no email → 422 (rule works)",
+   "info"
+  ],
+  [
+   "Delete field qa_rt18v_j2",
+   "DELETE /modules/{Leads}/fields/{j2}",
+   "422 FIELD_IN_USE_BY_RULE \"\\\"qa_rt18v_j2\\\" is used by validation rule \\\"QA RT18 J2 rule\\\" … Remove the field from those rules (or delete them) before deleting the field.\"",
+   "ok"
+  ],
+  [
+   "After",
+   "GET fields / GET rule",
+   "field still there; rule active, conditionError null",
+   "ok"
+  ]
+ ]
+}

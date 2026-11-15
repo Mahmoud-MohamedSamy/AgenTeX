@@ -1,0 +1,19 @@
+# NDC-2939 Scoring Rules | A save without a version overwrites the rule with no conflict check
+Summary
+PUT /scoring-rules/{id} is accepted without row_version and overwrites the rule. Another admin's change can be lost without warning. The screen sends row_version and is protected; any other client is not. This is the same problem as NDC-2868 (Global Sets).
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026
+- Owner account, API
+Steps to reproduce
+- Create a rule (points 1) and save it with points 5 and the current row_version (200, version 2).
+- Send PUT with points 3 and no row_version.
+Expected result
+The save is refused because no version was sent, the same way a stale version is refused with 409 SCORING_RULE_VERSION_CONFLICT.
+Actual result
+- 200; the rule now has points 3. A stale row_version is refused correctly (409), only a missing one is not checked.
+Notes
+- Evidence (TAVI left, Zoho right where it was checked): H2-no-version-overwrite.png (attached).
+
+
+== COMMENTS (0)
+

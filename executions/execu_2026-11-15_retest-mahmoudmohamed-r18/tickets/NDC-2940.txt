@@ -1,0 +1,20 @@
+# NDC-2940 Scoring Rules | Two creates at the same moment make two rules with the same name
+Summary
+The duplicate-name check is not safe when two create requests arrive together. Both succeed and the module ends up with two rules of the same name.
+Environment
+- Staging, staging-crm.taviportal.com, tenant NDC-Staging, 12 Nov 2026
+- Owner account, API
+Steps to reproduce
+- Send two POST /scoring-rules requests for Leads with the same name at the same time.
+- List the Leads rules.
+Expected result
+One rule is created and the other request is refused: "This module already has a scoring rule named …" (the answer a single second create gets).
+Actual result
+- Both return 201 and the list shows two rules named "QA SR1112 dbl".
+Notes
+- A double click on Create in the screen did not reproduce it; this is an API race.
+- Evidence (TAVI left, Zoho right where it was checked): H4-duplicate-names-vs-zoho.png (attached).
+
+
+== COMMENTS (0)
+

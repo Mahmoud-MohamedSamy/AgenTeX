@@ -1,0 +1,43 @@
+{
+ "presence": "A3:on A2:on A1:on",
+ "skills": "QA AS6 sk1→A1 / QA AS6 sk2→A2",
+ "put1": 200,
+ "OR-01/H-12 skill then skill RR": {
+  "owner": "A2",
+  "skills": [
+   "QA AS6 sk2"
+  ],
+  "feed": "ticket.department_changed > ticket.created > ticket.auto_assigned(created)→A2"
+ },
+ "OR-02 skill › workflow": {
+  "skills": [
+   "QA AS6 sk2"
+  ],
+  "execs": [],
+  "feed": "ticket.department_changed > ticket.created"
+ },
+ "put3": 200,
+ "OR-03 workflow sets the field a skill needs": "ERR wf OR03 409 A rule named 'QA AO PB OR03' already exists in one of this rule's departments. Rule names must be unique per department.",
+ "OR-11 workflow sets the field RR needs": "ERR wf OR11 409 A rule named 'QA AO PB OR11' already exists in one of this rule's departments. Rule names must be unique per department.",
+ "OR-15/E-15 two RR rules match": {
+  "before": "A1",
+  "reorder": "200",
+  "after": "A3",
+  "feedA": "ticket.department_changed > ticket.created > ticket.auto_assigned(created)→A1 > ticket.owner_changed",
+  "feedB": "ticket.created > ticket.department_changed > ticket.auto_assigned(created)→A3",
+  "reorderBack": 200
+ },
+ "OR-28 skill › direct criteria": {
+  "skills": [
+   "QA AS6 sk2"
+  ],
+  "owner": "A3",
+  "feed": "ticket.created > ticket.auto_assigned(created)→A3 > ticket.department_changed"
+ },
+ "skillRestore": [
+  200,
+  200
+ ],
+ "switchRestore": 200,
+ "switchNow": false
+}

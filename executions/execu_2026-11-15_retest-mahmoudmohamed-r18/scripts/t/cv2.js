@@ -1,0 +1,20 @@
+const fs=require('fs'); const I=JSON.parse(fs.readFileSync('../out/ids-crm9.json','utf8'));
+const L='841043e1-c078-41f9-8d6e-dfd61bee45c3'; const R={};
+const net=[]; page.on('response', async r => { if (r.request().method()==='POST' && /convert/.test(r.url())) net.push(r.status()+' '+(await r.text().catch(()=>'')).replace(/"[0-9a-f-]{36}"/g,'"<id>"').slice(0,600)); });
+await page.goto(H+'/modules/'+L+'/records/'+I.l2994,{waitUntil:'domcontentloaded'}); for(let i=0;i<30;i++){ await sleep(1000); if(/2994 convert/.test(await text())) break; }
+await sleep(2000);
+await page.getByRole('button',{name:/^Convert$/}).first().click(); await sleep(4000);
+R.url=page.url().slice(-60);
+await page.getByText(/Create a new .* for this/).first().click(); await sleep(2500);
+await page.getByPlaceholder('Deal name').fill('QA RT18 2994 deal');
+const sb = page.locator('main').getByText('Stage', { exact: true }).first().locator('xpath=ancestor::div[2]//button').first(); await sb.click(); await sleep(900);
+R.opts=(await page.getByRole('option').allInnerTexts()).slice(0,20);
+await page.getByRole('option', { name: /^Closed Lost$/ }).first().click(); await sleep(900);
+await shot('2994-1-form.png');
+await page.locator('main button', { hasText: /^Convert$/ }).last().click();
+await sleep(1500); await shot('2994-2-after-convert.png');
+await sleep(4000); await shot('2994-3-after-5s.png');
+R.net=net; R.url2=page.url().slice(-60);
+R.msgs=((await text()).match(/[^.\n]{0,60}(required|converted|success|error|could not|refused|amount|closing|reason)[^.\n]{0,120}/gi)||[]).slice(0,8);
+R.alerts=await page.locator('[role=alert],[role=status],[data-sonner-toast],.toast').allInnerTexts().catch(()=>[]);
+return R;

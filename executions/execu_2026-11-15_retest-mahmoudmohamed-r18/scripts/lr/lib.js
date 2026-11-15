@@ -1,0 +1,23 @@
+// ---- r18 layout-rules helpers (prepended by run.sh to every step). Owner session via apiw.js.
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-15_retest-mahmoudmohamed-r18';
+const LED = m => fs.appendFileSync(RUN + '/ledger.md', '- ' + new Date().toISOString().slice(0, 19) + ' ' + m + '\n');
+const E = r => r && r.j && r.j.error ? (r.j.error.code + ': ' + r.j.error.message + (r.j.error.details ? ' ' + JSON.stringify(r.j.error.details).slice(0, 400) : '')) : '';
+const SR = r => r.s + (E(r) ? ' ' + E(r) : '');
+const IDS = RUN + '/out/ids-lr18.json'; const I = fs.existsSync(IDS) ? JSON.parse(fs.readFileSync(IDS, 'utf8')) : {}; const SAVE = () => fs.writeFileSync(IDS, JSON.stringify(I, null, 1));
+const P = 'QA RT18'; const FP = 'qa_rt18_';
+const enc = v => v === null ? { kind: 'null' } : typeof v === 'number' ? { kind: 'number', value: v } : typeof v === 'boolean' ? { kind: 'boolean', value: v } : Array.isArray(v) ? { kind: 'array', items: v.map(enc) } : { kind: 'string', value: String(v) };
+const modId = async (k = 'leads') => { if (I['mod_' + k]) return I['mod_' + k]; const m = arr((await api('GET', '/modules')).j.data).find(x => x.moduleKey === k); I['mod_' + k] = m.id; SAVE(); return m.id; };
+const fieldsOf = async mid => arr((await api('GET', '/modules/' + mid + '/fields')).j.data);
+const getLayout = async (mid, lid) => (await api('GET', '/modules/' + mid + '/layouts/' + lid)).j.data;
+const rules = async (mid, q = '') => arr((await api('GET', '/modules/' + mid + '/layout-rules' + q)).j.data);
+const mkRule = async (mid, body, tag) => { const r = await api('POST', '/modules/' + mid + '/layout-rules', { status: 'active', description: 'qa rt18', ...body }); const id = r.j && r.j.data && r.j.data.id; if (id) { LED('layout rule "' + body.name + '" ' + id + ' (' + (tag || mid) + ')'); } return r; };
+const putRule = async (mid, id, body) => api('PUT', '/modules/' + mid + '/layout-rules/' + id, body);
+const delRule = async (mid, id) => api('DELETE', '/modules/' + mid + '/layout-rules/' + id);
+const getRule = async (mid, id) => (await api('GET', '/modules/' + mid + '/layout-rules/' + id));
+const eq = (field, value) => ({ op: 'eq', field, value });
+const br = (condition, actions) => ({ condition, actions });
+const show = fields => ({ type: 'show_fields', fields });
+const req = fields => ({ type: 'require_fields', fields });
+const secs = sections => ({ type: 'show_sections', sections });
+const mkRec = async (mid, vals, lid, tag) => { const r = await api('POST', '/modules/' + mid + '/records', { data: Object.entries(vals).map(([k, v]) => ({ field: k, value: enc(v) })), ...(lid ? { layout_id: lid } : {}) }); const id = r.j && r.j.data && r.j.data.id; if (id) LED('record "' + (vals.first_name || vals.deal_name || vals.last_name || '') + '" ' + id + ' (' + (tag || 'Leads') + ')'); return { s: r.s, id, err: E(r) }; };
+const recVals = async (mid, id) => { const r = await api('GET', '/modules/' + mid + '/records/' + id); if (!r.j || !r.j.data) return { _s: r.s }; const o = {}; for (const d of r.j.data.data || []) o[d.field] = d.value && (d.value.value !== undefined ? d.value.value : d.value.items ? d.value.items.map(x => x.value) : d.value.kind === 'null' ? null : d.value); return o; };

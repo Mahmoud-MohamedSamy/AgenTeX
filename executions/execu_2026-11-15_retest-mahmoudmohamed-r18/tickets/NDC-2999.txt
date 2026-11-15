@@ -1,0 +1,31 @@
+# NDC-2999 Workflow Rules | Owner Assignment action saves any role or user value, even "x"
+Summary
+The rules API does not check the target of an Owner Assignment action. A role round robin with role "x" or a role id that does not exist, and a specific user "x", are all saved.
+Steps to Reproduce
+- Send POST /api/v1/workflow/rules with an Owner Assignment action: ownerTargetKind RoleRoundRobin, ownerValue "x".
+- Repeat with ownerValue 11111111-2222-3333-4444-555555555555 (no such role).
+- Repeat with ownerTargetKind SpecificUser, ownerValue "x".
+Expected Result
+- Each is refused with a clear message: the role or user must exist.
+Actual Result
+- All three: HTTP 201, the rule is saved.
+- For comparison, an unknown trigger field is refused (400 "Unknown field(s)").
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026.
+Attachment
+Annotated evidence attached (WF-owner-target-not-checked.png).
+
+
+== COMMENTS (3)
+--- comment 2026-11-14T20:20:49.909800+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging-desk (tavi) on 14 Nov, 18:18 UTC.
+Checked live through the rules API on NDC-Staging, with your payloads: role round robin "x" and user "x" answer 400 "Owner Assignment needs the id of the user, profile, role or team to assign."; the role id 11111111-2222-3333-4444-555555555555 answers 400 "Owner Assignment: The profile to assign in turn does not exist."; an unknown user, role (org unit) or team id is refused the same way. A real user and a real team still save.
+
+--- comment 2026-11-14T19:44:46.819461+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Merged to staging: anyware.workflow #134 (merge 727a0c9). It is not deployed to staging-desk yet, so the steps in this ticket still behave as before on the server. Please retest after the deploy; I will check it there too.
+
+--- comment 2026-11-14T19:41:07.672165+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix in review: anyware.workflow #134.
+An Owner Assignment to a specific user, profile, role or team now needs that item's id ("x" is refused), and the save checks that it exists: "Owner Assignment: The user to assign does not exist." (or profile, role, team). The check also covers an Owner Assignment in a rule's second or later condition. If IAM or Desk cannot be reached, the save goes through as before.
+How it was checked: before the fix I sent your payloads to the rules API on NDC-Staging (staging-desk) and got 201 as you did. The fix has tests that fail without it, and the full suites match staging. Not yet checked on staging after the fix: it is not merged or deployed, and tavi's Desk API was answering 404 during the work.
+

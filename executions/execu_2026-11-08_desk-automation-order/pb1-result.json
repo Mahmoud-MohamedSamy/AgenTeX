@@ -1,0 +1,62 @@
+{
+ "switchOn": true,
+ "presence": "A3:on A2:on A1:on",
+ "OR-01/H-12 skill then skill RR": "ERR skill 400 {\"success\":false,\"data\":null,\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"A department can have up to 30 active skills.\",\"details\":[{\"field\":\"is_active\",\"issue\":\"SKILL_ACTIVE_LIMIT\"}]},\"meta\":null}",
+ "OR-02 skill › workflow": "ERR skill 400 {\"success\":false,\"data\":null,\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"A department can have up to 30 active skills.\",\"details\":[{\"field\":\"is_active\",\"issue\":\"SKILL_ACTIVE_LIMIT\"}]},\"meta\":null}",
+ "OR-03 workflow sets field a skill needs": {
+  "skill": 400,
+  "priority": "",
+  "skills": [],
+  "owner": "A1",
+  "execs": [
+   "43f23c07-b129-40ba-ba2d-98513830a130:Fired[]"
+  ],
+  "feed": "ticket.department_changed > ticket.created > ticket.auto_assigned(created)→A1 > ticket.owner_changed > ticket.workflow_rule_ran(RecordCreated)"
+ },
+ "OR-04/D-15 direct › workflow condition owner": {
+  "owner": "A1",
+  "execs": [
+   "b6907cc1-4cbc-43d3-bcf5-517849229efc:Fired[AddTicketComment=Succeeded]"
+  ],
+  "feed": "ticket.department_changed > ticket.created > ticket.auto_assigned(created)→A1 > ticket.workflow_rule_ran(RecordCreated) > comment.added"
+ },
+ "OR-05/D-16 direct A1 then workflow A2": {
+  "owner": "A2",
+  "num": "3559",
+  "execs": [
+   "32f80cd4-9249-4d51-870e-e4f8c7c9e8d9:Fired[]"
+  ],
+  "feed": "ticket.department_changed > ticket.created > ticket.auto_assigned(created)→A1 > ticket.owner_changed > ticket.workflow_rule_ran(RecordCreated)"
+ },
+ "OR-06 direct A1 then workflow email to owner": {
+  "owner": "A1",
+  "execs": [
+   "4552221d-bc9c-46b3-8baf-b13fd41ce461:Fired[Email=Succeeded]"
+  ],
+  "dispatch": "[{\"id\":\"0dedb2d7-5f9a-4375-b75e-50a67f34715d\",\"executionId\":\"6e704ea6-1ffc-484e-bae0-82b1f11f6dc3\",\"ruleActionId\":\"9f4c8b8f-c712-4ffa-b488-dee90d8ae794\",\"actionType\":\"Email\",\"target\":\"UserField:owner\",\"status\":\"Succeeded\",\"attempts\":1,\"lastAttemptAt\":\"2026-11-14T10:28:08.043345+00:00\",\"nextAttemptAt\":\"2026-11-14T10:28:05.561916+00:00\",\"lastError\":null,\"responseStatus\":200,\"responseBodyTruncated\":null,\"completedAt\":\"2026-11-14T10:28:11.120348+00:00\"}]"
+ },
+ "OR-10/D-17 workflow sets owner, RR also matches": {
+  "owner": "A3",
+  "execs": [
+   "3eaa0274-fc35-4978-914a-c51cdeda2abd:Fired[]"
+  ],
+  "feed": "ticket.created > ticket.department_changed > ticket.workflow_rule_ran(RecordCreated)"
+ },
+ "OR-11 workflow sets the field RR needs": {
+  "priority": "",
+  "owner": "none",
+  "execs": [
+   "81890b7a-3c0f-4880-8d44-b989dc3e5d52:Fired[]"
+  ],
+  "feed": "ticket.department_changed > ticket.created > ticket.workflow_rule_ran(RecordCreated)"
+ },
+ "OR-12 direct moves dept, new dept RR": {
+  "dept": "AS6-A",
+  "owner": "A1",
+  "feed": "ticket.auto_assigned(created) > ticket.created > ticket.auto_assigned(moved)→A1 > ticket.owner_changed"
+ },
+ "OR-15/E-15 two RR rules match": "ERR rule PB15 second lb A3 400 VALIDATION_ERROR The assignment rule is invalid.",
+ "OR-28 skill › direct criteria": "ERR skill 400 {\"success\":false,\"data\":null,\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"A department can have up to 30 active skills.\",\"details\":[{\"field\":\"is_active\",\"issue\":\"SKILL_ACTIVE_LIMIT\"}]},\"meta\":null}",
+ "switchRestore": 200,
+ "switchNow": false
+}

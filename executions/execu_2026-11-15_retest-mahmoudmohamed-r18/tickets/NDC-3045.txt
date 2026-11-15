@@ -1,0 +1,29 @@
+# NDC-3045 Access | With Private ticket sharing, an agent can open tickets of a department they are not in when a lower-role agent owns them
+Summary
+With Tickets data sharing set to Private, an agent can list and open tickets of a department they don’t belong to, when those tickets are owned by an agent below them in the role hierarchy. Found in the Desk go-live retest, Wave 2 (W2-76, W2-85), NDC-Staging, 12 Nov 2026.
+Steps
+- In Setup › Data Sharing, set Tickets to Private.
+- Agent C is in Customer Support only. Agent B has a lower role than C (B reports to C in Roles) and is in Marketing.
+- Assign Marketing tickets #3105 and #3106 to agent B.
+- Sign in as agent C, open All Tickets and search "QA GL W2".
+- Open #3105.
+Expected
+C can’t see or open Marketing tickets, because C isn’t a Marketing agent. Department membership should come first; the role hierarchy should only widen access within the agent’s own departments.
+Actual
+C sees #3105 and #3106 in the list and opens both, comments included. Other Marketing tickets stay hidden from C, so the access comes only from C being above B in the role hierarchy. The department isn’t checked.
+Zoho Desk (checked live, 14 Nov 2026)
+Same setup in a Zoho Desk Enterprise test org:
+- Tickets set to Private.
+- Agent 1 is a Manager in department "QA C10 Marketing" and owns ticket #101.
+- Agent 2 is a CEO (above Manager) and is not in that department.
+Agent 2 opening #101 gets "Permission denied. You do not have sufficient permissions to perform this operation." Through the API, opening the ticket and listing the department’s tickets both return 403, and search finds nothing. Control: once Agent 2 is added to the department, #101 opens. So Zoho checks the department first.
+Related
+NDC-2196
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner + agent B + agent C, Edge, 12 Nov 2026. Zoho Desk test org, 14 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): W2-C10-vs-zoho-live.png.
+
+
+== COMMENTS (0)
+

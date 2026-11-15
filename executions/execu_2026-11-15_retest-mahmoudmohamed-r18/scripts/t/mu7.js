@@ -1,0 +1,2 @@
+await sleep(45000); const jobs=await api('GET','/mass-update-jobs/mine'); log('mine '+jobs.t.slice(0,300)); const act=await api('GET','/modules/'+L+'/mass-update-jobs/active'); log('active '+act.s+' '+act.t.slice(0,300));
+const c={}; let live=0; for(const id of I.R07){ const r=await api('GET','/modules/'+L+'/records/'+id); if(r.s!==200){c['status'+r.s]=(c['status'+r.s]||0)+1; continue;} live++; const s=JSON.stringify(r.j.data); const m=s.match(/"lead_source","value":\{"kind":"[a-z_]+","value":"?([^"}]*)/); const v=m?m[1]:'?'; c[v]=(c[v]||0)+1; } c.live=live; return c;

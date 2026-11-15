@@ -1,0 +1,12 @@
+const out = { req: [] };
+page.on('response', async r => { if (/scoring-rules/.test(r.url())) out.req.push(r.request().method() + ' ' + r.url().replace(/.*\/api\/v1/, '').replace(/[0-9a-f-]{36}/g, '{id}') + ' ' + r.status()); });
+await go('/settings', 9000);
+const t0 = await bodyText(); out.menuHasScoring = /Scoring Rules/.test(t0); out.autoMenu = (t0.match(/AUTOMATION.{0,120}/) || [''])[0];
+await shot('2937-1-settings-menu.png');
+await go('/settings/automation/scoring-rules?module=' + MID, 9000);
+out.url = page.url(); const t = await bodyText(); out.main = (await page.locator('main').innerText().catch(() => t)).replace(/\s+/g, ' ').slice(0, 600);
+out.newBtn = await page.getByRole('button', { name: /New Scoring Rule/ }).count();
+out.newEnabled = out.newBtn ? await page.getByRole('button', { name: /New Scoring Rule/ }).first().isEnabled() : null;
+out.ruleNames = (t.match(/QA RT18 SR [A-Za-z0-9 ]+/g) || []).length;
+await shot('2937-2-direct-url.png');
+return out;

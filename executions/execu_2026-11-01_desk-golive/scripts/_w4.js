@@ -11,20 +11,12 @@ const flat = r => { const o = { id: r.id, created_at: r.created_at }; for (const
 const findT = async q => arr(D((await api('GET', '/modules/' + TM + '/records?limit=20&sort=-created_at&q=' + encodeURIComponent(q))).j)).map(flat);
 let out = {};
 try {
-await page.setViewportSize({ width: 1600, height: 900 });
-await go('/settings/channels/email', 9000);
-await page.locator('[data-testid=desk-seg-domains]:visible').first().click().catch(async () => { await go('/settings/channels/email/domains', 8000); }); await sleep(4000);
-const j = page.getByText('exa mple.com').first(); await j.scrollIntoViewIfNeeded().catch(() => {}); await sleep(1000);
-out.url1 = page.url(); out.d1 = (await page.locator('body').innerText()).replace(/\s+/g, ' ').match(/.{0,150}(http:%2f%2fx\.com|exa mple\.com).{0,150}/g);
-await shot('w4/D1-domains');
-await go('/settings/organization/email-templates', 10000);
-await page.locator('tr').filter({ hasText: 'QA GL W4 reply ack' }).first().getByRole('button', { name: /^Actions for/ }).click(); await sleep(1500);
-await shot('w4/D9-template-menu'); await page.keyboard.press('Escape');
-await page.locator('tr').filter({ hasText: 'Reply acknowledgement' }).filter({ hasNotText: 'QA GL W4' }).first().getByRole('button', { name: /^Actions for/ }).click(); await sleep(1500);
-await page.getByRole('menuitem', { name: /^Activate/ }).hover().catch(() => {}); await sleep(1500);
-await shot('w4/D9-builtin-menu'); await page.keyboard.press('Escape');
-const d = await api('DELETE', '/desk/email-templates/0f472a78-e303-4644-9cd7-ef35c013382d'); out.d9del = d.s + ' ' + d.t.slice(0, 220);
-await go('/knowledge-base/gallery', 15000); await sleep(8000); out.d6 = (await page.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 300);
-await shot('w4/D6-gallery');
+const ID = '684a13c3-f3eb-498f-b6dd-90fd3cfd6057';
+out.del = (await api('DELETE', '/modules/' + TM + '/records/' + ID)).s; await sleep(3000);
+let items = []; for (const q of ['?limit=200&app=desk', '?limit=200']) { const b = await api('GET', '/audit/recycle-bin/items' + q); items = items.concat(arr(D(b.j))); }
+const pick = items.filter(x => x.record_id === ID); out.labels = pick.map(x => x.record_label);
+if (pick.length) out.purge = (await api('POST', '/audit/recycle-bin/delete', { item_ids: [pick[0].id], ids: [pick[0].id] })).s;
+out.get = (await api('GET', '/modules/' + TM + '/records/' + ID)).s;
+out.blockList = arr(D((await api('GET', '/desk/channels/spam-contacts?limit=200')).j)).filter(x => /mmohamed@anyware|mahmoud\.mmohamedsamy@gmail/.test(x.address)).length;
 return fin({ out });
 } catch (e) { out.ERR = String(e.message).replace(/\u001b\[[0-9;]*m/g, '').slice(0, 500); return fin({ out }); }

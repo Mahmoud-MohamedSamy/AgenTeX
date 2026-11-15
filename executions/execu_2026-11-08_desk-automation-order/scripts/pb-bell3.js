@@ -1,0 +1,2 @@
+const out=[];let cur='';for(let i=0;i<8;i++){const d=(await api('GET','/notifications?limit=100'+(cur?'&cursor='+encodeURIComponent(cur):''))).j?.data;const L=d?.data||[];L.forEach(x=>{if(/#(3601|3602|3559|3592|3593)\b/.test(x.title||''))out.push((x.created_at||'').slice(11,19)+' '+x.title.slice(0,80));});cur=d?.meta?.next_cursor;if(!cur||!L.length||(L[L.length-1].created_at||'')<'2026-11-14T10:20')break;}
+return out;

@@ -1,0 +1,23 @@
+# NDC-3043 Support Plans | A contract can be given a discontinued plan through the API, and its page then says no plan is linked
+Summary
+Support Plans | A contract can be given a discontinued plan through the API, and its page then says no plan is linked. Found in the Desk go-live retest, Wave 3 (W3-08b), NDC-Staging, 13 Nov 2026. Where: Contracts (records API); Setup › Support Plans.
+Steps
+- Discontinue a support plan (it disappears from the New Contract picker — correct).
+- Create a contract through the API with that plan's id.
+Expected
+Refused, as the screen does ('can no longer be linked to contracts').
+Actual
+Saved (201). The record stores the plan id, but the contract page says 'No support plan is linked to this contract.' — the data is left inconsistent. Same pattern as the cross-department plan in NDC-2841.
+POST /modules/{contracts}/records … support_plan = <discontinued plan> → 201
+Zoho Desk
+Not checked live: the Zoho test org has no support plans (GET supportPlans → empty) and creating one would be a Zoho write.
+Note
+Same pattern as NDC-2841 (the screen blocks it, the API does not).
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner and agent C (Desk Agent), Edge, 13 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): F1-vs-zoho.png.
+
+
+== COMMENTS (0)
+

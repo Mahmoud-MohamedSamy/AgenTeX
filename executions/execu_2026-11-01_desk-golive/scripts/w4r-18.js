@@ -1,0 +1,3 @@
+const ids = '60d56647-cabf-439e-9a1d-eb4a64a149ed,c8588c2e-828e-4b66-a87c-146f7114fc9a,617328b7-0b3c-4230-be13-1437c609d88b,b3a9071e-9d70-4d1e-8bb7-6ea366ca0668,7ab5a1a1-7661-416c-b211-cbdb8f800dcd,46ae255f-d14a-4b89-ad2b-354d82749d64,2071afe8-bf5d-44de-9cba-8b0270dfa581,bc0baf57-ba56-4ab7-b686-31a1222c49ff,f37a5099-ded6-4d66-a39b-02178e847b0e,33947ee4-187d-4f89-a021-e09fc6d8d450,4b55d6bf-d99f-41c9-b374-90a6c9ff285f,df877dd7-4253-4181-9d44-dce1f2bd70d4'.split(',');
+out.closed = []; for (const id of ids) { const t = flat(D((await api('GET', '/modules/' + TM + '/records/' + id)).j) || {}); if (t.status === 'Closed') out.closed.push(t.ticket_number + ' ' + String(t.subject).slice(0, 50) + ' | ' + t.updated_at); }
+return fin({ out });

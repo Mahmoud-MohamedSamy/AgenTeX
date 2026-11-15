@@ -1,0 +1,26 @@
+# NDC-3040 Ticket Archiving | Any agent can change the company-wide archiving, spam-deletion and parent/child rules
+Summary
+Ticket Archiving | Any agent can change the company-wide archiving, spam-deletion and parent/child rules. Found in the Desk go-live retest, Wave 3 (W3-35), NDC-Staging, 13 Nov 2026. Where: Setup › Ticket Archiving (/settings/tickets/archiving); API /desk/tickets/archive/settings, /desk/tickets/spam/settings, /desk/tickets/parent-child/settings.
+Steps
+- Sign in as an agent with the system profile Desk Agent (no settings permissions).
+- Open Setup: Ticket Archiving is in the menu; open it.
+- Change any switch (auto-archive, spam delete, contact auto-spam, parent/child) and Save — or send the same PUT the page sends.
+Expected
+The page is hidden or read-only for a Desk Agent and the server refuses the change (as it does for Support Plans: 'needs the View SLAs permission', 403).
+Actual
+All switches are enabled for agent C and the server accepts all three saves (200). Agent C's permission list has 52 entries, all ticket/KB level, none for settings. So any agent can turn on auto-archive or 7-day spam deletion for the whole company. (In the test I wrote back the existing values only.)
+as agent C (Desk Agent):
+PUT /desk/tickets/archive/settings {enabled:false, inactive_days:120, closed_only:true} → 200
+PUT /desk/tickets/spam/settings {enabled:true, retention_days:30, …} → 200
+PUT /desk/tickets/parent-child/settings {parent_close_behavior:none, auto_close_parent:false} → 200
+GET /desk/sla/support-plans → 403 (correct)
+Zoho Desk
+Checked live 14 Nov (read only, Zoho's own API): the default Agent profile has the Setup permissions `automation`, `featureConfig`, `permission` and 38 others off; only Recycle Bin, import history, move records, snippets and masking are on (8 of 49). The Support Administrator profile has them on. Not tried as an agent: the Zoho test org has one admin user. Zoho's Setup pages do not open in this trial org.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner and agent C (Desk Agent), Edge, 13 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): F4-vs-zoho.png.
+
+
+== COMMENTS (0)
+

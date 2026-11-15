@@ -1,0 +1,32 @@
+# NDC-2998 Workflow Rules | The rules API accepts a date trigger on a field that is not a date
+Summary
+A rule with the trigger "A Date-Time field" can be saved through the API on a text or pick-list field (Subject, Priority). The rule editor only offers date fields; a field that does not exist is refused.
+Steps to Reproduce
+- Send POST /api/v1/workflow/rules with trigger { kind: DateFieldRelative, dateFieldName: "subject", offsetSeconds: -3600 }.
+- Repeat with dateFieldName "priority", then "due_date", then "nope_field".
+Expected Result
+- subject and priority are refused because they are not date or date-time fields.
+- due_date is accepted; nope_field is refused.
+Actual Result
+- subject: HTTP 201, rule saved with dateFieldName subject.
+- priority: HTTP 201, rule saved.
+- due_date: 201 (correct); nope_field: 400 "Unknown field(s) for module Tickets" (correct).
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026.
+Attachment
+Annotated evidence attached (WF-D6-date-trigger-on-text-field.png).
+
+
+== COMMENTS (3)
+--- comment 2026-11-14T20:20:50.854487+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging-desk (tavi) on 14 Nov, 18:18 UTC.
+Checked live through the rules API on NDC-Staging: dateFieldName subject and priority answer 400 "A date trigger needs a date or date-time field; 'subject' is not one."; due_date saves (201); nope_field is still refused as an unknown field.
+
+--- comment 2026-11-14T19:44:42.604558+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Merged to staging: anyware.workflow #134 (merge 727a0c9). It is not deployed to staging-desk yet, so the steps in this ticket still behave as before on the server. Please retest after the deploy; I will check it there too.
+
+--- comment 2026-11-14T19:41:05.219900+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix in review: anyware.workflow #134.
+A Date-Time trigger on a field that is not a date or date-time field (Subject, Priority) is now refused at save with "A date trigger needs a date or date-time field; 'subject' is not one." due_date still saves; an unknown field is still refused as before.
+How it was checked: before the fix I sent your payloads to the rules API on NDC-Staging (staging-desk) and got 201 as you did. The fix has tests that fail without it, and the full suites match staging. Not yet checked on staging after the fix: it is not merged or deployed, and tavi's Desk API was answering 404 during the work.
+
