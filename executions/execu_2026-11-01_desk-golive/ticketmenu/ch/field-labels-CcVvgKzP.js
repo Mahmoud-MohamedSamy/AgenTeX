@@ -1,0 +1,1 @@
+function e(e){return e.apiName??e.fieldName??e.id}var t=e=>e.trim().toLocaleLowerCase();function n(e,n,r){let i=e.map(n),a=new Map;for(let e of i)a.set(t(e),(a.get(t(e))??0)+1);return i.map((n,i)=>(a.get(t(n))??0)>1?`${n} (${r(e[i])})`:n)}function r(t,r){let i=n(t,r,e);return new Map(t.map((e,t)=>[e.id,i[t]]))}export{r as n,e as r,n as t};

@@ -1,0 +1,1 @@
+import{Jo as e}from"./index-DnVIIZyt.js";function t(){let t=e(),n=t.data??null,r=!!n?.enabled,i=!!n?.paused;return{enabled:r,paused:i,live:r&&!i,ready:!t.isLoading,status:n}}export{t};

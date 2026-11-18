@@ -1,0 +1,1 @@
+import{fM as e}from"./index-DnVIIZyt.js";var t=new class{getSystemSender(){return e.get(`/mail/sender/system`)}getTicketSender(t){return e.get(`/desk/tickets/${encodeURIComponent(t)}/sender`)}};function n(e){let t=e.display_name?.trim();return t?`${t} <${e.from_address}>`:e.from_address}export{n,t};

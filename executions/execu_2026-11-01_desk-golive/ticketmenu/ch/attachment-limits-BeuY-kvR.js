@@ -1,0 +1,1 @@
+var e=16*1024*1024;function t(t){return t.size>e}export{t};

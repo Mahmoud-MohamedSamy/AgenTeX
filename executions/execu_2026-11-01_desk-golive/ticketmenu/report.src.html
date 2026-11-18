@@ -1,0 +1,139 @@
+<title>Ticket Menu vs Zoho</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; summary strip, then findings with evidence, then the full action table */
+:root {
+  --bg: #f6f7f9; --surface: #ffffff; --fg: #1b2330; --muted: #5b6676; --line: #dde2ea; --accent: #2d5bd7;
+  --pass: #17803d; --pass-bg: #e3f4e8; --fail: #c42b2b; --fail-bg: #fbe6e6; --known: #a35d00; --known-bg: #fbefdc; --info: #5a4bc4; --info-bg: #ece9fb;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif; --body: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa5b5; --line: #2c3442; --accent: #7c9cf5;
+  --pass: #5fd18a; --pass-bg: #163322; --fail: #ff8a8a; --fail-bg: #3a1c1f; --known: #f0b45c; --known-bg: #3a2b14; --info: #b3a8ff; --info-bg: #2a2547; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e4e8ef; --muted: #9aa5b5; --line: #2c3442; --accent: #7c9cf5;
+  --pass: #5fd18a; --pass-bg: #163322; --fail: #ff8a8a; --fail-bg: #3a1c1f; --known: #f0b45c; --known-bg: #3a2b14; --info: #b3a8ff; --info-bg: #2a2547; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--body); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 36px; }
+h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: 2rem; line-height: 1.15; }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1.05rem; margin: 0; }
+p { margin: 0; max-width: 72ch; }
+.eyebrow { font: 500 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 10px; }
+.meta { color: var(--muted); font-size: 14px; }
+.strip { display: flex; flex-wrap: wrap; gap: 10px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; display: grid; gap: 2px; min-width: 120px; }
+.stat b { font: 700 1.6rem var(--display); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; color: var(--muted); }
+.stat.fail b { color: var(--fail); } .stat.pass b { color: var(--pass); } .stat.known b { color: var(--known); } .stat.info b { color: var(--info); }
+section { display: grid; gap: 14px; }
+.finding { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; min-width: 0; }
+.finding .head { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; }
+.id { font: 600 13px var(--mono); color: var(--muted); }
+.pill { font: 600 12px var(--body); padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.pill.fail { color: var(--fail); background: var(--fail-bg); } .pill.pass { color: var(--pass); background: var(--pass-bg); }
+.pill.known { color: var(--known); background: var(--known-bg); } .pill.info { color: var(--info); background: var(--info-bg); }
+.cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cmp > div { min-width: 0; border-top: 2px solid var(--line); padding-top: 8px; }
+.cmp .lbl { font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+figure { margin: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--bg); }
+figure img { display: block; width: 100%; height: auto; }
+figcaption { font-size: 13px; color: var(--muted); padding: 8px 12px; border-top: 1px solid var(--line); }
+.note { background: var(--info-bg); border-radius: 8px; padding: 12px 14px; }
+.tbl { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+code { font: 13px var(--mono); }
+ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+@media (max-width: 640px) { .cmp { grid-template-columns: 1fr; } h1 { font-size: 1.6rem; } }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Desk go-live · ticket page · 16 Nov 2026</div>
+  <h1>Ticket ⋮ menu: every action checked against Zoho</h1>
+  <p class="meta">TAVI: NDC-Staging (Wonder Travel), owner account, QA tickets "QA GL TM …" in Marketing, each action clicked from the ⋮ menu on the ticket page. Zoho Desk: test org TechEgySolutions, admin account, QA tickets #108–#110, checked live the same day. All test data on both sides was deleted and purged afterwards.</p>
+  <div class="strip">
+    <div class="stat"><b>17</b><span>menu actions</span></div>
+    <div class="stat pass"><b>14</b><span>pass</span></div>
+    <div class="stat fail"><b>2</b><span>new bugs (not filed)</span></div>
+    <div class="stat known"><b>1</b><span>already filed</span></div>
+    <div class="stat info"><b>1</b><span>filed ticket to recheck</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>New bugs (drafts, waiting for your review)</h2>
+
+  <article class="finding">
+    <div class="head"><span class="id">TM-1</span><h3>Tickets | Clone leaves the required Status empty, so the copy cannot be saved until it is picked again</h3><span class="pill fail">Bug · Medium</span></div>
+    <div class="cmp">
+      <div><div class="lbl">TAVI</div><p>⋮ › Clone opens the new-ticket form with Status empty (the clone link skips status) but Status is required. Save shows "Please fix the field highlighted below." and "This field is required". Same on the Standard and Test Layout Rules layouts. After picking Open by hand it saved as #4582 with the same contact and email.</p></div>
+      <div><div class="lbl">Zoho (live)</div><p>More Actions › Clone opens the form with Status already set to "Open"; Submit works straight away.</p></div>
+    </div>
+    <figure><img alt="TAVI clone form with empty required Status beside Zoho clone form with Status Open" src="__IMG1__"><figcaption>TAVI ticket #4510 › Clone › Save (left) · Zoho ticket #108 › Clone (right)</figcaption></figure>
+  </article>
+
+  <article class="finding">
+    <div class="head"><span class="id">TM-2</span><h3>Tickets | A ticket marked as spam still accepts replies and comments and stays shared with other departments</h3><span class="pill fail">Bug · Medium</span></div>
+    <div class="cmp">
+      <div><div class="lbl">TAVI</div><p>After ⋮ › Mark as Spam the ticket shows the Spam chip and banner, but Reply All opens the composer with Send, a private comment saves (201), "Shared with HR" (full access) stays, and the full ⋮ menu is still offered.</p></div>
+      <div><div class="lbl">Zoho (live)</div><p>"Ticket has been marked as spam, so you are not able to add Conversation". The menu shrinks to Not Spam and Delete. Zoho's Mark Spam dialog says: "If the ticket is shared with other departments, it will be revoked." (dialog text seen; not tried with a shared ticket).</p></div>
+    </div>
+    <figure><img alt="TAVI spam ticket with open reply composer and share chip beside Zoho spam ticket that blocks conversation" src="__IMG2__"><figcaption>TAVI ticket #4510 after Mark as Spam (left) · Zoho ticket #109 after Mark Spam (right)</figcaption></figure>
+  </article>
+</section>
+
+<section>
+  <h2>Filed tickets affected by this run</h2>
+  <article class="finding">
+    <div class="head"><span class="id">NDC-2952 (C6)</span><h3>Move clears the ticket owner</h3><span class="pill info">Looks like the same as Zoho</span></div>
+    <p>In Zoho, ticket #108 was assigned to the admin, who is a member of the target department Tech, then moved there with More Actions › Move. Afterwards the Zoho API shows the owner empty. TAVI does the same, and its Move dialog now says so up front ("it is unassigned unless you pick someone below") with an "Assign to" picker. C6 was filed on 12 Nov from Zoho screens and documentation, not a live move. Nothing has been changed in Plane.</p>
+  </article>
+  <article class="finding">
+    <div class="head"><span class="id">NDC-2950 (C4)</span><h3>An Open ticket can be archived</h3><span class="pill known">Already filed, unchanged</span></div>
+    <p>⋮ › Archive still archives an Open ticket at once, with no confirm; the menu then offers Unarchive, which works. Zoho has no manual archive on the ticket or in the list view.</p>
+  </article>
+</section>
+
+<section>
+  <h2>All 17 actions</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Action</th><th>TAVI</th><th>Zoho (live)</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Move</td><td>Moved to Customer Support and back; dialog warns the owner is cleared unless picked</td><td>Move › department › "Move Ticket #108?"; owner also cleared</td><td><span class="pill pass">Pass · same</span></td></tr>
+      <tr><td>Share</td><td>Shared with HR (full access); "Shared with HR" chip; "Sharing updated."</td><td>Share Ticket dialog with departments</td><td><span class="pill pass">Pass</span></td></tr>
+      <tr><td>Merge</td><td>Same-contact tickets; master and per-field choice; child closed with "merged into" banner and Unmerge</td><td>From the list view; same master screen; child goes to Recycle Bin and "You cannot undo or revert a merge"</td><td><span class="pill pass">Pass · TAVI extra</span></td></tr>
+      <tr><td>Apply Macro</td><td>QA macro applied, private comment added</td><td>In menu; "Macros aren't created yet!"</td><td><span class="pill pass">Pass</span></td></tr>
+      <tr><td>Recalculate Skills</td><td>"The skills already match the criteria. Nothing changed."</td><td>Not in this org's menu</td><td><span class="pill pass">Pass</span></td></tr>
+      <tr><td>Assign by Skills</td><td>"The ticket has no active skills of its department."</td><td>Not in this org's menu</td><td><span class="pill pass">Pass</span></td></tr>
+      <tr><td>Follow</td><td>Follow and unfollow work with toasts; label stays "Follow" with a tick when following</td><td>Follow; label changes to "Un-Follow"</td><td><span class="pill pass">Pass</span></td></tr>
+      <tr><td>Mark as Unread</td><td>"Marked as unread."; ticket shows bold in the list</td><td>In menu; stays on the ticket</td><td><span class="pill pass">Pass</span></td></tr>
+      <tr><td>Mark as Spam</td><td>Confirm with optional "also mark the contact"; Not Spam restores. Reply, comment and sharing stay</td><td>Confirm; conversation blocked; menu shows only Not Spam and Delete</td><td><span class="pill fail">Fail · TM-2</span></td></tr>
+      <tr><td>Archive</td><td>Archives an Open ticket with no confirm; Unarchive works</td><td>No manual archive</td><td><span class="pill known">Known · NDC-2950</span></td></tr>
+      <tr><td>Clone</td><td>Status empty and required; Save refused until picked</td><td>Status prefilled "Open"</td><td><span class="pill fail">Fail · TM-1</span></td></tr>
+      <tr><td>Change Layout</td><td>Works on three tries (one earlier try returned "The desk service is temporarily unavailable")</td><td>No layout switch on the ticket or in Edit</td><td><span class="pill pass">Pass · TAVI extra</span></td></tr>
+      <tr><td>Print</td><td>Options dialog (private comments, attachments list), print page with properties and conversation</td><td>Not on the ticket menu</td><td><span class="pill pass">Pass · TAVI extra</span></td></tr>
+      <tr><td>Put on legal hold</td><td>"Legal hold placed.", Legal hold chip, menu flips to Release; deleting by hand still works, as the dialog says</td><td>None</td><td><span class="pill pass">Pass · TAVI extra</span></td></tr>
+      <tr><td>Copy link</td><td>"Link copied."; clipboard holds the ticket URL</td><td>Not on the ticket menu</td><td><span class="pill pass">Pass · TAVI extra</span></td></tr>
+      <tr><td>Copy rating link</td><td>With Customer Happiness off: "Customer Happiness is off, so there is no rating link."</td><td>Not on the ticket menu</td><td><span class="pill pass">Pass · TAVI extra</span></td></tr>
+      <tr><td>Delete</td><td>Confirm → Recycle Bin; restore works</td><td>Same confirm, moves to Recycle Bin</td><td><span class="pill pass">Pass</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Cleanup</h2>
+  <ul>
+    <li>TAVI: 7 QA tickets (including the clone and two Follow test tickets), 1 contact, 1 macro and 1 legal hold deleted; Recycle Bin purged; every id returns 404 and no record drafts remain.</li>
+    <li>Zoho: tickets #108–#110 and the QA contact trashed and purged; nothing left in the Recycle Bin.</li>
+  </ul>
+  <p class="note">Next step: on your OK, check Plane for duplicates and file TM-1 and TM-2 (Bug, Desk, current sprint, image attached). For NDC-2952 a comment with the live Zoho result can be drafted for your review.</p>
+</section>
+</div>

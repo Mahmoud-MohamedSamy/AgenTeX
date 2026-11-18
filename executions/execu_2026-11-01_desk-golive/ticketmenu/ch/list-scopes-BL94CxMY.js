@@ -1,0 +1,1 @@
+var e=Object.freeze({recordBound:`exclude`});export{e as t};

@@ -1,0 +1,1 @@
+import{h as e}from"./react-vendor-2tVcgncM.js";import{K as t}from"./index-DnVIIZyt.js";import{t as n}from"./useDeskReportCatalog-B9tma05x.js";var r=e();function i(){return(0,r.jsx)(`div`,{"data-testid":`analytics-reports-library`,children:(0,r.jsx)(t,{catalog:n()})})}export{i as ReportsLibraryPage,i as default};

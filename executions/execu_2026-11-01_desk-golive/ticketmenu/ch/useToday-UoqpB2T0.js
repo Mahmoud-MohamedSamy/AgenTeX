@@ -1,0 +1,1 @@
+import{l as e}from"./filter.helpers-_iEBeF54.js";import{l as t}from"./due-date-BuZBXK__.js";import{IM as n}from"./index-DnVIIZyt.js";function r(){let r=t(n()?.timezone);return{today:e(`today`,new Date,r??`UTC`)[0],timeZone:r}}export{r as t};

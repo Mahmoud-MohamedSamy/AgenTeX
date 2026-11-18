@@ -1,0 +1,1 @@
+import{gS as e,g_ as t,p_ as n}from"./index-DnVIIZyt.js";var r=[`assignment-rules`],i={all:r,list:e=>[...r,`list`,e],detail:e=>[...r,`detail`,e]},a=e=>t(e);function o(t={},r={}){return e({queryKey:i.list(t),queryFn:()=>n.listRules(t),select:a,enabled:r.enabled??!0})}export{o as t};

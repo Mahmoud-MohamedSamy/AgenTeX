@@ -1,0 +1,1 @@
+import{Tv as e}from"./index-DnVIIZyt.js";var t=`${e}/organization/holidays`,n=`${t}/new`;`${t}`;function r(e){return`${t}/${encodeURIComponent(e)}`}export{n,r,t};

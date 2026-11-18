@@ -1,0 +1,1 @@
+var e=(e,t)=>e(`tickets.macros.kinds.${t}`,{defaultValue:t.replace(/_/g,` `)}),t=(e,t)=>e(`tickets.macros.reasons.${t}`,{defaultValue:t.replace(/_/g,` `)});export{t as n,e as t};

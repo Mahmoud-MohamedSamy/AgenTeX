@@ -1,0 +1,1 @@
+import{h as e}from"./react-vendor-2tVcgncM.js";import{fr as t}from"./index-DnVIIZyt.js";import{r as n}from"./src-Bxb-fb10.js";var r=e(),i=`desk`;function a(){return(0,r.jsx)(n,{appKey:i,permissionsRoute:t})}export{a as DeskProfilesPage};

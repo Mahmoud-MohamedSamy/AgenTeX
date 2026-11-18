@@ -1,0 +1,1 @@
+import{g as e,h as t}from"./react-vendor-2tVcgncM.js";import"./index-DnVIIZyt.js";import{t as n}from"./src-Bxb-fb10.js";var r=t(),i=`desk`;function a(){let{t}=e(`desk`);return(0,r.jsx)(n,{appKey:i,title:t(`userManagement.roles.title`),subtitle:t(`userManagement.roles.description`)})}export{a as RolesPage};

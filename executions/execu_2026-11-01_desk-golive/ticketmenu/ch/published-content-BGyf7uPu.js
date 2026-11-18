@@ -1,0 +1,1 @@
+var e=`default`,t=Object.freeze({salesiq:`/reports/published`,desk:`/analytics/published`,crm:`/dashboards/published`});function n(e,n){return`${t[e]}/${encodeURIComponent(n)}`}function r(e){return[...e].sort((e,t)=>e.sort_order-t.sort_order||e.name.localeCompare(t.name))}function i(e,t){return t?e.find(e=>e.placement_id===t)??null:null}export{r as a,n as i,e as n,i as r,t};

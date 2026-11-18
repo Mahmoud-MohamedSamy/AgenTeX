@@ -1,0 +1,1 @@
+import{h as e,o as t,p as n}from"./react-vendor-2tVcgncM.js";import{W as r,jo as i}from"./index-DnVIIZyt.js";var a=e();function o(){let{placementId:e}=n();return e?(0,a.jsx)(r,{placementId:e,backHref:i.dashboards,hostApp:`desk`},e):(0,a.jsx)(t,{replace:!0,to:i.dashboards})}export{o as PublishedAnalyticsPage,o as default};

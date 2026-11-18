@@ -1,0 +1,1 @@
+import{i as e}from"./rolldown-runtime-DWdDZTNf.js";import{b as t}from"./dnd-kit-DwRl-dS8.js";import{Yy as n,bj as r,vj as i,xj as a,yj as o}from"./index-DnVIIZyt.js";var s=e(t());function c(){let{ready:e,hasPermission:t}=n();return(0,s.useMemo)(()=>{let n=n=>e&&t(n);return{ready:e,canView:n(i),canManage:n(r),canChangeOwner:n(o),canDelete:n(a)}},[e,t])}export{c as t};

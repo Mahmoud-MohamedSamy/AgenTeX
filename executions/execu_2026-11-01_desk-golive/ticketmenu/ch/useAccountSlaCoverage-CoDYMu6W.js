@@ -1,0 +1,1 @@
+import{Cb as e,Mb as t,Nb as n,gS as r}from"./index-DnVIIZyt.js";function i(i,a=!0){return r({queryKey:e.accountCoverage(i),enabled:a&&!!i,retry:!1,queryFn:async()=>{let e=await n.accountCoverage(i);if(t(e))return null;if(!e.success||!e.data)throw Error(e.error?.message||`Failed to load the SLA coverage`);return e.data}})}export{i as t};
