@@ -1,0 +1,3 @@
+// robust goto for flaky Zoho UI
+module.exports=async(page,url,re,max=4)=>{re=re||/./;for(let a=0;a<max;a++){if(a===0)await page.goto(url,{waitUntil:'commit',timeout:90000}).catch(()=>{});else await page.reload({waitUntil:'commit',timeout:90000}).catch(()=>{});
+for(let k=0;k<45;k++){await page.waitForTimeout(2000);const t=await page.innerText('body').catch(()=>'');if(t.length>300&&re.test(t)&&!/scripts for this page has caused an error/.test(t)){await page.waitForTimeout(3000);const nn=page.getByText('Not Now',{exact:true});if(await nn.count())await nn.first().click().catch(()=>{});return a+1;}if(/caused an error/.test(t))break;}}return 0;};

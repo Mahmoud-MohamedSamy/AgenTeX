@@ -1,0 +1,37 @@
+{
+ "out": "NDC-3065-retest-PASS.png",
+ "ticket": "NDC-3065",
+ "priority": "high",
+ "title": "Blueprint | An agent with read-only access to a ticket can still run a transition they own and move the ticket",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner ndc-staging-owner + QA agent \"Customer Experience Specialists 2\" (CES2, Desk Agent) signed in once · after metadata-engine #239 · blueprints QA RT20 B2 tk / sh / xdf / xdr / vo / dyn · tickets #5025-#5095",
+ "date": "17 Nov 2026",
+ "panels": [
+  { "img": "3065-b2-K1-agent.png", "caption": "Ticket's own case: CES2 (owner of QA onlyA) can only read #5025 (owner's ticket): nothing offered; API run 403; ticket still opens", "crop": [370, 60, 1230, 600],
+    "boxes": [ { "b": [1232, 134, 1424, 156], "n": 1, "kind": "PASS" }, { "b": [682, 190, 1582, 232], "n": 1, "kind": "INFO" }, { "b": [390, 540, 640, 628], "n": 2, "kind": "PASS" } ] },
+  { "img": "3065-b2-K2-agent.png", "caption": "CES2's own ticket #5030: QA onlyA offered; run moved it to Escalated", "crop": [664, 60, 936, 200],
+    "boxes": [ { "b": [1346, 172, 1422, 202], "n": 3, "kind": "PASS" } ] },
+  { "img": "3065-b2-SR-agent.png", "caption": "Shared with Customer Support read-only (#5044): not offered, run 403 (restricted #5048 the same; full #5038 offered and ran)", "crop": [664, 60, 936, 200],
+    "boxes": [ { "b": [1186, 104, 1378, 124], "n": 4, "kind": "INFO" }, { "b": [1232, 134, 1424, 156], "n": 4, "kind": "PASS" } ] },
+  { "img": "3065-b2-XR-agent.png", "caption": "Exception: CES2 named as Customer Support owner at read-only (#5058): blueprint shares at that level and QA xd still runs", "crop": [664, 60, 936, 200],
+    "boxes": [ { "b": [1364, 134, 1422, 166], "n": 5, "kind": "PASS" }, { "b": [682, 190, 1582, 232], "n": 5, "kind": "INFO" } ] },
+  { "img": "3065-b2-XR-agent-after.png", "caption": "Exception, after the run: the blueprint share ends with the state, so CES2 loses #5058 (as the developer explained)", "crop": [320, 380, 1280, 180],
+    "boxes": [ { "b": [740, 425, 1180, 490], "n": 5, "kind": "INFO" } ] },
+  { "img": "3065-b2-designer-vo.png", "caption": "Designer: CES2 saved before becoming view-only is marked Read only and does not count; Add owner no longer offers CES2", "crop": [300, 110, 1300, 740],
+    "boxes": [ { "b": [316, 708, 716, 800], "n": 9, "kind": "PASS" }, { "b": [312, 124, 960, 182], "n": 9, "kind": "PASS" }, { "b": [316, 812, 716, 842], "n": 7, "kind": "PASS" } ] },
+  { "img": "3065-b2-api-card.png", "caption": "API: the agent's calls and the owner checks", "crop": [0, 0, 1600, 740],
+    "boxes": [ { "b": [36, 99, 1564, 178], "n": 1, "kind": "PASS" }, { "b": [36, 188, 1564, 225], "n": 3, "kind": "PASS" }, { "b": [36, 235, 1564, 314], "n": 4, "kind": "PASS" }, { "b": [36, 324, 1564, 382], "n": 5, "kind": "PASS" }, { "b": [36, 392, 1564, 471], "n": 6, "kind": "PASS" }, { "b": [36, 481, 1564, 539], "n": 7, "kind": "PASS" }, { "b": [36, 549, 1564, 607], "n": 8, "kind": "PASS" }, { "b": [36, 617, 1564, 675], "n": 9, "kind": "PASS" }, { "b": [36, 685, 1564, 722], "n": 10, "kind": "INFO" } ] }
+ ],
+ "rows": [
+  [1, "Ticket's exact case: normal agent, owner of the transition, can only read another person's ticket (#5025, #5034)", "Not offered, run refused, ticket unchanged", "Screen: 'No transitions you can run', no QA onlyA button; API transitions []; run 403 BLUEPRINT_NOT_OWNER; both stay Open, no transition in History", "PASS"],
+  [2, "Agent's access after the refused run", "Agent can still open the ticket", "#5025 opens (200 and on screen) with the read-only banner, before and after", "PASS"],
+  [3, "Agent's own ticket (#5030)", "Offered and runs", "QA onlyA offered; run 200 -> Escalated", "PASS"],
+  [4, "Ticket shared with the agent's department", "Full: can run; read-only / restricted: cannot", "Full #5038: offered, 200; read-only #5044, restricted #5048, no share #5049: not offered, 403", "PASS"],
+  [5, "Owner from another department named in Transition Owners", "Can run at the level the admin picks", "Share applied as configured (CS full / CS read_only); QA xd offered and 200 on both; share removed after the run, so CES2 then sees 'not available'", "PASS"],
+  [6, "Save a blueprint with a view-only member as owner", "Refused", "422 BLUEPRINT_OWNER_READ_ONLY (CES2 in B2 Dept, Mahmoud Mohamed in CS); a save 3 s after the view-only change was still accepted, 1 min later refused", "PASS"],
+  [7, "Designer picker and ticket Assign owners", "View-only agents not offered / refused", "Add owner offers only ndc-staging-owner; eligible-owners exclude both; Assign owners PUT CES2 422, owner 200", "PASS"],
+  [8, "View-only agent runs on an owner's ticket (#5093)", "Not offered; run refused", "Nothing offered; run onlyA / shared 403 BLUEPRINT_NOT_OWNER", "PASS"],
+  [9, "Owner saved before the agent became view-only", "Marked Read only, does not count", "Designer: 'Read only' card + warning 'QA onlyA has no active owner'", "PASS"],
+  [10, "Notes: refusal wording; only owner cannot edit", "For information", "Refusal says 'You are not an owner of this transition' to a named owner; on #5025 the admin also sees 'No transitions you can run' with no hint why", "INFO"]
+ ]
+}

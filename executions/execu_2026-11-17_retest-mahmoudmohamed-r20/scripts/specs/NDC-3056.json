@@ -1,0 +1,31 @@
+{
+ "out": "NDC-3056-retest-PASS.png",
+ "ticket": "NDC-3056",
+ "priority": "medium",
+ "title": "Blueprint | Agents cannot see the blueprint's flow and transition conditions from a ticket",
+ "verdict": "PASS",
+ "label": "RETEST PASS",
+ "env": "NDC-Staging · staging-desk · Edge · agent \"Customer Experience Specialists 2\" (Desk Agent, Customer Support, ticket owner); owner as control · blueprint QA RT20 BS 3056 flow (4 states, 6 transitions) · tickets #4869, #5117, #5118",
+ "date": "18 Nov 2026",
+ "panels": [
+  {"img": "3056-r3-open-en-popup.png", "caption": "Agent, ticket in Open (opened from the Steps card link): all 6 transitions; the 3 from Open first and highlighted", "crop": [464, 45, 672, 700],
+   "boxes": [{"b": [468, 110, 1132, 416], "n": 2, "kind": "PASS"}, {"b": [468, 428, 1132, 740], "n": 1, "kind": "PASS"}]},
+  {"img": "3056-r3-hold-en-popup.png", "caption": "Agent, ticket in On Hold (opened from the header link): On Hold → Closed now first and highlighted, the other 5 follow", "crop": [464, 45, 672, 700],
+   "boxes": [{"b": [468, 110, 1132, 204], "n": 2, "kind": "PASS"}, {"b": [468, 216, 1132, 740], "n": 1, "kind": "PASS"}]},
+  {"img": "3056-r3-esc-en-1024-popup.png", "w": 1024, "caption": "Agent ran \"QA go\" → Escalated, popup reopened (1024 px, no sideways scroll): Escalated → Closed first; agent can't run it (Priority = \"medium\" not met)", "crop": [176, 45, 672, 810],
+   "boxes": [{"b": [180, 110, 844, 204], "n": 2, "kind": "PASS"}, {"b": [180, 788, 844, 852], "n": 3, "kind": "PASS"}]},
+  {"img": "3056-r3-owner-open-popup-bottom.png", "caption": "Owner (control), #4869 back in Open: \"QA admin\" (owner-only) — owner can run it; the agent's popup says it can't", "crop": [464, 580, 672, 275],
+   "boxes": [{"b": [468, 770, 1132, 850], "n": 3, "kind": "PASS"}]},
+  {"img": "3056-r3-hold-ar-popup-s1.png", "caption": "Arabic: arrows right-to-left, \"يظهر عندما\" (Shown when), \"الخطوات من\" (Steps from), runnable text translated", "crop": [464, 45, 672, 810],
+   "boxes": [{"b": [468, 302, 1132, 397], "n": 4, "kind": "PASS"}, {"b": [468, 764, 1132, 850], "n": 4, "kind": "PASS"}]},
+  {"img": "3056-r3-closed-ar-dark-popup-s1.png", "caption": "Arabic, dark theme, Closed: Closed → Open first; \"المطلوب: قائمة التحقق\" (Asks for: Checklist)", "crop": [464, 45, 672, 810],
+   "boxes": [{"b": [468, 106, 1132, 178], "n": 2, "kind": "PASS"}, {"b": [468, 762, 1132, 850], "n": 3, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Popup = the whole flow (r19/r20 failing item)", "Every state and every transition, with from → to and \"Shown when\" as configured", "Counted 6 of 6 transitions and all 4 states in Open, On Hold, Escalated and Closed (agent, EN + AR, 1600 and 1024 px). From → to and conditions match GET blueprint: go Open→Escalated, urgent Open→On Hold (Priority = \"high\"), admin Open→Closed (owner-only, no condition), end Escalated→Closed (Priority = \"medium\"), holdend On Hold→Closed, reopen Closed→Open. On Hold → Closed now shown", "PASS"],
+  [2, "Current state's steps first and highlighted", "Follows the ticket's state", "Open: 3 rows highlighted first; On Hold: 1; Escalated: 1; Closed: 1. Agent ran QA go (Open→Escalated) and QA reopen (Closed→Open) in the UI; reopened popup moved the highlight each time; other rows keep blueprint order", "PASS"],
+  [3, "Can I run it / Asks for (below the flow)", "Correct per user; no way to run from the popup", "Agent: go \"You can run · Nothing to fill in\", urgent/admin/end \"You can't run this step now…\", reopen \"Asks for: Checklist\". Owner: admin \"You can run\". Popup has only a Close button; API as agent: admin and end → 403", "PASS"],
+  [4, "Arabic, dark, 1024 px", "Translated, RTL arrows, no overflow", "Arabic labels + arrows right-to-left; dark readable (forced via the app's dark class — no theme switch for this agent); 1024 px: page and popup width 1024/672, no sideways scroll", "PASS"],
+  [5, "Opening and closing", "Header link and Steps card link open it; closes cleanly", "Both links open the same popup; closes with X, Esc and click outside", "PASS"]
+ ]
+}

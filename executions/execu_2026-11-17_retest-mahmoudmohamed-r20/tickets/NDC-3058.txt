@@ -1,0 +1,43 @@
+# NDC-3058 Workflow Rules | Add Tags action says "Search or create a tag" but a new tag cannot be created from it
+Summary
+In a workflow rule's Add Tags action, the Tags box placeholder reads "Search or create a tag…". Typing a name that does not exist only shows "No matching tags". There is no option to create the tag, so only existing tags can be used.
+Steps to Reproduce
+- Go to Desk → Settings → Automation → Workflow Rules and open a rule (or create one).
+- Add an Add Tags action, or open an existing one, with Configure inline selected.
+- Click the Tags box and type a name that does not exist yet, for example test.
+Expected Result
+- The list offers Create "test". Choosing it creates the tag and adds it to the action, as the placeholder says.
+Actual Result
+- The list shows only "No matching tags", with no create option.
+- The page sends no request to create the tag.
+- The only way to use a new tag is to create it first in Tags settings, then come back to the rule.
+Note
+- Pressing Enter after typing was not tried in the recording.
+- Zoho Desk not checked live.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge 156, Windows 10, 15 Nov 2026.
+Attachments
+- Frame at 0:07: placeholder "Search or create a tag…" (add-tags-placeholder-0-07.jpg)
+- Frame at 0:09: typed "test" → "No matching tags" (add-tags-no-create-0-09.jpg)
+- Jam recording: https://jam.dev/c/83f2f10f-4f9b-4d74-a92c-baca910827d3
+
+
+== COMMENTS (3)
+--- comment 2026-11-17T12:54:12.974308+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Decided 17 Nov 2026: a Desk workflow rule does not create tags. Moving to Ready For Test for the wording fix.
+Desk tags belong to a department and are created on Tickets → Tags. A rule can run across several departments, so a tag it created would have no department to belong to. Rules pick from existing tags, and the tag box now says "Search tags…" so it no longer suggests otherwise. This differs from Zoho on purpose.
+To retest: in a Desk rule's Add Tags or Remove Tags action, the box says "Search tags…", and typing a name that does not exist shows "No matching tags".
+
+--- comment 2026-11-17T12:51:33.411189+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Wording fix live on tavi (client-engine #839, desk-web deployed 17 Nov 2026). Staying In Progress while the product question below is open.
+Checked in the browser on staging-desk (NDC Staging): in a rule's Add Tags action, the box now says "Search tags…" instead of "Search or create a tag…". Typing a new name shows "No matching tags" and no longer suggests the tag can be created.
+Open: whether a Desk rule should be able to create a new tag, as in Zoho. Today Desk tags belong to a department and are created on Tickets → Tags (decision of 29 Sep). This is with the product owner.
+
+--- comment 2026-11-16T10:28:50.123442+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Reproduced on staging-desk (NDC-Staging) on 16 Nov. Typing "test" showed only "No matching tags", and pressing Enter created nothing either.
+Desk turned off creating tags from a rule on purpose (29 Sep): ticket tags belong to a department and are managed on Tickets → Tags, and a rule can span several departments. The bug is the box's wording, which promised "create" anyway.
+Fix in client-engine #839 (open, not merged or deployed):
+- Where creating isn't allowed, the box now says "Search tags…". This covers Desk's Add Tags and Remove Tags, and CRM admins without tag-manage permission.
+- The blueprint During step had the same wording and is fixed too.
+Whether a rule should be able to create a Desk tag is a product decision and stays open. Checked with automated tests only. I'll check it in the browser on staging after deploy.
+

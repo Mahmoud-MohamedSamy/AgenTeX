@@ -1,0 +1,59 @@
+# NDC-3065 Blueprint | An agent with read-only access to a ticket can still run a transition they own and move the ticket
+Summary
+A ticket that an agent may only read (banner "You can read this ticket but not change it") still offers that agent the blueprint transition they own, and Run moves the ticket. In Zoho Desk (checked live on 16 Nov 2026), an agent with read-only access cannot be chosen as a transition owner at all, so this cannot happen there.
+Steps to Reproduce
+- Create a blueprint where transition "QA onlyA" (Open → Escalated) is owned only by agent A.
+- Create a ticket in it owned by someone else, so agent A can only read it.
+- Sign in as agent A and open the ticket.
+- Click QA onlyA › Run.
+Expected Result (Zoho Desk, checked live)
+- An agent who can only read the ticket is not offered the transition and cannot run it. The button is hidden or disabled, and a run sent through the API is refused.
+- As in Zoho Desk, an agent who has read-only access is not listed in Blueprint › Transition Owners, so they can't be given a transition to begin with.
+Actual Result
+- The banner says "You can read this ticket but not change it" and Status is locked, but QA onlyA and Run are offered.
+- Run answers 200: #4182 moved Open → Escalated and History shows the agent did it (same on #4174).
+- Afterwards the agent gets "This ticket is not available" + "Permission denied."
+Zoho Desk live check (16 Nov 2026)
+- Portal techegysolutions, admin account, Edge.
+- Before: "test agent 2" had the Agent profile. In Test Blueprint 01 › Move to On Hold › Transition Owners, test agent 1 and test agent 2 were both offered.
+- Changed test agent 2 to Light Agent. Zoho's note says "Light Agents have read only permissions", and Tickets access becomes "View Only". Before saving, Zoho required the agent's open tickets and activities to be handed to another agent.
+- After: the Transition Owners picker no longer offers test agent 2. Searching "test agent 2" returns "No results found".
+- Afterwards: test agent 2 was set back to Agent. The blueprint was not saved.
+- Not checked in Zoho: an agent who can only read one ticket (Data Sharing "Public Read Only"), which is closer to the TAVI case. A Light Agent is read-only on every ticket.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge (headless) on Windows 10, 16 Nov 2026, owner account ndc-staging-owner and QA agent "Customer Experience Specialists 2" (Desk Agent, Customer Support). Zoho Desk: techegysolutions portal, checked live on 16 Nov 2026.
+Evidence
+- BUG-read-only-agent-runs-transition-FAIL.png
+- NDC-3065-zoho-live-light-agent-owners.png: the live Zoho Desk check, with both agents offered before the change, the Light Agent "read only permissions" note, the hand-over Zoho requires, and "No results found" for the Light Agent afterwards.
+
+
+== COMMENTS (4)
+--- comment 2026-11-17T05:14:07.900763+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging (tavi) on 16 Nov 2026: desk #263, metadata-engine #233, client-engine #846.
+Checked on staging in NDC-Staging, with Customer Support, whose view-only member is Mahmoud Mohamed:
+- In the blueprint designer, Transition Owners does not offer Mahmoud Mohamed. Checked in the browser, in English and Arabic.
+- On a ticket, Assign owners lists every Customer Support agent except Mahmoud Mohamed. Checked in the browser.
+- Saving a blueprint with Mahmoud Mohamed as a transition owner through the API is refused: "This agent only reads the department's tickets (a Light Agent or a view-only member), so they cannot own a transition."
+- Choosing him as a ticket's transition owner through the API is refused with the same message. Choosing a working agent still saves.
+Not checked live: a read-only agent opening a ticket and trying to run a transition they own. That needs that agent's own login. Unit tests cover it: they are not offered the transition, and the run is refused.
+The probe blueprint and ticket are deleted. Still open from the description: "This ticket is not available" after the run. Does #4181 open for your agent?
+
+--- comment 2026-11-16T15:23:40.404745+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Update: the same rule now covers every place a transition owner is chosen.
+- The ticket's Assign owners dialog no longer offers a Light Agent or a view-only member of the ticket's department, and saving one through the API is refused with a message naming them.
+- The blueprint designer reads the list for the department being edited, so a new blueprint and a blueprint whose department was just changed are covered too.
+Still on branches, not merged. Checked in tests only, not on staging or in the browser.
+
+--- comment 2026-11-16T15:02:55.457319+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Thanks for the Zoho check. It changes part of our earlier answer. We now split the case by why the agent can only read:
+- Read only by role: a Light Agent, or an agent who is view-only in the blueprint's department. These agents are no longer transition owners. The designer does not offer them in Transition Owners. A save that adds one is refused with a message saying why. On a ticket they are not offered the transition, and a run sent through the API is refused. A transition whose only owners are such agents is treated as having no owner, so an agent who can edit the ticket can run it. An owner like this who was already saved stays on the blueprint, marked "Read only", and does not count.
+- Read only on one ticket: another agent's ticket, as in #4182, or a read-only share. This stays as before. An owner may run their transition at any viewer access (decision B-14). Zoho was not checked for this case, as your note says.
+Fix on branches, not merged yet: desk fix/ndc-3065-read-only-agents, metadata-engine and client-engine fix/ndc-3065-read-only-owners.
+Checked in tests only so far, not on staging and not in the browser. The picker needs the metadata-engine change deployed before it can be checked live.
+Still open: "This ticket is not available" after the run. Could you tell us whether #4181 opens for the same agent?
+
+--- comment 2026-11-16T12:33:59.106123+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Running the transition: by design. Blueprint decision B-14 lets a transition's named owner run it whatever their access to the ticket, Read Only and Restricted included. That follows Zoho Desk, where a transition owner may act on a ticket they can only view. The rule is spec 7.1.4 step 3: "An owner may run at any viewer access. The share cap does not apply to them." The run endpoint implements it as written. On #4182, History shows the transition run by agent 9d182dfa at 10:04:58 (Open → Escalated), as the rule allows.
+So when agent A owns "QA onlyA", seeing it and running it on a ticket they can only read is expected. The banner and the locked Status field describe ordinary editing; they don't cover transitions the agent owns. An agent who is not an owner still gets neither the button nor the run, which is the check QA's ticket expects.
+"This ticket is not available" after the run: not reproduced yet. #4182 is in Customer Support with no shares, so the run shouldn't change what the agent can see. My probe agent sees less than yours, so it can't tell. Could you reopen #4182 (now Escalated) and #4181 (still Open) as the same agent and tell us which ones open? If #4181 opens and #4182 doesn't, the move to Escalated took the agent's access away, and that part is a bug we will fix.
+

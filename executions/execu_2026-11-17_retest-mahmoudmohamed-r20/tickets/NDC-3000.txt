@@ -1,0 +1,27 @@
+# NDC-3000 Email | Customers get no acknowledgement emails, and the ticket-closed email has no rating link
+Summary
+Automatic customer emails: no acknowledgements, and the closing email has no rating link. Found in the Desk go-live retest, Wave 4 (W4-09, W4-28, W4-73), NDC-Staging, 12 Nov 2026. Where: Setup › Channels › Email › Replies (acknowledgement on); Setup › Email Templates (reply acknowledgement); Setup › Customer Happiness (send on close).
+Steps
+- Make sure the acknowledgement is on (Email › Replies) and a reply-acknowledgement template is active for the department.
+- From a customer mailbox, email the support address to open a new ticket, then reply to the agent's answer.
+- Turn ratings on for the department with Send on close, and close the ticket.
+Expected
+The customer gets "Your ticket has been delivered…" for the new ticket, the reply acknowledgement after their reply, and a closing email that carries the rating question with Good / Okay / Bad links (TAVI's own setup text says the Ticket Closed email carries the rating link when ratings are sent on close).
+Actual
+For tickets #3278, #3279, #3280 and the reply on #3280, no acknowledgement email arrived. Closing #3280 twice (23:11 and 23:16 Cairo) with ratings on for Marketing sent the closing email without any rating question or link. Agent replies on the same tickets were delivered.
+Closing email received (both closes):
+  Your ticket #3280 "QA GL W4 mail to new address" has been closed. If you need anything else, just reply to this email.
+  Wonder Travel · 09876543210 · 1, Maadi, Cairo, EG · https://crm.taviportal.com/
+Settings at the time: acknowledgement_enabled=true; happiness is_enabled=true, trigger=on_close, department scope = Marketing
+Zoho Desk
+Zoho Desk has notification rules for acknowledging a new ticket and a new reply (Zoho help: Notifications). Not checked live in Zoho (it would need test data in the Zoho account, which is read only). This is TAVI failing its own feature, so no Zoho comparison is needed to call it a bug.
+Note
+From the Desk automation-order run on the same tenant: with ratings not limited to a department, the closing-style email did carry working rating buttons (NT-10 on 10 Nov, and workflow I29 on 12 Nov, ticket #3194 rated Good). So the missing link may be tied to ratings limited to one department (Marketing here).
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner and a customer mailbox, Edge, 12 Nov 2026.
+Attachment
+Annotated evidence: W4-D8-no-acks-no-rating-link.png.
+
+
+== COMMENTS (0)
+

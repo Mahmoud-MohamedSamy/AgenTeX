@@ -1,0 +1,10 @@
+{"out":"2841-api-card.png","title":"NDC-2841 — contract vs support plan department (Dept A = QA RT19 SLA Dept, Dept B = QA RT19 SLA Dept B, own plans QA RT20 BS Plan 2841 A/B w2pv)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Create Dept A contract with Dept B plan (x3)","POST /modules/{contracts}/records department=A, support_plan=planB","422 RECORD_VALIDATION_FAILED, details SUPPORT_PLAN_OTHER_DEPARTMENT: \"Support Plan: this support plan belongs to another department. Choose a plan of the contract's own department.\" — no contract with that name exists afterwards","ok"],
+["2 Control: Dept A contract with Dept A plan","POST … support_plan=planA","201; coverage shows QA RT20 BS Plan 2841 A w2pv","ok"],
+["3 Change plan to Dept B (record edit)","PATCH … support_plan=planB","422 SUPPORT_PLAN_OTHER_DEPARTMENT; plan stays A","ok"],
+["4 Attach Dept B plan (contract panel)","PUT /desk/sla/contracts/{id}/plan plan_id=planB","409 SUPPORT_PLAN_OTHER_DEPARTMENT \"Choose a support plan of the contract's own department.\"","ok"],
+["5 Move contract to Dept B together with Dept B plan","PATCH department=B, support_plan=planB","200; coverage = Plan B (allowed, as dev said)","ok"],
+["6 Contract with no department + Dept B plan","POST without department","422 \"Department is required.\" (dev listed as open; now closed)","ok"],
+["7 Change ONLY the department of a contract with a Dept A plan","PATCH department=B","200; contract now Dept B, Support Plan field still the Dept A plan, coverage \"no_plan\" — silent, no message (dev: not covered)","bad"]
+]}

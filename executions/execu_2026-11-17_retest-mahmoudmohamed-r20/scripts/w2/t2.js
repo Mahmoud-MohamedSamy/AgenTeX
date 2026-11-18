@@ -1,0 +1,12 @@
+eval(fs.readFileSync('w2/lib.js','utf8'));
+const QAO='93949fbd-f9df-4e2e-ae45-00b8dc38385b',CS='7e1ac409-58b0-41ab-97e1-0e7d5c8c5158',RID='f7112914-17b5-4bd9-b7d9-84643e3aa3cf',NEW='dbdbd304-652f-4bf1-b4af-f73065323d5e';
+const tags=(await api('GET','/desk/tags?take=500')).j?.data?.tags||[];const TN=id=>{const t=tags.find(x=>x.id===id);return t?t.name+'@'+(t.department_id===QAO?'QAO':(t.department_id===CS?'CS':t.department_id?.slice(0,8))):id;};
+const o={};const g=(await api('GET','/workflow/rules/'+RID)).j?.data;o.saved=g.actions.map(a=>a.type+' '+(a.tagIds||[]).map(TN).join(','));
+o.newTag=TN(NEW);
+o.act=await act(RID);
+const t=await mkTicket('3058 one',{department:QAO,priority:'low'},'create flow');await sleep(5000);
+const p=await api('PATCH',`/modules/${T}/records/${t.id}`,{data:[{field:'priority',value:enc('high')}]});o.patch=p.s;
+await sleep(20000);
+o.ex=(await execsRaw(t.id)).filter(e=>e.ruleId===RID).map(e=>e.id.slice(0,8)+' '+e.outcome+' '+e.dispatches.map(d=>d.actionType+':'+d.status+' '+(d.target||'')+(d.lastError?' '+d.lastError:'')).join(';'));
+o.ticketTags=((await api('GET',`/desk/tickets/${t.id}/tags`)).j?.data?.tags||[]).map(x=>x.name+'@'+(x.department_id===QAO?'QAO':x.department_id));
+o.deact=await deact(RID);o.tid=t.id;o.num=t.num||(await api('GET','/desk/tickets/'+t.id)).j?.data?.ticket_number;save('t2',o);return o;

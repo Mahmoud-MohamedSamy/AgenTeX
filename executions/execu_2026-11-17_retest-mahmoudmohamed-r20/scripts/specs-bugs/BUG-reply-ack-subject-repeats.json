@@ -1,0 +1,96 @@
+{
+ "out": "BUG-reply-ack-subject-repeats-FAIL.png",
+ "ticket": "NEW BUG",
+ "priority": "low",
+ "title": "Email | Reply acknowledgement subject repeats \"Re:\" and the ticket number ([#4745] [#4745])",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · staging-desk · QA RT19 NTF Dept (hosted address qa-rt19-ntf) · customer = QA lead's own Gmail · ticket #4745 · 17 Nov 2026 · Zoho Desk techegysolutions (live, 17 Nov)",
+ "date": "17 Nov 2026",
+ "panels": [
+  {
+   "img": "inbox-3000-replyack.png",
+   "caption": "TAVI: reply acknowledgement in the customer inbox, 14:18 Cairo (addresses hidden)",
+   "crop": [
+    320,
+    240,
+    880,
+    140
+   ],
+   "boxes": [
+    {
+     "b": [
+      328,
+      244,
+      840,
+      276
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      328,
+      352,
+      782,
+      376
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "zs-1-ack-reply-template.png",
+   "caption": "Zoho Desk: \"Acknowledge contact on receiving a reply\" template — fixed subject, does not reuse the customer's subject",
+   "crop": [
+    270,
+    240,
+    880,
+    440
+   ],
+   "boxes": [
+    {
+     "b": [
+      278,
+      605,
+      1130,
+      665
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Subject of the reply acknowledgement",
+   "One \"Re:\" and the ticket number once (e.g. \"Re: QA RT19 NTF 3000 ack test [#4745]\")",
+   "\"Re: Re: QA RT19 NTF 3000 ack test [#4745] [#4745]\" — the customer's reply subject (already \"Re: … [#4745]\") gets another \"Re:\" and another [#4745]",
+   "FAIL"
+  ],
+  [
+   2,
+   "Reply added to the ticket + acknowledgement body",
+   "Reply on #4745, acknowledgement sent",
+   "Reply added to #4745 (matched by email headers); body \"Thanks — we have your reply on ticket #4745 and will get back to you shortly.\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Zoho Desk (live)",
+   "-",
+   "Reply acknowledgement uses a template subject \"[##${Cases.Request Id}##] Your reply has been received\"; agent replies add one \"Re:\" and add the ticket tag only when it is missing — never \"[#n] [#n]\"",
+   "INFO"
+  ],
+  [
+   4,
+   "Each further reply",
+   "Subject stays the same",
+   "Each round adds one more \"Re:\" and one more [#4745] (follows from row 1; seen once)",
+   "INFO"
+  ]
+ ],
+ "label": "BUG"
+}

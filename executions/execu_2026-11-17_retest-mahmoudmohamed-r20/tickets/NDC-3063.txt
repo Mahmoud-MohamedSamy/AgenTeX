@@ -1,0 +1,32 @@
+# NDC-3063 Blueprint | The state time limit only accepts hours, with no option to switch between minutes, hours and days
+Summary
+When you set a time limit on a blueprint state, the "Time limit in hours" and "Warn before, in hours" boxes only take hours. There is no unit picker, so minutes or days have to be converted into hours by hand.
+Steps to reproduce
+- Settings → Automation → Blueprints → open "test blueprint" (Tech, version 16).
+- Click the On Hold state to open its panel.
+- Look at the Time limit section.
+Expected result
+Each box has a number plus a unit picker (Minutes / Hours / Days), as in Zoho Desk. A 30-minute or 3-day limit can then be entered directly.
+Actual result
+- Both boxes are labelled "in hours" and have no unit picker.
+- To get 30 minutes you type 0.5, and for 3 days you type 72.
+- A limit that isn't a round number of hours comes back as a rounded decimal, so 20 minutes shows as 0.33.
+Additional notes
+- The time is saved in minutes, so the system can already store minutes. Only the input is limited to hours.
+- "Warn before" has the same problem.
+- Annotated evidence attached: boxes 1–2 mark the two hours-only boxes; box 3 marks the Clock setting, which is not part of this bug.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Edge, 16 Nov 2026.
+
+
+== COMMENTS (2)
+--- comment 2026-11-17T11:24:40.271969+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging (tavi) on 17 Nov 2026: client-engine #847.
+Checked in the browser on staging (NDC-Staging), English with the light theme and Arabic with the dark theme: a state saved with a 20-minute limit and a 10-minute warning shows "Due after 20 Minutes" and "Warn before 10 Minutes", each with a Minutes / Hours / Days picker, and both fit the panel. "Moves on by itself" and the escalation level offset use the same field, checked in tests. The Clock setting is unchanged.
+The probe blueprint is deleted.
+
+--- comment 2026-11-16T11:50:35.058689+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Reproduced on staging: the state panel's boxes read "Time limit in hours" and "Warn before, in hours", and a 20-minute limit showed as 0.33.
+Fix on client-engine branch fix/ndc-3056-3063-blueprint-header-duration: "Due after" and "Warn before" each have a number and a Minutes / Hours / Days picker. A saved value opens in the largest unit it fills evenly, so 20 minutes shows as 20 Minutes and 72 hours as 3 Days. An empty box starts in hours, as before. Time is still saved in minutes. "Moves on by itself" and the escalation level offset had the same hours-only box and get the same picker. The Clock setting is unchanged.
+Checked in a browser on the branch build against staging's real data: a state with a 20-minute limit and a 10-minute warning shows "20 Minutes" and "10 Minutes", and both pickers fit the panel. English and Arabic, light and dark theme. Not deployed yet.
+

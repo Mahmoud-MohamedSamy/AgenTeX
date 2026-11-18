@@ -1,0 +1,21 @@
+{
+ "out": "NDC-3071-retest-PASS.png",
+ "ticket": "NDC-3071",
+ "priority": "medium",
+ "title": "Records API | A field value without a \"kind\" key returns 500 instead of a validation error",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · API as the owner account (shared session) · Tickets module · department QA RT20 TK Dept",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3071-api-card.png", "caption": "13 malformed bodies and the valid control, POST and PATCH", "crop": [0, 0, 1600, 570],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 204], "n": 2, "kind": "PASS"}, {"b": [36, 214, 1564, 319], "n": 3, "kind": "PASS"}, {"b": [36, 329, 1564, 387], "n": 4, "kind": "INFO"}, {"b": [36, 397, 1564, 481], "n": 5, "kind": "PASS"}, {"b": [36, 491, 1564, 549], "n": 6, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Subject value without \"kind\" (3 tries)", "400 naming the field", "400 VALIDATION_ERROR, path data[0].value, \"A field value needs a kind\" (was 500)", "PASS"],
+  [2, "Priority value without \"kind\"", "400 naming the field", "400, path data[1].value (was 500)", "PASS"],
+  [3, "Other shapes: dept no kind, {}, array item no kind, plain string, kind only, no value", "400, no 500", "All 400 VALIDATION_ERROR, no record created", "PASS"],
+  [4, "Unknown kind / kind null / wrong kind for text", "400 with field path", "400, but path is \"\", \"kind\" or \"value\" instead of data[0].value", "INFO"],
+  [5, "PATCH without kind; value null", "400, record unchanged", "400; priority stays high; null gives \"The Value field is required\"", "PASS"],
+  [6, "Valid control", "201, then PATCH 200", "201 created, PATCH priority Low 200; no junk records", "PASS"]
+ ]
+}

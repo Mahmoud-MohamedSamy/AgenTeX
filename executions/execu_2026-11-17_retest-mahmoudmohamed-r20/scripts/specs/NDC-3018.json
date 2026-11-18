@@ -1,0 +1,27 @@
+{
+ "out": "NDC-3018-retest-PASS.png",
+ "ticket": "NDC-3018",
+ "priority": "medium",
+ "title": "Validation Rules | CRM refused save is now announced: field message is role=alert, linked by aria-describedby, input aria-invalid, focus on the field",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-crm · ndc-staging-owner · Edge headless (Playwright ARIA snapshot) · Leads, layout \"QA RT18 VR Layout\" · rule \"QA RT18 text no BAD\" f0efde5f (QA-only layout) · lead \"QA RT20 VR 3018 edit\"",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3018-1-crm-refused.png", "caption": "Create Lead › Save with \"BAD-rt20\": message under the field, focus ring on the refused input", "crop": [418, 440, 1024, 200],
+   "boxes": [{"b": [600, 505, 1412, 548], "n": 4, "kind": "PASS"}, {"b": [600, 549, 810, 567], "n": 3, "kind": "PASS"}]},
+  {"img": "3018-2-crm-banner.png", "caption": "Top banner \"Please fix the field highlighted below.\" (role=alert)", "crop": [418, 100, 1024, 140],
+   "boxes": [{"b": [420, 186, 1440, 232], "n": 3, "kind": "PASS"}]},
+  {"img": "3018-3-crm-edit-refused.png", "caption": "Edit Lead › Save with \"BAD-edit\": same field message, focus on the input", "crop": [300, 420, 1260, 120],
+   "boxes": [{"b": [309, 468, 1551, 510], "n": 5, "kind": "PASS"}, {"b": [309, 512, 502, 530], "n": 5, "kind": "PASS"}]},
+  {"img": "3018-a11y-card.png", "caption": "Accessibility evidence (ARIA snapshot, attributes, live-region insertions, focus)", "crop": [0, 0, 1600, 485],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 246], "n": 2, "kind": "PASS"}, {"b": [36, 256, 1564, 335], "n": 3, "kind": "PASS"}, {"b": [36, 345, 1564, 382], "n": 4, "kind": "PASS"}, {"b": [36, 392, 1564, 471], "n": 5, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Accessibility tree after refused save", "Field invalid, message exposed", "ARIA snapshot: textbox \"QA RT18 v text\" [invalid] + alert \"QA RT18 text cannot start with BAD\"", "PASS"],
+  [2, "aria-invalid + aria-describedby", "aria-invalid=\"true\", describedby → message", "aria-invalid=\"true\"; aria-describedby → the message <p>; getByRole(textbox, description) finds it", "PASS"],
+  [3, "Message announced", "role=\"alert\" or live region", "Field message now has role=\"alert\" and is inserted after Save; banner \"Please fix the field highlighted below.\" also role=alert (was: no role / no live region)", "PASS"],
+  [4, "Focus", "Moves to the refused field", "Focus on the refused input", "PASS"],
+  [5, "Edit form", "Same behaviour", "Edit Lead: same attributes, alert and focus (no top banner on edit; field alert announced)", "PASS"],
+  [6, "Desk half", "-", "Passed 15 Nov (r18); not rechecked this round", "INFO"]
+ ]
+}

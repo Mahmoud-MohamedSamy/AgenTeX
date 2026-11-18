@@ -1,0 +1,21 @@
+{
+ "out": "BUG-wf-failed-action-shows-cancelled-FAIL.png",
+ "ticket": "NEW BUG",
+ "label": "BUG",
+ "priority": "medium",
+ "title": "Workflow Rules | A failed action shows \"Cancelled\", the run shows \"Fired\", and failed runs cannot be filtered",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · staging-desk · Setup › Workflow Rules › Execution History · owner · rules \"QA RT20 CR 3052 …\" · tickets #4978, #4980, #4986, #4989 · 17 Nov 2026",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img":"3052-1-exec-nocontact1.png","caption":"Run on #4978: the Create Record action could not run (missing Contact Name) — Status \"Cancelled\", text wraps as \"Can cell ed\", Details cut off","crop":[268,60,1332,500],"boxes":[{"b":[686,405,740,468],"n":1,"kind":"FAIL"},{"b":[740,400,1268,478],"n":3,"kind":"FAIL"}]},
+  {"img":"3052-0-exec-list.png","caption":"Execution History list: every run Outcome \"Fired\"; filters only Workflow rule / Record ID / Assignment rule","crop":[268,60,1400,900],"boxes":[{"b":[292,132,1396,208],"n":4,"kind":"FAIL"},{"b":[1200,270,1290,880],"n":2,"kind":"FAIL"}]}
+ ],
+ "rows": [
+  [1,"Status of an action that failed for good (e.g. Create Record refused: required field missing, HTTP 422)","\"Failed\", in red, so an admin sees something went wrong","\"Cancelled\" — reads like a deliberate stop; the column also wraps the word (\"Can cell ed\")","FAIL"],
+  [2,"Outcome of the run in the list","Shows that an action failed (e.g. \"Failed\" or \"Partly failed\")","\"Fired\" for every run, including runs whose only action failed","FAIL"],
+  [3,"Reason","Readable in the row","Details text is cut short; the full \"Not created: Calls needs Contact Name.\" shows only on hover","FAIL"],
+  [4,"Find failed runs","A filter by status/outcome","Filters are Workflow rule, Record ID and Assignment rule only — failed runs cannot be listed","FAIL"],
+  [5,"Scope","-","Developer (NDC-3052): every action that fails for good shows \"Cancelled\" today — not only Create Record","INFO"]
+ ]
+}

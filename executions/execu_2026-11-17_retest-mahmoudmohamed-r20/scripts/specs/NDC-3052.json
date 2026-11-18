@@ -1,0 +1,279 @@
+{
+ "out": "NDC-3052-retest-PASS.png",
+ "ticket": "NDC-3052",
+ "priority": "medium",
+ "title": "Workflow Rules | Create Record still creates a record missing required fields at run time",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk + staging-crm · owner (shared session) · Desk rules QA RT20 CR 3052 * (QA RT19 WF Dept) and CRM rules QA RT20 CR 3052 crm * (Leads / Customers), all inactive now · own QA tickets, leads, customers only",
+ "date": "17 Nov 2026",
+ "panels": [
+  {
+   "img": "3052-1-exec-nocontact1.png",
+   "caption": "Desk: ticket without contact → Create Record in Calls Cancelled, HTTP 422, \"Not created: Calls needs Contact Name.\" (no Call)",
+   "crop": [
+    268,
+    60,
+    1332,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      400,
+      1268,
+      478
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      686,
+      405,
+      740,
+      468
+     ],
+     "n": 6,
+     "kind": "DECISION"
+    }
+   ]
+  },
+  {
+   "img": "3052-4-exec-withcontact2.png",
+   "caption": "Desk: same rule, ticket with contact → Succeeded 201, Call created with the ticket's contact",
+   "crop": [
+    268,
+    60,
+    1332,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      400,
+      1268,
+      448
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3052-7-exec-conn-nocontact.png",
+   "caption": "Desk: Create Connected Record (Calls › Ticket) without contact → Cancelled \"Not created: Calls needs Contact Name.\"",
+   "crop": [
+    268,
+    60,
+    1332,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      400,
+      1268,
+      478
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3052-9-exec-saved-prefix.png",
+   "caption": "Pre-fix saved action \"Create Event => Tickets Module\" on own QA rule → Cancelled \"Not created: Events needs Contact Name, Department.\" (no Event)",
+   "crop": [
+    268,
+    60,
+    1332,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      400,
+      1268,
+      478
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3052-10-crm-exec-cconn-empty.png",
+   "caption": "CRM: Create Connected Record (Customers › Tasks) with Subject = empty ${phone} → Cancelled \"Not created: Tasks needs Subject.\"",
+   "crop": [
+    268,
+    60,
+    1332,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      400,
+      1268,
+      478
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3052-0-exec-list.png",
+   "caption": "Execution History list: every run shows Outcome \"Fired\"; filters only Workflow rule / Record ID / Assignment rule — no way to list failed runs",
+   "crop": [
+    268,
+    60,
+    1400,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      132,
+      1396,
+      208
+     ],
+     "n": 6,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      1200,
+      270,
+      1290,
+      880
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "3052-api-card.png",
+   "caption": "API: GET /workflow/executions + created records",
+   "crop": [
+    0,
+    0,
+    1600,
+    712
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      126,
+      1564,
+      205
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      215,
+      1564,
+      341
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      351,
+      1564,
+      409
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      419,
+      1564,
+      566
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      576,
+      1564,
+      634
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      644,
+      1564,
+      702
+     ],
+     "n": 6,
+     "kind": "DECISION"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Desk Create Record (Calls), Contact Name = ticket's contact; repeated twice",
+   "No contact: not created, Failed + fields named; with contact: created",
+   "No contact: Cancelled 422 \"Not created: Calls needs Contact Name.\", no Call (2/2); with contact: Succeeded, Call has the contact (2/2)",
+   "PASS"
+  ],
+  [
+   2,
+   "Required field mapped to empty custom placeholder; system-filled fields",
+   "Empty → not created; defaults must not block",
+   "Subject = empty ${qa_ndc_tkt_pnr_no} → Cancelled \"needs Subject\", set → created; Tickets target without department/layout → Succeeded (default dept Customer Support, status Open)",
+   "PASS"
+  ],
+  [
+   3,
+   "Desk Create Connected Record, empty contact placeholder",
+   "Not created",
+   "Cancelled \"Not created: Calls needs Contact Name.\"; with contact Succeeded, Call linked to ticket",
+   "PASS"
+  ],
+  [
+   4,
+   "CRM Create Record + Create Connected Record, empty placeholder",
+   "Not created",
+   "Leads › Tasks and Customers › Tasks (x2): Cancelled \"Not created: Tasks needs Subject.\", no Task; with value Succeeded",
+   "PASS"
+  ],
+  [
+   5,
+   "Pre-fix stored action",
+   "Run ends not-created",
+   "Saved action \"Create Event => Tickets Module\" (lacks Contact Name, Department) on own QA rule → Cancelled, no Event. Real rules not touched",
+   "PASS"
+  ],
+  [
+   6,
+   "Status wording",
+   "Failed",
+   "Action Status \"Cancelled\", run Outcome \"Fired\"; Details truncated in the table; no failed filter. Options: (a) accept Cancelled → Done; (b) Bug: must show Failed. QA lead decision 17 Nov: accepted for this ticket; the status label and failed-run visibility are tracked in a separate ticket",
+   "INFO"
+  ]
+ ]
+}

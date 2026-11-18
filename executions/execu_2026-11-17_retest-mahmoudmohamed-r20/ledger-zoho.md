@@ -1,0 +1,33 @@
+# Round 20 Zoho ledger
+- 2026-11-17T10:10:15 [SC] Zoho CRM org946877290 Scoring Rules page opened read-only (r18-z3 copy, not saved back); 0 rules; nothing created
+- 2026-11-17T12:07:01 [AZ] Zoho Desk techegysolutions: Round Robin rule 'QA RT20 AZ RR' created in dept TechEgySolutions (Ticket Create; Subject starts with QA RT20 AZ; Sequential; test agent 1). RR Preferences original: offline OFF, dept threshold ON 40, agent threshold OFF, on closure OFF, backlogs OFF
+- 2026-11-17T12:09:17 [AZ] Zoho RR Preferences TechEgySolutions changed for test: offline ON, dept threshold 1 (restore: offline OFF, threshold 40)
+- 12:09:24 [AZ] Zoho tickets #140 (1499272000000483192) 'QA RT20 AZ Z1 thr1 first', #141 (1499272000000483242) 'QA RT20 AZ Z2 thr1 second', contact QA RT20 AZ (example.com) created
+- 12:11:04 [AZ] Zoho ticket #142 (1499272000000483288) 'QA RT20 AZ Z3 after on hold' created; On Hold PATCH on #140 refused 422 (status mapped in blueprint 1499272000000432068)
+- 12:15:14 [AZ] Zoho RR Preferences TechEgySolutions RESTORED (offline OFF, dept threshold 40, others OFF) - screenshot zd-az-11-prefs-restored.png
+- 12:15:17 [AZ] Zoho ticket #144 (1499272000000483369) 'QA RT20 AZ Z5 offline agent' created
+- 12:17:16 [AZ] Zoho Tech dept RR Preferences original: offline OFF, dept threshold ON 40, agent OFF, on closure OFF, backlogs ON (limit 5) (zd-az-13-tech-prefs-orig.png); changing threshold to 1
+- 12:18:04 [AZ] Zoho Tech dept RR Preferences changed: dept threshold 1, backlog limit 1 (restore: 40, 5)
+- 12:19:08 [AZ] Zoho Round Robin rule 'QA RT20 AZ RR Tech' created in dept Tech (Ticket Create; Subject starts with QA RT20 AZ; Sequential; admin agent)
+- 12:19-12:21 [AZ] Zoho Tech tickets #145 (1499272000000483409, set On Hold), #146 (483453), #147 (483499) 'QA RT20 AZ T1..T3' created
+- 12:22:08 [AZ] Zoho Tech skill type 'QA RT20 AZ Type' 1499272000000485296; skills 'QA RT20 AZ SkA' 485299 (criteria Subject contains SKA, agent admin), 'QA RT20 AZ SkC' 485312 (Subject contains SKC, no agent)
+- 12:22:59 [AZ] Zoho rule 'QA RT20 AZ RR Tech' target changed to Skill Based Assignment
+- 12:23-12:24 [AZ] Zoho Tech tickets #148 (483548), #149 (483597), #150 (483641) 'QA RT20 AZ SK1..SK3' created
+- 12:26:17 [AZ] Zoho cleanup: 11 QA RT20 AZ tickets (#140-#150) moveToTrash 204; contact QA RT20 AZ trashed 204; skills 485299/485312 + skill type 485296 DELETE 204; Recycle Bin delete 12 QA items 200 -> 0 left; ticket search 204, skills 0, types 0
+- 12:28:30 [AZ] Zoho Tech dept RR Preferences RESTORED (threshold 40, backlog limit 5; offline OFF, backlogs ON as before) - zd-az-19-tech-prefs-restored.png
+- 12:31:05 [AZ] Zoho RR rules 'QA RT20 AZ RR' (TechEgySolutions) and 'QA RT20 AZ RR Tech' (Tech) DELETED via UI; verified both depts: 0 QA RT20 rules, 'no Round Robin Rules'. Zoho QA RT20 AZ data left: none
+- 17 Nov [ZC] Zoho support plans 'QA RT20 ZC Plan A' 1499272000000485370 (TechEgySolutions, SLA 020033) and 'QA RT20 ZC Plan B' 1499272000000485385 (Tech, SLA 432346) created 201
+- 17 Nov [ZC] Zoho contract 'QA RT20 ZC C1' 1499272000000485400 (TechEgySolutions, account Zoho 426149, plan A) created 200
+- 17 Nov [ZC] Zoho support plan 'QA RT20 ZC Plan B2' 1499272000000485410 (Tech, Silver SLAs 432345) created 201
+- 2026-11-17T13:35:06 [ZS] ticket #151 1499272000000468089 "QA RT20 ZS ack test" 200 contactId 1499272000000468052
+- 2026-11-17T13:35:07 [ZS] ticket #152 1499272000000468138 "Re: Re: QA RT20 ZS ack test [#4745]" 200 contactId 1499272000000468052
+- 2026-11-17T13:35:08 [ZS] ticket #153 1499272000000468187 "QA RT20 ZS own tag" 200 contactId 1499272000000468052
+- 17 Nov 13:22Z [ZC] Zoho UI Edit Contract on C1 with Department changed to Tech + Plan B -> Zoho CREATED a new contract 'QA RT20 ZC C1' 1499272000000462043 (Tech, Plan B); original C1 485400 unchanged
+- 17 Nov 13:33Z [ZC] same with Plan B2 -> new contract 'QA RT20 ZC C1' 1499272000000489002 (Tech, Plan B2); original unchanged
+- 2026-11-17T13:40:09 [ZS] sendReply on #152 to contact example.com address -> 200 thread 1499272000000496001
+- 2026-11-17T13:41:05 [ZS] sendReply on #151 to contact example.com address -> 200 thread 1499272000000497001
+- 2026-11-17T13:41:14 [ZS] sendReply on #153 to contact example.com address -> 200 thread 1499272000000484073
+- 17 Nov [ZC] Zoho cleanup: contracts 485400, 462043, 489002 moveToTrash 204; Recycle Bin purge of 3 QA RT20 ZC items 200; support plans 485370/485385/485410 DELETE 204. Verified: 0 QA RT20 ZC plans/contracts in TechEgySolutions and Tech, 0 in Recycle Bin. Zoho header department left on TechEgySolutions. Zoho QA RT20 ZC data left: none
+- 2026-11-17T13:43:12 [ZS] sendReply on #151 to contact example.com address -> 200 thread 1499272000000482073
+- 2026-11-17T14:05:06 [ZS] cleanup: tickets #151-#153 moveToTrash 204; contact QA RT20 ZS trashed 204; Recycle Bin delete 4 QA RT20 ZS items 200 -> 0 left; ticket GET after 404/404/404; contact search 200. Zoho QA RT20 ZS data left: none
+- 2026-11-17T14:05:38 [ZS] verified: search 0 tickets / 0 contacts 'QA RT20 ZS'. No Zoho settings or templates changed (template + notification rules + email advanced config only viewed, not saved). Note: example.com has null MX so the 4 sends bounced back as a Mailer-daemon thread on #152 (deleted with the ticket); nothing reached a real mailbox.

@@ -1,0 +1,9 @@
+{"out":"3112-r1-api-card.png","title":"Blueprint owner right after an agent is made view-only — owner, QA RT20 B2 Dept, 18 Nov 2026 (after metadata-engine #242)","host":"staging-desk.taviportal.com","who":"owner","date":"18 Nov 2026",
+"rows":[
+["Prime (each cycle)","CES2 normal member · PUT ticket owners [CES2] · GET eligible-owners","200 · eligible-owners includes CES2 (old answer now remembered)","info"],
+["Wait 0.3 s after view-only","POST blueprint (owner CES2) · PUT ticket owners [CES2]","422 BLUEPRINT_OWNER_READ_ONLY @0.9 s · 422 BLUEPRINT_OWNERS_INVALID @1.9 s (2 cycles: also @1.7 s / 2.8 s)","ok"],
+["Wait 1 s","POST blueprint · PUT ticket owners","422 @3.1 s · 422 @9.2 s","ok"],
+["Wait 3 s (17 Nov: accepted 201/200 here)","POST blueprint · PUT ticket owners","422 @5.0 s · 422 @6.3 s","ok"],
+["Owner picker list","GET eligible-owners after each change","CES2 gone already at 2.4–10 s and at 31 s (dev: may lag up to 30 s)","ok"],
+["Control","PUT ticket owners [owner]","200","ok"]
+]}

@@ -1,0 +1,13 @@
+const J = JSON.parse(fs.readFileSync(RUN + '/scripts/bp/3065.json', 'utf8')); const o = {}; const MM = '7e5e7c27-46e4-4bf6-b021-7bd219d34472', DD = 'e04e88df-03e2-4a9f-8ccc-ff934cca500e';
+const sts = () => [ST('Open', { position: { x: 0, y: 0 } }), ST('Escalated', { position: { x: 350, y: 0 } }), ST('Closed', { isTerminal: true, position: { x: 700, y: 0 } })];
+const b = await mkBp(DEF('3065 dyn', sts(), [TR('go', 'Open', 'Escalated'), TR('end', 'Escalated', 'Closed')], { dynamicOwners: true })); o.bp = E(b.r); o.bpId = b.id;
+const c = await mkBp(DEF('3065 dynmine', sts(), [TR('go', 'Open', 'Escalated'), TR('end', 'Escalated', 'Closed')], { dynamicOwners: true, departmentId: DD })); o.bp2 = E(c.r); o.bp2Id = c.id;
+o.d1 = await mkT('3065 dyn', 'D1'); o.d2 = await mkT('3065 dynmine', 'D2', {}, DD); await waitIn(o.d1); await waitIn(o.d2);
+const put = (id, tr, u) => api('PUT', `/modules/${TK}/records/${id}/blueprint/owners/${tr}`, { userIds: u, teamIds: [], departmentOwners: [] });
+o.vo_cs_MM = E(await put(o.d1, 'go', [MM]));
+o.vo_mine_CES2 = E(await put(o.d2, 'go', [AG_A]));
+o.ok_cs_CES1 = E(await put(o.d1, 'go', [AG_B])); if (/^2/.test(o.ok_cs_CES1)) LED('ticket-level owners of QA go on D1 set to CES1 (control)');
+o.ok_mine_owner = E(await put(o.d2, 'go', [OWNER]));
+const el = await api('GET', '/desk/departments/' + DD + '/eligible-owners'); o.eligMine = L(el.j?.data).map(x => x.display_name);
+J.dyn = { bp: o.bpId, bp2: o.bp2Id, d1: o.d1, d2: o.d2 }; fs.writeFileSync(RUN + '/scripts/bp/3065.json', JSON.stringify(J, null, 1));
+return o;

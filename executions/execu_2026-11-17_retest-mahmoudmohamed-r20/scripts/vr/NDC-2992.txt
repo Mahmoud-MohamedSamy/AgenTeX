@@ -1,0 +1,27 @@
+# NDC-2992 Layout Rules | Screen readers are not told a rule-mandatory field is required [Done]
+Summary
+Screen readers are not told a rule-mandatory field is required. Only a visual asterisk is shown.
+Environment
+- NDC-Staging (staging-crm.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2. Test data was deleted after the run.
+Steps to reproduce
+- Pick Refund so order becomes mandatory.
+- Inspect the order input.
+Expected result
+The input carries aria-required or required.
+Actual result
+- Only a visual asterisk is shown.
+- The input has no aria-required.
+Notes
+- Test cases M5 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+
+== COMMENTS
+--- 2026-11-16T10:18:21.194837+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Pick Refund → Asterisk shown (aria-hidden) [PASS]
+- Inspect the order input → input aria-required="true" (also on its fieldset), wrapper data-field-required="true" [PASS]
+- Field not mandatory → note before vip: attribute absent [PASS]
+Evidence: NDC-2992-retest-PASS.png (attached)

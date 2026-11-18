@@ -1,0 +1,51 @@
+--- 2026-11-17T12:51:33.411189+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+ Wording fix live on tavi (client-engine #839, desk-web deployed 17 Nov 2026). Staying In Progress while the product question below is open. 
+
+ Checked in the browser on staging-desk (NDC Staging): in a rule's Add Tags action, the box now says "Search tags…" instead of "Search or create a tag…". Typing a new name shows "No matching tags" and no longer suggests the tag can be created.
+
+ Open: whether a Desk rule should be able to create a new tag, as in Zoho. Today Desk tags belong to a department and are created on Tickets → Tags (decision of 29 Sep). This is with the product owner.
+
+--- 2026-11-17T12:54:12.974308+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+ Decided 17 Nov 2026: a Desk workflow rule does not create tags. Moving to Ready For Test for the wording fix. 
+
+ Desk tags belong to a department and are created on Tickets → Tags. A rule can run across several departments, so a tag it created would have no department to belong to. Rules pick from existing tags, and the tag box now says "Search tags…" so it no longer suggests otherwise. This differs from Zoho on purpose.
+
+ To retest: in a Desk rule's Add Tags or Remove Tags action, the box says "Search tags…", and typing a name that does not exist shows "No matching tags".
+
+--- 2026-11-17T14:55:47.294789+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+ Retest FAIL — 17 Nov 2026 → moved to Bug Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner) Method: Manual browser + API
+ Checked:
+ Add Tags + Remove Tags box wording, type a new name → Both boxes "Search tags…"; "No matching tags"; Enter adds nothing; no create request (dev claim held) [PASS]
+ Pick an existing tag, save, rule runs on edit → Rule saved, Fired on edit of #4885; tags QA WF tag B + QA WF tag A on the ticket [PASS]
+ Still failing:
+ Tag list in a rule limited to QA AO Dept A : expected Only the department's tags (dev: tags belong to a department); actual All departments' tags offered, same names 3x, no department label; the first "QA WF tag A" was Customer Support's and was put on a QA AO Dept A ticket; Execution History shows no Add Tags action row
+ Create a new tag from the rule, like Zoho : expected A new tag can be created from the rule, like Zoho Desk; actual Not possible: "Search tags…" + "No matching tags", no create (developer decision 17 Nov). QA lead decision 17 Nov: a rule should be able to create a tag, as in Zoho Desk
+ QA lead decision (17 Nov 2026): the product decision that Desk rules do not create tags is not accepted — a rule should be able to create a new tag, as in Zoho Desk. The wording fix itself holds.
+ Evidence: NDC-3058-retest-FAIL.png (attached)
+
+--- 2026-11-17T17:20:12.142145+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+ Fixed and live on tavi (client-engine #852, metadata-engine #238, workflow #143, deployed 17 Nov 2026). Moving to Ready For Test. 
+
+ Following the QA lead's decision, a rule can now create a tag, as in Zoho Desk. In Zoho a rule belongs to one department, and so does the tag it creates. Here:
+
+ 
+ A rule limited to one department offers only that department's tags (plus tags for all departments), and typing a new name offers "Create". The tag is created in that department. You need permission to manage tags there, as on Tickets › Tags.
+
+ A rule over several departments (or all) names each tag with its department ("Refund · Billing") and says to limit the rule to one department to create a tag.
+
+ A tag a rule adds to a ticket must belong to the ticket's department, or to all departments. Another department's tag is not added.
+
+ Every action a rule carries out at save, Add Tags included, now appears in Execution History.
+
+ 
+ Checked on NDC Staging:
+
+ 
+ Browser: a rule limited to QA AO Dept A offered only QA WF tag B and C (A was already chosen). Typing a new name offered Create, and the tag was created in QA AO Dept A and added to the rule. I deleted the test tag and the rule afterwards.
+
+ API: a rule over all departments adding Customer Support's "Accepted" and QA AO Dept A's "QA WF tag A" to a QA AO Dept A ticket. Only "QA WF tag A" was added, and Execution History shows Add Tags, Succeeded.
+
+ 
+ To know: on a rule over several departments, Add Tags shows Succeeded even when one of its tags belongs to another department than the ticket's and was not added.
+
+ Not checked in the browser: Remove Tags, and the message when a name is refused (for example "QA-1"; Desk allows letters, digits and single spaces).

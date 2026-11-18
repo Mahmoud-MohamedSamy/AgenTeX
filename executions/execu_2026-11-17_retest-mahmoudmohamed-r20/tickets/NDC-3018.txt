@@ -1,0 +1,38 @@
+# NDC-3018 Validation Rules | Screen readers are not told why a save was refused
+Summary
+When a validation rule refuses a save, the message appears under the field but is not linked to it or announced, so screen-reader users get no feedback.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; Leads and Tickets record forms
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Create a rule that refuses a value.
+- Open a new record, type the refused value and click Save.
+- Inspect the field and the message in the page.
+Expected result
+The field has aria-invalid="true", aria-describedby points to the message, the message is announced (role="alert" or a live region), and focus goes to the refused field.
+Actual result
+- No aria-invalid and no aria-describedby on the input (CRM and Desk).
+- No role="alert" or aria-live region.
+- CRM moves focus to the refused field; Desk moves focus to Subject instead.
+Notes
+- Case M4.
+- Evidence: crm-M4-refused.png, desk-M4-refused.png (attached).
+
+
+== COMMENTS (1)
+--- comment 2026-11-16T10:34:29.261898+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 15 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- aria-invalid on the input → aria-invalid="true" [PASS]
+- aria-describedby → message → aria-describedby="live-field-…-error" → "QA RT18 text cannot start with BAD" [PASS]
+- Focus → Focus on the QA RT18 v text input [PASS]
+- Desk ticket form (focus went to Subject) → Not rechecked (CRM-only lane) [INFO]
+Still failing:
+- Message announced: expected role="alert" or a live region; actual Field message has no role and no aria-live; no alert / live region on the page contains it
+Desk half: aria-invalid + aria-describedby + focus on the refused field, and a role=alert banner "Please fix the field highlighted below." [PASS].
+Decision (QA lead, 16 Nov 2026): CRM must announce the refusal like Desk does (role=alert / aria-live). Still failing in CRM: the message has no role=alert / aria-live and no live region contains it, so screen readers are not told. Moved to Bug.
+Evidence: NDC-3018-retest-PARTIAL.png, NDC-3018-retest-PARTIAL-vs-zoho.png (attached)
+

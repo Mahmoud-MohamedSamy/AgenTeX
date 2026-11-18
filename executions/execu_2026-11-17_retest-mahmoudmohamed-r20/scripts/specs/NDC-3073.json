@@ -1,0 +1,27 @@
+{
+ "out": "NDC-3073-retest-PASS.png",
+ "ticket": "NDC-3073",
+ "priority": "medium",
+ "title": "Tickets | A ticket marked as spam still accepts replies and comments and stays shared with other departments",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner account (shared session) · ticket #4838 in QA RT20 TK Dept, contact = user's own plus-address (masked), shared with QA RT20 TK Dept B (full) · control #4839",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3073-1-spam-dialog-m.png", "caption": "Before: Reply All and \"Shared with QA RT20 TK Dept B\"; ⋮ › Mark as Spam dialog", "crop": [520, 56, 1080, 560],
+   "boxes": [{"b": [1264, 101, 1386, 133], "n": 2, "kind": "INFO"}, {"b": [798, 138, 994, 162], "n": 3, "kind": "INFO"}, {"b": [544, 318, 1056, 582], "n": 5, "kind": "INFO"}]},
+  {"img": "3073-3-menu-after-m.png", "caption": "After spam (reloaded): banner, no Reply All, no Shared chip, ⋮ shows only Not Spam and Delete", "crop": [664, 56, 936, 360],
+   "boxes": [{"b": [680, 160, 1584, 214], "n": 1, "kind": "PASS"}, {"b": [1384, 124, 1584, 200], "n": 4, "kind": "PASS"}, {"b": [680, 100, 1320, 140], "n": 3, "kind": "PASS"}]},
+  {"img": "3073-5-not-spam-m.png", "caption": "Not Spam: Reply All back; sharing stays removed", "crop": [664, 56, 936, 300],
+   "boxes": [{"b": [1264, 101, 1386, 133], "n": 6, "kind": "PASS"}]},
+  {"img": "3073-api-card.png", "caption": "API checks", "crop": [0, 0, 1600, 450],
+   "boxes": [{"b": [36, 146, 1564, 204], "n": 3, "kind": "PASS"}, {"b": [36, 214, 1564, 272], "n": 2, "kind": "PASS"}, {"b": [36, 282, 1564, 340], "n": 2, "kind": "PASS"}, {"b": [36, 350, 1564, 387], "n": 5, "kind": "INFO"}, {"b": [36, 397, 1564, 434], "n": 6, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Spam ticket closed to conversation", "No reply, no comment (Zoho banner)", "Banner \"Ticket has been marked as spam, so you are not able to add conversation.\" with Not Spam", "PASS"],
+  [2, "Reply / comment really refused", "Blocked", "Reply All gone; API comment (private, public) and reply → 422, nothing stored or sent (was composer + comment 201)", "PASS"],
+  [3, "Sharing with other departments", "Revoked", "Shares Dept B full → [] after spam; \"Shared with\" chip gone; stays revoked after Not Spam", "PASS"],
+  [4, "⋮ menu on a spam ticket", "Only Not Spam and Delete", "Only Not Spam and Delete (Actions still lists a custom action)", "PASS"],
+  [5, "Message texts", "Clear", "Mark-as-spam dialog does not say sharing will be revoked (Zoho does); re-share error says \"add conversation\"", "INFO"],
+  [6, "Controls / Not Spam", "Normal again", "Comment on a non-spam ticket 201; after Not Spam Reply All back and comment 201", "PASS"]
+ ]
+}

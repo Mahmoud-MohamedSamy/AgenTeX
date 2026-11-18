@@ -1,0 +1,21 @@
+# NDC-3073 Tickets | A ticket marked as spam still accepts replies and comments and stays shared with other departments
+Summary
+After Mark as Spam the ticket shows the Spam chip and banner, but agents can still reply to the sender and add comments, and the ticket keeps its sharing with other departments. Found in the Desk go-live retest (ticket ⋮ menu run), NDC-Staging, 16 Nov 2026.
+Steps
+- Share a ticket with another department (⋮ › Share, e.g. HR, Full Access).
+- Mark it as spam (⋮ › Mark as Spam › Mark as Spam).
+- Click Reply All; add a private comment; look at the "Shared with" chip and the ⋮ menu.
+Expected
+A spam ticket is closed to conversation: no reply and no comment, and sharing with other departments is removed, as in Zoho. Only Not Spam and Delete stay in the menu.
+Actual
+Reply All opens the composer with Send; a private comment saves (POST /desk/tickets/{id}/comments → 201); the ticket still shows "Shared with HR" and GET /desk/tickets/{id}/shares still returns HR (full access); the full ⋮ menu (Move, Share, Merge, Clone…) is still offered.
+Zoho Desk
+Checked live 16 Nov on ticket #109: after Mark Spam the ticket shows "Ticket has been marked as spam, so you are not able to add Conversation"; More Actions shows only Not Spam and Delete. Zoho's Mark Spam dialog says "If the ticket is shared with other departments, it will be revoked." (dialog text seen; not tried with a shared Zoho ticket).
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner account, Edge, 16 Nov 2026. Zoho Desk checked live the same day in the test org TechEgySolutions as admin; test data deleted after.
+Attachment
+Annotated evidence (TAVI vs Zoho): TM-2-spam-reply-vs-zoho.png.
+
+
+== COMMENTS (0)
+

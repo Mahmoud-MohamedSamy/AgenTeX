@@ -1,0 +1,1 @@
+const o={};for(const p of ['/desk/tags?take=500','/desk/tags?department_id=93949fbd-f9df-4e2e-ae45-00b8dc38385b','/modules/88e8ea44-1658-4df3-9930-d0902b91073d/tags?include_inactive=true','/desk/tags/context']){const r=await api('GET',p);o[p]=r.s+' '+r.t.slice(0,600);}return o;

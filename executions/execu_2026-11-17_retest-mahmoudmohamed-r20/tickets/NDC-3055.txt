@@ -1,0 +1,30 @@
+# NDC-3055 Ticket Views | Deleting all tickets in a view with "Select all" fails without any message and no tickets are deleted
+Summary
+Deleting every ticket in a view at once does not work. After "Select all 293 in this view" and Delete, the screen hangs for about 30 seconds and then stops. No error is shown and the tickets are still in the list. Deleting one page of tickets (50) a moment earlier works.
+Steps to Reproduce
+- Open Desk → Tickets → any view with more than 50 tickets (293 tickets in the recording).
+- Tick the select-all box at the top of the list.
+- Click Select all 293 in this view.
+- Click More → Delete, then Delete again to confirm.
+Expected Result
+- All selected tickets are deleted, the list refreshes and the view's count drops to zero.
+- If there is a limit on how many tickets can be deleted at once, the user is told what the limit is before or after deleting.
+Actual Result
+- The delete runs for about 30 seconds and then stops with no reply from the server.
+- No success or error message is shown.
+- When the list reloads, the tickets are still there. The first tickets in the selection (#1595, #1589, #1551, #1539) are still shown as not deleted.
+- While waiting, the page keeps reloading its counts and ticket details in the background, and many of those calls fail too.
+Supporting Evidence (from the recording)
+- 0:03: deleting 50 tickets succeeds (204, 3.5 s).
+- 0:13: deleting all 293 tickets gets no response and is cancelled after 30 s. All 293 ticket IDs are sent in the web address (about 11.5 KB).
+- 0:13–0:21: 41 background ticket-detail calls fail with a connection error.
+- 0:43: the list reloads and the same tickets are still there.
+- Time of the failed delete: 2026-11-15 11:01:16 UTC.
+Environment
+staging-desk.taviportal.com/views (NDC-Staging), Microsoft Edge 156, Windows 10, screen 1272×866, 15 Nov 2026.
+Recording
+https://jam.dev/c/5436645d-03ff-4af9-9e86-761205abd5d4
+
+
+== COMMENTS (0)
+

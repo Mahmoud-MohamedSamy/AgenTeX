@@ -1,0 +1,8 @@
+{"out":"3055-api-card.png","title":"NDC-3055 Select all 300 in view \"QA RT20 TK 3055 view\" → More → Delete (network + checks)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["Delete request","POST /modules/{Tickets}/records/mass-delete, 300 ids in the JSON body (address 107 chars; 15 Nov: 293 ids in the address, ~11.5 KB)","202 in < 2 s: job_id 0f46f2e1…, requested 300, deletion_group_id c313bb05…","ok"],
+["Progress messages","toasts while the job runs","t+2 s \"Deleting 300 tickets in the background (up to 50,000 at a time)…\" + \"0 of 300 done\"; t+4 s \"100 of 300 done\"; t+6 s \"300 records moved to the recycle bin.\"","ok"],
+["Job polling","GET /mass-delete-jobs/{job}","processing 0 → processing 100 → completed, deleted 300, failed 0","ok"],
+["Records after","GET each of the 300 ids","404 × 300; view shows (0) \"No Tickets yet\", also after reload","ok"],
+["Recycle bin","GET /audit/recycle-bin/items (3,066 scanned)","all 300 present, one deletion group c313bb05…, deleted by ndc-staging-owner, expires in 60 days","ok"],
+["Sidebar count","view entry in the left list right after the delete","still 300 until the page is reloaded, then 0","info"]]}

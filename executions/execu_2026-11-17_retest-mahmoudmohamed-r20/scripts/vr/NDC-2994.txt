@@ -1,0 +1,29 @@
+# NDC-2994 Lead Conversion | Convert page shows no message when the server refuses the conversion [Done]
+Summary
+When the server refuses a lead conversion (422), the convert page shows no message. The user does not know why nothing happened.
+Environment
+- NDC-Staging (staging-crm.taviportal.com), Chromium, 12 November 2026, admin account.
+- A test lead converted with a new deal (Transaction).
+Steps to reproduce
+- Open a lead and click Convert.
+- Choose to create a new deal and set the stage to Closed Lost. Leave amount, closing date and reason empty.
+- Click Convert.
+Expected result
+The page shows the server's message (amount, closing date and reason are required), as Zoho CRM does on its convert page.
+Actual result
+- The request returns 422 (amount, closing date and reason required).
+- The page shows nothing and stays as it was.
+Notes
+- Found while testing Layout Rules case G15.
+- Evidence: crm-G15-convert.png (attached).
+
+== COMMENTS
+--- 2026-11-16T10:13:30.859918+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Convert with a new deal at Closed Lost, amount / closing date / reason empty → Red banner "The conversion was refused. Correct the highlighted fields and convert again." (POST …/convert 422 RECORD_VALIDATION_FAILED) [PASS]
+- Field messages → "Amount is required to close a deal.", "Closing Date is required to close a deal.", "Reason for Loss is required to mark a deal lost." under the fields [PASS]
+- Form after the refusal → Stage Closed Lost and deal name kept; still on the convert page [INFO]
+Evidence: NDC-2994-retest-PASS.png (attached)

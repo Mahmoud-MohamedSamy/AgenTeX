@@ -1,0 +1,72 @@
+# NDC-3056 Blueprint | Agents cannot see the blueprint's flow and transition conditions from a ticket
+Summary
+On a ticket inside a blueprint, Desk only shows the current state and the transition buttons available right now. Agents cannot open the whole blueprint to see which states come next, which transition leads where, and what each transition needs before its button appears. TAVI CRM already has this on its records: the "View configured actions" link in the Blueprint section opens a popup with this flow.
+Steps to Reproduce
+- In TAVI CRM, open a lead that is in a blueprint (for example AEX-01-BP, blueprint AEO-01).
+- In the Blueprint section, click View configured actions. A popup shows each state, the transition between states and the condition, for example web → WebToReferral → referral, "Shown when: Company is not empty".
+- In TAVI Desk, open a ticket that is in an active blueprint.
+- Look for the same option on the ticket's blueprint card.
+Expected Result
+- The Desk ticket's blueprint card has a "View configured actions" option, the same as CRM.
+- It opens the blueprint's flow: states, the transitions between them and each transition's "Shown when" condition.
+- An agent can then see why a transition button is not showing yet and what has to be filled in first.
+Actual Result
+- The Desk ticket only shows the current state and the transitions available right now.
+- If no transition is available, the agent has no way of finding out which condition is missing.
+- The blueprint flow can only be seen in Settings → Blueprints, which agents normally cannot open.
+Note
+Compared with TAVI CRM, which runs on the same blueprint engine. Zoho Desk was not checked live. Not part of the Desk blueprint gap list NDC-2754.
+Environment
+staging-desk.taviportal.com (NDC-Staging) and staging-crm.taviportal.com, Microsoft Edge, Windows 10, 15 Nov 2026.
+Attachment
+Screenshot of the TAVI CRM "View configured actions" popup for blueprint AEO-01 (crm-view-configured-actions.png).
+
+
+== COMMENTS (6)
+--- comment 2026-11-17T11:24:38.881163+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging (tavi) on 17 Nov 2026: client-engine #847.
+Checked in the browser on staging (NDC-Staging), English with the light theme and Arabic with the dark theme: on a ticket whose blueprint step can run, the header shows the step's button with "View configured actions" beside it, and the link opens the blueprint's flow. The link also stays while nothing can run, and in the Steps card.
+The probe blueprint and ticket are deleted.
+
+--- comment 2026-11-16T12:13:27.065561+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 16 Nov 2026 (ticket was already moved by someone else; state not changed)
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Ticket blueprint card as an agent → Shown on the Steps card of #4174 and #4168 and opens a popup (was: missing) [PASS]
+- Per step: can I run it, what does it ask → "You can run this step · Nothing to fill in"; held: the agent ran QA onlyA on #4174 → 200, Escalated [PASS]
+- "Shown when" and a step the agent cannot run now → QA urgent shows "Shown when: Priority = high"; QA urgent and QA admin (owner only) say "You can't run this step now. The ticket may not meet its conditions yet, or only its owners can run it." (does not say which of the two applies) [PASS]
+- Side observation → #4174 and #4168 show "You can read this ticket but not change it" to this agent, yet the agent (transition owner) could run the transition and move the ticket [INFO]
+Still failing:
+- Popup content: expected The blueprint's flow: states and the transitions between them (like CRM); actual Only the current state and the steps leaving it (on #4180 all three from Open). Later states/transitions (Escalated → Closed, On Hold → Closed on #4180; Closed and QA end on #4174) are not shown
+Evidence: NDC-3056-retest-PARTIAL.png (attached)
+
+--- comment 2026-11-16T11:50:33.872850+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Reproduced on staging: with a step the ticket can run, the header showed only that step's button, and "View configured actions" was gone.
+Fix on client-engine branch fix/ndc-3056-3063-blueprint-header-duration: the header now shows "View configured actions" whenever the ticket is in a blueprint. It sits beside the transition buttons, beside "No transitions you can run", and also while the steps are loading or could not be checked. The Steps card keeps its link. The earlier fix showed the link only when nothing could run; that choice is reversed.
+Checked in a browser on the branch build against staging's real data: a ticket with the runnable step "ZZ hold" shows the button and the link side by side, and the link opens the flow. English and Arabic, light and dark theme. Not deployed yet.
+
+--- comment 2026-11-16T11:06:33.549096+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Retest 16 Nov 2026 — FAIL (partial), moved back to Bug
+NDC-Staging, ticket #4164 in blueprint "test blueprint" (Tech), Edge. Recording: https://jam.dev/c/09208a61-3455-4a9c-8b64-c37c5b32a7e6
+What works now
+- While no transition can be run, the ticket header shows "No transitions you can run · View configured actions", and the Steps card in Ticket Properties has the same link.
+- The popup shows the blueprint flow: each transition from the current state, where it leads, its "Shown when" condition (for example Move to On Hold, Shown when Sub Category = "refund"), and why each step can't be run yet.
+What still fails
+- Sub Category was set to Refund and saved, so "Move to On Hold" can now be run. The header then shows only the "Move to On Hold" button, and the "View configured actions" link is gone.
+- The link stays only in the Steps card. With Ticket Properties closed, there is no way to open the flow view from the ticket.
+Expected
+"View configured actions" stays in the ticket header at all times while the ticket is in a blueprint, next to any transition buttons. Agents still need the flow when a transition is available, for example to see what comes after On Hold or why Closed and Reopened are not offered.
+Note
+The server still returns the full flow after the change: blueprint-state returns allStates, and allTransitions with their conditions. Only the header stops showing the link.
+Annotated evidence attached: NDC-3056-retest-FAIL.png. Boxes 1–3 PASS; box 4 and box 6 FAIL; box 5 is the Steps card link that still works.
+
+--- comment 2026-11-16T08:23:12.093910+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging: the ticket's blueprint card offers "View configured actions"; the popup shows the states, transitions and "Shown when: Priority = high", and for a step the ticket does not meet yet it says "You can't run this step now…".
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:18.352873+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging: the ticket's blueprint card had no "View configured actions".
+Fix on client-engine fix/ndc-3056-3034-3032-ticket-blueprint: the ticket's Steps card, and the "No transitions you can run" line, now offer "View configured actions". It opens the same flow as CRM (states, transitions, each "Shown when" condition, current state highlighted) and lists the steps from the current state: whether you can run each one now, whether it runs by itself, and what it asks for. When nothing can run, the card says a step may be waiting for its conditions or limited to its owners.
+Checked in a browser on the branch build against staging's real data: a step with "Shown when: Priority = high" on a low-priority ticket showed the condition and "You can't run this step now". Light and dark theme and Arabic checked. Not deployed yet.
+

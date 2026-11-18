@@ -1,0 +1,37 @@
+--- 2026-11-17T12:51:31.552562+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+ Fixed and live on tavi (client-engine #839, desk-web deployed 17 Nov 2026). Moving to Ready For Test. 
+
+ Checked in the browser on staging-desk (NDC Staging) with an inactive test rule, deleted afterwards: the condition "Approval Status is Pending approval" now reads Approval Status = Pending approval in the folded line, the same label the editor shows, without quotes.
+
+ Named values in rule summaries no longer carry quotes: Owner = Jane Smith , not Owner = "Jane Smith" . Quotes remain only on text an admin typed.
+
+ Not checked: other list fields (Status, Priority, a custom list, a related record's list field), the CRM rule editor, and the Arabic layout.
+
+--- 2026-11-17T14:55:59.888345+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+ Retest PARTIAL — 17 Nov 2026 → moved to Bug Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner) Method: Manual browser + API
+ Checked:
+ Approval Status is Pending approval, folded line → Approval Status = Pending approval (dev claim held); typed text keeps quotes (Subject starts with "QA RT20 WF 3057 ") [PASS]
+ Status and a custom list (QA NDC Transaction Type) → Status is one of [On Hold]; QA NDC Transaction Type = Time Limit/BDF — stored value equals the label here [PASS]
+ Still failing:
+ Priority, Language, Classification, Happiness Rating, Ticket Approval Status : expected Label agents see (ticket shows Priority High); actual Priority is one of [high, urgent]; Language = arabic; Classification is one of [feature]; Happiness Rating = okay; Ticket Approval Status = pending (the open editor also shows lowercase values)
+ A related record's list field : expected Label (Customer); actual Contact · Type = customer
+ CRM rule editor (Leads) : expected Labels; actual Approval Status = Pending approval; Lead Source is one of [web, referral]; Rating = market_failed; Industry = technology
+ Arabic layout : expected Translated labels; actual Approval Status in Arabic; other values English stored values; editor pattern "( 1 and 2 )" not translated
+ Evidence: NDC-3057-retest-PARTIAL.png (attached)
+
+--- 2026-11-17T17:19:54.207858+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+ Fixed and live on tavi (client-engine #852, deployed 17 Nov 2026). Moving to Ready For Test. 
+
+ The rule editor and its folded summary now name stored values with the same words the record pages use, in English and Arabic. We also added the words that were missing for the values Desk and CRM create without a label (found by checking every Desk and CRM list on staging): Priority, Language, Classification, Happiness Rating, Ticket Approval Status, contact Type, and CRM Lead Source, Rating, Industry, Salutation, account and deal lists. The criteria pattern reads its "and" / "or" in Arabic.
+
+ Checked in the browser on staging:
+
+ 
+ Desk (QA AO Dept A rule): "Priority = High", "Language = Arabic", pattern "(1 and 2)". The open editor shows High and Arabic.
+
+ CRM (Leads rule): "Rating = Market Failed", "Industry = Technology", "Lead Source = Referral".
+
+ CRM in Arabic: "فشل السوق", "التكنولوجيا", "إحالة", pattern "(1 و 2 و 3)".
+
+ 
+ Not changed: field names such as "Rating" and the module name "Leads" stay English in Arabic, because those labels are stored in English only. Not checked in the browser: Desk in Arabic (covered by tests), Happiness Rating and Ticket Approval Status on screen.

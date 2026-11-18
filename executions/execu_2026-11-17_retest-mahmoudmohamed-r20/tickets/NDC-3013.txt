@@ -1,0 +1,36 @@
+# NDC-3013 Validation Rules | Old Desk rule says it "can't be applied" for the wrong reason, and is still applied
+Summary
+The existing Desk rule "QA NDC Reject needs a reason" has no layout. The list and editor say "This rule can't be applied (a field it uses changed or was deleted)". The real cause is the missing layout, and the server still applies the rule.
+Environment
+- Staging, tenant NDC-Staging, 12–13 Nov 2026
+- Owner account; Tickets › Validation Rules, rule "QA NDC Reject needs a reason" (created 3 Nov, no layout)
+- Test data used the prefix "QA VR1112" and was deleted after the check.
+Steps to reproduce
+- Open Settings › Modules and Fields › Tickets › Validation Rules.
+- Look at the rule "QA NDC Reject needs a reason" and open it.
+- Set a ticket to status "QA NDC Reject" without a reason and save.
+Expected result
+The warning names the real problem (no layout chosen) and matches what the server does.
+Actual result
+- List and editor: "This rule can't be applied (a field it uses changed or was deleted). Edit it to rebuild it."
+- The editor opens with Layout empty; no field was changed or deleted.
+- The ticket save is still refused with "Please add a clear rejection reason", so the rule is being applied.
+Notes
+- Case J7. The API gives conditionError "A Desk validation rule applies to one layout; choose it."
+- Evidence: desk-B8-list.png, desk-J7-editor.png (attached).
+
+
+== COMMENTS (1)
+--- comment 2026-11-16T10:15:50.515638+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest FAIL — 15 Nov 2026 → moved to Bug
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- API reason → conditionError now "A branch's check tests the primary field 'Status' only…" (was "choose a layout"); not shown on screen [INFO]
+Still failing:
+- Warning in the rule list: expected Names the real problem; actual "This rule can't be applied (a field it uses changed or was deleted). Edit it to rebuild it." — unchanged; no field changed
+- Warning in the editor: expected Names the real problem; actual Same message; Layout empty
+- Warning matches what the server does: expected Not applied, or no "can't be applied" warning; actual Ticket set to QA NDC Reject without reason → 422 "Please add a clear rejection reason": the rule is still applied
+Zoho Desk comparison not possible this round: the Zoho Desk accounts in the 14 Nov credentials file are agents without Setup access.
+Evidence: NDC-3013-retest-FAIL.png (attached)
+

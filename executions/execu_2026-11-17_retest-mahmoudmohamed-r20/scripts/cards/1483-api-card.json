@@ -1,0 +1,12 @@
+{"out":"1483-api-card.png","title":"NDC-1483 Scoring Rule — behaviour checks (Leads, QA RT20 SC leads, score = lead minus control lead)","host":"staging-crm.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Field points + / -","R1: Company is 'QA RT20 SC co' +13, Employees >= 100 +7, Lead Status is Not Interested -5; R2 Rating active +20","new lead +13; emp 150 → +20; Not Interested → +15; rating active → +35; emp 99/100 → +28/+35; control lead with only the negative entry → -5","ok"],
+["2 Operators","between 1..500 (+4), today / this month / last 7 days / between dates / is ${TODAY}, pick list contains + any of","all scored right: date today 31, 5 days ago 14, 12 days ago 10, last month 0; Gamma +32, Beta +64; between bounds 1 and 500 inclusive","ok"],
+["3 Rule edit / rescore old records","PUT points 30→25 no flag; then 25→26 with update_existing_records; UI Create with \"Also score the records already there\"","no flag: lead keeps old score until saved; flag: background run 12,041 leads, lead 37→33; UI create: old lead 5→16, other lead unchanged","ok"],
+["4 Switch off / on / delete","PATCH active false, true; DELETE (lead not saved)","each starts a background run (~40 s): 8→5 off, 5→8 on, 8→5 delete","ok"],
+["5 Validation","no name, 121-char name, 501 desc, 0 / 1.5 / 10001 points, no entries, unknown field, contains on number, abc on number, unknown option, 31 entries, duplicate entry, duplicate name","all 422 with clear messages; -10000 accepted","ok"],
+["6 Score field is system-only","PATCH score 999; create lead with score 500","200 but score stays computed (5)","ok"],
+["7 List / view / workflow / report","list sort + filter Score >= 30; custom view Score >= 30; workflow Score reaches 40 + criteria Score >= 60; report Score >= 30","sort + filter + view: 3 right leads; workflows fired once each; report filter works","ok"],
+["8 Report after background rescore","report Last Name + Score after rule edit / delete runs","report shows old score for leads rescored in the background (A 37 vs 33, N -4 vs 0) 20+ min later; right after a save A shows 33","bad"],
+["9 Workflow on background rescore","Score-reaches-40 workflow active; rule with update_existing_records lifts lead 5→55","workflow did not run (title stays empty); it runs when the score changes on a save","info"],
+["10 Non-admin (CRM User)","page + API list/get/create/active/delete/run","\"no access\" page, no New / Run buttons; every call 403","ok"]]}

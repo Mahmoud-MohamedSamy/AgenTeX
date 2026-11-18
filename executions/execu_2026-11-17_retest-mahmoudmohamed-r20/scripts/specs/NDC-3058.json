@@ -1,0 +1,39 @@
+{
+ "out": "NDC-3058-retest-PASS.png",
+ "ticket": "NDC-3058",
+ "priority": "medium",
+ "title": "Workflow Rules | Add Tags action says \"Search or create a tag\" but a new tag cannot be created from it",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner (shared session) · client-engine #852, metadata-engine #238, workflow #143 · rules QA RT20 W2 3058 one / rem / multi / mix / wrong / bad (all inactive) · tickets #5092, #5100, #5101 · tag QA RT20 W2 newtag (QA AO Dept A)",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3058-r2-api-card.png", "caption": "API: create, refuse, run, remove, department checks", "crop": [0, 0, 1600, 585],
+   "boxes": [{"b": [928, 99, 1564, 157], "n": 2, "kind": "PASS"}, {"b": [928, 167, 1564, 225], "n": 4, "kind": "PASS"}, {"b": [928, 235, 1564, 293], "n": 3, "kind": "PASS"}, {"b": [928, 303, 1564, 361], "n": 6, "kind": "PASS"}, {"b": [928, 371, 1564, 429], "n": 8, "kind": "PASS"}, {"b": [928, 439, 1564, 497], "n": 9, "kind": "FAIL"}, {"b": [928, 507, 1564, 565], "n": 10, "kind": "INFO"}]},
+  {"img": "3058-r2-1-one-dept-options.png", "caption": "Rule limited to QA AO Dept A: only that department's tags offered (A, C; B chosen) — no Customer Support duplicates", "crop": [368, 590, 500, 300],
+   "boxes": [{"b": [396, 806, 838, 876], "n": 1, "kind": "PASS"}]},
+  {"img": "3058-r2-4-create-offered.png", "caption": "Typed a new name → Create \"QA RT20 W2 newtag\" (created in QA AO Dept A, added to the rule)", "crop": [368, 590, 500, 300],
+   "boxes": [{"b": [396, 718, 838, 756], "n": 2, "kind": "PASS"}]},
+  {"img": "3058-r2-6-invalid-clicked.png", "caption": "Refused name \"QA-1\": clear message, nothing created", "crop": [368, 590, 1220, 300],
+   "boxes": [{"b": [1157, 812, 1575, 876], "n": 4, "kind": "PASS"}]},
+  {"img": "3058-r2-11-multi-options.png", "caption": "Rule over Customer Support + QA AO Dept A: every tag named with its department", "crop": [368, 520, 500, 300],
+   "boxes": [{"b": [396, 535, 838, 757], "n": 7, "kind": "PASS"}, {"b": [400, 770, 596, 792], "n": 7, "kind": "PASS"}]},
+  {"img": "3058-r2-12-multi-typed.png", "caption": "Same rule, new name typed: no Create — \"Limit the rule to one department to create a tag here\"", "crop": [368, 590, 580, 300],
+   "boxes": [{"b": [396, 698, 926, 756], "n": 7, "kind": "PASS"}]},
+  {"img": "3058-r2-17-ticket-history.png", "caption": "Ticket #5092 History: tags added by QA RT20 W2 3058 one, newtag removed by QA RT20 W2 3058 rem", "crop": [664, 280, 936, 480],
+   "boxes": [{"b": [700, 320, 1100, 398], "n": 6, "kind": "PASS"}, {"b": [700, 664, 1100, 742], "n": 3, "kind": "PASS"}]},
+  {"img": "3058-r2-15-exec-wrong.png", "caption": "Execution History for #5101: Add Tags \"Succeeded\" although the only tag (Customer Support's) was not added", "crop": [280, 70, 1000, 400],
+   "boxes": [{"b": [293, 396, 1267, 452], "n": 9, "kind": "FAIL"}]}
+ ],
+ "rows": [
+  [1, "Rule limited to one department: tag list", "Only that department's tags (+ all-department tags)", "QA AO Dept A rule offers QA WF tag A, B, C, QA RT20 W2 newtag only; Remove Tags list the same (dev claim held)", "PASS"],
+  [2, "Type a new name → Create", "Create offered; tag created in that department", "Create \"QA RT20 W2 newtag\" → POST /desk/tags 201 in QA AO Dept A, chip added, rule saved (dev claim held)", "PASS"],
+  [3, "Created tag → rule fires → ticket gets it", "Ticket carries the new tag", "#5092 edited → Add Tags Succeeded, tags QA WF tag B + QA RT20 W2 newtag; History \"Tags changed … by workflow rule\"", "PASS"],
+  [4, "Refused name \"QA-1\" (dev: not checked)", "Clear message, nothing created", "422 TAG_NAME_INVALID, toast \"The tag name is not valid. Use 3 to 50 letters, digits and single spaces.\"", "PASS"],
+  [5, "Duplicate name", "No second tag", "Exact or lower-case existing name shows the existing tag, no Create; already-chosen name → \"No matching tags\"; double space trimmed (\"QA two\")", "PASS"],
+  [6, "Remove Tags (dev: not checked)", "Tag taken off; no create in Remove", "Box \"Search tags…\", new name → \"No matching tags\"; rule removed newtag from #5092, kept tag B; Execution History Remove Tags Succeeded", "PASS"],
+  [7, "Rule over several departments", "Each tag named with its department; says to limit the rule to create", "\"Accepted · Customer Support\", \"QA WF tag B · QA AO Dept A\" …; typed name → \"Limit the rule to one department to create a tag here.\" (dev claim held)", "PASS"],
+  [8, "Another department's tag on a ticket", "Not added", "Mixed rule on #5100 added only QA WF tag A; CS-only rule on #5101 added nothing (dev claim held)", "PASS"],
+  [9, "Execution History when a tag is skipped (dev \"to know\")", "Says the tag was not added", "Add Tags \"Succeeded\" with no detail — even on #5101 where nothing was added; Target shows tag ids, not names — not filed", "INFO"],
+  [10, "API: single-department rule saved with another department's tag", "Refused like the editor", "201 saved (rule QA RT20 W2 3058 bad, inactive); tag-manage permission for a non-admin agent not checked — not filed", "INFO"]
+ ]
+}

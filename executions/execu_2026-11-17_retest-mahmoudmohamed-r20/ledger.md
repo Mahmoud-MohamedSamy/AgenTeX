@@ -1,0 +1,623 @@
+# Round 20 ledger (17 Nov 2026)
+- 2026-11-17T09:16:09Z AS lane: ticket created 993f1366-bffb-47af-bd74-70231a5b0e97 "QA RT20 AS 2933 api mixed"
+- 2026-11-17T09:16:22Z AS lane: skill created 33380b29-0c6b-45b3-b1cc-6d75cb2dc00a "QA RT20 AS Tmp" active dept QA RT19 SK Dept
+- 2026-11-17T09:16:24Z AS lane: ticket created 8a9ca034-0e3d-413f-9fb8-7810ca38dc92 "QA RT20 AS 2933 ui ticket"
+- 2026-11-17T09:16:33Z AS lane: skill 33380b29-0c6b-45b3-b1cc-6d75cb2dc00a set inactive
+- 2026-11-17T09:16:56Z AS lane: ticket created b31f1a05-48ed-4935-889e-b9f4180fee4b "QA RT20 AS 2933 sk13 ticket"
+- 2026-11-17T09:18:57 ticket "QA RT20 VR 3013 ticket" 0d3a47d9-dc83-4767-8e8a-2b80a7836706 (QA AO Dept A, Desk) (lane VR)
+- 2026-11-17T09:19:08Z BP lane: department created e04e88df-03e2-4a9f-8ccc-ff934cca500e "QA RT20 BP Dept" agents owner+CES2 (201)
+- 2026-11-17T09:19:29Z BP lane: blueprint created f2b2c1f5-56fd-4098-91e8-8a8704f78898 "QA RT20 BP 3065 role" active=true
+- 2026-11-17T09:19:30Z BP lane: blueprint created f85fde0c-1152-4743-95f6-801f19e99b33 "QA RT20 BP 3065 tk" active=true
+- 2026-11-17T09:19:36Z BP lane: ticket created 25312cc0-7c5b-41a2-89d5-4a78c5155ab8 #undefined "QA RT20 BP 3065 role T1 owned by CES2"
+- 2026-11-17T09:19:38Z BP lane: ticket created 7ba77b0d-9a39-4448-b532-2a391ffc5ceb #undefined "QA RT20 BP 3065 role T2 owned by owner"
+- 2026-11-17T09:19:41Z BP lane: ticket created 60968417-89fa-4b5e-9d97-e4bf8d93e2a4 #undefined "QA RT20 BP 3065 role T3 owned by owner"
+- 2026-11-17T09:19:44Z BP lane: ticket created b5328b28-4ce9-4896-838e-cb8df66e7441 #undefined "QA RT20 BP 3065 tk K1 owned by owner"
+- 2026-11-17T09:20:12 ticket "QA RT20 VR 3013 ticket other layout" 5c241fdd-18d8-4502-8ee0-b6d352391970 (layout Test Validation Rules, QA AO Dept A, Desk) (lane VR)
+- 2026-11-17T09:20:12Z TK lane: department "QA RT20 TK Dept" 026c1059-b7fa-405f-a00c-48ac2bcbb518 created, agent owner
+- 2026-11-17T09:20:32Z TK lane: department "QA RT20 TK Dept B" 194c0397-8060-48b2-9278-dae6d04b2bd3 created, agent owner
+- 2026-11-17T09:20:34Z TK lane: ticket created 9e5d8b94-60ff-45be-b04f-93c6646dc858 "QA RT20 TK probe ticket"
+- 2026-11-17T09:21:10Z BP lane: CES2 (9d182dfa) set VIEW-ONLY in QA RT20 BP Dept e04e88df (restore: remove view-only at end)
+- 2026-11-17T09:21:45Z TK lane: ticket created b9a13ebd-c909-44dd-a0ab-5ec87196ddbe "QA RT20 TK 3071 Z control" (valid control)
+- 2026-11-17T09:21:53Z BP lane: SIGN-IN agent "Customer Experience Specialists 2" (QA account) ONCE via login-r12.js -> scratchpad r20-bp-agent.json (user-allowed)
+- 2026-11-17T09:22:03  [SC] scoring rule "QA RT20 SC R1 fit" fbaa0579-59f1-4f8c-a2e8-48b01d7f7212 (Leads)
+- 2026-11-17T09:22:04  [SC] scoring rule "QA RT20 SC R2 rating" 82457ae2-7d77-473b-abf4-8db1d3866ab2 (Leads)
+- 2026-11-17T09:22:07  [SC] record "QA RT20 SC ctl" 4eba295c-69c7-4ffd-bd42-28a1001297ac (Leads)
+- 2026-11-17T09:22:08  [SC] record "QA RT20 SC A" ac3fb777-5c39-4872-bf79-c5faf04298b2 (Leads)
+- 2026-11-17T09:22:10  [SC] record "QA RT20 SC N" df1d3f13-5b69-4d2d-80a3-e8407fd050bc (Leads)
+- 2026-11-17T09:22:25  [SC] scoring rule fbaa0579-59f1-4f8c-a2e8-48b01d7f7212 edited company points 13->30
+- 2026-11-17T09:22:32  [SC] scoring rule 82457ae2-7d77-473b-abf4-8db1d3866ab2 deactivated
+- 2026-11-17T09:22:42  [SC] scoring rule "QA RT20 SC R3 emp" 190b04c5-8dde-4db0-9930-84fed40e1faa (Leads)
+- 2026-11-17T09:22:43Z TK lane: 300 tickets created "QA RT20 TK 3055 bulk 001..300" in QA RT20 TK Dept (ids in scripts/tk/cfg.json bulk)
+- 2026-11-17T09:22:45Z TK lane: view "QA RT20 TK 3055 view" 471295a5-6f22-48ab-a1db-7947f53ae91d created (private, subject starts with QA RT20 TK 3055)
+- 2026-11-17T09:22:51Z TK lane: ticket created 3a8af62b-8b16-4e4e-8783-5199e3729085 "QA RT20 TK 3072 clone source"
+- 2026-11-17T09:23:53  [SC] scoring rule "QA RT20 SC G notBetween no_of_employees" 8888ab17-8163-45dc-91ab-701561f7ce85 (Leads)
+- 2026-11-17T09:23:53  [SC] scoring rule "QA RT20 SC G between date" 0814fafd-1202-4edf-9d4c-42a8d715aaee (Leads)
+- 2026-11-17T09:23:54  [SC] scoring rule "QA RT20 SC G today date" 9f212914-ef40-467b-a29f-0b2df615ddae (Leads)
+- 2026-11-17T09:23:54  [SC] scoring rule "QA RT20 SC G currentMonth date" 14ae1e62-73a1-4d1c-a422-4e61f9a8c729 (Leads)
+- 2026-11-17T09:23:54  [SC] scoring rule "QA RT20 SC G inLastDays date" 9eb88c05-423b-4807-894f-bcf57ed11757 (Leads)
+- 2026-11-17T09:23:55  [SC] scoring rule "QA RT20 SC G eq date" b33cf3da-111e-41a8-8270-d0800a4f1835 (Leads)
+- 2026-11-17T09:23:55  [SC] scoring rule "QA RT20 SC G contains lead_source" 8d12dd4a-3faa-4efe-896d-44f06684dcb2 (Leads)
+- 2026-11-17T09:23:55  [SC] scoring rule "QA RT20 SC G startsWith lead_source" ea26ebaf-d756-4854-bdd7-f4fa54862f18 (Leads)
+- 2026-11-17T09:23:56  [SC] scoring rule "QA RT20 SC G in lead_source" 09333c98-b5c8-4cba-8e9d-8b9f2c129166 (Leads)
+- 2026-11-17T09:23:57  [SC] scoring rule "QA RT20 SC G startsWith company" f0b0e789-955c-4cb5-b792-61884a36d674 (Leads)
+- 2026-11-17T09:23:57  [SC] scoring rule "QA RT20 SC G endsWith company" 810c274a-57ba-48dc-bdce-100c54a14ca5 (Leads)
+- 2026-11-17T09:23:58  [SC] scoring rule "QA RT20 SC G notContains company" 7fb0fc9b-369f-4ef2-9c5b-7a724ff5870d (Leads)
+- 2026-11-17T09:23:58  [SC] scoring rule "QA RT20 SC G layout" 9e09b88f-39a4-4dc0-96cd-964ce82a74c0 (Leads)
+- 2026-11-17T09:23:59  [SC] scoring rule "QA RT20 SC G criteria" 54cdb8f8-aebc-48f8-8866-730a46123c68 (Leads)
+- 2026-11-17T09:24:03  [SC] scoring rule (validation) 941eaf06-ec8d-4f58-906d-1b4139ce8298
+- 2026-11-17T09:24:06Z BP lane: as CES2, priority set High on #4805 (25312cc0, own QA ticket) - edit-access probe
+- 2026-11-17T09:24:18Z BP lane: owner ran onlyA on #4807 (60968417) -> Open (no-owner rule check)
+- 2026-11-17T09:24:21  [SC] deleted 16 probe/validation scoring rules (G*/V*): 204,204,204,204,204,204,204,204,204,204,204,204,204,204,204,204
+- 2026-11-17T09:24:51  [SC] field qa_rt20sc_date ddcccbef-5e9c-4323-80d1-dbcdcd075c06 (Leads)
+- 2026-11-17T09:25:14  [SC] scoring rule "QA RT20 SC R4 dates" b2a4099b-bee1-4b32-96df-7d01b7dc8608 (Leads)
+- 2026-11-17T09:25:18  [SC] record "QA RT20 SC D" 1849df1b-7d1e-4b59-a132-d0349de5524a (Leads)
+- 2026-11-17T09:25:47  [SC] scoring rule "QA RT20 SC R5 old" d2804dc8-909f-4434-82bd-9d9a9c62b0d7 (Leads)
+- 2026-11-17T09:25:51 lead "QA RT20 VR 3018 edit" 5a21266c-7560-421d-b6d1-ef170ad92bab (CRM Leads, layout QA RT18 VR Layout) (lane VR)
+- 2026-11-17T09:25:54  [SC] deleted scoring rule R5 d2804dc8-909f-4434-82bd-9d9a9c62b0d7
+- 2026-11-17T09:26:01  [SC] deleted scoring rule R2 82457ae2-7d77-473b-abf4-8db1d3866ab2
+- 2026-11-17T09:27:20Z BP lane: as CES2 (read-only on ticket) ran QA onlyA on #4808 (b5328b28) via UI -> Escalated (NDC-3065 per-ticket case)
+- 2026-11-17 AS lane: tickets #4802 (8a9ca034) "QA RT20 AS 2933 ui ticket", #4803 (993f1366) "QA RT20 AS 2933 api mixed" in QA RT19 SK Dept, #4804 (b31f1a05) "QA RT20 AS 2933 sk13 ticket" in QA SK13 Dept A; all Open, unassigned
+- 2026-11-17 AS lane: skill 33380b29 "QA RT20 AS Tmp" created in QA RT19 SK Dept, now INACTIVE (left inactive)
+- 2026-11-17T09:31:53Z TK lane: NDC-3055: 300 "QA RT20 TK 3055 bulk" tickets deleted via UI Select all → recycle bin (group c313bb05), left in bin
+- 2026-11-17T09:32:10Z AS lane: rule created d3a8cdf7-206f-47f1-85bf-39edd82aa1c3 round_robin "QA RT20 AS thr A1 u3q9" active=true
+- 2026-11-17T09:32:10 [SC] UI clicked Leads 'Run scoring rules' (~09:31 UTC, 11:31 Cairo): started a background rescore of all 12,039 leads at once, no confirmation dialog. Scores follow current active rules (QA RT18 SR rules still active).
+- 2026-11-17T09:32:26Z AS lane: ticket created c5a0eee5-f0bd-4de3-9a01-664effda258f "QA RT20 AS R20THu3q9A1 thr4"
+- 2026-11-17T09:32:38  [SC] record "QA RT20 SC E old" 8747c0ab-10e6-468c-b1b1-1d75e9210784 (Leads)
+- 2026-11-17T09:32:41  [SC] record "QA RT20 SC F old" d7bc4120-a82a-4222-9e46-8865666214db (Leads)
+- 2026-11-17T09:33:03Z AS lane: ticket created 6b039c20-946a-4456-af12-2dde3273786e "QA RT20 AS R20THu3q9A1 thr5"
+- 2026-11-17T09:33:47Z AS lane: ticket created f2b91b67-d759-4f96-bb93-9470105952d9 "QA RT20 AS R20THu3q9A1 thr6"
+- 2026-11-17T09:34:29Z AS lane: ticket created eefca269-5d07-443b-8fb3-46f4e529cb76 "QA RT20 AS R20THu3q9A1 thr7"
+- 2026-11-17T09:35:02Z AS lane: rule d3a8cdf7-206f-47f1-85bf-39edd82aa1c3 active=false -> 200
+- 2026-11-17T09:35:02Z AS lane: rule created d7226ec0-69e7-4b21-b66c-48fa944b729a round_robin "QA RT20 AS thr A3 u3q9" active=true
+- 2026-11-17T09:35:11  [SC] scoring rule "QA RT20 SC R7 off-del" 9ebf0994-9b22-4705-89fb-5d05953bc11d (Leads)
+- 2026-11-17T09:35:15Z AS lane: ticket created ad074a1f-8cf9-4ba7-9af4-fdbf70be0a0d "QA RT20 AS R20THu3q9A3 thr1"
+- 2026-11-17T09:35:17  [SC] scoring rule R7 9ebf0994-9b22-4705-89fb-5d05953bc11d deactivated
+- 2026-11-17T09:35:33Z TK lane: ticket created 5a113720-2b53-4268-8f98-6de0be291eec clone of 3072 source via UI
+- 2026-11-17T09:35:52Z TK lane: ticket created 4922b0bd-168c-445d-bcd9-2a6bd59fa59f "QA RT20 TK 3072 clone source B" (On Hold)
+- 2026-11-17T09:35:56Z AS lane: ticket created 4eaad7f0-0056-4ed4-a37e-d2020a963a08 "QA RT20 AS R20THu3q9A3 thr2"
+- 2026-11-17T09:37:00Z AS lane: ticket created 05a818fe-100c-48fb-b04f-8537523daeb1 "QA RT20 AS R20THu3q9A3 thr3"
+- 2026-11-17T09:37:27Z TK lane: ticket created 8910721d-3810-43f9-a307-0e1dfd1c5b01 clone of 3072 source B via UI
+- 2026-11-17T09:37:52Z AS lane: ticket created 76c2b1c9-56c7-45ba-be6b-32796ff8bd85 "QA RT20 AS R20THu3q9A3 thr4"
+- 2026-11-17T09:38:08  [SC] scoring rule R7 9ebf0994-9b22-4705-89fb-5d05953bc11d deleted (delete-effect test)
+- 2026-11-17T09:38:22 [SC] scoring rule "QA RT20 SC R6 old ui" (Leads, UI create with update_existing_records=true; background run rescored 1 lead) ; field qa_rt20sc_date (Leads, date) created earlier by t03
+- 2026-11-17T09:38:32Z TK lane: contact created 5ea6829a-98bc-45f9-b1b8-6555fcc1a5af "QA RT20 TK Contact C1" (example.com address)
+- 2026-11-17T09:38:34Z TK lane: contact created 0511ac9d-bfa0-4415-a60e-a917ba5f7437 "QA RT20 TK Contact C2" (example.com address)
+- 2026-11-17T09:38:35Z AS lane: rule d7226ec0-69e7-4b21-b66c-48fa944b729a active=false -> 200
+- 2026-11-17T09:38:36Z TK lane: ticket created 0d6f76a6-2c77-4e10-afe8-fce17d71f422 "QA RT20 TK 3064 edit contact" (no contact)
+- 2026-11-17T09:38:36Z AS lane: rule d3a8cdf7-206f-47f1-85bf-39edd82aa1c3 active=false -> 200
+- 2026-11-17T09:38:38Z AS lane: rule d7226ec0-69e7-4b21-b66c-48fa944b729a active=false -> 200
+- 2026-11-17T09:38:39Z AS lane: thr1: dept 4853562a RR prefs changed and restored 200 true
+- 2026-11-17T09:38:51Z AS lane: rule created c07aad90-06fd-4676-9a23-94f10f8dd9f2 round_robin "QA RT20 AS thr A1 ct7j" active=true
+- 2026-11-17T09:39:10Z AS lane: ticket created 9f52535e-3f2c-40a5-b9d9-5100ad434db5 "QA RT20 AS R20THct7jA1 thr4"
+- 2026-11-17T09:39:11Z AS lane: rule created 9918cb81-45f5-4955-aa20-9cbae2620632 round_robin "QA RT20 AS skill A1 A3 i67z" active=true
+- 2026-11-17T09:39:15Z AS lane: ticket created 5ea54dfb-5d04-44d3-8d19-05b3314c5344 "QA RT20 AS R20SKi67z a S3+S1"
+- 2026-11-17T09:39:17Z AS lane: ticket created bca3e707-6b2c-4496-be41-fc87bd481460 "QA RT20 AS R20SKi67z b S3 only"
+- 2026-11-17T09:39:18Z AS lane: ticket created 99111839-2105-4fea-aaf6-557464723dac "QA RT20 AS R20SKi67z c no skills"
+- 2026-11-17T09:39:20Z AS lane: ticket created be9f1648-adce-4221-ac2f-f84f49073cf1 "QA RT20 AS R20SKi67z d1 S1+S2"
+- 2026-11-17T09:39:51  [SC] scoring rule R1 fbaa0579-59f1-4f8c-a2e8-48b01d7f7212 company points 30->25 (no update flag)
+- 2026-11-17T09:40:43Z AS lane: ticket created a65137fe-81c8-4f9e-965b-68d3efedf6e5 "QA RT20 AS R20THct7jA1 thr5"
+- 2026-11-17T09:41:15  [SC] scoring rule R1 fbaa0579-59f1-4f8c-a2e8-48b01d7f7212 company points 25->26 (update_existing_records)
+- 2026-11-17T09:41:37Z BP lane: owner ran QA end on #4807 (60968417) Escalated->Closed (NDC-3068)
+- 2026-11-17T09:41:40Z BP lane: ticket created 5e50f93c-dbe2-4b64-9e33-1536a241469c "QA RT20 BP-3068 plain close" (no blueprint)
+- 2026-11-17T09:42:11Z AS lane: ticket created bc153207-a024-4dfd-8e03-f856b9d77f18 "QA RT20 AS R20THct7jA1 thr6"
+- 2026-11-17T09:42:38 [SC] API POST /scoring-rules/run (Leads) probe -> 202: started one more background rescore of all leads (no rule change, scores unchanged expected)
+- 2026-11-17T09:42:48Z BP lane: owner closed 5e50f93c-dbe2-4b64-9e33-1536a241469c by status edit (NDC-3068)
+- 2026-11-17T09:42:52Z TK lane: ticket created 2c76a22f-f63d-454a-bcdc-4143d6276068 "QA RT20 TK 3064 add contact card" (no contact)
+- 2026-11-17T09:43:23  [SC] workflow rule "QA RT20 SC WF score reaches 40" b341d0be-71ae-44ef-a314-43a298ae2b98 (Leads, active during test)
+- 2026-11-17T09:43:25  [SC] workflow rule "QA RT20 SC WF crit score>=60" 4043a814-6498-45f8-b462-eac7354bac31 (Leads, active during test)
+- 2026-11-17T09:43:27  [SC] record "QA RT20 SC G wf" e000f40a-03cb-455c-b160-9827ffdf5bf2 (Leads)
+- 2026-11-17T09:43:41Z AS lane: ticket created 8c84c826-db28-452a-813d-279eb76b53d4 "QA RT20 AS R20THct7jA1 thr7"
+- 2026-11-17T09:44:45Z AS lane: ticket created 3a4bccd6-7845-4bb7-8c1a-9af6c374a051 "QA RT20 AS R20SKi67z d2 S1+S2"
+- 2026-11-17T09:45:00  [SC] workflow rule b341d0be-71ae-44ef-a314-43a298ae2b98 deactivated (200)
+- 2026-11-17T09:45:01  [SC] workflow rule 4043a814-6498-45f8-b462-eac7354bac31 deactivated (200)
+- 2026-11-17T09:45:07Z AS lane: rule c07aad90-06fd-4676-9a23-94f10f8dd9f2 active=false -> 200
+- 2026-11-17T09:45:07Z AS lane: rule created 4da2afc9-6b14-4cad-bdba-f033e2791214 round_robin "QA RT20 AS thr A3 ct7j" active=true
+- 2026-11-17T09:45:25Z AS lane: ticket created b4f7176e-4e4f-47ff-b4ee-e7e95c4f51ef "QA RT20 AS R20THct7jA3 thr1"
+- 2026-11-17T09:45:27  [SC] workflow rule b341d0be-71ae-44ef-a314-43a298ae2b98 deactivate -> isActive false
+- 2026-11-17T09:45:28  [SC] workflow rule 4043a814-6498-45f8-b462-eac7354bac31 deactivate -> isActive false
+- 2026-11-17T09:45:42Z BP lane: blueprint created 6deb60c8-5329-41dc-b237-622a6bfd0a09 "QA RT20 BP 3065 dyn" active=true
+- 2026-11-17T09:45:44Z BP lane: blueprint created 3f8f8148-a453-4929-ac7b-9d1d16275141 "QA RT20 BP 3065 dynmine" active=true
+- 2026-11-17T09:45:45  [SC] report "QA RT20 SC score report" 13eefe2e-4349-495a-a2d0-6a3255212253
+- 2026-11-17T09:45:46Z BP lane: ticket created 657d9a23-d604-49fc-a359-88869211f9d0 #undefined "QA RT20 BP 3065 dyn D1"
+- 2026-11-17T09:45:48Z BP lane: ticket created 08aa4c21-b908-48fe-80af-f643c4346794 #undefined "QA RT20 BP 3065 dynmine D2"
+- 2026-11-17T09:45:53Z BP lane: ticket-level owners of QA go on D1 set to CES1 (control)
+- 2026-11-17T09:46:06  [SC] report 13eefe2e-4349-495a-a2d0-6a3255212253 deleted (204)
+- 2026-11-17T09:46:19  [SC] report "QA RT20 SC score report2" d6d461e5-09f0-4ed2-986c-9c776f1b5ec4
+- 2026-11-17T09:46:23  [SC] report d6d461e5-09f0-4ed2-986c-9c776f1b5ec4 deleted (204)
+- 2026-11-17T09:46:28Z AS lane: ticket created 32857369-51a4-494e-a4af-c59a717e6b24 "QA RT20 AS R20SKi67z d3 S1+S2"
+- 2026-11-17T09:46:53Z AS lane: ticket created ea99ee0b-f600-4b6d-97cd-87b0d3571d38 "QA RT20 AS R20THct7jA3 thr2"
+- 2026-11-17T09:47:57Z AS lane: rule 9918cb81-45f5-4955-aa20-9cbae2620632 active=false -> 200
+- 2026-11-17T09:47:59Z AS lane: tskill: QA AS6 Dept A RR prefs changed and restored 200 true
+- 2026-11-17T09:48:12 Desk Tickets fields qa_rt20vr_type,qa_rt20vr_order,qa_rt20vr_l1,qa_rt20vr_l2,qa_rt20vr_l3,qa_rt20vr_l4,qa_rt20vr_l5,qa_rt20vr_l6,qa_rt20vr_l7 (lane VR)
+- 2026-11-17T09:48:17 Desk layout "QA RT20 VR 1988 Layout" d6082066-bb4e-446f-acb6-1405c46cfb83 (departments [QA AO Dept A], not default, HC off) (lane VR)
+- 2026-11-17T09:48:44Z AS lane: ticket created d2dcfbb8-4edf-4b6f-8441-f2f7ae1f4f9b "QA RT20 AS R20THct7jA3 thr3"
+- 2026-11-17T09:48:47 layout d6082066-bb4e-446f-acb6-1405c46cfb83 updated: order field moved to Refund section; Priority options [low,medium] set on this layout only (per-layout picklist test) (lane VR)
+- 2026-11-17T09:48:51Z BP lane: CES2 view-only REMOVED in QA RT20 BP Dept (restore) 200 vo=[]
+- 2026-11-17T09:49:01Z TK lane: contact created 265b884a-2c92-47bd-bec2-2974c110aba3 "QA RT20 TK Inbox customer" (user own Gmail plus-address +r20tk)
+- 2026-11-17T09:49:05Z TK lane: ticket created 4109d6f6-1e5b-4dc9-b8db-1ce913be2860 "QA RT20 TK 3073 spam A" contact Inbox customer
+- 2026-11-17T09:49:07Z TK lane: ticket created 2bc2347d-0871-41ec-9a37-7e80e57d6e78 "QA RT20 TK 3073 spam B" contact Inbox customer
+- 2026-11-17T09:49:08Z TK lane: ticket 4109d6f6-1e5b-4dc9-b8db-1ce913be2860 shared with QA RT20 TK Dept B (full)
+- 2026-11-17T09:49:10 layout rule "QA RT20 VR 1988 LR" eb9f278a-2d94-44d4-a5ae-c06c4ba97b87 (layout QA RT20 VR 1988 Layout; type=Refund → show Refund section + order mandatory) ACTIVE (lane VR)
+- 2026-11-17T09:49:11Z TK lane: ticket 2bc2347d-0871-41ec-9a37-7e80e57d6e78 shared with QA RT20 TK Dept B (full)
+- 2026-11-17T09:49:11 validation rule "QA RT20 VR 1988 VR" 870f725c-dbb6-4c9d-85d5-fc263233c55a (layout QA RT20 VR 1988 Layout; when type=Refund, order must not start with BAD) ACTIVE (lane VR)
+- 2026-11-17T09:49:12 dependency map l1→l2 452f2806-855b-4ad9-84ae-99299972e1c4 (lane VR)
+- 2026-11-17T09:49:13 dependency map l2→l3 c48cb94a-be1c-4960-9c72-c5b2d94e0218 (lane VR)
+- 2026-11-17T09:49:13 dependency map l3→l4 df8acc65-1333-4b77-9d90-88125be5cdcb (lane VR)
+- 2026-11-17T09:49:14 dependency map l4→l5 b49bbf5a-3aeb-4e7c-8da4-cfa903ffb17e (lane VR)
+- 2026-11-17T09:49:14 dependency map l5→l6 36742ad2-e810-498c-806c-5ab89cc38ac6 (lane VR)
+- 2026-11-17T09:49:15 dependency map l6→l7 961641b2-4398-4401-9d61-6ce6f17ebf5c (lane VR)
+- 2026-11-17T09:49:27Z AS lane: rule created 89c04db9-dd9e-4c4a-9422-b94ac813c7e4 round_robin "QA RT20 AS control seq pv7i" active=true
+- 2026-11-17T09:49:34Z AS lane: ticket created e0ad4898-2cd1-483d-9bc7-89251a6ed92c "QA RT20 AS R20CTLpv7i control"
+- 2026-11-17T09:49:39 ticket "QA RT20 VR 1988 T3 refund ok" aa53a5d7-4fd9-4b07-9007-9c7ef4c83921 (lane VR)
+- 2026-11-17T09:49:41 ticket "QA RT20 VR 1988 T4 question" e7488480-6a7c-470c-b58b-db6b6d69e1bd (lane VR)
+- 2026-11-17T09:49:43 ticket "QA RT20 VR 1988 T4b question BAD" 21221953-a798-4e41-a910-99d12c296f0d (lane VR)
+- 2026-11-17T09:49:44 ticket "QA RT20 VR 1988 T5 my layout urgent" 9ac42cb0-94b8-4b74-af92-26c8c50ba038 (lane VR)
+- 2026-11-17T09:49:46 ticket "QA RT20 VR 1988 T5b standard urgent" 146012e7-a714-4d9c-9c77-d889ef653774 (lane VR)
+- 2026-11-17T09:49:48 ticket "QA RT20 VR 1988 T6b dep chain ok" 798b7b39-9b8f-4a9b-bf25-e1a921775105 (lane VR)
+- 2026-11-17T09:50:11Z AS lane: ticket created 21caaaef-0f5e-4015-9e10-d4c5a8781fa5 "QA RT20 AS R20THct7jA3 thr4"
+- 2026-11-17T09:51:52Z AS lane: rule 4da2afc9-6b14-4cad-bdba-f033e2791214 active=false -> 200
+- 2026-11-17T09:51:53Z AS lane: rule c07aad90-06fd-4676-9a23-94f10f8dd9f2 active=false -> 200
+- 2026-11-17T09:51:54Z AS lane: rule 4da2afc9-6b14-4cad-bdba-f033e2791214 active=false -> 200
+- 2026-11-17T09:51:55Z AS lane: thr2: dept 4853562a RR prefs changed and restored 200 true
+- 2026-11-17T09:53:30 [SC] custom view (Leads, private, list) "QA RT20 SC hot leads" 6ff4fca2-d060-4305-aa18-10e6f4defe40 (Score >= 30)
+- 2026-11-17T09:53:56Z AS lane: rule 89c04db9-dd9e-4c4a-9422-b94ac813c7e4 active=false -> 200
+- 2026-11-17T09:54:24Z TK lane: comment added on ticket 2bc2347d-0871-41ec-9a37-7e80e57d6e78 (3073 control, private)
+- 2026-11-17T09:54:27Z TK lane: comment added on ticket 4109d6f6-1e5b-4dc9-b8db-1ce913be2860 (after Not Spam, private)
+- 2026-11-17T09:54:27Z AS lane: rule created 159fedac-653e-4b57-8f81-7636b1b00c81 round_robin "QA RT20 AS control O jv2x" active=true
+- 2026-11-17T09:54:33Z AS lane: ticket created 983eae80-05fc-4efe-95b8-db17104b8b98 "QA RT20 AS R20CT2Ojv2x control"
+- 2026-11-17T09:55:29Z TK lane: state at hand-back: #4838 (3073 A) Not Spam again, shares empty; #4839 (3073 B) still shared with QA RT20 TK Dept B; #4821 contact removed (edited subject/description/priority high); #4833 contact C1; view 471295a5 left (empty); 300 bulk tickets in recycle bin; no rules, settings, agents or locks touched
+- 2026-11-17T09:55:50Z BP lane: department created 9b9678c7-8a91-4030-8967-f3888097b4ef "QA RT20 BP Dept B" (NDC-3027, will be disabled with transfer)
+- 2026-11-17T09:55:51Z BP lane: ticket created 1063994b-7a3a-4efd-8be3-45c54681c964 "QA RT20 BP-3027 transfer ticket"
+- 2026-11-17T09:55:53Z BP lane: ticket created undefined "QA RT20 BP-3027 delete restore"
+- 2026-11-17T09:56:02Z BP lane: ticket deleted undefined (NDC-3027, to restore)
+- 2026-11-17T09:56:13Z BP lane: department DISABLED 9b9678c7-8a91-4030-8967-f3888097b4ef "QA RT20 BP Dept B" with transfer to QA RT20 BP Dept: 200
+- 2026-11-17T09:56:32Z BP lane: ticket created e82addd9-3e98-414c-8681-9ec9c0e66484 "QA RT20 BP-3027 delete restore"
+- 2026-11-17T09:56:33Z AS lane: rule 159fedac-653e-4b57-8f81-7636b1b00c81 active=false -> 200
+- 2026-11-17T09:56:34Z AS lane: rule created 95a06ae8-93b1-4a41-b2ee-f5d21c322198 round_robin "QA RT20 AS control A3 jv2x" active=true
+- 2026-11-17T09:56:38Z AS lane: ticket created 3e4ca487-d480-414e-b8d3-c7591b343df5 "QA RT20 AS R20CT2A3jv2x control"
+- 2026-11-17T09:56:42Z BP lane: ticket deleted e82addd9-3e98-414c-8681-9ec9c0e66484 (NDC-3027, to restore)
+- 2026-11-17T09:56:47Z BP lane: ticket restored e82addd9-3e98-414c-8681-9ec9c0e66484 200
+- 2026-11-17T09:57:18 layout rule eb9f278a-2d94-44d4-a5ae-c06c4ba97b87 → disabled; validation rule 870f725c-dbb6-4c9d-85d5-fc263233c55a → disabled; layout d6082066-bb4e-446f-acb6-1405c46cfb83 status active → active (lane VR)
+- 2026-11-17T09:57:20  [SC] record "QA RT20 SC H setscore" 39baa0ec-50bf-4944-9280-7c39527bbd6f (Leads)
+- 2026-11-17T09:58:59 layout d6082066-bb4e-446f-acb6-1405c46cfb83 status active → active (lane VR)
+- 2026-11-17T09:59:08  [SC] report "QA RT20 SC score report3" e964a56d-29aa-438c-9fa8-028b4ebc7b00
+- 2026-11-17T09:59:11  [SC] report e964a56d-29aa-438c-9fa8-028b4ebc7b00 deleted (204)
+- 2026-11-17T09:59:14 ticket "QA RT20 VR 1988 T3 refund ok" aa53a5d7-4fd9-4b07-9007-9c7ef4c83921 deleted (Recycle Bin) so the QA layout can be disabled (lane VR)
+- 2026-11-17T09:59:16 ticket "QA RT20 VR 1988 T4 question" e7488480-6a7c-470c-b58b-db6b6d69e1bd deleted (Recycle Bin) so the QA layout can be disabled (lane VR)
+- 2026-11-17T09:59:17 ticket "QA RT20 VR 1988 T4b question BAD" 21221953-a798-4e41-a910-99d12c296f0d deleted (Recycle Bin) so the QA layout can be disabled (lane VR)
+- 2026-11-17T09:59:18 ticket "QA RT20 VR 1988 T5 my layout urgent" 9ac42cb0-94b8-4b74-af92-26c8c50ba038 deleted (Recycle Bin) so the QA layout can be disabled (lane VR)
+- 2026-11-17T09:59:19 ticket "QA RT20 VR 1988 T6b dep chain ok" 798b7b39-9b8f-4a9b-bf25-e1a921775105 deleted (Recycle Bin) so the QA layout can be disabled (lane VR)
+- 2026-11-17T09:59:20 layout d6082066-bb4e-446f-acb6-1405c46cfb83 status → disabled (lane VR)
+- 2026-11-17T09:59:40  [SC] report "QA RT20 SC score report3" 5033f9ec-1019-4c1d-9bac-2ac2687bc08f
+- 2026-11-17T09:59:42  [SC] report 5033f9ec-1019-4c1d-9bac-2ac2687bc08f deleted (204)
+- 2026-11-17T10:00:01Z AS lane: rule 95a06ae8-93b1-4a41-b2ee-f5d21c322198 active=false -> 200
+- 2026-11-17T10:00:02Z AS lane: rule 159fedac-653e-4b57-8f81-7636b1b00c81 active=false -> 200
+- 2026-11-17T10:00:03Z AS lane: rule 95a06ae8-93b1-4a41-b2ee-f5d21c322198 active=false -> 200
+- 2026-11-17T10:00:03Z AS lane: ctl2: QA AO Dept B RR prefs changed and restored 200 true
+- 2026-11-17T10:00:45  [SC] report "QA RT20 SC score report4" 1dd51f9d-0a7b-46f6-9a73-362dbf1b8f4a
+- 2026-11-17T10:00:51  [SC] report 1dd51f9d-0a7b-46f6-9a73-362dbf1b8f4a deleted (204)
+- 2026-11-17T10:01:37Z AS lane: QA AS6 Dept A prefs: offline allowed, thresholds off for 2275 import check -> 200
+- 2026-11-17T10:01:38Z AS lane: rule created 6f6aa538-8bf2-4590-8de4-5e0df68d2735 round_robin "QA RT20 AS 2275 import xuy5" active=true
+- 2026-11-17T10:01:39  [SC] record "QA RT20 SC G2 wf run" bfc26145-3cb5-4547-a91a-bf3e17c80d17 (Leads)
+- 2026-11-17T10:01:41Z AS lane: ticket created abdfb71c-35e6-4248-aac4-20ee66582eb1 "QA RT20 AS R20ASIMP api control"
+- 2026-11-17T10:01:42  [SC] workflow b341d0be-71ae-44ef-a314-43a298ae2b98 re-activated for background-run test
+- 2026-11-17T10:01:44  [SC] scoring rule "QA RT20 SC R8 wf run" c059deb0-4acf-4602-8711-61bbae1db2fa (Leads)
+- 2026-11-17T10:03:02  [SC] scoring rule R8 c059deb0-4acf-4602-8711-61bbae1db2fa deactivated
+- 2026-11-17T10:03:02  [SC] workflow b341d0be-71ae-44ef-a314-43a298ae2b98 deactivated again
+- 2026-11-17T10:07:39Z BP lane: blueprint switched OFF f2b2c1f5-56fd-4098-91e8-8a8704f78898 "QA RT20 BP 3065 role": 200 active=false
+- 2026-11-17T10:07:40Z BP lane: blueprint switched OFF f85fde0c-1152-4743-95f6-801f19e99b33 "QA RT20 BP 3065 tk": 200 active=false
+- 2026-11-17T10:07:42Z BP lane: blueprint switched OFF 6deb60c8-5329-41dc-b237-622a6bfd0a09 "QA RT20 BP 3065 dyn": 200 active=false
+- 2026-11-17T10:07:43Z BP lane: blueprint switched OFF 3f8f8148-a453-4929-ac7b-9d1d16275141 "QA RT20 BP 3065 dynmine": 200 active=false
+- 2026-11-17T10:08:00Z BP lane: CES2 removed from QA RT20 BP Dept (restore agent memberships): 200 agents=1
+- 2026-11-17T10:08:06Z AS lane: ticket created by import 2d3c3f67-407c-4f4f-8c51-8cd2ba158670 "QA RT20 AS R20ASIMP import with owner"
+- 2026-11-17T10:08:25  [SC] scoring rule "QA RT20 SC R1 fit" fbaa0579-59f1-4f8c-a2e8-48b01d7f7212 deactivated (end of lane)
+- 2026-11-17T10:08:26  [SC] scoring rule "QA RT20 SC R3 emp" 190b04c5-8dde-4db0-9930-84fed40e1faa deactivated (end of lane)
+- 2026-11-17T10:08:26  [SC] scoring rule "QA RT20 SC R4 dates" b2a4099b-bee1-4b32-96df-7d01b7dc8608 deactivated (end of lane)
+- 2026-11-17T10:08:27  [SC] scoring rule "QA RT20 SC R6 old ui" 07c2e8cb-126b-4fce-854b-be27b520162f deactivated (end of lane)
+- 2026-11-17T10:08:39Z AS lane: ticket created by import 6cb16e4b-7cee-4187-8c0c-d59a796ef081 "QA RT20 AS R20ASIMP import no owner"
+- 2026-11-17T10:08:52Z AS lane: rule 6f6aa538-8bf2-4590-8de4-5e0df68d2735 active=false -> 200
+- 2026-11-17T10:08:53Z AS lane: QA AS6 Dept A prefs restored after import check true
+- 2026-11-17T10:09:51Z AS lane: rule created 47eb319a-03b4-4804-9f7e-084259159c05 round_robin "QA RT20 AS control owner 326x" active=true
+- 2026-11-17T10:09:57Z AS lane: ticket created 27b307db-914a-4bac-bcac-bb4b4851f219 "QA RT20 AS R20CT3326x control"
+- 2026-11-17T10:14:44Z AS lane: rule 47eb319a-03b4-4804-9f7e-084259159c05 active=false -> 200
+- 2026-11-17T10:14:45Z AS lane: ctl3: QA AO Dept B RR prefs changed and restored 200 true
+- 2026-11-17 AS lane summary: rules "QA RT20 AS …" 3 in QA AS6 Dept A, 7 in QA AO Dept B — all INACTIVE (verified 10:20Z); RR prefs QA AO Dept B + QA AS6 Dept A changed per probe and restored (equal, verified); tenant switches not touched. Tickets left (Closed unless noted): #4822-4851 range "QA RT20 AS R20TH*/R20SK*/R20CT*" + import #4848/#4849 + control #4847 (Open), #4802/#4803/#4804 (Open). No sign-ins (owner shared session only).
+- 2026-11-17T11:26:37Z AZ lane: rule created 6a76d354-937f-48bf-a9bc-81c654ab2b11 round_robin "QA RT20 AZ control owner u9lr" active=true
+- 2026-11-17T11:26:45Z AZ lane: ticket created 4245065f-61e7-4617-ad39-1e32027ebc5f "QA RT20 AZ CTLu9lr control"
+- 2026-11-17T11:28:19Z HX lead: ticket QA RT20 HX 3068 status close db0d1419-7a72-44ab-a395-515bde91a769 (QA RT20 TK Dept)
+- 2026-11-17T11:30:55Z AZ lane: rule 6a76d354-937f-48bf-a9bc-81c654ab2b11 active=false -> 200
+- 2026-11-17T11:30:56Z AZ lane: ctl: QA AO Dept B RR prefs changed and restored 200 same=true
+- 2026-11-17T11:38:38Z WF lane: ticket "QA RT20 WF H0 health probe" 2d2bb448-b96e-44b5-9b7d-56137e07e887 #undefined
+- 2026-11-17T11:39:03Z BS lane: agent state r20-bp-agent.json (CES2, signed in by BP lane 09:21Z) COPIED to scratchpad r20-bs-agent.json for BS lane use; no new sign-in
+- 2026-11-17T11:40:26Z AZ lane: rule created 48388931-8f5b-4676-87ac-d3399956f70a round_robin "QA RT20 AZ move control owner 54l6" active=true
+- 2026-11-17T11:40:33Z AZ lane: ticket created 7b917154-e9e7-46fc-8c0a-ae5d71f9b266 "QA RT20 AZ MV54l6 create"
+- 2026-11-17T11:40:37Z BS lane: copied CES2 state was dead (signed out); SIGN-IN agent "Customer Experience Specialists 2" ONCE via login-r12.js -> scratchpad r20-bs-agent.json
+- 2026-11-17T11:41:08Z BS lane: blueprint created 23339d62-fecf-4324-8950-5fa1bfdef0df "QA RT20 BS 3056 flow" active=true
+- 2026-11-17T11:41:11Z BS lane: ticket created 9ec8bdc5-2362-4386-a4cd-e5bee332d0c7 #undefined "QA RT20 BS 3056 flow ticket"
+- 2026-11-17T11:42:37Z AZ lane: ticket created cfb30f3e-0c18-4bfe-87f7-ed1b8ebaf230 "QA RT20 AZ MV54l6 move"
+- 2026-11-17T11:42:48Z AZ lane: rule 48388931-8f5b-4676-87ac-d3399956f70a active=false -> 200
+- 2026-11-17T11:42:49Z AZ lane: mvctl: QA AO Dept B RR prefs changed and restored 200 same=true
+- 2026-11-17T11:43:18Z WF lane: ticket "QA RT20 WF 2997 ouCS t1" 50c07440-1e26-449d-a3e8-60fa4c7ea71b #undefined
+- 2026-11-17T11:43:21Z WF lane: ticket "QA RT20 WF 2997 ouCS t2" b28f187c-2772-4fe1-94a9-2be3ef246533 #undefined
+- 2026-11-17T11:43:22Z WF lane: ticket "QA RT20 WF 2997 ouCS t3" 594bbc15-8fc6-47bf-8804-e7a446d075d0 #undefined
+- 2026-11-17T11:43:27Z AZ lane: rule created 5fb4d133-2127-4093-b6be-e6821309fabc round_robin "QA RT20 AZ thr A1 i29z" active=true
+- 2026-11-17T11:43:32Z WF lane: workflow rule "QA RT20 WF 2997 ouCS" 2ad2c87e-1eed-4d00-b36d-272645b3cf28 (active)
+- 2026-11-17T11:43:47Z AZ lane: ticket created 79739cce-b518-49b2-b053-d8069e8ea683 "QA RT20 AZ THi29zA1 at thr 4"
+- 2026-11-17T11:44:24Z WF lane: workflow rule 2ad2c87e-1eed-4d00-b36d-272645b3cf28 deactivated
+- 2026-11-17T11:44:26Z WF lane: ticket "QA RT20 WF 2997 ouQAO t1" 19d6d4ac-076f-43ee-8a8a-b91d0985bb71 #undefined
+- 2026-11-17T11:44:28Z WF lane: ticket "QA RT20 WF 2997 ouQAO t2" 76e370c9-8684-4be8-94cb-640b9d35d0fd #undefined
+- 2026-11-17T11:44:37Z WF lane: workflow rule "QA RT20 WF 2997 ouQAO" fa6290c8-8376-4925-8870-be4c4ff7083f (active)
+- 2026-11-17T11:45:07Z AZ lane: ticket created cf2d1019-6619-4ff6-a022-dbab287c758d "QA RT20 AZ THi29zA1 at thr 5"
+- 2026-11-17T11:45:12Z WF lane: workflow rule fa6290c8-8376-4925-8870-be4c4ff7083f deactivated
+- 2026-11-17T11:45:14Z WF lane: ticket "QA RT20 WF 2997 prEmpty t1" 77cb63f3-60b4-4560-af1b-d9acb2dc30a3 #undefined
+- 2026-11-17T11:45:17Z AZ lane: ticket created 48384bb8-7b1e-40ef-9e94-92392eadaeff "QA RT20 AZ THi29zA1 full again"
+- 2026-11-17T11:45:23Z WF lane: workflow rule "QA RT20 WF 2997 prEmpty" ce83f4b2-5caf-4b80-bd5a-86af2227751b (active)
+- 2026-11-17T11:45:51Z WF lane: workflow rule ce83f4b2-5caf-4b80-bd5a-86af2227751b deactivated
+- 2026-11-17T11:45:52Z WF lane: ticket "QA RT20 WF 2997 prQAO t1" d04f3a39-8089-492c-a92d-4507ed63ac1c #undefined
+- 2026-11-17T11:45:53Z WF lane: ticket "QA RT20 WF 2997 prQAO t2" 6ca5f973-fe8a-42c1-aeea-b90e3e6da0f5 #undefined
+- 2026-11-17T11:45:54Z WF lane: ticket "QA RT20 WF 2997 prQAO t3" c176661a-19d8-4a87-9792-b5b4205f68d7 #undefined
+- 2026-11-17T11:46:05Z WF lane: workflow rule "QA RT20 WF 2997 prQAO" 09f71f2f-36df-416e-8f7a-c39634886b39 (active)
+- 2026-11-17T11:46:05Z AZ lane: ticket created e1bcae94-637e-4ff3-80f0-318295756e4f "QA RT20 AZ THi29zA1 after onhold"
+- 2026-11-17T11:46:50Z WF lane: workflow rule 09f71f2f-36df-416e-8f7a-c39634886b39 deactivated
+- 2026-11-17T11:46:51Z WF lane: ticket "QA RT20 WF 2997 mgrQAO t1" 870dd1ee-514a-4a74-bb62-4351e9bfce4a #undefined
+- 2026-11-17T11:46:52Z WF lane: ticket "QA RT20 WF 2997 mgrQAO t2" 29509a02-0536-4cd5-8824-2e8706f2be70 #undefined
+- 2026-11-17T11:46:55Z WF lane: ticket "QA RT20 WF 2997 mgrQAO t3" 76883278-e51e-42b7-a2b0-3c79ac81a6d6 #undefined
+- 2026-11-17T11:46:57Z WF lane: ticket "QA RT20 WF 2997 mgrQAO t4" 7169c4fa-57ed-43e9-9302-c9e3492f2103 #undefined
+- 2026-11-17T11:47:00Z AZ lane: rule 5fb4d133-2127-4093-b6be-e6821309fabc active=false -> 200
+- 2026-11-17T11:47:01Z AZ lane: rule created f858cd7e-7ad4-45ce-95c4-9e42b4f31a64 round_robin "QA RT20 AZ thr A3 i29z" active=true
+- 2026-11-17T11:47:08Z WF lane: workflow rule "QA RT20 WF 2997 mgrQAO" 5709ab69-4399-49b8-9209-0a597aa46ac8 (active)
+- 2026-11-17T11:47:59Z WF lane: workflow rule 5709ab69-4399-49b8-9209-0a597aa46ac8 deactivated
+- 2026-11-17T11:48:51Z WF lane: ticket "QA RT20 WF 2997 seq t1" 7fa7dbbb-e3b8-44b8-947f-e1d0a60e5b8a #undefined
+- 2026-11-17T11:48:53Z WF lane: ticket "QA RT20 WF 2997 seq t2" 2609f288-3c1f-45e9-a32c-ea4123b63bcb #undefined
+- 2026-11-17T11:48:54Z WF lane: ticket "QA RT20 WF 2997 seq t3" 7ba5d495-4b70-4e20-8fbb-03487292a2a3 #undefined
+- 2026-11-17T11:48:56Z WF lane: ticket "QA RT20 WF 2997 seq t4" a6f7a24d-403d-4b36-9506-bb2becbd79b3 #undefined
+- 2026-11-17T11:49:05Z WF lane: workflow rule "QA RT20 WF 2997 seq" 26d76a91-21f9-4c42-b232-d33c5e09b0a2 (active)
+- 2026-11-17T11:49:05Z BS lane: as CES2 ran QA go on #4869 (9ec8bdc5) -> Escalated; set priority medium (agent API)
+- 2026-11-17T11:49:16Z AZ lane: ticket created 751edc3e-510d-45e4-bcbc-164971627e43 "QA RT20 AZ THi29zA3 at thr 1"
+- 2026-11-17T11:50:00Z AZ lane: ticket created 0652c9b4-d22c-4a3f-b906-a950d32f6edf "QA RT20 AZ THi29zA3 at thr 2"
+- 2026-11-17T11:50:05Z BS lane: as CES2 ran QA end on #4869 -> Closed (blueprint state)
+- 2026-11-17T11:50:09Z AZ lane: ticket created 1978149b-e7dc-473f-a656-fa70fcb9f66e "QA RT20 AZ THi29zA3 full again"
+- 2026-11-17T11:50:56Z AZ lane: ticket created 72307ed2-621c-4a3b-9e99-fc537390067b "QA RT20 AZ THi29zA3 after onhold"
+- 2026-11-17T11:50:57Z WF lane: workflow rule 26d76a91-21f9-4c42-b232-d33c5e09b0a2 deactivated
+- 2026-11-17T11:50:58Z WF lane: workflow rule "QA RT20 WF 2997 oncreate" f8b379ca-3c58-404c-9142-d44b6692b324 (active)
+- 2026-11-17T11:50:59Z WF lane: ticket "QA RT20 WF 2997 oncreate t1" 46a4db68-18cb-4282-af5e-79f6cd3e4d02 #undefined
+- 2026-11-17T11:51:21Z WF lane: workflow rule f8b379ca-3c58-404c-9142-d44b6692b324 deactivated
+- 2026-11-17T11:52:05Z AZ lane: rule f858cd7e-7ad4-45ce-95c4-9e42b4f31a64 active=false -> 200
+- 2026-11-17T11:52:09Z AZ lane: rule 5fb4d133-2127-4093-b6be-e6821309fabc active=false -> 200
+- 2026-11-17T11:52:13Z AZ lane: rule f858cd7e-7ad4-45ce-95c4-9e42b4f31a64 active=false -> 200
+- 2026-11-17T11:52:25Z AZ lane: thr: QA AO Dept B RR prefs changed and restored 200 true; 8 QA RT20 AZ tickets closed
+- 2026-11-17T11:52:58Z WF lane: ticket H0 2d2bb448 priority high->urgent (history probe)
+- 2026-11-17T11:53:28Z WF lane: ticket H0 2d2bb448 owner -> Dev Team 2? no: dept QA RT19 WF Dept (history probe) 422
+- 2026-11-17T11:53:50Z AZ lane: closed via /desk close (desk projection was stale Open): 4868:409 4870:409 4871:409 4872:409 4873:409 4874:409 4875:409 4876:409 4877:409 4878:409
+- 2026-11-17T11:53:55Z AZ lane: rule created 15ed2341-c685-41eb-accc-98cd5fd222b4 round_robin "QA RT20 AZ skill A1 A3 grmp" active=true
+- 2026-11-17T11:53:59Z AZ lane: ticket created bcaa378c-3bf9-45be-a467-306fc85412b6 "QA RT20 AZ SKgrmp a QA RT19 AS S3+QA RT19 AS S1"
+- 2026-11-17T11:53:59Z WF lane: correction: H0 2d2bb448 assign to Dev Team 2 was refused 422 (not an agent of QA RT19 WF Dept); owner unchanged (ndc-staging-owner)
+- 2026-11-17T11:54:34Z AZ lane: ticket created 271263d6-8d86-4989-a560-f2e6b8dfa7a8 "QA RT20 AZ SKgrmp b QA RT19 AS S3"
+- 2026-11-17T11:55:05Z BS lane: blueprint created 5392f456-66f9-4bc7-aa95-99bad990f4d5 "QA RT20 BS 3063 units" active=false
+- 2026-11-17T11:55:13Z AZ lane: ticket created 438ab25e-58ca-4788-a050-933cfdef2154 "QA RT20 AZ SKgrmp c no skills"
+- 2026-11-17T11:56:06Z WF lane: workflow rule "QA RT20 WF 3058" 20388e6d-8143-40f7-9941-8c6febf2077e (inactive)
+- 2026-11-17T11:56:51Z AZ lane: ticket created b8847d75-be3d-466a-ad30-d077cad2ff68 "QA RT20 AZ SKgrmp d QA RT19 AS S1+QA RT19 AS S2"
+- 2026-11-17T11:57:14Z WF lane: workflow rule 20388e6d-8143-40f7-9941-8c6febf2077e activated
+- 2026-11-17T11:57:16Z WF lane: ticket "QA RT20 WF 3058 tag pick" f3ee35f3-ff2f-4cd2-a750-ce80e54825b7 #undefined
+- 2026-11-17T11:57:29Z AZ lane: ticket created aeaacd01-c346-4a98-94dd-f8af96e52fc5 "QA RT20 AZ SKgrmp e QA RT19 AS S1+QA RT19 AS S2"
+- 2026-11-17T11:57:44Z WF lane: workflow rule 20388e6d-8143-40f7-9941-8c6febf2077e deactivated
+- 2026-11-17T11:58:07Z AZ lane: rule 15ed2341-c685-41eb-accc-98cd5fd222b4 active=false -> 200
+- 2026-11-17T11:58:10Z WF lane: workflow rule "QA RT20 WF 3057 lists" b3f7f4a3-def6-4cf3-8f33-53db39e40be7 (inactive)
+- 2026-11-17T11:58:12Z WF lane: workflow rule "QA RT20 WF 3057 related" 9f6fde07-08f1-4491-81c1-c68c23c4eacf (inactive)
+- 2026-11-17T11:58:12Z AZ lane: sk: QA AS6 Dept A RR prefs changed and restored 200 true; tickets closed
+- 2026-11-17T12:00:01Z AZ lane: rule created b3fdc126-796f-4f68-bd7f-9d7843824ecf round_robin "QA RT20 AZ burst A1 A3 ymfl" active=true
+- 2026-11-17T12:00:12Z AZ lane: ticket created 64669a4a-86c5-415b-a790-407e25fae229 "QA RT20 AZ BUymfl #1"
+- 2026-11-17T12:00:28Z AZ lane: ticket created 5ad4fc53-370a-4654-8cef-b8d9b319b501 "QA RT20 AZ BUymfl #2"
+- 2026-11-17T12:00:29Z AZ lane: ticket created 7500b62c-6948-4f6f-8994-f2ddb6818212 "QA RT20 AZ BUymfl #3"
+- 2026-11-17T12:00:30Z AZ lane: ticket created 26c0321b-9b47-43e0-990c-bb89a351c10e "QA RT20 AZ BUymfl #4"
+- 2026-11-17T12:00:32Z AZ lane: ticket created 719b8e00-06d1-4729-8901-c8b69ffed807 "QA RT20 AZ BUymfl #5"
+- 2026-11-17T12:00:35Z AZ lane: ticket created 3f2e612a-698d-4582-a982-a3325584a34d "QA RT20 AZ BUymfl #6"
+- 2026-11-17T12:00:36Z AZ lane: ticket created 435b31a8-4c1c-4a3f-8337-c4f985dd6007 "QA RT20 AZ BUymfl #7"
+- 2026-11-17T12:00:38Z AZ lane: ticket created abd2b34d-68e5-4267-a147-773c10bce376 "QA RT20 AZ BUymfl #8"
+- 2026-11-17T12:00:39Z AZ lane: ticket created f6720ece-b9dc-4c09-bc8c-7c863fa4624d "QA RT20 AZ BUymfl #9"
+- 2026-11-17T12:00:40Z AZ lane: ticket created 66fba5b3-35ed-4a46-b5f7-9f71de64e8df "QA RT20 AZ BUymfl #10"
+- 2026-11-17T12:02:01Z AZ lane: rule b3fdc126-796f-4f68-bd7f-9d7843824ecf active=false -> 200
+- 2026-11-17T12:02:13Z AZ lane: burst: QA AO Dept B RR prefs changed and restored 200 true; 10 tickets closed (record)
+- 2026-11-17T12:02:29Z WF lane: CRM workflow rule "QA RT20 WF 3057 crm" c4d6ea12-8765-45d0-9cfa-e276820c6b6e (inactive, Leads)
+- 2026-11-17T12:02:41Z AZ lane: rule created 0d6893a2-ed11-426a-96ba-e67b02dae738 round_robin "QA RT20 AZ burst A1 A3 b63k" active=true
+- 2026-11-17T12:02:50Z AZ lane: ticket created a0c6e4b4-f6fc-4a34-ab7a-d64aee93cbec "QA RT20 AZ BUb63k #1"
+- 2026-11-17T12:02:52Z AZ lane: ticket created a8f71793-422f-4bb9-8c87-5583ba4c5a39 "QA RT20 AZ BUb63k #2"
+- 2026-11-17T12:02:53Z AZ lane: ticket created 10854b1f-5455-49c3-94f2-8f95ba304036 "QA RT20 AZ BUb63k #3"
+- 2026-11-17T12:02:53Z AZ lane: ticket created f0c7b71f-e669-49e4-b33b-3a1216ffcb18 "QA RT20 AZ BUb63k #4"
+- 2026-11-17T12:02:54Z AZ lane: ticket created 0d20639d-0459-41e1-9990-e0f52095056e "QA RT20 AZ BUb63k #5"
+- 2026-11-17T12:02:55Z AZ lane: ticket created d2ff04f1-4c02-4253-9e9b-2cf5fca5db8c "QA RT20 AZ BUb63k #6"
+- 2026-11-17T12:02:56Z AZ lane: ticket created cb866c53-5a22-4011-9879-c909d07c3c36 "QA RT20 AZ BUb63k #7"
+- 2026-11-17T12:02:57Z AZ lane: ticket created a7805396-c79a-4f05-9f19-0963bb973610 "QA RT20 AZ BUb63k #8"
+- 2026-11-17T12:02:57Z AZ lane: ticket created dd0c1583-2896-4ef5-81c0-4dd5fab759ed "QA RT20 AZ BUb63k #9"
+- 2026-11-17T12:02:58Z AZ lane: ticket created 6ee141e7-1f4b-46a3-a5bb-8c5ee3bad211 "QA RT20 AZ BUb63k #10"
+- 2026-11-17T12:05:07Z AZ lane: rule 0d6893a2-ed11-426a-96ba-e67b02dae738 active=false -> 200
+- 2026-11-17T12:05:38Z AZ lane: burst: QA AO Dept B RR prefs changed and restored 200 true; 10 tickets closed (record)
+- 2026-11-17T12:07:05Z BS lane: SLA policy "QA RT20 BS 2841 A w2pv" a5859600-5fa7-445a-a22d-8c4e70484459 inactive
+- 2026-11-17T12:07:06Z BS lane: SLA policy "QA RT20 BS 2841 B w2pv" 5571e16b-6e43-47f6-8c57-848c69abbdea inactive
+- 2026-11-17T12:07:07Z BS lane: support plan "QA RT20 BS Plan 2841 A w2pv" 68789c8d-569f-44d7-8683-de4991d2c717
+- 2026-11-17T12:07:09Z BS lane: support plan "QA RT20 BS Plan 2841 B w2pv" 6863c25d-e7e6-4062-ba45-27003d13854b
+- 2026-11-17T12:07:11Z BS lane: account "QA RT20 BS Account 2841 w2pv" 217f16bf-3be7-4a1d-9fdb-12e372f7ff34
+- 2026-11-17T12:07:17Z BS lane: contract "QA RT20 BS Contract 2841 A own plan w2pv" c788d067-97c0-471e-a1f1-f19fb8731569
+- 2026-11-17T12:07:24Z BS lane: contract "QA RT20 BS Contract 2841 A to move w2pv" c9334539-2831-46f2-98d7-45f8fc0e0b16
+- 2026-11-17T12:07:30Z BS lane: contract "QA RT20 BS Contract 2841 A dept only change w2pv" ed48020f-8389-4b30-86b1-23d399ffbae7
+- 2026-11-17T12:16:09Z WF lane: rule 20388e6d "QA RT20 WF 3058" edited in the UI (added tag "QA WF tag A" — the Customer Support one), saved; left inactive
+- 2026-11-17T12:22:06Z BS lane: contract created via New Contract form "QA RT20 BS Contract 2841 UI en" 562e9bee-fdac-4b80-8d76-821f963858b6 (QA RT19 SLA Dept B, plan QA RT20 BS Plan 2841 B w2pv); mismatched save before it refused 422, nothing created
+- 2026-11-17T12:22:06Z BS lane: blueprint QA RT20 BS 3063 units 5392f456 (inactive) Open state edited many times in designer, final Open 20 min / warn 10 min
+- 2026-11-17T12:31:14Z AZ lane: rule created e5b93a34-5b9a-479b-87a9-3be79a1c98f0 round_robin "QA RT20 AZ move control owner 51o0" active=true
+- 2026-11-17T12:31:23Z AZ lane: ticket created 4479d7ef-bb0b-4ebc-b82b-e19888c21d34 "QA RT20 AZ MV51o0 create"
+- 2026-11-17T12:31:30Z BS lane: blueprint switched OFF 23339d62-fecf-4324-8950-5fa1bfdef0df "QA RT20 BS 3056 flow": 200 active=false
+- 2026-11-17T12:31:36Z AZ lane: ticket created 8e8331b9-f6f3-4944-b76e-668a18ec12e3 "QA RT20 AZ MV51o0 move"
+- 2026-11-17T12:31:55Z AZ lane: rule e5b93a34-5b9a-479b-87a9-3be79a1c98f0 active=false -> 200
+- 2026-11-17T12:31:56Z AZ lane: mvctl: QA AO Dept B RR prefs changed and restored 200 same=true
+- 2026-11-17T12:36:09Z AZ lane: fix: closed leftover Open QA RT20 AZ tickets 4896 200 rec=Closed desk=Closed; 4897 200 rec=Closed desk=Closed; 4898 200 rec=Closed desk=Closed; 4899 200 rec=Closed desk=Closed
+- 2026-11-17T12:36:25Z AZ lane: rule created a7d6f9b6-9420-4725-9ec1-57947e96e60a round_robin "QA RT20 AZ thr A1 k93g" active=true
+- 2026-11-17T12:36:35Z AZ lane: rule created 9699f056-1c30-4479-9b1d-c1d4f93d59ca round_robin "QA RT20 AZ skill A1 A3 7fzh" active=true
+- 2026-11-17T12:36:39Z AZ lane: ticket created 33833983-24cd-4c72-bd9b-4c69aadbd157 "QA RT20 AZ THCk93gA1 at thr 4"
+- 2026-11-17T12:36:41Z AZ lane: ticket created e5b0f4fe-c2f1-4de4-a995-3ee43e58914e "QA RT20 AZ SKC7fzh a QA RT19 AS S3+QA RT19 AS S2"
+- 2026-11-17T12:36:50Z AZ lane: ticket created f575515e-beee-4917-9a24-06ddf0d2ed04 "QA RT20 AZ SKC7fzh b QA RT19 AS S3"
+- 2026-11-17T12:38:29Z AZ lane: ticket created 11f69dba-d233-4253-a7aa-a9e0d7795970 "QA RT20 AZ SKC7fzh c no skills"
+- 2026-11-17T12:39:02Z AZ lane: ticket created e372b9fb-5ee5-402c-87f9-b02b2e3e5af4 "QA RT20 AZ THCk93gA1 at thr 5"
+- 2026-11-17T12:39:12Z AZ lane: ticket created 336ccbed-7564-4e22-a900-42057c27f9a2 "QA RT20 AZ THCk93gA1 at thr 6"
+- 2026-11-17T12:39:22Z AZ lane: ticket created 6ae227e2-62d3-4794-8453-13c158d06f16 "QA RT20 AZ THCk93gA1 at thr 7"
+- 2026-11-17T12:39:34Z AZ lane: rule a7d6f9b6-9420-4725-9ec1-57947e96e60a active=false -> 200
+- 2026-11-17T12:39:34Z AZ lane: rule created fd050049-bb76-432b-857a-ace879e8f23b round_robin "QA RT20 AZ thr A3 k93g" active=true
+- 2026-11-17T12:40:13Z AZ lane: ticket created 171fc44f-1b6a-4a12-9c87-7592b6726f66 "QA RT20 AZ THCk93gA3 at thr 1"
+- 2026-11-17T12:41:50Z AZ lane: ticket created e21ce44b-f190-4d54-b053-fae17cc9c7f0 "QA RT20 AZ SKC7fzh d QA RT19 AS S1+QA RT19 AS S2"
+- 2026-11-17T12:42:00Z AZ lane: rule 9699f056-1c30-4479-9b1d-c1d4f93d59ca active=false -> 200
+- 2026-11-17T12:42:10Z AZ lane: skc: QA AS6 Dept A RR prefs changed and restored 200 true; tickets closed
+- 2026-11-17T12:43:45Z AZ lane: ticket created e764ad5c-28d4-4c5f-b5f2-695bd510c6c3 "QA RT20 AZ THCk93gA3 at thr 2"
+- 2026-11-17T12:44:27Z AZ lane: ticket created 0a6c3e91-9c33-4a19-8c1a-3e95198bce18 "QA RT20 AZ THCk93gA3 full again"
+- 2026-11-17T12:50:17Z AZ lane: rule fd050049-bb76-432b-857a-ace879e8f23b active=false -> 200
+- 2026-11-17T12:52:58Z AZ lane: rescue after thrc timeout: rules ["QA RT20 AZ skill A1 A3 grmp:false","QA RT20 AZ skill A1 A3 7fzh:false","QA RT20 AZ control owner u9lr:false","QA RT20 AZ move control owner 54l6:false","QA RT20 AZ thr A1 i29z:false","QA RT20 AZ thr A3 i29z:false","QA RT20 AZ burst A1 A3 ymfl:false","QA RT20 AZ burst A1 A3 b63k:false","QA RT20 AZ move control owner 51o0:false","QA RT20 AZ thr A1 k93g:false","QA RT20 AZ thr A3 k93g:true"]; AOB prefs {"assign_to_offline_agents":true,"department_threshold_enabled":true,"department_threshold":2,"agent_threshold_enabled":false,"agent_thresholds":[],"assign_backlogs":false,"backlog_limit":10,"backlog_order":"created_time","assign_on_closure":false,"incoming_mode":"immediate"} restored true
+- 2026-11-17T12:57:43Z AZ lane: rule created c12370a4-f829-4a08-8a14-c2b44ea81370 round_robin "QA RT20 AZ onhold A3 n9yj" active=true
+- 2026-11-17T12:57:47Z AZ lane: ticket created 4b003aef-9ffb-4000-8152-ef31a4f410d5 "QA RT20 AZ OHn9yj one"
+- 2026-11-17T12:57:52Z AZ lane: ticket created 3c2edaa7-ffc3-438c-97cd-31f6f0eb6be2 "QA RT20 AZ OHn9yj two full"
+- 2026-11-17T12:58:56Z AZ lane: ticket created f58eb034-8b11-4109-89f4-2c1882efc27e "QA RT20 AZ OHn9yj three after hold"
+- 2026-11-17T12:59:04Z AZ lane: rule c12370a4-f829-4a08-8a14-c2b44ea81370 active=false -> 200
+- 2026-11-17T12:59:09Z AZ lane: oh: QA AO Dept B RR prefs changed and restored 200 true; tickets closed
+- 2026-11-17T12:59:21Z AZ lane: rule created 8715d370-186b-4f7b-911f-ead48a3a80ba round_robin "QA RT20 AZ burst A1 A3 jtms" active=true
+- 2026-11-17T12:59:34Z AZ lane: burstc: 10 tickets created at once in QA AO Dept B
+- 2026-11-17T13:00:58Z AZ lane: rule 8715d370-186b-4f7b-911f-ead48a3a80ba active=false -> 200
+- 2026-11-17T13:01:09Z AZ lane: burst: QA AO Dept B RR prefs changed and restored 200 true; 10 tickets closed (record)
+- 2026-11-17T13:01:57Z AZ lane: final check: {"rules":"13 AZ rules, active: []","aob":true,"da":true,"tickets":"62 created, closed now: 0","wl":"A1 4 A3 1"}
+- 2026-11-17T13:04:27Z HX lead: ticket QA RT20 HX 3068 status close 2 bd0f0086-1e5e-4cc7-8f79-d64e196e8fdd (QA RT20 TK Dept)
+- 2026-11-17T13:16:49Z PC lane (NDC-3076): rule created a6f3dc95-a68a-417e-9842-c5b62aefae22 round_robin "QA RT20 PC thr TU1 gijh" active=true
+- 2026-11-17T13:16:59Z PC lane (NDC-3076): ticket created d7eb655c-159d-479d-b6d6-cf9c20993203 "QA RT20 PC PCgijhTU1 r1 at thr 4"
+- 2026-11-17T13:17:23Z ZC lane: contract "QA RT20 ZC Contract 2841 dept only" 00645a02-40cc-4a7e-9f8d-4a1446829857 (QA RT19 SLA Dept, BS plan A) — dept-only re-confirm
+- 2026-11-17T13:17:26Z ZC lane: contract 00645a02-40cc-4a7e-9f8d-4a1446829857 department changed to QA RT19 SLA Dept B by dept-only PATCH (200) — left as evidence
+- 2026-11-17T13:19:23Z PC lane (NDC-3076): ticket created 507d9ef0-e11b-431c-b09e-64acf6f408f1 "QA RT20 PC PCgijhTU1 r1 at thr 5"
+- 2026-11-17T13:21:18Z PC lane (NDC-3076): ticket created f9c30281-0940-4671-9ffc-94c02c0587b7 "QA RT20 PC PCgijhTU1 r2 at thr 4"
+- 2026-11-17T13:25:10Z PC lane (NDC-3076): ticket created c9efed57-d28c-4173-9af6-0f125c1a8a82 "QA RT20 PC PCgijhTU1 r2 at thr 5"
+- 2026-11-17T13:25:33Z PC lane (NDC-3076): ticket created f65c6298-ae2b-487e-9700-5dcd68d9f811 "QA RT20 PC PCgijhx TU1 del extra owned"
+- 2026-11-17T13:25:45Z PC lane (NDC-3076): ticket created 06e6e196-f171-4aea-935c-70b5237ecc42 "QA RT20 PC PCgijhTU1 del full"
+- 2026-11-17T13:27:38Z PC lane (NDC-3076): ticket deleted f65c6298-ae2b-487e-9700-5dcd68d9f811 #4945 (del case) -> 204
+- 2026-11-17T13:27:51Z PC lane (NDC-3076): ticket created 669236bc-1180-4440-af4a-c5c3d7a2dd0e "QA RT20 PC PCgijhTU1 del after"
+- 2026-11-17T13:28:06Z PC lane (NDC-3076): rule a6f3dc95-a68a-417e-9842-c5b62aefae22 active=false -> 200
+- 2026-11-17T13:28:08Z PC lane (NDC-3076): rule created 12da8edf-c1d1-45aa-a388-2ae2e9045f0e round_robin "QA RT20 PC thr DT2 gijh" active=true
+- 2026-11-17T13:28:27Z PC lane (NDC-3076): ticket created 5619d05a-46f1-49d2-8af3-2d5703f27bbc "QA RT20 PC PCgijhDT2 r1 at thr 1"
+- 2026-11-17T13:30:28Z PC lane (NDC-3076): ticket created 142d2b30-2bc6-4985-b0b4-4bf0cd20cdaa "QA RT20 PC PCgijhDT2 r1 at thr 2"
+- 2026-11-17T13:33:07Z PC lane (NDC-3076): ticket created ec5f63a9-8fd8-4a5a-a0dc-bf21d7fa0ae0 "QA RT20 PC PCgijhDT2 r2 at thr 2"
+- 2026-11-17T13:35:16Z PC lane (NDC-3076): ticket created 62cc4c71-50a2-4516-8d2b-9f45a42919cb "QA RT20 PC PCgijhDT2 r2 at thr 3"
+- 2026-11-17T13:35:41Z PC lane (NDC-3076): ticket created 8971d3bd-c878-48b4-9fe5-10864d58a150 "QA RT20 PC PCgijhx DT2 del extra owned"
+- 2026-11-17T13:35:57Z PC lane (NDC-3076): ticket created f72ed65c-c356-4dcb-bde1-aa3a4bb6c9cd "QA RT20 PC PCgijhDT2 del full"
+- 2026-11-17T13:38:40Z PC lane (NDC-3076): ticket deleted 8971d3bd-c878-48b4-9fe5-10864d58a150 #4952 (del case) -> 204
+- 2026-11-17T13:39:12Z PC lane (NDC-3076): ticket created 3ffbff35-c0a7-4aa9-bee3-7ce34fd3c7b8 "QA RT20 PC PCgijhDT2 del after"
+- 2026-11-17T13:39:36Z PC lane (NDC-3076): ticket created db35510a-f6bf-41b3-9907-a0914878b7ee "QA RT20 PC PCgijhx DT2 rst extra owned"
+- 2026-11-17T13:39:58Z PC lane (NDC-3076): ticket created 67d63aa6-b3ad-4a41-a0aa-abb00638c9a5 "QA RT20 PC PCgijhDT2 rst full"
+- 2026-11-17T13:42:27Z PC lane (NDC-3076): ticket deleted db35510a-f6bf-41b3-9907-a0914878b7ee #4955 (rst case) -> 204
+- 2026-11-17T13:43:00Z PC lane (NDC-3076): ticket created 6ea36fc4-1fdb-424f-b55b-27466f19f4e5 "QA RT20 PC PCgijhDT2 rst after"
+- 2026-11-17T13:43:12Z PC lane (NDC-3076): ticket restored from Recycle Bin db35510a-f6bf-41b3-9907-a0914878b7ee #4955 -> 200
+- 2026-11-17T13:43:37Z PC lane (NDC-3076): ticket created 9ed2bc72-2c26-46fa-a0e0-fd993853f687 "QA RT20 PC PCgijhDT2 rst after restore"
+- 2026-11-17T13:46:30Z PC lane (NDC-3076): ticket created e329cbb7-5cff-458c-953d-c92dc2822606 "QA RT20 PC PCgijhx DT2 mv extra owned"
+- 2026-11-17T13:46:44Z PC lane (NDC-3076): ticket created e02819c6-2465-4a3b-9712-2bd7594a9d4c "QA RT20 PC PCgijhDT2 mv full"
+- 2026-11-17T13:53:57Z PC lane (NDC-3076): ticket created 5204eb6a-d972-4f54-af43-ea707aa2bc94 "QA RT20 PC PCgijhDT2 mv after"
+- 2026-11-17T13:56:28Z PC lane (NDC-3076): rule 12da8edf-c1d1-45aa-a388-2ae2e9045f0e active=false -> 200
+- 2026-11-17T13:56:31Z PC lane (NDC-3076): rule created e7e5b597-fc79-4174-b2ae-8687ad6e897a round_robin "QA RT20 PC ctl TU1 AS6A gijh" active=true
+- 2026-11-17T13:56:57Z PC lane (NDC-3076): ticket created b4e3a991-ec66-412a-97b9-c1ce30103bbc "QA RT20 PC PCgijhC at thr 76"
+- 2026-11-17T14:17:08Z PC lane (NDC-3076): rule created 0f07c0e5-01ad-4c34-b085-521eb76dcb31 round_robin "QA RT20 PC mv DT2 k9wb" active=true
+- 2026-11-17T14:17:47Z PC lane (NDC-3076): ticket created f27fc1b7-cd04-4787-848c-3d17a1ae20f4 "QA RT20 PC PDk9wbx DT2 mv extra owned"
+- 2026-11-17T14:17:54Z PC lane (NDC-3076): ticket created 230354fd-2bbb-4f1b-b38a-7879efacc1b4 "QA RT20 PC PDk9wbM full"
+- 2026-11-17T14:20:15Z PC lane (NDC-3076): ticket moved f27fc1b7-cd04-4787-848c-3d17a1ae20f4 #4963 QA AO Dept B -> QA AS6 Dept A (owner kept) -> 200
+- 2026-11-17T14:20:32Z PC lane (NDC-3076): ticket created 08a1d5f1-6cfc-4170-8e41-a16e3f25b79c "QA RT20 PC PDk9wbM after move"
+- 2026-11-17T14:21:08Z PC lane (NDC-3076): rule 0f07c0e5-01ad-4c34-b085-521eb76dcb31 active=false -> 200
+- 2026-11-17T14:21:08Z PC lane (NDC-3076): rule created 5c8c2d36-8407-4212-85a7-ffe149d87208 round_robin "QA RT20 PC ctl TU1 AS6A k9wb" active=true
+- 2026-11-17T14:21:40Z PC lane (NDC-3076): ticket created 026cd24d-37d4-4afd-b782-b8fe580173ef "QA RT20 PC PDk9wbC at thr 76"
+- 2026-11-17T14:24:01Z PC lane (NDC-3076): ticket created 888441fb-40a3-46ed-ac2a-c694228f3e87 "QA RT20 PC PDk9wbC at thr 77"
+- 2026-11-17T14:24:09Z PC lane (NDC-3076): rule a6f3dc95-a68a-417e-9842-c5b62aefae22 active=false -> 200
+- 2026-11-17T14:24:12Z PC lane (NDC-3076): rule 12da8edf-c1d1-45aa-a388-2ae2e9045f0e active=false -> 200
+- 2026-11-17T14:24:14Z PC lane (NDC-3076): rule e7e5b597-fc79-4174-b2ae-8687ad6e897a active=false -> 200
+- 2026-11-17T14:24:18Z PC lane (NDC-3076): rule 0f07c0e5-01ad-4c34-b085-521eb76dcb31 active=false -> 200
+- 2026-11-17T14:24:22Z PC lane (NDC-3076): rule 5c8c2d36-8407-4212-85a7-ffe149d87208 active=false -> 200
+- 2026-11-17T14:25:45Z PC lane (NDC-3076): pr2: QA AO Dept B + QA AS6 Dept A RR prefs restored to the pre-test snapshot AOB 200 true; DA 200 true; PC tickets closed 25/25 existing (of 27 created); deleted (left in Recycle Bin) #4945 #4952; PC rules active: []
+- 2026-11-17T14:28:53Z PC lane (NDC-3076): note: first run pr.js hung on a network call at the AS6 Dept A control step (~14:00Z) and was stopped; pr2.js re-ran move + control and restored both depts' prefs to the pr.js snapshot (verified equal). Left: #4945 and #4952 deleted (Recycle Bin), #4955 restored then Closed, all other 25 PC tickets Closed, PC rules a6f3dc95, 12da8edf, e7e5b597, 0f07c0e5, 5c8c2d36 inactive. Lock removed.
+- 2026-11-17T14:29:37Z CR lane: workflow rule "QA RT20 CR 3052 contact" 4900e95a-d66e-4917-839a-46be50dd2876 (active)
+- 2026-11-17T14:29:39Z CR lane: workflow rule "QA RT20 CR 3052 custom" f3ae1f11-f807-4d1d-a0ae-1010f5345344 (active)
+- 2026-11-17T14:29:45Z CR lane: workflow rule "QA RT20 CR 3052 conn" 46037a3b-5e37-4b7e-afea-1566367db2af (active)
+- 2026-11-17T14:29:45Z CR lane: workflow rule "QA RT20 CR 3052 saved" def78ce7-8376-42f9-82a2-70ea309625d8 (active)
+- 2026-11-17T14:30:09Z CR lane: workflow rule "QA RT20 CR 3052 sysfill" a46a4525-9613-45eb-81dd-cd5bb57210fb (active)
+- 2026-11-17T14:30:12Z CR lane: workflow rule "QA RT20 CR 3052 sysstatus" 3d8168ab-2683-4fd0-8b24-a74ae2725591 (active)
+- 2026-11-17T14:30:31Z CR lane: ticket "QA RT20 CR 3052 contact no contact 1" 2efb4852-0464-499f-af8d-01e8c17f2e74 #undefined
+- 2026-11-17T14:30:35Z CR lane: ticket "QA RT20 CR 3052 contact with contact 1" 48df1dd5-adce-4e2f-bfd8-c23e3ab97a95 #undefined
+- 2026-11-17T14:30:38Z CR lane: ticket "QA RT20 CR 3052 contact no contact 2" 48d747a5-3fb6-4b9e-b0ab-975268a17b80 #undefined
+- 2026-11-17T14:30:41Z CR lane: ticket "QA RT20 CR 3052 contact with contact 2" 9940062a-a37d-4ddd-ad13-2f1e0b917af5 #undefined
+- 2026-11-17T14:30:44Z CR lane: ticket "QA RT20 CR 3052 custom pnr empty" 04c882eb-1a74-4c00-abae-694180ca68a3 #undefined
+- 2026-11-17T14:30:47Z CR lane: ticket "QA RT20 CR 3052 custom pnr set" 7c4d0f11-0987-4596-a0e0-e4d5e24f6019 #undefined
+- 2026-11-17T14:30:51Z CR lane: ticket "QA RT20 CR 3052 sysfill no dept no layout" 4065a27d-0728-43b0-855e-ad87eb59f9d9 #undefined
+- 2026-11-17T14:30:53Z CR lane: ticket "QA RT20 CR 3052 sysstatus status placeholder empty" 560ad71c-38ab-4d12-9565-33fd2e272973 #undefined
+- 2026-11-17T14:30:55Z CR lane: ticket "QA RT20 CR 3052 conn no contact" 7ccac33d-5c0b-4ef7-8ffc-60d0c67fafe6 #undefined
+- 2026-11-17T14:30:58Z CR lane: ticket "QA RT20 CR 3052 conn with contact" 4f41a2df-66bc-45aa-a199-dcdea77f9ae9 #undefined
+- 2026-11-17T14:31:01Z CR lane: ticket "QA RT20 CR 3052 saved pre-fix saved action" 7ddac109-cd38-4a1a-ae3a-f079d5d8bd6c #undefined
+- 2026-11-17T14:33:22Z CR lane: CRM workflow rule "QA RT20 CR 3052 crm task" cd1c9f89-b8ae-44d7-9a4f-c4ab6a6bfa35 (active)
+- 2026-11-17T14:33:27Z CR lane: CRM lead "QA RT20 CR 3052 crm task no company" 340c79de-e993-449f-883e-15c1a7bb6376
+- 2026-11-17T14:33:29Z CR lane: CRM lead "QA RT20 CR 3052 crm task with company" 697f8fea-f935-4f7e-8561-6de3bdfdc504
+- 2026-11-17T14:36:03Z CR lane: workflow rule 4900e95a-d66e-4917-839a-46be50dd2876 deactivated
+- 2026-11-17T14:36:06Z CR lane: workflow rule f3ae1f11-f807-4d1d-a0ae-1010f5345344 deactivated
+- 2026-11-17T14:36:06Z CR lane: workflow rule 46037a3b-5e37-4b7e-afea-1566367db2af deactivated
+- 2026-11-17T14:36:07Z CR lane: workflow rule def78ce7-8376-42f9-82a2-70ea309625d8 deactivated
+- 2026-11-17T14:36:08Z CR lane: workflow rule a46a4525-9613-45eb-81dd-cd5bb57210fb deactivated
+- 2026-11-17T14:36:09Z CR lane: workflow rule 3d8168ab-2683-4fd0-8b24-a74ae2725591 deactivated
+- 2026-11-17T14:36:09Z CR lane: Desk call record f4b9404b-6639-45e9-95e7-5c371d2e1a68 "QA RT20 CR conn call QA RT20 CR 3052 conn with contact" (created by QA RT20 CR 3052 rule)
+- 2026-11-17T14:36:09Z CR lane: Desk call record 08a8fc87-dead-4891-92e2-1b7e36e250ae "QA RT20 CR PNR 3052" (created by QA RT20 CR 3052 rule)
+- 2026-11-17T14:36:09Z CR lane: Desk call record a581fafc-0905-43a6-bbb1-66a3e5f06f99 "QA RT20 CR call for QA RT20 CR 3052 contact with contact 2" (created by QA RT20 CR 3052 rule)
+- 2026-11-17T14:36:09Z CR lane: Desk call record cd48268a-8bdc-4dce-a663-5262de89ec91 "QA RT20 CR call for QA RT20 CR 3052 contact with contact 1" (created by QA RT20 CR 3052 rule)
+- 2026-11-17T14:36:09Z CR lane: Desk ticket 1448ccb8-aa8e-4ae6-8edf-2d835e4b0a4b "QA RT20 CR child of QA RT20 CR 3052 sysfill no dept no layout" (created by rule QA RT20 CR 3052 sysfill, default dept 7e1ac409-58b0-41ab-97e1-0e7d5c8c5158)
+- 2026-11-17T14:40:09Z CR lane: CRM workflow rule "QA RT20 CR 3052 crm conn" 9ebf28d1-8ea7-4d7e-95d3-2f2c08a8f4be (active)
+- 2026-11-17T14:40:11Z CR lane: CRM lead "QA RT20 CR 3052 crm conn no company" 8fc3f71d-36c3-4741-b42b-9ca1686ab8fa
+- 2026-11-17T14:40:15Z CR lane: CRM lead "QA RT20 CR 3052 crm conn with company" a5baf055-4d62-4b7f-a233-c048d1036f89
+- 2026-11-17T14:40:38Z CR lane: CRM customer 858e0916-5962-41d6-910c-bdc3928e2a2d "QA RT20 CR Cust 3052" (created by rule QA RT20 CR 3052 crm conn)
+- 2026-11-17T14:40:38Z CR lane: CRM customer 10617ebe-a78b-4991-8e57-3644a47e536f "" (created by rule QA RT20 CR 3052 crm conn)
+- 2026-11-17T14:40:38Z CR lane: workflow rule cd1c9f89-b8ae-44d7-9a4f-c4ab6a6bfa35 deactivated
+- 2026-11-17T14:40:39Z CR lane: workflow rule 9ebf28d1-8ea7-4d7e-95d3-2f2c08a8f4be deactivated
+- 2026-11-17T14:40:39Z CR lane: CRM task 284f7359-b089-4e44-bab2-8dc2d1cfb6e1 "QA RT20 CR Co 3052" (created by rule QA RT20 CR 3052 crm task)
+- 2026-11-17T14:40:59Z CR lane: CRM customer 48de1627-9616-4376-921c-38c516ed2ee6 (API control, no name)
+- 2026-11-17T14:41:03Z CR lane: CRM customer 3d9f9c77-781a-4926-8a9e-22468f3504ee (API control, empty name)
+- 2026-11-17T14:41:04Z CR lane: CRM workflow rule "QA RT20 CR 3052 crm cust plain" c21d1488-fe04-4b8e-a9c5-6eb53035d4af (active)
+- 2026-11-17T14:41:09Z CR lane: workflow rule 9ebf28d1-8ea7-4d7e-95d3-2f2c08a8f4be activated
+- 2026-11-17T14:41:11Z CR lane: CRM lead "QA RT20 CR 3052 crm cust plain no company" 37f5ff4c-c2fd-4937-9eea-fbb636704034
+- 2026-11-17T14:41:14Z CR lane: CRM lead "QA RT20 CR 3052 crm conn no company 2" e6f36694-34f4-4447-8ed6-c235626a44a5
+- 2026-11-17T14:41:50Z CR lane: CRM customer 033c1eeb-2ee4-4d9d-9eb4-895df666e1ff "" (created by QA RT20 CR 3052 crm rule)
+- 2026-11-17T14:41:50Z CR lane: CRM customer 6846a450-9a02-4d86-934c-0bb5a6e55410 "" (created by QA RT20 CR 3052 crm rule)
+- 2026-11-17T14:41:51Z CR lane: workflow rule c21d1488-fe04-4b8e-a9c5-6eb53035d4af deactivated
+- 2026-11-17T14:41:52Z CR lane: workflow rule 9ebf28d1-8ea7-4d7e-95d3-2f2c08a8f4be deactivated
+- 2026-11-17T14:42:25Z CR lane: CRM workflow rule "QA RT20 CR 3052 crm cconn" b17dde92-130d-4bef-beee-d4f3f6d2f869 (active)
+- 2026-11-17T14:42:26Z CR lane: CRM customer "QA RT20 CR 3052 crm cconn no phone 1" 2ff519ce-2935-4397-a49e-9f1f265d87ca
+- 2026-11-17T14:42:31Z CR lane: CRM customer "QA RT20 CR 3052 crm cconn with phone" 0b4b34e4-535e-406f-8c90-69e3c8303423
+- 2026-11-17T14:42:33Z CR lane: CRM customer "QA RT20 CR 3052 crm cconn no phone 2" 99ea2471-f31d-482a-9ff7-2bd4691a401d
+- 2026-11-17T14:42:56Z CR lane: CRM task 8c8c5e3c-281c-40c2-a87d-5ae010bd3095 "01000003052" (created after QA RT20 CR 3052 crm cconn run)
+- 2026-11-17T14:42:58Z CR lane: workflow rule b17dde92-130d-4bef-beee-d4f3f6d2f869 deactivated
+- 2026-11-17T15:46:40Z W2 lane: ticket "QA RT20 W2 2997 refire t1" 43102d58-3541-4d5e-a92d-1cbc4852197b #undefined
+- 2026-11-17T15:46:43Z W2 lane: ticket "QA RT20 W2 2997 refire t2" 11e69ba7-7324-43b7-beff-12a5246e8d9a #undefined
+- 2026-11-17T15:46:45Z W2 lane: ticket "QA RT20 W2 2997 refire t3" 124579de-5f68-437f-bc80-791075b81ea0 #undefined
+- 2026-11-17T15:46:57Z W2 lane: workflow rule "QA RT20 W2 2997 refire" c333b271-907f-4794-be64-8e10c104644e (active)
+- 2026-11-17T15:49:08Z B2 lane: r20-bs-agent.json copy was signed out; SIGN-IN agent "Customer Experience Specialists 2" ONCE via login-r12.js -> scratchpad r20-b2-agent.json
+- 2026-11-17T15:50:44Z B2 lane: department created 6d68dc90-7ecf-4829-bf51-9beb87282b87 "QA RT20 B2 Dept" agents owner only (201)
+- 2026-11-17T15:50:45Z B2 lane: blueprint created 0614fde2-9b91-4ef2-9cca-b161abfeacbf "QA RT20 B2 tk" active=true
+- 2026-11-17T15:50:46Z B2 lane: blueprint created 135573ba-c401-4c32-a598-81795a5d4180 "QA RT20 B2 sh" active=true
+- 2026-11-17T15:50:46Z B2 lane: blueprint created bde3d039-eb3b-4045-b540-5344b29a8b45 "QA RT20 B2 xdf" active=true
+- 2026-11-17T15:50:47Z B2 lane: blueprint created 7fdfadd8-0bb1-4928-bc93-9c99dec8f16c "QA RT20 B2 xdr" active=true
+- 2026-11-17T15:50:57Z W2 lane: workflow rule "QA RT20 W2 3057 lists" 19f2efc7-e2fc-458d-87c8-77bf18fcfd3c (inactive)
+- 2026-11-17T15:51:10Z W2 lane: workflow rule c333b271-907f-4794-be64-8e10c104644e deactivated
+- 2026-11-17T15:51:11Z W2 lane: CRM workflow rule "QA RT20 W2 3057 crm leads" 934b84ec-c50d-4c69-96f6-819388cc79ba (inactive)
+- 2026-11-17T15:51:14Z W2 lane: CRM workflow rule "QA RT20 W2 3057 crm accounts" 28a968d4-bf01-4c31-ad1f-e374ea82b8ed (inactive)
+- 2026-11-17T15:51:16Z W2 lane: CRM workflow rule "QA RT20 W2 3057 crm deals" bd73a16d-31d9-417c-b1eb-8c9e588b7697 (inactive)
+- 2026-11-17T15:51:54Z W2 lane: ticket "QA RT20 W2 2997 rapid t1" da96e91b-3f0c-4c56-a4ba-7fb13a52055a #undefined
+- 2026-11-17T15:51:55Z W2 lane: ticket "QA RT20 W2 2997 ouCS t1" f6af637b-d947-4e48-8ebb-2084498dc7a2 #undefined
+- 2026-11-17T15:51:57Z W2 lane: ticket "QA RT20 W2 2997 rapid t2" abea28ad-2100-4dd1-a99d-0cc421f481da #undefined
+- 2026-11-17T15:51:58Z W2 lane: ticket "QA RT20 W2 2997 ouCS t2" 3480a58b-8510-4c2a-9935-696e71e965bb #undefined
+- 2026-11-17T15:51:58Z B2 lane: ticket created 721f85d6-37b6-46fd-abe3-197b911537b4 #5025 "QA RT20 BP tk K1 owned by owner"
+- 2026-11-17T15:51:59Z W2 lane: ticket "QA RT20 W2 2997 rapid t3" da9ce044-3f82-4bcf-bc3e-961c5b0b88fd #undefined
+- 2026-11-17T15:52:00Z W2 lane: ticket "QA RT20 W2 2997 ouCS t3" f4695c07-4492-41cf-b7d9-3c7f84e7dd90 #undefined
+- 2026-11-17T15:52:07Z B2 lane: ticket created ea2bba89-affb-44ed-a8c9-bae63ccf81f2 #5030 "QA RT20 BP tk K2 owned by CES2"
+- 2026-11-17T15:52:22Z W2 lane: workflow rule "QA RT20 W2 2997 rapid" 9d0f9dbf-0220-40e5-acbc-bc7b2166c174 (active)
+- 2026-11-17T15:52:22Z W2 lane: workflow rule "QA RT20 W2 2997 ouCS" efe8d13d-5432-4df7-bcee-ae56e36ecf59 (active)
+- 2026-11-17T15:53:10Z W2 lane: workflow rule efe8d13d-5432-4df7-bcee-ae56e36ecf59 deactivated
+- 2026-11-17T15:53:11Z W2 lane: ticket "QA RT20 W2 2997 ouQAO t1" 86e6a2cc-50f2-46b9-acb2-10d4e38b9425 #undefined
+- 2026-11-17T15:53:12Z W2 lane: ticket "QA RT20 W2 2997 ouQAO t2" 9dcf6e35-5df8-4ee3-a897-27e1c3ecdfbf #undefined
+- 2026-11-17T15:53:25Z W2 lane: workflow rule "QA RT20 W2 2997 ouQAO" abfedf22-3a9c-42ee-9408-4f02a708a9c2 (active)
+- 2026-11-17T15:53:43Z B2 lane: ticket created 8227d66f-cfa6-4574-baa6-337fac22b938 #5034 "QA RT20 BP tk K3 owned by owner refusal repeat"
+- 2026-11-17T15:53:50Z B2 lane: ticket created 28da17c2-34ea-44b5-89d2-95516d1a4fbd #5038 "QA RT20 BP sh SF owned by owner"
+- 2026-11-17T15:53:59Z B2 lane: ticket created 26794d0a-8aa8-4b71-bd7b-d440acf318c2 #5044 "QA RT20 BP sh SR owned by owner"
+- 2026-11-17T15:54:05Z B2 lane: ticket created 911d06e7-2942-4e51-a991-bb98c3efb377 #5048 "QA RT20 BP sh SX owned by owner"
+- 2026-11-17T15:54:09Z B2 lane: ticket created ea909222-0059-4afd-8bc2-76be120f7c4e #5049 "QA RT20 BP sh SN owned by owner"
+- 2026-11-17T15:54:10Z W2 lane: workflow rule abfedf22-3a9c-42ee-9408-4f02a708a9c2 deactivated
+- 2026-11-17T15:54:13Z B2 lane: ticket created 943f5653-3a87-4081-ac47-1069be0df480 #5053 "QA RT20 BP xdf XF owned by owner"
+- 2026-11-17T15:54:13Z W2 lane: ticket "QA RT20 W2 2997 prEmpty t1" 0f485bdc-fdfb-43df-832a-25aa064e6065 #undefined
+- 2026-11-17T15:54:17Z B2 lane: ticket created d32892b7-d1f4-4173-8e77-7bc6908170f4 #5058 "QA RT20 BP xdr XR owned by owner"
+- 2026-11-17T15:54:29Z B2 lane: shares set: SF ##5038 st=Open dept=DD bp={"blueprintDefinitionId":"135573ba-c401-4c32-a598-81795a5d41 CS full; SR CS read_only; SX CS restricted; SN none
+- 2026-11-17T15:54:40Z W2 lane: workflow rule 9d0f9dbf-0220-40e5-acbc-bc7b2166c174 deactivated
+- 2026-11-17T15:55:07Z W2 lane: workflow rule "QA RT20 W2 2997 prEmpty" cce83fbb-628f-43e2-8867-0ebbc5375b2d (active)
+- 2026-11-17T15:55:10Z B2 lane: note - ticket lines above labelled "QA RT20 BP <tag>" are really subjects "QA RT20 B2 <tag> ..." (label typo); blueprints tk 0614fde2 / sh 135573ba / xdf bde3d039 / xdr 7fdfadd8 (ids in scripts/b2/made.json)
+- 2026-11-17T15:55:39Z W2 lane: workflow rule cce83fbb-628f-43e2-8867-0ebbc5375b2d deactivated
+- 2026-11-17T15:55:41Z W2 lane: ticket "QA RT20 W2 2997 prQAO t1" 5fc79657-89cf-4ade-a31e-44f83f48f2e6 #undefined
+- 2026-11-17T15:55:41Z W2 lane: ticket "QA RT20 W2 2997 prQAO t2" aee6ac22-9f55-40f9-bcfb-4a32dcfe083d #undefined
+- 2026-11-17T15:55:42Z W2 lane: ticket "QA RT20 W2 2997 prQAO t3" d5c2bede-2253-4f7e-9c15-18971610aaf0 #undefined
+- 2026-11-17T15:55:52Z W2 lane: workflow rule "QA RT20 W2 2997 prQAO" c1153965-1d22-4b17-9303-1274a58ce367 (active)
+- 2026-11-17T15:56:35Z W2 lane: workflow rule c1153965-1d22-4b17-9303-1274a58ce367 deactivated
+- 2026-11-17T15:56:38Z W2 lane: ticket "QA RT20 W2 2997 mgrQAO t1" 45aaa54b-9c21-41c3-b539-52ec7843a77c #undefined
+- 2026-11-17T15:56:39Z W2 lane: ticket "QA RT20 W2 2997 mgrQAO t2" 739e022e-f82a-4c7f-8cad-07bbeeba3a49 #undefined
+- 2026-11-17T15:56:39Z W2 lane: ticket "QA RT20 W2 2997 mgrQAO t3" f82bf228-b522-4c61-be88-cb5b3e80e132 #undefined
+- 2026-11-17T15:56:40Z W2 lane: ticket "QA RT20 W2 2997 mgrQAO t4" e0043c3b-f7e7-43bc-a0e8-0dea21019783 #undefined
+- 2026-11-17T15:56:49Z W2 lane: workflow rule "QA RT20 W2 2997 mgrQAO" 52f280f0-3178-45f6-86ec-e9acbe7d84a9 (active)
+- 2026-11-17T15:57:39Z W2 lane: workflow rule 52f280f0-3178-45f6-86ec-e9acbe7d84a9 deactivated
+- 2026-11-17T15:57:41Z B2 lane: as CES2 API run onlyA on #5025 (K1): 403
+- 2026-11-17T15:57:42Z B2 lane: as CES2 API run onlyA on #5034 (K3): 403
+- 2026-11-17T15:57:42Z B2 lane: as CES2 API run onlyA on #5044 (SR): 403
+- 2026-11-17T15:57:42Z B2 lane: as CES2 API run onlyA on #5048 (SX): 403
+- 2026-11-17T15:57:43Z B2 lane: as CES2 API run onlyA on #5049 (SN): 403
+- 2026-11-17T15:57:45Z B2 lane: as CES2 API run onlyA on #5030 (K2): 200
+- 2026-11-17T15:57:46Z B2 lane: as CES2 API run onlyA on #5038 (SF): 200
+- 2026-11-17T15:57:46Z B2 lane: as CES2 API run xd on #5053 (XF): 200
+- 2026-11-17T15:57:47Z B2 lane: as CES2 API run xd on #5058 (XR): 200
+- 2026-11-17T16:02:26Z W2 lane: workflow rule "QA RT20 W2 3058 one" f7112914-17b5-4bd9-b7d9-84643e3aa3cf (inactive)
+- 2026-11-17T16:02:28Z W2 lane: workflow rule "QA RT20 W2 3058 multi" 1fad3bd6-afc0-4408-877d-0c56cabc66fa (inactive)
+- 2026-11-17T16:05:28Z W2 lane: Desk tag "QA RT20 W2 newtag" dbdbd304-652f-4bf1-b4af-f73065323d5e created from rule editor (QA AO Dept A); rule f7112914 saved with tags QA WF tag B + QA RT20 W2 newtag
+- 2026-11-17T16:05:30Z W2 lane: workflow rule f7112914-17b5-4bd9-b7d9-84643e3aa3cf activated
+- 2026-11-17T16:05:34Z W2 lane: ticket "QA RT20 W2 3058 one create flow" d83c8c58-7531-46a0-8571-b7bbbfe35605 #undefined
+- 2026-11-17T16:05:47Z B2 lane: CES2 added to QA RT20 B2 Dept 6d68dc90-7ecf-4829-bf51-9beb87282b87 as normal member: 200 (restore: remove at end)
+- 2026-11-17T16:05:49Z B2 lane: blueprint created 933564d7-5d22-4e27-8907-d721c1bb983d "QA RT20 B2 vo" active=true
+- 2026-11-17T16:05:50Z B2 lane: blueprint created a51e8df8-ec0f-4cfc-88d9-c40dd79002e3 "QA RT20 B2 dyn" active=true
+- 2026-11-17T16:05:54Z B2 lane: ticket created 9a9be9b0-78f4-43bb-9c39-f9b7facf8c7f #5093 "QA RT20 BP vo V1 owned by owner"
+- 2026-11-17T16:05:57Z B2 lane: ticket created 2f1c5233-a4f7-4a41-b412-8aab0a3e0193 #5094 "QA RT20 BP vo V2 owned by CES2"
+- 2026-11-17T16:05:59Z B2 lane: ticket created 39902662-f867-4697-80a2-52a3c5bb7298 #5095 "QA RT20 BP dyn D1"
+- 2026-11-17T16:06:02Z W2 lane: workflow rule f7112914-17b5-4bd9-b7d9-84643e3aa3cf deactivated
+- 2026-11-17T16:06:05Z B2 lane: CES2 set VIEW-ONLY in QA RT20 B2 Dept 6d68dc90-7ecf-4829-bf51-9beb87282b87 (restore: remove at end)
+- 2026-11-17T16:06:09Z B2 lane: blueprint created (UNEXPECTED) 3066223c-1a18-41d6-a149-968080594c27 vo-bad inactive
+- 2026-11-17T16:06:16Z W2 lane: workflow rule "QA RT20 W2 3058 rem" c840c74c-9724-4af3-9915-1121c645857e (inactive; RemoveTags QA RT20 W2 newtag; guard "QA RT20 W2 3058 one ")
+- 2026-11-17T16:07:50Z B2 lane: as CES2 (view-only) API run onlyA on #5093: 403
+- 2026-11-17T16:07:50Z B2 lane: as CES2 (view-only) API run shared on #5093: 403
+- 2026-11-17T16:07:53Z B2 lane: as CES2 (view-only) API run onlyA on #5094: 200
+- 2026-11-17T16:07:54Z B2 lane: as CES2 (view-only) API run shared on #5094: 409
+- 2026-11-17T16:07:57Z W2 lane: workflow rule c840c74c-9724-4af3-9915-1121c645857e activated
+- 2026-11-17T16:08:19Z W2 lane: workflow rule c840c74c-9724-4af3-9915-1121c645857e deactivated
+- 2026-11-17T16:08:20Z W2 lane: workflow rule "QA RT20 W2 3058 bad" b24570e3-0cce-4bb1-8775-02e268229f49 (inactive)
+- 2026-11-17T16:08:20Z W2 lane: workflow rule "QA RT20 W2 3058 mix" 77a9ad56-76a3-410f-98c6-e0c49e65b54d (inactive)
+- 2026-11-17T16:08:21Z W2 lane: workflow rule "QA RT20 W2 3058 wrong" 7fd6c912-6313-4d8f-8be9-b73315e1912e (inactive)
+- 2026-11-17T16:08:21Z W2 lane: ticket "QA RT20 W2 3058 mix qao" 06463ae6-dac7-4a5f-b3c1-6c69663aab0d #undefined
+- 2026-11-17T16:08:22Z W2 lane: ticket "QA RT20 W2 3058 wrong qao" a45f0db3-5a69-461e-b70b-fcbfa6f184a7 #undefined
+- 2026-11-17T16:08:28Z W2 lane: workflow rule 77a9ad56-76a3-410f-98c6-e0c49e65b54d activated
+- 2026-11-17T16:08:29Z W2 lane: workflow rule 7fd6c912-6313-4d8f-8be9-b73315e1912e activated
+- 2026-11-17T16:08:40Z B2 lane: as CES2 (view-only) edit priority High on #5094 (own ticket) probe: 200
+- 2026-11-17T16:08:58Z W2 lane: workflow rule 77a9ad56-76a3-410f-98c6-e0c49e65b54d deactivated
+- 2026-11-17T16:08:59Z W2 lane: workflow rule 7fd6c912-6313-4d8f-8be9-b73315e1912e deactivated
+- 2026-11-17T16:09:51Z B2 lane: CES2 view-only removed AND CES2 removed from QA RT20 B2 Dept 6d68dc90-7ecf-4829-bf51-9beb87282b87 (restore): 200 agents=["OWNER"] vo=[]
+- 2026-11-17T16:09:52Z B2 lane: blueprint switched OFF 0614fde2-9b91-4ef2-9cca-b161abfeacbf "QA RT20 B2 tk": 200 active=false
+- 2026-11-17T16:09:55Z B2 lane: blueprint switched OFF 135573ba-c401-4c32-a598-81795a5d4180 "QA RT20 B2 sh": 200 active=false
+- 2026-11-17T16:09:59Z B2 lane: blueprint switched OFF bde3d039-eb3b-4045-b540-5344b29a8b45 "QA RT20 B2 xdf": 200 active=false
+- 2026-11-17T16:10:01Z B2 lane: blueprint switched OFF 7fdfadd8-0bb1-4928-bc93-9c99dec8f16c "QA RT20 B2 xdr": 200 active=false
+- 2026-11-17T16:10:03Z B2 lane: blueprint switched OFF 933564d7-5d22-4e27-8907-d721c1bb983d "QA RT20 B2 vo": 200 active=false
+- 2026-11-17T16:10:04Z B2 lane: blueprint switched OFF a51e8df8-ec0f-4cfc-88d9-c40dd79002e3 "QA RT20 B2 dyn": 200 active=false
+- 2026-11-17T16:25:19Z W2 lane: end — all QA RT20 W2 rules verified inactive (14 Desk, 3 CRM); tag QA RT20 W2 newtag dbdbd304 left (not on any ticket now except none; removed from #5092 by rule)
+- 2026-11-18T09:03:33Z X41 (18 Nov 2841 retest): contract "QA RT20 X41 Contract 2841 dept only 4l9e" b5e0b71b-8f6e-462d-8491-a804ccc483cb
+- 2026-11-18T09:03:39Z X41 (18 Nov 2841 retest): contract "QA RT20 X41 Contract 2841 move with B 4l9e" 17bac24c-7847-49ea-b779-2bb9799f0a64
+- 2026-11-18T09:03:44Z X41 (18 Nov 2841 retest): contract "QA RT20 X41 Contract 2841 move clear plan 4l9e" 97324ad7-2dfc-4f2f-8e59-430737868d09
+- 2026-11-18T09:20:22Z X56 lane: agent CES2 signed in once (login-r12) into scratchpad r20-bs-agent.json (old session had expired)
+- 2026-11-18T09:20:56Z X56 lane: blueprint switched ON (for test) 23339d62-fecf-4324-8950-5fa1bfdef0df "QA RT20 BS 3056 flow": 200 active=true
+- 2026-11-18T09:20:58Z X56 lane: ticket created 5c68004d-860c-4bcd-b6b8-77e0bce5c044 #undefined "QA RT20 X56 / QA RT20 BS 3056 flow t2" priority low owner CES2
+- 2026-11-18T09:20:59Z X56 lane: ticket created 7bec7744-755c-48bc-932f-6d3d5ce2191f #undefined "QA RT20 X56 / QA RT20 BS 3056 flow t3" priority high owner CES2
+- 2026-11-18T09:21:17Z X56 lane: ticket 7bec7744-755c-48bc-932f-6d3d5ce2191f #5118 moved Open -> On Hold by owner (QA urgent): 200; t2 is #5117
+- 2026-11-18T09:26:44Z X56 lane: agent CES2 ran QA go in UI on #5117 (5c68004d) Open -> Escalated
+- 2026-11-18T09:36:41Z X56 lane: agent CES2 ran QA reopen (checklist ticked) in UI on #4869 (9ec8bdc5) Closed -> Open
+- 2026-11-18T09:38:05Z X56 lane: blueprint switched OFF 23339d62-fecf-4324-8950-5fa1bfdef0df "QA RT20 BS 3056 flow": 200 active=false
+- 2026-11-18T13:56:55Z W2 lane: workflow rule "QA RT20 W2 3111 own" 98a920bb-ab8d-4880-af00-70fbcf0052c8 (inactive)
+- 2026-11-18T13:57:00Z W2 lane: workflow rule "QA RT20 W2 3111 multi" a7312455-2106-491f-a1f0-53940bad31c4 (inactive)
+- 2026-11-18T13:57:02Z W2 lane: workflow rule "QA RT20 W2 3111 rem" ed2122cc-1a6e-4796-ba7b-cf07b1e1da82 (inactive)
+- 2026-11-18T13:57:31Z W2 lane: workflow rule "QA RT20 W2 3110 wrong" bcbf89c5-c707-43c9-9b34-fe775f56d0fa (inactive)
+- 2026-11-18T13:57:38Z W2 lane: ticket "QA RT20 W2 3110 wrong qao" a8c7f21a-2b75-4ed2-a1c5-092c97dfaaab #undefined
+- 2026-11-18T13:57:40Z W2 lane: workflow rule "QA RT20 W2 3110 mix" ea788716-5602-4146-9415-bc361f9eafe0 (inactive)
+- 2026-11-18T13:57:41Z W2 lane: ticket "QA RT20 W2 3110 mix qao" 0541afda-2cb7-4f62-9609-30dea8125b14 #undefined
+- 2026-11-18T13:57:42Z W2 lane: workflow rule "QA RT20 W2 3110 delayed" 3b4ce654-e664-494b-8ba3-8d2d4b798502 (inactive)
+- 2026-11-18T13:57:44Z W2 lane: ticket "QA RT20 W2 3110 delayed qao" 59a9b8fe-f27d-4da8-9a07-607d9c6353b1 #undefined
+- 2026-11-18T13:57:45Z W2 lane: workflow rule "QA RT20 W2 3110 rem" 14dbb85c-ca89-4df7-8ec7-b6b4746d30c0 (inactive)
+- 2026-11-18T13:57:47Z W2 lane: ticket "QA RT20 W2 3110 rem qao" af84aae0-190f-4aa7-9e17-3f3fdde1a5a0 #undefined
+- 2026-11-18T13:57:57Z W2 lane: workflow rule bcbf89c5-c707-43c9-9b34-fe775f56d0fa activated
+- 2026-11-18T13:57:58Z W2 lane: workflow rule ea788716-5602-4146-9415-bc361f9eafe0 activated
+- 2026-11-18T13:57:58Z W2 lane: workflow rule 3b4ce654-e664-494b-8ba3-8d2d4b798502 activated
+- 2026-11-18T13:57:59Z W2 lane: workflow rule 14dbb85c-ca89-4df7-8ec7-b6b4746d30c0 activated
+- 2026-11-18T13:59:39Z W2 lane: workflow rule bcbf89c5-c707-43c9-9b34-fe775f56d0fa deactivated
+- 2026-11-18T13:59:43Z W2 lane: workflow rule ea788716-5602-4146-9415-bc361f9eafe0 deactivated
+- 2026-11-18T13:59:45Z W2 lane: workflow rule 3b4ce654-e664-494b-8ba3-8d2d4b798502 deactivated
+- 2026-11-18T13:59:46Z W2 lane: workflow rule 14dbb85c-ca89-4df7-8ec7-b6b4746d30c0 deactivated
+- 2026-11-18T14:05:30Z B2 lane: r3112: CES2 normal member of QA RT20 B2 Dept 6d68dc90-7ecf-4829-bf51-9beb87282b87 (restore to before at end)
+- 2026-11-18T14:05:32Z B2 lane: blueprint created 865d108f-4793-4f8e-882b-d652e8bd855c "QA RT20 B2 r3112 dyn" active=true
+- 2026-11-18T14:05:38Z B2 lane: ticket created b3f89e29-e154-4e6c-9963-6653ed7b56ee #5495 "QA RT20 BP r3112 dyn t1"
+- 2026-11-18T14:06:52Z B2 lane: r3112: QA RT20 B2 Dept members restored to before (200)

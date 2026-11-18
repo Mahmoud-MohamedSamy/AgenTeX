@@ -1,0 +1,25 @@
+// RT20 BS lane helpers (prepended by bp/run.sh, runs inside apiw.js). NDC-Staging. Every blueprint "QA RT20 BS <tag>", subject guard "QA RT20 BS <tag> ".
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20';
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158', DA = 'b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6', CON = '43004ce2-577f-4eda-b00a-0750fe40c3d4';
+const OWNER = '97be04b6-0a08-4883-aa51-e1650b11cab7', AG_A = '9d182dfa-05f3-4af7-9685-8615a2fbe537', AG_B = '2a7c1bc4-f6d4-4bd3-805e-0496ece13987', A2 = 'd23fb4e0-248d-41f6-af60-d28885a7007e';
+const MADE = RUN + '/scripts/x56/made.json';
+const made = (() => { try { return JSON.parse(fs.readFileSync(MADE, 'utf8')); } catch (e) { return { bps: [], tickets: [], other: [] }; } })();
+const keep = () => fs.writeFileSync(MADE, JSON.stringify(made, null, 1));
+const LED = m => fs.appendFileSync(RUN + '/ledger.md', '- ' + new Date().toISOString().slice(0, 19) + 'Z X56 lane: ' + m + '\n');
+const L = x => Array.isArray(x) ? x : (x && (x.items || x.data || x.transitions || x.shares || x.states || x.rules || x.events)) || [];
+const E = r => r.s + (r.s >= 300 ? ' ' + (r.j?.error?.code || '') + ' ' + String(r.j?.error?.message || r.t).slice(0, 200) + (r.j?.error?.details ? ' ' + JSON.stringify(r.j.error.details).slice(0, 300) : '') : '');
+const ST = (id, x = {}) => ({ id, name: id, position: { x: 0, y: 0 }, slaClock: 'calendar', ...x });
+const TR = (id, a, b, o = {}) => ({ id, name: 'QA ' + id, fromStateId: a, toStateId: b, before: o.before || {}, during: o.during || {}, after: { actions: o.after || [] }, ...(o.extra || {}) });
+const DEF = (tag, states, transitions, x = {}) => ({ name: 'QA RT20 BS ' + tag, description: 'QA RT20 BS retest - safe to delete', moduleKey: 'desk_tickets', targetField: 'status', departmentId: CS, entryCriteria: { op: 'contains', field: 'subject', value: 'QA RT20 BS ' + tag + ' ' }, states, transitions, ...x });
+const mkBp = async (def, active = true) => { const r = await api('POST', `/modules/${TK}/blueprints`, { definition: def, isActive: active }); const id = r.j?.data?.id; if (id) { made.bps.push(id); keep(); LED('blueprint created ' + id + ' "' + def.name + '" active=' + active); } return { r, id }; };
+const sv = v => v === null ? { kind: 'null' } : typeof v === 'number' ? { kind: 'number', value: v } : typeof v === 'boolean' ? { kind: 'boolean', value: v } : Array.isArray(v) ? { kind: 'array', items: v.map(sv) } : { kind: 'string', value: String(v) };
+const fields = o => Object.entries(o).map(([k, v]) => ({ field: k, value: sv(v) }));
+const mkT = async (tag, suffix = 'ticket', extra = {}, dept = CS) => { const r = await api('POST', `/modules/${TK}/records`, { data: fields({ subject: 'QA RT20 BS ' + tag + ' ' + suffix, description: 'QA RT20 BS ' + tag, status: 'Open', department: dept, ...extra }) }); const id = r.j?.data?.id; if (id) { made.tickets.push(id); keep(); const n = (await rec(id)).ticket_number; LED('ticket created ' + id + ' #' + n + ' "QA RT20 BS ' + tag + ' ' + suffix + '"'); } else log('ticket fail', E(r)); return id; };
+const rec = async id => { const d = (await api('GET', '/modules/' + TK + '/records/' + id)).j?.data?.data || []; const o = {}; for (const x of d) { const v = x.value || {}; o[x.field] = v.kind === 'array' ? (v.items || []).map(i => i.value) : v.value; } return o; };
+const bstate = async id => L((await api('GET', `/modules/${TK}/records/${id}/blueprint-state`)).j?.data?.states)[0] || null;
+const waitIn = async (id, s = 20) => { for (let i = 0; i < s / 2; i++) { const x = await bstate(id); if (x) return x; await sleep(2000); } return null; };
+const runT = (id, tid, from = 'Open', extra = {}) => api('POST', `/desk/tickets/${id}/blueprint-transitions/${tid}`, { run_id: crypto.randomUUID(), expected_state_id: from, fields: {}, ...extra });
+const trans = async id => L((await api('GET', `/modules/${TK}/records/${id}/blueprint-transitions`)).j?.data).map(x => x.transitionId || x.id);
+const histRaw = async id => L((await api('GET', `/desk/tickets/${id}/history`)).j?.data);
+const feed = async id => { const j = (await api('GET', '/desk/tickets/' + id + '/activity')).j; return Array.isArray(j?.data) ? j.data : (j?.data?.items || []); };
+const getBp = async id => (await api('GET', `/modules/${TK}/blueprints/${id}`)).j?.data;

@@ -1,0 +1,22 @@
+--- 2026-11-17T14:54:49.706054+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+ Retest PARTIAL — 17 Nov 2026 → moved to Bug Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner) Method: Manual browser + API
+ Checked:
+ Roles › CEO round robin, Customer Support tickets → 3/3 → Customer Experience Specialists 2, Succeeded; Mahmoud Mohamed (read-only there) never picked (dev claim held) [PASS]
+ Nobody in the role/profile can own the ticket → CEO in QA AO Dept A: Skipped "nobody in the org unit can own…"; Profile in empty dept: Skipped "nobody in the role can own…" (dev claims held) [PASS]
+ Profiles › Desk Administrator in QA AO Dept A; Roles › Manager turn-taking → Profile 3/3 → Dev Team 2; Manager dispatches alternate Dev Team 2 / Test User 1 (6 picks) [PASS]
+ Dev note: person-made ticket keeps creator on an On Create rule → Not held: On Create rule set Dev Team 2 (better than the note) [INFO]
+ Ticket History shows the owner change → BLOCKED: history writer down (no events for any edit, incl. a manual priority change) [INFO]
+ Still failing:
+ Same rule, ticket goes to background worker : expected One owner per edit, tickets alternate; actual Owner write fires the On Edit rule again; 2nd run reassigns → final owners DT2, DT2, TU1, TU1 (and DT2, TU1, TU1, TU1); run 1 body says Test User 1, ticket ends with Dev Team 2
+ Evidence: NDC-2997-retest-PARTIAL.png (attached)
+
+--- 2026-11-17T17:19:50.985677+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+ Fixed and live on tavi (metadata-engine #237, deployed 17 Nov 2026). Moving to Ready For Test. 
+
+ Cause: when Desk was slow, the rule's owner check went to the background worker, which then set the owner. That owner write counted as a new edit, so the same On Edit rule ran again and took another round-robin turn. Now the owner a rule decides is applied without running rules again, for workflow rules as it already was for assignment rules.
+
+ Checked on NDC Staging with your scenario: an On Edit rule, Roles › Manager round robin, on a QA AO Dept A ticket, four edits. Result: four runs for four edits, owners Dev Team 2, Test User 1, Dev Team 2, Test User 1. In two of the four runs the background worker decided the owner, the case that failed for you. The rule and ticket were deleted afterwards.
+
+ About your note on History: from 21:04 on 16 Nov until 12:17 UTC on 17 Nov, Desk was disconnected from ticket events, so History showed nothing for any edit. Since then the rule run and the owner change both show in History.
+
+ Not checked: the same through the browser.

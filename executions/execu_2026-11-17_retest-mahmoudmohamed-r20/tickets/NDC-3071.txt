@@ -1,0 +1,21 @@
+# NDC-3071 Records API | A field value without a "kind" key returns 500 instead of a validation error
+Summary
+When a record is created through the Records API and a field value has no "kind" key (for example {"value":"x"}), the server answers 500 "An unexpected error occurred." instead of a 400 validation error that names the field. Found while retesting NDC-2967 (key order of a field value), which is fixed.
+Steps to Reproduce
+- Send POST /api/v1/modules/{Tickets module id}/records with a body where the subject value has no "kind": {"data":[{"field":"subject","value":{"value":"Test"}},{"field":"department","value":{"kind":"string","value":"<department id>"}}]}
+- Repeat with "kind" present on Subject but missing on another field, e.g. priority {"value":"High"}.
+- For comparison, send a value with an unknown kind, e.g. {"kind":"bogus","value":"Test"}.
+Expected Result
+- 400 VALIDATION_ERROR saying the field's value is not in the expected format (as for an unknown kind), with the field path.
+Actual Result
+- 500 INTERNAL_ERROR "An unexpected error occurred." with a trace id, on any field (Subject, Priority). No record is created.
+- An unknown kind correctly returns 400 "The request body could not be read. Check the field types and try again." with path data[0].value.
+- Seen 4 times on 16 Nov 2026 (traces f480efe5-77fb-4e44-9b40-6f7719a60756, f9630ee9-ca77-47d4-bb76-569e2acd86de, and two earlier in the NDC-2967 retest).
+Environment
+staging-desk.taviportal.com (NDC-Staging), API as the owner account, 16 Nov 2026.
+Evidence
+BUG-records-api-no-kind-500-FAIL.png
+
+
+== COMMENTS (0)
+

@@ -1,0 +1,7 @@
+{"out":"3068-api-card.png","title":"NDC-3068 closed time / resolution time — record values and desk History API (17 Nov)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 #4177 (closed by blueprint 16 Nov)","GET record; UI History","closed_time 2026-11-16T09:48:59Z, resolution_time 11 -> History 'New 16/11/2026 11:48 AM' and 'Less than a minute'","ok"],
+["2 #4829 closed today by status edit 09:42Z","GET record; GET /desk/tickets/{id}","no closed_time / resolution_time field; desk closed_at null; History: only 'Status was updated Open -> Closed'","bad"],
+["3 #4807 closed today by blueprint (owner ran onlyA then end)","GET record; GET /desk/tickets/{id}; GET /desk/tickets/{id}/history","record status Closed, no closed_time; desk ticket status still Open; history = department_changed only (no blueprint_entered / transition / status_changed)","bad"],
+["4 Same calls on 16 Nov tickets","#4177 #4182 #4174 history","blueprint_entered, blueprint_transition, status_changed recorded","info"],
+["5 Other lanes' tickets closed today","3 tickets closed 09:32-09:35Z","closed_time empty, no status_changed in desk history","bad"]]}

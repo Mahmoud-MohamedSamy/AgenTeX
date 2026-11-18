@@ -1,0 +1,274 @@
+{
+ "out": "NDC-3063-retest-PASS.png",
+ "ticket": "NDC-3063",
+ "priority": "medium",
+ "title": "Blueprint | The state time limit only accepts hours, with no option to switch between minutes, hours and days",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · Edge · owner · own blueprint QA RT20 BS 3063 units 5392f456 (Customer Support, INACTIVE, never published) · values set by API and in the state panel",
+ "date": "17 Nov 2026",
+ "panels": [
+  {
+   "img": "3063-1-OnHold-en.png",
+   "caption": "Stored 4320 / 120 min opens as Due after 3 Days, Warn before 2 Hours; Minutes / Hours / Days pickers",
+   "crop": [
+    1242,
+    230,
+    358,
+    160
+   ],
+   "boxes": [
+    {
+     "b": [
+      1256,
+      288,
+      1586,
+      324
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1256,
+      354,
+      1586,
+      390
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3063-1-Escalated-en.png",
+   "caption": "Stored 90 / 60 min: 90 Minutes, 1 Hours (canvas badge 1h 30m)",
+   "crop": [
+    1242,
+    230,
+    358,
+    160
+   ],
+   "boxes": [
+    {
+     "b": [
+      1256,
+      288,
+      1586,
+      324
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1256,
+      354,
+      1586,
+      390
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3063-ar-OnHold.png",
+   "caption": "Arabic: مستحق بعد 3 أيام، التنبيه قبل 2 ساعات",
+   "crop": [
+    0,
+    230,
+    360,
+    170
+   ],
+   "boxes": [
+    {
+     "b": [
+      14,
+      288,
+      346,
+      324
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      14,
+      354,
+      346,
+      390
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3063-5-escalation-level.png",
+   "caption": "Escalation level › After the limit › Offset has the same number + unit picker",
+   "crop": [
+    1242,
+    580,
+    358,
+    170
+   ],
+   "boxes": [
+    {
+     "b": [
+      1266,
+      704,
+      1576,
+      742
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3063-B-savestate.png",
+   "caption": "Warn before = time limit (20 / 20 Minutes): draft saved, publishing blocked with a clear message",
+   "crop": [
+    300,
+    112,
+    1000,
+    80
+   ],
+   "boxes": [
+    {
+     "b": [
+      312,
+      124,
+      1288,
+      182
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3063-api-card.png",
+   "caption": "Entered → stored minutes → shown after reload",
+   "crop": [
+    0,
+    0,
+    1600,
+    665
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      272
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      361
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      371,
+      1564,
+      429
+     ],
+     "n": 5,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      439,
+      1564,
+      518
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      528,
+      1564,
+      586
+     ],
+     "n": 5,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      596,
+      1564,
+      654
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Due after / Warn before have number + Minutes/Hours/Days (dev claim)",
+   "Unit picker, saved value in largest even unit",
+   "20 min → 20 Minutes, 10 → 10 Minutes, 72 h → 3 Days, 90 min → 90 Minutes, 2160 → 36 Hours, 1.5 Days entered → stored 2160 → 36 Hours; stored in minutes; reload keeps them (was: \"in hours\", 20 min = 0.33)",
+   "PASS"
+  ],
+  [
+   2,
+   "Arabic",
+   "Same",
+   "دقائق / ساعات / أيام pickers; 20 دقائق, 3 أيام, 90 دقائق; example line right",
+   "PASS"
+  ],
+  [
+   3,
+   "Warn ≥ limit",
+   "Refused",
+   "Draft keeps it but Save and Publish is blocked: \"Open: the warning must come before the time limit, and the time limit must be set\"",
+   "PASS"
+  ],
+  [
+   4,
+   "\"Moves on by itself\" and escalation offset (dev claim)",
+   "Same picker",
+   "Moves on 1440 → 1 Days; escalation level After the limit › Offset with Minutes/Hours/Days (empty starts in Hours)",
+   "PASS"
+  ],
+  [
+   5,
+   "0, empty, negative, text, fractions",
+   "Clear handling",
+   "0 / empty / abc → no limit (empty opens in Hours, dev claim); -5 → \"No limit\", nothing saved; 0.5 min → 1, 0.25 min warning dropped — all silent, no message",
+   "INFO"
+  ],
+  [
+   6,
+   "Huge value (99,999,999 Days)",
+   "Field-level message",
+   "Server 422, toast \"Blueprint definition does not match the expected schema.\" (raw detail \"143999998560 is not a valid value for slaMinutes\"); no field highlighted (edge case outside this ticket; noted for a separate Low issue)",
+   "INFO"
+  ],
+  [
+   7,
+   "Time limit / warning actually fire",
+   "-",
+   "BLOCKED: staging background processing is down since 16 Nov 21:04 UTC; not part of this ticket (input units only)",
+   "INFO"
+  ]
+ ]
+}

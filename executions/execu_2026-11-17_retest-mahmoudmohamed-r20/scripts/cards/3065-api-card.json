@@ -1,0 +1,9 @@
+{"out":"3065-api-card.png","title":"NDC-3065 read-only agent and blueprint transitions — API (17 Nov)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner + QA agent CES2 (signed in once)","date":"17 Nov 2026",
+"rows":[
+["1 Save view-only owner","POST blueprint (Customer Support) with transition owner = Mahmoud Mohamed (view-only member)","422 BLUEPRINT_OWNER_READ_ONLY \"This agent only reads the department's tickets (a Light Agent or a view-only member), so they cannot own a transition.\"","ok"],
+["2 Eligible owners","GET /desk/departments/{Customer Support}/eligible-owners; {QA RT20 BP Dept}/eligible-owners","CS: Mahmoud Mohamed not listed. BP Dept (CES2 view-only): only ndc-staging-owner","ok"],
+["3 Ticket owners (dynamic)","PUT records/{#4834}/blueprint/owners/go userIds=[Mahmoud Mohamed]; {#4835} [CES2 view-only]; control [CES1]","422 BLUEPRINT_OWNERS_INVALID (same message) x2; control 200","ok"],
+["4 View-only agent runs","as CES2 (view-only in QA RT20 BP Dept): GET #4806 transitions; POST run onlyA / shared","[] offered; 403 BLUEPRINT_NOT_OWNER both; ticket stays Open","ok"],
+["5 Owner saved before","blueprint QA RT20 BP 3065 role after CES2 became view-only: ownerIssues; owner runs onlyA on #4807","reason read_only for onlyA+shared; onlyA in transitionsWithoutActiveOwner; owner run 200 -> Escalated","ok"],
+["6 Read-only on one ticket","as CES2 (normal Customer Support agent) on #4808 owned by owner: PATCH priority; GET transitions; Run (UI)","edit 403 PERMISSION_DENIED, but onlyA offered and Run 200 -> Escalated (decision B-14, unchanged)","bad"],
+["7 Access after run","as CES2: GET #4808 after run; #4181 (never run) and #4182","#4808 404 'not available' right after the run; #4181 / #4182 also 404 now (their blueprints are inactive)","bad"]]}

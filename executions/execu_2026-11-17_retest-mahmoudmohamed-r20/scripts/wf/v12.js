@@ -1,0 +1,2 @@
+await page.goto(H+'/views/all/tickets/f3ee35f3-ff2f-4cd2-a750-ce80e54825b7',{waitUntil:'commit'});await page.getByText('QA RT20 WF 3058 tag pick').first().waitFor({timeout:90000}).catch(()=>{});await sleep(6000);
+const p=page.getByText('Priority',{exact:true}).first();await p.scrollIntoViewIfNeeded();await sleep(1000);const bb=await p.boundingBox();await shot('3057-4-ticket-priority.png');return {bb};

@@ -1,0 +1,10 @@
+const fs=require('fs');const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20';
+const led=m=>fs.appendFileSync(RUN+'/ledger-zoho.md','- '+new Date().toISOString().slice(0,19)+' [ZS] '+m+'\n');
+const M=s=>String(s).replace(/[\w.+-]+@[\w.-]+/g,'<email>');
+module.exports=async(page,z)=>{const D='1499272000000006907';const o={};
+const fa=await z('GET','/api/v1/mailReplyAddress?departmentId='+D);o.fromAddr=fa.s+' n='+((fa.j?.data||[]).length);
+const mk=async s=>{const r=await z('POST','/api/v1/tickets',{subject:s,departmentId:D,channel:'Email',contact:{lastName:'QA RT20 ZS',email:'qa-rt20-zs@example.com'},description:'QA RT20 ZS subject check'});led('ticket #'+r.j?.ticketNumber+' '+r.j?.id+' "'+s+'" '+r.s+' contactId '+r.j?.contactId);return r.j||{err:M(r.t)};};
+const t1=await mk('QA RT20 ZS ack test');const t2=await mk('Re: Re: QA RT20 ZS ack test [#4745]');const t3=await mk('QA RT20 ZS own tag');
+const p=await z('PATCH','/api/v1/tickets/'+t3.id,{subject:'Re: Re: QA RT20 ZS own tag [##'+t3.ticketNumber+'##]'});o.patch3=p.s+' '+p.j?.subject;
+o.t=[t1,t2,t3].map(t=>({id:t.id,n:t.ticketNumber,s:t.subject,ch:t.channel,err:t.err}));o.contact=t1.contactId;
+fs.writeFileSync(__dirname+'/state.json',JSON.stringify({t:o.t.map(x=>({id:x.id,n:x.n})),contact:t1.contactId}));return o;};

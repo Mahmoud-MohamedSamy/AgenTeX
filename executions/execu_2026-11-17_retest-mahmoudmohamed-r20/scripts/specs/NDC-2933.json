@@ -1,0 +1,237 @@
+{
+ "out": "NDC-2933-retest-PASS.png",
+ "ticket": "NDC-2933",
+ "priority": "medium",
+ "title": "Skills | Ticket Skills field offers and keeps inactive skills and other departments' skills; Zoho drops them and has no Skills on Add Ticket",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · QA RT19 SK Dept (active S1, S2, S3, a long-name skill; inactive QA RT19 SK Inact; QA RT20 AS Tmp made inactive after use) · QA SK13 Dept A (S1-S12), Sales",
+ "date": "17 Nov 2026",
+ "panels": [
+  {
+   "img": "2933-1-ticket4802-edit-skills.png",
+   "caption": "#4802 (QA RT19 SK Dept) › Ticket Information › Edit Skills: only S1, S2, S3, Long + the now-inactive Tmp already on the ticket (ticked, can be removed); no QA RT19 SK Inact, no other department",
+   "crop": [
+    370,
+    60,
+    690,
+    660
+   ],
+   "boxes": [
+    {
+     "b": [
+      388,
+      505,
+      640,
+      673
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      394,
+      646,
+      506,
+      668
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2933-3-ticket4514-edit-skills.png",
+   "caption": "#4514 (failed yesterday, not checked by the developer): same four skills only",
+   "crop": [
+    370,
+    60,
+    690,
+    660
+   ],
+   "boxes": [
+    {
+     "b": [
+      388,
+      505,
+      640,
+      650
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2933-4-ticket4804-sk13-edit-skills.png",
+   "caption": "#4804 in QA SK13 Dept A: only QA SK13 S1-S12 (list follows the ticket's department)",
+   "crop": [
+    370,
+    60,
+    690,
+    660
+   ],
+   "boxes": [
+    {
+     "b": [
+      388,
+      505,
+      640,
+      657
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2933-9-ticket4514-edit-skills-ar.png",
+   "caption": "Arabic layout (language set only in the test browser): #4514 Edit Skills offers the same four skills, right-to-left, long name wraps",
+   "crop": [
+    940,
+    60,
+    660,
+    660
+   ],
+   "boxes": [
+    {
+     "b": [
+      958,
+      503,
+      1214,
+      652
+     ],
+     "n": 6,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2933-5-new-ticket-own-dept-picked.png",
+   "caption": "New Ticket, QA RT19 SK Dept: only its active skills (regression)",
+   "crop": [
+    440,
+    380,
+    990,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      1106,
+      762,
+      1410,
+      890
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2933-api-card.png",
+   "caption": "API and the ticket-page save",
+   "crop": [
+    0,
+    0,
+    1600,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      204
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      272
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      340
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      350,
+      1564,
+      408
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Ticket page › Ticket Information › Edit Skills",
+   "Only the ticket department's active skills",
+   "#4802 and #4514 (QA RT19 SK Dept): S1, S2, S3, Long only; #4804 (QA SK13 Dept A): S1-S12 only; no inactive, no other department (failed 16 Nov; dev claim held, #4514 also checked)",
+   "PASS"
+  ],
+  [
+   2,
+   "Skill already on the ticket that became inactive",
+   "Shown so it can be removed (dev claim)",
+   "#4802 Tmp shown ticked; unticked + S2 ticked + Save → toast, reload and API = S1, S2",
+   "PASS"
+  ],
+  [
+   3,
+   "Saving inactive / other-department skills (create, edit, API)",
+   "Dropped on save",
+   "#4803 create kept only S1; edits kept S2, then []",
+   "PASS"
+  ],
+  [
+   4,
+   "New Ticket Skills field + department change",
+   "Only the department's active skills; picks dropped on change",
+   "Own dept 4 skills, QA SK13 Dept A S1-S12, Sales its 6; S1+S2 dropped on switch",
+   "PASS"
+  ],
+  [
+   5,
+   "Skills on Add Ticket (Zoho has none)",
+   "Product call",
+   "Kept, filtered (dev decision, accepted 16 Nov)",
+   "INFO"
+  ],
+  [
+   6,
+   "Arabic layout (dev: not checked)",
+   "Same filtered list",
+   "#4514 in Arabic: S1, S2, S3, Long only; RTL, long name wraps",
+   "PASS"
+  ]
+ ]
+}

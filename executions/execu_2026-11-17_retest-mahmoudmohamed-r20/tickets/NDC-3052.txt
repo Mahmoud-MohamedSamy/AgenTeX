@@ -1,0 +1,33 @@
+# NDC-3052 Workflow Rules | Create Record still creates a record missing required fields at run time
+Summary: a workflow rule's Create Record can still create a record that lacks a field the target module requires, and the run says Succeeded. Saving now refuses such an action (NDC-2968), but two cases get past the save:
+- A Create Record saved before the NDC-2968 fix, which still runs as it was saved. On staging, QA's NDC-Staging tenant has 8 such actions in 7 rules and 1 saved action.
+- A field mapped to a placeholder (for example the ticket's Contact) whose value is empty on the record the rule runs on.
+Expected: when the record would be missing a required field, the action ends Failed in Execution History, naming the fields (for example "Not created: Calls needs Subject, Contact Name."), and no record is created.
+Actual: the record is created without the field, and the action is Succeeded.
+Notes:
+- The required fields are the ones the save check already uses: metadata-engine's verdict for a create through the action's layout, or the module's default layout.
+- Two places could do it: workflow checking the rendered values just before it creates the record, or metadata-engine's internal create enforcing Required for records an automation creates. The second also covers other automations.
+- Applies to Create Record and Create Connected Record, in Desk and CRM rules.
+- Related: NDC-2968 (save-time check, live on staging since 2026-11-15).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T12:26:13.406998+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging on 16 Nov (metadata-engine #231 and workflow #141 merged) and checked on staging-desk (NDC-Staging) with test rules and tickets, since deleted:
+- Ticket without a contact: the Create Record into Calls ended Cancelled with "Not created: Calls needs Contact Name." in Details, followed by metadata-engine's own detail. No Call was created.
+- Same rule, ticket with a contact: Succeeded, and the Call was created.
+Two notes:
+- Execution History shows Cancelled, not Failed. That is how every action that fails for good shows today.
+- Stored rules that already leave out a required field will now fail on every run instead of creating an incomplete record. On NDC-Staging that is 8 actions in 7 rules and 1 saved action.
+Checked through the API and stored records, not in the browser.
+
+--- comment 2026-11-16T10:53:24.225154+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Reproduced on staging-desk (NDC-Staging) on 16 Nov with a test rule, since deleted. A ticket rule created a Call with its Contact Name mapped to the ticket's contact. The ticket had no contact, so the Call was created with an empty contact, and the run said Succeeded.
+Fix in two PRs (open, not merged or deployed):
+- metadata-engine #231 checks the record's required fields when a rule creates it. It applies the same rules as the New record form and counts what the system fills in itself: default values, a ticket's default department and status, and the department's layout.
+- workflow #141 asks for that check. The action then ends with "Not created: Calls needs Contact Name." and no record is created.
+Differences from the ticket's expected result:
+- Execution History shows the action as Cancelled, with that sentence in Details, not Failed. Every action that fails for good shows this way today.
+- Stored rules that already leave out a required field will fail on every run instead of creating an incomplete record. On NDC-Staging that is 8 actions in 7 rules and 1 saved action.
+Checked with automated tests only. I'll check it on staging after deploy.
+

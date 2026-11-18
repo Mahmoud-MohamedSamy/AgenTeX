@@ -1,0 +1,14 @@
+const o = {}; const id = r => r.j && r.j.data && r.j.data.id; const DF = 'qa_rt20sc_date';
+let r = await mkRule({ name: P + 'R4 dates', entries: [ent(DF, 'today', undefined, 1), ent(DF, 'currentMonth', undefined, 2), ent(DF, 'inLastDays', 7, 4), ent(DF, 'between', ['2026-11-01', '2026-11-30'], 8), ent(DF, 'eq', '${TODAY}', 16), ent('qa_rt18sr_pl', 'contains', 'amm', 32), ent('qa_rt18sr_pl', 'in', ['Beta'], 64)] }); o.R4 = SR(r).slice(0, 300); I.R4 = id(r); SAVE();
+o.R4stored = id(r) ? JSON.stringify(r.j.data.entries.map(e => [e.operator, e.value, e.points])) : '';
+await updRec(I.C, { title: 'QA RT20 SC t5' }); const sc = await score(I.C); o.ctl = sc;
+const D = await mkRec({ last_name: P + 'D', company: 'QA RT20 SC ctl', no_of_employees: 50, [DF]: '2026-11-17' }); I.D = D.id; SAVE(); o.mkD = D.s + ' ' + D.err;
+const d = async () => (await score(D.id)) - sc;
+o.today = await d() + ' (exp 31)';
+await updRec(D.id, { [DF]: '2026-11-12' }); o.d5ago = await d() + ' (exp 2+4+8=14)';
+await updRec(D.id, { [DF]: '2026-11-05' }); o.d12ago = await d() + ' (exp 10)';
+await updRec(D.id, { [DF]: '2026-10-30' }); o.lastMonth = await d() + ' (exp 0)';
+await updRec(D.id, { qa_rt18sr_pl: 'Gamma' }); o.plGamma = await d() + ' (exp 32)';
+await updRec(D.id, { qa_rt18sr_pl: 'Beta' }); o.plBeta = await d() + ' (exp 64)';
+const v = await recVals(D.id); o.vals = [v[DF], v.qa_rt18sr_pl, v.score];
+return o;

@@ -1,0 +1,31 @@
+{
+ "out": "NDC-3056-retest-PARTIAL.png",
+ "ticket": "NDC-3056",
+ "priority": "medium",
+ "title": "Blueprint | Agents cannot see the blueprint's flow and transition conditions from a ticket",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · Edge · agent \"Customer Experience Specialists 2\" (Desk Agent, Customer Support, ticket owner) signed in once · blueprint QA RT20 BS 3056 flow (4 states, 6 transitions) · ticket #4869",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3056-a1-header-en.png", "caption": "Open, a step can run: header shows \"QA go\" with \"View configured actions\" beside it; Steps card keeps its link", "crop": [664, 60, 936, 160],
+   "boxes": [{"b": [1360, 168, 1590, 204], "n": 1, "kind": "PASS"}]},
+  {"img": "3056-b1-header-escalated-en.png", "caption": "Escalated, nothing can run (priority low): \"No transitions you can run · View configured actions\"", "crop": [664, 60, 936, 160],
+   "boxes": [{"b": [1228, 168, 1590, 196], "n": 2, "kind": "PASS"}]},
+  {"img": "3056-a2-popup-en.png", "caption": "Popup in Open: only the 3 steps leaving Open (Shown when Priority = \"high\" shown)", "crop": [464, 130, 672, 640],
+   "boxes": [{"b": [468, 200, 1132, 506], "n": 3, "kind": "FAIL"}, {"b": [700, 336, 900, 372], "n": 4, "kind": "PASS"}]},
+  {"img": "3056-b2-popup-escalated-en.png", "caption": "Popup in Escalated: only Escalated → Closed; the rest of the flow is gone", "crop": [464, 310, 672, 280],
+   "boxes": [{"b": [468, 380, 1132, 474], "n": 3, "kind": "FAIL"}]},
+  {"img": "3056-d2-popup-closed-ar.png", "caption": "Arabic, Closed: only Closed → Open, \"Asks for: Checklist\"", "crop": [464, 300, 672, 300],
+   "boxes": [{"b": [468, 368, 1132, 460], "n": 3, "kind": "FAIL"}, {"b": [468, 505, 1132, 595], "n": 5, "kind": "PASS"}]},
+  {"img": "3056-api-card.png", "caption": "API as the agent: the server sends the whole flow (4 states, 6 transitions); the popup draws 1–3", "crop": [0, 0, 1600, 490],
+   "boxes": [{"b": [36, 99, 1564, 199], "n": 6, "kind": "PASS"}, {"b": [36, 209, 1564, 382], "n": 3, "kind": "FAIL"}]}
+ ],
+ "rows": [
+  [1, "Header while a step can run (dev claim)", "Step button + \"View configured actions\"", "\"QA go\" + link side by side; same in Arabic (\"عرض الإجراءات المُعدّة\") with \"QA reopen\"; Steps card keeps its link", "PASS"],
+  [2, "Header while nothing can run (dev claim)", "Link stays", "Escalated, priority low: \"No transitions you can run · View configured actions\"", "PASS"],
+  [3, "Popup = the blueprint's flow (all states and transitions)", "Every state and transition, like CRM", "Still only the steps leaving the current state: Open 3 of 6, Escalated 1 of 6, Closed 1 of 6; On Hold → Closed never shown; the server already sends all 6", "FAIL"],
+  [4, "\"Shown when\" conditions", "Shown on each conditional transition", "Priority = \"high\" (Open → On Hold) and Priority = \"medium\" (Escalated → Closed) shown — but only when that state is current", "PASS"],
+  [5, "What the agent can / can't run", "Clear per step", "\"You can run this step\" / \"Nothing to fill in\" / \"Asks for: Checklist\"; conditional and owner-only steps: \"You can't run this step now…\" (does not say which reason); agent ran go and end → moved", "PASS"],
+  [6, "Server data", "Full flow available to agents", "blueprint-state as agent 200 with allStates 4 + allTransitions 6 incl. criteria", "INFO"]
+ ]
+}

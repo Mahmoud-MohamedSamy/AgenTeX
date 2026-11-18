@@ -1,0 +1,40 @@
+--- 2026-11-17T13:00:45.103093+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+ Retest PARTIAL — 17 Nov 2026 → moved to Bug Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner) Method: Manual browser + API
+ Checked:
+ Save a blueprint with a view-only member as transition owner → 422 BLUEPRINT_OWNER_READ_ONLY with the 'only reads the department's tickets' message (dev claim held) [PASS]
+ Transition Owners picker (designer) → Customer Support: Mahmoud Mohamed (view-only) not offered; QA RT20 BP Dept: CES2 not offered after becoming view-only [PASS]
+ Ticket 'Assign owners' (dynamic owners) → Dialog lists CS agents without Mahmoud Mohamed; API PUT with a view-only agent 422 BLUEPRINT_OWNERS_INVALID, working agent 200 [PASS]
+ View-only agent opens a department ticket and runs → #4806: 'No transitions you can run'; POST run onlyA/shared 403 BLUEPRINT_NOT_OWNER [PASS]
+ Owner saved before the agent became read-only → Designer: 'Read only' + warning 'QA onlyA has no active owner'; owner could run onlyA (200) [PASS]
+ Still failing:
+ Ticket's exact case: normal agent, read-only on one ticket (#4808 owned by owner) : expected Not offered, run refused (ticket Expected); actual Edit 403, but QA onlyA + Run offered and Run moved #4808 to Escalated — developer decision B-14 keeps this; Zoho not checked for this case. QA lead decision 17 Nov: the ticket's expectation stands — an agent who can only read the ticket must not be offered or allowed to run the transition
+ Agent's access after the run : expected Agent can still open the ticket; actual #4808 'This ticket is not available' + Permission denied right after the run; #4181/#4182 also 404 for CES2 today
+ QA lead decision (17 Nov 2026): developer decision B-14 is not accepted; the ticket's Expected stands.
+ Evidence: NDC-3065-retest-PARTIAL.png (attached)
+
+--- 2026-11-17T17:18:56.602920+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+ Fixed and live on tavi (metadata-engine #239, deployed 17 Nov 2026 at 15:14 UTC). Moving to Ready For Test. 
+
+ As the QA lead decided, B-14 no longer holds for an agent who can only read the ticket. A transition owner can run the transition only if they can edit the ticket, or if the ticket is shared with them at Full access. They are not offered it, and a run through the API is refused, when the ticket belongs to another agent and they can only open it, or when it is shared with them read-only or restricted.
+
+ One exception stays: an owner from another department named in the blueprint's Transition Owners. The blueprint shares the ticket with that department at the access level the admin picks, so that its agents can run the step, and they still can.
+
+ Checked on staging in NDC-Staging through the API, logged in as a normal Customer Support agent (a probe account standing in for CES2), with a temporary blueprint whose transition only that agent owns:
+
+ 
+ On a Customer Support ticket the account owner owns, the agent can open the ticket but is not offered the transition. A run answers 403 "You are not an owner of this transition." The ticket stays Open, and the agent can still open it afterwards. Before this deploy, the same setup offered the transition.
+
+ On a ticket the agent owns, the transition is offered and the run moves the ticket to On Hold.
+
+ 
+ "This ticket is not available" after the run: the agent could open the ticket only because they own a transition from its current state. That access ends when the ticket leaves the state. An agent who can only read can no longer run, so they keep seeing the ticket. #4181 and #4182 behave the same way: their blueprints no longer give CES2 an open transition, so CES2 cannot open the account owner's tickets.
+
+ To know when you retest:
+
+ 
+ If a transition's only owner cannot edit a particular ticket, nobody can run it on that ticket until its owners change: on the ticket's Assign owners when the blueprint has dynamic owners, otherwise by editing the blueprint.
+
+ The refusal says "You are not an owner of this transition", even though the agent is named as one. Better wording is a follow-up.
+
+ 
+ The probe blueprint and tickets are deleted. Not checked: the ticket screen in the browser for this case (the API answers above are the list and run the screen uses).

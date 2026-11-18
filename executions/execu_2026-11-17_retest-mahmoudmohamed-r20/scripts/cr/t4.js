@@ -1,0 +1,6 @@
+eval(fs.readFileSync('cr/lib.js','utf8'));const o={ex:{},recs:{}};const tk=JSON.parse(fs.readFileSync(OUTD+'t3-tickets.json','utf8'));
+await sleep(20000);
+for(const [k,t] of Object.entries(tk.t)){const tt=await getTicket(t.id);const ex=(await execsRaw(t.id)).filter(e=>e.ruleId===t.rule);o.ex[k]={num:tt._number,contact:tt.contact_id||null,ex:ex.map(e=>({id:e.id,out:e.outcome,d:(e.dispatches||[]).map(d=>({type:d.actionType,st:d.status,http:d.httpStatus||d.lastHttpStatus,err:d.lastError,target:d.target,res:d.resultRecordId||d.createdRecordId||d.result}))}))};}
+const mods={Calls:'f7e488b5-0232-42fd-811c-1f24356af653',Events:'6fb19115-9356-40f0-b064-840d8f1fad93',Tickets:T};
+for(const [n,m] of Object.entries(mods)){const L=arr((await api('GET','/modules/'+m+'/records?take=60&sort=-created_at')).j?.data);o.recs[n]=[];for(const c of L){if(c.createdAt&&c.createdAt<tk.start)continue;const x={};for(const f of c.data||[])x[f.field]=val(f.value);if(n==='Tickets'&&!/^QA RT20 CR child/.test(x.subject||''))continue;if(n==='Calls'&&!/QA RT20 CR/.test(x.subject||''))continue;o.recs[n].push({id:c.id,createdAt:c.createdAt,subject:x.subject||x.title,contact_id:x.contact_id,department:x.department,ticket_id:x.ticket_id,status:x.status,call_status:x.call_status,layout:c.layoutId});}}
+save('t4',o);return o;

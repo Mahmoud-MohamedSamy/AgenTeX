@@ -1,0 +1,452 @@
+[
+ {
+  "ticket": "NDC-2729",
+  "id": "4ead7a61-0fb1-4bf6-a102-bc218fc2703f",
+  "pri": "urgent",
+  "mod": "CRM",
+  "feat": "Blueprint",
+  "title": "Blueprint | Create Task, Meeting, Call and other create-record actions in After Transition Actions allow another module, duplicate owner settings, \"Value\" defaults and a text-only Related record",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2729-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Module dropdown on Create task / Meeting / Call → No module dropdown on any of the three; only the generic 'Create record' action has a module picker (by design) [PASS]</li><li>Owner settings → ASSIGN TO (Record owner / Person who performed / Specific user) only; no Task/Meeting/Call Owner field, also on Create record › Tasks [PASS]</li><li>Pick list defaults → Task: Reminder None, Status Not Started, Priority Low; Call: Outbound, Scheduled, Reminder None; Meeting: Office, Zoom; no \"Value\" or \"Select…\" [PASS]</li><li>Related record / lookups → Related record = \"This record\"; Customer/Contact Name and Related To = \"Choose a record…\" pickers [PASS]</li><li>Desk Create task / Field update (13-15 Nov items) → Field update: no Status/Department/Team/Skills; ASSIGN TO picker on Create task (15 Nov PASS, unchanged) [PASS]</li><li>Desk Field update pick lists (15 Nov FAIL) → Priority, Channel, Classification, Category, Sub Category, Language and the QA NDC pick lists offered (125 fields); value -None- then options [PASS]</li></ul><p>Evidence: NDC-2729-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2275",
+  "id": "7ae77874-2a69-4a0a-ae58-177b7912a974",
+  "pri": "urgent",
+  "mod": "Desk",
+  "feat": "Assignment Rules",
+  "title": "Assignment Rules: Direct Assignment and Round Robin (requirements)",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2275-retest-PASS.png",
+   "NDC-2275-retest-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Phantom tickets gone from the count (dev claim) → Records API and workload API 4 and 1 (morning and again 12:36) [PASS]</li><li>Morning 09:38-10:15: round robin on create/update → Nothing assigned (13 tickets) - staging outage (history/email/sync also stopped); superseded by rows 9-13 [INFO]</li><li>Morning: threshold probes → Blocked by the outage; re-run in row 10 [INFO]</li><li>Morning: skill rule → Blocked by the outage; re-run in row 12 [INFO]</li><li>Morning: NF-3 burst → Not run in the morning; re-run in row 13 [INFO]</li><li>Import, automation ticked (GEN-13 decided) → #4849 and #4848 to importer, no rule entry. INFO: mapped owner 'Mahmoud Samy' still ignored (#4848) [PASS]</li><li>Import help text (English) → Shown [PASS]</li><li>Control probe 11:26 (pool = online owner, thresholds off) → #4865 still Unassigned after 180 s (outage not over); 11:40 move path assigned (#4870), create did not (#4868) [INFO]</li><li>Round robin on create (control 12:31) → #4913 -> owner on create, #4914 on move; History 'Assigned automatically · Round Robin Assignment' [PASS]</li><li>Dept threshold = agent's Open tickets in that dept (key check) → TU1 (4 Open, 94 elsewhere): thr 4 #4916 waits, thr 5 #4920 assigned; DT2 (1 Open, 30 elsewhere): thr 1 #4923 waits, thr 2 #4925 assigned, next #4926 waits. Same via move at 11:43 [PASS]</li><li>On Hold not counted → DT2 full at thr 2; t1 On Hold -> t3 assigned; waiting t2 stays (backlogs off). INFO: workload API still counts On Hold (2) [PASS]</li><li>Skill rule: any one skill; no skills / unheld skill stays unassigned → #4917 -> TU1, #4924 (S1+S2) -> TU1, #4918 and #4919 Unassigned [PASS]</li><li>NF-3 style burst: 10 at once, pool of 2, thr 6 → Exactly TU1 2, DT2 5, 3 waiting, no double entries [PASS]</li><li>Zoho Desk live parity → Same behaviour for create, threshold per dept, On Hold, waiting, offline, any-one skill (see vs-Zoho image) [INFO]</li></ul><p>Evidence: NDC-2275-retest-PASS.png, NDC-2275-retest-vs-zoho.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3065",
+  "id": "d84423ea-60a3-4c5f-9d12-777f70afebff",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Blueprint",
+  "title": "Blueprint | An agent with read-only access to a ticket can still run a transition they own and move the ticket",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3065-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Ticket's exact case: normal agent, owner of the transition, can only read another person's ticket (#5025, #5034) → Screen: 'No transitions you can run', no QA onlyA button; API transitions []; run 403 BLUEPRINT_NOT_OWNER; both stay Open, no transition in History [PASS]</li><li>Agent's access after the refused run → #5025 opens (200 and on screen) with the read-only banner, before and after [PASS]</li><li>Agent's own ticket (#5030) → QA onlyA offered; run 200 -> Escalated [PASS]</li><li>Ticket shared with the agent's department → Full #5038: offered, 200; read-only #5044, restricted #5048, no share #5049: not offered, 403 [PASS]</li><li>Owner from another department named in Transition Owners → Share applied as configured (CS full / CS read_only); QA xd offered and 200 on both; share removed after the run, so CES2 then sees 'not available' [PASS]</li><li>Save a blueprint with a view-only member as owner → 422 BLUEPRINT_OWNER_READ_ONLY (CES2 in B2 Dept, Mahmoud Mohamed in CS); a save 3 s after the view-only change was still accepted, 1 min later refused [PASS]</li><li>Designer picker and ticket Assign owners → Add owner offers only ndc-staging-owner; eligible-owners exclude both; Assign owners PUT CES2 422, owner 200 [PASS]</li><li>View-only agent runs on an owner's ticket (#5093) → Nothing offered; run onlyA / shared 403 BLUEPRINT_NOT_OWNER [PASS]</li><li>Owner saved before the agent became view-only → Designer: 'Read only' card + warning 'QA onlyA has no active owner' [PASS]</li><li>Notes: refusal wording; only owner cannot edit → Refusal says 'You are not an owner of this transition' to a named owner; on #5025 the admin also sees 'No transitions you can run' with no hint why [INFO]</li></ul><p>Retested again after the developer fix (17 Nov 2026 evening): the ticket's case is fixed. Accepted by the QA lead (18 Nov 2026): an owner named from another department through Transition Owners can still run the step at the share level the blueprint gives (developer exception). A separate small finding, a just-made view-only agent still accepted as owner for a short time, is filed as NDC-3112.</p><p>Evidence: NDC-3065-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3000",
+  "id": "b1973014-edce-4e87-adf6-8d8db41dee05",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Email",
+  "title": "Email | Customers get no acknowledgement emails, and the ticket-closed email has no rating link",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3000-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Acknowledgement setup → Channel ack on; dept rules Receiving a new ticket + Acknowledging a reply saved on; own receiving address [INFO]</li><li>Ticket not opened by email (#4691) → No ack (by design: ack only for inbound email) [INFO]</li><li>Close with ratings limited to the dept (#4678) → Arrived in the customer inbox with Bad / Okay / Good (user checked) [PASS]</li><li>Customer emails the support address (#4745) → \"Re: QA RT19 NTF 3000 ack test [#4745]\" — \"Your ticket has been delivered, we will contact you soon. #4745\"; received once, 17:44 Cairo (checked by the user) [PASS]</li><li>Customer replies to the acknowledgement (#4745) → Reply sent 07:58 UTC was added to #4745 when staging email recovered (12:18 UTC, matched by the email headers); reply acknowledgement \"Thanks — we have your reply on ticket #4745 and will get back to you shortly.\" received 14:18 Cairo (checked by the user) [PASS]</li><li>New emails create tickets with an acknowledgement (#4906, #4907) → \"Re: QA RT19 NTF 3000 inbound check [#4906]\" — \"Your ticket has been delivered, we will contact you soon. #4906\" received 14:18 Cairo (user); #4907 the same in the app [PASS]</li><li>Reply acknowledgement subject → \"Re: Re: QA RT19 NTF 3000 ack test [#4745] [#4745]\" — prefix and ticket tag repeated (small separate issue) [INFO]</li><li>Staging email outage 16 Nov 15:44 – 17 Nov 12:18 UTC → No email was received during the outage; queued emails were processed on recovery (not a fault of this fix) [INFO]</li></ul><p>Small separate issue, to be filed as its own Low ticket: the reply acknowledgement subject repeats the prefix and the ticket tag (\"Re: Re: QA RT19 NTF 3000 ack test [#4745] [#4745]\"). The reply was still added to the right ticket and the acknowledgement arrived. The 4-hour delay of that acknowledgement came from the staging email outage (16 Nov 21:04 – 17 Nov 12:17 UTC), not from this fix.</p><p>Evidence: NDC-3000-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3055",
+  "id": "97c8ea38-d3b8-4e1d-a838-dc268cd2d451",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Ticket Views",
+  "title": "Ticket Views | Deleting all tickets in a view with \"Select all\" fails without any message and no tickets are deleted",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3055-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Select all 300 in this view → More → Delete → Delete → One POST mass-delete with the ids in the body → 202 job in &lt; 2 s (was: ids in the address, no reply, cancelled after 30 s) [PASS]</li><li>Message to the user, incl. limit → \"Deleting 300 tickets in the background (up to 50,000 at a time)\", progress 0/100 of 300, then \"300 records moved to the recycle bin.\" [PASS]</li><li>List refreshes, count drops to zero → View shows (0) \"No Tickets yet\" about 6 s after confirm, and after reload [PASS]</li><li>Every ticket really deleted → GET each id → 404 × 300; job completed deleted 300, failed 0 [PASS]</li><li>Recycle Bin → All 300 in the bin, one deletion group, 60 days [PASS]</li><li>Sidebar count of the view → Stayed 300 until page reload (then 0); cosmetic [INFO]</li></ul><p>Evidence: NDC-3055-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2997",
+  "id": "653cc82d-903e-4613-850a-a14b2d5bb646",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Owner Assignment by role (round robin) never assigns anyone",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2997-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Re-fire, edits one at a time (Manager round robin, 3 tickets × 3 edits) → 9 edits → 9 runs, owners DT2, TU1, DT2, TU1, DT2, TU1, DT2, TU1, DT2; every Correlation distinct (dev claim held) [PASS]</li><li>Re-fire when the background worker decides the owner (3 tickets edited together, 4 rounds) → 12 edits → 12 runs (4 per ticket); 2 runs finished by the worker (owner set ~8 s later), no extra run; no Correlation = another run; 6 DT2 / 6 TU1 [PASS]</li><li>Developer scenario: 4 QA AO Dept A tickets, Manager → DT2, TU1, DT2, TU1 — one run each (dev claim held) [PASS]</li><li>Afternoon cases: CEO→Customer Support, CEO→QA AO Dept A, Profile→empty dept, Profile→QA AO Dept A → CES2 3/3; Skipped (org unit) ×2; Skipped (role); Dev Team 2 3/3 [PASS]</li><li>Ticket History shows the rule run and owner change → API + UI: 1 workflow rule ran + 1 owner change + 1 priority change per edit; \"by workflow rule QA RT20 W2 2997 …\" (dev claim held) [PASS]</li><li>NEW: History of an owner change the background worker applied → Shown twice (\"Ticket owner was changed\" + \"Ticket Owner was updated\"), no rule named; API has one owner_changed with source engine, no rule — not filed [INFO]</li></ul><p>Evidence: NDC-2997-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-1483",
+  "id": "13f42b70-88a1-4ef9-b552-49f27986d592",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Lead Scoring",
+  "title": "Scoring Rule",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-1483-retest-PARTIAL.png",
+   "NDC-1483-retest-PARTIAL-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Field entries add / take away points; several rules add up → +13, +7, -5, +20 and +4 all added right; 99/100 boundary right; lead with only the negative entry = -5 [PASS]</li><li>Operators by field type → between (inclusive), today, this month, last N days, between dates, ${TODAY}, pick list contains / any of: all right (new since 15 Nov) [PASS]</li><li>Change a rule; rescore existing records → Without the box the record changes on its next save; with \"Also score the records already there\" / update_existing_records a background run rescored old leads (37→33, 5→16) [PASS]</li><li>Switch off / on / delete a rule → Each starts a background run (~40 s): 8→5, 5→8, 8→5 without saving the lead [PASS]</li><li>Validation and limits → Name 120, description 500, points whole ≠ 0 within ±10000, 30 entries, field / operator / value / option checks, duplicate entry and duplicate name: all 422 [PASS]</li><li>Score cannot be typed in → PATCH or create with score is ignored; score stays computed [PASS]</li><li>Score in list, custom view, workflow, report → Sort + filter ≥ 30 and a custom view Score ≥ 30 list the 3 right leads; workflow Score reaches 40 and criteria Score ≥ 60 fired; report filter Score ≥ 30 works [PASS]</li><li>Score workflow when a background run changes the score → Workflow \"Score reaches 40\" did not run when the run lifted a lead 5→55; it runs on a save [INFO]</li><li>Non-admin user → \"You can't manage scoring rules\"; list / get / create / active / delete / run all 403 [PASS]</li><li>Run scoring rules button → Starts a rescore of all 12,041 leads at once, no confirmation step [INFO]</li><li>Audit log → Created / switched / edited / deleted entries listed under Scoring Rule [PASS]</li><li>Same as Omnichannel / Zoho → Field rules, + / - points, on/off, delete: yes. Decay, touch points / activities, record criteria, layout, multi-condition lines, per-rule score fields, record-page score section: not built (vs-Zoho image; open on NDC-2934) [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Report after a background rescore</strong>: expected Report shows the current score; actual Report keeps the old score of leads changed by a background run (A 37 vs 33, N -4 vs 0) 20+ min later; correct after the lead is saved</li></ul><p>QA lead decision (17 Nov 2026): NDC-1483 is closed as Done. What is still missing (7 Zoho gaps, stale report scores after a background rescore, score workflow not run on a background rescore) is tracked as a comment on NDC-2934 (Scoring Rules gaps).</p><p>Evidence: NDC-1483-retest-PARTIAL.png, NDC-1483-retest-PARTIAL-vs-zoho.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3018",
+  "id": "b0f24b6a-57e8-4d24-a70d-a664d4b9fa0f",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | Screen readers are not told why a save was refused",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3018-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Accessibility tree after refused save → ARIA snapshot: textbox \"QA RT18 v text\" [invalid] + alert \"QA RT18 text cannot start with BAD\" [PASS]</li><li>aria-invalid + aria-describedby → aria-invalid=\"true\"; aria-describedby → the message &lt;p>; getByRole(textbox, description) finds it [PASS]</li><li>Message announced → Field message now has role=\"alert\" and is inserted after Save; banner \"Please fix the field highlighted below.\" also role=alert (was: no role / no live region) [PASS]</li><li>Focus → Focus on the refused input [PASS]</li><li>Edit form → Edit Lead: same attributes, alert and focus (no top banner on edit; field alert announced) [PASS]</li><li>Desk half → Passed 15 Nov (r18); not rechecked this round [INFO]</li></ul><p>Evidence: NDC-3018-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3067",
+  "id": "75d32599-2bb4-4dcd-b168-b47f7c25135e",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Audit Log",
+  "title": "Audit Log | Changes made in the web app show the server's internal address ::ffff:172.19.0.19 instead of the user's IP",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3067-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 17 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Desk change lines (tickets, departments, replies, rules, blueprints) → Public IP on 499 change rows today; none show 172.19.0.19 (was 48 rows on 16 Nov) [PASS]</li><li>This lane's own changes → Department, blueprint and ticket creates show the public IP [PASS]</li><li>Developer curl sweep (ZZ sweep2997) → 22 workflow-rule rows with 172.19.0.19, curl user agent — probably sent from inside the cluster [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Agent / permission changes (IAM) made in the browser</strong>: expected User's own IP; actual 3 of 3 today show IP 172.19.0.19 (e.g. CES2 permission GRANT desk:ticket:share)</li><li><strong>Blueprint transition runs and mass delete by a user</strong>: expected User's own IP; actual No IP line at all (21 user rows without IP; API also has no actor label on the transition rows)</li></ul><p>Evidence: NDC-3067-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3056",
+  "id": "a230223a-117d-48df-b524-0c29badfe173",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Blueprint",
+  "title": "Blueprint | Agents cannot see the blueprint's flow and transition conditions from a ticket",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3056-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Popup = the whole flow (r19/r20 failing item) → Counted 6 of 6 transitions and all 4 states in Open, On Hold, Escalated and Closed (agent, EN + AR, 1600 and 1024 px). From → to and conditions match GET blueprint: go Open→Escalated, urgent Open→On Hold (Priority = \"high\"), admin Open→Closed (owner-only, no condition), end Escalated→Closed (Priority = \"medium\"), holdend On Hold→Closed, reopen Closed→Open. On Hold → Closed now shown [PASS]</li><li>Current state's steps first and highlighted → Open: 3 rows highlighted first; On Hold: 1; Escalated: 1; Closed: 1. Agent ran QA go (Open→Escalated) and QA reopen (Closed→Open) in the UI; reopened popup moved the highlight each time; other rows keep blueprint order [PASS]</li><li>Can I run it / Asks for (below the flow) → Agent: go \"You can run · Nothing to fill in\", urgent/admin/end \"You can't run this step now…\", reopen \"Asks for: Checklist\". Owner: admin \"You can run\". Popup has only a Close button; API as agent: admin and end → 403 [PASS]</li><li>Arabic, dark, 1024 px → Arabic labels + arrows right-to-left; dark readable (forced via the app's dark class — no theme switch for this agent); 1024 px: page and popup width 1024/672, no sideways scroll [PASS]</li><li>Opening and closing → Both links open the same popup; closes with X, Esc and click outside [PASS]</li></ul><p>Evidence: NDC-3056-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3063",
+  "id": "0c0eaaca-c682-4dd4-91e0-5a8a1bf9b8cc",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Blueprint",
+  "title": "Blueprint | The state time limit only accepts hours, with no option to switch between minutes, hours and days",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3063-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Due after / Warn before have number + Minutes/Hours/Days (dev claim) → 20 min → 20 Minutes, 10 → 10 Minutes, 72 h → 3 Days, 90 min → 90 Minutes, 2160 → 36 Hours, 1.5 Days entered → stored 2160 → 36 Hours; stored in minutes; reload keeps them (was: \"in hours\", 20 min = 0.33) [PASS]</li><li>Arabic → دقائق / ساعات / أيام pickers; 20 دقائق, 3 أيام, 90 دقائق; example line right [PASS]</li><li>Warn ≥ limit → Draft keeps it but Save and Publish is blocked: \"Open: the warning must come before the time limit, and the time limit must be set\" [PASS]</li><li>\"Moves on by itself\" and escalation offset (dev claim) → Moves on 1440 → 1 Days; escalation level After the limit › Offset with Minutes/Hours/Days (empty starts in Hours) [PASS]</li><li>0, empty, negative, text, fractions → 0 / empty / abc → no limit (empty opens in Hours, dev claim); -5 → \"No limit\", nothing saved; 0.5 min → 1, 0.25 min warning dropped — all silent, no message [INFO]</li><li>Huge value (99,999,999 Days) → Server 422, toast \"Blueprint definition does not match the expected schema.\" (raw detail \"143999998560 is not a valid value for slaMinutes\"); no field highlighted (edge case outside this ticket; noted for a separate Low issue) [INFO]</li><li>Time limit / warning actually fire → BLOCKED: staging background processing is down since 16 Nov 21:04 UTC; not part of this ticket (input units only) [INFO]</li></ul><p>Evidence: NDC-3063-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3071",
+  "id": "14ce0fca-861d-4564-81e8-fed89fe3f56d",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Records API",
+  "title": "Records API | A field value without a \"kind\" key returns 500 instead of a validation error",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3071-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Subject value without \"kind\" (3 tries) → 400 VALIDATION_ERROR, path data[0].value, \"A field value needs a kind\" (was 500) [PASS]</li><li>Priority value without \"kind\" → 400, path data[1].value (was 500) [PASS]</li><li>Other shapes: dept no kind, {}, array item no kind, plain string, kind only, no value → All 400 VALIDATION_ERROR, no record created [PASS]</li><li>Unknown kind / kind null / wrong kind for text → 400, but path is \"\", \"kind\" or \"value\" instead of data[0].value [INFO]</li><li>PATCH without kind; value null → 400; priority stays high; null gives \"The Value field is required\" [PASS]</li><li>Valid control → 201 created, PATCH priority Low 200; no junk records [PASS]</li></ul><p>Evidence: NDC-3071-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3076",
+  "id": "eda12901-b717-43a6-901d-021f0635c128",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Round Robin Assignment",
+  "title": "Round Robin Assignment | Department threshold counts Open tickets the agent does not have, so tickets wait while the agent is under the limit",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3076-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Real Open count = workload (QA AO Dept B) → Test User 1: 4 (#4281-4283, #4285), workload 4; Dev Team 2: 1 (#4284), workload 1 (dev's '2 Open' was a probe since gone) [PASS]</li><li>Ticket steps, Test User 1, twice → Run 1: #4941 waits, #4942 -> TU1; run 2: #4943 waits, #4944 -> TU1 [PASS]</li><li>Ticket steps, Dev Team 2, twice → Run 1 (1 Open): thr 1 #4948 waits, thr 2 #4949 -> DT2; run 2 (2 Open): thr 2 #4950 waits, thr 3 #4951 -> DT2 [PASS]</li><li>Delete handling (the fix) → 3 times: TU1 #4945 deleted -> #4947 assigned (#4946 waited before); DT2 #4952 -> #4954, #4955 -> #4957. Workload dropped within 1-2 s [PASS]</li><li>Restore from Recycle Bin → #4955 restored -> workload 3 in 1 s; #4958 at thr 3 waits [PASS]</li><li>Ticket moved to another department (owner kept) → #4963 moved to AS6 Dept A -> AO-B workload 2; #4967 at thr 3 -> DT2 (#4964 waited before) [PASS]</li><li>Control QA AS6 Dept A → TU1 76 Open/Escalated: thr 76 #4968 waits, thr 77 #4969 assigned. INFO: workload API shows 78 (adds 2 On Hold) [PASS]</li><li>Data and settings → RR prefs both depts equal to the snapshot; 5 PC rules inactive; 25 probes closed; #4945, #4952 in Recycle Bin [INFO]</li></ul><p>Evidence: NDC-3076-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2933",
+  "id": "85e9bc3f-d8bb-42e6-9073-f2ee3e6ede9d",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Skills",
+  "title": "Skills | Ticket Skills field offers and keeps inactive skills and other departments' skills; Zoho drops them and has no Skills on Add Ticket",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2933-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Ticket page › Ticket Information › Edit Skills → #4802 and #4514 (QA RT19 SK Dept): S1, S2, S3, Long only; #4804 (QA SK13 Dept A): S1-S12 only; no inactive, no other department (failed 16 Nov; dev claim held, #4514 also checked) [PASS]</li><li>Skill already on the ticket that became inactive → #4802 Tmp shown ticked; unticked + S2 ticked + Save → toast, reload and API = S1, S2 [PASS]</li><li>Saving inactive / other-department skills (create, edit, API) → #4803 create kept only S1; edits kept S2, then [] [PASS]</li><li>New Ticket Skills field + department change → Own dept 4 skills, QA SK13 Dept A S1-S12, Sales its 6; S1+S2 dropped on switch [PASS]</li><li>Skills on Add Ticket (Zoho has none) → Kept, filtered (dev decision, accepted 16 Nov) [INFO]</li><li>Arabic layout (dev: not checked) → #4514 in Arabic: S1, S2, S3, Long only; RTL, long name wraps [PASS]</li></ul><p>Evidence: NDC-2933-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2841",
+  "id": "4b383b8a-5bc9-41e8-9b67-d4d037ae75a0",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "SLA",
+  "title": "SLA | A contract in one department can use a support plan (and its SLA) from another department",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2841-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Change only the Department of a contract with a Dept A plan (the failing step), 3 tries → 422 SUPPORT_PLAN_OTHER_DEPARTMENT with a clear message; contract keeps Dept A + plan A (and its SLA) [PASS]</li><li>Same change sending the old plan back → 422, nothing changed [PASS]</li><li>Move together with a plan of the new department (TAVI extra) → 200, contract Dept B + plan B, coverage plan B [PASS]</li><li>Save without changing the Department (rename; same dept + plan) → 200 / 200 [PASS]</li><li>Contract page: change the Department → Department is read-only; ⋮ has only Copy link / Delete [PASS]</li><li>Earlier fixes: create with other dept plan; change plan to other dept; panel attach; no department → 422 / 422 / 409 / 422 — all still hold [PASS]</li><li>Move and clear the plan; contract without a plan → Support Plan is now a required field (422 'Support Plan is required.'), so the dev's 'contract without a plan' path cannot be made [INFO]</li><li>Contract moved on 17 Nov before the fix → Still Dept B with the Dept A plan: existing bad data is not corrected [INFO]</li></ul><p>Retest 3 after metadata-engine PR #241 (18 Nov 2026): the last item from the 17 Nov Zoho comparison is fixed — changing only the department of a contract that has a plan is now refused, as in Zoho Desk, and the contract page does not let the department be changed. Notes, not defects: Support Plan is now a required contract field, so a contract without a plan can no longer be created; a contract moved before the fix (17 Nov, test data) still has the other department's plan.</p><p>Evidence: NDC-2841-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-1988",
+  "id": "e6c0ffee-e742-4287-b04d-809dc852e74e",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Templates & Workflow",
+  "title": "Layout rules, validation rules, nested picklists",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-1988-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Layout rules: show fields / sections, mandatory on condition → Refund → section shown + field required on the form; API 422 \"… is required\" without it, 201 for Question. Department scope, HC switch and the 19 bugs NDC-2974..2992 are all Done. Open gaps in NDC-2996 (primary field types, layout move, suggest-value, manage permission) remain [PASS]</li><li>Validation rules across fields, own message (50 per department) → \"when type = Refund\" + check on order → own message on form and API 422; Question + BAD saves. 50-per-department cap not exercised (no cap in the app; not creating 50 rules) [PASS]</li><li>Nested picklists up to 6 levels → 7 levels chained (6 maps); form narrows each level, server refuses a wrong value at level 2 and level 7, cycles refused [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Different picklist values per layout</strong>: expected Each layout can use a subset; actual Missing: no UI for it (options are module-wide); a subset stored on the layout by API is ignored by the form and by the server (urgent saved)</li><li><strong>Help Center access per field (editable / read-only / hidden)</strong>: expected Per-field customer access; actual Missing: field permissions are profile Read/Edit + Read-only only; HC forms only have hidden/required/default per form field. Layout rules with \"Apply to Help Center\" work (12 Nov G17)</li><li><strong>Field encryption with ePHI label</strong>: expected Encrypt sensitive custom fields; actual Missing: field API refuses \"encrypted\" (DATATYPE_OPTION_UNKNOWN); no encryption or ePHI option in the app</li></ul><p>QA lead decision (17 Nov 2026): NDC-1988 is closed as Done. The 3 missing items (picklist values per layout, Help Center access per field, field encryption with ePHI label) are now tracked as a comment on NDC-2996 (Layout Rules gaps); the validation-rules part is complete (note on NDC-3021).</p><p>Evidence: NDC-1988-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3064",
+  "id": "8d0b8d5a-7a63-435b-940f-2d536ca14f66",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | A ticket has no Edit button for all its properties, and no way to add, change or remove its contact",
+  "verdict": "FAIL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3064-retest-FAIL.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 17 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Edit button on Ticket Properties → change several fields → Save → \"Edit ticket\" form; contact + subject + description + priority sent in one PATCH → 200, all read back [PASS]</li><li>Change the linked contact → Change contact → C2, PATCH 200, read back C2 [PASS]</li><li>Remove the linked contact → Confirm \"The ticket stays, without a contact\" → contact empty, card shows Add contact [PASS]</li><li>Add a contact when there is none → Add contact → C1 on #4833, kept after reload [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Edit form covers all the ticket's fields</strong>: expected All fields; actual Status, Ticket Owner and Department are not in the Edit form (still inline in Key Information; Department via Move). The create/clone form of the same layout has them — QA lead decision 17 Nov: the Edit form must include them</li></ul><p>QA lead decision (17 Nov 2026): the Edit form must cover all the ticket's properties, including Status, Ticket Owner and Department.</p><p>Evidence: NDC-3064-retest-FAIL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3072",
+  "id": "961f905d-3988-4f92-bfb5-776ea2c09025",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | Clone leaves the required Status empty, so the copy cannot be saved until it is picked again",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3072-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Clone source A (Standard, Open) → Save → Status = Open on the form; first Save → POST 201, clone #4811 Open (was \"Select\" + \"This field is required\") [PASS]</li><li>Clone On Hold source B on Test Layout Rules → Save → Status = Open (not copied On Hold, as Zoho); first Save 201, #4813 Open, same layout [PASS]</li><li>Rest of the copy → Subject \"… (Clone)\", description, department, priority copied [PASS]</li><li>Ticket Owner on the clone form → Owner is now skipped too (clone_skip …,owner) and the form fills the current user (ndc-staging-owner) [INFO]</li></ul><p>Evidence: NDC-3072-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3073",
+  "id": "294ffbd8-03d0-4f99-a0cd-63993cb78c0b",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | A ticket marked as spam still accepts replies and comments and stays shared with other departments",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3073-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Spam ticket closed to conversation → Banner \"Ticket has been marked as spam, so you are not able to add conversation.\" with Not Spam [PASS]</li><li>Reply / comment really refused → Reply All gone; API comment (private, public) and reply → 422, nothing stored or sent (was composer + comment 201) [PASS]</li><li>Sharing with other departments → Shares Dept B full → [] after spam; \"Shared with\" chip gone; stays revoked after Not Spam [PASS]</li><li>⋮ menu on a spam ticket → Only Not Spam and Delete (Actions still lists a custom action) [PASS]</li><li>Message texts → Mark-as-spam dialog does not say sharing will be revoked (Zoho does); re-share error says \"add conversation\" [INFO]</li><li>Controls / Not Spam → Comment on a non-spam ticket 201; after Not Spam Reply All back and comment 201 [PASS]</li></ul><p>Evidence: NDC-3073-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3013",
+  "id": "91c4c9b6-1913-4d78-b916-37f4b13192d3",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | Old Desk rule says it \"can't be applied\" for the wrong reason, and is still applied",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3013-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Warning in the rule list → \"No layout is chosen: this rule checks tickets of every layout. Edit it to choose its layout.\" (was \"a field it uses changed or was deleted\") [PASS]</li><li>Warning in the editor → Same \"No layout is chosen…\" banner; Layout field empty [PASS]</li><li>Warning matches what the server does → Standard layout and \"Test Validation Rules\" layout: QA NDC Reject without reason → 422 \"Please add a clear rejection reason\"; with a reason → 200. The rule checks every layout, as the warning says [PASS]</li><li>API reason → conditionError now null, warnings [] (no false error) [INFO]</li></ul><p>Evidence: NDC-3013-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3052",
+  "id": "06204143-9cad-425e-bcee-9aab09e5d554",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Create Record still creates a record missing required fields at run time",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3052-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Desk Create Record (Calls), Contact Name = ticket's contact; repeated twice → No contact: Cancelled 422 \"Not created: Calls needs Contact Name.\", no Call (2/2); with contact: Succeeded, Call has the contact (2/2) [PASS]</li><li>Required field mapped to empty custom placeholder; system-filled fields → Subject = empty ${qa_ndc_tkt_pnr_no} → Cancelled \"needs Subject\", set → created; Tickets target without department/layout → Succeeded (default dept Customer Support, status Open) [PASS]</li><li>Desk Create Connected Record, empty contact placeholder → Cancelled \"Not created: Calls needs Contact Name.\"; with contact Succeeded, Call linked to ticket [PASS]</li><li>CRM Create Record + Create Connected Record, empty placeholder → Leads › Tasks and Customers › Tasks (x2): Cancelled \"Not created: Tasks needs Subject.\", no Task; with value Succeeded [PASS]</li><li>Pre-fix stored action → Saved action \"Create Event => Tickets Module\" (lacks Contact Name, Department) on own QA rule → Cancelled, no Event. Real rules not touched [PASS]</li><li>Status wording → Action Status \"Cancelled\", run Outcome \"Fired\"; Details truncated in the table; no failed filter. Options: (a) accept Cancelled → Done; (b) Bug: must show Failed. QA lead decision 17 Nov: accepted for this ticket; the status label and failed-run visibility are tracked in a separate ticket [INFO]</li></ul><p>QA lead decision (17 Nov 2026): moved to Done — no workflow creates a record missing a required field any more, and the run names the missing fields. The Execution History label (\"Cancelled\" instead of \"Failed\", run Outcome \"Fired\", no filter for failed runs) applies to every failing action, not only Create Record, and is tracked in a separate ticket.</p><p>Evidence: NDC-3052-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3058",
+  "id": "6f6bf586-7da8-43d9-baf8-2a60c608f831",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Add Tags action says \"Search or create a tag\" but a new tag cannot be created from it",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3058-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Rule limited to one department: tag list → QA AO Dept A rule offers QA WF tag A, B, C, QA RT20 W2 newtag only; Remove Tags list the same (dev claim held) [PASS]</li><li>Type a new name → Create → Create \"QA RT20 W2 newtag\" → POST /desk/tags 201 in QA AO Dept A, chip added, rule saved (dev claim held) [PASS]</li><li>Created tag → rule fires → ticket gets it → #5092 edited → Add Tags Succeeded, tags QA WF tag B + QA RT20 W2 newtag; History \"Tags changed … by workflow rule\" [PASS]</li><li>Refused name \"QA-1\" (dev: not checked) → 422 TAG_NAME_INVALID, toast \"The tag name is not valid. Use 3 to 50 letters, digits and single spaces.\" [PASS]</li><li>Duplicate name → Exact or lower-case existing name shows the existing tag, no Create; already-chosen name → \"No matching tags\"; double space trimmed (\"QA two\") [PASS]</li><li>Remove Tags (dev: not checked) → Box \"Search tags…\", new name → \"No matching tags\"; rule removed newtag from #5092, kept tag B; Execution History Remove Tags Succeeded [PASS]</li><li>Rule over several departments → \"Accepted · Customer Support\", \"QA WF tag B · QA AO Dept A\" …; typed name → \"Limit the rule to one department to create a tag here.\" (dev claim held) [PASS]</li><li>Another department's tag on a ticket → Mixed rule on #5100 added only QA WF tag A; CS-only rule on #5101 added nothing (dev claim held) [PASS]</li><li>Execution History when a tag is skipped (dev \"to know\") → Add Tags \"Succeeded\" with no detail — even on #5101 where nothing was added; Target shows tag ids, not names — not filed [INFO]</li><li>API: single-department rule saved with another department's tag → 201 saved (rule QA RT20 W2 3058 bad, inactive); tag-manage permission for a non-admin agent not checked — not filed [INFO]</li></ul><p>Retested again after the developer fix (17 Nov 2026 evening): a rule limited to one department can now create a tag in that department, as in Zoho Desk. Two small findings are filed separately: NDC-3110 (Add Tags shows Succeeded when nothing was added, Target shows tag IDs) and NDC-3111 (API saves a single-department rule with another department's tag).</p><p>Evidence: NDC-3058-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3027",
+  "id": "b28b7b45-cc9f-460d-8bff-8f4a7798332d",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Audit Log",
+  "title": "Audit Log | Entries show the internal field name EngineDeletedAt and name a deleted ticket by the contact's email",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3027-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 17 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Restore a deleted ticket → \"restored a Ticket named QA RT20 BP-3027 delete restore\" (was \"cleared Ticket's EngineDeletedAt\") [PASS]</li><li>Delete a ticket → \"deleted a Ticket named QA RT20 BP-3027 delete restore\" (no #number: the number was assigned ~50 s after create, after the delete) [PASS]</li><li>Department change made by the system (department disabled with transfer) → \"System updated … transfer ticket's department from QA RT20 BP Dept B to Customer Support\" (15 Nov: raw ids, actor shown as an id) [PASS]</li><li>Original case: ticket created by import → Not re-imported (API ticket used, as on 15 Nov); restore line shows IP 172.19.0.36 (see NDC-3067) [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Other field names</strong>: expected Readable; actual \"QA RT20 BP Dept B's IsActive from yes to no\"; assignment rules \"IsActive\", \"Version from 1 to 2\" — internal names</li></ul><p>Evidence: NDC-3027-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3112",
+  "id": "7cf1f8dd-c6b1-4c30-a816-27762d2b71c5",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Blueprint",
+  "title": "Blueprint | A just-made view-only agent can still be saved as transition owner for a short time",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3112-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API (4 timed cycles)</p><p>Checked:</p><ul><li>Old answer in memory → PUT owners 200; eligible-owners includes CES2 [INFO]</li><li>Save / choose owner 0.3 s after view-only → 422 BLUEPRINT_OWNER_READ_ONLY · 422 BLUEPRINT_OWNERS_INVALID (2 cycles) [PASS]</li><li>Same after 1 s → 422 · 422 [PASS]</li><li>Same after 3 s (failed on 17 Nov: 201 / 200) → 422 · 422 [PASS]</li><li>Owner picker list → Gone at 2–10 s and at 31 s [PASS]</li><li>Control: owner as transition owner → 200 [PASS]</li></ul><p>Evidence: NDC-3112-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3068",
+  "id": "68cb11e5-1891-4e89-8443-032373a81983",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Ticket History",
+  "title": "Ticket History | Closed Time shows a raw timestamp and Resolution Time shows a bare number",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3068-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Closed Time line (ticket closed by blueprint, #4177) → \"New 16/11/2026 11:48 AM\" (was 2026-11-16T09:48:59.7799208+00:00) [PASS]</li><li>Resolution Time line (#4177) → \"New Less than a minute\" (was bare 11), same as Key Information [PASS]</li><li>Close a new ticket after staging recovered (#4940, status edit, 13:04 UTC) → \"Closed Time · Old blank · New 17/11/2026 3:04 PM\" and \"Resolution Time · Old blank · New Less than a minute\"; record closed_time + resolution_time set; also \"Ticket closed by a status change\" [PASS]</li><li>Tickets closed this morning (#4829, #4807) → No lines: closed during the staging outage (no history recorded 16 Nov 21:04 – ~12:20 UTC 17 Nov); not a fault of this fix [INFO]</li></ul><p>Evidence: NDC-3068-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3057",
+  "id": "a8517101-22a0-4ec6-994a-30181d9fb793",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | The rule's condition summary shows the stored value \"pending_approval\" instead of the option label \"Pending approval\"",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3057-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Desk folded line: Priority, Language, Classification, Happiness Rating, Ticket Approval Status, Contact · Type → Priority is one of [High, Urgent]; Language = Arabic; Classification is one of [Feature]; Happiness Rating = Okay; Ticket Approval Status = Pending; Contact · Type = Customer (dev claim held; Happiness Rating + Ticket Approval Status were not checked by dev) [PASS]</li><li>Desk open editor → Low/Medium/High/Urgent chips (High, Urgent chosen), Arabic, Question/Problem/Feature/Others, Okay, Pending, Customer [PASS]</li><li>Desk in Arabic (dev: not checked in browser) → Folded + editor: عالية، عاجلة / العربية / ميزة / مقبول / قيد الانتظار / عميل; field names Arabic too; pattern (1 و 2 … و 7) [PASS]</li><li>CRM Leads: Lead Source, Rating, Industry, Salutation → [Web, Referral], Market Failed, Technology, Dr.; editor the same [PASS]</li><li>CRM in Arabic (Leads, Agency Code, Transactions) → الويب، إحالة / فشل السوق / التكنولوجيا / د.; عميل / خاصة / نشط / المالية; تحليل الاحتياجات / عمل جديد / لا توجد ميزانية / الدردشة; pattern (1 و 2 …) (dev claim held) [PASS]</li><li>CRM account + deal lists (English) → Agency Code: Account Type Customer, Ownership Private, Rating Active, Industry Finance; Transactions: Stage Needs Analysis, Type New Business, Reason For Loss No Budget, Lead Source [Chat] [PASS]</li><li>Typed text → Subject / Last Name / Name starts with \"QA RT20 W2 3057 \" [PASS]</li><li>CRM field and module names in Arabic → Lead Source, Rating, Industry, Salutation, Account Type, Ownership, Stage, Reason For Loss and module names Leads / Agency Code / Transactions stay English [INFO]</li></ul><p>Evidence: NDC-3057-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3110",
+  "id": "82dd5c43-7634-40e4-9b77-77e3ceb68400",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Add Tags shows \"Succeeded\" when no tag was added, and Target shows tag IDs",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3110-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API + Edge (Execution History pages)</p><p>Checked:</p><ul><li>Target column → \"Accepted\" (was the tag id) [PASS]</li><li>Status when nothing was added → Skipped · \"Not added: Accepted belongs to another department.\" (was Succeeded, empty) [PASS]</li><li>Delayed Add Tags (60 s) → Skipped, same reason, HTTP 200 body not_added [Accepted]; ticket #5493 Tags 0 [PASS]</li><li>Mixed tags → Succeeded, Target \"QA WF tag A\"; ticket got only that tag (dev's stated limit: no note about the skipped one) [PASS]</li><li>Remove Tags Target → \"QA WF tag A\", removed from #5494 [PASS]</li><li>Ticket tags → #5491 Tags (0) [PASS]</li></ul><p>Evidence: NDC-3110-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3111",
+  "id": "5d7aa230-dba8-4adc-b3c7-f1f915ae327c",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | API saves a single-department rule with another department's tag",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3111-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 17 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API</p><p>Checked:</p><ul><li>POST single-dept rule with other dept's tag → 422 \"Add Tags: Accepted belongs to another department. Use a tag of the rule's department.\" (was 201) [PASS]</li><li>Own department's tag → 201 [PASS]</li><li>Own + other tag together → 422, same message [PASS]</li><li>PATCH tags to other dept's tag → 422; still QA WF tag A [PASS]</li><li>Rename → 200 [PASS]</li><li>Move rule to a department its tag is not in → 422 \"QA WF tag A belongs to another department\" [PASS]</li><li>Old rule saved 17 Nov with the wrong tag → Rename / same departments still save (200); refused only when tags or departments change (as dev said) [INFO]</li><li>Multi-dept rule with one dept's tag → 201 [PASS]</li><li>Remove Tags with other dept's tag → 201 — not covered by the fix (dev: tickets that change department keep old tags) [INFO]</li></ul><p>Evidence: NDC-3111-retest-PASS.png (attached)</p>"
+ }
+]

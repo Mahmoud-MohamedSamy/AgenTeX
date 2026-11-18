@@ -1,0 +1,194 @@
+{
+ "out": "NDC-2841-retest-PASS.png",
+ "ticket": "NDC-2841",
+ "priority": "medium",
+ "title": "SLA | A contract in one department can use a support plan (and its SLA) from another department",
+ "verdict": "PASS",
+ "label": "RETEST PASS",
+ "env": "NDC-Staging · staging-desk · API + Edge · owner · Dept A = QA RT19 SLA Dept, Dept B = QA RT19 SLA Dept B · plans QA RT20 BS Plan 2841 A/B w2pv · contracts QA RT20 X41 Contract 2841 … 4l9e",
+ "date": "18 Nov 2026",
+ "panels": [
+  {
+   "img": "2841-r3-api-card.png",
+   "caption": "API retest after metadata-engine #241: department-only change refused, move with the new department's plan allowed, earlier fixes hold",
+   "crop": [
+    20,
+    20,
+    1560,
+    590
+   ],
+   "boxes": [
+    {
+     "b": [
+      32,
+      96,
+      1568,
+      202
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      206,
+      1568,
+      249
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      253,
+      1568,
+      296
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      300,
+      1568,
+      343
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      347,
+      1568,
+      411
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      415,
+      1568,
+      479
+     ],
+     "n": 7,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      32,
+      483,
+      1568,
+      547
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      551,
+      1568,
+      594
+     ],
+     "n": 8,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2841-r3-1-contract-m.png",
+   "caption": "Contract page after the refused change: still QA RT19 SLA Dept with the Dept A plan; Department is read-only on the page",
+   "crop": [
+    300,
+    60,
+    600,
+    600
+   ],
+   "boxes": [
+    {
+     "b": [
+      316,
+      236,
+      592,
+      356
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      316,
+      582,
+      592,
+      626
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Change only the Department of a contract with a Dept A plan (the failing step), 3 tries",
+   "Refused, like Zoho Desk",
+   "422 SUPPORT_PLAN_OTHER_DEPARTMENT with a clear message; contract keeps Dept A + plan A (and its SLA)",
+   "PASS"
+  ],
+  [
+   2,
+   "Same change sending the old plan back",
+   "Refused",
+   "422, nothing changed",
+   "PASS"
+  ],
+  [
+   3,
+   "Move together with a plan of the new department (TAVI extra)",
+   "Allowed",
+   "200, contract Dept B + plan B, coverage plan B",
+   "PASS"
+  ],
+  [
+   4,
+   "Save without changing the Department (rename; same dept + plan)",
+   "Allowed",
+   "200 / 200",
+   "PASS"
+  ],
+  [
+   5,
+   "Contract page: change the Department",
+   "Not possible (Zoho: field locked)",
+   "Department is read-only; ⋮ has only Copy link / Delete",
+   "PASS"
+  ],
+  [
+   6,
+   "Earlier fixes: create with other dept plan; change plan to other dept; panel attach; no department",
+   "Refused",
+   "422 / 422 / 409 / 422 — all still hold",
+   "PASS"
+  ],
+  [
+   7,
+   "Move and clear the plan; contract without a plan",
+   "—",
+   "Support Plan is now a required field (422 'Support Plan is required.'), so the dev's 'contract without a plan' path cannot be made",
+   "INFO"
+  ],
+  [
+   8,
+   "Contract moved on 17 Nov before the fix",
+   "—",
+   "Still Dept B with the Dept A plan: existing bad data is not corrected",
+   "INFO"
+  ]
+ ]
+}

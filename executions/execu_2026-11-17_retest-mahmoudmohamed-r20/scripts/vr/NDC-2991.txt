@@ -1,0 +1,28 @@
+# NDC-2991 Layout Rules | Deleting a rule the caller cannot reach returns 204 but deletes nothing [Done]
+Summary
+Deleting a rule the caller cannot reach returns 204 but deletes nothing. 204 No Content.
+Environment
+- NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2; the same setup on Desk Tickets. Test data was deleted after the run.
+Steps to reproduce
+- DELETE /modules/<other module>/layout-rules/<rule id>.
+- Also: sign in as another tenant's owner and DELETE this tenant's rule id.
+Expected result
+404, the same as GET and PUT in both cases.
+Actual result
+- 204 No Content.
+- The rule is not deleted (data is safe), but the caller is told it worked when it did not.
+Notes
+- Test cases K3, K2 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- CRM and Desk share the same rule engine, so this applies to both apps.
+
+== COMMENTS
+--- 2026-11-16T10:18:11.650350+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- DELETE /modules/{Contacts}/layout-rules/{Leads rule} → 404 LAYOUT_RULE_NOT_FOUND (was 204) [PASS]
+- Rule after the call → GET on Leads 200 [PASS]
+- Other tenant's owner deletes this tenant's rule (K2) → Not checked: no other-tenant account in this round [INFO]
+Evidence: NDC-2991-retest-PASS.png (attached)

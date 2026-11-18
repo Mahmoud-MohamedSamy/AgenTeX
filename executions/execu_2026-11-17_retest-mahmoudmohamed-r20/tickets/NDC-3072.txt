@@ -1,0 +1,21 @@
+# NDC-3072 Tickets | Clone leaves the required Status empty, so the copy cannot be saved until it is picked again
+Summary
+Cloning a ticket from the ticket page opens the new-ticket form with Status empty, but Status is required, so the first Save always fails. Found in the Desk go-live retest (ticket ⋮ menu run), NDC-Staging, 16 Nov 2026.
+Steps
+- Open any ticket (tried on the Standard layout and on the "Test Layout Rules" layout).
+- Open the ⋮ menu › Clone.
+- Look at Status on the form, then click Save.
+Expected
+The clone form starts with a valid status (Zoho fills "Open"), so Save works straight away.
+Actual
+Status shows "Select" with "This field is required". Save shows "Please fix the field highlighted below." The clone link skips status on purpose (clone_skip=status,resolution,closed_time,ticket_number) but nothing puts the default back. After picking Open by hand the copy saved (#4582, same contact and email).
+Zoho Desk
+Checked live 16 Nov: More Actions › Clone on ticket #108 opens "Clone Ticket" with Status = Open, Ticket Owner Unassigned, Subject "… (Clone)"; Submit works at once.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner account, Edge, 16 Nov 2026. Zoho Desk checked live the same day in the test org TechEgySolutions as admin; test data deleted after.
+Attachment
+Annotated evidence (TAVI vs Zoho): TM-1-clone-status-vs-zoho.png.
+
+
+== COMMENTS (0)
+

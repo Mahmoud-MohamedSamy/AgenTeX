@@ -1,0 +1,3 @@
+eval(fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/scripts/ntf/lib.js','utf8'));
+const ids={'no contact 1':'2efb4852-0464-499f-af8d-01e8c17f2e74','no contact 2':'48d747a5-3fb6-4b9e-b0ab-975268a17b80','with contact 1':'48df1dd5-adce-4e2f-bfd8-c23e3ab97a95','custom pnr empty':'04c882eb-1a74-4c00-abae-694180ca68a3','conn no contact':'7ccac33d-5c0b-4ef7-8ffc-60d0c67fafe6','saved pre-fix':'7ddac109-cd38-4a1a-ae3a-f079d5d8bd6c'};
+const R={};for(const [k,id] of Object.entries(ids)){const o=await rec(id);R[k]='#'+o.ticket_number+' '+id;}return R;

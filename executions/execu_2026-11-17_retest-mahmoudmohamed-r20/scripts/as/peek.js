@@ -1,0 +1,3 @@
+var __AS="D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20/scripts/as/";eval(fs.readFileSync(__AS+'lib.js','utf8'));
+const out=[];for(const id of made.tickets.slice(-(+process.env.N||8))){const o=await rec(id);const d=(await api('GET','/desk/tickets/'+id)).j?.data;const f=await feed(id);out.push([String(o.subject).slice(11),'#'+(d?.ticket_number||'-'),'rec '+o.created_at,'desk '+(d?.created_at||'').slice(11,19),o.status,nm(o.owner),'bk='+d?.in_backlog,f.map(e=>e.action.replace('ticket.','')+'@'+e.occurred_at.slice(11,19)+(e.summary?.rule_name?':'+e.summary.rule_name:'')+(e.summary?.reason?':'+e.summary.reason:'')).join(', ')]);}
+return out;

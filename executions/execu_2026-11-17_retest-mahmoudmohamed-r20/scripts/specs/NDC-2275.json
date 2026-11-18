@@ -1,0 +1,35 @@
+{
+ "out": "NDC-2275-retest-PASS.png",
+ "ticket": "NDC-2275",
+ "priority": "urgent",
+ "title": "Assignment Rules: Direct Assignment and Round Robin (requirements)",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner (shared session) · QA AO Dept B (Test User 1, Dev Team 2, owner), QA AS6 Dept A · rules QA RT20 AS … (morning) and QA RT20 AZ … (afternoon), all left inactive, prefs restored · 17 Nov 2026 09:38-10:15 UTC (outage) and 11:26-13:10 UTC (re-run) · Zoho Desk live comparison in NDC-2275-retest-vs-zoho.png",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "2275-az-2-create-assigned-history.png", "caption": "12:31 UTC: #4913 created in QA AO Dept B - History: Assigned automatically, Round Robin Assignment, Round robin (Sequence), triggered by a new ticket (round robin works again)", "crop": [664, 240, 936, 600],
+   "boxes": [{"b": [700, 662, 1100, 830], "n": 9, "kind": "PASS"}]},
+  {"img": "2275-az-api-card.png", "caption": "API (afternoon): control, threshold = Open in dept, On Hold, skills, burst", "crop": [0, 0, 1600, 580],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 8, "kind": "INFO"}, {"b": [36, 167, 1564, 225], "n": 9, "kind": "PASS"}, {"b": [36, 235, 1564, 314], "n": 10, "kind": "PASS"}, {"b": [36, 324, 1564, 382], "n": 11, "kind": "PASS"}, {"b": [36, 392, 1564, 450], "n": 12, "kind": "PASS"}, {"b": [36, 460, 1564, 497], "n": 13, "kind": "PASS"}]},
+  {"img": "2275-api-card.png", "caption": "API (morning): counts (dev claim) and the outage probes", "crop": [0, 0, 1600, 540],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 246], "n": 3, "kind": "INFO"}, {"b": [36, 324, 1564, 403], "n": 2, "kind": "INFO"}, {"b": [36, 460, 1564, 518], "n": 6, "kind": "PASS"}]},
+  {"img": "2275-2-imp-3-assign-en.png", "caption": "Import > Assign help text (English): 'A row with no owner is assigned to you.'", "crop": [400, 90, 800, 240],
+   "boxes": [{"b": [430, 232, 1150, 294], "n": 7, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Phantom tickets gone from the count (dev claim)", "Test User 1 = 4, Dev Team 2 = 1 in QA AO Dept B", "Records API and workload API 4 and 1 (morning and again 12:36)", "PASS"],
+  [2, "Morning 09:38-10:15: round robin on create/update", "Matching unassigned ticket assigned", "Nothing assigned (13 tickets) - staging outage (history/email/sync also stopped); superseded by rows 9-13", "INFO"],
+  [3, "Morning: threshold probes", "Assigned at count+1", "Blocked by the outage; re-run in row 10", "INFO"],
+  [4, "Morning: skill rule", "S1+S2 to the S2 holder", "Blocked by the outage; re-run in row 12", "INFO"],
+  [5, "Morning: NF-3 burst", "Room filled exactly", "Not run in the morning; re-run in row 13", "INFO"],
+  [6, "Import, automation ticked (GEN-13 decided)", "Rows with no owner go to the importer; no rule", "#4849 and #4848 to importer, no rule entry. INFO: mapped owner 'Mahmoud Samy' still ignored (#4848)", "PASS"],
+  [7, "Import help text (English)", "'A row with no owner is assigned to you.'", "Shown", "PASS"],
+  [8, "Control probe 11:26 (pool = online owner, thresholds off)", "Assigned", "#4865 still Unassigned after 180 s (outage not over); 11:40 move path assigned (#4870), create did not (#4868)", "INFO"],
+  [9, "Round robin on create (control 12:31)", "Assigned with History entry", "#4913 -> owner on create, #4914 on move; History 'Assigned automatically · Round Robin Assignment'", "PASS"],
+  [10, "Dept threshold = agent's Open tickets in that dept (key check)", "Waits at count, assigned at count+1; other depts not counted", "TU1 (4 Open, 94 elsewhere): thr 4 #4916 waits, thr 5 #4920 assigned; DT2 (1 Open, 30 elsewhere): thr 1 #4923 waits, thr 2 #4925 assigned, next #4926 waits. Same via move at 11:43", "PASS"],
+  [11, "On Hold not counted", "After the agent's ticket goes On Hold, the next is assigned", "DT2 full at thr 2; t1 On Hold -> t3 assigned; waiting t2 stays (backlogs off). INFO: workload API still counts On Hold (2)", "PASS"],
+  [12, "Skill rule: any one skill; no skills / unheld skill stays unassigned", "S3+S2 -> S2 holder; S3 only / none -> Unassigned", "#4917 -> TU1, #4924 (S1+S2) -> TU1, #4918 and #4919 Unassigned", "PASS"],
+  [13, "NF-3 style burst: 10 at once, pool of 2, thr 6", "TU1 2, DT2 5, 3 wait (room from the API)", "Exactly TU1 2, DT2 5, 3 waiting, no double entries", "PASS"],
+  [14, "Zoho Desk live parity", "Same rules in Zoho (17 Nov)", "Same behaviour for create, threshold per dept, On Hold, waiting, offline, any-one skill (see vs-Zoho image)", "INFO"]
+ ]
+}

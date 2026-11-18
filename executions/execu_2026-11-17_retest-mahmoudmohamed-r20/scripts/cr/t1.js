@@ -1,0 +1,13 @@
+eval(fs.readFileSync('cr/lib.js','utf8'));const o={rules:{},tickets:{}};
+const CALLS='f7e488b5-0232-42fd-811c-1f24356af653',CL='fdb13486-6c74-4a80-8401-c9a25255dfe1',TASKS='d120a6c2-2596-4254-968b-a1bcd3a000bf',TKL='8b37d84b-df62-42e0-bc52-9b564c33cb75',CT='349fc131-bdf7-44a3-94b2-78f01eb8d32e';
+const ts={kind:'timestamp',timestampValue:new Date(Date.now()+86400000).toISOString()};
+const R=async(tag,actions)=>{const r=await mkRule(tag,{kind:'RecordCreated'},actions,{isActive:true});o.rules[tag]=r.res+' '+(r.id||'');return r.id;};
+const rid={};
+rid.contact=await R('3052 contact',[{type:'CreateRecord',targetModuleId:CALLS,targetLayoutId:CL,fieldMappings:{subject:S('QA RT20 CR call for ${subject}'),call_start_time:ts,call_status:S('scheduled'),contact_id:S('${contact_id}'),department:S('${department}')}}]);
+rid.custom=await R('3052 custom',[{type:'CreateRecord',targetModuleId:CALLS,targetLayoutId:CL,fieldMappings:{subject:S('${qa_ndc_tkt_pnr_no}'),call_start_time:ts,call_status:S('scheduled'),contact_id:S(CT),department:S('${department}')}}]);
+rid.sysTicket=await R('3052 sysfill',[{type:'CreateRecord',targetModuleId:T,fieldMappings:{subject:S('QA RT20 CR child of ${subject}')}}]);
+rid.sysTask=await R('3052 task nodept',[{type:'CreateRecord',targetModuleId:TASKS,targetLayoutId:TKL,fieldMappings:{subject:S('QA RT20 CR task for ${subject}')}}]);
+rid.conn=await R('3052 conn',[{type:'CreateConnectedRecord',targetModuleId:CALLS,targetLayoutId:CL,connectedLookupField:'ticket_id',fieldMappings:{subject:S('QA RT20 CR conn call ${subject}'),call_start_time:ts,call_status:S('scheduled'),contact_id:S('${contact_id}'),department:S('${department}')}}]);
+rid.saved=await R('3052 saved',[{type:'CreateRecord',standaloneActionId:'ff81e21e-7246-4572-9a00-1ff9956511a6'}]);
+fs.writeFileSync(OUTD+'t1-rules.json',JSON.stringify(rid));
+return o;

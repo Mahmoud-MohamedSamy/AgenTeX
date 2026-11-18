@@ -1,0 +1,13 @@
+eval(fs.readFileSync('cr/lib.js','utf8'));const o={rows:[]};const APPK=process.env.APP||'desk';
+const nn=a=>Object.fromEntries(Object.entries(a).filter(([k,v])=>v!==null&&v!==undefined&&!(Array.isArray(v)&&!v.length)));
+let rules=arr((await api('GET','/workflow/rules?take=300')).j?.data);
+const saved=arr((await api('GET','/workflow/actions?take=200')).j?.data);
+const sById=Object.fromEntries(saved.map(s=>[s.id,s]));
+const fc={};const req=async m=>{if(!fc[m]){const f=arr((await api('GET',`/modules/${m}/fields?take=400`)).j?.data);fc[m]=f.filter(x=>x.required&&x.status==='active').map(x=>({k:x.apiName,sys:x.isSystemManaged,lay:(x.layouts||[]).map(l=>l.layoutName)}));}return fc[m];};
+const mods=Object.fromEntries(arr((await api('GET','/modules?take=200')).j?.data).map(m=>[m.id,m.name]));
+const chk=async(src,a)=>{let act=a;if(a.standaloneActionId&&sById[a.standaloneActionId])act={...a,...nn(sById[a.standaloneActionId].action)};
+ const tm=act.targetModuleId;const m=Object.keys(act.fieldMappings||{});const rq=tm?await req(tm):[];
+ o.rows.push({src,type:a.type,sa:a.standaloneActionId||null,tm:mods[tm]||tm,tl:act.targetLayoutId,mapped:m,required:rq.map(x=>x.k+(x.sys?'(sys)':'')),missing:rq.filter(x=>!m.includes(x.k)&&!x.sys&&x.k!=='name').map(x=>x.k),full:nn(act)});};
+for(const r of rules)for(const a of r.actions||[])if(a.type==='CreateRecord')await chk(`rule ${r.id} "${r.name}" active=${r.isActive}`,a);
+for(const s of saved)if(s.type==='CreateRecord')await chk(`saved ${s.id} "${s.name}" active=${s.isActive}`,s.action);
+save('d3-'+APPK,o);return o.rows.map(r=>({src:r.src,sa:r.sa,tm:r.tm,mapped:r.mapped.join(','),missing:r.missing.join(',')}));

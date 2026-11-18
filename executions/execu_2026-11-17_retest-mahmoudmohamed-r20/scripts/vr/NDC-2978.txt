@@ -1,0 +1,27 @@
+# NDC-2978 Layout Rules | Desk rule limited to a department still runs in every department [Done]
+Summary
+Desk rule limited to a department still runs in every department. departmentIds is saved, but the rule runs for Sales and HR too (date shows when vip is ticked).
+Environment
+- NDC-Staging (staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Desk Tickets layout "QA LR1112 Layout" with test fields type, tier, filter (pick lists), order, note, reason (text), vip (checkbox), date and email2. Test data was deleted after the run.
+Steps to reproduce
+- Rule "vip" limited to Customer Support.
+- Open the ticket create form for Sales or HR and tick vip.
+Expected result
+The rule runs only for tickets of the chosen department.
+Actual result
+- departmentIds is saved, but the rule runs for Sales and HR too (date shows when vip is ticked).
+Notes
+- Test cases G16, C14 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- Evidence: desk-G16-dept.png (attached).
+
+== COMMENTS
+--- 2026-11-16T10:12:14.175152+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Ticket form in the rule's department (QA AO Dept A), Category General → Language shows * (required) [PASS]
+- Same form in another department (QA AO Dept B) → Language not required (was: rule ran in Sales/HR) [PASS]
+- Server: save with Category General and no Language → Dept A 422 "Language is required."; Dept B 201 [PASS]
+Evidence: NDC-2978-retest-PASS.png (attached)

@@ -1,0 +1,41 @@
+# NDC-3057 Workflow Rules | The rule's condition summary shows the stored value "pending_approval" instead of the option label "Pending approval"
+Summary
+On a Desk workflow rule, the folded condition line shows the option's stored value in quotes (Approval Status = "pending_approval") instead of the label agents see everywhere else ("Pending approval"). Opening the condition for editing shows the right label, and saving does not change the folded text.
+Steps to Reproduce
+- Go to Desk → Settings → Automation → Workflow Rules.
+- Open a rule whose condition uses a list field, for example "Test Workflow Based on Ticket Approval Status" with Approval Status is Pending approval.
+- Look at the folded condition line under Condition 1.
+- Click the condition to open it, then click Done and Save.
+Expected Result
+- The folded condition reads Approval Status = Pending approval, the same label shown in the editor and on tickets.
+Actual Result
+- The folded condition reads Approval Status = "pending_approval": the stored value, in quotes, as if it were typed text.
+- Opening the condition shows Pending approval correctly.
+- After Done and Save (saved successfully), the folded line still shows "pending_approval".
+Note
+- Only Approval Status is shown in the recording. Other list fields (Status, Priority, custom list fields) were not checked.
+- Zoho Desk not checked live.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge 156, Windows 10, 15 Nov 2026.
+Attachments
+- Frame at 0:02: folded condition showing "pending_approval" (condition-folded-0-02.jpg)
+- Frame at 0:03: the open editor showing "Pending approval" (condition-editor-0-03.jpg)
+- Jam recording: https://jam.dev/c/bb35821e-1c24-4a39-a827-ec9b514ce0b1
+
+
+== COMMENTS (2)
+--- comment 2026-11-17T12:51:31.552562+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on tavi (client-engine #839, desk-web deployed 17 Nov 2026). Moving to Ready For Test.
+Checked in the browser on staging-desk (NDC Staging) with an inactive test rule, deleted afterwards: the condition "Approval Status is Pending approval" now reads Approval Status = Pending approval in the folded line, the same label the editor shows, without quotes.
+Named values in rule summaries no longer carry quotes: Owner = Jane Smith, not Owner = "Jane Smith". Quotes remain only on text an admin typed.
+Not checked: other list fields (Status, Priority, a custom list, a related record's list field), the CRM rule editor, and the Arabic layout.
+
+--- comment 2026-11-16T10:28:48.500066+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Reproduced on staging-desk (NDC-Staging) on 16 Nov with a test rule, since deleted. The folded condition read Approval Status = "pending_approval".
+Cause: the folded line names users, records, departments, teams and tags, but it had no lookup for list options. It also missed the labels the condition editor gives Approval Status.
+Fix in client-engine #839 (open, not merged or deployed):
+- Every list field now shows its option label: Approval Status, Status, Priority, custom lists, and a related record's list field.
+- A value picked from a list reads without quotes, for example Approval Status = Pending approval. Quotes now mark only text the admin typed.
+- Saved users, records and tags also lose their quotes, for example Owner = Jane Smith.
+Checked with automated tests only. I'll check it in the browser on staging after deploy.
+

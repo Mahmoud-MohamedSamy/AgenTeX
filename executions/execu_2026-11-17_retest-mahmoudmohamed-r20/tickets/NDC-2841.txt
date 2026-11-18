@@ -1,0 +1,67 @@
+# NDC-2841 SLA | A contract in one department can use a support plan (and its SLA) from another department
+Summary
+Support plans and SLA policies belong to a department, and a contract belongs to a department. Desk accepts a contract in one department with a support plan from another department, so the other department’s SLA is applied to this customer. In Zoho Desk a contract is created inside its department and the Support Plan field only lists that department’s plans.
+Steps to Reproduce
+- In Setup › Support Plans, select department B and create a support plan with an SLA policy of department B.
+- Create a contract in department A (with an account, start and end date) and choose the department B plan as its support plan.
+- Open the contract.
+- Go to Setup › Support Plans and select department B.
+Expected Result
+- Only department A’s support plans can be chosen for a department A contract; a plan from another department is refused.
+Actual Result
+- The contract is saved. Its Department is QA AO Dept A, and Support Plan Info shows the QA AO Dept B plan and its Dept B SLA.
+- Support Plans for QA AO Dept B lists that plan with Contracts = 1.
+- Attaching a Dept B plan to an existing Dept A contract was also accepted on 9 Nov.
+- Note: the contract was created through the API; whether the New Contract form also offers other departments’ plans was not checked.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 10 Nov 2026 12:10 UTC. Zoho Desk (techsolutionsegypt) checked live, read-only: Add Contract under the current department; plans loaded with departmentId of the current department.
+Attachment
+Annotated comparison with Zoho attached (SL-60-contract-takes-plan-from-another-department-vs-zoho.png).
+
+
+== COMMENTS (5)
+--- comment 2026-11-17T12:08:41.128855+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 17 Nov: metadata-engine at about 09:40 UTC, and the Desk app at about 10:10 UTC. Ready for retest.
+Checked on staging, through the records API, with test plans I made in QA AO Dept A and Dept B:
+- A Dept A contract with the Dept B plan was refused with 422 SUPPORT_PLAN_OTHER_DEPARTMENT on Support Plan: "this support plan belongs to another department. Choose a plan of the contract's own department." No contract was created.
+- A Dept A contract with the Dept A plan saved (201).
+- Changing that contract's plan to the Dept B plan was refused with the same 422.
+The test contract, plans and SLA policies are deleted.
+Not checked in the browser: the New Contract form's plan field. Automated tests cover it showing only the Department's plans and the error after a Department change. The deployed app serves the new English and Arabic text.
+
+--- comment 2026-11-17T11:05:42.427841+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Thanks for the retest. Both failing items are fixed and in review: metadata-engine PR #234 and client-engine PR #848 (desk PR #264 is docs only). Not deployed yet.
+Saving a contract with another department's plan is now refused with 422 SUPPORT_PLAN_OTHER_DEPARTMENT on the Support Plan field: "this support plan belongs to another department. Choose a plan of the contract's own department." Nothing is created. The contract's department is the one the save sets, or else the one it already has. So moving a contract to Dept B together with a Dept B plan still works.
+The New Contract form's plan field now lists only the plans of the contract's own Department. Before a Department is chosen, it uses the account's department, as before. If the Department is changed after a plan was picked, the field shows an error until a matching plan is chosen. English and Arabic.
+Still not covered: a contract with no department accepts any plan, as before. Changing only the Department of a contract that already has a plan is not refused.
+To retest after deploy: the two "Still failing" steps from your retest.
+
+--- comment 2026-11-16T17:18:48.271371+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 16 Nov 2026 → moved to Bug
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Attach a Dept B plan to a Dept A contract → 409 "Choose a support plan of the contract's own department."; plan kept [PASS]
+- Contract › Change plan list → Only the 2 QA RT19 SLA Dept plans [PASS]
+Still failing:
+- Contract saved with a Dept B plan: expected Refused; actual Saved (201); plan silently not linked ("No support plan is linked to this contract")
+- New Contract form plan field: expected Own department's plans only; actual Lists every department's plans (dev: not covered yet)
+Expected (as Zoho Desk, checked live 16 Nov): the Create Contract form lists only the contract department's support plans, and saving a contract with another department's plan is refused with a clear error (Zoho: 422 "Invalid SupportPlan ID", nothing created). TAVI now: the Create Contract picker lists every department's plans, and a contract saved with another department's plan is accepted (201) but silently shows "No support plan is linked to this contract". Attaching later is refused (409) and Change plan lists only the department's plans — those parts are fixed.
+Evidence: NDC-2841-retest-PARTIAL.png, NDC-2841-retest-vs-zoho.png (attached)
+
+--- comment 2026-11-16T13:33:43.901763+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 11:30 UTC. Ready for retest.
+Checked on staging, through the API: attaching a QA AO Dept B plan to a QA AO Dept A contract was refused with "Choose a support plan of the contract's own department." The contract kept its plan.
+Not checked in the browser: the contract's Change plan list, which now shows only the department's plans. That is covered by automated tests.
+Still open, as noted before: the New Contract form's plan field, a contract moved to another department, and a contract with no department.
+
+--- comment 2026-11-16T11:56:51.105306+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Fix is in review: desk PR #259 and client-engine PR #840. Not deployed yet.
+Reproduced on staging 16 Nov: I attached a QA AO Dept B plan to a QA AO Dept A contract, and it was accepted. I put the contract's original plan back and removed the test plan.
+Change: a contract now takes only a plan from its own department. The contract's plan picker lists only that department's plans. Attaching another department's plan is refused with a clear message. A contract saved through the API with another department's plan doesn't get it.
+Not covered yet:
+- The New Contract form's plan field still lists every department's plans. The plan is not applied, but the field keeps the value.
+- A contract moved to another department keeps its old plan.
+- A contract with no department accepts any plan.
+To retest after deploy: use clause 8, attaching a Dept B plan from the contract's Support Plan panel.
+

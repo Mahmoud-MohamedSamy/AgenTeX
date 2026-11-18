@@ -1,0 +1,15 @@
+{"out":"NDC-3112-retest-PASS.png","ticket":"NDC-3112","priority":"low","label":"RETEST PASS","verdict":"PASS",
+"title":"Blueprint | A just-made view-only agent can still be saved as transition owner for a short time",
+"env":"NDC-Staging · staging-desk · Blueprint API · owner · dept \"QA RT20 B2 Dept\" · agent CES2 · blueprint \"QA RT20 B2 r3112 dyn\"","date":"18 Nov 2026",
+"panels":[
+ {"img":"3112-r1-api-card.png","caption":"4 cycles: CES2 normal → owner chosen (old answer remembered) → CES2 made view-only → save / choose owner within 0.3–3 s","crop":[20,20,1560,410],"boxes":[
+  {"b":[36,99,1564,136],"n":1,"kind":"INFO"},{"b":[36,146,1564,204],"n":2,"kind":"PASS"},{"b":[36,214,1564,251],"n":3,"kind":"PASS"},{"b":[36,261,1564,319],"n":4,"kind":"PASS"},{"b":[36,329,1564,366],"n":5,"kind":"PASS"},{"b":[36,376,1564,413],"n":6,"kind":"PASS"}]}
+],
+"rows":[
+ [1,"Old answer in memory","CES2 accepted while a normal member","PUT owners 200; eligible-owners includes CES2","INFO"],
+ [2,"Save / choose owner 0.3 s after view-only","422","422 BLUEPRINT_OWNER_READ_ONLY · 422 BLUEPRINT_OWNERS_INVALID (2 cycles)","PASS"],
+ [3,"Same after 1 s","422","422 · 422","PASS"],
+ [4,"Same after 3 s (failed on 17 Nov: 201 / 200)","422","422 · 422","PASS"],
+ [5,"Owner picker list","CES2 no longer offered","Gone at 2–10 s and at 31 s","PASS"],
+ [6,"Control: owner as transition owner","200","200","PASS"]
+]}

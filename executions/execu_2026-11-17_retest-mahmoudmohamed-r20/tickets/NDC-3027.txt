@@ -1,0 +1,32 @@
+# NDC-3027 Audit Log | Entries show the internal field name EngineDeletedAt and name a deleted ticket by the contact's email
+Summary
+Audit Log shows internal field names and names tickets by email. Found in the Desk go-live retest, Wave 5 (W5-68), NDC-Staging, 12–13 Nov 2026. Where: Setup › Audit Log.
+Steps
+- Delete a ticket that was created by import, restore it, open the Audit Log.
+Expected
+Entries name the ticket (#3460 and subject) and readable fields.
+Actual
+'cleared Ticket's EngineDeletedAt' and 'deleted a Ticket named qa-gl-w5-c1@example.com'.
+Zoho Desk
+Not needed (wording).
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner, Edge, 13 Nov 2026.
+Attachment
+Annotated evidence (TAVI vs Zoho): W5-E3-vs-zoho.png.
+
+
+== COMMENTS (1)
+--- comment 2026-11-16T10:20:04.839956+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Retest PARTIAL — 15 Nov 2026 → moved to Bug
+Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Restore of a deleted ticket → "restored a Ticket named #4064 QA RT18 3022d dept ticket" (was "cleared Ticket's EngineDeletedAt") [PASS]
+- Delete of a ticket → "deleted a Ticket named #4064 QA RT18 3022d dept ticket" (was the contact's email) [PASS]
+- System ticket-number entry → "ticket number from blank value to 4066" logged as a separate update (noise) [INFO]
+- Ticket created by import (original case) → Not re-imported; API ticket used [INFO]
+Still failing:
+- Department change made by the system (department disabled with transfer): expected Readable fields and values; actual "User a7a7a7a7 updated #4066 …'s department from 6158b7cc-… to 7e1ac409-…" — raw ids, actor shown as an id
+Zoho Desk comparison not possible this round: the Zoho Desk accounts in the 14 Nov credentials file are agents without Setup / Audit Log access.
+Evidence: NDC-3027-retest-PARTIAL.png (attached)
+

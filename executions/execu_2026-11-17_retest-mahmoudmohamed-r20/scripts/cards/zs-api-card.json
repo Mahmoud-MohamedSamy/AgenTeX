@@ -1,0 +1,8 @@
+{"out":"zs-4-api-reply-subjects.png","title":"Zoho Desk (live, techegysolutions) — subject of the email Zoho actually sent for an agent reply (thread originalContent.subject)","host":"desk.zoho.com","who":"Zoho admin (QA RT20 ZS data, contact on example.com)","date":"17 Nov 2026",
+"rows":[
+["1 Plain subject #151","POST /tickets/{#151}/sendReply (ticket subject 'QA RT20 ZS ack test'), then GET /threads/{id}/originalContent","subject = 'Re:[## 151 ##] QA RT20 ZS ack test'  — Zoho adds ONE 'Re:' + its own [## n ##] tag","ok"],
+["2 Second reply #151","sendReply again on the same ticket","subject = 'Re:[## 151 ##] QA RT20 ZS ack test' — identical; nothing piles up (built from the ticket subject, not the last mail)","ok"],
+["3 Subject already 'Re: Re: … [#4745]' #152","ticket subject 'Re: Re: QA RT20 ZS ack test [#4745]' (foreign tag style), sendReply","subject = 'Re:[## 152 ##] Re: Re: QA RT20 ZS ack test [#4745]' — Zoho does not strip old 'Re:'; foreign [#4745] is not its tag so it adds [## 152 ##]","info"],
+["4 Subject already holds Zoho's own tag #153","ticket subject 'Re: Re: QA RT20 ZS own tag [##153##]', sendReply","subject = 'Re:Re: Re: QA RT20 ZS own tag [##153##]' — tag NOT added a second time; only 'Re:' prefixed","ok"],
+["5 Reply acknowledgement template","GET /api/v1/templates (both depts) 'Acknowledge contact on receiving a reply'","subject = '[##${Cases.Request Id}##] Your reply has been received' — fixed text; does not reuse the customer's reply subject, so no Re:/tag repetition is possible","ok"]
+]}
