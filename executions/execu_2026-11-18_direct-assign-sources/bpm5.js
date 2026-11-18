@@ -1,0 +1,20 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158';
+const L = x => Array.isArray(x) ? x : (x && (x.items || x.data || x.states)) || [];
+const sv = v => ({ kind: 'string', value: String(v) }); const fields = o => Object.entries(o).map(([k, v]) => ({ field: k, value: sv(v) }));
+const rec = async id => { const d = (await api('GET', '/modules/' + TK + '/records/' + id)).j?.data?.data || []; const o = {}; for (const x of d) o[x.field] = x.value?.value; return o; };
+const bstate = async id => L((await api('GET', `/modules/${TK}/records/${id}/blueprint-state`)).j?.data?.states)[0] || null;
+const sla = async id => { const s = (await api('GET', '/desk/tickets/' + id + '/sla')).j?.data; return s ? s.state + (s.policy ? ' (' + (s.policy.name || s.policy.id || '') + ')' : '') + ' ' + (s.note || '') : 'n/a'; };
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-18_direct-assign-sources/out/bpmid.json'; const o = JSON.parse(fs.readFileSync(OUT, 'utf8'));
+const p = await api('POST', '/desk/sla/policies', { department_id: CS, name: 'QA RT22 BPSLA policy', description: null, is_active: true, triggers: { create: true, update: true, field_update: null, customer_reply: false, agent_response: false, private_thread: null, comment: null }, execute_only_with_account: false, resolution_from_created: false,
+  targets: [{ name: 'QA RT22 BPSLA 1 day', criteria: { conditions: [{ field_key: 'subject', operator: 'contains', value: 'QA RT22 BPSLA' }], pattern: null }, response: { value: 1, unit: 'hours' }, resolution: { value: 1, unit: 'days' }, calendar_mode: 'calendar', business_hours_id: null, first_response_only: true, escalate_on_business_hours: false, escalations: { response: [], resolution: [] } }] });
+o.sla = p.j?.data?.id; log({ slaCreate: p.s, t: p.s >= 300 ? p.t.slice(0, 300) : undefined }); fs.writeFileSync(OUT, JSON.stringify(o, null, 1)); if (!o.sla) return;
+const mk = async subject => (await api('POST', `/modules/${TK}/records`, { data: fields({ subject, description: 'QA RT22 BPMID', status: 'Open', department: CS }) })).j?.data?.id;
+o.tickets.T4 = await mk('QA RT22 BPSLA QA RT22 BPMID T4 SLA and blueprint on create');
+o.tickets.T5 = await mk('QA RT22 BPSLA T5 SLA first');
+fs.writeFileSync(OUT, JSON.stringify(o, null, 1)); await sleep(20000);
+o.T4 = { sla: await sla(o.tickets.T4), bp: (await bstate(o.tickets.T4))?.activeStates || 'not in blueprint', status: (await rec(o.tickets.T4)).status };
+o.T5before = { sla: await sla(o.tickets.T5), bp: (await bstate(o.tickets.T5))?.activeStates || 'not in blueprint' };
+await api('PATCH', '/modules/' + TK + '/records/' + o.tickets.T5, { data: fields({ subject: 'QA RT22 BPSLA QA RT22 BPMID T5 edited to match blueprint while SLA running' }) });
+await sleep(20000);
+o.T5after = { sla: await sla(o.tickets.T5), bp: (await bstate(o.tickets.T5))?.activeStates || 'not in blueprint', status: (await rec(o.tickets.T5)).status };
+fs.writeFileSync(OUT, JSON.stringify(o, null, 1)); log({ T4: o.T4, T5before: o.T5before, T5after: o.T5after });

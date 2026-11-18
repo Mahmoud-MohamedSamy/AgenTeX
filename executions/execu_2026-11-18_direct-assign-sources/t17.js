@@ -1,0 +1,2 @@
+const T = '88e8ea44-1658-4df3-9930-d0902b91073d';
+for (let i = 0; i < 8; i++) { const L = arr((await api('GET', '/modules/' + T + '/records?limit=3')).j); const nw = L.filter(x => x.created_at > '2026-11-18T13:00'); if (nw.length) { log({ found: nw.map(x => x.id + ' ' + x.source + ' ' + x.created_at) }); break; } if (i === 7) log({ found: 'none by ' + new Date().toISOString().slice(11, 19) }); await sleep(30000); }

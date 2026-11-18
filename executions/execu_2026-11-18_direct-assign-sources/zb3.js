@@ -1,0 +1,3 @@
+const D = '1499272000000006907';
+const s = await api(page, 'GET', 'slas?departmentId=' + D); out.slas = s.s + ' ' + (s.j && s.j.data ? s.j.data.map(x => x.name + ':' + x.status).join(', ') : s.t.slice(0, 200));
+for (const id of ['1499272000000547001', '1499272000000547047']) { const g = await api(page, 'GET', 'tickets/' + id + '?include=sla'); const h = await api(page, 'GET', 'tickets/' + id + '/History?limit=20'); out[id.slice(-4)] = { sla: JSON.stringify(g.j && (g.j.sla || g.j.slaId || null)).slice(0, 150), due: g.j && g.j.dueDate, hist: (h.j && h.j.data || []).map(e => (e.actor && e.actor.type) + ' ' + e.eventName) }; }

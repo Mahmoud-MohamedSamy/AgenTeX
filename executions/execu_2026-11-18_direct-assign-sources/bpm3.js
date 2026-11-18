@@ -1,0 +1,14 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d';
+const L = x => Array.isArray(x) ? x : (x && (x.items || x.data || x.states || x.events)) || [];
+const sv = v => ({ kind: 'string', value: String(v) }); const fields = o => Object.entries(o).map(([k, v]) => ({ field: k, value: sv(v) }));
+const rec = async id => { const d = (await api('GET', '/modules/' + TK + '/records/' + id)).j?.data?.data || []; const o = {}; for (const x of d) o[x.field] = x.value?.value; return o; };
+const bstate = async id => L((await api('GET', `/modules/${TK}/records/${id}/blueprint-state`)).j?.data?.states)[0] || null;
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-18_direct-assign-sources/out/bpmid.json';
+const o = JSON.parse(fs.readFileSync(OUT, 'utf8'));
+const h = L((await api('GET', `/desk/tickets/${o.tickets.T2}/history`)).j?.data);
+o.T2history = h.slice(0, 10).map(e => (e.action || e.event || e.type) + ' | ' + (e.actor_name || e.actor?.name || e.actor_type || '') + ' | ' + JSON.stringify(e.changes || e.details || e.summary || '').slice(0, 160));
+const a = (await api('GET', '/desk/tickets/' + o.tickets.T2 + '/activity')).j; o.T2activity = (Array.isArray(a?.data) ? a.data : (a?.data?.items || [])).slice(0, 8).map(e => e.action + ' ' + JSON.stringify(e.details || e.meta || '').slice(0, 160));
+const p = await api('PATCH', '/modules/' + TK + '/records/' + o.tickets.T3, { data: fields({ subject: 'QA RT22 BPMID T3 edited to match while Escalated' }) }); o.T3patch = p.s;
+await sleep(20000);
+const x3 = await rec(o.tickets.T3); const b3 = await bstate(o.tickets.T3); o.T3after = { status: x3.status, bp: b3 ? b3.activeStates : 'not in blueprint' };
+fs.writeFileSync(OUT, JSON.stringify(o, null, 1)); log({ T2history: o.T2history, T2activity: o.T2activity, T3: o.T3after, patch: o.T3patch });

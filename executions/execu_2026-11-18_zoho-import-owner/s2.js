@@ -1,0 +1,11 @@
+const ag = await api(page,'GET','agents?limit=50&status=ACTIVE');
+const a2 = ag.j.data.find(a => a.name === 'test agent 2').emailId;
+const D = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-18_zoho-import-owner/data/';
+const fs = require('fs');
+fs.writeFileSync(D + 'A-no-owner-column.csv', 'Subject,Contact Name,Email,Department,Status\r\nQA RT22 IMP A no owner column,QA RT22 Import,qa-rt22-import@example.com,TechEgySolutions,Open\r\n');
+fs.writeFileSync(D + 'B-owner-column.csv', 'Subject,Contact Name,Email,Department,Status,Ticket Owner\r\nQA RT22 IMP B1 empty owner,QA RT22 Import,qa-rt22-import@example.com,TechEgySolutions,Open,\r\nQA RT22 IMP B2 agent2 owner,QA RT22 Import,qa-rt22-import@example.com,TechEgySolutions,Open,' + a2 + '\r\n');
+out.written = fs.readdirSync(D);
+await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/setup/import', { waitUntil: 'commit', timeout: 60000 }).catch(()=>{});
+await page.waitForTimeout(12000);
+out.url = page.url(); const t = await body(page); out.txt = t.slice(0, 1500);
+await page.screenshot({ path: D + '../shots/01-import-page.png' });

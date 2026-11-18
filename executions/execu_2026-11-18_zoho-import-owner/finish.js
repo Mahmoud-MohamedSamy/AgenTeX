@@ -1,0 +1,13 @@
+const D='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-18_zoho-import-owner/';
+await page.mouse.click(741, 220); await page.waitForTimeout(1500);
+await page.keyboard.press('Escape').catch(()=>{}); await page.waitForTimeout(800);
+out.dest = await page.$$eval('input', es => es.filter(e => e.offsetParent && /^dest_/.test(e.getAttribute('data-id') || '') && /_textBox$/.test(e.getAttribute('data-id'))).map(e => e.value));
+await page.screenshot({ path: D + 'shots/' + TAG + '-mapping.png', fullPage: true });
+await page.locator('[data-id="mapModule"]').first().click(); await page.waitForTimeout(6000);
+await page.locator('button:visible').filter({ hasText: /^Next$/ }).first().click({ timeout: 15000 }).catch(e => out.nextErr = 'no Next'); await page.waitForTimeout(8000);
+await page.screenshot({ path: D + 'shots/' + TAG + '-review.png' });
+const b = page.locator('button:visible').filter({ hasText: /^Start Import$/ }).first(); const bb = await b.boundingBox().catch(() => null);
+if (bb) await page.mouse.click(bb.x + bb.width / 2, bb.y + bb.height / 2); else out.noStart = 1;
+await page.waitForTimeout(30000);
+await page.screenshot({ path: D + 'shots/' + TAG + '-after.png' });
+const t = await body(page); const i = t.indexOf('IMPORT ID'); out.list = t.slice(i, i + 300);

@@ -1,0 +1,3 @@
+const deps = (await api('GET', '/desk/departments')).j?.data; const D = Array.isArray(deps) ? deps : (deps?.departments || deps?.items || []);
+const ntf = D.find(d => /QA RT19 NTF/.test(d.name)); log({ ntf: ntf && { id: ntf.id, agents: ntf.agent_user_ids, channels: (ntf.channels || []).map(c => c.channel_type + ':' + c.is_enabled) } });
+for (const p of ['/desk/channels/email', '/desk/email/addresses', '/desk/mailboxes', '/desk/web-forms', '/desk/webforms', '/desk/help-widgets', '/desk/widgets', '/desk/channels']) { const r = await api('GET', p); log(p + ' ' + r.s + ' ' + (r.s < 300 ? r.t.replace(/[A-Za-z0-9._%+-]+@gmail\.com/g, '<gmail>').slice(0, 400) : '')); }

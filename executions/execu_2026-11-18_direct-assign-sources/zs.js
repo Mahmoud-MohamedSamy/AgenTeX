@@ -1,0 +1,1 @@
+async (page) => { await page.waitForTimeout(20000); await page.screenshot({ path: 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-18_direct-assign-sources/out/z-rr-new2.png' }); return page.url(); }
