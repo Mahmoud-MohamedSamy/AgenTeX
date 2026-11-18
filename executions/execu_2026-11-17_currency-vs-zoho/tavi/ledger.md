@@ -1,0 +1,11 @@
+# TAVI ledger — NDC-Staging, prefix QA CUR1117, 17 Nov 2026
+- created currency EUR id 78377dfa-8bb2-487a-9fa3-8be9118188fc (rate12dp)
+- created currency XYZ id 48f34dfa-63e7-4cf0-a326-eb56ba9899d7 (notIso)
+- created currency USD id af0c80a9-c6d1-4edb-8836-30631780ba93
+- created deal QA CUR1117 Deal USD id 96cae089-e8c6-497e-9c50-610a19340d2e
+- deleted currency USD af0c80a9-c6d1-4edb-8836-30631780ba93
+- company profile currency EGP -> AED (revert to EGP)
+- company profile currency reverted to EGP
+- CLEANUP deleted deal QA CUR1117 Deal USD (in Recycle Bin)
+- CLEANUP deleted currency 78377dfa-8bb2-487a-9fa3-8be9118188fc
+- CLEANUP deleted currency 48f34dfa-63e7-4cf0-a326-eb56ba9899d7

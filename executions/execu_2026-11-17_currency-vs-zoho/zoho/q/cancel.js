@@ -1,0 +1,1 @@
+async (page) => { await page.locator(':text-is("Cancel"):visible').last().click(); await page.waitForTimeout(2500); const t = await page.innerText('body'); return /Do you want to set/.test(t) ? 'back, unconfirmed' : t.slice(0, 300); }

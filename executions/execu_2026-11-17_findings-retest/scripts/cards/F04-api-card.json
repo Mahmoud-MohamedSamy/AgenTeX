@@ -1,0 +1,7 @@
+{"out":"F04-api-card.png","title":"F04 (NDC-3065) agent CES2 on another person's ticket #4997 — API, 17 Nov","host":"staging-desk.taviportal.com","who":"agent Customer Experience Specialists 2 (CES2) + owner","date":"17 Nov 2026",
+"rows":[
+["Setup (owner) 15:50Z","Blueprint QA RT21 BP F04 tk (Customer Support, active), QA onlyA owners = [CES2]; #4997 owner = ndc-staging-owner; control #4998 same owner, no blueprint","201; #4997 entered Open 15:50:31Z; blueprint ownerIssues [] ","info"],
+["CES2 access before 15:51:37Z","GET record / desk ticket #4997; control #4998","#4997 200 / 200; control #4998 403 / 404 (read access comes from the blueprint)","info"],
+["Transitions offered to CES2","GET /records/#4997/blueprint-transitions","200 data [] — UI: 'No transitions you can run' (r20: QA onlyA + Run offered)","ok"],
+["CES2 runs QA onlyA 15:53:06Z","POST /desk/tickets/#4997/blueprint-transitions/onlyA","403 BLUEPRINT_NOT_OWNER 'You are not an owner of this transition.'; edit PATCH 403","ok"],
+["CES2 access after","GET record / desk ticket #4997 + UI reload 15:52:45Z","200 / 200, status Open; reload shows the ticket + read-only banner (r20: 'This ticket is not available')","ok"]]}

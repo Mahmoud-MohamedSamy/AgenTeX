@@ -1,0 +1,1 @@
+async (page) => { await page.mouse.click(1014, 136); await page.waitForTimeout(5000); const t = await page.innerText('body'); return { url: page.url().replace(/[?].*$/, ''), still: t.includes('QA CUR1117') }; }

@@ -1,0 +1,17 @@
+const L = m => fs.appendFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_currency-vs-zoho/tavi/ledger.md', '- ' + m + '\n');
+const D = 'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430', USD = 'af0c80a9-c6d1-4edb-8836-30631780ba93', DEAL = '96cae089-e8c6-497e-9c50-610a19340d2e';
+const out = {};
+const rv = async () => { const t = JSON.stringify((await api('GET', '/modules/' + D + '/records/' + DEAL)).j.data); const g = k => { const m = t.match(new RegExp('"' + k + '","value":\{"kind":"[a-z]+","value":"?([^"}]*)')); return m ? m[1] : null; }; return { currency: g('currency'), rate: g('exchange_rate'), amount: g('amount'), amount_home: g('amount_home') }; };
+out.before = await rv();
+out.rate60 = (await api('PUT', '/currencies/' + USD, { code: 'USD', symbol: '$', exchange_rate: 60, is_active: true })).s;
+out.afterRate = await rv();
+out.deactivate = (await api('PUT', '/currencies/' + USD, { code: 'USD', symbol: '$', exchange_rate: 60, is_active: false })).s;
+const s = x => ({ kind: 'string', value: String(x) });
+const r = await api('POST', '/modules/' + D + '/records', { data: [ { field: 'deal_name', value: s('QA CUR1117 Deal USD inactive') }, { field: 'currency', value: s('USD') }, { field: 'amount', value: { kind: 'number', value: 5 } } ] });
+out.newDealInactive = [r.s, r.j && r.j.error ? r.j.error.message : (r.j && r.j.data && r.j.data.id)]; if (r.s < 300) L('created deal QA CUR1117 Deal USD inactive id ' + r.j.data.id);
+out.afterDeactivate = await rv();
+const del = await api('DELETE', '/currencies/' + USD); out.deleteWhileUsed = [del.s, del.t.slice(0, 250)];
+if (del.s < 300) L('deleted currency USD ' + USD);
+out.afterDelete = await rv();
+out.list = (await api('GET', '/currencies')).j.data;
+return out;

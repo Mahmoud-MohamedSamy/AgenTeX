@@ -1,0 +1,20 @@
+{
+ "out": "F01-retest-FIXED.png",
+ "ticket": "F01",
+ "priority": "high",
+ "title": "Staging | Incoming email, ticket history, round-robin assignment and ticket numbers stopped (background processing)",
+ "verdict": "FIXED",
+ "env": "NDC-Staging · staging-desk · owner (shared session) · tickets QA RT21 WF F01 * (#5005 QA RT19 WF Dept, #5026/#5037 QA AS6 Dept A) · active assignment rule QA AS6 RR seq · 15:50-15:57 UTC",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F01-api-card.png", "caption": "API: health probe 15:50-15:57 UTC", "crop": [0, 0, 1600, 470],
+   "boxes": [{"b": [36, 99, 1564, 136], "n": 1, "kind": "PASS"}, {"b": [36, 146, 1564, 204], "n": 2, "kind": "PASS"}, {"b": [36, 214, 1564, 272], "n": 3, "kind": "PASS"}, {"b": [36, 282, 1564, 361], "n": 4, "kind": "PASS"}, {"b": [36, 371, 1564, 450], "n": 5, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "New ticket gets a number", "Within seconds", "#5005 numbered ~5 s after create (15:50:52Z)", "PASS"],
+  [2, "History logs a status change", "Status change in History", "Open > On Hold > Closed both logged with actor and time (was: only the create-time department event)", "PASS"],
+  [3, "Closing sets the close times", "closed_time and resolution_time set", "closed_time 15:51:01Z, resolution_time 15; Desk status Closed, closed_at set", "PASS"],
+  [4, "Active round-robin rule assigns", "Owner set", "QA AS6 RR seq assigned Test User 1 ~4 s after the edit (dept option assign to offline agents on for the probe, restored)", "PASS"],
+  [5, "Inbound email", "Ticket created from email", "No new mail sent (rules). Email tickets #4906-#4908 created 12:18 UTC (morning mails arrived late); none after: NOT REPRODUCED / live check BLOCKED", "INFO"]
+ ]
+}

@@ -1,0 +1,7 @@
+{"out":"F01-api-card.png","title":"F01 Staging background processing health check (QA RT21 WF), 17 Nov 2026 15:50-15:57 UTC","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Ticket number","POST record 15:50:46Z, poll GET /desk/tickets/{id} every 5 s","#5005 after ~5 s (15:50:52Z); #5026, #5037 numbered too","ok"],
+["2 History logs status change","PATCH status Open > On Hold 15:50:54Z, > Closed 15:51:01Z; GET history","ticket.status_changed Open>On Hold (15:50:54Z) and On Hold>Closed (15:51:01Z), actor user; field edit priority low>high also logged on #5037","ok"],
+["3 Close sets times","GET record + desk ticket after close","record closed_time 2026-11-17T15:51:01.61Z, resolution_time 15; desk status Closed, closed_at 15:51:01.61Z, closed_by owner","ok"],
+["4 Round robin (active rule QA AS6 RR seq, on update)","unassigned #5037 in QA AS6 Dept A, PATCH priority 15:56:27Z (dept option assign to offline agents on; pool all offline)","owner Test User 1 at 15:56:31Z (~4 s), activity ticket.auto_assigned by system. Control 15:53Z with option off: stays unassigned (all 3 pool agents offline = by design)","ok"],
+["5 Inbound email","no new mail sent (send to support address not allowed by email rules); tickets source=email since 16 Nov 15:44Z","#4906, #4907 (QA RT19 NTF 3000 inbound checks), #4908 created 17 Nov 12:18:06-12:18:20Z (backlog of the morning mails drained); none after. Live inbound not rechecked","info"]]}

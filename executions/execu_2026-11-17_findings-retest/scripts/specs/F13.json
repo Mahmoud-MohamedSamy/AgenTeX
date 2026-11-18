@@ -1,0 +1,14 @@
+{"out":"F13-retest-STILL-FAILS.png","ticket":"F13","priority":"none","title":"Tickets | Clone fills the current user as Ticket Owner: TAVI vs Zoho live","verdict":"STILL FAILS","label":"RETEST STILL FAILS (Zoho keeps the source owner)","date":"17 Nov 2026 · TAVI 15:56-16:02 UTC · Zoho live 16:13 UTC",
+"env":"TAVI staging-desk (owner account, shared session): source #5086 in QA AO Dept A owned by Dev Team 2; source #5074 in QA RT19 SLA Dept owned by another agent; source #5075 unassigned · Zoho Desk techegysolutions (admin): existing ticket #106 owned by test agent 2, Clone opened and cancelled (nothing saved)",
+"leftHead":"TAVI Desk (left)","rightHead":"Zoho Desk live (right)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-17_findings-retest/screenshots/raw/F13-C-1-source.png","caption":"TAVI source #5086: Ticket Owner Dev Team 2","crop":[300,380,700,300],"boxes":[{"b":[400,525,700,600],"n":0,"color":"#2563eb"}]},
+{"side":"tavi","img":"executions/execu_2026-11-17_findings-retest/screenshots/raw/F13-C-2-clone-form.png","caption":"TAVI ⋮ › Clone on #5086: Ticket Owner pre-filled with the current user (ndc-staging-owner); saved clone #5088 owner = current user","crop":[420,600,1000,300],"boxes":[{"b":[950,800,1420,850],"n":1,"kind":"DIFFERS"}]},
+{"side":"zoho","img":"executions/execu_2026-11-17_findings-retest/screenshots/raw/F13-Z-1-source.png","caption":"Zoho source #106: Ticket Owner test agent 2","crop":[330,60,700,500],"boxes":[{"b":[350,350,640,400],"n":0,"color":"#2563eb"},{"b":[352,204,640,222],"n":0,"kind":"MASK","label":"hidden"}]},
+{"side":"zoho","img":"executions/execu_2026-11-17_findings-retest/screenshots/raw/F13-Z-3-clone-form.png","caption":"Zoho ⋯ › Clone on #106: Ticket Owner = test agent 2 (source owner kept), not the current user and not Unassigned","crop":[200,100,900,600],"boxes":[{"b":[615,605,890,662],"n":1,"kind":"DIFFERS"},{"b":[620,290,890,320],"n":0,"kind":"MASK","label":"hidden"},{"b":[1120,328,1380,350],"n":0,"kind":"MASK","label":"hidden"}]}
+],
+"rows":[
+[1,"Clone a ticket owned by another agent (Ticket Owner on the clone form)","Keeps the source owner (test agent 2) — seen live today; r20 note \"Unassigned\" was wrong","Fills the current user (ndc-staging-owner) instead of Dev Team 2; saved clone #5088 owner = current user (POST body has no owner, server defaults to creator)","DIFFERS"],
+[2,"Clone a source in a department where the current user is not an agent (#5074)","Not checked","Form shows Unassigned, but the saved clone #5081 owner = current user (form and saved value differ)","INFO"],
+[3,"Clone an unassigned source (#5075)","Not checked","Form fills the current user (cancelled, not saved)","INFO"]
+]}

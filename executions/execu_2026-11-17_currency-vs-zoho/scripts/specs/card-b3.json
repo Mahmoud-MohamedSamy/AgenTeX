@@ -1,0 +1,7 @@
+{ "out": "api-b3-delete-used.png", "title": "TAVI CRM: a currency that records use can be deleted", "host": "staging-crm.taviportal.com (NDC-Staging)", "who": "ndc-staging-owner", "date": "17 Nov 2026",
+  "rows": [
+    ["Deal saved in USD", "POST /modules/{Deals}/records  currency = USD, amount 1000", "201 · exchange_rate 50 · amount_home 50000", "info"],
+    ["Delete USD", "DELETE /api/v1/currencies/{USD}", "204 No Content (no warning, no block)", "bad"],
+    ["Currencies list after", "GET /api/v1/currencies", "USD no longer listed", "bad"],
+    ["Deal after", "GET /modules/{Deals}/records/{deal}", "currency still USD, rate 50 — the record points at a currency that no longer exists", "bad"]
+  ] }

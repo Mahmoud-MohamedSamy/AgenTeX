@@ -1,0 +1,8 @@
+{"out":"A7-api-card.png","title":"A7 / AC-08: peers on role Manager — D and E on each other's Customer Support tickets","host":"staging-desk.taviportal.com","date":"17 Nov 2026","who":"agents D (Test User 1) and E (Mahmoud TAVIPortal)",
+"rows":[
+["Peers OFF (16:07 UTC)","D on E's #5097 / E on D's #5096: view, edit priority, private comment","view 403/404, edit 403, comment 404 (both)","info"],
+["Peers ON Manager (16:08 UTC)","PUT /desk/ticket-access/settings {peer_sharing_role_ids:[Manager]}","200","info"],
+["Peer views the other's ticket","GET record + GET desk ticket","200 / 200 (both D and E)","ok"],
+["Peer edits a field","PATCH record {priority: low}","403 \"Permission denied.\" (both) — Zoho per 17 Nov morning live check: 200","bad"],
+["Peer adds a private comment","POST …/comments {is_private:true}","201 (both)","ok"],
+["Restore (16:09 UTC)","PUT /desk/ticket-access/settings {peer_sharing_role_ids:[]}","Private / Agent's departments / no peers","info"]]}

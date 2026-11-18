@@ -1,0 +1,22 @@
+{
+ "out": "F02-retest-FIXED.png",
+ "ticket": "F02 (NDC-2997)",
+ "priority": "medium",
+ "title": "Workflow Rules | Owner Assignment re-fires its own On Edit rule after the background owner write and reassigns the ticket",
+ "verdict": "FIXED",
+ "env": "NDC-Staging · staging-desk · owner (shared session) · rules QA RT21 WF F02 seq (0b861ad1) / seq2 (1b3248ea), On Edit, Roles › Manager round robin, QA AO Dept A, now inactive · tickets #5080-#5084, #5102-#5105",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F02-api-card.png", "caption": "API: 8 edits, one run each", "crop": [0, 0, 1600, 470],
+   "boxes": [{"b": [36, 99, 1564, 178], "n": 1, "kind": "PASS"}, {"b": [36, 188, 1564, 246], "n": 2, "kind": "PASS"}, {"b": [36, 256, 1564, 314], "n": 3, "kind": "PASS"}, {"b": [36, 324, 1564, 382], "n": 4, "kind": "INFO"}, {"b": [36, 392, 1564, 450], "n": 5, "kind": "INFO"}]},
+  {"img": "F17-1-list-fired.png", "caption": "Execution History: rule 0b861ad1 has exactly one run per ticket (4 rows, 4 different records), no chained second run", "crop": [280, 230, 1120, 670],
+   "boxes": [{"b": [295, 610, 1395, 830], "n": 1, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Edit 4 tickets, rule On Edit Owner Assignment (round robin)", "One run per edit", "Run A: one run on each of #5080, #5082-#5084; #5080 took the background path (owner set after ~6 s) and was NOT re-fired (was: run 2 chained to run 1)", "PASS"],
+  [2, "Owner the run reports = ticket owner", "Same", "#5080 run says owner_assigned Dev Team 2, ticket owner Dev Team 2 (was: run said Test User 1, ticket ended Dev Team 2)", "PASS"],
+  [3, "Repeat (run B)", "Tickets alternate", "#5102-#5105: DT2, TU1, DT2, TU1, one run each", "PASS"],
+  [4, "Background path coverage", "—", "Only 1 of 8 edits went to the background worker today (r20: 2 of 4)", "INFO"],
+  [5, "Turn order run A", "Alternate", "#5083 and #5084 both Dev Team 2 (one run each, not a re-fire); run B alternated", "INFO"]
+ ]
+}

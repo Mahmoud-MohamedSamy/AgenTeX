@@ -1,0 +1,14 @@
+{
+ "summary": "Better but not fixed: F05 report score lag (now under 20 min), F12 sidebar count (now 20–40 s late, no reload). F13 corrected: Zoho live keeps the source ticket's owner on Clone (not Unassigned as written in r20); TAVI sets the current user. Blocked: C1 (changing the currency is not allowed on staging in a retest), F16 (needs a real customer reply from the user's mailbox; no inbound email has arrived since 12:18 UTC). F14 workflow part not run (it rescores all 12,052 leads).",
+ "newFindings": [
+  "Workflow Rules: a rule can be saved by API with another department's tag (200); at run time the tag is not applied but Execution History lists it under Target and says Succeeded.",
+  "Workflow Rules: the Execution History list shows the rule id instead of the rule name (goes with F15).",
+  "Contracts: after a department-only change the coverage check now reports the other department's plan as active (r20: no plan in force) (goes with F06).",
+  "Tickets: Clone from a department where the current user is not an agent shows Ticket Owner \"Unassigned\" in the form, but the saved clone is owned by the current user (goes with F13).",
+  "Departments: the disable dialog says tickets are kept but does not say they move to the chosen department.",
+  "Tickets: conversations of API-created tickets show \"Unknown sender\" in the read-only view.",
+  "CRM Recycle Bin: the q= search is ignored (unrelated items returned).",
+  "Staging was redeployed around 16:00 UTC: one \"Failed to fetch dynamically imported module\" (MoveTicketDialog) and a few 502s; all worked on retry."
+ ],
+ "cleanup": "All QA RT21 data deleted and purged on NDC-Staging: about 85 tickets, 4 workflow rules, 2 blueprints, 2 departments, 1 team, 1 tag, 3 contracts, 2 views/reports, 1 scoring rule, 2 leads, 1 deal and 3 currencies; Recycle Bin searches for QA RT21 return 0. Restored: Test User 1 back on Desk Supervisor, Customer Support members as before, ticket access Private / Agent's departments / no peers (peers on 16:08–16:09 only), QA AS6 Dept A offline-agents option (on for 12 s). Company and home currency not changed. Zoho: only the Clone form opened and cancelled; nothing created. Agent sign-ins C, D, E and CES2 used once each; state files deleted."
+}

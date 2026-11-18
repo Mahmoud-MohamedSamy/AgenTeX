@@ -1,0 +1,186 @@
+<title>Currencies Live Check</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one reading column; summary, then one card per Plane draft with its image, then gaps, same-as-Zoho, not checked. */
+:root{
+  --bg:#f4f6f8; --surface:#ffffff; --fg:#141a22; --muted:#5a6473; --line:#dce1e8;
+  --accent:#2f5bd3; --bug:#c42b2b; --bug-bg:#fbe9e9; --gap:#b45309; --gap-bg:#fdf1e3; --same:#15803d; --same-bg:#e7f5ec; --info-bg:#e9effc;
+  --body:"IBM Plex Sans",system-ui,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11151b; --surface:#1a1f27; --fg:#e7eaf0; --muted:#9aa3b2; --line:#2b313c;
+  --accent:#7d9dff; --bug:#f87171; --bug-bg:#3a1e1e; --gap:#f5a54a; --gap-bg:#33261a; --same:#4ade80; --same-bg:#173024; --info-bg:#1d2740; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151b; --surface:#1a1f27; --fg:#e7eaf0; --muted:#9aa3b2; --line:#2b313c;
+  --accent:#7d9dff; --bug:#f87171; --bug-bg:#3a1e1e; --gap:#f5a54a; --gap-bg:#33261a; --same:#4ade80; --same-bg:#173024; --info-bg:#1d2740; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body)}
+.wrap{max-width:1080px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 30px/1.2 var(--body);margin:6px 0 8px;text-wrap:balance}
+h2{font:600 20px/1.3 var(--body);margin:0 0 12px;text-wrap:balance}
+h3{font:600 17px/1.35 var(--body);margin:0;text-wrap:balance}
+p{margin:0;max-width:72ch}
+.lede{color:var(--muted)}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.stat .n{font:700 28px var(--body);font-variant-numeric:tabular-nums}.stat .l{font-size:13px;color:var(--muted)}
+.n.bug{color:var(--bug)}.n.gap{color:var(--gap)}.n.same{color:var(--same)}
+.note{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:12px 16px;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.pill{font:600 11px var(--mono);letter-spacing:.06em;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.pill.bug{background:var(--bug-bg);color:var(--bug)}.pill.gap{background:var(--gap-bg);color:var(--gap)}.pill.same{background:var(--same-bg);color:var(--same)}.pill.info{background:var(--info-bg);color:var(--accent)}
+.meta{font-size:13px;color:var(--muted)}
+.title{font:600 15px var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;overflow-wrap:anywhere}
+ul,ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;max-width:76ch}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}.cols>div{min-width:0}
+.lbl{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--accent)}
+summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.shot{display:block;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:10px}
+.shot img{display:block;width:100%}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font:600 12px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.id{font:600 13px var(--mono);white-space:nowrap}
+.tag-new{font:600 10px var(--mono);color:var(--accent);margin-left:6px}
+@media (max-width:700px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}h1{font-size:25px}}
+</style>
+
+<main class="wrap">
+  <header>
+    <div class="eyebrow">TAVI CRM · Currencies · live check vs Zoho CRM · 17 Nov 2026</div>
+    <h1>Currencies live check: drafts for review</h1>
+    <p class="lede">TAVI (NDC-Staging) and Zoho CRM (test org org946877290) were both tested live. Nothing below is in Plane yet. Approve, edit or drop each draft.</p>
+  </header>
+
+  <section class="summary" aria-label="Summary">
+    <div class="stat"><div class="n bug">4</div><div class="l">new bugs (B1–B4)</div></div>
+    <div class="stat"><div class="n gap">10</div><div class="l">gaps for NDC-3102</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">confirmed: NDC-3101</div></div>
+    <div class="stat"><div class="n same">7</div><div class="l">behaviours same as Zoho</div></div>
+  </section>
+
+  <div class="note">
+    <div><b>Correction to my earlier comparison.</b> On the screenshots I said both products read the rate the same way. Live, Zoho reads "1 EGP = € 0.016944" (one home unit in the foreign currency), and TAVI reads "how many EGP one EUR is worth". They are opposite. NDC-3102 already has this wrong; the update fixes it (gap G5).</div>
+    <div><b>Data left behind.</b> Zoho test org: home currency EGP is confirmed (Zoho can't undo it) and Euro is inactive (Zoho can't delete a currency). TAVI: the QA deal is in the Recycle Bin; currencies and the company currency are back to how they were.</div>
+  </div>
+
+  <section>
+    <h2>New bugs</h2>
+    <div style="display:flex;flex-direction:column;gap:16px">
+
+      <article class="card">
+        <div class="head"><span class="pill bug">B1 · HIGH</span><span class="meta">State Bug · CRM · Sprint 16 · Global Settings</span></div>
+        <div class="title">Currency | A currency added in Settings cannot be used on records</div>
+        <div class="cols">
+          <div><span class="lbl">Expected (Zoho, live)</span>A currency added in Setup appears at once in the record Currency field (Deal: EGP, EUR) and records save in it.</div>
+          <div><span class="lbl">Actual (TAVI)</span>EUR active in Settings, but a deal in EUR is refused: "EUR is not one of the allowed values (EGP, USD, AED, JOD, KWD, OMR, SAR)". USD is in that fixed picklist but refused: "USD is not one of the organization's currencies". A record currency must be in both lists, and nothing links them.</div>
+        </div>
+        <details><summary>Steps and evidence</summary>
+          <ol style="margin-top:8px"><li>Settings › Company Settings › Currencies › Add currency: Euro, rate 50, Active.</li><li>Create a Deal (Transactions) with Currency = EUR and Amount 1000. Refused.</li><li>Create a Deal with Currency = USD (not added in Settings). Refused.</li><li>Add USD in Settings, then create the USD deal. It saves with rate 50 and a home value of 50,000.</li></ol>
+          <a class="shot" href="B1.png" target="_blank" rel="noopener"><img src="B1.png" alt="B1 annotated: TAVI API refusals next to Zoho Create Deal with EUR selected."></a>
+        </details>
+      </article>
+
+      <article class="card">
+        <div class="head"><span class="pill bug">B2 · MEDIUM</span><span class="meta">State Bug · CRM · Sprint 16 · Global Settings</span></div>
+        <div class="title">Currency | Create Deal form has no Currency field and the Amount shows $ instead of the home currency</div>
+        <div class="cols">
+          <div><span class="lbl">Expected (Zoho, live)</span>Create Deal shows Currency and a locked Exchange Rate; Amount shows the home code (EGP) until another currency is picked.</div>
+          <div><span class="lbl">Actual (TAVI)</span>The Standard create layout has no Currency or Exchange Rate field, so the user can't choose the record currency. Amount shows "$" while the home currency is EGP. Currency only shows on the record page under Additional Information.</div>
+        </div>
+        <details><summary>Evidence</summary>
+          <a class="shot" href="B2.png" target="_blank" rel="noopener"><img src="B2.png" alt="B2 annotated: TAVI create form with $ and no currency field next to Zoho create form."></a>
+        </details>
+      </article>
+
+      <article class="card">
+        <div class="head"><span class="pill bug">B3 · MEDIUM</span><span class="meta">State Bug · CRM · Sprint 16 · Global Settings</span></div>
+        <div class="title">Currency | A currency that records use can be deleted</div>
+        <div class="cols">
+          <div><span class="lbl">Expected (Zoho, live)</span>"The added currency can only be deactivated and cannot be deleted." Deactivating warns that it can't be chosen for new records; old records keep it.</div>
+          <div><span class="lbl">Actual (TAVI)</span>Delete returns 204 with no warning while a deal is saved in USD. The deal still says USD at rate 50, but USD is gone from the list.</div>
+        </div>
+        <details><summary>Evidence</summary>
+          <a class="shot" href="B3.png" target="_blank" rel="noopener"><img src="B3.png" alt="B3 annotated: TAVI delete API evidence next to Zoho's cannot-be-deleted warning."></a>
+        </details>
+      </article>
+
+      <article class="card">
+        <div class="head"><span class="pill bug">B4 · LOW</span><span class="meta">State Bug · CRM · Sprint 16 · Global Settings</span></div>
+        <div class="title">Currency | Add currency accepts a code that is not ISO 4217 and silently rounds the exchange rate</div>
+        <div class="cols">
+          <div><span class="lbl">Expected (Zoho, live)</span>Currencies come from Zoho's list only. A 12-decimal rate shows "Exchange rate is too large" and Save stays disabled.</div>
+          <div><span class="lbl">Actual (TAVI)</span>Code XYZ is created (201), although the error for bad codes says "must be a 3-letter ISO 4217 code". 0.123456789012 is accepted and stored as 0.123456789 without telling the user. Found through the API; the screen uses a picker.</div>
+        </div>
+        <details><summary>Evidence</summary>
+          <a class="shot" href="B4.png" target="_blank" rel="noopener"><img src="B4.png" alt="B4 annotated: TAVI validation API evidence next to Zoho Add Currency."></a>
+        </details>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>NDC-3101: comment draft</h2>
+    <article class="card">
+      <div class="head"><span class="pill info">COMMENT</span><span class="meta">Existing bug · stays in Bug</span></div>
+      <p>Confirmed on NDC-Staging, 17 Nov. Changing the company currency to AED saves (200, the profile shows AED), but GET /currencies still returns home currency EGP. I reverted it to EGP. Zoho CRM, checked live: the home currency must be confirmed once ("Once you confirm your home currency, you cannot change it later"), and after that, editing the home currency allows only its format, not the currency. Suggest TAVI follows that: lock the company Currency once currencies are set up, instead of letting it differ from the home currency.</p>
+      <details><summary>Image</summary>
+        <a class="shot" href="H1.png" target="_blank" rel="noopener"><img src="H1.png" alt="NDC-3101 annotated: TAVI API evidence next to Zoho home currency confirmation."></a>
+      </details>
+    </article>
+  </section>
+
+  <section>
+    <h2>NDC-3102: updated gap list</h2>
+    <p class="lede" style="margin-bottom:12px">Replaces the screenshot-based list. Rows marked NEW were found live today.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>#</th><th>Function</th><th>Zoho CRM (live)</th><th>TAVI CRM now</th></tr></thead>
+      <tbody>
+        <tr><td class="id">G1</td><td>Code or symbol</td><td>Code/Symbol dropdown (€ or EUR).</td><td>Free-text symbol, up to 8 characters.</td></tr>
+        <tr><td class="id">G2</td><td>Automatic exchange rate</td><td>Update Type Automatic (default; Open Exchange Rates, every 30 minutes) or Manual.</td><td>Manual only.</td></tr>
+        <tr><td class="id">G3</td><td>Number format</td><td>Symbol Position, Digit Separators (5 styles), Decimal Places (0, 2–6), live Preview; defaults follow the currency (Euro 1.234.567,89). Records show amounts in that format.</td><td>No format options; amounts always 1,000.00.</td></tr>
+        <tr><td class="id">G4</td><td>Home currency format<span class="tag-new">NEW</span></td><td>Home currency has its own Edit with the same Format options.</td><td>Not available.</td></tr>
+        <tr><td class="id">G5</td><td>Rate direction<span class="tag-new">NEW</span></td><td>"1 EGP = € 0.0175" (home → foreign).</td><td>"How many EGP one EUR is worth" (foreign → home). Needs a product decision; data imported from Zoho would be inverted.</td></tr>
+        <tr><td class="id">G6</td><td>Currencies list</td><td>Search box; columns Format, Update Type, Exchange Rate (info icon), Last Modified By; All Status filter; status toggle.</td><td>Currency, Symbol, Exchange rate, Status only.</td></tr>
+        <tr><td class="id">G7</td><td>Currency detail, history, trend<span class="tag-new">NEW</span></td><td>Clicking a currency opens Info, Exchange Rate Trends (chart) and Logs ("Exchange Rate was updated from 0.0175 to 0.02 by …").</td><td>No detail view or history.</td></tr>
+        <tr><td class="id">G8</td><td>Exchange Rate Preferences<span class="tag-new">NEW</span></td><td>Allow users to refresh a record's rate (refresh icon); Auto update the rate of records per module when the record is edited.</td><td>Not available.</td></tr>
+        <tr><td class="id">G9</td><td>Warnings<span class="tag-new">NEW</span></td><td>Before the first extra currency (fields added to modules, can't delete, report filters); before deactivating (not on new records, user preferred currency reset, create-record actions reset).</td><td>No warnings.</td></tr>
+        <tr><td class="id">G10</td><td>Confirm-once home currency<span class="tag-new">NEW</span></td><td>Home currency must be confirmed once, then locked.</td><td>No confirm step; see NDC-3101.</td></tr>
+      </tbody>
+    </table></div>
+    <details style="margin-top:12px"><summary>Images for NDC-3102</summary>
+      <a class="shot" href="G1.png" target="_blank" rel="noopener"><img src="G1.png" alt="Add currency dialog: TAVI next to Zoho, gaps 1 to 3."></a>
+      <a class="shot" href="G2.png" target="_blank" rel="noopener"><img src="G2.png" alt="Currencies list, logs and rate preferences in Zoho next to TAVI."></a>
+    </details>
+  </section>
+
+  <section>
+    <h2>Same as Zoho (not filed)</h2>
+    <ul>
+      <li>Rate 0 or negative refused; Save disabled while the rate is empty.</li>
+      <li>A record stores the rate it was saved with; changing the rate in Settings doesn't change it (TAVI 50 kept after 60; Zoho 0.0175 kept after 0.02).</li>
+      <li>Records show the amount in their currency plus the home value ("$ 1,000.00 ≈ E£ 50,000.00"; Zoho "€ 1.000,00 (EGP 57,142.86)").</li>
+      <li>A deactivated currency can't be chosen for new records; existing records keep it.</li>
+      <li>Home currency can't be added as an extra currency; duplicate codes refused.</li>
+      <li>The exchange rate on a record is filled from Settings.</li>
+      <li>Editing a record whose currency was deleted still works.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Not checked</h2>
+    <ul>
+      <li>TAVI: whether picking an Account switches the deal currency. Zoho does: picking an EGP account switched a € 1000 deal to EGP 57,142.86.</li>
+      <li>Who can manage currencies (profile permission), in both products.</li>
+      <li>Audit log entries for currency changes in TAVI.</li>
+      <li>Reports and filters across currencies.</li>
+      <li>Zoho's limit "Only 5 currencies can be active" is an edition limit, so I left it out.</li>
+    </ul>
+  </section>
+</main>

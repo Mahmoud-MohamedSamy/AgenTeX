@@ -1,0 +1,12 @@
+const safe=s=>String(s).replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g,m=>/example\.com$/.test(m)?m:'<addr>');
+const src=fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-08_desk-automation-order/scripts/e1-ev.js','utf8');const ADDR=src.match(/const NEW\s*=\s*'([^']+)'/)[1].replace('+qae1','+r20tk');
+const id=C.t3073A;const out=[];
+const c1=await api('POST','/desk/tickets/'+id+'/comments',{body_html:'<p>QA RT21 TK 3073 private comment on spam ticket</p>',is_public:false});out.push(['comment private',c1.s,safe(c1.j?.error?.code||''),safe(c1.j?.error?.message||'')]);
+const c2=await api('POST','/desk/tickets/'+id+'/comments',{body_html:'<p>QA RT21 TK 3073 public comment on spam ticket</p>',is_public:true});out.push(['comment public',c2.s,safe(c2.j?.error?.code||''),safe(c2.j?.error?.message||'')]);
+const t0=new Date();const rp=await api('POST','/desk/tickets/'+id+'/replies',{mode:'reply',to:[ADDR],subject:'QA RT21 TK 3073 reply on spam ticket',body_html:'<p>QA RT21 TK 3073 reply on a spam ticket (should be refused)</p>'});out.push(['reply to own plus-address',rp.s,safe(rp.j?.error?.code||''),safe(rp.j?.error?.message||''),t0.toISOString()]);
+const sh=await api('PUT','/desk/tickets/'+id+'/shares',{shares:[{department_id:C.D2,access:'full'}]});out.push(['re-share while spam',sh.s,safe(sh.j?.error?.code||''),safe((sh.j?.error?.message||sh.t).slice(0,160))]);
+const g=await api('GET','/desk/tickets/'+id+'/shares');out.push(['shares now',g.s,JSON.stringify(g.j?.data).slice(0,160)]);
+const cm=await api('GET','/desk/tickets/'+id+'/comments');out.push(['comments list',cm.s,arr(cm.j?.data).length]);
+for(const o of out) log(o.join(' | '));
+if(c1.s<300||c2.s<300||rp.s<300) LED('NDC-3073: write accepted on spam ticket '+id+' (comment/reply) - see notes');
+fs.writeFileSync(RUN+'/scripts/tk/c2.out.json',JSON.stringify(out,null,1));

@@ -1,0 +1,8 @@
+{ "out": "api-b1-record-currency.png", "title": "TAVI CRM: a record can only use a currency that is in BOTH lists", "host": "staging-crm.taviportal.com (NDC-Staging)", "who": "ndc-staging-owner", "date": "17 Nov 2026",
+  "rows": [
+    ["Currencies settings", "GET /api/v1/currencies", "home_currency EGP; currencies: EUR (active, 1 EUR = 50 EGP)", "info"],
+    ["Deals › Currency field", "GET /modules/{Deals}/fields  (currency)", "datatype pick_list; allowed_values: EGP, USD, AED, JOD, KWD, OMR, SAR  (fixed list, no EUR)", "info"],
+    ["Deal in EUR", "POST /modules/{Deals}/records  currency = EUR, amount 1000", "422 PICKLIST_VALUE_INVALID: Currency: 'EUR' is not one of the allowed values (EGP, USD, AED, JOD, KWD, OMR, SAR).", "bad"],
+    ["Deal in USD", "POST /modules/{Deals}/records  currency = USD, amount 1000", "422 RECORD_FIELD_INVALID: Currency USD is not one of the organization's currencies.", "bad"],
+    ["After adding USD in settings", "POST /currencies USD rate 50 → POST deal currency = USD", "201; record gets exchange_rate 50 and amount_home 50000 (works only because USD is in both lists)", "ok"]
+  ] }

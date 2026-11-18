@@ -1,0 +1,20 @@
+{
+ "out": "F07-retest-FIXED.png",
+ "ticket": "F07",
+ "priority": "low",
+ "title": "Departments | Disabling a department with a transfer target moves tickets to the default department",
+ "verdict": "FIXED",
+ "env": "NDC-Staging · staging-desk · owner ndc-staging-owner (shared session) · departments QA RT21 BP Dept A (target) / Dept B (disabled) · ticket #5070 in Dept B",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F07-2-dialog-picked-A.png", "caption": "16:02:02Z Settings › Departments: disable QA RT21 BP Dept B, Transfer to = QA RT21 BP Dept A (request body transfer_to_department_id = Dept A, 200, toast 'QA RT21 BP Dept B is now inactive.')", "crop": [576, 293, 448, 314],
+   "boxes": [{"b": [649, 494, 999, 524], "n": 1, "kind": "INFO"}, {"b": [832, 558, 999, 594], "n": 1, "kind": "INFO"}]},
+  {"img": "F07-5-history.png", "caption": "Ticket #5070 now in QA RT21 BP Dept A; History 6:02 PM (16:02Z) 'Department was updated Old QA RT21 BP Dept B New QA RT21 BP Dept A'", "crop": [664, 60, 936, 560],
+   "boxes": [{"b": [740, 110, 905, 134], "n": 2, "kind": "PASS"}, {"b": [705, 282, 1000, 366], "n": 2, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Disable Dept B in the UI and pick Dept A as 'Transfer to'", "Accepted", "POST /desk/departments/{B}/disable {transfer_to_department_id: Dept A} 200 at 16:02:02Z; Dept B inactive (first try 15:59:47Z returned 502 and nothing changed)", "INFO"],
+  [2, "Department of the ticket that was in Dept B", "The chosen Dept A", "#5070 department = QA RT21 BP Dept A (API record + desk ticket, screen header and History); r20 saw Customer Support", "PASS"],
+  [3, "Dialog wording", "—", "Says 'Its tickets … are kept' and 'It currently has 1 agent(s) and 1 channel(s). Choose an active department to transfer them to.' — tickets are moved too, the text does not say so", "INFO"]
+ ]
+}

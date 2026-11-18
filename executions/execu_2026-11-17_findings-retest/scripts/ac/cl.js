@@ -1,0 +1,17 @@
+const CSORIG=['2a7c1bc4-f6d4-4bd3-805e-0496ece13987','5b3f7466-2fa7-4115-8ee0-f97c52cbb2c1','7e5e7c27-46e4-4bf6-b021-7bd219d34472','97be04b6-0a08-4883-aa51-e1650b11cab7','9d182dfa-05f3-4af7-9685-8615a2fbe537'];
+const o={del:{}};
+for(const k of ['T1','T2','T3','T4','T5','T6','T7']) if(IDS[k]) o.del[k]=await pr('DELETE','/modules/'+TM+'/records/'+IDS[k]);
+o.team=await pr('DELETE','/desk/teams/'+IDS.team);
+o.cs=await pr('PUT','/desk/departments/'+DEP.CS+'/agents',{agent_user_ids:CSORIG,view_only_agent_user_ids:['7e5e7c27-46e4-4bf6-b021-7bd219d34472']});
+await sleep(4000);
+const rb=await api('GET','/audit/recycle-bin/items?app_key=desk&q='+encodeURIComponent('QA RT21 AC')+'&limit=100'); const items=(D(rb.j)||[]).filter(x=>/QA RT21 AC/.test(x.record_label||''));
+o.rbFound=items.map(x=>x.record_label);
+if(items.length) o.purge=await pr('POST','/audit/recycle-bin/delete',{ids:items.map(x=>x.id)});
+await sleep(3000);
+const rb2=await api('GET','/audit/recycle-bin/items?app_key=desk&q='+encodeURIComponent('QA RT21 AC')+'&limit=100'); o.rbLeft=(D(rb2.j)||[]).filter(x=>/QA RT21 AC/.test(x.record_label||'')).length;
+const s=await api('GET','/modules/'+TM+'/records?limit=50&q='+encodeURIComponent('QA RT21 AC')); o.liveLeft=(D(s.j)||[]).filter(x=>JSON.stringify(x).includes('QA RT21 AC')).length;
+const cs=D((await api('GET','/desk/departments/'+DEP.CS)).j); o.csNow={agents:cs.agent_user_ids.length,vo:cs.view_only_agent_user_ids};
+const tr=await api('GET','/desk/teams/'+IDS.team); o.teamGet=tr.s;
+let r=await api('GET','/iam/users?limit=100&page=1'); let L=D(r.j); r=await api('GET','/iam/users?limit=100&page=2'); L=L.concat(D(r.j)); o.dProf=(L.find(u=>u.userId===US.D)||{}).profileNames;
+o.ta=(await api('GET','/desk/ticket-access/settings')).t.slice(0,160);
+led('cleanup '+JSON.stringify(o).slice(0,600)); return o;

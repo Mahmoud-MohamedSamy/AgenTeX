@@ -1,0 +1,11 @@
+await page.goto(H+'/views',{waitUntil:'domcontentloaded'}); await sleep(10000);
+await page.locator('input[type=checkbox], [role=checkbox]').nth(1).click({force:true}); await sleep(1500);
+await page.getByRole('button',{name:'More',exact:true}).click(); await sleep(1500);
+log('more',(await page.locator('[role=menu]').last().innerText().catch(()=>'')).replace(/\s+/g,' '));
+await shot('A1-3-bulk-more.png'); await page.keyboard.press('Escape'); await sleep(500);
+await page.getByRole('button',{name:'Clear selection'}).click().catch(()=>{}); await sleep(800);
+const r1=page.locator('[role=row]').nth(1); await r1.hover(); await sleep(500);
+await r1.locator('button[aria-label^="Peek"]').click(); await sleep(4000);
+const d=await page.locator('[role=dialog], aside').last().innerText().catch(()=>''); log('peek',d.replace(/\s+/g,' ').slice(0,800)); log('peekMove',/move/i.test(d));
+await shot('A1-4-peek.png');
+log('header',(await page.locator('[role=row]').first().innerText()).replace(/\s+/g,' '));

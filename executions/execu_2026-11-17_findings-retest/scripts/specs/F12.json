@@ -1,0 +1,20 @@
+{
+ "out": "F12-retest-CHANGED.png",
+ "ticket": "F12",
+ "priority": "low",
+ "title": "Ticket Views | Sidebar view count stays at the old number after a bulk delete",
+ "verdict": "CHANGED",
+ "env": "NDC-Staging · staging-desk · owner account (shared session) · private view \"QA RT21 TK F12 view\" (subject starts with QA RT21 TK F12) · 25 tickets per run, 2 runs · 17 Nov 2026 15:51-15:55 UTC",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F12-6-r2-stale.png", "caption": "Run 2, 15:54:48 UTC (8 s after Delete): header (0), sidebar still 25", "crop": [0, 56, 1600, 840],
+   "boxes": [{"b": [304, 68, 520, 100], "n": 1, "kind": "PASS"}, {"b": [38, 578, 250, 608], "n": 2, "kind": "FAIL"}]},
+  {"img": "F12-7-r2-settled.png", "caption": "Run 2, 15:55:11 UTC (31 s after Delete, no reload): sidebar now 0", "crop": [0, 56, 1600, 840],
+   "boxes": [{"b": [38, 578, 250, 608], "n": 3, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Select all 25 in the view → More → Delete → Delete", "Header count updates", "Toast \"25 records moved to the recycle bin.\" at +6-8 s; header (0)", "PASS"],
+  [2, "Sidebar count right after the delete", "Same as header", "Still 25 at +8-10 s (run 1 15:51:46, run 2 15:54:48 UTC)", "FAIL"],
+  [3, "Sidebar count later, no reload", "Updates (r20: stayed until reload)", "0 by +31 s run 2 (15:55:11), by +40 s run 1 (15:52:16); no reload needed now", "INFO"]
+ ]
+}

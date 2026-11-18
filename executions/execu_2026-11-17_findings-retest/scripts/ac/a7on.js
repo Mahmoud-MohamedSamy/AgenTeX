@@ -1,0 +1,1 @@
+const r=await api('PUT','/desk/ticket-access/settings',{public_scope:'departments',peer_sharing_role_ids:[MGR]}); led('ticket-access peers=[Manager] '+r.s+' (restore [])'); return r.s+' '+r.t.slice(0,250);

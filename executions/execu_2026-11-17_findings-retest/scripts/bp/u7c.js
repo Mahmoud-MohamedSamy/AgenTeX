@@ -1,0 +1,10 @@
+const out = {};
+await page.goto(H + '/views/all/tickets/8185c6be-c69c-4813-bb7e-962eba699969', { waitUntil: 'domcontentloaded' });
+await page.getByText('QA RT21 BP-F07 transfer ticket').first().waitFor({ timeout: 120000 }).catch(() => {}); await sleep(5000);
+let t = (await text()).replace(/\s+/g, ' '); out.head = (t.match(/QA RT21 BP-F07 transfer ticket.{0,120}/) || [''])[0];
+const d = page.getByText('QA RT21 BP Dept A').first(); out.deptBox = await d.boundingBox().catch(() => null);
+await shot('F07-4-ticket.png');
+await page.getByRole('tab', { name: /history/i }).first().click().catch(async () => { await page.getByText(/^History$/i).last().click(); }); await sleep(6000);
+t = (await text()).replace(/\s+/g, ' '); const i = t.search(/Ticket History/); out.hist = t.slice(i, i + 900).replace(/[\w.+-]+@[\w.-]+/g, '<mail>');
+const h = page.getByText(/department from/i).first(); out.hBox = await h.boundingBox().catch(() => null);
+await shot('F07-5-history.png'); return out;

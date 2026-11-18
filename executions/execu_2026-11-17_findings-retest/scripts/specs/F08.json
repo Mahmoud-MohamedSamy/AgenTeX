@@ -1,0 +1,22 @@
+{
+ "out": "F08-retest-STILL-FAILS.png",
+ "ticket": "F08",
+ "priority": "low",
+ "title": "Tickets | Mark as Spam gives no sharing warning; wrong re-share wording; custom action on a spam ticket",
+ "verdict": "STILL FAILS",
+ "env": "NDC-Staging · staging-desk · owner account (shared session) · ticket #5106 \"QA RT21 TK F08 spam ticket\" (QA RT20 TK Dept, no contact) shared with QA RT20 TK Dept B (full) · 17 Nov 2026 16:15-16:17 UTC · Zoho not rechecked today",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F08-1-spam-dialog.png", "caption": "16:15:42 UTC: ticket is \"Shared with QA RT20 TK Dept B\"; Mark as spam dialog says nothing about sharing", "crop": [520, 60, 1080, 540],
+   "boxes": [{"b": [680, 142, 876, 162], "n": 0, "color": "#2563eb"}, {"b": [556, 400, 1046, 505], "n": 1, "kind": "FAIL"}]},
+  {"img": "F08-3-actions-on-spam.png", "caption": "16:16:41 UTC after spam: Actions still lists the custom action \"QA RT18 CA echo\" (not run)", "crop": [660, 60, 940, 300],
+   "boxes": [{"b": [1348, 124, 1548, 168], "n": 3, "kind": "FAIL"}, {"b": [680, 160, 1584, 214], "n": 0, "color": "#2563eb"}]},
+  {"img": "F08-4-api-card.png", "caption": "API: shares revoked silently; re-share refusal talks about \"conversation\"", "crop": [0, 0, 1600, 460],
+   "boxes": [{"b": [36, 146, 1564, 183], "n": 1, "kind": "FAIL"}, {"b": [36, 193, 1564, 272], "n": 2, "kind": "FAIL"}, {"b": [36, 329, 1564, 387], "n": 3, "kind": "FAIL"}]}
+ ],
+ "rows": [
+  [1, "Mark a shared ticket as spam", "Dialog warns that sharing will be revoked", "Dialog: \"The ticket moves to Spam Tickets and out of your queues. Not Spam brings it back.\" + contact checkbox; no sharing note; shares [] after", "FAIL"],
+  [2, "Re-share the spam ticket", "Refused with a reason about sharing", "422 \"…you are not able to add conversation. Mark it as Not Spam first.\"", "FAIL"],
+  [3, "Actions button on the spam ticket", "No custom actions", "\"QA RT18 CA echo\" still listed (⋮ menu correctly shows only Not Spam / Delete)", "FAIL"]
+ ]
+}

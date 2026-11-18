@@ -1,0 +1,23 @@
+{
+ "out": "F09-retest-STILL-FAILS.png",
+ "ticket": "F09 (NDC-3063 side finding)",
+ "priority": "low",
+ "title": "Blueprint | Huge time limit gives a schema error toast; fractions and negatives change silently",
+ "verdict": "STILL FAILS",
+ "env": "NDC-Staging · staging-desk · owner ndc-staging-owner (shared session) · own inactive blueprint QA RT21 BP F09 units (f31735f1), state Open, Save state + Save Draft (never published)",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F09-F-savestate.png", "caption": "16:04:50Z Due after 99,999,999 Days, Warn 1 Day → only a toast 'Blueprint definition does not match the expected schema.' (Save Draft 422 states[0].slaMinutes 143999998560); no field message; after reload the old 20/10 Minutes are back", "crop": [1150, 120, 450, 780],
+   "boxes": [{"b": [1257, 290, 1466, 322], "n": 1, "kind": "FAIL"}, {"b": [1160, 812, 1575, 875], "n": 1, "kind": "FAIL"}]},
+  {"img": "F09-J-entered.png", "caption": "16:05:44Z 0.5 Minutes becomes 1 as typed; warning 0.25 Minutes stays in the box but is not used (preview has no warning; saved warning = none); 'Draft saved' with no message", "crop": [1240, 230, 360, 300],
+   "boxes": [{"b": [1257, 290, 1466, 322], "n": 2, "kind": "FAIL"}, {"b": [1257, 356, 1466, 388], "n": 3, "kind": "FAIL"}, {"b": [1260, 465, 1580, 510], "n": 3, "kind": "INFO"}]},
+  {"img": "F09-E-entered.png", "caption": "16:06:47Z Due after -5 Minutes is accepted; node shows no limit; saved as no limit ('Draft saved'), no message", "crop": [300, 230, 1300, 340],
+   "boxes": [{"b": [1257, 290, 1466, 322], "n": 4, "kind": "FAIL"}, {"b": [345, 488, 480, 522], "n": 4, "kind": "FAIL"}]}
+ ],
+ "rows": [
+  [1, "Due after = 99,999,999 Days; Save state, Save Draft", "Field-level message for out-of-range", "Toast 'Blueprint definition does not match the expected schema.' only; 422 BLUEPRINT_DEFINITION_FIELD_INVALID '143999998560 is not a valid value for slaMinutes.'; no field highlighted; value reverts to 20 Minutes on reopen", "FAIL"],
+  [2, "Due after = 0.5 Minutes", "Message, or keep the value", "Box turns into 1 as typed; saved slaMinutes 1; no message", "FAIL"],
+  [3, "Warn before = 0.25 Minutes", "Message, or keep the value", "Shown 0.25 but saved warning = none (slaPreExpiryMinutes null); reopen shows an empty box (Hours); no message", "FAIL"],
+  [4, "Due after = -5 Minutes", "Field-level message", "Accepted; saved slaMinutes null = no limit; reopen empty; no message", "FAIL"]
+ ]
+}

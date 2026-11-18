@@ -1,0 +1,1 @@
+return {T6:await mkT('T6',{subject:'QA RT21 AC A7 owned by D',department:DEP.CS,status:'Open',email:'qa-rt21-ac@example.com',channel:'phone',owner:US.D}),T7:await mkT('T7',{subject:'QA RT21 AC A7 owned by E',department:DEP.CS,status:'Open',email:'qa-rt21-ac@example.com',channel:'phone',owner:US.E})};

@@ -1,0 +1,1 @@
+async (page) => { await page.mouse.click(1063, 240); await page.waitForTimeout(5000); const t = await page.innerText('body'); return { qaDealLeft: t.includes('QA CUR1117'), r18LeadLeft: t.includes('QA RT18 LR') }; }

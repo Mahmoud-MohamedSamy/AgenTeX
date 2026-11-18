@@ -1,0 +1,15 @@
+const main=()=>page.locator('main').last();const R={};
+const reqs=[];page.on('request',q=>{if(/tag/i.test(q.url()))reqs.push(q.method()+' '+q.url().replace(H,'').slice(0,160));});
+await page.goto(H+'/settings/automation/workflow-rules/47752153-cc19-4572-90e2-bb487f25f45e',{waitUntil:'commit'});
+const inp=page.locator('input[placeholder*="tag"]').first();await inp.waitFor({timeout:150000});await sleep(3000);
+R.ph=await inp.getAttribute('placeholder');
+await inp.scrollIntoViewIfNeeded();await inp.click();await sleep(2000);R.optsEmpty=(await page.getByRole('option').allInnerTexts());
+await shot('F03-1-add-tags-open.png');
+await inp.fill('QA WF tag');await sleep(2500);R.opts=(await page.getByRole('option').allInnerTexts());
+R.listText=(await page.locator('[role=listbox]').first().innerText().catch(()=>'')).replace(/\s+/g,' ').slice(0,600);
+await shot('F03-2-add-tags-typed.png');
+await inp.fill('QA RT21 WF F03 newtag');await sleep(2500);R.newOpts=(await page.getByRole('option').allInnerTexts());
+R.newText=(await page.locator('[role=listbox]').first().innerText().catch(()=>'')).replace(/\s+/g,' ').slice(0,300);
+await shot('F03-3-new-tag-typed.png');
+await inp.fill('');await page.keyboard.press('Escape');
+R.reqs=reqs;return R;

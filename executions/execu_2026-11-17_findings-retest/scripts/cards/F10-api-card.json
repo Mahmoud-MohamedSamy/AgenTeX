@@ -1,0 +1,10 @@
+{"out":"F10-1-api-card.png","title":"F10 Records API: error path for malformed field values (17 Nov, 15:48-15:49 UTC, each case twice)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["A value without kind (reference)","POST /modules/<tickets>/records  data[0] subject {value:'...'}","400 VALIDATION_ERROR, details.path \"data[0].value\" (x2)","ok"],
+["D unknown kind \"bogus\" on data[0]","data[0] subject {kind:'bogus', value:'QA RT21 TK F10 D'}","400 VALIDATION_ERROR, details.path \"\" (x2) - expected data[0].value","bad"],
+["D2 unknown kind on data[1]","data[1] priority {kind:'bogus', value:'High'}","400 VALIDATION_ERROR, details.path \"\" (x2) - expected data[1].value","bad"],
+["I kind null","data[0] subject {kind:null, value:'...'}","400 VALIDATION_ERROR, details.path \"kind\" (x2) - expected data[0].value","bad"],
+["J kind number, text value","data[0] subject {kind:'number', value:'QA RT21 TK F10 J'}","400 VALIDATION_ERROR, details.path \"value\" (x2) - expected data[0].value","bad"],
+["J2 kind boolean on data[1]","data[1] priority {kind:'boolean', value:'High'}","400 VALIDATION_ERROR, details.path \"value\" (x2) - no index","bad"],
+["All malformed cases","same message for all: \"The request body could not be read. Check the field types and try again.\"","none 500, no record created","info"],
+["Z valid control","subject + status + department, correct kinds","201 created (deleted at lane end)","ok"]]}

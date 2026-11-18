@@ -1,0 +1,7 @@
+{"out":"F03-api-card.png","title":"F03 / NDC-3058 Add Tags department check — rule QA RT21 WF F03 (On Edit, QA AO Dept A)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Tags in tenant","GET /desk/tags","\"QA WF tag A/B/C\" exist in 3 departments each (QA AO Dept A, Customer Support, Tech)","info"],
+["2 Picker in the editor","type \"QA WF tag\" in Add Tags","only QA WF tag A + C listed once each (B already chosen) + Create \"QA WF tag\"; saved ids all QA AO Dept A tags (was: every department's tags, A 3x)","ok"],
+["3 Create from the picker","Create \"QA RT21 WF F03 newtag\"","POST /desk/tags {department_id: QA AO Dept A} 201, chip added, rule saved 200","ok"],
+["4 Rule runs (16:06:57Z edit of #5098)","activate, PATCH priority, GET ticket tags + execution","run 0d751c04 Fired, Add Tags Succeeded row shown; ticket tags: QA WF tag B, QA WF tag A, QA RT21 WF F03 newtag — all QA AO Dept A","ok"],
+["5 API save with Customer Support's tag","PATCH rule actions + fcaac38b (CS \"QA WF tag A\")","200 accepted and stored; at run time NOT applied to the ticket (silently dropped), Execution History still lists its id in Target and says Succeeded","info"]]}

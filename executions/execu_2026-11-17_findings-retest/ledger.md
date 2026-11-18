@@ -1,0 +1,130 @@
+# Ledger: findings retest 17 Nov 2026
+- 2026-11-17T15:48:03  [SC RT21] scoring rule "QA RT21 SC R1 rpt" d78347b7-6e2e-448e-b710-0fca44066dcd (Leads)
+- 2026-11-17T15:48:05  [SC RT21] record "QA RT21 SC A" 3dcca428-66c6-484c-85e8-055abf9fde1a (Leads)
+- 2026-11-17T15:48:06  [SC RT21] record "QA RT21 SC ctl" 940d794f-ed3e-4fd1-a3eb-f84cc92fc630 (Leads)
+- 2026-11-17T15:48:25  [SC RT21] report "QA RT21 SC score report" 3c745d84-1f26-4000-936f-a4f7820c91c5
+- 2026-11-17T15:49:07Z TK lane: ticket created cba6ab99-81a0-4bce-a8c7-6d0a99f4fcee "QA RT21 TK F10 Z control"
+- 2026-11-17T15:49:56  [SC RT21] scoring rule R1 d78347b7-6e2e-448e-b710-0fca44066dcd points 10->25 with update_existing_records (background rescore of all leads)
+- 2026-11-17T15:50:05Z BP lane: blueprint created c68e757a-e7bc-4ce9-a4f7-067dfbdb51ce "QA RT21 BP F04 tk" active=true
+- 2026-11-17T15:50:34Z BP lane: ticket created 8efcd904-ef9f-48b6-813e-aa08d858bf39 #undefined "QA RT21 BP F04 tk K1 owned by owner"
+- 2026-11-17T15:50:36Z BP lane: ticket created 1094141f-1a83-4de0-b6de-0b907e474e69 "QA RT21 BP-F04 control owned by owner" (no blueprint)
+- 2026-11-17T15:50:46Z WF lane: ticket "QA RT21 WF F01 health probe" 6781c9db-484e-41ac-adce-38062b4addee #undefined
+- 2026-11-17T15:50:51Z TK lane: 25 tickets created "QA RT21 TK F12 bulk 01..25" in QA RT20 TK Dept (fixture) (ids in scripts/tk/cfg.json bulk)
+- 2026-11-17T15:50:52Z TK lane: view "QA RT21 TK F12 view" 884bbb1f-fafb-4108-961c-966ff616ff9f created (private, subject starts with QA RT21 TK F12)
+- 2026-11-17T15:51:30Z BP lane: SIGN-IN agent "Customer Experience Specialists 2" (CES2) ONCE via login-r12.js -> scratchpad f21-bp-a.json
+- 2026-11-17T15:51:35Z WF lane: ticket "QA RT21 WF F01 QA AS6 SEQ rr probe" 1a467808-a7ad-4e14-89b9-962d6bd7a873 #undefined
+- 2026-11-17T15:52:46Z BP lane: as CES2 opened #4997 (8efcd904) in UI (F04): QA onlyA NOT offered, nothing run
+- 2026-11-17T15:53:25Z WF lane: ticket "QA RT21 WF F01 QA AS6 SEQ rr probe 2" ec361af9-7290-48a6-8792-eb3472070509 #undefined
+- 2026-11-17T15:54:13Z TK lane: 25 tickets created "QA RT21 TK F12 bulk r2 01..25" in QA RT20 TK Dept (repeat run; ids in cfg bulk2)
+- 2026-11-17T15:55:10Z BP lane: department created cb0ea6e0-5ad9-4f60-83eb-cb469a56ac98 "QA RT21 BP Dept A" (F07) active
+- 2026-11-17T15:55:11Z BP lane: department created 2a67ad0b-e003-4241-873d-ff4c47c73a68 "QA RT21 BP Dept B" (F07) active
+- 2026-11-17T15:55:12Z BP lane: ticket created 8185c6be-c69c-4813-bb7e-962eba699969 "QA RT21 BP-F07 transfer ticket" in Dept B
+- 2026-11-17T15:55:57Z TK lane: ticket created abc77774-cfa3-444d-b154-56ef28359e9a "QA RT21 TK F13 clone source (owner other agent)" in QA RT19 SLA Dept (fixture), owner 876ce871-2b02-4854-89a7-68050391c62b
+- 2026-11-17T15:56:00Z TK lane: ticket created 7cc8bf83-6b33-4676-bcb4-81b93380ef61 "QA RT21 TK F13 clone source (unassigned)" in QA RT20 TK Dept
+- 2026-11-17T15:56:23Z WF lane: QA AS6 Dept A round-robin-preferences assign_to_offline_agents false -> true (lock held)
+- 2026-11-17T15:56:35Z WF lane: QA AS6 Dept A round-robin-preferences restored (assign_to_offline_agents false), diff empty=true
+- 2026-11-17T15:56:46  [SC RT21] currency XYZ 25aa4b91-281f-414c-9880-535597ff092b added (C6_notIso_XYZ)
+- 2026-11-17T15:56:48  [SC RT21] currency EUR a252d3ca-6804-4c2e-8c1f-b92b73e875a1 added (C6_rate12dp_EUR)
+- 2026-11-17T15:57:02Z WF lane: ticket "QA RT21 WF F02 seq t1" ae90128e-8c50-4256-b38c-c86f8249185e #undefined
+- 2026-11-17T15:57:03Z WF lane: ticket "QA RT21 WF F02 seq t2" 7c097be7-134d-4771-9f2d-e9fcfb440011 #undefined
+- 2026-11-17T15:57:06Z WF lane: ticket "QA RT21 WF F02 seq t3" 8923a0ed-1612-4635-b481-d2e6b5b4e720 #undefined
+- 2026-11-17T15:57:08Z WF lane: ticket "QA RT21 WF F02 seq t4" c9e9eb3a-71db-4c89-8ef2-07f25276e402 #undefined
+- 2026-11-17T15:57:16  [SC RT21] currency USD 5881bda6-9eba-47cb-b754-ed09de242cc2 added (C5, used by QA RT21 SC deal)
+- 2026-11-17T15:57:17Z WF lane: workflow rule "QA RT21 WF F02 seq" 0b861ad1-c411-4acb-b125-5c52fc691d81 (active)
+- 2026-11-17T15:57:20  [SC RT21] deal "QA RT21 SC Deal USD" 5e94f62e-9512-4632-b82b-e3ad74ff7c1d (Transactions)
+- 2026-11-17T15:57:22  [SC RT21] currency USD 5881bda6-9eba-47cb-b754-ed09de242cc2 DELETED while used by deal 5e94f62e-9512-4632-b82b-e3ad74ff7c1d (C5 test)
+- 2026-11-17T15:57:59Z WF lane: workflow rule "QA RT21 WF F03" 47752153-cc19-4572-90e2-bb487f25f45e (inactive)
+- AC 15:58:00Z CS members + D,E (restore to 5 orig + view-only 7e5e7c27): 200
+- 2026-11-17T15:58:02Z TK lane: ticket created 985ada1f-8349-4329-ab6c-217508c3faec clone of F13 source A via UI (QA RT19 SLA Dept)
+- AC 15:58:03Z D profile -> Desk Light Agent (restore Desk Supervisor ...404): 204
+- AC 15:58:07Z ticket T3 996816b8-3cfe-4292-bc26-cd21e9d91fc3 QA RT21 AC A3 light team ticket
+- AC 15:58:08Z team QA RT21 AC Light Team a27f7e7e-071d-4994-a0b8-7157dde2faa1
+- 2026-11-17T15:58:46Z TK lane: ticket created 247c9e91-24dd-450e-834e-a56f48c888a2 "QA RT21 TK F13 clone source C" in QA AO Dept A (fixture), owner 5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4
+- AC 15:59:22Z D profile restored -> Desk Supervisor 204
+- AC 15:59:31Z ticket T1 12f59848-7ff4-4354-8299-8782748a635a QA RT21 AC A1 bulk move ticket
+- 2026-11-17T15:59:52Z BP lane: department 2a67ad0b "QA RT21 BP Dept B" DISABLED via UI with transfer to QA RT21 BP Dept A cb0ea6e0 (F07)
+- 2026-11-17T16:01:26Z WF lane: workflow rule 0b861ad1-c411-4acb-b125-5c52fc691d81 deactivated
+- 2026-11-17T16:02:15Z BP lane: (correction) first UI disable 15:59:47Z got 502, dept stayed active; retry 16:02:02Z 200 -> Dept B 2a67ad0b inactive
+- 2026-11-17T16:02:30Z TK lane: ticket created 1cf90b07-af55-4996-8a8d-10ea9a5d5215 clone of F13 source C via UI (QA AO Dept A)
+- AC 16:02Z sign-in C (CES2) once -> scratchpad f21-ac-c.json
+- AC 16:03:12Z ticket T2 c74380b4-9815-418f-a028-ea9114715f7d QA RT21 AC A2 moved while open
+- AC 16:03:14Z ticket T4 caea2934-d4ab-4de1-9271-375f514247a5 QA RT21 AC A5 follower after move
+- 2026-11-17T16:03:26Z TK lane: contract "QA RT21 TK F06 Contract 1" c4e34c68-77b6-471a-aa70-18691e73fa12 (QA RT19 SLA Dept, plan A)
+- 2026-11-17T16:03:29Z TK lane: contract "QA RT21 TK F06 Contract 2" 6b0b53c0-0c56-4082-ac5c-01e78527fe5c (QA RT19 SLA Dept, plan A)
+- 2026-11-17T16:03:32Z TK lane: contract "QA RT21 TK F06 Contract 3 control" 1b4c8455-afba-40ef-a02d-2e8769177709 (QA RT19 SLA Dept, plan A)
+- 2026-11-17T16:04:41Z BP lane: blueprint created f31735f1-6a61-4a08-aff0-145e2ca0df9d "QA RT21 BP F09 units" active=false
+- AC 16:05:25Z ticket T5 0fc57c88-e9db-4989-8f13-bf56ddf63ebd QA RT21 AC A5 follower after move
+- 2026-11-17T16:06:17Z WF lane: desk tag "QA RT21 WF F03 newtag" 883ef82a-cc1f-4271-a2ca-451d6027fc46 created from the Add Tags picker (dept QA AO Dept A) on rule 47752153
+- AC 16:06:46Z ticket T6 25faba55-7a9d-40f5-b921-cd7d6db2ad9b QA RT21 AC A7 owned by D
+- AC 16:06:48Z ticket T7 5345146b-16e4-458b-848b-b0ae81f8094c QA RT21 AC A7 owned by E
+- 2026-11-17T16:06:49Z WF lane: workflow rule 47752153-cc19-4572-90e2-bb487f25f45e activated
+- 2026-11-17T16:06:50Z WF lane: ticket "QA RT21 WF F03 tag pick" d454def9-de65-410a-91c3-7b7cb51fd2b2 #undefined
+- 2026-11-17T16:07:18Z WF lane: workflow rule 47752153-cc19-4572-90e2-bb487f25f45e deactivated
+- AC 16:07Z sign-in D and E once -> scratchpad f21-ac-d.json, f21-ac-e.json
+- AC 16:07:44Z ticket-access peers=[Manager] 200 (restore [])
+- 2026-11-17T16:07:49Z WF lane: workflow rule "QA RT21 WF F17" 5da55312-6e7f-48ba-a8e4-3f67aaa58aba (active)
+- 2026-11-17T16:07:50Z WF lane: ticket "QA RT21 WF F17 no contact" d84f19f2-53d9-4768-bff0-7f5151bf09b5 #undefined
+- 2026-11-17T16:08:14Z BP lane: blueprint switched OFF c68e757a-e7bc-4ce9-a4f7-067dfbdb51ce: 200
+- 2026-11-17T16:08:16Z BP lane: ticket deleted 8efcd904-ef9f-48b6-813e-aa08d858bf39: 204
+- 2026-11-17T16:08:16Z WF lane: workflow rule 5da55312-6e7f-48ba-a8e4-3f67aaa58aba deactivated
+- 2026-11-17T16:08:18Z BP lane: ticket deleted 1094141f-1a83-4de0-b6de-0b907e474e69: 204
+- 2026-11-17T16:08:18Z BP lane: ticket deleted 8185c6be-c69c-4813-bb7e-962eba699969: 204
+- 2026-11-17T16:08:30Z BP lane: recycle bin purged 3 BP tickets: 200
+- 2026-11-17T16:08:30Z BP lane: blueprint delete c68e757a-e7bc-4ce9-a4f7-067dfbdb51ce: 204
+- 2026-11-17T16:08:31Z BP lane: blueprint delete f31735f1-6a61-4a08-aff0-145e2ca0df9d: 204
+- 2026-11-17T16:08:31Z BP lane: department delete 2a67ad0b-e003-4241-873d-ff4c47c73a68 (dB): 200
+- 2026-11-17T16:08:31Z BP lane: department delete cb0ea6e0-5ad9-4f60-83eb-cb469a56ac98 (dA): 422 UNPROCESSABLE This department still has 1 agent. Choose an active department to transfer them to. [{"field":"transfer_to_department_id","issue":"required"},{"field":"agent_count","issue":"1"}]
+- AC 16:09:09Z ticket-access restored {"success":true,"data":{"public_scope":"departments","peer_sharing_role_ids":[],"record_visibility":"hierarchy"},"error":null,"meta":null}
+- 2026-11-17T16:09:39Z BP lane: department delete cb0ea6e0-5ad9-4f60-83eb-cb469a56ac98 (Dept A) after removing owner from it: patch 200, delete 200
+- AC 16:09:42Z cleanup {"del":{"T1":"204","T2":"204","T3":"204","T4":"204","T5":"204","T6":"204","T7":"204"},"team":"204","cs":"200","rbFound":["QA RT21 AC Light Team","#5097 QA RT21 AC A7 owned by E","#5096 QA RT21 AC A7 owned by D","#5091 QA RT21 AC A5 follower after move","#5090 QA RT21 AC A5 follower after move","#5085 QA RT21 AC A3 light team ticket","#5089 QA RT21 AC A2 moved while open","#5087 QA RT21 AC A1 bulk move ticket"],"purge":"200","rbLeft":0,"liveLeft":0,"csNow":{"agents":5,"vo":["7e5e7c27-46e4-4bf6-b021-7bd219d34472"]},"teamGet":404,"dProf":"Desk Supervisor","ta":"{\"success\":true,\"data\":{\"publi
+- AC 16:09Z agent state files C, D, E deleted
+- 2026-11-17T16:10:20Z BP lane: recycle bin purged 4 BP items (2 depts, 2 blueprints): 200
+- 2026-11-17T16:10:23Z BP lane: agent state file f21-bp-a.json deleted; CES2 memberships untouched
+- 2026-11-17T16:10:40Z WF lane: ticket "QA RT21 WF F02 seq2 t1" f94efaec-0844-4d48-85b9-42eef11e22c5 #undefined
+- 2026-11-17T16:10:42Z WF lane: ticket "QA RT21 WF F02 seq2 t2" 81fec0b7-4744-4482-bd3a-e0275a9a300f #undefined
+- 2026-11-17T16:10:43Z WF lane: ticket "QA RT21 WF F02 seq2 t3" b10148d3-cd51-46a9-9742-49ea04f3a246 #undefined
+- 2026-11-17T16:10:44Z WF lane: ticket "QA RT21 WF F02 seq2 t4" 261cce62-240c-4178-8248-f9dc36fbedbc #undefined
+- 2026-11-17T16:10:54Z WF lane: workflow rule "QA RT21 WF F02 seq2" 1b3248ea-a8f7-48b1-a250-61c6785361b2 (active)
+- 2026-11-17T16:11:11  [SC RT21] scoring rule R1 d78347b7-6e2e-448e-b710-0fca44066dcd points 25->30 with update_existing_records (2nd background rescore)
+- 2026-11-17T16:12:57Z WF lane: workflow rule 1b3248ea-a8f7-48b1-a250-61c6785361b2 deactivated
+- 2026-11-17T16:13:03  [SC RT21] CLEANUP deal 5e94f62e-9512-4632-b82b-e3ad74ff7c1d deleted (204)
+- 2026-11-17T16:13:05  [SC RT21] CLEANUP currency XYZ 25aa4b91-281f-414c-9880-535597ff092b deleted (204)
+- 2026-11-17T16:13:05  [SC RT21] CLEANUP currency EUR a252d3ca-6804-4c2e-8c1f-b92b73e875a1 deleted (204)
+- 2026-11-17T16:13:07  [SC RT21] CLEANUP purged from Recycle Bin (crm): 6c43f920-8218-4fcb-b1b2-76182fceeac7
+- 2026-11-17T16:15:01Z TK lane: ticket created 29060316-17ae-4baf-bdb5-1a4eee6c4df5 "QA RT21 TK F08 spam ticket" in QA RT20 TK Dept (no contact)
+- 2026-11-17T16:15:02Z TK lane: ticket 29060316-17ae-4baf-bdb5-1a4eee6c4df5 shared with QA RT20 TK Dept B (full)
+- 2026-11-17T16:15:16  [SC RT21] CLEANUP report 3c745d84-1f26-4000-936f-a4f7820c91c5 deleted (204)
+- 2026-11-17T16:15:17  [SC RT21] CLEANUP scoring rule R1 d78347b7-6e2e-448e-b710-0fca44066dcd deleted (204)
+- 2026-11-17T16:15:17  [SC RT21] CLEANUP lead A 3dcca428-66c6-484c-85e8-055abf9fde1a deleted (204)
+- 2026-11-17T16:15:18  [SC RT21] CLEANUP lead C 940d794f-ed3e-4fd1-a3eb-f84cc92fc630 deleted (204)
+- 2026-11-17T16:15:29Z WF lane: workflow rule 0b861ad1-c411-4acb-b125-5c52fc691d81 deleted
+- 2026-11-17T16:15:29Z WF lane: workflow rule 47752153-cc19-4572-90e2-bb487f25f45e deleted
+- 2026-11-17T16:15:30Z WF lane: workflow rule 5da55312-6e7f-48ba-a8e4-3f67aaa58aba deleted
+- 2026-11-17T16:15:30Z WF lane: workflow rule 1b3248ea-a8f7-48b1-a250-61c6785361b2 deleted
+- 2026-11-17T16:15:30Z WF lane: ticket 6781c9db-484e-41ac-adce-38062b4addee deleted (to Recycle Bin)
+- 2026-11-17T16:15:31Z WF lane: ticket 1a467808-a7ad-4e14-89b9-962d6bd7a873 deleted (to Recycle Bin)
+- 2026-11-17T16:15:31Z WF lane: ticket ec361af9-7290-48a6-8792-eb3472070509 deleted (to Recycle Bin)
+- 2026-11-17T16:15:31Z WF lane: ticket ae90128e-8c50-4256-b38c-c86f8249185e deleted (to Recycle Bin)
+- 2026-11-17T16:15:32Z WF lane: ticket 7c097be7-134d-4771-9f2d-e9fcfb440011 deleted (to Recycle Bin)
+- 2026-11-17T16:15:32Z WF lane: ticket 8923a0ed-1612-4635-b481-d2e6b5b4e720 deleted (to Recycle Bin)
+- 2026-11-17T16:15:33Z WF lane: ticket c9e9eb3a-71db-4c89-8ef2-07f25276e402 deleted (to Recycle Bin)
+- 2026-11-17T16:15:33Z WF lane: ticket d454def9-de65-410a-91c3-7b7cb51fd2b2 deleted (to Recycle Bin)
+- 2026-11-17T16:15:34Z WF lane: ticket d84f19f2-53d9-4768-bff0-7f5151bf09b5 deleted (to Recycle Bin)
+- 2026-11-17T16:15:34  [SC RT21] CLEANUP purged (crm): 1c302932-17dc-44a2-89f8-ab3d99d612d5, 7b8eb280-e428-4cc3-96e4-cf126667b098
+- 2026-11-17T16:15:35Z WF lane: ticket f94efaec-0844-4d48-85b9-42eef11e22c5 deleted (to Recycle Bin)
+- 2026-11-17T16:15:36Z WF lane: ticket 81fec0b7-4744-4482-bd3a-e0275a9a300f deleted (to Recycle Bin)
+- 2026-11-17T16:15:36Z WF lane: ticket b10148d3-cd51-46a9-9742-49ea04f3a246 deleted (to Recycle Bin)
+- 2026-11-17T16:15:38Z WF lane: ticket 261cce62-240c-4178-8248-f9dc36fbedbc deleted (to Recycle Bin)
+- 2026-11-17T16:15:51Z WF lane: desk tag 883ef82a QA RT21 WF F03 newtag deleted
+- 2026-11-17T16:15:54Z WF lane: purged 17 QA RT21 WF items from Recycle Bin
+- 2026-11-17T16:16:39Z WF lane: CLEANUP verified: 13 tickets GET 404, 4 rules GET 404, Recycle Bin 0 items 'QA RT21 WF', tag 883ef82a deleted, QA AS6 Dept A assign_to_offline_agents=false, no locks held
+- 2026-11-17T16:22:09Z TK lane: deleted 7 QA RT21 TK tickets (F10 control, F13 sources/clones, F08) → recycle bin
+- 2026-11-17T16:22:10Z TK lane: deleted contracts c4e34c68-77b6-471a-aa70-18691e73fa12,6b0b53c0-0c56-4082-ac5c-01e78527fe5c,1b4c8455-afba-40ef-a02d-2e8769177709 (QA RT21 TK F06 1-3)
+- 2026-11-17T16:22:10Z TK lane: view 884bbb1f-fafb-4108-961c-966ff616ff9f "QA RT21 TK F12 view" delete 204
+- 2026-11-17T16:22:32Z TK lane: recycle bin purge of 61 QA RT21 TK items
+- 2026-11-17T15:51:36Z TK lane: F12 run 1: 25 "QA RT21 TK F12 bulk" tickets deleted via UI Select all → recycle bin
+- 2026-11-17T15:54:40Z TK lane: F12 run 2: 25 "QA RT21 TK F12 bulk r2" tickets deleted via UI → recycle bin
+- 2026-11-17T15:57:15Z TK lane: F13 note: clone of unassigned source 7cc8bf83 opened and cancelled (no ticket)
+- 2026-11-17T16:08:20Z TK lane: F11 New Contract form "QA RT21 TK F11 Contract UI" save refused 422, left unsaved (no record)
+- 2026-11-17T16:15:48Z TK lane: ticket 29060316 (#5106) marked as spam via UI (shares revoked by the app); deleted at cleanup
+- 2026-11-17T16:26:51Z TK lane: cleanup verified: {"404":57,"c404":3,"v404":1}; bin mine left 0 expected; live search 0

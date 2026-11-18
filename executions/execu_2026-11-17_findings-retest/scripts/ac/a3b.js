@@ -1,0 +1,1 @@
+const r=await api('GET','/modules/'+TM+'/records/'+IDS.T3); const s=JSON.stringify(D(r.j)); return {team:(s.match(/"(team|team_id)"[^}]{0,160}/g)||[]).slice(0,3), owner:(s.match(/"owner"[^}]{0,120}/)||[])[0]};

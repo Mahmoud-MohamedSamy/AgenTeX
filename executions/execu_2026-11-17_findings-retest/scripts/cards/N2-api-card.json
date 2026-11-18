@@ -1,0 +1,7 @@
+{"out":"N2-api-card.png","title":"N2 Workflow Rules: Add Tags with another department's tag, saved through the API (17 Nov, rule QA RT21 WF F03, On Edit, QA AO Dept A)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Tags in the tenant","GET /desk/tags","\"QA WF tag A\" exists in QA AO Dept A, Customer Support and Tech (same name, 3 ids)","info"],
+["2 Editor picker (UI)","type \"QA WF tag\" in Add Tags","only QA AO Dept A tags offered (NDC-3058 fixed)","ok"],
+["3 Save by API with Customer Support's tag","PATCH rule actions: Add Tags + fcaac38b (Customer Support \"QA WF tag A\")","200: accepted and stored; no department check","bad"],
+["4 Rule runs (edit of #5098, 16:06:57 UTC)","GET ticket tags","the Customer Support tag is NOT on the ticket (silently dropped)","bad"],
+["5 Execution History for that run","GET /workflow/executions?recordId=#5098","Add Tags \"Succeeded\"; Target still lists fcaac38b","bad"]]}

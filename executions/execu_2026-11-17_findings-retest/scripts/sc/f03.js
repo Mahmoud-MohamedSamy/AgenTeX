@@ -1,0 +1,4 @@
+const o = {}; const g = (await getRule(I.R1)).j.data; const e2 = g.entries.map(e => ({ field_key: e.field_key, operator: e.operator, value: e.value, points: 30 }));
+const p = await api('PUT', '/scoring-rules/' + I.R1, { name: g.name, description: g.description, module_id: L, is_active: true, entries: e2, row_version: g.row_version, update_existing_records: true }); o.put = SR(p); o.putAt = new Date().toISOString(); LED('scoring rule R1 ' + I.R1 + ' points 25->30 with update_existing_records (2nd background rescore)'); I.put2At = o.putAt; SAVE();
+for (let i = 0; i < 12; i++) { await sleep(10000); const r = await api('GET', '/scoring-rules/run?module_id=' + L); const d = r.j.data; if (d.status === 'completed' && d.created_at > o.putAt.slice(0, 16)) { o.run = [d.status, d.reason, d.processed_count, d.changed_count, d.created_at, d.completed_at]; break; } }
+o.recA = await score(I.A); return o;

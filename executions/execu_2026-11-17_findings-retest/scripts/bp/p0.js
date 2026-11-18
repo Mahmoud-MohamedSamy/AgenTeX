@@ -1,0 +1,2 @@
+const me = await api('GET', '/iam/me'); const cs = (await api('GET', '/desk/departments/' + CS)).j?.data;
+return { me: me.s, csAgents: cs?.agent_user_ids?.length, ces2InCS: (cs?.agent_user_ids || []).includes(AG_A), ces2VO: (cs?.view_only_agent_user_ids || []).includes(AG_A), csActive: cs?.is_active, sharing: JSON.stringify((await api('GET', '/desk/settings/data-sharing')).j?.data || '').slice(0, 300) };

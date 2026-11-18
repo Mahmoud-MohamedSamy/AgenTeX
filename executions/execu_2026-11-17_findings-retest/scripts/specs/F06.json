@@ -1,0 +1,21 @@
+{
+ "out": "F06-retest-STILL-FAILS.png",
+ "ticket": "F06",
+ "priority": "low",
+ "title": "Contracts | Changing only the department keeps the other department's plan",
+ "verdict": "STILL FAILS",
+ "env": "NDC-Staging · staging-desk · owner account (shared session) · QA RT19 SLA Dept (A) / Dept B with r20 plans \"QA RT20 BS Plan 2841 A/B w2pv\" · contracts QA RT21 TK F06 1-3 · 17 Nov 2026 16:03-16:06 UTC · Zoho per r20 live check",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F06-1-tavi-record.png", "caption": "Contract 1 after the department-only PATCH (200): Department QA RT19 SLA Dept B, Support Plan still Dept A's plan A", "crop": [304, 60, 700, 840],
+   "boxes": [{"b": [318, 280, 592, 350], "n": 1, "kind": "FAIL"}, {"b": [318, 562, 592, 605], "n": 1, "kind": "FAIL"}, {"b": [358, 472, 582, 491], "n": 0, "kind": "MASK", "label": "hidden"}]},
+  {"img": "F06-2-api-card.png", "caption": "API: department-only change accepted twice; matching move and plan-only change behave", "crop": [0, 0, 1600, 540],
+   "boxes": [{"b": [36, 167, 1564, 272], "n": 1, "kind": "FAIL"}, {"b": [36, 282, 1564, 340], "n": 2, "kind": "FAIL"}, {"b": [36, 350, 1564, 455], "n": 3, "kind": "PASS"}, {"b": [36, 465, 1564, 523], "n": 4, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Change ONLY the department of a Dept A contract with plan A (2 contracts)", "Refused, or plan cleared with a message", "200 both times; contract is Dept B and keeps Dept A's plan A", "FAIL"],
+  [2, "Coverage of the moved contract", "No other department's plan in force", "Coverage now reports plan A active on the Dept B contract (r20: silently no_plan)", "FAIL"],
+  [3, "Controls: dept + matching plan together; plan A only on Dept B contract", "200; 422", "200 Dept B + plan B; 422 SUPPORT_PLAN_OTHER_DEPARTMENT", "PASS"],
+  [4, "Zoho Desk", "Refuses department-only change", "Zoho per r20 live check (not rechecked today)", "INFO"]
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "out": "F10-retest-STILL-FAILS.png",
+ "ticket": "F10",
+ "priority": "low",
+ "title": "Records API | Some malformed field values report a vague error path",
+ "verdict": "STILL FAILS",
+ "env": "NDC-Staging · staging-desk API · owner session (shared) · Tickets module records POST · 17 Nov 2026 15:48-15:49 UTC, every case run twice",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F10-1-api-card.png", "caption": "API: path is data[0].value only for a missing kind; unknown / null / wrong kind give \"\", \"kind\" or \"value\"", "crop": [0, 0, 1600, 520],
+   "boxes": [{"b": [36, 99, 1564, 136], "n": 1, "kind": "PASS"}, {"b": [36, 146, 1564, 251], "n": 2, "kind": "FAIL"}, {"b": [36, 261, 1564, 392], "n": 3, "kind": "FAIL"}, {"b": [36, 470, 1564, 507], "n": 4, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Value without kind (reference)", "path data[0].value", "400 VALIDATION_ERROR, path data[0].value", "PASS"],
+  [2, "Unknown kind \"bogus\" on item 0 and on item 1", "path data[0].value / data[1].value", "path \"\" both times, no index", "FAIL"],
+  [3, "kind null; kind number on text; kind boolean on priority", "path data[i].value", "path \"kind\" / \"value\" / \"value\", no index", "FAIL"],
+  [4, "Valid control; no 500, nothing stored for malformed", "201; 400 for all malformed", "201; all malformed 400, none created", "PASS"]
+ ]
+}

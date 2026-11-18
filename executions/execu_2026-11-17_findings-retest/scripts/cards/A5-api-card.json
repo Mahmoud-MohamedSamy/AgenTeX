@@ -1,0 +1,7 @@
+{"out":"A5-api-card.png","title":"A5 / NDC-3099: follower after the ticket moved out of their department (16:05 UTC)","host":"staging-desk.taviportal.com","date":"17 Nov 2026","who":"ndc-staging-owner + agent C (Customer Support only)",
+"rows":[
+["C follows #5091 (Customer Support)","PUT /desk/tickets/#5091/follow  (as C)","200; GET followers → [C]","info"],
+["Owner moves it to Sales, then comments","POST …/move {Sales}; POST …/comments","200; 201","info"],
+["Followers after the move","GET /desk/tickets/#5091/followers  (owner)","[ {user_id: C, followed_at 16:05:26} ]  (C still a follower)","bad"],
+["C opens the ticket","GET /desk/tickets/#5091 ; GET /modules/Tickets/records/#5091  (as C)","404 ; 403","info"],
+["C's notifications","GET /notifications  (as C)","\"Ticket #5091 moved to Sales: QA RT21 AC A5 follower after move\", \"New comment on ticket #5091: QA RT21 AC A5 follower after move\"","bad"]]}

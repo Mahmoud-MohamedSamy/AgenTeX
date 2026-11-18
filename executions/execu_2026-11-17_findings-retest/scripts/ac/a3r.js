@@ -1,0 +1,2 @@
+const o={}; o.restore=await pr('POST','/iam/users/'+US.D+'/profiles',{profile_id:'44444444-4444-4444-4444-444444444404',scope_id:MGR,replace:true});
+let r=await api('GET','/iam/users?limit=100&page=1'); let L=D(r.j); r=await api('GET','/iam/users?limit=100&page=2'); L=L.concat(D(r.j)); o.dProf=(L.find(u=>u.userId===US.D)||{}).profileNames; led('D profile restored -> '+o.dProf+' '+o.restore); return o;

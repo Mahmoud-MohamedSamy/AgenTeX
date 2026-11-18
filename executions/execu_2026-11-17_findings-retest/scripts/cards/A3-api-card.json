@@ -1,0 +1,7 @@
+{"out":"A3-api-card.png","title":"A3 / NDC-3097: light agent in a team (owner API, 15:58 UTC)","host":"staging-desk.taviportal.com","date":"17 Nov 2026","who":"ndc-staging-owner",
+"rows":[
+["Test User 1 profile","POST /iam/users/{D}/profiles {Desk Light Agent, replace:true}","204 → profileNames \"Desk Light Agent\"","info"],
+["Create team with the light agent","POST /desk/teams {name:\"QA RT21 AC Light Team\", department: Customer Support, sources:[agent D]}","201 team a27f7e7e created, member_user_ids [D]","bad"],
+["Assign a ticket to that team","POST /desk/tickets/#5085/assign {owner_id:null, team_id:a27f7e7e}","200 → record team = a27f7e7e","bad"],
+["Light agent as ticket owner (control)","POST /desk/tickets/#5085/assign {owner_id: D}","422 \"User … is not an active agent of the ticket's department.\" (refused, correct)","ok"],
+["Restore","POST /iam/users/{D}/profiles {Desk Supervisor, replace:true}; DELETE team; DELETE + purge #5085","204 / 204 / 204, Recycle Bin purged","info"]]}

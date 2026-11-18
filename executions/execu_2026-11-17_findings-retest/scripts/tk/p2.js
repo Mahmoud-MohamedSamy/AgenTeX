@@ -1,0 +1,1 @@
+for(const id of ['6edaf8a3-7e99-4213-bd90-451802d63be6','09b9df1d-2345-44c5-9e4e-6778e219fd7e',C.D2]){const d=await api('GET','/desk/departments/'+id);log(d.j?.data?.name,JSON.stringify(d.j?.data?.agent_user_ids));}

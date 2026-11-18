@@ -1,0 +1,8 @@
+{ "out": "api-b4-validation.png", "title": "TAVI CRM: Add currency API validation", "host": "staging-crm.taviportal.com (NDC-Staging)", "who": "ndc-staging-owner", "date": "17 Nov 2026",
+  "rows": [
+    ["Not an ISO code", "POST /currencies  code XYZ, symbol x, rate 2", "201 Created — although the error text for bad codes says \"must be a 3-letter ISO 4217 code\"", "bad"],
+    ["12 decimal places", "POST /currencies  EUR rate 0.123456789012", "201 Created, stored silently as 0.123456789 (Zoho UI: \"Exchange rate is too large\")", "bad"],
+    ["Rate 0 / negative / huge", "POST /currencies  rate 0, -5, 1234567890123456", "422 CURRENCY_EXCHANGE_RATE_INVALID (greater than 0, at most 1000000000)", "ok"],
+    ["Symbol blank / 60 chars", "POST /currencies  symbol '' or 60 × X", "422 CURRENCY_SYMBOL_INVALID (required, at most 8 characters)", "ok"],
+    ["Home currency / duplicate", "POST /currencies  EGP; eur after EUR", "422 CURRENCY_CODE_IS_HOME; 422 CURRENCY_CODE_DUPLICATE", "ok"]
+  ] }

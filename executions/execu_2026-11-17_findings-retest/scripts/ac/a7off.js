@@ -1,0 +1,1 @@
+const r=await api('PUT','/desk/ticket-access/settings',{public_scope:'departments',peer_sharing_role_ids:[]}); const g=await api('GET','/desk/ticket-access/settings'); led('ticket-access restored '+g.t.slice(0,160)); return g.t.slice(0,200);

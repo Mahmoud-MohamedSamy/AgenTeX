@@ -1,0 +1,22 @@
+{
+ "out": "F03-retest-FIXED.png",
+ "ticket": "F03 (NDC-3058)",
+ "priority": "medium",
+ "title": "Workflow Rules | Add Tags picker offers and applies other departments' tags",
+ "verdict": "FIXED",
+ "env": "NDC-Staging · staging-desk · owner (shared session) · rule QA RT21 WF F03 47752153 (On Edit, QA AO Dept A, now inactive) · ticket #5098 · tag QA RT21 WF F03 newtag created then deleted",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F03-2-add-tags-typed.png", "caption": "Add Tags in a QA AO Dept A rule: \"QA WF tag\" lists A and C once (B already picked) + Create; no other department's copies", "crop": [360, 520, 520, 300],
+   "boxes": [{"b": [395, 655, 840, 722], "n": 2, "kind": "PASS"}, {"b": [395, 724, 840, 756], "n": 3, "kind": "PASS"}]},
+  {"img": "F03-api-card.png", "caption": "API checks", "crop": [0, 0, 1600, 450],
+   "boxes": [{"b": [36, 167, 1564, 225], "n": 2, "kind": "PASS"}, {"b": [36, 235, 1564, 293], "n": 3, "kind": "PASS"}, {"b": [36, 303, 1564, 361], "n": 4, "kind": "PASS"}, {"b": [36, 371, 1564, 429], "n": 5, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Same tag names in 3 departments", "—", "QA WF tag A/B/C each exist in QA AO Dept A, Customer Support, Tech", "INFO"],
+  [2, "Tag list in a rule limited to QA AO Dept A", "Only the department's tags", "Only QA AO Dept A tags, each name once (was: every department's tags, A 3x, no label)", "PASS"],
+  [3, "Create a tag from the picker", "(NDC-3058 gap)", "Placeholder now \"Search or create a tag…\"; Create made the tag in QA AO Dept A (POST 201)", "PASS"],
+  [4, "Rule runs on edit of #5098 (16:06:57Z)", "Tags put on, action logged", "Ticket got QA WF tag B, A, newtag (all QA AO Dept A); Execution History has an Add Tags Succeeded row (was: no row)", "PASS"],
+  [5, "API save with Customer Support's tag id", "Refused or dropped", "Saved 200; at run time not applied (dropped silently) but Target still lists it and status Succeeded", "INFO"]
+ ]
+}

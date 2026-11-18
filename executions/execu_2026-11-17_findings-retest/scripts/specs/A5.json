@@ -1,0 +1,98 @@
+{
+ "out": "A5-retest-STILL-FAILS.png",
+ "ticket": "A5 (NDC-3099)",
+ "priority": "low",
+ "title": "Tickets | A follower still gets notifications for a ticket that moved out of their department",
+ "verdict": "STILL FAILS",
+ "env": "NDC-Staging · staging-desk · Edge · shared owner session · agent C (Customer Support only) · #5091 moved Customer Support → Sales at 16:05:28 UTC",
+ "date": "17 Nov 2026",
+ "panels": [
+  {
+   "img": "A5-1-c-bell.png",
+   "caption": "Agent C's bell after the move (C cannot open #5091)",
+   "crop": [
+    1152,
+    0,
+    448,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      1168,
+      260,
+      1590,
+      325
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      1168,
+      422,
+      1590,
+      487
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "A5-api-card.png",
+   "caption": "API",
+   "crop": [
+    0,
+    0,
+    1600,
+    400
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      319
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Followers after the move",
+   "Follower removed (Zoho per 17 Nov morning live check: followers list empty)",
+   "C still on the followers list",
+   "FAIL"
+  ],
+  [
+   2,
+   "Notifications to C",
+   "None for a ticket C cannot see",
+   "\"Ticket #5091 moved to Sales: …\" and \"New comment on ticket #5091: …\" (subject + number)",
+   "FAIL"
+  ],
+  [
+   3,
+   "C opens the ticket",
+   "Refused",
+   "404 / 403 (correct)",
+   "PASS"
+  ]
+ ]
+}

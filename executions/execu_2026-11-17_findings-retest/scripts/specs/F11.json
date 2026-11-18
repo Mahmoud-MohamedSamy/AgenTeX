@@ -1,0 +1,22 @@
+{
+ "out": "F11-retest-STILL-FAILS.png",
+ "ticket": "F11",
+ "priority": "low",
+ "title": "Contracts | Form help text repeats words; plan error stays after the right plan is picked",
+ "verdict": "STILL FAILS",
+ "env": "NDC-Staging · staging-desk · owner account (shared session) · Contracts › New Contract (EN), default department Sales · QA RT19 SLA Dept / Dept B with r20 plans A/B · 17 Nov 2026 16:07-16:09 UTC · nothing saved",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F11-1-default-help.png", "caption": "New Contract with Sales as default department: help text repeats \"the contract's department\"", "crop": [418, 420, 1030, 330],
+   "boxes": [{"b": [598, 696, 910, 732], "n": 1, "kind": "FAIL"}]},
+  {"img": "F11-4-after-fix.png", "caption": "16:08:28 UTC, after the 422 save (16:08:20) the right plan B is picked: the old server error is still under Support Plan", "crop": [418, 240, 1030, 380],
+   "boxes": [{"b": [603, 472, 906, 506], "n": 3, "kind": "PASS"}, {"b": [598, 548, 910, 598], "n": 2, "kind": "FAIL"}]},
+  {"img": "F11-5-list-after-fix.png", "caption": "Plan list after the fix: only Dept B plans, only plan B ticked", "crop": [418, 240, 1030, 450],
+   "boxes": [{"b": [604, 618, 906, 668], "n": 3, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Help text under Support Plan with Sales as default department", "Clear text naming the department", "\"Plans of the contract's department, the contract's department\" (with a picked dept: \"Plans of QA RT19 SLA Dept B, the contract's department\")", "FAIL"],
+  [2, "Save with Dept A plan on a Dept B contract (422), then pick the right plan B", "Error clears", "Red \"Support Plan: this support plan belongs to another department…\" stays under the field", "FAIL"],
+  [3, "Wrong plan shown ticked in the list", "Not ticked", "List shows only Dept B plans, plan B ticked (fixed)", "PASS"]
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "out": "F04-retest-NOT-REPRODUCED.png",
+ "ticket": "F04 (NDC-3065)",
+ "priority": "high",
+ "title": "Blueprint | Agent loses access to another person's ticket right after running its transition",
+ "verdict": "NOT REPRODUCED",
+ "env": "NDC-Staging · staging-desk · owner ndc-staging-owner + agent \"Customer Experience Specialists 2\" (CES2, normal member of Customer Support) signed in once · blueprint QA RT21 BP F04 tk · tickets #4997 (blueprint), #4998 (control)",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "F04-1-before.png", "caption": "15:52Z CES2 opens #4997 (owner's ticket): read-only banner; QA onlyA is no longer offered — 'No transitions you can run'", "crop": [664, 60, 936, 200],
+   "boxes": [{"b": [1230, 132, 1425, 158], "n": 1, "kind": "PASS"}, {"b": [682, 190, 1582, 232], "n": 3, "kind": "INFO"}]},
+  {"img": "F04-4-reload.png", "caption": "15:52:45Z after reload CES2 still sees #4997 (r20: 'This ticket is not available' + Permission denied)", "crop": [664, 60, 936, 200],
+   "boxes": [{"b": [680, 70, 1080, 96], "n": 2, "kind": "PASS"}, {"b": [682, 190, 1582, 232], "n": 2, "kind": "PASS"}]},
+  {"img": "F04-api-card.png", "caption": "API as CES2 and owner", "crop": [0, 0, 1600, 470],
+   "boxes": [{"b": [36, 188, 1564, 246], "n": 3, "kind": "INFO"}, {"b": [36, 256, 1564, 314], "n": 1, "kind": "PASS"}, {"b": [36, 324, 1564, 382], "n": 1, "kind": "PASS"}, {"b": [36, 392, 1564, 450], "n": 2, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Normal agent, read-only on another person's ticket, owner of QA onlyA", "Transition not run / access unchanged", "Not offered in the UI ('No transitions you can run'); API run 403 BLUEPRINT_NOT_OWNER at 15:53:06Z; edit 403. r20 offered it and Run moved the ticket", "PASS"],
+  [2, "Agent's access after the attempt + reload", "Same access as before", "Ticket still opens with the read-only banner; GET record/desk 200 before and after. The r20 loss could not be produced because the run is now refused", "PASS"],
+  [3, "Where the read access comes from", "—", "Control #4998 (same owner, no blueprint) is 'This ticket is not available' / 403 for CES2, so CES2 reads #4997 only because it is a transition owner on its blueprint", "INFO"]
+ ]
+}

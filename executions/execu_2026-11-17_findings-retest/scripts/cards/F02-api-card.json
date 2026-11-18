@@ -1,0 +1,7 @@
+{"out":"F02-api-card.png","title":"F02 / NDC-2997 Owner Assignment re-fire check — On Edit rules QA RT21 WF F02 seq / seq2, Roles › Manager round robin, QA AO Dept A","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Run A 15:57-15:59Z, 4 tickets edited one at a time","rule 0b861ad1 active; PATCH priority low>high on #5080, #5082, #5083, #5084; owner + runs polled at 2/6/12/20 s","#5080 went to the background worker (2 s: owner unchanged, 6 s: Dev Team 2) and still has ONE run; #5082, #5083, #5084 one run each. Final owners DT2, TU1, DT2, DT2","ok"],
+["2 Run reports the ticket's owner","GET /workflow/executions?recordId=","#5080 run 0981b720 responseBody owner_assigned 5491656d = Dev Team 2 = ticket owner","ok"],
+["3 Run B (repeat) 16:10-16:13Z","rule 1b3248ea, #5102-#5105, same steps","one run each, distinct correlation ids; owners DT2, TU1, DT2, TU1 (turns alternate)","ok"],
+["4 Background path coverage","r20 had 2 of 4 tickets on the background path","only 1 of 8 edits took the background path today (#5080); no chained second run","info"],
+["5 Turn order run A","expected alternate","#5083 and #5084 both Dev Team 2 (no re-fire involved; each one run). Not repeated in run B","info"]]}

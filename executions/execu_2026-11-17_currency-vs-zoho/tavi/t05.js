@@ -1,0 +1,14 @@
+const L = m => fs.appendFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_currency-vs-zoho/tavi/ledger.md', '- ' + m + '\n');
+const out = {};
+const tryAdd = async (name, body) => { const r = await api('POST', '/currencies', body); out[name] = [r.s, r.j && r.j.error ? r.j.error.code + ': ' + r.j.error.message : (r.j && r.j.data ? JSON.stringify(r.j.data).slice(0, 300) : r.t.slice(0, 200))]; if (r.s < 300 && r.j && r.j.data && r.j.data.id) { L('created currency ' + body.code + ' id ' + r.j.data.id + ' (' + name + ')'); } return r; };
+await tryAdd('rate0', { code: 'EUR', symbol: '€', exchange_rate: 0, is_active: true });
+await tryAdd('rateNeg', { code: 'EUR', symbol: '€', exchange_rate: -5, is_active: true });
+await tryAdd('rateText', { code: 'EUR', symbol: '€', exchange_rate: 'abc', is_active: true });
+await tryAdd('rateHuge', { code: 'EUR', symbol: '€', exchange_rate: 1234567890123456, is_active: true });
+await tryAdd('rate12dp', { code: 'EUR', symbol: '€', exchange_rate: 0.123456789012, is_active: true });
+await tryAdd('symbolBlank', { code: 'EUR', symbol: '', exchange_rate: 50, is_active: true });
+await tryAdd('symbolLong', { code: 'EUR', symbol: 'X'.repeat(60), exchange_rate: 50, is_active: true });
+await tryAdd('homeAsForeign', { code: 'EGP', symbol: 'E£', exchange_rate: 1, is_active: true });
+await tryAdd('notIso', { code: 'XYZ', symbol: 'x', exchange_rate: 2, is_active: true });
+await tryAdd('lower', { code: 'eur', symbol: '€', exchange_rate: 50, is_active: true });
+return out;

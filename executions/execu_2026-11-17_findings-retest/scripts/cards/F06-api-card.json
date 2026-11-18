@@ -1,0 +1,9 @@
+{"out":"F06-2-api-card.png","title":"F06 Contracts: department-only change (17 Nov, 16:03-16:04 UTC)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["Contract 1 created","POST contracts: QA RT19 SLA Dept (A) + plan \"QA RT20 BS Plan 2841 A w2pv\" (Dept A)","201; coverage plan A, active","info"],
+["Contract 1: change ONLY department","PATCH data:[department = QA RT19 SLA Dept B]","200 - department Dept B, support_plan still plan A (Dept A)","bad"],
+["Contract 2 (repeat)","same create + department-only PATCH","200 - Dept B with plan A again","bad"],
+["Coverage after the change","GET /desk/sla/contracts/<id>/coverage (+20 s)","plan \"QA RT20 BS Plan 2841 A w2pv\" active on both Dept B contracts (r20: no_plan)","bad"],
+["Control: dept B + plan B together","PATCH department + support_plan","200, Dept B + plan B, coverage plan B","ok"],
+["Control: plan A on a Dept B contract","PATCH support_plan = plan A","422 SUPPORT_PLAN_OTHER_DEPARTMENT \"this support plan belongs to another department\"","ok"],
+["Zoho Desk (r20 live check, not rechecked today)","department-only change of a contract with a plan","Refused: UI \"You cannot update a Contract's department.\", API 422","info"]]}
