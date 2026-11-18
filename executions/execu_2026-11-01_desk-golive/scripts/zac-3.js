@@ -1,0 +1,3 @@
+const TE = '1499272000000006907'; const Z2 = '1499272000000451643';
+out.tries = [];
+for (const [m, p, b] of [['GET', 'tickets/' + Z2 + '/sharedDepartments'], ['PATCH', 'tickets/' + Z2 + '/sharedDepartments', { sharedDepartments: [{ id: TE, type: 'FULL_ACCESS' }] }], ['POST', 'tickets/' + Z2 + '/share', { sharedDepartments: [{ id: TE, type: 'FULL_ACCESS' }] }], ['PUT', 'tickets/' + Z2 + '/sharedDepartments', { sharedDepartments: [{ id: TE, type: 'FULL_ACCESS' }] }]]) { const r = await api(page, m, p, b); out.tries.push(m + ' ' + p.replace(Z2, 'Z2') + ' ' + r.s + ' ' + r.t.slice(0, 200)); if (m !== 'GET' && r.s < 300) break; }

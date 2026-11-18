@@ -1,0 +1,12 @@
+const ids = ['1499272000000451419', '1499272000000451460', '1499272000000451502'], CID = '1499272000000449895';
+out.t = (await api(page, 'POST', 'tickets/moveToTrash', { ticketIds: ids })).s;
+out.c = (await api(page, 'POST', 'contacts/moveToTrash', { contactIds: [CID] })).s;
+await page.waitForTimeout(4000);
+const rb = await api(page, 'GET', 'recycleBin?limit=100'); const items = (rb.j && rb.j.data) || [];
+const mine = items.filter(x => /QA GL C6/.test(x.name || x.displayName || x.subject || ''));
+out.mine = mine.map(x => x.name || x.displayName || x.subject);
+if (mine.length) out.purge = (await api(page, 'POST', 'recycleBin/delete', { ids: mine.map(x => x.id) })).s;
+await page.waitForTimeout(3000);
+for (const id of ids) out['get' + id.slice(-3)] = (await api(page, 'GET', 'tickets/' + id)).s;
+out.getC = (await api(page, 'GET', 'contacts/' + CID)).s;
+const rb2 = await api(page, 'GET', 'recycleBin?limit=100'); out.binLeft = ((rb2.j && rb2.j.data) || []).filter(x => /QA GL/.test(x.name || x.displayName || x.subject || '')).length;

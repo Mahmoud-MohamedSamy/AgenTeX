@@ -1,0 +1,13 @@
+const CID = '1499272000000449847';
+out.t = (await api(page, 'POST', 'tickets/moveToTrash', { ticketIds: [T109] })).s;
+out.c = (await api(page, 'POST', 'contacts/moveToTrash', { contactIds: [CID] })).s;
+await page.waitForTimeout(4000);
+const rb = await api(page, 'GET', 'recycleBin?limit=100'); const items = (rb.j && rb.j.data) || [];
+const mine = items.filter(x => /QA GL TM/.test(x.name || x.displayName || x.subject || '') || [T108, T109, T110, CID].includes(String(x.entityId || x.id)));
+out.mine = mine.map(x => [x.id, x.name || x.displayName || x.subject]);
+if (mine.length) out.purge = (await api(page, 'POST', 'recycleBin/delete', { ids: mine.map(x => x.id) })).s;
+await page.waitForTimeout(3000);
+for (const id of [T108, T109, T110]) out['get' + id.slice(-3)] = (await api(page, 'GET', 'tickets/' + id)).s;
+out.getC = (await api(page, 'GET', 'contacts/' + CID)).s;
+const rb2 = await api(page, 'GET', 'recycleBin?limit=100'); out.binLeft = ((rb2.j && rb2.j.data) || []).filter(x => /QA GL TM/.test(x.name || x.displayName || x.subject || '')).length;
+const me = await api(page, 'GET', 'myinfo'); out.meStill = me.s;

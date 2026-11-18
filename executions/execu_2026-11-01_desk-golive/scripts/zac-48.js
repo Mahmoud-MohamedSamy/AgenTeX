@@ -1,0 +1,1 @@
+await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/setup#setup/customization/1499272000000006907/notifications', { waitUntil: 'commit' }).catch(() => {}); await page.waitForTimeout(9000); await shotZ(page, 'ac2-notif-page'); out.u = page.url();

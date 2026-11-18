@@ -1,0 +1,13 @@
+const t = await mk(TM, 'ticket', 'QA GL TM follow2', { subject: 'QA GL TM follow2', department: MK, status: 'Open', email: 'qa-gl-tm-c1@example.com' }); const id = t.id; out.id = id;
+out.created = (await get(TM, id)).created_at;
+out.f0 = JSON.stringify(D((await api('GET', '/desk/tickets/' + id + '/followers')).j)).slice(0, 160);
+await go('/views/all/tickets/' + id, 9000);
+let m = await openMore(); const fi = m.getByText('Follow', { exact: true }).locator('xpath=ancestor-or-self::*[@role][1]');
+out.attrs = await fi.evaluate(e => ({ role: e.getAttribute('role'), checked: e.getAttribute('aria-checked'), state: e.getAttribute('data-state'), disabled: e.getAttribute('aria-disabled') || e.getAttribute('data-disabled'), html: e.outerHTML.slice(0, 400) }));
+await shot('tm/tavi-follow-before');
+NET.length = 0; await fi.click(); await sleep(3500); out.click1 = { toast: await toasts(), net: flt() };
+out.f1 = JSON.stringify(D((await api('GET', '/desk/tickets/' + id + '/followers')).j)).slice(0, 160);
+m = await openMore(); const fi2 = m.getByText(/Follow/).first().locator('xpath=ancestor-or-self::*[@role][1]'); out.attrs2 = await fi2.evaluate(e => ({ text: e.innerText, checked: e.getAttribute('aria-checked'), state: e.getAttribute('data-state') }));
+NET.length = 0; await fi2.click(); await sleep(3500); out.click2 = { toast: await toasts(), net: flt() };
+out.f2 = JSON.stringify(D((await api('GET', '/desk/tickets/' + id + '/followers')).j)).slice(0, 160);
+return fin({ out });

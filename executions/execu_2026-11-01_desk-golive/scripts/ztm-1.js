@@ -1,0 +1,1 @@
+async (page) => { await page.waitForTimeout(10000); await page.screenshot({ path: '../evidence/zoho-tm/list.png' }); return { url: page.url().slice(0, 120), t: (await page.innerText('body').catch(() => '')).replace(/\s+/g, ' ').slice(0, 600) }; }

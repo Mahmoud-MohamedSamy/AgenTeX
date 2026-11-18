@@ -1,0 +1,3 @@
+out.t = [];
+for (const f of ['notifications', 'emailnotification', 'notification', 'departmentnotifications', 'agentnotifications']) { await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/setup#setup/customization/1499272000000006907/' + f, { waitUntil: 'commit' }).catch(() => {}); await page.waitForTimeout(8000);
+  const t = (await body(page)).replace(/\s+/g, ' '); const m = t.match(/.{0,160}([Ss]hared [Tt]icket|ticket is shared|shared with).{0,220}/); out.t.push(f + ' => ' + (m ? m[0] : t.slice(t.indexOf('Need Help') - 300, t.indexOf('Need Help')).slice(0, 200))); if (m) { await shotZ(page, 'ac2-notif-shared'); break; } }

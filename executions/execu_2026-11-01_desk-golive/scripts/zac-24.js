@@ -1,0 +1,3 @@
+const hits = [];
+for (const u of ['setup/customization/notifications/notification-rules', 'setup/customization/notification-rules', 'setup/notifications']) { await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/' + u, { waitUntil: 'commit' }).catch(() => {}); await page.waitForTimeout(10000); const t = []; for (const f of page.frames()) t.push(await f.innerText('body').catch(() => '')); const all = t.join(' ').replace(/\s+/g, ' '); hits.push(u + ' => ' + (all.match(/.{0,120}[Ss]hared ticket.{0,160}/)?.[0] || all.slice(0, 200))); if (/[Ss]hared ticket/.test(all)) { await shotZ(page, 'ac-notif-shared'); break; } }
+out.hits = hits;

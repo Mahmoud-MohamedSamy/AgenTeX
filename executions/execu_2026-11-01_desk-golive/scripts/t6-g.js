@@ -1,0 +1,11 @@
+const T3 = 'f0de42fe-d7da-46a0-b75e-2b8abeceee37', T4 = '6ff392af-b0c0-4678-a701-d78f5100a0af';
+await go('/views/all/tickets/' + T1, 9000); NET.length = 0;
+await clickItem('Apply Macro'); await page.getByText('QA GL TM macro').first().click(); await sleep(3000);
+out.macro = { toast: await toasts(), dlg: await dlg(), net: NET.filter(n => !/heartbeat|summaries|realtime|resolved-batch|\/read$/.test(n.u)).map(n => n.m + ' ' + n.s + ' ' + n.u + ' ' + n.t.slice(0, 160)) };
+await sleep(2000); out.macroConv = (await head()).slice(0, 400); await shot('tm/tavi-macro-applied');
+await go('/views/all/tickets/' + T3, 9000);
+await clickItem('Merge'); out.merge1 = await dlg(); await shot('tm/tavi-merge-1');
+const d = page.locator('[role=dialog]').last(); const row = d.getByText(/QA GL TM menu 4/).first(); await row.click().catch(e => out.rowErr = e.message.slice(0, 100)); await sleep(800);
+await d.getByRole('button', { name: 'Continue' }).click().catch(e => out.contErr = e.message.slice(0, 100)); await sleep(2500);
+out.merge2 = await dlg(); await shot('tm/tavi-merge-2');
+return fin({ out });

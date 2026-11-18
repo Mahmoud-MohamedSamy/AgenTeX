@@ -1,0 +1,9 @@
+const pr = async (m, p, b) => { const r = await api(m, p, b); return r.s + (r.s >= 300 ? ' ' + r.t.slice(0, 200) : ''); };
+const c = await mk(CM, 'contact', 'QA AC2 Contact', { last_name: 'QA AC2 Contact', email: 'qa-ac2-c@example.com' }); out.contact = c.id || c.err;
+const sla = await api('POST', '/desk/sla/policies', { department_id: DEP.MKT, name: 'QA AC2 SLA', description: null, is_active: true, triggers: { create: true, update: false, field_update: null, customer_reply: false, agent_response: false, private_thread: null, comment: null }, execute_only_with_account: false, resolution_from_created: false, targets: [{ name: 'QA AC2 target', criteria: { conditions: [{ field_key: 'description', operator: 'contains', value: 'QAACSLA' }], pattern: null }, response: { value: 8, unit: 'hours' }, resolution: { value: 3, unit: 'days' }, calendar_mode: 'calendar', business_hours_id: null, first_response_only: true, escalate_on_business_hours: false, escalations: { response: [], resolution: [] } }] });
+out.sla = sla.s + ' ' + (D(sla.j)?.id || sla.t.slice(0, 200)); if (D(sla.j)?.id) CREATED.push({ kind: 'sla', id: D(sla.j).id, name: 'QA AC2 SLA' });
+const spec = { R1: [DEP.MKT, US.B, 1], R2: [DEP.MKT, US.B], R3: [DEP.CS, US.C, 1], R4: [DEP.MKT, US.B, 0, 'QAACSLA'], R5: [DEP.CS, US.C], R6: [DEP.CS, US.E] };
+out.T = {};
+for (const [k, [d, o, wc, desc]] of Object.entries(spec)) { const f = { subject: 'QA AC2 ' + k, department: d, status: 'Open', email: 'qa-ac2-c@example.com', channel: 'phone', description: 'QA AC2 recheck ' + k + ' ' + (desc || ''), owner: o }; if (wc && c.id) f.contact_id = c.id; const r = await mk(TM, 'ticket', 'QA AC2 ' + k, f); out.T[k] = r.id || 'ERR ' + r.s + ' ' + r.err; }
+await sleep(4000); const g = await get(TM, out.T.R4); out.r4 = [g.sla_name, g.response_due, g.due_date].join(' | '); const g3 = await get(TM, out.T.R3); out.r3contact = g3.contact_id;
+return fin({ out });

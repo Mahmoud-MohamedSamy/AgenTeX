@@ -1,0 +1,15 @@
+out.cs = await prr('PUT', '/desk/departments/' + DEP.CS + '/agents', { agent_user_ids: ['2a7c1bc4-f6d4-4bd3-805e-0496ece13987', '5b3f7466-2fa7-4115-8ee0-f97c52cbb2c1', '7e5e7c27-46e4-4bf6-b021-7bd219d34472', '97be04b6-0a08-4883-aa51-e1650b11cab7', '9d182dfa-05f3-4af7-9685-8615a2fbe537'], view_only_agent_user_ids: ['7e5e7c27-46e4-4bf6-b021-7bd219d34472'] });
+const cs = D((await api('GET', '/desk/departments/' + DEP.CS)).j); out.csNow = cs.agent_user_ids.length + '/' + cs.view_only_agent_user_ids.length + ' team:' + cs.team_assignment_enabled;
+out.sla = [await prr('DELETE', '/desk/sla/policies/8718a2bd-2ff0-4621-ab43-e707d25ddd06'), await prr('DELETE', '/desk/sla/policies/1f4fc390-15dd-4f2a-9368-67c85fa83769')];
+const mine = arr(D((await api('GET', '/modules/' + TM + '/records?limit=100&q=' + encodeURIComponent('QA AC2'))).j)).map(flat).filter(t => /^QA AC2 /.test(t.subject || ''));
+out.found = mine.map(t => t.subject).join(','); out.del = []; for (const t of mine) out.del.push((await api('DELETE', '/modules/' + TM + '/records/' + t.id)).s);
+out.con = await prr('DELETE', '/modules/' + CM + '/records/' + CON2);
+await sleep(3000);
+const bin = arr(D((await api('GET', '/audit/recycle-bin/items?app_key=desk&app_key=crm&limit=200&q=' + encodeURIComponent('QA AC2'))).j)).filter(x => /QA AC2/.test(x.record_label || ''));
+out.bin = bin.length; if (bin.length) out.purge = await prr('POST', '/audit/recycle-bin/delete', { ids: bin.map(x => x.id) });
+out.binLeft = arr(D((await api('GET', '/audit/recycle-bin/items?app_key=desk&app_key=crm&limit=200&q=' + encodeURIComponent('QA AC2'))).j)).filter(x => /QA AC2/.test(x.record_label || '')).length;
+const nr = await api('GET', '/desk/notification-rules/departments/' + DEP.CS + '/rules'); out.rule = (nr.t.match(/"key":"department.ticket_shared"[^}]{0,200}/) || [nr.s + ' ' + nr.t.slice(0, 100)])[0].match(/"is_enabled":(true|false)/)?.[0];
+out.ta = (await api('GET', '/desk/ticket-access/settings')).t.slice(30, 150);
+out.ovD = (await api('GET', '/iam/users/' + US.D + '/overrides?app_key=desk')).t.slice(0, 60);
+const us = D((await api('GET', '/iam/users?app_key=desk&page_size=500&page=1')).j); out.dProf = ((us.items || us).find(u => u.userId === US.D) || {}).profileNames;
+return fin({ out });

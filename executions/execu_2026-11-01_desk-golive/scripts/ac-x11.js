@@ -1,0 +1,10 @@
+await sleep(20000); const R7 = '229c89f5-9ae1-4edc-8d10-325936959fc5', P = '/desk/tickets/' + R7;
+out.view = (await api('GET', '/modules/' + TM + '/records/' + R7)).s; out.tkt = (await api('GET', P)).s;
+out.edit = await prr('PATCH', '/modules/' + TM + '/records/' + R7, { data: [{ field: 'priority', value: sv('low') }] });
+out.status = await prr('PATCH', '/modules/' + TM + '/records/' + R7, { data: [{ field: 'status', value: sv('On Hold') }] });
+out.comment = await prr('POST', P + '/comments', { body_html: '<p>QA AC2 view-only comment</p>', is_private: true });
+out.pick = await prr('POST', P + '/pick-up', {});
+out.reply = await prr('POST', P + '/replies', { mode: 'reply', to: ['mmohamed@anyware.software'], cc: [], bcc: [], subject: 'Re: QA AC2 R7', body_html: '<p>QA AC2 view-only reply test (please ignore)</p>' });
+out.move = await prr('POST', P + '/move', { department_id: DEP.HR });
+await go('/views/all/tickets/' + R7, 9000); out.ui = (await head()).slice(0, 200); await shot('access/d-viewonly-r7');
+return fin({ out });

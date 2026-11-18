@@ -1,0 +1,3 @@
+await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/tickets/list/all-cases', { waitUntil: 'commit', timeout: 60000 }).catch(() => {}); await page.waitForTimeout(12000);
+for (const n of ['#109', '#110']) { const row = page.locator('[data-id],li,div[class*=listItem],div[class*=ListItem]').filter({ hasText: n }).first(); const cb = row.locator('input[type=checkbox],[class*=checkbox],[class*=Checkbox]').first(); out['cb' + n] = await cb.count(); if (out['cb' + n]) await cb.click({ force: true }).catch(e => out['e' + n] = e.message.slice(0, 80)); else { await row.hover().catch(() => {}); } await page.waitForTimeout(800); }
+await page.waitForTimeout(1500); out.toolbar = (await body(page)).slice(0, 700); await shotZ(page, 'list-select');

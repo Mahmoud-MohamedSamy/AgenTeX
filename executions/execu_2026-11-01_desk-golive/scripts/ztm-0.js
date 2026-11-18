@@ -1,0 +1,1 @@
+async (page) => { await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/tickets/list/all-cases', { waitUntil: 'commit', timeout: 60000 }).catch(() => {}); await page.waitForTimeout(12000); return { url: page.url().slice(0, 120), t: (await page.innerText('body').catch(() => '')).replace(/\s+/g, ' ').slice(0, 400) }; }

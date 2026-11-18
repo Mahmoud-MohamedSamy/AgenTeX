@@ -1,0 +1,10 @@
+await go('/views/all/tickets/' + T1, 9000);
+NET.length = 0; await clickItem('Put on legal hold'); let d = page.locator('[role=dialog]').last();
+await d.locator('textarea,input').first().fill('QA GL TM hold').catch(() => {});
+await d.getByRole('button', { name: 'Put on hold' }).click(); await sleep(3500);
+out.hold = { toast: await toasts(), net: flt() }; out.holdText = (await page.locator('main').last().innerText()).replace(/\s+/g, ' ').match(/.{0,60}legal hold.{0,100}/i)?.[0] || ''; await shot('tm/tavi-hold-done');
+let m = await openMore(); out.menuAfterHold = await m.getByRole('menuitem').allInnerTexts(); await page.keyboard.press('Escape');
+NET.length = 0; await clickItem('Delete'); out.delDlg = await dlg(); await page.locator('[role=dialog],[role=alertdialog]').last().getByRole('button', { name: 'Delete ticket' }).click(); await sleep(4000);
+out.del = { toast: await toasts(), url: page.url().replace(H, ''), net: flt() }; await shot('tm/tavi-delete-done');
+out.getAfterDel = (await api('GET', '/modules/' + TM + '/records/' + T1)).s;
+return fin({ out });

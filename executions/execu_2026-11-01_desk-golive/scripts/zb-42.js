@@ -1,0 +1,1 @@
+for (const id of ['1499272000000451419', '1499272000000451460', '1499272000000451502']) { const t = await api(page, 'GET', 'tickets/' + id); out[id.slice(-3)] = { n: t.j.ticketNumber, dept: t.j.departmentId.slice(-4), assignee: t.j.assigneeId }; }

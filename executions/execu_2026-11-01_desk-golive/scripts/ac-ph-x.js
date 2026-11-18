@@ -1,0 +1,11 @@
+const PH='peers';
+const pr = async (m, p, b) => { const r = await api(m, p, b); return r.s + (r.s >= 300 ? ' ' + ((r.j && r.j.error && (r.j.error.message || r.j.error.code)) || r.t.slice(0, 60)).slice(0, 90) : ''); };
+const me = (await api('GET', '/iam/me')).j?.data; const mine = JSON.stringify(me || {}).includes(US.D) ? 'D' : 'E'; out.me = mine;
+const other = mine === 'D' ? 'CSE' : 'CSD';
+out.list = (await listQA()).ids.filter(x => /^[A-Z]/.test(x)).join(',');
+out.mk1 = st(await probe('MK1'));
+out.viewOther = (await api('GET', '/modules/' + TM + '/records/' + TK[other])).s;
+out.editOther = await pr('PATCH', '/modules/' + TM + '/records/' + TK[other], { data: [{ field: 'priority', value: sv('low') }] });
+out.commentOther = await pr('POST', '/desk/tickets/' + TK[other] + '/comments', { body_html: '<p>QA AC ' + mine + ' comment on ' + other + ' (' + PH + ')</p>', is_private: true });
+if (typeof DEL !== 'undefined') out.deleteOther = await pr('DELETE', '/modules/' + TM + '/records/' + TK[other]);
+return fin({ out });

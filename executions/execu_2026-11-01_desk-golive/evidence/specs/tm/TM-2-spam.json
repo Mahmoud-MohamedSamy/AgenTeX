@@ -1,0 +1,20 @@
+{
+ "out": "TM-2-spam-reply-vs-zoho.png",
+ "ticket": "TM-2",
+ "verdict": "FAIL",
+ "label": "BUG · Medium",
+ "date": "16 Nov 2026 (TAVI and Zoho live)",
+ "env": "TAVI: staging-desk.taviportal.com, NDC-Staging (Wonder Travel), owner · Zoho Desk: test org TechEgySolutions, admin · Edge · test tickets deleted after",
+ "title": "Tickets | A ticket marked as spam still accepts replies and comments and stays shared with other departments",
+ "panels": [
+  { "img": "tm/tavi-spam-reply.png", "w": 1280, "h": 720, "crop": [664, 96, 616, 580], "caption": "TAVI · ticket #4510 after ⋮ › Mark as Spam: Reply All opens the composer with Send",
+    "boxes": [ { "b": [1219, 111, 1266, 133], "n": 1 }, { "b": [680, 142, 790, 163], "n": 2 }, { "b": [1070, 622, 1184, 662], "n": 3 } ] },
+  { "img": "ztm/spam-ticket.png", "w": 1600, "h": 900, "crop": [652, 50, 948, 820], "caption": "Zoho · ticket #109 after More Actions › Mark Spam",
+    "boxes": [ { "b": [1540, 143, 1600, 169], "n": 1 }, { "b": [925, 472, 1325, 518], "n": 3 } ] }
+ ],
+ "rows": [
+  [1, "Ticket marked as spam", "Spam tag; reply, comment and the other menu actions are gone (menu shows only Not Spam and Delete).", "Spam chip and banner shown, but Reply All and the full ⋮ menu stay.", "DIFFERS"],
+  [2, "Sharing with other departments", "Zoho's Mark Spam dialog: \"If the ticket is shared with other departments, it will be revoked.\"", "Still \"Shared with HR\" (full access) after spam; GET /shares returns HR.", "DIFFERS"],
+  [3, "Add a reply or comment", "\"Ticket has been marked as spam, so you are not able to add Conversation\".", "Composer opens with Send; a private comment saves (POST /comments → 201).", "DIFFERS"]
+ ]
+}

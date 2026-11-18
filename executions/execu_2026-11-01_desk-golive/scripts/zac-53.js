@@ -1,0 +1,13 @@
+const A1 = '1499272000000432003', A2 = '1499272000000432034', TE = '1499272000000006907', TC = '1499272000000432293', CEO = '1499272000000008337', MGR = '1499272000000008339', AGP = '1499272000000008345';
+const pr = async (m, p, b) => { const r = await api(page, m, p, b); return r.s + (r.s >= 300 ? ' ' + r.t.slice(0, 140) : ''); };
+out.a1 = await pr('PATCH', 'agents/' + A1, { rolePermissionType: 'AgentPublic', roleId: CEO, profileId: AGP, associatedDepartmentIds: [TE] });
+out.a2 = await pr('PATCH', 'agents/' + A2, { rolePermissionType: 'AgentPublic', roleId: CEO, profileId: AGP, associatedDepartmentIds: [TE, TC] });
+out.mgr = await pr('PATCH', 'roles/' + MGR, { shareDataWithPeers: false }); out.ds = await pr('PATCH', 'dataSharingRules', { tickets: 'public' });
+const g = id => api(page, 'GET', 'agents/' + id).then(r => [r.j.profileId.slice(-5), r.j.roleId.slice(-5), r.j.rolePermissionType, JSON.stringify(r.j.associatedDepartmentIds.map(x => x.slice(-4)))].join(' '));
+out.now = [await g(A1), await g(A2)]; out.mgrNow = (await api(page, 'GET', 'roles/' + MGR)).j.shareDataWithPeers; out.dsNow = (await api(page, 'GET', 'dataSharingRules')).j.tickets;
+const ids = ['1499272000000493016', '1499272000000493055', '1499272000000493094', '1499272000000493139', '1499272000000493178', '1499272000000493232'];
+out.trash = await pr('POST', 'tickets/moveToTrash', { ticketIds: ids });
+out.ctrash = await pr('POST', 'contacts/moveToTrash', { contactIds: ['1499272000000451979'] });
+await page.waitForTimeout(4000); const rb = await api(page, 'GET', 'recycleBin?limit=100'); const items = ((rb.j && rb.j.data) || []).filter(x => /QA AC2/.test(x.name || x.displayName || x.subject || ''));
+out.bin = items.length; if (items.length) out.purge = await pr('POST', 'recycleBin/delete', { ids: items.map(x => x.id) });
+await page.waitForTimeout(3000); out.left = []; for (const id of ids) out.left.push((await api(page, 'GET', 'tickets/' + id)).s); out.binAll = ((await api(page, 'GET', 'recycleBin?limit=100')).j?.data || []).length;

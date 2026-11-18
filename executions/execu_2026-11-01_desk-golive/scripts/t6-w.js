@@ -1,0 +1,20 @@
+await page.keyboard.press('Escape').catch(() => {}); const cn = page.getByRole('button', { name: 'Cancel', exact: true }); if (await cn.count()) await cn.last().click().catch(() => {});
+const T3 = 'f0de42fe-d7da-46a0-b75e-2b8abeceee37', T4 = '6ff392af-b0c0-4678-a701-d78f5100a0af', TC = 'cf590f86-25cc-447c-9d12-354e500829e3', C = 'a262a4a9-b3b8-4ed9-858f-9423dd085989', MAC = '7e3f12a7-286c-4c98-afa7-f2b64c05cb3e', HOLD = 'b5399f9e-bf1a-4638-b2e1-67d48d02201c';
+out.hold = (await api('DELETE', '/desk/legal-holds/' + HOLD)).s;
+out.notspam = (await api('DELETE', '/desk/tickets/' + T1 + '/spam')).s;
+out.unshare = (await api('PUT', '/desk/tickets/' + T1 + '/shares', { shares: [] })).s;
+out.macro = (await api('DELETE', '/desk/macros/' + MAC)).s;
+const all = (await findT('QA GL TM')); out.found = all.map(x => '#' + x.ticket_number + ' ' + x.subject + ' ' + x.id.slice(0, 8));
+const ids = new Set([T1, T2, T3, T4, TC, ...all.filter(x => /^QA GL TM/.test(x.subject || '')).map(x => x.id)]);
+for (const id of ids) out['del ' + id.slice(0, 8)] = (await api('DELETE', '/modules/' + TM + '/records/' + id)).s;
+out.delC = (await api('DELETE', '/modules/' + CM + '/records/' + C)).s;
+await sleep(3000);
+let items = []; for (const q of ['?limit=200&app=desk', '?limit=200']) items = items.concat(arr(D((await api('GET', '/audit/recycle-bin/items' + q)).j)));
+const seen = new Set(); items = items.filter(x => !seen.has(x.id) && seen.add(x.id));
+const pick = items.filter(x => (ids.has(x.record_id) || x.record_id === C) && /QA GL TM/i.test(x.record_label || '')); out.bin = pick.map(x => x.record_label);
+if (pick.length) out.purge = (await api('POST', '/audit/recycle-bin/delete', { item_ids: pick.map(x => x.id), ids: pick.map(x => x.id) })).s;
+await sleep(2000);
+for (const id of [...ids, C]) { const m = id === C ? CM : TM; out['get ' + id.slice(0, 8)] = (await api('GET', '/modules/' + m + '/records/' + id)).s; }
+out.left = (await findT('QA GL TM')).length; out.macroLeft = JSON.stringify(D((await api('GET', '/desk/macros?limit=200')).j)).includes('QA GL TM');
+out.holdLeft = JSON.stringify(D((await api('GET', '/desk/legal-holds?limit=200')).j)).includes('QA GL TM');
+return fin({ out });

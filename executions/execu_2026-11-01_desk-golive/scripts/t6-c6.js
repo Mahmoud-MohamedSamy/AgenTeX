@@ -1,0 +1,13 @@
+const t = await mk(TM, 'ticket', 'QA GL C6 tavi', { subject: 'QA GL C6 tavi', department: MK, status: 'Open', email: 'qa-gl-tm-c1@example.com' }); const id = t.id; out.id = id;
+out.before = (await get(TM, id)).owner;
+await go('/views/all/tickets/' + id, 9000);
+await clickItem('Move'); const d = page.locator('[role=dialog]').last();
+await d.locator('button').filter({ hasText: 'Choose a department' }).last().click(); await sleep(1200);
+await page.locator('[role=option],[role=menuitem],[cmdk-item],li,button').filter({ hasText: /^Customer Support$/ }).first().click(); await sleep(1500);
+out.dlg1 = await dlg(); await shot('tm/tavi-c6-dlg');
+await d.locator('button').filter({ hasText: 'Unassigned' }).last().click().catch(e => out.aErr = e.message.slice(0, 80)); await sleep(1500);
+out.assignOpts = (await page.locator('[role=listbox],[role=menu],[cmdk-list],[data-radix-popper-content-wrapper]').last().innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300);
+await shot('tm/tavi-c6-assign-opts'); await page.keyboard.press('Escape'); await sleep(800);
+NET.length = 0; await d.getByRole('button', { name: 'Move', exact: true }).click(); await sleep(4000);
+out.move = { toast: await toasts(), net: flt() }; out.after = (await get(TM, id)).owner; await shot('tm/tavi-c6-after');
+return fin({ out });
