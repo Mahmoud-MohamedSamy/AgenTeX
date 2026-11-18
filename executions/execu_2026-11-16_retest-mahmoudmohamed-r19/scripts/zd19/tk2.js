@@ -1,0 +1,4 @@
+const R='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/';const ug=require('./ug.js');
+module.exports=async(page)=>{const ok=await ug(page,'https://desk.zoho.com/agent/techegysolutions/tech/tickets/details/1499272000000483110',/Ticket Properties/);await page.waitForTimeout(8000);
+const v=await page.evaluate(()=>{const o=[];document.querySelectorAll('img[src="x"],b,a').forEach(e=>{if(/bold|link/.test(e.textContent)||e.getAttribute('src')==='x'){const r=e.getBoundingClientRect();o.push(e.tagName+' href='+e.getAttribute('href')+' onerror='+e.getAttribute('onerror')+' @'+Math.round(r.x)+','+Math.round(r.y));}});return o.concat(['__x='+window.__x]);});
+await page.screenshot({path:R+'ZD-2963-1.png'});return 'ok='+ok+'\n'+v.join('\n');};

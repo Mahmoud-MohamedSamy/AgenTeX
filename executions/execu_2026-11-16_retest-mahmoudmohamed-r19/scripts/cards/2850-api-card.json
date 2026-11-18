@@ -1,0 +1,7 @@
+{"host":"staging-desk.taviportal.com","who":"owner session","date":"16 Nov 2026","out":"2850-api-card.png","title":"NDC-2850 removing Dev Team 2 (QA agent) — SLA policies in own departments QA RT19 D3 Dept / Dept B","rows":[
+["Before","GET /desk/sla/policies/{P} and {PB}","P (Dept): response L1 notify [Dev Team 2], owner Dev Team 2; resolution L1 [Dev Team 2, Mahmoud Samy]. PB (Dept B): L1 [Dev Team 2]; L2 [Dev Team 2], owner Dev Team 2","info"],
+["Reassign (what Reassign and remove runs)","POST /desk/agents/{DevTeam2}/reassign {Dept → agent Mahmoud Samy, Dept B → unassigned, update_rules:true}","200 · rules: sla_escalations 2, round_robin_pools 18, team_sources 14, department_memberships 37","ok"],
+["P after (agent chosen)","GET /desk/sla/policies/{P}","response L1 notify [Mahmoud Samy], owner Mahmoud Samy; resolution L1 [Mahmoud Samy] (no duplicate)","ok"],
+["PB after (Leave unassigned)","GET /desk/sla/policies/{PB}","L1 and L2 notify [] , owner none (agent dropped, levels kept; policy was inactive)","info"],
+["Escalation now","P active, ticket #4725 (QA RT19 D3 Dept), respond 1 min","15:41:59Z sla.escalation_fired L1: recipients Mahmoud Samy · notify done · reassign ndc-staging-owner → Mahmoud Samy done; policy off again","ok"],
+["Scope of update_rules","GET /desk/agents/{DevTeam2}/workload","every department / team / RR pool dropped Dev Team 2, also those not in the request (dialog always sends all) — restored afterwards: 35 memberships, main dept Tech, 14 teams, 18 pools","info"]]}

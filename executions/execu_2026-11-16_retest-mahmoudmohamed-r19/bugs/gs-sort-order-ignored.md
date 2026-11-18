@@ -1,0 +1,32 @@
+# Global Sets | List views and reports ignore the set's saved "Entered order" and sort A–Z
+
+**Summary**
+A global set can now be saved with Sort order = Entered order or Alphabetical. The editor says "Pick lists, list views, filters, reports and dashboards that use this set show its values in this order." The pick list options follow it, but a list view or report sorted by the field still sorts A–Z in both modes. Found while retesting NDC-2870 (gap item 3).
+
+**Steps to Reproduce**
+1. Go to CRM > Setup > Modules and Fields > Global Sets and open a set linked to a Leads field (e.g. "QA RT19 GS Tier").
+2. Make the values Silver, Platinum, Bronze in that order, choose Sort order = Entered order, and Save.
+3. Give 3 leads the values Silver, Platinum and Bronze.
+4. Open Leads, pick a list view showing them, and sort by the field, ascending.
+5. Create a Leads report sorted by the field.
+6. Switch the set to Alphabetical, save, and repeat steps 4–5.
+
+**Expected Result**
+- With Entered order, list views and reports sorted by the field show Silver, Platinum, Bronze.
+- With Alphabetical, they show Bronze, Platinum, Silver.
+
+**Actual Result**
+- The setting is saved and the pick list options follow it.
+- The list view sorted ascending by the field shows Bronze, Platinum, Silver (A–Z) in both modes. The report is the same.
+
+**Environment**
+staging-crm.taviportal.com (NDC-Staging), ndc-staging-owner, Edge + API, 16 Nov 2026.
+
+**Suggested priority**: Medium (the setting has no effect where the editor says it applies)
+
+**Related**: NDC-2870 (Global Sets gap list, item 3)
+
+**Evidence**: BUG-gs-sort-order-ignored-FAIL.png, BUG-gs-sort-order-ignored-vs-zoho.png
+
+**Zoho CRM comparison**
+Zoho's Sort order preference (Entered / Alphabetical) says "The order customized here will be followed in List views, reports and dashboards where sorting is applied for the picklist field." Live check on 16 Nov 2026 in a Zoho CRM test org: a set with the same entered order, and a Leads view sorted ascending by the field, shows Silver, Platinum, Bronze.

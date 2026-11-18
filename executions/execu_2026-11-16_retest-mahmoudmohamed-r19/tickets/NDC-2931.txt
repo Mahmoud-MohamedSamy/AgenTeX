@@ -1,0 +1,32 @@
+# NDC-2931 Skills | Skill-based assignment leaves a ticket unassigned unless one agent has every skill on it; Zoho assigns to an agent with any of them
+Summary
+A Round Robin rule with Skill Based Assignment only gives a ticket to an agent who has every skill on the ticket. If the ticket has two skills and the agent has one of them, the ticket stays unassigned. Zoho Desk gives the ticket to an agent who has at least one of the ticket's skills. "Assign by Skills" on a single ticket behaves the same way.
+Steps to reproduce
+- Sign in to TAVI Desk (NDC-Staging) as an admin.
+- Setup → Skills, department QA SK12 Dept A: skill QA SK12 S1 has agent Test User 1; skill QA SK12 S4 has no agents.
+- Setup → Assignment Rules → Round Robin, department QA SK12 Dept A: rule QA SK12 RR skill — Ticket Create and Ticket Update, Subject contains QASK12RR, Skill Based Assignment, Agents: Test User 1.
+- Create a ticket in QA SK12 Dept A with subject "QA SK12 E1 QASK12RR", no owner, skills QA SK12 S4 and QA SK12 S1.
+- Open the ticket and look at Ticket Owner.
+- On the same ticket use ⋯ → Assign by Skills.
+Expected (Zoho Desk)
+- The ticket goes to Test User 1, who has one of its two skills.
+- Zoho test, 12 Nov 2026: ticket #181 with skills "QA SK12 S3" and "test" was assigned to Fathy Mehanna, who has only "test". A ticket whose skills no agent has stays unassigned (#180).
+Actual (TAVI)
+- Ticket #3143 stays Unassigned.
+- Assign by Skills answers: "No agent of the department holds every skill on the ticket."
+- The help text on Setup → Assignment Rules → Skills also says skill based round robin assigns "only to agents holding every active skill on the ticket".
+Environment
+- TAVI Desk, NDC-Staging (staging-desk.taviportal.com), owner account, 12 Nov 2026.
+- Zoho Desk test portal (Enterprise trial), department Tech, 12 Nov 2026.
+Evidence
+Annotated image attached: SK-H02-skill-rr-any-skill-vs-zoho.png (TAVI left, Zoho right). Full comparison report: https://claude.ai/artifact/HG3raXZiXeEUZ1wYq8G4MP (cases SK-H02, SK-H05).
+
+
+== COMMENTS (1)
+--- comment 2026-11-15T13:31:17.899043+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on tavi. Moving to Ready For Test.
+- Fix (desk #249): Skill Based round robin and Assign by Skills give the ticket to an agent who holds at least one of its active skills, as in Zoho Desk. The help text on Setup and the Assign by Skills messages now say so (client-engine #832).
+- Checked live (API): in QA SK13 Dept A a temporary Skill Based rule with Test User 1 got a ticket with skills QA SK13 S1 (held) and QA SK13 S2 (held by nobody). It was assigned to Test User 1. Rule and ticket deleted.
+- Note: this reverses requirement RR-9 of NDC-2275 ("every skill"), on the product owner's call.
+Deployed to tavi on 15 Nov 2026 (desk 4f170c70, desk-web from client-engine 764295e1).
+

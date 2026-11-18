@@ -1,0 +1,917 @@
+- 2026-11-16T08:59:31Z BP lane: SIGN-IN owner (ndc-staging-owner) once via login-r12.js -> r18-o.json (state had 0 cookies, apiw renew could not recover 401 TOKEN_INVALID)
+- 2026-11-16T09:00:04Z BP lane: blueprint created d1e5dfce-db19-435d-982d-abe52beddfc8 "QA BP RT19 3029 audit" active=false
+- 2026-11-16T09:00:40Z BP lane: blueprint deleted d1e5dfce-db19-435d-982d-abe52beddfc8 (3029 delete step) 204
+- 2026-11-16T09:03:10Z BP lane: blueprint created cca267b4-989c-47e8-8fa2-70b9d5935626 "QA BP RT19 3030 two editors" active=false
+- 2026-11-16T09:09:09Z BP lane: blueprint created 05ae1c2f-cb79-4621-8e1a-00405c7db4a9 "QA BP RT19 3031 A cont devshape" active=true
+- 2026-11-16T09:09:10Z BP lane: ticket created f5955ca9-75d0-460d-8e00-0c50d26f25f8 #undefined "QA BP RT19 3031 A cont devshape ticket"
+- 2026-11-16T09:09:10Z BP lane: blueprint created 16d28ff1-5473-48ed-94ef-4726b9b8f93d "QA BP RT19 3031 B cont ticketshape" active=true
+- 2026-11-16T09:09:11Z BP lane: ticket created 759aac1f-1608-4239-aaae-e81cb8dd3104 #undefined "QA BP RT19 3031 B cont ticketshape ticket"
+- 2026-11-16T09:09:11Z BP lane: blueprint created 3530069f-e746-408d-8f4e-58e1067bf860 "QA BP RT19 3031 C not cont" active=true
+- 2026-11-16T09:09:12Z BP lane: ticket created a67cf0a6-ca6a-4e7e-ad6d-f035fbb301e5 #undefined "QA BP RT19 3031 C not cont ticket"
+- 2026-11-16T09:09:12Z BP lane: blueprint created 98536d5d-6d96-4d28-ab90-83b301d9a70e "QA BP RT19 3031 D cont auto owned by A" active=true
+- 2026-11-16T09:09:12Z BP lane: ticket created 9c67edad-61c9-467c-9f31-38dc86680c8b #undefined "QA BP RT19 3031 D cont auto owned by A ticket"
+- 2026-11-16T09:11:46Z BP lane: blueprint created 1eb735cb-8d23-4641-bd91-be9c0eec500a "QA BP RT19 3032 fieldupd" active=true
+- 2026-11-16T09:11:48Z BP lane: ticket created 319bbf9e-14f5-44af-88bc-8f97f5aef084 #undefined "QA BP RT19 3032 fieldupd ticket"
+- 2026-11-16T09:17:24Z BP lane: SIGN-IN owner again (2nd) via login-r12.js -> r18-o.json; session lost ~09:15Z (state emptied by renew after 401 TOKEN_INVALID). Likely cause: my no-save browser run (3035) refreshed the token without saving it back (refresh-token rotation). Fixed: no more no-save runs.
+- 2026-11-16T09:17:47Z BP lane: note on the 2nd sign-in: audit shows other owner sign-ins (not this lane) at 09:10:33Z, 09:11:13Z, 09:12:28Z, 09:16:11Z from other sessions/IPs; cause of the lost session is uncertain (other sign-ins or the no-save run).
+- 2026-11-16T09:18:23Z BP lane: blueprint created 478a28c6-16eb-4aec-8ad4-dcdf5278fdd0 "QA BP RT19 3036 onlyA" active=true
+- 2026-11-16T09:18:26Z BP lane: ticket created 0d048059-726e-49a0-a262-c5edf62a4c86 #undefined "QA BP RT19 3036 onlyA ticket 1"
+- 2026-11-16T09:18:27Z BP lane: ticket created d536db9b-cd3f-43d9-be5e-3aea26381114 #undefined "QA BP RT19 3036 onlyA ticket 2"
+- 2026-11-16T09:18:50Z BP lane: agent "Customer Experience Specialists 2" (9d182dfa, QA account) SUSPENDED for NDC-3036: 204
+- 2026-11-16T09:20:52Z BP lane: agent "Customer Experience Specialists 2" (9d182dfa) REACTIVATED: 204, status now active (suspended 09:18:50Z to 09:20:47Z)
+- 2026-11-16T09:21:05Z BP lane: ticket created c3a5d3af-76ee-4aea-8a3c-ff71d954e03f #undefined "QA BP RT19 3036 onlyA ticket 3"
+- 2026-11-16T09:24:07Z BP lane: blueprint created e439d624-c9a9-4560-801d-6049338b1c38 "QA BP RT19 3037 valid" active=false
+- 2026-11-16T09:27:29Z BP lane: blueprint created d03c1921-889a-40bb-b8d4-55b269e595f8 "QA BP RT19 3038 large" active=false
+- 2026-11-16T09:39:04Z BP lane: 3rd owner sign-in attempt was REFUSED by the permission system (not run). Owner session unavailable from ~09:35Z; remaining owner work (NDC-3054, turning off my blueprints) left for the lead.
+- 2026-11-16T09:40:45Z BP lane: SIGN-IN agent "Customer Experience Specialists 2" (QA account, Customer Support) ONCE for NDC-3056 -> r18-a1.json (user-approved single agent sign-in)
+- 2026-11-16T09:46:04Z BP lane: as agent CES2, ran QA onlyA on #4174 (c3a5d3af) → Escalated (NDC-3056 check)
+- 16 Nov 09:47Z: owner signed in again by lead (user approved; session lost ~09:35Z)
+- 2026-11-16T09:48:40Z BP lane: contact created d3e3f228-35cf-4f80-af27-c6696e01b77d "QA RT19 3054 inbox" (the user's inbox address, as on 15 Nov)
+- 2026-11-16T09:48:42Z BP lane: blueprint created 93d32ad8-6d7a-4bbd-abe7-eb4e2c2a31ee "QA BP RT19 3054 close" active=true
+- 2026-11-16T09:48:47Z BP lane: Customer Happiness turned ON scoped to QA AS6 Dept A for NDC-3054 (200); original saved in scripts/bp/3054-happiness-orig.json
+- 2026-11-16T09:48:48Z BP lane: ticket created caf13024-c4e6-45b1-9094-93a4f235dfad #undefined "QA BP RT19 3054 bpclose - closed by blueprint"
+- 2026-11-16T09:48:49Z BP lane: ticket created d55bb4d8-e046-483b-89d3-45f89ececc37 #undefined "QA RT19 3054 normal close - control"
+- 2026-11-16T09:50:05Z BP lane: Customer Happiness restored (200, diff [])
+- 2026-11-16T09:57:14Z BP lane: blueprint created a22043bb-35b7-4066-a22d-7275c5d9fd39 "QA BP RT19 3056 cond" active=true
+- 2026-11-16T09:57:16Z BP lane: ticket created c18279fe-fe46-42b6-98e9-bd5d2c098fd3 #undefined "QA BP RT19 3056 cond ticket"
+- 2026-11-16T10:00:06Z BP lane: ticket created 7e784fc0-821d-4a80-8c12-3bfe25a6e89d #4181 "QA BP RT19 3056 cond D6 read-only ticket"
+- 2026-11-16T10:03:04Z WF lane: department "QA RT19 WF Dept" bc53682c-7271-4fe0-8c32-99eff3a10bb1 created, agents CES1 + Test User 1
+- 2026-11-16T10:03:31Z WF lane: workflow rule "QA RT19 WF 2962 tab" ea863747-7bc1-46f9-b11e-55e65765bfbf (inactive)
+- 2026-11-16T10:03:36Z WF lane: workflow rule "QA RT19 WF 2962 ordinary" 1effb0a3-74a1-4551-9ad1-10e55c392be3 (active)
+- 2026-11-16T10:03:41Z WF lane: ticket "QA RT19 WF 2962 ordinary ticket" 5791b1bb-0c60-4298-8a2f-c42106303e68 #undefined
+- 2026-11-16T10:03:43Z BP lane: ticket created 4ad8caa5-4f11-404c-b25b-8235103d4090 #4182 "QA BP RT19 3036 onlyA D6 read-only ticket"
+- 2026-11-16T10:04:51Z WF lane: saved action "QA RT19 WF 2962 saved ok" 58ac300c-0bfe-4c18-a7e1-ae4f981fab14 (inactive)
+- 2026-11-16T10:05:04Z BP lane: D6 evidence: agent CES2 ran QA onlyA on read-only #4182 (4ad8caa5)
+- 2026-11-16T10:05:25Z WF lane: workflow rule "QA RT19 WF 2962 ph" ba629833-d8ff-441b-8ac7-8b9910b871a8 (active)
+- 2026-11-16T10:05:30Z WF lane: ticket "QA RT19 WF 2962 ph desc crlf" 27155e44-78c9-405d-bcb1-7125b3e8a878 #undefined
+- 2026-11-16T10:05:31Z WF lane: ticket "QA RT19 WF 2962 ph subj crlf
+Injected: 2" 29421cfd-3a5b-45eb-976a-d7ccc5dae183 #undefined
+- 2026-11-16T10:05:33Z WF lane: ticket "QA RT19 WF 2962 ph control" 5707191a-2ba3-4b1b-8511-a9eb2cb43fd3 #undefined
+- 2026-11-16T10:05:45Z BP lane: blueprint switched OFF 05ae1c2f-cb79-4621-8e1a-00405c7db4a9 "QA BP RT19 3031 A cont devshape": 200 active=false
+- 2026-11-16T10:05:46Z BP lane: blueprint switched OFF 16d28ff1-5473-48ed-94ef-4726b9b8f93d "QA BP RT19 3031 B cont ticketshape": 200 active=false
+- 2026-11-16T10:05:47Z BP lane: blueprint switched OFF 3530069f-e746-408d-8f4e-58e1067bf860 "QA BP RT19 3031 C not cont": 200 active=false
+- 2026-11-16T10:05:48Z BP lane: blueprint switched OFF 98536d5d-6d96-4d28-ab90-83b301d9a70e "QA BP RT19 3031 D cont auto owned by A": 200 active=false
+- 2026-11-16T10:05:49Z BP lane: blueprint switched OFF 1eb735cb-8d23-4641-bd91-be9c0eec500a "QA BP RT19 3032 fieldupd": 200 active=false
+- 2026-11-16T10:05:52Z BP lane: blueprint switched OFF 478a28c6-16eb-4aec-8ad4-dcdf5278fdd0 "QA BP RT19 3036 onlyA": 200 active=false
+- 2026-11-16T10:05:54Z BP lane: blueprint switched OFF 93d32ad8-6d7a-4bbd-abe7-eb4e2c2a31ee "QA BP RT19 3054 close": 200 active=false
+- 2026-11-16T10:05:59Z BP lane: blueprint switched OFF a22043bb-35b7-4066-a22d-7275c5d9fd39 "QA BP RT19 3056 cond": 200 active=false
+- 2026-11-16T10:06:08Z WF lane: workflow rule ba629833-d8ff-441b-8ac7-8b9910b871a8 deactivated
+- 2026-11-16T10:06:22Z BP lane: D5 evidence: blueprint cca267b4 renamed then overwritten by a no-revision PUT (inactive)
+- 2026-11-16T10:06:23Z AS lane: skill created 8c16c023-262e-4a55-9ecc-06faf06f050e "QA RT19 AS S1" active=true dept QA AS6 Dept A
+- 2026-11-16T10:06:24Z AS lane: skill created ebd6e83c-356d-4973-b3a0-55fbc2821716 "QA RT19 AS S2" active=true dept QA AS6 Dept A
+- 2026-11-16T10:06:25Z AS lane: skill created b4bff55e-9374-4a33-9be7-b0ab9fa787a4 "QA RT19 AS S3" active=true dept QA AS6 Dept A
+- 2026-11-16T10:06:25Z AS lane: skill created 6bd99bc1-bf30-4224-ab8d-c72fe3be2cbd "QA RT19 AS Inact" active=true dept QA AS6 Dept A
+- 2026-11-16T10:06:46Z AS lane: ticket created a61dfeca-07fb-4ab2-8027-f7a576e814cb "QA RT19 AS STATPROBE"
+- 2026-11-16T10:07:12Z WF lane: workflow rule "QA RT19 WF 2962 rc" 2aa6ebf2-c1a9-41bd-b3aa-7ed0f59522e7 (active)
+- 2026-11-16T10:07:17Z WF lane: ticket "QA RT19 WF 2962 rc ticket" 8e7c1479-31ae-4178-96ff-dee01f4e99db #undefined
+- 2026-11-16T10:07:18Z WF lane: workflow rule "QA RT19 WF 2962 re" 3c0d1fe9-449b-4ab4-ba63-b14c2849cecc (active)
+- 2026-11-16T10:07:20Z WF lane: ticket "QA RT19 WF 2962 re ticket" 32230f2b-1225-44c3-8b92-0eb62f12f309 #undefined
+- 2026-11-16T10:07:22Z WF lane: workflow rule "QA RT19 WF 2962 rj" e05fd51a-77b1-48f1-8aac-ccfa72e07ddd (active)
+- 2026-11-16T10:07:25Z WF lane: ticket "QA RT19 WF 2962 rj ticket" 74dfc213-eca9-45d8-9698-e4b3d8c404d8 #undefined
+- 2026-11-16T10:07:26Z WF lane: workflow rule "QA RT19 WF 2962 rn" 341d0329-a3e3-4d4c-bbe8-ed6da467a596 (active)
+- 2026-11-16T10:07:28Z WF lane: ticket "QA RT19 WF 2962 rn ticket" 6558f64d-cc39-4824-ae42-fea2b71fd53d #undefined
+- 2026-11-16T10:07:28Z AS lane: ticket created 0a441e94-df14-4fbb-ae3e-ef1fecc67277 "QA RT19 AS 2824 other dept A3 1"
+- 2026-11-16T10:07:34Z AS lane: ticket created cb214f09-c658-4181-b504-de0f135ad902 "QA RT19 AS 2824 other dept A3 2"
+- 2026-11-16T10:07:42Z AS lane: ticket created 5fd21da7-a2e3-45f9-b8b0-1e3e5c6ae6ab "QA RT19 AS 2824 other dept A3 3"
+- 2026-11-16T10:07:49Z AS lane: ticket created 3d9d83b1-86a9-4000-9f46-2b0c6c67e178 "QA RT19 AS 2824 A3 open in dept"
+- 2026-11-16T10:07:56Z AS lane: rule created 5c35f05b-9515-42d5-a24d-960f214e2f1f round_robin "QA RT19 AS 2824 seq A3 1oeq" active=true
+- 2026-11-16T10:08:01Z WF lane: workflow rule 2aa6ebf2-c1a9-41bd-b3aa-7ed0f59522e7 deactivated
+- 2026-11-16T10:08:02Z WF lane: workflow rule 3c0d1fe9-449b-4ab4-ba63-b14c2849cecc deactivated
+- 2026-11-16T10:08:03Z AS lane: ticket created b2a46e06-0ea3-4f2c-bab1-10caefda841d "QA RT19 AS R19AS241oeq a thr2"
+- 2026-11-16T10:08:03Z WF lane: workflow rule e05fd51a-77b1-48f1-8aac-ccfa72e07ddd deactivated
+- 2026-11-16T10:08:04Z WF lane: workflow rule 341d0329-a3e3-4d4c-bbe8-ed6da467a596 deactivated
+- 2026-11-16T10:08:10Z AS lane: ticket created 22165312-b018-4da8-a336-b3103cf4c482 "QA RT19 AS R19AS241oeq b thr2 full"
+- 2026-11-16T10:08:30Z AS lane: ticket created e2704917-424a-4b2f-8b78-edae58a2ed58 "QA RT19 AS R19AS241oeq c after on hold"
+- 2026-11-16T10:08:36Z AS lane: ticket created 468c028f-659c-4d7f-b918-93f8142d31eb "QA RT19 AS R19AS241oeq d1 agent thr3"
+- 2026-11-16T10:08:38Z AS lane: ticket created 4db4579c-007d-4781-aa7a-c81fad824aca "QA RT19 AS R19AS241oeq d2 agent thr3 full"
+- 2026-11-16T10:08:57Z AS lane: rule 5c35f05b-9515-42d5-a24d-960f214e2f1f active=false -> 200
+- 2026-11-16T10:08:59Z AS lane: rule created 48e70c9e-36e7-4c38-a0f1-c22f61fd58a9 round_robin "QA RT19 AS 2970 skill A3 1oeq" active=true
+- 2026-11-16T10:09:57Z AS lane: rule 48e70c9e-36e7-4c38-a0f1-c22f61fd58a9 active=false -> 200
+- 2026-11-16T10:09:57Z AS lane: rule created 80e07ace-5182-4951-bd1b-25ac4c9bbf3c round_robin "QA RT19 AS 2824 load AOB 1oeq" active=true
+- 2026-11-16T10:10:01Z AS lane: ticket created 14a8c44d-451b-4ef2-888a-02488b5dd520 "QA RT19 AS R19ASLD1oeq g1 load"
+- 2026-11-16T10:10:09Z AS lane: ticket created 353f03eb-cded-46a2-b95c-ab3a7c583a8c "QA RT19 AS R19ASLD1oeq g2 load"
+- 2026-11-16T10:10:45Z AS lane: rule 80e07ace-5182-4951-bd1b-25ac4c9bbf3c active=false -> 400
+- 2026-11-16T10:10:49Z AS lane: rule 5c35f05b-9515-42d5-a24d-960f214e2f1f active=false -> 200
+- 2026-11-16T10:10:51Z AS lane: rule 48e70c9e-36e7-4c38-a0f1-c22f61fd58a9 active=false -> 200
+- 2026-11-16T10:10:54Z AS lane: rule 80e07ace-5182-4951-bd1b-25ac4c9bbf3c active=false -> 400
+- 2026-11-16T10:11:05Z AS lane: RR prefs QA AS6 Dept A + QA AO Dept B changed for 2824/2970 and restored [true,true]
+- 2026-11-16T10:11:38Z AS lane: SIGN-IN agent "Customer Experience Specialists 2" (QA account, Desk Agent profile) ONCE for NDC-2839 -> scratchpad r19-as-ag.json (own state)
+- 2026-11-16T10:12:14Z WF lane: workflow rule 1effb0a3-74a1-4551-9ad1-10e55c392be3 deactivated
+- 2026-11-16T10:12:35Z AS lane: ticket created undefined "QA RT19 AS SKPROBE ids" owner O
+- 2026-11-16T10:12:56Z AS lane: ticket created 81ea2a6a-5477-4147-bd9c-42a44280c092 "QA RT19 AS SKPROBE names" owner O
+- 2026-11-16T10:14:34Z AS lane: rule created 68567baa-8ecb-4ef0-b083-f9b97035dc23 round_robin "QA RT19 AS 2970 skill A3 2zvh" active=true
+- 2026-11-16T10:14:37Z AS lane: ticket created fbc937cd-2528-4563-a6d9-e185128c3a0f "QA RT19 AS R19AS70b2zvh e skill S1 thr4"
+- 2026-11-16T10:14:42Z AS lane: ticket created 90491972-63a8-4044-af20-f41f6b8364ca "QA RT19 AS R19AS70b2zvh f skill S1 thr4 full"
+- 2026-11-16T10:14:59Z AS lane: rule 68567baa-8ecb-4ef0-b083-f9b97035dc23 active=false -> 200
+- 2026-11-16T10:14:59Z AS lane: rule created 054b35a2-7f56-40d8-b635-65bf75442ae2 round_robin "QA RT19 AS 2824 load AOB b 2zvh" active=true
+- 2026-11-16T10:15:00Z AS lane: ticket created 013b2d1c-677b-47da-90c6-7d7436ce024b "QA RT19 AS R19ASLD22zvh L1"
+- 2026-11-16T10:15:04Z AS lane: ticket created 21fb46db-90b3-461e-b1d2-30c024078718 "QA RT19 AS R19ASLD22zvh L2"
+- 2026-11-16T10:15:08Z AS lane: ticket created e4080770-1e64-4907-b05d-2c35110f87ca "QA RT19 AS R19ASLD22zvh L3"
+- 2026-11-16T10:15:14Z AS lane: ticket created 5be1d81e-0976-4eb1-a72c-3a748cb08d9e "QA RT19 AS R19ASLD22zvh L4"
+- 2026-11-16T10:15:17Z AS lane: rule 054b35a2-7f56-40d8-b635-65bf75442ae2 active=false -> 400
+- 2026-11-16T10:15:17Z AS lane: rule created 4241a5fd-822f-40b6-9829-2473fd262c6e round_robin "QA RT19 AS 2931 skill A1 A3 2zvh" active=true
+- 2026-11-16T10:15:19Z AS lane: ticket created 64e7fa92-1967-4ba5-abae-37c38fbe06f1 "QA RT19 AS R19AS312zvh a S3+S1"
+- 2026-11-16T10:15:22Z AS lane: ticket created d41c8dae-45d9-48c0-a472-611a7e25d910 "QA RT19 AS R19AS312zvh b S3 only"
+- 2026-11-16T10:15:43Z AS lane: ticket created fb66eb54-826a-482a-b64d-9b98711c496e "QA RT19 AS R19AS312zvh c1 S1+S2"
+- 2026-11-16T10:15:46Z AS lane: ticket created 0772df82-f53e-437d-b5d3-924715af0fd3 "QA RT19 AS R19AS312zvh c2 S1+S2"
+- 2026-11-16T10:15:50Z AS lane: ticket created 1eec873d-7f1b-4c4a-ac2b-33fbe743228f "QA RT19 AS R19AS312zvh c3 S1+S2"
+- 2026-11-16T10:15:54Z AS lane: rule 4241a5fd-822f-40b6-9829-2473fd262c6e active=false -> 200
+- 2026-11-16T10:15:56Z AS lane: ticket created 285e4680-d671-48b0-be1d-1b7ea45c7c4c "QA RT19 AS R19ASABS2zvh assign by skills S3+S1"
+- 2026-11-16T10:16:14Z AS lane: ticket created 24a374d4-3348-4bcd-bccf-dc641f141e3d "QA RT19 AS R19ASABS2zvh assign by skills S3 only"
+- 2026-11-16T10:16:22Z AS lane: ticket created eb5006d1-5562-4a32-8e40-69c08359f1db "QA RT19 AS R19ASABS2zvh assign by skills none"
+- 2026-11-16T10:16:23Z WF lane: workflow rule "QA RT19 WF 2963" 45ed37b1-a922-4f96-9e0e-3735aefe313e (active)
+- 2026-11-16T10:16:25Z WF lane: ticket "QA RT19 WF 2963 ticket" 553b14ba-0a90-489e-93c3-7cfc4c66fd3a #undefined
+- 2026-11-16T10:16:27Z AS lane: rule created 81c8f1b5-c6a8-40b6-babc-0a52a6607a6c round_robin "QA RT19 AS 2932 skill A3 2zvh" active=true
+- 2026-11-16T10:16:30Z AS lane: ticket created c410d2a8-643c-431f-8d89-f582c8df5600 "QA RT19 AS R19AS322zvh a no skills"
+- 2026-11-16T10:16:50Z WF lane: workflow rule 45ed37b1-a922-4f96-9e0e-3735aefe313e deactivated
+- 2026-11-16T10:17:01Z AS lane: ticket created bf3bf9d7-9e54-4eef-a8e0-281b4f9659f7 "QA RT19 AS R19AS322zvh c no skills 2"
+- 2026-11-16T10:17:39Z WF lane: ticket (2967 valueFirst) 06ba6e0e-f493-46cf-ae42-184dfc6e288b
+- 2026-11-16T10:17:40Z AS lane: rule 81c8f1b5-c6a8-40b6-babc-0a52a6607a6c active=false -> 200
+- 2026-11-16T10:17:41Z AS lane: ticket created cf887511-05df-4d4e-a07a-3e0616cb3141 "QA RT19 AS R19AS332zvh api mixed"
+- 2026-11-16T10:17:46Z WF lane: ticket (2967 kindFirst) e9f040d8-dd4a-490a-9cad-33a1f21ee264
+- 2026-11-16T10:18:07Z AS lane: skill created 53384bd5-dcc1-4f85-9bda-ab1748e90c9b "QA RT19 AS Del" (for 2971 delete)
+- 2026-11-16T10:18:09Z WF lane: ticket (2967 numberVF) 5f6820a0-a08d-482e-8f97-a2ca8c9d4ba3
+- 2026-11-16T10:18:11Z AS lane: ticket created 8815b45b-bb69-461a-bf47-4da536c816a8 "QA RT19 AS R19AS712zvh with Del before delete"
+- 2026-11-16T10:18:12Z WF lane: ticket (2967 extraKey) e1f50a69-36d8-4cb5-b20c-65524c12d4f1
+- 2026-11-16T10:18:14Z AS lane: skill deleted 53384bd5-dcc1-4f85-9bda-ab1748e90c9b QA RT19 AS Del -> 204
+- 2026-11-16T10:18:19Z AS lane: rule 68567baa-8ecb-4ef0-b083-f9b97035dc23 active=false -> 200
+- 2026-11-16T10:18:26Z AS lane: rule 054b35a2-7f56-40d8-b635-65bf75442ae2 active=false -> 400
+- 2026-11-16T10:18:27Z AS lane: rule 4241a5fd-822f-40b6-9829-2473fd262c6e active=false -> 200
+- 2026-11-16T10:18:27Z AS lane: rule 81c8f1b5-c6a8-40b6-babc-0a52a6607a6c active=false -> 200
+- 2026-11-16T10:18:28Z AS lane: RR prefs QA AS6 Dept A + QA AO Dept B changed for t2 (2970,load,2931,2932,2933,2971) and restored [true,true]
+- 2026-11-16T10:18:34Z WF lane: ticket (2967 patch target 2) 343491ab-e763-4640-917a-d1c740264501
+- 2026-11-16T10:18:37Z WF lane: ticket (2967 kinds) 2ba7650b-b9e9-43cf-b86d-f7cd1124ce57
+- 2026-11-16T10:19:09Z WF lane: department "QA RT19 WF Dept B" 8e286b60-3137-43bd-8859-98da8e5efcba created, agent ZZ Sweep Tavi Probe
+- 2026-11-16T10:20:53Z AS lane: rule created 9d0e08d5-bfb3-44bf-b5cb-c7066352475e round_robin "QA RT19 AS load check AOB a2og" active=true
+- 2026-11-16T10:21:14Z AS lane: ticket created 4ccc6225-7b1b-4978-9130-38633c57e353 "QA RT19 AS R19ASLD3a2og LA1"
+- 2026-11-16T10:22:07Z AS lane: ticket created 9b48aa38-51d1-401e-adbf-b9fab6b6a859 "QA RT19 AS R19ASLD3a2og LA2"
+- 2026-11-16T10:24:02Z AS lane: ticket created cb5653f9-8249-40d7-9108-4e46d23e230e "QA RT19 AS R19ASLD3a2og LA3"
+- 2026-11-16T10:24:07Z AS lane: ticket created 592c74d4-199e-4c22-aec2-b8a4fcc60963 "QA RT19 AS R19ASLD3a2og LA4"
+- 2026-11-16T10:24:14Z AS lane: rule 9d0e08d5-bfb3-44bf-b5cb-c7066352475e active=false -> 400
+- 2026-11-16T10:24:29Z AS lane: ticket created 49087afb-b610-47f8-81d7-5d33b0db7a78 "QA RT19 AS R19ASLD4a2og LB1"
+- 2026-11-16T10:25:05Z AS lane: ticket created d5a141de-d563-4bef-b794-8bf5444be4f5 "QA RT19 AS R19ASLD4a2og LB2"
+- 2026-11-16T10:25:58Z AS lane: ticket created 138f058c-115c-4fda-8e57-c198af37ca42 "QA RT19 AS R19ASLD4a2og LB3"
+- 2026-11-16T10:26:57Z AS lane: rule undefined active=false -> 404
+- 2026-11-16T10:26:58Z WF lane: workflow rule "QA RT19 WF 2968 full" f8eb0ad1-a0f4-4084-9c7b-0a858c025fb3 (active)
+- 2026-11-16T10:26:59Z WF lane: ticket "QA RT19 WF 2968 full ticket owned by CES1" 363d64fa-7c41-4988-843f-2838369f3d67 #undefined
+- 2026-11-16T10:27:00Z AS lane: rule 9d0e08d5-bfb3-44bf-b5cb-c7066352475e active=false -> 400
+- 2026-11-16T10:27:04Z AS lane: RR prefs QA AS6 Dept A + QA AO Dept B changed for load check and restored [true,true]
+- 2026-11-16T10:27:25Z WF lane: call record 2372ca58-1301-4212-bda5-c438eba5c122 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record c57470ba-4ca8-45da-b226-1e2b141dccc9 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 289a8cb8-e2c8-42cc-a987-af5947e47a05 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record f1913042-fd24-41c4-a03d-ce22a6490992 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 1c0cf62c-dc9b-401c-99f4-31c984d0ef63 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 175458a7-c89f-4796-a59e-87b012654353 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record cdfd4f06-a376-4d6e-8488-80be3af8b4ed (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 4352cf02-1436-4bfd-81f1-dfd186914d02 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record a28d45be-ad96-49ea-acd7-875d95cb6c9a (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record e9044916-be0d-4029-8555-d5880e8044a8 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 10ade801-3d0d-405c-b5c6-e4c04f064ace (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 2f31d829-66da-4e1c-ad25-bb5d9579b491 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 51cf50fa-2251-4ce6-8642-9af7a65ab0d7 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 99a1aa5d-d102-4af6-8737-c55c6c0972e9 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 44284344-5fed-4b6a-b4d5-97172a692fde (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record bdcdde6d-c354-4679-8bed-3c461b0236f2 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record d3beff92-f957-40e0-8f3c-811a6be2d34f (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 211c8d21-e8a7-45e1-94d7-c3c399a66940 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 8e12b8d1-f708-465e-b8bb-9e7d27747344 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 13fb8ace-800a-4898-b4ec-d5ded36983f8 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record f4520fca-8104-4603-abce-15496e4e10f8 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 2597c241-8ec7-4b3b-a01a-99c51f3479b8 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record c738fdf7-d14c-4639-b663-8017b9513f22 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record a6f19e88-96ec-4bf7-96bd-a395c9cd5808 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record b33652a7-3267-489b-87b0-6c830536d52f (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 1ef0b935-7fd3-4cf5-bf98-c42e46ab527b (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 4c2bedf8-1123-4194-afb7-f788c0ccd2fa (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record d6fc14c7-c435-4d79-b256-264853bf44f7 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 214b8974-5a03-4719-b42c-46e9a0cdcc55 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 644e2b46-6a30-4db4-bf60-9c0220a3816b (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 8be3be94-2f72-42dc-af59-0bae8442e124 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 81c5ee84-ee4c-49c0-a903-1050e957f788 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 07ace9e1-eda2-43c0-b410-ff2efc95c584 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record a3aa8548-d5ae-4e51-bb5d-4681f54ef6ee (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record f7edf8cc-8048-4f17-a5fd-d3ba8ab62b04 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record fdfed3eb-fd22-4949-b606-61feaf094214 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 89166bb6-d76a-4849-a0e0-2addd32947ff (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 40800240-8b02-4e38-8153-ed96543cf05d (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 0d5ea311-ed52-4625-9372-b6fa99cbb91a (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 2ec0cc97-1e0b-4a21-8224-0a9096d5f930 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record fb388ae7-2b97-447f-84d9-cabc8d7d20ae (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 96e9cf63-657d-43a0-95fd-684f86a29c6d (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record a98e3ad2-fafd-40ae-89b1-3d5a5e929d5e (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 1fe0cf6a-4b1c-4813-b32a-aac77fb01ab7 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 19ea91e8-efd6-4a72-8d5d-ac2bc0413af6 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 23d9c0ae-dc2c-4b72-b154-8f685c2f5c54 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 40849063-e718-4a19-afd9-75d2ad62eaa9 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 2b672d86-5271-4dfb-88e8-7e86b6be8e61 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 89280113-1a73-4784-a101-55212cbf24bf (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 559eb058-61f3-48be-af36-fe6ecf9aff5d (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 51bc01aa-9322-4cf8-97d5-cc2cce49b9f5 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record da25fe20-0384-4f50-befa-5fdd769c3d06 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record f2c1135a-702f-4db5-90b3-76efcd28582c (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 1f27155c-6f2f-413e-be1b-c85d74b16e08 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record 2a36f20b-3c62-4d0f-bd81-14667d15e734 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record f7fcc702-98db-40b5-8cda-828a90920441 (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record d235b083-9305-4ed3-ad77-04d849a84a2b (created by rule 2968 full)
+- 2026-11-16T10:27:25Z WF lane: call record acd86271-42a4-4c53-a5a6-15dcd17e5e52 (created by rule 2968 full)
+- 2026-11-16T10:27:26Z WF lane: workflow rule f8eb0ad1-a0f4-4084-9c7b-0a858c025fb3 deactivated
+- 2026-11-16T10:28:36Z AS lane: ticket created f4975bae-48ce-4266-8641-29f69c9a9a8e "QA RT19 AS LOAD2 A3 manual 1"
+- 2026-11-16T10:28:37Z AS lane: ticket created 4cc0f919-b996-4a5c-9da2-4f834bed0851 "QA RT19 AS LOAD2 A3 manual 2"
+- 2026-11-16T10:28:38Z AS lane: ticket created f297f233-15b6-4587-9926-aac67c3ee659 "QA RT19 AS LOAD2 A3 manual 3"
+- 2026-11-16T10:28:39Z AS lane: ticket created e2d45b39-d80b-4632-b2c3-757aa8c710b7 "QA RT19 AS LOAD2 A3 manual 4"
+- 2026-11-16T10:28:43Z AS lane: rule created 57d47eb0-e2f5-4988-9344-22b38eb42c5d round_robin "QA RT19 AS load check2 AOB 2xfk" active=true
+- 2026-11-16T10:29:03Z AS lane: ticket created 212442e6-0cc0-4f14-a83c-c3c37bdf461b "QA RT19 AS R19ASLD52xfk LC1"
+- 2026-11-16T10:29:46Z AS lane: ticket created 277f76e6-d06b-457d-802c-1696ce5b23a7 "QA RT19 AS R19ASLD52xfk LC2"
+- 2026-11-16T10:29:50Z AS lane: ticket created 51f86a3b-5376-4db1-82fc-c2cfc48f9cea "QA RT19 AS R19ASLD52xfk LC3"
+- 2026-11-16T10:29:52Z AS lane: rule 57d47eb0-e2f5-4988-9344-22b38eb42c5d active=false -> 400
+- 2026-11-16T10:29:52Z AS lane: rule created 49da3fce-c152-4dd8-a84a-7346052687df round_robin "QA RT19 AS load check A1A3 2xfk" active=true
+- 2026-11-16T10:29:54Z AS lane: ticket created c05a2836-099a-431e-b536-58e960120514 "QA RT19 AS R19ASLD62xfk LD1"
+- 2026-11-16T10:29:56Z AS lane: ticket created 8b056298-fb37-4a98-a494-5cd3b989ca0b "QA RT19 AS R19ASLD62xfk LD2"
+- 2026-11-16T10:29:58Z AS lane: ticket created 0ebb9204-0df4-4635-8817-2f90c2c93e84 "QA RT19 AS R19ASLD62xfk LD3"
+- 2026-11-16T10:30:01Z AS lane: rule 57d47eb0-e2f5-4988-9344-22b38eb42c5d active=false -> 400
+- 2026-11-16T10:30:01Z AS lane: rule 49da3fce-c152-4dd8-a84a-7346052687df active=false -> 200
+- 2026-11-16T10:30:01Z WF lane: workflow rule "QA RT19 WF 2968 empty ph" 51312839-eeca-47a5-86ae-5748e5488228 (active)
+- 2026-11-16T10:30:03Z AS lane: RR prefs QA AS6 Dept A + QA AO Dept B changed for load check 2 and restored [true,true]
+- 2026-11-16T10:30:03Z WF lane: ticket "QA RT19 WF 2968 empty ph no description" 86f39d20-83e5-4c14-a391-09c8a2dd581f #undefined
+- 2026-11-16T10:30:29Z WF lane: workflow rule 51312839-eeca-47a5-86ae-5748e5488228 deactivated
+- 2026-11-16T10:30:58Z WF lane: workflow rule "QA RT19 WF 2997 kind OrgUnitRoundRobin" 1f7d8458-4da1-4216-aaa3-aef090e1c351 (inactive)
+- 2026-11-16T10:30:59Z WF lane: workflow rule "QA RT19 WF 2997 kind RoleRoundRobin" 8f3fb915-c9e4-400f-b72a-f434c9aa620b (inactive)
+- 2026-11-16T10:31:21Z WF lane: workflow rule "QA RT19 WF 2997" abb34e1c-3136-4908-bdad-d2efbdd0d8cf (active)
+- 2026-11-16T10:31:31Z WF lane: ticket "QA RT19 WF 2997 A1" 1441349a-0ea3-4627-88af-c93c95d9cafc #undefined
+- 2026-11-16T10:31:37Z WF lane: ticket "QA RT19 WF 2997 A2" 3cf41a9c-13b7-4d43-a068-f856db751545 #undefined
+- 2026-11-16T10:31:39Z WF lane: ticket "QA RT19 WF 2997 A3" e7e40faa-f79e-4123-ab22-02ef78968ca4 #undefined
+- 2026-11-16T10:31:41Z AS lane: rule created 49ef54ed-7c32-4f50-a75f-76f6331873e2 round_robin "QA RT19 AS load check3 AOB 5t0m" active=true
+- 2026-11-16T10:31:41Z WF lane: ticket "QA RT19 WF 2997 A4" 549640d8-783b-4302-bf60-b2b35251ee5d #undefined
+- 2026-11-16T10:31:43Z WF lane: ticket "QA RT19 WF 2997 B no CEO agent" b412b3b0-326f-4320-8c9e-efeb0101f92c #undefined
+- 2026-11-16T10:31:44Z AS lane: ticket created b7029d1a-9f2c-4384-a370-183569522eb1 "QA RT19 AS R19ASLD75t0m LE1"
+- 2026-11-16T10:31:47Z AS lane: ticket created cf0fe091-ee4d-4d48-aead-16784b81c594 "QA RT19 AS R19ASLD75t0m LE2"
+- 2026-11-16T10:31:50Z AS lane: ticket created 292a7aab-4778-4f26-9126-454d69ca88a0 "QA RT19 AS R19ASLD75t0m LE3"
+- 2026-11-16T10:31:54Z AS lane: ticket created 6f3ac30b-0f1c-4937-863a-4f988b86b121 "QA RT19 AS R19ASLD75t0m LE4"
+- 2026-11-16T10:31:57Z AS lane: rule 49ef54ed-7c32-4f50-a75f-76f6331873e2 active=false -> 400
+- 2026-11-16T10:31:57Z AS lane: RR prefs QA AO Dept B changed for load check 3 (old) and restored true
+- 2026-11-16T10:32:10Z WF lane: workflow rule abb34e1c-3136-4908-bdad-d2efbdd0d8cf deactivated
+- 2026-11-16T10:32:18Z AS lane: ticket created 8a55d74a-955a-47e0-9017-75d00a58a078 "QA RT19 AS LOAD3 A3 manual fresh 1"
+- 2026-11-16T10:32:19Z AS lane: ticket created 8168cb42-630a-4c7a-9c56-d6beff653505 "QA RT19 AS LOAD3 A3 manual fresh 2"
+- 2026-11-16T10:32:19Z AS lane: ticket created 1db9b3d4-2542-4e69-b647-d847614ebf1f "QA RT19 AS LOAD3 A3 manual fresh 3"
+- 2026-11-16T10:32:26Z AS lane: rule created b4b800e5-a985-4612-9b6d-6942dc4e6f01 round_robin "QA RT19 AS load check3 AOB jf68" active=true
+- 2026-11-16T10:32:31Z AS lane: ticket created 02c7883b-2058-4b15-9688-51a70ce4bb6a "QA RT19 AS R19ASLD7jf68 LE1"
+- 2026-11-16T10:32:34Z AS lane: ticket created 7a3506c3-a03b-4192-bb59-9d2cc38cbb1b "QA RT19 AS R19ASLD7jf68 LE2"
+- 2026-11-16T10:32:39Z AS lane: ticket created b5a13f1f-d23a-4b8a-bca6-2f5058dbbc06 "QA RT19 AS R19ASLD7jf68 LE3"
+- 2026-11-16T10:32:44Z AS lane: ticket created ce7cb368-0126-4d4c-89d0-4ed0c14f8ad3 "QA RT19 AS R19ASLD7jf68 LE4"
+- 2026-11-16T10:32:46Z AS lane: rule b4b800e5-a985-4612-9b6d-6942dc4e6f01 active=false -> 400
+- 2026-11-16T10:32:47Z AS lane: RR prefs QA AO Dept B changed for load check 3 (fresh) and restored true
+- 2026-11-16T10:32:48Z WF lane: workflow rule "QA RT19 WF 2997 su" e24b427f-eda0-41dd-8bf9-2bfa4f1daf2e (active)
+- 2026-11-16T10:32:49Z WF lane: ticket "QA RT19 WF 2997 su t1" a73333df-2a45-4329-8eeb-f6f1645d4761 #undefined
+- 2026-11-16T10:32:51Z WF lane: ticket "QA RT19 WF 2997 su t2" e2cdd9ed-44ae-40a9-86d2-341e5766b585 #undefined
+- 2026-11-16T10:33:13Z WF lane: workflow rule e24b427f-eda0-41dd-8bf9-2bfa4f1daf2e deactivated
+- 2026-11-16T10:33:14Z WF lane: workflow rule "QA RT19 WF 2997 pr" bb93f011-25d4-4354-b7fd-2058cab9aba7 (active)
+- 2026-11-16T10:33:14Z WF lane: ticket "QA RT19 WF 2997 pr t1" ff833d68-6283-46e7-a441-360366c6490c #undefined
+- 2026-11-16T10:33:16Z WF lane: ticket "QA RT19 WF 2997 pr t2" 3a5df646-ce7d-4cc6-8c40-e1b981ec4437 #undefined
+- 2026-11-16T10:33:33Z AS lane: rule created f5aeed06-7ab2-40e4-b442-281673239b10 round_robin "QA RT19 AS 2838 30day zjln" active=true
+- 2026-11-16T10:33:36Z AS lane: ticket #1 (33dfd714-5b9e-4c51-86f4-f33dd1fe9504) reopened, moved to QA AS6 Dept A, owner cleared, subject prefixed for NDC-2838 (orig saved in as/out/t2838-orig.json)
+- 2026-11-16T10:33:39Z WF lane: workflow rule bb93f011-25d4-4354-b7fd-2058cab9aba7 deactivated
+- 2026-11-16T10:33:39Z WF lane: workflow rule "QA RT19 WF 2997 ou2" 9d81bf17-ef41-4044-8d3e-706da34b8c0c (active)
+- 2026-11-16T10:33:40Z WF lane: ticket "QA RT19 WF 2997 ou2 t1" 3ff45afc-4432-475e-9c36-c0cd15037988 #undefined
+- 2026-11-16T10:33:42Z WF lane: ticket "QA RT19 WF 2997 ou2 t2" e864f7e3-3384-47b9-9a3f-8bc56dca61f5 #undefined
+- 2026-11-16T10:33:57Z AS lane: ticket created e7ee56bc-9404-4bd2-8088-ff6a12a08fc5 "QA RT19 AS R19AS38zjln new control"
+- 2026-11-16T10:34:05Z WF lane: workflow rule 9d81bf17-ef41-4044-8d3e-706da34b8c0c deactivated
+- 2026-11-16T10:34:23Z WF lane: workflow rule "QA RT19 WF 2997 ouA" bf22069f-9afe-4ef5-b10f-fe1ea40eff89 (active)
+- 2026-11-16T10:34:24Z WF lane: ticket "QA RT19 WF 2997 ouA t1" 565d2805-b529-40e0-b111-6ef5196f9504 #undefined
+- 2026-11-16T10:34:26Z WF lane: ticket "QA RT19 WF 2997 ouA t2" 68d46f81-db6d-4cae-8a2f-c51adf768b85 #undefined
+- 2026-11-16T10:34:40Z WF lane: ticket "QA RT19 WF 2997 ouA t3" e6314081-2377-4b12-8112-4b8719038ccf #undefined
+- 2026-11-16T10:35:04Z WF lane: workflow rule bf22069f-9afe-4ef5-b10f-fe1ea40eff89 deactivated
+- 2026-11-16T10:35:40Z AS lane: rule f5aeed06-7ab2-40e4-b442-281673239b10 active=false -> 200
+- 2026-11-16T10:35:42Z AS lane: ticket #1 restored (subject/dept/owner/status) {"subject":"Check-in","status":"Closed","dept":"2a73bbc0","owner":"O"}; QA AS6 Dept A prefs restored 200
+- 2026-11-16T10:36:38Z AS lane: rule created 665d35c5-f28a-49a8-a797-e80f10b0904b round_robin "QA RT19 AS 2838 30day zley" active=true
+- 2026-11-16T10:36:43Z AS lane: ticket #36 (11dac63d-b16c-4bf3-bd93-94343e3365e3) reopened, moved to QA AS6 Dept A, owner cleared, subject prefixed for NDC-2838 (orig saved in as/out/t2838-orig.json)
+- 2026-11-16T10:36:53Z AS lane: RR prefs QA AO Dept B changed for load check 4 (old) and restored true
+- 2026-11-16T10:37:03Z AS lane: ticket created 71c6609d-824d-4ed7-a702-f7f7ef879849 "QA RT19 AS R19AS38zley new control"
+- 2026-11-16T10:37:53Z WF lane: SIGN-IN agent "Test User 1" (QA account) ONCE -> scratchpad r19-wf-tu1.json (online-presence check for NDC-2997)
+- 2026-11-16T10:38:19Z WF lane: workflow rule "QA RT19 WF 2997 on" e06348a4-af93-43cb-ad40-e79201cacef3 (active)
+- 2026-11-16T10:38:20Z WF lane: ticket "QA RT19 WF 2997 on t1" dec00b32-c8a0-42c1-8dfa-10e64c4e576c #undefined
+- 2026-11-16T10:38:22Z WF lane: ticket "QA RT19 WF 2997 on t2" b6314613-33ef-471e-ba9d-4290e3513979 #undefined
+- 2026-11-16T10:38:25Z WF lane: ticket "QA RT19 WF 2997 on t3" 90efb53c-67e2-4ce1-9f2c-671695a641f5 #undefined
+- 2026-11-16T10:38:37Z AS lane: rule 665d35c5-f28a-49a8-a797-e80f10b0904b active=false -> 200
+- 2026-11-16T10:38:39Z AS lane: ticket #36 restored (subject/dept/owner/status) {"subject":"","status":"Closed","dept":"7e1ac409","owner":"O"}; QA AS6 Dept A prefs restored 200
+- 2026-11-16T10:38:52Z WF lane: workflow rule e06348a4-af93-43cb-ad40-e79201cacef3 deactivated
+- 2026-11-16T10:39:17Z AS lane: rule created 07703c18-6cbe-4da5-9a34-08dfa0c256d8 round_robin "QA RT19 AS 2838 30day fv47" active=true
+- 2026-11-16T10:39:22Z AS lane: rule created 0d04215e-e2e1-4348-9688-dacb1b872c8e round_robin "QA RT19 AS load check4 AOB bdc3" active=true
+- 2026-11-16T10:39:23Z WF lane: workflow rule "QA RT19 WF 2973" a8ab9e31-8307-458f-8fe5-a0222e06d245 (active)
+- 2026-11-16T10:39:24Z WF lane: ticket "QA RT19 WF 2973 A active not in dept" ac6f4fc6-b72f-43dc-ae2b-a49f1f65053c #undefined
+- 2026-11-16T10:39:25Z AS lane: ticket created 21975ad3-4594-4e75-87d1-a4ba5ec4e32c "QA RT19 AS R19ASLD7bdc3 LE1"
+- 2026-11-16T10:39:28Z AS lane: ticket created 46e0596f-cf15-4ba3-b57f-223eb0785e04 "QA RT19 AS R19ASLD7bdc3 LE2"
+- 2026-11-16T10:39:31Z AS lane: ticket created 4d5c5068-8d24-49bd-95ef-e794003c80db "QA RT19 AS R19ASLD7bdc3 LE3"
+- 2026-11-16T10:39:33Z AS lane: ticket created d93c5c58-4c33-4328-bacd-de1e85e36f8a "QA RT19 AS R19ASLD7bdc3 LE4"
+- 2026-11-16T10:39:37Z AS lane: ticket created dceeee01-143b-445e-8175-573178104632 "QA RT19 AS R19ASLD7bdc3 LE5"
+- 2026-11-16T10:39:40Z AS lane: rule 0d04215e-e2e1-4348-9688-dacb1b872c8e active=false -> 400
+- 2026-11-16T10:39:40Z WF lane: ticket "QA RT19 WF 2973 B active in dept control" facc3ef7-5e3d-46c4-8b67-8c92883dc3b8 #undefined
+- 2026-11-16T10:39:40Z AS lane: RR prefs QA AO Dept B changed for load check 4 (old) and restored true
+- 2026-11-16T10:39:47Z AS lane: ticket created 928393eb-5e94-47e8-98d7-14e055e68f4f "QA RT19 AS R19AS38fv47 new control"
+- 2026-11-16T10:39:56Z WF lane: agent "ZZ Sweep Tavi Probe" (5b3f7466, QA probe) SUSPENDED for NDC-2973: 204
+- 2026-11-16T10:40:00Z WF lane: ticket "QA RT19 WF 2973 A suspended not in dept" 2ffbd460-2f21-48a9-baf9-34b88172135a #undefined
+- 2026-11-16T10:40:01Z WF lane: ticket "QA RT19 WF 2973 B suspended in dept" 99056683-57e1-4eb2-8735-679b5f845859 #undefined
+- 2026-11-16T10:40:07Z AS lane: rule created 6541e7b8-b656-4df7-ae4d-73f96e865517 round_robin "QA RT19 AS load check5 AOB 1wck" active=true
+- 2026-11-16T10:40:11Z AS lane: ticket created 2424b63c-3b6d-4563-acfd-829fb903e2db "QA RT19 AS R19ASLD71wck LE1"
+- 2026-11-16T10:40:17Z AS lane: ticket created 1c0258f8-6b80-4f5a-a369-d3af403dc0c3 "QA RT19 AS R19ASLD71wck LE2"
+- 2026-11-16T10:40:34Z WF lane: ticket "QA RT19 WF 2973 B manual target" 23bb542a-febc-476e-9631-a65b0aa8f20e #undefined
+- 2026-11-16T10:40:35Z AS lane: rule 6541e7b8-b656-4df7-ae4d-73f96e865517 active=false -> 400
+- 2026-11-16T10:40:35Z AS lane: RR prefs QA AO Dept B changed for load check 5 (old) and restored true
+- 2026-11-16T10:40:42Z WF lane: agent "ZZ Sweep Tavi Probe" REACTIVATED: 204, status active
+- 2026-11-16T10:40:42Z WF lane: workflow rule a8ab9e31-8307-458f-8fe5-a0222e06d245 deactivated
+- 2026-11-16T10:41:03Z WF lane: workflow rule "QA RT19 WF 2966" eb4132c0-7fd2-497f-a8cb-e548d55bc98a (active)
+- 2026-11-16T10:41:03Z WF lane: ticket "QA RT19 WF 2966 ratings off" fc5b7921-2562-4a4a-8a7a-bfa5bfb945e1 #undefined
+- 2026-11-16T10:41:12Z AS lane: rule created a8f673c5-3eed-4e80-9f68-7d1d993263d2 round_robin "QA RT19 AS NF3 burst glyh" active=true
+- 2026-11-16T10:41:19Z AS lane: NF-3 run 1: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T10:41:20Z AS lane: rule 07703c18-6cbe-4da5-9a34-08dfa0c256d8 active=false -> 200
+- 2026-11-16T10:41:22Z AS lane: ticket #31 restored (subject/dept/owner/status) {"subject":"Send email","status":"Closed","dept":"7e1ac409","owner":"O"}; QA AS6 Dept A prefs restored 200
+- 2026-11-16T10:41:36Z WF lane: Customer Happiness turned ON scoped to QA RT19 WF Dept B only for NDC-2966 (200); original wf/out/2966-happiness-orig.json
+- 2026-11-16T10:41:40Z WF lane: ticket "QA RT19 WF 2966 ratings on but dept not scoped" 27a734c6-e952-439e-96c4-97edb62638e6 #undefined
+- 2026-11-16T10:42:01Z WF lane: Customer Happiness restored (200, diff [])
+- 2026-11-16T10:42:01Z WF lane: workflow rule eb4132c0-7fd2-497f-a8cb-e548d55bc98a deactivated
+- 2026-11-16T10:43:59Z AS lane: NF-3 run 2: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T10:46:24Z AS lane: SLA policy created df6c9fa3-b9c3-4af3-9e99-4578802bd62e "QA RT19 AS 3046 SLA 506j" active=true dept QA AS6 Dept A
+- 2026-11-16T10:46:25Z AS lane: rule created 708a71dc-d787-41b4-9fb7-a08358400273 round_robin "QA RT19 AS 3046 A create+update 506j" active=true
+- 2026-11-16T10:46:25Z AS lane: rule created ef834136-847c-4bdf-bd5d-454b3c5a1e67 round_robin "QA RT19 AS 3046 B create only 506j" active=true
+- 2026-11-16T10:46:29Z AS lane: ticket created 8d5ad0ae-db8e-4933-8190-cdf6384d7f46 "QA RT19 AS R19AS46A506j api 1"
+- 2026-11-16T10:46:30Z AS lane: ticket created 41333357-8c8e-4b4c-94b1-e94f14447360 "QA RT19 AS R19AS46A506j api 2"
+- 2026-11-16T10:46:31Z AS lane: ticket created 3b9512c5-4583-412e-8617-6f5bae980ad4 "QA RT19 AS R19AS46B506j api create-only"
+- 2026-11-16T10:46:54Z AS lane: NF-3 run 3: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T10:48:22Z AS lane: NF-3 run 4: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T10:49:39Z AS lane: NF-3 run 5: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T10:50:20Z AS lane: ticket created f4f50454-205b-4579-b08f-4a011e566129 "QA RT19 AS R19AS46A506j screen 1" (New Ticket screen, owner cleared)
+- 2026-11-16T10:50:27Z AS lane: rule 708a71dc-d787-41b4-9fb7-a08358400273 active=false -> 200
+- 2026-11-16T10:50:28Z AS lane: rule ef834136-847c-4bdf-bd5d-454b3c5a1e67 active=false -> 200
+- 2026-11-16T10:50:30Z AS lane: SLA policy df6c9fa3-b9c3-4af3-9e99-4578802bd62e set inactive -> 200
+- 2026-11-16T10:50:31Z AS lane: QA AS6 Dept A prefs restored after 3046 true
+- 2026-11-16T10:51:04Z AS lane: rule a8f673c5-3eed-4e80-9f68-7d1d993263d2 active=false -> 400
+- 2026-11-16T10:51:06Z AS lane: RR prefs QA AO Dept B changed for NF-3 and restored true
+- 2026-11-16T10:52:55Z AS lane: rule created 8d200148-9daf-4b7e-9859-14010e3fabf0 round_robin "QA RT19 AS count probe A1 3n4w" active=true
+- 2026-11-16T10:52:58Z AS lane: ticket created 4ff2d446-9a6a-4243-8e6a-c4d60ff5f384 "QA RT19 AS R19ASCNT3n4w thr5"
+- 2026-11-16T10:53:22Z AS lane: ticket created e1b53452-8dd3-4720-a246-bcf2badaf72e "QA RT19 AS R19ASCNT3n4w thr6"
+- 2026-11-16T10:53:47Z AS lane: ticket created b64bd0dc-60a6-41ea-9b2e-7fae675de22c "QA RT19 AS R19ASCNT3n4w thr7"
+- 2026-11-16T10:53:48Z WF lane: department "QA RT19 WF Dept" bc53682c-7271-4fe0-8c32-99eff3a10bb1: agents removed (was ["2a7c1bc4-f6d4-4bd3-805e-0496ece13987","876ce871-2b02-4854-89a7-68050391c62b"])
+- 2026-11-16T10:53:49Z WF lane: department "QA RT19 WF Dept B" 8e286b60-3137-43bd-8859-98da8e5efcba: agents removed (was ["5b3f7466-2fa7-4115-8ee0-f97c52cbb2c1"])
+- 2026-11-16T10:53:53Z AS lane: rule 8d200148-9daf-4b7e-9859-14010e3fabf0 active=false -> 400
+- 2026-11-16T10:53:54Z AS lane: QA AO Dept B prefs changed for count probe and restored true
+- 2026-11-16T10:54:27Z WF lane: CORRECTION — of the 58 'call record … (created by rule 2968 full)' lines above, only 2372ca58-1301-4212-bda5-c438eba5c122 was created by my rule; the other 57 are pre-existing Calls returned by an unfiltered search (not created or changed by this lane). Rule 2968 empty ph created no Call.
+- 2026-11-16T10:55:45Z AS lane: rule created 874940df-7e49-43f5-9586-a20203cdf47f round_robin "QA RT19 AS count probe A1 j4rv" active=true
+- 2026-11-16T10:55:48Z AS lane: ticket created a4c325c0-aa8f-4d9d-93b6-d198776fe8ff "QA RT19 AS R19ASCNTj4rv thr6"
+- 2026-11-16T10:56:10Z AS lane: ticket created 44ffb3b2-8354-4c41-98ed-e6d136fae202 "QA RT19 AS R19ASCNTj4rv thr7"
+- 2026-11-16T10:56:17Z AS lane: rule 874940df-7e49-43f5-9586-a20203cdf47f active=false -> 400
+- 2026-11-16T10:56:17Z AS lane: QA AO Dept B prefs changed for count probe and restored true
+- 2026-11-16T10:56:57Z AS lane: rule created c87cd515-6c68-4223-a984-f6702be6ee77 round_robin "QA RT19 AS delete probe A1 jtbf" active=true
+- 2026-11-16T10:57:00Z AS lane: ticket created f7268a59-0fa3-4a4a-bbd4-41b86fd44602 "QA RT19 AS R19ASDELjtbf thr7"
+- 2026-11-16T10:57:05Z AS lane: ticket created 7e106cc1-1303-4988-a7ee-a864b9898ec1 "QA RT19 AS DEL probe A1 open"
+- 2026-11-16T10:57:11Z AS lane: ticket created bde88487-d4a7-431c-a2d6-bc328d726238 "QA RT19 AS R19ASDELjtbf thr7"
+- 2026-11-16T10:57:31Z AS lane: ticket 7e106cc1-1303-4988-a7ee-a864b9898ec1 deleted (to Recycle Bin) for threshold count probe -> 204
+- 2026-11-16T10:57:37Z AS lane: ticket created 62da5197-63aa-4392-b203-2f1ecbdd6180 "QA RT19 AS R19ASDELjtbf thr7"
+- 2026-11-16T10:57:45Z AS lane: ticket created 7d87927f-70be-4058-9f36-5b202d3ff6de "QA RT19 AS R19ASDELjtbf thr8"
+- 2026-11-16T10:57:50Z AS lane: rule c87cd515-6c68-4223-a984-f6702be6ee77 active=false -> 400
+- 2026-11-16T10:57:50Z AS lane: QA AO Dept B prefs changed for delete probe and restored true
+- 2026-11-16T10:58:42Z AS lane: rule created 7a470c2e-7709-4392-9c82-b962d4a9720a round_robin "QA RT19 AS NF3 burst scyn" active=true
+- 2026-11-16T10:58:49Z AS lane: NF-3 run 1: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T11:00:26Z AS lane: NF-3 run 2: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T11:01:50Z AS lane: NF-3 run 3: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T11:03:25Z AS lane: NF-3 run 4: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T11:04:46Z AS lane: NF-3 run 5: 20 tickets created in QA AO Dept B (20 ok)
+- 2026-11-16T11:07:10Z AS lane: rule 7a470c2e-7709-4392-9c82-b962d4a9720a active=false -> 400
+- 2026-11-16T11:07:11Z AS lane: RR prefs QA AO Dept B changed for NF-3 and restored true
+- 2026-11-16T11:15:41Z AS lane: rule 054b35a2-7f56-40d8-b635-65bf75442ae2 active=false -> 400
+- 2026-11-16T11:15:42Z AS lane: rule 9d0e08d5-bfb3-44bf-b5cb-c7066352475e active=false -> 400
+- 2026-11-16T11:15:43Z AS lane: rule 57d47eb0-e2f5-4988-9344-22b38eb42c5d active=false -> 400
+- 2026-11-16T11:15:43Z AS lane: rule 49ef54ed-7c32-4f50-a75f-76f6331873e2 active=false -> 400
+- 2026-11-16T11:15:43Z AS lane: rule b4b800e5-a985-4612-9b6d-6942dc4e6f01 active=false -> 400
+- 2026-11-16T11:15:44Z AS lane: rule 0d04215e-e2e1-4348-9688-dacb1b872c8e active=false -> 400
+- 2026-11-16T11:15:44Z AS lane: rule 6541e7b8-b656-4df7-ae4d-73f96e865517 active=false -> 400
+- 2026-11-16T11:15:45Z AS lane: rule a8f673c5-3eed-4e80-9f68-7d1d993263d2 active=false -> 400
+- 2026-11-16T11:15:45Z AS lane: rule 8d200148-9daf-4b7e-9859-14010e3fabf0 active=false -> 400
+- 2026-11-16T11:15:46Z AS lane: rule 874940df-7e49-43f5-9586-a20203cdf47f active=false -> 400
+- 2026-11-16T11:15:46Z AS lane: rule c87cd515-6c68-4223-a984-f6702be6ee77 active=false -> 400
+- 2026-11-16T11:15:47Z AS lane: rule 7a470c2e-7709-4392-9c82-b962d4a9720a active=false -> 400
+- 2026-11-16T11:15:55Z AS lane: rule 054b35a2-7f56-40d8-b635-65bf75442ae2 active=false -> 200
+- 2026-11-16T11:15:56Z AS lane: rule 9d0e08d5-bfb3-44bf-b5cb-c7066352475e active=false -> 200
+- 2026-11-16T11:15:56Z AS lane: rule 57d47eb0-e2f5-4988-9344-22b38eb42c5d active=false -> 200
+- 2026-11-16T11:15:57Z AS lane: rule 49ef54ed-7c32-4f50-a75f-76f6331873e2 active=false -> 200
+- 2026-11-16T11:15:57Z AS lane: rule b4b800e5-a985-4612-9b6d-6942dc4e6f01 active=false -> 200
+- 2026-11-16T11:15:58Z AS lane: rule 0d04215e-e2e1-4348-9688-dacb1b872c8e active=false -> 200
+- 2026-11-16T11:15:59Z AS lane: rule 6541e7b8-b656-4df7-ae4d-73f96e865517 active=false -> 200
+- 2026-11-16T11:15:59Z AS lane: rule a8f673c5-3eed-4e80-9f68-7d1d993263d2 active=false -> 200
+- 2026-11-16T11:16:00Z AS lane: rule 8d200148-9daf-4b7e-9859-14010e3fabf0 active=false -> 200
+- 2026-11-16T11:16:01Z AS lane: rule 874940df-7e49-43f5-9586-a20203cdf47f active=false -> 200
+- 2026-11-16T11:16:02Z AS lane: rule c87cd515-6c68-4223-a984-f6702be6ee77 active=false -> 200
+- 2026-11-16T11:16:02Z AS lane: rule 7a470c2e-7709-4392-9c82-b962d4a9720a active=false -> 200
+- 2026-11-16T11:16:10Z AS lane: found 13 QA AO Dept B rules still active (earlier deactivations 400 = missing version); all set inactive -> 200
+- 2026-11-16T11:17:03Z SK lane: department "QA RT19 SK Dept" 72f4edfe-f36a-4ac7-907e-fe7d97cd1dbf created, agents Test User 1 + Dev Team 2
+- 2026-11-16T11:17:14Z SK lane: skill type created 628a9393-10e8-46a4-8f0b-cc891865710f "QA RT19 SK Type" dept QA RT19 SK Dept
+- 2026-11-16T11:17:15Z SK lane: skill created c900074b-6838-4579-a654-fc29aab58331 "QA RT19 SK S1" dept QA RT19 SK Dept
+- 2026-11-16T11:17:16Z SK lane: skill created e6de6cfb-0599-47d3-9fcd-7aec3a4f715a "QA RT19 SK S2" dept QA RT19 SK Dept
+- 2026-11-16T11:17:16Z SK lane: skill created 6520191c-4c6d-47aa-922a-d0247b8fb4e3 "QA RT19 SK S3" dept QA RT19 SK Dept
+- 2026-11-16T11:17:17Z SK lane: skill created b2c0ed07-57cb-4496-bde3-a75bcd37bdf9 "QA RT19 SK Inact" dept QA RT19 SK Dept
+- 2026-11-16T11:17:17Z SK lane: skill b2c0ed07-57cb-4496-bde3-a75bcd37bdf9 "QA RT19 SK Inact" set inactive
+- 2026-11-16T11:17:18Z SK lane: skill created c064298d-a841-4e66-9784-d33d08a7f708 "QA RT19 SK Del" dept QA RT19 SK Dept
+- 2026-11-16T11:17:18Z SK lane: skill created 7d6179c7-de00-4d41-8eec-a368edd75ffd "QA RT19 SK Long WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" dept QA RT19 SK Dept
+- 2026-11-16T11:17:56Z SK lane: QA RT19 SK Dept RR prefs assign_to_offline_agents=true (orig false)
+- 2026-11-16T11:17:56Z SK lane: rule created 81d3a16a-2c00-4480-b42c-8acf9d7b0add round_robin skill "QA RT19 SK 2931 skill TU1+DT2 xbtx" active=true dept QA RT19 SK Dept
+- 2026-11-16T11:17:57Z SK lane: ticket created 32050fd4-4c9a-4181-a28a-13135ed417f4 "QA RT19 SK K31xbtx a S3+S1"
+- 2026-11-16T11:18:00Z SK lane: ticket created 8578fe69-876f-4e6d-9321-c555a414ea25 "QA RT19 SK K31xbtx b S3+S2"
+- 2026-11-16T11:18:03Z SK lane: ticket created 46d15278-27a1-4614-8901-3c227ef2a797 "QA RT19 SK K31xbtx c S3 only"
+- 2026-11-16T11:18:24Z SK lane: ticket created b87d5f86-df23-41ec-b759-176301dccb80 "QA RT19 SK K31xbtx d1 S1+S2"
+- 2026-11-16T11:18:28Z SK lane: ticket created fe76fd2c-562e-4228-8d4b-9b65ffc24399 "QA RT19 SK K31xbtx d2 S1+S2"
+- 2026-11-16T11:18:30Z SK lane: ticket created 973d923e-7984-4b6d-b738-072e3937d5d1 "QA RT19 SK K31xbtx d3 S1+S2"
+- 2026-11-16T11:18:33Z SK lane: rule 81d3a16a-2c00-4480-b42c-8acf9d7b0add active=false -> 200
+- 2026-11-16T11:18:33Z SK lane: ticket created 1f9e16ef-4ee8-4415-9d17-6ad6cde8a7c8 "QA RT19 SK K31ABSxbtx assign by skills S3+S1"
+- 2026-11-16T11:18:43Z SK lane: ticket created 90ac01c0-3029-4999-9918-3e5437709e01 "QA RT19 SK K31ABSxbtx assign by skills S3 only"
+- 2026-11-16T11:18:48Z SK lane: rule created ca961e02-df96-467d-8f5c-44d6cebb8a43 round_robin skill "QA RT19 SK 2932 skill TU1 only xbtx" active=true dept QA RT19 SK Dept
+- 2026-11-16T11:18:48Z SK lane: ticket created 7293f7cf-1b2e-49d3-82b4-5bf087573176 "QA RT19 SK K32xbtx a1 no skills"
+- 2026-11-16T11:18:49Z SK lane: ticket created baec2abc-8101-49ab-ba22-e344377c966a "QA RT19 SK K32xbtx a2 no skills"
+- 2026-11-16T11:18:49Z SK lane: ticket created 19afcd08-41e7-49e3-9026-51d1f792b51b "QA RT19 SK K32xbtx a3 no skills"
+- 2026-11-16T11:18:59Z AS lane: rule created bfbd96f4-2347-4567-89c0-5497ecb1849e round_robin "QA RT19 AS t3 count A3 117y" active=true
+- 2026-11-16T11:19:04Z AS lane: ticket created 3c6384bf-d6aa-4bfd-99a9-64a7ac4762ef "QA RT19 AS R19AS3117yA3 thr1"
+- 2026-11-16T11:19:20Z SK lane: ticket created bbf77094-4463-4721-a63d-ab26e4d9b2c6 "QA RT19 SK K32xbtx b S2 only (holder not in rule)"
+- 2026-11-16T11:19:31Z AS lane: ticket created d4aee4ca-35c0-4d97-b01f-7483a8227009 "QA RT19 AS R19AS3117yA3 thr2"
+- 2026-11-16T11:19:38Z AS lane: ticket created 95717ae8-4e59-4b3a-a1d5-773beadba944 "QA RT19 AS t3 A3 open other dept"
+- 2026-11-16T11:19:44Z AS lane: ticket created df2b4ea1-63ac-48d7-b056-a70fbf10f3cf "QA RT19 AS R19AS3117yA3 v1thr2"
+- 2026-11-16T11:19:50Z AS lane: ticket created 854ec9d0-163f-4025-8d61-00cc969dceba "QA RT19 AS t3 A3 open AOB"
+- 2026-11-16T11:19:56Z AS lane: ticket created 3d04383a-269f-4032-826d-5d2d11918600 "QA RT19 AS R19AS3117yA3 v2thr2"
+- 2026-11-16T11:20:27Z AS lane: ticket created 6a9bf9e9-dc06-4848-a61d-e213fbbca6f0 "QA RT19 AS R19AS3117yA3 v3thr2"
+- 2026-11-16T11:20:40Z AS lane: ticket created 4f8a9c28-0ca6-4143-bc33-6425a29fa482 "QA RT19 AS R19AS3117yA3 v4thr2"
+- 2026-11-16T11:21:07Z AS lane: ticket created a2591f08-7404-4388-9639-c5fb9c990fd3 "QA RT19 AS R19AS3117yA3 agthr2"
+- 2026-11-16T11:21:14Z SK lane: workflow rule "QA RT19 SK WF skills" 905a948f-f465-44da-8a70-53b1cbed24a3 created inactive
+- 2026-11-16T11:21:15Z SK lane: rule 81d3a16a-2c00-4480-b42c-8acf9d7b0add active=false -> 200
+- 2026-11-16T11:21:15Z SK lane: rule ca961e02-df96-467d-8f5c-44d6cebb8a43 active=false -> 200
+- 2026-11-16T11:21:15Z SK lane: workflow rule "QA RT19 SK WF any dept" 2add151f-92d5-4b1b-a95f-952578f2842a created inactive
+- 2026-11-16T11:21:15Z SK lane: QA RT19 SK Dept RR prefs restored, equal=true
+- 2026-11-16T11:21:16Z AS lane: ticket created 81f109b2-2e64-4469-9548-f84c975b5c6f "QA RT19 AS R19AS3117yA3 agthr3"
+- 2026-11-16T11:21:22Z AS lane: rule created 80438e61-a53e-4b11-b5f5-0964258627d5 round_robin "QA RT19 AS t3 count A1 117y" active=true
+- 2026-11-16T11:21:26Z AS lane: ticket created 8c1ecc37-0b93-4910-b106-ef85d3cb9460 "QA RT19 AS R19AS3117yA1 thr4"
+- 2026-11-16T11:21:29Z SK lane: ticket created 1183f40c-8866-470c-9322-036f9b929bba "QA RT19 SK 2971 has Del before delete"
+- 2026-11-16T11:21:53Z AS lane: ticket created 4e731a1e-bc12-4ffa-8d5c-7df1d4fb7e33 "QA RT19 AS R19AS3117yA1 thr5"
+- 2026-11-16T11:22:18Z AS lane: rule bfbd96f4-2347-4567-89c0-5497ecb1849e active=false -> 200
+- 2026-11-16T11:22:18Z AS lane: rule 80438e61-a53e-4b11-b5f5-0964258627d5 active=false -> 200
+- 2026-11-16T11:22:19Z AS lane: QA AO Dept B prefs changed for t3 count check and restored true; extra tickets closed
+- 2026-11-16T11:23:37Z AS lane: rule created aba2bd28-fb6f-40e7-a5af-4282e20180d5 round_robin "QA RT19 AS t4 A1 DA seun" active=true
+- 2026-11-16T11:23:43Z AS lane: ticket created c11177a9-c4bf-4119-949f-c69180ac9958 "QA RT19 AS R19AS4seuna thr74"
+- 2026-11-16T11:24:10Z AS lane: ticket created b2e032da-712e-4c02-b71b-cbe08f42e72b "QA RT19 AS R19AS4seuna thr75"
+- 2026-11-16T11:24:19Z AS lane: ticket created 36bf3e19-5db4-4639-bbdb-2419e079777d "QA RT19 AS R19AS4seuna thr77"
+- 2026-11-16T11:24:26Z AS lane: rule created 5cccba2d-4723-4430-bc94-86f392de3bd0 round_robin "QA RT19 AS t4 A3 AOB seun" active=true
+- 2026-11-16T11:24:32Z AS lane: ticket created 11da29a6-f1a2-4005-a511-e097e5037358 "QA RT19 AS R19AS4seunc agthr1"
+- 2026-11-16T11:24:59Z AS lane: ticket created f0030b9f-cd3a-479c-9a83-d20fb7f66a4b "QA RT19 AS R19AS4seunc agthr2"
+- 2026-11-16T11:25:09Z AS lane: ticket created aaa367cd-5942-43f2-b7a8-41cf1ba7e6a0 "QA RT19 AS R19AS4seunc del-after-assign"
+- 2026-11-16T11:25:19Z AS lane: ticket created 4e6a4894-fd19-4d6c-be8d-a8995614a57d "QA RT19 AS R19AS4seunc b1thr3"
+- 2026-11-16T11:25:45Z AS lane: ticket aaa367cd-5942-43f2-b7a8-41cf1ba7e6a0 deleted (Recycle Bin) for t4 auto-assigned delete check -> 204
+- 2026-11-16T11:25:58Z AS lane: ticket created 30900969-7a9b-4afe-9194-8c8878d9e1ee "QA RT19 AS R19AS4seunc b2thr2"
+- 2026-11-16T11:26:23Z AS lane: ticket created 2457ee39-a50b-4f3e-bb5c-abf2af0739f1 "QA RT19 AS R19AS4seunc del-immediately"
+- 2026-11-16T11:26:23Z AS lane: ticket 2457ee39-a50b-4f3e-bb5c-abf2af0739f1 deleted right after create for t4 -> 204
+- 2026-11-16T11:26:34Z AS lane: ticket created f716d447-666c-4c45-bea2-9aa3a46d837c "QA RT19 AS R19AS4seunc d2thr2"
+- 2026-11-16T11:26:58Z AS lane: rule aba2bd28-fb6f-40e7-a5af-4282e20180d5 active=false -> 200
+- 2026-11-16T11:26:58Z AS lane: rule 5cccba2d-4723-4430-bc94-86f392de3bd0 active=false -> 200
+- 2026-11-16T11:26:59Z AS lane: t4: prefs QA AS6 Dept A + QA AO Dept B changed and restored {"steps":["T-a A1 in AS6 Dept A records: {\"Open\":74,\"OnHold\":2,\"Esc\":0}","T-a dept thr 74 (= Open) -> #4539 -> none","T-a dept thr 75 (= Open+1) -> #4540 -> A1","T-a dept thr 77 (= Open+3) -> #4541 -> A1","T-c A3 in AO-B records: {\"Open\":1,\"OnHold\":0,\"Esc\":0}","T-c agent thr 1 (= Open, On Hold excluded) -> #4542 -> none","T-c agent thr 2 -> #4543 -> A3","T-b ticket #4544 auto-assigned -> A3 records now {\"Open\":2,\"OnHold\":0,\"Esc\":0}","T-b dept thr 3 with it open -> #undefined -> none (expect none: Open+1 = thr-1? no: count Open+1 < thr -> A3)","T-b deleted 204 records now {\"Open\":1,\"OnHold\":0,\"Esc\":0}","T-b dept thr 2 after delete -> #4545 -> none (expect A3 if delete clears count)","T-d created + deleted at once 204 records {\"Open\":1,\"OnHold\":0,\"Esc\":0}","T-d dept thr 2 -> #4547 -> none (expect A3)"],"restoreAS6-A":"200 true","restoreAO-B":"200 true"}
+- 2026-11-16T11:27:30Z AS lane: rule created b8e93f9e-d3aa-483e-9442-2cc984ef41d3 round_robin "QA RT19 AS t5 A3 AOB 3et2" active=true
+- 2026-11-16T11:27:30Z SK lane: skill c064298d-a841-4e66-9784-d33d08a7f708 "QA RT19 SK Del" deleted (NDC-2971)
+- 2026-11-16T11:27:36Z AS lane: QA AS6 Dept A prefs: offline allowed, thresholds off for 2275 import check -> 200
+- 2026-11-16T11:27:37Z AS lane: rule created cc87fb2b-067f-4e31-a44f-0182032d126a round_robin "QA RT19 AS 2275 import i2g9" active=true
+- 2026-11-16T11:27:37Z AS lane: ticket created 6b642a47-162c-4f9b-b665-a8ef9f87b82e "QA RT19 AS R19AS53et2 m start +1"
+- 2026-11-16T11:27:39Z AS lane: ticket created 25d1728f-638a-40f9-9617-69d771452bc5 "QA RT19 AS R19ASIMP api control"
+- 2026-11-16T11:28:03Z AS lane: ticket created 30794e21-72f8-4756-9c51-12146e39d8da "QA RT19 AS R19AS53et2 m start +2"
+- 2026-11-16T11:28:29Z AS lane: ticket created b3a62717-7e74-449a-a81f-88c59d8f5825 "QA RT19 AS R19AS53et2 m start +3"
+- 2026-11-16T11:28:35Z AS lane: ticket created by import 7b8c0c62-651e-4b8f-8c90-2587ff8c2f0b "QA RT19 AS R19ASIMP import with owner"
+- 2026-11-16T11:28:35Z AS lane: ticket created by import 62b4e26b-99b2-420e-b6e7-be7c04abcea8 "QA RT19 AS R19ASIMP import no owner"
+- 2026-11-16T11:28:40Z AS lane: ticket created 239c11dd-c988-4494-8669-115801d5b4fd "QA RT19 AS R19AS53et2 X reassign"
+- 2026-11-16T11:28:54Z AS lane: rule cc87fb2b-067f-4e31-a44f-0182032d126a active=false -> 200
+- 2026-11-16T11:28:54Z AS lane: QA AS6 Dept A prefs restored after import check true
+- 2026-11-16T11:28:56Z AS lane: ticket created 3a184872-c538-4e97-9158-5e1534001144 "QA RT19 AS R19AS53et2 m after X reassigned away +1"
+- 2026-11-16T11:29:21Z AS lane: ticket created 67937385-004a-4829-9da0-5faaf924eeb3 "QA RT19 AS R19AS53et2 m after X reassigned away +2"
+- 2026-11-16T11:29:30Z AS lane: ticket created 341fb7b5-c0dd-44e2-ae89-8643f414ecff "QA RT19 AS R19AS53et2 Y move dept"
+- 2026-11-16T11:29:41Z AS lane: ticket created 8392c9a6-579c-47b2-86b8-f12da491f0c4 "QA RT19 AS R19AS53et2 m after Y moved out +1"
+- 2026-11-16T11:30:10Z AS lane: ticket created 6a66df1d-ea88-4a7b-bf7a-97f14a8c8c08 "QA RT19 AS R19AS53et2 m after Y moved out +2"
+- 2026-11-16T11:30:24Z AS lane: ticket created 48930877-5017-4de0-add7-476a13184580 "QA RT19 AS R19AS53et2 Z close"
+- 2026-11-16T11:30:45Z AS lane: ticket created 7350519d-c366-411d-8cae-9f1be661123e "QA RT19 AS R19AS53et2 m after Z closed (control) +1"
+- 2026-11-16T11:31:15Z AS lane: ticket created c76df398-7d83-473a-8f48-6bdad769091f "QA RT19 AS R19AS53et2 m after Z closed (control) +2"
+- 2026-11-16T11:31:24Z AS lane: ticket created 626e2aca-7cbc-4cb3-9480-75d64a3f5023 "QA RT19 AS R19AS53et2 W delete"
+- 2026-11-16T11:31:27Z AS lane: ticket 626e2aca-7cbc-4cb3-9480-75d64a3f5023 deleted (Recycle Bin) for t5 -> 204
+- 2026-11-16T11:31:40Z AS lane: ticket created 347fb7de-7c01-4c03-a3e5-fff9a8503d36 "QA RT19 AS R19AS53et2 m after W deleted +1"
+- 2026-11-16T11:32:09Z AS lane: ticket created a3ae11fb-b8f6-43c9-9348-43db4e3fc3fc "QA RT19 AS R19AS53et2 m after W deleted +2"
+- 2026-11-16T11:32:20Z AS lane: rule b8e93f9e-d3aa-483e-9442-2cc984ef41d3 active=false -> 200
+- 2026-11-16T11:32:21Z AS lane: t5: QA AO Dept B prefs changed and restored true; X,Y closed
+- 2026-11-16T11:32:46Z SK lane: ticket created f0ccb075-4a50-448d-823b-67e1bfca6354 "QA RT19 SK 2931 UI assign by skills S3+S2"
+- 2026-11-16T11:35:49Z SK lane: QA RT19 SK Dept RR prefs assign_to_offline_agents=true for 2931 UI
+- 2026-11-16T11:36:22Z AS lane: rule created 37f2c3f4-cfd4-4400-a2a7-a4f7d1d33927 round_robin "QA RT19 AS t6 A1 34qx" active=true
+- 2026-11-16T11:36:26Z SK lane: QA RT19 SK Dept RR prefs restored, equal=true
+- 2026-11-16T11:36:30Z AS lane: ticket created 11a774a5-c692-4d01-808f-e1e1b7d10656 "QA RT19 AS R19AS634qxA1 +1"
+- 2026-11-16T11:36:56Z AS lane: ticket created c6d2403d-ab07-43d1-a1c7-28a0bb2ac9f9 "QA RT19 AS R19AS634qxA1 +2"
+- 2026-11-16T11:37:22Z AS lane: ticket created a66dfdc9-e39f-478c-aa93-d41ed2a5347c "QA RT19 AS R19AS634qxA1 +3"
+- 2026-11-16T11:37:29Z AS lane: rule 37f2c3f4-cfd4-4400-a2a7-a4f7d1d33927 active=false -> 200
+- 2026-11-16T11:37:29Z AS lane: rule created 6862e96d-33c7-4dc7-bdbe-d0630e62a135 round_robin "QA RT19 AS t6 A3 34qx" active=true
+- 2026-11-16T11:37:35Z AS lane: ticket created 08bb1321-38a1-4d0b-9819-ff3f11536418 "QA RT19 AS R19AS634qxA3 +1"
+- 2026-11-16T11:38:04Z AS lane: ticket created 66f94f3f-01e3-4fd0-b0cf-7d223e39cae6 "QA RT19 AS R19AS634qxA3 +2"
+- 2026-11-16T11:38:12Z AS lane: rule 6862e96d-33c7-4dc7-bdbe-d0630e62a135 active=false -> 200
+- 2026-11-16T11:38:13Z AS lane: rule 37f2c3f4-cfd4-4400-a2a7-a4f7d1d33927 active=false -> 200
+- 2026-11-16T11:38:13Z AS lane: rule 6862e96d-33c7-4dc7-bdbe-d0630e62a135 active=false -> 200
+- 2026-11-16T11:38:14Z AS lane: t6: QA AO Dept B prefs changed and restored 200 true
+- 2026-11-16T11:41:18Z AS lane: import via wizard created #4557/#4558 (QA AS6 Dept A, source excel_import); rule cc87fb2b 'QA RT19 AS 2275 import' inactive; final check: 32 QA RT19 AS rules all inactive, prefs AS6 A/B + AO-B identical
+- 2026-11-16T11:42:39Z SK lane: ticket created b7d081d0-3086-4c09-a483-bf62e7060123 "QA RT19 SK 2933 api mixed"
+- 2026-11-16T11:46:06Z SK lane: department "QA RT19 SK Dept" 72f4edfe-f36a-4ac7-907e-fe7d97cd1dbf: agents removed (was Test User 1 + Dev Team 2; they were not members before the lane created it)
+- 2026-11-16T12:01:00Z BUG lane: rule created 147d876d-b22f-4c82-872b-315c805173d2 round_robin "QA RT19 BUG D1 TestUser1 4ux4" active=true
+- 2026-11-16T12:01:39Z BUG lane: ticket created 32eff479-a56e-4a17-9c68-9b17fdce0ed7 "QA RT19 BUG BUGD14ux4TestUser1 thr6"
+- 2026-11-16T12:02:16Z BUG lane: ticket created de552a38-2b2a-4b0b-a585-705a12938138 "QA RT19 BUG BUGD14ux4TestUser1 thr7"
+- 2026-11-16T12:02:42Z BUG lane: rule 147d876d-b22f-4c82-872b-315c805173d2 active=false -> 200
+- 2026-11-16T12:02:43Z BUG lane: rule created 7cceb5ec-8f47-4026-a36f-822a28ff41b6 round_robin "QA RT19 BUG D1 DevTeam2 4ux4" active=true
+- 2026-11-16T12:03:00Z BUG lane: ticket created 265d97dc-fd18-4ebf-8a12-1f683c17737a "QA RT19 BUG BUGD14ux4DevTeam2 thr2"
+- 2026-11-16T12:03:34Z BUG lane: ticket created 9faabc4b-b7c8-4fca-9566-3da8eec7dd0a "QA RT19 BUG BUGD14ux4DevTeam2 thr3"
+- 2026-11-16T12:03:48Z BUG lane: rule 7cceb5ec-8f47-4026-a36f-822a28ff41b6 active=false -> 200
+- 2026-11-16T12:03:49Z BUG lane: rule 147d876d-b22f-4c82-872b-315c805173d2 active=false -> 200
+- 2026-11-16T12:03:50Z BUG lane: rule 7cceb5ec-8f47-4026-a36f-822a28ff41b6 active=false -> 200
+- 2026-11-16T12:03:51Z BUG lane: D1: QA AO Dept B RR prefs changed and restored 200 true; probe tickets closed; D1 rules inactive
+- 2026-11-16T12:04:29Z BUG lane: rule created 14e2f8c9-39a7-4acd-8a5f-52fc425807e4 round_robin "QA RT19 BUG D1 TestUser1 aj3l" active=true
+- 2026-11-16T12:04:37Z BUG lane: ticket created 7e9bd1d8-9476-4354-99de-429c8b40fc8b "QA RT19 BUG BUGD1aj3lTestUser1 thr5"
+- 2026-11-16T12:05:09Z BUG lane: ticket created ceb8bc29-ed7b-4d7a-adf1-bda218b7a814 "QA RT19 BUG BUGD1aj3lTestUser1 thr6"
+- 2026-11-16T12:05:44Z BUG lane: ticket created e0e9d80b-fb2d-4e94-a05b-67cec78f3b9e "QA RT19 BUG BUGD1aj3lTestUser1 thr7"
+- 2026-11-16T12:05:54Z BUG lane: rule 14e2f8c9-39a7-4acd-8a5f-52fc425807e4 active=false -> 200
+- 2026-11-16T12:05:55Z BUG lane: rule 14e2f8c9-39a7-4acd-8a5f-52fc425807e4 active=false -> 200
+- 2026-11-16T12:05:56Z BUG lane: D1: QA AO Dept B RR prefs changed and restored 200 true; probe tickets closed; D1 rules inactive
+- 2026-11-16T12:07:04Z BUG lane: rule created 1278035d-4d65-4783-92d2-b165574bd4e7 round_robin "QA RT19 BUG D2 burst DevTeam2 7uc8" active=true
+- 2026-11-16T12:07:11Z BUG lane: ticket created 0a2613ee-e4ff-49b0-936c-4109fa4c7363 "QA RT19 BUG BUGD27uc8 burst 1" (D2 parallel burst)
+- 2026-11-16T12:07:11Z BUG lane: ticket created 15b33246-4422-4e16-a546-4972643cdfc1 "QA RT19 BUG BUGD27uc8 burst 2" (D2 parallel burst)
+- 2026-11-16T12:07:11Z BUG lane: ticket created f88b8416-4235-4aec-bb8e-f96592a8cbb5 "QA RT19 BUG BUGD27uc8 burst 3" (D2 parallel burst)
+- 2026-11-16T12:07:11Z BUG lane: ticket created f2e1ac02-8a3c-4834-9dee-68b872af6fe8 "QA RT19 BUG BUGD27uc8 burst 4" (D2 parallel burst)
+- 2026-11-16T12:07:11Z BUG lane: ticket created bfa0dd42-4187-47fa-98ac-306b3e318dc4 "QA RT19 BUG BUGD27uc8 burst 5" (D2 parallel burst)
+- 2026-11-16T12:07:11Z BUG lane: ticket created 0faa3fa4-2ae0-469d-9478-752ce9953baf "QA RT19 BUG BUGD27uc8 burst 6" (D2 parallel burst)
+- 2026-11-16T12:07:11Z BUG lane: ticket created c919d333-e86c-467b-8eb2-d13428291726 "QA RT19 BUG BUGD27uc8 burst 7" (D2 parallel burst)
+- 2026-11-16T12:07:11Z BUG lane: ticket created 4128e5fd-8d67-42d2-9764-90e928f28a47 "QA RT19 BUG BUGD27uc8 burst 8" (D2 parallel burst)
+- 2026-11-16T12:07:11Z BUG lane: ticket created 76690bc7-99b1-4528-b1af-494dc97f28b8 "QA RT19 BUG BUGD27uc8 burst 9" (D2 parallel burst)
+- 2026-11-16T12:07:12Z BUG lane: ticket created 1ff2be15-072a-4bfc-9ccb-1bf7593e971c "QA RT19 BUG BUGD27uc8 burst 10" (D2 parallel burst)
+- 2026-11-16T12:08:17Z BUG lane: rule 1278035d-4d65-4783-92d2-b165574bd4e7 active=false -> 200
+- 2026-11-16T12:08:18Z BUG lane: D2: QA AO Dept B RR prefs changed and restored 200 true; burst tickets closed; D2 rule inactive
+- 2026-11-16T12:10:25Z BUG lane: ticket created 11afbdbc-9e45-4cca-9dec-9901c07561d7 "QA RT19 BUG BUGD2By0j9 1 close"
+- 2026-11-16T12:10:29Z BUG lane: ticket created f787862a-da0a-476c-b0a2-f2413f90ec4e "QA RT19 BUG BUGD2By0j9 2 close"
+- 2026-11-16T12:10:38Z BUG lane: ticket created 89b6d2ab-3c44-4def-b24e-c5fd1c5f2539 "QA RT19 BUG BUGD2By0j9 3 priority"
+- 2026-11-16T12:10:43Z BUG lane: ticket created 5515f88a-5c37-4b1b-9766-59f68f84dd3f "QA RT19 BUG BUGD2By0j9 4 none"
+- 2026-11-16T12:11:44Z BUG lane: rule created 56596e21-80f9-4fcd-bc6d-ca33abdc471f round_robin "QA RT19 BUG D1C DevTeam2 ly3i" active=true
+- 2026-11-16T12:12:03Z BUG lane: ticket created c8953b16-3bb5-4fad-bb31-e97c3a3820e8 "QA RT19 BUG BUGD1Cly3i before thr2"
+- 2026-11-16T12:12:39Z BUG lane: ticket created d826dbc4-c1e8-4cb9-8a20-04a4f7206a94 "QA RT19 BUG BUGD1Cly3i before thr3"
+- 2026-11-16T12:13:07Z BUG lane: ticket created 8f769054-a161-4223-9011-7f0750aa2ac8 "QA RT19 BUG BUGD1Cly3i delete at once"
+- 2026-11-16T12:13:09Z BUG lane: ticket 8f769054-a161-4223-9011-7f0750aa2ac8 deleted right after create (D1 phantom check) -> 204
+- 2026-11-16T12:14:37Z BUG lane: ticket created e843d038-f8bd-4d15-92dd-8dee9ef98dbd "QA RT19 BUG BUGD1Cly3i after thr2"
+- 2026-11-16T12:15:18Z BUG lane: ticket created ed800101-e174-458a-803b-a3473bd2f0e2 "QA RT19 BUG BUGD1Cly3i after thr3"
+- 2026-11-16T12:15:42Z BUG lane: rule 56596e21-80f9-4fcd-bc6d-ca33abdc471f active=false -> 200
+- 2026-11-16T12:15:43Z BUG lane: D1C: QA AO Dept B RR prefs changed and restored 200 true; probes closed; rule inactive
+- 2026-11-16T12:17:48Z HC lane: blueprint created ed0078d1-4081-45f1-ae11-5089e75e736f "QA BP RT19 HC 3060" active=true
+- 2026-11-16T12:17:51Z HC lane: ticket created a578ae5c-05fc-4161-b76c-648dbd0517df #undefined "QA BP RT19 HC 3060 ticket"
+- 2026-11-16T12:18:34Z NTF lane: department "QA RT19 NTF Dept" 8c6073ac-ba5f-4d17-9960-71a6850662a9 created, agents Test User 1 + Dev Team 2 + Mahmoud Samy + owner (none members before)
+- 2026-11-16T12:18:40Z SLA lane: department "QA RT19 SLA Dept" 6edaf8a3-7e99-4213-bd90-451802d63be6 created, agents Mahmoud Samy + Test User 1
+- 2026-11-16T12:18:42Z SLA lane: department "QA RT19 SLA Dept B" 09b9df1d-2345-44c5-9e4e-6778e219fd7e created, agent Test User 1
+- 2026-11-16T12:19:18Z SLA lane: email template "QA RT19 SLA Tpl 2853 ipe5" 55bacdcc-6b42-4713-9837-607a80011a2e (agent, sla_escalation)
+- 2026-11-16T12:19:19Z SLA lane: SLA policy "QA RT19 SLA R19SLA2853ipe5" 65a5a774-0a88-4748-ab8b-cd4bbb75cb1d active, dept 6edaf8a3
+- 2026-11-16T12:19:20Z SLA lane: SLA policy "QA RT19 SLA R19SLA2852ipe5" a52a8f61-8fe9-44d2-833f-2fe89420c488 active, dept 09b9df1d
+- 2026-11-16T12:19:21Z SLA lane: ticket "QA RT19 SLA 2853 A owner Samy R19SLA2853ipe5" 5f60dc01-14b0-487d-ac5b-7ca5f7722237 #undefined
+- 2026-11-16T12:19:23Z SLA lane: ticket "QA RT19 SLA 2853 B owner account, Samy member R19SLA2853ipe5" a934fdef-041b-477a-a886-0e01a25950b5 #undefined
+- 2026-11-16T12:19:25Z SLA lane: ticket "QA RT19 SLA 2852 C Samy not in dept R19SLA2852ipe5" d98d066a-1a05-4b24-b688-08d2ed8ebb03 #undefined
+- 2026-11-16T12:19:45Z SLA lane: SLA policy 2835 resp1h_before59m_control 709f1367-d646-4b1c-a196-95cb83efbc5c (inactive)
+- 2026-11-16T12:19:47Z SLA lane: SLA policy 2835 g cafa6194-4239-4d84-ac1a-bae1ba5876fc (inactive)
+- 2026-11-16T12:19:48Z SLA lane: SLA policy 709f1367-d646-4b1c-a196-95cb83efbc5c deleted (2835 probe) 204
+- 2026-11-16T12:19:48Z SLA lane: SLA policy cafa6194-4239-4d84-ac1a-bae1ba5876fc deleted (2835 probe) 204
+- 2026-11-16T12:20:22Z NTF lane: signed in Mahmoud Samy once into scratchpad r19-ntf-samy.json
+- 2026-11-16T12:20:41Z BUG lane: D4 tickets closed
+- 16 Nov 12:23Z: owner signed in again by lead (session revoked ~12:20Z by another sign-in)
+- 2026-11-16T12:23:40Z NTF lane: team "QA RT19 NTF Team" 8621f865-c7e9-4b14-a793-e01b8c75ccaf created in QA RT19 NTF Dept, member Mahmoud Samy
+- 2026-11-16T12:23:47Z NTF lane: ticket created cc18c1b4-0147-4761-8de3-99123f1e7950 #undefined "QA RT19 NTF 2864 A default tpl assign to Samy"
+- 2026-11-16T12:24:12Z NTF lane: ticket created c6038877-99bb-4b92-9607-d58bae888ca3 #undefined "QA RT19 NTF 2864 B default tpl assign to team"
+- 2026-11-16T12:24:32Z BUG lane: ticket created 37d6792b-1473-4a60-969d-07a554f63f9a "QA RT19 BUG BUGD4n61t inactive" (D4)
+- 2026-11-16T12:24:40Z BUG lane: ticket created f35f4aef-d646-4236-9a04-261be12392e6 "QA RT19 BUG BUGD4n61t other-dept" (D4)
+- 2026-11-16T12:24:49Z BUG lane: ticket created d626d9db-f5f1-4974-a66c-0ba61c7611fd "QA RT19 BUG BUGD4n61t base" (D4)
+- 2026-11-16T12:24:54Z SLA lane: email template "QA RT19 SLA Tpl 2834 resp 697c" b8fc15bf-43bd-47ff-be26-597918e98cbb
+- 2026-11-16T12:24:55Z SLA lane: email template "QA RT19 SLA Tpl 2834 resol 697c" 91fe3a11-1f1f-4b98-b08c-2a1e4105ffd1
+- 2026-11-16T12:24:55Z SLA lane: email template "QA RT19 SLA Tpl 2834 unused 697c" e6e22273-5951-409f-96ee-6c8b090a761d
+- 2026-11-16T12:24:58Z SLA lane: SLA policy "QA RT19 SLA 2834 active 697c" e005d1fb-3b9f-4496-9baa-9595477603fb active (matches nothing)
+- 2026-11-16T12:24:59Z SLA lane: SLA policy "QA RT19 SLA 2834 inactive 697c" b45b7074-b6c1-4c55-a372-a1fd204d2d39 inactive (matches nothing)
+- 2026-11-16T12:25:02Z SLA lane: SLA policy "QA RT19 SLA 2834 second user of resp 697c" 8d8525bc-130f-40d9-be59-5f2aab0dd439 inactive (matches nothing)
+- 2026-11-16T12:25:04Z SLA lane: template e6e22273-5951-409f-96ee-6c8b090a761d deleted (control) 204
+- 2026-11-16T12:25:08Z SLA lane: template 91fe3a11-1f1f-4b98-b08c-2a1e4105ffd1 deleted after unlink 204
+- 2026-11-16T12:25:14Z BUG lane: D4 tickets closed
+- 2026-11-16T12:26:45Z NTF lane: email template "QA RT19 NTF 2864 assigned tpl" d16af022-04c4-4d31-93af-ba015bb9089a created (agent, dept QA RT19 NTF Dept)
+- 2026-11-16T12:26:46Z NTF lane: QA RT19 NTF Dept rule agent.ticket_assigned template set to QA RT19 NTF 2864 assigned tpl (200)
+- 2026-11-16T12:26:50Z NTF lane: ticket created 296cc1b2-1522-455b-9960-69f244912cef #undefined "QA RT19 NTF 2864 C custom tpl assign to Samy"
+- 2026-11-16T12:26:57Z NTF lane: QA RT19 NTF Dept rule agent.ticket_assigned template back to default (200)
+- 2026-11-16T12:29:30Z BUG lane: ticket created by import 5291340e-071e-42f1-a8b8-1d352e689500 "QA RT19 BUG D3 auto row2 non-member owner" (D3)
+- 2026-11-16T12:29:30Z BUG lane: ticket created by import 4abf2253-89b3-4034-9167-f18da6dee5dc "QA RT19 BUG D3 auto row1 member owner" (D3)
+- 2026-11-16T12:29:31Z BUG lane: ticket created by import 5e5c09c6-8d32-47a1-8d8d-81fceca9a759 "QA RT19 BUG D3 man row2 non-member owner" (D3)
+- 2026-11-16T12:29:32Z BUG lane: ticket created by import 3b472169-fd3c-4b8b-b580-ecb235115e41 "QA RT19 BUG D3 man row1 member owner" (D3)
+- 2026-11-16T12:29:38Z HC lane: blueprint ed0078d1 "QA BP RT19 HC 3060" switched OFF (405 METHOD_NOT_ALLOWED That operation is not available on this resource.) isActive=true
+- 2026-11-16T12:29:49Z HC lane: blueprint switched OFF ed0078d1-4081-45f1-ae11-5089e75e736f "QA BP RT19 HC 3060": 200 active=false
+- 2026-11-16T12:30:16Z NTF lane: contact created e8de2fae-d4e5-4f31-bb73-f3b1a5e0a905 "QA RT19 NTF inbox customer" (the user's plus-address +r19ntf)
+- 2026-11-16T12:30:28Z NTF lane: ticket created 86beb1f7-0e4d-4b7e-8ac5-2fffed78232d #undefined "QA RT19 NTF 3053 A happiness off rule never saved"
+- 2026-11-16T12:30:54Z NTF lane: QA RT19 NTF Dept contact rule "Closing a ticket" turned ON (200)
+- 2026-11-16T12:31:05Z NTF lane: ticket created f2219c2f-0f2b-4c8b-9ff5-0846b858f1d9 #undefined "QA RT19 NTF 3053 B happiness off rule on"
+- 2026-11-16T12:31:37Z NTF lane: Customer Happiness ON scoped to QA RT19 NTF Dept for NDC-3053 (200), original in scripts/ntf/out/3053-happiness-orig.json
+- 2026-11-16T12:31:49Z NTF lane: ticket created 8ae64a31-97f1-4a97-b8e5-605c98929d92 #undefined "QA RT19 NTF 3053 C happiness on rule on"
+- 2026-11-16T12:32:10Z HC lane: community category created 3505c6d7-f23f-4bad-8a68-00277fe78257 "QA RT19 HC 3007 cat" (Customer Support, auto_convert requested true)
+- 2026-11-16T12:32:25Z HC lane: community topic created 2f8263ba-cfdc-4984-9433-8a608f010fd0 "QA RT19 HC 3007 agent question" (owner, question, cat 3505c6d7)
+- 2026-11-16T12:32:44Z NTF lane: Customer Happiness restored (200, diff [])
+- 2026-11-16T12:34:31Z BUG lane: ticket created by import 2c7c0e38-e083-4474-a0af-b6ca460f60bd "QA RT19 BUG D3 email row1 member owner by email" (D3)
+- 2026-11-16T12:35:16Z NTF lane: ticket created 1537c932-2dd2-4a84-8255-e5f113addc56 #undefined "QA RT19 NTF 3053 B2 happiness off rule on"
+- 2026-11-16T12:35:25Z HC lane: contact created 34f01ef4-a10c-4e7e-b5f5-71a4219e9768 "QA RT19 HC Customer" (user Gmail +r19hc, not printed)
+- 2026-11-16T12:35:35Z HC lane: Help Center invite sent to contact 34f01ef4-a10c-4e7e-b5f5-71a4219e9768 (200) at 2026-11-16T12:35:35.750Z
+- 2026-11-16T12:35:54Z BUG lane: D3 import tickets closed: []; import sessions 14696567 (d3-man), 8750ab30 (d3-auto), 9056f602 (d3-email) left as is (no undo)
+- 2026-11-16T12:36:14Z BUG lane: D3 import tickets closed: [[null,500],[null,500],[null,500],[null,500],[null,500]]; import sessions 14696567 (d3-man), 8750ab30 (d3-auto), 9056f602 (d3-email) left as is
+- 2026-11-16T12:40:14Z HC lane: ticket created 0e347cf7-3c20-400b-9ff5-6e9197a6cac2 "QA RT19 HC probe 0"
+- 2026-11-16T12:42:40Z SLA lane: STOPPED on owner session lost. Still ACTIVE (match only my tag descriptions): SLA policies 65a5a774 (2853), a52a8f61 (2852), e005d1fb (2834) — to be set inactive
+- 2026-11-16T12:43:56Z BUG lane: D3 import tickets close attempt: [401,401,401,401,401]
+- 16 Nov 12:52Z: owner signed in again by lead (user approved; revoked ~12:41Z)
+- 2026-11-16T12:53:52Z SLA lane: ticket "QA RT19 SLA 2853 A2 recheck owner Samy R19SLA2853ipe5" bbe82175-4648-43a0-aeae-6dc9a43d1587 #undefined
+- 2026-11-16T12:53:56Z HC lane: ticket created c2700c91-3a4c-42ca-8076-5a1715ace30e #undefined "QA RT19 HC 3044 portal reply" (Customer Support, contact +r19hc)
+- 2026-11-16T12:54:05Z SLA lane: SLA policy "QA RT19 SLA 2833 i8j7" 68a9cb45-4025-4a40-bb8f-da33a1430614 active, account-only, dept SLA Dept
+- 2026-11-16T12:54:09Z SLA lane: account "QA RT19 SLA Account 2833 i8j7" 3a786272-744d-4f78-a402-10153c39f27b
+- 2026-11-16T12:54:18Z HC lane: ticket c2700c91 is #undefined (3044)
+- 2026-11-16T12:54:19Z SLA lane: account "QA RT19 SLA Account 2833 nocontract i8j7" ee9d2e90-9180-40ab-a6d1-bd914cf1ed98
+- 2026-11-16T12:54:31Z SLA lane: support plan "QA RT19 SLA Plan 2833 i8j7" 6c7f0603-8a8b-44a8-aea0-8d1409fbc6b1 (1/month)
+- 2026-11-16T12:54:33Z SLA lane: contract "QA RT19 SLA Contract 2833 i8j7" a13c3f7f-e75c-4938-9be6-484f0db810c8
+- 2026-11-16T12:55:27Z SLA lane: ticket "QA RT19 SLA 2833 x0 no account R19SLA2833i8j7" 8cb15d95-d285-44a9-a5bf-f5dc1f77cdce #undefined
+- 2026-11-16T12:55:35Z SLA lane: ticket "QA RT19 SLA 2833 x1 first R19SLA2833i8j7" 6284723b-8f90-4f1b-9871-411ccaf9cecb #undefined
+- 2026-11-16T12:55:48Z SLA lane: ticket "QA RT19 SLA 2833 x2 second R19SLA2833i8j7" 94f9aca6-5120-48e1-8775-6c815da344c4 #undefined
+- 2026-11-16T12:55:57Z NTF lane: ticket created 24a5fe94-ff58-4c4a-bc1f-20d79b056200 #undefined "QA RT19 NTF 3053 B3 happiness off rule on (repeat)"
+- 2026-11-16T12:56:00Z SLA lane: ticket "QA RT19 SLA 2833 x3 third R19SLA2833i8j7" 3768762a-afd3-4d26-ae86-9768e4e10cba #undefined
+- 2026-11-16T12:56:04Z SLA lane: ticket "QA RT19 SLA 2833 x4 other account no contract R19SLA2833i8j7" 5f71dbac-8864-415a-a3c9-eb288af018ee #undefined
+- 2026-11-16T12:56:14Z NTF lane: Customer Happiness ON scoped to QA RT19 NTF Dept (repeat C2, NDC-3053/3000) (200)
+- 2026-11-16T12:56:21Z NTF lane: ticket created 38c30bed-4606-4ba3-918f-2c9462acf70a #4678 "QA RT19 NTF 3053 C2 happiness on scoped rule on (repeat)"
+- 2026-11-16T12:57:21Z NTF lane: Customer Happiness restored (200, diff [])
+- 2026-11-16T12:57:52Z NTF lane: ticket created 0082c3cd-73b8-4214-9e76-13d5198c15eb #4679 "QA RT19 NTF 2851 bulk close 1"
+- 2026-11-16T12:58:03Z NTF lane: ticket created 801e8834-001b-4ed7-b0a4-06058de336c9 #4680 "QA RT19 NTF 2851 bulk close 2"
+- 2026-11-16T12:58:05Z NTF lane: ticket created 9cdf799d-65bd-4107-96a1-185b91fd8afc #undefined "QA RT19 NTF 2851 mass status 1"
+- 2026-11-16T12:58:07Z NTF lane: ticket created e97b1c04-d87d-454d-bcab-9ffbc9b5b06a #undefined "QA RT19 NTF 2851 mass status 2"
+- 2026-11-16T12:58:09Z NTF lane: ticket created 0db320aa-7e8d-4912-a245-dd8f880fe3a4 #undefined "QA RT19 NTF 2851 single close control"
+- 2026-11-16T13:04:57Z HC lane: 3044 ticket c2700c91 = #4684 (Customer Support, contact +r19hc), created 2026-11-16T13:04:56.164489+00:00
+- 2026-11-16T13:05:05Z NTF lane: ticket created cab9a48c-44fc-4a97-ace4-2b813cd2b489 #undefined "QA RT19 NTF 2851 massupd 1"
+- 2026-11-16T13:05:07Z NTF lane: ticket created c0bb6586-0f6c-4c39-8397-a1c5df897f8d #undefined "QA RT19 NTF 2851 massupd 2"
+- 2026-11-16T13:05:53Z SLA lane: SLA policy "QA RT19 SLA 2841 A lb1g" 9d470069-0840-400e-a2dc-a88092d7695a inactive
+- 2026-11-16T13:05:54Z SLA lane: SLA policy "QA RT19 SLA 2841 B lb1g" ba980555-9206-4aed-9aeb-3e1ae90cc85a inactive
+- 2026-11-16T13:05:55Z SLA lane: support plan "QA RT19 SLA Plan 2841 A lb1g" 4ef202af-dab7-4d64-b650-aed1bb4192ed
+- 2026-11-16T13:05:55Z SLA lane: support plan "QA RT19 SLA Plan 2841 B lb1g" 2337a2bf-c4e4-41d4-8dce-53e730043619
+- 2026-11-16T13:05:56Z SLA lane: account e21dcadc-2d36-4bf3-be5c-65cb091208b8 2841
+- 2026-11-16T13:05:57Z SLA lane: contract "QA RT19 SLA Contract 2841 own plan lb1g" aad15ab8-e9d6-4e5e-a222-189bd1993ba4
+- 2026-11-16T13:06:00Z SLA lane: contract "QA RT19 SLA Contract 2841 created with B plan lb1g" b575e9a0-f84c-46dc-8f2f-89b8b0862d15
+- 2026-11-16T13:08:49Z NTF lane: Customer Happiness ON scoped to QA RT19 NTF Dept (NDC-2851 bulk close with ratings on) (200)
+- 2026-11-16T13:08:56Z NTF lane: ticket created b542b31a-127c-43cc-835f-fab59be64817 #4687 "QA RT19 NTF 2851 single close happiness on control"
+- 2026-11-16T13:11:06Z NTF lane: Customer Happiness restored (200, diff [])
+- 2026-11-16T13:11:21Z NTF lane: blueprint 44f7305d-bfb3-4961-a4c4-6c3184f8f1c9 "QA BP RT19 NTF 3061 hold" created active in QA RT19 NTF Dept
+- 2026-11-16T13:11:46Z NTF lane: blueprint 44f7305d-bfb3-4961-a4c4-6c3184f8f1c9 "QA BP RT19 NTF 3061 hold" created active in QA RT19 NTF Dept (after action: Send notification to Mahmoud Samy, owner, Test User 1 + Set Description)
+- 2026-11-16T13:12:13Z NTF lane: ticket created 17d0fce9-5320-4788-b013-b66b2bf01f63 #4689 "QA BP RT19 NTF 3061 run 1"
+- 2026-11-16T13:12:21Z SLA lane: ticket "QA RT19 SLA 2853 A3 recheck owner Samy R19SLA2853ipe5" 549d6bd4-77a2-48a1-a8d1-502ada3ee538 #undefined
+- 2026-11-16T13:18:13Z NTF lane: blueprint switched OFF 44f7305d-bfb3-4961-a4c4-6c3184f8f1c9 "QA BP RT19 NTF 3061 hold": 200 active=false
+- 2026-11-16T13:21:18Z NTF lane: QA RT19 NTF Dept contact rules "Receiving a new ticket" saved ON (200) and "Acknowledging a ticket reply" ON (200)
+- 2026-11-16T13:22:03Z NTF lane: ticket created 793bb0d6-380b-4e1c-9102-9cb2594137ae #4691 "QA RT19 NTF 3000 api email-channel ticket"
+- 2026-11-16T13:23:19Z NTF lane: receiving address qa-rt19-ntf@<Tech hosted domain> bc832879-1c56-4570-8ac6-fdba6026fe3e created for QA RT19 NTF Dept
+- 2026-11-16T13:28:29Z SLA lane: ticket "QA RT19 SLA 2832 CD overdue" e61514a8-ba65-4151-8006-02f4b2aa4b81 #undefined
+- 2026-11-16T13:28:31Z SLA lane: ticket "QA RT19 SLA 2832 CD none" 56287a4f-d938-4c92-b5c2-05d0c59f5f74 #undefined
+- 2026-11-16T13:28:34Z SLA lane: ticket "QA RT19 SLA 2832 CD in1h" 7c08fd10-8d66-4811-b914-f586bb117e6d #undefined
+- 2026-11-16T13:28:36Z SLA lane: ticket "QA RT19 SLA 2832 CD today" c9700bd9-59a0-48f0-a764-c405a4c104be #undefined
+- 2026-11-16T13:28:38Z SLA lane: ticket "QA RT19 SLA 2832 CD tomorrow" 96ef4986-a9f5-4035-b7ec-08f1ef5eee91 #undefined
+- 2026-11-16T13:28:40Z SLA lane: ticket "QA RT19 SLA 2832 CD later" 58a2f8d3-8891-4f53-9873-bae69a6745b4 #undefined
+- 2026-11-16T13:28:43Z SLA lane: ticket "QA RT19 SLA 2832 CD onhold" d8ace86d-01ff-4a24-8b5b-e6beaf348427 #undefined
+- 2026-11-16T13:31:03Z NTF lane: QA RT19 NTF Dept: agents Test User 1, Dev Team 2, Mahmoud Samy removed (200), owner kept for the NDC-3000 user step; team QA RT19 NTF Team members cleared (200)
+- 2026-11-16T13:45:36Z SLA lane: SLA policy 65a5a774-0a88-4748-ab8b-cd4bbb75cb1d set inactive (200  now active=false)
+- 2026-11-16T13:45:39Z SLA lane: SLA policy a52a8f61-8fe9-44d2-833f-2fe89420c488 set inactive (200  now active=false)
+- 2026-11-16T13:45:41Z SLA lane: SLA policy e005d1fb-3b9f-4496-9baa-9595477603fb set inactive (200  now active=false)
+- 2026-11-16T13:45:44Z SLA lane: SLA policy 68a9cb45-4025-4a40-bb8f-da33a1430614 set inactive (200  now active=false)
+- 2026-11-16T14:57:00Z D3 lane: blueprint created ff6ef3d5-76c4-4b03-891a-42940a4b1214 "QA BP RT19 D3 3070 rev" active=false
+- 2026-11-16T14:57:30Z D3 lane: blueprint created 6d5c648b-f119-43d6-b1f3-bfece7bc04ec "QA BP RT19 D3 3066 cont" active=true
+- 2026-11-16T14:57:47Z D3 lane: ticket created 157e7204-0030-4208-98c6-4106d07a320e #undefined "QA BP RT19 D3 3066 cont t1"
+- 2026-11-16T14:57:56Z D3 lane: ticket created 818b1205-27ff-4889-85a3-8bc6cc0ae8bf #undefined "QA BP RT19 D3 3066 cont t2"
+- 2026-11-16T14:59:14Z D3 lane: blueprint switched OFF 6d5c648b-f119-43d6-b1f3-bfece7bc04ec "QA BP RT19 D3 3066 cont": 200 active=false
+- 2026-11-16T15:03:42Z GS lane: set QA RT19 GS Tier bffe3175-a1fa-4ef7-9da3-f89117f9b922
+- 2026-11-16T15:05:38Z GS lane: field qa_rt19_gs_tier ea020cb2-28fe-48ea-a9a5-bcd4a56593cc (module 841043e1, set bffe3175)
+- 2026-11-16T15:05:40Z GS lane: field qa_rt19_gs_tier 1f6de0d7-d473-4186-9792-2e75a9957623 (module 6f553963, set bffe3175)
+- 2026-11-16T15:05:41Z GS lane: field qa_rt19_gs_dc 314231b1-dba7-4276-a24a-ef6e6847399f (Leads, local X/Y/Z)
+- 2026-11-16T15:05:42Z GS lane: dependency map tier→child b79b8d24-aa3f-4da7-b371-70e2171bcc28
+- 2026-11-16T15:05:45Z GS lane: record Tier LG1 a20f897b-835b-474c-905d-f1b7b44f548f (module 841043e1)
+- 2026-11-16T15:05:49Z GS lane: record Tier LG2 31425c09-d0fb-49e6-bb7a-41596be86401 (module 841043e1)
+- 2026-11-16T15:05:55Z GS lane: record Tier LS1 125712f0-01b2-49f3-a5ef-4e8ce8df4e5f (module 841043e1)
+- 2026-11-16T15:05:56Z GS lane: record Tier CG1 0e3d2371-d4e7-4434-94c4-9555c67959e8 (module 6f553963)
+- 2026-11-16T15:06:07Z D3 lane: blueprint stored 60003670-0d5c-4cc1-a1ca-d618936229ef
+- 2026-11-16T15:07:01Z GS lane: Leads view QA RT19 GS Gold view f571b7bc-1128-4a50-adba-ba16b9732bb2
+- 2026-11-16T15:07:12Z GS lane: workflow rule QA RT19 GS Gold rule e2239759-befb-476e-a972-d3e81a2ee097 isActive=false
+- 2026-11-16T15:07:22Z GS lane: report QA RT19 GS Gold report b325b1ae-b9ee-4cfb-8f84-fb4dd52719d4
+- 2026-11-16T15:08:15Z GS lane: replace Gold→Silver on set bffe3175-a1fa-4ef7-9da3-f89117f9b922 → 200
+- 2026-11-16T15:08:59Z GS lane: record Tier LB1 4e670635-a5d9-4819-a8ec-5de25aaba735 (module 841043e1)
+- 2026-11-16T15:09:02Z GS lane: deleted unused value Gold from set bffe3175-a1fa-4ef7-9da3-f89117f9b922 → 200
+- 2026-11-16T15:09:24Z GS lane: record Tier LP1 78c1d9e6-70f7-47ba-8a80-83c8acce3705 (module 841043e1)
+- 2026-11-16T15:09:38Z GS lane: set bffe3175-a1fa-4ef7-9da3-f89117f9b922 sort_order → alphabetical (200)
+- 2026-11-16T15:10:24Z GS lane: set bffe3175-a1fa-4ef7-9da3-f89117f9b922 sort_order → entered
+- 2026-11-16T15:10:26Z GS lane: report QA RT19 GS Sort report 2804d186-a184-47df-b9bf-0dde53d6ac16
+- 2026-11-16T15:11:53Z GS lane: set QA RT19 GS Lim 1 4faee202-7f5c-49be-b761-738e684c1cfd
+- 2026-11-16T15:11:56Z GS lane: set QA RT19 GS Lim 2 49c03249-b3a9-4abb-b353-6c490b546f57
+- 2026-11-16T15:11:56Z GS lane: set QA RT19 GS Lim 3 16f40933-3a44-45dc-b066-02f46d99ff62
+- 2026-11-16T15:11:59Z GS lane: set QA RT19 GS Lim 4 d6b62fb4-f5b1-4e3f-be98-0e782bc28702
+- 2026-11-16T15:12:00Z GS lane: set QA RT19 GS Lim 5 de42b36f-fb0f-4aed-80ed-cf28560bcd53
+- 2026-11-16T15:12:02Z GS lane: set QA RT19 GS Lim 6 75ca5666-6182-4624-8569-bdd108a453f5
+- 2026-11-16T15:12:02Z GS lane: set QA RT19 GS Lim 7 69f1bef9-a51f-4177-ba3d-21945acfc016
+- 2026-11-16T15:12:02Z GS lane: set QA RT19 GS Lim 8 cb5f7b1a-c73b-4d5b-99af-e0bea459d52c
+- 2026-11-16T15:12:03Z GS lane: set QA RT19 GS Lim 9 23400ad7-dbb1-4720-ac8c-55a96f0439be
+- 2026-11-16T15:12:03Z GS lane: set QA RT19 GS Lim 10 8f94791a-c0ba-458e-a23c-50cf3c159a3b
+- 2026-11-16T15:12:04Z GS lane: set QA RT19 GS Lim 11 af5dbea7-a98e-484a-913c-76f17042cc8f
+- 2026-11-16T15:12:05Z GS lane: set QA RT19 GS Lim 12 768b5724-02be-4fcb-89fb-df85e6dfad82
+- 2026-11-16T15:12:06Z GS lane: set QA RT19 GS Lim 13 08cb32f6-c430-4d85-b844-b885b9b67604
+- 2026-11-16T15:12:06Z GS lane: set QA RT19 GS Lim 14 a312e4a9-5034-4532-9be5-55d65a257085
+- 2026-11-16T15:12:07Z GS lane: set QA RT19 GS Lim 15 6132f300-f054-4432-b037-d7fa23940532
+- 2026-11-16T15:12:07Z GS lane: set QA RT19 GS Lim 16 0f7d5599-f613-4b54-878a-150d6f9fa5ea
+- 2026-11-16T15:12:13Z GS lane: set QA RT19 GS Lim 17 8c44f052-58f5-4470-8e8e-167a2f5f569f
+- 2026-11-16T15:12:15Z GS lane: set QA RT19 GS Lim 18 2f872b42-1ddf-458f-9737-3c6918ecc6b6
+- 2026-11-16T15:12:15Z GS lane: set QA RT19 GS Lim 19 4782b0a4-e8da-4095-b2e3-9761cc4643fb
+- 2026-11-16T15:12:15Z GS lane: set QA RT19 GS Lim 20 372f91cb-bf54-40de-b442-ac924201151b
+- 2026-11-16T15:12:16Z GS lane: set QA RT19 GS Lim 21 e383c00b-46ef-4c01-bf7a-cfa81fd6554e
+- 2026-11-16T15:12:16Z GS lane: set QA RT19 GS Lim 22 8dfdb44e-5c99-4178-b4c4-399293bf9dc8
+- 2026-11-16T15:12:17Z GS lane: set QA RT19 GS Lim 23 b49e8e0a-bea1-41a7-8619-655db686232e
+- 2026-11-16T15:12:19Z GS lane: set QA RT19 GS Lim 24 7e9d2868-6eb0-456e-a1cc-cbe87d7abcf7
+- 2026-11-16T15:12:20Z GS lane: set QA RT19 GS Lim 25 21286d05-c15b-4b8c-a7f6-e85a101576ad
+- 2026-11-16T15:12:55Z GS lane: deleted 25 QA RT19 GS Lim sets (own QA data)
+- 2026-11-16T15:13:07Z GS lane: set QA RT19 GS Unused 12d1cdff-2b8b-4fa8-8eb7-45acb4162ac8 (560 values)
+- 2026-11-16T15:13:39Z GS lane: deleted set QA RT19 GS Unused 12d1cdff-2b8b-4fa8-8eb7-45acb4162ac8 → 204
+- 2026-11-16T15:13:42Z GS lane: set QA RT19 GS Fields 309784bb-ec77-4d32-b4e2-0240721e392d
+- 2026-11-16T15:13:44Z GS lane: field qa_rt19_gs_fle01 119a4cc6-8b62-438e-b842-9cf979b40b28 (module 841043e1, set 309784bb)
+- 2026-11-16T15:13:47Z GS lane: field qa_rt19_gs_fle02 71b3b829-176f-44df-9865-f12d08d4c3f6 (module 841043e1, set 309784bb)
+- 2026-11-16T15:13:47Z GS lane: field qa_rt19_gs_fle03 116aba63-1798-4ef2-8029-e43712dddfe3 (module 841043e1, set 309784bb)
+- 2026-11-16T15:13:51Z GS lane: field qa_rt19_gs_fle04 0e279905-fade-4867-8172-da791b5370dd (module 841043e1, set 309784bb)
+- 2026-11-16T15:13:52Z GS lane: field qa_rt19_gs_fle05 3e3ff36b-9d38-46f0-b176-350b7c558752 (module 841043e1, set 309784bb)
+- 2026-11-16T15:13:54Z GS lane: field qa_rt19_gs_fle06 213363ae-50a3-4ba8-a426-ee4b3c775775 (module 841043e1, set 309784bb)
+- 2026-11-16T15:13:56Z GS lane: field qa_rt19_gs_fle07 048d3195-aaa8-43fb-8acf-29889a367f05 (module 841043e1, set 309784bb)
+- 2026-11-16T15:13:59Z GS lane: field qa_rt19_gs_fle08 8d8365dd-3f39-4790-9647-22a27a1b697d (module 841043e1, set 309784bb)
+- 2026-11-16T15:13:59Z GS lane: field qa_rt19_gs_fle09 15e2de48-4395-4c60-8fe1-cc4754c680ec (module 841043e1, set 309784bb)
+- 2026-11-16T15:14:02Z GS lane: field qa_rt19_gs_fle10 d8f3be7d-3015-4210-acca-e7f7daca734d (module 841043e1, set 309784bb)
+- 2026-11-16T15:14:04Z GS lane: field qa_rt19_gs_fle11 d6f6cde2-6dcd-4f7e-ac35-6de20a527de6 (module 841043e1, set 309784bb)
+- 2026-11-16T15:14:06Z GS lane: field qa_rt19_gs_fle12 b9c1f072-a5ae-4c5c-81ef-84cf34e709ef (module 841043e1, set 309784bb)
+- 2026-11-16T15:14:07Z GS lane: field qa_rt19_gs_fle13 8a2946a2-8a0d-431e-b675-5de94b04d821 (module 841043e1, set 309784bb)
+- 2026-11-16T15:14:09Z GS lane: field qa_rt19_gs_fco01 da10fee0-7e42-4214-bf5f-714f0a9c10f3 (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:12Z GS lane: field qa_rt19_gs_fco02 f5bc6f21-3cd8-4be2-b466-d4a891f0af1b (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:13Z GS lane: field qa_rt19_gs_fco03 5fbdc929-5d7c-4ffa-a9b6-f00eb9f26115 (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:16Z GS lane: field qa_rt19_gs_fco04 2d36f623-e026-4cad-940a-f4669bb9181a (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:18Z GS lane: field qa_rt19_gs_fco05 346f29ff-0c23-4454-9884-33641f78e7ed (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:21Z GS lane: field qa_rt19_gs_fco06 d1d699b6-35e6-445b-adca-cfb3ee779bd3 (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:22Z GS lane: field qa_rt19_gs_fco07 4c1a39d1-3f02-4fef-a404-355fe263c22f (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:25Z GS lane: field qa_rt19_gs_fco08 5d0f4fbf-eb34-4ee7-a852-da46dcf9ccc6 (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:26Z GS lane: field qa_rt19_gs_fco09 29ba7591-d956-47a0-8081-788fc0633616 (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:35Z GS lane: field qa_rt19_gs_fco10 07e549d7-e3b2-4e95-a13e-ec3d9766d673 (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:50Z GS lane: field qa_rt19_gs_fco11 4853da7e-e9f0-47cd-9834-8f09e0cf9b3a (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:51Z GS lane: field qa_rt19_gs_fco12 f703cba2-97a8-4388-8a3b-c7e8b576a5bf (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:52Z GS lane: field qa_rt19_gs_fco13 05414b0c-c959-4268-918c-2ab2eafcecc1 (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:53Z GS lane: field qa_rt19_gs_fco14 7c697c41-cb4a-4c70-af21-480a59bc4912 (module 6f553963, set 309784bb)
+- 2026-11-16T15:14:55Z GS lane: field qa_rt19_gs_fac01 4667afde-6281-4ca2-a9af-fe6f3651d609 (module b2398920, set 309784bb)
+- 2026-11-16T15:14:58Z GS lane: field qa_rt19_gs_fac02 502af7f4-ae99-418a-a47f-f73145df52a9 (module b2398920, set 309784bb)
+- 2026-11-16T15:14:59Z GS lane: field qa_rt19_gs_fac03 63d6b3f9-2595-46a6-b9f9-adb73dd3b870 (module b2398920, set 309784bb)
+- 2026-11-16T15:15:59Z GS lane: deleted 30 QA RT19 GS F* fields (own QA data, Recycle Bin)
+- 2026-11-16T15:16:00Z GS lane: deleted set QA RT19 GS Fields 309784bb-ec77-4d32-b4e2-0240721e392d → 204
+- 2026-11-16T15:16:24Z D3 lane: department "QA RT19 D3 Dept" 36e3c16c-d31d-4309-803b-3ae729e92401 created, agents Mahmoud Samy + Dev Team 2 -> 201
+- 2026-11-16T15:16:26Z D3 lane: department "QA RT19 D3 Dept B" d7bd09bf-3a0f-4d1f-840a-cc7b3ff77984 created, agents Dev Team 2 -> 201
+- 2026-11-16T15:16:30Z D3 lane: SLA policy "QA RT19 D3 2850 takeover R19D3xi726" b7e0e30f-599f-4011-9765-5f1ef0d54e5a (inactive) -> 201
+- 2026-11-16T15:16:31Z D3 lane: SLA policy "QA RT19 D3 2850 unassigned R19D3xi726" 1d5d88d5-3261-4067-97f1-dd8c0cb87bd2 (inactive) -> 201
+- 2026-11-16T15:17:22Z GS lane: field qa_rt19_gs_src e8875c47-75a1-48f3-b46d-efc4582f563e (module 841043e1, set a72a0c91)
+- 2026-11-16T15:17:28Z GS lane: record Src LC1 3c9a84d5-468d-4edd-b96f-7094c8c408ec (module 841043e1)
+- 2026-11-16T15:17:35Z GS lane: record Src bad e7be1704-09ad-481a-973b-1cbefd21ecaa (module 841043e1)
+- 2026-11-16T15:18:00Z GS lane: blueprint QA RT19 GS BP (inactive) 4e079c12-6fb8-4ed8-9249-f9caf8c68470 on qa_rt19_gs_tier
+- 2026-11-16T15:23:42Z GS lane: set bffe3175-a1fa-4ef7-9da3-f89117f9b922 added value Copper (200)
+- 2026-11-16T15:25:27Z D3 lane: NDC-2850 reassign Dev Team 2 (QA RT19 D3 Dept -> Mahmoud Samy, Dept B -> unassigned, update_rules) -> 200
+- 2026-11-16T15:26:34Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 93949fbd-f9df-4e2e-ae45-00b8dc38385b "QA AO Dept A" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:20Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 4853562a-0b4d-45cb-ba34-9f2118fcd32c "QA AO Dept B" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:26Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6 "QA AS6 Dept A" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:28Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department c0e05c3e-aa51-47ef-be50-53fd4c6edcb1 "QA NDC Accounting" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:30Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department c9a07377-df87-436d-bcb1-930251c00e6f "QA NDC Airline Operations" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:32Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 739804e7-fff5-43f5-a1da-f815758438f9 "QA NDC Alexandria Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:34Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department cb4ed3fa-dc3c-4e6e-8926-b0652c49a1c4 "QA NDC B2C TL" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:36Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department af3e14be-0c70-4e9e-8009-5297b4706665 "QA NDC Bani Sweif Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:38Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department f131cbef-8952-4ec8-bc72-5f23849592d4 "QA NDC Client Complaints" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:41Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department a026f008-f6a1-49b7-b4a3-dce33c6b36b7 "QA NDC Clients' Financial Investigations" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:42Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 8770cfd0-487a-4aca-8872-3aaeb14085a9 "QA NDC Dubai Operation" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:44Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department a5fd54e8-35df-4014-a28a-fd384b8b6863 "QA NDC El-Hady Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:45Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department e9a11c7a-5362-4174-8c46-c1fb0f5550af "QA NDC El-Mansoura Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:48Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department f948e6cb-8c56-4d40-9b42-066a5b6f8bb5 "QA NDC El-Zagazeg Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:50Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 77fca069-39a4-4ff9-835d-a12c12c7d5f2 "QA NDC Financial approval" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:54Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 3abf4280-94e5-49f8-b948-b8920dfc1e53 "QA NDC FLY-WT Refund" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:27:57Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department fc9fe73b-7c8d-464d-9ff2-47a26e49ee47 "QA NDC GDS TL" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:00Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 38068552-2ccb-4756-846f-ab6fe4dbced5 "QA NDC KSA Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:01Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department a8fc41f5-5f1b-458a-ae56-baf1ff917c44 "QA NDC LCC TL" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:02Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 95a6fd64-b877-435e-8e23-62c75717f95f "QA NDC Manual Invoice" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:05Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 5c4e639a-447a-4d44-a66e-2280df55abad "QA NDC Menoufia Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:07Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 6cd5caf8-fc52-45c7-8632-9d0e65ddcdd7 "QA NDC Minya Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:08Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 14130980-b62e-4398-a879-93e4dbe9c790 "QA NDC NDC Finance" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:10Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department b1d17c0f-cdc3-4ab7-85eb-bd7140b31cc3 "QA NDC Ok To Board" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:11Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 6c7eb3ca-69e5-43cf-a337-2ec9b155f191 "QA NDC Qina Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:13Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 0cade824-7985-40f9-a3b7-b168a8e7efdb "QA NDC Quality Assurance" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:14Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department b63b7c94-31cb-4b7b-a1c3-01a342d73efe "QA NDC Reissue-Ref - إلغاء وتعديل" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:16Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department ec3701b4-b1c3-4bdd-b178-9e24b6854f89 "QA NDC Saudi Arabia" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:20Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 990661a9-3688-44e6-b37a-c178e27c42f0 "QA NDC Souhag Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:21Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department fd416411-6792-4ef1-a335-3cdd626de539 "QA NDC System Admin" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:23Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 32c4c4ef-97f2-46f2-8af2-8c63cd5fec2b "QA NDC Tahrir Branch" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:26Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department e9215eee-a4ff-4750-a7dc-88f8b420c323 "QA NDC Technical Support" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:29Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 88b6fe3f-1811-4944-a246-0ddaaf9d50a0 "QA NDC UAE Seniors" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:32Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 8cfa703e-62fe-40b6-865e-6bdd86f7f89e "QA NDC Wonder Travel Finance" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:33Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 72f4edfe-f36a-4ac7-907e-fe7d97cd1dbf "QA RT19 SK Dept" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:35Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 19510fdc-91f3-4a7a-8888-153f1318b765 "Tech" -> 400 VALIDATION_ERROR Department name is required. [{"field":"name","issue":"Department name is required."}] now=false
+- 2026-11-16T15:28:41Z D3 lane: NDC-2850 restore: team 3389d15c-ec5e-4d17-843a-e76df9a3f4bc "Dev" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:41Z D3 lane: NDC-2850 restore: team 9eb4ee89-20b2-435d-884d-c760d7c5c738 "QA" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:43Z D3 lane: NDC-2850 restore: team 434140a3-2145-428c-9e57-e6bc5cf2f8d0 "QA AS6 Team A" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:44Z D3 lane: NDC-2850 restore: team 27848629-8d75-40c7-bbb2-56ae6eff4670 "QA NDC AR team" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:45Z D3 lane: NDC-2850 restore: team 3b8c65aa-e35d-489c-a8a5-137ee7fd02d1 "QA NDC AR TL" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:46Z D3 lane: NDC-2850 restore: team 9d63a88b-c2e7-409c-9ead-a0204f75d902 "QA NDC focal point validation" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:48Z D3 lane: NDC-2850 restore: team 2ded02fc-b481-4fbf-8d4a-c525a0ac1cc4 "QA NDC HR team" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:49Z D3 lane: NDC-2850 restore: team 51f027c0-87bc-417b-911e-04ed20866fea "QA NDC KSA Accounting Team" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:55Z D3 lane: NDC-2850 restore: team 8c6d8651-2fff-4b78-8306-e300133bd8bd "QA NDC operations" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:58Z D3 lane: NDC-2850 restore: team d2c41509-2f0a-4d3a-8f7e-77c32c80ca39 "QA NDC Ops Management" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:28:59Z D3 lane: NDC-2850 restore: team b71c2f3f-4b57-4e54-8ed3-65f79f9c68c5 "QA NDC supervisors" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:29:00Z D3 lane: NDC-2850 restore: team 5b6944c0-4e94-4ff0-bcb3-d5c34d16725f "QA NDC Top-up Managers" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:29:00Z D3 lane: NDC-2850 restore: team 40eb518f-dfa2-49ca-96a5-d493180bc9c5 "QA NDC UAE Accounting team" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:29:03Z D3 lane: NDC-2850 restore: team 7d72fd72-b8a4-45d2-8ddf-fd0405662b3e "QA RT18 2794 team" sources restored -> 422 UNPROCESSABLE One agent is not an agent of the team's department. Add the agent to the department first, or remove them from the team. [{"field":"sources","issue":"TEAM_AGENT_NOT_IN_DEPARTMENT"},{"field":"agent","issue":"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4"}] now=false same=false
+- 2026-11-16T15:29:35Z D3 lane: NDC-2850 restore: RR rule 80e07ace-5182-4951-bd1b-25ac4c9bbf3c "QA RT19 AS 2824 load AOB 1oeq" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:37Z D3 lane: NDC-2850 restore: RR rule 054b35a2-7f56-40d8-b635-65bf75442ae2 "QA RT19 AS 2824 load AOB b 2zvh" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:37Z D3 lane: NDC-2850 restore: RR rule 9d0e08d5-bfb3-44bf-b5cb-c7066352475e "QA RT19 AS load check AOB a2og" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:37Z D3 lane: NDC-2850 restore: RR rule 57d47eb0-e2f5-4988-9344-22b38eb42c5d "QA RT19 AS load check2 AOB 2xfk" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:38Z D3 lane: NDC-2850 restore: RR rule 49ef54ed-7c32-4f50-a75f-76f6331873e2 "QA RT19 AS load check3 AOB 5t0m" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:40Z D3 lane: NDC-2850 restore: RR rule b4b800e5-a985-4612-9b6d-6942dc4e6f01 "QA RT19 AS load check3 AOB jf68" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:40Z D3 lane: NDC-2850 restore: RR rule 0d04215e-e2e1-4348-9688-dacb1b872c8e "QA RT19 AS load check4 AOB bdc3" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:43Z D3 lane: NDC-2850 restore: RR rule 6541e7b8-b656-4df7-ae4d-73f96e865517 "QA RT19 AS load check5 AOB 1wck" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:43Z D3 lane: NDC-2850 restore: RR rule a8f673c5-3eed-4e80-9f68-7d1d993263d2 "QA RT19 AS NF3 burst glyh" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:50Z D3 lane: NDC-2850 restore: RR rule 7a470c2e-7709-4392-9c82-b962d4a9720a "QA RT19 AS NF3 burst scyn" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:51Z D3 lane: NDC-2850 restore: RR rule 2a700860-6c8c-4c76-a106-20adcf899944 "QA AS6 RR seq" pool targets restored (Dev Team 2 back), active=true -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"},{"field":"targets[0].pool.user_ids[2]","issue":"not_a_member"}]
+- 2026-11-16T15:29:52Z D3 lane: NDC-2850 restore: RR rule 74c26534-fd9e-4f7b-89de-0a7538305abb "QA AS6 RR load" pool targets restored (Dev Team 2 back), active=true -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"},{"field":"targets[0].pool.user_ids[2]","issue":"not_a_member"}]
+- 2026-11-16T15:29:52Z D3 lane: NDC-2850 restore: RR rule d4807ebf-a84a-4d69-a192-2db060ba9854 "QA AS6 RR skill" pool targets restored (Dev Team 2 back), active=true -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"},{"field":"targets[0].pool.user_ids[2]","issue":"not_a_member"}]
+- 2026-11-16T15:29:53Z D3 lane: NDC-2850 restore: RR rule 4241a5fd-822f-40b6-9829-2473fd262c6e "QA RT19 AS 2931 skill A1 A3 2zvh" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:54Z D3 lane: NDC-2850 restore: RR rule 49da3fce-c152-4dd8-a84a-7346052687df "QA RT19 AS load check A1A3 2xfk" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:54Z D3 lane: NDC-2850 restore: RR rule cc87fb2b-067f-4e31-a44f-0182032d126a "QA RT19 AS 2275 import i2g9" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:54Z D3 lane: NDC-2850 restore: RR rule 81d3a16a-2c00-4480-b42c-8acf9d7b0add "QA RT19 SK 2931 skill TU1+DT2 xbtx" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[0]","issue":"not_a_member"},{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:29:54Z D3 lane: NDC-2850 restore: RR rule b57047d9-0921-4398-8796-6ca40241729f "High Priority => Round Robin - Load Based - Dev Team 2 & QA Team 1" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:30:53Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 93949fbd-f9df-4e2e-ae45-00b8dc38385b "QA AO Dept A" -> 200 now=true
+- 2026-11-16T15:31:18Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 4853562a-0b4d-45cb-ba34-9f2118fcd32c "QA AO Dept B" -> 200 now=true
+- 2026-11-16T15:31:27Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6 "QA AS6 Dept A" -> 200 now=true
+- 2026-11-16T15:32:03Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department c0e05c3e-aa51-47ef-be50-53fd4c6edcb1 "QA NDC Accounting" -> 200 now=true
+- 2026-11-16T15:32:13Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department c9a07377-df87-436d-bcb1-930251c00e6f "QA NDC Airline Operations" -> 200 now=true
+- 2026-11-16T15:32:23Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 739804e7-fff5-43f5-a1da-f815758438f9 "QA NDC Alexandria Branch" -> 200 now=true
+- 2026-11-16T15:32:32Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department cb4ed3fa-dc3c-4e6e-8926-b0652c49a1c4 "QA NDC B2C TL" -> 200 now=true
+- 2026-11-16T15:32:44Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department af3e14be-0c70-4e9e-8009-5297b4706665 "QA NDC Bani Sweif Branch" -> 200 now=true
+- 2026-11-16T15:34:14Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department f131cbef-8952-4ec8-bc72-5f23849592d4 "QA NDC Client Complaints" -> 200 now=true
+- 2026-11-16T15:34:15Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department a026f008-f6a1-49b7-b4a3-dce33c6b36b7 "QA NDC Clients' Financial Investigations" -> 200 now=true
+- 2026-11-16T15:34:16Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 8770cfd0-487a-4aca-8872-3aaeb14085a9 "QA NDC Dubai Operation" -> 200 now=true
+- 2026-11-16T15:34:18Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department a5fd54e8-35df-4014-a28a-fd384b8b6863 "QA NDC El-Hady Branch" -> 200 now=true
+- 2026-11-16T15:34:24Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department e9a11c7a-5362-4174-8c46-c1fb0f5550af "QA NDC El-Mansoura Branch" -> 200 now=true
+- 2026-11-16T15:34:28Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department f948e6cb-8c56-4d40-9b42-066a5b6f8bb5 "QA NDC El-Zagazeg Branch" -> 200 now=true
+- 2026-11-16T15:34:31Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 77fca069-39a4-4ff9-835d-a12c12c7d5f2 "QA NDC Financial approval" -> 200 now=true
+- 2026-11-16T15:34:35Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 3abf4280-94e5-49f8-b948-b8920dfc1e53 "QA NDC FLY-WT Refund" -> 200 now=true
+- 2026-11-16T15:34:37Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department fc9fe73b-7c8d-464d-9ff2-47a26e49ee47 "QA NDC GDS TL" -> 200 now=true
+- 2026-11-16T15:34:43Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 38068552-2ccb-4756-846f-ab6fe4dbced5 "QA NDC KSA Branch" -> 200 now=true
+- 2026-11-16T15:34:48Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department a8fc41f5-5f1b-458a-ae56-baf1ff917c44 "QA NDC LCC TL" -> 200 now=true
+- 2026-11-16T15:34:50Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 95a6fd64-b877-435e-8e23-62c75717f95f "QA NDC Manual Invoice" -> 200 now=true
+- 2026-11-16T15:34:55Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 5c4e639a-447a-4d44-a66e-2280df55abad "QA NDC Menoufia Branch" -> 200 now=true
+- 2026-11-16T15:34:56Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 6cd5caf8-fc52-45c7-8632-9d0e65ddcdd7 "QA NDC Minya Branch" -> 200 now=true
+- 2026-11-16T15:34:59Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 14130980-b62e-4398-a879-93e4dbe9c790 "QA NDC NDC Finance" -> 200 now=true
+- 2026-11-16T15:35:01Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department b1d17c0f-cdc3-4ab7-85eb-bd7140b31cc3 "QA NDC Ok To Board" -> 200 now=true
+- 2026-11-16T15:35:03Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 6c7eb3ca-69e5-43cf-a337-2ec9b155f191 "QA NDC Qina Branch" -> 200 now=true
+- 2026-11-16T15:35:06Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 0cade824-7985-40f9-a3b7-b168a8e7efdb "QA NDC Quality Assurance" -> 200 now=true
+- 2026-11-16T15:35:09Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department b63b7c94-31cb-4b7b-a1c3-01a342d73efe "QA NDC Reissue-Ref - إلغاء وتعديل" -> 200 now=true
+- 2026-11-16T15:35:11Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department ec3701b4-b1c3-4bdd-b178-9e24b6854f89 "QA NDC Saudi Arabia" -> 200 now=true
+- 2026-11-16T15:35:13Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 990661a9-3688-44e6-b37a-c178e27c42f0 "QA NDC Souhag Branch" -> 200 now=true
+- 2026-11-16T15:35:17Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department fd416411-6792-4ef1-a335-3cdd626de539 "QA NDC System Admin" -> 200 now=true
+- 2026-11-16T15:35:20Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 32c4c4ef-97f2-46f2-8af2-8c63cd5fec2b "QA NDC Tahrir Branch" -> 200 now=true
+- 2026-11-16T15:35:43Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department e9215eee-a4ff-4750-a7dc-88f8b420c323 "QA NDC Technical Support" -> 200 now=true
+- 2026-11-16T15:35:48Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 88b6fe3f-1811-4944-a246-0ddaaf9d50a0 "QA NDC UAE Seniors" -> 200 now=true
+- 2026-11-16T15:35:51Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 8cfa703e-62fe-40b6-865e-6bdd86f7f89e "QA NDC Wonder Travel Finance" -> 200 now=true
+- 2026-11-16T15:35:53Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 72f4edfe-f36a-4ac7-907e-fe7d97cd1dbf "QA RT19 SK Dept" -> 200 now=true
+- 2026-11-16T15:35:56Z D3 lane: NDC-2850 restore: Dev Team 2 re-added to department 19510fdc-91f3-4a7a-8888-153f1318b765 "Tech" -> 200 now=true
+- 2026-11-16T15:36:01Z D3 lane: NDC-2850 restore: team 3389d15c-ec5e-4d17-843a-e76df9a3f4bc "Dev" sources restored -> 200 now=true same=false
+- 2026-11-16T15:36:06Z D3 lane: NDC-2850 restore: team 9eb4ee89-20b2-435d-884d-c760d7c5c738 "QA" sources restored -> 200 now=true same=false
+- 2026-11-16T15:36:07Z D3 lane: NDC-2850 restore: team 434140a3-2145-428c-9e57-e6bc5cf2f8d0 "QA AS6 Team A" sources restored -> 200 now=true same=false
+- 2026-11-16T15:36:10Z D3 lane: NDC-2850 restore: team 27848629-8d75-40c7-bbb2-56ae6eff4670 "QA NDC AR team" sources restored -> 200 now=true same=false
+- 2026-11-16T15:36:13Z D3 lane: NDC-2850 restore: team 3b8c65aa-e35d-489c-a8a5-137ee7fd02d1 "QA NDC AR TL" sources restored -> 200 now=true same=false
+- 2026-11-16T15:36:16Z D3 lane: NDC-2850 restore: team 9d63a88b-c2e7-409c-9ead-a0204f75d902 "QA NDC focal point validation" sources restored -> 200 now=true same=false
+- 2026-11-16T15:36:19Z D3 lane: NDC-2850 restore: team 2ded02fc-b481-4fbf-8d4a-c525a0ac1cc4 "QA NDC HR team" sources restored -> 200 now=true same=false
+- 2026-11-16T15:36:20Z D3 lane: NDC-2850 restore: team 51f027c0-87bc-417b-911e-04ed20866fea "QA NDC KSA Accounting Team" sources restored -> 200 now=true same=true
+- 2026-11-16T15:36:22Z D3 lane: NDC-2850 restore: team 8c6d8651-2fff-4b78-8306-e300133bd8bd "QA NDC operations" sources restored -> 200 now=true same=true
+- 2026-11-16T15:36:25Z D3 lane: NDC-2850 restore: team d2c41509-2f0a-4d3a-8f7e-77c32c80ca39 "QA NDC Ops Management" sources restored -> 200 now=true same=true
+- 2026-11-16T15:36:27Z D3 lane: NDC-2850 restore: team b71c2f3f-4b57-4e54-8ed3-65f79f9c68c5 "QA NDC supervisors" sources restored -> 200 now=true same=true
+- 2026-11-16T15:36:29Z D3 lane: NDC-2850 restore: team 5b6944c0-4e94-4ff0-bcb3-d5c34d16725f "QA NDC Top-up Managers" sources restored -> 200 now=true same=true
+- 2026-11-16T15:36:31Z D3 lane: NDC-2850 restore: team 40eb518f-dfa2-49ca-96a5-d493180bc9c5 "QA NDC UAE Accounting team" sources restored -> 200 now=true same=false
+- 2026-11-16T15:36:37Z D3 lane: NDC-2850 restore: team 7d72fd72-b8a4-45d2-8ddf-fd0405662b3e "QA RT18 2794 team" sources restored -> 200 now=true same=false
+- 2026-11-16T15:36:41Z D3 lane: NDC-2850 restore: RR rule 80e07ace-5182-4951-bd1b-25ac4c9bbf3c "QA RT19 AS 2824 load AOB 1oeq" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:42Z D3 lane: NDC-2850 restore: RR rule 054b35a2-7f56-40d8-b635-65bf75442ae2 "QA RT19 AS 2824 load AOB b 2zvh" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:42Z D3 lane: NDC-2850 restore: RR rule 9d0e08d5-bfb3-44bf-b5cb-c7066352475e "QA RT19 AS load check AOB a2og" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:44Z D3 lane: NDC-2850 restore: RR rule 57d47eb0-e2f5-4988-9344-22b38eb42c5d "QA RT19 AS load check2 AOB 2xfk" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:45Z D3 lane: NDC-2850 restore: RR rule 49ef54ed-7c32-4f50-a75f-76f6331873e2 "QA RT19 AS load check3 AOB 5t0m" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:46Z D3 lane: NDC-2850 restore: RR rule b4b800e5-a985-4612-9b6d-6942dc4e6f01 "QA RT19 AS load check3 AOB jf68" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:46Z D3 lane: NDC-2850 restore: RR rule 0d04215e-e2e1-4348-9688-dacb1b872c8e "QA RT19 AS load check4 AOB bdc3" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:47Z D3 lane: NDC-2850 restore: RR rule 6541e7b8-b656-4df7-ae4d-73f96e865517 "QA RT19 AS load check5 AOB 1wck" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:47Z D3 lane: NDC-2850 restore: RR rule a8f673c5-3eed-4e80-9f68-7d1d993263d2 "QA RT19 AS NF3 burst glyh" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:48Z D3 lane: NDC-2850 restore: RR rule 7a470c2e-7709-4392-9c82-b962d4a9720a "QA RT19 AS NF3 burst scyn" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:48Z D3 lane: NDC-2850 restore: RR rule 2a700860-6c8c-4c76-a106-20adcf899944 "QA AS6 RR seq" pool targets restored (Dev Team 2 back), active=true -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:36:49Z D3 lane: NDC-2850 restore: RR rule 74c26534-fd9e-4f7b-89de-0a7538305abb "QA AS6 RR load" pool targets restored (Dev Team 2 back), active=true -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:36:50Z D3 lane: NDC-2850 restore: RR rule d4807ebf-a84a-4d69-a192-2db060ba9854 "QA AS6 RR skill" pool targets restored (Dev Team 2 back), active=true -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[1]","issue":"not_a_member"}]
+- 2026-11-16T15:36:50Z D3 lane: NDC-2850 restore: RR rule 4241a5fd-822f-40b6-9829-2473fd262c6e "QA RT19 AS 2931 skill A1 A3 2zvh" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:51Z D3 lane: NDC-2850 restore: RR rule 49da3fce-c152-4dd8-a84a-7346052687df "QA RT19 AS load check A1A3 2xfk" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:52Z D3 lane: NDC-2850 restore: RR rule cc87fb2b-067f-4e31-a44f-0182032d126a "QA RT19 AS 2275 import i2g9" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:36:53Z D3 lane: NDC-2850 restore: RR rule 81d3a16a-2c00-4480-b42c-8acf9d7b0add "QA RT19 SK 2931 skill TU1+DT2 xbtx" pool targets restored (Dev Team 2 back), active=false -> 400 VALIDATION_ERROR The assignment rule is invalid. [{"field":"targets[0].pool.user_ids[0]","issue":"not_a_member"}]
+- 2026-11-16T15:36:54Z D3 lane: NDC-2850 restore: RR rule b57047d9-0921-4398-8796-6ca40241729f "High Priority => Round Robin - Load Based - Dev Team 2 & QA Team 1" pool targets restored (Dev Team 2 back), active=false -> 200
+- 2026-11-16T15:37:51Z D3 lane: NDC-2850 restore fix: Dev Team 2 removed again from "QA RT19 SK Dept" (SK lane had left it with no agents at 11:46Z) -> 200 members now 0
+- 2026-11-16T15:38:22Z D3 lane: SLA policy b7e0e30f-599f-4011-9765-5f1ef0d54e5a activated for NDC-2850 escalation run -> 200
+- 2026-11-16T15:38:31Z D3 lane: ticket created 19eff012-64c6-405f-88ba-62b4be3a36ae #undefined "QA RT19 D3 2850 escalation after removal R19D3xi726" (QA RT19 D3 Dept)
+- 2026-11-16T15:39:05Z D3 lane: SLA policy b7e0e30f-599f-4011-9765-5f1ef0d54e5a deactivated after NDC-2850 run -> 200
+- 2026-11-16T15:40:07Z D3 lane: SLA policy b7e0e30f-599f-4011-9765-5f1ef0d54e5a activated for NDC-2850 escalation run -> 200
+- 2026-11-16T15:40:19Z D3 lane: ticket created 6d2eb07b-6aa8-4090-a6ba-c472fa856b36 #4725 "QA RT19 D3 2850 escalation after removal run2 R19D3xi726" (QA RT19 D3 Dept)
+- 2026-11-16T15:43:22Z D3 lane: SLA policy b7e0e30f-599f-4011-9765-5f1ef0d54e5a deactivated after NDC-2850 run -> 200
+- 2026-11-16T15:48:48Z GS lane: Leads view QA RT19 GS Sort view f79332b2-678a-44a4-83cc-d6921f1582ad
+- 2026-11-16T15:54:36Z D3 lane: NDC-2850 restore: Dev Team 2 main department set back to Tech (was Tech before the reassign; became QA AO Dept A) -> {"put":"200 {\"success\":true,\"data\":{\"agent_user_id\":\"5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4\",\"department_ids\":[\"0cade824-7985-40f9-a3b7-b168a8e7efdb\",\"14130980-b62e-4398-a879-93e4dbe9c790\",\"19510fdc-91f3-4a7a-8888-","n":35,"main":"19510fdc-91f3-4a7a-8888-153f1318b765","same":true}
+- 2026-11-16T15:55:51Z D3 lane: NDC-2850 restore: dept b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6 "QA AS6 Dept A" members temporarily +1 (pool users who were not members) to re-save RR pools with Dev Team 2, then put back: {"origN":3,"tempAdd":1,"add":"200","QA AS6 RR seq":"200 active=true","QA AS6 RR load":"200 active=true","QA AS6 RR skill":"200 active=true","back":"200 same=true"}
+- 2026-11-16T15:55:53Z D3 lane: NDC-2850 restore: dept 72f4edfe-f36a-4ac7-907e-fe7d97cd1dbf "QA RT19 SK Dept" members temporarily +2 (pool users who were not members) to re-save RR pools with Dev Team 2, then put back: {"origN":0,"tempAdd":2,"add":"200","QA RT19 SK 2931 skill TU1+DT2 xbtx":"200 active=false","back":"200 same=true"}

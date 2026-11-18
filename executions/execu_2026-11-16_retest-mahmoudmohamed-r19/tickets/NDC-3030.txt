@@ -1,0 +1,31 @@
+# NDC-3030 Blueprint | Two people editing the same blueprint: the second save silently replaces the first person's change
+Summary
+If a blueprint is changed in another tab or by another admin while you have it open, your Save and Publish overwrites that change with no warning.
+Steps to Reproduce
+- Open the same blueprint in two browser tabs (or as two admins).
+- In tab 1 change the name and click Save and Publish.
+- In tab 2 (still showing the old version) change only the description and click Save and Publish.
+- Reload the blueprint.
+Expected Result
+- Tab 2 is told the blueprint changed since it was opened and can reload; no change is lost.
+Actual Result
+- Tab 2 saves and publishes with no message (Version 2).
+- After reload the name is back to the old one: tab 1's rename is lost. Only tab 2's description is kept.
+Note
+Same problem as NDC-2965 (Workflow Rules). Spec row H6.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026.
+Attachment
+Annotated evidence attached (BP-H6-second-editor-overwrites-first-silently.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:07.529143+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging: with the designer open and edited, a save made elsewhere first, then Save and Publish in the designer showed "Someone else changed this blueprint after you opened it." with Reload and Keep my changes, and nothing was overwritten. Through the API a stale save answers 409.
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:00.852957+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging through the API: a save from a stale copy put the old name back.
+Fix: each blueprint now has a revision. A save made from an outdated copy is refused, and the designer shows "Someone else changed this blueprint after you opened it." with Reload or Keep my changes. It also warns when you come back to the tab and the blueprint has changed. Branches: metadata-engine fix/ndc-3030-3037-3036-3029-blueprint-admin, client-engine fix/ndc-blueprint-designer-qa-1115.
+Checked in automated tests, including two writers racing on a real database. Not deployed, not checked on staging yet.
+

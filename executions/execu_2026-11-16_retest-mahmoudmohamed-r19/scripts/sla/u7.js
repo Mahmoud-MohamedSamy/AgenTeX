@@ -1,0 +1,13 @@
+const D=JSON.parse(require('fs').readFileSync('sla/out/cfg.json','utf8')).D;
+await page.goto(H+'/settings/automation/sla?department='+D,{waitUntil:'domcontentloaded'});await sleep(8000);
+await page.getByRole('button',{name:'New SLA'}).click();await sleep(2500);
+await page.getByPlaceholder('e.g. Chat Tickets').fill('QA RT19 SLA 2835 UI');
+await page.locator('label').filter({hasText:'Ticket Create'}).click();await sleep(500);
+await page.getByRole('button',{name:'Next'}).click();await sleep(2000);
+await page.getByRole('button',{name:/Add Target/}).click();await sleep(2500);
+const dlg=page.getByRole('dialog',{name:/Add Target/});
+await dlg.locator('input').nth(3).fill('1');
+const sw=page.locator('button[aria-label="Response Escalation"]');log('sw',await sw.count());const bb=await sw.first().boundingBox();log(JSON.stringify(bb));
+await page.mouse.click(bb.x+bb.width/2,bb.y+bb.height/2);await sleep(1500);
+log(JSON.stringify(await page.locator('[role=dialog] input, [role=dialog] button, [role=dialog] [role=combobox], [role=dialog] label, [role=dialog] h4').evaluateAll(b=>b.map(x=>x.tagName+':'+(x.getAttribute('aria-label')||x.getAttribute('placeholder')||'')+'|'+(x.innerText||x.value||'').trim().slice(0,40)))));
+await shot('2835-x3.png');

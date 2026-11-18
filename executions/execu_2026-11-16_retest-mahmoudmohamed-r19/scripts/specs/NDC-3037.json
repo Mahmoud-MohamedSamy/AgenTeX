@@ -1,0 +1,103 @@
+{
+ "out": "NDC-3037-retest-PASS.png",
+ "ticket": "NDC-3037",
+ "priority": "low",
+ "title": "Blueprint | A transition owner id that does not exist is now refused (422 \"No user exists with id …\") on create and on edit",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · POST/PUT /api/v1/modules/{tickets}/blueprints with a random UUID as transition owner · blueprint \"QA BP RT19 3037 valid\" (off) used for the edit checks · 11:24 Cairo",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "3037-api-card.png",
+   "caption": "API requests and read-back",
+   "crop": [
+    0,
+    0,
+    1600,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      293
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      303,
+      1564,
+      340
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      350,
+      1564,
+      408
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Save a blueprint with a random owner id",
+   "Refused",
+   "422 BLUEPRINT_OWNER_UNKNOWN \"No user exists with id …\" naming the transition; nothing stored (was: 201, id stored)",
+   "PASS"
+  ],
+  [
+   2,
+   "Put the unknown id into an existing blueprint (draft and direct save)",
+   "Refused",
+   "422 both ways; stored owners unchanged",
+   "PASS"
+  ],
+  [
+   3,
+   "Dev: designer shows old unknown ids as \"Unknown user\"",
+   "Never a raw id",
+   "Not checked live: the server no longer lets such an id be saved (dev states the same)",
+   "INFO"
+  ],
+  [
+   4,
+   "Malformed id",
+   "Clear message",
+   "422, but the message exposes .NET parser text (System.Guid, BytePositionInLine). Minor, reported separately",
+   "INFO"
+  ]
+ ]
+}

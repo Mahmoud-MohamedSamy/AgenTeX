@@ -1,0 +1,159 @@
+{
+ "out": "NDC-2962-retest-PASS.png",
+ "ticket": "NDC-2962",
+ "date": "16 Nov 2026",
+ "priority": "high",
+ "title": "Workflow Rules | A line break in a webhook header value adds an extra header to the outgoing request",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · dept QA RT19 WF Dept · webhooks to https://qa-rt19.invalid (never resolves) and to staging-desk's own API /api/v1/qa-rt19-probe (no public receiver) · tickets #4183, #4188, #4190",
+ "panels": [
+  {
+   "img": "2962-api-card.png",
+   "caption": "API evidence (owner, NDC-Staging)",
+   "crop": [
+    0,
+    0,
+    1600,
+    606
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      246
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      256,
+      1564,
+      314
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      324,
+      1564,
+      382
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      392,
+      1564,
+      450
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      460,
+      1564,
+      518
+     ],
+     "n": 6,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      528,
+      1564,
+      586
+     ],
+     "n": 7,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2962-2-exec-injected.png",
+   "caption": "Execution History for #4190 (header X-QA-Desc: ${description}, description holds a line break + \"Authorization: Bearer …\"): HTTP 401, server answered TOKEN_MISSING, so no injected header arrived",
+   "crop": [
+    270,
+    60,
+    1290,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      395,
+      1268,
+      502
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Save a header value / name with a line break or control character",
+   "Refused at save",
+   "400 with the header named (CRLF, LF, CR, NUL value; CRLF name); a tab is accepted (allowed in HTTP)",
+   "PASS"
+  ],
+  [
+   2,
+   "Save Host, Content-Length, Transfer-Encoding, Connection, non-ASCII",
+   "Refused",
+   "400 \"… is set by the request itself and cannot be changed\" / \"only ASCII\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Other write paths",
+   "Refused too",
+   "PATCH rule 400; saved action POST/PATCH 400; PUT not available",
+   "PASS"
+  ],
+  [
+   4,
+   "What the webhook sends",
+   "Only the configured headers",
+   "Webhook to our own staging API: configured Authorization reached it (TOKEN_INVALID); a line break coming from a record value added no header (TOKEN_MISSING); header values are not templated",
+   "PASS"
+  ],
+  [
+   5,
+   "Execution History shows the request headers",
+   "—",
+   "Not recorded: dispatch row has target, status, HTTP, details only",
+   "INFO"
+  ],
+  [
+   6,
+   "Rule saved before the fix fails once with the reason",
+   "Dev claim",
+   "Not checkable: no path saves such a header; stored values are masked \"********\"",
+   "INFO"
+  ]
+ ]
+}

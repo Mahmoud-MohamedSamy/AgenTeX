@@ -1,0 +1,26 @@
+# NDC-2966 Workflow Rules | "Send happiness email" is logged as Succeeded while ratings are off
+Summary
+With Customer Happiness switched off, the Send happiness email action sends nothing but is logged as Succeeded with no reason.
+Steps to Reproduce
+- Make sure Customer Happiness is off.
+- Create a rule On Create with the action Send happiness email.
+- Create a matching ticket and open Execution History.
+Expected Result
+- The run says the action was skipped because ratings are off (the editor itself says "Nothing is sent while ratings … are switched off").
+Actual Result
+- Execution: SendHappinessEmail Succeeded, with no reason (ticket #3163). Nothing in the ticket history.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026.
+Attachment
+Annotated evidence attached (WF-I30-happiness-email-succeeded-while-off.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-15T11:02:51.532558+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Merged (anyware.workflow #138, client-engine #830) and deployed to staging-desk (tavi) on 15 Nov, 08:59 UTC.
+Checked there: an active test rule On Create with Send happiness email, and a new test ticket. Execution History shows the action as Skipped with "Not sent: the ticket's department does not collect ratings." in the Details column (that is the reason Desk gave for the test department; with ratings switched off it reads "Not sent: customer happiness ratings are switched off."). Test ticket and rule deleted.
+
+--- comment 2026-11-15T10:18:42.197993+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix in review: anyware.workflow #138 and client-engine #830.
+When Desk does not send the happiness email (ratings off, already rated, no ticket owner, …), the action now ends Skipped in Execution History, with the reason, for example "Not sent: customer happiness ratings are switched off." It is not retried and not reported as a failure. Checked with tests; not merged or deployed yet.
+

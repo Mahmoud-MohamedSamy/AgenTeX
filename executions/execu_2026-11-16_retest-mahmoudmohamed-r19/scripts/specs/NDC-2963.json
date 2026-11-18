@@ -1,0 +1,95 @@
+{
+ "out": "NDC-2963-retest-DECISION.png",
+ "ticket": "NDC-2963",
+ "date": "16 Nov 2026",
+ "priority": "high",
+ "title": "Workflow Rules | Script saved in an Add Comment action runs when an admin opens the rule",
+ "verdict": "DECISION",
+ "env": "NDC-Staging · staging-desk · owner · rule \"QA RT19 WF 2963\" (45ed37b1) saved through the API with <img src=x onerror=\"window.__xss=1\"> + <b> + javascript: link · ticket #4218",
+ "panels": [
+  {
+   "img": "2963-1b-editor-comment.png",
+   "caption": "Rule editor: description shown as plain text; comment editor shows a broken image + bold + link (no onerror, no href), window.__xss unset",
+   "crop": [
+    240,
+    60,
+    1400,
+    840
+   ],
+   "boxes": [
+    {
+     "b": [
+      284,
+      146,
+      624,
+      168
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      522,
+      764,
+      838,
+      830
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2963-4-ticket-comment.png",
+   "caption": "Ticket #4218: the comment the action posted renders the same safe HTML (broken image, bold, link without href); nothing ran",
+   "crop": [
+    664,
+    60,
+    1600,
+    340
+   ],
+   "boxes": [
+    {
+     "b": [
+      676,
+      258,
+      860,
+      316
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Open the rule in the editor",
+   "No script runs",
+   "onerror / javascript: href stripped; window.__xss unset; no dialog",
+   "PASS"
+  ],
+  [
+   2,
+   "Editor shows the body as plain text",
+   "Plain text",
+   "Rendered as rich text: broken image, bold, link (safe)",
+   "INFO"
+  ],
+  [
+   3,
+   "Ticket comment posted by the action",
+   "Plain text, safe",
+   "Safe; rendered as rich text (stored body_html keeps the raw <img onerror>, the screen strips it)",
+   "INFO"
+  ],
+  [
+   4,
+   "Rules list and Execution History",
+   "Safe",
+   "List row and Execution History show no HTML; window.__xss unset",
+   "PASS"
+  ]
+ ]
+}

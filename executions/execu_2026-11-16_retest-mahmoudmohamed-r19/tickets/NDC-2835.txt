@@ -1,0 +1,31 @@
+# NDC-2835 SLA | A "Before due" escalation longer than the target time can be saved
+Summary
+An SLA target can respond within 1 hour while its escalation is set to "Before due by 2 hours". That escalation would be due an hour before the ticket even exists. The editor and the server accept it without any message. Levels that are out of order are already refused, so this one check is missing.
+Steps to Reproduce
+- Go to Setup › SLA & Escalation and click New SLA. Enter a name, tick Ticket Create and click Next.
+- Click Add Target. Set Respond Within to 1 Hours.
+- Turn on Response Escalation. In Level 1 set When to Escalate to "Before due" and By to 2 Hours.
+- Save the target, then save the SLA.
+Expected Result
+- The target cannot be saved and a message says the Before-due time must be shorter than the target time.
+Actual Result
+- The target and the SLA save with no message.
+- The saved SLA has a 1-hour response target and an escalation 2 hours before it is due.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, 1440×900, owner account, 10 Nov 2026. Compared with Zoho Desk help articles (live Zoho Desk did not load on this network).
+Attachment
+Annotated comparison attached (SL-54-before-due-escalation-longer-than-target-vs-zoho.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T13:33:46.898684+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 11:30 UTC. Ready for retest.
+Checked on staging, through the API: saving an SLA with a 1-hour response target and an escalation 2 hours before due was refused, with the error on that level's time.
+The SLA editor's English and Arabic message is deployed, but I didn't click through it in the browser.
+
+--- comment 2026-11-16T11:56:54.365633+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Fix is in review: anyware-shared-sla PR #2 (the shared SLA package, version 0.2.1), then desk PR #260 and client-engine PR #840. Not deployed yet.
+Reproduced on staging 16 Nov: I saved a 1-hour response target with an escalation 2 hours before due, and it was accepted. I deleted the test SLA.
+Change: a "Before due" escalation must now be shorter than its target time, and an equal time is refused too. Saving shows "Make the before-due time shorter than the target time" in English or Arabic. No SLA saved on any staging company breaks this rule today.
+To retest after deploy: repeat the original steps. The save should be refused with that message.
+

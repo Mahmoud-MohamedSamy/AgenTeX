@@ -1,0 +1,196 @@
+{
+ "out": "NDC-3053-retest-PASS.png",
+ "ticket": "NDC-3053",
+ "priority": "medium",
+ "title": "Notifications | \"Closing a ticket\" email is sent only when Customer Happiness is on",
+ "verdict": "PASS",
+ "label": "RETEST PASS (inbox pending)",
+ "env": "NDC-Staging · staging-desk · owner · new dept QA RT19 NTF Dept · contact = user's plus-address · tickets #4675 #4678 (#4631 #4628 #4629 in a staging outage)",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "3053-1-closing-off-never-saved.png",
+   "caption": "Department that never saved the rule, Customer Happiness off: \"Closing a ticket\" shows Email off",
+   "crop": [
+    270,
+    130,
+    1600,
+    900
+   ],
+   "boxes": [
+    {
+     "b": [
+      300,
+      830,
+      1570,
+      890
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3053-api-card.png",
+   "caption": "API: rule turned on, close with Happiness off and on, restore",
+   "crop": [
+    0,
+    0,
+    1600,
+    470
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      204
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      272
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      340
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      397,
+      1564,
+      455
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "inbox-3053-4675.png",
+   "caption": "#4675 Happiness off: no rating link (user's inbox, address hidden)",
+   "crop": [
+    260,
+    226,
+    944,
+    280
+   ],
+   "boxes": [
+    {
+     "b": [
+      332,
+      240,
+      1190,
+      280
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "inbox-3053-4678.png",
+   "caption": "#4678 Happiness on: rating link (user's inbox, address hidden)",
+   "crop": [
+    260,
+    226,
+    944,
+    400
+   ],
+   "boxes": [
+    {
+     "b": [
+      332,
+      240,
+      1190,
+      280
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "inbox-3053-4629.png",
+   "caption": "#4629 retried during outage: no rating link (user's inbox, address hidden)",
+   "crop": [
+    260,
+    226,
+    944,
+    280
+   ],
+   "boxes": [
+    {
+     "b": [
+      332,
+      240,
+      1190,
+      280
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Rule never saved, Happiness off",
+   "Screen matches what is sent",
+   "\"Closing a ticket\" shows off (is_enabled false, not customized)",
+   "PASS"
+  ],
+  [
+   2,
+   "Rule on, Happiness off, close #4675",
+   "Closed email sent",
+   "\"Your ticket #4675 has been closed\" queued + sent 12:56Z (also #4631)",
+   "PASS"
+  ],
+  [
+   3,
+   "Rule on, Happiness on for the dept, close #4678",
+   "Closed email with rating",
+   "Sent with the rating link, happiness_link_status = sent; Happiness restored, diff none",
+   "PASS"
+  ],
+  [
+   4,
+   "Runs during the 12:30–12:40Z staging outage",
+   "-",
+   "#4628 nothing sent; #4629 sent on retry without link status; not counted",
+   "INFO"
+  ],
+  [
+   5,
+   "Customer inbox",
+   "Closed email always; rating link only with Happiness on",
+   "#4631 and #4675 (Happiness off): closed email, no rating link; #4678 (Happiness on): closed email with Bad / Okay / Good",
+   "PASS"
+  ],
+  [
+   6,
+   "#4629 (closed during the outage, sent on retry)",
+   "—",
+   "Closed email arrived WITHOUT the rating link although Happiness was on for that run — retry may drop the link (separate observation)",
+   "INFO"
+  ]
+ ]
+}

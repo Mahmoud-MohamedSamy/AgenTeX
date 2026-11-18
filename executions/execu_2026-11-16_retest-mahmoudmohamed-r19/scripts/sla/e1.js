@@ -1,0 +1,15 @@
+eval(fs.readFileSync('sla/lib.js','utf8'));
+const u=Math.random().toString(36).slice(2,6); const R={u};
+const tag53='R19SLA2853'+u, tag52='R19SLA2852'+u;
+const tpl=ok(await api('POST','/desk/email-templates',{name:'QA RT19 SLA Tpl 2853 '+u,module:'desk_tickets',notification_type:'agent',use_case:'ticket.sla_escalation',subject:'QA RT19 SLA 2853 custom L{{sla.level}} #{{ticket.number}}',body_html:'<p>QA RT19 SLA custom template: [{{ticket.subject}}] obligation [{{sla.obligation}}] level [{{sla.level}}] due [{{sla.due_at}}] policy [{{sla.policy}}]</p>'}),'tpl').j.data.id;
+led(`email template "QA RT19 SLA Tpl 2853 ${u}" ${tpl} (agent, sla_escalation)`);
+const lvl=(timing,min,ref)=>({timing,offset:timing==='at'?null:{value:min,unit:'minutes'},recipients:[{kind:'agent',id:SAMY}],template_ref:ref,actions:{assign_owner:null,assign_team:null,set_priority:null}});
+const pol=async(dept,tag,levels)=>{const r=ok(await api('POST','/desk/sla/policies',{department_id:dept,name:'QA RT19 SLA '+tag,description:null,is_active:true,triggers:{create:true,update:false,field_update:null,customer_reply:false,agent_response:false,private_thread:null,comment:null},execute_only_with_account:false,resolution_from_created:false,targets:[{name:'t '+tag,criteria:{conditions:[{field_key:'description',operator:'contains',value:tag}],pattern:null},response:{value:1,unit:'minutes'},resolution:{value:2,unit:'hours'},calendar_mode:'calendar',business_hours_id:null,first_response_only:true,escalate_on_business_hours:false,escalations:{response:levels,resolution:[]}}]}),'policy '+tag);const id=r.j.data.id;led(`SLA policy "QA RT19 SLA ${tag}" ${id} active, dept ${dept.slice(0,8)}`);return id;};
+R.p53=await pol(D,tag53,[lvl('at',null,tpl),lvl('after',1,null)]);
+R.p52=await pol(DB,tag52,[lvl('at',null,null)]);
+R.tpl=tpl;
+const a=await tk('2853 A owner Samy '+tag53,[f('owner',SAMY)]); R.A=a;
+const b=await tk('2853 B owner account, Samy member '+tag53,[]); R.B=b;
+const c=await tk('2852 C Samy not in dept '+tag52,[],DB); R.C=c;
+R.created=now();
+setCfg({e1:R}); return R;

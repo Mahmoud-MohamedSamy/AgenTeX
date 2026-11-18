@@ -1,0 +1,8 @@
+{"out":"2931-api-card.png","title":"NDC-2931 QA RT19 SK Dept: skills S1 (Test User 1), S2 (Dev Team 2), S3 (nobody). Skill Based rule \"QA RT19 SK 2931 skill TU1+DT2\" (pool both, offline allowed)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Ticket S3 + S1 (one held)","POST record #4514 skills [S3, S1], owner null","assigned to Test User 1 (holds S1 only) by the Skill Based rule (was: Unassigned)","ok"],
+["Ticket S3 + S2 (one held)","POST record #4515 skills [S3, S2]","assigned to Dev Team 2 (holds S2 only)","ok"],
+["Ticket S3 only (nobody holds)","POST record #4516 skills [S3]","stays Unassigned after 20 s (as Zoho #180)","ok"],
+["Ticket S1 + S2, 3 tickets","POST #4517, #4518, #4519","Test User 1, Dev Team 2, Test User 1: both holders eligible, take turns","ok"],
+["Assign by Skills, S3 + S1 (no rule)","POST /desk/tickets/{#4520}/skills/assign","200 assigned:true owner Test User 1 (was: \"No agent of the department holds every skill\")","ok"],
+["Assign by Skills, S3 only","POST /desk/tickets/{#4521}/skills/assign","200 assigned:false nobody_eligible \"No agent of the department holds any of the ticket's skills.\"","ok"]]}

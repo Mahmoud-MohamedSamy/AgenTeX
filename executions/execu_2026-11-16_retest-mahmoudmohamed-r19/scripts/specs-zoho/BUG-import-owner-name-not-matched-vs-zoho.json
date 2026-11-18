@@ -1,0 +1,14 @@
+{"out":"BUG-import-owner-name-not-matched-vs-zoho.png","ticket":"NEW BUG (draft)","title":"Ticket Import | Ticket Owner by agent name not matched, ticket given to the importer, result shows 0 errors","verdict":"SAME","label":"NOT A BUG vs ZOHO","date":"TAVI 16 Nov 2026 · Zoho 16 Nov 2026 14:38Z",
+"env":"TAVI staging-desk (NDC-Staging, Setup > Data > Import, QA AS6 Dept A) · Zoho Desk techegysolutions (Enterprise, admin, Setup > Data Administration > Import, 2-row Tickets.csv: owner 'test agent 1' / unknown email; import 1499272000000485053; tickets #122, #123 deleted and purged)",
+"leftHead":"TAVI Desk (left)","rightHead":"Zoho Desk (right)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/bug-import-owner-name-api-card.png","caption":"TAVI: owner by name -> importer; owner by email -> matched; the error is kept in the session only","crop":[0,0,1600,420],"boxes":[{"b":[36,99,1564,246],"n":2,"kind":"DIFFERS"},{"b":[36,256,1564,293],"n":1,"kind":"SAME"},{"b":[36,350,1564,408],"n":3,"kind":"SAME"}]},
+{"side":"tavi","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/BUG-d3-man-4-result.png","caption":"TAVI Result page: Import complete, 0 errors","crop":[400,90,800,430],"boxes":[{"b":[1001,203,1184,289],"n":3,"kind":"SAME"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-3-2.png","caption":"Zoho Field Mapping: Ticket Owner can be matched only by Agent ID, Agent External Id or Email ID - no name option","crop":[420,520,980,300],"boxes":[{"b":[634,630,780,815],"n":1,"kind":"SAME"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-3-6.png","caption":"Zoho import result: Total 2, Created 2, Skipped 0, Failed 0, Success - no warning about the owners","crop":[100,110,1400,100],"boxes":[{"b":[110,160,1490,198],"n":3,"kind":"SAME"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-3-7.png","caption":"Zoho #122 (owner 'test agent 1' given by name): Unassigned; History only \"New ticket created through import\" (#123, unknown email: same)","crop":[330,230,1000,260],"boxes":[{"b":[350,285,640,345],"n":2,"kind":"DIFFERS"},{"b":[745,300,1010,320],"n":3,"kind":"SAME"}]}
+],
+"rows":[
+[1,"How an owner is looked up","Only by Agent ID, Agent External Id or Email ID; a name cannot be mapped at all","Name is not matched; email is matched (#4630 owned by Test User 1)","SAME"],
+[2,"Row whose owner does not match (name, unknown email)","Ticket created Unassigned","Ticket created and given to the importer (same rule as TAVI's no-owner rows, which the user chose on 9 Nov, GEN-13 option B)","DIFFERS"],
+[3,"Does the result tell the user","No: Success, Created 2, Failed 0, Skipped 0; nothing in History","No: Import complete, 0 errors (message kept only in the session data)","SAME"]]}

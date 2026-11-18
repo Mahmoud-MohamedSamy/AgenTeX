@@ -1,0 +1,11 @@
+const id=process.env.TID||'32050fd4-4c9a-4181-a28a-13135ed417f4';const tag=process.env.TAG||'2933-5-ticket-edit-skills';
+await page.goto(H+'/views/all/tickets/'+id,{waitUntil:'domcontentloaded'});
+await page.getByText(/QA RT19 SK/).first().waitFor({timeout:90000}).catch(()=>{});await sleep(6000);
+const b=page.getByRole('button',{name:'Edit Skills'});await b.waitFor({state:'attached',timeout:90000});await b.scrollIntoViewIfNeeded();await sleep(500);log('row: '+(await b.innerText()).replace(/\n/g,' | '));
+await shot(tag+'-row.png');
+await b.click();await sleep(2000);
+const opts=await page.locator('[role=option],[role=menuitemcheckbox],[role=checkbox],[aria-pressed]').evaluateAll(L=>L.filter(e=>e.offsetParent).map(e=>(e.innerText||e.getAttribute('aria-label')||'').trim().slice(0,40)+(e.getAttribute('aria-pressed')==='true'||e.getAttribute('aria-checked')==='true'||e.getAttribute('aria-selected')==='true'||e.getAttribute('data-state')==='checked'?' [ON]':'')).filter(x=>/QA|tier|billing|support|expertise|handling|management/i.test(x)));
+log('opts '+JSON.stringify(opts));
+await shot(tag+'.png');
+const dlg=page.locator('[role=dialog],[data-radix-popper-content-wrapper]').last();if(await dlg.count())log('dlg '+(await dlg.innerText()).replace(/\n/g,' | ').slice(0,800));
+await page.keyboard.press('Escape');

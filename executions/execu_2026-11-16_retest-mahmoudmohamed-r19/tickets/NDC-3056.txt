@@ -1,0 +1,34 @@
+# NDC-3056 Blueprint | Agents cannot see the blueprint's flow and transition conditions from a ticket
+Summary
+On a ticket inside a blueprint, Desk only shows the current state and the transition buttons available right now. Agents cannot open the whole blueprint to see which states come next, which transition leads where, and what each transition needs before its button appears. TAVI CRM already has this on its records: the "View configured actions" link in the Blueprint section opens a popup with this flow.
+Steps to Reproduce
+- In TAVI CRM, open a lead that is in a blueprint (for example AEX-01-BP, blueprint AEO-01).
+- In the Blueprint section, click View configured actions. A popup shows each state, the transition between states and the condition, for example web → WebToReferral → referral, "Shown when: Company is not empty".
+- In TAVI Desk, open a ticket that is in an active blueprint.
+- Look for the same option on the ticket's blueprint card.
+Expected Result
+- The Desk ticket's blueprint card has a "View configured actions" option, the same as CRM.
+- It opens the blueprint's flow: states, the transitions between them and each transition's "Shown when" condition.
+- An agent can then see why a transition button is not showing yet and what has to be filled in first.
+Actual Result
+- The Desk ticket only shows the current state and the transitions available right now.
+- If no transition is available, the agent has no way of finding out which condition is missing.
+- The blueprint flow can only be seen in Settings → Blueprints, which agents normally cannot open.
+Note
+Compared with TAVI CRM, which runs on the same blueprint engine. Zoho Desk was not checked live. Not part of the Desk blueprint gap list NDC-2754.
+Environment
+staging-desk.taviportal.com (NDC-Staging) and staging-crm.taviportal.com, Microsoft Edge, Windows 10, 15 Nov 2026.
+Attachment
+Screenshot of the TAVI CRM "View configured actions" popup for blueprint AEO-01 (crm-view-configured-actions.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:12.093910+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging: the ticket's blueprint card offers "View configured actions"; the popup shows the states, transitions and "Shown when: Priority = high", and for a step the ticket does not meet yet it says "You can't run this step now…".
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:18.352873+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging: the ticket's blueprint card had no "View configured actions".
+Fix on client-engine fix/ndc-3056-3034-3032-ticket-blueprint: the ticket's Steps card, and the "No transitions you can run" line, now offer "View configured actions". It opens the same flow as CRM (states, transitions, each "Shown when" condition, current state highlighted) and lists the steps from the current state: whether you can run each one now, whether it runs by itself, and what it asks for. When nothing can run, the card says a step may be waiting for its conditions or limited to its owners.
+Checked in a browser on the branch build against staging's real data: a step with "Shown when: Priority = high" on a low-priority ticket showed the condition and "You can't run this step now". Light and dark theme and Arabic checked. Not deployed yet.
+

@@ -1,0 +1,14 @@
+{"out":"BUG-audit-log-internal-ip-FAIL.png","ticket":"NEW BUG","priority":"medium","title":"Audit Log | Changes made in the web app show the server's internal address ::ffff:172.19.0.19 instead of the user's IP","verdict":"FAIL",
+"env":"NDC-Staging · staging-desk · ndc-staging-owner · Setup › Audit Log (All Entities, Any time) and GET /api/v1/audit/events · 16 Nov 2026 12:06 Cairo",
+"date":"16 Nov 2026",
+"panels":[
+ {"img":"D2-1-audit-log.png","caption":"Setup › Audit Log: every change line by ndc-staging-owner reads \"IP ::ffff:172.19.0.19/128\"","crop":[400,370,1200,530],"full":true,
+  "boxes":[{"b":[544,407,672,424],"n":1,"kind":"FAIL"},{"b":[544,464,672,481],"n":1,"kind":"FAIL"},{"b":[544,713,672,730],"n":1,"kind":"FAIL"},{"b":[544,770,672,787],"n":1,"kind":"FAIL"}]},
+ {"img":"D2-api-card.png","caption":"Audit API, today: sign-ins have the real IP, changes have the internal one","crop":[0,0,1600,330],"full":true,
+  "boxes":[{"b":[36,99,1564,136],"n":2,"kind":"PASS"},{"b":[36,146,1564,204],"n":3,"kind":"FAIL"},{"b":[36,214,1564,251],"n":3,"kind":"FAIL"}]}
+],
+"rows":[
+ [1,"IP on change lines (added / updated / deleted / published)","The IP of the user who made the change","::ffff:172.19.0.19/128 on every line, for every user, for blueprints, tickets and skills","FAIL"],
+ [2,"IP on sign-in / sign-out lines","User's IP","Real public address (41.40.x.x, 41.44.x.x)","INFO"],
+ [3,"API source_ip of desk created/updated rows","User's IP","::ffff:172.19.0.19/128 (48 rows) or empty (35 rows, system actions)","FAIL"]
+]}

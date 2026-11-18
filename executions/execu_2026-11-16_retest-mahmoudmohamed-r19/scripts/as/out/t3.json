@@ -1,0 +1,28 @@
+{
+ "steps": [
+  "rule A3 201",
+  "A3 start workload AO-B 1, all depts 23",
+  "A3 dept thr 1 (= visible open) -> #4525 -> none",
+  "A3 dept thr 2 (= visible+1) -> #4527 -> A3",
+  "var1 added Open A3 ticket in AS6 Dept A #4528 workload AO-B 1, all depts 24",
+  "A3 dept thr 2 after other-dept ticket -> #4529 -> A3 (expect A3)",
+  "var2 added Open A3 ticket in AO-B #4530 workload AO-B 2, all depts 25",
+  "A3 dept thr 2 after same-dept Open ticket -> #4531 -> none (expect none)",
+  "var3 set it On Hold 200",
+  "workload AO-B 2, all depts 25",
+  "A3 dept thr 2 after On Hold -> #4532 -> A3 (expect A3)",
+  "var4 set it Escalated 200",
+  "workload AO-B 2, all depts 25",
+  "A3 dept thr 2 with it Escalated -> #4533 -> none (info)",
+  "back to On Hold 200",
+  "agent thr A3 2 200",
+  "A3 agent thr 2 (= visible) -> #4534 -> A3 (expect none; On Hold + other dept not counted)",
+  "A3 agent thr 3 -> #4535 -> A3 (expect A3)",
+  "rule A1 201",
+  "A1 start workload AO-B 4, all depts 93",
+  "A1 dept thr 4 (= visible open) -> #4536 -> none",
+  "A1 dept thr 5 (= visible+1) -> #4538 -> none"
+ ],
+ "restore": "200",
+ "same": true
+}

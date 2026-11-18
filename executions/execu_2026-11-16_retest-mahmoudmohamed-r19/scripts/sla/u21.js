@@ -1,0 +1,11 @@
+const reqs=[];page.on('response',r=>{const u=r.url();if(/\/records(\?|\/query|\/search)|\/views\/.*\/records|\/tickets\?|count/.test(u)&&/api\/v1/.test(u))reqs.push(r.status()+' '+r.request().method()+' '+u.split('/api/v1')[1].slice(0,120));});
+await page.goto(H+'/views/all/tickets',{waitUntil:'domcontentloaded'});await page.getByRole('button',{name:'Classic View'}).waitFor({timeout:200000});await sleep(2000);
+await page.getByRole('button',{name:'Classic View'}).click();await sleep(1200);
+log('modes',JSON.stringify(await page.locator('[role=menuitem],[role=menuitemradio],[role=option]').allInnerTexts()));
+await page.locator('[role=menuitem],[role=menuitemradio],[role=option]').filter({hasText:/Countdown/}).first().click();
+await sleep(20000);
+const body=await page.locator('#main-content').innerText();
+log('errors',(body.match(/Couldn't load these tickets|At most 25 filter conditions[^\n]*/g)||[]).length);
+log('body',body.slice(0,3000).replace(/\n+/g,' | '));
+log('reqs',reqs.length,JSON.stringify(reqs.filter(x=>!x.startsWith('200')).slice(0,10)),JSON.stringify(reqs.slice(0,4)));
+await shot('2832-1-countdown-all.png');

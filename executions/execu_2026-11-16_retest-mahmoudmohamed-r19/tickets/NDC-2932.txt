@@ -1,0 +1,30 @@
+# NDC-2932 Skills | Skill-based round robin assigns a ticket that has no skills, even to an agent who is not in the rule; Zoho leaves it unassigned
+Summary
+When a ticket matches a Round Robin rule with Skill Based Assignment but has no skills, TAVI still assigns it. In one run it went to an agent who is not in the rule's agent list. Zoho Desk leaves such a ticket unassigned, because no agent has a skill on it.
+Steps to reproduce
+- Sign in to TAVI Desk (NDC-Staging) as an admin.
+- Department QA SK12 Dept A has agents Test User 1 and Mahmoud Samy.
+- Setup → Assignment Rules → Round Robin, QA SK12 Dept A: rule QA SK12 RR skill — Subject contains QASK12RR, Skill Based Assignment, Agents: Test User 1 only.
+- Create a ticket in QA SK12 Dept A with subject "QA SK12 E2 QASK12RR", no owner, and no skills.
+- Open the ticket and look at Ticket Owner and the Skills tab.
+Expected (Zoho Desk)
+- The ticket stays unassigned.
+- Zoho test, 12 Nov 2026: ticket #182 with no skills, same kind of rule, stayed Unassigned.
+Actual (TAVI)
+- Ticket #3144 was assigned to Mahmoud Samy, who is not in the rule.
+- In an earlier run the same kind of ticket (#3132) went to Test User 1.
+Environment
+- TAVI Desk, NDC-Staging (staging-desk.taviportal.com), owner account, 12 Nov 2026.
+- Zoho Desk test portal (Enterprise trial), department Tech, 12 Nov 2026.
+Evidence
+Annotated image attached: SK-H03-skill-rr-no-skill-ticket-assigned-vs-zoho.png (TAVI left, Zoho right). Full comparison report: https://claude.ai/artifact/HG3raXZiXeEUZ1wYq8G4MP (case SK-H03).
+
+
+== COMMENTS (1)
+--- comment 2026-11-15T13:31:20.460897+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on tavi. Moving to Ready For Test.
+- Cause: for a ticket with no skills, a Skill Based rule widened its pool to every agent of the department, which is how #3144 reached Mahmoud Samy.
+- Fix (desk #249): a ticket with no active skills that matches a Skill Based rule stays unassigned and gets no backlog row. Adding a skill to it later routes it again.
+- Checked live (API): a ticket with no skills matching a temporary Skill Based rule in QA SK13 Dept A stayed unassigned, with no backlog row. Rule and ticket deleted.
+Deployed to tavi on 15 Nov 2026 (desk 4f170c70, desk-web from client-engine 764295e1).
+

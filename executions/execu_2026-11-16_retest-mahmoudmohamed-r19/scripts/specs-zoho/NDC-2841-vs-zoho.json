@@ -1,0 +1,13 @@
+{"out":"NDC-2841-retest-vs-zoho.png","ticket":"NDC-2841","title":"Contracts | Create Contract Support Plan picker lists other departments' plans; saving one leaves the contract with no plan","verdict":"BUG","label":"TAVI BUG vs ZOHO","date":"TAVI 16 Nov 2026 · Zoho 16 Nov 2026 15:10-15:40Z",
+"env":"TAVI staging-desk (NDC-Staging, QA RT19 SLA Dept / Dept B) · Zoho Desk techegysolutions (Enterprise, admin; support plans QA RT19 ZD Plan E (TechEgySolutions) and Plan T (Tech); contract QA RT19 ZD C own; all deleted and purged)",
+"leftHead":"TAVI Desk (left)","rightHead":"Zoho Desk (right)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/2841-4-new-contract-plan-picker.png","caption":"TAVI Create Contract (QA RT19 SLA Dept): Support Plan lists plans of QA AO Dept A, QA RT19 SLA Dept B, Tech","crop":[420,330,1000,370],"boxes":[{"b":[604,390,906,440],"n":1,"kind":"BUG"},{"b":[604,545,906,648],"n":1,"kind":"BUG"}]},
+{"side":"tavi","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/2841-3-contract-created-with-deptB-plan.png","caption":"TAVI: contract saved with the Dept B plan (201) - \"No support plan is linked to this contract\", no message at save","crop":[300,60,1000,260],"boxes":[{"b":[312,240,596,310],"n":2,"kind":"BUG"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-2841-2.png","caption":"Zoho Add Contract (dept TechEgySolutions) > Select Support Plan: only the department's own plan (Plan E); Tech's Plan T is not offered","crop":[380,0,840,200],"boxes":[{"b":[390,92,1210,130],"n":1,"kind":"DIFFERS"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-2841-2-api-card.png","caption":"Zoho API: another department's plan is refused with 422 \"Invalid SupportPlan ID\"; own plan accepted","crop":[0,0,1600,355],"boxes":[{"b":[36,167,1564,225],"n":1,"kind":"DIFFERS"},{"b":[36,235,1564,293],"n":2,"kind":"DIFFERS"},{"b":[36,303,1564,340],"n":3,"kind":"SAME"}]}
+],
+"rows":[
+[1,"Support Plan picker on the create-contract form","Lists only the contract department's plans","Lists every department's plans","DIFFERS"],
+[2,"Saving with another department's plan","Refused: 422 \"Invalid SupportPlan ID\", nothing created","Saved (201) but the contract silently has \"No support plan is linked\"; no message","DIFFERS"],
+[3,"Own department's plan","Accepted and linked","Accepted and linked; attaching another dept's plan later is refused 409 (fixed part)","SAME"]]}

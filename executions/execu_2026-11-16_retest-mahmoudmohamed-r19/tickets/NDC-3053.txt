@@ -1,0 +1,38 @@
+# NDC-3053 Notifications | "Closing a ticket" email is sent only when Customer Happiness is on
+Summary
+The contact notification "Closing a ticket" is on, but the customer gets no closed email unless Customer Happiness is also on. With Happiness on, the only closed email sent is the rating email.
+Steps to Reproduce
+- Setup › Notifications, department QA AS6 Dept A: check that Contact Notifications › "Closing a ticket" is on (Email, default template).
+- Setup › Customer Happiness: "Collect customer ratings" is off.
+- Close a ticket whose contact has an email address, using the normal Close action.
+- Turn Customer Happiness on for that department and close another ticket for the same contact.
+Expected Result
+- The closed email is sent to the contact whenever "Closing a ticket" is on, whether or not Customer Happiness is on.
+Actual Result
+- Happiness off (QA tickets #3944, #3953): History shows "Ticket closed" but no email is queued or sent; nothing arrived in Gmail.
+- Happiness on (QA tickets #3945, #3954): "Your ticket #… has been closed" arrives, with the Bad / Okay / Good rating question.
+Zoho Desk
+Checked live on 12 Nov 2026 (test account techsolutionsegypt): a manual close applied the notification rule "Acknowledge Contact when the Ticket is closed" and emailed the contact. Zoho's Customer Happiness setting was not recorded that day.
+Note
+Found during the automation-order end-to-end run E2E-1 (customer journey with real mail).
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account and agent Mahmoud Samy, department QA AS6 Dept A, contact with a QA Gmail address, 15 Nov 2026.
+Attachment
+Annotated evidence attached (E1-F1-closed-email-needs-customer-happiness-vs-zoho.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T13:33:26.358770+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 11:30 UTC. Ready for retest.
+Checked on staging, through the API rather than the browser:
+- With Customer Happiness off, Setup › Notifications now shows "Closing a ticket" off for QA AS6 Dept A and QA AS6 Dept B. Neither department had saved the rule.
+- QA AO Dept A had saved the rule on, and it still shows on.
+- I turned the rule on in QA AS6 Dept B and closed a test ticket. "Your ticket #4548 has been closed" was sent, with Customer Happiness still off.
+I then set the rule back to off in QA AS6 Dept B, so it now shows off as a saved choice. The test ticket is deleted.
+
+--- comment 2026-11-16T11:56:33.162644+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Fix is in review: desk PR #258. Not deployed yet.
+Cause, checked on staging 16 Nov: in QA AS6 Dept A, "Closing a ticket" had never been saved, and Customer Happiness was off. Desk sends no closed email in that case. This was a deliberate choice: the switch defaults to on, and without that check every company that never opened Customer Happiness would email customers on every close. But the Notifications page still showed the rule as on. I closed a test ticket there and no email was sent. I deleted the test ticket afterwards.
+Change (product decision): the Notifications page now shows "Closing a ticket" as off while Customer Happiness is off and the department never saved the rule. Turning it on saves the rule, and from then on every close sends the closed email, whether or not Customer Happiness is on. Departments that already saved the rule, and companies with Customer Happiness on, see no change.
+To retest after deploy: open Setup › Notifications for QA AS6 Dept A with Customer Happiness off. "Closing a ticket" should show off. Turn it on, close a ticket whose contact has an email, and the closed email should arrive.
+

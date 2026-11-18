@@ -1,0 +1,9 @@
+// env START (hash) CLICKS="a|b" SHOT=name WAIT ms UNTIL=regex FULL=1 NETRE=regex
+const R='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/';
+module.exports=async(page)=>{const net=[];if(process.env.NETRE){const re=new RegExp(process.env.NETRE,'i');page.on('response',async r=>{const u=r.url();if(re.test(u)&&!/accounts|iam/.test(u)){let b='';try{b=(await r.text()).slice(0,+(process.env.NETLEN||600))}catch(e){}net.push(r.request().method()+' '+r.status()+' '+u.replace(/^https:\/\/desk\.zoho\.com/,'').slice(0,200)+'\n   '+b.replace(/[\w.+-]+@[\w.-]+/g,'<email>'));}});}
+if(process.env.START)await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/setup'+process.env.START,{waitUntil:'commit',timeout:90000});await page.waitForTimeout(8000);
+const out=[];for(const c of (process.env.CLICKS||'').split('|').filter(Boolean)){const l=page.getByText(c,{exact:true});await l.last().waitFor({timeout:70000}).catch(()=>{});const n=await l.count();out.push(c+':'+n);if(n){await l.last().click().catch(e=>out.push('clickerr'));await page.waitForTimeout(+(process.env.WAIT||5000));}}
+if(process.env.UNTIL){const re=new RegExp(process.env.UNTIL,'i');for(let k=0;k<90;k++){if(re.test(await page.innerText('body').catch(()=>'')))break;await page.waitForTimeout(1000);}await page.waitForTimeout(3000);}
+const nn=page.getByText('Not Now',{exact:true});if(await nn.count())await nn.first().click().catch(()=>{});await page.waitForTimeout(1000);
+await page.screenshot({path:R+(process.env.SHOT||'zd-tmp')+'.png',fullPage:!!process.env.FULLPAGE});
+const main=await page.innerText('body');const i=main.indexOf('Workstation');return out.join(' ')+'\n'+page.url()+'\n'+(process.env.FULL?main:main.slice(Math.max(0,i)).slice(0,6000)).replace(/[\w.+-]+@[\w.-]+/g,'<email>')+'\nNET:\n'+net.join('\n');};

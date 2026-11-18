@@ -1,0 +1,27 @@
+# NDC-2839 Assignment Rules | An agent without the assignment permission can still read Round Robin Preferences and Team Assignment
+Summary
+An agent whose profile does not have the "Manage assignment rules" permission is blocked from the Assignment Rules page and from the rules, but can still read the department’s Round Robin Preferences (thresholds, agent thresholds, backlog and closure settings) and its Team Assignment setting. Saving them is blocked correctly. Reading should be blocked the same way.
+Steps to Reproduce
+- Sign in as an agent with the Desk Agent profile (no "Manage assignment rules" permission).
+- Open Setup › Assignment Rules. The page says "You can’t manage assignment".
+- As the same agent, request the department’s Round Robin Preferences and Team Assignment (GET /api/v1/desk/departments/{id}/round-robin-preferences and /team-assignment).
+Expected Result
+- Both requests are refused, like the rules request, because the agent cannot manage assignment.
+Actual Result
+- The rules request is refused (403, Missing required permission desk:assignment:manage) and saving preferences is refused (403).
+- Reading Round Robin Preferences returns 200 with all the department’s threshold, backlog and closure settings.
+- Reading Team Assignment returns 200.
+Environment
+staging-desk.taviportal.com (NDC-Staging), agent Customer Experience Specialists 2 (Desk Agent profile), department QA AS6 Dept A, 10 Nov 2026 11:42 UTC.
+Attachment
+Annotated evidence attached (AG-prefs-agent-can-read-rr-preferences.png).
+
+
+== COMMENTS (1)
+--- comment 2026-11-15T13:31:22.621680+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on tavi. Moving to Ready For Test.
+- Fix (desk #250): GET round-robin-preferences and GET team-assignment now need "Manage assignment rules", like saving them.
+- Checked live (API) on QA SK13 Dept A: an agent without the permission gets 403 on both; the owner still gets 200 on both.
+- Agents' ticket screens read Team Assignment from the department list, so nothing an agent sees changes.
+Deployed to tavi on 15 Nov 2026 (desk 4f170c70, desk-web from client-engine 764295e1).
+

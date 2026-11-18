@@ -1,0 +1,30 @@
+# NDC-3035 Blueprint | Unsaved designer changes are lost when the session expires
+Summary
+If the session expires while a blueprint has unsaved changes, Save and Publish sends you to sign in and the changes are gone afterwards, with no warning.
+Steps to Reproduce
+- Open a blueprint in the designer and change the description (do not save).
+- Let the session expire.
+- Click Save and Publish, then sign in again.
+Expected Result
+- A warning before the change is lost, or the change kept (local draft) and restored after sign-in.
+Actual Result
+- "Your session expired. Please sign in again." (good).
+- After sign-in the designer opens with the old description; the change is lost and nothing warned about it.
+Note
+Spec row H11. Not compared with Zoho.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026.
+Attachment
+Annotated evidence attached (BP-H11-unsaved-designer-change-lost-on-session-expiry.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:18.628269+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging: with an unsaved description change, an expired session sent Save and Publish to "Your session expired. Please sign in again."; signing in returned to the designer, which offered "You have unsaved changes from <time>", and Restore brought the change back.
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:33.631819+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging: after the session expired, the description change was gone.
+Fix on client-engine fix/ndc-blueprint-designer-qa-1115: the designer keeps unsaved changes in this browser while you edit. After the session expires, sign-in brings you back to the designer, which offers "You have unsaved changes from <time>. Restore / Discard". Hidden values such as webhook keys are not stored and are filled back from the saved blueprint. Copies are deleted on sign-out.
+Checked in a browser on the branch build against staging: an expired session sent Save and Publish to sign-in, sign-in returned to the designer, and Restore brought the description back. Not deployed yet.
+

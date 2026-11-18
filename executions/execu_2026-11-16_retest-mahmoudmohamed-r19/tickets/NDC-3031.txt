@@ -1,0 +1,32 @@
+# NDC-3031 Blueprint | A continuous blueprint does not run the next step by itself
+Summary
+A blueprint marked as continuous behaves like a normal one: after a transition, the next transition (which asks for nothing) does not run on its own.
+Steps to Reproduce
+- Create a blueprint with Advanced configuration = Continuous: Open → Escalated ("first", one checklist item) → On Hold ("auto", no items) → Closed.
+- Create a matching ticket and run "first".
+- Wait and look at the ticket.
+Expected Result
+- As soon as "first" completes, "auto" runs by itself and the ticket moves to On Hold.
+Actual Result
+- The ticket stays in Escalated ("In Escalated for 2 minutes"); "QA auto" waits for a click (checked after 30 s and 2 min; also seen 12 Nov).
+- The blueprint shows Advanced configuration "Continuous" (continuous: true is stored).
+Zoho Desk
+Create Blueprint › "Is this a continuous Blueprint?": "In a continuous Blueprint, the next transition is automatically triggered as soon as the current transition is completed." (setting text seen live; a continuous run was not done in Zoho).
+Note
+Spec row J15.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026. Compared live with Zoho Desk (test account techsolutionsegypt; test blueprint deleted afterwards).
+Attachment
+Annotated evidence attached (BP-J15-continuous-blueprint-next-step-not-automatic-vs-zoho.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:06.285178+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging with your shape of blueprint (Continuous on, Open → Escalated with a checklist, → On Hold with nothing, → Closed with a checklist): after running "first", the ticket moved to On Hold by itself and stopped there, since the next step asks for something.
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:42:53.820904+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging: after "first", the ticket stayed in Escalated after 30 s. The engine only chained timed steps.
+Fix on metadata-engine fix/ndc-3031-3047-blueprint-entry-continuous: on a continuous blueprint, after an agent completes a transition, the next transition from the new state runs by itself when its form asks for nothing and the agent may run it (canvas order picks one). It never runs an "any state" transition, visits each state once per walk, and stops at 25 steps. A next step that asks for something opens its form, as before.
+Checked in automated tests only. Not deployed, not checked on staging yet.
+

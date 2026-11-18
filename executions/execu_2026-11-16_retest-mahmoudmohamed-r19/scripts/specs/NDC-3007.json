@@ -1,0 +1,23 @@
+{
+ "out": "NDC-3007-retest-PARTIAL.png",
+ "ticket": "NDC-3007",
+ "priority": "medium",
+ "title": "Community | A customer's question topic does not create a linked ticket",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · owner + Help Center customer (user's plus-address, invited) · category \"QA RT19 HC 3007 cat\" (Customer Support, auto convert on) · topic \"test00\" → ticket #4671",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "3007-3-ticket-topic-card.png", "w": 1440, "caption": "#4671 was created from the customer's question: Community topic card links to \"test00\" with its category, status Open, \"Created automatically\"", "crop": [360, 60, 1080, 600],
+   "boxes": [{"b": [372, 480, 656, 612], "n": 1, "kind": "PASS"}, {"b": [680, 100, 1000, 135], "n": 2, "kind": "PASS"}]},
+  {"img": "3007-5-composer.png", "w": 1440, "caption": "Reply options on the ticket: Reply All / Reply / Forward by email only, no Post reply to the forum", "crop": [360, 60, 1080, 440],
+   "boxes": [{"b": [391, 198, 645, 220], "kind": "MASK", "label": "email hidden"}, {"b": [391, 222, 645, 246], "kind": "MASK", "label": "phone hidden"}, {"b": [776, 270, 1014, 296], "kind": "MASK", "label": "email hidden"}, {"b": [686, 432, 1300, 456], "kind": "MASK", "label": "email hidden"}, {"b": [1226, 266, 1422, 376], "n": 3, "kind": "FAIL"}]},
+  {"img": "3007-api-card.png", "caption": "API", "crop": [0, 0, 1600, 470],
+   "boxes": [{"b": [36, 167, 1564, 225], "n": 1, "kind": "PASS"}, {"b": [36, 235, 1564, 314], "n": 2, "kind": "PASS"}, {"b": [36, 324, 1564, 382], "n": 3, "kind": "FAIL"}, {"b": [36, 392, 1564, 450], "n": 4, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Customer posts a Question in the Help Center", "A ticket is created and linked; Ticket ID on the topic", "Topic \"test00\" (customer) → ticket #4671 2 s later; topic API ticket = converted, number 4671; ticket card links back to the topic (was ticket null)", "PASS"],
+  [2, "The ticket", "Shows the topic text, forum status", "Subject/description from the topic, Channel Forum, department Customer Support, contact = the customer; card shows topic status Open", "PASS"],
+  [3, "Post reply back to the forum from the ticket", "Like Zoho: Post Reply to the forum", "Not offered: reply menu is Reply All / Reply / Forward (email only)", "FAIL"],
+  [4, "Agent-posted question / manual Convert to ticket", "Info", "Agent question in the same category: no ticket, can.convert false (no Convert to ticket action)", "INFO"]
+ ]
+}

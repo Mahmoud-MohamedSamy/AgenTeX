@@ -1,0 +1,125 @@
+{
+ "out": "NDC-2841-retest-PARTIAL.png",
+ "ticket": "NDC-2841",
+ "date": "16 Nov 2026",
+ "env": "NDC-Staging · staging-desk · owner account · QA RT19 SLA Dept (Mahmoud Samy + Test User 1), QA RT19 SLA Dept B (Test User 1)",
+ "priority": "medium",
+ "verdict": "PARTIAL",
+ "title": "SLA | A contract in one department can use a support plan (and its SLA) from another department",
+ "panels": [
+  {
+   "img": "2841-4-new-contract-plan-picker.png",
+   "caption": "Create Contract (Department QA RT19 SLA Dept): Support Plan lists other departments' plans",
+   "crop": [
+    420,
+    330,
+    1440,
+    700
+   ],
+   "boxes": [
+    {
+     "b": [
+      604,
+      390,
+      906,
+      440
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      604,
+      545,
+      906,
+      595
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      604,
+      600,
+      906,
+      648
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2841-api-card.png",
+   "caption": "API + Change plan list",
+   "crop": [
+    0,
+    0,
+    1600,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      204
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      251
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      319
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Attach a Dept B plan to a Dept A contract",
+   "Refused",
+   "409 \"Choose a support plan of the contract's own department.\"; plan kept",
+   "PASS"
+  ],
+  [
+   2,
+   "Contract › Change plan list",
+   "Own department's plans only",
+   "Only the 2 QA RT19 SLA Dept plans",
+   "PASS"
+  ],
+  [
+   3,
+   "Contract saved with a Dept B plan",
+   "Refused",
+   "Saved (201); plan silently not linked (\"No support plan is linked to this contract\")",
+   "FAIL"
+  ],
+  [
+   4,
+   "New Contract form plan field",
+   "Own department's plans only",
+   "Lists every department's plans (dev: not covered yet)",
+   "FAIL"
+  ]
+ ]
+}

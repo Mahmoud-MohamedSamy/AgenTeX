@@ -1,0 +1,7 @@
+{"host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026","out":"bug-rr-phantom-api-card.png","title":"Round robin department threshold vs the agent's real Open tickets (QA AO Dept B, one-agent rule)","rows":[
+["Test User 1: real Open in dept","GET /modules/{tickets}/records (owner = Test User 1, dept QA AO Dept B)  +  GET /desk/agents/{id}/workload","Records: 4 Open (#4281, #4282, #4283, #4285), 0 On Hold, 0 Escalated. Workload API open_tickets = 4","info"],
+["Test User 1: threshold 5 and 6","PUT round-robin-preferences dept threshold 5, then 6; create matching ticket each time","#4588 (thr 5) and #4589 (thr 6) stay unassigned: rule treats the agent as full","bad"],
+["Test User 1: threshold 7","dept threshold 7","#4590 assigned to Test User 1 -> rule counts 6 Open, 2 more than exist (same result at 12:01Z: #4584/#4585, and all day in earlier runs)","bad"],
+["Dev Team 2: real Open in dept","same reads for Dev Team 2","Records: 1 Open (#4284). Workload API open_tickets = 1","info"],
+["Dev Team 2: threshold 2 / 3","dept threshold 2, then 3","thr 2: #4586 and #4606 and #4610 stay unassigned; thr 3: #4587, #4608, #4611 assigned -> rule counts 2 Open, 1 more than exists (since ~11:25Z)","bad"],
+["Control (same agent, other dept)","QA AS6 Dept A, Test User 1, 74 Open, thr 75 (earlier run t4)","#4540 assigned at Open+1 -> count correct there","ok"]]}

@@ -1,0 +1,21 @@
+{
+ "out": "NDC-3069-retest-PASS.png",
+ "ticket": "NDC-3069",
+ "priority": "low",
+ "title": "Blueprint API | A malformed transition owner id returns .NET parser text instead of a readable error",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner session (API) · Tickets module blueprints \"QA BP RT19 D3 3069 *\" (Customer Support) · 16 Nov 2026 ~17:00 Cairo",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "3069-api-card.png", "caption": "API: bad owner ids are refused with a readable message naming the transition and the value; nothing stored", "crop": [0, 0, 1600, 570],
+   "boxes": [{"b": [36, 99, 1564, 178], "n": 1, "kind": "PASS"}, {"b": [36, 188, 1564, 293], "n": 2, "kind": "PASS"}, {"b": [36, 303, 1564, 361], "n": 3, "kind": "PASS"}, {"b": [36, 371, 1564, 455], "n": 4, "kind": "PASS"}, {"b": [36, 465, 1564, 502], "n": 5, "kind": "PASS"}, {"b": [36, 512, 1564, 549], "n": 6, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "POST with owner id \"not-a-uuid\"", "422, plain message naming transition and value", "422 path transitions[0].before.allowedUserIds[0]: \"Transition QA x: 'not-a-uuid' is not a valid user id.\" No .NET parser text", "PASS"],
+  [2, "Bad id in 2nd place / a number", "Same, right path", "allowedUserIds[1] '12345' and 42 both named the same way", "PASS"],
+  [3, "Same on PUT of an existing blueprint", "Refused, nothing changed", "422 same message; owners and revision unchanged", "PASS"],
+  [4, "Control: valid but unknown id; nothing stored", "Readable; no record", "\"No user exists with id …\" as before; no blueprint created by the refused calls", "PASS"],
+  [5, "Developer: other wrong-typed values named the same way", "Readable", "isTerminal \"yes\" → \"'yes' is not a valid value for isTerminal.\"", "PASS"],
+  [6, "Side note: state position.x = \"abc\"", "-", "201, stored as-is (layout-only field not type-checked); outside this ticket", "INFO"]
+ ]
+}

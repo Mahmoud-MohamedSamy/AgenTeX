@@ -1,0 +1,36 @@
+# NDC-2962 Workflow Rules | A line break in a webhook header value adds an extra header to the outgoing request
+Summary
+A Webhook action header value that contains a line break is sent as two headers. Anyone who can edit rules can add any header to outgoing webhook requests (header injection).
+Steps to Reproduce
+- Create a rule On Create with a Webhook action to a request catcher (webhook.site).
+- Add header X-QA with the value a + line break + Injected: 1 (saved through the rules API).
+- Create a matching ticket and look at the request the catcher received.
+Expected Result
+- Header names and values with line breaks are refused at save.
+- Reserved headers such as Host are refused too.
+- Only the configured headers are sent.
+Actual Result
+- The rule is saved.
+- The catcher received two headers: x-qa: a and injected: 1. Execution History: Webhook Succeeded.
+- A Host header override is also accepted.
+Note
+Zoho Desk workflow rules have no Webhook action, so this is not a Zoho comparison; it is a security defect in TAVI's own feature.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026.
+Attachment
+Annotated evidence attached (WF-O4-webhook-header-injection.png).
+
+
+== COMMENTS (3)
+--- comment 2026-11-14T20:20:55.942302+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging-desk (tavi) on 14 Nov, 18:18 UTC.
+Checked live through the rules API on NDC-Staging: a header value with CRLF or LF, a header name with a line break, Host, Content-Length and a non-ASCII value are all refused at save (400, with the header named). An ordinary header still saves. Not checked live: that a rule saved before the fix with such a header no longer sends it (covered by a test; no such rule exists on staging).
+
+--- comment 2026-11-14T19:44:45.553475+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Merged to staging: anyware.workflow #134 (merge 727a0c9). It is not deployed to staging-desk yet, so the steps in this ticket still behave as before on the server. Please retest after the deploy; I will check it there too.
+
+--- comment 2026-11-14T19:41:06.543914+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix in review: anyware.workflow #134.
+A webhook header is now refused at save when its value holds a line break, another control character or a non-ASCII character, when its name is not a valid header name, or when it is a header the request sets itself (Host, Content-Length, Transfer-Encoding, Connection and a few more). A rule saved before the fix with such a header no longer sends it: the run fails once with the reason, and nothing is sent.
+How it was checked: before the fix I sent your payloads to the rules API on NDC-Staging (staging-desk) and got 201 as you did. The fix has tests that fail without it, and the full suites match staging. Not yet checked on staging after the fix: it is not merged or deployed, and tavi's Desk API was answering 404 during the work.
+

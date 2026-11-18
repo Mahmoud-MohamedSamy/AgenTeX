@@ -1,0 +1,31 @@
+# NDC-3036 Blueprint | If the only owner of a transition is deactivated, nobody can run it and no warning is shown
+Summary
+A transition owned by one agent becomes impossible to run when that agent is suspended. Tickets waiting on it are stuck and the blueprint shows no warning.
+Steps to Reproduce
+- Create a blueprint where transition "QA onlyA" (Open → Escalated) has only agent A as owner.
+- Put a ticket into it.
+- Suspend agent A.
+- As an admin open the ticket and the blueprint.
+Expected Result
+- Someone can still move the ticket (admin or a fallback), or the blueprint flags the transition as having no active owner.
+Actual Result
+- Ticket: "No transitions you can run"; Status locked. API run by the admin: 403 "You are not an owner of this transition."
+- Designer: Status Active, no warning; re-saving the blueprint works with no message.
+Note
+Spec row D5. Agent A was reactivated right after the test. Not compared with Zoho.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026.
+Attachment
+Annotated evidence attached (BP-D5-only-owner-suspended-ticket-stuck.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:09.901568+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging with a probe user (reactivated afterwards): while the only owner was active, the admin was refused (403). After suspending that owner, the admin could run the step, and the designer showed "QA onlyA has no active owner. Agents with edit access to the ticket can run this step until you choose an owner".
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:06.131849+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging with an active agent as the only owner: the admin saw no transitions and got 403 "You are not an owner of this transition". I did not suspend anyone.
+Fix (decision B-73): suspended, deleted or still-invited owners no longer count. When none of a transition's owners is active, any agent with access and edit rights on the ticket can run it. The designer marks such a transition "No active owner" on the canvas, in Before, and in the issues box (it does not block publishing), and labels suspended owners. Branches: metadata-engine fix/ndc-3030-3037-3036-3029-blueprint-admin, client-engine fix/ndc-blueprint-designer-qa-1115.
+Checked in automated tests only. Not deployed, not checked on staging yet.
+

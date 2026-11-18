@@ -1,0 +1,10 @@
+{"host":"staging-desk.taviportal.com","who":"owner session","date":"16 Nov 2026","out":"3070-api-card.png","title":"NDC-3070 save without revision — blueprint \"QA BP RT19 D3 3070\" ff6ef3d5 (inactive)","rows":[
+["1. GET (copy B)","GET /blueprints/{id}","revision 1, name \"QA BP RT19 D3 3070 rev\"","info"],
+["2. Rename with revision 1","PUT {definition(name renamed), revision:1}","200 → revision 2, name \"QA BP RT19 D3 3070 renamed by A\"","ok"],
+["3. PUT from copy B, no revision","PUT {definition(desc changed)} — no revision","422 BLUEPRINT_DEFINITION_INVALID · path revision · \"Send the revision you loaded, so this save cannot overwrite a newer change.\" (was 200 + rename lost)","ok"],
+["4. Draft from copy B, no revision","PUT /blueprints/{id}/draft — no revision","422 same message, path revision","ok"],
+["5. revision: null","PUT {…, revision:null}","422 same message","ok"],
+["6. Stale revision 1","PUT and PUT …/draft with revision 1","409 BLUEPRINT_REVISION_CONFLICT (both)","ok"],
+["7. GET after 3–6","GET /blueprints/{id}","revision 2, name still \"renamed by A\", description untouched — nothing overwritten","ok"],
+["8. Control: current revision","PUT {…, revision:2}","200 → revision 3","ok"],
+["9. Active switch on list (request blocked)","browser: Setup › Blueprints › switch","PUT body keys isActive, definition, revision = 3 (the revision the list read); blocked, blueprint stays inactive","ok"]]}

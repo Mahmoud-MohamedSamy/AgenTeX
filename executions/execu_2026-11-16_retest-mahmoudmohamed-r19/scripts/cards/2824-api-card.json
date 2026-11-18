@@ -1,0 +1,10 @@
+{"out":"2824-api-card.png","title":"NDC-2824 round robin thresholds, QA AO Dept B / QA AS6 Dept A, one-agent sequential rules \"QA RT19 AS t3/t4/t6\" (offline allowed); each probe ticket closed after it is checked","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Dept threshold, other departments","Dev Team 2: 1 Open in AO-B, 23 Open in all departments; PUT preferences department_threshold 1, then 2","thr 1 -> #4525 waits; thr 2 -> #4527 Dev Team 2 (only AO-B counted, was all departments)","ok"],
+["+1 Open in another dept","POST ticket owner Dev Team 2 in QA AS6 Dept A (#4528); thr 2","#4529 -> Dev Team 2 (other department not counted)","ok"],
+["+1 Open in AO-B, then On Hold","POST ticket owner Dev Team 2 in AO-B (#4530); thr 2; PATCH #4530 On Hold; thr 2","Open: #4531 waits; On Hold: #4532 -> Dev Team 2 (On Hold not counted). Escalated: #4533 waits (counted as open)","ok"],
+["Agent level threshold","Dev Team 2 agent threshold 1, then 2 (1 Open in AO-B)","thr 1 -> #4542 waits; thr 2 -> #4543 Dev Team 2","ok"],
+["Big department","Test User 1: 74 Open + 2 On Hold in QA AS6 Dept A, 93 in all; dept thr 74, 75","thr 74 -> #4539 waits; thr 75 -> #4540 Test User 1 (was: needed 83+)","ok"],
+["Hidden extra count (new)","Test User 1 in AO-B: 4 Open (list + /workload); dept thr 5, 6, 7","#4576, #4577 wait; only thr 7 -> #4578. Rule counts 6, two more than the Open tickets (all day)","bad"],
+["Hidden extra count (new)","Dev Team 2 in AO-B: 1 Open; thr 2, 3 (after ghost ticket \"QA RT19 AS R19AS4seunc b1thr3\" 11:25Z: no number, no History)","thr 2 -> #4579 waits; thr 3 -> #4580. Was counted correctly before the ghost ticket","bad"],
+["Restore","PUT round-robin-preferences back; rules inactive","200; preferences identical to before","info"]]}

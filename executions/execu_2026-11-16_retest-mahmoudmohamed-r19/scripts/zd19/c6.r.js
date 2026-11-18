@@ -1,0 +1,6 @@
+async (page) => { if(!/desk.zoho.com/.test(page.url())){await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/tickets/list/all-cases',{waitUntil:'commit',timeout:90000});for(let k=0;k<40;k++){await page.waitForTimeout(1500);if(await page.evaluate(()=>/crmcsr=/.test(document.cookie)))break;}await page.waitForTimeout(3000);}
+const z=async(m,u,b)=>page.evaluate(async([m,u,b])=>{const c=(document.cookie.match(/crmcsr=([^;]+)/)||[])[1]||'';const h={'X-ZCSRF-TOKEN':'crmcsrfparam='+c,orgId:'946801013'};if(b)h['Content-Type']='application/json';const r=await fetch(u,{method:m,credentials:'include',headers:h,body:b?JSON.stringify(b):undefined});const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}return {s:r.status,j,t:t.slice(0,500)};},[m,u,b]);
+
+const o={};let r=await z('DELETE','/api/v1/supportPlans/1499272000000485162');o.del=r.s+' '+r.t.slice(0,250);
+if(r.s>=300){const u=await z('PATCH','/api/v1/supportPlans/1499272000000485162',{status:'INACTIVE'});o.inact=u.s+' '+u.t.slice(0,200);r=await z('DELETE','/api/v1/supportPlans/1499272000000485162');o.del2=r.s+' '+r.t.slice(0,200);}
+const s=await z('GET','/api/v1/supportPlans?departmentId=1499272000000006907');o.left=(s.j?.data||[]).map(x=>x.id+' '+(x.name)+' '+x.status);return o;}

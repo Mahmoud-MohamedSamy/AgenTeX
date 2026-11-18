@@ -1,0 +1,9 @@
+{"out":"2839-api-card.png","title":"NDC-2839 as agent \"Customer Experience Specialists 2\" (QA account, Desk Agent profile, no desk:assignment:manage) — QA AS6 Dept A","host":"staging-desk.taviportal.com","who":"agent Customer Experience Specialists 2","date":"16 Nov 2026",
+"rows":[
+["Rules (control)","GET /api/v1/desk/assignment-rules?type=round_robin&department_id={QA AS6 Dept A}","403 forbidden \"Missing required permission 'desk:assignment:manage'.\"","ok"],
+["Read RR Preferences","GET /api/v1/desk/departments/{QA AS6 Dept A}/round-robin-preferences","403 forbidden \"Missing required permission 'desk:assignment:manage'.\" (was 200 with thresholds/backlog settings)","ok"],
+["Read Team Assignment","GET /api/v1/desk/departments/{QA AS6 Dept A}/team-assignment","403 forbidden (same message) (was 200)","ok"],
+["Second department","GET …/{QA SK13 Dept A}/round-robin-preferences and /team-assignment","403 / 403","ok"],
+["Save (control)","PUT …/round-robin-preferences {} · PUT …/team-assignment","403 / 403","ok"],
+["Agent screens data","GET /api/v1/desk/departments","200, 45 departments, each with team_assignment_enabled (what ticket screens use)","ok"],
+["Side note","GET /api/v1/desk/assignment/notification-settings","200 — agent can still read the two master switches and notify flags (not part of this ticket)","info"]]}

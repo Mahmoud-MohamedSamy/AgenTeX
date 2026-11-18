@@ -1,0 +1,15 @@
+{"out":"BUG-read-only-agent-runs-transition-FAIL.png","ticket":"NEW BUG","priority":"high","title":"Blueprint | An agent with read-only access to a ticket can still run a transition they own and move the ticket","verdict":"FAIL",
+"env":"NDC-Staging · staging-desk · agent \"Customer Experience Specialists 2\" (Desk Agent, Customer Support), only owner of transition QA onlyA in blueprint \"QA BP RT19 3036 onlyA\" · ticket #4182 owned by ndc-staging-owner · 16 Nov 12:04 Cairo",
+"date":"16 Nov 2026",
+"panels":[
+ {"img":"D6-2-run-panel.png","caption":"Agent on #4182: \"You can read this ticket but not change it\", Status locked, yet QA onlyA and Run are offered","crop":[370,55,1230,845],"full":true,
+  "boxes":[{"b":[680,188,1584,234],"n":1,"kind":"INFO"},{"b":[391,745,457,772],"n":1,"kind":"INFO"},{"b":[1484,134,1584,166],"n":2,"kind":"FAIL"},{"b":[1514,858,1584,890],"n":2,"kind":"FAIL"}]},
+ {"img":"D6-api-card.png","caption":"Run result and owner read-back","crop":[0,0,1600,330],"full":true,
+  "boxes":[{"b":[36,167,1564,204],"n":3,"kind":"FAIL"},{"b":[36,214,1564,272],"n":3,"kind":"FAIL"},{"b":[36,282,1564,319],"n":4,"kind":"INFO"}]}
+],
+"rows":[
+ [1,"Agent opens a ticket they may only read","Read-only: no changes","Banner \"You can read this ticket but not change it\"; Status field locked","INFO"],
+ [2,"Transition buttons for a read-only agent","Hidden or disabled","QA onlyA button and the Run panel are offered","FAIL"],
+ [3,"Agent clicks Run","Refused (no edit right)","POST …/blueprint-transitions/onlyA 200; ticket moved Open → Escalated and History says the agent did it (also seen on #4174)","FAIL"],
+ [4,"After the run","-","The agent then gets \"This ticket is not available\" + \"Permission denied.\"","INFO"]
+]}

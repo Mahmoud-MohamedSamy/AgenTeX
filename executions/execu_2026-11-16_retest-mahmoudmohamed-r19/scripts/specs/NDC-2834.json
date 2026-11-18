@@ -1,0 +1,132 @@
+{
+ "out": "NDC-2834-retest-PASS.png",
+ "ticket": "NDC-2834",
+ "date": "16 Nov 2026",
+ "env": "NDC-Staging · staging-desk · owner account · QA RT19 SLA Dept (Mahmoud Samy + Test User 1), QA RT19 SLA Dept B (Test User 1)",
+ "priority": "low",
+ "verdict": "PASS",
+ "title": "SLA | An escalation email template that an SLA uses can be deleted with no warning",
+ "panels": [
+  {
+   "img": "2834-2-refused.png",
+   "caption": "Email Templates › Delete on a template used by 2 SLAs",
+   "crop": [
+    600,
+    350,
+    1600,
+    890
+   ],
+   "boxes": [
+    {
+     "b": [
+      1156,
+      750,
+      1576,
+      876
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      608,
+      361,
+      992,
+      539
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2834-api-card.png",
+   "caption": "API",
+   "crop": [
+    0,
+    0,
+    1600,
+    430
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      178
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      188,
+      1564,
+      246
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      256,
+      1564,
+      293
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      303,
+      1564,
+      408
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Delete a template an SLA uses",
+   "Told which SLA; cannot delete",
+   "Toast names both SLAs: \"…Choose another email in those escalations, then delete it.\"; row stays; API 409 EMAIL_TEMPLATE_IN_USE",
+   "PASS"
+  ],
+  [
+   2,
+   "Confirm dialog",
+   "-",
+   "Still generic; stays open after the refusal (minor)",
+   "INFO"
+  ],
+  [
+   3,
+   "Template used only in an inactive SLA's resolution level",
+   "Refused",
+   "409 naming that SLA",
+   "PASS"
+  ],
+  [
+   4,
+   "After refusal",
+   "Template and link kept",
+   "Template 200; SLA still points at it",
+   "PASS"
+  ],
+  [
+   5,
+   "Controls: unused / unlinked template",
+   "Deletes",
+   "204 / 204",
+   "PASS"
+  ]
+ ]
+}

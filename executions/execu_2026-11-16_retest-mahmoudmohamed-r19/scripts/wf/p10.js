@@ -1,0 +1,2 @@
+const ids=['2a7c1bc4-f6d4-4bd3-805e-0496ece13987','876ce871-2b02-4854-89a7-68050391c62b'];
+for(let i=0;i<8;i++){const x=await api('POST','/desk/agents/presence/query',{user_ids:ids});const a=x.j?.data?.agents||[];const s=a.map(z=>z.user_id.slice(0,4)+':'+z.presence.online+'/'+JSON.stringify(z.presence.channels));log(s.join(' '));if(a.find(z=>z.user_id.startsWith('876c')&&z.presence.online))break;await sleep(10000);}

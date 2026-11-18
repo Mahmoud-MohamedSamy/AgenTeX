@@ -1,0 +1,26 @@
+{
+ "out": "NDC-2931-retest-PASS.png",
+ "ticket": "NDC-2931",
+ "priority": "medium",
+ "title": "Skills | Skill-based assignment leaves a ticket unassigned unless one agent has every skill on it; Zoho assigns to an agent with any of them",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · department QA RT19 SK Dept (Test User 1 + Dev Team 2) · skills QA RT19 SK S1 (Test User 1), S2 (Dev Team 2), S3 (nobody) · Skill Based rule QA RT19 SK 2931 skill TU1+DT2",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "2931-4-ui-assign-by-skills-done.png", "caption": "#4575 (skills S3 + S2, unassigned) › More ticket actions › Assign by Skills: \"Assigned to an agent who holds at least one of these skills.\"", "crop": [664, 60, 936, 830],
+   "boxes": [{"b": [1160, 812, 1576, 876], "n": 5, "kind": "PASS"}]},
+  {"img": "2931-5-ui-assign-by-skills-owner.png", "caption": "Same ticket a moment later: Ticket Owner Dev Team 2 (holds S2 only)", "crop": [370, 60, 900, 520],
+   "boxes": [{"b": [385, 445, 650, 505], "n": 5, "kind": "PASS"}]},
+  {"img": "2931-api-card.png", "caption": "API", "crop": [0, 0, 1600, 450],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 204], "n": 2, "kind": "PASS"}, {"b": [36, 214, 1564, 251], "n": 3, "kind": "PASS"}, {"b": [36, 261, 1564, 298], "n": 4, "kind": "PASS"}, {"b": [36, 308, 1564, 366], "n": 5, "kind": "PASS"}, {"b": [36, 376, 1564, 434], "n": 6, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Skill Based rule, ticket S3 (nobody) + S1 (Test User 1)", "Assigned to Test User 1", "#4514 assigned to Test User 1 (was: Unassigned)", "PASS"],
+  [2, "Same with S3 + S2 (Dev Team 2)", "Assigned to Dev Team 2", "#4515 assigned to Dev Team 2", "PASS"],
+  [3, "Ticket whose only skill nobody holds", "Stays unassigned (Zoho #180)", "#4516 Unassigned after 20 s", "PASS"],
+  [4, "S1 + S2, three tickets", "Any holder eligible", "#4517-#4519 Test User 1, Dev Team 2, Test User 1 (turns)", "PASS"],
+  [5, "Assign by Skills on one ticket (API + ticket menu)", "Assigns to an agent with any of the skills", "API #4520 to Test User 1; screen #4575 to Dev Team 2, toast \"…holds at least one of these skills.\"", "PASS"],
+  [6, "Assign by Skills when nobody holds any skill / nobody online", "Clear message", "\"No agent of the department holds any of the ticket's skills.\" (#4521); offline agents not allowed: \"No agent who holds these skills is online.\"", "PASS"],
+  [7, "Setup help text", "No longer says \"every skill\"", "Round Robin rule editor: \"Agents get the tickets that match their skills.\" (neutral; does not say \"at least one\")", "INFO"]
+ ]
+}

@@ -1,0 +1,31 @@
+# NDC-2838 Assignment Rules | Round robin backlog skips an old ticket without saying why
+Summary
+The 30-day rule works: a backlog ticket with no customer reply in the last 30 days is not assigned. But nothing tells the agent or admin why. The ticket stays unassigned in the backlog with no entry in its History, while newer tickets are assigned within seconds.
+Steps to Reproduce
+- In a department with a round robin rule, open Round Robin Preferences, turn on "Assign tickets to offline agents" and set the department threshold to 1, so new tickets wait in the backlog.
+- Create a new ticket that matches the rule. It waits unassigned.
+- Reopen an old ticket (created more than 30 days ago, with no customer reply), move it to the same department and clear its owner. It waits unassigned.
+- Turn the department threshold off and turn on "Assign backlogs".
+- After a few minutes, open both tickets and look at the owner and the History tab.
+Expected Result
+- The new ticket is assigned from the backlog.
+- The old ticket is left out because of the 30-day rule, and its History (or the backlog view) says why, for example "Not assigned: no customer reply in the last 30 days".
+Actual Result
+- The new ticket (#2453) was assigned to Test User 1 13 seconds after the backlog was released; its History says "Taken from the backlog".
+- The old ticket (#1) was still unassigned 32 minutes later.
+- Its History shows only the reopen, the move and the owner change. Nothing says it was skipped or why.
+- Same result on 9 Nov (twice) and 10 Nov.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account; QA AS6 Dept B, round robin rule "QA E18 manual"; 10 Nov 2026 10:02–10:36 UTC. Zoho Desk was not checked live for a skip reason.
+Attachment
+Annotated evidence attached (E18-03-backlog-skips-old-ticket-without-reason.png): TAVI's 30-day rule text, the new ticket taken from the backlog, and the old ticket still unassigned with no reason in its History.
+
+
+== COMMENTS (1)
+--- comment 2026-11-15T13:31:28.874445+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on tavi. Moving to Ready For Test.
+- Fix (desk #251, client-engine #832): when round robin holds a ticket back because the customer has not replied in 30 days, the ticket's History shows "Not assigned by round robin" with the rule and the reason "No customer reply in the last 30 days".
+- Checked live: I made a probe ticket 40 days old, moved it into QA SK13 Dept A with a matching temporary rule, and it waited with that reason. Its History tab in the browser showed the entry above (English). The Arabic copy is in the deployed files; I did not view the Arabic screen. Rule and ticket deleted.
+- Not covered yet: a ticket that was already waiting for another reason (for example a full threshold) and later passes 30 days still gets no entry. I will file that separately if you want it.
+Deployed to tavi on 15 Nov 2026 (desk 4f170c70, desk-web from client-engine 764295e1).
+

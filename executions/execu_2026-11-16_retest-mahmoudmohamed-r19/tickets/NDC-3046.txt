@@ -1,0 +1,42 @@
+# NDC-3046 Assignment Rules | Round robin rule with an SLA condition does not assign new tickets
+Summary
+A round-robin rule whose condition uses the SLA (for example "SLA Name is X") never assigns a newly created ticket, even though the SLA is already applied to it. The same rule assigns the ticket only later, when someone edits it. The Round Robin page itself says "Round robin runs after workflows and SLAs".
+Steps to Reproduce
+- Setup › SLA & Escalation: create an active SLA policy in a department that applies on ticket create (any target that matches the test ticket).
+- Setup › Assignment Rules › Round Robin: in the same department create an active rule that runs on Ticket Create and Ticket Update, with the condition SLA Name is <that policy> and a few online agents in the pool.
+- Create a new unassigned ticket in that department that matches the SLA policy.
+- Open the ticket and look at Ticket Owner and the History tab.
+- Edit any field on the ticket (e.g. Priority) and look again.
+Expected Result
+- The SLA is applied first and the round-robin rule then assigns the new ticket at creation, as the Round Robin page states ("Round robin runs after workflows and SLAs").
+Actual Result
+- The SLA is applied on create, but the ticket stays Unassigned and History has no assignment entry (QA ticket #3922, created 14 Nov 2026 3:33 PM Cairo).
+- After one edit (Priority High › Medium at 3:45 PM) the same rule assigns it at once to Test User 1, trigger "The ticket was edited". So the rule and its condition are correct; on create the round robin does not see the SLA.
+- Same result in the earlier run on 14 Nov (OR-13 and OR-13b). Round-robin rules whose conditions use fields set by workflows (e.g. Priority) do assign on create, so only the SLA step is affected.
+Note
+Zoho Desk help states SLA is applied before round robin; not checked live in Zoho (its API refused to create round-robin rules in the test org). Found in the Desk automation order run, case OR-13.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, department QA AS6 Dept A, agents Test User 1, Mahmoud Samy and Dev Team 2 online, 14 Nov 2026.
+Attachment
+Annotated evidence attached (OR-13-round-robin-cannot-see-sla-on-new-ticket.png).
+
+
+== COMMENTS (3)
+--- comment 2026-11-15T15:06:48.193100+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Live on tavi (desk #254) and checked on NDC Staging on 15 Nov. Moving to Ready For Test.
+- Checked with the API in QA AS6 Dept A, using a temporary SLA policy that applies on create and a temporary round-robin rule that runs on Ticket Create only, with the condition "SLA Name is <that policy>" and Test User 1 in the pool. A new unassigned ticket matching the policy got the SLA and was assigned to Test User 1 about 2.5 seconds after it was created. The History entry names the rule and the trigger "A new ticket". The SLA was applied once.
+- The rule, the policy and the test tickets are deleted, and the department's Round Robin Preferences are back as they were. For the check I briefly turned on "assign to offline agents", because the pool agent was offline.
+- Not checked: the New Ticket screen itself, and a run with your rule that runs on both create and update.
+- Still not covered, as written above: an edit or a move that changes the SLA, chat tickets, and a ticket a direct rule moved into the department while it was being created.
+
+--- comment 2026-11-15T14:44:33.122430+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Fix merged (desk #254) and deploying to tavi now. Moving to In Progress until I have checked it live.
+- What changes: when a department has a round-robin rule that runs on Ticket Create and has an SLA condition (SLA Name, a due date, SLA violated and so on), a new ticket now gets its SLA first, and the rule then sees it. The assignment still counts as "A new ticket", so a rule that runs on create only matches. Departments whose rules have no SLA condition still assign at once.
+- Not covered by this fix: an edit or a move that changes the ticket's SLA, tickets from chat, and a ticket a direct rule moved into the department while it was being created. Round robin still runs before the new SLA name arrives in those cases. If saving the SLA name fails, the ticket stays unassigned until an edit, as before.
+- Checked so far: automated tests only. The live check on NDC Staging follows the deploy.
+
+--- comment 2026-11-15T13:31:38.681812+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Cause found; not fixed yet. Staying in Bug.
+- On #3922 the SLA applied 30 ms after the ticket was created, but desk copies the SLA name onto the ticket about 3.5 seconds later. Round robin had already run on the new ticket without the SLA name, so "SLA Name is …" did not match. That later copy is deliberately not treated as an edit, so round robin never runs again until someone edits the ticket.
+- The fix has to make round robin wait for the SLA on a new ticket, and still count it as "Ticket Create" for rules that run only on create. That is planned as its own piece of work.
+

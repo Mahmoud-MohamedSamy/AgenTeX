@@ -1,0 +1,7 @@
+{"out":"3036-api-card.png","title":"NDC-3036 transition QA onlyA owned only by agent \"Customer Experience Specialists 2\" (QA account) — owner/admin runs it","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Owner agent active","POST /desk/tickets/#4171/blueprint-transitions/onlyA","403 BLUEPRINT_NOT_OWNER \"You are not an owner of this transition.\" (expected while the owner is active)","ok"],
+["Suspend the agent 11:18:50","PATCH /iam/users/{agent} status=suspended","204; users list: suspended. GET blueprint: transitionsWithoutActiveOwner [onlyA], ownerIssues reason inactive","ok"],
+["Admin runs it while suspended","GET …/blueprint-transitions (#4171) → [onlyA]; POST …/onlyA","200 → #4171 Escalated (was: 403, ticket stuck)","ok"],
+["Reactivate 11:20:47","PATCH status=active","204; users list: active (agent restored)","ok"],
+["Right after reactivation","GET blueprint + run onlyA on #4172 (~4 s later)","still flagged inactive; run 200 (#4172 moved). From 11:21:06 (#4174) flag gone, onlyA not offered to the admin (same at +1 and +2 min)","info"]]}

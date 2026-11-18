@@ -1,0 +1,34 @@
+# NDC-2933 Skills | Ticket Skills field offers and keeps inactive skills and other departments' skills; Zoho drops them and has no Skills on Add Ticket
+Summary
+The ticket Skills field lists every skill of every department, inactive skills included, no matter which department the ticket is in. Whatever is picked is saved. This happens on Create Ticket and on the ticket page (Ticket Properties → Ticket Information → Edit Skills). The side-rail Skills tab (Associate Skills) is correct: it offers only active skills of the ticket's department.
+In Zoho Desk, Skills is also a layout field, but the Add Ticket form does not show it, and inactive or other-department skills set on a ticket are dropped when it is saved.
+Steps to reproduce
+- Sign in to TAVI Desk (NDC-Staging) as an admin.
+- Tickets → New Ticket, choose Department = Sales.
+- Look at the Skills field: it lists skills of Customer Support, QA AS6 Dept A (including the inactive skill QA AS6 sk3), QA SK12 Dept A and others.
+- Open any ticket of QA SK12 Dept A → Ticket Properties → Ticket Information → Edit Skills: the same full list, including inactive QA SK12 Inact.
+- On a ticket in QA SK12 Dept A, save Skills = QA SK12 Inact (inactive) and QA AS6 sk1 (another department's skill).
+- Reopen the ticket.
+Expected (Zoho Desk)
+- No Skills input on the Add Ticket form.
+- On a ticket, only active skills of the ticket's department can be kept; inactive and other-department skills are dropped on save.
+- Zoho test, 12 Nov 2026: ticket #170 saved with QA SK12 S1 + an inactive skill + another department's skill kept only QA SK12 S1.
+Actual (TAVI)
+- Create Ticket shows the Skills field with every department's skills, inactive ones included.
+- Edit Skills on the ticket page shows the same unfiltered list; long skill names run off the side of the panel.
+- Ticket #3145 kept both QA SK12 Inact and QA AS6 sk1. Saving through the API is accepted the same way.
+Environment
+- TAVI Desk, NDC-Staging (staging-desk.taviportal.com), owner and admin accounts, 12 Nov 2026.
+- Zoho Desk test portal (Enterprise trial), department Tech, 12 Nov 2026.
+Evidence
+Annotated image attached: SK-G02-ticket-skills-field-inactive-other-dept-vs-zoho.png (TAVI left, Zoho right). Full comparison report: https://claude.ai/artifact/HG3raXZiXeEUZ1wYq8G4MP (cases SK-G02, SK-G03, SK-J02, SK-J04, SK-J05).
+
+
+== COMMENTS (1)
+--- comment 2026-11-15T13:31:30.960236+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on tavi. Moving to Ready For Test.
+- Fix (desk #252, client-engine #832): when a ticket's skills are set (on create, or when an edit changes them), only active skills of the ticket's department are kept, as in Zoho Desk. New Ticket and Edit Skills offer only the department's active skills, and changing the department on New Ticket drops skills the new department does not have. We kept the Skills field on New Ticket, filtered, rather than removing it.
+- Checked live: a ticket created through the API in QA SK13 Dept A with QA SK13 S1, QA SK13 Inact and QA SK12 S1 kept only QA SK13 S1. In the browser, New Ticket offered Sales' 6 active skills for Sales and exactly QA SK13 S1 to S12 after switching to QA SK13 Dept A (no inactive skill).
+- Not checked in the browser: the long-name wrapping on Edit Skills, and the Arabic layout.
+Deployed to tavi on 15 Nov 2026 (desk 4f170c70, desk-web from client-engine 764295e1).
+

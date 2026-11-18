@@ -1,0 +1,11 @@
+var __AS="D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/scripts/as/";
+eval(fs.readFileSync(__AS+'lib.js','utf8'));
+const IDF=OUT+'ids.json';const I=fs.existsSync(IDF)?JSON.parse(fs.readFileSync(IDF,'utf8')):{};const R={};
+const b=JSON.parse(fs.readFileSync(OUT+'baseline.json','utf8'));const TYPE=b.skillsA.skills[1].type_id;
+const mk=async(name,active,agents)=>{if(I[name])return I[name];const r=await api('POST','/desk/skills?department_id='+DA,{department_id:DA,name,type_id:TYPE,description:'QA RT19 AS lane',is_active:active,criteria:{conditions:[{field_key:'subject',operator:'contains',value:'QART19ASNEVER'}],pattern:null}});
+ const id=r.j?.data?.id||r.j?.data?.skill?.id;R[name]=E(r);if(!id)return null;LED('skill created '+id+' "'+name+'" active='+active+' dept QA AS6 Dept A');
+ if(agents.length)R[name+' agents']=(await api('PUT','/desk/skills/'+id+'/agents',{user_ids:agents})).s;I[name]=id;return id;};
+await mk('QA RT19 AS S1',true,[A3]);await mk('QA RT19 AS S2',true,[A1]);await mk('QA RT19 AS S3',true,[]);await mk('QA RT19 AS Inact',true,[]);
+fs.writeFileSync(IDF,JSON.stringify(I));
+const L=(await api('GET','/desk/skills?department_id='+DA)).j?.data?.skills||[];R.list=L.filter(s=>/RT19/.test(s.name)).map(s=>s.name+' act='+s.is_active+' ag='+s.agent_ids.map(nm));
+return R;

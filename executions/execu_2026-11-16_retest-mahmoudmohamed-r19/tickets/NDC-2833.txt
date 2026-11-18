@@ -1,0 +1,40 @@
+# NDC-2833 SLA | When a support plan's ticket allowance is used up, the plan's SLA still runs on the next tickets
+Summary
+A ticket-based support plan (for example 1 ticket per month) should only cover that number of tickets. In Desk, once the allowance is used up, the next ticket from the same customer still gets the same SLA, now shown as "Department policy", with response and resolution timers running. The ticket even says "The support plan's ticket allowance is used up for this cycle." In Zoho Desk, "the remaining tickets will not adhere to the selected SLA".
+Steps to Reproduce
+- In Setup › SLA & Escalation, create an SLA for a department with "Execute only when associated with an Account" turned on.
+- In Support Plans, create a ticket-based plan with that SLA and an allowance of 1 ticket per month.
+- Create an account and a contract for it in the same department, using that plan.
+- Create a ticket for that account. Open it and look at the SLA panel: it is covered by the contract and plan, "0 tickets left".
+- Create a second ticket for the same account and open its SLA panel.
+Expected Result
+- The second ticket does not get the plan's SLA, because the allowance is used up.
+- No response or resolution timers run for it from that SLA.
+Actual Result
+- The second ticket gets the same SLA, shown as "Covered by: Department policy".
+- First response and resolution are both "Running" and will escalate.
+- The panel shows "The support plan's ticket allowance is used up for this cycle." but it has no effect.
+- A ticket with no account gets no SLA from this policy, so the allowance is the only thing that is ignored.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, 1440×900, owner account, 10 Nov 2026. Compared with Zoho Desk help articles (live Zoho Desk did not load on this network).
+Attachment
+Annotated comparison attached (SL-38-sla-applied-after-allowance-used-up-vs-zoho.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T13:33:52.186570+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 11:30 UTC. Ready for retest.
+Checked on staging: I followed the ticket's setup with test data in QA AO Dept A:
+- An SLA that runs only for tickets with an account.
+- A plan allowing 1 ticket per month.
+- An active contract for an existing QA account.
+- Two tickets for that account.
+Ticket 1 was covered by the contract and plan, with 0 tickets left. Ticket 2 got no SLA, and its SLA panel note says the allowance is used up. Before the fix it showed "Covered by: Department policy".
+All test data is deleted.
+
+--- comment 2026-11-16T11:56:58.481909+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Fix is in review: anyware-shared-sla PR #2 (the shared SLA package, version 0.2.1), then desk PR #260. Not deployed yet.
+Cause: since 14 Oct, an SLA linked to a support plan also counts as an ordinary department SLA. So when the plan's allowance ran out, the next ticket got the same SLA as "Department policy". I confirmed this in the code and did not repeat it on staging.
+Change (product decision): once an account's plan allowance is used up, that plan's SLA no longer applies to the account's next tickets in any way. The SLA panel says the allowance is used up. Another SLA of the department can still apply.
+To retest after deploy: repeat the original steps. The second ticket should have no SLA from the plan's policy.
+

@@ -1,0 +1,34 @@
+# NDC-2970 Skills | Round robin department threshold counts the agent's open tickets in every department, so skill-based assignment stops; Zoho counts only that department
+Summary
+Round Robin Preferences → Department wise threshold says "Maximum number of open tickets an agent in the department can handle". TAVI counts the agent's open tickets in all departments instead. An agent who works in more than one department is treated as full and skill-based round robin stops giving them tickets, long before they reach the limit in this department.
+Zoho Desk counts only the agent's open tickets in the rule's department.
+Steps to reproduce
+- Sign in to TAVI Desk (NDC-Staging) as an admin.
+- Use an agent who has many open tickets in other departments (Test User 1: about 90 open outside QA SK13 Dept A).
+- In QA SK13 Dept A, give the agent skill QA SK13 S1 and make a Skill Based round robin rule (QA SK13 RR skill, subject contains QASK13RR) with only that agent in the pool.
+- Setup → Assignment Rules → Round Robin → Department QA SK13 Dept A → ⋮ → Preferences: turn on Department wise threshold and set 40 open tickets per agent. Assign tickets to offline agents is on.
+- Create a ticket in QA SK13 Dept A with subject "QA SK13 H7 QASK13RR" and skill QA SK13 S1.
+- Open the ticket and look at Ticket Owner.
+Expected (Zoho Desk)
+- Only open tickets in this department count. The agent has 3 open in QA SK13 Dept A, which is under 40, so the ticket is assigned to them.
+- Zoho test, 12 Nov 2026: Fathy had 5 open tickets in Tech and 1 in another department. At a Tech threshold of 3 he was not assigned; at 6 he was assigned (#189).
+Actual (TAVI)
+- #3204 stays Unassigned at threshold 40. Earlier: threshold 1 → not assigned (#3177), 40 → not assigned (#3181).
+- Threshold 100 (above the agent's ~93 open tickets in all departments) → assigned (#3182). Threshold off → assigned (#3179).
+- So the limit is compared with the agent's open tickets across the whole tenant, not the department.
+Environment
+- TAVI Desk, NDC-Staging (staging-desk.taviportal.com), owner account, 12 Nov 2026.
+- Zoho Desk test portal (Enterprise trial), department Tech, 12 Nov 2026.
+Evidence
+Annotated image attached: SK-H06-dept-threshold-counts-all-departments-vs-zoho.png (TAVI left, Zoho right). Full comparison report: https://claude.ai/artifact/HG3raXZiXeEUZ1wYq8G4MP (case SK-H06).
+
+
+== COMMENTS (1)
+--- comment 2026-11-15T13:31:10.615573+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on tavi. Moving to Ready For Test.
+- Cause: the threshold counted the agent's open tickets in every department.
+- Fix (desk #248): thresholds and the load-based method count only the agent's open tickets in the rule's department. On Hold tickets no longer count either (NDC-2824).
+- Checked live on NDC Staging through the API: in QA SK13 Dept A, Test User 1 had 0 open tickets there and 79 across the tenant. With the department threshold at 10 and a temporary sequential rule, a new ticket went to Test User 1 at once. Before the fix it would have waited in the backlog. The temporary rule and ticket were deleted and the department's Round Robin Preferences were put back.
+- Not checked in the browser: the assignment happens on the server, and I read it through the API.
+Deployed to tavi on 15 Nov 2026 (desk 4f170c70, desk-web from client-engine 764295e1).
+

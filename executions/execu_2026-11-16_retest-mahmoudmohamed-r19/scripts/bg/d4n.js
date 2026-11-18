@@ -1,0 +1,2 @@
+var __B="D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/scripts/bg/";eval(fs.readFileSync(__B+'blib.js','utf8'));
+const L=fs.readFileSync(RUN+'/ledger.md','utf8').split('\n').filter(l=>/\(D4\)/.test(l));const o=[];for(const l of L){const id=l.match(/[0-9a-f-]{36}/)[0];const r=await rec(id);o.push([r.subject.slice(-12),r.ticket_number,r.status,JSON.stringify(r.skills)]);}return o;

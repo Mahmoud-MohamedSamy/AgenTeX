@@ -1,0 +1,1 @@
+const r = await api('GET', `/modules/${TK}/records/c3a5d3af-76ee-4aea-8a3c-ff71d954e03f/blueprint-transitions`); return { s: r.s, err: r.s >= 300 ? E(r) : '', t: L(r.j?.data).map(x => x.transitionId || x.id) };

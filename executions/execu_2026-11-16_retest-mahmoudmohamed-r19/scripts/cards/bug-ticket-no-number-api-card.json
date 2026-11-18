@@ -1,0 +1,7 @@
+{"host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026","out":"bug-ticket-no-number-api-card.png","title":"Ticket record created without a ticket number or History (\"QA RT19 AS R19AS4seunc b1thr3\", id 4e6a4894)","rows":[
+["Create (11:25:19Z)","POST /modules/{tickets}/records  QA AO Dept B, one-agent round robin rule active","201, record 4e6a4894 saved (source manual). Neighbours got numbers: #4544 just before, #4545 just after","info"],
+["34 min later (11:59Z)","GET /modules/{tickets}/records (all 790) and /records/4e6a4894","Only record without ticket_number; fields: subject, description, department, status, priority, owner, approval_status - no ticket_number","bad"],
+["History / activity","GET /desk/tickets/4e6a4894/history and /activity","both 200 with data: [] - no 'created' entry, no status change, although the record was edited to Closed at 11:25:42Z","bad"],
+["First open of the ticket","GET /desk/tickets/4e6a4894 (11:59:54Z)","Desk ticket created only now: created_at 11:59:54Z, ticket_number 4583 (out of order; #4545 was created 34 min earlier)","bad"],
+["Number 4546","all live records + Desk Recycle Bin","4546 is used by no live ticket and no Recycle Bin item; the ticket created+deleted at 11:26Z sits in the Recycle Bin with no number","info"],
+["Parallel burst (12:07Z)","10 x POST records at once, same dept + rule","all 201; after 20 s 5 of 10 had no number and no activity; Desk side created one by one 2-47 s after create; all numbered by 12:08 (no permanent ghost)","info"]]}

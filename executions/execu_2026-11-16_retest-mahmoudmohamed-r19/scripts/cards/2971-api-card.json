@@ -1,0 +1,8 @@
+{"out":"2971-api-card.png","title":"NDC-2971 deleted skill \"QA RT19 SK Del\" (QA RT19 SK Dept), ticket #4537 had it before the delete","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Before delete","GET #4537","skills [QA RT19 SK Del, QA RT19 SK S1]","info"],
+["Delete the skill","DELETE /desk/skills/{QA RT19 SK Del}","204; department list no longer has it","ok"],
+["Ticket that had it","GET #4537","skills [QA RT19 SK S1]: the deleted skill is gone (was: kept)","ok"],
+["Create with the deleted skill","POST record skills [Del, S1]","422 \"Skills: 'QA RT19 SK Del' is not one of the allowed values.\" (was: saved and kept)","ok"],
+["Edit to the deleted skill","PATCH #4537 skills [S1, Del]","422 same message; ticket unchanged [S1]","ok"],
+["Workflow rule that saved it","GET /workflow/rules/{QA RT19 SK WF skills}","skillKeys still list Del and Inact; editor shows them as \"(removed)\" so they can be taken off","info"]]}

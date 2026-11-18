@@ -1,0 +1,12 @@
+const RAW = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/';
+const out = {};
+await page.goto(H + '/views/all/tickets/c18279fe-fe46-42b6-98e9-bd5d2c098fd3', { waitUntil: 'domcontentloaded' });
+await page.getByText('View configured actions').first().waitFor({ timeout: 120000 }).catch(() => {}); await sleep(3000);
+const t = (await text()).replace(/\s+/g, ' '); const i = t.search(/Steps/); out.card = t.slice(i, i + 250); out.readOnly = /read this ticket but not change/i.test(t);
+out.buttons = await page.getByRole('button').evaluateAll(es => es.map(e => e.innerText.trim()).filter(x => /^QA /.test(x)));
+await page.screenshot({ path: RAW + '3056-4180-card.png' });
+await page.getByText('View configured actions').first().click(); await sleep(3000);
+const d = page.getByRole('dialog').first(); out.popup = (await d.innerText().catch(() => '')).replace(/\s+/g, ' ');
+await page.screenshot({ path: RAW + '3056-4180-popup.png' });
+out.dialogScroll = await d.evaluate(e => { const s = e.querySelector('[class*=overflow], [style*=overflow]') || e; return [s.scrollHeight, s.clientHeight]; }).catch(() => null);
+return out;

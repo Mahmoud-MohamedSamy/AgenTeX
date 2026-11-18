@@ -1,0 +1,8 @@
+{"host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026","out":"bug-skills-api-inconsistent-api-card.png","title":"Ticket Skills field through the Records API: deleted / unknown vs inactive / other-department skills (QA AS6 Dept A, 12:27Z)","rows":[
+["Deleted skill (create)","POST /modules/{tickets}/records  skills [\"QA RT19 AS S1\",\"QA RT19 AS Del\"] (Del deleted)","422 RECORD_VALIDATION_FAILED, MULTI_SELECT_VALUE_INVALID \"Skills: 'QA RT19 AS Del' is not one of the allowed values.\" - nothing saved","ok"],
+["Unknown skill (create)","skills [S1, \"QA RT19 BUG no such skill\"]","422 same type and message - nothing saved","ok"],
+["Deleted skill (edit)","PATCH /records/{#4620}  skills [S2, \"QA RT19 AS Del\"]","422; ticket keeps [S1]","ok"],
+["Inactive skill (create)","POST  skills [S1, \"QA RT19 AS Inact\" (inactive)]","201, #4618 saved [\"QA RT19 AS S1\"]; response has no warning; Inact silently dropped","bad"],
+["Other-dept skill (create)","POST  skills [S1, \"QA SK13 S1\" (another department)]","201, #4619 saved [\"QA RT19 AS S1\"]; no warning","bad"],
+["Inactive / other-dept (edit)","PATCH #4620 skills [S2, Inact], then [S2, \"QA SK13 S2\"]","200 both, saved [\"QA RT19 AS S2\"]; no warning","bad"],
+["Only other-dept skill (edit, SK lane 11:4xZ)","PATCH  skills [\"QA SK13 S2\"]","200, saved [] - all skills removed, no warning","bad"]]}

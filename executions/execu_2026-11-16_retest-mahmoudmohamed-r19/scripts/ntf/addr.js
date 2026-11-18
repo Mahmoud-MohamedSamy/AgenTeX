@@ -1,0 +1,1 @@
+const A=Ls((await api('GET','/desk/channels/addresses')).j?.data);const a=A.find(x=>x.id===I.addr);return a?{address:a.address,dept:a.department_id===D,active:a.is_active,receiving:a.mail?.receiving,verified:a.mail?.verified}:'not found';

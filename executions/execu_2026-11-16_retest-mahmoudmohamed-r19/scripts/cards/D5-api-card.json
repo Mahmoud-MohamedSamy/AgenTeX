@@ -1,0 +1,7 @@
+{"out":"D5-api-card.png","title":"D5 blueprint saves without a revision (blueprint QA BP RT19 3030…, inactive)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Start","GET blueprint","revision 11, name \"QA BP RT19 3030 RENAMED BY B run4\"","info"],
+["Writer A","PUT …/{id} name = \"QA BP RT19 D5 renamed by A\", revision 11","200 → revision 12, rename saved","ok"],
+["Writer B, copy from revision 11, NO revision sent","PUT …/{id} description only","200 (no conflict)","bad"],
+["Writer B draft, NO revision","PUT …/{id}/draft","200","bad"],
+["Read-back","GET blueprint","revision 14: name back to \"QA BP RT19 3030 RENAMED BY B run4\" — A's rename lost silently. With revision 11 the same save gets 409 BLUEPRINT_REVISION_CONFLICT (NDC-3030)","bad"]]}

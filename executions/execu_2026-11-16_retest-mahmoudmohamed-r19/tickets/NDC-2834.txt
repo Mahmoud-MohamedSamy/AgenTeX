@@ -1,0 +1,35 @@
+# NDC-2834 SLA | An escalation email template that an SLA uses can be deleted with no warning
+Summary
+An escalation email template chosen in an SLA escalation level can be deleted from Email Templates with only a generic confirmation. Nothing says an SLA uses it. Afterwards the SLA silently falls back to the default escalation email, and the admin only finds out by opening that SLA target ("A template that no longer exists"). Desk already refuses to delete business hours that an SLA uses, so templates behave differently.
+Steps to Reproduce
+- Create an escalation email template (Agent Notification, SLA escalation) in Setup › Email Templates.
+- In Setup › SLA & Escalation, create an SLA whose response escalation level 1 uses that template, and save.
+- Go back to Setup › Email Templates, open the template's actions menu and click Delete.
+- Read the confirmation and click Delete.
+- Open the SLA again, go to its target and look at the escalation's Agent Notification Template.
+Expected Result
+- When deleting, the admin is told the template is used by an SLA (name it), and either cannot delete it or is asked to pick a replacement.
+Actual Result
+- The dialog only says "will be deleted. This can't be undone from this page."; the template is deleted.
+- The SLA now shows "A template that no longer exists" and "The default escalation email is being used". This is visible only inside the target editor.
+Note
+Zoho's help covers only the delete steps (public templates cannot be deleted); what Zoho does for a template an SLA uses is not documented and was not seen live. Low priority because escalations still go out with the default email.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, 1440×900, owner account, 10 Nov 2026. Compared with Zoho Desk help articles (live Zoho Desk did not load on this network).
+Attachment
+Annotated comparison attached (SL-57-template-used-by-sla-deleted-without-warning-vs-zoho.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T13:33:40.490447+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 11:30 UTC. Ready for retest.
+Checked on staging, through the API: deleting an escalation template that a test SLA used was refused. The answer named the SLA: "This template is the escalation email of these SLA policies: probe …". The SLA kept the template.
+The Email Templates page shows this as an English or Arabic message. That text is deployed, but I didn't click through it in the browser.
+The test SLA and template are deleted.
+
+--- comment 2026-11-16T11:56:46.266287+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Fix is in review: desk PR #259 and client-engine PR #840. Not deployed yet.
+Reproduced on staging 16 Nov: I deleted a template that an SLA escalation level used. The delete went through, and the level kept pointing at the deleted template. I removed the test template and SLA afterwards.
+Change: such a template can no longer be deleted. The message names the SLA policies that use it, in English or Arabic, so the admin can choose another email in those escalations first.
+To retest after deploy: repeat the original steps. Delete should be refused with a message naming the SLA.
+

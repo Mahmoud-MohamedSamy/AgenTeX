@@ -1,0 +1,152 @@
+{
+ "out": "NDC-2997-retest-FAIL.png",
+ "ticket": "NDC-2997",
+ "date": "16 Nov 2026",
+ "priority": "high",
+ "title": "Workflow Rules | Owner Assignment by role (round robin) never assigns anyone",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · staging-desk · owner · Roles › CEO = OrgUnitRoundRobin 7972984b (request caught from the screen) · QA RT19 WF Dept (CES1 + Test User 1, both CEO) and QA AO Dept A (Dev Team 2 + Test User 1) · Test User 1 signed in and online for one run",
+ "panels": [
+  {
+   "img": "2997-api-card.png",
+   "caption": "API evidence (owner, NDC-Staging)",
+   "crop": [
+    0,
+    0,
+    1600,
+    480
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      204
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      251
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      319
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      329,
+      1564,
+      366
+     ],
+     "n": 5,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      376,
+      1564,
+      413
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      423,
+      1564,
+      460
+     ],
+     "n": 7,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2997-2-exec-online.png",
+   "caption": "Execution History: Owner Assignment OrgUnitRoundRobin CEO Skipped \"Not assigned: nobody in the org unit can own a ticket of this department.\" although Test User 1 (CEO, online) is an agent of the department",
+   "crop": [
+    270,
+    60,
+    1290,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      395,
+      1268,
+      502
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Owner Assignment › Roles › CEO, tickets in a department with CEO agents",
+   "Owner from the role, taking turns",
+   "No owner set on 9 tickets in 2 departments; Skipped \"nobody in the org unit can own a ticket of this department\"",
+   "FAIL"
+  ],
+  [
+   2,
+   "Same with a CEO agent online",
+   "Assigned",
+   "Still Skipped (3 tickets)",
+   "FAIL"
+  ],
+  [
+   3,
+   "Manual assign of the same agents",
+   "—",
+   "200 (they can own these tickets)",
+   "INFO"
+  ],
+  [
+   4,
+   "No agent can be assigned",
+   "Action shows the reason",
+   "Skipped with the reason (Dept B, no CEO agent)",
+   "PASS"
+  ],
+  [
+   5,
+   "Profiles round robin (control)",
+   "—",
+   "Succeeded, owner CES1",
+   "PASS"
+  ]
+ ]
+}

@@ -1,0 +1,154 @@
+{
+ "out": "NDC-3036-retest-PASS.png",
+ "ticket": "NDC-3036",
+ "priority": "medium",
+ "title": "Blueprint | When a transition's only owner is suspended, the designer warns \"no active owner\" and agents with edit access can run the step",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · blueprint \"QA BP RT19 3036 onlyA\" (Customer Support), QA onlyA owned only by QA account \"Customer Experience Specialists 2\" (suspended 11:18:50–11:20:47 Cairo, then reactivated and checked active) · tickets #4171, #4172, #4174",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "3036-2-before-panel.png",
+   "caption": "Designer while the owner is suspended: warning box (does not block publishing) and Before › Who can run this",
+   "crop": [
+    300,
+    110,
+    1300,
+    720
+   ],
+   "boxes": [
+    {
+     "b": [
+      314,
+      128,
+      1586,
+      180
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      316,
+      600,
+      716,
+      666
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      316,
+      710,
+      716,
+      766
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3036-3-ticket2-suspended.png",
+   "caption": "Ticket #4172 as the admin while suspended: the QA onlyA button is offered",
+   "crop": [
+    664,
+    55,
+    936,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      1508,
+      170,
+      1584,
+      202
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3036-api-card.png",
+   "caption": "API",
+   "crop": [
+    0,
+    0,
+    1600,
+    400
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      329,
+      1564,
+      387
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Blueprint flags the transition",
+   "Warning",
+   "\"1 warning, which does not block publishing · QA onlyA has no active owner. Agents with edit access to the ticket can run this step until you choose an owner\" on top and in Before (was: Active, no warning)",
+   "PASS"
+  ],
+  [
+   2,
+   "Suspended owner labelled",
+   "-",
+   "Who can run this: \"Customer Experience Specialists 2 · Suspended · Agent\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Someone can still move the ticket",
+   "Admin or fallback can run it",
+   "Button QA onlyA shown to the admin; API run 200, #4171 → Escalated (was: 403, \"No transitions you can run\")",
+   "PASS"
+  ],
+  [
+   4,
+   "Dev: while the only owner is active, the admin is refused",
+   "403",
+   "403 BLUEPRINT_NOT_OWNER on #4171 before the suspension",
+   "PASS"
+  ],
+  [
+   5,
+   "After reactivation",
+   "Back to owner-only",
+   "For a few seconds the flag stayed and the admin could still run it (#4172, 200); from 11:21:06 the flag is gone and onlyA is not offered (#4174). Short cache, no lasting effect",
+   "INFO"
+  ]
+ ]
+}

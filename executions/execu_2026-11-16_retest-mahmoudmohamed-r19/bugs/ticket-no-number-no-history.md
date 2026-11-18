@@ -1,0 +1,35 @@
+# Tickets | A created ticket can stay without a ticket number and History until someone opens it
+
+**Summary**
+A ticket created through the Records API was saved, but for 34 minutes it had no ticket number and an empty History and activity feed, even after it was edited to Closed. The Desk part of the ticket (number, History) was only created when the ticket was first opened, and it then got the next free number (#4583) instead of a number from the time it was created. A parallel burst of 10 creates showed the same step running late (up to 47 seconds), but in that burst every ticket got its number in the end.
+
+**Steps to Reproduce**
+1. In QA AO Dept B, with a one-agent round robin rule active and a department threshold set, create a ticket through the Records API (the NDC-2824 retest probe "QA RT19 AS R19AS4seunc b1thr3", 16 Nov 11:25:19Z).
+2. About 20 seconds later, edit the ticket to Closed.
+3. Look at the ticket in the Records API / tickets data: it has no ticket number. Open its History: empty.
+4. Open the ticket page.
+5. For the burst: create 10 tickets at once in the same department and check their numbers and History 20 seconds later.
+
+**Expected Result**
+- Every ticket gets its ticket number and a "Ticket created" History entry as soon as it is created, and later edits (status Closed) are recorded.
+- No ticket stays without a number; numbers follow creation order.
+
+**Actual Result**
+- Record 4e6a4894 (created 11:25:19Z): at 11:59Z it was the only one of 790 tickets with no ticket_number. History and activity were both empty, although the status was changed to Closed at 11:25:42Z.
+- The first open of the ticket (GET of the ticket at 11:59:54Z) created the Desk ticket at that moment (created_at 11:59:54Z) with number 4583, out of order: the next ticket created at 11:25 got #4545.
+- Number 4546 is used by no live ticket and no Recycle Bin item. A ticket created and deleted at once at 11:26Z is in the Recycle Bin with no number at all.
+- Parallel burst of 10 (12:07:10Z): all 201; after 20 s, 5 of the 10 had no number and no activity. Their Desk side was created one by one, 2–47 s after create; all had numbers by 12:08. No lasting ghost from the burst.
+- Two more tries did not leave a ghost: create then close at once (x2), create then edit priority at once — all numbered within 10 s.
+- How the first ghost was made: a single API create (not a burst) while other test lanes were creating tickets at the same time; the exact trigger is not known.
+
+**Environment**
+staging-desk.taviportal.com (NDC-Staging), owner account, Records API, 16 Nov 2026, 11:25–12:10Z.
+
+**Suggested priority**: Medium (a ticket can stay without number and History, and outside assignment/SLA processing, until someone opens it)
+
+**Related**: NDC-2275 (NF-3 burst test), NDC-2824; round robin phantom count (rr-threshold-phantom-count.md) started at the same time for Dev Team 2.
+
+**Evidence**: BUG-ticket-no-number-no-history-FAIL.png (no UI screenshot: the ghost was fixed by its first open, and the burst tickets were numbered within 47 s)
+
+**Zoho Desk comparison**
+In Zoho Desk, 5 tickets created in parallel through the API all had their number in the create response (consecutive #114–#118) and a "created" History entry on the first read 3 s later. Side-by-side: BUG-ticket-no-number-no-history-vs-zoho.png

@@ -1,0 +1,10 @@
+const M = s => String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g, '<e>').replace(/"[a-z_]*(token|secret|password)[a-z_]*":"[^"]*"/gi,'"$1":"<x>"');
+const SRC = fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-08_desk-automation-order/scripts/e1-ev.js', 'utf8');
+const ADDR = SRC.match(/const NEW='([^']+)'/)[1].replace('+qae1', '+r19hc'); if (!ADDR.includes('+r19hc')) return 'tag fail';
+const o = {}; const HC = 'e74f2abb-e28d-400e-908c-f2c54862e389';
+const c = await api('POST', '/modules/' + CON + '/records', { data: fields({ first_name: 'QA RT19 HC', last_name: 'Customer', email: ADDR }) });
+o.contact = c.j?.data?.id; if (!o.contact) return { contact: M(E(c)) };
+made.other.push('contact ' + o.contact); keep(); LED('contact created ' + o.contact + ' "QA RT19 HC Customer" (user Gmail +r19hc, not printed)');
+const inv = await api('POST', '/help-centers/' + HC + '/invitations/contacts', { contact_ids: [o.contact] }); o.invite = inv.s + ' ' + M(JSON.stringify(inv.j)).slice(0, 500);
+o.inviteAt = new Date().toISOString(); LED('Help Center invite sent to contact ' + o.contact + ' (' + inv.s + ') at ' + o.inviteAt);
+fs.writeFileSync(RUN + '/scripts/hc/hc.json', JSON.stringify(o, null, 1)); return o;

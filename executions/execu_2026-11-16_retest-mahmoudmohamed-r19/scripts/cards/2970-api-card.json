@@ -1,0 +1,8 @@
+{"out":"2970-api-card.png","title":"NDC-2970 skill-based round robin department threshold, QA AS6 Dept A, rule \"QA RT19 AS 2970 skill A3\" (skill QA RT19 AS S1, pool Dev Team 2, offline allowed)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Start","GET /desk/agents/{Dev Team 2}/workload","QA AS6 Dept A: 3 Open (+2 On Hold); 9 in all departments","info"],
+["Threshold above dept count","PUT department_threshold 4; POST ticket skill QA RT19 AS S1, no owner","#4204 -> Dev Team 2 (3 Open < 4; On Hold and other departments not counted)","ok"],
+["Control: at the limit","Dev Team 2 now 4 Open in dept; POST second skill ticket","#4205 waits unassigned (4 = threshold)","ok"],
+["Same count, sequential rule","see NDC-2824 card: other-department ticket not counted (#4529), On Hold not counted (#4532), 74/93 case (#4540)","as Zoho: only the rule's department","ok"],
+["Hidden extra count (new, shared)","Test User 1 in QA AO Dept B: 4 Open; thr 5/6/7","assigned only at 7 (#4578): two phantom tickets counted","bad"],
+["Restore","preferences back, rule inactive","200; identical","info"]]}

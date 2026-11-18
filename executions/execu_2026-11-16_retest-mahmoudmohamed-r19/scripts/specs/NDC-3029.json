@@ -1,0 +1,137 @@
+{
+ "out": "NDC-3029-retest-PASS.png",
+ "ticket": "NDC-3029",
+ "priority": "medium",
+ "title": "Blueprint | Creating, editing, publishing, activating and deleting a blueprint now each write a readable Audit Log entry",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · blueprint \"QA BP RT19 3029 audit\" (Customer Support) created, description edited + published, transition owner changed + published, activated, deactivated, deleted 11:00 Cairo · Setup › Audit Log (All Entities, Any time)",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "3029-1-audit-log.png",
+   "caption": "Setup › Audit Log, today 11:00: one line per blueprint change, each with user, IP and Department: Customer Support",
+   "crop": [
+    400,
+    370,
+    1200,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      540,
+      838,
+      1000,
+      880
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      540,
+      725,
+      1050,
+      765
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      540,
+      612,
+      1020,
+      652
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      540,
+      668,
+      1215,
+      708
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      540,
+      442,
+      1040,
+      540
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      540,
+      385,
+      1005,
+      425
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      544,
+      405,
+      672,
+      425
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Create blueprint",
+   "One readable entry",
+   "\"ndc-staging-owner added a Blueprint named QA BP RT19 3029 audit\" + Department: Customer Support (was: nothing)",
+   "PASS"
+  ],
+  [
+   2,
+   "Edit description, Save and Publish",
+   "Updated + published entries",
+   "\"… updated QA BP RT19 3029 audit: changed the description\" and \"… published a Blueprint named …\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Change who can run transition QA finish, publish",
+   "Entry names the change",
+   "\"… changed who can perform the transition QA finish\" + second \"published\" line",
+   "PASS"
+  ],
+  [
+   4,
+   "Activate, then deactivate",
+   "Entries",
+   "\"… Active from no to yes\" and \"… Active from yes to no\" (worded as updates, not \"activated\")",
+   "PASS"
+  ],
+  [
+   5,
+   "Delete blueprint",
+   "Entry under Desk",
+   "\"… deleted a Blueprint named QA BP RT19 3029 audit\"; GET /audit/events?app_key=desk returns all 9 rows (target blueprint_definition_row, metadata department_name Customer Support)",
+   "PASS"
+  ],
+  [
+   6,
+   "IP shown on these lines",
+   "The user's IP",
+   "::ffff:172.19.0.19/128 (an internal server address) on every change line, ticket edits too; sign-in lines show the real public IP. Not blueprint-specific, reported separately",
+   "INFO"
+  ]
+ ]
+}

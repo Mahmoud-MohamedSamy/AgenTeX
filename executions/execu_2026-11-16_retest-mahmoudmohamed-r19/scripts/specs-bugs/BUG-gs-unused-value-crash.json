@@ -1,0 +1,11 @@
+{"out":"BUG-gs-unused-value-crash-FAIL.png","ticket":"NEW BUG","priority":"high",
+"title":"Global Sets | Deleting an unused value, or opening \"Where is this value used\" on it, crashes the Settings page",
+"verdict":"FAIL","env":"NDC-Staging · staging-crm · ndc-staging-owner · Setup › Modules and Fields › Global Sets › \"QA RT19 GS Tier\" › Unused value \"Copper\" · 16 Nov 2026","date":"16 Nov 2026",
+"panels":[
+{"img":"2870-5-history-unused.png","caption":"Edit Global Set: Unused Values (1) \"Copper\" with \"Where is this value used\" and Delete icons","crop":[464,420,672,380],"boxes":[{"b":[488,700,1112,734],"n":1,"kind":"INFO"},{"b":[1052,704,1076,730],"n":2,"kind":"FAIL"},{"b":[1078,704,1102,730],"n":3,"kind":"FAIL"}]},
+{"img":"2870-7b-copper-usage.png","caption":"After clicking either icon: \"Something went wrong\" (the whole Settings page is replaced; unsaved edits are lost)","crop":[270,100,1330,320],"boxes":[{"b":[640,140,1020,370],"n":2,"kind":"FAIL"}]},
+{"img":"2870-api-card.png","caption":"The API behind it works: used value 422, unused value 200 (deleted), unused value still on a record 409, two at once 422","crop":[0,90,1600,230],"full":true,"boxes":[{"b":[36,188,1564,246],"n":4,"kind":"PASS"}]}],
+"rows":[[1,"Unused value shown in the editor","Listed with its actions","\"Copper\" listed under Unused Values (1)","INFO"],
+[2,"Click \"Where is this value used\" on Copper","Panel listing where the value is used (or that it is not used)","Page crashes: \"Something went wrong · An unexpected error occurred\" (console: TypeError reading 'length')","FAIL"],
+[3,"Click Delete on Copper","Confirm, then the value is deleted for good","Same crash; the value cannot be deleted from the screen","FAIL"],
+[4,"Same delete through the API","—","Works: unused 200, used 422 NOT_UNUSED, on a record 409 IN_USE, two at once 422","PASS"]]}

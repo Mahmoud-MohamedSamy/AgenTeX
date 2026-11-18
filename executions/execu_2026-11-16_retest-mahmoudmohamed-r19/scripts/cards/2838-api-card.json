@@ -1,0 +1,7 @@
+{"out":"2838-api-card.png","title":"NDC-2838 old ticket #31 (created 10 Oct 2026, no customer messages) routed into QA AS6 Dept A with round robin rule \"QA RT19 AS 2838 30day\" (pool Dev Team 2, offline allowed)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Prepare #31","PATCH status Open + subject \"QA RT19 AS … old ticket Send email\"; POST /desk/tickets/{#31}/move QA AS6 Dept A; POST …/assign owner null","200 / 200 / 200 (12:39 Cairo)","info"],
+["Round robin on the update","GET /desk/tickets/{#31}/activity","ticket.auto_assign_skipped {reason: no_recent_customer_reply, rule_name: \"QA RT19 AS 2838 30day fv47\", rule_type: round_robin}; owner stays empty","ok"],
+["Control: new ticket, same rule","POST record \"QA RT19 AS R19AS38… new control\"","assigned to Dev Team 2 within seconds","ok"],
+["Assign backlogs on, 90 s","PUT round-robin-preferences assign_backlogs=true","#31 still unassigned; one skip entry only (no repeats)","ok"],
+["Restore","move back to Customer Support, owner ndc-staging-owner, subject \"Send email\", Closed","200/200/200; preferences restored","info"]]}

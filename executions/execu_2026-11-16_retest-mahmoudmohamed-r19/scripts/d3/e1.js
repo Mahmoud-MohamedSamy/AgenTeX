@@ -1,0 +1,20 @@
+const SAMY = 'd23fb4e0-248d-41f6-af60-d28885a7007e', A3 = '5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4';
+const CF = RUN + '/scripts/d3/2850.json'; const C = JSON.parse(fs.readFileSync(CF, 'utf8')); const sv2 = () => fs.writeFileSync(CF, JSON.stringify(C, null, 1));
+const nm = x => x === A3 ? 'DevTeam2' : x === SAMY ? 'Samy' : x;
+const o = {};
+const p = (await api('GET', '/desk/sla/policies/' + C.P)).j.data; p.is_active = true;
+o.act = E(await api('PUT', '/desk/sla/policies/' + C.P, p)); LED('SLA policy ' + C.P + ' activated for NDC-2850 escalation run -> ' + o.act);
+const subj = 'QA RT19 D3 2850 escalation after removal run2 ' + C.tag;
+const r = await api('POST', `/modules/${TK}/records`, { data: fields({ subject: subj, description: 'QA RT19 D3 ' + C.tag, status: 'Open', department: C.D, priority: 'high' }) });
+const id = r.j?.data?.id; made.tickets.push(id); keep(); let n; for (let i = 0; i < 12 && !n; i++) { const dt = await api('GET', '/desk/tickets/' + id); n = dt.j?.data?.ticket_number; if (!n) await sleep(3000); } o.ticket = { id, n, subj, createdUtc: new Date().toISOString() };
+LED('ticket created ' + id + ' #' + n + ' "' + subj + '" (QA RT19 D3 Dept)'); C.E = o.ticket; sv2();
+const slaOf = async () => { const s = (await api('GET', '/desk/tickets/' + id + '/sla')).j?.data; return { state: s?.state, policy: s?.policy?.name || s?.execution?.policy_name, obl: (s?.obligations || []).map(x => x.kind + ':' + x.state + ' due ' + (x.due_at || '').slice(11, 19) + ' lvl ' + x.escalation_level_reached) }; };
+o.sla0 = await slaOf();
+o.sla0b = []; for (let i = 0; i < 15; i++) { await sleep(10000); const s = await slaOf(); o.sla0b.push(new Date().toISOString().slice(11,19) + ' ' + s.state + ' ' + s.obl.join(';')); if (s.obl.some(x => / lvl [1-9]/.test(x))) break; }
+await sleep(10000);
+o.sla1 = await slaOf(); o.rec = (({ owner, status, priority }) => ({ owner: nm(owner), status, priority }))(await rec(id));
+const f = await feed(id); o.feed = f.slice(0, 12).map(e => (e.occurred_at || e.created_at || '').slice(11, 19) + ' ' + e.action + ' ' + JSON.stringify(e.summary || e.new_value || '').replace(new RegExp(SAMY, 'g'), 'Samy').replace(new RegExp(A3, 'g'), 'DevTeam2').replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+/g, '<e>').slice(0, 220));
+p.is_active = false; const p2 = (await api('GET', '/desk/sla/policies/' + C.P)).j.data; p2.is_active = false;
+o.deact = E(await api('PUT', '/desk/sla/policies/' + C.P, p2)); LED('SLA policy ' + C.P + ' deactivated after NDC-2850 run -> ' + o.deact);
+o.activeNow = (await api('GET', '/desk/sla/policies/' + C.P)).j.data.is_active;
+C.Eres = o; sv2(); return o;

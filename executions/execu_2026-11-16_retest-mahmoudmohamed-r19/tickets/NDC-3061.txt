@@ -1,0 +1,35 @@
+# NDC-3061 Blueprint | The "Send notification" after-transition action is never sent, while the transition's other after-actions run
+Summary
+A blueprint transition with a Send notification after-action does not notify anyone. The transition runs, and the other after-actions on the same transition work (field updates, create task), but none of the chosen users gets the notification.
+Steps to Reproduce
+- In Desk → Settings → Blueprints, open a blueprint for a department (Tech, "test blueprint").
+- On transition Move to On Hold (Open → On Hold), add the after-action Send notification with title and body "Ticket Moved to On Hold" and four users as recipients. Also add a Create task after-action for comparison. Publish.
+- Create a ticket in Tech that enters the blueprint (#4133) and run Move to On Hold.
+- Sign in as each recipient and open the notification bell.
+Expected Result
+- Every chosen user gets "Ticket Moved to On Hold" in the bell right after the transition.
+Actual Result
+- The transition runs (Open → On Hold).
+- Other after-actions on the same transition work: the ticket's Email field is updated, the contact's Description is updated, and the task is created (its "Task assigned to you" notification arrives at 14:41:33).
+- None of the four recipients (ndc-staging-owner, mahmoud.mahamed1515, Mahmoud Mohamed, Mahmoud Samy) gets "Ticket Moved to On Hold".
+Note
+- Desk email (the other after-action) was not checked; the recording does not show the mailbox.
+- Zoho Desk not checked live.
+Environment
+staging-desk.taviportal.com (NDC-Staging), blueprint "test blueprint" (Tech), ticket #4133, transition run at 2026-11-15 14:41:21 UTC, Microsoft Edge 156, Windows 10.
+Attachments
+- Annotated evidence (blueprint-notification-not-sent.png): the five after-actions with ran / not ran, and each recipient's bell after the run, from the recording's network data (the video frames are not available from Jam).
+- Jam recording: https://jam.dev/c/c4adce7e-7740-41b2-a2db-faab2675712d
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T10:58:00.853527+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on staging (metadata-engine PR #230, deployed today). A blueprint notification is now filed as a Desk notification, so it appears in Desk's bell.
+Checked on staging-desk (NDC-Staging): I created a test blueprint whose "Move to On Hold" step sends a notification, ran it on a ticket, and opened the bell in the browser. The notification was at the top. Before the fix, the same test produced a notification that only the CRM bell would show. The same change covers SLA escalation notifications.
+Not checked: notifications sent before the fix (including the one from #4133) stay in the CRM bell. I checked only one recipient's bell, not four users. The Desk email after-action was not checked.
+
+--- comment 2026-11-16T09:10:50.459841+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Found the cause. The notification is created for every chosen user, but it is filed as a CRM notification, so it shows in the CRM bell and not in Desk's. On staging, the "Ticket Moved to On Hold" notification from #4133 is stored that way for the recipients, and a test blueprint I ran this morning did the same.
+Fix: metadata-engine now files a blueprint notification under the ticket's app (Desk). The same change covers SLA escalation notifications. Branch fix/ndc-3061-blueprint-notification-app, pushed. It is not merged or deployed yet.
+Not changed: notifications already sent stay in the CRM bell. The Desk email after-action was not checked.
+

@@ -1,0 +1,17 @@
+const A3 = '5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4', SAMY = 'd23fb4e0-248d-41f6-af60-d28885a7007e';
+const CF = RUN + '/scripts/d3/2850.json'; const C = JSON.parse(fs.readFileSync(CF, 'utf8')); const sv2 = () => fs.writeFileSync(CF, JSON.stringify(C, null, 1));
+const nm = x => x === A3 ? 'DevTeam2' : x === SAMY ? 'Samy' : x;
+const show = async id => { const p = (await api('GET', '/desk/sla/policies/' + id)).j?.data; const e = p.targets[0].escalations; const f = l => ({ lvl: l.level, t: l.timing, to: l.recipients.map(x => nm(x.id)), owner: nm(l.actions?.assign_owner) }); return { active: p.is_active, resp: e.response.map(f), res: e.resolution.map(f) }; };
+const o = {};
+o.before = { P: await show(C.P), PB: await show(C.PB) };
+const body = { departments: [{ department_id: C.D, target: { kind: 'agent', id: SAMY } }, { department_id: C.DB, target: { kind: 'unassigned', id: null } }], update_rules: true };
+const r = await api('POST', '/desk/agents/' + A3 + '/reassign', body); o.reassign = { s: r.s, t: r.t.slice(0, 800) };
+LED('NDC-2850 reassign Dev Team 2 (QA RT19 D3 Dept -> Mahmoud Samy, Dept B -> unassigned, update_rules) -> ' + r.s);
+C.reassignAt = new Date().toISOString(); sv2();
+o.after = { P: await show(C.P), PB: await show(C.PB) };
+const w = (await api('GET', '/desk/agents/' + A3 + '/workload')).j.data; o.refsAfter = w.references; o.deptsAfter = w.departments.length;
+const myD = async d => { const g = (await api('GET', '/desk/departments/' + d)).j?.data; return (g?.agent_user_ids || []).map(nm); };
+o.members = { D: await myD(C.D), DB: await myD(C.DB) };
+const teams = (await api('GET', '/desk/teams')).j.data.teams; o.teamsStill = teams.filter(t => (t.sources || []).some(s => s.ref_id === A3)).map(t => t.name);
+o.lostDepts = C.snap.depts.filter(d => !w.departments.some(x => x.department_id === d));
+fs.writeFileSync(RUN + '/scripts/d3/r1.json', JSON.stringify(o, null, 1)); return o;

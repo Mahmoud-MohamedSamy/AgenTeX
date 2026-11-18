@@ -1,0 +1,2 @@
+for(let i=0;i<3;i++){ try{ await page.goto('https://crm.zoho.com/crm/org946877290/tab/Leads',{waitUntil:'commit',timeout:120000}); break;}catch(e){log('retry');} } await sleep(20000);
+const v=await page.evaluate(()=>{const h=document.documentElement.innerHTML; return {zgid:(h.match(/zgid["':= ]+"?(\d{6,})/i)||[])[1], crmZgid:typeof crmZgid!=='undefined'?String(crmZgid):null, orgid:(h.match(/orgId["':= ]+"?(\d{6,})/i)||[])[1]};}); return v;

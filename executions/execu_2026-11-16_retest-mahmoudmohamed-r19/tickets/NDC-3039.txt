@@ -1,0 +1,31 @@
+# NDC-3039 Blueprint designer | Issue list before publishing: the "name" line can't be clicked and a missing department isn't counted
+Summary
+The "issues to fix before publishing" box links transition issues, but the blueprint name issue is plain text and an empty Department is not listed.
+Steps to Reproduce
+- Click New blueprint, add two transitions without names, leave Name and Department empty.
+- Look at the issue box above the canvas.
+Expected Result
+- Every issue is a link that jumps to the item (Name too).
+- The empty Department is counted and listed ("4 issues").
+Actual Result
+- "3 issues to fix before publishing": "The blueprint needs a name" is plain text.
+- Department is red on the field but not in the count or list.
+Note
+Spec row H3 (the rest of H3 passes). Not compared with Zoho.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026.
+Attachment
+Annotated evidence attached (BP-H3-issue-list-name-not-clickable-department-not-counted.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:16.769765+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging: "The blueprint needs a name" is a link, and clicking it opens Blueprint details with the Name field focused.
+The empty-Department count is covered by automated tests; I did not build a new blueprint in the browser to see "4 issues".
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:31.071127+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging: "The blueprint needs a name" was plain text, and Department was never checked.
+Fix on client-engine fix/ndc-blueprint-designer-qa-1115: every issue is a link that opens and focuses its item, Name and Department included, and an empty Department is counted.
+Checked in a browser on the branch build against staging: the name issue is a button, and clicking it focuses Name. Not deployed yet.
+

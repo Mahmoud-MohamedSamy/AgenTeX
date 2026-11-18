@@ -1,0 +1,3 @@
+module.exports=async(page,z)=>{const d=await z('GET','/api/v1/departments?limit=50');const a=await z('GET','/api/v1/agents?limit=50');const me=await z('GET','/api/v1/myinfo');
+const sk=[];for(const x of (d.j?.data||[])){const r=await z('GET','/api/v1/skills?departmentId='+x.id);sk.push({dept:x.name,s:r.s,skills:(r.j?.data||[]).map(k=>({id:k.id,name:k.name,status:k.status})) ,t:r.s>=300?r.t.slice(0,200):''});}
+return {depts:(d.j?.data||[]).map(x=>({id:x.id,name:x.name,enabled:x.isEnabled})),agents:(a.j?.data||[]).map(x=>({id:x.id,name:x.name,status:x.status,role:x.roleId,depts:x.associatedDepartmentIds,mailLen:(x.emailId||'').length})),me:{id:me.j?.id,name:me.j?.name},sk};};

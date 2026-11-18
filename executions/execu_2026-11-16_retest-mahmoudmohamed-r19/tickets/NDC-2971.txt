@@ -1,0 +1,34 @@
+# NDC-2971 Skills | Workflow Add/Remove skills list and Create Ticket Skills field offer deleted skills (plus inactive and other departments' skills); a ticket saved with a deleted skill keeps it
+Summary
+Skills that were deleted are still offered in two places: the workflow rule actions Add skills / Remove skills, and the Skills field on Create Ticket. A ticket can be saved with a deleted skill and keeps it.
+The workflow list also offers inactive skills and every department's skills. Choosing a department for the rule does not narrow it. NDC-2933 covers inactive and other-department skills on the ticket Skills field; this ticket adds deleted skills and the workflow actions.
+In Zoho Desk, a deleted skill disappears everywhere. A workflow rule's Add Skills list shows only the active skills of the rule's department.
+Steps to reproduce
+- Sign in to TAVI Desk (NDC-Staging) as an admin.
+- Delete some skills (on 12 Nov morning, the 32 QA SK12 skills were deleted from Setup → Skills).
+- Setup → Workflow Rules → open QA SK13 WF skills (Tickets, Departments = QA SK13 Dept A) → instant action Add skills. Scroll through the Skills list.
+- Tickets → New Ticket and look at the Skills field.
+- Create a ticket in QA SK13 Dept A with the deleted skill QA SK12 S1 and save. Reopen it.
+Expected (Zoho Desk)
+- Deleted skills are offered nowhere and are removed from tickets.
+- A workflow rule's Add/Remove Skills list shows only the active skills of the rule's department. Zoho test, 12 Nov 2026: 13 options in Tech (QA SK13 S1–S12 + test). QA SK13 Inact (inactive) and the other department's skill were not listed.
+Actual (TAVI)
+- The Add skills list has 81 options: 32 deleted QA SK12 skills, inactive QA SK13 Inact (it can be ticked), QA SK13 HS of QA SK13 Dept B, and tier_1_support, billing, QA AS6 … of other departments.
+- Create Ticket's Skills field offers the same 32 deleted skills.
+- Ticket #3176 was saved with deleted QA SK12 S1 and still shows it under Ticket Information → Skills.
+- At run time the rule skips the inactive skill (#3174 got 9 of 10), so the list promises skills that are never added.
+Environment
+- TAVI Desk, NDC-Staging (staging-desk.taviportal.com), owner account, 12 Nov 2026.
+- Zoho Desk test portal (Enterprise trial), department Tech, 12 Nov 2026.
+Evidence
+Annotated image attached: SK-I03-J07-skill-pickers-deleted-inactive-other-dept-vs-zoho.png (TAVI left, Zoho right). Full comparison report: https://claude.ai/artifact/HG3raXZiXeEUZ1wYq8G4MP (cases SK-I03, SK-I05, SK-J07). Related: NDC-2933.
+
+
+== COMMENTS (1)
+--- comment 2026-11-15T13:31:33.125923+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on tavi. Moving to Ready For Test.
+- Fix (client-engine #832, desk #252): workflow Add skills / Remove skills offer the active skills of the departments the rule names, or every department's active skills when it names none. A skill already saved on the action that is no longer offered stays listed, marked "(removed)", so it can be taken off. New Ticket and saving a ticket follow NDC-2933.
+- Checked in the browser on QA SK13 WF skills: Add skills offers QA SK13 S1 to S12 only; QA SK13 Inact shows as "(removed)"; no other department's skill is listed.
+- Question about the deleted skills: the 32 QA SK12 skills were not deleted. They still exist in QA SK12 Dept A, and the audit log shows only QA SK12 S3 deleted on 12 Nov, which is no longer offered anywhere. #3176 kept QA SK12 S1 because it is another department's live skill, which the save now drops. How did you delete them? If a delete looked successful in Setup but did not happen, please send the steps.
+Deployed to tavi on 15 Nov 2026 (desk 4f170c70, desk-web from client-engine 764295e1).
+

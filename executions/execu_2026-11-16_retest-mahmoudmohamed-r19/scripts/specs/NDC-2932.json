@@ -1,0 +1,21 @@
+{
+ "out": "NDC-2932-retest-PASS.png",
+ "ticket": "NDC-2932",
+ "priority": "medium",
+ "title": "Skills | Skill-based round robin assigns a ticket that has no skills, even to an agent who is not in the rule; Zoho leaves it unassigned",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · department QA RT19 SK Dept (Test User 1 + Dev Team 2) · Skill Based rule QA RT19 SK 2932 skill TU1 only (pool Test User 1), offline agents allowed",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "2932-1-ticket-no-skills-history.png", "caption": "#4523, no skills, matched the Skill Based rule: Ticket Owner Unassigned; History shows only the creation (no assignment)", "crop": [370, 60, 860, 500],
+   "boxes": [{"b": [385, 445, 650, 505], "n": 1, "kind": "PASS"}, {"b": [700, 410, 1100, 545], "n": 1, "kind": "PASS"}]},
+  {"img": "2932-api-card.png", "caption": "API", "crop": [0, 0, 1600, 360],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 225], "n": 2, "kind": "PASS"}, {"b": [36, 235, 1564, 272], "n": 3, "kind": "PASS"}, {"b": [36, 282, 1564, 340], "n": 4, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Ticket with no skills matches the Skill Based rule (3 tickets)", "Stays unassigned (Zoho #182)", "#4522, #4523, #4524 Unassigned after 25 s; no assignment in feed or History (was: given to an agent outside the rule)", "PASS"],
+  [2, "Ticket whose skill only an agent outside the rule holds", "Not given to that agent", "#4526 (S2, Dev Team 2 not in the pool) Unassigned", "PASS"],
+  [3, "Skill added later (dev claim)", "Routed again", "#4522 edit skills [S1]: assigned to Test User 1", "PASS"],
+  [4, "No backlog row (dev claim)", "Not picked up by Assign backlogs", "Assign backlogs ON 90 s: #4523, #4524, #4526 still Unassigned (no API to read backlog rows directly)", "PASS"]
+ ]
+}

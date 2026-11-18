@@ -1,0 +1,2 @@
+const g=await gs(I.T); const r=await api('PUT','/global-sets/'+I.T,{name:g.name,description:g.description,colors_enabled:g.colors_enabled,values:[...g.values,{value:'Copper',label:'Copper'}],sort_order:g.sort_order,row_version:g.row_version}); LED('set '+I.T+' added value Copper ('+r.s+')');
+const x=await api('POST','/global-sets/'+I.T+'/values/remove',{values:['Copper']}); const g2=await gs(I.T); return SR(r)+' / remove '+SR(x)+' values '+g2.values.map(v=>v.value)+' unused '+g2.unused_values.map(v=>v.value);

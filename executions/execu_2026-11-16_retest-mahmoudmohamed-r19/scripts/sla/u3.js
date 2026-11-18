@@ -1,0 +1,12 @@
+await page.goto(H+'/settings/organization/email-templates',{waitUntil:'domcontentloaded'});await sleep(8000);
+const s=await page.$('input[type=search], input[placeholder*="earch"]');await s.fill('QA RT19 SLA Tpl 2834 resp');await sleep(3000);
+const row=page.locator('tr').filter({hasText:'QA RT19 SLA Tpl 2834 resp'}).first();
+const btns=await row.locator('button').evaluateAll(b=>b.map(x=>(x.getAttribute('aria-label')||'')+'|'+x.innerText));log(JSON.stringify(btns));
+await row.locator('button').last().click();await sleep(1500);
+const mi=await page.locator('[role=menuitem]').allInnerTexts();log('menu',JSON.stringify(mi));
+await page.locator('[role=menuitem]').filter({hasText:/^Delete/}).first().click();await sleep(1500);
+const dlg=page.locator('[role=dialog],[role=alertdialog]').last();log('dialog',await dlg.innerText());await shot('2834-1-confirm.png');
+await dlg.getByRole('button',{name:/^Delete/}).click();await sleep(3500);
+log('after',(await page.locator('[role=dialog],[role=alertdialog],[role=alert],[data-sonner-toast],[role=status]').allInnerTexts()).join(' || '));
+await shot('2834-2-refused.png');
+log('rowStill',await page.locator('tr').filter({hasText:'QA RT19 SLA Tpl 2834 resp'}).count());

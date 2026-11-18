@@ -1,0 +1,12 @@
+{"out":"BUG-blueprint-save-without-revision-overwrites-FAIL.png","ticket":"NEW BUG","priority":"low","title":"Blueprint API | A save that sends no revision is accepted and silently overwrites a newer change","verdict":"FAIL",
+"env":"NDC-Staging · staging-desk · ndc-staging-owner · blueprint \"QA BP RT19 3030 RENAMED BY B run4\" (cca267b4, inactive) · PUT /api/v1/modules/{tickets}/blueprints/{id} and …/draft · 16 Nov 2026 12:06 Cairo",
+"date":"16 Nov 2026",
+"panels":[
+ {"img":"D5-api-card.png","caption":"Two writers through the API; writer B sends no revision","crop":[0,0,1600,400],"full":true,
+  "boxes":[{"b":[36,146,1564,183],"n":1,"kind":"INFO"},{"b":[36,193,1564,251],"n":2,"kind":"FAIL"},{"b":[36,261,1564,298],"n":2,"kind":"FAIL"},{"b":[36,308,1564,387],"n":3,"kind":"FAIL"}]}
+],
+"rows":[
+ [1,"Writer A renames (revision 11)","Saved","200, revision 12","INFO"],
+ [2,"Writer B saves from the older copy without a revision (PUT and PUT /draft)","Refused (409) or revision required","200 both times","FAIL"],
+ [3,"Read-back","A's rename kept","Name back to the old one; A's change lost with no warning. With a stale revision the same call gets 409 (NDC-3030 fix), so only clients that omit the revision are unprotected; the designer always sends one","FAIL"]
+]}

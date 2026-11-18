@@ -1,0 +1,201 @@
+{
+ "out": "NDC-3054-retest-PASS.png",
+ "ticket": "NDC-3054",
+ "priority": "medium",
+ "title": "Blueprint | Closing a ticket through a blueprint transition now sends the closed email with the rating request, like a normal close",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · QA AS6 Dept A with Customer Happiness ON for the test (restored, no diff) · blueprint \"QA BP RT19 3054 close\" · contact \"QA RT19 3054 inbox\" (the user's inbox) · #4177 blueprint close, #4178 normal close, 09:48:59Z = 11:48:59 Cairo",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "3054-bp-history.png",
+   "caption": "#4177 › History after the blueprint Close",
+   "crop": [
+    370,
+    55,
+    1230,
+    790
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      390,
+      190,
+      640,
+      220
+     ],
+     "kind": "MASK",
+     "label": "address hidden"
+    },
+    {
+     "b": [
+      712,
+      765,
+      1192,
+      815
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      712,
+      610,
+      930,
+      740
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      712,
+      510,
+      960,
+      592
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3054-api-card.png",
+   "caption": "Activity read-back (API)",
+   "crop": [
+    0,
+    0,
+    1600,
+    360
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      178
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      188,
+      1564,
+      246
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      303,
+      1564,
+      340
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3054-inbox-4177.png",
+   "caption": "User inbox: #4177 (blueprint close) — closed email with rating question (address hidden)",
+   "crop": [
+    260,
+    226,
+    944,
+    470
+   ],
+   "boxes": [
+    {
+     "b": [
+      332,
+      245,
+      670,
+      275
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      332,
+      445,
+      610,
+      522
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3054-inbox-4178.png",
+   "caption": "User inbox: #4178 (normal close, control) — closed email with rating question (address hidden)",
+   "crop": [
+    260,
+    226,
+    944,
+    470
+   ],
+   "boxes": [
+    {
+     "b": [
+      332,
+      245,
+      670,
+      275
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      332,
+      445,
+      610,
+      522
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Close through a blueprint transition",
+   "\"Ticket closed\" logged",
+   "\"Ticket closed by blueprint transition QA close in QA BP RT19 3054 close\" (activity ticket.closed, reason blueprint_transition), once (was: only Status changed + Completed blueprint)",
+   "PASS"
+  ],
+  [
+   2,
+   "Closed email + rating request",
+   "Sent as for a normal close",
+   "Reply queued \"Your ticket #4177 has been closed\" → Reply sent 09:49:03Z; Happiness Link Status = sent (was: no email)",
+   "PASS"
+  ],
+  [
+   3,
+   "Normal close of #4178 (control)",
+   "Same",
+   "ticket.closed, reply queued/sent \"Your ticket #4178 has been closed\", Happiness link sent — same result as #4177",
+   "PASS"
+  ],
+  [
+   4,
+   "Emails in the user's inbox",
+   "Both arrive with the rating question",
+   "\"Your ticket #4177 has been closed\" and \"Your ticket #4178 has been closed\" received 11:49 Cairo, each with \"How would you rate your experience…\" Bad / Okay / Good (checked by the user)",
+   "PASS"
+  ]
+ ]
+}

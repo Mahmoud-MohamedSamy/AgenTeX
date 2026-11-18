@@ -1,0 +1,21 @@
+{
+ "out": "NDC-3046-retest-PASS.png",
+ "ticket": "NDC-3046",
+ "priority": "medium",
+ "title": "Assignment Rules | Round robin rule with an SLA condition does not assign new tickets",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · QA AS6 Dept A · SLA policy QA RT19 AS 3046 (applies on create) · rules \"QA RT19 AS 3046 A\" (Create+Update) and \"B\" (Create only), condition SLA Name is that policy, pool Dev Team 2",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "3046-3-history.png", "caption": "#4399 made on the New Ticket screen with Ticket Owner cleared: History \"Assigned automatically … Rule QA RT19 AS 3046 A … Triggered by A new ticket\"; SLA due dates set", "crop": [664, 60, 936, 800],
+   "boxes": [{"b": [700, 282, 1100, 450], "n": 3, "kind": "PASS"}]},
+  {"img": "3046-api-card.png", "caption": "API", "crop": [0, 0, 1600, 380],
+   "boxes": [{"b": [36, 126, 1564, 205], "n": 1, "kind": "PASS"}, {"b": [36, 215, 1564, 252], "n": 2, "kind": "PASS"}, {"b": [36, 262, 1564, 320], "n": 3, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "New unassigned ticket matching the SLA; RR rule (Create + Update) with SLA Name condition", "SLA applied first, then the rule assigns at creation", "#4335, #4336 assigned to Dev Team 2 by the rule, trigger \"created\", 2.7–3.1 s; SLA applied once (was: Unassigned until edited)", "PASS"],
+  [2, "Same with a rule that runs on Ticket Create only", "Assigned at creation", "#4337 assigned by the create-only rule, trigger \"created\"", "PASS"],
+  [3, "New Ticket screen, Ticket Owner cleared (dev did not check)", "Assigned at creation", "#4399 SLA applied, then assigned 3 s later, \"Triggered by A new ticket\"", "PASS"],
+  [4, "Edit/move that changes the SLA, chat tickets, direct-rule move during create", "-", "Not checked (dev lists them as not covered by this fix)", "INFO"]
+ ]
+}

@@ -1,0 +1,33 @@
+# NDC-3066 Ticket History | Automatic blueprint steps show the wrong From state and To state
+Summary
+When a blueprint step runs by itself (continuous blueprint or timer), its History line shows From state Open and To state Escalated, whatever the real move was. The status line next to it shows the real move.
+Steps to Reproduce
+- Create a continuous blueprint: Open → Escalated ("first", one checklist item) → On Hold ("auto", nothing to fill) → Closed ("end", nothing to fill).
+- Create a matching ticket and run "first".
+- Wait a few seconds; the ticket moves to On Hold and Closed by itself.
+- Open the ticket › History.
+Expected Result
+- "Moved by <blueprint> automatically · Transition QA auto" shows From state Escalated, To state On Hold; QA end shows On Hold → Closed.
+Actual Result
+- QA auto and QA end both show From state Open, To state Escalated (tickets #4165, #4166).
+- The Status changed lines next to them are correct (Escalated → On Hold, On Hold → Closed).
+- GET /desk/tickets/{id}/history: the ticket.blueprint_transition rows carry only the transition name, no from/to state.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge (headless) on Windows 10, 16 Nov 2026, owner account ndc-staging-owner.
+Evidence
+BUG-history-auto-step-wrong-from-to-FAIL.png
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T14:26:46.804890+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on staging (client-engine #842), checked in the browser on staging-desk, History tab, with QA's own tickets.
+#4166: QA first reads Open to Escalated, QA auto reads Escalated to On Hold, and QA end reads On Hold to Closed.
+#4165: QA first reads Open to Escalated, and QA auto reads Escalated to On Hold.
+The cause was that a run and the automatic steps after it share one request id, and History matched each line with a status change from that request. It now matches the status change made at the same moment as each move. Rows already in History read right too, with no data change.
+
+--- comment 2026-11-16T13:13:21.927941+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix on a PR, not merged yet. client-engine #842.
+Cause, read from #4165 and #4166 on staging: the agent's run and the automatic steps after it all share one request id. History paired each blueprint line with a status change from that request, so every step showed the first move, Open to Escalated. The status lines were right all along.
+After the fix, each blueprint line pairs with the status change made at the same moment as its own move. A test built from #4166's rows now reads Open to Escalated, Escalated to On Hold, then On Hold to Closed. Tickets already in History, #4165 and #4166 included, read right once this is deployed; nothing in Desk changes.
+Checked in tests only so far, not yet in the browser.
+

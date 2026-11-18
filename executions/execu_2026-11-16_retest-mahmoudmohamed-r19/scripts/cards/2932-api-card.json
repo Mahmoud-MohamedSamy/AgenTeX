@@ -1,0 +1,6 @@
+{"out":"2932-api-card.png","title":"NDC-2932 QA RT19 SK Dept (agents Test User 1 + Dev Team 2). Skill Based rule \"QA RT19 SK 2932 skill TU1 only\" (pool Test User 1 only, offline allowed)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["3 tickets with no skills","POST #4522, #4523, #4524, owner null, no skills; wait 25 s","all 3 stay Unassigned; feed only ticket.created + department_changed, no assignment (was: assigned to an agent outside the rule)","ok"],
+["Skill held only by an agent outside the rule","POST #4526 skills [S2] (Dev Team 2, not in pool)","stays Unassigned after 20 s, not given to Dev Team 2","ok"],
+["Add a skill later","PATCH #4522 skills [S1]","routed again: assigned to Test User 1","ok"],
+["Assign backlogs ON for 90 s","PUT round-robin-preferences assign_backlogs:true","#4523, #4524, #4526 still Unassigned after 90 s (no backlog row picked up); prefs restored, equal","ok"]]}

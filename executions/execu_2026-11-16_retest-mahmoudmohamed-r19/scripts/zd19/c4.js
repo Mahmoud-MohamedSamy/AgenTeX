@@ -1,0 +1,4 @@
+async (page) => { const z=async(m,u)=>page.evaluate(async([m,u])=>{const c=(document.cookie.match(/crmcsr=([^;]+)/)||[])[1]||'';const r=await fetch(u,{method:m,credentials:'include',headers:{'X-ZCSRF-TOKEN':'crmcsrfparam='+c,orgId:'946801013'}});const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}return {s:r.status,j};},[m,u]);
+const t=await z('GET','/api/v1/tickets/search?subject=QA%20RT19*&limit=10');const c=await z('GET','/api/v1/contacts/search?lastName=QA%20RT19%20ZD&limit=10');const rb=await z('GET','/api/v1/recycleBin?limit=50');
+const sk=[];for(const d of ['1499272000000432293','1499272000000006907']){const r=await z('GET','/api/v1/skills?departmentId='+d);sk.push((r.j?.data||[]).length);const s2=await z('GET','/api/v1/skillTypes?departmentId='+d);sk.push((s2.j?.data||[]).length);}
+return {tickets:t.s+' '+((t.j?.data||[]).length),contacts:c.s+' '+((c.j?.data||[]).length),bin:(rb.j?.data||[]).length,skills_types:sk.join(',')};}

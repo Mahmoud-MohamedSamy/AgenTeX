@@ -1,0 +1,199 @@
+{
+ "out": "NDC-3038-retest-PASS.png",
+ "ticket": "NDC-3038",
+ "priority": "low",
+ "title": "Blueprint designer | On a 30-state, 80-transition blueprint no labels or buttons overlap; slow cold opens are network load, seen in Edge too, and the designer draws in under 1 s",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · blueprint \"QA BP RT19 3038 large\" (30 states, 80 transitions, off) · Windows 10, headless Edge and Playwright Firefox, 1600x900 · 11:28–11:38 Cairo (staging network unstable at times)",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "3038-edge-fit.png",
+   "caption": "Edge, Fit to screen: 80 labels, none overlapping each other or a state",
+   "crop": [
+    300,
+    260,
+    1000,
+    460
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      440,
+      275,
+      1270,
+      395
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3038-firefox-hover.png",
+   "caption": "Firefox: + / delete show only for the hovered label (QA t5_6)",
+   "crop": [
+    1040,
+    340,
+    260,
+    90
+   ],
+   "boxes": [
+    {
+     "b": [
+      1238,
+      373,
+      1296,
+      390
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3038-api-card.png",
+   "caption": "Measurements",
+   "crop": [
+    0,
+    0,
+    1600,
+    490
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      225
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      387
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      397,
+      1564,
+      476
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "3038-cold-card.png",
+   "caption": "6 cold Firefox + 6 cold Edge opens",
+   "crop": [
+    0,
+    0,
+    1600,
+    380
+   ],
+   "full": true,
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 4,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 4,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      314
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      324,
+      1564,
+      361
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Labels and buttons on the dense graph, Edge",
+   "Readable, no overlap",
+   "0 overlapping label pairs, 0 label/button, 0 label/state in default view, after Fit and on hover (was: overlap on every row, 138 pairs per dev)",
+   "PASS"
+  ],
+  [
+   2,
+   "Same in Firefox",
+   "Same",
+   "0 / 0 / 0; + and delete appear on hover/selection only",
+   "PASS"
+  ],
+  [
+   3,
+   "Open time once the app is loaded (Edge, Firefox)",
+   "A few seconds",
+   "Edge 2.2 s; Firefox 2.5–3.1 s (one 5.1 s); selecting a state 0.3–0.5 s (was: Edge 9.0 s, Firefox 43 s)",
+   "PASS"
+  ],
+  [
+   4,
+   "Cold open, 6 Firefox + 6 Edge, new browser each",
+   "A few seconds",
+   "Firefox 5.7–34.5 s, Edge 3.6–25.3 s: both slow in the same way when the network is slow (the earlier 43.4 s fits this)",
+   "INFO"
+  ],
+  [
+   5,
+   "Is Firefox slow at drawing the designer?",
+   "No",
+   "Slow part is network (528 KB index.js 9.8–21.7 s, other bundles 7–16 s, both browsers). From last response to 30 states drawn: Firefox 0.3–0.7 s, Edge 0.1–0.4 s",
+   "PASS"
+  ]
+ ]
+}

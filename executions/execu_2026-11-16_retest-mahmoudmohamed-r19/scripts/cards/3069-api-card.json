@@ -1,0 +1,9 @@
+{"host":"staging-desk.taviportal.com","who":"owner session","date":"16 Nov 2026","out":"3069-api-card.png","title":"NDC-3069 malformed transition owner id — POST/PUT /api/v1/modules/{tickets}/blueprints","rows":[
+["Owner id \"not-a-uuid\" (POST)","allowedUserIds: [\"not-a-uuid\"]","422 BLUEPRINT_DEFINITION_FIELD_INVALID · path transitions[0].before.allowedUserIds[0] · \"Transition QA x: 'not-a-uuid' is not a valid user id.\" (was .NET \"could not be converted to System.Guid … BytePositionInLine\")","ok"],
+["Second id bad","allowedUserIds: [owner, \"12345\"]","422 · path …allowedUserIds[1] · \"Transition QA x: '12345' is not a valid user id.\"","ok"],
+["Number instead of id","allowedUserIds: [42]","422 · \"Transition QA x: 42 is not a valid user id.\"","ok"],
+["Same on save of existing (PUT)","PUT /blueprints/{id} with \"not-a-uuid\"","422 same readable message; GET after: owners unchanged ({}), revision unchanged","ok"],
+["Control: valid but unknown id","00000000-…-0000000000aa","422 BLUEPRINT_OWNER_UNKNOWN \"No user exists with id '…'.\" (unchanged)","ok"],
+["Nothing stored","GET /blueprints (QA BP RT19 D3 3069 *)","no blueprint created by the 4 refused POSTs","ok"],
+["Other wrong-typed field","states[1].isTerminal = \"yes\"","422 path states[1].isTerminal \"'yes' is not a valid value for isTerminal.\"","ok"],
+["Side note (layout only)","states[0].position.x = \"abc\"","201 stored as-is (position not type-checked); not part of this ticket","info"]]}

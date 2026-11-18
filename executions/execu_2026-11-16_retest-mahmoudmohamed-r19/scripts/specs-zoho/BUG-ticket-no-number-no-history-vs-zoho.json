@@ -1,0 +1,11 @@
+{"out":"BUG-ticket-no-number-no-history-vs-zoho.png","ticket":"NEW BUG","title":"Tickets | A created ticket can stay without a ticket number and History until someone opens it","verdict":"BUG","label":"BUG vs ZOHO","date":"TAVI 16 Nov 2026 · Zoho 16 Nov 2026 13:24Z",
+"env":"TAVI staging-desk (NDC-Staging, Records API, QA AO Dept B) · Zoho Desk techegysolutions (Enterprise, admin, dept Tech, 5 parallel API creates #114-#118, all deleted and purged)",
+"leftHead":"TAVI Desk (left)","rightHead":"Zoho Desk (right)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/bug-ticket-no-number-api-card.png","caption":"TAVI: record 4e6a4894 had no number and empty History for 34 min; burst: 5/10 unnumbered for 20+ s","crop":[0,0,1600,530],"boxes":[{"b":[36,167,1564,361],"n":1,"kind":"BUG"},{"b":[36,439,1564,518],"n":2,"kind":"BUG"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-2-1-api-card.png","caption":"Zoho: 5 parallel creates; each create response already has its number (#114-#118); History has TicketCreated on first read","crop":[0,0,1600,330],"boxes":[{"b":[36,99,1564,204],"n":1,"kind":"SAME"},{"b":[36,214,1564,272],"n":2,"kind":"SAME"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-2-2.png","caption":"Zoho #118 (burst ticket) History: \"submitted a new ticket\" with all create fields","crop":[652,40,948,440],"boxes":[{"b":[745,280,1110,465],"n":2,"kind":"SAME"},{"b":[715,100,760,128],"n":1,"kind":"SAME"}]}
+],
+"rows":[
+[1,"Ticket number at create","Returned in the create response for every ticket, also for 5 parallel creates (#114-#118, consecutive)","One ticket had no number for 34 min and got #4583 only when first opened (out of order, #4546 skipped); in a 10-ticket burst 5 had no number for 2-47 s","DIFFERS"],
+[2,"History right after create","TicketCreated entry present on the first read (3 s after create)","Empty History and activity, also after the ticket was edited to Closed","DIFFERS"]]}

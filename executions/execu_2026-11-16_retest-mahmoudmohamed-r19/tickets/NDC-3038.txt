@@ -1,0 +1,31 @@
+# NDC-3038 Blueprint designer | On a large blueprint the transition labels and buttons overlap; Firefox takes 43 s to open it
+Summary
+With 30 states and 80 transitions the designer is slow to open (very slow in Firefox) and the transition labels and their buttons cover each other.
+Steps to Reproduce
+- Create a blueprint with 30 states and 80 transitions.
+- Open it in the designer in Edge, Chrome and Firefox.
+Expected Result
+- Labels readable and clickable on a dense graph.
+- The designer opens in a few seconds.
+Actual Result
+- Labels and their + / delete buttons overlap on every row.
+- Time to open: Edge 9.0 s, Chrome 10.7 s, Firefox 43 s. (API create 0.8 s and publish 0.9 s are fine.)
+Note
+Spec row N8. Not compared with Zoho.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026.
+Attachment
+Annotated evidence attached (BP-N8-large-blueprint-labels-overlap.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:21.525228+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging with 30 states and 80 transitions: no two labels overlap (was 138 pairs), and the designer opened in 1.4 s in Chrome on a Mac. On the same build before deploy, Firefox opened it in 2.7 to 3.3 s at 1440 and 1280.
+Please re-time on Windows, especially Firefox; your 43 s did not reproduce on a Mac.
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:37.642347+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging with 30 states and 80 transitions: 138 pairs of labels overlapped. Opening took 2.2 s in Chrome and 2.5 s in Firefox on a Mac, so the slow opening (9 to 43 s on Windows) did not reproduce here.
+Fix on client-engine fix/ndc-blueprint-designer-qa-1115: labels are placed so they never cover each other or a state. On large blueprints + and delete show on hover or selection, and selecting no longer rebuilds the whole canvas.
+Checked in a browser on the branch build against staging: 0 overlapping labels at 1440 and 1280 in Chrome and Firefox, opening in 1.9 to 3.3 s. Not deployed yet. Please re-time on Windows after deploy, especially Firefox.
+

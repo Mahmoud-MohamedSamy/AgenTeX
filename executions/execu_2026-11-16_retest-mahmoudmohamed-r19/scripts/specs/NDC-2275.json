@@ -1,0 +1,31 @@
+{
+ "out": "NDC-2275-retest-PARTIAL.png",
+ "ticket": "NDC-2275",
+ "priority": "urgent",
+ "title": "Assignment Rules: Direct Assignment and Round Robin (requirements)",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · owner, API + Edge headless · QA AS6 Dept A, QA AO Dept B · Test User 1, Dev Team 2 (offline, offline allowed) · rules \"QA RT19 AS NF3 burst\", \"QA RT19 AS 2275 import\" (now inactive)",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "2275-api-card.png", "caption": "API: NF-3 burst, the counting side effect, import and round robin on create", "crop": [0, 0, 1600, 470],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 225], "n": 2, "kind": "FAIL"}, {"b": [36, 235, 1564, 293], "n": 3, "kind": "PASS"}, {"b": [36, 303, 1564, 361], "n": 4, "kind": "PASS"}, {"b": [36, 371, 1564, 408], "n": 10, "kind": "INFO"}]},
+  {"img": "2275-imp-3-assign-en.png", "caption": "Import › Assign (English): \"Off by default, so a bulk import only loads data. A row with no owner is assigned to you.\"", "crop": [400, 90, 800, 240],
+   "boxes": [{"b": [455, 255, 1145, 292], "n": 5, "kind": "PASS"}]},
+  {"img": "2275-imp-6-assign-ar.png", "caption": "Import › Assign (Arabic): \"… يُسند إليك كل صف بلا مالك.\"", "crop": [400, 90, 800, 240],
+   "boxes": [{"b": [440, 255, 1145, 292], "n": 6, "kind": "PASS"}]},
+  {"img": "2275-3-history.png", "caption": "#4553 History: assigned automatically by the round robin rule on create; owner change still listed twice", "crop": [664, 240, 936, 600],
+   "boxes": [{"b": [700, 282, 1100, 452], "n": 3, "kind": "PASS"}, {"b": [700, 470, 1000, 660], "n": 9, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "NF-3: 20 tickets at once, pool of 2, room for 5 each, 5 runs", "5 / 5 / 10 waiting every run, one entry per ticket", "5 / 5 / 10 in all 5 runs; no double entries; nothing changed after 60 s (dev claim held; dev ran 3)", "PASS"],
+  [2, "Threshold count equals the agent's Open tickets in the department", "No extra tickets counted", "Test User 1 counted 2 above its 4 Open in QA AO Dept B all day; Dev Team 2 counted 1 above since a ghost ticket (record with no number and no History, 11:25Z). First burst run at dept threshold 5 gave 0 / 4 / 16 because of it", "FAIL"],
+  [3, "Round robin on create (regression)", "Assigned by the rule", "#4553 -> Test User 1, \"Triggered by A new ticket\"", "PASS"],
+  [4, "GEN-13 (decided 15 Nov): import with automation ticked, active matching rule", "Row with no owner -> importer, rules not run", "#4557 -> ndc-staging-owner, no auto-assignment entry (rule assigned the API control #4553)", "PASS"],
+  [5, "Import help text, English", "\"A row with no owner is assigned to you.\"", "Shown; old \"…chosen rule runs regardless\" gone", "PASS"],
+  [6, "Import help text, Arabic", "Same meaning", "\"يُسند إليك كل صف بلا مالك.\" (dev checked files only; now seen on screen)", "PASS"],
+  [7, "Thresholds count only the department, On Hold not counted (NDC-2824, NDC-2970)", "As Zoho", "Held (see NDC-2824 / NDC-2970)", "PASS"],
+  [8, "Skill rules take any one skill; no skills -> unassigned (NDC-2931, NDC-2932)", "As Zoho", "API held here (#4210 any skill, #4219 no skills stays unassigned); full check in the Skills lane", "INFO"],
+  [9, "History shows the owner change twice", "-", "Still \"Ticket owner was changed\" + \"Ticket Owner was updated\" (dev: not changed)", "INFO"],
+  [10, "Import row with Ticket Owner \"Mahmoud Samy\" (mapped)", "-", "#4558 owner = importer, not Mahmoud Samy; not investigated", "INFO"]
+ ]
+}

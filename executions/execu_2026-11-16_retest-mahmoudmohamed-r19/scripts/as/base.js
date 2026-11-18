@@ -1,0 +1,11 @@
+var __AS="D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/scripts/as/";eval(fs.readFileSync(__AS+'lib.js','utf8'));
+const R={};
+const cf=(await api('GET','/desk/assignment-rules/criteria-fields')).j?.data;
+const F=Array.isArray(cf)?cf:(cf?.fields||[]);R.cfKeys=F.length;R.subject=F.find(f=>(f.key||f.field_key)==='subject');R.sla=F.filter(f=>/sla/.test(f.key||f.field_key)).map(f=>(f.key||f.field_key)+':'+JSON.stringify(f.operators||''));
+const mem=async d=>{const x=(await api('GET','/desk/departments/'+d+'/agents')).j?.data;const L=Array.isArray(x)?x:(x?.agents||x?.items||[]);return L.map(a=>nm(a.user_id||a.id)+':'+(a.name||a.display_name||''));};
+R.memA=await mem(DA);R.memB=await mem(DB);
+const base={prefsA:await prefs(DA),prefsB:await prefs(DB),skillsA:(await api('GET','/desk/skills?department_id='+DA)).j?.data,skillPrefA:(await api('GET','/desk/skill-preferences?department_id='+DA)).j?.data,taA:(await api('GET','/desk/departments/'+DA+'/team-assignment')).j?.data,taB:(await api('GET','/desk/departments/'+DB+'/team-assignment')).j?.data,notif:await notif()};
+if(!fs.existsSync(OUT+'baseline.json'))save('baseline.json',base);
+R.skillPref=base.skillPrefA;R.ta=[base.taA,base.taB];
+R.wlB={A1:(await wl(A1,DB)).dept,A2:(await wl(A2,DB)).dept,A3:(await wl(A3,DB)).dept};
+return R;

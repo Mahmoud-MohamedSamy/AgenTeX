@@ -1,0 +1,1 @@
+const r=await api('GET','/desk/tickets?limit=1');log(r.s);

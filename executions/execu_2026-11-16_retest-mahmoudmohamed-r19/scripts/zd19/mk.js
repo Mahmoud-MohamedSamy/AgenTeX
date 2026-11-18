@@ -1,0 +1,3 @@
+// node mk.js in.js -> in.r.js with ZLIB + login prelude
+const fs=require('fs');const pre="if(!/desk\.zoho\.com/.test(page.url())){await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/tickets/list/all-cases',{waitUntil:'commit',timeout:90000});for(let k=0;k<40;k++){await page.waitForTimeout(1500);if(await page.evaluate(()=>/crmcsr=/.test(document.cookie)))break;}await page.waitForTimeout(3000);}\n"+fs.readFileSync(__dirname+'/zlib.txt','utf8');
+const src=fs.readFileSync(process.argv[2],'utf8').replace('ZLIB',pre);fs.writeFileSync(process.argv[2].replace(/\.js$/,'.r.js'),src);

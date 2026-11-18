@@ -1,0 +1,11 @@
+const M = s => String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g, '<e>');
+const H = JSON.parse(fs.readFileSync(RUN + '/scripts/hc/hc.json', 'utf8')); const o = {};
+const t44 = await rec('c2700c91-3a4c-42ca-8076-5a1715ace30e'); o.n3044 = t44.ticket_number; H.n3044 = o.n3044; fs.writeFileSync(RUN + '/scripts/hc/hc.json', JSON.stringify(H, null, 1));
+LED('ticket c2700c91 is #' + o.n3044 + ' (3044)');
+const id = '4f632116-cc82-4644-b0c8-e7ea4727f88e'; const r = await rec(id);
+o.t = M(JSON.stringify(Object.fromEntries(Object.entries(r).filter(([k, v]) => v !== null && v !== '' && !(Array.isArray(v) && !v.length))))).slice(0, 1500);
+o.contactIsOurs = r.contact_id === H.contact;
+const d = await api('GET', '/desk/tickets/' + id); o.desk = M(d.t).slice(0, 1500);
+o.hist = M(JSON.stringify((await histRaw(id)).map(x => [x.action, x.source, x.summary && JSON.stringify(x.summary).slice(0, 150)]))).slice(0, 1200);
+const tp = await api('GET', '/desk/community/topics/5becb270-7705-4622-9994-44f82280d0ce'); o.topic = M(JSON.stringify({ ticket: tp.j.data.ticket, author: tp.j.data.author, body: tp.j.data.body_html || tp.j.data.body, status: tp.j.data.status })).slice(0, 700);
+return o;

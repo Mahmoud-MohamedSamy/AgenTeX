@@ -1,0 +1,26 @@
+{
+ "out": "NDC-3066-retest-PASS.png",
+ "ticket": "NDC-3066",
+ "priority": "medium",
+ "title": "Ticket History | Automatic blueprint steps show the wrong From state and To state",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner session · new continuous blueprint \"QA BP RT19 D3 3066 cont\" 6d5c648b (Customer Support, Open → Escalated → On Hold → Closed, now inactive) · tickets #4699, #4700 run 16:58 Cairo · old tickets #4165, #4166",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "3066-5-4699-history-auto.png", "caption": "#4699 › History: QA auto (ran by itself) reads From Escalated To On Hold; QA first reads Open → Escalated", "crop": [664, 230, 936, 250],
+   "boxes": [{"b": [700, 236, 1060, 342], "n": 1, "kind": "PASS"}, {"b": [700, 360, 1120, 462], "n": 3, "kind": "INFO"}]},
+  {"img": "3066-1-4699-history.png", "caption": "#4699: QA end (ran by itself) reads From On Hold To Closed, matching the Status changed line below", "crop": [664, 480, 936, 280],
+   "boxes": [{"b": [700, 488, 1060, 610], "n": 2, "kind": "PASS"}, {"b": [700, 630, 900, 752], "n": 3, "kind": "INFO"}]},
+  {"img": "3066-4-4165-history.png", "caption": "Old ticket #4165 (from the bug report) now reads QA auto Escalated → On Hold, no data change needed", "crop": [664, 340, 936, 140],
+   "boxes": [{"b": [700, 346, 1110, 470], "n": 4, "kind": "PASS"}]},
+  {"img": "3066-api-card.png", "caption": "History API for #4699 / #4700", "crop": [0, 0, 1600, 400], "full": true,
+   "boxes": [{"b": [36, 99, 1564, 230], "n": 3, "kind": "PASS"}, {"b": [36, 240, 1564, 319], "n": 5, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "QA auto ran by itself (#4699, #4700)", "From Escalated, To On Hold", "From state Escalated, To state On Hold (was Open → Escalated)", "PASS"],
+  [2, "QA end ran by itself (#4699, #4700)", "From On Hold, To Closed", "From state On Hold, To state Closed", "PASS"],
+  [3, "QA first + Status changed lines", "Agree with the transition lines", "QA first Open → Escalated; each Status changed line matches its transition line", "PASS"],
+  [4, "Developer: old rows read right with no data change", "#4165 / #4166 correct", "#4165 QA auto Escalated → On Hold; #4166 QA auto Escalated → On Hold, QA end On Hold → Closed", "PASS"],
+  [5, "History API transition row", "-", "Still no from/to on ticket.blueprint_transition (null old/new); the status row of the same moment carries it. Developer fixed the screen only", "INFO"]
+ ]
+}

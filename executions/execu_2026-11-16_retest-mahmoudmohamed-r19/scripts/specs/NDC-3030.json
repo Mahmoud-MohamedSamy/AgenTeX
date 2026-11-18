@@ -1,0 +1,24 @@
+{
+ "out": "NDC-3030-retest-PASS.png",
+ "ticket": "NDC-3030",
+ "priority": "medium",
+ "title": "Blueprint | A second editor's stale Save and Publish is now refused with \"Someone else changed this blueprint after you opened it\"; the first change is kept",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · blueprint \"QA BP RT19 3030 two editors\" (Customer Support, off) · designer open in two tabs (headless Edge) + API",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "3030-2-tab2-conflict.png", "caption": "Tab 2 (opened before tab 1 renamed) changes the description and clicks Save and Publish: refused with a banner (PUT /draft 409)", "crop": [60, 55, 1540, 330],
+   "boxes": [{"b": [318, 130, 1285, 182], "n": 1, "kind": "PASS"}, {"b": [1318, 288, 1582, 345], "n": 1, "kind": "INFO"}]},
+  {"img": "3030-4-tab2-after-reload.png", "caption": "Tab 2 › Reload (confirmed): tab 1's rename is shown; a fresh open shows the same", "crop": [60, 55, 1540, 330],
+   "boxes": [{"b": [110, 60, 450, 85], "n": 2, "kind": "PASS"}, {"b": [1318, 212, 1582, 248], "n": 2, "kind": "PASS"}]},
+  {"img": "3030-api-card.png", "caption": "API read-back", "crop": [0, 0, 1600, 400],
+   "boxes": [{"b": [36, 146, 1564, 204], "n": 3, "kind": "PASS"}, {"b": [36, 214, 1564, 251], "n": 3, "kind": "PASS"}, {"b": [36, 261, 1564, 319], "n": 5, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Tab 2 saves from the old copy", "Told the blueprint changed; nothing lost", "Banner \"Someone else changed this blueprint after you opened it.\" with Reload / Keep my changes; PUT /draft 409, no publish (was: saved as Version 2 silently)", "PASS"],
+  [2, "Reload, then open the blueprint fresh", "Tab 1's change kept", "Name \"QA BP RT19 3030 RENAMED IN TAB 1 run3\" in tab 2 after Reload and on a fresh open; API revision 9 has that name. Reload asks first and says tab 2's own edits will be lost", "PASS"],
+  [3, "API save from a stale copy (PUT and PUT /draft with old revision)", "Refused", "409 BLUEPRINT_REVISION_CONFLICT with currentRevision; stored name unchanged", "PASS"],
+  [4, "Dev: warning when you come back to a tab whose blueprint changed", "Banner on return", "Not seen in headless Edge (focus/visibility simulated); the banner came on Save instead. Keep my changes closes the banner and keeps the edits in the form", "INFO"],
+  [5, "API save that sends no revision", "-", "200 and overwrites (old name put back). The designer always sends a revision; only scripts/integrations that omit it can still overwrite", "INFO"]
+ ]
+}

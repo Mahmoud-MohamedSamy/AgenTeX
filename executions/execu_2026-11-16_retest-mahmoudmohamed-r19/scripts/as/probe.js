@@ -1,0 +1,13 @@
+var __AS="D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/scripts/as/";eval(fs.readFileSync(__AS+'lib.js','utf8'));
+const R={};
+const deps=(await api('GET','/desk/departments')).j?.data;const DL=Array.isArray(deps)?deps:(deps?.items||deps?.departments||[]);
+R.depts=DL.filter(d=>/QA (AS6|AO|SK13|SK12|RT19)/.test(d.name)).map(d=>d.id.slice(0,8)+' '+d.name);
+R.rrA=(await listRules('round_robin',DA)).map(r=>[r.id.slice(0,8),r.name,r.is_active,r.execute_on]);
+R.rrB=(await listRules('round_robin',DB)).map(r=>[r.id.slice(0,8),r.name,r.is_active]);
+R.direct=(await listRules('direct')).map(r=>[r.id.slice(0,8),r.name,r.is_active]);
+R.prefsA=await prefs(DA);R.prefsB=await prefs(DB);
+R.notif=await notif();
+R.presence=await presence();
+const sk=(await api('GET','/desk/skills?department_id='+DA)).j?.data;R.skillsA=(Array.isArray(sk)?sk:(sk?.skills||sk?.items||[])).map(s=>[s.id.slice(0,8),s.name,s.status||s.is_active,(s.agent_ids||s.agents||[]).length]);
+R.wl={A1:await wl(A1),A2:await wl(A2),A3:await wl(A3)};
+return R;

@@ -1,0 +1,22 @@
+{
+ "out": "NDC-2838-retest-PASS.png",
+ "ticket": "NDC-2838",
+ "priority": "low",
+ "title": "Assignment Rules | Round robin backlog skips an old ticket without saying why",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · QA AS6 Dept A, rule \"QA RT19 AS 2838 30day\" (Ticket Create + Update, pool Dev Team 2, offline allowed) · old ticket #31 (created 10 Oct 2026) moved in and back",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "2838-1-history.png", "caption": "#31 › History: \"Not assigned by round robin — Rule type Round Robin Assignment, Rule QA RT19 AS 2838 30day, Reason No customer reply in the last 30 days\"", "crop": [664, 60, 936, 800],
+   "boxes": [{"b": [700, 530, 1100, 652], "n": 1, "kind": "PASS"}]},
+  {"img": "2838-api-card.png", "caption": "API", "crop": [0, 0, 1600, 430],
+   "boxes": [{"b": [36, 194, 1564, 252], "n": 2, "kind": "PASS"}, {"b": [36, 262, 1564, 299], "n": 3, "kind": "PASS"}, {"b": [36, 309, 1564, 346], "n": 4, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Old ticket (no customer reply in 30 days) reaches a matching round robin rule", "History says it was not assigned and why", "\"Not assigned by round robin\" with rule type, rule name and \"No customer reply in the last 30 days\" (was: no entry)", "PASS"],
+  [2, "Same in the API activity", "Reason recorded", "ticket.auto_assign_skipped, reason no_recent_customer_reply", "PASS"],
+  [3, "Control: new ticket on the same rule", "Assigned", "Assigned to Dev Team 2 at once", "PASS"],
+  [4, "Assign backlogs on for 90 s", "Old ticket still held, no noise", "Still unassigned; one entry only", "PASS"],
+  [5, "Arabic History text; ticket that starts waiting for another reason and later passes 30 days", "-", "Not checked (dev also lists the second as not covered)", "INFO"]
+ ]
+}

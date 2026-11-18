@@ -1,0 +1,14 @@
+const o = JSON.parse(fs.readFileSync(RUN + '/scripts/bp/3029.json', 'utf8')); const id = o.id;
+let g = await getBp(id);
+o.activate = E(await api('PUT', `/modules/${TK}/blueprints/${id}`, { definition: g.definition, isActive: true, revision: g.revision })); await sleep(1500);
+g = await getBp(id); o.act1 = g.isActive;
+o.deactivate = E(await api('PUT', `/modules/${TK}/blueprints/${id}`, { definition: g.definition, isActive: false, revision: g.revision })); await sleep(1500);
+g = await getBp(id); o.act2 = g.isActive;
+o.delAt = new Date().toISOString();
+o.delete = E(await api('DELETE', `/modules/${TK}/blueprints/${id}`)); LED('blueprint deleted ' + id + ' (3029 delete step) ' + o.delete);
+await sleep(5000);
+const ev = await api('GET', '/audit/events?app_key=desk&limit=200'); o.evS = ev.s; const Lx = L(ev.j?.data);
+o.evKeys = Object.keys(Lx[0] || {});
+o.events = Lx.filter(x => (x.occurred_at || x.created_at || '') >= o.start).map(x => ({ at: (x.occurred_at||x.created_at), a: x.action, e: x.entity_type, lbl: x.entity_label || x.entity_name, sum: JSON.stringify(x.summary || x.message || x.description || '').slice(0, 200), user: x.actor_name || x.actor?.name || x.user_name, ip: x.ip_address || x.ip, dept: x.department_name || x.department_id || x.department }));
+fs.writeFileSync(RUN + '/scripts/bp/3029.json', JSON.stringify(o, null, 1));
+return o;

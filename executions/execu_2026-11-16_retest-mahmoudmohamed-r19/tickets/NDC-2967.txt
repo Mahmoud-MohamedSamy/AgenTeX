@@ -1,0 +1,26 @@
+# NDC-2967 Records API | 500 error when "kind" is not the first key of a field value
+Summary
+Creating a record through the API fails with a server error when the keys of a field value are in a different order.
+Steps to Reproduce
+- POST /api/v1/modules/{tickets}/records with a field value {"value":"x","kind":"string"}.
+- Send the same request with {"kind":"string","value":"x"}.
+Expected Result
+- Both requests are accepted; JSON key order must not matter.
+Actual Result
+- First request: HTTP 500 INTERNAL_ERROR "An unexpected error occurred".
+- Second request: HTTP 201, record created.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026.
+Attachment
+Annotated evidence attached (WF-API-500-value-key-order.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-15T10:17:44.242443+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Merged (anyware.metadata-engine #226) and deployed to staging-desk (tavi) on 15 Nov, 08:17 UTC.
+Checked there through the records API on NDC-Staging: a ticket created with {"value":"x","kind":"string"} now answers 201 and stores the subject, the same as {"kind":"string","value":"x"}. A value with an unknown kind answers 400 "The request body could not be read. Check the field types and try again." instead of 500. Test tickets deleted.
+
+--- comment 2026-11-15T05:51:23.835757+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Reproduced on staging-desk today: a ticket created with {"value":"x","kind":"string"} answered 500, with {"kind":"string","value":"x"} 201.
+Fix in review: anyware.metadata-engine #226. The API now reads a field value's kind wherever it sits in the object, so key order no longer matters; an unknown kind is still refused as a bad request. Checked with tests; not merged or deployed yet.
+

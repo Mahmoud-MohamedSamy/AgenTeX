@@ -1,0 +1,32 @@
+T-a A1 in AS6 Dept A records: {"Open":74,"OnHold":2,"Esc":0}
+T-a dept thr 74 (= Open) -> #4539 -> none
+T-a dept thr 75 (= Open+1) -> #4540 -> A1
+T-a dept thr 77 (= Open+3) -> #4541 -> A1
+T-c A3 in AO-B records: {"Open":1,"OnHold":0,"Esc":0}
+T-c agent thr 1 (= Open, On Hold excluded) -> #4542 -> none
+T-c agent thr 2 -> #4543 -> A3
+T-b ticket #4544 auto-assigned -> A3 records now {"Open":2,"OnHold":0,"Esc":0}
+T-b dept thr 3 with it open -> #undefined -> none (expect none: Open+1 = thr-1? no: count Open+1 < thr -> A3)
+T-b deleted 204 records now {"Open":1,"OnHold":0,"Esc":0}
+T-b dept thr 2 after delete -> #4545 -> none (expect A3 if delete clears count)
+T-d created + deleted at once 204 records {"Open":1,"OnHold":0,"Esc":0}
+T-d dept thr 2 -> #4547 -> none (expect A3)
+{
+ "steps": [
+  "T-a A1 in AS6 Dept A records: {\"Open\":74,\"OnHold\":2,\"Esc\":0}",
+  "T-a dept thr 74 (= Open) -> #4539 -> none",
+  "T-a dept thr 75 (= Open+1) -> #4540 -> A1",
+  "T-a dept thr 77 (= Open+3) -> #4541 -> A1",
+  "T-c A3 in AO-B records: {\"Open\":1,\"OnHold\":0,\"Esc\":0}",
+  "T-c agent thr 1 (= Open, On Hold excluded) -> #4542 -> none",
+  "T-c agent thr 2 -> #4543 -> A3",
+  "T-b ticket #4544 auto-assigned -> A3 records now {\"Open\":2,\"OnHold\":0,\"Esc\":0}",
+  "T-b dept thr 3 with it open -> #undefined -> none (expect none: Open+1 = thr-1? no: count Open+1 < thr -> A3)",
+  "T-b deleted 204 records now {\"Open\":1,\"OnHold\":0,\"Esc\":0}",
+  "T-b dept thr 2 after delete -> #4545 -> none (expect A3 if delete clears count)",
+  "T-d created + deleted at once 204 records {\"Open\":1,\"OnHold\":0,\"Esc\":0}",
+  "T-d dept thr 2 -> #4547 -> none (expect A3)"
+ ],
+ "restoreAS6-A": "200 true",
+ "restoreAO-B": "200 true"
+}

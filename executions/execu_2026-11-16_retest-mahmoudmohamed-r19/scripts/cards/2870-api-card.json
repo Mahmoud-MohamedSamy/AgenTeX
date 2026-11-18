@@ -1,0 +1,10 @@
+{"out":"2870-api-card.png","title":"NDC-2870 Global Sets gap list: behaviour checks (API, owner)","host":"staging-crm.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["1 Replace everywhere","POST /global-sets/{Tier}/values/replace {Gold:\"Silver\"} (Gold on 2 leads + 1 customer, view, rule criteria + field update, report filter, dependency map)","200; records Silver (modified time updated); view, rule criteria + action, report filter = Silver; map {Silver:[X,Y]}; Gold → Unused","ok"],
+["2 Delete unused value","POST …/values/delete {value}","Silver (used) 422 NOT_UNUSED; Gold (unused) 200 gone; Bronze unused but on a record 409 IN_USE; 2 values 422","ok"],
+["3 Sort order","PUT set sort_order alphabetical / entered; GET records sort_by=tier asc; report sorted by tier","saved + field options follow; BUT list asc = Bronze, Platinum, Silver in BOTH modes (entered = Silver, Platinum, Bronze); report same","bad"],
+["5 Source / Industry","GET /global-sets; new field linked to Source","System sets Source (16) + Industry (16); link 201, \"Cold Call\" 201, \"NotAValue\" 422","ok"],
+["6 Countries / States","GET fields Leads/Contacts/Accounts","country, state, mailing_country, billing_country… still single_line (free text); no countries list","bad"],
+["7/8 Used In + per value","GET …/used-in, …/values/usage?value=, /reporting/field-usage","used-in: views, rules, blueprints, dependency maps; reports only via field-usage (body wrapped twice: data.data.reports)","info"],
+["10 Limits","GET /global-sets/limits + create past each limit","31st set 409 LIMIT_SETS (also clone/convert); 16th set field on a module 422; 31st field on a set 422; 501st unused 409","ok"],
+["11 History","GET …/replace-history","Gold → Silver by owner, 3 records, 1 view, 1 map, 1 workflow; no reports count; replace is synchronous (no notification)","info"]]}

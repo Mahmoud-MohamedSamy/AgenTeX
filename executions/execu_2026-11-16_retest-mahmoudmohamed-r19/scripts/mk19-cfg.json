@@ -1,0 +1,19 @@
+{
+ "decision": {},
+ "override": {
+  "NDC-2963": "Done"
+ },
+ "extraNote": {
+  "NDC-2973": "<p>Note: the action is labelled Skipped (with the reason), not Failed as the ticket's Expected says; the ticket keeps its owner in every refused case, so the behaviour is correct.</p>",
+  "NDC-2997": "<p>Developer's comment checked: \"nobody can be assigned → Skipped with reason\" held; \"assigned to CES2 in Customer Support\" did not reproduce in QA RT19 WF Dept or QA AO Dept A (Customer Support not rechecked this round).</p>",
+  "NDC-2962": "<p>What is sent was checked without a public receiver: the webhook was pointed at staging-desk's own API and its 401 answer used to see which Authorization header arrived. Not checkable: a rule saved before the fix (none exists; no write path accepts such a header).</p>",
+  "NDC-2967": "<p>Also seen (separate issue): a field value with no \"kind\" key at all, e.g. {\"value\":\"x\"}, returns 500 instead of 400.</p>",
+  "NDC-2824": "<p>Also seen (separate issue, to be filed): for some agents the threshold count includes 1–2 tickets that do not exist in any list (e.g. after a ticket was created with no number or History), so they are assigned later than the threshold says.</p>",
+  "NDC-2970": "<p>Also seen (separate issue, to be filed): for some agents the threshold count includes 1–2 tickets that do not exist in any list (e.g. after a ticket was created with no number or History), so they are assigned later than the threshold says.</p>",
+  "NDC-2963": "<p>Zoho Desk comparison (live, 16 Nov): Zoho has no built-in Add comment action; a comment added through its comments API with the same HTML body (img onerror, b, javascript: link) is shown as safe rich text — onerror and the javascript: link stripped, broken image, bold, link without href, no script. TAVI now shows exactly the same. Decision (QA lead, 16 Nov 2026): accepted as matching Zoho, moved to Done. Hardening note for the developers: Zoho strips the dangerous attributes before saving; TAVI still stores the raw &lt;img onerror&gt; in the comment HTML and only cleans it on display, so email, API or export consumers could receive it raw.</p>",
+  "NDC-2841": "<p>Expected (as Zoho Desk, checked live 16 Nov): the Create Contract form lists only the contract department's support plans, and saving a contract with another department's plan is refused with a clear error (Zoho: 422 \"Invalid SupportPlan ID\", nothing created). TAVI now: the Create Contract picker lists every department's plans, and a contract saved with another department's plan is accepted (201) but silently shows \"No support plan is linked to this contract\". Attaching later is refused (409) and Change plan lists only the department's plans — those parts are fixed.</p>",
+  "NDC-2870": "<p>Zoho CRM comparison (live, 11 and 16 Nov): items 2, 3, 6 and 9 exist in Zoho CRM (delete from Unused one value at a time; list views/reports follow Entered order; built-in Countries and States list behind address fields; Used In shows module names). Item 7: Zoho's Used In does not list reports, but TAVI's own requirement does and its API already finds them, so it stays open. Item 11 accepted (QA lead, 17 Nov 2026): TAVI's replace finishes at once and history is shown, so no done notification is needed.</p>"
+ },
+ "method": {},
+ "observations": []
+}

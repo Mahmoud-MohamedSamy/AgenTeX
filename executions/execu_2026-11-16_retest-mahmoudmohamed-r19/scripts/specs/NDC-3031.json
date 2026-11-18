@@ -1,0 +1,173 @@
+{
+ "out": "NDC-3031-retest-PASS.png",
+ "ticket": "NDC-3031",
+ "priority": "medium",
+ "title": "Blueprint | A continuous blueprint now runs the next no-input step by itself and stops at a step that asks for something",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · 4 blueprints \"QA BP RT19 3031 A–D\" (Customer Support) · tickets #4165–#4168 · 11:09 Cairo",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "3031-A-history.png",
+   "caption": "#4165 (continuous): after the owner ran QA first, QA auto ran by itself (by System) and the ticket is On Hold; next step Closed waits",
+   "crop": [
+    0,
+    55,
+    1600,
+    800
+   ],
+   "boxes": [
+    {
+     "b": [
+      385,
+      440,
+      650,
+      570
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      710,
+      345,
+      1110,
+      470
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      796,
+      410,
+      870,
+      452
+     ],
+     "n": 5,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      385,
+      580,
+      650,
+      630
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      12,
+      410,
+      306,
+      545
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      12,
+      262,
+      306,
+      400
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ],
+   "full": true
+  },
+  {
+   "img": "3031-api-card.png",
+   "caption": "API: 4 shapes",
+   "crop": [
+    0,
+    0,
+    1600,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      303,
+      1564,
+      361
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Continuous: run \"first\", wait",
+   "\"auto\" runs by itself → On Hold",
+   "On Hold within 5 s (same at 30 s); History \"Moved by … automatically · Transition QA auto · by System\" (was: stuck in Escalated)",
+   "PASS"
+  ],
+  [
+   2,
+   "Dev: stops at a step that asks for something",
+   "Stops",
+   "\"end\" (checklist) not run; card shows Next step Closed",
+   "PASS"
+  ],
+  [
+   3,
+   "Ticket's shape (last step asks for nothing)",
+   "Chain continues",
+   "#4166 ran auto + end by itself → Closed, blueprint completed",
+   "PASS"
+  ],
+  [
+   4,
+   "Controls: not continuous / step owned by someone else",
+   "No auto-run",
+   "#4167 (not continuous) and #4168 (auto owned by agent A only) stay Escalated",
+   "PASS"
+  ],
+  [
+   5,
+   "History line of the automatic step",
+   "Right From/To",
+   "Shows From state Open, To state Escalated for QA auto (it moved Escalated → On Hold); the API row has no from/to. Reported as a new defect",
+   "INFO"
+  ]
+ ]
+}

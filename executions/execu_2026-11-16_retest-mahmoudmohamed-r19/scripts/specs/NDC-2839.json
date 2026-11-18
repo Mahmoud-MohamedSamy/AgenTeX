@@ -1,0 +1,23 @@
+{
+ "out": "NDC-2839-retest-PASS.png",
+ "ticket": "NDC-2839",
+ "priority": "low",
+ "title": "Assignment Rules | An agent without the assignment permission can still read Round Robin Preferences and Team Assignment",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · agent \"Customer Experience Specialists 2\" (QA account, Desk Agent profile) signed in once · QA AS6 Dept A, QA SK13 Dept A",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "2839-1-agent-assignment-rules-blocked.png", "caption": "Agent opens Setup › Assignment Rules: \"You can't manage assignment\" (needs \"Manage assignment rules\")", "crop": [268, 56, 1332, 220],
+   "boxes": [{"b": [480, 160, 1390, 210], "n": 1, "kind": "PASS"}]},
+  {"img": "2839-api-card.png", "caption": "API as the same agent", "crop": [0, 0, 1600, 520],
+   "boxes": [{"b": [36, 167, 1564, 225], "n": 2, "kind": "PASS"}, {"b": [36, 235, 1564, 272], "n": 3, "kind": "PASS"}, {"b": [36, 282, 1564, 366], "n": 4, "kind": "PASS"}, {"b": [36, 376, 1564, 434], "n": 5, "kind": "PASS"}, {"b": [36, 444, 1564, 502], "n": 6, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Agent opens Assignment Rules", "Blocked", "\"You can't manage assignment\" page; rules GET 403", "PASS"],
+  [2, "Agent reads Round Robin Preferences", "403, like the rules", "403 \"Missing required permission 'desk:assignment:manage'\" (was 200)", "PASS"],
+  [3, "Agent reads Team Assignment", "403", "403 (was 200)", "PASS"],
+  [4, "Same in another department; saving both", "403", "QA SK13 Dept A GETs 403; PUTs 403", "PASS"],
+  [5, "Agent's ticket screens still get the Team Assignment flag", "Unchanged", "Department list 200 with team_assignment_enabled for 45 departments", "PASS"],
+  [6, "Assignment notification settings", "-", "Agent can still GET them (master switches + notify flags); outside this ticket", "INFO"]
+ ]
+}

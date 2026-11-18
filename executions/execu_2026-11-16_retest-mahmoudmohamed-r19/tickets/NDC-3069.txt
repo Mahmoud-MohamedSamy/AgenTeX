@@ -1,0 +1,29 @@
+# NDC-3069 Blueprint API | A malformed transition owner id returns .NET parser text instead of a readable error
+Summary
+Saving a blueprint whose transition owner id is not a valid id returns 422 with internal framework text instead of a readable message naming the transition.
+Steps to Reproduce
+- Send POST /api/v1/modules/{tickets}/blueprints with a transition whose before.allowedUserIds = ["not-a-uuid"].
+- Read the error.
+Expected Result
+- 422 with a plain message naming the transition and the bad value (e.g. "Transition QA x: 'not-a-uuid' is not a valid user id"), like the message for an unknown id.
+Actual Result
+- 422 BLUEPRINT_DEFINITION_FIELD_INVALID on path "definition" with "The JSON value could not be converted to System.Guid. Path: $.transitions[0].before.allowedUserIds[0] | LineNumber: 0 | BytePositionInLine: 535."
+- A valid but unknown id gives the readable "No user exists with id …" (fixed under NDC-3037).
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge (headless) on Windows 10, 16 Nov 2026, owner account ndc-staging-owner.
+Evidence
+BUG-blueprint-api-guid-parser-text-FAIL.png
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T14:26:44.666716+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on staging (metadata-engine #232), checked through the API on staging-desk in the NDC Staging tenant.
+POST /blueprints with "not-a-uuid" as the first transition's owner now answers 422 on path transitions[0].before.allowedUserIds[0]: "Transition Not Valid Escalation: 'not-a-uuid' is not a valid user id." Nothing was stored.
+A wrong-typed value elsewhere in a definition is named the same way. An action's own errors (an unknown action kind, for example) keep their existing message. Not checked: how the designer shows this message, since the designer itself always sends valid ids.
+
+--- comment 2026-11-16T13:13:19.207424+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix on a PR, not merged yet. metadata-engine #232.
+Reproduced on staging: "not-a-uuid" as an owner answered 422 on path "definition" with the .NET parser text. Nothing was stored.
+After the fix, the detail sits on path transitions[0].before.allowedUserIds[0] and reads: Transition Win: 'not-a-uuid' is not a valid user id. A wrong-typed value elsewhere in the definition is named the same way. An action's own errors (an unknown action kind, for example) keep their existing message.
+Checked in tests only so far, not yet on staging.
+

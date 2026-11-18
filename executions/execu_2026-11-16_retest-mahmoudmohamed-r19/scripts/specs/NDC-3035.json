@@ -1,0 +1,107 @@
+{
+ "out": "NDC-3035-retest-PASS.png",
+ "ticket": "NDC-3035",
+ "priority": "medium",
+ "title": "Blueprint | An unsaved designer change survives an expired session: after sign-in the designer offers \"You have unsaved changes\" and Restore brings it back",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · blueprint \"QA BP RT19 3030 RENAMED BY B run4\" · headless Edge · expiry simulated in this browser only (both session cookies replaced by invalid values; the shared owner was not signed out); \"sign in again\" = real session put back + the sign-in page's returnTo · 11:14 Cairo",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "3035-2-session-expired.png",
+   "caption": "Description changed (not saved), session expired, Save and Publish: PUT /draft 401 → sign-in page (returnTo = this blueprint)",
+   "crop": [
+    520,
+    260,
+    560,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      608,
+      298,
+      992,
+      338
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3035-3-restore-offer.png",
+   "caption": "Back on the designer after sign-in: the unsaved change is offered",
+   "crop": [
+    310,
+    110,
+    990,
+    700
+   ],
+   "boxes": [
+    {
+     "b": [
+      318,
+      130,
+      1285,
+      182
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3035-4-after-restore.png",
+   "caption": "After Restore: Description = the unsaved text typed before the expiry",
+   "crop": [
+    900,
+    55,
+    700,
+    330
+   ],
+   "boxes": [
+    {
+     "b": [
+      1316,
+      286,
+      1584,
+      348
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Unsaved description change, session expires, Save and Publish",
+   "Sent to sign-in",
+   "\"Your session expired. Please sign in again.\" (/login?reason=expired&returnTo=/settings/automation/blueprints/{id}); save refused 401, nothing saved",
+   "PASS"
+  ],
+  [
+   2,
+   "Sign in again",
+   "Back to the designer, change offered",
+   "Return address is the same blueprint; banner \"You have unsaved changes from 16/11/2026 11:14 AM. Restore / Discard\" (was: old description, no warning)",
+   "PASS"
+  ],
+  [
+   3,
+   "Restore",
+   "Change kept",
+   "Description = \"QA RT19 3035 unsaved change 09:14:36\" (typed before expiry); server copy still \"QA RT19 desc from stale B\" until saved",
+   "PASS"
+  ],
+  [
+   4,
+   "Dev: copies deleted on sign-out; hidden values not stored",
+   "-",
+   "Not checked: signing out the shared owner is not allowed in this run",
+   "INFO"
+  ]
+ ]
+}

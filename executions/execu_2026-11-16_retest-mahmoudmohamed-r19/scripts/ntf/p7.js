@@ -1,0 +1,1 @@
+const L=Ls((await api('GET','/modules/'+TK+'/blueprints?limit=200')).j?.data);return L.filter(b=>/NTF/.test(JSON.stringify(b).slice(0,3000))).map(b=>({id:b.id,name:b.name||b.definition?.name,keys:Object.keys(b),active:b.isActive??b.is_active}));

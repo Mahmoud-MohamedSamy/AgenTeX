@@ -1,0 +1,8 @@
+{"out":"3053-api-card.png","title":"NDC-3053 Closing a ticket email with Customer Happiness off and on (QA RT19 NTF Dept)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["New dept, rule never saved","GET notification-rules (Happiness off)","contact.ticket_closed is_enabled=false, is_customized=false (screen: Email switch off)","ok"],
+["Turn the rule on","PUT .../rules/contact.ticket_closed {is_enabled:true}  12:30:54Z","200; is_enabled=true, is_customized=true","ok"],
+["Happiness OFF, close","#4675 POST /close 12:56:03Z (contact = user's plus-address)","reply.queued + sent \"Your ticket #4675 has been closed\" (no rating link); also #4631 12:35:43Z","ok"],
+["Happiness ON scoped to this dept","PUT /desk/happiness/settings (lock); #4678 POST /close 12:56:27Z","\"Your ticket #4678 has been closed\" + {{happiness.link}}, happiness_link_status = sent","ok"],
+["Restore","PUT /desk/happiness/settings (original)","200, diff none","info"],
+["Not counted (staging 500/503 12:30-12:40Z)","#4628 closed 12:31:08Z; #4629 closed 12:31:52Z","#4628 no mail; #4629 sent on retry 12:34:38Z without happiness_link_status","info"]]}

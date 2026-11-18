@@ -1,0 +1,33 @@
+{
+ "out": "3054-api-card.png",
+ "title": "NDC-3054 blueprint close vs normal close, same contact (the user's inbox), QA AS6 Dept A, Customer Happiness ON for the test",
+ "host": "staging-desk.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "16 Nov 2026",
+ "rows": [
+  [
+   "#4177 blueprint close",
+   "POST /desk/tickets/{id}/blueprint-transitions/close at 09:48:59Z (11:48:59 Cairo)",
+   "200 → activity: ticket.closed (reason blueprint_transition) 09:48:59 · reply.queued \"Your ticket #4177 has been closed\" to the contact 09:49:01 · reply.sent 09:49:03 · happiness_link_status = sent",
+   "ok"
+  ],
+  [
+   "#4178 normal close (control)",
+   "POST /desk/tickets/{id}/close at 09:48:59Z",
+   "200 → ticket.closed 09:49:00 · reply.queued \"Your ticket #4178 has been closed\" · reply.sent 09:49:02 · happiness_link_status = sent",
+   "ok"
+  ],
+  [
+   "Customer Happiness",
+   "PUT settings ON (Dept A) before, original back after",
+   "200 / 200; diff after restore: none",
+   "ok"
+  ],
+  [
+   "Inbox",
+   "the user's inbox",
+   "both closed emails arrived with the rating question (Bad / Okay / Good), checked by the user 16 Nov",
+   "ok"
+  ]
+ ]
+}

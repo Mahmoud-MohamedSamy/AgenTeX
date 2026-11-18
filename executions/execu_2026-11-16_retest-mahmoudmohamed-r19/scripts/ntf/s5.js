@@ -1,0 +1,2 @@
+const a=(await api('GET','/notifications?limit=40&apps=desk')).j?.data;const b=(await api('GET','/notifications?limit=40')).j?.data;
+return {desk:(a?.data||[]).filter(n=>/3061/.test(n.title||'')).map(n=>n.created_at.slice(11,19)+' '+n.app_key+' '+n.module+' '+n.event_type+' '+n.title+' | '+n.body),all:(b?.data||[]).filter(n=>/3061/.test(n.title||'')).map(n=>n.created_at.slice(11,19)+' '+n.app_key+' '+n.module)};

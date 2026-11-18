@@ -1,0 +1,130 @@
+{
+ "out": "NDC-2967-retest-PASS.png",
+ "ticket": "NDC-2967",
+ "date": "16 Nov 2026",
+ "priority": "high",
+ "title": "Records API | 500 error when \"kind\" is not the first key of a field value",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · POST/PATCH /api/v1/modules/{tickets}/records · tickets in QA RT19 WF Dept",
+ "panels": [
+  {
+   "img": "2967-api-card.png",
+   "caption": "API evidence (owner, NDC-Staging)",
+   "crop": [
+    0,
+    0,
+    1600,
+    480
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      230
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      240,
+      1564,
+      298
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      308,
+      1564,
+      345
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      355,
+      1564,
+      413
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      423,
+      1564,
+      460
+     ],
+     "n": 7,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "{\"value\":\"x\",\"kind\":\"string\"}",
+   "201",
+   "201, subject stored (was 500)",
+   "PASS"
+  ],
+  [
+   2,
+   "{\"kind\":\"string\",\"value\":\"x\"}",
+   "201",
+   "201",
+   "PASS"
+  ],
+  [
+   3,
+   "Every field value-first, PATCH value-first, extra key in between",
+   "Accepted",
+   "201 / 200, values stored",
+   "PASS"
+  ],
+  [
+   4,
+   "Unknown kind",
+   "400 (dev claim)",
+   "400 \"The request body could not be read…\"",
+   "PASS"
+  ],
+  [
+   5,
+   "No \"kind\" at all",
+   "400",
+   "500 INTERNAL_ERROR (twice) — new, not in this ticket",
+   "INFO"
+  ]
+ ]
+}

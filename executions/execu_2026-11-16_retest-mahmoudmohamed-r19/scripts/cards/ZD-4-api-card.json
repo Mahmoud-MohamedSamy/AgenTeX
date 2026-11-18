@@ -1,0 +1,7 @@
+{"host":"desk.zoho.com (portal techegysolutions, Enterprise)","who":"admin mahmoud.mahamed1717","date":"16 Nov 2026 13:44-13:50Z","out":"ZD-4-1-api-card.png","title":"Zoho Desk: ticket skills (entitySkills) with inactive, other-department, deleted and unknown skills - ticket #114 in dept Tech","rows":[
+["Setup","Tech: SkA (active), SkInact (INACTIVE), SkDel (then deleted, 204); TechEgySolutions: SkOther","4 skills created through /api/v1/skills","info"],
+["Edit: active + inactive","PATCH /api/v1/tickets/{#114} entitySkills [SkA, SkInact]","200; saved [SkA] - inactive skill silently dropped, no warning","info"],
+["Edit: active + other dept","entitySkills [SkA, SkOther]","200; saved [SkA] - silently dropped, no warning","info"],
+["Edit: only other dept / only inactive","entitySkills [SkOther] ; [SkInact]","200; saved [] - all skills removed, no warning","info"],
+["Edit: deleted / unknown id","entitySkills [SkA, SkDel] ; [SkA, 1499272000000999999]","200; saved [SkA] - deleted and unknown also silently dropped (TAVI refuses these with 422)","info"],
+["Create with them","POST /api/v1/tickets entitySkills [SkA,SkInact] / [SkA,SkOther] / [SkA,SkDel]","200 x3 (#119, #120, #121); each saved [SkA], no warning","info"]]}

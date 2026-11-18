@@ -1,0 +1,17 @@
+{"out":"BUG-history-auto-step-wrong-from-to-FAIL.png","ticket":"NEW BUG","priority":"medium","title":"Ticket History | Automatic blueprint steps show the wrong From state and To state","verdict":"FAIL",
+"env":"NDC-Staging · staging-desk · ndc-staging-owner · continuous blueprint \"QA BP RT19 3031 B cont ticketshape\" (Customer Support) · ticket #4166: owner ran QA first (Open → Escalated), then QA auto (Escalated → On Hold) and QA end (On Hold → Closed) ran by themselves · 16 Nov 11:09 Cairo",
+"date":"16 Nov 2026",
+"panels":[
+ {"img":"3034-B-history.png","caption":"#4166 › History: \"Moved by … automatically · Transition QA end · From state Open · To state Escalated\" (QA end really moved On Hold → Closed)","crop":[664,240,936,600],
+  "boxes":[{"b":[712,650,1120,750],"n":1,"kind":"FAIL"},{"b":[712,500,960,590],"n":3,"kind":"INFO"}]},
+ {"img":"3031-A-history.png","caption":"#4165: \"Transition QA auto · From state Open · To state Escalated\" right above \"Status changed Escalated → On Hold\"","crop":[664,300,936,480],
+  "boxes":[{"b":[712,365,1110,470],"n":2,"kind":"FAIL"},{"b":[712,505,960,612],"n":3,"kind":"INFO"}]},
+ {"img":"D1-api-card.png","caption":"History API: the transition rows carry no from/to state","crop":[0,0,1600,310],"full":true,
+  "boxes":[{"b":[36,167,1564,225],"n":4,"kind":"FAIL"},{"b":[36,235,1564,293],"n":4,"kind":"FAIL"}]}
+],
+"rows":[
+ [1,"QA end ran by itself on #4166","From On Hold, To Closed","From state Open, To state Escalated","FAIL"],
+ [2,"QA auto ran by itself on #4165 / #4166","From Escalated, To On Hold","From state Open, To state Escalated","FAIL"],
+ [3,"Status lines next to them","-","Correct: Escalated → On Hold, On Hold → Closed, so the transition line contradicts the status line","INFO"],
+ [4,"History API row for the automatic step","Carries from/to","summary has transition_name only, no from/to; old/new null. The screen seems to borrow the first transition's states","FAIL"]
+]}

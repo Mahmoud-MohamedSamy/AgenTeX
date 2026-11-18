@@ -1,0 +1,36 @@
+# NDC-2853 SLA | The agent chosen in an SLA escalation gets no email, even as a member and admin of the ticket's department
+Summary
+An SLA escalation that notifies an agent of the ticket's own department sends no email. The agent is a Desk Administrator and a member of the department, but with ticket data sharing set to Private they cannot see a ticket owned by another agent. The escalation skips them as "No access to the ticket" and ends with "No one to notify". Tickets created by an agent are owned by that agent (NDC-2840), so in practice escalations reach almost nobody. Same cause as NDC-2852, but here the agent belongs to the department.
+Steps to Reproduce
+- Check that Setup › Ticket Access › Data sharing for tickets is "Private".
+- Go to Setup › SLA & Escalation and create an SLA policy in a department, with a 1-minute first response target.
+- In level 1 (at due) choose an agent who is a member of that department, with a custom escalation email template. In level 2 (1 minute after due) choose the same agent with the default template.
+- As another agent, create a ticket in the department that matches the policy, and wait 3 minutes.
+- Check the chosen agent's mailbox, then open the ticket's History tab.
+Expected Result
+- As in Zoho Desk: the agent chosen in the escalation gets an email at each level (the custom template at level 1, the default at level 2).
+Actual Result
+- No escalation email arrived in the agent's mailbox (checked by the user for runs on 9 Nov and on 10 Nov at 17:37 Cairo time).
+- History on both levels: "Mahmoud Samy · Skipped: No access to the ticket", then "Skipped: No one to notify".
+- The ticket shows SLA Violated and SLA Escalated, so the escalation itself ran.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account. Zoho Desk behaviour is taken from the Zoho Desk help pages (not checked in a live Zoho Desk, because Zoho Setup pages do not load on our network).
+QA AO Dept A, SLA policy "QA AO SL224oya", ticket #2662, 10 Nov 2026 16:01–16:02 UTC; earlier runs SL22pczr (9 Nov) and SL22jof1 (10 Nov 15:37 UTC). Agent Mahmoud Samy: Desk Administrator, member of QA AO Dept A. Zoho source: help.zoho.com "Creating and using SLAs".
+Attachment
+Annotated evidence attached (SL-22-escalation-email-never-reaches-department-agent-vs-zoho.png).
+
+
+== COMMENTS (3)
+--- comment 2026-11-16T13:33:59.623444+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 11:30 UTC. Ready for retest.
+The editor hint is deployed. The agent email from NDC-2864 is live, and I saw it delivered on staging.
+Please check that the level-2 escalation email with the default template reaches an agent who can see the ticket.
+
+--- comment 2026-11-16T11:57:04.804006+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Change is in review: client-engine PR #840. Not deployed yet. Same decision as NDC-2852: an agent who can't open the ticket is still skipped, including a Desk Administrator under private sharing. The escalation editor now says so under "Whom to Escalate".
+Your note from 11 Nov (default-template emails): that is NDC-2864, now fixed in review. Escalation emails were never affected: Desk sends them itself, with the default template or a chosen one. After deploy, please check that the level-2 email with the default template arrives for an agent who can see the ticket.
+
+--- comment 2026-11-11T14:08:50.132158+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Related: NDC-2864
+On 11 Nov 2026 we found that agent notification rules with the default template send no email at all, only the in-app notification (NDC-2864). The cause stated here (the chosen agent is skipped as "No access to the ticket") is still what the ticket History shows. But when this is fixed, please also check that the escalation email actually reaches the agent's mailbox, because agent emails are not arriving for other notifications either.
+

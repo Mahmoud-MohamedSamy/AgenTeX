@@ -1,0 +1,30 @@
+# NDC-3037 Blueprint | A transition owner that does not exist is accepted and shown as a raw id
+Summary
+The blueprints API accepts a transition owner user id that does not exist; the designer then shows the raw id as an "Agent" owner.
+Steps to Reproduce
+- Save a blueprint through POST /api/v1/modules/{tickets}/blueprints with before.allowedUserIds = [a random UUID].
+- Open the blueprint and click the transition › Before.
+Expected Result
+- Refused, like an owner id from another tenant (which is refused correctly).
+Actual Result
+- HTTP 201; the id is stored.
+- Designer › Who can run this: "5327d6ce-320e-4039-8c1a-95edb4cb2d4f · Agent".
+Note
+Same kind of problem as NDC-2999 (Workflow Rules). Spec row N3.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026.
+Attachment
+Annotated evidence attached (BP-N3-transition-owner-that-does-not-exist-accepted.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:08.647153+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging: saving a blueprint with a random owner id answers 422 "No user exists with id …" on that transition, and nothing is saved.
+Not seen live: the designer's "Unknown user" label, because the server no longer accepts such an id. It shows only for ids saved before this fix; covered by automated tests.
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:03.546035+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging: a random owner id saved with 201 and was stored.
+Fix: saving a blueprint now refuses an owner who is not a user of this tenant (or is deleted), naming the transition. Owners already stored are flagged, not refused, so old blueprints stay editable. The designer shows an unknown owner as "Unknown user" with a warning, never the raw id. Branches: metadata-engine fix/ndc-3030-3037-3036-3029-blueprint-admin, client-engine fix/ndc-blueprint-designer-qa-1115.
+Checked in automated tests only. Not deployed, not checked on staging yet.
+

@@ -1,0 +1,40 @@
+# NDC-2968 Workflow Rules | Create Record action skips required fields and leaves the new record without an owner
+Summary
+A Create Record action creates records that break the target module's required fields, and the new record has no owner. The run is logged as Succeeded.
+Steps to Reproduce
+- Create a rule On Create with a Create Record action in Calls, setting only the Start Time (Subject left out).
+- Create a matching ticket.
+- Open the new Call.
+Expected Result
+- The rule cannot be saved without the required fields, or the run fails with a clear reason.
+- The new record has a real owner.
+Actual Result
+- The Call is created with no Subject; Call Owner is Unassigned and Created By shows "Unknown user".
+- Execution History: CreateRecord Succeeded.
+Note
+The owner part is the Desk side of NDC-2726 (CRM: records created by Create Record don't take the triggering record's owner).
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026.
+Attachment
+Annotated evidence attached (WF-I25-create-record-skips-required-fields.png).
+
+
+== COMMENTS (3)
+--- comment 2026-11-15T12:11:12.544320+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging (workflow #140, metadata-engine #227). Retested today:
+- Saving a rule with Create Record in Calls that sets only Start Time is refused: "Create Record in 'Calls': fill in the required fields Subject, Call Status, Contact Name, Department."
+- With every required field set (Department taken from the ticket), a new matching ticket created the Call, and the Call's owner is the ticket's owner (ndc-staging-owner). The action Succeeded.
+- Not changed, as noted before: Created By on such a Call shows the system, and a Create Record saved before this fix still runs as it was saved.
+Checked through the API on staging-desk (NDC-Staging), not in the browser. Execution History reads the same rows the API returned. All test rules and tickets were deleted.
+
+--- comment 2026-11-15T11:46:04.274282+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix in review: workflow #140 and metadata-engine #227. Not merged, not deployed.
+- Saving a rule or a saved action now refuses a Create Record that leaves out a field the new record requires, naming them, for example "Create Record in 'Calls': fill in the required fields Subject, Call Status." Only a Create Record you add or change is checked, so existing rules still save.
+- A record a Desk rule creates in a module other than Tickets (a Call, for example) now gets the ticket's owner, as CRM rules already do. A new ticket a rule creates stays unowned, so its team is kept.
+- Not changed: Created By still shows the system, because a rule creates the record, not a person. A Create Record saved before this fix, or a placeholder that turns out empty when the rule runs, still creates the record without the field.
+Checked with automated tests only. I will retest on staging-desk after deploy.
+
+--- comment 2026-11-15T11:06:10.931384+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Reproduced on staging-desk today: a rule On Create with Create Record in Calls setting only the Start Time created a Call with no Subject, Status, Contact or Department (all required in Calls), no owner and no creator, and Execution History says Succeeded.
+Fix not built yet. Plan: the rule cannot be saved when it leaves out a field the target module requires, and a record a Desk rule creates in Calls, Tasks and similar modules takes the ticket's owner (as CRM rules already do). Tickets created by a rule stay unowned, because a ticket's team would otherwise be cleared.
+

@@ -1,0 +1,164 @@
+{
+ "out": "NDC-3056-retest-PARTIAL.png",
+ "ticket": "NDC-3056",
+ "priority": "medium",
+ "title": "Blueprint | Agents now get \"View configured actions\" on the ticket, but the popup shows only the steps from the current state, not the blueprint's whole flow",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · agent \"Customer Experience Specialists 2\" (Desk Agent, Customer Support, QA account) signed in once · tickets #4174 (QA BP RT19 3036 onlyA: Open → Escalated → Closed) and #4168 (QA BP RT19 3031 D: Open → Escalated → On Hold → Closed) · 11:45 Cairo · #4180 (QA BP RT19 3056 cond, owned by the agent, priority Low: Open → Escalated (go), Open → On Hold (urgent, Shown when Priority = high), Open → Closed (admin, owner only), Escalated → Closed, On Hold → Closed) · 11:57 Cairo",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "3056-4180-popup.png",
+   "caption": "#4180 › View configured actions as the agent: every step from Open with its condition and whether the agent can run it now; Escalated → Closed and On Hold → Closed are not shown",
+   "crop": [
+    464,
+    135,
+    672,
+    632
+   ],
+   "boxes": [
+    {
+     "b": [
+      750,
+      335,
+      870,
+      372
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      470,
+      640,
+      1130,
+      692
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      470,
+      702,
+      1130,
+      756
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      470,
+      198,
+      1132,
+      505
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "3056-4174-popup.png",
+   "caption": "#4174 (in Open) › View configured actions: only Open → QA onlyA → Escalated; Closed and QA end are missing",
+   "crop": [
+    464,
+    300,
+    672,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      468,
+      370,
+      1132,
+      462
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      470,
+      508,
+      1130,
+      590
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3056-4168-popup.png",
+   "caption": "#4168 (in Escalated): only Escalated → QA auto → On Hold; Open, Closed, QA first, QA end missing",
+   "crop": [
+    464,
+    300,
+    672,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      468,
+      370,
+      1132,
+      462
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      470,
+      508,
+      1130,
+      590
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Ticket blueprint card as an agent",
+   "\"View configured actions\" option",
+   "Shown on the Steps card of #4174 and #4168 and opens a popup (was: missing)",
+   "PASS"
+  ],
+  [
+   2,
+   "Popup content",
+   "The blueprint's flow: states and the transitions between them (like CRM)",
+   "Only the current state and the steps leaving it (on #4180 all three from Open). Later states/transitions (Escalated → Closed, On Hold → Closed on #4180; Closed and QA end on #4174) are not shown",
+   "FAIL"
+  ],
+  [
+   3,
+   "Per step: can I run it, what does it ask",
+   "Shown",
+   "\"You can run this step · Nothing to fill in\"; held: the agent ran QA onlyA on #4174 → 200, Escalated",
+   "PASS"
+  ],
+  [
+   4,
+   "\"Shown when\" and a step the agent cannot run now",
+   "Condition shown; agent sees why",
+   "QA urgent shows \"Shown when: Priority = high\"; QA urgent and QA admin (owner only) say \"You can't run this step now. The ticket may not meet its conditions yet, or only its owners can run it.\" (does not say which of the two applies)",
+   "PASS"
+  ],
+  [
+   5,
+   "Side observation",
+   "-",
+   "#4174 and #4168 show \"You can read this ticket but not change it\" to this agent, yet the agent (transition owner) could run the transition and move the ticket",
+   "INFO"
+  ]
+ ]
+}

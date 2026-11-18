@@ -1,0 +1,290 @@
+{
+ "out": "NDC-2870-retest-PARTIAL.png",
+ "ticket": "NDC-2870",
+ "priority": "high",
+ "title": "Global Sets | Gap list vs Zoho CRM: 7 of 11 items now work, sort order, Countries/States, reports in Used In and the delete screen are still open",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · owner (shared session) · set \"QA RT19 GS Tier\" linked to Leads + Customers, 5 leads + 1 customer, view, inactive rule, 2 reports, dependency map, inactive blueprint · Zoho CRM org946877290 checked live for sort order",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "2870-1-list.png",
+   "caption": "List: Created By column now shown; Used In is still a count (\"2 fields\"), not module names; ready-made Industry + Source sets",
+   "crop": [
+    270,
+    110,
+    1330,
+    360
+   ],
+   "boxes": [
+    {
+     "b": [
+      1046,
+      182,
+      1250,
+      208
+     ],
+     "n": 9,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      970,
+      368,
+      1030,
+      394
+     ],
+     "n": 9,
+     "kind": "PARTIAL"
+    },
+    {
+     "b": [
+      290,
+      262,
+      820,
+      304
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      290,
+      412,
+      820,
+      454
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2870-2-usedin.png",
+   "caption": "Used In: modules as links, custom view, rule, blueprint, dependency map; the 2 reports that use the field are not listed",
+   "crop": [
+    464,
+    264,
+    672,
+    372
+   ],
+   "boxes": [
+    {
+     "b": [
+      496,
+      436,
+      1104,
+      548
+     ],
+     "n": 7,
+     "kind": "PARTIAL"
+    }
+   ]
+  },
+  {
+   "img": "2870-5-history-unused.png",
+   "caption": "Editor: sort order setting, Add Predefined Choices, Replaced values history (Gold → Silver), Unused value with a delete icon",
+   "crop": [
+    464,
+    110,
+    672,
+    640
+   ],
+   "boxes": [
+    {
+     "b": [
+      486,
+      120,
+      1000,
+      176
+     ],
+     "n": 3,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      692,
+      188,
+      900,
+      220
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      488,
+      562,
+      1112,
+      660
+     ],
+     "n": 11,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1076,
+      704,
+      1104,
+      730
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2870-7b-copper-usage.png",
+   "caption": "Clicking \"Where is this value used\" or the delete icon on unused value Copper: the page crashes (TypeError reading 'length')",
+   "crop": [
+    270,
+    100,
+    1330,
+    320
+   ],
+   "boxes": [
+    {
+     "b": [
+      640,
+      140,
+      1020,
+      370
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2870-api-card.png",
+   "caption": "API checks behind each item",
+   "crop": [
+    0,
+    0,
+    1600,
+    670
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      178
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      256,
+      1564,
+      314
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      392,
+      1564,
+      450
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      528,
+      1564,
+      586
+     ],
+     "n": 10,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Replace updates every place using the value",
+   "Records, view + workflow criteria, field updates, dependency, reports; old value to Unused",
+   "Gold → Silver: 3 records (modified time updated), view, rule criteria + field update, report filter, dependency map {Silver:[X,Y]}; Gold moved to Unused; Used In shows blueprint",
+   "PASS"
+  ],
+  [
+   2,
+   "Delete an unused value for good",
+   "One at a time from Unused; in-use refused",
+   "API PASS (used 422, unused 200, on records 409, two at once 422). Screen: the delete icon and \"Where is this value used\" on an unused value crash the page",
+   "PARTIAL"
+  ],
+  [
+   3,
+   "Saved sort order that list views/reports follow",
+   "Entered / Alphabetical; list views, reports, dashboards follow it",
+   "Setting saved and field options follow it; list views and reports still sort A–Z (entered Silver, Platinum, Bronze → shown Bronze, Platinum, Silver). Zoho shows Silver, Platinum, Bronze",
+   "FAIL"
+  ],
+  [
+   4,
+   "Add Predefined Choices",
+   "In the values menu",
+   "8 lists (Months, Days, Yes/No, Salutations, Priorities, Industries, Lead sources, Ratings); Months adds 12, repeat skips 12",
+   "PASS"
+  ],
+  [
+   5,
+   "Ready-made Source and Industry sets",
+   "Shipped, ready to link",
+   "System sets Source (16) and Industry (16); a pick list links to Source, values checked",
+   "PASS"
+  ],
+  [
+   6,
+   "Countries and States list for address fields",
+   "List behind Country/State fields + Configure page",
+   "Not built: country/state fields still free text; only a \"countries\" predefined choice list",
+   "FAIL"
+  ],
+  [
+   7,
+   "Used In lists reports, dependencies, blueprints",
+   "All places listed",
+   "Dependency maps + blueprints listed; reports not shown on screen (API field-usage finds them, body wrapped twice)",
+   "PARTIAL"
+  ],
+  [
+   8,
+   "Which value is used where",
+   "Per value",
+   "\"Where is this value used\" per value: records, views, rules, blueprints, maps (works for used values; crashes for unused ones, see 2)",
+   "PASS"
+  ],
+  [
+   9,
+   "Created By column, Used In as module names",
+   "Both",
+   "Created By shown; Used In column is still a field count (module links only inside the panel)",
+   "PARTIAL"
+  ],
+  [
+   10,
+   "Limits per tenant",
+   "30 sets, 15 per module, 30 fields per set, 500 unused",
+   "All four enforced with clear messages (also on clone/convert/associate)",
+   "PASS"
+  ],
+  [
+   11,
+   "Replaced values history + done notification",
+   "History + notification for long replaces",
+   "History shown (who, when, counts); no notification because the replace finishes at once. Accepted by the QA lead (17 Nov)",
+   "INFO"
+  ]
+ ]
+}

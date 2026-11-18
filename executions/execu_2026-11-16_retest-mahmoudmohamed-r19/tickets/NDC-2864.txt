@@ -1,0 +1,46 @@
+# NDC-2864 Notifications | Agent notification rules with Email on send no email, only the in-app notification, unless a custom template is chosen
+Summary
+Agent notification rules such as "Assigning a ticket" show Email switched on and "Sent as: in-app notification + email", but with the default template they send only the in-app notification. No email reaches the agent. The default template is called "the in-app notification only", and a hint says to choose a template to also send an email. In Zoho Desk, an enabled agent notification rule sends the email with its predefined template; customising the template is optional. Agents who are not looking at Desk never hear about tickets assigned to them, to their team, or comments on their tickets.
+Steps to Reproduce
+- Go to Setup › Customization › Notifications and choose a department.
+- Under Agent Notifications, look at "Assigning a ticket": Email is on and the template is "Default — the in-app notification only".
+- As the agent, open My Notifications and check that the Email channel and "Tickets assigned to you" email are on.
+- Assign a ticket in that department to the agent.
+- Check the agent's bell and the agent's mailbox (including Spam).
+Expected Result
+- As in Zoho Desk: the agent gets an email for the assignment, using the rule's predefined template, because the rule's Email switch is on.
+- The same for the other agent rules with Email on (comment added, ticket assigned to the agent's team).
+- If TAVI keeps an "in-app only" default, the row must not say Email on and "Sent as: in-app notification + email".
+Actual Result
+- The bell shows "Ticket #2859 assigned to you" and "Ticket #2818 assigned to you".
+- Neither email arrived in the agent’s mailbox (Mahmoud Samy, checked by the user, 11 Nov 2026).
+- A newly invited agent got no email either for "Ticket #2856 assigned to you" or for a comment on #2856.
+- The rule row shows Email on and "Sent as: in-app notification + email", and the template is "Default — the in-app notification only".
+- Retest the same day: after choosing a template on these rules, the emails did arrive (#2865 assigned and a comment on it, team ticket #2869, #2867 assigned). So the emails fail only with the default template.
+- The "Good rating on ticket #2818" email did arrive without a template, probably sent by the Customer Happiness setting rather than by the notification rule.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10. Department QA AO Dept A; agents Mahmoud Samy (Desk Administrator) and a new test agent; 11 Nov 2026, 09:48–11:33 UTC. Customer emails from the same department (ticket closed, rating request) do arrive, so outgoing mail works. Zoho source: help.zoho.com "Managing Notification Rules/Triggers in Zoho Desk": "notifications can be sent via e-mail" and "The notification rules have their predefined template" (help page, not checked in a live Zoho Desk).
+Attachment
+Annotated evidence attached (AG-MAIL-agent-notification-email-not-sent-with-default-template-vs-zoho.png): the rule row, the agent's bell and settings, and the Zoho Desk help text.
+
+
+== COMMENTS (3)
+--- comment 2026-11-16T13:33:29.690060+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 11:30 UTC. Ready for retest.
+Checked on staging: I assigned a test ticket in QA AO Dept A to a test agent. "Assigning a ticket" was on with the default template. The agent got the email "Ticket #4565 assigned to you: …" (Sent), and the bell arrived as an in-app notification only, so there was no second email.
+QA's own RT19 tests that ran at the same time also sent "Ticket #… assigned to you" emails. The rule's default template now reads "Default — the built-in email".
+Not checked: an agent who turned that email off in My Notifications.
+
+--- comment 2026-11-16T11:56:38.104481+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Fix is in review: desk PR #258 and notify PR #24 (notify ships first). Not deployed yet.
+Cause, checked on staging 16 Nov: with the default template, Desk handed the agent email to the notification service. NDC-Staging's delivery policy has email off by default, so the email was dropped. In the last 7 days, 809 "ticket assigned" notifications went out in-app only. With a template chosen, Desk sends the email itself, which is why QA's retest worked.
+Change (product decision): every agent, team and department rule now sends its built-in email whenever the rule's Email switch is on. Desk sends it itself, so the delivery policy no longer blocks it. A chosen template still replaces the built-in wording. Agents who switched that email off under My Notifications don't get it, and the in-app notification is unchanged. The default template now reads "Default — the built-in email".
+Not covered: the built-in agent emails are English only.
+To retest after deploy: repeat the original steps with the default template. The agent should get both the bell and the email.
+
+--- comment 2026-11-11T14:54:29.174226+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Correction, 11 Nov 2026
+- The "Good rating on ticket #2818" email did arrive (12:55 Cairo). It was wrongly listed as missing, so it was removed from the Actual Result and the image. The rating rule has the same setup as the assignment rule, so that email is probably sent by the Customer Happiness setting, not by the notification rule.
+- Retest with a template: after a template was chosen on "Assigning a ticket", "Adding a comment" and the team "Assigning a ticket" rules, all those emails arrived (#2865, #2867, #2869). This confirms the bug: with the default template these rules send only the in-app notification.
+- The image was replaced with the corrected version.
+

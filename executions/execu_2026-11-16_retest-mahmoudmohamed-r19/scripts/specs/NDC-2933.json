@@ -1,0 +1,173 @@
+{
+ "out": "NDC-2933-retest-PARTIAL.png",
+ "ticket": "NDC-2933",
+ "priority": "medium",
+ "title": "Skills | Ticket Skills field offers and keeps inactive skills and other departments' skills; Zoho drops them and has no Skills on Add Ticket",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · owner · department QA RT19 SK Dept (active S1, S2, S3, a long-name skill; inactive QA RT19 SK Inact) · other departments QA SK13 Dept A, QA SK12 Dept A, Sales",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "2933-1-new-ticket-skills-own-dept.png",
+   "caption": "New Ticket, QA RT19 SK Dept: only its active skills (no Inact, no other department); long name wraps",
+   "crop": [
+    990,
+    420,
+    440,
+    480
+   ],
+   "boxes": [
+    {
+     "b": [
+      1106,
+      800,
+      1410,
+      900
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2933-3-new-ticket-switched-sk13.png",
+   "caption": "S1 + S2 picked, then Department changed to QA SK13 Dept A: only QA SK13 S1-S12, picks dropped",
+   "crop": [
+    990,
+    380,
+    440,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      1106,
+      762,
+      1410,
+      868
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2933-5-ticket-edit-skills.png",
+   "caption": "Ticket #4514 (QA RT19 SK Dept) › Ticket Information › Edit Skills: every department's skills, inactive ones included (QA SK12 Inact, list continues to QA SK13 Inact, QA RT19 SK Inact)",
+   "crop": [
+    370,
+    100,
+    290,
+    420
+   ],
+   "boxes": [
+    {
+     "b": [
+      388,
+      126,
+      640,
+      515
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "2933-api-card.png",
+   "caption": "API and the ticket-page save",
+   "crop": [
+    0,
+    0,
+    1600,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      204
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      272
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      361
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "New Ticket Skills field",
+   "Only the department's active skills (dev kept the field, filtered)",
+   "QA RT19 SK Dept: S1, S2, S3, Long; Sales: its 6; QA SK13 Dept A: S1-S12; no inactive, no other department",
+   "PASS"
+  ],
+  [
+   2,
+   "Change department on New Ticket",
+   "Picks the new department lacks are dropped",
+   "S1 + S2 dropped on switch to QA SK13 Dept A; QA SK13 S1 dropped on switch back",
+   "PASS"
+  ],
+  [
+   3,
+   "Ticket page › Ticket Information › Edit Skills",
+   "Only the ticket department's active skills",
+   "Still lists every department's skills incl. inactive (QA RT19 SK Inact, QA SK13 Inact, QA SK12 Inact, QA AS6 sk3 …); seen twice (#4514, #4537). Dev claim did not hold",
+   "FAIL"
+  ],
+  [
+   4,
+   "Saving inactive / other-department skills (create, edit)",
+   "Dropped on save",
+   "#4581 kept only QA RT19 SK S1; edits keep only active own skills",
+   "PASS"
+  ],
+  [
+   5,
+   "Picking them on the ticket page and saving",
+   "Not offered",
+   "Screen sends them, toast \"Record updated successfully\", reload shows them silently dropped; long names wrap in Edit Skills",
+   "INFO"
+  ],
+  [
+   6,
+   "Skills on Add Ticket (Zoho has none)",
+   "Product call",
+   "Kept, filtered (dev decision)",
+   "INFO"
+  ]
+ ]
+}

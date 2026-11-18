@@ -1,0 +1,30 @@
+# NDC-3034 Ticket History | Blueprint lines show the internal name "BlueprintStateChanged" and text like "QA BP F2U|entered|Open"
+Summary
+Besides the readable blueprint lines, ticket History shows extra lines with an internal event name and internal detail text.
+Steps to Reproduce
+- Put a ticket into a blueprint and run a transition.
+- Open the ticket › History.
+Expected Result
+- Only readable lines (e.g. "Entered blueprint … at Open", "<agent> ran <transition> in <blueprint>").
+Actual Result
+- Extra lines titled "BlueprintStateChanged" with Detail "QA BP JU: QA verify", "QA BP K: QA back" or the pipe-joined "QA BP F2U|entered|Open".
+Zoho Desk
+Every blueprint line is readable: "Blueprint applied · Blueprint name …", "Blueprint transition performed by <agent> · Blueprint name · Transition name · From state · To state", "Ticket updated on completion of transition".
+Note
+Spec row M1.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026. Compared live with Zoho Desk (test account techsolutionsegypt; test blueprint deleted afterwards).
+Attachment
+Annotated evidence attached (BP-M1-history-shows-internal-blueprint-event-names-vs-zoho.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:13.157054+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging: History shows no "BlueprintStateChanged" and no pipe text. The transition line reads "ndc-staging-owner ran QA escalate in <blueprint>" with From state Open and To state Escalated.
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:22.194233+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging: History showed two "BlueprintStateChanged" lines and "ZZ bp1115 UI|entered|Open".
+Fix on client-engine fix/ndc-3056-3034-3032-ticket-blueprint: History drops the engine's internal blueprint lines, since Desk already writes readable ones. No line ever shows an internal type name. The "<agent> ran <transition> in <blueprint>" line now shows From state and To state (desk fix/ndc-3032-history-carries-source-details).
+Checked in a browser on the branch build against staging's real data: no "BlueprintStateChanged" and no pipe text. Not deployed yet.
+

@@ -1,0 +1,240 @@
+{
+ "out": "NDC-3000-retest-PASS.png",
+ "ticket": "NDC-3000",
+ "priority": "high",
+ "title": "Email | Customers get no acknowledgement emails, and the ticket-closed email has no rating link",
+ "verdict": "PASS",
+ "label": "RETEST PASS",
+ "env": "NDC-Staging · staging-desk · owner · QA RT19 NTF Dept with its own hosted address qa-rt19-ntf · contact = user's plus-address · #4678, #4691",
+ "date": "17 Nov 2026",
+ "panels": [
+  {
+   "img": "3000-api-card.png",
+   "caption": "Setup done for the user's mail test; rating link checked with ratings limited to one department",
+   "crop": [
+    0,
+    0,
+    1600,
+    470
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      251
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      319
+     ],
+     "n": 2,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      329,
+      1564,
+      387
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      397,
+      1564,
+      455
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "inbox-3053-4678.png",
+   "caption": "#4678 closed email with rating link (user's inbox, address hidden)",
+   "crop": [
+    260,
+    226,
+    944,
+    400
+   ],
+   "boxes": [
+    {
+     "b": [
+      332,
+      240,
+      1190,
+      280
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "inbox-3000-ack.png",
+   "caption": "User inbox: acknowledgement for #4745 (address hidden), one copy",
+   "crop": [
+    320,
+    240,
+    600,
+    130
+   ],
+   "boxes": [
+    {
+     "b": [
+      328,
+      244,
+      722,
+      276
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      328,
+      340,
+      872,
+      362
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "inbox-3000-replyack.png",
+   "caption": "User inbox: reply acknowledgement for #4745, 14:18 Cairo (addresses hidden)",
+   "crop": [
+    320,
+    240,
+    880,
+    140
+   ],
+   "boxes": [
+    {
+     "b": [
+      328,
+      244,
+      840,
+      276
+     ],
+     "n": 7,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      328,
+      352,
+      782,
+      376
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "inbox-3000-4906.png",
+   "caption": "User inbox: acknowledgement for the new ticket #4906 (address hidden)",
+   "crop": [
+    320,
+    240,
+    600,
+    130
+   ],
+   "boxes": [
+    {
+     "b": [
+      328,
+      244,
+      794,
+      276
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      328,
+      340,
+      910,
+      362
+     ],
+     "n": 6,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Acknowledgement setup",
+   "Ack on for the department",
+   "Channel ack on; dept rules Receiving a new ticket + Acknowledging a reply saved on; own receiving address",
+   "INFO"
+  ],
+  [
+   2,
+   "Ticket not opened by email (#4691)",
+   "-",
+   "No ack (by design: ack only for inbound email)",
+   "INFO"
+  ],
+  [
+   3,
+   "Close with ratings limited to the dept (#4678)",
+   "Closed email has the rating link",
+   "Arrived in the customer inbox with Bad / Okay / Good (user checked)",
+   "PASS"
+  ],
+  [
+   4,
+   "Customer emails the support address (#4745)",
+   "New-ticket acknowledgement",
+   "\"Re: QA RT19 NTF 3000 ack test [#4745]\" — \"Your ticket has been delivered, we will contact you soon. #4745\"; received once, 17:44 Cairo (checked by the user)",
+   "PASS"
+  ],
+  [
+   5,
+   "Customer replies to the acknowledgement (#4745)",
+   "Reply added to #4745 + reply acknowledgement",
+   "Reply sent 07:58 UTC was added to #4745 when staging email recovered (12:18 UTC, matched by the email headers); reply acknowledgement \"Thanks — we have your reply on ticket #4745 and will get back to you shortly.\" received 14:18 Cairo (checked by the user)",
+   "PASS"
+  ],
+  [
+   6,
+   "New emails create tickets with an acknowledgement (#4906, #4907)",
+   "New-ticket acknowledgement",
+   "\"Re: QA RT19 NTF 3000 inbound check [#4906]\" — \"Your ticket has been delivered, we will contact you soon. #4906\" received 14:18 Cairo (user); #4907 the same in the app",
+   "PASS"
+  ],
+  [
+   7,
+   "Reply acknowledgement subject",
+   "One \"Re:\" and one ticket tag",
+   "\"Re: Re: QA RT19 NTF 3000 ack test [#4745] [#4745]\" — prefix and ticket tag repeated (small separate issue)",
+   "INFO"
+  ],
+  [
+   8,
+   "Staging email outage 16 Nov 15:44 – 17 Nov 12:18 UTC",
+   "-",
+   "No email was received during the outage; queued emails were processed on recovery (not a fault of this fix)",
+   "INFO"
+  ]
+ ]
+}

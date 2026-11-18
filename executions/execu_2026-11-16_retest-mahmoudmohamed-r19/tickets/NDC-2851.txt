@@ -1,0 +1,36 @@
+# NDC-2851 Notifications | Closing tickets in bulk sends the "ticket closed" email to every customer
+Summary
+When an agent selects several tickets in the list and closes them together, TAVI sends the "Your ticket has been closed" email to the customer of every ticket. Zoho Desk does not send notification emails when tickets are closed in bulk, so a mass clean-up does not flood customers with emails.
+Steps to Reproduce
+- Make sure the "ticket closed" customer notification is on for the department.
+- Open Tickets › All Tickets in Table View.
+- Tick two open tickets that have a customer with an email address.
+- Click Close and confirm "Close 2 tickets".
+- Open each ticket and look at the conversation.
+Expected Result
+- The tickets are closed.
+- As in Zoho Desk: no "ticket closed" email is sent, because notification rules do not run when tickets are closed with a bulk action.
+Actual Result
+- Both tickets are closed.
+- Each ticket shows a "Your ticket #… has been closed" email sent by System to the customer (#2664 and #2665, 10 Nov 2026 18:09 Cairo time).
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account. Zoho Desk behaviour is taken from the Zoho Desk help pages (not checked in a live Zoho Desk, because Zoho Setup pages do not load on our network).
+QA AO Dept A, tickets #2664 and #2665, 10 Nov 2026 16:09 UTC. Zoho source: help.zoho.com "Performing bulk updates" › Closing tickets: "Notification rules will not be triggered when tickets are closed using bulk actions."
+Attachment
+Annotated evidence attached (NT-24-bulk-close-sends-closed-mail-vs-zoho.png): the bulk close, the closed email on the ticket, and the Zoho Desk help note.
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T13:33:34.701469+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 11:30 UTC. Ready for retest.
+Checked on staging, through the API: I bulk-closed two test tickets in QA AO Dept A. Both closed, and neither sent a closed email. A single close of a third ticket still sent "Your ticket #4552 has been closed".
+Not checked in the browser: Mass Update with Status set to Closed. It is covered by automated tests and is now routed through the same bulk close.
+The test tickets are deleted.
+
+--- comment 2026-11-16T11:56:42.026986+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Fix is in review: desk PR #258 and client-engine PR #840. Not deployed yet.
+Reproduced on staging 16 Nov: a bulk Close of two test tickets in QA AO Dept A sent each customer "Your ticket #… has been closed". I deleted the test tickets.
+Change (product decision: follow Zoho): closing tickets in bulk no longer sends the closed email or a rating request. That covers the Close button, a macro applied to several tickets, and Mass Update with Status set to Closed. Closing a single ticket is unchanged. If a bulk close closes a parent's last open child, the parent closes too, and the parent's customer is still emailed, because the parent was not in the selection.
+Not covered: a Mass Update to a custom status of the Closed type, such as "Refunded", still sends the email.
+To retest after deploy: repeat the original steps. Both tickets should close, and neither conversation should show a closed email.
+

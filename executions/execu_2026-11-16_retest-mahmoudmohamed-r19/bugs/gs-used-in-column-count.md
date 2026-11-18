@@ -1,0 +1,27 @@
+# Global Sets | The Used In column shows a field count instead of the module names
+
+**Summary**
+On the Global Sets list, the Used In column shows a count ("0 fields", "1 field", "2 fields"). The modules that use the set only appear after opening the Used In panel. The Created By column is now shown (that part of the gap is fixed). Found while retesting NDC-2870 (gap item 9).
+
+**Steps to Reproduce**
+1. Go to CRM > Setup > Modules and Fields > Global Sets.
+2. Look at the Used In column for a set linked to fields in two modules (e.g. "QA RT19 GS Tier", linked in Leads and Customers).
+
+**Expected Result**
+- Used In names the modules ("Leads, Customers"), each a link that opens the associated places.
+
+**Actual Result**
+- Used In shows "2 fields". The module names are only inside the panel that opens from the link.
+- Created By is shown, and "Last modified" shows the date and user.
+
+**Environment**
+staging-crm.taviportal.com (NDC-Staging), ndc-staging-owner, Edge, 16 Nov 2026.
+
+**Suggested priority**: Low (display only; the information is one click away)
+
+**Related**: NDC-2870 (Global Sets gap list, item 9)
+
+**Evidence**: BUG-gs-used-in-column-count-FAIL.png, BUG-gs-used-in-column-count-vs-zoho.png
+
+**Zoho CRM comparison**
+Zoho's Global Sets list has the columns Global Set Name · Used In · Created By · Modified By. Used In lists module names as links (e.g. "Leads, Contacts, Accounts, Quotes …"), and a click opens "Associated places of <set>". Seen live in a Zoho CRM test org on 11 Nov 2026.

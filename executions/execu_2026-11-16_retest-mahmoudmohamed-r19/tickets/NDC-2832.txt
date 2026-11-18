@@ -1,0 +1,30 @@
+# NDC-2832 Tickets | Countdown Mode does not load: 6 of 7 columns show "Couldn't load these tickets"
+Summary
+Switching a ticket view to Countdown Mode shows the seven columns, but six of them (Overdue, No Due Date, Due in 1 hour, Due today, Due tomorrow, Due later) show "Couldn't load these tickets" and a message "At most 25 filter conditions are allowed." Only the On Hold column loads. Retry does not help, so Countdown Mode cannot be used.
+Steps to Reproduce
+- Sign in as an admin who belongs to many departments (the owner account here).
+- Go to Tickets and open the All Tickets view.
+- Open the view-mode menu at the top right and choose Countdown Mode.
+- Wait for the columns to load, then click Retry in any column.
+Expected Result
+- Each column lists the tickets that fall in it, as in Zoho Desk's Countdown Mode (up to seven columns by due time).
+- No error message.
+Actual Result
+- Overdue, No Due Date, Due in 1 hour, Due today, Due tomorrow and Due later all show "Couldn't load these tickets".
+- A message appears: "At most 25 filter conditions are allowed."
+- Retry fails the same way. Only On Hold shows tickets.
+Note for developers
+Each column request to the tickets list sends more than 25 filter conditions and is refused with INVALID_FILTERS. Seen as the owner (member of about 40 departments); it reproduced on 9 and 10 Nov.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, 1440×900, owner account, 10 Nov 2026. Compared with Zoho Desk help articles (live Zoho Desk did not load on this network).
+Attachment
+Annotated comparison attached (SL-62-countdown-mode-columns-fail-vs-zoho.png).
+
+
+== COMMENTS (1)
+--- comment 2026-11-16T11:37:18.333458+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Fixed and deployed on staging. Ready for retest.
+What I checked: on 16 Nov I opened All Tickets in Countdown Mode as the NDC-Staging owner (about 40 departments) at 1440 px, in a browser on staging-desk.taviportal.com. Every column loaded: Overdue showed 11 tickets, No Due Date 257, and Due in 1 hour and Due today showed "No tickets". All 31 ticket-list requests the board made answered 200, and no column showed "Couldn't load these tickets" or "At most 25 filter conditions".
+Why it works now: the board used to send the "not Closed" status exclusion as one condition per status, which pushed each column past the 25-condition limit. Since client-engine commit 3e811660a (NDC-2266, 12 Nov) it is sent as a single condition. That commit is in the running desk-web build.
+Not checked: Arabic and the dark theme. The fix is in the request, not the layout.
+

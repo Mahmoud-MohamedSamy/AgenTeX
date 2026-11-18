@@ -1,0 +1,190 @@
+{
+ "out": "NDC-2971-retest-PASS.png",
+ "ticket": "NDC-2971",
+ "priority": "medium",
+ "title": "Skills | Workflow Add/Remove skills list and Create Ticket Skills field offer deleted skills (plus inactive and other departments' skills); a ticket saved with a deleted skill keeps it",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · department QA RT19 SK Dept · skill QA RT19 SK Del deleted during the test · inactive workflow rules QA RT19 SK WF skills (department) and QA RT19 SK WF any dept",
+ "date": "16 Nov 2026",
+ "panels": [
+  {
+   "img": "2971-2-wf-dept-after-delete-add-skills.png",
+   "caption": "Workflow rule for QA RT19 SK Dept › Add skills: only S1, S2, S3, Long; saved Del (deleted) and Inact (inactive) shown as \"(removed)\" so they can be unticked",
+   "crop": [
+    370,
+    530,
+    500,
+    310
+   ],
+   "boxes": [
+    {
+     "b": [
+      515,
+      702,
+      856,
+      796
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      515,
+      798,
+      856,
+      836
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2971-4-new-ticket-after-delete.png",
+   "caption": "New Ticket after the delete: no QA RT19 SK Del",
+   "crop": [
+    990,
+    400,
+    440,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      1106,
+      772,
+      1410,
+      898
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2971-5-ticket-after-delete-edit-skills-row.png",
+   "caption": "#4537 had Del + S1 before the delete: now shows only QA RT19 SK S1",
+   "crop": [
+    370,
+    300,
+    290,
+    250
+   ],
+   "boxes": [
+    {
+     "b": [
+      380,
+      480,
+      645,
+      525
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2971-api-card.png",
+   "caption": "API",
+   "crop": [
+    0,
+    0,
+    1600,
+    430
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      183
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      193,
+      1564,
+      230
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      240,
+      1564,
+      298
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      308,
+      1564,
+      345
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Workflow Add / Remove skills, rule with a department",
+   "Only that department's active skills",
+   "Before and after the delete: S1, S2, S3, Long only; no other department, no inactive",
+   "PASS"
+  ],
+  [
+   2,
+   "Skill saved on the action that is now deleted / inactive (dev claim)",
+   "Listed as \"(removed)\"",
+   "\"QA RT19 SK Del (removed)\", \"QA RT19 SK Inact (removed)\", ticked, can be unticked",
+   "PASS"
+  ],
+  [
+   3,
+   "Rule with no department; New Ticket",
+   "No deleted / inactive skills",
+   "No-department rule: every department's active skills (64), no inactive, Del only as \"(removed)\"; New Ticket: S1, S2, S3, Long",
+   "PASS"
+  ],
+  [
+   4,
+   "Ticket that had the deleted skill",
+   "Removed from the ticket",
+   "#4537 [Del, S1] became [S1] in API and on screen; ticket Edit Skills no longer offers Del",
+   "PASS"
+  ],
+  [
+   5,
+   "Save a ticket with the deleted skill",
+   "Not kept",
+   "Create and edit 422 \"'QA RT19 SK Del' is not one of the allowed values.\"",
+   "PASS"
+  ],
+  [
+   6,
+   "Ticket page Edit Skills still offers inactive / other-department skills",
+   "-",
+   "Belongs to NDC-2933 (see there)",
+   "INFO"
+  ],
+  [
+   7,
+   "Dev question: the 32 QA SK12 skills",
+   "-",
+   "QA SK12 Dept A still has 32 skills (never deleted, as dev says); a real delete now works",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,33 @@
+# NDC-2852 SLA | Escalation does not notify the agents chosen in it when they cannot see the ticket
+Summary
+An SLA escalation can name any agent, including agents from other departments. When the escalation fires, TAVI skips every chosen agent who cannot see the ticket, and only the ticket History shows it. In the test, nobody was notified. In Zoho Desk, the users chosen in the escalation are emailed when the SLA is violated.
+Steps to Reproduce
+- Go to Setup › SLA & Escalation and create an SLA policy in a department, with a 1-minute first response target.
+- In escalation level 1 (at due), choose two agents in "Notify": one from another department and one from this department.
+- Create a ticket in the department that matches the policy, owned by another agent, and wait 2 minutes.
+- Open the ticket and go to the History tab.
+Expected Result
+- As in Zoho Desk: an email notification is sent to the users chosen in the escalation when the SLA is violated.
+- If TAVI does limit who can be notified, the escalation editor should say so when the agent is chosen, not skip the agent silently later.
+Actual Result
+- The ticket shows SLA Violated and SLA Escalated.
+- History, SLA escalation level 1: "Mahmoud Samy · Skipped: No access to the ticket", "Mahmoud TAVIPortal · Skipped: No access to the ticket", "Skipped: No one to notify".
+- No email is sent, and the policy editor gave no warning when these agents were chosen.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account. Zoho Desk behaviour is taken from the Zoho Desk help pages (not checked in a live Zoho Desk, because Zoho Setup pages do not load on our network).
+QA AO Dept A, SLA policy "QA AO SL214oya", ticket #2663, 10 Nov 2026 16:01 UTC. Mahmoud TAVIPortal works in Tech only. Ticket data sharing is Private. Zoho source: help.zoho.com "Creating and using SLAs": "An email notification is sent to the selected users when the SLA is violated."
+Attachment
+Annotated evidence attached (SL-21-escalation-skips-chosen-agents-without-ticket-access-vs-zoho.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T13:33:56.657818+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 11:30 UTC. Ready for retest.
+The hint under "Whom to Escalate" (English and Arabic) is in the deployed Desk app, but I didn't open the editor in the browser. Skipping agents who can't open the ticket is unchanged, by decision.
+
+--- comment 2026-11-16T11:57:01.650471+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Change is in review: client-engine PR #840. Not deployed yet.
+Product decision: escalations keep skipping chosen agents who can't open the ticket. Private ticket sharing promises that other agents can't see it, and the escalation email would show its subject. The History line "Skipped: No access to the ticket" stays. On staging, the escalation on 14 Nov still skipped such an agent.
+Change: the escalation editor now says under "Whom to Escalate" that agents are emailed only for tickets they can see, and that with private sharing a chosen agent who can't open the ticket is skipped. The text is in English and Arabic.
+To retest after deploy: open an SLA escalation level and read the hint under Whom to Escalate.
+

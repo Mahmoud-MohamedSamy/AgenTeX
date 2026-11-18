@@ -1,0 +1,10 @@
+const RAW = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/'; const out = {};
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.goto(H + '/views/all/tickets/4f632116-cc82-4644-b0c8-e7ea4727f88e', { waitUntil: 'domcontentloaded' });
+await page.getByText('test00').first().waitFor({ timeout: 90000 }).catch(() => {}); await sleep(6000);
+await page.mouse.click(1211, 117); await sleep(2000); out.menu = (await text()).replace(/\s+/g, ' ').match(/.{0,40}(Forum|forum|Community|community).{0,80}/g);
+await page.screenshot({ path: RAW + '3007-4-reply-menu.png' }); await page.keyboard.press('Escape'); await sleep(800);
+await page.getByRole('button', { name: 'Reply All' }).first().click(); await sleep(3000);
+out.composer = ((await text()).replace(/\s+/g, ' ').match(/.{0,60}(Forum|forum|Community|community|topic).{0,100}/g) || []).slice(0, 6);
+await page.screenshot({ path: RAW + '3007-5-composer.png' });
+return out;

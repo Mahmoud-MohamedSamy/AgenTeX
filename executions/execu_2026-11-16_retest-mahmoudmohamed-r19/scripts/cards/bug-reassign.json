@@ -1,0 +1,7 @@
+{"out":"bug-reassign-api-card.png","title":"Agents API: reassign removes the agent everywhere, not only from the departments in the request","host":"staging-desk.taviportal.com","who":"ndc-staging-owner (owner)","date":"16 Nov 2026",
+"rows":[
+["Before","Dev Team 2: member of 36 departments, 14 teams, round-robin pools in other departments; named in SLA escalations of QA RT19 D3 Dept + Dept B","snapshot saved: department_memberships 35 (+ the 2 test departments), team_sources 14, RR pools in other departments","info"],
+["Request (2 departments only)","POST /api/v1/desk/agents/{Dev Team 2}/reassign\n{departments:[{QA RT19 D3 Dept → agent Mahmoud Samy},{QA RT19 D3 Dept B → unassigned}], update_rules:true}","200 success; rules: department_memberships 37, round_robin_pools 18, team_sources 14, sla_escalations 2, moved_tickets 0","bad"],
+["After","GET agent references + memberships","department_memberships 0, round_robin_pools 0, team_sources 0; agent left 33 departments that were NOT in the request (e.g. QA AO Dept A, QA NDC Accounting, QA NDC KSA Branch …)","bad"],
+["The 2 requested departments","SLA levels in QA RT19 D3 Dept / Dept B","Handed to Mahmoud Samy / left with nobody, as asked","ok"],
+["Restore","re-add memberships, teams, RR pool targets one by one","35 memberships, main department, 14 teams, 18 RR pools back; verified equal to the snapshot","info"]]}

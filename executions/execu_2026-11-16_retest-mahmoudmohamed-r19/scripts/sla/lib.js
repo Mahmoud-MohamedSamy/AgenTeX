@@ -1,0 +1,14 @@
+var T='88e8ea44-1658-4df3-9930-d0902b91073d', OWNER='97be04b6-0a08-4883-aa51-e1650b11cab7', SAMY='d23fb4e0-248d-41f6-af60-d28885a7007e', TU1='876ce871-2b02-4854-89a7-68050391c62b';
+var ACC='784400e1-4a2a-42c2-b4f3-7ca56e79828a',CON='0924eb24-e42a-4eab-8efd-e3428f19e882';
+var LED='../ledger.md', OUTD='sla/out/';
+var CFG=(()=>{try{return JSON.parse(fs.readFileSync(OUTD+'cfg.json','utf8'));}catch(e){return {};}})();
+var D=CFG.D, DB=CFG.DB;
+var now=()=>new Date().toISOString().slice(0,19)+'Z';
+var led=(t)=>fs.appendFileSync(LED,`- ${now()} SLA lane: ${t}\n`);
+var f=(k,v)=>({field:k,value:{kind:'string',value:v}});
+var setCfg=o=>{Object.assign(CFG,o);fs.mkdirSync(OUTD,{recursive:true});fs.writeFileSync(OUTD+'cfg.json',JSON.stringify(CFG,null,1));};
+var save=(n,o)=>{fs.mkdirSync(OUTD,{recursive:true});fs.writeFileSync(OUTD+n+'.json',JSON.stringify(o,null,1));};
+var ok=(r,w)=>{if(!r||r.s>=300)throw new Error(w+' '+(r&&r.s)+' '+(r&&r.t.slice(0,400)));return r;};
+var tk=async(subj,extra=[],dept)=>{const r=ok(await api('POST','/modules/'+T+'/records',{data:[f('subject','QA RT19 SLA '+subj),f('description','QA RT19 SLA '+subj),f('department',dept||D),f('status','Open'),f('priority','high'),...extra]}),'ticket');const id=r.j.data.id;const num=r.j.data.recordNumber||r.j.data.number;led(`ticket "QA RT19 SLA ${subj}" ${id} #${num}`);return {id,num};};
+var sla=async id=>{const s=(await api('GET','/desk/tickets/'+id+'/sla')).j?.data;return {state:s?.state,policy:s?.policy?.name||s?.execution?.policy_name,cov:s?.coverage,obl:(s?.obligations||[]).map(o=>({k:o.kind,st:o.state,due:o.due_at,lvl:o.escalation_level_reached}))};};
+var feed=async id=>(await api('GET','/desk/tickets/'+id+'/activity')).j;

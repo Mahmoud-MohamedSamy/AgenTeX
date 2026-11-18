@@ -1,0 +1,21 @@
+{
+ "out": "NDC-2824-retest-PASS.png",
+ "ticket": "NDC-2824",
+ "priority": "high",
+ "title": "Assignment Rules | Round robin threshold counts the agent's tickets in every department and On Hold tickets",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner, API · QA AO Dept B + QA AS6 Dept A · one-agent sequential rules \"QA RT19 AS t3/t4/t6\" (subject key, offline allowed) · Dev Team 2, Test User 1 · each probe ticket closed after the check",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "2824-api-card.png", "caption": "Threshold probes: one variable changed at a time, counts read from the ticket list and /workload before each probe", "crop": [0, 0, 1600, 610],
+   "boxes": [{"b": [36, 126, 1564, 184], "n": 1, "kind": "PASS"}, {"b": [36, 194, 1564, 231], "n": 2, "kind": "PASS"}, {"b": [36, 241, 1564, 299], "n": 3, "kind": "PASS"}, {"b": [36, 309, 1564, 346], "n": 4, "kind": "PASS"}, {"b": [36, 356, 1564, 414], "n": 5, "kind": "PASS"}, {"b": [36, 424, 1564, 550], "n": 6, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Department threshold = Open tickets in the rule's department (Dev Team 2: 1 there, 23 in all)", "Only that department counts", "thr 1 waits (#4525), thr 2 assigned (#4527)", "PASS"],
+  [2, "Add an Open ticket for the agent in another department", "Not counted", "thr 2 still assigned (#4529)", "PASS"],
+  [3, "Add an Open ticket in the department, then put it On Hold", "Open counts, On Hold does not", "Open: waits (#4531); On Hold: assigned (#4532); Escalated counts as open (#4533)", "PASS"],
+  [4, "Agent level threshold", "Same count", "thr 1 waits (#4542), thr 2 assigned (#4543)", "PASS"],
+  [5, "Agent with 74 Open in QA AS6 Dept A and 93 in all departments", "Assigned at 75", "thr 74 waits (#4539), thr 75 assigned (#4540)", "PASS"],
+  [6, "New defect, separate: rule counts 1-2 tickets the agent does not have", "Count = Open tickets in the department", "Test User 1: 4 Open in AO-B, assigned only at thr 7 (#4576/#4577 wait, all day); Dev Team 2: counted 2 with 1 Open since a ghost ticket (no number, no History) was created 11:25Z", "INFO"]
+ ]
+}

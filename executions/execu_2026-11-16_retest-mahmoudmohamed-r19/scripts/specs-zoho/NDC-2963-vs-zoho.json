@@ -1,0 +1,13 @@
+{"out":"NDC-2963-retest-vs-zoho.png","ticket":"NDC-2963","title":"Workflow Rules | Add Comment body with HTML: sanitised, but shown as safe rich text instead of plain text","verdict":"SAME","label":"TAVI ACCEPTABLE vs ZOHO","date":"TAVI 16 Nov 2026 · Zoho 16 Nov 2026 14:56Z",
+"env":"TAVI staging-desk (NDC-Staging, rule QA RT19 WF 2963, ticket #4218) · Zoho Desk techegysolutions (Enterprise, admin, ticket #124 with 2 private comments through the comments API; deleted and purged)",
+"leftHead":"TAVI Desk (left)","rightHead":"Zoho Desk (right)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/2963-1b-editor-comment.png","caption":"TAVI rule editor: Add comment is a rich-text editor; the body shows a broken image, bold, link without href; nothing runs","crop":[370,470,500,370],"boxes":[{"b":[522,764,838,830],"n":2,"kind":"SAME"},{"b":[382,540,852,570],"n":1,"kind":"INFO"}]},
+{"side":"tavi","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/2963-4-ticket-comment.png","caption":"TAVI ticket #4218: the posted comment renders the same safe rich text","crop":[664,190,936,150],"boxes":[{"b":[676,258,860,316],"n":2,"kind":"SAME"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-2963-2-api-card.png","caption":"Zoho: no built-in Add comment action; comments API (what a custom function uses) strips onerror and javascript: href, keeps <img>, <b>, <a>","crop":[0,0,1600,395],"boxes":[{"b":[36,99,1564,178],"n":1,"kind":"INFO"},{"b":[36,188,1564,314],"n":2,"kind":"SAME"},{"b":[36,324,1564,382],"n":3,"kind":"INFO"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-2963-1.png","caption":"Zoho ticket #124: html comment = broken image + bold + link without href (bottom); plainText comment shows the tags as text (top)","crop":[658,180,942,180],"boxes":[{"b":[660,272,1592,356],"n":2,"kind":"SAME"},{"b":[660,182,1592,264],"n":3,"kind":"INFO"}]}
+],
+"rows":[
+[1,"Automation action that adds a comment","None built in (workflow/macro actions: Alerts, Tasks, Field Updates, Custom Functions); done through a custom function calling the comments API","Built-in Add comment action with a rich-text editor (TAVI extra)","TAVI extra"],
+[2,"HTML in an html/rich-text comment body","Sanitised (onerror and javascript: href removed) and shown as safe rich text: broken image, bold, link without href; no script runs","Same: broken image, bold, link without href in the editor and on the ticket; no script runs","SAME"],
+[3,"Plain-text comments","Only when the caller sends contentType plainText: tags shown literally","Not offered for this action (always rich text)","INFO"]]}

@@ -1,0 +1,33 @@
+# NDC-3070 Blueprint API | A save that sends no revision is accepted and silently overwrites a newer change
+Summary
+The NDC-3030 fix refuses a stale save that sends an old revision, but a save that sends no revision at all is still accepted and replaces the newer version. The designer always sends a revision; scripts or integrations that omit it can still lose other people's changes.
+Steps to Reproduce
+- GET a blueprint (revision 11).
+- Save a rename with revision 11 (200, revision 12).
+- From the copy read in step 1, save a description change through PUT /blueprints/{id} (and PUT …/draft) without a revision field.
+- GET the blueprint.
+Expected Result
+- The save without a revision is refused (409, or 422 "revision is required"); the rename stays.
+Actual Result
+- Both saves answer 200.
+- The name is back to the old one; the rename is lost with no warning. The same call with revision 11 gets 409 BLUEPRINT_REVISION_CONFLICT.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge (headless) on Windows 10, 16 Nov 2026, owner account ndc-staging-owner.
+Evidence
+BUG-blueprint-save-without-revision-overwrites-FAIL.png
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T14:26:41.230030+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on staging (metadata-engine #232, client-engine #841), checked on staging-desk in the NDC Staging tenant.
+Checked through the API with a throwaway blueprint, since permanently deleted. The save with revision 1 answered 200 and moved it to revision 2. From the old copy, PUT without a revision answered 422 BLUEPRINT_DEFINITION_INVALID on path "revision": "Send the revision you loaded, so this save cannot overwrite a newer change." PUT .../draft without a revision answered the same. The stored name stayed the rename, still at revision 2. A stale revision still answers 409 BLUEPRINT_REVISION_CONFLICT.
+The Active switch on the blueprint list sent no revision either, so it could also overwrite a newer change. In the browser on both staging-desk and staging-crm, the switch now sends the revision the list read. I blocked that request, so nothing changed.
+Publish still takes an optional revision, because it promotes the stored draft rather than writing a copy the caller holds.
+
+--- comment 2026-11-16T13:13:17.050864+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix on a PR, not merged yet. metadata-engine #232 and client-engine #841.
+Reproduced on staging with a throwaway blueprint, since deleted: after a rename saved with its revision, a PUT and a draft save from the old copy without a revision both answered 200, and the rename was lost.
+After the fix, PUT and draft saves without a revision answer 422 on path "revision" and write nothing, so the rename stays. A stale revision still answers 409 as before. Publish keeps its optional revision, because it promotes the stored draft and writes no copy the caller holds.
+The Active switch on the CRM and Desk blueprint lists also saved without a revision. #841 makes them send the one the list read, and it ships before the metadata-engine change.
+Checked in tests only so far, not yet on staging.
+

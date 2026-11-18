@@ -1,0 +1,8 @@
+{"out":"3000-api-card.png","title":"NDC-3000 acknowledgement and rating link (QA RT19 NTF Dept)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Channel setting","GET /desk/channels/settings","acknowledgement_enabled = true","info"],
+["Receiving address for our dept","POST /desk/channels/addresses kind hosted, local part qa-rt19-ntf","201, receiving, verified, active (Tech's hosted domain)","info"],
+["Dept rules saved ON","PUT contact.ticket_received + contact.reply_received {is_enabled:true}","200; both is_enabled=true, is_customized=true (saved rule ignores the address opt-in)","info"],
+["Ticket not opened by email","#4691 POST record channel=email (API)","no acknowledgement queued (ack is only for tickets opened by an inbound email) - not a failure","info"],
+["Rating link, ratings limited to one dept","Happiness ON scoped to QA RT19 NTF Dept; #4678 close 12:56:27Z","closed email queued + sent with {{happiness.link}}, happiness_link_status = sent (was missing for Marketing on 12 Nov)","ok"],
+["Customer emails the support address","needs the user's own mailbox","PENDING USER: new-ticket ack, reply ack, closed email with Good/Okay/Bad links","info"]]}

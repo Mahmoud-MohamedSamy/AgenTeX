@@ -1,0 +1,154 @@
+{
+ "out": "NDC-2835-retest-PASS.png",
+ "ticket": "NDC-2835",
+ "date": "16 Nov 2026",
+ "env": "NDC-Staging · staging-desk · owner account · QA RT19 SLA Dept (Mahmoud Samy + Test User 1), QA RT19 SLA Dept B (Test User 1)",
+ "priority": "medium",
+ "verdict": "PASS",
+ "title": "SLA | A \"Before due\" escalation longer than the target time can be saved",
+ "panels": [
+  {
+   "img": "2835-1-before2h-set-m.png",
+   "caption": "Original steps: Respond Within 1 Hours, Level 1 Before due by 2 Hours (target dialog saves)",
+   "crop": [
+    580,
+    260,
+    1600,
+    600
+   ],
+   "boxes": [
+    {
+     "b": [
+      597,
+      293,
+      920,
+      327
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      612,
+      548,
+      1000,
+      584
+     ],
+     "n": 1,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2835-2-sla-save.png",
+   "caption": "Save SLA → refused, nothing saved",
+   "crop": [
+    268,
+    140,
+    1600,
+    480
+   ],
+   "boxes": [
+    {
+     "b": [
+      422,
+      153,
+      1446,
+      228
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2835-api-card.png",
+   "caption": "API",
+   "crop": [
+    0,
+    0,
+    1600,
+    410
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      251
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      345
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      355,
+      1564,
+      392
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Respond 1 h + Level 1 Before due 2 h in the target dialog",
+   "Refused with message",
+   "Target dialog closes, no message (checked at SLA save)",
+   "INFO"
+  ],
+  [
+   2,
+   "Save the SLA",
+   "Refused: before-due must be shorter",
+   "POST 400; banner \"Make the before-due time shorter than the target time\" (prefixed with the raw path targets[0].escalations.response[0].offset)",
+   "PASS"
+  ],
+  [
+   3,
+   "API: 2 h, equal 60 m, 61 m, 25 h vs 1 day",
+   "400",
+   "400 before_not_shorter_than_target on the level's offset",
+   "PASS"
+  ],
+  [
+   4,
+   "Resolution escalation; edit of a saved SLA",
+   "400",
+   "400; stored value unchanged",
+   "PASS"
+  ],
+  [
+   5,
+   "Control 59 m before a 1 h target",
+   "Saves",
+   "201",
+   "PASS"
+  ]
+ ]
+}

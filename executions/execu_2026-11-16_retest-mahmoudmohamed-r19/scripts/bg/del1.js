@@ -1,0 +1,4 @@
+var __B="D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/scripts/bg/";eval(fs.readFileSync(__B+'blib.js','utf8'));
+const led=fs.readFileSync(RUN+'/ledger.md','utf8').split('\n').filter(l=>/delet/i.test(l));const ids=[...new Set(led.join('\n').match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g)||[])];
+const out=[];for(const id of ids){const r=await api('GET','/modules/'+T+'/records/'+id);if(r.s!==200){out.push([id.slice(0,8),r.s]);continue;}const d={};for(const x of r.j.data.data||[])d[x.field]=x.value?.value;if(d.department===AOB||[A1,A3].includes(d.owner))out.push([id.slice(0,8),r.j.data.is_deleted,d.ticket_number,d.status,nm(d.owner),nm(d.department),String(d.subject).slice(0,45)]);}
+return {n:ids.length,out};

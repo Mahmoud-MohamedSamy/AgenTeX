@@ -1,0 +1,33 @@
+# NDC-3060 Blueprint | The Contact field in a transition form shows the contact's ID instead of the contact's name
+Summary
+When a blueprint transition asks for the ticket's Contact field, the form shows the contact's internal ID (de7195a2-369e-48c5-b03f-b8e37d6c5fb2) in a plain text box, instead of the contact's name. The ticket itself shows the contact normally in Contact Info.
+Steps to Reproduce
+- Create a blueprint for a department (Tech in the screenshot) with a transition, for example Open → On Hold "Move to On Hold". In the transition's During section, add the Contact field.
+- Open a ticket in that blueprint that already has a contact (#4058).
+- Click Move to On Hold.
+- Look at the Contact field in the transition form.
+Expected Result
+- The Contact field shows the contact's name, the same as Contact Info on the ticket.
+- It works as a contact picker, where you search by name and choose, like on the ticket form.
+Actual Result
+- The Contact field shows de7195a2-369e-48c5-b03f-b8e37d6c5fb2, the contact's ID.
+- It looks like a plain text box, so the agent sees an ID they cannot read and could overwrite it with any text.
+Note
+- Seen from a screenshot. Not checked: whether clicking the field opens a contact picker, whether other lookup fields (Account, Product) behave the same, and what is saved after Run.
+- Zoho Desk not checked live.
+Environment
+staging-desk.taviportal.com (NDC-Staging), ticket #4058, blueprint "test blueprint", Microsoft Edge, Windows 10, 15 Nov 2026.
+Attachment
+Annotated evidence attached (blueprint-contact-shows-id.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T10:58:02.342622+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fixed and live on staging (client-engine PR #838, deployed today to Desk).
+Checked in the browser on staging-desk (NDC-Staging) at 1440 px with a test blueprint whose step asks for Contact, on a ticket whose contact is Mahmoud Mohamed. The Contact field shows "Mahmoud Mohamed", the same as Contact Info, and no id appears anywhere on the page. Clicking it opens the contact picker. Arabic shows the same name.
+Not checked live: Account and Product fields. They use the same control, so they are covered by the same change and its tests. Not checked on Windows or Edge. The CRM app's copy of the form was still being deployed when I posted this.
+
+--- comment 2026-11-16T09:10:51.658362+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Found the cause. The Contact item in a transition form is already a contact picker: clicking it opens a record chooser, and only records can be chosen, not free text. Its button printed the contact's id instead of the name.
+Fix: the button now shows the contact's full name, as Contact Info does. It shows "Loading…" while the name loads, and never the full id. Account, Product and any other lookup field use the same control, so they show names too. Branch fix/ndc-3060-during-lookup-name, pushed, covered by tests. It is not merged or deployed yet, and I have not checked it in the browser.
+

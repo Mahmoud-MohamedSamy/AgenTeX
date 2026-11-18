@@ -1,0 +1,34 @@
+# NDC-2870 Global Sets: features Zoho CRM has that CRM is missing
+Summary
+We compared CRM's Global Sets with Zoho CRM. This ticket lists what Zoho has and CRM does not have yet. The feature spec is NDC-2806. Each item says where it sits in NDC-2806 (S1–S8 are its scope items).
+Already done in CRM
+- Global Sets tab under Modules and Fields: list, search, create, edit, clone (X_Cloned, X_Cloned_2) and delete.
+- Editor: name, description, colours, bulk add, drag to reorder, Sort A–Z, remove to Unused and move back (50 at a time).
+- Convert a field's own pick list into a global set, and link an existing pick list with the mapping popup (records per value, Map to, Move to unused, View associated places).
+- Used In per field: layouts, custom views, workflow rules, saved actions, approval and review processes, custom actions.
+- Safeguards: more than 15 linked fields blocks delete and replace; locked fields (Approval Status, status fields) cannot use a set; duplicate names and values are refused; a stale save is refused.
+- Permissions crm:global_set:view and crm:global_set:manage, plus audit entries.
+- CRM also lets multi-select and radio-button fields use a set, which Zoho does not allow.
+Missing — managing values
+- Replace that updates every place using the value. Today CRM refuses for views (NDC-2867) and skips workflows (NDC-2866). Zoho changes records, view and workflow criteria, field updates and field dependency, and moves the old value to Unused. NDC-2806 S3.
+- Delete an unused value for good. Today a value can only go to Unused and back. Zoho deletes one value at a time from Unused and refuses values still in use.
+- Saved sort order (Entered / Alphabetical) that list views, reports and dashboards follow. Today there is only a one-time Sort A–Z button. Not in NDC-2806.
+- Add Predefined Choices in the values menu. Not in NDC-2806.
+Missing — sets Zoho ships
+- Ready-made Source and Industry sets. Today Lead Source and Industry are separate pick lists per module. Not in NDC-2806.
+- Countries and States list behind every address Country/State field, with codes and a Configure page. Today country fields are free text. Not in NDC-2806.
+Missing — where admins see a set is used
+- Used In listing reports, field dependencies and blueprints. Today it says "Reports … are not listed here yet". NDC-2806 S6.
+- Which value is used where (per value, e.g. which field update or workflow uses "Gold"). Today Used In is per field only.
+- Created By column, and Used In showing module names as links. Today the list shows a field count and last modified only.
+Missing — limits and API
+- Limits per tenant: Zoho allows 30 sets (Enterprise), 15 linked pick lists per module, 30 fields per set, 500 unused values. CRM only has 1000 values and the 15-field rule; we created 51 sets without a limit.
+- Replaced values history and a "done" notification for long replaces.
+Environment
+staging-crm.taviportal.com (NDC-Staging), Edge, 11 November 2026, owner account. Zoho CRM Enterprise trial test org. Comparison images are attached.
+
+
+== COMMENTS (1)
+--- comment 2026-11-11T16:07:56.284943+02:00 by e1364b0b-d3cd-4167-8261-6194577a480a
+Update on "Could not be checked": field dependency with a global-set field has now been tested through the dependency maps. A set field works as parent and as child, but Replace does not update the maps (filed as NDC-2918). Reports were also checked: Replace does not update report filters (NDC-2917). Both relate to item 1 and item 7 of this list.
+

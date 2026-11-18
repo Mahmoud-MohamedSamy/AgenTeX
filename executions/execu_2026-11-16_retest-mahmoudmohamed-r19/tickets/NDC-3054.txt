@@ -1,0 +1,33 @@
+# NDC-3054 Blueprint | Closing a ticket through a blueprint transition sends no closed email or rating request
+Summary
+When a blueprint transition moves a ticket to Closed, the ticket never records "Ticket closed". As a result, the closed email and the rating request are not sent.
+Steps to Reproduce
+- Turn Customer Happiness on for the department.
+- Create a blueprint with an Open → Closed transition "Close" that the ticket owner can run.
+- As the owner, run "Close" on a ticket in that blueprint whose contact has an email address.
+- For comparison, close a second ticket for the same contact with the normal Close action.
+Expected Result
+- The same result as a normal close: "Ticket closed" is logged and the closed email with the rating question is sent to the contact.
+Actual Result
+- Blueprint close (QA tickets #3955, #3946): History shows "Status changed → Closed" and "Completed blueprint" only. There is no "Ticket closed" entry, no email is sent, and nothing arrived in Gmail.
+- Normal close (QA ticket #3954): "Ticket closed", Reply queued, Reply sent and the closed email with the rating arrived.
+- With Customer Happiness off the blueprint close is the same (QA ticket #3935).
+Note
+Zoho not checked live. Found during the automation-order end-to-end run E2E-1. Related: the "Closing a ticket" email also needs Customer Happiness on (filed separately).
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account and agent Mahmoud Samy, department QA AS6 Dept A, contact with a QA Gmail address, 15 Nov 2026.
+Attachment
+Annotated evidence attached (E1-F2-blueprint-close-sends-no-closed-email.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:21:00.747522+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging: a blueprint transition into Closed logs "Ticket closed" once, marked as closed by the blueprint transition. The ticket's History reads "Ticket closed by blueprint transition <transition> in <blueprint>".
+Not seen: the closed email itself. In the department I used (QA AS6 Dept A) a normal Close sends no closed email either, so the blueprint close now matches a normal close there. Please retest in a department where Customer Happiness and the closed email are on.
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:42:45.331260+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging (NDC-Staging): a blueprint close wrote "Status changed" and "Completed blueprint" but no "Ticket closed"; a normal Close wrote it.
+Fix on branch desk fix/ndc-3054-blueprint-close-side-effects (PR to follow): any close that does not go through the Close button (blueprint transition, workflow rule, macro custom closed status, API) now gets the same result as a normal close, exactly once: "Ticket closed" in History, the closed email, and the rating request when Customer Happiness is on. History says what closed it, e.g. "Ticket closed by blueprint transition Close in Refund" (client-engine fix/ndc-3056-3034-3032-ticket-blueprint). Imports and data migrations never email. Spam tickets and blocked senders get the History line but no email.
+Checked in automated tests only. Not deployed, not checked on staging yet.
+

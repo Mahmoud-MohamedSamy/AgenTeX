@@ -1,0 +1,33 @@
+# NDC-3029 Blueprint | Creating, editing, publishing or deleting a blueprint leaves no entry in the Audit Log
+Summary
+Blueprint changes are not recorded in the Audit Log at all. Zoho Desk logs every blueprint add, update and delete.
+Steps to Reproduce
+- Go to Settings › Automation › Blueprints and create a blueprint.
+- Edit it (for example the description) and click Save and Publish.
+- Delete the blueprint.
+- Open Settings › Audit Log (All Entities, Any time).
+Expected Result
+- One readable entry for each change: blueprint created, updated, published and deleted, with name, user, IP and department.
+Actual Result
+- No entry for any of the four changes. On 13 Nov 20:24 Cairo blueprint "QA BP D1 audit" was created, edited, published and deleted; the log shows only sign-ins at that time.
+- GET /audit/events?app_key=desk has no blueprint event either; the only blueprint entries ever seen are "restored" and "purged".
+Zoho Desk
+Setup › Audit Log lists blueprint "QA BP I4 throwaway" as Blueprint - (Tickets) · ADD, UPDATE and DELETE, each with user, IP and department.
+Note
+Spec rows H12 and M4. Related earlier fix: NDC-1643.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026. Compared live with Zoho Desk (test account techsolutionsegypt; test blueprint deleted afterwards).
+Attachment
+Annotated evidence attached (BP-H12-blueprint-changes-not-in-audit-log-vs-zoho.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:11.061826+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging in Settings › Audit Log: creating, editing, publishing and deleting a blueprint each show a line with the blueprint name, user, IP and department, e.g. "ndc-staging-owner added a Blueprint named …", "… published a Blueprint named …", "… updated …: changed who can perform the transition QA finish".
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:09.213305+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging: creates, edits and publishes wrote nothing to the audit log. Deletes were written under the app "metadata-engine", so Desk's Audit Log never showed them.
+Fix: each change writes one row under Desk's app with the blueprint name, user, IP and department: created, updated, published, activated, deactivated, deleted. Branches: metadata-engine fix/ndc-3030-3037-3036-3029-blueprint-admin, client-engine fix/ndc-blueprint-designer-qa-1115 (the words for the new actions in English and Arabic).
+Checked in automated tests only. Not deployed, not checked in the Audit Log screen yet.
+

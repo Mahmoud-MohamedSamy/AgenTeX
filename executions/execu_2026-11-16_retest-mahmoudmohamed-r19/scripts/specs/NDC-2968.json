@@ -1,0 +1,115 @@
+{
+ "out": "NDC-2968-retest-PASS.png",
+ "ticket": "NDC-2968",
+ "date": "16 Nov 2026",
+ "priority": "medium",
+ "title": "Workflow Rules | Create Record action skips required fields and leaves the new record without an owner",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · Create Record in Calls · ticket #4238 owned by CES1 in QA RT19 WF Dept · contact \"QA RT18 GL Contact\"",
+ "panels": [
+  {
+   "img": "2968-api-card.png",
+   "caption": "API evidence (owner, NDC-Staging)",
+   "crop": [
+    0,
+    0,
+    1600,
+    360
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      204
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      272
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      340
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2968-2-exec-empty.png",
+   "caption": "Execution History: a required field that comes out empty at run time → Create Record Cancelled with the reason, no Call created",
+   "crop": [
+    270,
+    60,
+    1290,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      395,
+      1268,
+      502
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Save Create Record in Calls with only Start Time",
+   "Refused, fields named",
+   "400 \"fill in the required fields Subject, Call Status, Contact Name, Department.\"",
+   "PASS"
+  ],
+  [
+   2,
+   "All required fields; ticket owned by CES1",
+   "Call has a real owner",
+   "Call created, owner = CES1 (the ticket owner), Department from the ticket, Succeeded",
+   "PASS"
+  ],
+  [
+   3,
+   "Required field from an empty placeholder",
+   "Run fails with a clear reason",
+   "Cancelled \"Not created: Calls needs Subject…\", nothing created",
+   "PASS"
+  ],
+  [
+   4,
+   "Created By on the Call",
+   "—",
+   "System (dev: by design); not checked on screen",
+   "INFO"
+  ]
+ ]
+}

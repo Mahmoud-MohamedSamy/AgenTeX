@@ -1,0 +1,135 @@
+{
+ "out": "NDC-2973-retest-PASS.png",
+ "ticket": "NDC-2973",
+ "date": "16 Nov 2026",
+ "priority": "medium",
+ "title": "Workflow Rules | Owner Assignment action assigns suspended agents and agents outside the department",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner · QA agent \"ZZ Sweep Tavi Probe\" (member of QA RT19 WF Dept B only) suspended ~10:40 UTC for 1 min and reactivated · tickets #4280, #4286, #4288, #4289",
+ "panels": [
+  {
+   "img": "2973-api-card.png",
+   "caption": "API evidence (owner, NDC-Staging)",
+   "crop": [
+    0,
+    0,
+    1600,
+    454
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      204
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      251
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      319
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      329,
+      1564,
+      387
+     ],
+     "n": 5,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      397,
+      1564,
+      434
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2973-1-exec-susp-in-dept.png",
+   "caption": "Execution History #4289 (agent in the department, suspended): Owner Assignment Skipped \"the agent is not an active agent of the ticket's department.\"",
+   "crop": [
+    270,
+    60,
+    1290,
+    520
+   ],
+   "boxes": [
+    {
+     "b": [
+      292,
+      395,
+      1268,
+      502
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Agent not in the department (active and suspended)",
+   "Refused like manual assign, reason shown",
+   "Owner kept; Skipped \"not an agent of the ticket's department\"",
+   "PASS"
+  ],
+  [
+   2,
+   "Agent in the department, suspended",
+   "Refused, reason shown",
+   "Owner kept; Skipped \"not an active agent of the ticket's department\" (ticket 3 s after suspension)",
+   "PASS"
+  ],
+  [
+   3,
+   "Control: active agent in the department",
+   "Assigned",
+   "Succeeded",
+   "PASS"
+  ],
+  [
+   4,
+   "Label",
+   "Failed",
+   "Skipped with the reason (dev design, same as NDC-2966)",
+   "INFO"
+  ]
+ ]
+}

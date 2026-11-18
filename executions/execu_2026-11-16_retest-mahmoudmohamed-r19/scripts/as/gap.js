@@ -1,0 +1,5 @@
+var __AS="D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/scripts/as/";eval(fs.readFileSync(__AS+'lib.js','utf8'));
+const rows=[];for(let p=1;p<20;p++){const g=await api('GET','/modules/'+T+'/records?page='+p+'&per_page=100');const L=g.j?.data?.items||g.j?.data||[];for(const r of L){const o={id:r.id,cs:r.compliance_state};for(const x of r.data||[])o[x.field]=x.value?.value;rows.push(o);}if(!g.j?.meta?.more_records)break;}
+const rb=JSON.parse(fs.readFileSync(OUT+'rb-items.json','utf8'));const r2=await api('GET','/audit/recycle-bin/items?app_key=desk&limit=50');const rbl=[...rb,...arr(r2.j?.data)].map(x=>x.record_label);
+const have=new Set(rows.map(r=>+r.ticket_number));const miss=[];for(let n=4520;n<=4572;n++)if(!have.has(n))miss.push(n+(rbl.some(l=>l.startsWith('#'+n+' '))?' (recycle bin)':' (NOT FOUND)'));
+return {miss,total:rows.length,noncompliant:rows.filter(r=>r.cs&&r.cs!=='valid').map(r=>[r.ticket_number,r.cs,r.status,nm(r.owner)]).slice(0,20)};

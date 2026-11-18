@@ -1,0 +1,12 @@
+{"out":"BUG-skills-api-silent-drop-vs-zoho.png","ticket":"NEW BUG (draft)","title":"Ticket Skills | Inactive and other-department skills are silently dropped on save while a deleted skill is refused","verdict":"SAME","label":"NOT A BUG vs ZOHO","date":"TAVI 16 Nov 2026 · Zoho 16 Nov 2026 13:44-13:50Z",
+"env":"TAVI staging-desk (NDC-Staging, Records API, QA AS6 Dept A) · Zoho Desk techegysolutions (Enterprise, admin, API /api/v1/tickets entitySkills, dept Tech; skills, skill types and tickets #114, #119-#121 deleted and purged)",
+"leftHead":"TAVI Desk (left)","rightHead":"Zoho Desk (right)",
+"panels":[
+{"side":"tavi","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/bug-skills-api-inconsistent-api-card.png","caption":"TAVI: deleted/unknown -> 422; inactive/other-dept -> saved without them, no warning","crop":[0,0,1600,495],"boxes":[{"b":[36,99,1564,251],"n":3,"kind":"INFO"},{"b":[36,261,1564,413],"n":1,"kind":"SAME"},{"b":[36,423,1564,481],"n":2,"kind":"SAME"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-4-1-api-card.png","caption":"Zoho: every not-allowed skill (inactive, other dept, deleted, unknown) is dropped silently with 200","crop":[0,0,1600,470],"boxes":[{"b":[36,167,1564,251],"n":1,"kind":"SAME"},{"b":[36,261,1564,319],"n":2,"kind":"SAME"},{"b":[36,329,1564,387],"n":3,"kind":"INFO"},{"b":[36,397,1564,455],"n":1,"kind":"SAME"}]},
+{"side":"zoho","img":"executions/execu_2026-11-16_retest-mahmoudmohamed-r19/screenshots/raw/ZD-4-1.png","caption":"Zoho #114 Skills panel after the edit with only an inactive skill: \"No skills yet\", no message","crop":[300,50,960,420],"boxes":[{"b":[400,320,600,465],"n":2,"kind":"SAME"}]}
+],
+"rows":[
+[1,"Inactive or other-department skill sent with a valid one (create and edit)","200; saved with the valid skill only; no warning","201/200; saved with the valid skill only; no warning","SAME"],
+[2,"Edit with only an inactive / other-department skill","200; all skills removed; no warning","200; all skills removed; no warning","SAME"],
+[3,"Deleted or unknown skill","200; dropped silently too","422 \"not one of the allowed values\" - stricter than Zoho (TAVI extra, not a defect)","INFO"]]}

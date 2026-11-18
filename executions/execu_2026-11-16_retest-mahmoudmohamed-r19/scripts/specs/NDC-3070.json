@@ -1,0 +1,22 @@
+{
+ "out": "NDC-3070-retest-PASS.png",
+ "ticket": "NDC-3070",
+ "priority": "low",
+ "title": "Blueprint API | A save that sends no revision is accepted and silently overwrites a newer change",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner session (API + headless Edge) · blueprint \"QA BP RT19 D3 3070 renamed by A\" ff6ef3d5 (Customer Support, inactive) · 16 Nov 2026 ~17:00 Cairo",
+ "date": "16 Nov 2026",
+ "panels": [
+  {"img": "3070-api-card.png", "caption": "API: saves without a revision are refused, the newer rename stays", "crop": [0, 0, 1600, 610],
+   "boxes": [{"b": [36, 146, 1564, 183], "n": 1, "kind": "INFO"}, {"b": [36, 193, 1564, 366], "n": 2, "kind": "PASS"}, {"b": [36, 376, 1564, 413], "n": 3, "kind": "PASS"}, {"b": [36, 423, 1564, 481], "n": 4, "kind": "PASS"}, {"b": [36, 538, 1564, 596], "n": 5, "kind": "PASS"}]},
+  {"img": "3070-2-list-switch-blocked.png", "caption": "Setup › Blueprints: clicking the Active switch sends revision 3 (request blocked on purpose, so \"Network error\" and the blueprint stays Inactive)", "crop": [270, 600, 1330, 300],
+   "boxes": [{"b": [500, 700, 1420, 780], "n": 5, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Rename saved with revision 1", "200, revision 2", "200, revision 2", "INFO"],
+  [2, "PUT and PUT …/draft from the old copy with no revision (and revision null)", "Refused (409 or 422 revision required)", "422 path revision: \"Send the revision you loaded, so this save cannot overwrite a newer change.\" (was 200)", "PASS"],
+  [3, "Stale revision 1 on PUT and draft", "409", "409 BLUEPRINT_REVISION_CONFLICT", "PASS"],
+  [4, "GET after the refused saves", "Rename kept", "Still \"renamed by A\", revision 2, description untouched", "PASS"],
+  [5, "Developer: list Active switch sends the revision; current revision still saves", "Revision sent / 200", "Switch PUT carries revision 3 (blocked); PUT with revision 2 → 200, revision 3", "PASS"]
+ ]
+}

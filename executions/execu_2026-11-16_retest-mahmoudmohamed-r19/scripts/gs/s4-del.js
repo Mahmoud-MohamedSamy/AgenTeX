@@ -1,0 +1,16 @@
+const o={}; const D=v=>api('POST','/global-sets/'+I.T+'/values/delete',{value:v});
+const lb=await mkRec(L,'Tier LB1',{qa_rt19_gs_tier:'Bronze'}); I.R.LB1=lb[1]; SAVE();
+o.delInUse=SR(await D('Silver'));
+o.delUsedNotUnused=SR(await D('Bronze'));
+o.delMissing=SR(await D('Nope'));
+o.delMany=SR(await api('POST','/global-sets/'+I.T+'/values/delete',{values:['Gold','Platinum']}));
+o.delGold=SR(await D('Gold')); LED('deleted unused value Gold from set '+I.T+' → '+o.delGold.slice(0,3));
+let g=await gs(I.T); o.afterGold='values '+g.values.map(v=>v.value)+' unused '+g.unused_values.map(v=>v.value);
+o.rmBronze=SR(await api('POST','/global-sets/'+I.T+'/values/remove',{values:['Bronze']}));
+o.delBronzeUnusedWithRecord=SR(await D('Bronze'));
+g=await gs(I.T); o.afterBronze='values '+g.values.map(v=>v.value)+' unused '+g.unused_values.map(v=>v.value);
+o.LB1=await recVal(L,I.R.LB1,'qa_rt19_gs_tier');
+const f=arr((await api('GET','/modules/'+L+'/fields')).j.data).find(x=>x.id===I.fL); o.fieldOpts=JSON.stringify(f.datatypeOptions||f.datatype_options).slice(0,500);
+o.restoreGold=SR(await api('POST','/global-sets/'+I.T+'/values/restore',{values:['Gold']}));
+const au=await api('GET','/audit/events?limit=10&entity_id='+I.T); o.audit=au.s+' '+JSON.stringify(arr(au.j&&au.j.data).slice(0,5).map(x=>x.action||x.event_type||x.type)).slice(0,300);
+return o;

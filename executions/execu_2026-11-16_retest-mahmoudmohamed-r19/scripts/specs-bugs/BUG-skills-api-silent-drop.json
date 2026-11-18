@@ -1,0 +1,12 @@
+{"out":"BUG-skills-api-silent-drop-FAIL.png","ticket":"NEW BUG","priority":"low",
+"title":"Ticket Skills | Inactive and other-department skills are silently dropped on save while a deleted skill is refused",
+"verdict":"FAIL","env":"NDC-Staging · staging-desk · API as ndc-staging-owner · POST/PATCH /api/v1/modules/{tickets}/records · 16 Nov 2026","date":"16 Nov 2026",
+"panels":[{"img":"bug-skills-api-inconsistent-api-card.png","caption":"API evidence (owner, NDC-Staging, 16 Nov 2026 12:27Z; row 7 from the NDC-2933 run)","crop":[0,0,1600,495],"full":true,
+"boxes":[{"b":[36,99,1564,157],"n":1,"kind":"PASS"},{"b":[36,167,1564,204],"n":2,"kind":"PASS"},{"b":[36,214,1564,251],"n":3,"kind":"PASS"},{"b":[36,261,1564,319],"n":4,"kind":"FAIL"},{"b":[36,329,1564,366],"n":5,"kind":"FAIL"},{"b":[36,376,1564,413],"n":6,"kind":"FAIL"},{"b":[36,423,1564,481],"n":7,"kind":"FAIL"}]}],
+"rows":[[1,"Create with a deleted skill","Refused with a clear message","422 \"not one of the allowed values\"","PASS"],
+[2,"Create with an unknown skill name","Refused","422, same message","PASS"],
+[3,"Edit to a deleted skill","Refused","422, ticket unchanged","PASS"],
+[4,"Create with an inactive skill","Refused (like deleted) or saved with a warning naming the dropped skill","201 #4618, skill dropped, no warning","FAIL"],
+[5,"Create with another department's skill","Same as 4","201 #4619, dropped, no warning","FAIL"],
+[6,"Edit with inactive / other-department skill","Same as 4","200, dropped silently (#4620)","FAIL"],
+[7,"Edit with only another department's skill","Refused or warned","200, all skills removed silently","FAIL"]]}

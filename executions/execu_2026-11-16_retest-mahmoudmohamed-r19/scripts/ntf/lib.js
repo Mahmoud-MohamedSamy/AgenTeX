@@ -1,0 +1,22 @@
+// NTF lane (round 19b). Prefix QA RT19 NTF. eval'd inside apiw.js scripts. Never prints addresses.
+var RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19';
+var OUT=RUN+'/scripts/ntf/out/';var IDF=OUT+'ids.json';
+var I=fs.existsSync(IDF)?JSON.parse(fs.readFileSync(IDF,'utf8')):{};var saveI=()=>fs.writeFileSync(IDF,JSON.stringify(I,null,1));
+var TK='88e8ea44-1658-4df3-9930-d0902b91073d',CON='43004ce2-577f-4eda-b00a-0750fe40c3d4';
+var A1='876ce871-2b02-4854-89a7-68050391c62b',A3='5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4',A2='d23fb4e0-248d-41f6-af60-d28885a7007e',O='97be04b6-0a08-4883-aa51-e1650b11cab7';
+var NM={[A1]:'Test User 1',[A3]:'Dev Team 2',[A2]:'Mahmoud Samy',[O]:'owner'};var nm=v=>v?(NM[v]||String(v).slice(0,8)):'Unassigned';
+var PFX='QA RT19 NTF';var D=I.D;
+var LED=m=>fs.appendFileSync(RUN+'/ledger.md','- '+new Date().toISOString().slice(0,19)+'Z NTF lane: '+m+'\n');
+var SRC=fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-08_desk-automation-order/scripts/e1-ev.js','utf8');
+var BASEADDR=SRC.match(/const NEW='([^']+)'/)[1];var MAIL=BASEADDR.replace(/\+[^@]*@/,'+r19ntf@');
+var MASK=s=>String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+/g,'<email>');
+var sv=v=>v===null?{kind:'null'}:typeof v==='number'?{kind:'number',value:v}:typeof v==='boolean'?{kind:'boolean',value:v}:Array.isArray(v)?{kind:'array',items:v.map(sv)}:{kind:'string',value:String(v)};
+var fields=o=>Object.entries(o).map(([k,v])=>({field:k,value:sv(v)}));
+var Ls=x=>Array.isArray(x)?x:(x&&(x.items||x.data||x.rules||x.records||x.results))||[];
+var E=r=>r.s+(r.s>=300?' '+MASK((r.j?.error?.code||'')+' '+String(r.j?.error?.message||r.t).slice(0,300)):'');
+var rec=async id=>{const d=(await api('GET','/modules/'+TK+'/records/'+id)).j?.data?.data||[];const o={};for(const x of d){const v=x.value||{};o[x.field]=v.kind==='array'?(v.items||[]).map(i=>i.value):v.value;}return o;};
+var histRaw=async id=>Ls((await api('GET','/desk/tickets/'+id+'/history')).j?.data);
+var feed=async id=>{const j=(await api('GET','/desk/tickets/'+id+'/activity')).j;return Array.isArray(j?.data)?j.data:(j?.data?.items||[]);};
+var feedS=async id=>(await feed(id)).map(e=>(e.created_at||e.occurred_at||'').slice(11,19)+' '+e.action+' '+MASK(JSON.stringify(e.summary||{})).slice(0,200)).reverse();
+var cairo=iso=>new Date(new Date(iso).getTime()+2*3600e3).toISOString().slice(11,19);
+var mkT=async(suffix,extra={})=>{const r=await api('POST','/modules/'+TK+'/records',{data:fields({subject:PFX+' '+suffix,description:'QA RT19 NTF retest - safe to delete',status:'Open',department:D,priority:'medium',channel:'web',...extra})});const id=r.j?.data?.id;if(id){(I.tickets=I.tickets||[]).push(id);saveI();const n=(await rec(id)).ticket_number;LED('ticket created '+id+' #'+n+' "'+PFX+' '+suffix+'"');return {id,n,at:new Date().toISOString()};}return {err:E(r)};};

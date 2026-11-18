@@ -1,0 +1,7 @@
+{"out":"3030-api-card.png","title":"NDC-3030 stale saves through the blueprints API (blueprint QA BP RT19 3030 two editors)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Writer A (fresh, revision 1)","PUT /modules/{tickets}/blueprints/{id} name = \"… RENAMED A\", revision 1","200 → revision 2, name saved","ok"],
+["Writer B (stale, revision 1)","PUT same blueprint, description only, revision 1","409 BLUEPRINT_REVISION_CONFLICT \"This blueprint was changed by someone else after you opened it.\" currentRevision 2; name A kept","ok"],
+["Writer B draft (stale)","PUT …/{id}/draft, revision 1 (the designer's path)","409 BLUEPRINT_REVISION_CONFLICT; nothing saved","ok"],
+["Save with no revision","PUT same blueprint, description only, no revision field","200 → rename A replaced by the old name (no check when the client sends no revision)","info"],
+["Designer, two tabs (UI)","tab 1 rename + Save and Publish; tab 2 description + Save and Publish","PUT /draft 200 + POST /publish 200 (tab 1); PUT /draft 409 (tab 2) → banner; after Reload and a fresh open: tab 1's name kept","ok"]]}

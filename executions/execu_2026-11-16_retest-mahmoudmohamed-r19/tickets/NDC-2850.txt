@@ -1,0 +1,51 @@
+# NDC-2850 SLA | Removing an agent drops them from SLA escalations instead of handing the escalation to another agent
+Summary
+When an admin removes an agent who is named in an SLA escalation, TAVI only offers a replacement for the agent's open tickets. The agent is simply taken out of the escalation. An escalation level that named only that agent is left with nobody to notify, and the admin is not asked who should take it over. Zoho Desk (checked live on 16 Nov 2026) requires a new owner when an agent is deleted and passes the agent's automation rules and notifications to that owner.
+Steps to Reproduce
+- Go to Setup › SLA & Escalation and open an SLA policy in a department.
+- In an escalation level, choose one agent in "Notify" and save.
+- Go to Setup › Agents, open the actions menu for that agent and choose "Remove from Desk".
+- Read the dialog.
+Expected Result (Zoho Desk, checked live)
+- Removing the agent opens a page where the admin must choose a new owner for each department, for open tickets and for open activities. The choices are another agent, or "Mark as Unassigned".
+- The page says: "The automation rules configured to assign tickets and activities and to send email notifications to '<agent>' will henceforth assign them to the specified agent(s)." The removed agent's rules and notifications, including the SLA escalation, pass to the chosen agent instead of being dropped.
+- The escalation keeps notifying someone after the agent is removed.
+Actual Result
+- The dialog offers a replacement only for open tickets ("Customer Support: Leave unassigned").
+- It lists "SLA escalations: 1" and says escalations "stop naming this agent; a rule that only named them is turned off".
+- There is no way to choose who takes over the escalation, so a level that named only this agent will notify nobody.
+Zoho Desk live check (16 Nov 2026)
+- Portal techegysolutions, admin account, Edge.
+- Set "test agent 1" as the only person in Bronze SLAs › Priority High › Resolution Escalation › Level 1.
+- Opened Agents › test agent 1 › Delete. The page "Assign open Tickets & Activities" requires a new owner for Open Tickets and Open Activities, and shows the note quoted above.
+- Clicked Cancel. Nothing was deleted, and the escalation was removed again afterwards.
+- Not confirmed: the delete itself, so it was not seen live that the SLA's "Whom to Escalate" changes to the new owner. Zoho's note covers automation rules and notifications in general. The Deactivate flow was not opened.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account. Agent "Test SL-51" in QA AO Dept A, named alone in level 1 of SLA policy "QA AO SL51d…" (10 Nov 2026, 15:30 UTC). The removal was not confirmed, because the agent also owns another team's open ticket. Zoho Desk: techegysolutions portal, checked live on 16 Nov 2026.
+Attachments
+- SL-51-removed-agent-dropped-from-escalation-not-replaced-vs-zoho.png: the TAVI Remove from Desk dialog next to the Zoho Desk help text.
+- NDC-2850-zoho-live-delete-agent.png: the live Zoho Desk check, with the SLA escalation set to test agent 1, the Delete agent page with its required new owner and note, the owner choices, and the escalation removed afterwards.
+
+
+== COMMENTS (3)
+--- comment 2026-11-16T15:19:26.963492+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Deployed to staging on 16 Nov at 12:55 UTC. Ready for retest.
+Checked on staging, through the API, with my own test agent:
+- I added the test agent to QA AO Dept A. The agent owned no open tickets there, and the reassign workload still listed Dept A, so the dialog offers a choice for it.
+- I created a test SLA whose level 1 notified the test agent and assigned to them.
+- I ran the reassign that Remove from Desk runs, with "Update rules and memberships" on and the owner chosen for Dept A.
+- The SLA level then named the owner, both as the agent notified and as the owner it assigns to. The test agent was gone from it.
+The dialog's new hint is deployed, but I didn't click through the dialog in the browser. The test SLA is deleted and Dept A's member list is back as it was.
+
+--- comment 2026-11-16T14:18:21.362643+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Thanks for the live Zoho check. The fix is in review: desk PR #261 and client-engine PR #843. Not deployed yet.
+Change: when an agent is removed, the agent you choose for a department in the Remove from Desk dialog now also takes over that agent's SLA escalation levels (as the person notified and the owner the level assigns to) and their places in round-robin pools. Assignment rules and macros already followed that choice. With "Leave unassigned" or a team, the agent is dropped as before.
+While "Update rules and memberships" is on, the dialog now asks who takes over in every department the agent belongs to, not only where they still own open work. The hint under the checkbox says what happens, in English and Arabic.
+Not covered: an escalation in a department the agent never belonged to still drops them, because there is no takeover to choose there.
+To retest after deploy: repeat the original steps, choose an agent for QA AO Dept A, and confirm. The SLA level should then name that agent.
+
+--- comment 2026-11-16T11:37:32.976740+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+This is how Desk was built, not a defect. I recommend treating it as a feature request. The state is unchanged for now.
+The Remove from Desk dialog does what its text says: escalations stop naming the removed agent, and a level that named only that agent is turned off. Choosing who takes over in SLA escalations, assignment rules and the other places Zoho lists would be new work. It needs its own design for each place an agent can be named.
+I checked this against the dialog text and the code, not by removing an agent on staging. The removal moves real tickets.
+

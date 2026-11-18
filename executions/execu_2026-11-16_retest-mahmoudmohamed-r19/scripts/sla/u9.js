@@ -1,0 +1,16 @@
+const D=JSON.parse(require('fs').readFileSync('sla/out/cfg.json','utf8')).D;
+const mc=async l=>{const b=await l.first().boundingBox();if(!b)throw new Error('no box');await page.mouse.click(b.x+b.width/2,b.y+b.height/2);await sleep(900);};
+const openNew=async(name)=>{await page.goto(H+'/settings/automation/sla?department='+D,{waitUntil:'domcontentloaded'});await page.getByRole('button',{name:'New SLA'}).waitFor({timeout:90000});await sleep(1500);
+await page.getByRole('button',{name:'New SLA'}).click();await sleep(2500);
+await page.getByPlaceholder('e.g. Chat Tickets').fill(name);
+await page.locator('label').filter({hasText:'Ticket Create'}).click();await sleep(500);
+await page.getByRole('button',{name:'Next'}).click();await sleep(2000);
+await page.getByRole('button',{name:/Add Target/}).click();await sleep(2500);};
+await openNew('QA RT19 SLA 2835 UI');
+const dlg=page.getByRole('dialog',{name:/Add Target/});
+await dlg.locator('input').nth(3).fill('1');
+await mc(page.locator('button[aria-label="Response Escalation"]'));
+await mc(page.locator('button[aria-label="When to Escalate"]'));
+const opts=page.locator('[role=option],[role=menuitem],[role=menuitemradio]');log('opts',JSON.stringify(await opts.allInnerTexts()));
+await mc(opts.filter({hasText:/Before/}));await sleep(800);
+log(JSON.stringify(await dlg.locator('input, button[aria-label]').evaluateAll(b=>b.filter(x=>!/@/.test(x.innerText||'')).map(x=>x.tagName+':'+(x.getAttribute('aria-label')||'')+'|'+(x.tagName==='INPUT'?x.value:x.innerText.trim().split('\n')[0].slice(0,25))))));

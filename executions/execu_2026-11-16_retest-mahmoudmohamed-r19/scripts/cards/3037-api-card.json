@@ -1,0 +1,7 @@
+{"out":"3037-api-card.png","title":"NDC-3037 transition owner id that does not exist (random UUID) — blueprints API","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"16 Nov 2026",
+"rows":[
+["Create with unknown owner","POST /modules/{tickets}/blueprints · before.allowedUserIds = [random UUID]","422 BLUEPRINT_DEFINITION_INVALID · BLUEPRINT_OWNER_UNKNOWN \"No user exists with id '…'\" (transitionId ghost); blueprint count unchanged","ok"],
+["Create with real + unknown owner","allowedUserIds = [owner, random UUID]","422 BLUEPRINT_OWNER_UNKNOWN on allowedUserIds[1]; nothing saved","ok"],
+["Edit a valid blueprint (designer path)","PUT …/{id}/draft with the unknown owner","422 BLUEPRINT_OWNER_UNKNOWN","ok"],
+["Edit a valid blueprint (direct)","PUT …/{id} with the unknown owner","422; read-back: owners still [ndc-staging-owner]","ok"],
+["Malformed id (side check)","allowedUserIds = [\"not-a-uuid\"]","422, but the message is .NET parser text: \"The JSON value could not be converted to System.Guid. Path: $.transitions[0]… BytePositionInLine: 579\"","info"]]}

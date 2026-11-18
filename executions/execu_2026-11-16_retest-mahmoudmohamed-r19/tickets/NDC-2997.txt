@@ -1,0 +1,43 @@
+# NDC-2997 Workflow Rules | Owner Assignment by role (round robin) never assigns anyone
+Summary
+A workflow rule that assigns the ticket owner by role in round robin sets no owner, even when an agent of that role is online and in the ticket department. The run is still logged as Fired, with no result or reason for the owner action.
+Steps to Reproduce
+- Create a rule On Create for Tickets, condition Priority is Urgent, with actions: Owner Assignment › Roles › CEO (round robin), Add Tags, Task, and Email to the ticket owner.
+- Make sure an agent of that role who belongs to the ticket department is online (Test User 1).
+- Create two or more urgent tickets, some with no owner.
+- Open each ticket and Execution History.
+Expected Result
+- Each matching ticket gets an owner from the role, taking turns between the role agents.
+- If no agent can be assigned, the owner action is marked Failed with the reason.
+Actual Result
+- On 6 urgent tickets no owner was set (it stayed the creator or empty); ticket history shows no owner change.
+- Add Tags, Task and Email in the same rule all Succeeded.
+- Execution History: Fired, one row per ticket; the Owner Assignment action has no result and no reason.
+- Owner Assignment to a specific user works (control).
+Note
+Also seen in case I8 of the workflow run (old B-9). Related: NDC-2204 (role list content).
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 11–12 Nov 2026.
+Attachment
+Annotated evidence attached (WF-E2E1-role-round-robin-assigns-nobody.png).
+
+
+== COMMENTS (3)
+--- comment 2026-11-15T12:11:11.454022+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Deployed to staging (workflow #139). Retested today with Owner Assignment > Roles > Desk CEO (round robin), rule On Create:
+- Ticket in Customer Support: assigned to Customer Experience Specialists 2, an agent of that department. Owner Assignment Succeeded.
+- Ticket in QA AS6 Dept B, where no member of that role is an agent: the ticket kept its owner, and the run shows Owner Assignment Skipped "Not assigned: nobody in the org unit can own a ticket of this department."
+Checked through the API on staging-desk (NDC-Staging), not in the browser. Execution History reads the same rows the API returned. All test rules and tickets were deleted.
+
+--- comment 2026-11-15T11:46:03.157148+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Fix in review: workflow #139, together with NDC-2973. Not merged, not deployed.
+- A role or org-unit round robin on a ticket now takes turns only among agents who may own a ticket of that department. Before, it picked among every Desk user in the role, so it could pick someone outside the department.
+- When nobody can be assigned, Execution History shows the Owner Assignment as Skipped with the reason, for example "Not assigned: nobody in the role can own a ticket of this department."
+- A ticket with no department still takes turns among the whole role.
+As said before, "nobody is ever assigned" did not reproduce on staging. Checked with automated tests only; I will retest after deploy.
+
+--- comment 2026-11-15T11:06:09.959910+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Retested on staging-desk (NDC-Staging) today with the current build: an active test rule On Create, Owner Assignment > Roles > CEO (round robin), and two new test tickets. The tickets were given to two different CEO-role agents, taking turns. So the main part (nobody assigned) does not reproduce now.
+What still holds: when the round robin cannot assign anyone, Execution History shows the run as Fired with no result or reason for the Owner Assignment (your expected line 2). That part is not fixed yet; it is being designed together with NDC-2973.
+Question: were your 6 tickets created in a department whose own assignment rules (Desk settings) assign new tickets first? That would also leave the rule's owner unused.
+

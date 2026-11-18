@@ -1,0 +1,17 @@
+var __B="D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/scripts/bg/";eval(fs.readFileSync(__B+'blib.js','utf8'));
+const R={at:new Date().toISOString(),rows:[]};const K='BUGD4'+U;
+const S1='QA RT19 AS S1',S2='QA RT19 AS S2',IN='QA RT19 AS Inact',DEL='QA RT19 AS Del',OD1='QA SK13 S1',OD2='QA SK13 S2',NX='QA RT19 BUG no such skill';
+const sk=async id=>JSON.stringify((await rec(id)).skills||[]);
+const body=(k,skills)=>({data:fields({subject:PFX+' '+K+' '+k,description:PFX+' D4 skills API',department:DA,status:'Open',priority:'high',owner:O,skills})});
+const ids=[];
+const C=async(k,skills)=>{const r=await api('POST','/modules/'+T+'/records',body(k,skills));const id=r.j?.data?.id;if(id){ids.push(id);LED('ticket created '+id+' "'+PFX+' '+K+' '+k+'" (D4)');}await sleep(1500);const row=['create '+k,JSON.stringify(skills),r.s+(r.s>=300?' '+(r.j?.error?.code||'')+' '+(r.j?.error?.message||'')+' '+JSON.stringify(r.j?.error?.details||'').slice(0,200):''),id?'saved '+(await sk(id)):'not created','warnings: '+JSON.stringify(r.j?.data?.warnings??r.j?.meta??null).slice(0,150)];R.rows.push(row);log(row.join(' | '));return id;};
+const P=async(id,k,skills)=>{const r=await api('PATCH','/modules/'+T+'/records/'+id,{data:fields({skills})});await sleep(1500);const row=['edit '+k,JSON.stringify(skills),r.s+(r.s>=300?' '+(r.j?.error?.code||'')+' '+(r.j?.error?.message||''):''),'saved '+(await sk(id)),'warnings: '+JSON.stringify(r.j?.data?.warnings??r.j?.meta??null).slice(0,150)];R.rows.push(row);log(row.join(' | '));};
+R.skillList=((await api('GET','/desk/skills?department_id='+DA)).j?.data?.skills||[]).filter(s=>/QA RT19 AS/.test(s.name)).map(s=>[s.name,s.is_active]);log(JSON.stringify(R.skillList));
+await C('deleted',[S1,DEL]);
+const a=await C('inactive',[S1,IN]);
+await C('other-dept',[S1,OD1]);
+await C('unknown',[S1,NX]);
+const t=await C('base',[S1]);
+await P(t,'deleted',[S2,DEL]);await P(t,'inactive',[S2,IN]);await P(t,'other-dept',[S2,OD2]);
+for(const id of ids)await patch(id,{status:'Closed'});LED('D4 tickets closed');
+save('d4.json',R);return R.rows.length;

@@ -1,0 +1,34 @@
+# NDC-3032 Blueprint | Field changes made by a blueprint are missing from the ticket's History tab
+Summary
+When a transition's After action changes a field, the ticket History tab does not show that change. The server records it.
+Steps to Reproduce
+- Create a blueprint whose transition has an After action "Field update" (e.g. Description = "QA F2D set by blueprint").
+- Run the transition on a ticket.
+- Open the ticket › History.
+Expected Result
+- A history line for the field change (old → new), marked as done by the blueprint transition.
+Actual Result
+- History shows "<agent> ran QA F2 desc in QA BP F2D" and the status change, but no Description line.
+- GET /desk/tickets/{id}/history does contain ticket.field_changed for description (source blueprint).
+- A manual change of the same field is shown normally. Same for an address field changed by the blueprint.
+Zoho Desk
+Ticket #191 History after a transition with an After field update: "Ticket updated as part of transition actions · Blueprint name … · Transition name QA move · Phone changed from -None- to 010000014".
+Note
+Found while running spec row F2 (address field, which passed) and M1.
+Environment
+staging-desk.taviportal.com (NDC-Staging), Microsoft Edge, Windows 10, owner account, 12–13 Nov 2026. Compared live with Zoho Desk (test account techsolutionsegypt; test blueprint deleted afterwards).
+Attachment
+Annotated evidence attached (BP-F2-blueprint-field-change-missing-from-history-vs-zoho.png).
+
+
+== COMMENTS (2)
+--- comment 2026-11-16T08:23:14.248094+02:00 by 82cf7a79-0707-4f47-97ca-f8926587b6db
+Checked on staging: after a transition whose After action sets Description, History shows "ndc-staging-owner updated the ticket through blueprint transition QA escalate in <blueprint>" with Description: blank → "QA set by blueprint".
+Address fields are covered by automated tests, not checked in the browser.
+Merged: metadata-engine #228 #229, desk #255 #256 #257, client-engine #835 #836 #837. Deployed to staging (tavi) on 16 Nov 2026.
+
+--- comment 2026-11-15T17:43:29.088746+02:00 by 9529016b-e67d-42b9-815c-263f673b8252
+Reproduced on staging: the History API had the Description change from the blueprint, the History tab did not.
+Fix: History now shows every field change a blueprint transition makes, as "<agent> updated the ticket through blueprint transition <transition> in <blueprint>" with old → new (addresses included). Branches: desk fix/ndc-3032-history-carries-source-details (History rows now say what made each change), client-engine fix/ndc-3056-3034-3032-ticket-blueprint.
+Checked in a browser on the client branch against staging: the Description change appears. Staging's Desk does not have the desk change yet, so the line was unnamed there ("…through a blueprint transition"). Not deployed yet.
+
