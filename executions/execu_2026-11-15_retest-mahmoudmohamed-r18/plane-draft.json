@@ -1,0 +1,1512 @@
+[
+ {
+  "ticket": "NDC-2729",
+  "id": "4ead7a61-0fb1-4bf6-a102-bc218fc2703f",
+  "pri": "urgent",
+  "mod": "CRM",
+  "feat": "Blueprint",
+  "title": "Blueprint | Create Task, Meeting, Call and other create-record actions in After Transition Actions allow another module, duplicate owner settings, \"Value\" defaults and a text-only Related record",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2729-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>CRM Create task / Call in After actions → ASSIGN TO only, no Task Owner, Reminder None (as on 13 Nov) [PASS]</li><li>Desk Create task: Department / Team → Ticket owner / performer / A specific agent or team → \"Agent or team\" picker; \"The task belongs to the ticket's department.\" (13 Nov: Department* + Team text boxes) [PASS]</li><li>Desk Create task: Status / Priority → Not Started / Highest [PASS]</li><li>Desk Field update: Status / Department / Team / Skills → Gone; Ticket Owner = user picker, dates = date-time, checkbox = Yes/No [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Desk Field update: pick list fields</strong>: expected Offered, value starts at \"-None-\" (Zoho); actual No pick list offered at all — Priority, Channel, Classification, Category, Language and the 47 QA NDC pick lists are missing from the field list</li></ul><p>Evidence: NDC-2729-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2807",
+  "id": "7e03a59d-626d-48e8-a41f-8f4468467b09",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Bulk Operations",
+  "title": "Bulk Operations | Bulk operations (mass update, mass delete, empty Recycle Bin) stop when you leave the page",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2807-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Start a mass update of 200 leads → One POST mass-update-jobs (200 ids) → 202 queued; dialog + toast say it keeps running [PASS]</li><li>Mass update, leave with a full navigation 1.3 s after start → Job completed 200/200, failed 0; API referral 200/200 [PASS]</li><li>Mass update, close the browser 0.5 s after start → API recount: chat 200/200 [PASS]</li><li>Recycle Bin › Delete forever 50, full navigation 3.7 s after the request → 50/50 removed; the other 50 of the batch stay [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Mass delete 200, leave with a full navigation at +11 s</strong>: expected All 200 moved to the Recycle Bin (13 Nov: 200/200); actual 100 in the bin (group 2bad85f3), 100 still live</li></ul><p>Zoho reference (r15, 11 Nov): Zoho CRM finishes mass actions as a background job when the user leaves the page. Not re-run in Zoho this round.</p><p>Evidence: NDC-2807-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2630",
+  "id": "cd74d3ad-134c-433f-b719-c02babeb981c",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Email",
+  "title": "Email | A failed email send is shown as sent",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2630-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open the message of a send the provider refused → Red \"Failed\" + \"Not sent: No Zoho account found for sender…\"; no \"Sent\" chip (send 422 MAIL_SEND_FAILED; list Failed + Retry) [PASS]</li><li>Open the message of a bounced send (example.com) → \"Bounced\" + 550 5.4.4 reason; no \"Sent\" chip [PASS]</li><li>Timeline after failed sends → RecordCreated only (both leads) [PASS]</li><li>Compose while the sender cannot send → \"You can't send email yet…\" + reason; Send disabled [PASS]</li></ul><p>Evidence: NDC-2630-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2917",
+  "id": "ee7c2c37-2310-45bc-a200-fc7f725bf613",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Global Sets",
+  "title": "Global Sets | Replace does not update reports: the filter keeps the old value and results go stale",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2917-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Replace Gold → Silver, run the saved report → Filter eq \"Silver\"; 3 rows after 3 s and after 25 s [PASS]</li><li>Rename Silver to \"Silver Star\" (API) → Query returns value_labels Silver → Silver Star [PASS]</li><li>Report screen after the rename → 3 rows \"Silver Star\" [PASS]</li></ul><p>Evidence: NDC-2917-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2993",
+  "id": "45a3f624-989a-4e4a-bcd0-d9840ac37a1a",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Kanban View",
+  "title": "Kanban View | Kanban view of Leads and Deals does not load: every column shows \"Could not load these records\"",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2993-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open Leads › Kanban → No \"Could not load these records\"; 17 column requests 200 (No Answer 5, Busy 15, Switched Off 4 …) [PASS]</li><li>Open Deals › Kanban → Qualification 56, Needs_analysis 1, Proposal 1, Negotiation 5 …; all column requests 200 over 31 loads [PASS]</li><li>API filter request that failed → records?filters=[lead_status equals] and [stage equals] → 200; skip_total=true → 200 [PASS]</li></ul><p>Evidence: NDC-2993-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2974",
+  "id": "ce9a4d6a-b583-4b84-a000-d081e391ac31",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Mass update of the primary field skips rule-mandatory fields",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2974-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Mass Update field list → \"QA RT18 type\" disabled: \"Drives a layout rule — edit these records one at a time\" [PASS]</li><li>Another rule primary field in the list → \"QA RT18 filter\" (primary of rule QA RT18 filter) disabled too [PASS]</li><li>POST records/mass-update type = Refund (order empty) → 422 LAYOUT_RULE_PRIMARY_FIELD \"QA RT18 type cannot be mass updated: it is the primary field of the layout rule 'QA RT18 basic'\" [PASS]</li><li>Records after the call → Both still Question, order empty [PASS]</li><li>Mass update of a normal field (control) → qa_rt18_note → 200, saved [INFO]</li></ul><p>Evidence: NDC-2974-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2975",
+  "id": "928119f2-4565-4511-b904-215ae29c4bb5",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Inline edit gives no way to fill a field the rule makes mandatory",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2975-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Inline edit type → Refund, confirm → \"Review details — This change makes these fields mandatory. Fill them in to save it.\" with QA RT18 order*, Cancel, Save [PASS]</li><li>Fill order in the pop-up and Save → PATCH 200; pop-up closes [PASS]</li><li>Record read back → API: Refund / \"QA RT18 G4 order\"; timeline shows both updates [PASS]</li></ul><p>Evidence: NDC-2975-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2976",
+  "id": "87ba4939-86ff-4fb3-ad75-32ee4bc0efca",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Deal stage bar refuses a stage change with no way to fill the mandatory field",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2976-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Click Negotiation (rule: stage Negotiation and discount > 20 → approval note mandatory) → \"Review details\" with QA RT18 approval note*, Cancel, Save (the first PATCH 422 is caught by the pop-up) [PASS]</li><li>Fill note, Save → PATCH 200; stage bar on Negotiation [PASS]</li><li>Record read back → API: negotiation / discount 30 / \"QA RT18 approved\" [PASS]</li></ul><p>Evidence: NDC-2976-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2977",
+  "id": "1456767a-e789-40f1-88b7-eb484109eddd",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Blueprint transition ignores the layout rule's mandatory field",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2977-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open transition Question → Refund (rule: Refund makes order mandatory) → Form shows message, QA RT18 order*, attachment, note [PASS]</li><li>Execute with order empty → \"This field is required.\"; no request sent, dialog stays [PASS]</li><li>Fill order, Execute → POST …/blueprint 200; API: Refund / \"QA RT18 G10 order\" [PASS]</li></ul><p>Evidence: NDC-2977-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2979",
+  "id": "5356447a-8efd-4a60-9ecc-245a620f9b00",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | A rule on a user field (Lead Owner) never fires",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2979-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Rule \"Lead Owner is ndc-staging-owner → show order\", form opens with that owner → Order visible [PASS]</li><li>Pick another user → Order hidden (Sec A shows only note) [PASS]</li><li>Pick ndc-staging-owner back → Order visible [PASS]</li></ul><p>Evidence: NDC-2979-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2980",
+  "id": "72418464-736d-4b47-948f-e79dcb7dbedd",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | \"Is empty\" condition rows never match",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2980-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>email2 empty at start → reason visible [PASS]</li><li>Type an email → reason hidden [PASS]</li><li>Clear it → reason visible [PASS]</li><li>\"is not empty\" row → tmp shown only while email2 has a value [PASS]</li><li>API op \"isEmpty\" → still stored as \"isNull\" / \"isNotNull\" (editor shows \"is empty\" / \"is not empty\"); works the same [INFO]</li></ul><p>Evidence: NDC-2980-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2981",
+  "id": "b4307963-a8f5-4a06-a61d-4f5d223850aa",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | The rule editor cannot build text, number, date, regex or length rows",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2981-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open a rule with text/number/date/email rows saved through the API → QA RT18 text \"starts with\" QA, amount > 5, date after, email2 is not empty [PASS]</li><li>Row field list → Text, number, date, email fields listed besides choice/user fields [PASS]</li><li>Operators → text: matches/contains pattern, length is / > / ≥ / &lt; / ≤, is empty …; number: = ≠ > ≥ &lt; ≤ between; date: on/after/before/between [PASS]</li><li>Date row value → saved value 2026-01-01 shows as an empty mm/dd/yyyy box in the editor (side issue, see report) [INFO]</li></ul><p>Evidence: NDC-2981-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2982",
+  "id": "f43b9b53-4640-41f7-b6e6-2062c02b2cd6",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Removing one target field from the layout switches off the whole rule",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2982-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Remove date (vip rule: show date + require note) from the layout, tick vip → note mandatory (aria-required true); Save blocked \"This field is required\" [PASS]</li><li>Rule list / editor → Banner: \"Parts of this rule no longer exist — they are skipped, the rest of the rule still applies: 'QA RT18 date' is no longer on this layout\"; API staleTargets lists only date [PASS]</li><li>Other rules that mention date in one row (basic) → basic still active; Refund → order shown + mandatory [PASS]</li><li>J6 section deleted / J8 option deleted → staleTargets section_unknown / option_retired; Refund → order mandatory, radio Yes → email2 mandatory, vip → note mandatory [PASS]</li></ul><p>Evidence: NDC-2982-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2985",
+  "id": "53473ebb-e49e-497b-aca5-6a37d61ad998",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | A field hidden by field permission leaks its value in the record timeline",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2985-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Owner hides QA RT18 date for profile User and sets it to 2026-05-01 → PATCH 200; owner timeline feed has FieldChanged qa_rt18_date → 2026-05-01 [INFO]</li><li>CRM User opens the record › Timeline → Only \"Lead created by Mahmoud Samy\"; GET timeline feed returns 1 entry (RecordCreated), no qa_rt18_date [PASS]</li><li>CRM User › Overview › Recent activity → Only \"Lead created\" [PASS]</li><li>Record API and field panel for the CRM User → effective permission qa_rt18_date = hidden; GET record has no qa_rt18_date; no 2026-05-01 anywhere in the page [PASS]</li></ul><p>Evidence: NDC-2985-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2987",
+  "id": "be71d465-7626-4d2a-b4ab-2803b281bc95",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | A value typed into a field that the rule then hides is dropped on create",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2987-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Type \"QA keep me\" in order (type Refund) → order visible and filled [INFO]</li><li>Change type so order is hidden, Save → POST /records 201 [PASS]</li><li>Read the record → qa_rt18_order = \"QA keep me\" (was empty) [PASS]</li></ul><p>Evidence: NDC-2987-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3009",
+  "id": "4fc186c9-1d02-46cb-baa6-9a0696e64ba0",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | Two admins editing the same rule: the second save silently wipes out the first",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3009-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open the same rule in tab A and tab B; tab A types \"changed in tab 1 (stale)\" → Both editors loaded with rowVersion 1 [INFO]</li><li>Tab A saves after tab B → PUT 409 VALIDATION_RULE_CONFLICT; toast \"This validation rule was changed by someone else; reload it and try again.\"; editor stays open [PASS]</li><li>Editor sends the version → Both PUTs carry rowVersion=1; tab B 200 [PASS]</li><li>Reload the rule → description \"changed in tab 2\", rowVersion 2 (was 5 → 7 with both written) [PASS]</li></ul><p>Evidence: NDC-3009-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3010",
+  "id": "cc422fbb-8d00-487a-a693-40ee6f091bce",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | A user is blocked by a rule on a field they cannot edit or cannot see",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3010-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Field qa_rt18v_note read-only for profile User → effective permission read_only for Mahmoud Samy [INFO]</li><li>CRM User saves a lead without the note (read-only) → UI Save → 201 \"Record saved successfully\"; API 201 [PASS]</li><li>Same with the field hidden for User → Field not on the form; UI 201, API 201 [PASS]</li><li>Owner (can edit the field) saves without the note → 422 \"QA RT18 H6 note is required\" in both modes [PASS]</li><li>CRM User breaks a rule on a field they can edit → 422 \"QA RT18 text cannot start with BAD\" [PASS]</li><li>Desk (Desk Agent) → Not rechecked (CRM-only lane) [INFO]</li></ul><p>Evidence: NDC-3010-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3011",
+  "id": "bbf20ce7-f001-435e-9a9c-5ab552348db4",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | A value typed in a blueprint transition form skips the validation rules (CRM)",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3011-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Execute the transition with \"BAD-bp\" → POST transition 422 BLUEPRINT_VALIDATION_FAILED; form shows \"Transition field validation failed. • qa_rt18v_text: QA RT18 text cannot start with BAD\"; record stays Open [PASS]</li><li>Message wording → Rule text shown, prefixed with the API name \"qa_rt18v_text:\" instead of the field label (minor) [INFO]</li><li>Execute with a good value → 200; record moves to Reject with \"fine-bp\" [PASS]</li></ul><p>Evidence: NDC-3011-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3045",
+  "id": "ba0952ce-a41b-48ef-8368-22b538387784",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Access",
+  "title": "Access | With Private ticket sharing, an agent can open tickets of a department they are not in when a lower-role agent owns them",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3045-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>C opens Marketing ticket #4067 owned by B (lower role) → Screen: \"This ticket is not available\" + \"Permission denied.\"; API record 403, desk ticket + replies 404 (was opened with comments) [PASS]</li><li>C searches All Tickets for the test tickets → Search returns only #4070; #4067/#4068 not in the list (was listed) [PASS]</li><li>Control: C's own Customer Support ticket → #4070 listed and GET 200 [PASS]</li><li>Hierarchy inside C's own department → Not checked: B is not a Customer Support agent (assign 422) [INFO]</li></ul><p>Evidence: NDC-3045-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3022",
+  "id": "3a4bf088-0154-4748-bf51-8c8f3a2dc40a",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Departments",
+  "title": "Departments | Disabling a department with ticket transfer leaves the ticket record on the old department, so the ticket is missing from the new department's list",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3022-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Ticket page after disable/delete with transfer → #4061 shows Customer Support [PASS]</li><li>Ticket record + Customer Support list (records filter) → All 6 runs end with record department = Customer Support and list count 1 (was: deleted dept kept for good, list 0) [PASS]</li><li>How fast → Runs 2, 3, 6 within 2–3 s; runs 1, 4, 5 the record stayed on the old dept > 6 s, ≥ 17 s and ~82 s before switching [INFO]</li><li>Overview dashboard vs list → Not rechecked on the dashboard (record + list agree) [INFO]</li></ul><p>Evidence: NDC-3022-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2972",
+  "id": "e62a97d4-b8f5-448d-9a4a-07610a43bbef",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Desk Profiles",
+  "title": "Desk Profiles | There is no page to see or edit a profile's permissions",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2972-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open a profile's permissions from Desk → Settings › Permissions page; key icon \"View and edit permissions\" opens it for that profile (was Headquarters) [PASS]</li><li>Change a permission and save → GRANT on desk:tags:manage → \"1 pending change\" → Save 1 → POST …/permissions 204 [PASS]</li><li>Reload + API read-back → Row shows GRANT after reload; GET permissions + effective = desk:tags:manage [PASS]</li><li>Effect on a signed-in user → Not checked: no user holds the QA profile and real agents were not reassigned [INFO]</li><li>Unset state → A new profile with no permissions shows every row as DENY (no \"not set\" state); list mixes platform keys (metadata.*, iam.*) with desk:* [INFO]</li></ul><p>Evidence: NDC-2972-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3000",
+  "id": "b1973014-edce-4e87-adf6-8d8db41dee05",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Email",
+  "title": "Email | Customers get no acknowledgement emails, and the ticket-closed email has no rating link",
+  "verdict": "BLOCKED",
+  "decision": "",
+  "state": "none",
+  "stateId": null,
+  "images": [
+   "NDC-3000-retest-BLOCKED.png"
+  ],
+  "comment_html": "<p><strong>Retest BLOCKED — 15 Nov 2026</strong> → state not changed<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>New-ticket acknowledgement by email → BLOCKED — needs a customer mailbox emailing the support address. Now driven by the department rule \"Receiving a new ticket\" (Marketing on; red note: only for addresses with \"Acknowledge mail to this address\" on — 0 of 0) [INFO]</li><li>Reply acknowledgement → BLOCKED (same). Marketing rule \"Acknowledging a ticket reply\" is off; Customer Support has both ack rules off [INFO]</li><li>Closing email carries the rating question with Bad / Okay / Good → Confirmed today by the go-live retest W4-73 (user inbox, ticket #3929 Marketing): Bad/Okay/Good shown, Good saved — not repeated here (needs Happiness switched on + an inbox) [PASS]</li><li>Wording on the Notifications page → \"Setting it here decides … whatever Channels → Email says\" next to \"Sent only for receiving addresses with … on\" — contradictory [INFO]</li></ul><p>Evidence: NDC-3000-retest-BLOCKED.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3001",
+  "id": "93ae5db6-5eaa-4789-b2dc-9d0ca2693197",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Knowledge Base",
+  "title": "Knowledge Base | Text typed in the article translation editor comes out reversed",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3001-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>French: type \"abc def 123\" in Body (60 ms per key), save → Editor \"abc def 123\"; PUT body_html \"abc def 123\"; read back the same (was \"321 fed cba\") [PASS]</li><li>Arabic: type \"abc def 123 مرحبا\", save → Editor and read-back \"abc def 123 مرحبا\" [PASS]</li><li>Saved HTML → Body saved as plain text without &lt;p> (\"abc def 123\") [INFO]</li><li>Arabic Body direction → Editor stays left-aligned for Arabic [INFO]</li></ul><p>Evidence: NDC-3001-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2978",
+  "id": "72466758-4738-4c76-83de-3793e641ef8c",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Desk rule limited to a department still runs in every department",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2978-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Ticket form in the rule's department (QA AO Dept A), Category General → Language shows * (required) [PASS]</li><li>Same form in another department (QA AO Dept B) → Language not required (was: rule ran in Sales/HR) [PASS]</li><li>Server: save with Category General and no Language → Dept A 422 \"Language is required.\"; Dept B 201 [PASS]</li></ul><p>Evidence: NDC-2978-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3023",
+  "id": "a9c05a0c-e90d-4cb7-b730-ba4aa65b0804",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Products",
+  "title": "Products | New Product cannot be saved from the screen: the departments value is rejected as not a valid department id",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3023-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Screen: New Product with the pre-filled department › Save → POST 201 (departments sent as a list); record page shows Departments Sales (was 422 not a valid department id) [PASS]</li><li>Two departments (Marketing + Sales) → API 201, both ids read back [PASS]</li><li>Replace with Marketing → PATCH 200, read back [Marketing] [PASS]</li><li>Unknown department id → 422 DEPARTMENT_VALUE_INVALID [INFO]</li></ul><p>Evidence: NDC-3023-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3040",
+  "id": "c9cf42f7-993e-4b5c-92c1-7df5684c94af",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Ticket Archiving",
+  "title": "Ticket Archiving | Any agent can change the company-wide archiving, spam-deletion and parent/child rules",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3040-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Setup menu for a Desk Agent → Ticket Archiving not listed (menu: … Data Administration › Recycle Bin) [PASS]</li><li>Open /settings/tickets/archiving directly → All 5 switches disabled, no Save; \"You can view these settings. Changing them needs the Manage Ticket Settings permission.\" [PASS]</li><li>PUT archive / spam / parent-child settings → 403 \"Missing required permission 'desk:ticket_settings:manage'.\" ×3 (was 200) [PASS]</li><li>Settings after the test → Owner GET = baseline [PASS]</li></ul><p>Evidence: NDC-3040-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3028",
+  "id": "b2298482-cf7a-464f-96e9-8cf9b860e063",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | Bulk Close on many selected tickets fails with 500 errors and shows a wrong result",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3028-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Select all 60 in this view › Close 60 tickets → Batched POST /desk/tickets/bulk/close × 3 (25/25/10), all 200, failed 0; toast \"60 records closed.\" (was per-ticket 500s, \"0 updated, 60 failed\") [PASS]</li><li>Reload + API read-back → List shows Closed; GET of the 60 records: Closed 60, Open 0 [PASS]</li><li>Run Close again on the same 60 → Each result ALREADY_CLOSED; toast \"0 closed, 60 already closed.\" [PASS]</li><li>Time / leaving the page → ~90 s for 60 with no progress shown; leaving the page early stops the remaining batches (25/60, 53/60, 36/60 seen) [INFO]</li></ul><p>Also seen: closing 60 tickets takes about 90 s with no progress shown; if the page is reloaded during that time, the remaining batches are not sent (25/60, 53/60, 36/60 closed in three runs) and the user is not told.</p><p>Evidence: NDC-3028-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3012",
+  "id": "3e207483-f914-4061-acb9-89714fc40a09",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | A value typed in a ticket blueprint step skips the validation rules (Desk)",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3012-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Blueprint step with a value the active rule refuses → Run → 422 BLUEPRINT_VALIDATION_FAILED; message under Subject \"QA RT18: subject cannot start with QA RT18 BAD\" (was 200, saved) [PASS]</li><li>Ticket after the refusal → Open, subject unchanged (UI and API) [PASS]</li><li>Same through the API, then an allowed value → Bad 422; good value 200 → On Hold [PASS]</li><li>Check while typing → Message appears only on Run (server check), not while typing [INFO]</li></ul><p>Evidence: NDC-3012-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2794",
+  "id": "96b66641-68cc-40bb-a6e7-f0222ed21143",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Can't assign a ticket to a team and an agent of that team in one rule",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2794-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Rule with Team with agent saved → 201, action TeamWithAgent (team + agent) [PASS]</li><li>Ticket matching the rule → Owner Test User 1 + team QA RT18 2794 team at 5/15/30 s and on the ticket page later (was: team cleared) [PASS]</li><li>Agent not in the team → 400 \"…the agent is not a member of the team…\" [PASS]</li><li>History → History shows \"workflow rule ran\" and department only; no owner/team lines for the rule's change [INFO]</li></ul><p>Evidence: NDC-2794-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2962",
+  "id": "afaa6dec-b925-4afe-9abd-d55722f6612a",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | A line break in a webhook header value adds an extra header to the outgoing request",
+  "verdict": "PARTIAL",
+  "decision": "Save-time header checks all pass; whether the webhook sends only the configured headers could not be checked (no private receiver; the original test used public webhook.site). Option A: comment only, keep in Ready For Test until a private receiver is available. Option B: accept the save-time fix → Done.",
+  "state": "none",
+  "stateId": null,
+  "images": [
+   "NDC-2962-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → state not changed<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Header value a + CRLF + Injected: 1 → 400 \"Webhook header 'X-QA' cannot contain a line break or another control character.\" [PASS]</li><li>Header value with LF only → 400, same message [PASS]</li><li>Header name with CRLF → 400 \"header name … may hold only letters, digits and - _ . ! # $ % &amp; ' * + ^ ` | ~.\" [PASS]</li><li>Reserved headers Host, Content-Length, Transfer-Encoding, Connection → 400 each \"… is set by the request itself and cannot be changed.\" [PASS]</li><li>Non-ASCII value (café) → 400 \"can hold only ASCII letters, digits, spaces and symbols.\" [PASS]</li><li>Ordinary header X-QA-Ordinary → 201; value shown masked \"********\" on GET [PASS]</li><li>Edit an existing rule to a CRLF header → PATCH 400, same message; stored header unchanged [PASS]</li><li>Only the configured headers are sent → BLOCKED: original run used public webhook.site; no private receiver reachable from staging. No old rule with a bad header exists [INFO]</li></ul><p>Evidence: NDC-2962-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2963",
+  "id": "525ea8fb-1e8d-4423-9b70-6d89e5763a00",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Script saved in an Add Comment action runs when an admin opens the rule",
+  "verdict": "PASS",
+  "decision": "Script no longer runs (security fix PASS), but the comment still renders safe HTML (broken image) instead of the plain text the ticket's Expected asks for. Option A: PASS → Done. Option B: hold to plain text → Bug.",
+  "state": "none",
+  "stateId": null,
+  "images": [
+   "NDC-2963-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → state not changed<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open the rule whose comment is &lt;img src=x onerror=…> → Editor shows the image without onerror (innerHTML &lt;img src=\"x\">); window.__xss undefined; no dialog [PASS]</li><li>Other vectors (svg onload, javascript: href, iframe, onmouseover after hover, &lt;script>) → Editor body \"&lt;svg>&lt;/svg>&lt;a>QA link&lt;/a>&lt;p>QA hover&lt;/p>\": handlers, href, iframe and script removed; window.__xss undefined [PASS]</li><li>Body shown as plain text → INFO: the rich-text editor still renders safe HTML (a broken image icon shows); the stored body keeps the raw payload [INFO]</li></ul><p>Evidence: NDC-2963-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2964",
+  "id": "852bc12a-153c-437c-b709-44e8b3a9a399",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Double-clicking Save & Activate creates two identical rules",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2964-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Double-click Save &amp; Activate on a new rule → 1 POST /workflow/rules (201); list shows 1 \"QA RT18 WF 2964 double save\" [PASS]</li><li>Three clicks in the same instant (script) → 1 POST; 1 rule \"QA RT18 WF 2964 triple click\" [PASS]</li><li>Both rules after the test → Both deactivated (204) [INFO]</li></ul><p>Evidence: NDC-2964-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2983",
+  "id": "a9f8aab2-8446-4dbd-a62f-2b2534a4f66b",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Deleting a field used by a rule is allowed, and the whole rule stops",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2983-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>DELETE /fields/{qa_rt18_tmp} (target in rules basic + radio) → 422 FIELD_IN_USE_BY_RULE, names both rules and says to remove the field from them first [PASS]</li><li>After the call → Field still there; basic active, no definitionError [PASS]</li></ul><p>Evidence: NDC-2983-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2984",
+  "id": "bf48858b-d8ad-44db-abf7-5abdf831cb05",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Deleting a layout leaves its rules behind, still active",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2984-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>DELETE layout \"QA RT18 J7 Layout\" that has a rule → Layout 204; GET rule → 404 LAYOUT_RULE_NOT_FOUND [PASS]</li><li>Rule list → Rule not listed [PASS]</li></ul><p>Evidence: NDC-2984-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2986",
+  "id": "2efd0175-2c67-420a-b502-ecb7dfb61573",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | A CRM User without customize permission can see the rule list",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2986-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open Leads › Layout Rules by URL as a CRM User → Tab opens but shows no rules [PASS]</li><li>Rule names, layouts, primary fields, counts → Empty state \"You can't manage layout rules — can be viewed and changed only by users who can customize this module\"; no QA RT18 rule names in the page [PASS]</li><li>Server answer → Toast \"Permission denied.\"; GET /layout-rules 403 PERMISSION_DENIED; GET one rule 403 [PASS]</li></ul><p>Evidence: NDC-2986-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2988",
+  "id": "6fffe9ce-726a-4349-87ed-8e06ca957635",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Filter options replace the map dependency instead of narrowing it",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2988-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>type Refund only → tier: Gold, Bronze [PASS]</li><li>type Refund + filter X → tier: Gold (was Gold, Silver) [PASS]</li><li>type Question + filter X → tier: Gold, Silver [PASS]</li></ul><p>Evidence: NDC-2988-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2994",
+  "id": "c2dbb91c-f03a-4ec4-8621-fbe3bb9a4396",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Lead Conversion",
+  "title": "Lead Conversion | Convert page shows no message when the server refuses the conversion",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2994-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Convert with a new deal at Closed Lost, amount / closing date / reason empty → Red banner \"The conversion was refused. Correct the highlighted fields and convert again.\" (POST …/convert 422 RECORD_VALIDATION_FAILED) [PASS]</li><li>Field messages → \"Amount is required to close a deal.\", \"Closing Date is required to close a deal.\", \"Reason for Loss is required to mark a deal lost.\" under the fields [PASS]</li><li>Form after the refusal → Stage Closed Lost and deal name kept; still on the convert page [INFO]</li></ul><p>Evidence: NDC-2994-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2934",
+  "id": "71bdfe80-f41e-433e-b91d-525b7110b096",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Lead Scoring",
+  "title": "Scoring Rules: features Zoho CRM has that CRM is missing",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2934-retest-PARTIAL.png",
+   "NDC-2934-retest-PARTIAL-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Clone a rule → Row menu Edit · Clone · Delete; Clone pre-fills \"Copy of …\", Create 201 [PASS]</li><li>Up to 30 conditions per rule → 30 entries 201; 31 → 422 \"at most 30 entries\" [PASS]</li><li>Search + status filter on the list → \"Search by name or description\" (K2 → 2 rows) + All / Active / Inactive (Inactive → only F9 audit) [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Rule per layout</strong>: expected Layout picker (one / All Layouts); actual No layout in the editor; API layout_id accepted but not stored</li><li><strong>Which records a rule scores (criteria)</strong>: expected Add Criteria; actual No criteria in the editor; API criteria ignored</li><li><strong>Several conditions in one line + pattern</strong>: expected AND/OR + editable pattern; actual Still one condition per line; conditions[] → 422</li><li><strong>between / relative dates / pick list contains</strong>: expected Offered; actual 422 \"'between' is not a known operator\"; today/currentMonth/inLastDays unknown; pick list contains/startsWith refused</li><li><strong>Touch point (channel) scoring</strong>: expected Emails, calls, campaigns…; actual 422 \"activity (touch point) scoring is not available\"</li><li><strong>Update old records / Run Scoring Rules</strong>: expected Rescore existing records; actual No prompt on save; old lead not rescored (score 1, rule +6 not applied); no run action</li><li><strong>Score per rule, positive/negative, score fields per rule</strong>: expected Kept per rule; actual Record still has one \"score\" field only</li><li><strong>Switch a rule off keeps its scores</strong>: expected Points kept; actual Off + save: 8 → 1 (points dropped)</li><li><strong>Delete a rule removes its scores at once</strong>: expected Removed without editing records; actual Deleted rule (+7): lead still 8 until saved</li><li><strong>Scoring Rules section on the record page</strong>: expected Row per rule with Score; actual No score anywhere on the lead page</li><li><strong>API: clone, run, per-rule scores, activate/deactivate</strong>: expected Available; actual clone/duplicate/run/recalculate/stats/export/activate/deactivate/records/{id}/scores → 404/405</li><li><strong>Score workflow for selected scoring rules only</strong>: expected All / Selective Scoring Rules; actual Trigger offers Increases / Decreases / Either + threshold only</li></ul><p>Evidence: NDC-2934-retest-PARTIAL.png, NDC-2934-retest-PARTIAL-vs-zoho.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2996",
+  "id": "38468fe2-b916-4491-a475-b3a70f33ce72",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Modules & Fields",
+  "title": "Layout Rules: features Zoho CRM and Zoho Desk have that TAVI is missing",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2996-retest-PARTIAL.png",
+   "NDC-2996-retest-PARTIAL-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Blueprint transition shows rule-mandatory fields → QA RT18 order* in the form, Execute blocked while empty (NDC-2977) [PASS]</li><li>Z9 (comment): Help Center form must include the primary field → Not checked this round (needs a Desk Help Center form fixture) [INFO]</li></ul><p>Still failing:</p><ul><li><strong>CRM primary field: text, number, email, phone …</strong>: expected Any type except owner, multi-select, lookups, auto number, formula, file, multi-line; actual 422 \"cannot be the primary field of a layout rule\" for text, number, email, phone, Company</li><li><strong>Desk primary field: text, number, date, email</strong>: expected Allowed; actual 422 for Email, Due Date, Phone, Description</li><li><strong>Move a record to another layout</strong>: expected Layout picker on Edit; new layout's rules apply; actual No picker; PATCH layout_id 200 but created_with_layout_id unchanged</li><li><strong>Suggest-value pop-up remembered after Ignore</strong>: expected Not shown again; actual Shown again on reopen (owner)</li><li><strong>Profile permission for a non-admin to manage rules</strong>: expected A Customize / Manage layouts permission; actual No such key among 354 permissions; runtime check with a CRM User not run (no User-profile account in this lane)</li></ul><p>Evidence: NDC-2996-retest-PARTIAL.png, NDC-2996-retest-PARTIAL-vs-zoho.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3021",
+  "id": "e8c61ce6-d98a-44ae-8112-73217d971bfe",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Modules & Fields",
+  "title": "Validation Rules: features Zoho CRM and Zoho Desk have that TAVI is missing",
+  "verdict": "FAIL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3021-retest-FAIL.png",
+   "NDC-3021-retest-FAIL-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Desk: prompt when removing the checked field from a layout → Not rechecked (CRM-only lane) [INFO]</li><li>Help Center CAPTCHA, Kanban (NDC-2993), merge, signature timestamp → Not rechecked [INFO]</li><li>Gap item 3, two separate rules broken by one save (Zoho shows both) → API 422 with 2 details (E2 top + text field); screen shows the top banner \"QA RT18 E2 pick cannot be Reject\" and \"QA RT18 text cannot start with BAD\" under the field; nothing saved [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Function code inside the product</strong>: expected Write the check in the product; actual Function rule still needs an outside https URL (422 without it)</li><li><strong>Relative dates (${CURRENTTIME})</strong>: expected Accepted; actual 422 \"is not a date (use yyyy-MM-dd)\" for today, ${CURRENTTIME}, ${TODAY}</li><li><strong>Show every failing condition</strong>: expected All messages; actual Record failing 2 branches gets 1 message (first match)</li><li><strong>Web forms (G12) testable</strong>: expected Public session works; actual POST /web-forms/public/{key}/session 404 for all 4 forms</li><li><strong>Possible bug: internal function URLs</strong>: expected Refused; actual 169.254.169.254, localhost, 10.0.0.5 all saved (201, deleted)</li></ul><p>Evidence: NDC-3021-retest-FAIL.png, NDC-3021-retest-FAIL-vs-zoho.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2935",
+  "id": "aaec8503-2284-4c69-9013-9aac9e93aa42",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Scoring Rules",
+  "title": "Scoring Rules | A field used by a scoring rule can be deleted, and the rule silently stops scoring",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2935-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Rule \"QA RT18SR NUM ≥ 5 → +9\", lead with 6 → Score 9 [PASS]</li><li>DELETE the field (API) → 422 FIELD_IN_USE_BY_RULE naming \"QA RT18 SR K1\" [PASS]</li><li>Delete in the screen → Dialog \"This field is in use and cannot be deleted\" › Scoring rules: Copy of QA RT18 SR K1, QA RT18 SR K1; Delete Permanently disabled [PASS]</li><li>Rule and records after → Field kept; rule 1 entry +9, active; no \"needs attention\" [PASS]</li></ul><p>Evidence: NDC-2935-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3014",
+  "id": "c6098487-aab4-41f2-8133-78065b4fb56b",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | A field used in a rule's \"Applies when\" can be deleted, and the rule stays Active but broken",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3014-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Delete field qa_rt18v_j2 (used only in \"Applies when\") → 422 FIELD_IN_USE_BY_RULE naming \"QA RT18 J2 rule\" [PASS]</li><li>Rule after → Field still exists; rule Active, conditionError null; record with j2 = y and no email → 422 (rule works) [PASS]</li><li>Same family (J3/J4, Desk) → Not rechecked: removing a pick value was blocked by the blueprint first; Desk not in this lane [INFO]</li></ul><p>Desk half: field qa_rt18_l3_when used only in the \"Applies when\" of a Tickets rule → DELETE 422 FIELD_IN_USE_BY_RULE naming the rule; field kept, rule clean [PASS].</p><p>Evidence: NDC-3014-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3015",
+  "id": "0a8bd3cc-cf93-4856-b3e1-9508ef879f32",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | Deleting a layout leaves its rules in the list, Active, pointing to a missing layout",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3015-retest-PARTIAL.png",
+   "NDC-3015-retest-PARTIAL-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Rules after the delete → Active switched off; list shows \"(deleted layout)\" + \"This rule's layout was deleted, so the rule is not applied. Edit it to choose another layout, or delete it.\"; GET status disabled [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Delete a layout that has an active rule</strong>: expected Delete warns about the rules; actual API 204 with no warning; UI dialog only says \"permanently deletes the layout and its access settings\"</li></ul><p>Decision (QA lead, 16 Nov 2026): accepted as Zoho parity. Zoho CRM also deletes the layout with no warning about its validation rules; TAVI now switches the rules off and marks them \"(deleted layout)\" with a note. Moved to Done.</p><p>Evidence: NDC-3015-retest-PARTIAL.png, NDC-3015-retest-PARTIAL-vs-zoho.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3017",
+  "id": "1e2edbbb-b6e2-4f32-a74b-388ea9c1aa28",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | A message set to show \"at the top of the form\" is not brought into view",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3017-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Scroll to the checked field, pick a refused value, click Save → page scrolled 757 px down; no request sent (refused client-side) [INFO]</li><li>Where the user sees the message → Scroll 757 → 32 px; \"QA RT18 E2 pick cannot be Reject\" at the top in view; banner has role=\"alert\"; focus on the banner [PASS]</li><li>Field mark → Pick field not marked (no aria-invalid / red border) [INFO]</li></ul><p>Evidence: NDC-3017-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3018",
+  "id": "b0f24b6a-57e8-4d24-a70d-a664d4b9fa0f",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | Screen readers are not told why a save was refused",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3018-retest-PARTIAL.png",
+   "NDC-3018-retest-PARTIAL-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>aria-invalid on the input → aria-invalid=\"true\" [PASS]</li><li>aria-describedby → message → aria-describedby=\"live-field-…-error\" → \"QA RT18 text cannot start with BAD\" [PASS]</li><li>Focus → Focus on the QA RT18 v text input [PASS]</li><li>Desk ticket form (focus went to Subject) → Not rechecked (CRM-only lane) [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Message announced</strong>: expected role=\"alert\" or a live region; actual Field message has no role and no aria-live; no alert / live region on the page contains it</li></ul><p>Desk half: aria-invalid + aria-describedby + focus on the refused field, and a role=alert banner \"Please fix the field highlighted below.\" [PASS].</p><p>Decision (QA lead, 16 Nov 2026): CRM must announce the refusal like Desk does (role=alert / aria-live). Still failing in CRM: the message has no role=alert / aria-live and no live region contains it, so screen readers are not told. Moved to Bug.</p><p>Evidence: NDC-3018-retest-PARTIAL.png, NDC-3018-retest-PARTIAL-vs-zoho.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2959",
+  "id": "9d9b0f68-561f-4a2a-bda6-a8d3760801fd",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Web Forms",
+  "title": "Web Forms | The hosted link of a web form opens \"404 Not Found (nginx)\" (Desk and CRM)",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2959-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open the CRM form's hosted link signed out → 200, form shows Full Name + Lead Source (was nginx 404) [PASS]</li><li>Send the form from the hosted page → \"QA RT18 2959 thank you\"; lead \"QA RT18 2959 hosted\" created, Lead Source web [PASS]</li><li>Open the Desk \"Tech Webform\" hosted link signed out → 200, form shows Subject, Last Name, Email … [PASS]</li><li>Iframe address of both forms → 200 [INFO]</li></ul><p>Evidence: NDC-2959-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2635",
+  "id": "a3451c13-dda3-4367-a220-721ae246741e",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Activities",
+  "title": "Activity Life Cycle: features Zoho Desk has that Desk is missing",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2635-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Item 1 Department on every activity → Add Task: *Department required; owner list follows it (Sales 4 users → QA AO Dept A its 4 agents). Visibility for an agent outside the department not rechecked here (fixed under NDC-2830, Done) [PASS]</li><li>Item 2 Delete on the task / call / event page → Delete button on task, call and event pages; event deleted from its page (dialog \"moved to the Recycle Bin\", DELETE 204, GET 404) [PASS]</li><li>Item 3 Delete in the bulk bar → Bulk bar More › Delete present (run end-to-end 11 Nov; not re-run) [PASS]</li><li>Item 4 Activity count on the ticket → Tab \"4 ACTIVITY\"; GET ticket counts.activities 4 → 3 after the delete [PASS]</li><li>Item 5 Ticket-activities API + ready-made filters + counts → /desk/tickets/{id}/activities (+count, dueDate filters), /desk/activities (+dueDate filters, count), /desk/tasks|calls|events/count all 200 with correct numbers (was 404) [PASS]</li><li>Other endpoints named in the ticket → /desk/activities/stats, /reports and a /desk/tasks list still 404 (not in Zoho's list) [INFO]</li></ul><p>Evidence: NDC-2635-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3007",
+  "id": "1a837b7a-1b5a-43a3-a42f-99138c2b9dad",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Community",
+  "title": "Community | A customer's question topic does not create a linked ticket",
+  "verdict": "BLOCKED",
+  "decision": "",
+  "state": "none",
+  "stateId": null,
+  "images": [
+   "NDC-3007-retest-BLOCKED.png"
+  ],
+  "comment_html": "<p><strong>Retest BLOCKED — 15 Nov 2026</strong> → state not changed<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Customer posts a Question topic on the Help Center → BLOCKED — needs a portal customer sign-in, not available in this lane [INFO]</li><li>Agent-posted Question from Desk → Topic 200, ticket null after 8 s (Zoho behaviour for staff posts not known) [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Convert to ticket on a topic</strong>: expected Available (alternative in the ticket); actual Tools menu unchanged, API can.convert false — not there</li></ul><p>Evidence: NDC-3007-retest-BLOCKED.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3024",
+  "id": "3ab30c0c-28da-4b33-a0cd-25ff6251a668",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Contracts",
+  "title": "Contracts | A contract is saved with an end date earlier than its start date, with no error",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3024-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Screen: End Date earlier than Start Date › Save → \"End Date\" must be on or after \"Start Date\". (aria-invalid on End Date); no POST [PASS]</li><li>API create with end &lt; start → 422 RECORD_VALIDATION_FAILED end_date (was 201, status upcoming) [PASS]</li><li>API edit of a good contract to end &lt; start → PATCH 422, same message; dates unchanged [PASS]</li><li>End = start → 201 (one-day contract allowed; Zoho asks start &lt; end) [INFO]</li></ul><p>Evidence: NDC-3024-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3041",
+  "id": "0ceb7d8c-3af8-46e4-b8d1-7f42070336ea",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Custom Actions",
+  "title": "Custom Actions | Authentication set on an API source is not sent when the imported spec declares no security",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3041-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>API key on a source whose spec has no security → requestHeaders X-QA-RT18-Key: *** (was: no auth header) [PASS]</li><li>Bearer → Authorization: *** [PASS]</li><li>Basic → Authorization: *** [PASS]</li><li>Control: none → requestHeaders null [PASS]</li><li>Receiver-side check (original method) → BLOCKED: original used public webhook.site; checked the app's own request record against an .invalid host instead [INFO]</li></ul><p>Evidence: NDC-3041-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3042",
+  "id": "056f33eb-7ced-4696-98a5-207c53381359",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Custom Actions",
+  "title": "Custom Actions | Deleting an action used by a workflow rule gives no warning and leaves the rule broken",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3042-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Delete an action a workflow rule uses → \"It cannot be deleted while these use it. Remove it from them first: Workflow rule: QA RT18 WF uses CA echo — desk\" [PASS]</li><li>Confirm button → Delete disabled; no request sent; action still listed [PASS]</li><li>Same through the API → DELETE → 409 CUSTOM_ACTION_IN_USE \"is used by workflow rule 'QA RT18 WF uses CA echo'\" (was 204); GET still 200 [PASS]</li><li>Bot cards → Dialog says bot cards are not checked [INFO]</li></ul><p>Evidence: NDC-3042-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3002",
+  "id": "396560c0-e4a7-4874-83f6-e8981706b23f",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Email",
+  "title": "Email | Invalid domains are saved, and others get \"try again\" instead of a validation message",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3002-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Add \"exa mple.com\" (space) → Screen: red field + \"contains a space…\"; API 400 VALIDATION_ERROR (was saved) [PASS]</li><li>Add \"abc\" → Screen: red field; API 400 \"is not a full domain name…\" (was 503 try again) [PASS]</li><li>Add a domain already in the list → \"taviportal.com is already in your domains.\" (was 503) [PASS]</li><li>Remove a domain → DELETE 200 (state retired) and the card is gone; count 3 → 2 [PASS]</li><li>Add \"http://x.com\" → Screen strips http:// and adds \"x.com\" (removed again); API 400 \"is a web address…\" [INFO]</li></ul><p>Evidence: NDC-3002-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3003",
+  "id": "3827d72f-b1f0-4ca0-bb32-23a651b96ef0",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Email Templates",
+  "title": "Email Templates | A department reply-acknowledgement template cannot be switched off or deleted",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3003-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Actions menu of the active department template → Preview / Edit / Clone / Deactivate / Delete (was: Activate shown, no Deactivate) [PASS]</li><li>Deactivate → Dialog explains the fallback; POST …/deactivate 200; row \"Not active\" [PASS]</li><li>Delete while still active → Greyed out until deactivated (reasonable guard) [INFO]</li><li>Delete after deactivating → Menu Activate/Delete; DELETE 204; toast; row gone, 44 → 43 templates [PASS]</li><li>Built-in Reply acknowledgement menu → Preview / View / Clone / Activate / Delete [INFO]</li></ul><p>Evidence: NDC-3003-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3006",
+  "id": "a4e8ec60-7873-4a1c-ba79-59d0d868c0de",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Knowledge Base",
+  "title": "Knowledge Base | The image Gallery stays empty after uploading or inserting images",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3006-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Upload an image in Gallery, reload → qa-rt18-gallery.png 7.7 KB listed; /files?purpose=kb_article_image returns it (was []) [PASS]</li><li>Insert an image into an article (editor image button), save, open Gallery → qa-rt18-article-img.png 53 KB listed (POST /files purpose kb_article_image 201, article PUT 200 with the img) [PASS]</li><li>Older images → The two 12 Nov go-live images are listed as well [INFO]</li></ul><p>Evidence: NDC-3006-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2823",
+  "id": "9b91e6e7-c554-4f70-8a9a-46ab39f95915",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | No option to select all tickets at once in the ticket list view. (Zoho Desk offers a \"Select All\" master checkbox)",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2823-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Tick the header checkbox → \"50 of 60 selected\" (rows loaded so far) [PASS]</li><li>Select every ticket of the view in one action → \"Select all 60 in this view\" → chip 60 [PASS]</li><li>Bulk Update on the select-all set → Mass-update job 202, toast \"60 records updated\", API priority medium 60/60 [PASS]</li><li>Bulk Close on the select-all set (part that failed 13 Nov) → 60/60 Closed, truthful toast (NDC-3028) [PASS]</li></ul><p>Evidence: NDC-2823-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3013",
+  "id": "91c4c9b6-1913-4d78-b916-37f4b13192d3",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | Old Desk rule says it \"can't be applied\" for the wrong reason, and is still applied",
+  "verdict": "FAIL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3013-retest-FAIL.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>API reason → conditionError now \"A branch's check tests the primary field 'Status' only…\" (was \"choose a layout\"); not shown on screen [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Warning in the rule list</strong>: expected Names the real problem; actual \"This rule can't be applied (a field it uses changed or was deleted). Edit it to rebuild it.\" — unchanged; no field changed</li><li><strong>Warning in the editor</strong>: expected Names the real problem; actual Same message; Layout empty</li><li><strong>Warning matches what the server does</strong>: expected Not applied, or no \"can't be applied\" warning; actual Ticket set to QA NDC Reject without reason → 422 \"Please add a clear rejection reason\": the rule is still applied</li></ul><p>Zoho Desk comparison not possible this round: the Zoho Desk accounts in the 14 Nov credentials file are agents without Setup access.</p><p>Evidence: NDC-3013-retest-FAIL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3016",
+  "id": "a70e8eac-f85b-4c64-93c0-c059be92e42f",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | A deleted department shows as a raw id in the Desk rule list, and the rule gives no warning",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3016-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Departments column in the list → \"(deleted department), Customer Support\" (was \"d2a27f92-…, Customer Support\") [PASS]</li><li>Editor departments → \"(deleted department)\" ticked next to Customer Support (was hidden) [PASS]</li><li>Warning on the rule → List and editor: \"A department this rule was for was deleted. Edit the rule to remove it.\" [PASS]</li><li>Rule loads and saves → Save → PUT 200 [PASS]</li><li>API state → Rule stays Active; GET has no warning (screen-only) [INFO]</li></ul><p>Evidence: NDC-3016-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3004",
+  "id": "3ada257f-1482-4d0a-8086-e733377553b4",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Web Forms",
+  "title": "Web Forms | A disabled web form shows a blank page instead of a \"not available\" message",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3004-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open the iframe (embed) address of a disabled form → \"This form is not available.\" (was blank page) [PASS]</li><li>Open its hosted link → \"This form is not available.\" [PASS]</li><li>Form language is Arabic → Message stays English and left to right [INFO]</li></ul><p>Evidence: NDC-3004-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3005",
+  "id": "0411cd6f-257f-4f6d-b838-208af22027aa",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Web Forms",
+  "title": "Web Forms | A form set to Arabic keeps English field labels and left-to-right layout",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3005-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Field labels → Last Name / Email / Subject / Description shown as اسم العائلة / البريد الإلكتروني / الموضوع / الوصف (was English) [PASS]</li><li>Buttons → إرسال / إعادة تعيين [PASS]</li><li>Direction → html dir=rtl lang=ar, form direction rtl; labels right-aligned (hosted and iframe) [PASS]</li><li>Page width → Hidden spam-trap field sits at x = −10176 px, so the RTL page is 11,600 px wide (scrollWidth) — possible sideways scroll [INFO]</li></ul><p>Evidence: NDC-3005-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2948",
+  "id": "d197281b-1a7c-4d6a-afa5-7ca057cee272",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | A criteria pattern that leaves out a condition is accepted, and that condition is ignored",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2948-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Pattern \"1 and 2\" with 3 conditions → \"Condition 3 is not in the pattern. Use every condition number.\" [PASS]</li><li>Apply → Apply disabled; \"(1 or 2)\" also refused; \"1 and 2 and 3\" enables Apply [PASS]</li><li>Other pattern errors → \"1 and 2 and 3 and 4\" → \"Pattern refers to condition 4, which doesn't exist.\" [PASS]</li><li>Message language → INFO: English only (developer note); not checked in Arabic [INFO]</li></ul><p>Evidence: NDC-2948-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2951",
+  "id": "2174082b-0f59-4d64-99a4-88176057ba0b",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | A rule can have only one Field Update action",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2951-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Save a rule with 3 Field Updates (priority, description, classification) → 201; list Actions column = 3 [PASS]</li><li>Two Field Updates on the same field → 400 \"Field 'description' is set by two Field Updates at the same moment. Set it in one of them.\" [PASS]</li><li>Run on a ticket → #3982: priority Low→High, description \"QA RT18 2951 second FU\", classification Problem; execution Fired [PASS]</li><li>Editor offers Field Update after the first → Not checked on screen this round (developer checked) [INFO]</li></ul><p>Evidence: NDC-2951-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2953",
+  "id": "926c64f6-16a0-4ad4-8f5d-8ed8bf952acb",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | The rules API accepts a Field Update on the system field Created By",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2953-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Field Update created_by → 422 \"Field 'created_by' is read-only and cannot be changed.\" [PASS]</li><li>modified_by → 422, same message [PASS]</li><li>created_at / modified_at → 422, same message [PASS]</li><li>ticket_number (control) → 422 (unchanged) [PASS]</li><li>subject (control) → 201 [PASS]</li></ul><p>Evidence: NDC-2953-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2958",
+  "id": "7299fda3-f7fc-400d-afee-ec2bc9a38cb9",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | ${recordId} and ${moduleId} come out empty in a Field Update",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2958-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Rule On Create: Description = R[${recordId}] M[${moduleId}] S[${subject}] → 201 [PASS]</li><li>Create matching ticket → #3983, execution Fired [PASS]</li><li>Description of the ticket → \"R[17ca3589-…] M[88e8ea44-…] S[QA RT18 WF 2958 ticket]\" = ticket id + Tickets module id [PASS]</li></ul><p>Evidence: NDC-2958-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2965",
+  "id": "7b61a317-a49b-4a60-a995-0a2e42808bb2",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Saving a rule silently overwrites a change made by someone else",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2965-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Tab B: rename + Save → PATCH 200 [PASS]</li><li>Tab A (opened before): description + Save → PATCH 409 → dialog \"Rule changed … Reload the latest version?\" (Cancel / Reload latest) [PASS]</li><li>No change lost → Toast \"…changed by someone else after you opened it…\"; API name \"QA RT18 WF 2958 renamed in tab B\" [PASS]</li><li>API stale save with the old version → 409 RULE_VERSION_CONFLICT [PASS]</li></ul><p>Still failing:</p><ul><li><strong>API save without any version</strong>: expected —; actual 200 and the earlier rename is overwritten (version is optional for API callers)</li></ul><p>Evidence: NDC-2965-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2999",
+  "id": "2404a977-f692-444e-aa5a-61986efa4cbc",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Owner Assignment action saves any role or user value, even \"x\"",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2999-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>RoleRoundRobin \"x\" → 400 \"Owner Assignment needs the id of the user, profile, role or team to assign.\" [PASS]</li><li>RoleRoundRobin 11111111-…-555555555555 → 400 \"The profile to assign in turn does not exist.\" [PASS]</li><li>SpecificUser \"x\" / unknown user id → 400 / 400 \"The user to assign does not exist.\" [PASS]</li><li>Team unknown id → 400 \"The team to assign does not exist.\" [PASS]</li><li>Real user / profile / team → 201 / 201 / 201 [PASS]</li><li>RoleRoundRobin with a role (org unit CEO) id → 400 \"profile … does not exist\": this kind takes a profile id [INFO]</li></ul><p>Evidence: NDC-2999-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2945",
+  "id": "4eb2fc4f-1604-4502-a01c-4d931c62e08c",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Audit Log",
+  "title": "Audit Log | Scoring rule edits show \"EntriesJson: 1 item → 1 item\", so the change cannot be seen",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2945-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Change one line's points 15 → 20 → \"updated QA RT18 SR F9 audit's Scoring lines from 1 › points: 15 to 1 › points: 20\" (API: EntriesJson \"1 › points: 15\" → \"1 › points: 20\") [PASS]</li><li>Switch the rule off → \"Active from yes to no\" [PASS]</li><li>Created / deleted entries → \"added a Scoring Rule named …\", \"deleted a Scoring Rule named QA RT18 SR H2\" [PASS]</li><li>Line detail → Line shown by number only (field / condition not named) [INFO]</li></ul><p>Evidence: NDC-2945-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2136",
+  "id": "9f559025-4222-4823-933b-57eb3bff3635",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Custom Views",
+  "title": "Custom Views | List first page p95 far above 1.5 s (Leads 9.1 s, Deals 3.3 s)",
+  "verdict": "FAIL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2136-retest-FAIL.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser, timed loads (Java automation not run: it signs the owner in again)</p><p>Checked:</p><ul><li>Open All Leads 20 times (full navigation) → Rows shown every time (0 failures) [INFO]</li><li>Staging load → Other QA lanes running; Deals Kanban in the same hour also slowed (p50 1.74 → 8.92 s) [INFO]</li></ul><p>Still failing:</p><ul><li><strong>p95 of navigation → first row</strong>: expected ≤ 1.5 s; actual p50 5.06 s, p95 15.62 s, fastest 2.58 s (13 Nov: p95 4.03 s)</li></ul><p>Note: staging was slower overall during the run (other lanes active).</p><p>Evidence: NDC-2136-retest-FAIL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2137",
+  "id": "533f6806-b5a3-410d-8ec9-ea4f67c174e7",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Custom Views",
+  "title": "Custom Views | Kanban headers + first cards p95 5.1 s (target 2 s)",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2137-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser, timed loads</p><p>Checked:</p><ul><li>Open Deals Kanban → Shown in every column, every load [PASS]</li><li>Column requests (skip_total=true) → 224/224 → 200 [PASS]</li></ul><p>Still failing:</p><ul><li><strong>p95 time to headers + first cards</strong>: expected ≤ 2 s; actual Run 1 (10 loads): p50 1.74 s, p95 5.46 s; run 2 (20 loads, busier staging): p50 8.92 s, p95 31.93 s</li></ul><p>Note: staging was slower overall during the run (other lanes active).</p><p>Evidence: NDC-2137-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2989",
+  "id": "084e6464-a0b7-4f66-a479-e249ff4b09a8",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Conflicting actions on one field are accepted",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2989-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>set value + suggest value on the same field → 422 conflicting_actions [PASS]</li><li>mandatory + read-only on the same field → 422 conflicting_actions [PASS]</li></ul><p>Evidence: NDC-2989-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2990",
+  "id": "5b17d002-3696-4f7b-baf1-9d354c526573",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | No limit on actions per condition",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2990-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>CRM 41 actions → 422 \"A condition may have at most 40 actions; this one has 41.\" (40 → 201) [PASS]</li><li>CRM 500 actions → 422 too_many [PASS]</li><li>Desk 26 actions → 422 \"… at most 25 actions; this one has 26.\" (25 → 201) [PASS]</li></ul><p>Evidence: NDC-2990-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2991",
+  "id": "6c62a43c-1abc-4c3d-ad0b-af4b4f10a633",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Deleting a rule the caller cannot reach returns 204 but deletes nothing",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2991-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>DELETE /modules/{Contacts}/layout-rules/{Leads rule} → 404 LAYOUT_RULE_NOT_FOUND (was 204) [PASS]</li><li>Rule after the call → GET on Leads 200 [PASS]</li><li>Other tenant's owner deletes this tenant's rule (K2) → Not checked: no other-tenant account in this round [INFO]</li></ul><p>Evidence: NDC-2991-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2992",
+  "id": "70f684b1-201c-4957-ae07-691421ea931d",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | Screen readers are not told a rule-mandatory field is required",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2992-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Pick Refund → Asterisk shown (aria-hidden) [PASS]</li><li>Inspect the order input → input aria-required=\"true\" (also on its fieldset), wrapper data-field-required=\"true\" [PASS]</li><li>Field not mandatory → note before vip: attribute absent [PASS]</li></ul><p>Evidence: NDC-2992-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2995",
+  "id": "47b1a8ab-d6e6-439e-8e5e-a81d9c7007e2",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | \"Show related lists\" picker lists the same relation many times",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2995-retest-PARTIAL.png",
+   "NDC-2995-retest-PARTIAL-vs-zoho.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Notes entry → \"Notes\" is listed [PASS]</li><li>Same relation many times → 27 entries, none repeated: each lookup now carries its API name, e.g. \"Leads (Lookup 2) · leads.lookup_2_3\" [PASS]</li><li>Effect on the record page → Leads record page still has no related-list sections (Notes, Activities, Customer Portal, Recent activity only), so the action cannot be seen [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Clear name</strong>: expected Readable at a glance; actual The picker is narrow: the API-name part is cut (\"Leads (Lookup 2) · leads.lookup…\"), so 7 lines still read the same</li></ul><p>Evidence: NDC-2995-retest-PARTIAL.png, NDC-2995-retest-PARTIAL-vs-zoho.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2936",
+  "id": "fe5932c3-6210-48e3-a391-11c4a6c02a91",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Scoring Rules",
+  "title": "Scoring Rules | Removing a pick list value used by a scoring rule gives no warning, and records lose their points",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2936-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Remove a value a rule uses (screen) → Pop-up \"Scoring rules use these values\" naming the rule and value [PASS]</li><li>Remove it through the API → PUT field 200 with no warning in the answer; rule gets stale_entries option_retired [INFO]</li><li>Rule state after removal → List shows \"Needs attention (1)\"; editor banner \"Entry 1 tests a value that was removed…\" [PASS]</li><li>Rule value → Stored value still \"Alpha\"; editor shows \"Alpha (removed from the field)\" [PASS]</li><li>Record holding Alpha saved again → K2b lead keeps Alpha, score 4 after save [PASS]</li><li>Screen path: Leave empty for that record → Value cleared, but score stayed 6 until the record was saved again (then 2) [INFO]</li></ul><p>Evidence: NDC-2936-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2937",
+  "id": "17e0790f-50f3-4764-8082-f801a0c9b00d",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Scoring Rules",
+  "title": "Scoring Rules | Users without permission see the page, the New button and the editor, then every call is refused",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2937-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Open the page → No-access state \"You can't manage scoring rules — need the Modules and Fields manage permission…\" [PASS]</li><li>New Scoring Rule / editor → No New Scoring Rule button, so no editor or field list [PASS]</li><li>API as the same user → list, get, create, active, delete → 403 PERMISSION_DENIED [PASS]</li><li>Settings menu → Menu item \"Scoring Rules\" still listed (leads to the no-access page) [INFO]</li></ul><p>Evidence: NDC-2937-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2939",
+  "id": "f47ed6b4-5248-4e12-a3e5-dc25d9105434",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Scoring Rules",
+  "title": "Scoring Rules | A save without a version overwrites the rule with no conflict check",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2939-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>PUT with the current row_version → 200, version 2, points 5 [PASS]</li><li>PUT with no row_version → 400 SCORING_RULE_VERSION_REQUIRED; points stay 5 [PASS]</li><li>PUT with a stale row_version → 409 SCORING_RULE_VERSION_CONFLICT; points stay 5 [PASS]</li></ul><p>Evidence: NDC-2939-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2940",
+  "id": "7dd347a3-42d0-4c4d-8a2c-ac6a008ec6da",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Scoring Rules",
+  "title": "Scoring Rules | Two creates at the same moment make two rules with the same name",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2940-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>2 POST at the same moment → 201 / 422 \"This module already has a scoring rule named 'QA RT18 SR dbl'.\" [PASS]</li><li>List the rules → 1 rule \"QA RT18 SR dbl\" [PASS]</li><li>3 POST at the same moment → 201 / 422 / 422; 1 rule saved [PASS]</li><li>Later single create → 422 duplicate [PASS]</li></ul><p>Evidence: NDC-2940-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2941",
+  "id": "3861ebe2-5634-422f-bb20-7a17263735ea",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Scoring Rules",
+  "title": "Scoring Rules | The same condition twice in one rule is accepted and counted twice",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2941-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Two identical lines (Lead Source is chat +3 ×2) → 422 \"This condition is already given in entry 1 of this rule.\" [PASS]</li><li>Same condition, different points → 422 same message [PASS]</li><li>Lead with Lead Source = chat → No such rule saved; lead score 0 [PASS]</li></ul><p>Evidence: NDC-2941-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2942",
+  "id": "0b14a988-1405-4930-900f-3caedfd4fbb8",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Scoring Rules",
+  "title": "Scoring Rules | The API saves conditions the screen cannot show (regex, length, any value on User fields)",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2942-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>regexMatches on Company → 422 operator_unsupported, lists eq…isNotNull [PASS]</li><li>lengthEq on Company → 422 operator_unsupported [PASS]</li><li>isEmpty on Company → 201, stored as isNull (the editor's \"is empty\") [PASS]</li><li>User / Lead Owner \"is x\" → 422 \"use one of: isNull, isNotNull\" [PASS]</li><li>Conditions the editor offers → contains, isNull, user isNotNull → 201 [PASS]</li></ul><p>Evidence: NDC-2942-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2943",
+  "id": "06756404-c602-437d-a1a1-151519823a28",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Scoring Rules",
+  "title": "Scoring Rules | Unknown rule or module ids are answered as success",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2943-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>DELETE unknown rule id → 404 SCORING_RULE_NOT_FOUND [PASS]</li><li>Delete the same rule twice → 204, then 404 [PASS]</li><li>List for unknown module → 404 MODULE_NOT_FOUND [PASS]</li><li>Create for unknown module → 404 MODULE_NOT_FOUND [PASS]</li><li>Page ?module=&lt;unknown> → \"This module no longer exists.\" + hint; no New Scoring Rule button [PASS]</li></ul><p>Evidence: NDC-2943-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2944",
+  "id": "258014fd-1ef3-443d-bdb6-72182354d5dd",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Scoring Rules",
+  "title": "Scoring Rules | After a failed Create, focus stays on the button instead of the first error",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2944-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Create with name and field rule empty (keyboard Enter and mouse click) → document.activeElement = Rule name input both times [PASS]</li><li>Errors shown → 3 \"Required.\" messages, 3 controls aria-invalid [PASS]</li></ul><p>Evidence: NDC-2944-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3019",
+  "id": "1a196b1f-8ab9-4380-9879-3193330408bf",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | CRM rule list shows the raw layout id instead of the layout name",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3019-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Reload the list (3 times, first read at 3.5 s) → 7 rows each time, 0 ids; 5 rows \"QA RT18 VR Layout\", 2 rows \"(deleted layout)\" [PASS]</li><li>Arabic → Not rechecked (would change the owner's language setting) [INFO]</li></ul><p>Evidence: NDC-3019-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3020",
+  "id": "8de83847-4afb-4fdb-a52e-e1e2e94abfa6",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Validation Rules",
+  "title": "Validation Rules | Deleting a rule through another module's address answers \"deleted\" but deletes nothing",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3020-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>DELETE /modules/{Contacts}/validation-rules/{Leads rule} → 404 VALIDATION_RULE_NOT_FOUND [PASS]</li><li>GET / PUT through Contacts → 404 / 404, description unchanged [PASS]</li><li>GET on Leads → 200 [PASS]</li><li>Desk (Tickets via Desk Contacts) → Not rechecked (CRM-only lane) [INFO]</li></ul><p>Desk half: Tickets rule addressed through desk_contacts → GET 404, DELETE 404 (was 204); rule still present [PASS].</p><p>Evidence: NDC-3020-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2938",
+  "id": "cd35576f-4c1e-46f8-a2ae-f1a9818f907e",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Score threshold accepts text or decimals with no message and keeps the last valid number",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2938-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Type abc → \"Enter a whole number from -1,000,000,000 to 1,000,000,000.\" (aria-describedby on the box) [PASS]</li><li>Empty, 12.5, 999999999999999999 → All marked invalid with the same message [PASS]</li><li>Type -20 → Accepted, no message [PASS]</li><li>Create with an invalid value → Create disabled; dialog stays; nothing saved [PASS]</li></ul><p>Evidence: NDC-2938-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3027",
+  "id": "b28b7b45-cc9f-460d-8bff-8f4a7798332d",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Audit Log",
+  "title": "Audit Log | Entries show the internal field name EngineDeletedAt and name a deleted ticket by the contact's email",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3027-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 15 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Restore of a deleted ticket → \"restored a Ticket named #4064 QA RT18 3022d dept ticket\" (was \"cleared Ticket's EngineDeletedAt\") [PASS]</li><li>Delete of a ticket → \"deleted a Ticket named #4064 QA RT18 3022d dept ticket\" (was the contact's email) [PASS]</li><li>System ticket-number entry → \"ticket number from blank value to 4066\" logged as a separate update (noise) [INFO]</li><li>Ticket created by import (original case) → Not re-imported; API ticket used [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Department change made by the system (department disabled with transfer)</strong>: expected Readable fields and values; actual \"User a7a7a7a7 updated #4066 …'s department from 6158b7cc-… to 7e1ac409-…\" — raw ids, actor shown as an id</li></ul><p>Zoho Desk comparison not possible this round: the Zoho Desk accounts in the 14 Nov credentials file are agents without Setup / Audit Log access.</p><p>Evidence: NDC-3027-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3026",
+  "id": "ab158fc8-6571-44bf-a34d-603144b4368a",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Data Export",
+  "title": "Data Export | The Name column is empty on every row of the Contacts CSV export",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3026-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Contact with first + last name → \"Mona QA RT18 Export\" (First Mona, Last QA RT18 Export) [PASS]</li><li>Contact with last name only → \"QA RT18 GL Contact\" [PASS]</li><li>Rows with an empty Name → 0 of 2 (was: every row empty) [PASS]</li></ul><p>Evidence: NDC-3026-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3008",
+  "id": "73f02592-e52b-412f-be1e-6dca2f79c23c",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Email",
+  "title": "Email | Blocked addresses accept a wildcard (*@example.com) although the page says one address at a time",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3008-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Block \"*@…\" on the screen → Red field: \"Desk blocks one address at a time: a whole domain or a wildcard such as *@example.com cannot be blocked here.\" No request sent [PASS]</li><li>Same through the API (*@, @domain, bare domain) → POST spam-contacts → 400 VALIDATION_ERROR, same message, ×3 [PASS]</li><li>Blocked list after → \"No blocked addresses\"; API list [] [PASS]</li><li>Real domain blocking (Zoho has it) → Not offered; TAVI chose refusal, as the ticket allows [INFO]</li></ul><p>Evidence: NDC-3008-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3025",
+  "id": "a22acedb-5ae2-477d-90df-b652fbf088e7",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Mass Update",
+  "title": "Mass Update | Choosing a field but no value silently clears that field on every selected ticket",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3025-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Update records with Priority chosen and no value → Banner \"Choose a value for each field you added, or tick “Clear this field” to empty it.\" + field message; no mass-update request sent [PASS]</li><li>Way to empty a field on purpose → New tick box \"Clear this field on every selected record\" [PASS]</li><li>Tickets after the attempt → API: #4059 priority high, #4060 low (was: both emptied) [PASS]</li></ul><p>Evidence: NDC-3025-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3043",
+  "id": "53fc8a19-41a6-4ac8-951a-591da3a4ef0b",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Support Plans",
+  "title": "Support Plans | A contract can be given a discontinued plan through the API, and its page then says no plan is linked",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3043-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>POST contract with a discontinued plan → 422 \"this support plan is discontinued and can no longer be linked to contracts.\" (was 201) [PASS]</li><li>PATCH an existing contract to the discontinued plan → 422 SUPPORT_PLAN_DISCONTINUED; plan unchanged [PASS]</li><li>Control: active plan → 201 [PASS]</li></ul><p>Evidence: NDC-3043-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3033",
+  "id": "70f62a9e-fcb6-4977-9bd1-ea0dc2d8487d",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Ticket History",
+  "title": "Ticket History | An address field change is shown as raw code text",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3033-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Change City Cairo → Tanta → \"QA RT18 Address was updated · City Cairo → Tanta\" [PASS]</li><li>Change Street + Zip together → \"Street 1 QA Street → 2 QA Road\", \"Zip Code 11511 → 31511\"; no JSON [PASS]</li><li>Changed through → Records API (owner); screen inline edit not used [INFO]</li></ul><p>Evidence: NDC-3033-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3044",
+  "id": "196d1fc5-fb23-41ba-a04d-f42aab32b66b",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Ticket History",
+  "title": "Ticket History | A customer reply from the Help Center is shown as \"Email received\"",
+  "verdict": "BLOCKED",
+  "decision": "",
+  "state": "none",
+  "stateId": null,
+  "images": [
+   "NDC-3044-retest-BLOCKED.png"
+  ],
+  "comment_html": "<p><strong>Retest BLOCKED — 15 Nov 2026</strong> → state not changed<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Contact replies from the Help Center → BLOCKED: needs the contact to sign in to the Help Center (not allowed in this lane) [INFO]</li><li>Re-read the original entry → #3463 deleted at the 13 Nov cleanup [INFO]</li><li>Static check → No \"Email received\" / \"Help Center\" history text in the web bundle: label comes from elsewhere [INFO]</li></ul><p>Evidence: NDC-3044-retest-BLOCKED.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2955",
+  "id": "57ca0b2f-de42-4e19-b5c6-8440bdfd0613",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Rule name length is only checked when you save",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2955-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Type 250 chars in Rule Name (New Rule dialog) → maxlength 200, value 200 chars [PASS]</li><li>Type 2004 chars in Description → maxlength 2000, value 2000, counter \"2000 / 2000\" (starts \"0 / 2000\") [PASS]</li><li>Rule header name box → maxlength 200, value 200 chars [PASS]</li><li>Limit vs Zoho (50) → 200 kept by design (developer note) [INFO]</li></ul><p>Evidence: NDC-2955-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2961",
+  "id": "effb47b1-f69f-4e10-8dc7-d19b9fd73142",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Rules list shows internal field names in the Trigger column",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2961-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Date trigger on due_date (1 h before, 1 day before, 2 days after) → \"Date-Field Relative: Due Date (1 hour before)\", \"(1 day before)\", \"(2 days after)\" [PASS]</li><li>Field Changed triggers → \"Field Changed: Ticket Owner\", \"Field Changed: Status, Priority\", \"Field Changed: QA NDC Related Branch\" [PASS]</li><li>Arabic → \"تغيّر حقل: مالك التذكرة\", \"تاريخ الاستحقاق (يوم قبل)\", \"(يومان بعد)\", \"(ساعة قبل)\" [PASS]</li><li>Arabic list separator → \"الحالة, الأولوية\" uses a Latin comma [INFO]</li></ul><p>Evidence: NDC-2961-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2998",
+  "id": "fe960274-d442-45bd-9a55-43b34d88527d",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | The rules API accepts a date trigger on a field that is not a date",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2998-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 15 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>dateFieldName subject → 400 \"A date trigger needs a date or date-time field; 'subject' is not one.\" [PASS]</li><li>dateFieldName priority → 400, same message [PASS]</li><li>due_date → 201 [PASS]</li><li>nope_field → 400 \"Unknown field(s) for module 'Tickets': nope_field.\" [PASS]</li></ul><p>Evidence: NDC-2998-retest-PASS.png (attached)</p>"
+ }
+]

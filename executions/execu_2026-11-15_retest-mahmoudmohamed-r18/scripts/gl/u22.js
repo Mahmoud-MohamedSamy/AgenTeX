@@ -1,0 +1,10 @@
+const S='C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/64533306-cf5e-4d09-aa5c-24702973a047/scratchpad/';
+const net=[]; page.on('response',async r=>{ if(r.url().includes('/api/v1/files')){ net.push(r.request().method()+' '+r.url().split('/api/v1')[1].slice(0,120)+' '+r.status()+' '+(r.request().method()==='GET'?(await r.text().catch(()=>'')).slice(0,200):'')); }});
+await page.goto(H+'/knowledge-base/gallery',{waitUntil:'domcontentloaded'}); await sleep(12000);
+const before=(await page.locator('main').last().innerText()).replace(/\s+/g,' ');
+const fi=page.locator('input[type=file]'); const nfi=await fi.count();
+await fi.first().setInputFiles(S+'qa-rt18-gallery.png'); await sleep(8000);
+await page.reload({waitUntil:'domcontentloaded'}); await sleep(12000);
+const after=(await page.locator('main').last().innerText()).replace(/\s+/g,' ');
+await shot('3006-1-gallery-after-upload.png');
+return {nfi,before:before.slice(before.indexOf('Gallery Images'),before.indexOf('Gallery Images')+400),after:after.slice(after.indexOf('Gallery Images'),after.indexOf('Gallery Images')+500),net};

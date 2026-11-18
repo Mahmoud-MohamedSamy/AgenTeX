@@ -1,0 +1,3 @@
+const out={}; let reqs=[]; page.on('request',r=>{ const u=r.url(); if(u.includes('/api/v1/') && r.method()==='GET' && !/notifications|heartbeat|resolved|me\/|\/me$|mass-update|tab-settings|sandboxes|salesiq|crm\/status|send-as|settings\/hub|\/modules$/.test(u)) reqs.push(u.split('/api/v1')[1].slice(0,140)); });
+for (const n of ['Agents','Roles','Data Sharing']) { await page.goto(H+'/settings',{waitUntil:'domcontentloaded'}); await sleep(8000); reqs=[]; await page.getByRole('button',{name:n,exact:true}).first().click(); await sleep(9000); out[n]={url:page.url().replace(H,''), reqs:[...new Set(reqs)], t:(await page.locator('main').last().innerText()).replace(/\s+/g,' ').split('Email Providers').pop().slice(0,900)}; }
+return out;

@@ -1,0 +1,154 @@
+{
+ "out": "NDC-3016-retest-PASS.png",
+ "ticket": "NDC-3016",
+ "priority": "medium",
+ "title": "Validation Rules | A deleted department now shows as \"(deleted department)\" with a warning in the Desk rule list and editor",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Edge headless · rule \"QA RT18 3016 dept rule\" for \"QA RT18 3016 dept\" (deleted) + Customer Support · rule left inactive",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3016-1-list.png",
+   "caption": "List after the department was deleted",
+   "crop": [
+    292,
+    326,
+    1284,
+    330
+   ],
+   "boxes": [
+    {
+     "b": [
+      306,
+      570,
+      712,
+      586
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1056,
+      548,
+      1242,
+      588
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3016-2-editor.png",
+   "caption": "Editor: warning + \"(deleted department)\" ticked, Customer Support ticked",
+   "crop": [
+    352,
+    46,
+    896,
+    490
+   ],
+   "boxes": [
+    {
+     "b": [
+      354,
+      92,
+      1246,
+      122
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      372,
+      460,
+      762,
+      478
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      372,
+      484,
+      520,
+      528
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3016-api-card.png",
+   "caption": "API",
+   "crop": [
+    0,
+    0,
+    1600,
+    350
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      340
+     ],
+     "n": 5,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Departments column in the list",
+   "\"(deleted department)\" instead of the raw id",
+   "\"(deleted department), Customer Support\" (was \"d2a27f92-…, Customer Support\")",
+   "PASS"
+  ],
+  [
+   2,
+   "Editor departments",
+   "Deleted one shown",
+   "\"(deleted department)\" ticked next to Customer Support (was hidden)",
+   "PASS"
+  ],
+  [
+   3,
+   "Warning on the rule",
+   "Warns",
+   "List and editor: \"A department this rule was for was deleted. Edit the rule to remove it.\"",
+   "PASS"
+  ],
+  [
+   4,
+   "Rule loads and saves",
+   "Saves",
+   "Save → PUT 200",
+   "PASS"
+  ],
+  [
+   5,
+   "API state",
+   "-",
+   "Rule stays Active; GET has no warning (screen-only)",
+   "INFO"
+  ]
+ ]
+}

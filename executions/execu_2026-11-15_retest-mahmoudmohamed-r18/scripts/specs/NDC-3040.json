@@ -1,0 +1,21 @@
+{
+ "out": "NDC-3040-retest-PASS.png",
+ "ticket": "NDC-3040",
+ "priority": "high",
+ "title": "Ticket Archiving | A Desk Agent now only sees the rules read-only and the server refuses any change",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · agent C \"Customer Experience Specialists 2\" (Desk Agent) signed in once · PUTs sent with the current values only · owner re-read: unchanged",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3040-1-agentC-archiving.png", "caption": "Agent C: Ticket Archiving not in the Setup menu; opened by address it is read-only (switches disabled, no Save) with a permission note", "crop": [60, 60, 960, 840],
+   "boxes": [{"b": [66, 540, 262, 900], "n": 1, "kind": "PASS"}, {"b": [950, 200, 1000, 390], "n": 2, "kind": "PASS"}, {"b": [306, 458, 830, 482], "n": 2, "kind": "PASS"}]},
+  {"img": "3040-api-card.png", "caption": "API as agent C", "crop": [0, 0, 1600, 380],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 3, "kind": "PASS"}, {"b": [36, 167, 1564, 204], "n": 3, "kind": "PASS"}, {"b": [36, 214, 1564, 272], "n": 3, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Setup menu for a Desk Agent", "Page hidden or read-only", "Ticket Archiving not listed (menu: … Data Administration › Recycle Bin)", "PASS"],
+  [2, "Open /settings/tickets/archiving directly", "Read-only", "All 5 switches disabled, no Save; \"You can view these settings. Changing them needs the Manage Ticket Settings permission.\"", "PASS"],
+  [3, "PUT archive / spam / parent-child settings", "Refused", "403 \"Missing required permission 'desk:ticket_settings:manage'.\" ×3 (was 200)", "PASS"],
+  [4, "Settings after the test", "Unchanged", "Owner GET = baseline", "PASS"]
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "decision": {
+  "NDC-2963": "Script no longer runs (security fix PASS), but the comment still renders safe HTML (broken image) instead of the plain text the ticket's Expected asks for. Option A: PASS → Done. Option B: hold to plain text → Bug.",
+  "NDC-2962": "Save-time header checks all pass; whether the webhook sends only the configured headers could not be checked (no private receiver; the original test used public webhook.site). Option A: comment only, keep in Ready For Test until a private receiver is available. Option B: accept the save-time fix → Done."
+ },
+ "method": {
+  "NDC-2136": "Manual browser, timed loads (Java automation not run: it signs the owner in again)",
+  "NDC-2137": "Manual browser, timed loads"
+ },
+ "extraNote": {
+  "NDC-2807": "<p>Zoho reference (r15, 11 Nov): Zoho CRM finishes mass actions as a background job when the user leaves the page. Not re-run in Zoho this round.</p>",
+  "NDC-2136": "<p>Note: staging was slower overall during the run (other lanes active).</p>",
+  "NDC-2137": "<p>Note: staging was slower overall during the run (other lanes active).</p>",
+  "NDC-3028": "<p>Also seen: closing 60 tickets takes about 90 s with no progress shown; if the page is reloaded during that time, the remaining batches are not sent (25/60, 53/60, 36/60 closed in three runs) and the user is not told.</p>",
+  "NDC-3014": "<p>Desk half: field qa_rt18_l3_when used only in the \"Applies when\" of a Tickets rule → DELETE 422 FIELD_IN_USE_BY_RULE naming the rule; field kept, rule clean [PASS].</p>",
+  "NDC-3020": "<p>Desk half: Tickets rule addressed through desk_contacts → GET 404, DELETE 404 (was 204); rule still present [PASS].</p>",
+  "NDC-3013": "<p>Zoho Desk comparison not possible this round: the Zoho Desk accounts in the 14 Nov credentials file are agents without Setup access.</p>",
+  "NDC-3027": "<p>Zoho Desk comparison not possible this round: the Zoho Desk accounts in the 14 Nov credentials file are agents without Setup / Audit Log access.</p>",
+  "NDC-3018": "<p>Desk half: aria-invalid + aria-describedby + focus on the refused field, and a role=alert banner \"Please fix the field highlighted below.\" [PASS].</p><p>Decision (QA lead, 16 Nov 2026): CRM must announce the refusal like Desk does (role=alert / aria-live). Still failing in CRM: the message has no role=alert / aria-live and no live region contains it, so screen readers are not told. Moved to Bug.</p>",
+  "NDC-3015": "<p>Decision (QA lead, 16 Nov 2026): accepted as Zoho parity. Zoho CRM also deletes the layout with no warning about its validation rules; TAVI now switches the rules off and marks them \"(deleted layout)\" with a note. Moved to Done.</p>"
+ },
+ "observations": [
+  "<b>CRM</b> Layout rule editor shows a saved date as empty; rule list shows the API name instead of the label; Blueprint message uses the API name.",
+  "<b>CRM Scoring</b>: \"Leave empty\" does not rescore; the field API removes a used value with no warning; CRM User sees the Scoring menu; audit names a changed line by number only.",
+  "<b>CRM Function rules</b> accept internal URLs.",
+  "<b>Desk Workflow Rules</b>: PATCH without a version silently overwrites (Scoring refuses this); Arabic Trigger column uses a Latin comma; ticket History shows only \"workflow rule ran\" with no owner/team lines.",
+  "<b>Desk web form</b> shows raw skill keys; Arabic form: hidden spam-trap field makes the page ~11,600 px wide, disabled-form message stays in English.",
+  "<b>Desk Audit Log</b>: system department moves show raw department ids and \"User a7a7a7a7\" (NDC-3027).",
+  "<b>Desk department disable</b>: ticket record and department list sometimes take up to ~80 s to follow the transfer.",
+  "<b>Desk Notifications page</b> contradicts itself about when the acknowledgement mail is sent.",
+  "<b>Desk bulk Close</b>: ~90 s for 60 tickets, no progress; reload stops the remaining batches silently.",
+  "<b>Desk Validation Rules</b>: a rule with an API conditionError is still enforced (NDC-3013); deleted-department warning only on screen, API warnings [] and rule stays Active (NDC-3016); blueprint step shows the rule message only after Run.",
+  "<b>Desk Permissions page</b>: new profile shows every row as DENY (no \"not set\"); platform permissions (metadata.*, iam.*) mixed with Desk ones.",
+  "<b>Desk Activities › Tasks</b>: \"Not Found\" toast on load (GET of a deleted record).",
+  "<b>Desk KB</b>: translation body saved without a &lt;p&gt;, Arabic editor left-aligned; domain field normalises \"http://x.com\" instead of refusing."
+ ],
+ "override": {
+  "NDC-2962": "none",
+  "NDC-3015": "Done",
+  "NDC-3018": "Bug"
+ }
+}

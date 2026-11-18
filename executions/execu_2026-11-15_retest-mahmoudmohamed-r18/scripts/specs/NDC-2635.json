@@ -1,0 +1,27 @@
+{
+ "out": "NDC-2635-retest-PASS.png",
+ "ticket": "NDC-2635",
+ "priority": "medium",
+ "title": "Activity Life Cycle | All five missing items are now built (department, page Delete, bulk Delete, ticket count, activities API)",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Edge headless + API · ticket #4141 \"QA RT18 2635 ticket\" (QA AO Dept A) with 2 tasks, 1 call, 1 event",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "2635-1-ticket-activity.png", "caption": "Ticket tab \"4 ACTIVITY\" lists the 4 linked activities", "crop": [664, 180, 936, 340],
+   "boxes": [{"b": [1248, 186, 1328, 214], "n": 4, "kind": "PASS"}, {"b": [668, 274, 1596, 516], "n": 5, "kind": "PASS"}]},
+  {"img": "2635-3-event-delete-confirm.png", "caption": "Event page › Delete → \"moved to the Recycle Bin\" → Delete (204; count 4 → 3)", "crop": [560, 60, 1040, 480],
+   "boxes": [{"b": [1488, 80, 1584, 114], "n": 2, "kind": "PASS"}, {"b": [610, 362, 990, 538], "n": 2, "kind": "PASS"}]},
+  {"img": "2635-7b-bulk-more.png", "caption": "Tasks list, one row ticked: bulk bar Assign To / Update / Close / More › Delete", "crop": [260, 56, 900, 200],
+   "boxes": [{"b": [282, 66, 740, 102], "n": 3, "kind": "PASS"}]},
+  {"img": "2635-api-card.png", "caption": "API", "crop": [0, 0, 1600, 470],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 5, "kind": "PASS"}, {"b": [36, 167, 1564, 204], "n": 5, "kind": "PASS"}, {"b": [36, 214, 1564, 272], "n": 5, "kind": "PASS"}, {"b": [36, 282, 1564, 340], "n": 5, "kind": "PASS"}, {"b": [36, 350, 1564, 387], "n": 4, "kind": "PASS"}, {"b": [36, 397, 1564, 455], "n": 6, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Item 1 Department on every activity", "Required, narrows owners, visibility by department", "Add Task: *Department required; owner list follows it (Sales 4 users → QA AO Dept A its 4 agents). Visibility for an agent outside the department not rechecked here (fixed under NDC-2830, Done)", "PASS"],
+  [2, "Item 2 Delete on the task / call / event page", "Delete to Recycle Bin", "Delete button on task, call and event pages; event deleted from its page (dialog \"moved to the Recycle Bin\", DELETE 204, GET 404)", "PASS"],
+  [3, "Item 3 Delete in the bulk bar", "Mass Delete", "Bulk bar More › Delete present (run end-to-end 11 Nov; not re-run)", "PASS"],
+  [4, "Item 4 Activity count on the ticket", "Count shown / returned", "Tab \"4 ACTIVITY\"; GET ticket counts.activities 4 → 3 after the delete", "PASS"],
+  [5, "Item 5 Ticket-activities API + ready-made filters + counts", "As Zoho", "/desk/tickets/{id}/activities (+count, dueDate filters), /desk/activities (+dueDate filters, count), /desk/tasks|calls|events/count all 200 with correct numbers (was 404)", "PASS"],
+  [6, "Other endpoints named in the ticket", "-", "/desk/activities/stats, /reports and a /desk/tasks list still 404 (not in Zoho's list)", "INFO"]
+ ]
+}

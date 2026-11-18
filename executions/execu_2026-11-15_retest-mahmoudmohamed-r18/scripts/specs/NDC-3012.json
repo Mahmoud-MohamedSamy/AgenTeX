@@ -1,0 +1,125 @@
+{
+ "out": "NDC-3012-retest-PASS.png",
+ "ticket": "NDC-3012",
+ "priority": "high",
+ "title": "Validation Rules | A value typed in a Desk blueprint step is now checked against the validation rules",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Edge headless · ticket #4137 (QA AO Dept A, Standard layout) · blueprint \"QA RT18 3012 BP\" step \"QA to Hold\" asks for Subject · rule \"QA RT18 3012 subject not BAD\" · rule and blueprint left inactive",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3012-3-after-run.png",
+   "caption": "Step QA to Hold, Subject \"QA RT18 BAD-bp\" › Run → refused with the rule message; ticket stays Open",
+   "crop": [
+    664,
+    100,
+    936,
+    740
+   ],
+   "boxes": [
+    {
+     "b": [
+      678,
+      666,
+      1586,
+      732
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      798,
+      140,
+      962,
+      160
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      678,
+      172,
+      1092,
+      202
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3012-api-card.png",
+   "caption": "Requests and read-back",
+   "crop": [
+    0,
+    0,
+    1600,
+    340
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      272
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      319
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Blueprint step with a value the active rule refuses",
+   "Refused with the rule message",
+   "Run → 422 BLUEPRINT_VALIDATION_FAILED; message under Subject \"QA RT18: subject cannot start with QA RT18 BAD\" (was 200, saved)",
+   "PASS"
+  ],
+  [
+   2,
+   "Ticket after the refusal",
+   "Stays in its state",
+   "Open, subject unchanged (UI and API)",
+   "PASS"
+  ],
+  [
+   3,
+   "Same through the API, then an allowed value",
+   "Refused / allowed",
+   "Bad 422; good value 200 → On Hold",
+   "PASS"
+  ],
+  [
+   4,
+   "Check while typing",
+   "-",
+   "Message appears only on Run (server check), not while typing",
+   "INFO"
+  ]
+ ]
+}

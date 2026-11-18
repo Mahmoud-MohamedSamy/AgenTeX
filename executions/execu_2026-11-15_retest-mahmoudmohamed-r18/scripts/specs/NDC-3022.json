@@ -1,0 +1,21 @@
+{
+ "out": "NDC-3022-retest-PASS.png",
+ "ticket": "NDC-3022",
+ "priority": "high",
+ "title": "Departments | A ticket transferred by disabling its department now ends up in Customer Support everywhere (sometimes after a delay)",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · 6 temporary departments \"QA RT18 Dept 3022…\" (disabled with transfer to Customer Support, then deleted) · tickets #4061–#4066",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3022-1-ticket-4061.png", "caption": "Ticket #4061 after its department was disabled and deleted: department Customer Support", "crop": [664, 60, 936, 90],
+   "boxes": [{"b": [736, 110, 896, 134], "n": 1, "kind": "PASS"}]},
+  {"img": "3022-api-card.png", "caption": "Records API and the Customer Support list agree with the ticket; 3 of 6 runs lagged before catching up", "crop": [0, 0, 1600, 440],
+   "boxes": [{"b": [36, 167, 1564, 246], "n": 2, "kind": "PASS"}, {"b": [36, 256, 1564, 314], "n": 3, "kind": "INFO"}, {"b": [36, 324, 1564, 382], "n": 2, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Ticket page after disable/delete with transfer", "Customer Support", "#4061 shows Customer Support", "PASS"],
+  [2, "Ticket record + Customer Support list (records filter)", "Agree with the ticket", "All 6 runs end with record department = Customer Support and list count 1 (was: deleted dept kept for good, list 0)", "PASS"],
+  [3, "How fast", "Right away", "Runs 2, 3, 6 within 2–3 s; runs 1, 4, 5 the record stayed on the old dept > 6 s, ≥ 17 s and ~82 s before switching", "INFO"],
+  [4, "Overview dashboard vs list", "Same count", "Not rechecked on the dashboard (record + list agree)", "INFO"]
+ ]
+}

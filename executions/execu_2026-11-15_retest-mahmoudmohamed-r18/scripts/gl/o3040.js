@@ -1,0 +1,1 @@
+const o={}; for (const p of ['/desk/tickets/archive/settings','/desk/tickets/spam/settings','/desk/tickets/parent-child/settings']) { const r=await api('GET',p); o[p]=r.s+' '+r.t.slice(0,600); } return o;

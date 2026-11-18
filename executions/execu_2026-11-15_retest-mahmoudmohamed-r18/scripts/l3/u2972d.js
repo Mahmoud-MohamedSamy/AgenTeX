@@ -1,0 +1,13 @@
+const PROF='fd8263b4-de5d-4859-8603-47dd47fa41a6'; const reqs=[]; page.on('response',async r=>{const u=r.url(); const m=r.request().method(); if(/api\/v1\/iam/.test(u)&&m!=='GET'&&!/iam\/auth/.test(u)) reqs.push(m+' '+u.split('/api/v1')[1].slice(0,120)+' '+r.status()+' '+(r.request().postData()||'').slice(0,250)+' => '+(await r.text().catch(()=>'')).slice(0,200));});
+const rowOf=async key=>{const k=page.getByText(key,{exact:true}).first(); await k.scrollIntoViewIfNeeded(); return k.locator('xpath=ancestor::*[.//button[normalize-space()="GRANT" or normalize-space()="Grant"]][1]');};
+const st=async key=>{const row=await rowOf(key); return await row.locator('button').evaluateAll(bs=>bs.map(b=>b.innerText+':'+b.getAttribute('aria-pressed')+':'+(getComputedStyle(b).backgroundColor)).join(' '));};
+await page.goto(H+'/settings/users-control/permissions?profileId='+PROF,{waitUntil:'domcontentloaded'}); await sleep(12000);
+log('profile header', ((await text()).match(/QA RT18 profile[^\n]*/g)||[]).slice(0,3));
+log('before', await st('desk:tags:manage'));
+await (await rowOf('desk:tags:manage')).getByRole('button',{name:/^grant$/i}).first().click(); await sleep(1500);
+log('pending', await st('desk:tags:manage')); await shot('2972-3-pending.png');
+await page.getByRole('button',{name:/^Save/}).first().click(); await sleep(5000);
+log('after save text', ((await text()).match(/[^\n]*(saved|updated|error|failed)[^\n]*/gi)||[]).slice(0,4)); await shot('2972-4-saved.png');
+await page.reload({waitUntil:'domcontentloaded'}); await sleep(12000);
+log('after reload', await st('desk:tags:manage')); await shot('2972-5-after-reload.png');
+log('reqs', reqs);

@@ -1,0 +1,157 @@
+{
+ "out": "NDC-3013-retest-FAIL.png",
+ "ticket": "NDC-3013",
+ "priority": "medium",
+ "title": "Validation Rules | Old Desk rule still says \"a field it uses changed or was deleted\" and is still applied",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Edge headless · Tickets › Validation Rules · rule \"QA NDC Reject needs a reason\" (3 Nov, no layout, not edited) · test ticket \"QA RT18 3013 ticket\" (QA AO Dept A)",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "3013-1-list.png",
+   "caption": "List: same wrong reason, rule Active, Layout shown as \"All layouts\"",
+   "crop": [
+    292,
+    326,
+    1284,
+    104
+   ],
+   "boxes": [
+    {
+     "b": [
+      306,
+      400,
+      796,
+      420
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      864,
+      388,
+      934,
+      410
+     ],
+     "n": 1,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      1404,
+      384,
+      1450,
+      410
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "3013-2-editor.png",
+   "caption": "Edit dialog: same message; Layout empty (\"Choose a layout…\")",
+   "crop": [
+    352,
+    46,
+    896,
+    340
+   ],
+   "boxes": [
+    {
+     "b": [
+      354,
+      92,
+      1246,
+      122
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      354,
+      326,
+      790,
+      358
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "3013-api-card.png",
+   "caption": "API",
+   "crop": [
+    0,
+    0,
+    1600,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 4,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      293
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Warning in the rule list",
+   "Names the real problem",
+   "\"This rule can't be applied (a field it uses changed or was deleted). Edit it to rebuild it.\" — unchanged; no field changed",
+   "FAIL"
+  ],
+  [
+   2,
+   "Warning in the editor",
+   "Names the real problem",
+   "Same message; Layout empty",
+   "FAIL"
+  ],
+  [
+   3,
+   "Warning matches what the server does",
+   "Not applied, or no \"can't be applied\" warning",
+   "Ticket set to QA NDC Reject without reason → 422 \"Please add a clear rejection reason\": the rule is still applied",
+   "FAIL"
+  ],
+  [
+   4,
+   "API reason",
+   "-",
+   "conditionError now \"A branch's check tests the primary field 'Status' only…\" (was \"choose a layout\"); not shown on screen",
+   "INFO"
+  ]
+ ]
+}

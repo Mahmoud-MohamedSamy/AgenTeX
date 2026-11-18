@@ -1,0 +1,10 @@
+const path=require('path');const P='D:/Software Testing/Automation/Agentex Installation/Agentex Installation';
+const S='C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/64533306-cf5e-4d09-aa5c-24702973a047/scratchpad/r18-z3.json';
+const {chromium}=require(path.join(P,'node_modules/playwright-core'));
+(async()=>{const b=await chromium.launch({headless:false,channel:'msedge'});const ctx=await b.newContext({storageState:S,viewport:{width:1600,height:900}});const pg=await ctx.newPage();
+await pg.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/setup#setup/usermanagement/agents',{waitUntil:'domcontentloaded',timeout:90000});await pg.waitForTimeout(20000);
+await pg.locator('text=Not Now').click().catch(()=>{});
+await pg.locator('text=test agent 1').first().hover();await pg.waitForTimeout(1500);
+await pg.screenshot({path:'../screenshots/raw/z-prof-1.png'});
+await pg.locator('text=test agent 1').first().click();await pg.waitForTimeout(6000);
+await pg.screenshot({path:'../screenshots/raw/z-prof-2.png'});console.log(pg.url());console.log((await pg.innerText('body')).slice(0,1500).replace(/\n+/g,' | '));await b.close();})().catch(e=>{console.error('ERR',e.message.split('\n')[0]);process.exit(1)});

@@ -1,0 +1,24 @@
+const R={};const reqs=[];page.on('request',q=>{if(/\/workflow\/rules/.test(q.url())&&q.method()!=='GET')reqs.push(q.method()+' '+q.url().split('/api/v1')[1]);});
+const resp=[];page.on('response',r=>{if(/\/workflow\/rules/.test(r.url())&&r.request().method()!=='GET')resp.push(r.status());});
+await wiz('QA RT18 WF 2964 double save');await openCond();
+await setCond(0,'Subject','starts with','QA RT18 WF 2964 ');
+await clk(main.getByRole('button',{name:'Done'}).first()).catch(()=>{});await sleep(600);
+await clk(main.getByRole('button',{name:'Add action'}).first());await sleep(600);
+await clk(main.getByRole('button',{name:/^Field Update/}).first());await sleep(900);
+await clk(main.getByRole('button',{name:'Add field'}).first());await sleep(600);
+await choose(main.locator('button[aria-label="— select field —"]').last(),'Description');
+const inp=main.locator('xpath=//button[@aria-label="Remove Description"]/..//input | //button[@aria-label="Remove Description"]/..//textarea').last();R.inp=await inp.count();
+if(R.inp)await inp.fill('QA RT18 2964 FU');
+R.txt=(await main.innerText()).replace(/\s+/g,' ').match(/CONDITION.{0,300}/)?.[0];
+// 2955 header name box
+const en=page.getByRole('button',{name:'Edit rule name'}).first();R.en=await en.count();
+await shot('2964-0-before-save.png');
+const btn=main.getByRole('button',{name:'Save & Activate'}).first();
+await btn.dblclick();await sleep(500);R.btnDisabledDuring=await btn.isDisabled().catch(()=>'gone');R.btnText=await btn.innerText().catch(()=>'gone');
+await shot('2964-1-during-save.png');
+await sleep(6000);R.url=page.url();R.reqs=[...reqs];R.resp=[...resp];
+await page.goto(H+'/settings/automation/workflow-rules',{waitUntil:'domcontentloaded'});await page.getByRole('row').nth(2).waitFor({timeout:90000}).catch(()=>{});await sleep(2000);
+await page.getByPlaceholder('Search rules…').fill('QA RT18 WF 2964');await sleep(3000);
+R.rows=(await page.getByRole('row').allInnerTexts()).filter(r=>/2964/.test(r)).map(r=>r.replace(/\s+/g,' '));
+await shot('2964-2-list-one-rule.png');
+return R;

@@ -1,0 +1,1 @@
+const r=await api('POST','/web-forms/921e0f8e-9f1d-49f1-ada6-2a9b10a226bb/disable',{}); const f=arr((await api('GET','/web-forms')).j.data).find(x=>x.name==='QA RT18 form'); return {dis:r.s+' '+r.t.slice(0,150), en:f.is_enabled};

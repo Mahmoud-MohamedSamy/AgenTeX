@@ -1,0 +1,19 @@
+{
+ "out": "NDC-3008-retest-PASS.png",
+ "ticket": "NDC-3008",
+ "priority": "low",
+ "title": "Blocked addresses | A wildcard or whole domain is now refused with a clear message",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Setup › Channels › Email › Blocked addresses · test domain qa-rt18.example.com (no tickets use it)",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3008-1-wildcard.png", "caption": "\"*@qa-rt18.example.com\" › Block → red field + message; list stays \"No blocked addresses\"", "crop": [446, 190, 976, 450],
+   "boxes": [{"b": [462, 296, 884, 386], "n": 1, "kind": "PASS"}, {"b": [450, 470, 1418, 630], "n": 3, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Block \"*@…\" on the screen", "Refused (page says one address at a time) or a real domain block", "Red field: \"Desk blocks one address at a time: a whole domain or a wildcard such as *@example.com cannot be blocked here.\" No request sent", "PASS"],
+  [2, "Same through the API (*@, @domain, bare domain)", "Refused", "POST spam-contacts → 400 VALIDATION_ERROR, same message, ×3", "PASS"],
+  [3, "Blocked list after", "Nothing added", "\"No blocked addresses\"; API list []", "PASS"],
+  [4, "Real domain blocking (Zoho has it)", "—", "Not offered; TAVI chose refusal, as the ticket allows", "INFO"]
+ ]
+}

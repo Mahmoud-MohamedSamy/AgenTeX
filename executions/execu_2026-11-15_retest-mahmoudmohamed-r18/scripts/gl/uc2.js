@@ -1,0 +1,11 @@
+const out={};
+await page.goto(H+'/settings',{waitUntil:'domcontentloaded'}); await sleep(10000);
+const side=(await page.locator('body').innerText()).replace(/\s+/g,' ');
+out.menuHasArchiving=/Ticket Archiving/.test(side); out.side=side.slice(0,900);
+await page.goto(H+'/settings/tickets/archiving',{waitUntil:'domcontentloaded'}); await sleep(12000);
+const t=(await page.locator('main').last().innerText()).replace(/\s+/g,' ');
+out.page=t.slice(0,900);
+out.switches=await page.locator('main [role=switch], main input[type=checkbox]').evaluateAll(es=>es.map(e=>[e.getAttribute('aria-label')||e.id, e.disabled||e.getAttribute('aria-disabled'), e.getAttribute('aria-checked')||e.checked]));
+out.saveBtns=await page.locator('main button').filter({hasText:/^Save/}).evaluateAll(es=>es.map(e=>[e.innerText,e.disabled]));
+await shot('3040-1-agentC-archiving.png');
+return out;

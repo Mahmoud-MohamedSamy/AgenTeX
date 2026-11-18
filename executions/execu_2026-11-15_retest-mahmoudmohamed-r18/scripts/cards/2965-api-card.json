@@ -1,0 +1,33 @@
+{
+ "out": "2965-api-card.png",
+ "title": "NDC-2965 stale save of a workflow rule",
+ "host": "staging-desk.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "Save B from copy v2",
+   "PATCH /workflow/rules/{id} name \"… renamed B\", version 2",
+   "200",
+   "ok"
+  ],
+  [
+   "Stale save A",
+   "PATCH same rule, description, version 2",
+   "409 RULE_VERSION_CONFLICT This rule was changed by someone else after you opened it. Reload it…",
+   "ok"
+  ],
+  [
+   "Editor, 2 tabs",
+   "Tab B rename + Save, then tab A description + Save",
+   "B PATCH 200, A PATCH 409 → dialog \"Rule changed … Reload latest version?\"; name kept \"QA RT18 WF 2958 renamed in tab B\"",
+   "ok"
+  ],
+  [
+   "Save without a version",
+   "PATCH same rule, old copy, no version field",
+   "200 — rename from B overwritten (name back to \"QA RT18 WF 2951\")",
+   "bad"
+  ]
+ ]
+}

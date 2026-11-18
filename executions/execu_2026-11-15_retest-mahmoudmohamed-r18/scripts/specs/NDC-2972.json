@@ -1,0 +1,166 @@
+{
+ "out": "NDC-2972-retest-PASS.png",
+ "ticket": "NDC-2972",
+ "priority": "high",
+ "title": "Desk Profiles | A profile's permissions can now be seen, changed and saved in Desk",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Edge headless · Settings › User Management › Permissions · QA profile \"QA RT18 profile\" (no real profile changed)",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2972-7-key-opens.png",
+   "caption": "Key icon on the Profiles page opens the profile in the new Permissions page (categories with GRANT / DENY)",
+   "crop": [
+    270,
+    56,
+    1330,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      294,
+      478,
+      578,
+      532
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      606,
+      150,
+      812,
+      196
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2972-3-pending.png",
+   "caption": "GRANT on Manage Ticket Tags → 1 pending change, Save 1",
+   "crop": [
+    600,
+    220,
+    1000,
+    100
+   ],
+   "boxes": [
+    {
+     "b": [
+      604,
+      228,
+      1572,
+      300
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2972-5-after-reload.png",
+   "caption": "After Save and a full reload: GRANT kept",
+   "crop": [
+    600,
+    410,
+    1000,
+    140
+   ],
+   "boxes": [
+    {
+     "b": [
+      630,
+      460,
+      1564,
+      498
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2972-api-card.png",
+   "caption": "API",
+   "crop": [
+    0,
+    0,
+    1600,
+    350
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      204
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      251
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      319
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Open a profile's permissions from Desk",
+   "Page with the profile's permissions",
+   "Settings › Permissions page; key icon \"View and edit permissions\" opens it for that profile (was Headquarters)",
+   "PASS"
+  ],
+  [
+   2,
+   "Change a permission and save",
+   "Saved",
+   "GRANT on desk:tags:manage → \"1 pending change\" → Save 1 → POST …/permissions 204",
+   "PASS"
+  ],
+  [
+   3,
+   "Reload + API read-back",
+   "Change kept",
+   "Row shows GRANT after reload; GET permissions + effective = desk:tags:manage",
+   "PASS"
+  ],
+  [
+   4,
+   "Effect on a signed-in user",
+   "-",
+   "Not checked: no user holds the QA profile and real agents were not reassigned",
+   "INFO"
+  ],
+  [
+   5,
+   "Unset state",
+   "-",
+   "A new profile with no permissions shows every row as DENY (no \"not set\" state); list mixes platform keys (metadata.*, iam.*) with desk:*",
+   "INFO"
+  ]
+ ]
+}

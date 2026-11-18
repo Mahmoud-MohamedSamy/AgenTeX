@@ -1,0 +1,26 @@
+const wiz=async(name)=>{
+await page.goto(H+'/settings/automation/workflow-rules',{waitUntil:'domcontentloaded'});
+await page.getByRole('row').nth(2).waitFor({timeout:90000}).catch(()=>{});await sleep(2000);
+await page.evaluate(()=>Object.keys(localStorage).filter(k=>k.startsWith('workflow-rule-draft')).forEach(k=>localStorage.removeItem(k)));
+await page.getByRole('button',{name:'New Rule'}).click();const dlg=page.getByRole('dialog').first();await dlg.waitFor();
+await dlg.getByRole('button',{name:'Select a module'}).click();await page.getByRole('option',{name:'Tickets'}).click();
+await dlg.getByText('Selected departments').click();await sleep(500);await dlg.getByText('QA AO Dept A',{exact:true}).click();await sleep(300);
+await dlg.getByPlaceholder('e.g. High-Value Lead Notification').fill(name);
+await dlg.getByRole('button',{name:'Next'}).click();await sleep(1000);
+await dlg.getByRole('group').getByRole('button',{name:'Create',exact:true}).click().catch(e=>log('trig err',String(e.message).slice(0,100)));
+await dlg.getByRole('button',{name:'Create',exact:true}).last().click();await sleep(4000);
+};
+const main=page.locator('main').last();const clk=l=>l.dispatchEvent('click');
+const choose=async(btn,label)=>{await btn.click({force:true});await sleep(500);await page.locator(`xpath=//*[@role='option'][starts-with(normalize-space(.),"${label}")]`).first().click();await sleep(500);};
+const setCond=async(i,field,op,value)=>{
+ await choose(main.locator('button[aria-label="— select field —"]').first(),field);
+ if(op)await choose(main.getByRole('button',{name:'Operator'}).nth(i),op);
+ const rows=main.locator('button[aria-label="Remove condition"]');const row=rows.nth(i).locator('xpath=..');const inp=row.locator('input, textarea').first();
+ if(await inp.count())await inp.fill(value);await sleep(300);};
+const openCond=async()=>{await clk(main.getByText(/No conditions — actions run/).first());await sleep(800);await clk(main.getByText('Tickets matching certain conditions',{exact:true}).first());await sleep(800);};
+await wiz('QA RT18 WF 2948 probe');await openCond();
+log('opbtn',await main.getByRole('button',{name:'Operator'}).count(), 'rm',await main.locator('button[aria-label="Remove condition"]').count());
+log('aria',await main.locator('[aria-label]').evaluateAll(a=>a.map(x=>x.getAttribute('aria-label')).filter((v,i,s)=>s.indexOf(v)===i).slice(0,40)));
+await setCond(0,'Subject','starts with','QA RT18 WF 2948 ');
+log('c',(await main.innerText()).split('CONDITION')[1]?.slice(0,400).replace(/\s+/g,' '));
+await shot('wf-probe-cond2.png');return {};

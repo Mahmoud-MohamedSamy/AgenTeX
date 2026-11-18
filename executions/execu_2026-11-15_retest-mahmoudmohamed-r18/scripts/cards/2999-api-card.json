@@ -1,0 +1,45 @@
+{
+ "out": "2999-api-card.png",
+ "title": "NDC-2999 Owner Assignment target check",
+ "host": "staging-desk.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "RoleRoundRobin \"x\"",
+   "POST /workflow/rules  OwnerAssignment {RoleRoundRobin, \"x\"}",
+   "400 Owner Assignment needs the id of the user, profile, role or team to assign.",
+   "ok"
+  ],
+  [
+   "RoleRoundRobin unknown id",
+   "ownerValue 11111111-2222-3333-4444-555555555555",
+   "400 Owner Assignment: The profile to assign in turn does not exist.",
+   "ok"
+  ],
+  [
+   "SpecificUser \"x\" / unknown id",
+   "ownerValue \"x\" / 1111…5555",
+   "400 needs the id… / 400 The user to assign does not exist.",
+   "ok"
+  ],
+  [
+   "Team unknown id",
+   "Team 1111…5555",
+   "400 The team to assign does not exist.",
+   "ok"
+  ],
+  [
+   "Real targets (controls)",
+   "SpecificUser owner / RoleRoundRobin profile \"AI Agent\" / Team 485a7732",
+   "201 / 201 / 201",
+   "ok"
+  ],
+  [
+   "RoleRoundRobin with an org-unit role id",
+   "ownerValue CEO 7972984b (from /iam/org-units)",
+   "400 profile does not exist — RoleRoundRobin takes a profile id",
+   "info"
+  ]
+ ]
+}

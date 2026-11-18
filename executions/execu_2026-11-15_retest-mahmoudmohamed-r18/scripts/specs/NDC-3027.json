@@ -1,0 +1,20 @@
+{
+ "out": "NDC-3027-retest-PARTIAL.png",
+ "ticket": "NDC-3027",
+ "priority": "low",
+ "title": "Audit Log | Delete/restore now name the ticket by number and subject, no EngineDeletedAt; system department moves still show raw ids",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Setup › Audit Log · ticket #4064 \"QA RT18 3022d dept ticket\" deleted and restored (API ticket, not an imported one); #4066 moved by a department disable",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3027-1-audit-log.png", "caption": "Audit Log, today: restore/delete entries for #4064; system entries for #4066 from the department disable", "crop": [422, 380, 1024, 330],
+   "boxes": [{"b": [544, 384, 1060, 404], "n": 1, "kind": "PASS"}, {"b": [544, 441, 1054, 461], "n": 2, "kind": "PASS"}, {"b": [544, 554, 1430, 598], "n": 3, "kind": "FAIL"}, {"b": [544, 677, 1198, 697], "n": 4, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Restore of a deleted ticket", "Readable entry naming the ticket", "\"restored a Ticket named #4064 QA RT18 3022d dept ticket\" (was \"cleared Ticket's EngineDeletedAt\")", "PASS"],
+  [2, "Delete of a ticket", "Named by number + subject", "\"deleted a Ticket named #4064 QA RT18 3022d dept ticket\" (was the contact's email)", "PASS"],
+  [3, "Department change made by the system (department disabled with transfer)", "Readable fields and values", "\"User a7a7a7a7 updated #4066 …'s department from 6158b7cc-… to 7e1ac409-…\" — raw ids, actor shown as an id", "FAIL"],
+  [4, "System ticket-number entry", "—", "\"ticket number from blank value to 4066\" logged as a separate update (noise)", "INFO"],
+  [5, "Ticket created by import (original case)", "Same as rows 1–2", "Not re-imported; API ticket used", "INFO"]
+ ]
+}

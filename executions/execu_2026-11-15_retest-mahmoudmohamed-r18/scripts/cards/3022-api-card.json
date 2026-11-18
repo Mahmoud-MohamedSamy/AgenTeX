@@ -1,0 +1,7 @@
+{"out":"3022-api-card.png","title":"NDC-3022 department disable/delete with ticket transfer (6 runs)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Each run: new dept QA RT18 Dept 3022…, 1 ticket in it","POST /desk/departments/{d}/disable {transfer_to_department_id: Customer Support} → 200, then DELETE (transfer CS) → 200","Desk ticket API = Customer Support at once in every run","ok"],
+["Records API + Customer Support list, runs 2, 3, 6 (#4062, #4063, #4066)","GET /modules/{tickets}/records/{t}; records filter department = CS","record = Customer Support and list count 1 within 2–3 s of the disable","ok"],
+["Same, runs 1, 4, 5 (#4061, #4064, #4065)","polled every 2–3 s","record still on the disabled dept and CS list 0 for > 6 s / ≥ 17 s / ~ 82 s, then Customer Support (run 1 caught up at the delete)","info"],
+["End state, all 6 runs","after disable + delete","record department = Customer Support, CS list count 1 (was: stayed on the deleted dept for good)","ok"],
+["History","GET /desk/tickets/{t}/history","department_changed old dept → Customer Support (desk_api)","info"]]}

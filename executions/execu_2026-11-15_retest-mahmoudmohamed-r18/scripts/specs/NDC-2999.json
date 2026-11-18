@@ -1,0 +1,127 @@
+{
+ "out": "NDC-2999-retest-PASS.png",
+ "ticket": "NDC-2999",
+ "priority": "medium",
+ "title": "Workflow Rules | Owner Assignment now refuses \"x\" and ids that do not exist",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · POST /workflow/rules · QA AO Dept A · saved controls inactive",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2999-api-card.png",
+   "caption": "Rules API",
+   "crop": [
+    0,
+    0,
+    1600,
+    443
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      204
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      251
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      261,
+      1564,
+      298
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      308,
+      1564,
+      345
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      355,
+      1564,
+      413
+     ],
+     "n": 6,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "RoleRoundRobin \"x\"",
+   "Refused",
+   "400 \"Owner Assignment needs the id of the user, profile, role or team to assign.\"",
+   "PASS"
+  ],
+  [
+   2,
+   "RoleRoundRobin 11111111-…-555555555555",
+   "Refused",
+   "400 \"The profile to assign in turn does not exist.\"",
+   "PASS"
+  ],
+  [
+   3,
+   "SpecificUser \"x\" / unknown user id",
+   "Refused",
+   "400 / 400 \"The user to assign does not exist.\"",
+   "PASS"
+  ],
+  [
+   4,
+   "Team unknown id",
+   "Refused",
+   "400 \"The team to assign does not exist.\"",
+   "PASS"
+  ],
+  [
+   5,
+   "Real user / profile / team",
+   "Saves",
+   "201 / 201 / 201",
+   "PASS"
+  ],
+  [
+   6,
+   "RoleRoundRobin with a role (org unit CEO) id",
+   "—",
+   "400 \"profile … does not exist\": this kind takes a profile id",
+   "INFO"
+  ]
+ ]
+}

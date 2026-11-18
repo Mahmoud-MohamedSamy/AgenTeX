@@ -1,0 +1,83 @@
+{
+ "out": "NDC-2951-retest-PASS.png",
+ "ticket": "NDC-2951",
+ "priority": "medium",
+ "title": "Workflow Rules | A rule can hold several Field Update actions, and all of them run",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · rule \"QA RT18 WF 2951\" (active for the test, then off) · ticket #3982",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2951-api-card.png",
+   "caption": "Rules API + ticket read-back",
+   "crop": [
+    0,
+    0,
+    1600,
+    302
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      204
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      272
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Save a rule with 3 Field Updates (priority, description, classification)",
+   "Allowed (Zoho: up to 10)",
+   "201; list Actions column = 3",
+   "PASS"
+  ],
+  [
+   2,
+   "Two Field Updates on the same field",
+   "Refused clearly",
+   "400 \"Field 'description' is set by two Field Updates at the same moment. Set it in one of them.\"",
+   "PASS"
+  ],
+  [
+   3,
+   "Run on a ticket",
+   "All updates applied",
+   "#3982: priority Low→High, description \"QA RT18 2951 second FU\", classification Problem; execution Fired",
+   "PASS"
+  ],
+  [
+   4,
+   "Editor offers Field Update after the first",
+   "Offered",
+   "Not checked on screen this round (developer checked)",
+   "INFO"
+  ]
+ ]
+}

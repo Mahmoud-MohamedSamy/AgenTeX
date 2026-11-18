@@ -1,0 +1,21 @@
+{
+ "out": "NDC-3023-retest-PASS.png",
+ "ticket": "NDC-3023",
+ "priority": "high",
+ "title": "Products | New Product now saves from the screen; departments are accepted as a list",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Setup › Products › New Product · products \"QA RT18 3023 Product\" (screen) and \"… two depts\" (API)",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3023-2-after-save.png", "caption": "New Product › name + code, Departments pre-filled Sales › Save → saved (POST 201) and opened", "crop": [422, 100, 1024, 540],
+   "boxes": [{"b": [418, 110, 620, 140], "n": 1, "kind": "PASS"}, {"b": [466, 592, 600, 632], "n": 1, "kind": "PASS"}, {"b": [505, 306, 725, 322], "kind": "MASK", "label": "email hidden"}]},
+  {"img": "3023-api-card.png", "caption": "API: list of 1 or 2 departments saved, edit to Marketing only, unknown id still refused", "crop": [0, 0, 1600, 340],
+   "boxes": [{"b": [36, 188, 1564, 225], "n": 2, "kind": "PASS"}, {"b": [36, 235, 1564, 272], "n": 3, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Screen: New Product with the pre-filled department › Save", "Saved for the chosen department", "POST 201 (departments sent as a list); record page shows Departments Sales (was 422 not a valid department id)", "PASS"],
+  [2, "Two departments (Marketing + Sales)", "Saved", "API 201, both ids read back", "PASS"],
+  [3, "Replace with Marketing", "Saved", "PATCH 200, read back [Marketing]", "PASS"],
+  [4, "Unknown department id", "Refused", "422 DEPARTMENT_VALUE_INVALID", "INFO"]
+ ]
+}

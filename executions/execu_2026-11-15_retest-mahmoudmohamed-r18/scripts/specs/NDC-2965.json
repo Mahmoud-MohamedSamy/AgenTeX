@@ -1,0 +1,132 @@
+{
+ "out": "NDC-2965-retest-PASS.png",
+ "ticket": "NDC-2965",
+ "priority": "medium",
+ "title": "Workflow Rules | A stale save in the editor is refused with a reload prompt; the other change is kept",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · rule \"QA RT18 WF 2958\" (inactive) opened in two tabs of the owner session",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2965-3-tabA-conflict.png",
+   "caption": "Tab B renamed + saved; tab A changed the description and clicked Save",
+   "crop": [
+    600,
+    340,
+    990,
+    550
+   ],
+   "boxes": [
+    {
+     "b": [
+      612,
+      354,
+      988,
+      546
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1158,
+      792,
+      1574,
+      874
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2965-api-card.png",
+   "caption": "API checks",
+   "crop": [
+    0,
+    0,
+    1600,
+    349
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      204
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      272
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      282,
+      1564,
+      319
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Tab B: rename + Save",
+   "Saves",
+   "PATCH 200",
+   "PASS"
+  ],
+  [
+   2,
+   "Tab A (opened before): description + Save",
+   "Told the rule changed, asked to reload",
+   "PATCH 409 → dialog \"Rule changed … Reload the latest version?\" (Cancel / Reload latest)",
+   "PASS"
+  ],
+  [
+   3,
+   "No change lost",
+   "Rename kept",
+   "Toast \"…changed by someone else after you opened it…\"; API name \"QA RT18 WF 2958 renamed in tab B\"",
+   "PASS"
+  ],
+  [
+   4,
+   "API stale save with the old version",
+   "409",
+   "409 RULE_VERSION_CONFLICT",
+   "PASS"
+  ],
+  [
+   5,
+   "API save without any version",
+   "—",
+   "200 and the earlier rename is overwritten (version is optional for API callers)",
+   "FAIL"
+  ]
+ ]
+}

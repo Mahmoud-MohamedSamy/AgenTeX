@@ -1,0 +1,20 @@
+{
+ "out": "NDC-3041-retest-PASS.png",
+ "ticket": "NDC-3041",
+ "priority": "medium",
+ "title": "Custom Actions | Source authentication is now attached even when the spec declares no security",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · source \"QA RT18 CA no-security API\" (base https://qa-rt18.invalid, unresolvable on purpose) · action \"QA RT18 CA echo\" run on ticket #4059",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3041-api-card.png", "caption": "The run record of each run lists the headers the request carried (secret masked)", "crop": [0, 0, 1600, 470],
+   "boxes": [{"b": [36, 167, 1564, 225], "n": 1, "kind": "PASS"}, {"b": [36, 235, 1564, 272], "n": 2, "kind": "PASS"}, {"b": [36, 282, 1564, 340], "n": 3, "kind": "PASS"}, {"b": [36, 350, 1564, 387], "n": 4, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "API key on a source whose spec has no security", "Key sent with every request", "requestHeaders X-QA-RT18-Key: *** (was: no auth header)", "PASS"],
+  [2, "Bearer", "Sent", "Authorization: ***", "PASS"],
+  [3, "Basic", "Sent", "Authorization: ***", "PASS"],
+  [4, "Control: none", "No header", "requestHeaders null", "PASS"],
+  [5, "Receiver-side check (original method)", "—", "BLOCKED: original used public webhook.site; checked the app's own request record against an .invalid host instead", "INFO"]
+ ]
+}

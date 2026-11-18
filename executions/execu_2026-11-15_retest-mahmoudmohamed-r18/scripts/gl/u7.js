@@ -1,0 +1,10 @@
+const res=[]; page.on('response',async r=>{ if(r.url().includes('spam-contacts') && r.request().method()!=='GET'){ res.push(r.request().method()+' '+r.status()+' '+(r.request().postData()||'')+' → '+(await r.text().catch(()=>'')).slice(0,300)); }});
+await page.goto(H+'/settings/channels/email',{waitUntil:'domcontentloaded'}); await sleep(10000);
+await page.getByRole('tab',{name:/Blocked addresses/}).click(); await sleep(3000);
+const inp=page.locator('input[placeholder="name@example.com"]'); await inp.fill('*@qa-rt18.example.com'); await sleep(500);
+const b=page.locator('main button').filter({hasText:/^Block$/}); const dis=await b.isDisabled();
+if(!dis) await b.click(); await sleep(4000);
+const m=(await page.locator('main').last().innerText()).replace(/\s+/g,' ');
+await shot('3008-1-wildcard.png');
+const valid=await inp.evaluate(e=>[e.validity.valid,e.validationMessage,e.getAttribute('aria-invalid')]);
+return {dis,res,valid,m:m.slice(m.indexOf('Block a sender'),m.indexOf('Block a sender')+900)};

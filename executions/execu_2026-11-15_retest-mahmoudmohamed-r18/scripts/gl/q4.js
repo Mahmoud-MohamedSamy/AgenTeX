@@ -1,0 +1,1 @@
+const r=await api('GET','/desk/community/topics/5e2db2a0-0dfd-4b89-a08f-e9d5d17580e8'); const d=r.j.data; return {s:r.s, created:d.created_at, updated:d.updated_at, type:d.type, ticket:d.ticket, ticket_id:d.ticket_id, can:d.can, keys:Object.keys(d).join(',')};

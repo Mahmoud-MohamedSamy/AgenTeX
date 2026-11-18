@@ -1,0 +1,1 @@
+const TM="88e8ea44-1658-4df3-9930-d0902b91073d"; const l=await api("GET","/modules/"+TM+"/records?limit=5&q="+encodeURIComponent("QA RT18 3022d")); return arr(l.j.data).map(r=>({id:r.id, n:(r.data.find(x=>x.field==="ticket_number")||{}).value}));

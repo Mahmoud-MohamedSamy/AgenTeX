@@ -1,0 +1,13 @@
+const KM='0924eb24-e42a-4eab-8efd-e3428f19e882'; const net=[];
+page.on('response',async r=>{ if(r.url().includes('/records') && r.request().method()==='POST'){ net.push(r.status()+' '+(await r.text().catch(()=>'')).slice(0,300)); }});
+await page.goto(H+'/modules/'+KM+'/records/new',{waitUntil:'domcontentloaded'}); await sleep(12000); for(let i=0;i<30 && /Loading form/.test(await page.locator('main').last().innerText());i++) await sleep(1000);
+await page.locator('input[placeholder="Contract Name"]').fill('QA RT18 3024 screen bad dates');
+const d=page.locator('main input[type=date]'); await d.nth(0).fill('2026-12-01'); await d.nth(1).fill('2026-11-01'); await sleep(800);
+await d.nth(1).blur(); await sleep(800);
+await page.locator('main button').filter({hasText:/^Save$/}).first().click(); await sleep(4000);
+const t=(await page.locator('main').last().innerText()).replace(/\s+/g,' ');
+const end=await d.nth(1).evaluate(e=>[e.getAttribute('aria-invalid'),e.getAttribute('aria-describedby')]);
+const box=await d.nth(1).boundingBox();
+await d.nth(1).scrollIntoViewIfNeeded(); await sleep(500); await shot('3024-1-screen-bad-dates.png');
+const box2=await d.nth(1).boundingBox();
+return {net,end,box2,t:t.slice(t.indexOf('Contract Information'),t.indexOf('Contract Information')+900)};

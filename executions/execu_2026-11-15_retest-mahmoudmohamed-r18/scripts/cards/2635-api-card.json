@@ -1,0 +1,8 @@
+{"out":"2635-api-card.png","title":"NDC-2635 activities API (ticket \"QA RT18 2635 ticket\": 2 tasks, 1 call, 1 event)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Ticket activities","GET /desk/tickets/{id}/activities, …/activities/count","200: 4 items (task, task, call, event); count {total 4, open 4, overdue 1, tasks 2, calls 1, events 1}","ok"],
+["Ticket filters","…/activities?dueDate=Overdue / Tomorrow / Today","1 (overdue task) / 2 (task + call tomorrow) / 0 — correct","ok"],
+["Global list + filters","GET /desk/activities (?dueDate=Overdue / Tomorrow)","200: total 516 / 509 / 2 (the two QA items); invalid value → 400 listing overdue, today, tomorrow, today_and_overdue, next_7_days_and_overdue","ok"],
+["Counts","GET /desk/activities/count, /desk/tasks/count, /desk/calls/count, /desk/events/count","200 each (e.g. tasks {count 383, open 383, overdue 378}) — was 404","ok"],
+["Ticket count field","GET /desk/tickets/{id} counts","activities 4 → 3 after the event was deleted","ok"],
+["Still 404","/desk/activities/stats, /desk/activities/reports, /desk/tasks (list)","404 (not in the Zoho list of this ticket; tasks are listed through /desk/activities)","info"]]}

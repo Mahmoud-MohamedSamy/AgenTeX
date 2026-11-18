@@ -1,0 +1,12 @@
+const R={};
+await page.goto(H+'/settings/automation/workflow-rules',{waitUntil:'domcontentloaded'});
+await page.getByRole('row').nth(2).waitFor({timeout:90000}).catch(()=>{});await sleep(2000);
+await page.evaluate(()=>Object.keys(localStorage).filter(k=>k.startsWith('workflow-rule-draft')).forEach(k=>localStorage.removeItem(k)));
+await page.getByRole('button',{name:'New Rule'}).click();const dlg=page.getByRole('dialog').first();await dlg.waitFor();
+await dlg.getByRole('button',{name:'Select a module'}).click();await page.getByRole('option',{name:'Tickets'}).click();
+const nm=dlg.getByPlaceholder('e.g. High-Value Lead Notification');R.nameMax=await nm.getAttribute('maxlength');
+await nm.click();await page.keyboard.type('QA RT18 WF 2955 '+'x'.repeat(234),{delay:0});R.nameLen=(await nm.inputValue()).length;
+R.dlgText=(await dlg.innerText()).replace(/\s+/g,' ').slice(0,600);
+await shot('2955-1-new-rule-name.png');
+R.dlgInputs=await dlg.locator('input,textarea').evaluateAll(a=>a.map(x=>x.tagName+'|'+x.placeholder+'|'+x.getAttribute('maxlength')));
+return R;

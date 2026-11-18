@@ -1,0 +1,6 @@
+{"out":"3043-api-card.png","title":"NDC-3043 contract with a discontinued support plan (API)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Discontinued plan used","GET /desk/sla/support-plans?department_id={Tech}","\"QA Plan Gold\" bc1e5c23 status discontinued (existing tenant plan)","info"],
+["Create contract with it","POST /modules/{contracts}/records … support_plan = QA Plan Gold","422 SUPPORT_PLAN_DISCONTINUED \"this support plan is discontinued and can no longer be linked to contracts.\" (was 201)","ok"],
+["Change an existing contract to it","PATCH /modules/{contracts}/records/{QA RT18 3024 good dates} support_plan = QA Plan Gold","422 SUPPORT_PLAN_DISCONTINUED; contract keeps QA RT18 plan","ok"],
+["Control: active plan","POST … support_plan = QA RT18 plan","201","ok"]]}

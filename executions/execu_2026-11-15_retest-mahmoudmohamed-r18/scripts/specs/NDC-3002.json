@@ -1,0 +1,24 @@
+{
+ "out": "NDC-3002-retest-PASS.png",
+ "ticket": "NDC-3002",
+ "priority": "medium",
+ "title": "Email domains | Bad domains are refused with a clear message; a removed domain leaves the list",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Setup › Channels › Email › Your domains",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3002-2-exa_mple_com.png", "caption": "\"exa mple.com\" → red field + \"contains a space. A domain has no spaces, like acme.com.\"; nothing sent", "crop": [446, 360, 976, 90],
+   "boxes": [{"b": [462, 383, 1264, 438], "n": 1, "kind": "PASS"}]},
+  {"img": "3002-4-taviportal_com.png", "caption": "Existing domain → \"taviportal.com is already in your domains.\"", "crop": [446, 360, 976, 90],
+   "boxes": [{"b": [462, 383, 1264, 438], "n": 3, "kind": "PASS"}]},
+  {"img": "3002-8-after-remove.png", "caption": "After … › Remove domain on x.com: Your domains 2, x.com no longer listed", "crop": [446, 140, 976, 690],
+   "boxes": [{"b": [666, 146, 806, 170], "n": 4, "kind": "PASS"}, {"b": [450, 700, 1420, 820], "n": 4, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Add \"exa mple.com\" (space)", "Refused with a clear message", "Screen: red field + \"contains a space…\"; API 400 VALIDATION_ERROR (was saved)", "PASS"],
+  [2, "Add \"abc\"", "Refused with a clear message", "Screen: red field; API 400 \"is not a full domain name…\" (was 503 try again)", "PASS"],
+  [3, "Add a domain already in the list", "\"Already exists\"", "\"taviportal.com is already in your domains.\" (was 503)", "PASS"],
+  [4, "Remove a domain", "Removed from the list", "DELETE 200 (state retired) and the card is gone; count 3 → 2", "PASS"],
+  [5, "Add \"http://x.com\"", "Refused or cleaned", "Screen strips http:// and adds \"x.com\" (removed again); API 400 \"is a web address…\"", "INFO"]
+ ]
+}

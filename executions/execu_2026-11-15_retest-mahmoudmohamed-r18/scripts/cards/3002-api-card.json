@@ -1,0 +1,7 @@
+{"out":"3002-api-card.png","title":"NDC-3002 email domains validation (API)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Add \"exa mple.com\"","POST /desk/channels/domains/exa%20mple.com","400 VALIDATION_ERROR \"contains a space. A domain has no spaces, like acme.com.\"","ok"],
+["Add \"abc\"","POST /desk/channels/domains/abc","400 \"is not a full domain name. Enter one with a dot, like acme.com.\" (was 503 try again)","ok"],
+["Add \"http://x.com\"","POST /desk/channels/domains/http%3A%2F%2Fx.com","400 \"is a web address. Enter the domain alone … without http://\"","ok"],
+["Add existing \"taviportal.com\"","POST /desk/channels/domains/taviportal.com","200, returns the existing live domain (no duplicate); screen says \"already in your domains\"","ok"],
+["Remove \"x.com\" (screen)","… › Remove domain › Remove domain","DELETE 200 state retired; list back to 2 domains, x.com no longer shown","ok"]]}

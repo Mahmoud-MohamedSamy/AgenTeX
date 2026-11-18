@@ -1,0 +1,10 @@
+const net=[]; page.on('response',async r=>{ if(r.url().includes('/records') && ['POST','PATCH','PUT'].includes(r.request().method())){ net.push(r.request().method()+' '+r.status()+' '+(r.request().postData()||'').slice(0,400)+' → '+(await r.text().catch(()=>'')).slice(0,250)); }});
+await page.goto(H+'/settings/organization/products',{waitUntil:'domcontentloaded'}); await sleep(12000);
+await page.getByRole('button',{name:'New Product'}).click(); await sleep(3500);
+await page.getByLabel('Product Name').fill('QA RT18 3023 Product'); await page.getByLabel('Product Code').fill('QA-RT18-3023');
+const dlgTxt=(await page.locator('[role=dialog]').last().innerText().catch(()=>'')).replace(/\s+/g,' ').slice(0,800);
+await shot('3023-1-form.png');
+await page.getByRole('button',{name:/^Save$/}).last().click(); await sleep(5000);
+await shot('3023-2-after-save.png');
+const after=(await page.locator('main').last().innerText()).replace(/\s+/g,' ');
+return {dlgTxt,net,after:after.slice(0,1500)};

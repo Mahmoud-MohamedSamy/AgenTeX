@@ -1,0 +1,6 @@
+{"out":"3012-api-card.png","title":"NDC-3012 Desk blueprint step value and validation rules","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Rule","Tickets validation rule \"QA RT18 3012 subject not BAD\" (Standard layout): Subject starts with \"QA RT18 BAD\" → refuse","201 active; plain create with that subject → 422 VALIDATION_RULE_FAILED (control)","ok"],
+["Step on screen","Ticket #4137 (blueprint \"QA RT18 3012 BP\", QA AO Dept A) › QA to Hold › Subject \"QA RT18 BAD-bp\" › Run","POST /desk/tickets/{id}/blueprint-transitions/t_qa_1 → 422 BLUEPRINT_VALIDATION_FAILED, subject: \"QA RT18: subject cannot start with QA RT18 BAD\"","ok"],
+["Read-back","GET ticket","status Open, subject unchanged \"QA RT18 3012 ticket\"","ok"],
+["Same by API, then a good value","fields.subject \"QA RT18 BAD-api\"; then \"QA RT18 3012 ticket ok\"","422 same message, still Open; good value 200 → On Hold, subject saved","ok"]]}

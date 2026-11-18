@@ -1,0 +1,88 @@
+{
+ "out": "NDC-2963-retest-PASS.png",
+ "ticket": "NDC-2963",
+ "priority": "high",
+ "title": "Workflow Rules | Script in an Add Comment body no longer runs when the rule is opened",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · rules \"QA RT18 WF 2963\" + \"2963b\" (saved through the API, inactive) · editor, Edge 1600 px",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2963-3-editor-body-a.png",
+   "caption": "Rule saved with commentBody <img src=x onerror=\"window.__xss=1\">, opened in the editor",
+   "crop": [
+    368,
+    470,
+    500,
+    370
+   ],
+   "boxes": [
+    {
+     "b": [
+      522,
+      762,
+      838,
+      812
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      522,
+      762,
+      838,
+      812
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2963-4-editor-body-b.png",
+   "caption": "Rule 2963b: svg onload, javascript: link, iframe, onmouseover, <script> in the body",
+   "crop": [
+    368,
+    180,
+    500,
+    380
+   ],
+   "boxes": [
+    {
+     "b": [
+      522,
+      312,
+      838,
+      542
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Open the rule whose comment is <img src=x onerror=…>",
+   "No script runs",
+   "Editor shows the image without onerror (innerHTML <img src=\"x\">); window.__xss undefined; no dialog",
+   "PASS"
+  ],
+  [
+   2,
+   "Other vectors (svg onload, javascript: href, iframe, onmouseover after hover, <script>)",
+   "No script runs",
+   "Editor body \"<svg></svg><a>QA link</a><p>QA hover</p>\": handlers, href, iframe and script removed; window.__xss undefined",
+   "PASS"
+  ],
+  [
+   3,
+   "Body shown as plain text",
+   "Plain text everywhere",
+   "INFO: the rich-text editor still renders safe HTML (a broken image icon shows); the stored body keeps the raw payload",
+   "INFO"
+  ]
+ ]
+}

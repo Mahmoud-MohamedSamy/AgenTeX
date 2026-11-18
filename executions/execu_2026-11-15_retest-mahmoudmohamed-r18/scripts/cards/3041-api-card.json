@@ -1,0 +1,8 @@
+{"out":"3041-api-card.png","title":"NDC-3041 source auth on a spec with no security (request record)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Source from a pasted OpenAPI spec with NO securitySchemes","POST /workflow/custom-actions/sources (baseUrl https://qa-rt18.invalid, never resolves) + action \"QA RT18 CA echo\" published","201 / 201 / 200","info"],
+["Authentication = API key, header X-QA-RT18-Key","PUT …/sources/{src}/credential {authKind: api_key} → 200; POST …/{action}/run (ticket #4059)","run step requestHeaders {\"X-QA-RT18-Key\": \"***\"} (was: no auth header)","ok"],
+["Authentication = Bearer","same, authKind bearer","requestHeaders {\"Authorization\": \"***\"}","ok"],
+["Authentication = Basic (user qa-rt18)","same, authKind basic","requestHeaders {\"Authorization\": \"***\"}","ok"],
+["Control: Authentication = none","same, authKind none","requestHeaders null","ok"],
+["Receiver side","—","Not observed: no private receiver; host .invalid so nothing left staging (outcome network_error, \"Name or service not known\")","info"]]}

@@ -1,0 +1,11 @@
+const T='88e8ea44-1658-4df3-9930-d0902b91073d';
+await page.goto(H+'/modules/'+T+'/records/new',{waitUntil:'domcontentloaded'}); await page.waitForSelector('[data-rule-field]',{timeout:40000}).catch(()=>{}); await sleep(3000);
+const pick=async(field,opt)=>{ await page.locator(`[data-rule-field="${field}"] button`).first().click(); await sleep(1200); const s=page.locator('[role=listbox] input, [cmdk-input], input[placeholder*="Search" i]').last(); if(await s.count() && await s.isVisible().catch(()=>false)) { await s.fill(opt); await sleep(1200);} const o=page.getByRole('option',{name:opt,exact:true}).first(); if(await o.count()) await o.click(); else await page.getByText(opt,{exact:true}).last().click(); await sleep(2000); };
+const lang=async()=>page.locator('[data-rule-field="language"]').evaluate(e=>({txt:e.innerText.replace(/\s+/g,' ').slice(0,40), req:!!e.querySelector('[aria-required=true],[required]')||/\*/.test(e.querySelector('label').innerText)}));
+await pick('department','QA AO Dept A'); log('dept', (await page.locator('[data-rule-field="department"]').innerText()).replace(/\s+/g,' '));
+log('lang before category', await lang());
+await pick('category','General'); log('cat', (await page.locator('[data-rule-field="category"]').innerText()).replace(/\s+/g,' '));
+log('lang A+General', await lang()); await page.locator('[data-rule-field="language"]').scrollIntoViewIfNeeded(); await shot('2978-2-deptA-general.png');
+await page.locator('[data-rule-field="department"]').scrollIntoViewIfNeeded(); await pick('department','QA AO Dept B'); log('dept', (await page.locator('[data-rule-field="department"]').innerText()).replace(/\s+/g,' '));
+log('cat after', (await page.locator('[data-rule-field="category"]').innerText()).replace(/\s+/g,' '));
+log('lang B+General', await lang()); await page.locator('[data-rule-field="language"]').scrollIntoViewIfNeeded(); await shot('2978-3-deptB-general.png');

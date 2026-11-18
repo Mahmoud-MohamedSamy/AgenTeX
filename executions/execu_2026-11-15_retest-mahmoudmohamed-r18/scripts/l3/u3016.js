@@ -1,0 +1,11 @@
+const T='88e8ea44-1658-4df3-9930-d0902b91073d'; const reqs=[];
+page.on('response',async r=>{const u=r.url(); const m=r.request().method(); if(/validation-rules/.test(u)&&m!=='GET') reqs.push(m+' '+r.status()+' '+(r.request().postData()||'').match(/departmentIds[^\]]*\]/)+' => '+(await r.text().catch(()=>'')).slice(0,150));});
+await page.goto(H+'/settings/modules-and-fields/'+T+'?tab=validation',{waitUntil:'domcontentloaded'}); await sleep(9000);
+const nm=page.getByText('QA RT18 3016 dept rule',{exact:true}).first(); const row=nm.locator('xpath=ancestor::tr[1]'); log('row', (await row.innerText()).replace(/\s+/g,' '));
+await row.scrollIntoViewIfNeeded(); await shot('3016-1-list.png');
+await row.locator('button[aria-label="Edit"],button[title="Edit"]').first().click().catch(async()=>{ await row.locator('button').nth(1).click(); }); await sleep(4000);
+const d=page.locator('[role=dialog]').last(); const t=await d.innerText(); log('dept part', t.slice(t.indexOf('DEPARTMENTS'), t.indexOf('DEPARTMENTS')+500).replace(/\s+/g,' '));
+log('warn', (t.match(/[^\n]*(deleted|can't be applied|warning)[^\n]*/gi)||[]).slice(0,4));
+const dp=d.getByText('DEPARTMENTS').first(); await dp.scrollIntoViewIfNeeded(); await shot('3016-2-editor.png');
+await d.getByRole('button',{name:/^Save$/}).last().click(); await sleep(4000); log('after save dlg open', await page.locator('[role=dialog]').count());
+log('reqs',reqs);

@@ -1,0 +1,161 @@
+{
+ "out": "NDC-2962-retest-PARTIAL.png",
+ "ticket": "NDC-2962",
+ "priority": "high",
+ "title": "Workflow Rules | Webhook headers with line breaks or reserved names are now refused at save; what is sent not checked",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Workflow Rules API · QA AO Dept A · rules saved inactive",
+ "date": "15 Nov 2026",
+ "panels": [
+  {
+   "img": "2962-api-card.png",
+   "caption": "POST/PATCH /workflow/rules with the ticket's payloads and more",
+   "crop": [
+    0,
+    0,
+    1600,
+    600
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      225
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      235,
+      1564,
+      293
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      303,
+      1564,
+      361
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      371,
+      1564,
+      408
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      418,
+      1564,
+      455
+     ],
+     "n": 6,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      465,
+      1564,
+      502
+     ],
+     "n": 7,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      512,
+      1564,
+      570
+     ],
+     "n": 8,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Header value a + CRLF + Injected: 1",
+   "Refused at save",
+   "400 \"Webhook header 'X-QA' cannot contain a line break or another control character.\"",
+   "PASS"
+  ],
+  [
+   2,
+   "Header value with LF only",
+   "Refused",
+   "400, same message",
+   "PASS"
+  ],
+  [
+   3,
+   "Header name with CRLF",
+   "Refused",
+   "400 \"header name … may hold only letters, digits and - _ . ! # $ % & ' * + ^ ` | ~.\"",
+   "PASS"
+  ],
+  [
+   4,
+   "Reserved headers Host, Content-Length, Transfer-Encoding, Connection",
+   "Refused",
+   "400 each \"… is set by the request itself and cannot be changed.\"",
+   "PASS"
+  ],
+  [
+   5,
+   "Non-ASCII value (café)",
+   "Refused (developer note)",
+   "400 \"can hold only ASCII letters, digits, spaces and symbols.\"",
+   "PASS"
+  ],
+  [
+   6,
+   "Ordinary header X-QA-Ordinary",
+   "Still saves",
+   "201; value shown masked \"********\" on GET",
+   "PASS"
+  ],
+  [
+   7,
+   "Edit an existing rule to a CRLF header",
+   "Refused",
+   "PATCH 400, same message; stored header unchanged",
+   "PASS"
+  ],
+  [
+   8,
+   "Only the configured headers are sent",
+   "One x-qa header at the receiver",
+   "BLOCKED: original run used public webhook.site; no private receiver reachable from staging. No old rule with a bad header exists",
+   "INFO"
+  ]
+ ]
+}

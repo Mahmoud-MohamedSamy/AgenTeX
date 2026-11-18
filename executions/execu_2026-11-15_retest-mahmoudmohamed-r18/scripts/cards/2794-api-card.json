@@ -1,0 +1,6 @@
+{"out":"2794-api-card.png","title":"NDC-2794 workflow Owner Assignment: team with agent","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Rule","POST /workflow/rules \"QA RT18 2794 team+agent\" (QA AO Dept A, on create, subject starts \"QA RT18 2794\"): OwnerAssignment TeamWithAgent = QA RT18 2794 team + Test User 1 (member)","201, created inactive; activated only for the test (204)","ok"],
+["Agent outside the team","Same action with an agent who is not in the team","400 \"Team with agent: the agent is not a member of the team. Pick an agent of that team.\"","ok"],
+["Ticket fires the rule","POST ticket \"QA RT18 2794 team+agent ticket\" (#4140)","Execution Fired; owner = Test User 1 and team = QA RT18 2794 team at 5 s, 15 s, 30 s and again later (was: team cleared)","ok"],
+["After the test","POST /workflow/rules/…/deactivate","204, rule inactive","info"]]}

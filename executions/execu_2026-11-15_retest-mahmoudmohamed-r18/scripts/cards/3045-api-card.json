@@ -1,0 +1,6 @@
+{"out":"3045-api-card.png","title":"NDC-3045 Private ticket sharing: agent C (CEO role, Customer Support) vs Marketing tickets of agent B (Manager, reports to CEO)","host":"staging-desk.taviportal.com","who":"agent C \"Customer Experience Specialists 2\" (Desk Agent) — setup by ndc-staging-owner","date":"15 Nov 2026",
+"rows":[
+["Setup (owner)","Data Sharing Tickets = Private (already); #4067 \"QA RT18 3045 B1\" + #4068 \"…B2\" Marketing, assigned to B (200); #4070 Customer Support owned by C","—","info"],
+["C opens #4067 / #4068","GET /modules/{tickets}/records/{id}; GET /desk/tickets/{id}; GET …/replies","403 PERMISSION_DENIED / 404 / 404 (was 200, comments included)","ok"],
+["C searches \"QA RT18 3045\"","GET /modules/{tickets}/records?q=…","only #4070 (own Customer Support ticket); B's Marketing tickets not listed (was listed)","ok"],
+["Control: C's own Customer Support ticket #4070","GET record","200","ok"]]}

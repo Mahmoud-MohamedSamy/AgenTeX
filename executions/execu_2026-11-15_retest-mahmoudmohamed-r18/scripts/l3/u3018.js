@@ -1,0 +1,15 @@
+const T='88e8ea44-1658-4df3-9930-d0902b91073d'; const reqs=[];
+page.on('response',async r=>{const u=r.url(); const m=r.request().method(); if(/api\/v1\/modules/.test(u)&&m==='POST'&&/records/.test(u)) reqs.push(m+' '+u.split('/api/v1')[1].slice(0,80)+' '+r.status()+' '+(await r.text().catch(()=>'')).slice(0,200));});
+await page.goto(H+'/modules/'+T+'/records/new',{waitUntil:'domcontentloaded'}); await page.waitForSelector('[data-rule-field]',{timeout:40000}).catch(()=>{}); await sleep(3000);
+const pick=async(field,opt)=>{ await page.locator(`[data-rule-field="${field}"] button`).first().click(); await sleep(1200); const s=page.locator('[role=listbox] input, [cmdk-input], input[placeholder*="Search" i]').last(); if(await s.count() && await s.isVisible().catch(()=>false)) { await s.fill(opt); await sleep(1200);} const o=page.getByRole('option',{name:opt,exact:true}).first(); if(await o.count()) await o.click(); else await page.getByText(opt,{exact:true}).last().click(); await sleep(1500); };
+await pick('department','QA AO Dept A'); await pick('status','Open');
+await page.locator('[data-rule-field="email"] input').first().fill('qa-rt18-l3@example.com');
+await page.locator('[data-rule-field="description"] textarea').first().click();
+await page.locator('[data-rule-field="subject"] input').first().fill('QA RT18 BAD 3018');
+await page.getByRole('button',{name:/^Save$/}).last().click(); await sleep(5000);
+const R=await page.evaluate(()=>{ const w=document.querySelector('[data-rule-field="subject"]'); const i=w&&w.querySelector('input'); const db=i&&i.getAttribute('aria-describedby'); const ids=(db||'').split(/\s+/).filter(Boolean);
+ const live=[...document.querySelectorAll('[role=alert],[aria-live]')].map(e=>(e.getAttribute('role')||'')+'/'+(e.getAttribute('aria-live')||'')+': '+e.innerText.replace(/\s+/g,' ').slice(0,100)).filter(x=>/QA RT18|subject|valid/i.test(x));
+ const a=document.activeElement; return {fieldText:w&&w.innerText.replace(/\s+/g,' ').slice(0,120), ariaInvalid:i&&i.getAttribute('aria-invalid'), describedby:db, describedTexts:ids.map(id=>(document.getElementById(id)||{}).innerText), live, focus:a&&(a.closest('[data-rule-field]')||{getAttribute:()=>a.tagName}).getAttribute('data-rule-field')};});
+log('R',R); await page.locator('[data-rule-field="subject"]').scrollIntoViewIfNeeded(); await shot('3018-1-desk-refused.png'); log('reqs',reqs);
+log('errEl', await page.evaluate(()=>{const i=document.querySelector('[data-rule-field="subject"] input'); const e=document.getElementById(i.getAttribute('aria-describedby')); return e&&e.outerHTML.slice(0,300);}));
+log('allLive', await page.evaluate(()=>[...document.querySelectorAll('[role=alert],[role=status],[aria-live]')].map(e=>e.tagName+' role='+e.getAttribute('role')+' live='+e.getAttribute('aria-live')+' txt='+e.innerText.replace(/\s+/g,' ').slice(0,80))));

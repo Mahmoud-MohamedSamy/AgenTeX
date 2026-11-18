@@ -1,0 +1,19 @@
+{
+ "out": "NDC-3042-retest-PASS.png",
+ "ticket": "NDC-3042",
+ "priority": "medium",
+ "title": "Custom Actions | Deleting an action used by a workflow rule is now blocked and names the rule",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Setup › Custom Actions · action \"QA RT18 CA echo\" used by inactive rule \"QA RT18 WF uses CA echo\" (Marketing)",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3042-2-delete-dialog.png", "caption": "Action ⋮ › Delete: the dialog lists the rule that uses it and Delete stays disabled", "crop": [576, 308, 448, 284],
+   "boxes": [{"b": [646, 400, 1000, 462], "n": 1, "kind": "PASS"}, {"b": [922, 542, 1000, 580], "n": 2, "kind": "PASS"}, {"b": [646, 470, 1000, 510], "n": 4, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Delete an action a workflow rule uses", "Warning naming the rule, or a refusal", "\"It cannot be deleted while these use it. Remove it from them first: Workflow rule: QA RT18 WF uses CA echo — desk\"", "PASS"],
+  [2, "Confirm button", "No silent delete", "Delete disabled; no request sent; action still listed", "PASS"],
+  [3, "Same through the API", "Refused", "DELETE → 409 CUSTOM_ACTION_IN_USE \"is used by workflow rule 'QA RT18 WF uses CA echo'\" (was 204); GET still 200", "PASS"],
+  [4, "Bot cards", "—", "Dialog says bot cards are not checked", "INFO"]
+ ]
+}

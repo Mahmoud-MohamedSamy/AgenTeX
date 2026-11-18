@@ -1,0 +1,21 @@
+{
+ "out": "NDC-3045-retest-PASS.png",
+ "ticket": "NDC-3045",
+ "priority": "high",
+ "title": "Access | With Private sharing, an agent can no longer open another department's tickets owned by a lower-role agent",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · agent C \"Customer Experience Specialists 2\" (Desk Agent, role CEO, Customer Support) signed in once · B = Manager in Marketing · Tickets sharing Private · tickets #4067/#4068 (Marketing, owner B), #4070 (Customer Support, owner C)",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3045-1-agentC-open-4067.png", "caption": "Agent C opens #4067 by its address: \"This ticket is not available\" + Permission denied; list shows only C's own #4070 among the QA RT18 3045 tickets", "crop": [0, 60, 1600, 840],
+   "boxes": [{"b": [740, 425, 1180, 490], "n": 1, "kind": "PASS"}, {"b": [1296, 820, 1576, 874], "n": 1, "kind": "PASS"}, {"b": [12, 112, 308, 252], "n": 3, "kind": "PASS"}]},
+  {"img": "3045-api-card.png", "caption": "API as agent C", "crop": [0, 0, 1600, 350],
+   "boxes": [{"b": [36, 167, 1564, 204], "n": 1, "kind": "PASS"}, {"b": [36, 214, 1564, 272], "n": 2, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "C opens Marketing ticket #4067 owned by B (lower role)", "Not allowed (C not in Marketing)", "Screen: \"This ticket is not available\" + \"Permission denied.\"; API record 403, desk ticket + replies 404 (was opened with comments)", "PASS"],
+  [2, "C searches All Tickets for the test tickets", "Marketing tickets hidden", "Search returns only #4070; #4067/#4068 not in the list (was listed)", "PASS"],
+  [3, "Control: C's own Customer Support ticket", "Visible", "#4070 listed and GET 200", "PASS"],
+  [4, "Hierarchy inside C's own department", "Still widens access", "Not checked: B is not a Customer Support agent (assign 422)", "INFO"]
+ ]
+}

@@ -1,0 +1,7 @@
+{"out":"3040-api-card.png","title":"NDC-3040 company-wide archiving/spam/parent-child rules as a Desk Agent","host":"staging-desk.taviportal.com","who":"agent C \"Customer Experience Specialists 2\" (Desk Agent)","date":"15 Nov 2026",
+"rows":[
+["PUT archive settings (same values as now)","PUT /desk/tickets/archive/settings {enabled:false, inactive_days:120, closed_only:true}","403 forbidden \"Missing required permission 'desk:ticket_settings:manage'.\" (was 200)","ok"],
+["PUT spam settings (same values)","PUT /desk/tickets/spam/settings {enabled:true, retention_days:30, …}","403, same message (was 200)","ok"],
+["PUT parent/child settings (same values)","PUT /desk/tickets/parent-child/settings {parent_close_behavior:none, auto_close_parent:false}","403, same message (was 200)","ok"],
+["Read the settings","GET the three endpoints","200 (view allowed)","info"],
+["Owner re-read after the test","GET as ndc-staging-owner","unchanged = baseline","ok"]]}

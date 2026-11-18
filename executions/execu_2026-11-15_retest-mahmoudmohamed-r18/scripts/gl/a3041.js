@@ -1,0 +1,9 @@
+const o={}; const P='/qa-rt18/echo/{ref}';
+const spec=JSON.stringify({openapi:'3.0.0',info:{title:'QA RT18 CA no-security API',version:'1.0'},servers:[{url:'https://qa-rt18.invalid'}],paths:{[P]:{post:{operationId:'qaRt18Echo',summary:'QA RT18 echo',parameters:[{name:'ref',in:'path',required:true,schema:{type:'string'}}],requestBody:{content:{'application/json':{schema:{type:'object',properties:{note:{type:'string'}}}}}},responses:{'200':{description:'ok'}}}}}});
+const s=await api('POST','/workflow/custom-actions/sources',{name:'QA RT18 CA no-security API',baseUrl:'https://qa-rt18.invalid',specFormat:'openapi3',origin:'paste',rawSpec:spec}); o.src=s.s+' '+s.t.slice(0,200); const sid=s.j&&s.j.data&&s.j.data.id; o.sid=sid; if(!sid) return o;
+fs.appendFileSync('../ledger.md',`- ${new Date().toISOString().slice(0,19)} custom-action source "QA RT18 CA no-security API" (baseUrl https://qa-rt18.invalid) ${sid} (Desk)\n`);
+const cr=await api('PUT','/workflow/custom-actions/sources/'+sid+'/credential',{authKind:'api_key',config:{headerName:'X-QA-RT18-Key'},secret:'qa-rt18-dummy-key-123'}); o.cred=cr.s+' '+cr.t.slice(0,400);
+const a=await api('POST','/workflow/custom-actions',{sourceId:sid,name:'QA RT18 CA echo',description:'QA RT18 echo',method:'POST',path:P,targetApps:['desk'],usageGuide:'',inputBindings:[{name:'ref',location:'path',required:true,handling:'runtime'},{name:'note',location:'body',required:false,handling:'runtime'}],dependencies:[],errorMappings:[],outputMappings:[]}); o.act=a.s+' '+a.t.slice(0,200); const aid=a.j&&a.j.data&&a.j.data.id; o.aid=aid;
+if(aid){ fs.appendFileSync('../ledger.md',`- ${new Date().toISOString().slice(0,19)} custom action "QA RT18 CA echo" ${aid} (Desk)\n`); o.pub=(await api('POST','/workflow/custom-actions/'+aid+'/publish')).s; }
+o.srcGet=(await api('GET','/workflow/custom-actions/sources/'+sid)).t.slice(0,2500);
+return o;

@@ -1,0 +1,18 @@
+{
+ "out": "NDC-3043-retest-PASS.png",
+ "ticket": "NDC-3043",
+ "priority": "low",
+ "title": "Support Plans | The API now refuses a discontinued plan on a contract, on create and on edit",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · records API, Contracts · discontinued plan \"QA Plan Gold\" (Tech) · account QA RT18 GL Account",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3043-api-card.png", "caption": "Contract with the discontinued plan: create and edit both 422 SUPPORT_PLAN_DISCONTINUED; active plan 201", "crop": [0, 0, 1600, 340],
+   "boxes": [{"b": [36, 146, 1564, 204], "n": 1, "kind": "PASS"}, {"b": [36, 214, 1564, 272], "n": 2, "kind": "PASS"}, {"b": [36, 282, 1564, 319], "n": 3, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "POST contract with a discontinued plan", "Refused, as the screen does", "422 \"this support plan is discontinued and can no longer be linked to contracts.\" (was 201)", "PASS"],
+  [2, "PATCH an existing contract to the discontinued plan", "Refused", "422 SUPPORT_PLAN_DISCONTINUED; plan unchanged", "PASS"],
+  [3, "Control: active plan", "Saved", "201", "PASS"]
+ ]
+}

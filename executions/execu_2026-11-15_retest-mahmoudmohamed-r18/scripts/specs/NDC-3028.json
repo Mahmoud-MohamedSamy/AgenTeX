@@ -1,0 +1,21 @@
+{
+ "out": "NDC-3028-retest-PASS.png",
+ "ticket": "NDC-3028",
+ "priority": "high",
+ "title": "Tickets | Bulk Close on the whole view now closes every ticket and the message tells the truth",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Edge headless · private view \"QA RT18 3028 view\" with 60 Open tickets #4073–#4132 (QA AO Dept A)",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3028-4c-result-done.png", "caption": "Select all 60 in this view › Close › Close 60 tickets: every row Closed, toast \"60 records closed.\"", "crop": [260, 60, 1600, 900],
+   "boxes": [{"b": [1296, 820, 1576, 874], "n": 1, "kind": "PASS"}, {"b": [1440, 128, 1524, 166], "n": 2, "kind": "PASS"}]},
+  {"img": "3028-api-card.png", "caption": "Requests, read-back and the second run", "crop": [0, 0, 1600, 350],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 204], "n": 2, "kind": "PASS"}, {"b": [36, 214, 1564, 272], "n": 3, "kind": "PASS"}, {"b": [36, 282, 1564, 340], "n": 4, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Select all 60 in this view › Close 60 tickets", "All close, no 500", "Batched POST /desk/tickets/bulk/close × 3 (25/25/10), all 200, failed 0; toast \"60 records closed.\" (was per-ticket 500s, \"0 updated, 60 failed\")", "PASS"],
+  [2, "Reload + API read-back", "All 60 Closed", "List shows Closed; GET of the 60 records: Closed 60, Open 0", "PASS"],
+  [3, "Run Close again on the same 60", "Truthful message", "Each result ALREADY_CLOSED; toast \"0 closed, 60 already closed.\"", "PASS"],
+  [4, "Time / leaving the page", "-", "~90 s for 60 with no progress shown; leaving the page early stops the remaining batches (25/60, 53/60, 36/60 seen)", "INFO"]
+ ]
+}

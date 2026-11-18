@@ -1,0 +1,57 @@
+{
+ "out": "2962-api-card.png",
+ "title": "NDC-2962 webhook header validation at save",
+ "host": "staging-desk.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "15 Nov 2026",
+ "rows": [
+  [
+   "Header value with CRLF",
+   "POST /workflow/rules  Webhook headers {\"X-QA\":\"a\r\nInjected: 1\"}",
+   "400 VALIDATION_ERROR — Webhook header 'X-QA' cannot contain a line break or another control character.",
+   "ok"
+  ],
+  [
+   "Header value with LF",
+   "headers {\"X-QA\":\"a\nInjected: 1\"}",
+   "400 — same message",
+   "ok"
+  ],
+  [
+   "Header name with CRLF",
+   "headers {\"X-QA\r\nInjected\":\"1\"}",
+   "400 — Webhook header name ... may hold only letters, digits and - _ . ! # $ % & ' * + ^ ` | ~.",
+   "ok"
+  ],
+  [
+   "Reserved headers",
+   "Host / Content-Length / Transfer-Encoding / Connection",
+   "400 each — Webhook header 'Host' is set by the request itself and cannot be changed.",
+   "ok"
+  ],
+  [
+   "Non-ASCII value",
+   "headers {\"X-QA\":\"café\"}",
+   "400 — can hold only ASCII letters, digits, spaces and symbols.",
+   "ok"
+  ],
+  [
+   "Ordinary header (control)",
+   "headers {\"X-QA-Ordinary\":\"rt18\"}",
+   "201 saved (stored value shown masked ********)",
+   "ok"
+  ],
+  [
+   "Edit path",
+   "PATCH /workflow/rules/{id} with CRLF header",
+   "400 — same message; stored header unchanged",
+   "ok"
+  ],
+  [
+   "Runtime (what is sent)",
+   "Fire a rule at a request catcher",
+   "BLOCKED — the original run used public webhook.site; no private receiver reachable from staging",
+   "info"
+  ]
+ ]
+}

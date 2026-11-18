@@ -1,0 +1,21 @@
+const TM='88e8ea44-1658-4df3-9930-d0902b91073d', CS='7e1ac409-58b0-41ab-97e1-0e7d5c8c5158', CON='349fc131-bdf7-44a3-94b2-78f01eb8d32e'; const o={};
+const sv=v=>({kind:'string',value:v});
+const c=await api('POST','/desk/departments',{name:'QA RT18 Dept 3022d',visibility:'private',description:'QA RT18 repro, delete after'}); o.dept=c.s+' '+c.t.slice(0,150); const DID=c.j&&c.j.data&&c.j.data.id; o.DID=DID; if(!DID) return o;
+fs.appendFileSync('../ledger.md',`- ${new Date().toISOString().slice(0,19)} department "QA RT18 Dept 3022d" ${DID} (Desk)\n`);
+await sleep(2000);
+const t=await api('POST','/modules/'+TM+'/records',{data:[{field:'subject',value:sv('QA RT18 3022d dept ticket')},{field:'department',value:sv(DID)},{field:'status',value:sv('Open')},{field:'contact_id',value:sv(CON)},{field:'email',value:sv('qa-rt18-gl@example.com')}]});
+const TID=t.j&&t.j.data&&t.j.data.id; o.ticket=t.s+' '+TID; if(!TID) {o.tt=t.t; return o;}
+fs.appendFileSync('../ledger.md',`- ${new Date().toISOString().slice(0,19)} ticket "QA RT18 3022d dept ticket" ${TID} (Desk)\n`);
+const recDept=async()=>{const r=await api('GET','/modules/'+TM+'/records/'+TID); return ((r.j.data.data||[]).find(d=>d.field==='department')||{}).value;};
+const deskDept=async()=>((await api('GET','/desk/tickets/'+TID)).j.data||{}).department_id;
+o.before={rec:await recDept(),desk:await deskDept()};
+const dis=await api('POST','/desk/departments/'+DID+'/disable',{transfer_to_department_id:CS}); o.disable=dis.s+' '+dis.t.slice(0,200);
+o.poll=[]; const t0=Date.now(); for(let i=0;i<30;i++){ await sleep(2000); const rd=await recDept(); const l=await api('GET','/modules/'+TM+'/records?page=1&per_page=5&filters='+encodeURIComponent(JSON.stringify([{field:'department',operator:'equals',value:CS},{field:'subject',operator:'contains',value:'QA RT18 3022d'}]))); o.poll.push(Math.round((Date.now()-t0)/1000)+'s rec='+(rd&&rd.value||'').slice(0,8)+' csList='+(l.j&&l.j.meta&&l.j.meta.total_count)); if(rd&&rd.value===CS) break; } o.afterDisable={rec:await recDept(),desk:await deskDept()};
+const f=[{field:'department',operator:'equals',value:CS},{field:'subject',operator:'contains',value:'QA RT18 3022d'}];
+const l=await api('GET','/modules/'+TM+'/records?page=1&per_page=5&filters='+encodeURIComponent(JSON.stringify(f))); o.inCSList_afterDisable=l.j&&l.j.meta&&l.j.meta.total_count;
+const del=await api('DELETE','/desk/departments/'+DID,{transfer_to_department_id:CS}); o.del=del.s+' '+del.t.slice(0,200);
+await sleep(6000); o.afterDelete={rec:await recDept(),desk:await deskDept()};
+const l2=await api('GET','/modules/'+TM+'/records?page=1&per_page=5&filters='+encodeURIComponent(JSON.stringify(f))); o.inCSList_afterDelete=l2.j&&l2.j.meta&&l2.j.meta.total_count;
+const h=await api('GET','/desk/tickets/'+TID+'/history'); o.hist=arr(h.j.data).slice(0,4).map(e=>e.action+' '+e.source+' '+JSON.stringify(e.old_value)+'→'+JSON.stringify(e.new_value));
+const n=await api('GET','/modules/'+TM+'/records/'+TID); o.num=((n.j.data.data||[]).find(d=>d.field==='ticket_number')||{}).value;
+return o;

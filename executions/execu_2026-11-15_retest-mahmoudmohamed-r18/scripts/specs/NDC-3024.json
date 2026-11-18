@@ -1,0 +1,21 @@
+{
+ "out": "NDC-3024-retest-PASS.png",
+ "ticket": "NDC-3024",
+ "priority": "medium",
+ "title": "Contracts | An end date before the start date is now refused on the screen and through the API",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Contracts › Create Contract (nothing saved) + records API · account QA RT18 GL Account, Tech, plan QA RT18 plan",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3024-1-screen-bad-dates.png", "caption": "Create Contract: Start 12/01/2026, End 11/01/2026 › Save → message under End Date, no request sent", "crop": [450, 570, 990, 80],
+   "boxes": [{"b": [600, 578, 910, 626], "n": 1, "kind": "INFO"}, {"b": [1100, 578, 1412, 644], "n": 1, "kind": "PASS"}]},
+  {"img": "3024-api-card.png", "caption": "API: create and edit with end < start → 422; same day and good dates 201", "crop": [0, 0, 1600, 340],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 2, "kind": "PASS"}, {"b": [36, 261, 1564, 319], "n": 3, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Screen: End Date earlier than Start Date › Save", "Refused with a message", "\"End Date\" must be on or after \"Start Date\". (aria-invalid on End Date); no POST", "PASS"],
+  [2, "API create with end < start", "Refused", "422 RECORD_VALIDATION_FAILED end_date (was 201, status upcoming)", "PASS"],
+  [3, "API edit of a good contract to end < start", "Refused", "PATCH 422, same message; dates unchanged", "PASS"],
+  [4, "End = start", "—", "201 (one-day contract allowed; Zoho asks start < end)", "INFO"]
+ ]
+}

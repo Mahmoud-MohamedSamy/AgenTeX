@@ -1,0 +1,1 @@
+const r=await api('DELETE','/workflow/custom-actions/ce1a9907-f037-4465-9148-b17c2e9fc33d'); const g=await api('GET','/workflow/custom-actions/ce1a9907-f037-4465-9148-b17c2e9fc33d'); return {del:r.s+' '+r.t.slice(0,400), get:g.s};

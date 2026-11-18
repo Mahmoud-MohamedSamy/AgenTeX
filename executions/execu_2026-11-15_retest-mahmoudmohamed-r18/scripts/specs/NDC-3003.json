@@ -1,0 +1,24 @@
+{
+ "out": "NDC-3003-retest-PASS.png",
+ "ticket": "NDC-3003",
+ "priority": "medium",
+ "title": "Email Templates | An active department reply-acknowledgement template can now be deactivated and then deleted",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Setup › Email Templates · template \"QA RT18 reply ack\" (Marketing), created + activated through the API, deleted in the test",
+ "date": "15 Nov 2026",
+ "panels": [
+  {"img": "3003-1-own-menu.png", "caption": "Active Marketing template › ⋮ : Deactivate is offered (Delete greyed while it is the one being sent)", "crop": [292, 540, 1284, 320],
+   "boxes": [{"b": [1360, 690, 1556, 724], "n": 1, "kind": "PASS"}, {"b": [1360, 726, 1556, 760], "n": 3, "kind": "INFO"}]},
+  {"img": "3003-3-deactivate-dialog.png", "caption": "Deactivate dialog: the department falls back to the all-departments or built-in template", "crop": [600, 330, 400, 240],
+   "boxes": [{"b": [620, 360, 980, 488], "n": 2, "kind": "PASS"}]},
+  {"img": "3003-5-after-delete.png", "caption": "After Deactivate › Delete: toast \"Deleted “QA RT18 reply ack”\", 44 → 43 templates, row gone", "crop": [292, 330, 1284, 560],
+   "boxes": [{"b": [1278, 820, 1574, 874], "n": 4, "kind": "PASS"}, {"b": [1490, 338, 1576, 360], "n": 4, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Actions menu of the active department template", "A way back to the built-in (Deactivate)", "Preview / Edit / Clone / Deactivate / Delete (was: Activate shown, no Deactivate)", "PASS"],
+  [2, "Deactivate", "Template stops being sent; built-in used", "Dialog explains the fallback; POST …/deactivate 200; row \"Not active\"", "PASS"],
+  [3, "Delete while still active", "—", "Greyed out until deactivated (reasonable guard)", "INFO"],
+  [4, "Delete after deactivating", "Deleted", "Menu Activate/Delete; DELETE 204; toast; row gone, 44 → 43 templates", "PASS"],
+  [5, "Built-in Reply acknowledgement menu", "Can take over", "Preview / View / Clone / Activate / Delete", "INFO"]
+ ]
+}
