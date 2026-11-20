@@ -1,0 +1,10 @@
+const id='32050fd4-4c9a-4181-a28a-13135ed417f4';
+await page.goto(H+'/views/all/tickets/'+id,{waitUntil:'commit'});await page.evaluate(()=>localStorage.setItem('anyware_language','ar'));await page.reload({waitUntil:'commit'});
+await page.getByText(/QA RT19 SK/).first().waitFor({timeout:120000}).catch(()=>{});await sleep(8000);
+const b=page.locator('button[aria-label]').filter({has:page.locator('xpath=.')}).first();
+const btns=await page.locator('button').evaluateAll(L=>L.filter(e=>/مهار|Skills/i.test((e.getAttribute('aria-label')||'')+e.innerText)).map(e=>(e.getAttribute('aria-label')||'')+' | '+e.innerText.slice(0,60)));log('cands '+JSON.stringify(btns));
+const eb=page.locator('button').filter({hasText:/مهار/}).first();const lab=page.locator('button[aria-label="تعديل المهارات"]').first();
+const tgt=(await lab.count())?lab:eb;await tgt.scrollIntoViewIfNeeded();await tgt.click();await sleep(3000);
+const opts=await page.locator('button[aria-pressed]').evaluateAll(L=>L.filter(e=>e.offsetParent).map(e=>e.innerText.trim().slice(0,45)+(e.getAttribute('aria-pressed')==='true'?' [ON]':'')));
+log('opts('+opts.length+') '+JSON.stringify(opts));await shot('2933-9-ticket4514-edit-skills-ar.png');
+await page.evaluate(()=>localStorage.setItem('anyware_language','en'));

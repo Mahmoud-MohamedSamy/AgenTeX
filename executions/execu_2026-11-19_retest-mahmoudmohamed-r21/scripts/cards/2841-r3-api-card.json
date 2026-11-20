@@ -1,0 +1,57 @@
+{
+ "out": "2841-r3-api-card.png",
+ "title": "NDC-2841 retest 3 (18 Nov 2026, after metadata-engine #241) — contracts in QA RT19 SLA Dept (A) / Dept B",
+ "rows": [
+  [
+   "Department-only change (the failing step)",
+   "PATCH contract (Dept A, plan A): department = Dept B — 3 tries",
+   "422 SUPPORT_PLAN_OTHER_DEPARTMENT on Department: \"the contract's support plan belongs to its current department. Choose a support plan of the new department in the same change.\" (x3); contract stays Dept A + plan A, coverage plan A",
+   "ok"
+  ],
+  [
+   "Old plan sent back",
+   "PATCH department = Dept B + support_plan = plan A",
+   "422 same message; nothing changed",
+   "ok"
+  ],
+  [
+   "Move with new dept plan",
+   "PATCH department = Dept B + support_plan = plan B",
+   "200; contract Dept B + plan B; coverage plan B",
+   "ok"
+  ],
+  [
+   "Save without dept change",
+   "PATCH contract_name; PATCH same dept + same plan",
+   "200 / 200; dept and plan unchanged",
+   "ok"
+  ],
+  [
+   "Earlier fixes",
+   "create Dept A with plan B; PATCH Dept B contract to plan A; panel PUT plan A; create without dept",
+   "422 / 422 / 409 / 422 \"Department is required.\"",
+   "ok"
+  ],
+  [
+   "Move and clear plan",
+   "PATCH department = Dept B + support_plan empty/null",
+   "422 \"Support Plan is required.\" (plan is now a required field; no contract without a plan can be created)",
+   "info"
+  ],
+  [
+   "Contract page",
+   "Department in Contract Information; ⋮ menu",
+   "read-only (click opens nothing; menu = Copy link, Delete) — like Zoho, department cannot be changed from the page",
+   "ok"
+  ],
+  [
+   "Old bad data",
+   "17 Nov contract moved before the fix (dept only)",
+   "still Dept B with the Dept A plan — not corrected by the fix",
+   "info"
+  ]
+ ],
+ "host": "staging-desk.taviportal.com",
+ "who": "ndc-staging-owner",
+ "date": "18 Nov 2026"
+}

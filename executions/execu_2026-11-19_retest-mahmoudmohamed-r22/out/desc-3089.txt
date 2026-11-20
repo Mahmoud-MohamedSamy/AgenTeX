@@ -1,0 +1,18 @@
+Summary
+The Used In panel of a global set lists custom views, workflow rules, blueprints and dependency maps that use the set's fields, but never the reports, even when a report filters or sorts on the field. An admin who checks Used In before changing or deleting values cannot see that reports depend on them. The system knows about the reports: the report field-usage API returns them. Found while retesting NDC-2870 (gap item 7; PRD requirement S6 "Used In shows reports").
+Steps to Reproduce
+- Go to CRM > Setup > Modules and Fields > Global Sets and open a set linked to a Leads pick list field (e.g. "QA RT19 GS Tier").
+- Go to Reports and create a Leads report with a filter on that field (e.g. "QA RT19 GS Gold report", Tier = Gold). Create a second report sorted by the field ("QA RT19 GS Sort report").
+- Go back to Global Sets and click the set's Used In link.
+Expected Result
+- Used In lists the 2 reports together with the views, rules, blueprints and dependency maps (PRD S6).
+Actual Result
+- Used In shows Leads > QA RT19 GS Tier with Custom views, Workflow rules, Blueprints and Dependency maps only. No Reports line.
+- GET /reporting/field-usage does return both reports, but the body is wrapped twice (data.data.reports).
+- Control: Replace (Gold → Silver) did update the report filter, so reports are covered by Replace but not shown in Used In.
+Environment
+staging-crm.taviportal.com (NDC-Staging), ndc-staging-owner, Edge + API, 16 Nov 2026.
+Evidence
+BUG-gs-used-in-no-reports-FAIL.png
+Zoho CRM comparison
+Not a Zoho-parity item. Zoho's Used In ("Associated places") lists modules, fields and layouts only, not reports. This draft is against TAVI's own PRD (S6) and TAVI's own Used In panel, which already goes beyond Zoho by listing views, rules, blueprints and dependency maps. No vs-Zoho image.

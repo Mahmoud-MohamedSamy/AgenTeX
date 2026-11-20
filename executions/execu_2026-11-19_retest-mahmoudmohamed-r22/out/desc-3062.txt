@@ -1,0 +1,23 @@
+Summary
+When a layout rule makes a checkbox mandatory, the form first shows "This field is required". If the agent ticks the box and then unticks it, the message disappears and the ticket saves with the checkbox unticked. The server also accepts the unticked value, so the rule is never enforced.
+Steps to Reproduce
+Desk → Settings → Modules and Fields → Tickets → Layout Rules. Open "Test Layout Rules" (layout "Test Layout Rules"). Condition 2 is Category is technical → Make fields mandatory: Checkbox Mandatory by Technical.
+Create a ticket with layout Test Layout Rules. Enter a Subject, set Status Open and Category Technical.
+See "This field is required" under Checkbox Mandatory by Technical.
+Tick the checkbox, then untick it.
+Click Save.
+Expected Result
+With the box unticked, "This field is required" stays and Save is blocked.
+The server refuses the save if the mandatory checkbox is not ticked.
+Actual Result
+After tick → untick, the "This field is required" message disappears while the box is still unticked.
+Save succeeds: ticket #4136 is created with "Checkbox Mandatory by Technical" = false.
+The server accepts the unticked value (201).
+Note
+Not checked: saving without ever touching the box, and whether the server checks layout-rule mandatory fields at all.
+Zoho Desk not checked live.
+Environment
+staging-desk.taviportal.com (NDC-Staging), layout "Test Layout Rules", ticket #4136, Microsoft Edge 156, Windows 10, 15 Nov 2026.
+Attachments
+Annotated evidence (layout-rule-mandatory-checkbox.png): the rule (0:14), the required message on the unticked box (0:37), the box still unticked with no message just before Save (0:39), and the saved ticket (0:49).
+Jam recording: https://jam.dev/c/07c08a47-1e33-4a62-967d-81c5891cfeb3

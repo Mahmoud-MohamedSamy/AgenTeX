@@ -1,0 +1,16 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', DB = '4853562a-0b4d-45cb-ba34-9f2118fcd32c', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/';
+const sv = v => v === null ? { kind: 'null' } : { kind: 'string', value: String(v) }; const fields = x => Object.entries(x).map(([k, v]) => ({ field: k, value: sv(v) }));
+const wl = async () => (((await api('GET', '/desk/agents/' + TU1 + '/workload')).j?.data?.departments || []).find(d => d.department_id === DB) || {}).open_tickets;
+const pres = async () => { const p = (await api('POST', '/desk/agents/presence/query', { user_ids: [TU1] })).j?.data?.agents?.[0]?.presence; return { online: p?.online, email: p?.channels?.email, last: p?.last_activity_at }; };
+const st = async id => { const d = (await api('GET', '/modules/' + TK + '/records/' + id)).j?.data?.data || []; const t = (await api('GET', '/desk/tickets/' + id)).j?.data || {}; const ow = (d.find(f => f.field === 'owner') || {}).value?.value || null; return { owner: ow === TU1 ? 'TU1' : ow, in_backlog: t.in_backlog }; };
+const o = { prefsBefore: (await api('GET', '/desk/departments/' + DB + '/round-robin-preferences')).j?.data, tu1Open: await wl(), presence: await pres() };
+const n = o.tu1Open + 1;
+const base = { ...o.prefsBefore, assign_to_offline_agents: true, agent_threshold_enabled: true, agent_thresholds: [{ user_id: TU1, threshold: n }], assign_backlogs: false, assign_on_closure: false };
+o.prefsSet = (await api('PUT', '/desk/departments/' + DB + '/round-robin-preferences', base)).s; o.base = base;
+const rr = await api('POST', '/desk/assignment-rules', { type: 'round_robin', department_id: DB, name: 'QA BL backlog offline retest', description: 'QA', is_active: true, execute_on: ['create'], targets: [{ criteria: { conditions: [{ field_key: 'subject', operator: 'starts_with', value: 'QA BL' }], pattern: '1' }, method: 'sequential', pool: { kind: 'agents', user_ids: [TU1], team_id: null, excluded_user_ids: [] } }] });
+o.rule = rr.j?.data?.id; if (!o.rule) throw new Error('rule ' + rr.s);
+const mk = async s => { const c = await api('POST', '/modules/' + TK + '/records', { data: fields({ subject: s, description: 'QA BL retest', department: DB, status: 'Open', priority: 'medium', owner: null }) }); if (!c.j?.data?.id) throw new Error('create ' + c.s); return c.j.data.id; };
+o.A = await mk('QA BL A fill'); await sleep(15000); o.B = await mk('QA BL B backlog'); await sleep(15000);
+o.setup = { A: await st(o.A), B: await st(o.B), tu1Open: await wl(), presence: await pres() };
+fs.writeFileSync(OUT + 'bl.json', JSON.stringify(o, null, 1)); log(o);

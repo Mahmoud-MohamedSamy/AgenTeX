@@ -1,0 +1,8 @@
+{"out":"3077-r1-api-card.png","title":"Ticket number and History right after an API create — owner, QA RT19 WF Dept B, 19 Nov 2026","host":"staging-desk.taviportal.com","who":"owner","date":"19 Nov 2026",
+"rows":[
+["Burst: 10 creates at once","POST /modules/tickets/records × 10 (parallel)","201 × 10","info"],
+["Numbers after 5 s (records API, ticket never opened)","GET /modules/tickets/records/{id} · ticket_number","all 10 numbered: #5679–#5688 (contiguous, no gaps); same at 20 s","ok"],
+["Single create","POST, then ticket_number after 5 s","#5689 — numbered without opening the ticket","ok"],
+["Edit to Closed 20 s later","PATCH status Closed","200; History has \"Status was updated Open → Closed\" and \"Ticket closed\"","ok"],
+["History (never opened before)","GET /desk/tickets/{id}/history","entries present from creation; screen shows \"Ticket was created by ndc-staging-owner\"","ok"]
+]}

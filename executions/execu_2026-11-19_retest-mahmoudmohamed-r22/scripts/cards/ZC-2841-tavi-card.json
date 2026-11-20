@@ -1,0 +1,8 @@
+{"out":"ZC-2841-tavi-api-card.png","title":"TAVI Desk staging — contract department vs support plan (lane BS run + ZC re-confirm), 17 Nov 2026","host":"staging-desk.taviportal.com /api/v1","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Create, other dept's plan","POST contract  Dept A (QA RT19 SLA Dept) + Plan B (Dept B)  x3","422 SUPPORT_PLAN_OTHER_DEPARTMENT \"this support plan belongs to another department...\" — nothing created","bad"],
+["2 Change plan to other dept's","PATCH record support_plan = Plan B;  PUT /desk/sla/contracts/{id}/plan = Plan B","422 (record) / 409 (panel) — plan stays A","bad"],
+["3 No department","POST contract without department","422 \"Department is required.\"","bad"],
+["4 Change ONLY department (ZC re-confirm)","PATCH record  department = Dept B  (contract QA RT20 ZC Contract 2841 dept only, Plan A)","200 — contract is now Dept B, support_plan still Dept A's plan; coverage still Plan A + Dept A policy","ok"],
+["5 Department + matching plan","PATCH record  department = Dept B + Plan B","200 — contract moved to Dept B with Plan B","ok"],
+["6 Own dept's plan (control)","POST contract Dept A + Plan A","201","ok"]]}

@@ -1,0 +1,6 @@
+const {execFileSync}=require('child_process');const W='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_retest-mahmoudmohamed-r22/scripts';
+const mode=m=>execFileSync('node',['apiw.js','o','C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/64533306-cf5e-4d09-aa5c-24702973a047/scratchpad/gsmode.js'],{cwd:W,env:{...process.env,APP:'crm',MODE:m},encoding:'utf8'}).trim();
+const R={};const bt=async()=>(await page.locator('main').first().innerText({timeout:20000}).catch(()=>'')).replace(/\s+/g,' ');
+const read=async n=>{await page.goto(H+'/home',{waitUntil:'commit'});await sleep(5000);await page.getByText('Reports',{exact:true}).first().click();await sleep(6000);const sr=page.getByPlaceholder(/search/i).last();if(await sr.count()){await sr.fill('QA RT19 GS Sort');await sleep(3000);}await page.getByText('QA RT19 GS Sort report').first().click({timeout:20000});await sleep(12000);R[n+'_url']=page.url().replace(H,'');const t=await bt();const seq=(t.match(/\b(Silver|Platinum|Bronze)\b/g)||[]);R[n]=[...new Set(seq)].join(' > ')+' ('+seq.length+')';await shot('crm-3088-'+n+'.png',{timeout:90000});};
+try{await read('a-report-entered');R.m1=mode('alphabetical');await read('b-report-alpha');}finally{R.m2=mode('entered');}
+return R;

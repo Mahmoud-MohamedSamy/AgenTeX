@@ -1,0 +1,15 @@
+{"out":"NDC-3105-retest-PASS.png","ticket":"NDC-3105","priority":"medium","label":"RETEST PASS","verdict":"PASS",
+"title":"Workflow Rules | A failed action shows \"Cancelled\", the run shows \"Fired\", and failed runs cannot be filtered",
+"env":"NDC-Staging · staging-desk · API + Edge · owner · rules \"QA RT21 W2 3105 all\" (Create Record that fails) and \"QA RT21 W2 3105 part\" (Add Tags + the same Create Record) · tickets #5527, #5528","date":"19 Nov 2026",
+"panels":[
+ {"img":"3105-r1-g-failed-only-new.png","caption":"Outcome filter \"Failed only\": both new runs listed, Failed and Partly failed","crop":[280,130,1130,250],"boxes":[{"b":[772,163,880,197],"n":1,"kind":"PASS"},{"b":[1176,286,1262,310],"n":2,"kind":"PASS"},{"b":[1176,342,1236,366],"n":3,"kind":"PASS"}]},
+ {"img":"3105-r1-f-run-partly-failed.png","caption":"Run of \"3105 part\": Outcome Partly failed, Add Tags Succeeded, Create Record Failed with HTTP 422 and the full reason — the Next / Completed column is cut off","crop":[280,60,1000,470],"boxes":[{"b":[544,193,628,213],"n":2,"kind":"PASS"},{"b":[686,470,736,500],"n":4,"kind":"PASS"},{"b":[944,452,1146,518],"n":4,"kind":"PASS"},{"b":[1172,400,1270,515],"n":5,"kind":"INFO"},{"b":[430,470,660,500],"n":6,"kind":"INFO"}]}
+],
+"rows":[
+ [1,"Filter failed runs","A way to list failed runs","Outcome \"Failed only\" (URL ?outcome=failed, kept after Back to history)","PASS"],
+ [2,"Run with one failed and one succeeded action","Not \"Fired\"","Partly failed","PASS"],
+ [3,"Run whose only action failed","Failed","Failed (all-fail rule, #5527)","PASS"],
+ [4,"Failed action status","Failed, not Cancelled","Failed · 422 · \"Not created: Calls needs Contact Name … (contact_id: Contact Name is required.)\"","PASS"],
+ [5,"Run page table width","Fits its box","Table 1010 px in a 974 px box: Next / Completed time cut off (\"19/11/2026 9:…\"); dev noted ~9 px and will fix separately","INFO"],
+ [6,"Create Record Target","—","Shows the target module id (f7e488b5…) instead of \"Calls\"","INFO"]
+]}

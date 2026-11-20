@@ -1,0 +1,17 @@
+const opts = async () => (await page.locator('[role=option]:visible').allInnerTexts().catch(() => [])).map(s => s.trim()).filter(Boolean);
+const pick = async (x, y, name) => { await page.mouse.click(x, y); await sleep(1200); const o = await opts(); if (name) { const el = page.getByRole('option', { name, exact: true }).first(); if (await el.count()) await el.click(); else { await page.keyboard.type(name); await sleep(800); await page.keyboard.press('Enter'); } await sleep(1200); } else await page.keyboard.press('Escape'); return o; };
+await page.goto(H + '/settings/automation/assignment-rules', { waitUntil: 'commit' });
+await page.getByText('Direct Assignment').first().waitFor({ timeout: 150000 }); await sleep(4000);
+await page.getByRole('button', { name: /New Rule/ }).first().click(); await sleep(2500);
+const dlg = page.locator('[role=dialog]').last(); await dlg.getByPlaceholder(/Urgent tickets/).fill('QA AR UI temp'); await dlg.getByRole('button', { name: /Add Target/ }).click(); await sleep(2000);
+const coming = await pick(1134, 641, 'QA AS6 Dept A'); log('comingOptions', coming.length, coming.slice(0, 4).join(' | '), '...');
+const moveOpts = await pick(1426, 641, null); log('moveOptions first', moveOpts.slice(0, 3).join(' | '));
+const agA = await pick(1206, 755, null); log('agents for Dept A', agA.join(' | '));
+await dlg.getByText('Teams', { exact: true }).click(); await sleep(1200); const tmA = await pick(1206, 755, null); log('teams for Dept A', tmA.join(' | '));
+await dlg.getByText('Agents', { exact: true }).click(); await sleep(1000);
+await pick(1426, 641, 'QA AS6 Dept B'); const agB = await pick(1206, 755, null); log('agents after Move to Dept B', agB.join(' | '));
+await pick(1206, 755, 'Test User 1'); await shot('AR-UI-06-agent-picked.png'); const before = (await dlg.innerText()).includes('Test User 1');
+await dlg.getByRole('button', { name: /Mark as Unassigned/ }).click(); await sleep(1200); await shot('AR-UI-07-mark-unassigned.png');
+const t = await dlg.innerText(); const i = t.indexOf('Assign Ticket to'); log('after Mark as Unassigned', before, t.slice(i, i + 160).replace(/\s+/g, ' '));
+await pick(1134, 641, 'Any Department'); await sleep(800); const anyT = await dlg.innerText(); const j = anyT.indexOf('Ticket coming to'); log('any dept', anyT.slice(j, j + 260).replace(/\s+/g, ' ')); await shot('AR-UI-08-any-dept.png');
+await dlg.getByRole('button', { name: 'Cancel', exact: true }).click(); await sleep(1500);

@@ -1,0 +1,17 @@
+const cfg=JSON.parse(fs.readFileSync(RUN+'/scripts/tk/cfg.json','utf8'));const ID=cfg.t3073A;
+const safe=s=>String(s).replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g,m=>/example\.com$/.test(m)?m:'<addr>');
+const openMore=async()=>{await page.keyboard.press('Escape').catch(()=>{});await sleep(400);const bs=page.getByRole('button',{name:'More ticket actions'});const n=await bs.count();let bi=0,by=1e9;for(let i=0;i<n;i++){const b=await bs.nth(i).boundingBox().catch(()=>null);if(b&&b.y<by){by=b.y;bi=i;}}await bs.nth(bi).click();await sleep(1200);return page.locator('[role=menu]').last();};
+const net=()=>NET.filter(n=>!/heartbeat|summar|realtime|\/read$|lookups/.test(n.u)).map(n=>n.m+' '+(n.s||n.FAILED)+' '+n.u.slice(0,90)+' b='+safe(n.b.slice(0,160))+' => '+safe((n.t||'').slice(0,160)));
+await page.goto(H+'/views/all/tickets/'+ID,{waitUntil:'domcontentloaded'});await sleep(14000);
+log('head before',safe((await mtxt()).slice(0,300)));
+let m=await openMore();log('menu before',(await m.innerText()).replace(/\s+/g,' '));
+await m.getByRole('menuitem',{name:'Mark as Spam',exact:true}).first().click();await sleep(2500);
+log('spam dlg',safe(await dlg()));await shot('3073-1-spam-dialog.png');
+NET.length=0;const dl=page.locator('[role=dialog],[role=alertdialog]').last();await dl.getByRole('button',{name:/Mark as Spam/}).last().click();await sleep(6000);
+log('spam toast',safe(await toasts()),'net',net());
+await page.reload({waitUntil:'domcontentloaded'});await sleep(14000);
+log('head after',safe((await mtxt()).slice(0,600)));await shot('3073-2-after-spam.png');
+const ra=page.getByRole('button',{name:/Reply All/});log('replyAll count',await ra.count(),'enabled',await ra.first().isEnabled().catch(()=>'n/a'));
+m=await openMore();log('menu after',(await m.innerText()).replace(/\s+/g,' '));await shot('3073-3-menu-after.png');await page.keyboard.press('Escape');
+const sh=await api('GET','/desk/tickets/'+ID+'/shares');log('shares after',sh.s,(sh.t.match(/"(department_name|access)":"[^"]+"/g)||[]).join(',')||sh.t.slice(0,200));
+const sp=await api('GET','/modules/'+TK+'/records/'+ID);log('fields',(sp.j?.data?.data||[]).filter(x=>/spam|status|share/i.test(x.field)).map(x=>x.field+'='+JSON.stringify(x.value?.value)).join(' '));

@@ -1,0 +1,12 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', DB = '4853562a-0b4d-45cb-ba34-9f2118fcd32c', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/'; const r2 = JSON.parse(fs.readFileSync(OUT + 'r2.json', 'utf8'));
+const sv = v => v === null ? { kind: 'null' } : { kind: 'string', value: String(v) }; const fields = o => Object.entries(o).map(([k, v]) => ({ field: k, value: sv(v) }));
+const o = {};
+o.prefsSet = (await api('PUT', '/desk/departments/' + DB + '/round-robin-preferences', { ...r2.prefsBefore, agent_threshold_enabled: true, agent_thresholds: [{ user_id: TU1, threshold: r2.tu1Open + 1 }], assign_on_closure: true })).s;
+const rr = await api('POST', '/desk/assignment-rules', { type: 'round_robin', department_id: DB, name: 'QA JAM closure repro', description: 'QA', is_active: true, execute_on: ['create'], targets: [{ criteria: { conditions: [{ field_key: 'subject', operator: 'starts_with', value: 'QA JAM' }], pattern: '1' }, method: 'sequential', pool: { kind: 'agents', user_ids: [TU1], team_id: null, excluded_user_ids: [] } }] });
+o.rule = rr.j?.data?.id; o.ruleRes = rr.s;
+const mk = async s => (await api('POST', '/modules/' + TK + '/records', { data: fields({ subject: s, description: 'QA JAM 4ca9d5fe repro', department: DB, status: 'Open', priority: 'medium', owner: null }) })).j?.data?.id;
+o.Aown = await mk('QA JAM A own'); await sleep(15000); o.Aback = await mk('QA JAM A backlog'); await sleep(15000);
+const st = async id => { const d = (await api('GET', '/modules/' + TK + '/records/' + id)).j?.data?.data || []; const t = (await api('GET', '/desk/tickets/' + id)).j?.data || {}; return { owner: (d.find(f => f.field === 'owner') || {}).value?.value === TU1 ? 'TU1' : ((d.find(f => f.field === 'owner') || {}).value?.value || null), in_backlog: t.in_backlog, status: t.status }; };
+o.setupA = { Aown: await st(o.Aown), Aback: await st(o.Aback), tu1Open: (((await api('GET', '/desk/agents/' + TU1 + '/workload')).j?.data?.departments || []).find(d => d.department_id === DB) || {}).open_tickets };
+fs.writeFileSync(OUT + 'r3.json', JSON.stringify(o, null, 1)); log(o);

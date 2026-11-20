@@ -1,0 +1,1 @@
+const BP='23339d62-fecf-4324-8950-5fa1bfdef0df';const g=await getBp(BP);const r=await api('PUT',`/modules/${TK}/blueprints/${BP}`,{definition:g.definition,isActive:false,revision:g.revision});if(r.s<300)LED('blueprint '+BP+' deactivated again (r21 3118 done)');return E(r)+' active='+(await getBp(BP)).isActive;

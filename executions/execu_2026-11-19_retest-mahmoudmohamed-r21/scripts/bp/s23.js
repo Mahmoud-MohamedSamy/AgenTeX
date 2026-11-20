@@ -1,0 +1,4 @@
+const J = JSON.parse(fs.readFileSync(RUN + '/scripts/bp/3065.json', 'utf8')); const T = J.t3027;
+let all = []; let cur = null; for (let p = 0; p < 3; p++) { const r = await api('GET', '/audit/events?limit=100' + (cur ? '&cursor=' + encodeURIComponent(cur) : '')); all = all.concat(L(r.j?.data)); cur = r.j?.meta?.next_cursor; if (!cur) break; }
+const m = all.filter(x => [T.x, T.y, T.DB].includes(x.target_id) || /QA RT20 BP-3027|QA RT20 BP Dept B/.test(JSON.stringify(x)));
+return m.map(x => x.occurred_at.slice(11, 19) + ' ' + x.actor_type + ' ' + (x.actor_label || '-').replace(/@.*/, '@') + ' ' + x.action.replace('audit.action.', '') + ' ' + x.target_type.replace('audit.entity.', '') + ' "' + String(x.target_label).replace(/[\w.+-]+@[\w.-]+/g, '<mail>') + '" ch=' + JSON.stringify(x.changes || '').replace(/[\w.+-]+@[\w.-]+/g, '<mail>').slice(0, 260));

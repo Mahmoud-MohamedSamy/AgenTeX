@@ -1,0 +1,128 @@
+{
+ "out": "BUG-skills-viewonly-agent-offered-FAIL.png",
+ "ticket": "NEW BUG",
+ "label": "BUG",
+ "priority": "medium",
+ "title": "Skills | View-only agents are offered in the skill's Agents list, and saving only says \"The skill is invalid.\"",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · staging-desk · Setup › Skills › Add Skill (Customer Support) · admin · Edge 156 · Jam a8af1960",
+ "date": "18 Nov 2026",
+ "panels": [
+  {
+   "img": "jam-a8af-skill-form.jpg",
+   "caption": "Add Skill: Mahmoud Mohamed (view-only in Customer Support) is offered and ticked like any agent — no \"(view only)\" mark",
+   "crop": [
+    795,
+    576,
+    805,
+    152
+   ],
+   "boxes": [
+    {
+     "b": [
+      826,
+      626,
+      1030,
+      661
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "jam-a8af-skill-error.jpg",
+   "caption": "After Save: only \"The skill is invalid.\" — no agent named, no reason",
+   "crop": [
+    795,
+    91,
+    805,
+    727
+   ],
+   "boxes": [
+    {
+     "b": [
+      821,
+      115,
+      1576,
+      176
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      826,
+      717,
+      1030,
+      752
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "img": "jam-a8af-api-card.png",
+   "caption": "Network: 400 with agent_ids[1] \"not_in_department\" (hidden from the admin, and he is in the department as view-only); 201 without him",
+   "crop": [
+    20,
+    20,
+    1560,
+    240
+   ],
+   "boxes": [
+    {
+     "b": [
+      30,
+      96,
+      1570,
+      160
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      30,
+      164,
+      1570,
+      207
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Agents list in Add Skill",
+   "View-only agents not offered, or shown disabled with \"(view only)\"",
+   "Mahmoud Mohamed (view-only) offered and can be ticked, no mark",
+   "FAIL"
+  ],
+  [
+   2,
+   "Message when the save is refused",
+   "Names the agent and the reason (view-only access)",
+   "Only \"The skill is invalid.\"",
+   "FAIL"
+  ],
+  [
+   3,
+   "Server reason",
+   "Says view-only",
+   "agent_ids[1] \"not_in_department\" — misleading",
+   "FAIL"
+  ],
+  [
+   4,
+   "Save without the view-only agent",
+   "Saved",
+   "201, skill created with 2 agents",
+   "INFO"
+  ]
+ ]
+}

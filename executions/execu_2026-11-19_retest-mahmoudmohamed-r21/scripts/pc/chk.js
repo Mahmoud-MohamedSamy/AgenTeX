@@ -1,0 +1,2 @@
+eval(fs.readFileSync("D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20/scripts/pc/hdr.js",'utf8'));
+const j=JSON.parse(fs.readFileSync(OUT+'pr.json','utf8'));const id=process.env.TID;const f=await feed(id);return {owner:await own(id),feed:f.map(e=>[e.created_at||e.at,e.action,JSON.stringify(e.summary||{}).slice(0,200)])};

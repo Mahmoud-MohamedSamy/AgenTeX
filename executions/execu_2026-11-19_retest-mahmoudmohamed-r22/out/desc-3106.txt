@@ -1,0 +1,18 @@
+Summary
+A currency added and made active in Settings › Company Settings › Currencies can't be used on a record. The record Currency field (Deals and other modules) is a separate fixed pick list, and a record's currency must be in both lists. The Currencies section itself says "Records can be in any active currency".
+Environment
+- TAVI CRM: staging-crm.taviportal.com, tenant NDC-Staging, account ndc-staging-owner
+- Zoho CRM (reference): test org, checked live in Edge
+- Date: 17 Nov 2026
+Steps to reproduce
+- Go to Settings › Company Settings › Currencies and add Euro (rate 50, Active).
+- Create a Deal (Transactions) with Currency = EUR and Amount 1000, then save.
+- Create another Deal with Currency = USD (a value in the Currency list that was not added in Settings), then save.
+Expected result
+The record Currency field lists the active currencies from Settings (home currency plus EUR), and the deal saves in EUR. This is how Zoho CRM works: Euro appears in the Deal Currency field straight after it is added.
+Actual result
+- EUR is refused: "Currency: 'EUR' is not one of the allowed values (EGP, USD, AED, JOD, KWD, OMR, SAR)."
+- USD is refused: "Currency USD is not one of the organization's currencies."
+- A record saves only when the code is in both the fixed pick list and Settings. Then the exchange rate and home value are filled correctly.
+Evidence
+Annotated image attached (TAVI API results next to Zoho Create Deal with EUR).

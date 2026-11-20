@@ -1,0 +1,3 @@
+await page.goto(H+'/settings/automation/workflow-rules/1a704422-e849-4321-94ea-51177b6d1850',{waitUntil:'commit'});await page.getByText('QA RT21 W2 3105 part').first().waitFor({timeout:90000});await sleep(7000);
+await page.evaluate(()=>{const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(/Contact Name/.test(n.textContent)){n.parentElement.scrollIntoView({block:'center'});break;}}});await sleep(2000);await shot('sn3119-c-contact-field.png',{timeout:60000,animations:'disabled'});
+const t=(await page.locator('body').innerText()).replace(/\s+/g,' ');const k=t.indexOf('Contact Name');return {around:t.slice(Math.max(0,k-200),k+300),toast:await page.getByText('The requested resource was not found.').count()};

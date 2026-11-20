@@ -1,0 +1,14 @@
+Summary
+Changing only a contract's department is accepted and keeps the old department's support plan on the contract (reported with NDC-2841 / finding F06). The coverage check then reports that other department's plan as active on the contract. In round 20 (16 Nov) the same check reported no plan.
+Steps to Reproduce
+- Create a contract in Dept A (QA RT19 SLA Dept) with a Dept A support plan.
+- Change only its Department to Dept B (QA RT19 SLA Dept B) and save.
+- Read the contract and GET /desk/sla/contracts/{id}/coverage.
+Expected Result
+The department-only change is refused (Zoho: "You cannot update a Contract's department."), or the plan is cleared and coverage shows no plan in force.
+Actual Result
+Step 2: 200; the contract is in Dept B with the Dept A plan. Step 3: coverage reports "QA RT20 BS Plan 2841 A w2pv" (Dept A) active on the Dept B contract (2 contracts, 17 Nov 16:03-16:04 UTC). Controls work: department + plan B together 200; plan A on a Dept B contract 422 SUPPORT_PLAN_OTHER_DEPARTMENT.
+Environment
+staging-desk.taviportal.com, NDC-Staging, Edge + API, owner account (ndc-staging-owner); found 17 Nov 2026 during the findings retest, N1 checked again 18 Nov. Test data deleted after.
+Attachment
+Annotated evidence: N3-contract-coverage-other-plan.png.

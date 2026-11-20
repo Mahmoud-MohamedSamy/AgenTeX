@@ -1,0 +1,4 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', DB = '4853562a-0b4d-45cb-ba34-9f2118fcd32c', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+log({ tu1Open: (((await api('GET', '/desk/agents/' + TU1 + '/workload')).j?.data?.departments || []).find(d => d.department_id === DB) || {}).open_tickets });
+const seen = []; let tp = 1; for (let i = 1; i <= tp && i <= 12; i++) { const r = await api('GET', '/modules/' + TK + '/records?page_size=100&page=' + i); tp = r.j?.meta?.total_pages || tp; for (const x of arr(r.j)) { const f = {}; for (const d of (x.data || [])) f[d.field] = d.value?.value; if (f.department === DB && (f.owner === TU1 || !f.owner) && f.status !== 'Closed') seen.push({ id: x.id.slice(0, 8), n: f.ticket_number, subj: (f.subject || '').slice(0, 40), owner: f.owner === TU1 ? 'TU1' : 'none', mod: x.last_modified_at?.slice(11, 19), created: x.created_at?.slice(0, 16) }); } }
+log(seen.sort((a, b) => (b.mod || '').localeCompare(a.mod || '')).slice(0, 15));

@@ -1,0 +1,642 @@
+[
+ {
+  "ticket": "NDC-3103",
+  "id": "bdcec9dc-68e0-465f-9b66-e3998629b3da",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Audit Log",
+  "title": "Audit Log | Entries are shared between applications: the CRM Audit Log lists Desk changes",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3103-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Audit events API (CRM vs Desk feeds) + Edge Audit Log</p><p>Checked:</p><ul><li>Desk profile permission change → Logged app = desk; not in the CRM feed [PASS]</li><li>Desk Tickets record visibility change → Logged app = desk; not in the CRM feed [PASS]</li><li>CRM actions → Currency and deal changes listed [PASS]</li><li>Entries logged before the fix → 17 entries from 17 Nov are still shown in CRM (stored under iam / metadata-engine) [INFO]</li></ul><p>Evidence: NDC-3103-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2807",
+  "id": "7e03a59d-626d-48e8-a41f-8f4468467b09",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Bulk Operations",
+  "title": "Bulk Operations | Bulk operations (mass update, mass delete, empty Recycle Bin) stop when you leave the page",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2807-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API (background jobs, unattended) + Edge progress panel</p><p>Checked:</p><ul><li>Keeps running after leaving the page → Mass update 180/180, mass delete 200/200, bin purge 199/199 — all as background jobs, unattended [PASS]</li><li>No second run on top of a running one → 409 MASS_UPDATE_JOB_ACTIVE / RECYCLE_BIN_RUN_ACTIVE [PASS]</li><li>Progress when coming back → Progress panel \"Mass update · 60 selected — 10 of 60 done\" on the Leads page [PASS]</li><li>Speed / Empty Bin → Mass update job ~20–30 records/min; Empty Bin (whole bin) not run — it would purge others' items [INFO]</li></ul><p>Evidence: NDC-2807-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3101",
+  "id": "cd2b51b8-095e-436e-b91d-77b37c812af1",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Currency",
+  "title": "Currency | Changing the currency in Company Settings does not change the home currency",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3101-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API + Edge (Company Settings dialog)</p><p>Checked:</p><ul><li>Change while other currencies exist → Currency disabled: \"The company currency can't be changed while other currencies are added (EUR)…\"; API 409 [PASS]</li><li>Change with no other currencies → Company currency AED → Currencies home_currency AED; reverted to EGP [PASS]</li></ul><p>Evidence: NDC-3101-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3106",
+  "id": "75bbb9c6-8bcf-4a00-b2da-0b6c7ddcdae9",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Currency",
+  "title": "Currency | A currency added in Settings cannot be used on records",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3106-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API + Edge (Create Deal)</p><p>Checked:</p><ul><li>Deal in a currency added in Settings → 201; currency EUR, exchange rate 50, amount_home 50 000 (was 422) [PASS]</li><li>Currency choices on the record → Create Deal Currency: EGP (E£), EUR (€) — the Settings list [PASS]</li><li>Field metadata → GET /fields still reports the old fixed allowed_values list for Currency; the form and the server use the Settings currencies [INFO]</li></ul><p>Evidence: NDC-3106-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3087",
+  "id": "5bf300b6-c37f-40bb-89a8-0b039ec6e206",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Global Sets",
+  "title": "Global Sets | Deleting an unused value, or opening \"Where is this value used\" on it, crashes the Settings page",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3087-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (Global Sets editor) + API check</p><p>Checked:</p><ul><li>Where is this value used → \"Where 'Copper' is used — Nothing uses this value.\" No crash, no page error [PASS]</li><li>Delete the unused value → \"Delete 'Copper' for good? Nothing uses this value…\" → \"'Copper' deleted\"; API: unused values now empty [PASS]</li><li>Value still in use → Not checked this round [INFO]</li></ul><p>Evidence: NDC-3087-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2751",
+  "id": "97dbf7d2-4e1b-4817-af28-290f95642f0a",
+  "pri": "high",
+  "mod": "CRM",
+  "feat": "Web Forms",
+  "title": "Web Forms | Form added with the website code doesn't appear on the website (Desk and CRM)",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2751-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: website visitor (signed out); owner for setup<br>Method: Signed-out Edge on a local test website (http://127.0.0.1:5500) with the \"Add it to your website\" code + API</p><p>Checked:</p><ul><li>Desk form on the website → Shown in an iframe from the script; session 200 with access-control-allow-origin = the website [PASS]</li><li>Desk test submission → \"Thank you. Your request has been submitted.\" · ticket created (channel web) · submissions 200 [PASS]</li><li>CRM form on the website + submit → Website listed in Settings › \"Websites the form is on\": form shown, \"QA RT18 2959 thank you\", lead created [PASS]</li><li>Side note: CRM form with NO website listed → Form does not show: /session 404, GET form 404 WEB_FORM_NOT_FOUND \"This form is not available.\" — dialog text and behaviour disagree [INFO]</li></ul><p>Side note: with no website listed on a CRM form, the Embed dialog says any website can show it, but the form answers 404 \"This form is not available.\" from the website. Listing the website makes it work.</p><p>Evidence: NDC-2751-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3059",
+  "id": "1bc103d1-b6b9-4853-92f1-54945a9c1517",
+  "pri": "high",
+  "mod": "Desk",
+  "feat": "Departments",
+  "title": "Departments | An agent with \"View only\" access to a department can still edit that department's tickets",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3059-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 19 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner) + agent Customer Experience Specialists 2<br>Method: API as the view-only agent + Edge</p><p>Checked:</p><ul><li>Edit fields (open and Closed ticket) → 403 PERMISSION_DENIED; values unchanged (was saved) [PASS]</li><li>Reply / Close (server) → 403 \"You can view this ticket but not change it.\" (replies, drafts, close) [PASS]</li><li>Comments → Private comment 201; public comment 403 [PASS]</li><li>Edit, Close, Resolution, Attachment controls → Read-only banner; no Edit, no Close ticket; Resolution and Attachment tabs have nothing to edit or upload [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Reply control</strong>: expected Hidden or disabled (ticket: \"Edit, attachment, resolution, Reply and Close controls are hidden or disabled\"); actual Reply All shown and enabled; full composer opens; refused only on Send for review</li></ul><p>Evidence: NDC-3059-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3107",
+  "id": "e2ee5556-3be3-4867-83c2-4a58d250e515",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Currency",
+  "title": "Currency | Create Deal form has no Currency field and the Amount shows $ instead of the home currency",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3107-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (Create Transactions)</p><p>Checked:</p><ul><li>Amount symbol → E£ (was $) [PASS]</li><li>Currency and Exchange Rate fields → Currency (EGP / EUR) and Exchange Rate (locked, 1 for EGP) present [PASS]</li></ul><p>Evidence: NDC-3107-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3108",
+  "id": "b8fcdd3a-3a8e-48b3-b36e-dbaf803aa224",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Currency",
+  "title": "Currency | A currency that records use can be deleted",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3108-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API</p><p>Checked:</p><ul><li>Delete a currency used by a record → 409 CURRENCY_IN_USE \"EUR is used by 1 record… Deactivate it instead\"; EUR still listed [PASS]</li><li>Deactivate instead → PUT is_active false 200 (re-activated after) [PASS]</li></ul><p>Evidence: NDC-3108-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3088",
+  "id": "536ba843-0127-4c94-9f66-2a8510ed925e",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Global Sets",
+  "title": "Global Sets | List views and reports ignore the set's saved \"Entered order\" and sort A–Z",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3088-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API list sort + Edge report, both set modes</p><p>Checked:</p><ul><li>List view sort, Entered order → asc Silver > Platinum > Bronze [PASS]</li><li>List view sort, Alphabetical → asc Bronze > Platinum > Silver [PASS]</li><li>Report sorted by the field → Entered: Silver > Platinum > Bronze · Alphabetical: Bronze > Platinum > Silver [PASS]</li></ul><p>Evidence: NDC-3088-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3089",
+  "id": "6b9c2c0e-22fd-484c-bd3f-55c94ddc5bf5",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Global Sets",
+  "title": "Global Sets | Used In does not list the reports that use the set's field",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3089-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (Used In panel)</p><p>Checked:</p><ul><li>Reports in Used In → \"Reports: QA RT19 GS Gold report, QA RT19 GS Sort report\" (was missing) [PASS]</li><li>Other places → Custom views, Workflow rules, Blueprints, Dependency maps still listed [INFO]</li></ul><p>Evidence: NDC-3089-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2822",
+  "id": "151ccb56-c123-4c51-b646-becdaf99fd48",
+  "pri": "medium",
+  "mod": "CRM",
+  "feat": "Web Forms",
+  "title": "Web Forms | Form fields need their own validation, in the Front-End and in the Back-End",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2822-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 19 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: website visitor (signed out); owner for setup and record checks<br>Method: Signed-out Edge on a local test website (QA forms A/B, English and Arabic) + direct public submissions API + form-save API</p><p>Checked:</p><ul><li>Front-End rules (text min/max, spaces, number, decimal, date range, email, phone) → All shown; Send blocked; focus Full Name; values kept; max length also stops typing at 10 [PASS]</li><li>Builder save refuses bad rules → 422: max below min, bad date, latest before earliest, rule the field can't take, length outside 1–255 [PASS]</li><li>Arabic → dir=rtl, Arabic messages in the browser and from the server [PASS]</li><li>Back-End direct API, CRM + Desk → 422 WEB_FORM_INVALID with path/type/message per field; unknown field refused; no record created [PASS]</li><li>Valid submission → Lead saved: name trimmed, 42.0 → 42, decimal 2.5, date 2026-11-20 [PASS]</li><li>Not checked → File type/size/count rules and hidden fields (not in the dev note) [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Whole number (Number field) with decimals</strong>: expected Refused in both layers (dev note lists a whole-number message); actual \"5.5\" accepted by the browser and the server (200); lead e51e9372 has number_2 = 5.5</li></ul><p>Not checked: file type/size/count rules and hidden fields.</p><p>Evidence: NDC-2822-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3098",
+  "id": "61824258-3a30-490b-bfdb-e5703e1e58c1",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Access",
+  "title": "Access | Ticket access cannot be set per agent (all department tickets / own + unassigned / own + team + unassigned)",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3098-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner) + agent Customer Experience Specialists 2<br>Method: Edge (agent page) + API as the agent</p><p>Checked:</p><ul><li>Per-agent setting → Agent page › Ticket access with the three choices; saved per agent (PUT …/ticket-access) [PASS]</li><li>All tickets of their departments → CES2 opens, edits and comments on CES1's ticket [PASS]</li><li>Own and unassigned → CES1's and the owner's tickets 404/403; own and unassigned 200 [PASS]</li><li>Tenant level → Data sharing is Private on staging (per-agent choice has no visible effect under Private); switched to Public for the test and restored. Not checked: the own + team option, and another agent's view while CES2 was limited [INFO]</li></ul><p>Evidence: NDC-3098-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3067",
+  "id": "75d32599-2bb4-4dcd-b168-b47f7c25135e",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Audit Log",
+  "title": "Audit Log | Changes made in the web app show the server's internal address ::ffff:172.19.0.19 instead of the user's IP",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3067-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 19 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Audit events API (400 events) + Edge Audit Log</p><p>Checked:</p><ul><li>Change lines from the web app (add, update, delete) → Public IP on 153 of 154 user change events (tickets, records, rules, SLA, round robin, settings); one event had no IP [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Recycle Bin purge and restore</strong>: expected User's IP; actual Internal ::ffff:172.19.0.x on all 67 purge events (two users), incl. #5686 purged by the owner at 12:58 PM; a Recycle Bin restore (#5717, 1:47 PM) also shows 172.19.0.36</li></ul><p>Also seen on NDC-3027 (#5717): the Recycle Bin restore line shows IP 172.19.0.36 too.</p><p>Evidence: NDC-3067-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3007",
+  "id": "1a837b7a-1b5a-43a3-a42f-99138c2b9dad",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Community",
+  "title": "Community | A customer's question topic does not create a linked ticket",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3007-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 19 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: customer (Help Center) + ndc-staging-owner<br>Method: Help Center customer post (QA lead) + Edge as owner + Community API</p><p>Checked:</p><ul><li>Question creates a linked ticket → #5736 created at once (channel forum, Customer Support); topic API: ticket converted #5736 [PASS]</li><li>Post Reply back to the forum → \"Post reply to forum\" is the ticket's main action; reply appeared on the topic (0 → 1) and on the ticket as \"Posted to the forum topic\" [PASS]</li><li>Category setting → Conversion is per category (auto-convert on in \"QA RT19 HC 3007 cat\"); no manual Convert to ticket (can.convert false) [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Forum Status field on the ticket</strong>: expected Present (as in Zoho); actual No Forum Status field on the ticket (Key Information, record fields)</li></ul><p>Evidence: NDC-3007-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3062",
+  "id": "f21fb5a0-b86a-48bc-aa7b-c7ea9c6d95e3",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | A checkbox made mandatory by a layout rule can be saved unticked after it is ticked and unticked",
+  "verdict": "PARTIAL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-3062-retest-PARTIAL.png"
+  ],
+  "comment_html": "<p><strong>Retest PARTIAL — 19 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (Create Ticket form) + Records API</p><p>Checked:</p><ul><li>Form: tick then untick, Save → Message stays under the unticked box; Save keeps the form open, no ticket created [PASS]</li></ul><p>Still failing:</p><ul><li><strong>Server refuses an unticked mandatory checkbox</strong>: expected 422; actual POST with checkbox false → 201; checkbox missing → 201 (layout_id Test Layout Rules, category technical)</li></ul><p>Evidence: NDC-3062-retest-PARTIAL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3064",
+  "id": "8d0b8d5a-7a63-435b-940f-2d536ca14f66",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | A ticket has no Edit button for all its properties, and no way to add, change or remove its contact",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3064-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (Edit form, Contact Info) + API check</p><p>Checked:</p><ul><li>Edit all properties → Edit form with Key Information + Ticket Information; priority High, phone and contact saved in one Save (API confirms all three) [PASS]</li><li>Add a contact → Contact chosen in the form (\"Choose a record\" picker) and saved; the card also has Add contact when empty [PASS]</li><li>Change the contact → Change contact → Contact 2; API contact_id = Contact 2 [PASS]</li><li>Remove the contact → Remove contact → API has no contact_id [PASS]</li></ul><p>Evidence: NDC-3064-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3077",
+  "id": "d155cb87-9a2f-48fa-b92b-5c7f186b9757",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | A created ticket can stay without a ticket number and History until someone opens it",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3077-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Records API (parallel creates) + Edge History</p><p>Checked:</p><ul><li>Ticket number → 10 parallel creates + 1 single: all numbered within 5 s (#5679–#5689), no gaps, without opening them [PASS]</li><li>History → \"Ticket was created by ndc-staging-owner\", \"Ticket Number … 5689\", status Open → Closed [PASS]</li></ul><p>Evidence: NDC-3077-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3049",
+  "id": "71b815c8-fd65-4c06-acb2-35a0aef4d557",
+  "pri": "medium",
+  "mod": "Omnichannel",
+  "feat": "Profiles",
+  "title": "Profiles | A custom profile cannot be deleted: \"Resolve the pending invitations\" although none exist",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3049-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-omnichannel.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: IAM API (profiles, invitations, users)</p><p>Checked:</p><ul><li>Delete while an invitation is pending → 409 \"Resolve the pending invitations…\" [PASS]</li><li>Cancel the invitation, then delete → Profile gone from the list [PASS]</li><li>Delete the invited user, then delete → Profile gone from the list [PASS]</li><li>Notes → Accept-then-delete path not run (needs a real mailbox); IAM writes answered 504 after ~10 s on staging tonight but took effect, also for a never-invited profile [INFO]</li></ul><p>Not run: the accept-then-delete path (needs a real mailbox). Note: on staging tonight IAM deletes answered 504 after about 10 s but still took effect, also for a profile that was never invited.</p><p>Evidence: NDC-3049-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3109",
+  "id": "6302767b-4bd5-4c55-b25b-5e3b6929bbd8",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Currency",
+  "title": "Currency | Add currency accepts a code that is not ISO 4217 and silently rounds the exchange rate",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3109-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API</p><p>Checked:</p><ul><li>Code not in ISO 4217 → 422 CURRENCY_CODE_INVALID for XYZ [PASS]</li><li>Rate with more decimals than kept → 422 \"Exchange rate can have at most 9 decimal places.\" [PASS]</li></ul><p>Evidence: NDC-3109-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2136",
+  "id": "9f559025-4222-4823-933b-57eb3bff3635",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Custom Views",
+  "title": "Custom Views | List first page p95 far above 1.5 s (Leads 9.1 s, Deals 3.3 s)",
+  "verdict": "FAIL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2136-retest-FAIL.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 19 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge, 20 timed reloads per list</p><p>Checked:</p><ul><li>Automation → Tagged NDC-2136 tests not run (would sign the owner in again); covered by the 20 loads [INFO]</li></ul><p>Still failing:</p><ul><li><strong>All Deals first page, p95</strong>: expected ≤ 1.5 s; actual p95 19.1 s, median 7.5 s, min 5.1 s (was 3.3 s)</li><li><strong>All Leads first page, p95</strong>: expected ≤ 1.5 s; actual p95 31.3 s, median 7.3 s, min 4.6 s with 1,387 records (was 9.1 s with 128)</li></ul><p>Evidence: NDC-2136-retest-FAIL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2137",
+  "id": "533f6806-b5a3-410d-8ec9-ea4f67c174e7",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Custom Views",
+  "title": "Custom Views | Kanban headers + first cards p95 5.1 s (target 2 s)",
+  "verdict": "FAIL",
+  "decision": "",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "images": [
+   "NDC-2137-retest-FAIL.png"
+  ],
+  "comment_html": "<p><strong>Retest FAIL — 19 Nov 2026</strong> → moved to Bug<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge, 20 timed reloads</p><p>Checked:</p><ul><li>Conditions → Tenant busy with other testers; even the fastest load (4.1 s) is above target [INFO]</li></ul><p>Still failing:</p><ul><li><strong>Kanban headers + first cards, p95</strong>: expected ≤ 2 s; actual p95 13.8 s, median 7.6 s, min 4.1 s (was p95 5.1 s); the original board \"QA CV deals-by-stage\" no longer exists, measured on Deals \"Kanban View\" (All Transactions)</li></ul><p>Evidence: NDC-2137-retest-FAIL.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3090",
+  "id": "a82c55cb-3371-43a9-8bd0-e81aa5a32e59",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Global Sets",
+  "title": "Global Sets | The Used In column shows a field count instead of the module names",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3090-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (Global Sets list)</p><p>Checked:</p><ul><li>Used In column → \"Customers, Leads\" (was \"2 fields\") [PASS]</li><li>Click a module → Used In panel per module (Customers, Leads) [PASS]</li></ul><p>Evidence: NDC-3090-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-2995",
+  "id": "47b1a8ab-d6e6-439e-8e5e-a81d9c7007e2",
+  "pri": "low",
+  "mod": "CRM",
+  "feat": "Layout Rules",
+  "title": "Layout Rules | \"Show related lists\" picker lists the same relation many times",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-2995-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (Layout Rules editor, not saved) + fields API</p><p>Checked:</p><ul><li>Notes entry → \"Notes\" is the first entry [PASS]</li><li>Same relation many times → Each entry is a different field: Leads has 7 lookup fields labelled \"Lookup 2\" and 7 labelled \"Multi-Select Lookup\" (lookup_2 … lookup_2_7); the picker now shows each field key under the name [PASS]</li><li>Leftover / not checked → The look-alike labels come from test fields on Leads (also Lookup 3 / Multi-Select Lookup 8 ×8). Related-list sections on the Leads record page not checked this round [INFO]</li></ul><p>Evidence: NDC-2995-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3100",
+  "id": "a3e437fd-704a-487d-b859-071426278f5e",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Agents",
+  "title": "Agents | The agent page shows raw text keys in \"Tickets owned\"",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3100-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (English and Arabic)</p><p>Checked:</p><ul><li>Tickets owned labels (English) → Open 107 · On Hold 2 · Closed 72 (was records.views.open / onHold / closed) [PASS]</li><li>Tickets owned labels (Arabic) → مفتوحة · قيد الانتظار · مغلقة; no raw keys [PASS]</li></ul><p>Evidence: NDC-3100-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3091",
+  "id": "ac3fbcdd-15b1-4141-8dcd-91eeb181a38c",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Agents API",
+  "title": "Agents API | Reassign removes the agent from every department, team and round-robin pool, not only the departments in the request",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3091-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Agents API</p><p>Checked:</p><ul><li>Partial reassign → department_memberships 1, team_sources 1 (QA RT20 B2 Dept and its team) [PASS]</li><li>Departments not in the request → Customer Support membership and its 5 skills kept [PASS]</li></ul><p>Evidence: NDC-3091-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3027",
+  "id": "b28b7b45-cc9f-460d-8bff-8f4a7798332d",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Audit Log",
+  "title": "Audit Log | Entries show the internal field name EngineDeletedAt and name a deleted ticket by the contact's email",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3027-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API + Edge Audit Log</p><p>Checked:</p><ul><li>Deleted ticket name → \"deleted a Ticket named #5717 QA RT22 BS 3027 deleted and restored\" (ticket has a contact) [PASS]</li><li>Restore entry → \"restored a Ticket named #5717 …\"; no \"cleared Ticket's EngineDeletedAt\" [PASS]</li><li>Other lines seen → \"added a Ticket\" with no name (create event with empty label); \"updated Agent's action from blank value to agent.reassigned\" shows a raw value. The restore line also shows the internal IP 172.19.0.36 (see NDC-3067). Not checked: an imported ticket [INFO]</li></ul><p>Evidence: NDC-3027-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3121",
+  "id": "088fbada-bc1e-4a11-8bd4-77f6058f6100",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Contracts",
+  "title": "Contracts | After a department-only change, coverage counts the other department's support plan as active",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3121-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Contracts API</p><p>Checked:</p><ul><li>Department-only change → 422 SUPPORT_PLAN_OTHER_DEPARTMENT; contract unchanged (fixed with NDC-2841) [PASS]</li><li>Coverage → Contract keeps Dept A + plan A; coverage reports plan A on the Dept A contract [PASS]</li></ul><p>Evidence: NDC-3121-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3051",
+  "id": "4cc288d6-9126-4bbb-9ef9-9e143964a755",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Data Backup",
+  "title": "Data Backup | An expired backup gives \"not finished\" as the reason it cannot be restored",
+  "verdict": "BLOCKED",
+  "decision": "",
+  "state": "none",
+  "stateId": null,
+  "images": [
+   "NDC-3051-retest-BLOCKED.png"
+  ],
+  "comment_html": "<p><strong>Retest BLOCKED — 19 Nov 2026</strong> → state not changed<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API</p><p>Checked:</p><ul><li>Find an expired full backup → None: GET /desk/data/backups returns 0 backups [INFO]</li><li>Reason shown for the expired backup → Not testable here (the ticket's backup is on tenant …0002) [INFO]</li></ul><p>Evidence: NDC-3051-retest-BLOCKED.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3123",
+  "id": "f629fc3e-9826-49e6-b026-f50f5c515db7",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Departments",
+  "title": "Departments | The disable dialog says tickets are kept, but they are moved to the \"Transfer to\" department",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3123-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (dialog read, then Cancel)</p><p>Checked:</p><ul><li>\"Tickets are kept\" wording → \"Its history and configuration are kept\" (tickets no longer listed as kept) [PASS]</li><li>Tickets move, with how many → \"Its 12 tickets will move to the department you choose below.\" — the department record also reports 12 [PASS]</li></ul><p>Evidence: NDC-3123-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3104",
+  "id": "50816f28-71d6-417a-a2bb-b59677f512e2",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Email",
+  "title": "Email | Reply acknowledgement subject repeats \"Re:\" and the ticket number",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3104-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: customer mailbox (Gmail) + ndc-staging-owner<br>Method: Customer email from Gmail (QA lead) + ticket replies API</p><p>Checked:</p><ul><li>New-ticket acknowledgement → \"Re: QA RT22 3104 ack test [#5738]\" [PASS]</li><li>Reply acknowledgements (2 replies) → Both \"Re: QA RT22 3104 ack test [#5738]\" (was \"Re: Re: … [#4745] [#4745]\" and growing); replies added to #5738 [PASS]</li><li>Limits → Gmail sends \"Re: …\" (not \"Re: Re: …\"), so a client that adds a second Re: was not tried. A first email from an agent's address (#5737) got no acknowledgement — Desk does not acknowledge its own agents [INFO]</li></ul><p>Evidence: NDC-3104-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3097",
+  "id": "2f76863a-0787-4ab9-88ff-bc3e21aa3059",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Teams",
+  "title": "Teams | A light agent can be added to a team, and the team can then be given tickets",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3097-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner); light agent test user 2<br>Method: Teams API</p><p>Checked:</p><ul><li>Create a team with a light agent → 422 TEAM_LIGHT_AGENT with a clear message (was 201) [PASS]</li><li>Add a light agent to an existing team → 422 TEAM_LIGHT_AGENT; members unchanged [PASS]</li><li>Full agent → 201 [INFO]</li></ul><p>Evidence: NDC-3097-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3095",
+  "id": "8528b57b-aa00-46e3-b2c5-2eac1c9ac4bd",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | A ticket cannot be moved to another department from the ticket list",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3095-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (Classic View list) + Records API</p><p>Checked:</p><ul><li>Department on each row → Every row shows its department with ▾ (QA AO Dept B, Sales, QA RT19 SLA Dept…) [PASS]</li><li>Move from the list → MOVE DEPARTMENT list; picked Customer Support → #5714 moved (API confirms) [PASS]</li></ul><p>Evidence: NDC-3095-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3096",
+  "id": "1ca7cb33-6e5b-49ba-9241-9893e5d0e738",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | No message tells an agent that the ticket they have open was moved to another department",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3096-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner) + agent Customer Experience Specialists 2<br>Method: Edge as the agent while the owner moved the ticket</p><p>Checked:</p><ul><li>Message when the open ticket is moved → \"Ticket moved — ndc-staging-owner moved this ticket from Customer Support to Sales. You can no longer open it in its new department.\" (was a generic \"not available\") [PASS]</li><li>Next step → \"Back to the list\" (no Stay option: CES2 has no access to Sales, so staying is not possible) [INFO]</li></ul><p>Evidence: NDC-3096-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3099",
+  "id": "24227fe9-7e21-4779-8b8b-8436d5a472da",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | A follower keeps getting notifications for a ticket that moved out of their department",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3099-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner) + agent Customer Experience Specialists 2<br>Method: API (follow, move, notifications)</p><p>Checked:</p><ul><li>Followers after the move → Followers [CES2] → [] after the move; stays [] after a new comment [PASS]</li><li>Further notifications → No \"moved\" or \"New comment\" notification for #5711 in CES2's bell; ticket 404 for CES2 [PASS]</li></ul><p>Evidence: NDC-3099-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3122",
+  "id": "ab7cd66b-9715-4406-8364-8a8288750822",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | Clone form shows Ticket Owner \"Unassigned\", but the saved clone is owned by the current user",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3122-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (⋮ › Clone)</p><p>Checked:</p><ul><li>Clone form Ticket Owner → Test User 1 (was \"Unassigned\") [PASS]</li><li>Saved clone owner → Clone saved owned by Test User 1 (was the current user) [PASS]</li><li>Department → QA RT19 SLA Dept kept; owner account is not an agent there [INFO]</li></ul><p>Evidence: NDC-3122-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3124",
+  "id": "c227ad73-591d-4bca-b324-59c2e99702f2",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Tickets",
+  "title": "Tickets | The first conversation of a ticket created without a contact shows \"Unknown sender\"",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3124-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API + Edge (Clone)</p><p>Checked:</p><ul><li>API-created ticket, no contact → \"ndc-staging-owner\" on #5704 [PASS]</li><li>Clone of a ticket without a contact → Clone #5705: \"ndc-staging-owner\" [PASS]</li><li>Tickets created before the fix → #5526 (9:35 today) still shows \"Unknown sender\" — old tickets not updated [INFO]</li><li>Contact added later → On #5690 the first message's sender became the contact added afterwards (\"Probe\") [INFO]</li></ul><p>Evidence: NDC-3124-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3133",
+  "id": "3f627b26-2b62-4719-8a1c-fe059d8c177b",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Execution run page: actions table runs past its box, cutting off Next / Completed, and Create Record Target shows the module id",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3133-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge at 1600 and 1280 px (measured table width)</p><p>Checked:</p><ul><li>Table width → 1600 px: 1102 in 1102; 1280 px: 962 in 962; 1-action run 1102 in 1102 (was 1010 in 974); \"19/11/2026 9:39 AM\" in full [PASS]</li><li>Create Record Target → \"Calls\" (was module id f7e488b5…) [PASS]</li><li>Module line at the top → \"Tickets\" instead of an id [PASS]</li></ul><p>Evidence: NDC-3133-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3134",
+  "id": "420ceac2-acc7-4021-a443-e22789079ad9",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Opening a rule whose Create Record sets Contact Name to ${contact_id} shows \"The requested resource was not found.\"",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3134-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (rule opened, network checked; nothing saved)</p><p>Checked:</p><ul><li>Open the rule → No \"The requested resource was not found.\" toast; no request for a contact \"${contact_id}\" (only the unrelated GET /agents/tia/status 404, silent) [PASS]</li><li>Contact Name value → \"${contact_id}\" · \"Filled in when the rule runs\" · Change (was a contact search \"Contacts ${contac\"); Department shows \"${department}\" the same way (was \"Deleted department\") [PASS]</li><li>Readability → In the narrow value box the text is cut (\"${co… Filled in …\") [INFO]</li></ul><p>Evidence: NDC-3134-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3050",
+  "id": "125fa838-d66d-4255-a5fb-6fb86d0e2caf",
+  "pri": "low",
+  "mod": "Omnichannel",
+  "feat": "Lead scoring",
+  "title": "Lead scoring | A scoring rule with no conditions and 0 points is saved and enabled",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3050-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-omnichannel.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Omnichannel scoring rules API</p><p>Checked:</p><ul><li>Name only (ticket step) → 400 \"criteria must have at least one condition.\", nothing saved [PASS]</li><li>0 points / no points / empty criteria → 400 with a clear message for each [PASS]</li><li>Edit an existing rule to empty or 0 → PATCH 400 both; rule unchanged (10 points, 1 condition) [PASS]</li><li>Valid rule → 200, points 10, 1 condition [PASS]</li></ul><p>Evidence: NDC-3050-retest-PASS.png (attached)</p>"
+ }
+]

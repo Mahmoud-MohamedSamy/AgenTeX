@@ -1,0 +1,12 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', DB = '4853562a-0b4d-45cb-ba34-9f2118fcd32c', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/'; const o = JSON.parse(fs.readFileSync(OUT + 'bl.json', 'utf8'));
+const sv = v => v === null ? { kind: 'null' } : { kind: 'string', value: String(v) }; const fields = x => Object.entries(x).map(([k, v]) => ({ field: k, value: sv(v) }));
+const wl = async () => (((await api('GET', '/desk/agents/' + TU1 + '/workload')).j?.data?.departments || []).find(d => d.department_id === DB) || {}).open_tickets;
+const pres = async () => (await api('POST', '/desk/agents/presence/query', { user_ids: [TU1] })).j?.data?.agents?.[0]?.presence?.online;
+const own = async id => { const d = (await api('GET', '/modules/' + TK + '/records/' + id)).j?.data?.data || []; const ow = (d.find(f => f.field === 'owner') || {}).value?.value || null; return ow === TU1 ? 'TU1' : ow; };
+o.base = { ...o.base, assign_backlogs: false, assign_on_closure: true }; log({ put: (await api('PUT', '/desk/departments/' + DB + '/round-robin-preferences', o.base)).s });
+const c = await api('POST', '/modules/' + TK + '/records', { data: fields({ subject: 'QA BL D backlog', description: 'QA BL retest', department: DB, status: 'Open', priority: 'medium', owner: null }) }); o.D = c.j?.data?.id; if (!o.D) throw new Error('create ' + c.s);
+await sleep(15000); log({ D: await own(o.D), tu1Open: await wl(), online: await pres() });
+const p = await api('PATCH', '/modules/' + TK + '/records/' + o.A, { data: [{ field: 'status', value: { kind: 'string', value: 'Closed' } }] }); if (p.s >= 300) throw new Error('close ' + p.s); log({ closedA: p.s, at: new Date().toISOString().slice(11, 19), tu1Open: await wl() });
+const res = []; for (let i = 0; i < 12; i++) { await sleep(10000); const ow = await own(o.D); res.push(new Date().toISOString().slice(11, 19) + ' D owner=' + ow); if (ow) break; } log(res);
+fs.writeFileSync(OUT + 'bl.json', JSON.stringify(o, null, 1));

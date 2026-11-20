@@ -1,0 +1,16 @@
+Summary
+When a followed ticket is moved to a department the follower is not in, the follower stays on the followers list and keeps getting bell notifications with the ticket number and subject, although they can no longer open the ticket. Found in the Desk go-live ticket access run (departments, teams, sharing, moving), NDC-Staging, 17 Nov 2026.
+Steps
+- Agent C (Customer Support only) follows a Customer Support ticket (#4860).
+- The owner moves it to Sales (⋮ › Move), then adds a comment.
+- Check the ticket's followers and agent C's bell; agent C opens the ticket.
+Expected
+As in Zoho: an agent who loses access is removed from the followers and gets no further updates for that ticket.
+Actual
+GET /desk/tickets/{id}/followers still returns agent C. Agent C's bell shows "Ticket #4860 moved to Sales: QA AC2 R3" and then "New comment on ticket #4860: QA AC2 R3". Opening the ticket: record 403, /desk/tickets 404, page "This ticket is not available".
+Zoho Desk
+Checked live 17 Nov: test agent 2 (TechEgySolutions only) followed a ticket (addFollowers 204, followers = [agent 2]); after the admin moved it to Tech the followers list was empty.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), Edge, 17 Nov 2026; accounts: owner, Desk Administrator (B), Desk Agent (C, Customer Support), Test User 1 (Desk Agent / Light Agent for the test). Zoho Desk checked live the same day in the test org TechEgySolutions (admin, test agents 1 and 2); test data deleted and settings restored after.
+Attachment
+Annotated evidence: AC-G6-follower-after-move-vs-zoho.png.

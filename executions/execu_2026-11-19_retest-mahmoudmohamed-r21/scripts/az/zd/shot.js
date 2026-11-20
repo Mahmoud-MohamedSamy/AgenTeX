@@ -1,0 +1,1 @@
+async (page) => { const R='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20/screenshots/raw/';await page.screenshot({path:R+'zd-tmp.png'});return page.url();}

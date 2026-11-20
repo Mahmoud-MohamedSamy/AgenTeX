@@ -1,0 +1,28 @@
+# NDC-2986 Layout Rules | A CRM User without customize permission can see the rule list [Done]
+Summary
+A CRM User without customize permission can see the rule list. The full list shows: names, layouts, primary fields, condition counts.
+Environment
+- NDC-Staging (staging-crm.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2. Test data was deleted after the run.
+Steps to reproduce
+- Sign in as a CRM User (profile User).
+- Open Settings > Modules and Fields > Leads > Layout Rules by URL.
+Expected result
+Zoho lets only users with Customize permission reach Layout Rules.
+Actual result
+- The full list shows: names, layouts, primary fields, condition counts.
+- Writes are refused (403).
+Notes
+- Test cases A2 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- Evidence: crm-A2-low.png (attached).
+
+== COMMENTS
+--- 2026-11-16T10:13:14.589020+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Open Leads › Layout Rules by URL as a CRM User → Tab opens but shows no rules [PASS]
+- Rule names, layouts, primary fields, counts → Empty state "You can't manage layout rules — can be viewed and changed only by users who can customize this module"; no QA RT18 rule names in the page [PASS]
+- Server answer → Toast "Permission denied."; GET /layout-rules 403 PERMISSION_DENIED; GET one rule 403 [PASS]
+Evidence: NDC-2986-retest-PASS.png (attached)

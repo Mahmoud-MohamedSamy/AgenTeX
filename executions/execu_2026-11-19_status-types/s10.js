@@ -1,0 +1,1 @@
+const s=(await api('GET','/desk/tickets/bfb9e882-036d-4a1c-8e2f-889cd43ebd92/sla')); log({s:s.s,t:s.t.slice(0,1200)}); const t=(await api('GET','/desk/tickets/bfb9e882-036d-4a1c-8e2f-889cd43ebd92')).j?.data||{}; log({status:t.status});

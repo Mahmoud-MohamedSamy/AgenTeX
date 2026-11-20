@@ -1,0 +1,10 @@
+const me = (await api('GET', '/iam/me')).j?.data; const myId = me && (me.id || me.user_id);
+const o = { me: nmU(myId) + ' ' + (myId || '').slice(0, 8) };
+o.getRules = (await api('GET', '/desk/assignment-rules?type=direct')).s;
+o.postRule = (await api('POST', '/desk/assignment-rules', { type: 'direct', name: 'QA AR A15 should fail', description: 'QA', is_active: false, execute_on: ['create'], targets: [DT('QA AR A15', IDS.DA, null, AG(IDS.A1))] })).s;
+o.getPrefs = (await api('GET', '/desk/departments/' + IDS.DA + '/round-robin-preferences')).s;
+o.putPrefs = (await api('PUT', '/desk/departments/' + IDS.DA + '/round-robin-preferences', { assign_backlogs: false })).s;
+o.getNotif = (await api('GET', '/desk/assignment/notification-settings')).s;
+o.putNotif = (await api('PUT', '/desk/assignment/notification-settings', { direct_rules_enabled: false })).s;
+o.skillsPost = (await api('POST', '/desk/skills?department_id=' + IDS.DA, { name: 'QA AR A15 skill', type_id: 'ef0243c4-f129-4f75-aede-6af2ab904a52', criteria: { conditions: [], pattern: null } })).s;
+return o;

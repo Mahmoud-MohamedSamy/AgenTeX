@@ -1,0 +1,13 @@
+const out = {};
+await go('/settings/automation/scoring-rules?module=' + MID, 9000);
+const run = page.getByRole('button', { name: /Run scoring rules/ }).first(); out.runBtn = await run.count();
+out.runBtnBox = await box(run);
+await run.click(); await sleep(1500);
+out.runDialog = (await page.locator('[role=dialog], [role=alertdialog]').last().innerText().catch(() => 'none')).replace(/\s+/g, ' ').slice(0, 800);
+await shot('1483-5-run-dialog.png');
+await page.keyboard.press('Escape'); await sleep(800);
+await page.getByRole('button', { name: /New Scoring Rule/ }).first().click(); await sleep(2000);
+const dr = page.getByTestId('scoring-rule-drawer');
+out.controls = await dr.locator('input, select, button, [role=combobox], [role=checkbox], [role=switch]').evaluateAll(e => e.map(x => [x.tagName, x.getAttribute('type'), x.getAttribute('role'), x.getAttribute('aria-label') || x.getAttribute('name') || x.getAttribute('data-testid') || '', (x.innerText || x.value || '').slice(0, 30)].join(':')));
+await shot('1483-6-new-drawer.png');
+return out;

@@ -1,0 +1,3 @@
+const R='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20/screenshots/raw/';const ug=require('./ug.js');
+module.exports=async(page)=>{const ok=await ug(page,'https://desk.zoho.com/agent/techegysolutions/techegysolutions/setup#setup/automation/'+(process.env.H||'assignmentrules'),new RegExp(process.env.RE||'Round Robin','i'));
+await page.waitForTimeout(5000);await page.screenshot({path:R+(process.env.SHOT||'zd-az-0')+'.png'});return 'ok='+ok+' '+page.url()+'\n'+(await page.innerText('body')).replace(/[\w.+-]+@[\w.-]+/g,'<email>').slice(0,3500);};

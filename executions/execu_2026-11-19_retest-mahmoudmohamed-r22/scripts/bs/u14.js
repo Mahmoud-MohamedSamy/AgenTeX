@@ -1,0 +1,12 @@
+const out = {}; const BP = '5392f456-66f9-4bc7-aa95-99bad990f4d5';
+await page.goto(H + '/settings/automation/blueprints/' + BP, { waitUntil: 'commit' }); await page.evaluate(() => localStorage.setItem('anyware_language', 'en')); await page.reload({ waitUntil: 'domcontentloaded' });
+for (let i = 0; i < 60; i++) { await sleep(2000); const tt = await text(); if (/QA a3/.test(tt)) break; if (/502 Bad Gateway/.test(tt) && i % 5 == 4) await page.reload({ waitUntil: 'domcontentloaded' }); } await sleep(2000);
+await page.locator('.react-flow__node').filter({ hasText: 'Open' }).first().click(); await sleep(2500);
+await shot('3063-4-open-panel.png');
+const b = page.getByRole('button', { name: /Add escalation level/ }).first(); await b.scrollIntoViewIfNeeded(); await b.click(); await sleep(2000);
+await page.locator('select', { has: page.locator('option', { hasText: 'After the limit' }) }).first().selectOption({ label: 'After the limit' }); await sleep(1500);
+const t = (await text()).replace(/\s+/g, ' '); const i = t.indexOf('Escalation levels'); out.esc = t.slice(i, i + 600);
+out.selects = await page.locator('select').evaluateAll(es => es.map(e => e.options[e.selectedIndex]?.text + ' [' + [...e.options].map(o => o.text).slice(0, 6).join('/') + ']'));
+await page.getByText('Escalation levels').first().scrollIntoViewIfNeeded(); await sleep(800); await shot('3063-5-escalation-level.png');
+await page.getByRole('button', { name: 'Cancel', exact: true }).click(); await sleep(1000);
+return out;

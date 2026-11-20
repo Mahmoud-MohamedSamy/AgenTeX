@@ -1,0 +1,21 @@
+const opts = async () => (await page.locator('[role=option]:visible').allInnerTexts().catch(() => [])).map(s => s.trim()).filter(Boolean);
+await page.goto(H + '/settings/automation/assignment-rules?view=round-robin', { waitUntil: 'commit' });
+await page.getByText('Round Robin Rules').first().waitFor({ timeout: 150000 }); await sleep(3000);
+await page.mouse.click(1380, 358); await sleep(1200); await page.getByRole('option', { name: 'QA AS6 Dept A', exact: true }).first().click().catch(() => {}); await sleep(3000);
+await page.getByRole('button', { name: /New Rule/ }).first().click(); await sleep(2500);
+const dlg = page.locator('[role=dialog]').last(); await dlg.getByRole('button', { name: /Add Target/ }).click().catch(() => {}); await sleep(2000);
+await shot('AR-UI-09-rr-new.png', { fullPage: true });
+log('rrForm', (await dlg.innerText()).replace(/\s+/g, ' ').slice(0, 2200));
+await dlg.getByRole('button', { name: 'Cancel', exact: true }).click(); await sleep(1500);
+await page.mouse.click(1531, 358); await sleep(1200); await page.mouse.click(1398, 400);
+for (let i = 0; i < 20; i++) { await sleep(1500); if (!/Loading assignment settings/.test(await text())) break; }
+const pd = page.locator('[role=dialog]').last();
+const sw = pd.getByText('Agent level threshold', { exact: true }).locator('xpath=ancestor::div[.//button[@role="switch"]][1]').locator('button[role=switch]').first(); await sw.click(); await sleep(1500);
+await pd.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(1500); const m1 = (await pd.innerText()).match(/Pick an agent[^\n]*|Enter a[^\n]*|agent[^\n]{0,60}required/i); log('emptyRow', m1 && m1[0]); await shot('AR-UI-10-prefs-empty-row.png');
+await pd.getByRole('button', { name: /Select an agent/ }).first().click(); await sleep(1200); const o1 = await opts(); await page.getByRole('option', { name: 'Test User 1' }).first().click(); await sleep(800);
+await pd.getByPlaceholder('Threshold').first().fill('0'); await pd.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(1500); const m2 = (await pd.innerText()).match(/whole number[^\n]*|1 to 200[^\n]*/i); log('threshold0', m2 && m2[0]);
+await pd.getByRole('button', { name: /Add agent/ }).click(); await sleep(1000); await pd.getByRole('button', { name: /Select an agent/ }).last().click(); await sleep(1200); const o2 = await opts(); await page.keyboard.press('Escape');
+log('rowOptions first', o1.join(' | '), ' second', o2.join(' | ')); await shot('AR-UI-11-prefs-rows.png');
+const di = pd.getByText('Open tickets per agent').locator('xpath=following::input[1]'); 
+await pd.getByRole('button', { name: 'Cancel', exact: true }).click(); await sleep(1500);
+log('prefsAfterCancel', (await text()).includes('Round Robin Preferences') ? 'dialog open' : 'closed');

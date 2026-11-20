@@ -1,0 +1,27 @@
+{
+ "out": "NDC-3055-retest-PASS.png",
+ "ticket": "NDC-3055",
+ "priority": "high",
+ "title": "Ticket Views | Deleting all tickets in a view with \"Select all\" fails without any message and no tickets are deleted",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner account (shared session) · private view \"QA RT20 TK 3055 view\" (subject starts with QA RT20 TK 3055) holding only 300 lane tickets",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3055-2-confirm.png", "caption": "Select all 300 in this view → More → Delete: the confirm names 300 tickets and the recycle bin", "crop": [260, 56, 1340, 600],
+   "boxes": [{"b": [608, 361, 992, 539], "n": 1, "kind": "PASS"}, {"b": [312, 68, 398, 100], "n": 1, "kind": "PASS"}]},
+  {"img": "3055-3-after-3s.png", "caption": "About 6 s later: view (0), success message, no hang", "crop": [0, 56, 1600, 844],
+   "boxes": [{"b": [1218, 818, 1576, 876], "n": 2, "kind": "PASS"}, {"b": [282, 68, 540, 100], "n": 3, "kind": "PASS"}, {"b": [38, 577, 250, 607], "n": 6, "kind": "INFO"}]},
+  {"img": "3055-6-recycle-bin.png", "caption": "Setup › Recycle Bin: the lane tickets, deleted by the owner, 60 days", "crop": [268, 56, 1332, 600],
+   "boxes": [{"b": [292, 234, 1576, 460], "n": 5, "kind": "PASS"}]},
+  {"img": "3055-api-card.png", "caption": "Network and API checks", "crop": [0, 0, 1600, 470],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 246], "n": 2, "kind": "PASS"}, {"b": [36, 256, 1564, 340], "n": 4, "kind": "PASS"}, {"b": [36, 350, 1564, 408], "n": 5, "kind": "PASS"}, {"b": [36, 418, 1564, 455], "n": 6, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Select all 300 in this view → More → Delete → Delete", "Request accepted", "One POST mass-delete with the ids in the body → 202 job in < 2 s (was: ids in the address, no reply, cancelled after 30 s)", "PASS"],
+  [2, "Message to the user, incl. limit", "Told the result and any limit", "\"Deleting 300 tickets in the background (up to 50,000 at a time)\", progress 0/100 of 300, then \"300 records moved to the recycle bin.\"", "PASS"],
+  [3, "List refreshes, count drops to zero", "View (0)", "View shows (0) \"No Tickets yet\" about 6 s after confirm, and after reload", "PASS"],
+  [4, "Every ticket really deleted", "300 gone", "GET each id → 404 × 300; job completed deleted 300, failed 0", "PASS"],
+  [5, "Recycle Bin", "All 300 restorable", "All 300 in the bin, one deletion group, 60 days", "PASS"],
+  [6, "Sidebar count of the view", "Updates", "Stayed 300 until page reload (then 0); cosmetic", "INFO"]
+ ]
+}

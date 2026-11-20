@@ -1,0 +1,10 @@
+{"out":"3071-api-card.png","title":"NDC-3071 Records API: field value without \"kind\" and other malformed shapes (POST/PATCH /modules/{Tickets}/records)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["A subject {\"value\":...} no kind","POST, subject value has no kind; repeated 3 times","400 VALIDATION_ERROR, path data[0].value: A field value needs a \"kind\" (null, string, number, boolean, object or array). (was 500)","ok"],
+["B priority no kind","POST, subject ok, priority {\"value\":\"High\"}","400 VALIDATION_ERROR, path data[1].value, same message (was 500)","ok"],
+["C department / F {} / K array item","department no kind; subject {}; tags array item without kind","400, path data[1].value / data[0].value / data[1].value, needs a \"kind\"","ok"],
+["E plain string / H kind only / L no value key","value \"x\"; {\"kind\":\"string\"}; {field} with no value","400 VALIDATION_ERROR \"The value is not in the expected format.\" (path empty / data[0])","ok"],
+["D unknown kind / I kind null / J kind number on text","{\"kind\":\"bogus\"}; {\"kind\":null}; {\"kind\":\"number\",\"value\":\"text\"}","400; path \"\" / \"kind\" / \"value\" (not the full data[i].value path; 16 Nov unknown kind gave data[0].value)","info"],
+["G value null","{\"field\":\"subject\",\"value\":null}","400 \"The Value field is required.\" path Data[0].Value","ok"],
+["M PATCH no kind","PATCH control ticket, priority {\"value\":\"Low\"}","400 data[0].value needs a \"kind\"; priority stays high","ok"],
+["Z valid control","POST valid kinds (subject, status Open, priority High, dept) then PATCH priority Low","201 created; PATCH 200, priority low; search QA RT20 TK 3071 finds only the control (no junk records)","ok"]]}

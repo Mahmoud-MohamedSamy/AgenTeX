@@ -1,0 +1,4 @@
+const o={};const T='88e8ea44-1658-4df3-9930-d0902b91073d',WF='bc53682c-7271-4fe0-8c32-99eff3a10bb1';
+const n=await api('DELETE','/desk/departments/8c6073ac-ba5f-4d17-9960-71a6850662a9');o.ntf=n.s+' '+String(n.t).slice(60,160);
+for(const q of ['department_id='+WF,'departmentId='+WF,'department='+WF,'include_deleted=true&department_id='+WF,'scope=all&department_id='+WF]){const r=await api('GET','/modules/'+T+'/records?per_page=50&'+q);const L=arr(r.j?.data);o[q.slice(0,30)]=r.s+' n='+L.length+' inWF='+L.filter(x=>JSON.stringify(x.data||'').includes(WF)).length+' '+L.filter(x=>JSON.stringify(x.data||'').includes(WF)).slice(0,3).map(x=>x.id.slice(0,8)+' '+JSON.stringify((x.data||[]).find(z=>z.field==='subject')?.value?.value)+' st='+JSON.stringify((x.data||[]).find(z=>z.field==='status')?.value?.value)).join(' | ');}
+return o;

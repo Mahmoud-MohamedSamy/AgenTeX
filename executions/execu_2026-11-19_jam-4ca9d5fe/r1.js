@@ -1,0 +1,11 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158', C1 = '2a7c1bc4-f6d4-4bd3-805e-0496ece13987', C2 = '9d182dfa-05f3-4af7-9685-8615a2fbe537';
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/';
+const sv = v => v === null ? { kind: 'null' } : { kind: 'string', value: String(v) }; const fields = o => Object.entries(o).map(([k, v]) => ({ field: k, value: sv(v) }));
+const wl = async u => (((await api('GET', '/desk/agents/' + u + '/workload')).j?.data?.departments || []).find(d => d.department_id === CS) || {}).open_tickets;
+const own = async id => { const d = (await api('GET', '/modules/' + TK + '/records/' + id)).j?.data?.data || []; return (d.find(f => f.field === 'owner') || {}).value?.value || null; };
+const o = { before: { C1: await wl(C1), C2: await wl(C2) } };
+const a = await api('POST', '/modules/' + TK + '/records', { data: fields({ subject: 'QA JAM closure A (owned by CES2)', description: 'QA JAM 4ca9d5fe repro', department: CS, status: 'Open', priority: 'medium', owner: C2 }) }); o.A = a.j?.data?.id;
+await sleep(8000); o.afterA = { C1: await wl(C1), C2: await wl(C2), Aowner: await own(o.A) };
+const b = await api('POST', '/modules/' + TK + '/records', { data: fields({ subject: 'QA JAM closure B (should go to backlog)', description: 'QA JAM 4ca9d5fe repro', department: CS, status: 'Open', priority: 'medium', owner: null }) }); o.B = b.j?.data?.id;
+await sleep(15000); const tb = (await api('GET', '/desk/tickets/' + o.B)).j?.data || {}; o.afterB = { Bowner: await own(o.B), B_in_backlog: tb.in_backlog, C1: await wl(C1), C2: await wl(C2) };
+fs.writeFileSync(OUT + 'r1.json', JSON.stringify(o, null, 1)); log(o);

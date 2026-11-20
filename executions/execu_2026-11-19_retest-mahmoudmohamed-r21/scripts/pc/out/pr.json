@@ -1,0 +1,152 @@
+{
+ "at": "2026-11-17T13:16:48.240Z",
+ "steps": [
+  "13:16:49 TU1 rule 201",
+  "13:16:56 TU1 rep 1 records Open/Esc 4 [\"#4285:Open\",\"#4283:Open\",\"#4282:Open\",\"#4281:Open\"] workload 4",
+  "13:19:20 TU1 rep 1 thr 4 (=count, expect WAIT) #4941 -> none [] desk lag 1",
+  "13:20:56 TU1 rep 1 thr 5 (=count+1, expect ASSIGNED) #4942 -> A1 [\"auto_assigned\"]",
+  "13:20:59 TU1 close #4942 200 wl back {\"wl\":4,\"sec\":1}",
+  "13:21:13 TU1 rep 2 records Open/Esc 4 [\"#4285:Open\",\"#4283:Open\",\"#4282:Open\",\"#4281:Open\"] workload 4",
+  "13:25:05 TU1 rep 2 thr 4 (=count, expect WAIT) #4943 -> none [] desk lag 3",
+  "13:25:20 TU1 rep 2 thr 5 (=count+1, expect ASSIGNED) #4944 -> A1 [\"auto_assigned\"]",
+  "13:25:23 TU1 close #4944 200 wl back {\"wl\":4,\"sec\":1}",
+  "13:25:32 TU1 del base Open 4 wl 4",
+  "13:25:41 TU1 del extra owned ticket #4945 owner A1 wl now {\"wl\":5,\"sec\":1} records 5",
+  "13:27:37 TU1 del thr 5 agent at 5 (expect WAIT) #4946 -> none []",
+  "13:27:40 TU1 del DELETE #4945 204 GET record after 404 GET desk ticket after 404",
+  "13:27:50 TU1 del wl after {\"wl\":4,\"sec\":1} records 4",
+  "13:27:57 TU1 del thr 5 right after del (expect ASSIGNED) #4947 -> A1 [\"auto_assigned\"]",
+  "13:28:01 TU1 del close #4947 200 wl back {\"wl\":4,\"sec\":4}",
+  "13:28:08 DT2 rule 201",
+  "13:28:22 DT2 rep 1 records Open/Esc 1 [\"#4284:Open\"] workload 1",
+  "13:30:21 DT2 rep 1 thr 1 (=count, expect WAIT) #4948 -> none [] desk lag 3",
+  "13:30:32 DT2 rep 1 thr 2 (=count+1, expect ASSIGNED) #4949 -> none [\"auto_assigned\"]",
+  "13:33:03 DT2 rep 2 records Open/Esc 2 [\"#4949:Open\",\"#4284:Open\"] workload 2",
+  "13:35:11 DT2 rep 2 thr 2 (=count, expect WAIT) #4950 -> none [] desk lag 1",
+  "13:35:24 DT2 rep 2 thr 3 (=count+1, expect ASSIGNED) #4951 -> A3 [\"auto_assigned\"]",
+  "13:35:27 DT2 close #4951 200 wl back {\"wl\":2,\"sec\":2}",
+  "13:35:37 DT2 del base Open 2 wl 2",
+  "13:35:53 DT2 del extra owned ticket #4952 owner A3 wl now {\"wl\":3,\"sec\":1} records 3",
+  "13:38:33 DT2 del thr 3 agent at 3 (expect WAIT) #4953 -> none []",
+  "13:38:42 DT2 del DELETE #4952 204 GET record after 404 GET desk ticket after 404",
+  "13:39:06 DT2 del wl after {\"wl\":2,\"sec\":2} records 2",
+  "13:39:22 DT2 del thr 3 right after del (expect ASSIGNED) #4954 -> A3 [\"auto_assigned\"]",
+  "13:39:25 DT2 del close #4954 200 wl back {\"wl\":2,\"sec\":1}",
+  "13:39:35 DT2 rst base Open 2 wl 2",
+  "13:39:51 DT2 rst extra owned ticket #4955 owner A3 wl now {\"wl\":3,\"sec\":1} records 3",
+  "13:42:26 DT2 rst thr 3 agent at 3 (expect WAIT) #4956 -> none []",
+  "13:42:41 DT2 rst DELETE #4955 204 GET record after 404 GET desk ticket after 404",
+  "13:42:59 DT2 rst wl after {\"wl\":2,\"sec\":1} records 2",
+  "13:43:06 DT2 rst thr 3 right after rst (expect ASSIGNED) #4957 -> A3 [\"auto_assigned\"]",
+  "13:43:08 DT2 rst close #4957 200 wl back {\"wl\":2,\"sec\":1}",
+  "13:43:11 DT2 rst bin item found",
+  "13:43:14 DT2 rst restore 200 record GET 200 owner A3 status Open",
+  "13:43:35 DT2 rst wl after restore {\"wl\":3,\"sec\":1} records 3",
+  "13:46:06 DT2 rst thr 3 after restore (agent back at 3 , expect WAIT) #4958 -> none []",
+  "13:46:10 DT2 rst close restored #4955 200 wl {\"wl\":2,\"sec\":1}",
+  "13:46:28 DT2 mv base Open 2 wl 2",
+  "13:46:41 DT2 mv extra owned ticket #4959 owner A3 wl now {\"wl\":3,\"sec\":1} records 3",
+  "13:48:48 DT2 mv thr 3 agent at 3 (expect WAIT) #4960 -> none []",
+  "13:48:48 DT2 mv move #4959 to AS6 Dept A 422 OWNERSHIP_MANAGED_BY_DESK Ticket ownership and department are managed by Desk: assign, pick up, unassign or move the ticket through Desk.",
+  "13:53:55 DT2 mv wl after {\"wl\":3,\"sec\":-1} records 3",
+  "13:56:24 DT2 mv thr 3 right after mv (expect ASSIGNED) #4961 -> none []",
+  "13:56:26 DT2 mv close moved #4959 200",
+  "13:56:53 CTL AS6A TU1 records Open/Esc 76 workload 78 notClosed 78",
+  "13:59:54 CTL thr 76 (expect WAIT) #4962 -> none []"
+ ],
+ "rows": {
+  "TU1-r1-wait": {
+   "thr": 4,
+   "n": 4941,
+   "o": "none"
+  },
+  "TU1-r1-assign": {
+   "thr": 5,
+   "n": 4942,
+   "o": "A1",
+   "id": "507d9ef0-e11b-431c-b09e-64acf6f408f1"
+  },
+  "TU1-r2-wait": {
+   "thr": 4,
+   "n": 4943,
+   "o": "none"
+  },
+  "TU1-r2-assign": {
+   "thr": 5,
+   "n": 4944,
+   "o": "A1",
+   "id": "c9efed57-d28c-4173-9af6-0f125c1a8a82"
+  },
+  "TU1-del-full": {
+   "thr": 5,
+   "n": 4946,
+   "o": "none"
+  },
+  "TU1-del-after": {
+   "thr": 5,
+   "n": 4947,
+   "o": "A1",
+   "id": "669236bc-1180-4440-af4a-c5c3d7a2dd0e"
+  },
+  "DT2-r1-wait": {
+   "thr": 1,
+   "n": 4948,
+   "o": "none"
+  },
+  "DT2-r1-assign": {
+   "thr": 2,
+   "n": 4949,
+   "o": "none",
+   "id": "142d2b30-2bc6-4985-b0b4-4bf0cd20cdaa"
+  },
+  "DT2-r2-wait": {
+   "thr": 2,
+   "n": 4950,
+   "o": "none"
+  },
+  "DT2-r2-assign": {
+   "thr": 3,
+   "n": 4951,
+   "o": "A3",
+   "id": "62cc4c71-50a2-4516-8d2b-9f45a42919cb"
+  },
+  "DT2-del-full": {
+   "thr": 3,
+   "n": 4953,
+   "o": "none"
+  },
+  "DT2-del-after": {
+   "thr": 3,
+   "n": 4954,
+   "o": "A3",
+   "id": "3ffbff35-c0a7-4aa9-bee3-7ce34fd3c7b8"
+  },
+  "DT2-rst-full": {
+   "thr": 3,
+   "n": 4956,
+   "o": "none"
+  },
+  "DT2-rst-after": {
+   "thr": 3,
+   "n": 4957,
+   "o": "A3",
+   "id": "6ea36fc4-1fdb-424f-b55b-27466f19f4e5"
+  },
+  "DT2-rst-restored": {
+   "thr": 3,
+   "n": 4958,
+   "o": "none"
+  },
+  "DT2-mv-full": {
+   "thr": 3,
+   "n": 4960,
+   "o": "none"
+  },
+  "DT2-mv-after": {
+   "thr": 3,
+   "n": 4961,
+   "o": "none",
+   "id": "5204eb6a-d972-4f54-af43-ea707aa2bc94"
+  }
+ }
+}

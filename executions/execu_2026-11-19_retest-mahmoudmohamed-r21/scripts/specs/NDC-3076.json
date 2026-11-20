@@ -1,0 +1,25 @@
+{
+ "out": "NDC-3076-retest-PASS.png",
+ "ticket": "NDC-3076",
+ "priority": "medium",
+ "title": "Round Robin Assignment | Department threshold counts Open tickets the agent does not have, so tickets wait while the agent is under the limit",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner (shared session) · QA AO Dept B (Test User 1 = 4 Open, Dev Team 2 = 1 Open), control QA AS6 Dept A · one-agent Sequential rules QA RT20 PC … (left inactive) · dept threshold on, offline allowed, prefs restored · 17 Nov 2026 13:14-14:24 UTC",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3076-1-after-delete-assigned-history.png", "caption": "#4947 created at threshold 5 right after the agent's extra Open ticket #4945 was deleted: owner Test User 1, History 'Assigned automatically · Round Robin Assignment · rule QA RT20 PC thr TU1 · Round robin (Sequence) · A new ticket'", "crop": [360, 60, 1240, 790],
+   "boxes": [{"b": [700, 660, 1000, 830], "n": 4, "kind": "PASS"}, {"b": [385, 530, 560, 585], "n": 4, "kind": "PASS"}]},
+  {"img": "3076-api-card.png", "caption": "API: real counts, ticket steps twice per agent, delete / restore / move, control", "crop": [0, 0, 1600, 670],
+   "boxes": [{"b": [36, 99, 1564, 178], "n": 1, "kind": "PASS"}, {"b": [36, 188, 1564, 246], "n": 2, "kind": "PASS"}, {"b": [36, 256, 1564, 314], "n": 3, "kind": "PASS"}, {"b": [36, 324, 1564, 403], "n": 4, "kind": "PASS"}, {"b": [36, 413, 1564, 471], "n": 5, "kind": "PASS"}, {"b": [36, 481, 1564, 539], "n": 6, "kind": "PASS"}, {"b": [36, 549, 1564, 586], "n": 7, "kind": "PASS"}, {"b": [36, 596, 1564, 654], "n": 8, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Real Open count = workload (QA AO Dept B)", "Records list and workload show the same tickets, no phantoms", "Test User 1: 4 (#4281-4283, #4285), workload 4; Dev Team 2: 1 (#4284), workload 1 (dev's '2 Open' was a probe since gone)", "PASS"],
+  [2, "Ticket steps, Test User 1, twice", "Threshold 4 waits, threshold 5 assigned", "Run 1: #4941 waits, #4942 -> TU1; run 2: #4943 waits, #4944 -> TU1", "PASS"],
+  [3, "Ticket steps, Dev Team 2, twice", "Threshold = count waits, count+1 assigned", "Run 1 (1 Open): thr 1 #4948 waits, thr 2 #4949 -> DT2; run 2 (2 Open): thr 2 #4950 waits, thr 3 #4951 -> DT2", "PASS"],
+  [4, "Delete handling (the fix)", "After the agent's Open ticket is deleted, the next ticket at the same threshold is assigned", "3 times: TU1 #4945 deleted -> #4947 assigned (#4946 waited before); DT2 #4952 -> #4954, #4955 -> #4957. Workload dropped within 1-2 s", "PASS"],
+  [5, "Restore from Recycle Bin", "Restored Open ticket counts again", "#4955 restored -> workload 3 in 1 s; #4958 at thr 3 waits", "PASS"],
+  [6, "Ticket moved to another department (owner kept)", "No longer counted in the old department", "#4963 moved to AS6 Dept A -> AO-B workload 2; #4967 at thr 3 -> DT2 (#4964 waited before)", "PASS"],
+  [7, "Control QA AS6 Dept A", "Count right in other departments", "TU1 76 Open/Escalated: thr 76 #4968 waits, thr 77 #4969 assigned. INFO: workload API shows 78 (adds 2 On Hold)", "PASS"],
+  [8, "Data and settings", "Restored", "RR prefs both depts equal to the snapshot; 5 PC rules inactive; 25 probes closed; #4945, #4952 in Recycle Bin", "INFO"]
+ ]
+}

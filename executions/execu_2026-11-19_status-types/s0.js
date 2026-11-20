@@ -1,0 +1,11 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_status-types/out/';
+const st = (await api('GET', '/desk/ticket-statuses')).j?.data?.statuses || [];
+fs.writeFileSync(OUT + 'statuses.json', JSON.stringify(st, null, 1));
+const by = {}; st.forEach(s => (by[s.type] = by[s.type] || []).push(s.value)); log({ total: st.length, counts: Object.fromEntries(Object.entries(by).map(([k, v]) => [k, v.length])), unconfigured: st.filter(s => !s.configured).map(s => s.value) });
+const lay = arr((await api('GET', '/modules/' + TK + '/layouts')).j); log({ layouts: lay.map(l => l.id.slice(0, 8) + ' ' + l.name + (l.is_default ? ' (default)' : '')) });
+const me = (await api('GET', '/iam/me')).j?.data; const uid = me?.id || me?.user?.id; log({ me: uid });
+const deps = (await api('GET', '/desk/departments')).j?.data; const D = Array.isArray(deps) ? deps : (deps?.departments || []);
+log({ myDepts: D.filter(d => (d.agent_user_ids || []).includes(uid)).map(d => d.id.slice(0, 8) + ' ' + d.name) });
+const x = arr((await api('GET', '/modules/' + TK + '/records?limit=1')).j)[0]; const d = (await api('GET', '/modules/' + TK + '/records/' + x.id)).j?.data?.data || [];
+log({ timeFields: d.filter(f => /clos|resol|time|due/i.test(f.field)).map(f => f.field) });
+fs.writeFileSync(OUT + 'ctx.json', JSON.stringify({ uid, layouts: lay.map(l => ({ id: l.id, name: l.name, def: l.is_default })), depts: D.filter(d => (d.agent_user_ids || []).includes(uid)).map(d => ({ id: d.id, name: d.name })) }, null, 1));

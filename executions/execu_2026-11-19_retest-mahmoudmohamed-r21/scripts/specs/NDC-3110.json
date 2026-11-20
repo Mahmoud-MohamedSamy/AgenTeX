@@ -1,0 +1,18 @@
+{"out":"NDC-3110-retest-PASS.png","ticket":"NDC-3110","priority":"low","label":"RETEST PASS","verdict":"PASS",
+"title":"Workflow Rules | Add Tags shows \"Succeeded\" when no tag was added, and Target shows tag IDs",
+"env":"NDC-Staging · staging-desk · API + Edge · owner · rules \"QA RT20 W2 3110 wrong / delayed / mix / rem\" (On Edit, QA AO Dept A + Customer Support) · tickets #5491–#5494 (QA AO Dept A)","date":"18 Nov 2026",
+"panels":[
+ {"img":"3110-r1-exec-wrong.png","caption":"Rule with only Customer Support's tag \"Accepted\", run on QA AO Dept A ticket #5491: Skipped, tag name, reason","crop":[280,110,1000,350],"boxes":[{"b":[440,405,525,440],"n":1,"kind":"PASS"},{"b":[538,408,612,440],"n":2,"kind":"PASS"},{"b":[826,404,1060,444],"n":2,"kind":"PASS"}]},
+ {"img":"3110-r1-exec-delayed.png","caption":"Same tag with a 60-second delay (#5493): Skipped with the same reason","crop":[280,110,1000,350],"boxes":[{"b":[440,405,612,440],"n":3,"kind":"PASS"},{"b":[826,404,1060,444],"n":3,"kind":"PASS"}]},
+ {"img":"3110-r1-exec-mix.png","caption":"Mixed rule (QA WF tag A + Accepted) on #5492: Succeeded, names only the tag it added","crop":[280,320,1000,140],"boxes":[{"b":[440,405,612,440],"n":4,"kind":"PASS"}]},
+ {"img":"3110-r1-exec-remove.png","caption":"Remove Tags shows the tag name under Target","crop":[280,320,1000,140],"boxes":[{"b":[300,405,612,440],"n":5,"kind":"PASS"}]},
+ {"img":"3110-r1-wrong-ticket-tags.png","caption":"Ticket #5491 after the run: Tags (0)","crop":[364,60,720,800],"boxes":[{"b":[680,110,730,134],"n":6,"kind":"INFO"},{"b":[384,800,520,850],"n":6,"kind":"PASS"}]}
+],
+"rows":[
+ [1,"Target column","Tag name","\"Accepted\" (was the tag id)","PASS"],
+ [2,"Status when nothing was added","Not \"Succeeded\"; reason shown","Skipped · \"Not added: Accepted belongs to another department.\" (was Succeeded, empty)","PASS"],
+ [3,"Delayed Add Tags (60 s)","Same as at save; tag not added","Skipped, same reason, HTTP 200 body not_added [Accepted]; ticket #5493 Tags 0","PASS"],
+ [4,"Mixed tags","Adds own dept tag; names it","Succeeded, Target \"QA WF tag A\"; ticket got only that tag (dev's stated limit: no note about the skipped one)","PASS"],
+ [5,"Remove Tags Target","Tag name","\"QA WF tag A\", removed from #5494","PASS"],
+ [6,"Ticket tags","Nothing from another department","#5491 Tags (0)","PASS"]
+]}

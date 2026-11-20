@@ -1,0 +1,12 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', DB = '4853562a-0b4d-45cb-ba34-9f2118fcd32c', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/'; const o = JSON.parse(fs.readFileSync(OUT + 'bl.json', 'utf8'));
+const mine = [o.A, o.B, o.D]; const res = {};
+for (const id of mine) res[id.slice(0, 8)] = (await api('DELETE', '/modules/' + TK + '/records/' + id)).s;
+res.rule = (await api('DELETE', '/desk/assignment-rules/' + o.rule)).s;
+res.prefs = (await api('PUT', '/desk/departments/' + DB + '/round-robin-preferences', o.prefsBefore)).s;
+res.prefsSame = JSON.stringify((await api('GET', '/desk/departments/' + DB + '/round-robin-preferences')).j?.data) === JSON.stringify(o.prefsBefore);
+await sleep(3000); const ids = []; let cur = null;
+do { const r = await api('GET', '/audit/recycle-bin/items?app_key=desk&limit=200' + (cur ? '&cursor=' + cur : '')); for (const x of arr(r.j)) if (mine.includes(x.record_id)) ids.push(x.id); cur = r.j?.meta?.next_cursor; } while (cur);
+res.bin = ids.length; if (ids.length) res.purge = (await api('POST', '/audit/recycle-bin/delete', { ids })).s;
+res.tu1Open = (((await api('GET', '/desk/agents/' + TU1 + '/workload')).j?.data?.departments || []).find(d => d.department_id === DB) || {}).open_tickets;
+log(res);

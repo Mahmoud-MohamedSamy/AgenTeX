@@ -1,0 +1,10 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158';
+log({ prefs: (await api('GET', '/desk/departments/' + CS + '/round-robin-preferences')).j?.data });
+const rr = (await api('GET', '/desk/assignment-rules?type=round_robin&department_id=' + CS)).j?.data?.rules || [];
+log({ rrRules: rr.map(r => ({ name: r.name, active: r.is_active, on: r.execute_on, targets: JSON.stringify(r.targets).slice(0, 300) })) });
+const n = (await api('GET', '/desk/assignment/notification-settings')).j?.data; log({ switches: n });
+const bp = (await api('GET', '/modules/' + TK + '/blueprints/82eee361-e3c5-41a3-9a40-7432e58ac3b3')).j?.data; log({ bp: bp && { name: bp.definition?.name || bp.name, active: bp.isActive ?? bp.is_active, entry: JSON.stringify(bp.definition?.entryCriteria).slice(0, 200), dept: bp.definition?.departmentId, transitions: (bp.definition?.transitions || []).map(t => t.id + ':' + t.fromStateId + '->' + t.toStateId + ' owners=' + JSON.stringify(t.before?.allowedUserIds || t.before || '').slice(0, 80)) } });
+const t = (await api('GET', '/desk/tickets/a695d5fb-5bf2-4633-8306-28cd4ebb534c')).j?.data; const r = (await api('GET', '/modules/' + TK + '/records/a695d5fb-5bf2-4633-8306-28cd4ebb534c')).j?.data?.data || [];
+log({ jamTicket5668_now: { status: t?.status, in_backlog: t?.in_backlog, owner: (r.find(f => f.field === 'owner') || {}).value?.value || null } });
+const wl = async u => (((await api('GET', '/desk/agents/' + u + '/workload')).j?.data?.departments || []).find(d => d.department_id === CS) || {}).open_tickets;
+log({ openNow: { CES1: await wl('2a7c1bc4-f6d4-4bd3-805e-0496ece13987'), CES2: await wl('9d182dfa-05f3-4af7-9685-8615a2fbe537') } });

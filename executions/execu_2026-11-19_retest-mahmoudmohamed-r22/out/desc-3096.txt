@@ -1,0 +1,16 @@
+Summary
+When another agent moves the ticket an agent has open, the page silently switches to a generic "not available" message. The agent is not told that the ticket was moved, by whom, or where. Found in the Desk go-live ticket access run (departments, teams, sharing, moving), NDC-Staging, 17 Nov 2026.
+Steps
+- Agent C (Customer Support only) opens a Customer Support ticket and keeps it open.
+- Another agent or the owner moves that ticket to Sales (⋮ › Move).
+- Look at agent C's open ticket page.
+Expected
+As in Zoho: a prompt such as "<agent> has moved this ticket from Customer Support to Sales department. Would you like to stay on this ticket?" with Yes / Exit.
+Actual
+Within seconds the page shows "This ticket is not available — It was deleted, or it is outside the records you are allowed to see." and, after a reload, "Permission denied." Nothing says that the ticket was moved.
+Zoho Desk
+Checked live 17 Nov: test agent 2 had ticket #132 open while the admin moved it from TechEgySolutions to Tech; agent 2 saw "mahmoud.mahamed1717 has moved this ticket from TechEgySolutions to Tech department. Would you like to stay on this ticket?" with Yes / Exit.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), Edge, 17 Nov 2026; accounts: owner, Desk Administrator (B), Desk Agent (C, Customer Support), Test User 1 (Desk Agent / Light Agent for the test). Zoho Desk checked live the same day in the test org TechEgySolutions (admin, test agents 1 and 2); test data deleted and settings restored after.
+Attachment
+Annotated evidence: AC-G2-move-prompt-vs-zoho.png.

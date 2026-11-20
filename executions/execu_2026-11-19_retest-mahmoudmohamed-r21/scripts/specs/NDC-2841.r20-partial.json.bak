@@ -1,0 +1,183 @@
+{
+ "out": "NDC-2841-retest-PARTIAL.png",
+ "ticket": "NDC-2841",
+ "priority": "medium",
+ "title": "SLA | A contract in one department can use a support plan (and its SLA) from another department",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · Edge · owner · Dept A = QA RT19 SLA Dept, Dept B = QA RT19 SLA Dept B · own plans QA RT20 BS Plan 2841 A/B w2pv (inactive SLA policies) · account QA RT20 BS Account 2841 w2pv",
+ "date": "17 Nov 2026",
+ "panels": [
+  {
+   "img": "2841-en-b-deptA.png",
+   "caption": "New Contract, Department = QA RT19 SLA Dept: the Support Plan list has only that department's 3 plans (was: every department's plans)",
+   "crop": [
+    418,
+    420,
+    1024,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      604,
+      492,
+      906,
+      654
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2841-en-e-deptB.png",
+   "caption": "Department changed to Dept B after picking the Dept A plan: red error under the field; list now shows Dept B plans (+ the still-selected A plan, ticked)",
+   "crop": [
+    418,
+    420,
+    1024,
+    360
+   ],
+   "boxes": [
+    {
+     "b": [
+      600,
+      732,
+      906,
+      768
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      604,
+      545,
+      906,
+      597
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "2841-ar-d-deptchanged.png",
+   "caption": "Arabic: \"هذه الخطة تابعة لقسم آخر. اختر خطة من QA RT19 SLA Dept B.\"",
+   "crop": [
+    176,
+    420,
+    1000,
+    340
+   ],
+   "boxes": [
+    {
+     "b": [
+      690,
+      716,
+      1000,
+      750
+     ],
+     "n": 2,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2841-api-card.png",
+   "caption": "API checks",
+   "crop": [
+    0,
+    0,
+    1600,
+    620
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      199
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      277,
+      1564,
+      403
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      481,
+      1564,
+      539
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      549,
+      1564,
+      607
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "New Contract form: plan list",
+   "Only the contract department's plans",
+   "Dept A → 3 Dept A plans; Dept B → Dept B plans; Sales → \"the contract's department has no active support plans\"; same in Arabic (dev did not check the browser)",
+   "PASS"
+  ],
+  [
+   2,
+   "Department changed after a plan was picked",
+   "Error / clear",
+   "Red \"This plan belongs to another department. Choose a plan of QA RT19 SLA Dept B.\" (AR same); Save sends the form and the server refuses (422), nothing created; with the Dept B plan the form saved (201, contract 562e9bee)",
+   "PASS"
+  ],
+  [
+   3,
+   "Create a Dept A contract with a Dept B plan (r19 failing item)",
+   "Refused",
+   "422 SUPPORT_PLAN_OTHER_DEPARTMENT ×3 with a clear message; no contract created (was 201 + silent \"No support plan\")",
+   "PASS"
+  ],
+  [
+   4,
+   "Change / attach a Dept B plan on a Dept A contract",
+   "Refused",
+   "Record PATCH 422, panel attach 409; plan stays A; control with own plan 201",
+   "PASS"
+  ],
+  [
+   5,
+   "Contract without department; move to Dept B with a Dept B plan",
+   "-",
+   "No department now 422 \"Department is required.\"; moving with a matching plan 200",
+   "PASS"
+  ],
+  [
+   6,
+   "Change only the department of a contract that has a plan",
+   "Refused, like Zoho Desk (department of a contract cannot be changed)",
+   "200 (API): contract becomes Dept B but keeps the Dept A plan and SLA, no message. Zoho live 17 Nov: field locked \"You cannot update a Contract's department.\", API 422 \"Invalid SupportPlan ID\" (3 of 3). QA lead decision 17 Nov: Bug",
+   "FAIL"
+  ]
+ ]
+}

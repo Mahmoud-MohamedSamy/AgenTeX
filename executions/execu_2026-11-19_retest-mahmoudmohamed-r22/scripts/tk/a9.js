@@ -1,0 +1,2 @@
+const cl='8910721d-3810-43f9-a307-0e1dfd1c5b01';C.clone2=cl;saveC();LED('ticket created '+cl+' clone of 3072 source B via UI');
+for(const id of [C.t3072b,C.clone1,cl]){const g=await api('GET','/modules/'+TK+'/records/'+id);const o={};for(const x of g.j.data.data)o[x.field]=x.value?.value;log(JSON.stringify({subject:o.subject,status:o.status,priority:o.priority,num:o.ticket_number,layout:g.j.data.created_with_layout_id.slice(0,8)}));}

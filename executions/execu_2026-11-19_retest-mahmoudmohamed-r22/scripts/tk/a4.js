@@ -1,0 +1,1 @@
+const t=await mkT('3072 clone source',{priority:'High'});log(t);if(t.id){C.t3072=t.id;saveC();LED('ticket created '+t.id+' "QA RT20 TK 3072 clone source"');const o=await rec(t.id);log(String(o.ticket_number),o.status);}

@@ -1,0 +1,18 @@
+{"out":"NDC-3111-retest-PASS.png","ticket":"NDC-3111","priority":"low","label":"RETEST PASS","verdict":"PASS",
+"title":"Workflow Rules | API saves a single-department rule with another department's tag",
+"env":"NDC-Staging · staging-desk · Workflow Rules API · owner · rules \"QA RT20 W2 3111 …\" and \"QA RT20 W2 3058 bad\" · tags \"Accepted\" (Customer Support), \"QA WF tag A\" (QA AO Dept A)","date":"18 Nov 2026",
+"panels":[
+ {"img":"3111-r1-api-card.png","caption":"API retest after workflow #146: another department's tag is refused on create and on edit; own tags, renames and multi-department rules still save","crop":[20,20,1560,570],"boxes":[
+  {"b":[36,99,1564,157],"n":1,"kind":"PASS"},{"b":[36,167,1564,204],"n":2,"kind":"PASS"},{"b":[36,214,1564,251],"n":3,"kind":"PASS"},{"b":[36,261,1564,298],"n":4,"kind":"PASS"},{"b":[36,308,1564,345],"n":5,"kind":"PASS"},{"b":[36,355,1564,392],"n":6,"kind":"PASS"},{"b":[36,402,1564,460],"n":7,"kind":"INFO"},{"b":[36,470,1564,507],"n":8,"kind":"PASS"},{"b":[36,517,1564,575],"n":9,"kind":"INFO"}]}
+],
+"rows":[
+ [1,"POST single-dept rule with other dept's tag","422 with a clear message","422 \"Add Tags: Accepted belongs to another department. Use a tag of the rule's department.\" (was 201)","PASS"],
+ [2,"Own department's tag","Saves","201","PASS"],
+ [3,"Own + other tag together","Refused","422, same message","PASS"],
+ [4,"PATCH tags to other dept's tag","Refused, stored tags unchanged","422; still QA WF tag A","PASS"],
+ [5,"Rename","Saves","200","PASS"],
+ [6,"Move rule to a department its tag is not in","Refused","422 \"QA WF tag A belongs to another department\"","PASS"],
+ [7,"Old rule saved 17 Nov with the wrong tag","—","Rename / same departments still save (200); refused only when tags or departments change (as dev said)","INFO"],
+ [8,"Multi-dept rule with one dept's tag","Saves","201","PASS"],
+ [9,"Remove Tags with other dept's tag","—","201 — not covered by the fix (dev: tickets that change department keep old tags)","INFO"]
+]}

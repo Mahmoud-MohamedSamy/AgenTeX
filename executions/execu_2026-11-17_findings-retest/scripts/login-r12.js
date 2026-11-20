@@ -29,6 +29,6 @@ const { chromium } = require(path.join(P, 'node_modules/playwright-core'));
   await page.waitForTimeout(5000);
   const t = await page.innerText('body').catch(() => '');
   if (/Verify[\s\S]{0,80}recovery code/i.test(t)) { console.log('TWO_FACTOR_REQUIRED'); process.exitCode = 2; await b.close(); return; }
-  if ((await page.$('input[type=password]')) || /invalid email/i.test(t)) { await page.screenshot({ path: out + '.fail.png' }); throw new Error('not signed in: ' + page.url()); }
+  if ((await page.$('input[type=password]')) || /invalid email/i.test(t)) { throw new Error('not signed in: ' + page.url() + ' msg=' + ((await page.locator('[role=alert], .text-red-600, .bg-red-50').first().innerText().catch(() => '')) || '').slice(0, 120)); }
   await ctx.storageState({ path: out }); console.log('signed in', app, page.url()); await b.close();
 })().catch(e => { console.error('ERR', e.message.split('Call log:')[0]); process.exit(1); });

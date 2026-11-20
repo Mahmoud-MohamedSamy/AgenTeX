@@ -1,0 +1,242 @@
+<title>Desk Automation Order Run</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky run header (progress + filters) over area groups of case cards, one column, max 860px */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --fg:#17202b; --muted:#5d6876; --line:#dde1e7; --accent:#0f6e78; --accent-soft:#e2f1f2;
+  --pass:#1b7f45; --pass-bg:#e3f4ea; --fail:#c62f2f; --fail-bg:#fbe7e7; --block:#b45f06; --block-bg:#fcefdc; --skip:#3f5f9a; --skip-bg:#e7edf8;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12171d; --surface:#1a2129; --fg:#e6eaef; --muted:#9aa5b2; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --pass:#5fd18e; --pass-bg:#173326; --fail:#ff7b7b; --fail-bg:#3a1c1e; --block:#f0a54d; --block-bg:#3a2a16; --skip:#8fb0ee; --skip-bg:#1d2a42; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12171d; --surface:#1a2129; --fg:#e6eaef; --muted:#9aa5b2; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --pass:#5fd18e; --pass-bg:#173326; --fail:#ff7b7b; --fail-bg:#3a1c1e; --block:#f0a54d; --block-bg:#3a2a16; --skip:#8fb0ee; --skip-bg:#1d2a42; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+header .wrap{padding-block:14px 12px;display:grid;gap:10px}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+h1{font-size:20px;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.env{color:var(--muted);font-size:13px}
+.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--line)}
+.bar span{display:block;height:100%;transition:width .3s}
+.counts{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.counts b{color:var(--fg)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:13px;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.chip:focus-visible,.st button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sep{width:1px;background:var(--line);margin:2px 4px}
+main .wrap{padding-block:18px 60px;display:grid;gap:26px}
+.note{font-size:13px;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin:0}
+.pre{font-size:13px;color:var(--muted);margin:0;padding-left:18px}
+.pre li{margin:2px 0}
+section{display:grid;gap:10px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0;display:flex;justify-content:space-between;gap:10px}
+h2 small{font-weight:500;letter-spacing:0;text-transform:none;font-variant-numeric:tabular-nums;white-space:nowrap}
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:8px;min-width:0}
+.card[data-s="Pass"]{border-left-color:var(--pass)}.card[data-s="Fail"]{border-left-color:var(--fail)}
+.card[data-s="Blocked"]{border-left-color:var(--block)}.card[data-s="Skipped"]{border-left-color:var(--skip)}
+.head{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.id{font-family:var(--mono);font-size:12.5px;color:var(--accent)}
+.pri{font-family:var(--mono);font-size:11.5px;padding:0 6px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+.pri.P0{color:var(--fail);border-color:currentColor}
+.title{font-weight:600;flex:1 1 220px;min-width:0}
+.tk{font-family:var(--mono);font-size:12px;color:var(--muted)}
+ol{margin:0;padding-left:20px;color:var(--fg)}ol li{margin:1px 0}
+.exp{font-size:14px;color:var(--muted)}.exp b{color:var(--fg);font-weight:600}
+.st{display:flex;flex-wrap:wrap;gap:6px}
+.st button{font:inherit;font-size:13px;font-weight:500;padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;min-height:34px}
+.st button[aria-pressed="true"][data-v="Pass"]{background:var(--pass-bg);border-color:var(--pass);color:var(--pass)}
+.st button[aria-pressed="true"][data-v="Fail"]{background:var(--fail-bg);border-color:var(--fail);color:var(--fail)}
+.st button[aria-pressed="true"][data-v="Blocked"]{background:var(--block-bg);border-color:var(--block);color:var(--block)}
+.st button[aria-pressed="true"][data-v="Skipped"]{background:var(--skip-bg);border-color:var(--skip);color:var(--skip)}
+.st button:disabled{opacity:.5;cursor:default}
+textarea{font:inherit;font-size:14px;width:100%;box-sizing:border-box;min-height:40px;resize:vertical;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:var(--bg);color:var(--fg)}
+.meta{font-size:12px;color:var(--muted);min-height:16px}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+@media (prefers-reduced-motion:reduce){.bar span{transition:none}}
+</style>
+
+<header><div class="wrap">
+  <div class="top"><h1>Desk Automation Order Run</h1><span class="env">TAVI Desk · NDC-Staging · compared with Zoho Desk</span></div>
+  <div class="bar" id="bar" aria-hidden="true"></div>
+  <div class="counts" id="counts"></div>
+  <div class="filters" id="filters"></div>
+</div></header>
+<main><div class="wrap">
+  <p class="note" id="note">Mark each case Pass, Fail, Blocked or Skip, and write what you saw in the comment box (ticket number, time, what the history showed). Results save as you go, and Claude can read them back.</p>
+  <ul class="pre">
+    <li><b>Order under test (Zoho):</b> Skills → Direct Assignment → Workflow → SLA → Round Robin → Blueprint → Notifications. Supervise rules run on a schedule; macros run on click.</li>
+    <li><b>Expected</b> is Zoho's behaviour. The tag on each card says where it comes from: "Zoho live" (seen in the test org) or "Zoho docs".</li>
+    <li>Use a QA department, prefix every rule and ticket with <b>QA AO</b>, and match rules on "Subject starts with QA AO …". Read the ticket's History tab after each case.</li>
+    <li>TAVI: switch Direct rules on in Assignment Rules before the direct cases and back off after. Round robin needs "assign to offline agents" or online agents.</li>
+  </ul>
+  <div id="list"></div>
+</div></main>
+
+<script>
+const CASES=[
+["AO-01","P0","1 · Order on create (pairs)","Skills are set before round robin picks the agent",["Skill rule: Subject contains \"refund\" → skill Refunds","Round robin (skill-based) in the QA department; agent A has Refunds, agent B does not","Create \"QA AO refund 01\"","Open History"],"The ticket gets the skill and agent A in the same event; History shows the skill before the round-robin assignment","Zoho docs · OR-01"],
+["AO-02","P1","1 · Order on create (pairs)","Workflow sees the skill",["Skill rule as AO-01","Workflow on create: Skill is Refunds → tag \"refund-skill\"","Create \"QA AO refund 02\""],"The tag is added: the workflow saw the skill set earlier in the same event","Zoho docs · OR-02"],
+["AO-03","P0","1 · Order on create (pairs)","Workflow sees the owner set by a direct rule",["Direct rule: Subject starts with QA AO DW → owner agent A","Workflow on create: Owner is agent A → Priority High","Create \"QA AO DW 03\""],"Owner is A and Priority is High; History shows Direct, then Workflow","Zoho docs · OR-04"],
+["AO-04","P1","1 · Order on create (pairs)","Direct and workflow both set the owner: the last one wins",["Direct rule → owner A; workflow on create → owner B (same subject)","Create \"QA AO DW 04\""],"Final owner B; History shows both changes in order (Direct then Workflow)","Zoho docs · OR-05"],
+["AO-05","P1","1 · Order on create (pairs)","Workflow alert goes to the owner the direct rule set",["Direct rule → owner A","Workflow on create: email alert to Ticket Owner","Create \"QA AO DW 05\""],"Agent A gets the alert, not the creator","Zoho docs · OR-06"],
+["AO-06","P0","1 · Order on create (pairs)","SLA uses the priority a workflow set",["SLA: High = 1 h response, Low = 1 day","Workflow on create: Subject contains URGENT → Priority High","Create \"QA AO URGENT 06\" with Priority Low"],"The High target applies (due in 1 h), not the Low one","Zoho docs · OR-07, OR-08"],
+["AO-07","P1","1 · Order on create (pairs)","Direct rule moves the ticket: the new department's SLA applies",["Department A has SLA 1 day; department B has SLA 2 h","Direct rule: tickets coming to A with subject QA AO MOVE → move to B","Create \"QA AO MOVE 07\" in A"],"Ticket ends in B with B's 2 h SLA","Zoho docs · OR-09"],
+["AO-08","P0","1 · Order on create (pairs)","Round robin does not override an owner a workflow set",["Workflow on create → owner A","Round robin in the same department (pool B, C)","Create \"QA AO WR 08\""],"Owner stays A; round robin skips the ticket","Zoho docs · OR-10"],
+["AO-09","P1","1 · Order on create (pairs)","A field a workflow sets makes a round-robin rule match",["Round robin rule: Category = Billing → pool B","Workflow on create: Subject contains invoice → Category Billing","Create \"QA AO invoice 09\" without a category"],"Agent B is assigned in the same event","Zoho docs · OR-11"],
+["AO-10","P0","1 · Order on create (pairs)","Direct rule moves the ticket: the new department's round robin assigns it",["Direct rule: QA AO RRMOVE → move to department B, no owner","Round robin in B (pool C)","Create \"QA AO RRMOVE 10\" in A"],"Ticket in B, owner C, in the same event","Zoho docs · OR-12"],
+["AO-11","P1","1 · Order on create (pairs)","SLA starts before round robin; agent timers count from assignment",["SLA 1 h response in the department","Round robin assigns agent B","Create \"QA AO SR 11\"; note created time, assigned time and due time"],"Due time counts from the ticket's SLA start; assignment comes after the SLA in History","Zoho docs · OR-13, OR-14"],
+["AO-12","P1","1 · Order on create (pairs)","Only the first matching round-robin rule runs",["Two round-robin rules that both match \"QA AO RRFIRST\" (rule 1 → B, rule 2 → C)","Create \"QA AO RRFIRST 12\"","Swap the rule order and repeat"],"Only the top rule assigns; after the swap the other agent is chosen","Zoho docs · OR-15"],
+["AO-13","P0","1 · Order on create (pairs)","Blueprint sees what workflow and round robin did",["Workflow on create → tag \"bp-go\"; round robin assigns B","Blueprint entry: Tag is bp-go; first transition owner = Ticket Owner","Create \"QA AO BP 13\""],"Blueprint applies; B can run the first transition; History: Workflow, Round Robin, then Blueprint applied","Zoho docs · OR-16, OR-17"],
+["AO-14","P0","1 · Order on create (pairs)","Direct rule moves the ticket: the new department's blueprint applies",["Direct rule: QA AO BPMOVE → move to department B, owner D","Blueprints in A and in B (all records)","Create \"QA AO BPMOVE 14\" in A"],"Ticket in B on B's blueprint, owner D; A's blueprint never applies","Zoho live 18 Nov (Direct then Blueprint) · OR-31"],
+["AO-15","P1","1 · Order on create (pairs)","Direct, SLA and blueprint can use the skill",["Skill rule → Refunds","Direct rule / SLA target / blueprint entry with criteria Skill is Refunds","Create \"QA AO refund 15\""],"Each one matches on the skill; if a criteria list has no Skill field, note the gap","Zoho docs · OR-28..30"],
+["AO-16","P0","1 · Order on create (pairs)","Only the final owner is notified, once",["Direct → A, workflow → B (as AO-04)","Notification \"assigned to you\" on","Create \"QA AO NOTIFY 16\"; check A's and B's bell and email"],"Only B is notified, once; A gets nothing","Zoho docs · OR-19, OR-32..35"],
+["AO-17","P1","1 · Order on create (pairs)","Team assignment notifies the team once",["Direct rule → team T (team assignment on)","Create \"QA AO TEAM 17\""],"Each team member is notified once","Zoho docs · OR-20"],
+["AO-18","P0","2 · Whole order","One new ticket runs every step in order",["Set up one rule of each kind on \"QA AO FULL\": skill, direct (move to B), workflow (Priority High), SLA (High 6 h), round robin in B, blueprint in B, notification","Create \"QA AO FULL 18\" in A","Open History and note the order of entries"],"History: Skills → Direct → Workflow → SLA → Round Robin → Blueprint → Notification; each step used the previous result; one final notice","Zoho docs · OR-22"],
+["AO-19","P0","2 · Whole order","The same chain on update",["Set the rules of AO-18 to run on update too","Create \"QA AO X 19\" (no match), then edit the subject to \"QA AO FULL 19\""],"Same order on the update; rules set to create-only do not run","Zoho docs · OR-23"],
+["AO-20","P1","2 · Whole order","Later events are new events",["On a ticket from AO-18: customer replies; agent changes status to Reopened","Rules on update / reopened (e.g. direct rule for reopened tickets)"],"Each event runs only the rules for that event; owner changes are logged","Zoho docs · OR-21"],
+["AO-21","P1","2 · Whole order","A failed step does not stop the rest",["Workflow action that fails (e.g. Create Record missing a required field)","Round robin and blueprint also match","Create \"QA AO FAIL 21\""],"The later steps still run; the failure is logged and visible as failed","Zoho docs · OR-25 · Known bug NDC-3105"],
+["AO-22","P1","2 · Whole order","No endless loop",["Workflow on edit: Owner Assignment by round robin","Edit a matching ticket 4 times"],"One run per edit; the rule does not re-run on its own owner change","Zoho docs · OR-26 · NDC-2997 (fixed 17 Nov)"],
+["AO-23","P2","2 · Whole order","Speed under load",["Round robin in a QA department","Create 100 \"QA AO LOAD\" tickets quickly (API)","Measure create time → owner set"],"95 of 100 owners set within 5 s","OR-27"],
+["AO-24","P0","3 · Ticket sources","Manual create from the form triggers rules",["Direct rule on create: QA AO SRC → owner A","Create \"QA AO SRC manual\" from the New Ticket form"],"Owner A by the direct rule","Zoho live 18 Nov · TAVI live 18 Nov: pass"],
+["AO-25","P0","3 · Ticket sources","Create through the API triggers rules",["Same rule","POST a ticket \"QA AO SRC api\""],"Owner A by the direct rule","Zoho live 18 Nov · TAVI live: pass"],
+["AO-26","P0","3 · Ticket sources","Email to a support address triggers rules",["Same rule in the department that owns the address","Send \"QA AO SRC email\" from an outside mailbox"],"Email ticket created; owner A by the direct rule (History: DirectAssignment)","Zoho live 18 Nov · TAVI: inbound mail down 17–18 Nov"],
+["AO-27","P0","3 · Ticket sources","Web form ticket triggers rules",["Web form in the department, its owner setting = Unassigned","Submit \"QA AO SRC webform\" as a visitor"],"Ticket created (channel Web); owner A by the direct rule","TAVI live 18 Nov: pass · Zoho: not tested"],
+["AO-28","P1","3 · Ticket sources","Web form with its own owner setting",["Same form with owner = a fixed user B, then owner = an assignment rule","Submit twice"],"Fixed user: B owns it and rules do not reassign; rule mode: the chosen rule assigns","Not tested in either product"],
+["AO-29","P1","3 · Ticket sources","Help Center ticket triggers rules",["Customer submits \"QA AO SRC portal\" from the Help Center"],"Owner A by the direct rule","Not tested"],
+["AO-30","P1","3 · Ticket sources","Omnichannel / IM push triggers rules",["Push a conversation to Desk as ticket \"QA AO SRC im\""],"Owner A by the direct rule","Not tested"],
+["AO-31","P0","3 · Ticket sources","Import does not run the direct rule",["Import a CSV row \"QA AO SRC import\" with no owner","TAVI: once with Trigger automation off, once on"],"Zoho: no rule runs, ticket Unassigned","Zoho live 18 Nov · TAVI: runs only when Trigger automation is on"],
+["AO-32","P0","3 · Ticket sources","Import and workflow owner assignment",["Workflow on create: QA AO WFIMP → owner B","Import a matching row (TAVI: automation off and on)"],"Match Zoho once known (Zoho not tested)","TAVI live 18 Nov: off = importer owns it, on = workflow runs"],
+["AO-33","P0","3 · Ticket sources","Import and round robin",["Round robin rule on QA AO RRIMP","Import a matching row (TAVI: automation off and on)"],"Match Zoho once known (Zoho trial org refused to create a round-robin rule)","TAVI live 18 Nov: never runs on import"],
+["AO-34","P1","3 · Ticket sources","Import and SLA / blueprint",["SLA and blueprint that match QA AO IMPBP","Import a matching row (TAVI: automation off and on)"],"Match Zoho once known","Not tested"],
+["AO-35","P0","4 · Import owner","Import without a Ticket Owner column",["Import a row with no owner column"],"Ticket created Unassigned","Zoho live 18 Nov · TAVI: owner = the importer (draft ticket)"],
+["AO-36","P0","4 · Import owner","Import with an empty Ticket Owner cell",["Import a row with the owner column empty"],"Ticket created Unassigned","Zoho live 18 Nov · TAVI: owner = the importer"],
+["AO-37","P1","4 · Import owner","Import with an unknown email or an agent's name",["Owner = qa-ao-nobody@example.com","Owner = an agent's name instead of email"],"Both created Unassigned","Zoho live 18 Nov · TAVI: owner = the importer, no warning"],
+["AO-38","P0","4 · Import owner","Import with an agent outside the department",["Owner = email of an agent who is not in the ticket's department"],"Row refused: \"The assignee doesn't belong to the department\"; nothing created","Zoho live 18 Nov · TAVI: imported and owned by that agent"],
+["AO-39","P1","4 · Import owner","Import with an agent of the department",["Owner = email of an agent of the department"],"That agent owns the ticket","Zoho live 18 Nov · TAVI live: same"],
+["AO-40","P0","5 · Blueprint and SLA","Ticket created at the start status enters at the start",["Blueprint Open (start) → Escalated → Closed (end) on QA AO BP","Create \"QA AO BP 40\" as Open"],"Blueprint applied at Open","Zoho live 18 Nov · TAVI live: same"],
+["AO-41","P0","5 · Blueprint and SLA","Ticket created at a middle status",["Same blueprint","Create \"QA AO BP 41\" with Status Escalated"],"Blueprint applied at Escalated; status stays Escalated","Zoho live 18 Nov · TAVI: forced back to Open, no history line"],
+["AO-42","P1","5 · Blueprint and SLA","Existing ticket edited to match while at a middle status",["Create \"QA AO X 42\" as Escalated (no match)","Edit the subject to \"QA AO BP 42\""],"Blueprint applied at Escalated","TAVI live 18 Nov: enters at Escalated · Zoho: not tested"],
+["AO-43","P0","5 · Blueprint and SLA","SLA and blueprint both apply on create",["SLA on QA AO BP (High 6 h) and the AO-40 blueprint","Create \"QA AO BP 43\" with Priority High"],"Due date set and blueprint applied; History shows both","Zoho live 18 Nov (#171) · TAVI live: same"],
+["AO-44","P1","5 · Blueprint and SLA","Ticket with a running SLA enters a blueprint later",["Create \"QA AO SLAONLY 44\" (SLA applies, no blueprint)","Edit the subject to match the blueprint"],"Blueprint applies; the SLA keeps running with the same due date","TAVI live 18 Nov: pass · Zoho: not tested"],
+["AO-45","P0","5 · Blueprint and SLA","On Hold blueprint state pauses the SLA",["Blueprint state \"Waiting\" mapped to an On Hold status","Run the transition into Waiting; wait 30 min; run the next transition"],"SLA paused while in Waiting; due date moves out by the paused time","Zoho docs"],
+["AO-46","P1","5 · Blueprint and SLA","State time limit is separate from the SLA",["Blueprint state with a 30 min time limit and escalation; ticket SLA 1 day","Leave the ticket in that state 35 min"],"State escalation fires at 30 min; the ticket SLA is not overdue","Zoho docs · NDC-3063 (time-limit validation)"],
+["AO-47","P0","5 · Blueprint and SLA","Workflow changes the status of a ticket in a blueprint",["Ticket on the AO-40 blueprint at Open","Workflow on edit: set Status Closed","Edit the ticket"],"Status changes only through transitions; the ticket stays on its blueprint","Zoho docs · Known bug NDC-2764"],
+["AO-48","P1","5 · Blueprint and SLA","SLA escalation reassigns to someone who is not a transition owner",["SLA escalation: reassign to agent E when overdue","Blueprint transitions owned by B only","Let the ticket go overdue"],"E owns the ticket; check whether E can run the transitions or is blocked","Zoho docs"],
+["AO-49","P1","5 · Blueprint and SLA","Reaching the end state completes the blueprint",["Run the ticket to Closed (end)","Customer replies, ticket reopens"],"Blueprint completed at Closed; note whether it applies again on reopen","Zoho docs (reopen not documented)"],
+["AO-50","P2","5 · Blueprint and SLA","Common transition from any state",["Add a common transition \"Cancel\" → Closed from every state","Run it from a middle state"],"Ticket goes to Closed and the blueprint completes","Zoho docs"]
+];
+const STATES=["Pass","Fail","Blocked","Skipped"];
+const LABEL={Pass:"Pass",Fail:"Fail",Blocked:"Blocked",Skipped:"Skip"};
+const COLOR={Pass:"var(--pass)",Fail:"var(--fail)",Blocked:"var(--block)",Skipped:"var(--skip)"};
+const FILTERS=[["all","All"],["P0","P0"],["P1","P1"],["P2","P2"],["|"],["Not run","Not run"],["Fail","Fail"],["Blocked","Blocked"]];
+let results={}, filter="all", db=null, canWrite=true;
+const pending={};
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function statusOf(id){return (results[id]&&results[id].status)||"Not run"}
+function fmt(t){if(!t)return"";try{return new Date(t).toLocaleString([], {day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return""}}
+
+function renderFilters(){
+  document.getElementById("filters").innerHTML=FILTERS.map(f=>f[0]==="|"?'<span class="sep"></span>':
+    `<button class="chip" data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("");
+}
+function renderSummary(){
+  const n=CASES.length,c={Pass:0,Fail:0,Blocked:0,Skipped:0};
+  CASES.forEach(k=>{const s=statusOf(k[0]);if(c[s]!==undefined)c[s]++});
+  const done=c.Pass+c.Fail+c.Blocked+c.Skipped;
+  document.getElementById("bar").innerHTML=STATES.map(s=>`<span style="width:${c[s]/n*100}%;background:${COLOR[s]}"></span>`).join("");
+  document.getElementById("counts").innerHTML=`<span><b>${done}/${n}</b> run</span>`+
+    STATES.map(s=>`<span><i class="dot" style="background:${COLOR[s]}"></i>${LABEL[s]} <b>${c[s]}</b></span>`).join("")+
+    `<span>Not run <b>${n-done}</b></span>`;
+}
+function matches(k){
+  if(filter==="all")return true;
+  if(/^P\d$/.test(filter))return k[1]===filter;
+  return statusOf(k[0])===filter;
+}
+function tkHTML(tk){return tk?`<span class="tk">${esc(tk)}</span>`:""}
+function cardHTML(k){
+  const [id,pri,area,title,steps,exp,tk]=k, r=results[id]||{}, s=statusOf(id);
+  return `<article class="card" data-id="${id}" data-s="${s}">
+    <div class="head"><span class="id">${id}</span><span class="pri ${pri}">${pri}</span><span class="title">${esc(title)}</span></div>
+    ${tkHTML(tk)}
+    <ol>${steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+    <div class="exp"><b>Expected:</b> ${esc(exp)}</div>
+    <div class="st" role="group" aria-label="Result for ${id}">${STATES.map(v=>`<button data-v="${v}" aria-pressed="${s===v}" ${canWrite?"":"disabled"}>${LABEL[v]}</button>`).join("")}</div>
+    <textarea id="c-${id}" placeholder="What you saw (ticket number, time, History order…)" aria-label="Comment for ${id}" ${canWrite?"":"disabled"}>${esc(r.comment||"")}</textarea>
+    <div class="meta" id="m-${id}">${r.updatedAt?"Saved "+fmt(r.updatedAt):""}</div>
+  </article>`;
+}
+function renderList(){
+  const groups=[];CASES.forEach(k=>{if(!matches(k))return;let g=groups.find(x=>x.a===k[2]);if(!g)groups.push(g={a:k[2],items:[]});g.items.push(k)});
+  const el=document.getElementById("list");
+  if(!groups.length){el.innerHTML='<p class="empty">No cases match this filter.</p>';return}
+  el.innerHTML=groups.map(g=>{const d=g.items.filter(k=>statusOf(k[0])!=="Not run").length;
+    return `<section><h2>${esc(g.a)}<small>${d}/${g.items.length} run</small></h2>${g.items.map(cardHTML).join("")}</section>`}).join("");
+  el.style.display="grid";el.style.gap="26px";
+}
+function updateCard(id){
+  const card=document.querySelector(`.card[data-id="${id}"]`);if(!card)return;
+  const r=results[id]||{},s=statusOf(id);card.dataset.s=s;
+  card.querySelectorAll(".st button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===s));
+  const ta=document.getElementById("c-"+id);if(ta&&document.activeElement!==ta&&!pending[id])ta.value=r.comment||"";
+  const m=document.getElementById("m-"+id);if(m&&!pending[id])m.textContent=r.updatedAt?"Saved "+fmt(r.updatedAt):"";
+}
+function groupCounts(){
+  document.querySelectorAll("#list section").forEach(sec=>{const ids=[...sec.querySelectorAll(".card")].map(c=>c.dataset.id);
+    const area=(CASES.find(k=>k[0]===ids[0])||[])[2];const all=CASES.filter(k=>k[2]===area&&matches(k));
+    const sm=sec.querySelector("h2 small");if(sm)sm.textContent=all.filter(k=>statusOf(k[0])!=="Not run").length+"/"+all.length+" run"});
+}
+function renderAll(){renderFilters();renderSummary();renderList()}
+
+const queue={};
+async function save(id,patch){
+  const cur=results[id]||{};const next={id,status:cur.status||"Not run",comment:cur.comment||"",...patch,updatedAt:new Date().toISOString()};
+  results[id]=next;renderSummary();updateCard(id);groupCounts();
+  if(!db){const m=document.getElementById("m-"+id);if(m)m.textContent="Not saved: storage is not available here";return}
+  queue[id]=(queue[id]||Promise.resolve()).then(async()=>{
+    const m=document.getElementById("m-"+id);
+    try{await db.collection("results").doc(id).set(results[id]);if(m)m.textContent="Saved "+fmt(results[id].updatedAt)}
+    catch(e){if(e&&e.code==="invalid_argument"){canWrite=false;renderList();document.getElementById("note").textContent="You can view this run, but only its owner can record results."}
+      else if(m)m.textContent="Could not save. Check your connection and try again."}
+  });
+}
+
+document.addEventListener("click",e=>{
+  const f=e.target.closest(".chip");if(f){filter=f.dataset.f;renderFilters();renderList();return}
+  const b=e.target.closest(".st button");if(b&&!b.disabled){const id=b.closest(".card").dataset.id;
+    const v=statusOf(id)===b.dataset.v?"Not run":b.dataset.v;
+    save(id,{status:v});}
+});
+document.addEventListener("input",e=>{
+  if(e.target.tagName!=="TEXTAREA")return;const id=e.target.id.slice(2);
+  const m=document.getElementById("m-"+id);if(m)m.textContent="Typing…";
+  clearTimeout(pending[id]);pending[id]=setTimeout(()=>{delete pending[id];save(id,{comment:e.target.value})},900);
+});
+document.addEventListener("focusout",e=>{
+  if(e.target.tagName!=="TEXTAREA")return;const id=e.target.id.slice(2);
+  if(pending[id]){clearTimeout(pending[id]);delete pending[id];save(id,{comment:e.target.value})}
+});
+
+renderAll();
+(async()=>{
+  try{db=await window.claude?.use?.("db")}catch(e){db=null}
+  if(!db){document.getElementById("note").textContent="Results can't be saved in this view. Open the artifact signed in to claude.ai to record them.";return}
+  try{const u=await window.claude.use("user");if(u&&u.can){const w=await u.can("data.write");if(w===false){canWrite=false;renderList();document.getElementById("note").textContent="You can view this run, but only its owner can record results."}}}catch(e){}
+  db.collection("results").onSnapshot(snap=>{
+    snap.docChanges().forEach(ch=>{const id=ch.doc.id;
+      if(ch.type==="removed")delete results[id];else results[id]=ch.doc.data();
+      updateCard(id)});
+    renderSummary();groupCounts();
+  },err=>{document.getElementById("note").textContent="Lost the live connection to saved results. Reload the page."});
+})();
+</script>

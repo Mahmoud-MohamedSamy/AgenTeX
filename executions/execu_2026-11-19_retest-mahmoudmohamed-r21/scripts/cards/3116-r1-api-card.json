@@ -1,0 +1,9 @@
+{"out":"3116-r1-api-card.png","title":"Skills: giving a view-only member a skill — owner, Customer Support, 19 Nov 2026 (after desk #266, client-engine #864)","host":"staging-desk.taviportal.com","who":"owner","date":"19 Nov 2026",
+"rows":[
+["Create skill with view-only agent","POST /desk/skills · agent_ids [CES2, Mahmoud Mohamed (view only)]","400 \"The skill is invalid.\" agent_ids[1] view_only (was not_in_department)","ok"],
+["Create skill with outsider","POST /desk/skills · agent_ids [CES2, Mohamed Fathy (not in Customer Support)]","400 agent_ids[1] not_in_department","ok"],
+["Create skill without them","POST /desk/skills · agent_ids [CES2]","201 \"QA RT21 SK 3116 ok\"","ok"],
+["Add to a skill's agents","PUT /desk/skills/{id}/agents · user_ids [CES2, Mahmoud Mohamed]","400 user_ids[1] view_only; outsider → not_in_department","ok"],
+["Agent Skills tab","PUT /desk/agents/{Mahmoud Mohamed}/skills?department_id=CS","400 \"The skill list is invalid.\" view_only; outsider → not_in_department; full agent CES2 → 200","ok"],
+["Stale screen (named refusal)","Add Skill with CES1 ticked, CES1 made view-only before Save (restored after)","\"Customer Experience Specialists 1 has view-only access to Customer Support, so they can't have its skills.\" — skill not created","ok"]
+]}

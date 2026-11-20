@@ -1,0 +1,7 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', DB = '4853562a-0b4d-45cb-ba34-9f2118fcd32c', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/'; const o = JSON.parse(fs.readFileSync(OUT + 's1.json', 'utf8'));
+const sv = v => v === null ? { kind: 'null' } : { kind: 'string', value: String(v) }; const fields = x => Object.entries(x).map(([k, v]) => ({ field: k, value: sv(v) }));
+const st = async id => { const d = (await api('GET', '/modules/' + TK + '/records/' + id)).j?.data?.data || []; const t = (await api('GET', '/desk/tickets/' + id)).j?.data || {}; const ow = (d.find(f => f.field === 'owner') || {}).value?.value || null; return { owner: ow === TU1 ? 'TU1' : ow, in_backlog: t.in_backlog }; };
+const wl = async () => (((await api('GET', '/desk/agents/' + TU1 + '/workload')).j?.data?.departments || []).find(d => d.department_id === DB) || {}).open_tickets;
+const k = process.env.K; const cr = await api('POST', '/modules/' + TK + '/records', { data: fields({ subject: 'QA JAM2 ' + k, description: 'QA JAM2 retest', department: DB, status: 'Open', priority: 'medium', owner: null }) }); o[k] = cr.j?.data?.id; if (!o[k]) throw new Error('create failed ' + cr.s);
+await sleep(15000); log({ [k]: await st(o[k]), tu1Open: await wl() }); fs.writeFileSync(OUT + 's1.json', JSON.stringify(o, null, 1));

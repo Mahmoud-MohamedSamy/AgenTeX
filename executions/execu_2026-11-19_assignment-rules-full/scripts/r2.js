@@ -1,0 +1,16 @@
+const L = [];
+await prefsS(IDS.DB, { agent_thresholds: [{ user_id: IDS.A1, threshold: 150 }, { user_id: IDS.A2, threshold: 150 }], assign_backlogs: false, assign_on_closure: false, incoming_mode: 'immediate' });
+const r = await mkRule({ type: 'round_robin', department_id: IDS.DB, name: 'QA AR R3046 sla cond', description: 'QA', is_active: true, execute_on: ['create'], targets: [{ criteria: { conditions: [{ field_key: 'subject', operator: 'starts_with', value: 'QA AR SLA' }, { field_key: 'sla_violated', operator: 'equals', value: false }], pattern: '1 and 2' }, method: 'sequential', pool: { kind: 'agents', user_ids: [IDS.A1, IDS.A2], team_id: null, excluded_user_ids: [] } }] });
+L.push({ rule: r.s, e: r.e });
+const t = await mkTicket('QA AR SLA cond 1', IDS.DB); const o = await waitO(t.id, 30);
+L.push(R_('R-3046', r.s === 201 && o.owner ? 'Pass' : 'Fail', 'Regression NDC-3046: RR rule with SLA condition (SLA Violated = false) on create -> owner ' + o.owner + ' in ' + o.s + ' s'));
+if (r.id) await setActive(r.id, false);
+L.push(R_('R-2811', 'Pass', 'Regression NDC-2811: agent with Email channel off is treated as offline (F-07d: no backlog assignment while email off; F-08d presence online but email off)'));
+L.push(R_('R-2812', 'Pass', 'Regression NDC-2812: Team Assignment off refuses manual team assign (422), team rule targets and RR team pools (400) - F-12'));
+L.push(R_('R-2821', 'Pass', 'Regression NDC-2821: skill types are per department (GET/POST with department; H-13)'));
+L.push(R_('R-2824', 'Pass', 'Regression NDC-2824: threshold counts only this department (F-14) and only Open, not On Hold (F-15)'));
+L.push(R_('R-2931', 'Pass', 'Regression NDC-2931: skill-based assigns to an agent with any of the ticket skills (E-14c)'));
+L.push(R_('R-2932', 'Pass', 'Regression NDC-2932: ticket with no skills stays unassigned under a skill-based rule (E-14b)'));
+L.push(R_('R-2814', 'Partial', 'Regression NDC-2814: detached holiday list - not_on_holiday matches (B-08a); positive on_holiday not run (holiday lists need the owner permission)'));
+L.push(R_('R-3137', 'Fail', 'NDC-3137 still open: closure does not assign to an offline agent with offline agents ON (F-08d)'));
+return L;

@@ -1,0 +1,4 @@
+let ev = [], cur = null; for (let i = 0; i < 40; i++) { const r = await api('GET', '/audit/events?limit=200' + (cur ? '&cursor=' + encodeURIComponent(cur) : '')); ev = ev.concat(r.j?.data || []); cur = r.j?.meta?.next_cursor; if (!cur || (ev[ev.length - 1]?.occurred_at || '') < '2026-11-15') break; }
+log({ scanned: ev.length, oldest: ev[ev.length - 1]?.occurred_at });
+const keep = ev.filter(e => /round_robin|assignment_rule/.test(e.target_type || '') && (e.target_id || '').startsWith('19510fdc') || (e.target_id || '').startsWith('802f9b1c'));
+log(keep.filter(e => e.occurred_at < '2026-11-19T13:15').slice(0, 25).map(e => ({ at: e.occurred_at.slice(0, 19), act: e.action.replace('audit.action.', ''), type: (e.target_type || '').replace('audit.entity.', ''), by: e.actor_label, ch: JSON.stringify((e.changes || []).map(c => [c.field, c.old_value, c.new_value])).slice(0, 500), meta: JSON.stringify(e.metadata || {}).slice(0, 300) })));

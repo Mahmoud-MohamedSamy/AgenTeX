@@ -1,0 +1,17 @@
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20';
+const CON = '0924eb24-e42a-4eab-8efd-e3428f19e882', D = '6edaf8a3-7e99-4213-bd90-451802d63be6', DB = '09b9df1d-2345-44c5-9e4e-6778e219fd7e';
+const planA = '68789c8d-569f-44d7-8683-de4991d2c717', acc = '217f16bf-3be7-4a1d-9fdb-12e372f7ff34';
+const led = t => fs.appendFileSync(RUN + '/ledger.md', `- ${new Date().toISOString().slice(0, 19)}Z ZC lane: ${t}\n`);
+const f = (k, v) => ({ field: k, value: { kind: 'string', value: v } });
+const today = new Date().toISOString().slice(0, 10), later = new Date(Date.now() + 90 * 86400000).toISOString().slice(0, 10);
+const field = async (id, k) => ((await api('GET', '/modules/' + CON + '/records/' + id)).j?.data?.data || []).find(z => z.field === k)?.value?.value;
+const cov = async id => { const r = await api('GET', '/desk/sla/contracts/' + id + '/coverage'); return r.s + ' ' + JSON.stringify(r.j?.data).slice(0, 200); };
+const o = {};
+const c = await api('POST', '/modules/' + CON + '/records', { data: [f('contract_name', 'QA RT20 ZC Contract 2841 dept only'), f('department', D), f('account_id', acc), f('support_plan', planA), f('start_date', today), f('end_date', later)] });
+o.create = c.s; const id = c.j?.data?.id; if (id) led(`contract "QA RT20 ZC Contract 2841 dept only" ${id} (QA RT19 SLA Dept, BS plan A) — dept-only re-confirm`);
+o.before = { dept: (await field(id, 'department')) === D ? 'A' : '?', plan: (await field(id, 'support_plan')) === planA ? 'planA' : '?', cov: await cov(id) };
+const p = await api('PATCH', '/modules/' + CON + '/records/' + id, { data: [f('department', DB)] }); o.patchDeptOnly = p.s + ' ' + (p.s >= 300 ? p.t.slice(0, 300) : '');
+o.after = { dept: (await field(id, 'department')) === DB ? 'B' : 'A', plan: (await field(id, 'support_plan')) === planA ? 'planA(Dept A)' : String(await field(id, 'support_plan')), cov: await cov(id) };
+led(`contract ${id} department changed to QA RT19 SLA Dept B by dept-only PATCH (${p.s}) — left as evidence`);
+fs.writeFileSync(RUN + '/scripts/zc/t1.json', JSON.stringify({ id, ...o }, null, 1));
+return o;

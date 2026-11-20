@@ -1,0 +1,11 @@
+{"out":"3076-api-card.png","title":"NDC-3076 retest (QA RT20 PC) - department threshold counts only the agent's real Open tickets","host":"staging-desk.taviportal.com","who":"ndc-staging-owner (shared session)","date":"17 Nov 2026 13:14-14:24 UTC",
+"rows":[
+["1 Real Open count (QA AO Dept B)","records API owner+dept+Open/Escalated vs GET /desk/agents/{id}/workload","Test User 1: 4 (#4281-4283, #4285) = workload 4. Dev Team 2: 1 (#4284) = workload 1. Same before and after the run. Developer's '2 Open' for DT2 not seen (1)","ok"],
+["2 Ticket steps x2, Test User 1","one-agent Sequential rule, dept threshold on, offline allowed","r1: thr 4 #4941 waits, thr 5 #4942 -> TU1; r2: thr 4 #4943 waits, thr 5 #4944 -> TU1","ok"],
+["3 Ticket steps x2, Dev Team 2","same, DT2","r1 (1 Open): thr 1 #4948 waits, thr 2 #4949 -> DT2; r2 (now 2 Open): thr 2 #4950 waits, thr 3 #4951 -> DT2","ok"],
+["4 Delete drops the count (fix case)","extra Open ticket owned by agent, thr = count+1, probe; DELETE extra; probe again","TU1: #4945 owned -> workload 5, #4946 waits; DELETE #4945 (204, 404 after) -> workload 4 in 1 s, #4947 -> TU1. DT2: #4952 -> #4953 waits; DELETE -> #4954 -> DT2; again #4955 -> #4956 waits; DELETE -> #4957 -> DT2","ok"],
+["5 Restore from Recycle Bin","POST /audit/recycle-bin/restore #4955 (Open, owner DT2)","restored 200, workload back to 3 in 1 s; next #4958 at thr 3 waits (counted again)","ok"],
+["6 Moved to another dept","POST /desk/tickets/{id}/move #4963 AO-B -> AS6 Dept A, owner kept","before: #4964 waits; after move AO-B workload 2 in 1 s; #4967 at thr 3 -> DT2","ok"],
+["7 Control QA AS6 Dept A (TU1)","76 Open/Escalated (+2 On Hold = workload 78)","thr 76 #4968 waits, thr 77 #4969 -> TU1 (On Hold not counted)","ok"],
+["8 Restore","RR prefs both depts, rules, probes","prefs equal to snapshot (AO-B thr 7 on, AS6-A off/40); 5 PC rules inactive; 25 probes closed; #4945, #4952 left in Recycle Bin","info"]
+]}

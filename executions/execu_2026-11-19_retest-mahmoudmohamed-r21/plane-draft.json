@@ -1,0 +1,98 @@
+[
+ {
+  "ticket": "NDC-3116",
+  "id": "025f150c-6627-43fb-b9f7-cb0a8ff44392",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Skills",
+  "title": "Skills | View-only agents are offered in the skill's Agents list, and saving only says \"The skill is invalid.\"",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3116-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API + Edge (Add Skill, Edit Skill, Agent Skills, stale-screen check)</p><p>Checked:</p><ul><li>Add Skill agent list → Listed \"Mahmoud Mohamed (view only)\" / \"ZZ Sweep Tavi Probe (view only)\", disabled; hint \"View-only agents can't have this department's skills.\" [PASS]</li><li>Edit Skill agent list → Same, disabled with the hint [PASS]</li><li>Server refusal → Create skill, skill's agents and Agent Skills all 400 view_only (was not_in_department); outsider still not_in_department; without them 201 / 200 [PASS]</li><li>Message on screen → \"Customer Experience Specialists 1 has view-only access to Customer Support, so they can't have its skills.\"; skill not created [PASS]</li><li>Agent Skills tab → Lists only full agents (CES1, CES2, owner) [PASS]</li></ul><p>Not checked: Arabic, and the macro / round-robin threshold / SLA escalation / blueprint task pickers the fix also changed. For the named message, CES1 was made view-only in Customer Support for a few seconds and restored right after (members match the state before).</p><p>Evidence: NDC-3116-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3105",
+  "id": "284326c7-c2f4-49fa-885a-c42156536433",
+  "pri": "medium",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | A failed action shows \"Cancelled\", the run shows \"Fired\", and failed runs cannot be filtered",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3105-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API + Edge (Execution History)</p><p>Checked:</p><ul><li>Filter failed runs → Outcome \"Failed only\" (URL ?outcome=failed, kept after Back to history) [PASS]</li><li>Run with one failed and one succeeded action → Partly failed [PASS]</li><li>Run whose only action failed → Failed (all-fail rule, #5527) [PASS]</li><li>Failed action status → Failed · 422 · \"Not created: Calls needs Contact Name … (contact_id: Contact Name is required.)\" [PASS]</li><li>Run page table width → Table 1010 px in a 974 px box: Next / Completed time cut off (\"19/11/2026 9:…\"); dev noted ~9 px and will fix separately [INFO]</li><li>Create Record Target → Shows the target module id (f7e488b5…) instead of \"Calls\" [INFO]</li></ul><p>Side note (not part of this ticket; the developer said the width will be fixed separately): on the run page the actions table is wider than its box (1010 px in 974 px), so the Next / Completed time is cut off. Create Record also shows the target module id (f7e488b5…) under Target instead of \"Calls\". Evidence: SN-3105-run-table-cut-off.png</p><p>Evidence: NDC-3105-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3117",
+  "id": "7357c43e-2731-4364-83d1-c0ce53b9c16c",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Blueprint",
+  "title": "Blueprint | Running a step whose condition is not met is refused with \"You are not an owner of this transition.\"",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3117-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: Customer Experience Specialists 2 (agent, ticket owner) + ndc-staging-owner<br>Method: API (agent CES2) + Edge stale-screen check</p><p>Checked:</p><ul><li>Setup → QA end shown when Priority = medium; #5117 Low, owner CES2 [INFO]</li><li>Run the step → 422 BLUEPRINT_CRITERIA_NOT_MET \"This ticket does not meet the conditions for this step yet.\" (was 403 BLUEPRINT_NOT_OWNER); ticket stays Escalated [PASS]</li><li>Owner-only step (control) → 403 BLUEPRINT_NOT_OWNER on #4869 [PASS]</li><li>On screen → Stale dialog: \"This ticket doesn't meet this step's conditions yet. Open View configured actions to see what it needs.\"; after reload the step is not offered [PASS]</li></ul><p>Evidence: NDC-3117-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3118",
+  "id": "d9596f2b-8b20-453a-b154-17cdb3882fc0",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Blueprint",
+  "title": "Blueprint | Ticket header progress bar and Steps card lose the path when a ticket moves Open → On Hold",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3118-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (owner) + API to move a new ticket</p><p>Checked:</p><ul><li>#5118 header bar → Open done · On Hold current · Closed [PASS]</li><li>#5118 Steps card → As expected [PASS]</li><li>New ticket Open → On Hold → Closed → Open ✓ · On Hold ✓ · Closed (Now), next Open [PASS]</li><li>After reopen → Bar restarts: Open (Now) · Escalated · Closed; card shows Open only, next Escalated / On Hold / Closed [INFO]</li></ul><p>Side note: after a reopen (Closed → Open) the bar starts a new cycle (Open · Escalated · Closed) and the Steps card shows only Open; the earlier steps are not shown. Arabic / dark theme not rechecked in this round. Evidence: SN-3118-reopen-new-cycle.png</p><p>Evidence: NDC-3118-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3115",
+  "id": "ec1cfc73-03cf-4015-8e85-e25a0ec2d550",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Ticket History",
+  "title": "Ticket History | Owner change made by a workflow rule through the background worker is logged twice and not attributed to the rule",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3115-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: API (4 rounds of simultaneous edits) + Edge History</p><p>Checked:</p><ul><li>Owner change finished by the background worker → Round 1 on all 3 tickets (owner blank at 1 s, set at ~5–10 s): one line each, \"by workflow rule QA RT21 W2 3115 rapid\"; API source workflow [PASS]</li><li>All owner changes (4 rounds × 3 tickets) → 6 owner changes, each once; 0 \"Ticket owner was changed\" / \"Ticket Owner was updated\" lines; all source workflow, none engine [PASS]</li></ul><p>Evidence: NDC-3115-retest-PASS.png (attached)</p>"
+ },
+ {
+  "ticket": "NDC-3119",
+  "id": "4df96c87-23b6-4c46-8447-3a430c2a0dc1",
+  "pri": "low",
+  "mod": "Desk",
+  "feat": "Workflow Rules",
+  "title": "Workflow Rules | Execution History cannot be reached from the app; it opens only by typing its address",
+  "verdict": "PASS",
+  "decision": "",
+  "state": "Done",
+  "stateId": "11f2d31f-9d01-4463-a1de-ce99521b97aa",
+  "images": [
+   "NDC-3119-retest-PASS.png"
+  ],
+  "comment_html": "<p><strong>Retest PASS — 19 Nov 2026</strong> → moved to Done<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Edge (Setup menu, rule menus)</p><p>Checked:</p><ul><li>Setup menu → Setup › Automation › Execution History → /settings/workflow-executions; item highlighted [PASS]</li><li>From a rule → Row menu (Edit · Activate · Execution history · Test rule · Delete) and the open rule's \"…\" menu both have Execution history [PASS]</li><li>Filtered to the rule → ?ruleId=…, Workflow rule filter shows the rule name, 1 run; Back to history keeps the filter [PASS]</li></ul><p>Side note (separate from this ticket): opening a rule with a Create Record action (\"QA RT21 W2 3105 part\") shows the toast \"The requested resource was not found.\" Two requests answer 404 while the editor opens: GET /modules/{Contacts}/records/${contact_id} (the field placeholder sent as a record id) and GET /agents/tia/status; which one raises the toast is not confirmed. Evidence: SN-3119-rule-editor-resource-not-found.png</p><p>Evidence: NDC-3119-retest-PASS.png (attached)</p>"
+ }
+]

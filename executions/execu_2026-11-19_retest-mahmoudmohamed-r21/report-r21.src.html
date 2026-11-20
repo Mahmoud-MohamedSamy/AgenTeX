@@ -1,0 +1,169 @@
+<title>Desk Retest Round 21</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column; summary strip, results table, one section per ticket, side notes, round facts. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5b6578; --line:#dfe3ea;
+  --accent:#3a4fd8; --pass:#1d7a46; --pass-bg:#e5f4ea; --note:#9a5b00; --note-bg:#fbf0dc; --info:#2f5fb0; --info-bg:#e6eefb;
+  --display:"Space Grotesk",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151c; --surface:#1a1f29; --fg:#e6e9f0; --muted:#9aa3b5; --line:#2c3341;
+  --accent:#8b9bff; --pass:#5fd08e; --pass-bg:#16301f; --note:#f0b55a; --note-bg:#33270f; --info:#86aef5; --info-bg:#172742; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151c; --surface:#1a1f29; --fg:#e6e9f0; --muted:#9aa3b5; --line:#2c3341;
+  --accent:#8b9bff; --pass:#5fd08e; --pass-bg:#16301f; --note:#f0b55a; --note-bg:#33270f; --info:#86aef5; --info-bg:#172742; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--body)}
+.wrap{max-width:1040px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:40px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.25}
+h1{font-size:30px} h2{font-size:21px} h3{font-size:17px}
+p{margin:0;max-width:72ch}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:grid;gap:10px}
+.meta{color:var(--muted);font-size:14px}
+.strip{display:flex;flex-wrap:wrap;gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 16px;min-width:120px;display:grid;gap:2px}
+.stat b{font:600 24px/1.1 var(--display);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.stat.pass b{color:var(--pass)} .stat.note b{color:var(--note)}
+section{display:grid;gap:14px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 12px/1.3 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);white-space:nowrap}
+.pill{display:inline-block;font:600 12px/1 var(--mono);padding:5px 8px;border-radius:999px;white-space:nowrap}
+.pill.pass{background:var(--pass-bg);color:var(--pass)} .pill.note{background:var(--note-bg);color:var(--note)} .pill.info{background:var(--info-bg);color:var(--info)}
+.ticket{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:12px;min-width:0}
+.ticket .head{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline}
+.ticket .head .id{font:600 15px var(--mono);color:var(--accent)}
+.ticket ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.dev{font-size:14px;color:var(--muted);border-left:3px solid var(--line);padding-left:12px}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:500;color:var(--accent)}
+summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+figure{margin:12px 0 0;display:grid;gap:6px}
+figure img{width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:#fff}
+figcaption{font:400 12px/1.4 var(--mono);color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.facts div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:6px;min-width:0}
+.facts h3{font-size:15px}
+.facts ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:3px}
+code{font-family:var(--mono);font-size:.92em}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">NDC · Desk · Ready For Test round 21</span>
+  <h1>Desk Retest Round 21</h1>
+  <p class="meta">19 Nov 2026 · assignee MahmoudMohamed · NDC-Staging (staging-desk.taviportal.com) · Edge + API · owner account, plus agent CES2 for NDC-3117. NDC-2751 was left out of this round on request.</p>
+  <div class="strip" aria-label="Round summary">
+    <div class="stat"><b>5</b><span>tickets retested</span></div>
+    <div class="stat pass"><b>5</b><span>passed → Done</span></div>
+    <div class="stat"><b>0</b><span>back to Bug</span></div>
+    <div class="stat note"><b>3</b><span>side notes, not filed</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>Results</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Ticket</th><th>Priority</th><th>Feature</th><th>Title</th><th>Verdict</th><th>Plane</th></tr></thead>
+    <tbody>
+      <tr><td class="id">NDC-3105</td><td>Medium</td><td>Workflow Rules</td><td>A failed action shows "Cancelled", the run shows "Fired", and failed runs cannot be filtered</td><td><span class="pill pass">PASS</span></td><td>Done · comment · 2 images</td></tr>
+      <tr><td class="id">NDC-3117</td><td>Low</td><td>Blueprint</td><td>Running a step whose condition is not met is refused with "You are not an owner of this transition."</td><td><span class="pill pass">PASS</span></td><td>Done · comment · 1 image</td></tr>
+      <tr><td class="id">NDC-3118</td><td>Low</td><td>Blueprint</td><td>Ticket header progress bar and Steps card lose the path when a ticket moves Open → On Hold</td><td><span class="pill pass">PASS</span></td><td>Done · comment · 2 images</td></tr>
+      <tr><td class="id">NDC-3115</td><td>Low</td><td>Ticket History</td><td>Owner change made by a workflow rule through the background worker is logged twice and not attributed to the rule</td><td><span class="pill pass">PASS</span></td><td>Done · comment · 1 image</td></tr>
+      <tr><td class="id">NDC-3119</td><td>Low</td><td>Workflow Rules</td><td>Execution History cannot be reached from the app; it opens only by typing its address</td><td><span class="pill pass">PASS</span></td><td>Done · comment · 2 images</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Tickets</h2>
+
+  <article class="ticket">
+    <div class="head"><span class="id">NDC-3105</span><h3>Failed actions, failed runs and the Failed only filter</h3><span class="pill pass">PASS</span></div>
+    <p class="dev">Developer: workflow #146, client-engine #858 and #859 on staging. A failed action reads Failed, runs read Failed or Partly failed, and a new "Failed only" filter lists failed runs.</p>
+    <ul>
+      <li>Two new rules on new tickets: one whose only action (Create Record) fails, one with Add Tags plus the same failing Create Record.</li>
+      <li>The all-fail run shows <b>Failed</b>; the mixed run shows <b>Partly failed</b>.</li>
+      <li>The failed action shows Failed, HTTP 422 and the full reason ("Calls needs Contact Name…"), not Cancelled.</li>
+      <li>Outcome filter "Failed only" lists both runs; the address keeps <code>?outcome=failed</code> and Back to history returns to the filtered list.</li>
+    </ul>
+    <details open><summary>Evidence</summary><figure><img src="{{IMG:NDC-3105-retest-PASS.png}}" alt="NDC-3105 annotated retest evidence"><figcaption>NDC-3105-retest-PASS.png</figcaption></figure></details>
+  </article>
+
+  <article class="ticket">
+    <div class="head"><span class="id">NDC-3117</span><h3>Unmet condition gets its own refusal</h3><span class="pill pass">PASS</span></div>
+    <p class="dev">Developer: metadata-engine #247 and client-engine #862. A step you may run but whose condition is not met answers 422 BLUEPRINT_CRITERIA_NOT_MET; an owner-only step still answers 403.</p>
+    <ul>
+      <li>Agent CES2, owner of #5117 (Priority Low), runs "QA end" (shown only when Priority = medium): <b>422 BLUEPRINT_CRITERIA_NOT_MET</b>, was 403 BLUEPRINT_NOT_OWNER. The ticket stays Escalated.</li>
+      <li>Control: owner-only step on #4869 still answers 403 BLUEPRINT_NOT_OWNER.</li>
+      <li>Stale screen: the step was opened at Priority medium, then the priority changed to Low; running it shows "This ticket doesn't meet this step's conditions yet. Open View configured actions to see what it needs." After a reload the step is not offered.</li>
+    </ul>
+    <details><summary>Evidence</summary><figure><img src="{{IMG:NDC-3117-retest-PASS.png}}" alt="NDC-3117 annotated retest evidence"><figcaption>NDC-3117-retest-PASS.png</figcaption></figure></details>
+  </article>
+
+  <article class="ticket">
+    <div class="head"><span class="id">NDC-3118</span><h3>Progress bar follows the real path</h3><span class="pill pass">PASS</span></div>
+    <p class="dev">Developer: client-engine #862. The states a ticket went through now come from its blueprint history; only what lies ahead is guessed.</p>
+    <ul>
+      <li>#5118 (Open → On Hold): bar reads Open ✓ · On Hold · Closed; Steps card shows Open done, On Hold Now, next Closed.</li>
+      <li>New ticket #5526 taken Open → On Hold → Closed: bar and card show exactly the steps it ran.</li>
+    </ul>
+    <details><summary>Evidence</summary><figure><img src="{{IMG:NDC-3118-retest-PASS.png}}" alt="NDC-3118 annotated retest evidence"><figcaption>NDC-3118-retest-PASS.png</figcaption></figure></details>
+  </article>
+
+  <article class="ticket">
+    <div class="head"><span class="id">NDC-3115</span><h3>Background owner change logged once, with the rule</h3><span class="pill pass">PASS</span></div>
+    <p class="dev">Developer: metadata-engine #245. A change a workflow rule makes after the save now names the rule; History shows one line per owner change.</p>
+    <ul>
+      <li>Rule "QA RT21 W2 3115 rapid" (On Edit, Owner Assignment, Manager round robin) on 3 tickets, 4 rounds of simultaneous edits.</li>
+      <li>Round 1 went through the background worker: owner empty at 1 s, set seconds later.</li>
+      <li>All 6 owner changes appear once each as "Owner changed … by workflow rule QA RT21 W2 3115 rapid"; no "Ticket owner was changed" or "Ticket Owner was updated" duplicates; API source is workflow for all.</li>
+    </ul>
+    <details><summary>Evidence</summary><figure><img src="{{IMG:NDC-3115-retest-PASS.png}}" alt="NDC-3115 annotated retest evidence"><figcaption>NDC-3115-retest-PASS.png</figcaption></figure></details>
+  </article>
+
+  <article class="ticket">
+    <div class="head"><span class="id">NDC-3119</span><h3>Execution History reachable from the app</h3><span class="pill pass">PASS</span></div>
+    <p class="dev">Developer: workflow #147 and client-engine #859. Setup › Automation lists Execution History; each rule's menus link to its filtered history.</p>
+    <ul>
+      <li>Setup › Automation › Execution History opens the page and is highlighted while open.</li>
+      <li>A rule's row menu and the open rule's "…" menu both have "Execution history", which opens the list filtered to that rule (<code>?ruleId=…</code>).</li>
+      <li>Opening a run and pressing Back to history returns to the same filtered list.</li>
+    </ul>
+    <details><summary>Evidence</summary><figure><img src="{{IMG:NDC-3119-retest-PASS.png}}" alt="NDC-3119 annotated retest evidence"><figcaption>NDC-3119-retest-PASS.png (sender address masked)</figcaption></figure></details>
+  </article>
+</section>
+
+<section>
+  <h2>Side notes</h2>
+  <p>Found during the retests, outside what the tickets asked for. Each is described in the related ticket's comment with its image attached; none is filed as a separate bug yet.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Note</th><th>Seen on</th><th>What happens</th><th>Kind</th></tr></thead>
+    <tbody>
+      <tr><td class="id">SN-3105</td><td>NDC-3105</td><td>Run page: the actions table is wider than its box (1010 px in 974 px), so "Next / Completed" and its times are cut off. Create Record shows the module id under Target instead of "Calls". The developer already said the width will be fixed separately.</td><td><span class="pill note">Finding</span></td></tr>
+      <tr><td class="id">SN-3119</td><td>NDC-3119</td><td>Opening a rule with a Create Record action shows "The requested resource was not found." Two requests answer 404 while the editor opens; which one raises the message is not confirmed.</td><td><span class="pill note">Finding</span></td></tr>
+      <tr><td class="id">SN-3118</td><td>NDC-3118</td><td>After a reopen (Closed → Open) the bar and Steps card start a new cycle and no longer show the earlier steps. A design question, not a clear defect.</td><td><span class="pill info">Info</span></td></tr>
+    </tbody>
+  </table></div>
+  <details><summary>SN-3105 evidence</summary><figure><img src="{{IMG:SN-3105-run-table-cut-off.png}}" alt="Run page actions table cut off"><figcaption>SN-3105-run-table-cut-off.png</figcaption></figure></details>
+  <details><summary>SN-3119 evidence</summary><figure><img src="{{IMG:SN-3119-rule-editor-resource-not-found.png}}" alt="Rule editor shows resource not found"><figcaption>SN-3119-rule-editor-resource-not-found.png</figcaption></figure></details>
+  <details><summary>SN-3118 evidence</summary><figure><img src="{{IMG:SN-3118-reopen-new-cycle.png}}" alt="Progress bar after reopen"><figcaption>SN-3118-reopen-new-cycle.png</figcaption></figure></details>
+</section>
+
+<section>
+  <h2>Round facts</h2>
+  <div class="facts">
+    <div><h3>Not covered</h3><ul><li>Arabic and dark theme were not rechecked (the developers checked them).</li><li>CRM Setup menu for NDC-3119 (no CRM access on staging).</li></ul></div>
+    <div><h3>Test data (cleanup pending)</h3><ul><li>Rules "QA RT21 W2 3105 all / part", "3115 rapid" (inactive)</li><li>Tickets #5526–#5531</li><li>#5117 priority changed and set back to Low</li><li>Blueprint "QA RT20 BS 3056 flow" activated for 3118, then deactivated</li></ul></div>
+    <div><h3>Sessions</h3><ul><li>Owner and agent CES2 sessions had expired overnight; each was signed in once.</li><li>No credentials or tokens appear in any evidence image.</li></ul></div>
+  </div>
+</section>
+</div>

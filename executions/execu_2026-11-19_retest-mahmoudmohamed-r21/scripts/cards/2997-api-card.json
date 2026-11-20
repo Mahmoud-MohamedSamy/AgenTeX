@@ -1,0 +1,10 @@
+{"out":"2997-api-card.png","title":"NDC-2997 Owner Assignment round robin — rules On Edit (QA RT20 WF), Desk org units read with app_key=desk","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Roles › CEO, Customer Support (3 tickets)","CEO = CES2 + Mahmoud Mohamed; edit priority on each","all 3 → Customer Experience Specialists 2, Succeeded; Mahmoud Mohamed (read-only there) never picked","ok"],
+["2 Roles › CEO, QA AO Dept A (2 tickets)","no CEO member is an agent there","owner unchanged; Skipped \"Not assigned: nobody in the org unit can own a ticket of this department.\"","ok"],
+["3 Profiles › Desk Administrator, empty dept","QA RT19 WF Dept, no agents","Skipped \"Not assigned: nobody in the role can own a ticket of this department.\"","ok"],
+["4 Profiles › Desk Administrator, QA AO Dept A (3)","only Dev Team 2 qualifies","all 3 → Dev Team 2, Succeeded","ok"],
+["5 Roles › Manager, QA AO Dept A — turns","Dev Team 2 + Test User 1; 4 tickets edited one at a time","dispatch order Dev Team 2, Test User 1, Dev Team 2, Test User 1, Dev Team 2, Test User 1 — turns alternate","ok"],
+["6 Rule fires again on its own owner write","same run: tickets 2 and 4 went to the background worker","run 1 says owner_assigned \"Test User 1\" / \"Dev Team 2\", the owner write re-fires the On Edit rule, run 2 reassigns → final owners Dev Team 2, Dev Team 2, Test User 1, Test User 1 (other run: DT2, TU1, TU1, TU1)","bad"],
+["7 Rule On Create, person-made ticket","dev note: creator keeps owner","owner set to Dev Team 2, Succeeded (dev note did not hold — rule wins)","info"],
+["8 Ticket History of owner change","GET /desk/tickets/{id}/history","empty on all 16 tickets; a manual priority edit also not logged → history writer still down: BLOCKED","info"]]}

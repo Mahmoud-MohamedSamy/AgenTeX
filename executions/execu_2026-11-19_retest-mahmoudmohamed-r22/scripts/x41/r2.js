@@ -1,0 +1,13 @@
+const RUN='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20';
+const CON='0924eb24-e42a-4eab-8efd-e3428f19e882',D='6edaf8a3-7e99-4213-bd90-451802d63be6',DB='09b9df1d-2345-44c5-9e4e-6778e219fd7e';
+const old=JSON.parse(fs.readFileSync(RUN+'/scripts/bs/2841.json','utf8')).ids;const planA=old.planA,planB=old.planB;const R1=JSON.parse(fs.readFileSync(RUN+'/scripts/x41/r1.json','utf8'));const {c1id,c2id,c4id}=R1.ids;
+const f=(k,v)=>({field:k,value:{kind:'string',value:v}});const E=r=>r.s+(r.s>=300?' '+JSON.stringify(r.j?.error||r.t).slice(0,350):'');
+const rec=async id=>{const d=(await api('GET','/modules/'+CON+'/records/'+id)).j?.data?.data||[];const v=k=>d.find(z=>z.field===k)?.value?.value;return {dept:v('department')===D?'A':v('department')===DB?'B':String(v('department')),plan:v('support_plan')===planA?'planA':v('support_plan')===planB?'planB':String(v('support_plan')??'none')};};
+const cov=async id=>{const r=await api('GET','/desk/sla/contracts/'+id+'/coverage');return r.s+' '+(r.j?.data?.plan?.name||'none');};
+const R={};
+R.cov_c2=await cov(c2id);R.cov_c1=await cov(c1id);R.cov_yday_c2=await cov(old.c2id);R.cov_ui=await cov('562e9bee-fdac-4b80-8d76-821f963858b6');
+R.attach_other=E(await api('PUT','/desk/sla/contracts/'+c2id+'/plan',{plan_id:planA}));R.c2=await rec(c2id);
+R.clear_empty=E(await api('PATCH','/modules/'+CON+'/records/'+c4id,{data:[f('department',DB),f('support_plan','')]}));R.c4a=await rec(c4id);
+R.clear_null=E(await api('PATCH','/modules/'+CON+'/records/'+c4id,{data:[f('department',DB),{field:'support_plan',value:{kind:'null'}}]}));R.c4b=await rec(c4id);
+R.fields=((await api('GET','/modules/'+CON+'/fields?page_size=200')).j?.data||[]).filter?.(x=>['support_plan','department'].includes(x.apiName||x.api_name||x.key)).map(x=>({k:x.apiName||x.api_name||x.key,req:x.required??x.isRequired??x.is_required}));
+return R;

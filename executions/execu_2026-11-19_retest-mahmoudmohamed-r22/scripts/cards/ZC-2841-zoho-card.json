@@ -1,0 +1,9 @@
+{"out":"ZC-2841-zoho-api-card.png","title":"Zoho Desk live (techegysolutions) — contract department vs support plan, QA RT20 ZC data, 17 Nov 2026","host":"desk.zoho.com /api/v1","who":"zoho-admin","date":"17 Nov 2026",
+"rows":[
+["1 Create, other dept's plan","POST /contracts  dept TechEgySolutions + QA RT20 ZC Plan B (Tech)","422 UNPROCESSABLE_ENTITY \"Validation failed for the condition : Invalid SupportPlan ID\" — nothing created","bad"],
+["2 Change plan to other dept's","PATCH /contracts/C1  associatedSupportPlanId = Plan B (Tech)","422 \"Invalid SupportPlan ID\" — C1 keeps Plan A","bad"],
+["3 No department","POST /contracts  without departmentId","422 INVALID_DATA  /departmentId missing","bad"],
+["4 Change ONLY department (x2)","PATCH /contracts/C1  departmentId = Tech  (C1 has Plan A)","422 \"Invalid SupportPlan ID\" (both tries) — C1 stays TechEgySolutions + Plan A","bad"],
+["5 Department + matching plan","PATCH /contracts/C1  departmentId = Tech + Plan B (Tech)","422 \"Validation failed for the condition : DepartmentId cannot be updated\" — unchanged","bad"],
+["6 Contract with no plan","POST /contracts  TechEgySolutions, no plan","422 \"Invalid SupportPlan ID\" — a contract always needs a plan","info"],
+["7 Own dept's plan (control)","POST /contracts  TechEgySolutions + Plan A;  PATCH dept=TechEgySolutions + Plan A","200 created (C1); same-department PATCH 200","ok"]]}

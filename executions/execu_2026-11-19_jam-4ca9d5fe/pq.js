@@ -1,0 +1,1 @@
+const p = (await api('POST', '/desk/agents/presence/query', { user_ids: ['876ce871-2b02-4854-89a7-68050391c62b'] })).j?.data?.agents?.[0]?.presence; log(JSON.stringify({ online: p?.online, idle: p?.idle, email: p?.channels?.email, last: p?.last_activity_at }));

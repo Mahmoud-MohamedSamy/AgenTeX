@@ -1,0 +1,3 @@
+eval(fs.readFileSync('cr/lib.js','utf8'));const o={};
+for(const [n,m] of [['Calls','f7e488b5-0232-42fd-811c-1f24356af653'],['Tasks','d120a6c2-2596-4254-968b-a1bcd3a000bf'],['Events','6fb19115-9356-40f0-b064-840d8f1fad93'],['Contacts','43004ce2-577f-4eda-b00a-0750fe40c3d4']]){const f=arr((await api('GET',`/modules/${m}/fields?take=400`)).j?.data);o[n]={look:f.filter(x=>/lookup|related/.test(x.datatypeKey)).map(x=>[x.apiName,x.datatypeKey,JSON.stringify(x.datatypeOptions).slice(0,200),x.required]),req:f.filter(x=>x.required).map(x=>[x.apiName,x.datatypeKey,JSON.stringify(x.datatypeOptions).slice(0,150),x.isSystemManaged,JSON.stringify(x.config).slice(0,150)]),layouts:arr((await api('GET',`/modules/${m}/layouts`)).j?.data).map(l=>[l.id,l.name,l.isDefault])};}
+return o;

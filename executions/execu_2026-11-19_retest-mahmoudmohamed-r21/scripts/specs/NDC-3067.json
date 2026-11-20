@@ -1,0 +1,24 @@
+{
+ "out": "NDC-3067-retest-PARTIAL.png",
+ "ticket": "NDC-3067",
+ "priority": "medium",
+ "title": "Audit Log | Changes made in the web app show the server's internal address ::ffff:172.19.0.19 instead of the user's IP",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk › Setup › Audit Log · owner ndc-staging-owner · public IPs masked to the first two parts · audit API rows 17 Nov 00:17-09:35 UTC",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3067-2-iam.png", "caption": "Ticket, department and reply lines now show the user's public IP; the agent permission change (IAM) still shows 172.19.0.19", "crop": [400, 180, 1060, 660],
+   "boxes": [{"b": [540, 355, 830, 396], "n": 1, "kind": "PASS"}, {"b": [540, 412, 1000, 450], "n": 1, "kind": "PASS"}, {"b": [540, 466, 1350, 508], "n": 3, "kind": "FAIL"}]},
+  {"img": "3067-2-run4808.png", "caption": "A blueprint run by an agent (#4808) and the mass deletes show no IP at all", "crop": [400, 360, 1060, 300],
+   "boxes": [{"b": [540, 370, 960, 440], "n": 4, "kind": "FAIL"}, {"b": [540, 466, 1362, 492], "n": 4, "kind": "FAIL"}, {"b": [540, 510, 1445, 574], "n": 1, "kind": "PASS"}]},
+  {"img": "3067-api-card.png", "caption": "Audit API: source_ip by kind of change (today)", "crop": [0, 0, 1600, 420],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 204], "n": 2, "kind": "PASS"}, {"b": [36, 214, 1564, 272], "n": 3, "kind": "FAIL"}, {"b": [36, 282, 1564, 340], "n": 4, "kind": "FAIL"}, {"b": [36, 350, 1564, 408], "n": 5, "kind": "INFO"}]}
+ ],
+ "rows": [
+  [1, "Desk change lines (tickets, departments, replies, rules, blueprints)", "User's own IP, as on the sign-in line", "Public IP on 499 change rows today; none show 172.19.0.19 (was 48 rows on 16 Nov)", "PASS"],
+  [2, "This lane's own changes", "Own public IP", "Department, blueprint and ticket creates show the public IP", "PASS"],
+  [3, "Agent / permission changes (IAM) made in the browser", "User's own IP", "3 of 3 today show IP 172.19.0.19 (e.g. CES2 permission GRANT desk:ticket:share)", "FAIL"],
+  [4, "Blueprint transition runs and mass delete by a user", "User's own IP", "No IP line at all (21 user rows without IP; API also has no actor label on the transition rows)", "FAIL"],
+  [5, "Developer curl sweep (ZZ sweep2997)", "-", "22 workflow-rule rows with 172.19.0.19, curl user agent — probably sent from inside the cluster", "INFO"]
+ ]
+}

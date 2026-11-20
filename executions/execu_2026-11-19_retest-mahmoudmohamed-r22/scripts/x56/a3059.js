@@ -1,0 +1,11 @@
+const T=JSON.parse(fs.readFileSync(RUN+'/out/3059.json','utf8'));const o={};
+o.read=E(await api('GET','/desk/tickets/'+T.id));
+o.patchDesk=E(await api('PATCH','/desk/tickets/'+T.id,{priority:'High'}));
+o.patchRecord=E(await api('PATCH','/modules/'+TK+'/records/'+T.id,{data:fields({priority:'high'})}));
+o.patchClosed=E(await api('PATCH','/modules/'+TK+'/records/'+T.id2,{data:fields({priority:'high'})}));
+o.reply=E(await api('POST','/desk/tickets/'+T.id+'/replies',{mode:'reply',to:['qa-rt22@example.com'],subject:'Re: QA RT22',body_html:'<p>QA RT22 3059 reply</p>'}));
+o.close=E(await api('POST','/desk/tickets/'+T.id+'/close',{}));
+o.statusOnHold=E(await api('PATCH','/desk/tickets/'+T.id,{status:'On Hold'}));
+o.publicComment=E(await api('POST','/desk/tickets/'+T.id+'/comments',{content_html:'<p>QA RT22 3059 public comment</p>',is_public:true}));
+o.privateComment=E(await api('POST','/desk/tickets/'+T.id+'/comments',{content_html:'<p>QA RT22 3059 private comment</p>',is_public:false}));
+o.after=JSON.stringify(await rec(T.id)).slice(0,200);return o;

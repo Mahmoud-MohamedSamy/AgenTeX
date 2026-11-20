@@ -1,0 +1,9 @@
+{"out":"3058-r2-api-card.png","title":"NDC-3058 retest 2 — rules create tags (QA RT20 W2 3058 *, now inactive), QA AO Dept A tickets","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Create from the rule editor","rule limited to QA AO Dept A; typed \"QA RT20 W2 newtag\" → Create","POST /desk/tags 201 {department_id: QA AO Dept A}; rule saved with QA WF tag B + QA RT20 W2 newtag","ok"],
+["2 Refused name","typed \"QA-1\" → Create","POST /desk/tags 422 TAG_NAME_INVALID; toast \"The tag name is not valid. Use 3 to 50 letters, digits and single spaces.\"","ok"],
+["3 New tag reaches a ticket","rule active, ticket #5092 priority edit","Fired, Add Tags Succeeded; ticket tags QA WF tag B, QA RT20 W2 newtag; History \"Tags changed … by workflow rule\"","ok"],
+["4 Remove Tags","rule QA RT20 W2 3058 rem, same ticket edited","Fired, Remove Tags Succeeded; newtag gone, tag B kept; History \"Removed tags … by workflow rule\"","ok"],
+["5 Mixed departments","rule over Customer Support + QA AO Dept A adds CS \"Accepted\" + QAO \"QA WF tag A\" to #5100 (QAO)","only QA WF tag A added; Add Tags Succeeded (dev note held)","ok"],
+["6 Only another department's tag","same rule type adds only CS \"Accepted\" to #5101 (QAO)","no tag added (correct) but Execution History says Add Tags Succeeded, no detail","bad"],
+["7 API: single-dept rule with another department's tag","POST /workflow/rules, departmentIds [QA AO Dept A], AddTags [CS \"Accepted\"]","201 saved (the editor would not offer that tag)","info"]]}

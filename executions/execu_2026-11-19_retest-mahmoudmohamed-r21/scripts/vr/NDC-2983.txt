@@ -1,0 +1,27 @@
+# NDC-2983 Layout Rules | Deleting a field used by a rule is allowed, and the whole rule stops [Done]
+Summary
+Deleting a field used by a rule is allowed, and the whole rule stops. DELETE returns 204.
+Environment
+- NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2; the same setup on Desk Tickets. Test data was deleted after the run.
+Steps to reproduce
+- Delete a field that is one target of the "basic" rule.
+Expected result
+Zoho Desk blocks deleting a field a rule uses.
+Actual result
+- DELETE returns 204.
+- The whole rule stops: order is always visible and no longer mandatory for Refund.
+- Same root as B-09.
+Notes
+- Test cases J4 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- CRM and Desk share the same rule engine, so this applies to both apps.
+
+== COMMENTS
+--- 2026-11-16T10:13:04.282341+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- DELETE /fields/{qa_rt18_tmp} (target in rules basic + radio) → 422 FIELD_IN_USE_BY_RULE, names both rules and says to remove the field from them first [PASS]
+- After the call → Field still there; basic active, no definitionError [PASS]
+Evidence: NDC-2983-retest-PASS.png (attached)

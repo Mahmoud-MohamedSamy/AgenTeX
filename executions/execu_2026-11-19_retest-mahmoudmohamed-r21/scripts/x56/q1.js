@@ -1,0 +1,2 @@
+const r=await api('GET','/desk/blueprints/23339d62');const b=r.j?.data||{};const L=x=>Array.isArray(x)?x:[];
+const tr=L(b.transitions||b.definition?.transitions);return {s:r.s,keys:Object.keys(b).slice(0,30),tr:tr.map(t=>({n:t.name,from:t.from||t.fromStateId,to:t.to||t.toStateId,owners:JSON.stringify(t.owners||t.ownerIds||t.owner).slice(0,200),crit:JSON.stringify(t.criteria||t.conditions).slice(0,150)}))};

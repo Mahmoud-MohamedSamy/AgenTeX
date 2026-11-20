@@ -1,0 +1,7 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', DB = '4853562a-0b4d-45cb-ba34-9f2118fcd32c', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/'; const o = JSON.parse(fs.readFileSync(OUT + 'r3.json', 'utf8'));
+const cur = (await api('GET', '/desk/departments/' + DB + '/round-robin-preferences')).j?.data;
+log({ on: (await api('PUT', '/desk/departments/' + DB + '/round-robin-preferences', { ...cur, assign_backlogs: true })).s, at: new Date().toISOString().slice(11, 19) });
+for (let i = 0; i < 15; i++) { await sleep(12000); const d = (await api('GET', '/modules/' + TK + '/records/' + o.Aback)).j?.data?.data || []; const ow = (d.find(f => f.field === 'owner') || {}).value?.value || null; if (ow || i === 14) { const t = (await api('GET', '/desk/tickets/' + o.Aback)).j?.data || {}; log({ t: new Date().toISOString().slice(11, 19), owner: ow === TU1 ? 'TU1' : ow, in_backlog: t.in_backlog }); break; } }
+log({ off: (await api('PUT', '/desk/departments/' + DB + '/round-robin-preferences', { ...cur, assign_backlogs: false })).s });
+const h = (await api('GET', '/desk/tickets/' + o.Aback + '/history')).j?.data || []; log({ hist: (Array.isArray(h) ? h : []).slice(0, 4).map(e => (e.occurred_at || '').slice(11, 19) + ' ' + e.action + ' ' + (e.actor?.kind || '') + ' ' + JSON.stringify(e.summary || '').slice(0, 120)) });

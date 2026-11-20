@@ -1,0 +1,13 @@
+const o = {}; const D = IDS.DA; const sk = async () => (await api('GET', '/desk/skills?department_id=' + D)).j.data.skills;
+o.before = (await sk()).map(s => s.name);
+const ty = (await api('GET', '/desk/skill-types?department_id=' + D)).j; o.typesBefore = JSON.stringify(ty && ty.data).slice(0, 300);
+const mkT = async n => { const r = await api('POST', '/desk/skill-types', { name: n, department_id: D }); const id = r.j && r.j.data && (r.j.data.id || (r.j.data.skill_type && r.j.data.skill_type.id)); if (id) LED('skill type "' + n + '" ' + id + ' (Dept A)'); return id || (r.s + ' ' + E(r)); };
+IDS.H05_TX = await mkT('QA H05 Type X'); IDS.H05_TY = await mkT('QA H05 Type Y');
+const mkS = async (name, type, active, agents) => { const r = await api('POST', '/desk/skills?department_id=' + D, { name, type_id: type, criteria: { conditions: [{ field_key: 'subject', operator: 'contains', value: 'QA H05 NEVER' }], pattern: null }, is_active: active }); const id = r.j && r.j.data && (r.j.data.id || (r.j.data.skill && r.j.data.skill.id)); if (id) { LED('skill "' + name + '" ' + id); if (agents.length) await api('PUT', '/desk/skills/' + id + '/agents', { user_ids: agents }); } return id || (r.s + ' ' + E(r)); };
+IDS.H05_S1 = await mkS('QA H05 Alpha Billing', IDS.H05_TX, true, [IDS.A1]);
+IDS.H05_S2 = await mkS('QA H05 Beta Billing', IDS.H05_TX, false, []);
+IDS.H05_S3 = await mkS('QA H05 Gamma Refunds', IDS.H05_TY, true, [IDS.A3]);
+IDS.H05_S4 = await mkS('QA H05 Delta Refunds', IDS.H05_TY, false, [IDS.A1, IDS.A3]);
+saveIds(); o.ids = [IDS.H05_TX, IDS.H05_TY, IDS.H05_S1, IDS.H05_S2, IDS.H05_S3, IDS.H05_S4];
+o.after = (await sk()).map(s => s.name + ':' + (s.is_active ? 'on' : 'off') + ':' + (s.type_name || s.type_id || '').toString().slice(0, 20) + ':' + JSON.stringify(s.agent_user_ids || s.agents || '').slice(0, 60));
+return o;

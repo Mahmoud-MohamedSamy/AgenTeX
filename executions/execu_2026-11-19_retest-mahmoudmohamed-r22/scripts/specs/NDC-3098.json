@@ -1,0 +1,13 @@
+{"out":"NDC-3098-retest-PASS.png","ticket":"NDC-3098","priority":"medium","label":"RETEST PASS","verdict":"PASS",
+"title":"Access | Ticket access cannot be set per agent (all department tickets / own + unassigned / own + team + unassigned)",
+"env":"NDC-Staging · staging-desk · API + Edge · owner + agent CES2 (Customer Support) · tickets #5675 (owner), #5676 (unassigned), #5677 (CES2), #5678 (CES1)","date":"19 Nov 2026",
+"panels":[
+ {"img":"3098-r1-d-agent-own.png","caption":"Setup › Agents › CES2: new Ticket access card with the three Zoho-like choices; \"Other agents are not affected.\"","crop":[292,430,330,280],"boxes":[{"b":[300,450,604,500],"n":1,"kind":"PASS"},{"b":[306,512,604,690],"n":1,"kind":"PASS"}]},
+ {"img":"3098-r1-api-card.png","caption":"Behaviour as CES2: \"Own and unassigned\" hides other agents' tickets; \"All tickets\" shows them again","crop":[20,20,1560,450],"boxes":[{"b":[36,167,1564,225],"n":2,"kind":"PASS"},{"b":[36,235,1564,361],"n":3,"kind":"PASS"},{"b":[36,371,1564,408],"n":2,"kind":"PASS"},{"b":[36,418,1564,455],"n":4,"kind":"INFO"}]}
+],
+"rows":[
+ [1,"Per-agent setting","Each agent has a ticket access type (all / own + team + unassigned / own + unassigned)","Agent page › Ticket access with the three choices; saved per agent (PUT …/ticket-access)","PASS"],
+ [2,"All tickets of their departments","Agent sees the department's tickets","CES2 opens, edits and comments on CES1's ticket","PASS"],
+ [3,"Own and unassigned","Only own + unassigned tickets","CES1's and the owner's tickets 404/403; own and unassigned 200","PASS"],
+ [4,"Tenant level","—","Data sharing is Private on staging (per-agent choice has no visible effect under Private); switched to Public for the test and restored. Not checked: the own + team option, and another agent's view while CES2 was limited","INFO"]
+]}

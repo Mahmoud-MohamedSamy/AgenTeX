@@ -1,0 +1,13 @@
+{"out":"NDC-3117-retest-PASS.png","ticket":"NDC-3117","priority":"low","label":"RETEST PASS","verdict":"PASS",
+"title":"Blueprint | Running a step whose condition is not met is refused with \"You are not an owner of this transition.\"",
+"env":"NDC-Staging · staging-desk · API + Edge · agent CES2 (ticket owner) + owner · blueprint \"QA RT20 BS 3056 flow\" · tickets #5117, #4869","date":"19 Nov 2026",
+"panels":[
+ {"img":"3117-r1-api-card.png","caption":"API: the unmet condition now gets its own code; the owner-only control still answers 403","crop":[20,20,1560,460],"boxes":[{"b":[36,99,1564,183],"n":1,"kind":"INFO"},{"b":[36,193,1564,298],"n":2,"kind":"PASS"},{"b":[36,308,1564,345],"n":3,"kind":"PASS"},{"b":[36,355,1564,460],"n":4,"kind":"PASS"}]},
+ {"img":"3117-r1-b-stale-run.png","caption":"Stale screen as CES2: QA end opened after the priority changed to Low — the dialog names the real reason","crop":[440,290,720,320],"boxes":[{"b":[486,407,1114,481],"n":4,"kind":"PASS"}]}
+],
+"rows":[
+ [1,"Setup","Step with a condition, no owners; condition not met","QA end shown when Priority = medium; #5117 Low, owner CES2","INFO"],
+ [2,"Run the step","Refused with a reason about the condition, not ownership","422 BLUEPRINT_CRITERIA_NOT_MET \"This ticket does not meet the conditions for this step yet.\" (was 403 BLUEPRINT_NOT_OWNER); ticket stays Escalated","PASS"],
+ [3,"Owner-only step (control)","Still \"not an owner\"","403 BLUEPRINT_NOT_OWNER on #4869","PASS"],
+ [4,"On screen","Message names the condition","Stale dialog: \"This ticket doesn't meet this step's conditions yet. Open View configured actions to see what it needs.\"; after reload the step is not offered","PASS"]
+]}

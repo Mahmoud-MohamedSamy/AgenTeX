@@ -1,0 +1,23 @@
+Summary
+Kanban headers + first cards p95 5.1 s (target 2 s).
+Found by test case CVS-L09 - Kanban column headers and first cards render within 2 s at p95.
+Steps to Reproduce
+Before you start:
+Logged in as the Owner (Tenant Owner).
+Deals Kanban view 'QA CV perf-board' by Stage with Amount aggregate exists.
+Open 'QA CV perf-board' and reload it 20 times.
+For each load, record the time until every column header (count and sum) and the first cards are shown.
+Compute the p95.
+Test data:
+Loads: 20
+Target: p95 ≤ 2 s
+Expected Results
+The 95th-percentile time to headers and first cards is within 2 seconds.
+Actual Results
+Deals Kanban 'QA CV deals-by-stage' (Stage, Amount; 12 columns), 20 reloads until all column headers with Amount totals and at least one card are shown: p95 5100 ms, median 2290, min 1261, max 26045.
+Target 2 s p95 missed.
+Environment
+staging-crm.taviportal.com, tenant NDC-Staging (time zone Africa/Cairo), Chromium, 5 October 2026. Accounts: CRM Admin (in place of the Owner role), test user 1 (User profile, has Manage Shared Views), test user 2 (profile "test", no Manage Shared Views). Test case CVS-L09, run execu_2026-10-05_11-20-40.
+Attachments
+L09-vs-zoho.png: annotated screenshot (TAVI on the left, with the comparison table).
+L08-L09-timings.png: original TAVI screenshot (20 reloads).

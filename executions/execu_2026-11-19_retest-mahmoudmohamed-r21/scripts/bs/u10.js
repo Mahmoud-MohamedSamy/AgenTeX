@@ -1,0 +1,20 @@
+const out = {}; const LANG = process.env.LANG2 || 'en'; const P = LANG;
+await page.goto(H + '/modules/0924eb24-e42a-4eab-8efd-e3428f19e882/records/new', { waitUntil: 'commit' }); await page.evaluate(l => localStorage.setItem('anyware_language', l), LANG); await page.reload({ waitUntil: 'domcontentloaded' });
+for (let i = 0; i < 30; i++) { await sleep(2000); if (/Support Plan|خطة الدعم|Sales|المبيعات/i.test(await text())) break; } await sleep(2500);
+const deptBtn = () => page.locator('xpath=//*[normalize-space(text())="Department" or normalize-space(text())="القسم"]/following::*[self::button or @role="combobox" or self::select][1]').first();
+out.deptTag = await deptBtn().evaluate(e => e.tagName + ' ' + (e.innerText || e.value)).catch(e => 'ERR');
+const planBox = () => page.locator('xpath=//*[normalize-space(text())="Support Plan" or normalize-space(text())="خطة الدعم"]/following::*[self::button or self::input or @role="combobox"][1]').first();
+out.planTag = 0;
+const listPlans = async (k) => { await planBox().click(); await sleep(2500); const opts = await page.locator('[role=option], [role=listbox] li, [cmdk-item]').allInnerTexts(); await shot('2841-' + P + '-' + k + '.png'); await page.keyboard.press('Escape'); await sleep(800); return opts.map(x => x.replace(/\s+/g, ' ').slice(0, 70)); };
+const pickDept = async name => { const d = deptBtn(); const tag = await d.evaluate(e => e.tagName); if (tag === 'SELECT') await d.selectOption({ label: name }); else { await d.click(); await sleep(1500); await page.getByRole('option', { name, exact: true }).first().click().catch(async () => { await page.getByText(name, { exact: true }).last().click(); }); } await sleep(2500); };
+out.planTag = await planBox().evaluate(e => e.tagName + ' ' + (e.getAttribute('role')||'') + ' ' + (e.innerText || e.placeholder || '')).catch(e=>'ERR'); out.default = await listPlans('a-default');
+await pickDept('QA RT19 SLA Dept'); out.deptA = await listPlans('b-deptA');
+await planBox().click(); await sleep(1500); await page.getByText('QA RT20 BS Plan 2841 A w2pv').first().click(); await sleep(1500);
+out.afterPick = (await text()).replace(/\s+/g, ' ').match(/Support Plan.{0,200}|خطة الدعم.{0,200}/)?.[0];
+await shot('2841-' + P + '-c-picked.png');
+await pickDept('QA RT19 SLA Dept B'); await sleep(1500);
+out.afterDeptChange = (await text()).replace(/\s+/g, ' ').match(/(Support Plan|خطة الدعم).{0,300}/)?.[0];
+await shot('2841-' + P + '-d-deptchanged.png');
+out.deptB = await listPlans('e-deptB');
+// try Save with required fields to see if the form blocks it (no account → would block anyway, so fill name/account/date)
+return out;

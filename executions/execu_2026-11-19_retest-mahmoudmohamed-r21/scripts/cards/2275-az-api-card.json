@@ -1,0 +1,9 @@
+{"out":"2275-az-api-card.png","title":"NDC-2275 afternoon re-run (QA RT20 AZ) — round robin back on staging; key checks from the API","host":"staging-desk.taviportal.com","who":"ndc-staging-owner (shared session)","date":"17 Nov 2026 11:26-13:10 UTC",
+"rows":[
+["1 Control 11:26 (create)","QA AO Dept B, rule pool = owner (online), thresholds off, offline allowed; ticket #4865","Unassigned after 180 s, no rule entry (same as this morning)","bad"],
+["2 Control 11:40 / 12:31","same rule; one ticket created in dept, one moved into dept","11:40 create #4868 none, move #4870 -> owner (move path worked); 12:31 create #4913 -> owner, move #4914 -> owner: round robin works again","ok"],
+["3 Dept threshold = Open in dept","Test User 1: 4 Open in AO-B (94 elsewhere); Dev Team 2: 1 Open (30 elsewhere); single-agent rules","thr 4: #4916 waits; thr 5: #4920 -> TU1; thr 1: #4923 waits; thr 2: #4925 -> DT2, next #4926 waits. Move path 11:43 same (#4871/#4872, #4875/#4876). No phantoms","ok"],
+["4 On Hold not counted","DT2 at thr 2 (1 Open): t1 -> DT2, t2 waits, t1 set On Hold, t3","t3 -> DT2 (On Hold not counted); t2 stays waiting (backlogs off). INFO: workload API still shows 2 (counts On Hold)","ok"],
+["5 Skill rule (any one skill)","AS6 Dept A, S2 held by TU1, S1/S3 by nobody","S3+S2 #4917 -> TU1; S3 only #4918 none; no skills #4919 none; S1+S2 #4924 -> TU1","ok"],
+["6 Burst (NF-3 style)","10 tickets at once, pool TU1+DT2, dept thr 6; room from API: TU1 2, DT2 5","got TU1 2, DT2 5, waiting 3, no double entries (exact)","ok"],
+["INFO outage","11:40-12:20 record -> Desk sync lagged: Desk kept status Open for record-closed tickets; one burst via move gave 2/4/4 then 0/0/10","re-run after recovery on the create path: all exact","info"]]}

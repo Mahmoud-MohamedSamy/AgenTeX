@@ -1,0 +1,12 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', DB = '4853562a-0b4d-45cb-ba34-9f2118fcd32c', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/';
+const sv = v => v === null ? { kind: 'null' } : { kind: 'string', value: String(v) }; const fields = o => Object.entries(o).map(([k, v]) => ({ field: k, value: sv(v) }));
+const wl = async () => (((await api('GET', '/desk/agents/' + TU1 + '/workload')).j?.data?.departments || []).find(d => d.department_id === DB) || {}).open_tickets;
+const st = async id => { const d = (await api('GET', '/modules/' + TK + '/records/' + id)).j?.data?.data || []; const t = (await api('GET', '/desk/tickets/' + id)).j?.data || {}; const ow = (d.find(f => f.field === 'owner') || {}).value?.value || null; return { owner: ow === TU1 ? 'TU1' : ow, in_backlog: t.in_backlog, status: t.status }; };
+const o = { tu1Before: await wl() };
+const rr = await api('POST', '/desk/assignment-rules', { type: 'round_robin', department_id: DB, name: 'QA JAM2 closure retest', description: 'QA', is_active: true, execute_on: ['create'], targets: [{ criteria: { conditions: [{ field_key: 'subject', operator: 'starts_with', value: 'QA JAM2' }], pattern: '1' }, method: 'sequential', pool: { kind: 'agents', user_ids: [TU1], team_id: null, excluded_user_ids: [] } }] });
+o.rule = rr.j?.data?.id;
+const mk = async s => (await api('POST', '/modules/' + TK + '/records', { data: fields({ subject: s, description: 'QA JAM2 retest', department: DB, status: 'Open', priority: 'medium', owner: null }) })).j?.data?.id;
+o.own = await mk('QA JAM2 own'); await sleep(15000); o.back = await mk('QA JAM2 backlog'); o.norule = await mk('QA NORULE unassigned control'); await sleep(15000);
+o.setup = { own: await st(o.own), back: await st(o.back), norule: await st(o.norule), tu1: await wl() };
+fs.writeFileSync(OUT + 's1.json', JSON.stringify(o, null, 1)); log(o);

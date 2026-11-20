@@ -1,0 +1,14 @@
+const L = []; const D = IDS.DA; const S = x => String(JSON.stringify(x === undefined ? null : x)).slice(0, 300);
+const H = async id => { const h = await hist(id); return Array.isArray(h) ? h.filter(x => /auto_assigned|owner_changed|workflow/.test(x)).map(x => x.replace(/\\"/g, '').slice(0, 110)) : h; };
+const OA = u => [{ type: 'OwnerAssignment', order: 0, delaySeconds: 0, ownerTargetKind: 'SpecificUser', ownerValue: u }];
+const w1 = await mkWf('QA AR WF EO2', 'RecordCreated', { kind: 'Logical', operator: 'And', operands: [SM('QA AR EO2'), { kind: 'Comparison', field: 'owner', operator: 'Equal', value: { kind: 'string', stringValue: IDS.A1 } }] }, OA(IDS.A2));
+const w2 = await mkWf('QA AR WF EO5', 'RecordCreated', SM('QA AR EO5'), OA(IDS.A2));
+const w3 = await mkWf('QA AR WF EO3', 'RecordCreated', SM('QA AR F EO3'), OA(IDS.A1));
+L.push({ w: [w1.s, w2.s, w3.s], e: [w1.e, w2.e, w3.e] });
+let id = (await mkTicket('QA AR EO2 y', D)).id; await sleep(12000);
+L.push(R_('D-15', (await ownN(id)) === 'A2' ? 'Pass' : 'Fail', 'Direct → A1, then workflow "owner is A1 → set A2" in the same event: final owner ' + await ownN(id) + ' (A2 = the workflow saw the owner set by direct). History ' + S(await H(id))));
+id = (await mkTicket('QA AR EO5 y', D)).id; await sleep(12000);
+L.push(R_('D-16', (await ownN(id)) === 'A2' ? 'Pass' : 'Fail', 'Direct → A1, workflow sets A2: final owner ' + await ownN(id) + '; history ' + S(await H(id))));
+id = (await mkTicket('QA AR F EO3 y', D)).id; await sleep(12000); const h3 = await H(id);
+L.push(R_('D-17', (await ownN(id)) === 'A1' && !h3.some(x => /round_robin/.test(x)) ? 'Pass' : 'Fail', 'Workflow sets A1 on create; Dept A RR "QA AR F seq" also matches: final owner ' + await ownN(id) + '; history ' + S(h3)));
+return L;

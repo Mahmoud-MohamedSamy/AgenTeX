@@ -1,0 +1,7 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', DB = '4853562a-0b4d-45cb-ba34-9f2118fcd32c', TU1 = '876ce871-2b02-4854-89a7-68050391c62b', ADM = '3445ec4a-020e-4f12-b156-dd2de7610164';
+const OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/'; const o = JSON.parse(fs.readFileSync(OUT + 'r3.json', 'utf8'));
+const nm = v => v === TU1 ? 'TU1' : v === ADM ? 'admin' : v;
+const ids = process.env.V === 'B' ? { own: o.Bown, back: o.Bback } : { own: o.Aown, back: o.Aback };
+for (let i = 0; i < 6; i++) { await sleep(10000); const d = (await api('GET', '/modules/' + TK + '/records/' + ids.back)).j?.data?.data || []; const t = (await api('GET', '/desk/tickets/' + ids.back)).j?.data || {}; const ow = (d.find(f => f.field === 'owner') || {}).value?.value || null; log({ t: new Date().toISOString().slice(11, 19), backlogTicketOwner: nm(ow), in_backlog: t.in_backlog }); if (ow) break; }
+const t = (await api('GET', '/desk/tickets/' + ids.own)).j?.data || {}; log({ closedTicket: t.status, closed_by: nm(t.closed_by), tu1Open: (((await api('GET', '/desk/agents/' + TU1 + '/workload')).j?.data?.departments || []).find(d => d.department_id === DB) || {}).open_tickets });
+const h = (await api('GET', '/desk/tickets/' + ids.back + '/history')).j?.data || []; log({ backlogHistory: (Array.isArray(h) ? h : []).slice(0, 6).map(e => e.action + ' ' + (e.actor?.kind || '') + ' ' + JSON.stringify(e.summary || '').slice(0, 100)) });

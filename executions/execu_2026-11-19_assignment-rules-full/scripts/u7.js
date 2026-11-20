@@ -1,0 +1,14 @@
+let alerted = false; page.on('dialog', async d => { alerted = true; await d.dismiss().catch(() => {}); });
+await page.goto(H + '/settings/customization/skills', { waitUntil: 'commit' }); await sleep(10000);
+const combo = page.locator('main [role=combobox], main button:has-text("Customer Support")').first(); await combo.click().catch(() => {}); await sleep(1200);
+await page.getByRole('option', { name: 'QA AS6 Dept A', exact: true }).first().click().catch(() => {}); await sleep(5000);
+const sk = await page.locator('main').innerText().catch(() => ''); log('skillsDeptA', /QA AR sk1/.test(sk) ? 'dept A list shown' : 'dept A not shown', /onerror=alert/.test(sk) ? 'xss names shown as text' : 'xss text absent', 'alert:', alerted, 'img[onerror]:', await page.locator('img[onerror]').count());
+await shot('AR-UI-13-skills.png');
+await page.goto(H + '/settings/automation/assignment-rules', { waitUntil: 'commit' }); await page.getByText('Direct Assignment').first().waitFor({ timeout: 150000 }); await sleep(3000);
+await page.locator('main').getByText('Notifications', { exact: true }).first().click(); await sleep(3000);
+const nt = await page.locator('main').innerText(); const ni = nt.indexOf('Rules'); log('notifTab', nt.slice(ni, ni + 1000).replace(/\s+/g, ' ')); await shot('AR-UI-14-notifications.png');
+await page.locator('main').getByText('Rules', { exact: true }).first().click(); await sleep(2500);
+const sw = await page.locator('main button[role=switch]:visible').evaluateAll(es => es.slice(0, 6).map(e => { const l = e.getAttribute('aria-label'); const lb = e.getAttribute('aria-labelledby'); const t = lb && document.getElementById(lb); return (l || (t && t.innerText) || '(no name)').slice(0, 40) + '=' + e.getAttribute('aria-checked'); }));
+log('switchNames', sw.join(' | '));
+const handles = await page.locator('main [aria-roledescription], main button[aria-label*="move" i], main button[aria-label*="drag" i], main button[aria-label*="reorder" i]').evaluateAll(es => es.slice(0, 3).map(e => e.getAttribute('aria-label') || e.getAttribute('aria-roledescription')));
+log('reorderHandles', handles.length, handles.join(' | '));

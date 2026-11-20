@@ -1,0 +1,33 @@
+{
+ "out": "NDC-3057-retest-PASS.png",
+ "ticket": "NDC-3057",
+ "priority": "medium",
+ "title": "Workflow Rules | Condition summary shows stored value instead of the label (\"Approval Status is pending_approval\")",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk + staging-crm · owner (shared session) · client-engine #852 · inactive rules QA RT20 W2 3057 lists (Desk, QA AO Dept A), QA RT20 W2 3057 crm leads / accounts / deals · English + Arabic (RTL)",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3057-r2-desk-en-folded.png", "caption": "Desk, English, folded: Priority [High, Urgent], Language Arabic, Classification [Feature], Happiness Rating Okay, Ticket Approval Status Pending, Contact · Type Customer", "crop": [360, 380, 1030, 270],
+   "boxes": [{"b": [385, 430, 700, 596], "n": 1, "kind": "PASS"}]},
+  {"img": "3057-r2-desk-en-editor.png", "caption": "Desk, English, open editor: same labels (High, Urgent chosen; Arabic; Feature; Okay)", "crop": [360, 380, 1030, 460],
+   "boxes": [{"b": [776, 556, 1318, 822], "n": 2, "kind": "PASS"}]},
+  {"img": "3057-r2-desk-ar-folded.png", "caption": "Desk, Arabic: field names and values translated (عالية، عاجلة · العربية · ميزة · مقبول · قيد الانتظار · عميل), pattern \"و\"", "crop": [215, 380, 1030, 270],
+   "boxes": [{"b": [560, 400, 1220, 630], "n": 3, "kind": "PASS"}]},
+  {"img": "3057-r2-crmleads-en-folded.png", "caption": "CRM Leads, English: Lead Source [Web, Referral], Rating Market Failed, Industry Technology, Salutation Dr.", "crop": [360, 380, 1030, 230],
+   "boxes": [{"b": [385, 430, 700, 542], "n": 4, "kind": "PASS"}]},
+  {"img": "3057-r2-crmleads-ar-folded.png", "caption": "CRM Leads, Arabic: values translated (الويب، إحالة · فشل السوق · التكنولوجيا · د.), pattern \"و\"; field names stay English (expected per dev)", "crop": [215, 380, 1030, 230],
+   "boxes": [{"b": [975, 432, 1048, 540], "n": 5, "kind": "PASS"}, {"b": [1052, 432, 1185, 540], "n": 8, "kind": "INFO"}]},
+  {"img": "3057-r2-crmdeals-en-folded.png", "caption": "CRM Transactions (deals), English: Stage Needs Analysis, Type New Business, Reason For Loss No Budget, Lead Source [Chat]", "crop": [360, 380, 1030, 230],
+   "boxes": [{"b": [385, 430, 760, 542], "n": 6, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Desk folded line: Priority, Language, Classification, Happiness Rating, Ticket Approval Status, Contact · Type", "Labels agents see", "Priority is one of [High, Urgent]; Language = Arabic; Classification is one of [Feature]; Happiness Rating = Okay; Ticket Approval Status = Pending; Contact · Type = Customer (dev claim held; Happiness Rating + Ticket Approval Status were not checked by dev)", "PASS"],
+  [2, "Desk open editor", "Same labels", "Low/Medium/High/Urgent chips (High, Urgent chosen), Arabic, Question/Problem/Feature/Others, Okay, Pending, Customer", "PASS"],
+  [3, "Desk in Arabic (dev: not checked in browser)", "Translated labels + pattern", "Folded + editor: عالية، عاجلة / العربية / ميزة / مقبول / قيد الانتظار / عميل; field names Arabic too; pattern (1 و 2 … و 7)", "PASS"],
+  [4, "CRM Leads: Lead Source, Rating, Industry, Salutation", "Labels", "[Web, Referral], Market Failed, Technology, Dr.; editor the same", "PASS"],
+  [5, "CRM in Arabic (Leads, Agency Code, Transactions)", "Translated values + pattern", "الويب، إحالة / فشل السوق / التكنولوجيا / د.; عميل / خاصة / نشط / المالية; تحليل الاحتياجات / عمل جديد / لا توجد ميزانية / الدردشة; pattern (1 و 2 …) (dev claim held)", "PASS"],
+  [6, "CRM account + deal lists (English)", "Labels", "Agency Code: Account Type Customer, Ownership Private, Rating Active, Industry Finance; Transactions: Stage Needs Analysis, Type New Business, Reason For Loss No Budget, Lead Source [Chat]", "PASS"],
+  [7, "Typed text", "Keeps quotes", "Subject / Last Name / Name starts with \"QA RT20 W2 3057 \"", "PASS"],
+  [8, "CRM field and module names in Arabic", "Dev: stay English (stored English only)", "Lead Source, Rating, Industry, Salutation, Account Type, Ownership, Stage, Reason For Loss and module names Leads / Agency Code / Transactions stay English", "INFO"]
+ ]
+}

@@ -1,0 +1,1 @@
+await page.goto(H+'/settings/web-forms',{waitUntil:'commit'});await sleep(15000);await shot('desk-wf-list.png',{timeout:60000});return {url:page.url().replace(H,''),t:(await page.locator('main').innerText().catch(()=>'')).replace(/\s+/g,' ').slice(0,600)};

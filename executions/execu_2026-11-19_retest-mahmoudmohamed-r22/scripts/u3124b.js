@@ -1,0 +1,2 @@
+const bt=async()=>(await page.locator('main').first().innerText({timeout:20000}).catch(()=>'')).replace(/\s+/g,' ');
+const R={};for(const [id,num,n] of [['28427d52-a45f-4cec-b9b3-07bfdd6d7a12','#5704','3124-r1-a-api'],['3bfc4061-4394-41a0-85d9-303fc7f3e53c','#5526','3124-r1-c-old-5526']]){await page.goto(H+'/views/all/tickets/'+id,{waitUntil:'commit'});await page.getByText(num).first().waitFor({timeout:120000});await sleep(5000);const t=await bt();const k=t.indexOf('CONVERSATION');R[n]=t.slice(k,k+200);await shot(n+'.png',{timeout:90000});}return R;

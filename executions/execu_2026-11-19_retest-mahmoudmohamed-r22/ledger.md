@@ -1,0 +1,115 @@
+# Ledger r22 (QA RT22 data)
+- 2026-11-19T10:21:28Z r22: 3059: CES2 view-only member of QA RT20 B2 Dept (restore from out/dd-before.json)
+- 2026-11-19T10:21:29Z r22: ticket created b93bc0c8-a562-4bda-9113-1f5295a0003f #5664 "QA RT20 BS 3059 vo ticket"
+- 2026-11-19T10:21:36Z r22: ticket created 604e24f7-f189-4b80-bf6a-476444bb7b08 #5665 "QA RT20 BS 3059 vo closed"
+- 2026-11-19T10:44:02Z r22: 3059: QA RT20 B2 Dept members restored (200)
+- 2026-11-19T10:45:31Z r22: ticket created b06d5af5-3577-4d84-a627-9a556cc184de #undefined "QA RT20 BS 3098 owned by owner"
+- 2026-11-19T10:45:32Z r22: ticket created cd3d314a-f5af-4fb7-a947-92fe6e787627 #undefined "QA RT20 BS 3098 unassigned"
+- 2026-11-19T10:45:33Z r22: ticket created b6bc3e1b-1615-4e50-ae6e-4298e55d8123 #undefined "QA RT20 BS 3098 owned by CES2"
+- 2026-11-19T10:45:34Z r22: ticket created 2a690a66-2843-4a72-b700-2917468928f5 #undefined "QA RT20 BS 3098 owned by CES1"
+- 2026-11-19T10:46:41Z 3098: tenant Ticket Access data sharing Private → Public for the per-agent test (restore to Private)
+- 2026-11-19T10:54:07Z 3098: tenant data sharing restored to Private; CES2 ticket access restored to All tickets of their departments
+- 2026-11-19T10:54:58Z r22: 3077: 10 burst tickets in QA AO Dept B: 05460a8a-a3c9-406c-86d8-817fe3ba02dc,6a8665dc-1f5f-41f3-aef0-037fad226c44,21d42899-c234-4a09-9f98-95053368c687,3cb32d7d-66f3-4cba-a23d-c5914d5b01d9,f916f779-a567-4357-8817-f8cc2e8d60ef,2b2db414-e2ec-48ac-9be5-dd71f26ae04c,a9afc0ac-1979-476f-b6e7-a1dcc7818f00,278dfb86-9343-4b0d-afdb-2500e74df048,7e9f7b88-b3ce-40c5-a96b-24ab0094fe89,64be9d51-5375-4e64-ba72-5fdc50b475fd
+- 2026-11-19T10:54:59Z r22: 3077: single ticket d4c603ea-874f-458c-a950-03446bf34202
+- 2026-11-19T10:58:17Z r22: 3067: ticket 3077 burst 10 64be9d51-5375-4e64-ba72-5fdc50b475fd deleted and purged
+- 2026-11-19T10:59:55Z r22: 3064: contact QA RT22 Contact 1 d3308f33-f711-4c4f-ad3b-7b29a8c38ce6
+- 2026-11-19T11:00:03Z r22: 3064: contact QA RT22 Contact 2 ef8ccb49-ed44-499b-afef-2dda60198918
+- 2026-11-19T11:00:26Z r22: ticket created c2cacd94-4c69-4693-a58b-e1cbf5918e0d #undefined "QA RT20 BS 3064 edit form"
+- 2026-11-19T11:09:15Z r22: 3062: ticket tech false 74b39d18-5525-45b9-a3fe-fb92bc720ec0 layout=?
+- 2026-11-19T11:09:16Z r22: 3062: ticket tech missing b9cc6685-3c2e-4742-9e49-fe66e640a20b layout=?
+- 2026-11-19T11:09:17Z r22: 3062: ticket tech true 08e1a5ca-ee2d-405a-a217-ac6eeaa8cff5 layout=?
+- 2026-11-19T11:09:19Z r22: 3062: ticket general missing a82f92f4-65a7-42dd-b2fa-4258d4c94b9d layout=?
+- 2026-11-19T11:09:41Z r22: 3062: ticket tech false 2f92bb99-6550-4e59-9982-5e869efa8597 layout=913b2c84-f235-404d-b563-c2cfa9566b6a
+- 2026-11-19T11:09:43Z r22: 3062: ticket tech missing e0103b5b-0a6f-4ff0-94d7-fff072f2b7d6 layout=913b2c84-f235-404d-b563-c2cfa9566b6a
+- 2026-11-19T11:09:43Z r22: 3062: ticket tech true e188650b-d9bb-45fd-92df-51c72c9e4737 layout=913b2c84-f235-404d-b563-c2cfa9566b6a
+- 2026-11-19T11:09:44Z r22: 3062: ticket general missing 4a01a712-367c-450c-a3ad-f94d7284f0a9 layout=913b2c84-f235-404d-b563-c2cfa9566b6a
+- 2026-11-19T11:19:59Z r22: ticket created 28427d52-a45f-4cec-b9b3-07bfdd6d7a12 #undefined "QA RT20 BS 3124 no contact api"
+- 2026-11-19T11:20:34Z 3124: tickets #5704 (API no contact) and clone #5705
+- 2026-11-19T11:27:32Z r22: ticket created 902a9bc5-56a9-4061-9694-01d9291f6f32 #undefined "QA RT20 BS 3122 clone source"
+- 2026-11-19T11:34:26Z 3122: #5706 + its clone (aea578ae)
+- 2026-11-19T11:36:38Z r22: ticket created 3120387f-5f5d-4a5b-a6e2-4c7ca387dbd0 #undefined "QA RT20 BS 3099 follower move"
+- 2026-11-19T11:37:16Z r22: 3099: ticket #5711 moved to Sales
+- 2026-11-19T11:39:10Z r22: 3097: light agent test user 2 added to QA RT20 B2 Dept (restore from out/dd-before-3097.json)
+- 2026-11-19T11:39:12Z r22: 3097: team QA RT22 3097 full team 043648e4-f61d-450b-bf4d-bec1884860fe
+- 2026-11-19T11:39:24Z r22: 3097: QA RT20 B2 Dept members restored (200)
+- 2026-11-19T11:39:35Z r22: 3097: light agent re-added to dept for PUT check
+- 2026-11-19T11:39:36Z r22: 3097: dept members restored again (200)
+- 2026-11-19T11:40:13Z r22: ticket created 02d76078-341b-414c-abc0-18fa598d463b #undefined "QA RT20 BS 3096 open while moved"
+- 2026-11-19T11:40:42Z r22: 3096: #5714 moved to Sales
+- 2026-11-19T11:45:13Z r22: 3091: CES2 added to QA RT20 B2 Dept (restore from out/3091-before.json)
+- 2026-11-19T11:46:43Z r22: 3091: reassign CES2 (DD only, update_rules true) → see out
+- 2026-11-19T11:47:01Z r22: 3091: QA RT20 B2 Dept restored (200), CS member count unchanged=true
+- 2026-11-19T11:47:31Z r22: ticket created 42e6920a-7d45-461f-94db-0083e0b18a81 #undefined "QA RT20 BS 3027 deleted and restored"
+- 2026-11-19T11:47:48Z r22: 3027: ticket #5717 42e6920a-7d45-461f-94db-0083e0b18a81 deleted + restored
+- 2026-11-19T12:58:17Z CRM: currency EUR dd6a0be9-be64-457e-b256-688877616efb
+- 2026-11-19T12:58:21Z CRM: deal QA RT22 CRM 3106 Deal EUR 6cd58e31-2553-4b5d-bcc3-725f90643ea7
+- 2026-11-19T12:58:44Z CRM: currency EUR dd6a0be9-be64-457e-b256-688877616efb created (3106)
+- 2026-11-19T13:00:47Z CRM: deal 6cd58e31-2553-4b5d-bcc3-725f90643ea7 deleted (Recycle Bin)
+- 2026-11-19T13:00:56Z CRM: currency EUR deleted
+- 2026-11-19T13:00:58Z CRM: company currency EGP → AED (3101) — revert
+- 2026-11-19T13:01:00Z CRM: company currency reverted to EGP (EGP)
+- 2026-11-19T13:05:08Z: 3103: profile QA RT18 profile granted desk:macros:manage (revert)
+- 2026-11-19T13:05:12Z: 3103: permission revoked (404)
+- 2026-11-19T13:06:02Z: 3103: profile QA RT18 profile granted desk:macros:manage (revert)
+- 2026-11-19T13:06:07Z: 3103: permission revoked (404)
+- 2026-11-19T13:06:24Z: 3103: profile QA RT18 profile granted desk:macros:manage (revert)
+- 2026-11-19T13:06:29Z: 3103: permission revoked (204)
+- 2026-11-19T13:09:10Z CRM: global set QA RT22 GS 3087 292513c9-1c6f-4d32-83cc-0da06efaa5ee
+- 2026-11-19T13:13:48Z CRM: 2807: 200 leads "QA RT22 2807 nnnn" (ids in out/2807.json)
+- 2026-11-19T13:29:01Z CRM: 2807: mass delete job 069c2040-aace-4a77-bf4c-95b914cb5438 for the 200 QA RT22 2807 leads
+- 2026-11-19T13:31:33Z CRM: 2807: recycle bin purge run 5fc9f0aa-057a-4b95-87e1-1a571956f938 for 199 QA RT22 2807 leads
+- 2026-11-19T13:35:06Z CRM: 2807: 60 leads QA RT22 2807 b (out/2807b.json)
+- 2026-11-19T13:38:11Z CRM: 3088: leads QA RT22 3088 a/b/c b30f71f1-a580-4161-9d23-2379fcf9ecb9,09a9ee1a-3c14-448f-9592-2e2d8c3ea990,106feaf2-87ef-4999-bf26-4d450909ddda
+- 2026-11-19T13:38:19Z CRM: 3088: QA RT19 GS Tier sort_order alphabetical (revert to entered)
+- 2026-11-19T13:38:22Z CRM: 3088: sort_order reverted (entered)
+- 2026-11-19T13:38:56Z CRM: 3088: sort_order alphabetical
+- 2026-11-19T13:39:04Z CRM: 3088: sort_order back to entered
+- 2026-11-19T13:39:38Z CRM: 3088 sort_order alphabetical
+- 2026-11-19T13:39:52Z CRM: 3088 sort_order entered
+- 2026-11-19T13:40:32Z CRM: 3088 sort_order alphabetical
+- 2026-11-19T13:41:04Z CRM: 3088 sort_order entered
+- 2026-11-19T15:13:34Z CRM: web form QA RT18 2959 form allowed_origins [] → [127.0.0.1:5500] for 2751 (restore [])
+- 2026-11-19T15:25:50Z CRM: web form QA RT18 2959 form websites [] → [http://127.0.0.1:5500] via Settings tab (restore to empty)
+- 2026-11-19T15:30:56Z CRM: created web form QA RT22 2822 B 347706e0-e522-4d78-ae98-65008fc3349c (delete)
+- 2026-11-19T15:31:42Z CRM: created web form QA RT22 2822 A e812f243-4874-48e5-b5f7-afc0a7388950 (delete)
+- 2026-11-19T16:09:17Z OMNI: 3050 scoring rule valid created eca8c296-88df-426c-bf47-d54abdfab945 (delete)
+- 2026-11-19T16:11:46Z OMNI: 3049 profiles QA RT22 3049 cancel f99f6c7a-04d9-481e-aefd-162eb2d5690f, QA RT22 3049 deluser b99cf1c7-3e8d-460c-b842-5fc50f1e783d (delete)
+- 2026-11-19T16:11:52Z OMNI: 3049 invited qa.rt22.3049.cancel (cancel/delete)
+- 2026-11-19T16:11:55Z OMNI: 3049 invited qa.rt22.3049.deluser (cancel/delete)
+- 2026-11-19T16:13:08Z OMNI: 3049 invitation cancel → 504
+- 2026-11-19T16:13:28Z OMNI: 3049 invited user deleted → 504
+- 2026-11-19T16:14:44Z OMNI: 3049 profile cancel2 0553e1c8-3217-42f8-a61e-585e99ea030b
+- 2026-11-19T16:14:45Z OMNI: 3049 invited cancel2 user 1f11137e-7919-4ef8-a960-a9922f8052c1
+- 2026-11-19T16:15:07Z OMNI: 3049 profile deluser2 92e12463-254b-4cc0-b206-738134103c36
+- 2026-11-19T16:15:09Z OMNI: 3049 invited deluser2 user fb41cd34-84be-43db-b94e-914c224da745
+- OMNI: 3049 profile plain c1a05881-befc-48f4-bb0d-bfd8b5ba702c
+- 2026-11-19T16:46:38Z crm: web form QA RT18 2959 form allowed_origins → [] (200)
+- DESK: created web form QA RT22 2751 desk empty 1877810b-24ff-4b8d-8657-d6b6a30b1f27 (delete)
+- 2026-11-19T20:38:52Z ZOHO DESK (techegysolutions, user approved): creating Advanced Web Form 'QA RT22 2751' (Tech) for side-note check — DELETE after
+- 2026-11-19T20:53:01Z ZOHO DESK: creating Feedback Widget (Department Tech) instead of Advanced Web Form — DELETE after
+- 2026-11-19T21:09:41Z ZOHO DESK: Feedback Widget created (id 1499272000000517261, dept Tech) — DELETE after
+- 2026-11-19T21:23:30Z ZOHO DESK: Feedback Widget 'Tech' DELETED (verified: list empty)
+- 2026-11-19T22:13:10Z CLEANUP desk [workflowRules,assignmentRules,blueprints,sla,skills,tags,views,webForms]: workflowRules 80/80, assignmentRules 67/67, blueprints 0/1, sla 8/13, skills 11/11, tags 0/1, views 2/2, webForms 2/2; fails 7
+- 2026-11-19T22:14:26Z CLEANUP desk [records]: workflowRules 80/80, assignmentRules 67/67, blueprints 0/1, sla 8/13, skills 11/11, tags 0/1, views 2/2, webForms 2/2, records 14/14; fails 7
+- 2026-11-19T22:16:24Z CLEANUP desk: support plans/SLA/tag/blueprint {"plans":"200 qa=6","plan QA RT18 plan":"204","plan QA RT19 SLA Plan 2833 i8j7":"204","plan QA RT19 SLA Plan 2841 A lb1g":"204","plan QA RT19 SLA Plan 2841 B lb1g":"204","plan QA RT20 BS Plan 2841 A w2pv":"204","plan QA RT20 BS Plan 2841 B w2pv":"204","sla ba980555":204,"sla 5571e16b":204,"sla 68a9cb45":204,"sla 9d470069":204,"sla a5859600":204,"tag?confirm=true":204,"bp":"204 "}
+- 2026-11-19T22:16:36Z CLEANUP desk [teams,departments]: workflowRules 80/80, assignmentRules 67/67, blueprints 0/1, sla 8/13, skills 11/11, tags 0/1, views 2/2, webForms 2/2, records 14/14, teams 3/3, departments 2/13; fails 18
+- 2026-11-19T22:18:42Z CLEANUP recycle bin desk: purge requested for 50/1158 QA RT18–23 items
+- 2026-11-19T22:20:20Z CLEANUP recycle bin desk: purge requested for 1158/1158 QA RT18–23 items
+- 2026-11-19T22:21:07Z CLEANUP desk [departments]: workflowRules 80/80, assignmentRules 67/67, blueprints 0/1, sla 8/13, skills 11/11, tags 0/1, views 2/2, webForms 2/2, records 14/14, teams 3/3, departments 4/13; fails 27
+- 2026-11-19T22:21:59Z CLEANUP desk departments: {"QA RT19 D3 Dept":"patch 200 | delete 200","QA RT19 NTF Dept":"patch 200 | delete 422 ,\"message\":\"This department still has 1 ticket and 1 email channel address. Choose an active department to transfer them to.\",\"details\":[{\"f","QA RT19 SLA Dept":"patch 200 | delete 200","QA RT19 SLA Dept B":"patch 200 | delete 200","QA RT19 WF Dept":"patch 200 | delete 422 ,\"message\":\"This department still has 3 tickets. Choose an active department to transfer them to.\",\"details\":[{\"field\":\"transfer_to_departme","QA RT20 B2 Dept":"patch 200 | delete 200","QA RT20 BP Dept":"patch 200 | delete 
+- 2026-11-19T22:22:36Z CLEANUP recycle bin desk: purge requested for 5/5 QA RT18–23 items
+- 2026-11-19T22:23:10Z CLEANUP desk departments: {"QA RT19 NTF Dept":"patch 200 | delete 422 ,\"message\":\"This department still has 1 email channel address. Choose an active department to transfer them to.\",\"details\":[{\"field\":\"transf","QA RT19 WF Dept":"patch 200 | delete 422 ,\"message\":\"This department still has 3 tickets. Choose an active department to transfer them to.\",\"details\":[{\"field\":\"transfer_to_departme"}
+- 2026-11-19T22:23:50Z CLEANUP desk: NTF address delete 204, NTF dept delete 422
+- 2026-11-19T22:24:48Z CLEANUP crm [workflowRules,blueprints,vrules,lrules,views,webForms,globalSets]: workflowRules 11/11, blueprints 0/2, vrules 7/7, lrules 7/7, views 4/4, webForms 3/3, globalSets 3/3; fails 2
+- 2026-11-19T22:25:03Z CLEANUP crm [records]: workflowRules 11/11, blueprints 0/2, vrules 7/7, lrules 7/7, views 4/4, webForms 3/3, globalSets 3/3, records 7/7; fails 2
+- 2026-11-19T22:25:04Z CLEANUP crm [blueprints]: workflowRules 11/11, blueprints 2/2, vrules 7/7, lrules 7/7, views 4/4, webForms 3/3, globalSets 3/3, records 7/7; fails 2
+- 2026-11-19T22:25:37Z CLEANUP crm [layouts,fields,profiles]: workflowRules 11/11, blueprints 2/2, vrules 7/7, lrules 7/7, views 4/4, webForms 3/3, globalSets 3/3, records 7/7, layouts 4/4, fields 24/29, profiles 0/1; fails 8
+- 2026-11-19T22:26:16Z CLEANUP crm scoring rules: {"list":"200 n=22","qa":["Copy of QA RT18 SR K1","QA RT18 SR dbl","QA RT18 SR dbl3","QA RT18 SR F9 audit","QA RT18 SR I6 contains company","QA RT18 SR I6 isEmpty company","QA RT18 SR I6 isNotNull user","QA RT18 SR I6 isNull company","QA RT18 SR K1","QA RT18 SR K2","QA RT18 SR K2 ui","QA RT18 SR K2b","QA RT18 SR Z1 layout","QA RT18 SR Z2 criteria","QA RT18 SR Z7 26","QA RT18 SR Z7 30","QA RT18 SR Z8 old","QA RT20 SC R1 fit","QA RT20 SC R3 emp","QA RT20 SC R4 dates","QA RT20 SC R6 old ui","QA RT20
+- 2026-11-19T22:26:27Z CLEANUP crm [fields]: workflowRules 11/11, blueprints 2/2, vrules 7/7, lrules 7/7, views 4/4, webForms 3/3, globalSets 3/3, records 7/7, layouts 4/4, fields 29/29, profiles 0/1; fails 8
+- 2026-11-19T22:26:32Z CLEANUP omni scoring rules: {"QA RT22 3050 valid":204,"left":0}
+- 2026-11-19T22:27:14Z CLEANUP recycle bin crm: purge requested for 334/334 QA RT18–23 items
+- 2026-11-19T22:27:34Z CLEANUP recycle bin reporting: purge requested for 5/5 QA RT18–23 items
+- 2026-11-19T22:28:25Z CLEANUP crm owner Leads prefs: dropped deleted views, lastListViewId → All Leads, lastView → kanban (200); backup out/leads-prefs-before-cleanup.json
+- 2026-11-19T22:35:17Z CLEANUP recycle bin desk: purge requested for 18/18 QA RT18–23 items
+- 2026-11-19T22:37:23Z CLEANUP done: keeper + local site stopped, 16 sign-in state files deleted. LEFT: Desk depts 'QA RT19 NTF Dept' (ghost email address count) and 'QA RT19 WF Dept' (3 hidden tickets) — delete refused without a transfer department; 5 'QA RT20 SC score report*' in reporting Recycle Bin — purge job 05bd6e90 stuck 'running'.
+- 2026-11-20T09:18:42Z NDC-3051 retest BLOCKED (user's backup 01a1f83b expires 27 Nov 09:14 UTC, restorable true, reason null). Comment 8ec0e9f0 posted, state not changed (user: leave blocked). 1 owner sign-in; state file r18-owner.json in scratchpad.

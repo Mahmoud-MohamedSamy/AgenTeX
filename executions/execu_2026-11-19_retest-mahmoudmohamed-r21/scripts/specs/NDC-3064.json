@@ -1,0 +1,248 @@
+{
+ "out": "NDC-3064-retest-FAIL.png",
+ "ticket": "NDC-3064",
+ "priority": "medium",
+ "title": "Tickets | A ticket has no Edit button for all its properties, and no way to add, change or remove its contact",
+ "verdict": "FAIL",
+ "env": "NDC-Staging · staging-desk · owner account (shared session) · QA RT20 TK Dept tickets #4821 and #4833 · contacts QA RT20 TK Contact C1/C2 (example.com)",
+ "date": "17 Nov 2026",
+ "panels": [
+  {
+   "img": "3064-4-edit-filled.png",
+   "caption": "Ticket Properties › Edit opens \"Edit ticket\": contact, subject, description (and priority below) changed in one form",
+   "crop": [
+    464,
+    44,
+    672,
+    812
+   ],
+   "boxes": [
+    {
+     "b": [
+      488,
+      186,
+      1112,
+      244
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      488,
+      386,
+      1112,
+      424
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      488,
+      566,
+      1112,
+      644
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3064-5-after-edit-save.png",
+   "caption": "Saved together: contact C1, subject EDITED; Edit button and Change / Remove contact on the card",
+   "crop": [
+    320,
+    56,
+    1280,
+    844
+   ],
+   "boxes": [
+    {
+     "b": [
+      609,
+      108,
+      657,
+      142
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      370,
+      200,
+      656,
+      304
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      1274,
+      820,
+      1576,
+      874
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      380,
+      560,
+      640,
+      690
+     ],
+     "n": 2,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "3064-8-removed.png",
+   "caption": "After Change contact (→ C2) and Remove contact: card back to \"No contact\" with Add contact",
+   "crop": [
+    320,
+    56,
+    1280,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      370,
+      196,
+      656,
+      286
+     ],
+     "n": 4,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3064-10-added-reload.png",
+   "caption": "Other ticket #4833: Add contact from the card → C1, still there after reload",
+   "crop": [
+    320,
+    56,
+    1280,
+    500
+   ],
+   "boxes": [
+    {
+     "b": [
+      370,
+      196,
+      656,
+      314
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "3064-api-card.png",
+   "caption": "Requests and read-back",
+   "crop": [
+    0,
+    0,
+    1600,
+    470
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      167,
+      1564,
+      267
+     ],
+     "n": 2,
+     "kind": "INFO"
+    },
+    {
+     "b": [
+      36,
+      277,
+      1564,
+      314
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      324,
+      1564,
+      382
+     ],
+     "n": 4,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      392,
+      1564,
+      450
+     ],
+     "n": 5,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Edit button on Ticket Properties → change several fields → Save",
+   "One form, saved together",
+   "\"Edit ticket\" form; contact + subject + description + priority sent in one PATCH → 200, all read back",
+   "PASS"
+  ],
+  [
+   2,
+   "Edit form covers all the ticket's fields",
+   "All fields",
+   "Status, Ticket Owner and Department are not in the Edit form (still inline in Key Information; Department via Move). The create/clone form of the same layout has them — QA lead decision 17 Nov: the Edit form must include them",
+   "FAIL"
+  ],
+  [
+   3,
+   "Change the linked contact",
+   "Possible from the ticket",
+   "Change contact → C2, PATCH 200, read back C2",
+   "PASS"
+  ],
+  [
+   4,
+   "Remove the linked contact",
+   "Possible",
+   "Confirm \"The ticket stays, without a contact\" → contact empty, card shows Add contact",
+   "PASS"
+  ],
+  [
+   5,
+   "Add a contact when there is none",
+   "Possible",
+   "Add contact → C1 on #4833, kept after reload",
+   "PASS"
+  ]
+ ]
+}

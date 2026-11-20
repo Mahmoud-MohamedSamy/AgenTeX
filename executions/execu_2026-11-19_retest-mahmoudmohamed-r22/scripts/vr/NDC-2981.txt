@@ -1,0 +1,29 @@
+# NDC-2981 Layout Rules | The rule editor cannot build text, number, date, regex or length rows [Done]
+Summary
+The rule editor cannot build text, number, date, regex or length rows. The row field list offers only choice and user fields.
+Environment
+- NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2; the same setup on Desk Tickets. Test data was deleted after the run.
+Steps to reproduce
+- Open the rule editor, add a condition row and open its field list.
+Expected result
+Zoho lets condition rows use any field type.
+Actual result
+- The row field list offers only choice and user fields.
+- Rows built through the API work on the form, but the editor shows them as "qa_lr_text (unknown field)".
+Notes
+- Test cases D9, D10, D11, D12 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- CRM and Desk share the same rule engine, so this applies to both apps.
+- Evidence: crm-C20-fields.png (attached).
+
+== COMMENTS
+--- 2026-11-16T10:11:03.594440+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Open a rule with text/number/date/email rows saved through the API → QA RT18 text "starts with" QA, amount > 5, date after, email2 is not empty [PASS]
+- Row field list → Text, number, date, email fields listed besides choice/user fields [PASS]
+- Operators → text: matches/contains pattern, length is / > / ≥ / < / ≤, is empty …; number: = ≠ > ≥ < ≤ between; date: on/after/before/between [PASS]
+- Date row value → saved value 2026-01-01 shows as an empty mm/dd/yyyy box in the editor (side issue, see report) [INFO]
+Evidence: NDC-2981-retest-PASS.png (attached)

@@ -1,0 +1,42 @@
+{
+ "out": "NDC-1483-retest-PARTIAL.png",
+ "ticket": "NDC-1483",
+ "priority": "medium",
+ "title": "Scoring Rule | Lead scoring works end to end (points + / -, operators, rescore, list, views, workflow, reports, permissions); reports keep old scores after a background rescore",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-crm · owner (shared session) + Mahmoud Samy (CRM User, signed in once) · Leads · rules QA RT20 SC R1/R3/R4/R6/R8 (inactive at end) · leads QA RT20 SC A, ctl, N, D, E, F, G, G2, H · Omnichannel not reachable for this owner (APP_KEY_NOT_ENTITLED), bar read from NDC-2571",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "1483-2-rule-editor.png", "caption": "Rule R1: Company is … +30 (edited from 13), Employees >= 100 +7, Lead Status is Not Interested -5", "crop": [960, 80, 640, 620],
+   "boxes": [{"b": [982, 370, 1580, 580], "n": 1, "kind": "PASS"}]},
+  {"img": "1483-3-rule-dates.png", "caption": "Rule R4: today, this month, last N days, between dates, pick list contains / any of — all scored right", "crop": [960, 80, 640, 760],
+   "boxes": [{"b": [982, 370, 1580, 800], "n": 2, "kind": "PASS"}]},
+  {"img": "1483-7-create-update-existing.png", "caption": "New rule with \"Also score the records already there\" → background run rescored the old lead (5 → 16)", "crop": [960, 360, 640, 240],
+   "boxes": [{"b": [978, 488, 1580, 545], "n": 3, "kind": "PASS"}]},
+  {"img": "1483-9-run-done.png", "caption": "Run scoring rules + last-run banner (12,041 checked, 1 changed); no confirmation before a run of every lead", "crop": [290, 90, 1300, 170],
+   "boxes": [{"b": [292, 208, 1576, 248], "n": 4, "kind": "PASS"}, {"b": [546, 138, 716, 178], "n": 11, "kind": "INFO"}]},
+  {"img": "1483-12-filter-score.png", "caption": "Leads list: filter Score ≥ 30 + Sort: Score Descending → the 3 expected QA leads", "crop": [260, 140, 1340, 420],
+   "boxes": [{"b": [272, 290, 507, 482], "n": 7, "kind": "PASS"}, {"b": [480, 148, 656, 182], "n": 7, "kind": "PASS"}, {"b": [524, 322, 1598, 488], "n": 7, "kind": "PASS"}]},
+  {"img": "1483-18-nonadmin-rules.png", "caption": "CRM User: \"You can't manage scoring rules\", no New / Run buttons (API 403)", "crop": [290, 80, 1290, 520],
+   "boxes": [{"b": [710, 368, 1158, 582], "n": 10, "kind": "PASS"}]},
+  {"img": "1483-20-audit-m.png", "caption": "Audit Log › Scoring Rule: added / switched / edited / deleted entries (IPs masked)", "crop": [410, 280, 1060, 610],
+   "boxes": [{"b": [420, 420, 1450, 875], "n": 12, "kind": "PASS"}]},
+  {"img": "1483-api-card.png", "caption": "API checks", "crop": [0, 90, 1600, 650],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 225], "n": 2, "kind": "PASS"}, {"b": [36, 235, 1564, 293], "n": 3, "kind": "PASS"}, {"b": [36, 303, 1564, 340], "n": 4, "kind": "PASS"}, {"b": [36, 350, 1564, 429], "n": 5, "kind": "PASS"}, {"b": [36, 439, 1564, 476], "n": 6, "kind": "PASS"}, {"b": [36, 486, 1564, 544], "n": 7, "kind": "PASS"}, {"b": [36, 554, 1564, 612], "n": 8, "kind": "FAIL"}, {"b": [36, 622, 1564, 680], "n": 9, "kind": "INFO"}, {"b": [36, 690, 1564, 727], "n": 10, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Field entries add / take away points; several rules add up", "Score = sum of matching entries of active rules", "+13, +7, -5, +20 and +4 all added right; 99/100 boundary right; lead with only the negative entry = -5", "PASS"],
+  [2, "Operators by field type", "Number, text, pick list, date operators work", "between (inclusive), today, this month, last N days, between dates, ${TODAY}, pick list contains / any of: all right (new since 15 Nov)", "PASS"],
+  [3, "Change a rule; rescore existing records", "Edited rule rescoring old records on request", "Without the box the record changes on its next save; with \"Also score the records already there\" / update_existing_records a background run rescored old leads (37→33, 5→16)", "PASS"],
+  [4, "Switch off / on / delete a rule", "Scores follow the active rules", "Each starts a background run (~40 s): 8→5, 5→8, 8→5 without saving the lead", "PASS"],
+  [5, "Validation and limits", "Clear errors", "Name 120, description 500, points whole ≠ 0 within ±10000, 30 entries, field / operator / value / option checks, duplicate entry and duplicate name: all 422", "PASS"],
+  [6, "Score cannot be typed in", "System field", "PATCH or create with score is ignored; score stays computed", "PASS"],
+  [7, "Score in list, custom view, workflow, report", "Usable like any number field", "Sort + filter ≥ 30 and a custom view Score ≥ 30 list the 3 right leads; workflow Score reaches 40 and criteria Score ≥ 60 fired; report filter Score ≥ 30 works", "PASS"],
+  [8, "Report after a background rescore", "Report shows the current score", "Report keeps the old score of leads changed by a background run (A 37 vs 33, N -4 vs 0) 20+ min later; correct after the lead is saved", "FAIL"],
+  [9, "Score workflow when a background run changes the score", "Not stated (decision)", "Workflow \"Score reaches 40\" did not run when the run lifted a lead 5→55; it runs on a save", "INFO"],
+  [10, "Non-admin user", "No access", "\"You can't manage scoring rules\"; list / get / create / active / delete / run all 403", "PASS"],
+  [11, "Run scoring rules button", "-", "Starts a rescore of all 12,041 leads at once, no confirmation step", "INFO"],
+  [12, "Audit log", "Changes logged", "Created / switched / edited / deleted entries listed under Scoring Rule", "PASS"],
+  [13, "Same as Omnichannel / Zoho", "Omni (NDC-2571): conditions, + / - points, on/off, delete, decay", "Field rules, + / - points, on/off, delete: yes. Decay, touch points / activities, record criteria, layout, multi-condition lines, per-rule score fields, record-page score section: not built (vs-Zoho image; open on NDC-2934)", "INFO"]
+ ]
+}

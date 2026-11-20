@@ -1,0 +1,11 @@
+const R='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20/screenshots/raw/';
+module.exports=async(page,z)=>{await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/setup#setup/customization/1499272000000006907/emailtemplates',{waitUntil:'commit',timeout:90000});
+await page.getByText('Notify agent on assigning a Call').first().waitFor({timeout:120000}).catch(()=>{});await page.waitForTimeout(3000);
+const nn=page.getByText('Not Now',{exact:true});if(await nn.count())await nn.first().click().catch(()=>{});
+const fr=page.frames().find(f=>/ShowHomePage/.test(f.url()));const out=[];
+const names=await fr.locator('text=/acknowledge/i').allInnerTexts();out.push(names.join(' | '));
+const l=fr.getByText('Acknowledge Contact on receiving a reply',{exact:true});out.push('n='+await l.count());
+await l.first().scrollIntoViewIfNeeded().catch(()=>{});await page.waitForTimeout(1000);await page.screenshot({path:R+'zs-1-templates-list.png'});
+await l.first().click().catch(e=>out.push('clickerr '+e.message.slice(0,80)));await page.waitForTimeout(12000);
+await page.screenshot({path:R+'zs-tmp-tpl3.png'});let t='';for(const f of page.frames())t+=await f.innerText('body').catch(()=>'');
+return out.join('\n')+'\n'+t.replace(/[\w.+-]+@[\w.-]+/g,'<email>').slice(0,2500);};

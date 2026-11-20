@@ -1,0 +1,3 @@
+const R={};const waitTxt=async(re,ms=90000)=>{const t0=Date.now();while(Date.now()-t0<ms){const t=await page.innerText('body').catch(()=>'');if(re.test(t))return true;await sleep(1500);}return false;};
+for(const [n,id] of Object.entries({'3052-10-crm-exec-cconn-empty':'10d8a62a-2db2-41f5-b0db-2f106b613895','3052-11-crm-exec-task-empty':'75f2c72d-82fa-4490-ad84-c6340e0b5e19'})){await page.goto(H+'/settings/workflow-executions/'+id,{waitUntil:'domcontentloaded'});R[n+' ok']=await waitTxt(/Dispatched actions/);await sleep(1500);const t=(await page.innerText('body')).replace(/\s+/g,' ');const i=t.indexOf('Back to history');R[n]=page.url().replace(H,'')+' | '+(i>=0?t.slice(i,i+700):t.slice(0,300));await shot(n+'.png');}
+return R;

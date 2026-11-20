@@ -1,0 +1,22 @@
+const L = []; const D = IDS.DA;
+const ns0 = (await api('GET', '/desk/assignment/notification-settings')).j.data; fs.writeFileSync(RUN + '/out/notif-before.json', JSON.stringify(ns0));
+L.push(sh(await api('PUT', '/desk/assignment/notification-settings', { ...ns0, direct_rules_enabled: true })).s); LED('direct rules switch ON (restore OFF)');
+const DR = async (name, tgts, extra) => { const r = await mkRule({ type: 'direct', name, description: 'QA AR', is_active: true, execute_on: ['create'], targets: tgts, ...(extra || {}) }); IDS['DR_' + name.split(' ')[2]] = r.id; return r; };
+const tk = async (s, dept, ex) => { const t = await mkTicket(s, dept || D, ex || {}); await sleep(4000); return t.id; };
+const H = async id => (await hist(id)).filter(x => /auto_assigned|department_changed|owner_changed|team/.test(x)).map(x => x.slice(0, 200));
+// D-01
+let r = await DR('QA AR D01 A1', [DT('QA AR D01', D, null, AG(IDS.A1))]); let id = await tk('QA AR D01 a');
+let h = await H(id); L.push(R_('D-01', (await ownN(id)) === 'A1' && h.some(x => /direct/.test(x)) ? 'Pass' : 'Fail', 'Direct rule → A1 on create: owner ' + await ownN(id) + '; history ' + JSON.stringify(h.filter(x => /auto_assigned/.test(x))).slice(0, 300)));
+id = await tk('QA AR D02 nomatch'); L.push(R_('D-02', !(await ownN(id)) ? 'Pass' : 'Fail', 'Non-matching ticket owner ' + await ownN(id)));
+id = await tk('QA AR D01 preset', D, { owner: IDS.A2 }); L.push(R_('D-03', (await ownN(id)) === 'A2' ? 'Pass' : 'Fail', 'Matching ticket created with owner A2 → ' + await ownN(id) + ' (direct never overrides an owner)'));
+r = await DR('QA AR D04 A3', [DT('QA AR D04', D, null, AG(IDS.A3))]); id = await tk('QA AR D04 offline');
+L.push(R_('D-04', (await ownN(id)) === 'A3' ? 'Pass' : 'Fail', 'Direct → A3 (offline, no threshold check): owner ' + await ownN(id) + ', in_backlog ' + await bl(id)));
+r = await DR('QA AR D05 team', [DT('QA AR D05', D, null, TM(IDS.TA))]); id = await tk('QA AR D05 team'); let t = await getT(id);
+L.push(R_('D-05', !t.owner || (t.owner && (t.owner.id || t.owner)) === IDS.TA || JSON.stringify(t).includes(IDS.TA) ? 'Pass' : 'Fail', 'Direct → team QA AS6 Team A: owner ' + JSON.stringify(t.owner).slice(0, 80) + ', team ' + JSON.stringify(t.team || t.team_id || null).slice(0, 80) + '; history ' + JSON.stringify(await H(id)).slice(0, 250)));
+r = await DR('QA AR D06 move', [DT('QA AR D06', null, IDS.DB, AG(IDS.A1))]); id = await tk('QA AR D06 move'); t = await getT(id);
+L.push(R_('D-06', t.department === IDS.DB && (await ownN(id)) === 'A1' ? 'Pass' : 'Fail', 'Any department → move to Dept B + A1: dept ' + (t.department === IDS.DB ? 'Dept B' : t.department) + ', owner ' + await ownN(id)));
+r = await DR('QA AR D07 moveRR', [DT('QA AR F D07', IDS.DB, D, UN)]); id = await tk('QA AR F D07 move-unassigned', IDS.DB); await sleep(5000); t = await getT(id);
+L.push(R_('D-07', t.department === D && (await ownN(id)) ? 'Pass' : 'Fail', 'Coming to Dept B → move to Dept A unassigned; Dept A RR "QA AR F seq" matches: dept ' + (t.department === D ? 'Dept A' : 'Dept B') + ', owner ' + await ownN(id) + '; ' + JSON.stringify(await H(id)).slice(0, 300)));
+const a = await DR('QA AR D08a unassigned', [DT('QA AR D08', D, null, UN)]); const b = await DR('QA AR D08b A2', [DT('QA AR D08', D, null, AG(IDS.A2))]); id = await tk('QA AR D08 x');
+L.push(R_('D-08', !(await ownN(id)) ? 'Pass' : 'Fail', 'First matching rule = Mark as Unassigned, second → A2: owner ' + await ownN(id) + ' (second must not act)'));
+saveIds(); return L;

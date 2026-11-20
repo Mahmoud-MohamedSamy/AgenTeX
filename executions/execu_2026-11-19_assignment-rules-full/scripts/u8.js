@@ -1,0 +1,13 @@
+await page.goto(H + '/settings/customization/notifications', { waitUntil: 'commit' }); await sleep(12000);
+const t = await text(); const keys = ['assign', 'Assign', 'unassigned', 'Unassigned', 'agent', 'team'];
+const hits = []; for (const m of t.matchAll(/[^\n]{0,80}(assign|Assign|unassigned)[^\n]{0,80}/g)) hits.push(m[0].trim()); log('setupNotifAssign', [...new Set(hits)].slice(0, 14).join(' || '));
+await page.goto(H + '/settings/automation/assignment-rules', { waitUntil: 'commit' }); await page.getByText('Direct Assignment').first().waitFor({ timeout: 150000 }); await sleep(3000);
+const tab = page.locator('button, [role=tab]').filter({ hasText: /^Notifications$/ }); log('tabs', await tab.count());
+await tab.last().click(); await sleep(3000); log('url', page.url());
+const nt = await text(); const ni = nt.indexOf('Notify'); log('assignNotifTab', nt.slice(Math.max(0, ni - 200), ni + 900).replace(/\s+/g, ' ')); await shot('AR-UI-14-notifications.png');
+await tab.last().evaluate(() => 0).catch(() => {});
+const rules = page.locator('button, [role=tab]').filter({ hasText: /^Rules$/ }); await rules.last().click(); await sleep(2500);
+const sw = await page.locator('button[role=switch]:visible').evaluateAll(es => es.slice(0, 8).map(e => { const l = e.getAttribute('aria-label'); const lb = e.getAttribute('aria-labelledby'); const tt = lb && document.getElementById(lb); return (l || (tt && tt.innerText) || '(no name)').slice(0, 50) + '=' + e.getAttribute('aria-checked'); }));
+log('switchNames', sw.join(' | '));
+const h2 = await page.locator('[aria-roledescription], button[aria-label*="move" i], button[aria-label*="drag" i], button[aria-label*="reorder" i]').evaluateAll(es => es.slice(0, 3).map(e => e.getAttribute('aria-label') || e.getAttribute('aria-roledescription')));
+log('reorderHandles', h2.length, h2.join(' | '));

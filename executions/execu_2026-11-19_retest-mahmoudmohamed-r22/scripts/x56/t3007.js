@@ -1,0 +1,1 @@
+const r=await api('GET','/desk/community/topics/0167012a-8044-4298-b42b-4104ab53cf91/replies');const L2=arr(r.j?.data?.items||r.j?.data);return {s:r.s,n:L2.length,replies:L2.map(x=>(x.created_at||'').slice(11,19)+' '+String(x.body_text||x.content||x.body_html||'').replace(/<[^>]+>/g,'').slice(0,80)+' by '+(x.author_name||x.author?.name||x.author_type||''))};

@@ -1,0 +1,10 @@
+await page.goto(H + '/settings/automation/assignment-rules', { waitUntil: 'commit' });
+await page.getByText('Direct Assignment').first().waitFor({ timeout: 150000 }); await sleep(4000);
+await page.getByRole('button', { name: /New Rule/ }).first().click(); await sleep(3000);
+const dlg = page.locator('[role=dialog]').last();
+await dlg.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(1500);
+const m1 = (await dlg.innerText()).match(/Enter a name[^\n]*|required[^\n]*/i); log('emptyName', m1 && m1[0]); await shot('AR-UI-03-empty-name.png');
+await dlg.getByPlaceholder(/Urgent tickets/).fill('QA AR UI temp'); await dlg.getByRole('button', { name: 'Save', exact: true }).click(); await sleep(1500);
+const t2 = await dlg.innerText(); const m2 = t2.match(/Add at least one target[^\n]*/i); log('noTarget', m2 && m2[0]); await shot('AR-UI-04-no-target.png');
+await dlg.getByRole('button', { name: /Add Target/ }).click(); await sleep(2500); await shot('AR-UI-05-target.png', { fullPage: true });
+log((await dlg.innerText()).replace(/\s+/g, ' ').slice(0, 1500));

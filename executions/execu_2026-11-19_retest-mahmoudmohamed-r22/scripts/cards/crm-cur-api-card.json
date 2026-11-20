@@ -1,0 +1,9 @@
+{"out":"crm-cur-api-card.png","title":"CRM currencies — owner, staging-crm (home currency EGP), 19 Nov 2026","host":"staging-crm.taviportal.com","who":"owner","date":"19 Nov 2026",
+"rows":[
+["3109 non-ISO code","POST /currencies code XYZ","422 CURRENCY_CODE_INVALID \"Currency code must be a 3-letter ISO 4217 code; XYZ is not one.\" (was 201)","ok"],
+["3109 rate with 12 decimals","POST /currencies JPY rate 0.123456789012","422 CURRENCY_EXCHANGE_RATE_TOO_PRECISE \"…at most 9 decimal places.\" (was rounded silently)","ok"],
+["3106 add EUR, then a Deal in EUR","POST /currencies EUR 50 · POST Deal currency EUR amount 1000","201 · 201 — stored currency EUR, rate 50, amount_home 50000 (was 422 \"not one of the allowed values\")","ok"],
+["3108 delete a currency in use","DELETE /currencies/EUR (1 deal uses it)","409 CURRENCY_IN_USE \"EUR is used by 1 record, so it cannot be deleted. Deactivate it instead…\" (was 204)","ok"],
+["3101 change company currency, EUR present","PUT /iam/tenant/company-profile currency AED","409 \"The company currency can't be changed while other currencies are added (EUR)…\"; home stays EGP","ok"],
+["3101 change company currency, no other currencies","deal + EUR removed · PUT currency AED · GET /currencies","200 · home_currency AED (follows the company currency); reverted to EGP","ok"]
+]}

@@ -1,0 +1,3 @@
+const ids = ['993f1366-bffb-47af-bd74-70231a5b0e97', '0d3a47d9-dc83-4767-8e8a-2b80a7836706', '9e5d8b94-60ff-45be-b04f-93c6646dc858', 'c5a0eee5-f0bd-4de3-9a01-664effda258f', '4eaad7f0-0056-4ed4-a37e-d2020a963a08', 'f2b91b67-d759-4f96-bb93-9470105952d9'];
+const o = {}; for (const id of ids) { const h = L((await api('GET', `/desk/tickets/${id}/history`)).j?.data); const r = await rec(id); const d = (await api('GET', '/desk/tickets/' + id)).j?.data || {}; o[id.slice(0, 8)] = 'rec=' + r.status + ' desk=' + d.status + ' closed_time=' + (r.closed_time || '-') + ' | ' + h.map(x => x.occurred_at.slice(11, 16) + ' ' + x.action.replace('ticket.', '')).slice(0, 6).join(', '); }
+return o;

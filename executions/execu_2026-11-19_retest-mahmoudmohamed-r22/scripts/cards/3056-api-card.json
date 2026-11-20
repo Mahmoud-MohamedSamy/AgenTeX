@@ -1,0 +1,8 @@
+{"out":"3056-api-card.png","title":"NDC-3056 — what the server gives the agent vs what the popup draws (#4869, blueprint QA RT20 BS 3056 flow)","host":"staging-desk.taviportal.com","who":"agent Customer Experience Specialists 2 (Desk Agent, Customer Support)","date":"17 Nov 2026",
+"rows":[
+["1 Server: blueprint-state (as agent)","GET /modules/{tickets}/records/{#4869}/blueprint-state","200: allStates = Open, Escalated, On Hold, Closed (4); allTransitions = go Open→Escalated, urgent Open→On Hold (priority = high), admin Open→Closed, end Escalated→Closed (priority = medium), holdend On Hold→Closed, reopen Closed→Open (6)","ok"],
+["2 Popup in Open","View configured actions (header and Steps card)","draws 3 of 6: go, urgent (Shown when Priority = \"high\"), admin. Missing end, holdend, reopen","bad"],
+["3 Popup in Escalated","after the agent ran QA go","draws 1 of 6: end (Shown when Priority = \"medium\"). Missing the Open steps, On Hold → Closed, Closed → Open","bad"],
+["4 Popup in Closed","after the agent ran QA end","draws 1 of 6: reopen (Asks for: Checklist). Same in Arabic","bad"],
+["5 Runnable steps (as agent)","GET blueprint-transitions; Run in the header","Open: go only (urgent hidden by condition, admin owner-only); Escalated priority low: none → \"No transitions you can run · View configured actions\"; priority medium: end; ran go and end → 200","ok"]
+]}

@@ -1,0 +1,4 @@
+const o={};const NTF='8c6073ac-ba5f-4d17-9960-71a6850662a9',WF='bc53682c-7271-4fe0-8c32-99eff3a10bb1';const mask=s=>String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g,'<email>');
+for(const p of ['/desk/channels/addresses','/desk/channels/mailboxes']){const r=await api('GET',p);const d=r.j?.data;const L=Array.isArray(d)?d:(d?.addresses||d?.mailboxes||d?.items||[]);o[p]=r.s+' n='+L.length+' ntf='+L.filter(x=>JSON.stringify(x).includes(NTF)).map(x=>x.id+' '+mask(x.address||x.email||x.name||'')+' created '+String(x.created_at||'').slice(0,10)).join(' | ');}
+const T='88e8ea44-1658-4df3-9930-d0902b91073d';const r=await api('GET','/modules/'+T+'/records?q='+encodeURIComponent('QA RT19 WF Dept')+'&per_page=50');o.wfq=r.s+' '+arr(r.j?.data).map(x=>x.id.slice(0,8)+' '+JSON.stringify((x.data||[]).find(z=>z.field==='subject')?.value?.value)).join(' | ');
+return o;

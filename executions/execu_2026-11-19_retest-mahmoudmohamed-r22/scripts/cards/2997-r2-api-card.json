@@ -1,0 +1,8 @@
+{"out":"2997-r2-api-card.png","title":"NDC-2997 retest 2 — On Edit rules, Owner Assignment round robin (QA RT20 W2 2997 *, now inactive)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Re-fire, edits one at a time","Roles › Manager (DT2 + TU1), QA AO Dept A; 3 tickets × 3 priority edits (9 edits)","9 runs (3 per ticket), all Fired / Owner Assignment Succeeded; owners in edit order DT2, TU1, DT2, TU1, DT2, TU1, DT2, TU1, DT2; every Correlation distinct","ok"],
+["2 Re-fire, edits in parallel (load)","3 tickets edited together, 4 rounds (12 edits)","12 runs (4 per ticket); 2 runs decided by the background worker (owner still old at ~1 s, set 8 s later) and no extra run followed; no Correlation = another run's id; picks 6 DT2 / 6 TU1","ok"],
+["3 Developer scenario","Manager round robin, 4 QA AO Dept A tickets","DT2, TU1, DT2, TU1 — one run each","ok"],
+["4 Afternoon developer cases","CEO→Customer Support; CEO→QA AO Dept A; Profile→empty dept; Profile→QA AO Dept A","CES2 3/3; Skipped \"nobody in the org unit can own…\" ×2; Skipped \"nobody in the role can own…\"; Dev Team 2 3/3","ok"],
+["5 Ticket History","GET /desk/tickets/{id}/history","per edit: 1 workflow_rule_ran + 1 owner_changed + 1 priority change (3/3/3 and 4/4/4)","ok"],
+["6 History of a background-decided owner","ticket #5027 round 3 (UI History tab)","API: one owner_changed, source engine, no rule attached; UI shows it twice (\"Ticket owner was changed\" + \"Ticket Owner was updated\") without \"by workflow rule\"","bad"]]}

@@ -1,0 +1,10 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', D = '19510fdc-91f3-4a7a-8888-153f1318b765', OUT = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-19_jam-4ca9d5fe/out/';
+const res = {}; const now = (await api('GET', '/desk/departments/' + D + '/round-robin-preferences')).j?.data; fs.writeFileSync(OUT + 'tech-prefs-before-cleanup.json', JSON.stringify(now));
+const agent = (await api('GET', '/desk/agents/' + now.agent_thresholds[0].user_id)).j?.data; res.thresholdAgent = agent?.name || agent?.display_name || agent?.full_name;
+const target = { ...now, assign_backlogs: true, assign_to_offline_agents: true, department_threshold_enabled: true, agent_thresholds: now.agent_thresholds.map(a => ({ ...a, threshold: 2 })) };
+res.put = (await api('PUT', '/desk/departments/' + D + '/round-robin-preferences', target)).s; res.after = (await api('GET', '/desk/departments/' + D + '/round-robin-preferences')).j?.data;
+res.delTicket = (await api('DELETE', '/modules/' + TK + '/records/a1532aaa-0014-40ff-9a1d-5478928aea87')).s; await sleep(3000);
+const ids = [], labels = []; let cur = null; do { const r = await api('GET', '/audit/recycle-bin/items?app_key=desk&limit=200' + (cur ? '&cursor=' + cur : '')); for (const x of arr(r.j)) if (/^QA BL/.test(x.record_label || '')) { ids.push(x.id); labels.push(x.record_label); } cur = r.j?.meta?.next_cursor; } while (cur);
+res.bin = labels; if (ids.length) res.purge = (await api('POST', '/audit/recycle-bin/delete', { ids })).s;
+const rule = ((await api('GET', '/desk/assignment-rules?type=round_robin')).j?.data?.rules || []).find(r => r.id.startsWith('802f9b1c')); res.rule = { name: rule?.name, active: rule?.is_active, targets: JSON.stringify(rule?.targets).slice(0, 600) };
+log(res);

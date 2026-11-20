@@ -1,0 +1,7 @@
+{"out":"3097-r1-api-card.png","title":"Light agent as team member — owner, light agent \"test user 2\" (Desk Light Agent) added to QA RT20 B2 Dept for the test, 19 Nov 2026","host":"staging-desk.taviportal.com","who":"owner","date":"19 Nov 2026",
+"rows":[
+["New team with the light agent","POST /desk/teams · QA RT20 B2 Dept · sources [test user 2]","422 TEAM_LIGHT_AGENT \"A light agent cannot be a team member. Remove the light agent from the team, or give them a working agent profile first.\" (was 201)","ok"],
+["New team with a full agent","POST /desk/teams · sources [owner]","201 \"QA RT22 3097 full team\"","ok"],
+["Add the light agent to that team","PUT /desk/teams/{id} · sources [owner, test user 2]","422 TEAM_LIGHT_AGENT; members still [owner]","ok"],
+["Department","PATCH QA RT20 B2 Dept members","light agent added only for the test, then removed (restored)","info"]
+]}

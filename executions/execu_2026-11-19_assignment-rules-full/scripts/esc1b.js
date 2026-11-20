@@ -1,0 +1,6 @@
+const c = (f, op, v) => ({ field_key: f, operator: op, value: v }); const D = IDS.DA; const pname = 'QA AR ESC SLA';
+const mkP = async (esc) => api('POST', '/desk/sla/policies', { department_id: D, name: pname, description: 'QA AR', is_active: true, triggers: { create: true, update: false, field_update: null, customer_reply: false, agent_response: false, private_thread: null, comment: null }, execute_only_with_account: false, resolution_from_created: true,
+  targets: [{ name: 't', criteria: { conditions: [c('subject', 'starts_with', 'QA AR ESC Y')], pattern: '1' }, response: { value: 1, unit: 'minutes' }, resolution: { value: 600, unit: 'minutes' }, calendar_mode: 'calendar', business_hours_id: null, first_response_only: true, escalate_on_business_hours: false, escalations: { response: [esc], resolution: [] } }] });
+let p = await mkP({ level: 1, timing: 'at', offset: null, recipients: [{ kind: 'agent', id: IDS.A1 }], template_ref: null, actions: { assign_owner: null, assign_team: null, set_priority: null } });
+console.log('try1', p.s, JSON.stringify(p.j).slice(0, 400));
+const pid = p.j && p.j.data && p.j.data.id; if (pid) { LED('SLA policy "' + pname + '" ' + pid + ' (Dept A, delete)'); IDS.ESC_SLA = pid; saveIds(); }

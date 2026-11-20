@@ -1,0 +1,9 @@
+{"out":"JAM-closure-api-card.png","title":"Assign tickets on closure: reproduction on staging (19 Nov 2026, QA AO Dept B)","host":"staging-desk.taviportal.com","who":"Desk Administrator + Test User 1","date":"19 Nov 2026",
+"rows":[
+["Jam 4ca9d5fe (Customer Support)","prefs: department threshold 1, assign_on_closure true, assign_backlogs false","#5668 in_backlog=true; #5666 (owner CES 1) closed 10:30:32 UTC; #5668 still unassigned 1 h later","bad"],
+["Repro setup","agent threshold Test User 1 = 5, assign_on_closure true, assign_backlogs false; RR rule pool = Test User 1","ticket 'A own' -> Test User 1 (5/5); ticket 'A backlog' -> in_backlog=true","info"],
+["Agent online","POST /desk/agents/presence/query","online=true, email channel on (last activity 10:43:22)","info"],
+["Owner closes own ticket","Test User 1: PATCH status=Closed at 10:44:22","200; closed_by Test User 1; open tickets 5 -> 4 (under threshold)","info"],
+["Backlog ticket after close","GET record + /desk/tickets every 10 s for 70 s","owner empty, in_backlog=true until 10:45:30; history: no assignment","bad"],
+["Control: Assign backlogs on","PUT round-robin-preferences assign_backlogs=true at 10:46:03","10:46:23 owner -> Test User 1 (actor System): backlog and threshold work","ok"],
+["10 Nov 2026 (earlier run F-08)","owner closes / another user closes","backlog ticket went to the closed ticket's owner in 3-4 s: PASS then","ok"]]}

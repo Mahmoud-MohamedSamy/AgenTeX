@@ -1,0 +1,2 @@
+const o = {}; for (const k of ['A1', 'A2', 'A3']) { const w = (await api('GET', '/desk/agents/' + IDS[k] + '/workload')).j?.data; o[k] = { total: (w.departments || []).reduce((a, d) => a + (d.open_tickets || 0), 0), DA: (w.departments || []).find(d => d.department_id === IDS.DA)?.open_tickets || 0, DB: (w.departments || []).find(d => d.department_id === IDS.DB)?.open_tickets || 0, keys: Object.keys(w) }; }
+return o;

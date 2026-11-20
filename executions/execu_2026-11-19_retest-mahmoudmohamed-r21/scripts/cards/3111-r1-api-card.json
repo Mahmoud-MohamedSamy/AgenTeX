@@ -1,0 +1,12 @@
+{"out":"3111-r1-api-card.png","title":"Workflow rule save with another department's tag — owner, 18 Nov 2026 (after workflow #146)","host":"staging-desk.taviportal.com","who":"owner","date":"18 Nov 2026",
+"rows":[
+["Create, other dept's tag","POST /workflow/rules · departments [QA AO Dept A] · Add Tags [\"Accepted\" (Customer Support)]","422 \"Add Tags: Accepted belongs to another department. Use a tag of the rule's department.\" — not saved","ok"],
+["Create, own dept's tag","POST · [QA AO Dept A] · Add Tags [\"QA WF tag A\" (QA AO Dept A)]","201 saved","ok"],
+["Create, mixed tags","POST · [QA AO Dept A] · Add Tags [QA WF tag A + Accepted]","422, same message — not saved","ok"],
+["Edit tags to other dept","PATCH saved rule · Add Tags → [Accepted]","422, same message; stored tag still QA WF tag A","ok"],
+["Rename only","PATCH saved rule · name","200 saved","ok"],
+["Move rule to other dept","PATCH saved rule · departments → [Customer Support], tag QA WF tag A kept","422 \"Add Tags: QA WF tag A belongs to another department…\"","ok"],
+["Old rule \"3058 bad\" (saved 17 Nov with Accepted)","PATCH name only / same departments","200 / 200 — still editable when tags and departments are unchanged","info"],
+["Multi-dept rule","POST · [QA AO Dept A + Customer Support] · Add Tags [Accepted]","201 saved — tag belongs to one of the rule's departments","ok"],
+["Remove Tags, other dept's tag","POST · [QA AO Dept A] · Remove Tags [Accepted]","201 saved — not checked by the fix (dev: tickets that change department keep old tags)","info"]
+]}

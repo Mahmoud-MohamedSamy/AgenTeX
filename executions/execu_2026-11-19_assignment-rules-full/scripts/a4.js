@@ -1,0 +1,1 @@
+return R_('A-15', 'Pass', 'Desk agent without the assignment permission (Customer Experience Specialists 2): rules GET/POST 403, RR preferences GET/PUT 403, switches PUT 403, skill POST 403. Minor: GET /desk/assignment/notification-settings 200 (reads the master switches). 6 Nov I-1 (prefs readable) is fixed.');

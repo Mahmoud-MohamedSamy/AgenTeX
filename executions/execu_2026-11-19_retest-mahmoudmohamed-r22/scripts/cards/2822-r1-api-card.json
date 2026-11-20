@@ -1,0 +1,57 @@
+{
+ "out": "2822-r1-api-card.png",
+ "title": "NDC-2822 · Back-End layer · POST /api/v1/web-forms/public/{key}/submissions (direct, no form page) · QA RT22 2822 A/B (CRM Leads) + Desk Tech Webform · 19 Nov 2026",
+ "rows": [
+  [
+   "1 Valid A",
+   "first_name \"  QA RT22 v1  \", number_2 \"42.0\", decimal 2.5, date 2026-11-20",
+   "200 · lead saved: name trimmed, number_2 = 42, decimal 2.5, date 2026-11-20",
+   "ok"
+  ],
+  [
+   "2 Text rules (min 3 / max 10 / spaces)",
+   "\"ab\" · \"QA RT22 abcdefgh\" · \"     \"",
+   "422 FIELD_TOO_SHORT · FIELD_TOO_LONG · FIELD_REQUIRED, no record",
+   "ok"
+  ],
+  [
+   "3 Number / decimal / date",
+   "500 · \"abc\" · decimal 12 · date 2027-01-15 · 2026-02-30",
+   "422 FIELD_RANGE · FIELD_FORMAT · FIELD_RANGE · FIELD_RANGE · FIELD_FORMAT",
+   "ok"
+  ],
+  [
+   "4 Lists + unknown field",
+   "pick_list_2 \"nope\" · multi_select [\"nope\"] · lead_source (not on form)",
+   "422 FIELD_OPTION · FIELD_OPTION · FIELD_UNKNOWN",
+   "ok"
+  ],
+  [
+   "5 Several bad at once",
+   "name, number, decimal, date all bad",
+   "422 with 4 errors (path, type, message), one per field",
+   "ok"
+  ],
+  [
+   "6 Email / phone / text (form B)",
+   "\"not-an-email\" · \"12ab!!\" · 11 chars (max 8) · 33-char email (max 30)",
+   "422 FIELD_FORMAT · FIELD_FORMAT · FIELD_TOO_LONG · FIELD_TOO_LONG; Arabic form → messages in Arabic",
+   "ok"
+  ],
+  [
+   "7 Whole number with decimals",
+   "number_2 (type Number) = \"5.5\"",
+   "200 · lead e51e9372 saved with number_2 = 5.5 — no whole-number check (browser sends it too)",
+   "bad"
+  ],
+  [
+   "8 Desk form (Tech Webform)",
+   "bad email · classification \"nope\" · unknown field · subject \"    \"",
+   "422 FIELD_FORMAT · FIELD_OPTION · FIELD_UNKNOWN · FIELD_REQUIRED",
+   "ok"
+  ]
+ ],
+ "host": "staging-crm.taviportal.com (public form API, signed out) + Desk",
+ "who": "website visitor (no sign-in) / owner for record checks",
+ "date": "19 Nov 2026"
+}

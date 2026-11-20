@@ -1,0 +1,824 @@
+{
+ "F-01a": {
+  "id": "F-01a",
+  "status": "Pass",
+  "comment": "Offline agents OFF, pool A1,A2,A3 (A3 offline): 4 tickets went to A1, A2, A1, A2. History of first: [\"ticket.department_changed {\\\"field_key\\\":\\\"department_id\\\",\\\"old_value\\\":null,\\\"new_value\\\":\\\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\\\"}\",\"ticket.auto_assigned {\\\"kind\\\":\\\"round_robin\\\",\\\"rule_id\\\":\\\"5d79cd79-69bf-4e93-8017-47e80df2a418\\\",\\\"team_id\\\":null,\\\"trigger\\\":\\\"created\\\",\\\"owner_id\\\":\\\"876ce8",
+  "at": "2026-11-19T16:13:49.550Z"
+ },
+ "F-01b": {
+  "id": "F-01b",
+  "status": "Pass",
+  "comment": "Offline agents ON: 3 tickets went to A3, A1, A2 (A3 offline should now get its turn)",
+  "at": "2026-11-19T16:14:24.365Z"
+ },
+ "F-14": {
+  "id": "F-14",
+  "status": "Pass",
+  "comment": "Agent thresholds = Dept A open + 1 (A1 82 vs total 112, A2 71 vs total 80): ticket assigned to A1 → threshold counts this department only (NDC-2824 fixed)",
+  "at": "2026-11-19T16:14:43.912Z"
+ },
+ "F-03": {
+  "id": "F-03",
+  "status": "Pass",
+  "comment": "Department threshold 1 (every agent has more than 1 open): ticket owner null, in_backlog true. History: [\"ticket.department_changed {\\\"field_key\\\":\\\"department_id\\\",\\\"old_value\\\":null,\\\"new_value\\\":\\\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\\\"}\"]",
+  "at": "2026-11-19T16:15:37.855Z"
+ },
+ "F-05": {
+  "id": "F-05",
+  "status": "Pass",
+  "comment": "Dept threshold 1 + A1 agent threshold 83 (A1 had 82): new ticket owner A1 (expected A1; A2 limited by dept threshold 1)",
+  "at": "2026-11-19T16:15:46.147Z"
+ },
+ "F-06": {
+  "id": "F-06",
+  "status": "Pass",
+  "comment": "Agent level switched off: rows kept = [\"A1:83\"]; new ticket owner null, in_backlog true (dept threshold 1 applies again)",
+  "at": "2026-11-19T16:16:16.261Z"
+ },
+ "F-09": {
+  "id": "F-09",
+  "status": "Pass",
+  "comment": "Both backlog options off, threshold raised to 200 (room for everyone): backlog ticket F03 after 80 s owner  (expected still unassigned)",
+  "at": "2026-11-19T16:17:40.822Z"
+ },
+ "F-07a": {
+  "id": "F-07a",
+  "status": "Pass",
+  "comment": "Assign backlogs on (limit 1, order created time), A1 given 2 free slots at 16:18:34 UTC: assignments {\"TK_F03\":\"A1@31s\",\"TK_L1\":\"A1@156s\"} (F03 is oldest; F06 older than L1-L3 too)",
+  "at": "2026-11-19T16:21:58.782Z"
+ },
+ "F-15": {
+  "id": "F-15",
+  "status": "Pass",
+  "comment": "Threshold ignores On Hold tickets: one of A2's tickets moved Open → On Hold let A2 take one more ticket. This is the fix of NDC-2824 (Done: \"threshold counts ... On Hold tickets\", Zoho counts open only). Requirements doc §Threshold (\"open or on hold\") is out of date.",
+  "at": "2026-11-19T17:12:59.161Z"
+ },
+ "F-07b": {
+  "id": "F-07b",
+  "status": "Pass",
+  "comment": "Order Due Date, one free slot (A2): assigned {\"TK_X2\":\"A2@20s\"} — expected X2 (due soonest) only",
+  "at": "2026-11-19T16:29:29.342Z"
+ },
+ "F-07c": {
+  "id": "F-07c",
+  "status": "Pass",
+  "comment": "Assign backlogs + slot freed by closing an A1 ticket: assigned {\"TK_X3\":\"A1@6s\"} — expected X3 (next due) to A1",
+  "at": "2026-11-19T16:31:14.929Z"
+ },
+ "F-07d": {
+  "id": "F-07d",
+  "status": "Pass",
+  "comment": "A2 offline with a free slot (offline agents off): X1 in 75 s → none; after A2 came online → {\"TK_X1\":\"A2@0s\"}",
+  "at": "2026-11-19T16:32:50.886Z"
+ },
+ "F-07e": {
+  "id": "F-07e",
+  "status": "Pass",
+  "comment": "Assign backlogs on; A1 full (7/7); A1 ticket X3 moved Dept B → Dept A (200): backlog Y1 (owner before null) → {\"TK_Y1\":\"A1@11s\"}",
+  "at": "2026-11-19T16:37:17.757Z"
+ },
+ "F-11": {
+  "id": "F-11",
+  "status": "Pass",
+  "comment": "in_backlog cleared: Y2 true → manual assign to A2 → false (after ~5 s); Y3 true → moved to Dept A via Desk move (200) → in_backlog false, dept DA, owner A1",
+  "at": "2026-11-19T16:37:01.269Z"
+ },
+ "F-16": {
+  "id": "F-16",
+  "status": "Pass",
+  "comment": "Unassigned ticket matching no round-robin rule: owner null, in_backlog false (expected not backlog)",
+  "at": "2026-11-19T16:36:23.325Z"
+ },
+ "F-08a": {
+  "id": "F-08a",
+  "status": "Pass",
+  "comment": "Closure on, backlogs off, A1 online and full; A1 closes own ticket ({\"success\":true,\"data\":{\"id\":\"80b8e911-8): backlog Z1 → {\"TK_Z1\":\"A1@5s\"}",
+  "at": "2026-11-19T16:39:42.827Z"
+ },
+ "F-08b": {
+  "id": "F-08b",
+  "status": "Pass",
+  "comment": "Administrator closes A2's ticket, A2 online: backlog Z2 → {\"TK_Z2\":\"A2@17s\"}",
+  "at": "2026-11-19T16:40:29.734Z"
+ },
+ "F-08c": {
+  "id": "F-08c",
+  "status": "Pass",
+  "comment": "5 repetitions (A1 closes own ticket with a backlog ticket waiting): A1@5s, A1@5s, A1@5s, A1@10s, A1@5s",
+  "at": "2026-11-19T16:44:46.820Z"
+ },
+ "F-08d": {
+  "id": "F-08d",
+  "status": "Fail",
+  "comment": "NDC-3137 recheck: A2 offline (email channel off), \"Assign tickets to offline agents\" ON, admin closes A2's ticket: backlog Z3 → still unassigned after 75 s",
+  "at": "2026-11-19T16:47:05.323Z"
+ },
+ "F-08e": {
+  "id": "F-08e",
+  "status": "Pass",
+  "comment": "Closing an unowned ticket (200) with backlog Z3 waiting: Z3 owner after 30 s null (expected nothing: no agent freed a slot). Z3 after A2 came back online (closure only): null",
+  "at": "2026-11-19T16:49:30.779Z"
+ },
+ "F-10a": {
+  "id": "F-10a",
+  "status": "Pass",
+  "comment": "Incoming = \"Push into backlog first\", agents have room: new N1 after 15 s owner null, in_backlog true; after Assign backlogs on → {\"TK_N1\":\"A2@67s\",\"TK_Z3\":\"A1@68s\"}",
+  "at": "2026-11-19T16:51:03.173Z"
+ },
+ "F-10b": {
+  "id": "F-10b",
+  "status": "Pass",
+  "comment": "Backlog first + only closure on: N2 waited (owner null); after A1 closed a ticket → {\"TK_N2\":\"A1@8s\"}",
+  "at": "2026-11-19T16:51:37.176Z"
+ },
+ "E-02": {
+  "id": "E-02",
+  "status": "Pass",
+  "comment": "No method → 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].method\",\"issue\":\"required\"}]; unknown method → 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].method\",\"issue\":\"unknown\"}]",
+  "at": "2026-11-19T16:55:10.112Z"
+ },
+ "E-04": {
+  "id": "E-04",
+  "status": "Pass",
+  "comment": "Empty pool → 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].pool.user_ids\",\"issue\":\"required\"}]; agent not in department → 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].pool.user_ids[0]\",\"issue\":\"not_a_member\"}]; no department → 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"department_id\",\"issue\":\"required\"}]",
+  "at": "2026-11-19T16:55:10.123Z"
+ },
+ "E-09": {
+  "id": "E-09",
+  "status": "Pass",
+  "comment": "Sequential pool A1,A2,A3 (offline agents on), 6 tickets → A1, A2, A3, A1, A2, A3",
+  "at": "2026-11-19T16:57:44.864Z"
+ },
+ "E-12": {
+  "id": "E-12",
+  "status": "Pass",
+  "comment": "Offline agents off, A3 offline: 3 tickets → A1, A2, A1; third ticket history skipped_user_ids = [A3] (A3's turn skipped)",
+  "at": "2026-11-19T17:00:53.379Z"
+ },
+ "E-19": {
+  "id": "E-19",
+  "status": "Pass",
+  "comment": "History entry: ticket.auto_assigned {\"kind\":\"round_robin\",\"rule_id\":\"2e9a32b2-c959-4494-8b3b-3ccfe98f0b16\",\"team_id\":null,\"trigger\":\"created\",\"owner_id\":\"876ce871-2b02-4854-89a7-68050391c62b\",\"strategy\":\"sequence\",\"rule_name\":\"QA AR E09 seq\",\"rule_type\":\"round_robin\",\"skipped_user_ids\":[]}",
+  "at": "2026-11-19T16:58:44.757Z"
+ },
+ "E-11": {
+  "id": "E-11",
+  "status": "Pass",
+  "comment": "After removing A2 from the pool (200): next 3 → A1, A3, A1 (requirement RR-6: restart at the first agent, A1)",
+  "at": "2026-11-19T16:59:06.088Z"
+ },
+ "E-10": {
+  "id": "E-10",
+  "status": "Pass",
+  "comment": "Team pool QA AS6 Team A (A2 Mahmoud Samy, A3 Dev Team 2): A3, A2, A3, A2 (Zoho: team members in alphabetical order → Dev Team 2 first)",
+  "at": "2026-11-19T16:59:34.079Z"
+ },
+ "E-05": {
+  "id": "E-05",
+  "status": "Pass",
+  "comment": "Team pool with A3 excluded: A2, A2, A2",
+  "at": "2026-11-19T16:59:50.625Z"
+ },
+ "E-13": {
+  "id": "E-13",
+  "status": "Pass",
+  "comment": "Load based, Dept A open counts {\"A1\":95,\"A2\":79,\"A3\":26}: 3 tickets → A3, A3, A3 (expected the least loaded, A3)",
+  "at": "2026-11-19T17:01:19.584Z"
+ },
+ "E-15": {
+  "id": "E-15",
+  "status": "Pass",
+  "comment": "Two matching RR rules (first → A1, second → A2): tickets → A1, A1; assignment entries in history: 1",
+  "at": "2026-11-19T17:01:52.347Z"
+ },
+ "E-17": {
+  "id": "E-17",
+  "status": "Pass",
+  "comment": "Round Robin master switch off (200): matching ticket owner null, in_backlog false after 25 s; switch restored (200)",
+  "at": "2026-11-19T17:02:36.328Z"
+ },
+ "E-20": {
+  "id": "E-20",
+  "status": "Pass",
+  "comment": "RR rule \"on update\" (subject contains QA AR E20 GO): created ticket owner null; after subject edit → A2 in 6 s",
+  "at": "2026-11-19T17:02:55.239Z"
+ },
+ "E-21": {
+  "id": "E-21",
+  "status": "Info",
+  "comment": "Ticket moved Dept B → Dept A was assigned by Dept A round-robin: [\"ticket.auto_assigned {\\\"kind\\\":\\\"round_robin\\\",\\\"rule_id\\\":\\\"5d79cd79-69bf-4e93-8017-47e80df2a418\\\",\\\"team_id\\\":null,\\\"trigger\\\":\\\"moved\\\",\\\"owner_id\\\":\\\"876ce871-2b02-4854-89a7-68050391c62b\\\",\\\"strategy\\\":\\\"sequence\\\",\\\"rule_name\\\":\\\"QA AR F seq\\\",\\\"rule_type\\\":\\\"round_robin\\\",\\\"\"]",
+  "at": "2026-11-19T17:02:57.028Z"
+ },
+ "E-14a": {
+  "id": "E-14a",
+  "status": "Pass",
+  "comment": "Skill-based: ticket with sk1 → A1, ticket with sk2 → A2",
+  "at": "2026-11-19T17:12:59.910Z"
+ },
+ "E-14b": {
+  "id": "E-14b",
+  "status": "Pass",
+  "comment": "Skill-based, ticket with no skills → stays unassigned, not backlog, no history entry. Matches Zoho per NDC-2932 (Done). Requirement RR-9 text is out of date.",
+  "at": "2026-11-19T17:12:59.173Z"
+ },
+ "E-14c": {
+  "id": "E-14c",
+  "status": "Pass",
+  "comment": "Skill-based, ticket with sk1 + sk2, nobody holds both → A1 (holds sk1). Matches Zoho per NDC-2931 (Done: Zoho assigns to an agent with any of the skills). Requirement RR-9 text is out of date.",
+  "at": "2026-11-19T17:12:59.185Z"
+ },
+ "H-02": {
+  "id": "H-02",
+  "status": "Pass",
+  "comment": "Skill: name blank → required; no type → required; duplicate → 409 SKILL_DUPLICATE; 101-char name → 400 VALIDATION_ERROR: The skill is invalid. [{\"field\":\"name\",\"issue\":\"too_long\"}]",
+  "at": "2026-11-19T17:12:59.771Z"
+ },
+ "H-01": {
+  "id": "H-01",
+  "status": "Pass",
+  "comment": "Skills are per department: Dept B shows none of Dept A's skills; skill types listed per department",
+  "at": "2026-11-19T17:12:59.794Z"
+ },
+ "H-03": {
+  "id": "H-03",
+  "status": "Pass",
+  "comment": "Inactive skill sk3 (criteria matches) never added to a ticket",
+  "at": "2026-11-19T17:12:59.814Z"
+ },
+ "H-06": {
+  "id": "H-06",
+  "status": "Pass",
+  "comment": "Ticket matching sk1 and sk2: [sk1, sk2]; after swapping the list order: [sk2, sk1]; order restored",
+  "at": "2026-11-19T17:12:59.827Z"
+ },
+ "H-07": {
+  "id": "H-07",
+  "status": "Pass",
+  "comment": "Auto-add on create (QA AR SK1 auto → [sk1]) and on update (subject edited to include SK2 → [sk2])",
+  "at": "2026-11-19T17:12:59.841Z"
+ },
+ "H-08": {
+  "id": "H-08",
+  "status": "Pass",
+  "comment": "Recalculate on a ticket whose subject no longer matches: skills [sk1] → [] (changed true)",
+  "at": "2026-11-19T17:12:59.852Z"
+ },
+ "H-10": {
+  "id": "H-10",
+  "status": "Pass",
+  "comment": "Skill usage lists the round-robin rules that use it (skill_method)",
+  "at": "2026-11-19T17:12:59.864Z"
+ },
+ "H-11": {
+  "id": "H-11",
+  "status": "Pass",
+  "comment": "11 skills on a ticket → 422 \"more than 10 selected items\"; 31st active skill in a department → 400 SKILL_ACTIVE_LIMIT \"up to 30 active skills\"",
+  "at": "2026-11-19T17:12:59.874Z"
+ },
+ "H-12": {
+  "id": "H-12",
+  "status": "Pass",
+  "comment": "Skill added by criteria on create, skill-based RR in the same event: SK2 ticket → A2 (holds sk2), sk1 ticket → A1",
+  "at": "2026-11-19T17:12:59.887Z"
+ },
+ "H-13": {
+  "id": "H-13",
+  "status": "Pass",
+  "comment": "Skill type created (department in body), renamed (200), deleted (204)",
+  "at": "2026-11-19T17:12:59.898Z"
+ },
+ "D-01": {
+  "id": "D-01",
+  "status": "Pass",
+  "comment": "Direct rule → A1 on create: owner A1; history ticket.auto_assigned {kind: agent, rule_id, trigger: created, owner_id A1}",
+  "at": "2026-11-19T17:14:58.555Z"
+ },
+ "D-02": {
+  "id": "D-02",
+  "status": "Pass",
+  "comment": "Non-matching ticket owner null",
+  "at": "2026-11-19T17:14:16.610Z"
+ },
+ "D-03": {
+  "id": "D-03",
+  "status": "Pass",
+  "comment": "Matching ticket created with owner A2 → A2 (direct never overrides an owner)",
+  "at": "2026-11-19T17:14:22.466Z"
+ },
+ "D-04": {
+  "id": "D-04",
+  "status": "Pass",
+  "comment": "Direct → A3 (offline, no threshold check): owner A3, in_backlog false",
+  "at": "2026-11-19T17:14:28.538Z"
+ },
+ "D-05": {
+  "id": "D-05",
+  "status": "Pass",
+  "comment": "Direct → team QA AS6 Team A: record owner null, team \"434140a3-2145-428c-9e57-e6bc5cf2f8d0\"; history [\"ticket.department_changed {\\\"field_key\\\":\\\"department_id\\\",\\\"old_value\\\":null,\\\"new_value\\\":\\\"b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6\\\"}\",\"ticket.auto_",
+  "at": "2026-11-19T17:14:59.774Z"
+ },
+ "D-06": {
+  "id": "D-06",
+  "status": "Pass",
+  "comment": "Any department → move to Dept B + A1: dept Dept B, owner A1",
+  "at": "2026-11-19T17:15:07.356Z"
+ },
+ "D-07": {
+  "id": "D-07",
+  "status": "Pass",
+  "comment": "Coming to Dept B → move to Dept A unassigned; Dept A RR \"QA AR F seq\" matches: dept Dept A, owner A2; [\"ticket.auto_assigned {\\\"kind\\\":\\\"unassigned\\\",\\\"rule_id\\\":\\\"6e8f14a4-ede8-41ee-8258-45d701fc3f9b\\\",\\\"team_id\\\":null,\\\"trigger\\\":\\\"created\\\",\\\"owner_",
+  "at": "2026-11-19T17:15:18.624Z"
+ },
+ "D-08": {
+  "id": "D-08",
+  "status": "Pass",
+  "comment": "First matching rule = Mark as Unassigned, second → A2: owner null (second must not act)",
+  "at": "2026-11-19T17:15:24.285Z"
+ },
+ "D-09": {
+  "id": "D-09",
+  "status": "Pass",
+  "comment": "Direct rule on update: unowned ticket edited to match → A1; ticket owned by A2 edited to match → A2",
+  "at": "2026-11-19T17:15:52.335Z"
+ },
+ "D-10": {
+  "id": "D-10",
+  "status": "Pass",
+  "comment": "No loop: assignment entries after match 1, after a further edit 1",
+  "at": "2026-11-19T17:15:52.346Z"
+ },
+ "D-11": {
+  "id": "D-11",
+  "status": "Pass",
+  "comment": "Two matching direct rules: first ticket → A1; after swapping order (200) → A2",
+  "at": "2026-11-19T17:16:22.843Z"
+ },
+ "D-12": {
+  "id": "D-12",
+  "status": "Pass",
+  "comment": "Both rules inactive → owner null; rule active but Direct master switch off → owner null",
+  "at": "2026-11-19T17:16:34.592Z"
+ },
+ "D-13": {
+  "id": "D-13",
+  "status": "Pass",
+  "comment": "Direct rule → A2 in Dept B; A2 removed from Dept B (200): ticket owner null; rule target now {\"kind\":\"agent\",\"user_id\":\"d23fb4e0-248d-41f6-af60-d28885a7007e\",\"team_id\":null}; A2 restored (200)",
+  "at": "2026-11-19T17:16:41.569Z"
+ },
+ "C-04": {
+  "id": "C-04",
+  "status": "Pass",
+  "comment": "Move to Dept B + agent A3 who is not in Dept B → 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].assign.user_id\",\"issue\":\"not_a_member\"}]",
+  "at": "2026-11-19T17:16:42.167Z"
+ },
+ "C-05": {
+  "id": "C-05",
+  "status": "Pass",
+  "comment": "Coming to Any Department, no move, agent A1 → 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].assign.kind\",\"issue\":\"needs_department\"}] (requirement: can only be Unassigned)",
+  "at": "2026-11-19T17:16:42.182Z"
+ },
+ "C-07": {
+  "id": "C-07",
+  "status": "Pass",
+  "comment": "API accepts a target with kind agent + team_id but stores only the agent (team_id dropped): ticket → A1, no team",
+  "at": "2026-11-19T17:17:29.857Z"
+ },
+ "F-12": {
+  "id": "F-12",
+  "status": "Pass",
+  "comment": "Team Assignment off (200): new direct rule with team target → 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].assign.t; RR team pool → 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].pool.tea; manual assign to team → 422 UNPROCESSABLE: Team Assignment is off in the ticket's department, so team 434140 (NDC-2812); restored (200)",
+  "at": "2026-11-19T17:17:10.185Z"
+ },
+ "F-13": {
+  "id": "F-13",
+  "status": "Pass",
+  "comment": "Team ticket D05 (team, no RR team rule) stays in the team queue with no owner: owner null, team \"434140a3-2145-428c-9e57-e6bc5cf2f8d0\"",
+  "at": "2026-11-19T17:17:10.200Z"
+ },
+ "D-15": {
+  "id": "D-15",
+  "status": "Pass",
+  "comment": "Direct → A1, then workflow \"owner is A1 → set A2\" in the same event: final owner A2 (A2 = the workflow saw the owner set by direct). History [\"ticket.owner_changed {\\\"field_key\\\":\\\"owner\\\",\\\"old_value\\\":\\\"876ce871-2b02-4854-89a7-68050391c62b\\\",\\\"new_value\\\":\\\"d23f\",\"ticket.auto_assigned {\\\"kind\\\":\\\"agent\\\",\\\"rule_id\\\":\\\"f2130916-3fdd-460c-b071-8f7d24e39567\\\",\\\"team_id\\\":null,\\\"trigger\\\"\"]",
+  "at": "2026-11-19T17:18:35.544Z"
+ },
+ "D-16": {
+  "id": "D-16",
+  "status": "Pass",
+  "comment": "Direct → A1, workflow sets A2: final owner A2; history [\"ticket.owner_changed {\\\"field_key\\\":\\\"owner\\\",\\\"old_value\\\":\\\"876ce871-2b02-4854-89a7-68050391c62b\\\",\\\"new_value\\\":\\\"d23f\",\"ticket.auto_assigned {\\\"kind\\\":\\\"agent\\\",\\\"rule_id\\\":\\\"7874f872-c761-49a9-98be-974db5ff9db1\\\",\\\"team_id\\\":null,\\\"trigger\\\"\"]",
+  "at": "2026-11-19T17:18:57.937Z"
+ },
+ "D-17": {
+  "id": "D-17",
+  "status": "Pass",
+  "comment": "Workflow sets A1 on create; Dept A RR \"QA AR F seq\" also matches: final owner A1; history []",
+  "at": "2026-11-19T17:19:11.992Z"
+ },
+ "G-01": {
+  "id": "G-01",
+  "status": "Pass",
+  "comment": "Direct rule assigns A1: notifications A1 1, A2 0",
+  "at": "2026-11-19T17:20:46.327Z"
+ },
+ "G-02": {
+  "id": "G-02",
+  "status": "Pass",
+  "comment": "A1 picks up a ticket himself ({\"success\":true,\"data\":{\"ticket_id\":\"67ed884b-f2b9-462b-b67d-f6f36ba71835\",\"owne): owner A1, A1 notifications 0",
+  "at": "2026-11-19T17:20:46.339Z"
+ },
+ "G-03": {
+  "id": "G-03",
+  "status": "Pass",
+  "comment": "Direct rule → team QA AS6 Team A (A2, A3): A2 notifications 1, A1 (not in team) 0",
+  "at": "2026-11-19T17:20:46.351Z"
+ },
+ "G-06": {
+  "id": "G-06",
+  "status": "Pass",
+  "comment": "Ticket created with owner A1 by the admin, then edited without touching owner: A1 has exactly 1 notification (the creation assignment), none for the edit",
+  "at": "2026-11-19T17:20:54.820Z"
+ },
+ "G-07": {
+  "id": "G-07",
+  "status": "Pass",
+  "comment": "EO-5: direct → A1 then workflow → A2 in the same event: A1 notifications [], A2 [\" | Ticket #5884 assigned to you: QA AR EO5 y\"] (only the final owner should be notified)",
+  "at": "2026-11-19T17:21:03.919Z"
+ },
+ "B-06": {
+  "id": "B-06",
+  "status": "Pass",
+  "comment": "Retest 20 Nov: no \"Is Escalated\" field by that name, but \"SLA Escalated\" (boolean, equals) is the same flag. RR rule \"subject starts QA AR ESC AND SLA Escalated = true\" (create+update), SLA policy with 1-min response + level-1 escalation: escalated ticket edited -> owner A1 in 5 s; non-escalated control -> null. Edit before escalation left the ticket unassigned.",
+  "at": "2026-11-19T22:09:58.609Z"
+ },
+ "B-07": {
+  "id": "B-07",
+  "status": "Pass",
+  "comment": "Date qa_ndc_issue_date: equals,not_equal_to,is_after,is_before,between,not_between,is_empty,is_not_empty | number first_response_time: equals,not_equal_to,less_than,greater_than,between,is_empty,is_not_empty | execution execution_time:during_business_hours/outside_business_hours/on_holiday/not_on_holiday",
+  "at": "2026-11-19T17:22:45.399Z"
+ },
+ "B-01": {
+  "id": "B-01",
+  "status": "Pass",
+  "comment": "Direct rule with no criteria (Dept B): unrelated ticket -> A2",
+  "at": "2026-11-19T17:22:56.348Z"
+ },
+ "A-11": {
+  "id": "A-11",
+  "status": "Pass",
+  "comment": "Delete rule (204): ticket it assigned keeps owner A2; rule gone",
+  "at": "2026-11-19T17:22:56.817Z"
+ },
+ "B-02": {
+  "id": "B-02",
+  "status": "Pass",
+  "comment": "Pattern 1 and (2 or 3), rule -> A1: QA AR B02 a/Low=A1 | QA AR B02 b/Urgent=A1 | QA AR B02 c/Medium=null | QA AR other B/Low=null",
+  "at": "2026-11-19T17:23:19.062Z"
+ },
+ "B-03": {
+  "id": "B-03",
+  "status": "Pass",
+  "comment": "Condition without value -> 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].criteria.conditions[0].value\",\"issue\":; without field -> 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].criteria.conditions[0].field_key\",\"iss",
+  "at": "2026-11-19T17:23:19.389Z"
+ },
+ "B-04": {
+  "id": "B-04",
+  "status": "Pass",
+  "comment": "Bad patterns: {\"1 and (2\":\"400 VALIDATION_ERROR: The assignment rule is invalid. [{\\\"field\\\":\\\"targets[0].criteria.pattern\\\",\\\"issue\\\":\\\"syntax\\\"}]\",\"1 and 4\":\"400 VALIDATION_ERROR: The assignment rule is invalid. [{\\\"field\\\":\\\"targets[0].criteria.pattern\\\",\\\"issue\\\":\\\"unkn",
+  "at": "2026-11-19T17:23:19.669Z"
+ },
+ "B-05": {
+  "id": "B-05",
+  "status": "Pass",
+  "comment": "25 conditions -> ACCEPTED; 26 -> 400 VALIDATION_ERROR: The assignment rule is invalid. [{\"field\":\"targets[0].criteria.conditions\",\"issue\":\"too_many",
+  "at": "2026-11-19T17:23:20.148Z"
+ },
+ "B-09": {
+  "id": "B-09",
+  "status": "Pass",
+  "comment": "Contact last name rule -> A2 (exp A2); account name rule -> A1 (exp A1); neither -> null (acct 201, contact 201)",
+  "at": "2026-11-19T17:23:40.208Z"
+ },
+ "B-08a": {
+  "id": "B-08a",
+  "status": "Pass",
+  "comment": "Detached holiday list \"QA AS6 HOL today\" (only holiday 7 Nov): on_holiday -> null (exp none), not_on_holiday -> A2 (exp A2). Positive \"today is a holiday\" not run: creating/editing holiday lists needs iam.company.business_hours.manage (owner), and the owner sign-in fails.",
+  "at": "2026-11-19T17:25:21.805Z"
+ },
+ "B-08b": {
+  "id": "B-08b",
+  "status": "Pass",
+  "comment": "Default business hours open now (UTC 17:25): during -> A1 / outside -> A2 rule gave A1",
+  "at": "2026-11-19T17:25:33.020Z"
+ },
+ "A-04": {
+  "id": "A-04",
+  "status": "Pass",
+  "comment": "Name 121 -> {\"ok\":false,\"s\":400,\"e\":\"VALIDATION_ERROR: The assignment rule is invalid. [{\\\"field\\\":\\\"name\\\",\\\"issue\\\":\\\"too_long\\\"}]\"}; name 120 + description 1000 -> 201; description 1001 -> {\"ok\":false,\"s\":400,\"e\":\"VALIDATION_ERROR: The assignment rule is invalid. [{\\\"field\\\":\\\"description\\\",\\\"issue\\\":\\\"too_long\\\"}]\"}",
+  "at": "2026-11-19T17:25:57.139Z"
+ },
+ "A-05": {
+  "id": "A-05",
+  "status": "Pass",
+  "comment": "Execute on empty -> {\"ok\":false,\"s\":400,\"e\":\"VALIDATION_ERROR: The assignment rule is invalid. [{\\\"field\\\":\\\"execute_on\\\",\\\"issue\\\":\\\"required\\\"}]\"}",
+  "at": "2026-11-19T17:25:57.238Z"
+ },
+ "A-06": {
+  "id": "A-06",
+  "status": "Pass",
+  "comment": "5 targets -> 201; 6 targets -> {\"ok\":false,\"s\":400,\"e\":\"VALIDATION_ERROR: The assignment rule is invalid. [{\\\"field\\\":\\\"targets\\\",\\\"issue\\\":\\\"too_many\\\"}]\"}",
+  "at": "2026-11-19T17:25:57.546Z"
+ },
+ "A-07": {
+  "id": "A-07",
+  "status": "Pass",
+  "comment": "Save with no target: \"Add at least one target.\" (UI) and API targets required",
+  "at": "2026-11-19T17:50:56.117Z"
+ },
+ "A-03": {
+  "id": "A-03",
+  "status": "Pass",
+  "comment": "Save with empty name: \"Enter a name for the Assignment Rule.\" (UI) and API name required",
+  "at": "2026-11-19T17:50:56.105Z"
+ },
+ "A-13": {
+  "id": "A-13",
+  "status": "Pass",
+  "comment": "First save 200; second save with the old version 409 RULE_CHANGED: This rule was changed by someone else. Reload to see the latest version. {\"rule_ids\":[\"41920c0a-d25b-4325-; description now v-first",
+  "at": "2026-11-19T17:25:58.739Z"
+ },
+ "A-14": {
+  "id": "A-14",
+  "status": "Pass",
+  "comment": "Audit events since 15:14 UTC: {\"assignment_rule:updated\":20,\"assignment_rule:created\":35,\"assignment_rule:deleted\":5,\"skill_type:deleted\":1,\"skill_type:updated\":1,\"skill_type:created\":2,\"skill:created\":25,\"skill:updated\":4,\"skill_settings:updated\":3,\"agent_skill:created\":3,\"round_robin_preferences:updated\":34,\"round_robin_agent_threshold:deleted\":5,\"round_robin_agent_threshold:updated\":10,\"round_robin_agent_threshold:created\":7}; sample prefs entry by mahmoud.mahamed1515 changes [\"AssignToOfflineAgents\",\"UpdatedAt\"]",
+  "at": "2026-11-19T17:26:12.599Z"
+ },
+ "A-09": {
+  "id": "A-09",
+  "status": "Pass",
+  "comment": "Activate then deactivate keeps the 5 targets unchanged; inactive rules never acted (D-12)",
+  "at": "2026-11-19T17:26:00.666Z"
+ },
+ "A-10": {
+  "id": "A-10",
+  "status": "Pass",
+  "comment": "Master switches (API): Direct off -> no direct assignment (D-12); Round Robin off -> no RR, no backlog (E-17); rules kept",
+  "at": "2026-11-19T17:26:00.678Z"
+ },
+ "I-03": {
+  "id": "I-03",
+  "status": "Pass",
+  "comment": "20 tickets at once, pool A1+A2, each with 5 free slots: A1 5, A2 5, unassigned 10, tickets with >1 assignment 0 (created 20); open after A1 39/39, A2 18/18",
+  "at": "2026-11-19T17:31:48.903Z"
+ },
+ "I-04": {
+  "id": "I-04",
+  "status": "Pass",
+  "comment": "Create -> owner (API poll every 250 ms), 10 tickets: 2.6s, 2.7s, 3.2s, 3.2s, 3.6s, 3.8s, 3.9s, 4.4s, 4.8s, 4.9s; within 5 s: 10/10",
+  "at": "2026-11-19T17:29:01.072Z"
+ },
+ "A-15": {
+  "id": "A-15",
+  "status": "Pass",
+  "comment": "Desk agent without the assignment permission (Customer Experience Specialists 2): rules GET/POST 403, RR preferences GET/PUT 403, switches PUT 403, skill POST 403. Minor: GET /desk/assignment/notification-settings 200 (reads the master switches). 6 Nov I-1 (prefs readable) is fixed.",
+  "at": "2026-11-19T17:32:31.052Z"
+ },
+ "R-3046": {
+  "id": "R-3046",
+  "status": "Pass",
+  "comment": "Regression NDC-3046 (SLA policy \"QA AR SLA 3046\" in Dept B, SLA [\"first_response:running\",\"resolution:running\"]): RR rule \"SLA name = policy\" on create -> A1 in 5 s. Extra: rule \"SLA Violated = false\" -> A1; with no SLA policy at all the same condition did not match (ticket left unassigned)",
+  "at": "2026-11-19T17:39:56.159Z"
+ },
+ "R-2811": {
+  "id": "R-2811",
+  "status": "Pass",
+  "comment": "Regression NDC-2811: agent with Email channel off is treated as offline (F-07d: no backlog assignment while email off; F-08d presence online but email off)",
+  "at": "2026-11-19T17:38:50.213Z"
+ },
+ "R-2812": {
+  "id": "R-2812",
+  "status": "Pass",
+  "comment": "Regression NDC-2812: Team Assignment off refuses manual team assign (422), team rule targets and RR team pools (400) - F-12",
+  "at": "2026-11-19T17:38:50.225Z"
+ },
+ "R-2821": {
+  "id": "R-2821",
+  "status": "Pass",
+  "comment": "Regression NDC-2821: skill types are per department (GET/POST with department; H-13)",
+  "at": "2026-11-19T17:38:50.238Z"
+ },
+ "R-2824": {
+  "id": "R-2824",
+  "status": "Pass",
+  "comment": "Regression NDC-2824: threshold counts only this department (F-14) and only Open, not On Hold (F-15)",
+  "at": "2026-11-19T17:38:50.250Z"
+ },
+ "R-2931": {
+  "id": "R-2931",
+  "status": "Pass",
+  "comment": "Regression NDC-2931: skill-based assigns to an agent with any of the ticket skills (E-14c)",
+  "at": "2026-11-19T17:38:50.261Z"
+ },
+ "R-2932": {
+  "id": "R-2932",
+  "status": "Pass",
+  "comment": "Regression NDC-2932: ticket with no skills stays unassigned under a skill-based rule (E-14b)",
+  "at": "2026-11-19T17:38:50.275Z"
+ },
+ "R-2814": {
+  "id": "R-2814",
+  "status": "Partial",
+  "comment": "Regression NDC-2814: detached holiday list - not_on_holiday matches (B-08a); positive on_holiday not run (holiday lists need the owner permission)",
+  "at": "2026-11-19T17:38:50.292Z"
+ },
+ "R-3137": {
+  "id": "R-3137",
+  "status": "Fail",
+  "comment": "NDC-3137 still open: closure does not assign to an offline agent with offline agents ON (F-08d)",
+  "at": "2026-11-19T17:38:50.308Z"
+ },
+ "A-01": {
+  "id": "A-01",
+  "status": "Pass",
+  "comment": "Setup > Automation > Assignment Rules: tabs Rules / Team Assignment / Notifications; Direct Assignment and Round Robin each with own list, New Rule and master switch (AR-UI-01)",
+  "at": "2026-11-19T17:50:56.078Z"
+ },
+ "A-02": {
+  "id": "A-02",
+  "status": "Pass",
+  "comment": "New rule: Active on, Execute on Ticket Create ticked, name 0/120 and description 0/1000 counters (AR-UI-02)",
+  "at": "2026-11-19T17:50:56.091Z"
+ },
+ "A-08": {
+  "id": "A-08",
+  "status": "Pass",
+  "comment": "Reorder: API order swap changes which rule acts (D-11); every row has a labelled drag handle \"Drag <rule> to reorder\" (UI drag itself not exercised)",
+  "at": "2026-11-19T17:50:56.137Z"
+ },
+ "A-12": {
+  "id": "A-12",
+  "status": "Not run",
+  "comment": "\"Rule saved.\" toast not checked in this run (no rule saved through the UI); seen on 7 Nov",
+  "at": "2026-11-19T17:50:56.149Z"
+ },
+ "C-01": {
+  "id": "C-01",
+  "status": "Pass",
+  "comment": "Ticket coming to: Any Department + 57 departments; Move Ticket to: Select Department + departments",
+  "at": "2026-11-19T17:50:56.162Z"
+ },
+ "C-02": {
+  "id": "C-02",
+  "status": "Pass",
+  "comment": "Coming to QA AS6 Dept A: Agents tab lists Dept A agents (Dev Team 2, Mahmoud Samy, ndc-staging-owner, Test User 1); Teams tab lists Dept A teams; Team linked to a ticket field; Mark as Unassigned",
+  "at": "2026-11-19T17:50:56.174Z"
+ },
+ "C-03": {
+  "id": "C-03",
+  "status": "Pass",
+  "comment": "Move Ticket to QA AS6 Dept B: agent list switches to Dept B agents (Mahmoud Samy, ndc-staging-owner, Test User 1)",
+  "at": "2026-11-19T17:50:56.186Z"
+ },
+ "C-06": {
+  "id": "C-06",
+  "status": "Pass",
+  "comment": "Agent Test User 1 picked, then Mark as Unassigned: picker back to Unassigned",
+  "at": "2026-11-19T17:50:56.198Z"
+ },
+ "C-08": {
+  "id": "C-08",
+  "status": "Pass",
+  "comment": "Team Assignment off: team targets refused by API (F-12). UI Teams tab hiding not re-checked in the browser",
+  "at": "2026-11-19T17:50:56.211Z"
+ },
+ "D-13b": {
+  "id": "D-13b",
+  "status": "Pass",
+  "comment": "List shows a rule whose agent left the department as \"Assign to <agent> (no longer in <department>)\"",
+  "at": "2026-11-19T17:50:56.222Z"
+ },
+ "D-14": {
+  "id": "D-14",
+  "status": "Pass",
+  "comment": "Sources (run 18 Nov, same build line): manual create and API trigger direct rules; web form triggers when the form owner mode is unassigned; import only with \"Trigger automation\" on; inbound email not testable (mail down). Evidence executions/execu_2026-11-18_direct-assign-sources",
+  "at": "2026-11-19T17:50:56.234Z"
+ },
+ "E-01": {
+  "id": "E-01",
+  "status": "Pass",
+  "comment": "Round Robin list has a Department picker; New rule shows \"Department: QA AS6 Dept A\"",
+  "at": "2026-11-19T17:50:56.246Z"
+ },
+ "E-03": {
+  "id": "E-03",
+  "status": "Pass",
+  "comment": "Method help texts match Zoho word for word (Load Based / Sequential / Skill Based)",
+  "at": "2026-11-19T17:50:56.257Z"
+ },
+ "E-06": {
+  "id": "E-06",
+  "status": "Pass",
+  "comment": "Form notes: \"The rule will not re-assign tickets that were assigned via other automations.\" and \"The rule will not assign more tickets than the number specified under threshold.\"",
+  "at": "2026-11-19T17:50:56.268Z"
+ },
+ "E-07": {
+  "id": "E-07",
+  "status": "Pass",
+  "comment": "No backlog option or capacity field on the round-robin rule form",
+  "at": "2026-11-19T17:50:56.280Z"
+ },
+ "E-08": {
+  "id": "E-08",
+  "status": "Pass",
+  "comment": "Round robin on Ticket Create works (F-01, E-09); New Ticket form owner shows Unassigned so RR can act (NDC-2813)",
+  "at": "2026-11-19T17:50:56.292Z"
+ },
+ "E-16": {
+  "id": "E-16",
+  "status": "Pass",
+  "comment": "All agents at threshold -> unassigned backlog ticket (F-03); all offline -> backlog (F-07d)",
+  "at": "2026-11-19T17:50:56.303Z"
+ },
+ "E-18": {
+  "id": "E-18",
+  "status": "Not run",
+  "comment": "30-day customer-reply limit for backlog needs aged data; retested 16 Nov as NDC-2838 (Done)",
+  "at": "2026-11-19T17:50:56.316Z"
+ },
+ "F-02": {
+  "id": "F-02",
+  "status": "Pass",
+  "comment": "Department threshold 0 / 201 / 1.5 / blank refused (out_of_range, invalid_type, required); 1 and 200 accepted; backlog limit 0 / 51 refused, 1 / 50 accepted; unknown order / incoming mode refused",
+  "at": "2026-11-19T17:50:56.340Z"
+ },
+ "F-04": {
+  "id": "F-04",
+  "status": "Pass",
+  "comment": "Agent rows: no agent -> \"Pick an agent.\" (UI) / required (API); threshold 0 or 201 refused; same agent twice -> duplicate; agent outside department -> not_a_member. Minor: API accepts the switch on with no rows (UI blocks it)",
+  "at": "2026-11-19T17:50:56.351Z"
+ },
+ "G-04": {
+  "id": "G-04",
+  "status": "Pass",
+  "comment": "Per-department notification rules (Assigning a ticket - agent / team) with email or mobile and a template, plus organization default switches",
+  "at": "2026-11-19T17:50:56.362Z"
+ },
+ "G-05": {
+  "id": "G-05",
+  "status": "Pass",
+  "comment": "Present: \"Notifies all agents when a ticket is created that has not been automatically assigned\" (Creating a new ticket, off by default). Not fired at runtime",
+  "at": "2026-11-19T17:50:56.374Z"
+ },
+ "H-04": {
+  "id": "H-04",
+  "status": "Pass",
+  "comment": "Agents on the skill form and Agent Skills agree (API: skill agents -> agent-skills shows the same)",
+  "at": "2026-11-19T17:50:56.385Z"
+ },
+ "H-05": {
+  "id": "H-05",
+  "status": "Not run",
+  "comment": "Skills page search and filters not exercised in this run",
+  "at": "2026-11-19T17:50:56.397Z"
+ },
+ "H-09": {
+  "id": "H-09",
+  "status": "Pass",
+  "comment": "Per-ticket recalculate re-applies criteria (H-08); Assign by Skills checked 7 Nov",
+  "at": "2026-11-19T17:50:56.408Z"
+ },
+ "H-14": {
+  "id": "H-14",
+  "status": "Pass",
+  "comment": "Skill names with <img onerror> render as text on the Skills page; no alert, no live img[onerror]",
+  "at": "2026-11-19T17:50:56.420Z"
+ },
+ "I-01": {
+  "id": "I-01",
+  "status": "Pass",
+  "comment": "Arabic: page right-to-left and translated (tabs, sections, buttons, row text); English only in rule names (user data). Setup menu item \"Domain Mapping\" untranslated (other feature)",
+  "at": "2026-11-19T17:50:56.431Z"
+ },
+ "I-02": {
+  "id": "I-02",
+  "status": "Pass",
+  "comment": "Every switch has an accessible name (\"Direct Assignment Rules\", \"Rule <name> active\"); drag handles labelled \"Drag <rule> to reorder\"",
+  "at": "2026-11-19T17:50:56.444Z"
+ },
+ "I-05": {
+  "id": "I-05",
+  "status": "Pass",
+  "comment": "Script-like names in rules and skills shown as text (H-14)",
+  "at": "2026-11-19T17:50:56.455Z"
+ },
+ "J-01": {
+  "id": "J-01",
+  "status": "Not run",
+  "comment": "Migration of pre-existing NDC rules: release-time check, not repeatable now",
+  "at": "2026-11-19T17:50:56.466Z"
+ },
+ "R-2813": {
+  "id": "R-2813",
+  "status": "Pass",
+  "comment": "Regression NDC-2813: New Ticket form shows Ticket Owner \"Unassigned\" (matches what it saves)",
+  "at": "2026-11-19T17:50:56.479Z"
+ }
+}

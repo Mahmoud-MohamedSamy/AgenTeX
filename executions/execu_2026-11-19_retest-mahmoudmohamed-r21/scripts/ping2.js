@@ -1,0 +1,1 @@
+const r=await api('GET','/iam/users?page_size=1');const t=await api('GET','/desk/departments?take=1');log(r.s,t.s);

@@ -1,0 +1,23 @@
+{
+ "out": "NDC-3072-retest-PASS.png",
+ "ticket": "NDC-3072",
+ "priority": "medium",
+ "title": "Tickets | Clone leaves the required Status empty, so the copy cannot be saved until it is picked again",
+ "verdict": "PASS",
+ "env": "NDC-Staging · staging-desk · owner account (shared session) · QA RT20 TK Dept · source A Open/High on Standard, source B #4812 On Hold/Low on Test Layout Rules",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3072-2-clone-status.png", "caption": "⋮ › Clone on source A (Standard): Status starts as Open", "crop": [400, 96, 1060, 804],
+   "boxes": [{"b": [520, 806, 908, 852], "n": 1, "kind": "PASS"}, {"b": [602, 660, 1410, 698], "n": 3, "kind": "PASS"}, {"b": [1000, 806, 1410, 852], "n": 4, "kind": "INFO"}]},
+  {"img": "3072-5-cloneB-status.png", "caption": "⋮ › Clone on On Hold source B (Test Layout Rules): Status starts as Open", "crop": [400, 96, 1060, 804],
+   "boxes": [{"b": [520, 806, 908, 852], "n": 2, "kind": "PASS"}, {"b": [542, 110, 732, 140], "n": 2, "kind": "PASS"}]},
+  {"img": "3072-6-cloneB-after-save.png", "caption": "First Save works: clone #4813 opens with Status Open", "crop": [0, 56, 1600, 844],
+   "boxes": [{"b": [700, 66, 1110, 136], "n": 2, "kind": "PASS"}, {"b": [380, 600, 640, 656], "n": 2, "kind": "PASS"}]}
+ ],
+ "rows": [
+  [1, "Clone source A (Standard, Open) → Save", "Status filled, Save works at once", "Status = Open on the form; first Save → POST 201, clone #4811 Open (was \"Select\" + \"This field is required\")", "PASS"],
+  [2, "Clone On Hold source B on Test Layout Rules → Save", "Valid status (Zoho: Open)", "Status = Open (not copied On Hold, as Zoho); first Save 201, #4813 Open, same layout", "PASS"],
+  [3, "Rest of the copy", "Fields copied", "Subject \"… (Clone)\", description, department, priority copied", "PASS"],
+  [4, "Ticket Owner on the clone form", "Zoho: Unassigned", "Owner is now skipped too (clone_skip …,owner) and the form fills the current user (ndc-staging-owner)", "INFO"]
+ ]
+}

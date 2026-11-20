@@ -1,0 +1,14 @@
+eval(fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-16_retest-mahmoudmohamed-r19/scripts/ntf/lib.js','utf8'));
+const RUN20='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20';
+const D20='026c1059-b7fa-405f-a00c-48ac2bcbb518';const R={};
+const c=await api('POST','/modules/'+TK+'/records',{data:fields({subject:'QA RT20 HX 3068 status close 2',status:'Open',priority:'Medium',department:D20})});
+const id=c.j?.data?.id;R.create=c.s;fs.appendFileSync(RUN20+'/ledger.md','- '+new Date().toISOString().slice(0,19)+'Z HX lead: ticket QA RT20 HX 3068 status close 2 '+id+' (QA RT20 TK Dept)\n');
+fs.writeFileSync(RUN20+'/scripts/hx/id.json',JSON.stringify({id}));
+let o;for(let i=0;i<12;i++){await sleep(10000);o=await rec(id);if(o.ticket_number)break;}R.number=o.ticket_number;R.numberAfterS=null;
+await sleep(5000);const p=await api('PATCH','/modules/'+TK+'/records/'+id,{data:fields({status:'Closed'})});R.close=p.s+' '+new Date().toISOString();
+await sleep(60000);o=await rec(id);const t=await api('GET','/desk/tickets/'+id);
+R.rec={status:o.status,closed_time:o.closed_time??null,resolution_time:o.resolution_time??null};
+const td=t.j?.data||{};R.desk={status:td.status||td.status_name,closed_at:td.closed_at??null};
+R.hist=(await histRaw(id)).map(h=>h.action+(h.field_key?':'+h.field_key:'')+' '+String(h.occurred_at).slice(11,19)+' '+MASK(JSON.stringify(h.new_value??'')).slice(0,60));
+R.feed=(await feed(id)).map(h=>h.action+' '+String(h.occurred_at).slice(11,19));
+return R;

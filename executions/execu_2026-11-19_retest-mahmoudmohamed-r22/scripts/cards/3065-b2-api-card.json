@@ -1,0 +1,12 @@
+{"out":"3065-b2-api-card.png","title":"NDC-3065 second retest (after metadata-engine #239) — API, 17 Nov evening","host":"staging-desk.taviportal.com","who":"ndc-staging-owner + QA agent CES2 (signed in once)","date":"17 Nov 2026",
+"rows":[
+["Read-only on one ticket","as CES2 (normal Customer Support agent) on #5025 and #5034 (owner's tickets, CES2 sole owner of QA onlyA): GET ticket; PATCH priority; GET transitions; POST run onlyA","GET 200; edit 403 PERMISSION_DENIED; transitions []; run 403 BLUEPRINT_NOT_OWNER \"You are not an owner of this transition.\" (x2); both stay Open, no transition in History; GET again 200","ok"],
+["Own ticket","as CES2 on #5030 (owned by CES2): GET transitions; POST run onlyA","[onlyA]; 200 -> Escalated (History: blueprint_transition by CES2)","ok"],
+["Shared with CS","tickets in QA RT20 B2 Dept (CES2 not a member) shared with Customer Support: #5038 full / #5044 read_only / #5048 restricted / #5049 no share; run onlyA","full: offered, 200 -> Escalated; read_only, restricted, none: [] offered, 403 BLUEPRINT_NOT_OWNER, stay Open","ok"],
+["Other-dept owner","blueprints with Transition Owners = Customer Support / CES2 at full (#5053) and read_only (#5058); GET shares; run xd","blueprint applied share CS:full / CS:read_only; xd offered and 200 on both; after the run the share is removed and CES2 gets 'not available'","info"],
+["Save view-only owner","CES2 view-only in QA RT20 B2 Dept: POST blueprint with owner CES2; CS blueprint with owner Mahmoud Mohamed","422 BLUEPRINT_OWNER_READ_ONLY (both); but 3 s after the view-only change the first save was accepted (201) and PUT owners 200 - repeated 1 min later: 422","ok"],
+["Eligible + ticket owners","GET eligible-owners CS / B2 Dept; PUT records/{#5095}/blueprint/owners/go [CES2]; [owner]","CS: no Mahmoud Mohamed; B2 Dept: only owner; PUT CES2 422 BLUEPRINT_OWNERS_INVALID; owner 200","ok"],
+["View-only agent runs","as CES2 view-only on #5093 (owner's ticket): transitions; run onlyA / shared","[]; 403 BLUEPRINT_NOT_OWNER x2; stays Open","ok"],
+["Pre-saved owner","blueprint QA RT20 B2 vo after CES2 became view-only","ownerIssues reason read_only (onlyA, shared); onlyA in transitionsWithoutActiveOwner","ok"],
+["Nobody can run","owner (admin) on #5025: GET transitions","[] - only owner CES2 cannot edit, so nobody can run QA onlyA on it","info"]
+]}

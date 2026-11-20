@@ -1,0 +1,3 @@
+const r=await api('POST','/desk/departments',{name:'QA RT19 WF Dept',description:'QA retest round 19 workflow lane',agent_user_ids:['2a7c1bc4-f6d4-4bd3-805e-0496ece13987','876ce871-2b02-4854-89a7-68050391c62b']});
+log(r.s,r.t.slice(0,600)); const id=r.j?.data?.id; if(id){fs.appendFileSync('../ledger.md',`- ${new Date().toISOString().slice(0,19)}Z WF lane: department "QA RT19 WF Dept" ${id} created, agents CES1 + Test User 1\n`); fs.writeFileSync('wf/out/cfg.json',JSON.stringify({D:id}));}
+const g=await api('GET','/desk/departments/'+id); log(g.s, JSON.stringify({a:g.j?.data?.agent_user_ids,act:g.j?.data?.is_active}));

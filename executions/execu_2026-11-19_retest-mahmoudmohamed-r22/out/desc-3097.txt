@@ -1,0 +1,16 @@
+Summary
+A light agent (view and private comment only) is accepted as a team member, and tickets can then be assigned to that team. Making the light agent the ticket owner is refused correctly, so the team is the way around it. Found in the Desk go-live ticket access run (departments, teams, sharing, moving), NDC-Staging, 17 Nov 2026.
+Steps
+- Give an agent the Desk Light Agent profile (here Test User 1, member of Customer Support).
+- Setup › Teams › New Team in Customer Support, add that agent as the only member, save (POST /desk/teams).
+- Assign a Customer Support ticket to that team (POST /desk/tickets/{id}/assign with team_id).
+Expected
+As in Zoho: a light agent cannot be added to a team; saving the team with a light agent is refused.
+Actual
+Team "QA AC Light Team" created (201) with member_user_ids = [the light agent]; a ticket assigned to the team (200). Assigning the same light agent as owner is refused (422 "not an active agent of the ticket's department").
+Zoho Desk
+Checked live 17 Nov: test agent 1 switched to Light Agent; POST teams with agents [agent 1] → 422 INVALID_DATA "/agents" invalid; the same call with a full agent (agent 2) → 200. Zoho help also says light agents cannot be added to teams.
+Environment
+staging-desk.taviportal.com, NDC-Staging (Wonder Travel), Edge, 17 Nov 2026; accounts: owner, Desk Administrator (B), Desk Agent (C, Customer Support), Test User 1 (Desk Agent / Light Agent for the test). Zoho Desk checked live the same day in the test org TechEgySolutions (admin, test agents 1 and 2); test data deleted and settings restored after.
+Attachment
+Annotated evidence: AC-G3-light-agent-team-vs-zoho.png.

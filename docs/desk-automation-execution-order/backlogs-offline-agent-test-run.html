@@ -1,0 +1,199 @@
+<title>Backlogs Offline Agent Run</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky run header (progress + filters) over area groups of case cards, one column, max 860px */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --fg:#17202b; --muted:#5d6876; --line:#dde1e7; --accent:#0f6e78; --accent-soft:#e2f1f2;
+  --pass:#1b7f45; --pass-bg:#e3f4ea; --fail:#c62f2f; --fail-bg:#fbe7e7; --block:#b45f06; --block-bg:#fcefdc; --skip:#3f5f9a; --skip-bg:#e7edf8;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12171d; --surface:#1a2129; --fg:#e6eaef; --muted:#9aa5b2; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --pass:#5fd18e; --pass-bg:#173326; --fail:#ff7b7b; --fail-bg:#3a1c1e; --block:#f0a54d; --block-bg:#3a2a16; --skip:#8fb0ee; --skip-bg:#1d2a42; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12171d; --surface:#1a2129; --fg:#e6eaef; --muted:#9aa5b2; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --pass:#5fd18e; --pass-bg:#173326; --fail:#ff7b7b; --fail-bg:#3a1c1e; --block:#f0a54d; --block-bg:#3a2a16; --skip:#8fb0ee; --skip-bg:#1d2a42; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+header .wrap{padding-block:14px 12px;display:grid;gap:10px}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+h1{font-size:20px;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.env{color:var(--muted);font-size:13px}
+.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--line)}
+.bar span{display:block;height:100%;transition:width .3s}
+.counts{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.counts b{color:var(--fg)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:13px;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.chip:focus-visible,.st button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sep{width:1px;background:var(--line);margin:2px 4px}
+main .wrap{padding-block:18px 60px;display:grid;gap:26px}
+.note{font-size:13px;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin:0}
+.pre{font-size:13px;color:var(--muted);margin:0;padding-left:18px}
+.pre li{margin:2px 0}
+section{display:grid;gap:10px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0;display:flex;justify-content:space-between;gap:10px}
+h2 small{font-weight:500;letter-spacing:0;text-transform:none;font-variant-numeric:tabular-nums;white-space:nowrap}
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:8px;min-width:0}
+.card[data-s="Pass"]{border-left-color:var(--pass)}.card[data-s="Fail"]{border-left-color:var(--fail)}
+.card[data-s="Blocked"]{border-left-color:var(--block)}.card[data-s="Skipped"]{border-left-color:var(--skip)}
+.head{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.id{font-family:var(--mono);font-size:12.5px;color:var(--accent)}
+.pri{font-family:var(--mono);font-size:11.5px;padding:0 6px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+.pri.P0{color:var(--fail);border-color:currentColor}
+.title{font-weight:600;flex:1 1 220px;min-width:0}
+.tk{font-family:var(--mono);font-size:12px;color:var(--muted)}
+ol{margin:0;padding-left:20px;color:var(--fg)}ol li{margin:1px 0}
+.exp{font-size:14px;color:var(--muted)}.exp b{color:var(--fg);font-weight:600}
+.st{display:flex;flex-wrap:wrap;gap:6px}
+.st button{font:inherit;font-size:13px;font-weight:500;padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;min-height:34px}
+.st button[aria-pressed="true"][data-v="Pass"]{background:var(--pass-bg);border-color:var(--pass);color:var(--pass)}
+.st button[aria-pressed="true"][data-v="Fail"]{background:var(--fail-bg);border-color:var(--fail);color:var(--fail)}
+.st button[aria-pressed="true"][data-v="Blocked"]{background:var(--block-bg);border-color:var(--block);color:var(--block)}
+.st button[aria-pressed="true"][data-v="Skipped"]{background:var(--skip-bg);border-color:var(--skip);color:var(--skip)}
+.st button:disabled{opacity:.5;cursor:default}
+textarea{font:inherit;font-size:14px;width:100%;box-sizing:border-box;min-height:40px;resize:vertical;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:var(--bg);color:var(--fg)}
+.meta{font-size:12px;color:var(--muted);min-height:16px}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+@media (prefers-reduced-motion:reduce){.bar span{transition:none}}
+</style>
+
+<header><div class="wrap">
+  <div class="top"><h1>Assign Backlogs: Offline Agent</h1><span class="env">TAVI Desk · NDC-Staging · Round Robin Preferences · follow-up to Jam 4ca9d5fe</span></div>
+  <div class="bar" id="bar" aria-hidden="true"></div>
+  <div class="counts" id="counts"></div>
+  <div class="filters" id="filters"></div>
+</div></header>
+<main><div class="wrap">
+  <p class="note" id="note">Mark each case Pass, Fail, Blocked or Skip, and write what you saw in the comment box (ticket number, time, what the history showed). Results save as you go, and Claude can read them back.</p>
+  <ul class="pre">
+    <li><b>Question:</b> when "Assign tickets to offline agents" is On, does <b>Assign backlogs</b> give a backlog ticket to an offline agent? "Assign tickets on closure" does not (tested 19 Nov 2026).</li>
+    <li>You need two accounts: an administrator and one agent (for example Test User 1). Prefix every rule and ticket with <b>QA BL</b>.</li>
+    <li>Run the cases in order; BL-04 is the one that answers the question. Write the ticket number, time and History actor in each comment.</li>
+  </ul>
+  <div id="list"></div>
+</div></main>
+
+<script>
+const CASES=[
+["BL-01","P0","1 · Setup","Department, current preferences and the round-robin rule",["Use a department nobody else is testing in (for example QA AO Dept B); check that no other round-robin rule in it is active","Setup › Assignment Rules › Rules › Round Robin › choose the department › ⋮ › Preferences: write the current values in the comment box so you can restore them","Set and save: Assign tickets to offline agents On · Agent level threshold On, Test User 1 = current open tickets in this department + 1 (for example 4 → 5) · Assign backlogs Off · Assign tickets on closure Off","New Rule: department above, On Ticket Create, Subject starts with \"QA BL\", pool Test User 1 only, any method, Active"],"Preferences saved as set (reopen Preferences to check); the rule is listed and active",""],
+["BL-02","P0","1 · Setup","Fill the agent to the threshold and put one ticket in the backlog",["Create ticket \"QA BL 1\" in that department, owner empty","Check: it is assigned to Test User 1, who is now at the threshold","Create ticket \"QA BL 2\" the same way"],"\"QA BL 1\" goes to Test User 1; \"QA BL 2\" stays unassigned (backlog) because the agent is full",""],
+["BL-03","P0","1 · Setup","Take the agent offline",["Sign Test User 1 out of every browser (or leave the account idle)","Wait 12–15 minutes; on staging the agent showed offline after about 11 minutes with no activity","Don't sign Test User 1 back in until BL-04 is finished"],"Test User 1 shows offline (no green dot / not online in the mail channel)",""],
+["BL-04","P0","2 · Assign backlogs, agent offline","Assign backlogs with \"Assign tickets to offline agents\" On",["Open Preferences and make both changes in ONE save: Test User 1 threshold +1 (for example 5 → 6) and Assign backlogs On","Watch \"QA BL 2\" for 2 minutes, refreshing every 20–30 s","Check the Owner field and the History tab"],"\"QA BL 2\" is assigned to Test User 1 (History actor: System), because offline agents count. If it does: closure is the only one that ignores the setting, which backs the drafted ticket (Jam 4ca9d5fe). If it stays unassigned: the setting isn't applied to backlog assignment at all, which is a different bug","Jam 4ca9d5fe follow-up"],
+["BL-05","P1","3 · Control: setting decides it","Assign backlogs with \"Assign tickets to offline agents\" Off",["Agent still offline. In Preferences: Assign backlogs Off, save","Create ticket \"QA BL 3\" (it should go to the backlog)","In Preferences, in one save: Assign tickets to offline agents Off, Test User 1 threshold +1 again, Assign backlogs On","Watch \"QA BL 3\" for 2 minutes"],"\"QA BL 3\" stays unassigned: with the setting Off, the offline agent is skipped",""],
+["BL-06","P1","3 · Control: setting decides it","Agent comes back online",["Sign Test User 1 in and open any page (for example Tickets)","Watch \"QA BL 3\" for 2 minutes"],"\"QA BL 3\" is assigned to Test User 1 within about a minute of the agent coming online (History actor: System)",""],
+["BL-07","P2","4 · Zoho Desk","Same check in Zoho Desk",["In Zoho Desk run BL-01 to BL-04 the same way (Setup › Automation › Assignment Rules › Round Robin › settings)","Note whether round robin can be created in the org (the trial org refused it)"],"Zoho's behaviour for Assign backlogs with offline agents allowed, to compare with TAVI","Zoho live (not yet seen)"],
+["BL-08","P0","5 · Cleanup","Remove test data and restore settings",["Delete the \"QA BL\" rule","Delete the \"QA BL\" tickets, then delete them from the Recycle Bin","Restore the preferences you wrote down in BL-01"],"No \"QA BL\" rule or tickets left; Preferences match the values from BL-01",""]
+];
+const STATES=["Pass","Fail","Blocked","Skipped"];
+const LABEL={Pass:"Pass",Fail:"Fail",Blocked:"Blocked",Skipped:"Skip"};
+const COLOR={Pass:"var(--pass)",Fail:"var(--fail)",Blocked:"var(--block)",Skipped:"var(--skip)"};
+const FILTERS=[["all","All"],["P0","P0"],["P1","P1"],["P2","P2"],["|"],["Not run","Not run"],["Fail","Fail"],["Blocked","Blocked"]];
+let results={}, filter="all", db=null, canWrite=true;
+const pending={};
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function statusOf(id){return (results[id]&&results[id].status)||"Not run"}
+function fmt(t){if(!t)return"";try{return new Date(t).toLocaleString([], {day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return""}}
+
+function renderFilters(){
+  document.getElementById("filters").innerHTML=FILTERS.map(f=>f[0]==="|"?'<span class="sep"></span>':
+    `<button class="chip" data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("");
+}
+function renderSummary(){
+  const n=CASES.length,c={Pass:0,Fail:0,Blocked:0,Skipped:0};
+  CASES.forEach(k=>{const s=statusOf(k[0]);if(c[s]!==undefined)c[s]++});
+  const done=c.Pass+c.Fail+c.Blocked+c.Skipped;
+  document.getElementById("bar").innerHTML=STATES.map(s=>`<span style="width:${c[s]/n*100}%;background:${COLOR[s]}"></span>`).join("");
+  document.getElementById("counts").innerHTML=`<span><b>${done}/${n}</b> run</span>`+
+    STATES.map(s=>`<span><i class="dot" style="background:${COLOR[s]}"></i>${LABEL[s]} <b>${c[s]}</b></span>`).join("")+
+    `<span>Not run <b>${n-done}</b></span>`;
+}
+function matches(k){
+  if(filter==="all")return true;
+  if(/^P\d$/.test(filter))return k[1]===filter;
+  return statusOf(k[0])===filter;
+}
+function tkHTML(tk){return tk?`<span class="tk">${esc(tk)}</span>`:""}
+function cardHTML(k){
+  const [id,pri,area,title,steps,exp,tk]=k, r=results[id]||{}, s=statusOf(id);
+  return `<article class="card" data-id="${id}" data-s="${s}">
+    <div class="head"><span class="id">${id}</span><span class="pri ${pri}">${pri}</span><span class="title">${esc(title)}</span></div>
+    ${tkHTML(tk)}
+    <ol>${steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+    <div class="exp"><b>Expected:</b> ${esc(exp)}</div>
+    <div class="st" role="group" aria-label="Result for ${id}">${STATES.map(v=>`<button data-v="${v}" aria-pressed="${s===v}" ${canWrite?"":"disabled"}>${LABEL[v]}</button>`).join("")}</div>
+    <textarea id="c-${id}" placeholder="What you saw (ticket number, time, History order…)" aria-label="Comment for ${id}" ${canWrite?"":"disabled"}>${esc(r.comment||"")}</textarea>
+    <div class="meta" id="m-${id}">${r.updatedAt?"Saved "+fmt(r.updatedAt):""}</div>
+  </article>`;
+}
+function renderList(){
+  const groups=[];CASES.forEach(k=>{if(!matches(k))return;let g=groups.find(x=>x.a===k[2]);if(!g)groups.push(g={a:k[2],items:[]});g.items.push(k)});
+  const el=document.getElementById("list");
+  if(!groups.length){el.innerHTML='<p class="empty">No cases match this filter.</p>';return}
+  el.innerHTML=groups.map(g=>{const d=g.items.filter(k=>statusOf(k[0])!=="Not run").length;
+    return `<section><h2>${esc(g.a)}<small>${d}/${g.items.length} run</small></h2>${g.items.map(cardHTML).join("")}</section>`}).join("");
+  el.style.display="grid";el.style.gap="26px";
+}
+function updateCard(id){
+  const card=document.querySelector(`.card[data-id="${id}"]`);if(!card)return;
+  const r=results[id]||{},s=statusOf(id);card.dataset.s=s;
+  card.querySelectorAll(".st button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===s));
+  const ta=document.getElementById("c-"+id);if(ta&&document.activeElement!==ta&&!pending[id])ta.value=r.comment||"";
+  const m=document.getElementById("m-"+id);if(m&&!pending[id])m.textContent=r.updatedAt?"Saved "+fmt(r.updatedAt):"";
+}
+function groupCounts(){
+  document.querySelectorAll("#list section").forEach(sec=>{const ids=[...sec.querySelectorAll(".card")].map(c=>c.dataset.id);
+    const area=(CASES.find(k=>k[0]===ids[0])||[])[2];const all=CASES.filter(k=>k[2]===area&&matches(k));
+    const sm=sec.querySelector("h2 small");if(sm)sm.textContent=all.filter(k=>statusOf(k[0])!=="Not run").length+"/"+all.length+" run"});
+}
+function renderAll(){renderFilters();renderSummary();renderList()}
+
+const queue={};
+async function save(id,patch){
+  const cur=results[id]||{};const next={id,status:cur.status||"Not run",comment:cur.comment||"",...patch,updatedAt:new Date().toISOString()};
+  results[id]=next;renderSummary();updateCard(id);groupCounts();
+  if(!db){const m=document.getElementById("m-"+id);if(m)m.textContent="Not saved: storage is not available here";return}
+  queue[id]=(queue[id]||Promise.resolve()).then(async()=>{
+    const m=document.getElementById("m-"+id);
+    try{await db.collection("results").doc(id).set(results[id]);if(m)m.textContent="Saved "+fmt(results[id].updatedAt)}
+    catch(e){if(e&&e.code==="invalid_argument"){canWrite=false;renderList();document.getElementById("note").textContent="You can view this run, but only its owner can record results."}
+      else if(m)m.textContent="Could not save. Check your connection and try again."}
+  });
+}
+
+document.addEventListener("click",e=>{
+  const f=e.target.closest(".chip");if(f){filter=f.dataset.f;renderFilters();renderList();return}
+  const b=e.target.closest(".st button");if(b&&!b.disabled){const id=b.closest(".card").dataset.id;
+    const v=statusOf(id)===b.dataset.v?"Not run":b.dataset.v;
+    save(id,{status:v});}
+});
+document.addEventListener("input",e=>{
+  if(e.target.tagName!=="TEXTAREA")return;const id=e.target.id.slice(2);
+  const m=document.getElementById("m-"+id);if(m)m.textContent="Typing…";
+  clearTimeout(pending[id]);pending[id]=setTimeout(()=>{delete pending[id];save(id,{comment:e.target.value})},900);
+});
+document.addEventListener("focusout",e=>{
+  if(e.target.tagName!=="TEXTAREA")return;const id=e.target.id.slice(2);
+  if(pending[id]){clearTimeout(pending[id]);delete pending[id];save(id,{comment:e.target.value})}
+});
+
+renderAll();
+(async()=>{
+  try{db=await window.claude?.use?.("db")}catch(e){db=null}
+  if(!db){document.getElementById("note").textContent="Results can't be saved in this view. Open the artifact signed in to claude.ai to record them.";return}
+  try{const u=await window.claude.use("user");if(u&&u.can){const w=await u.can("data.write");if(w===false){canWrite=false;renderList();document.getElementById("note").textContent="You can view this run, but only its owner can record results."}}}catch(e){}
+  db.collection("results").onSnapshot(snap=>{
+    snap.docChanges().forEach(ch=>{const id=ch.doc.id;
+      if(ch.type==="removed")delete results[id];else results[id]=ch.doc.data();
+      updateCard(id)});
+    renderSummary();groupCounts();
+  },err=>{document.getElementById("note").textContent="Lost the live connection to saved results. Reload the page."});
+})();
+</script>

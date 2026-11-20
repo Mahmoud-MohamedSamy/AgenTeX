@@ -1,0 +1,12 @@
+eval(fs.readFileSync('wf/lib.js','utf8'));
+const QAO='93949fbd-f9df-4e2e-ae45-00b8dc38385b',RID='20388e6d-8143-40f7-9941-8c6febf2077e';const o={};
+const tags=(await api('GET','/desk/tags?take=500')).j?.data?.tags||[];const TN=id=>{const t=tags.find(x=>x.id===id);return t?t.name+'@'+(t.department_id===QAO?'QAO':t.department_id.slice(0,8)):id;};
+o.dupA=tags.filter(t=>t.name==='QA WF tag A').map(t=>t.id.slice(0,8)+'@'+t.department_id.slice(0,8));
+const g=(await api('GET','/workflow/rules/'+RID)).j?.data;o.saved=g.actions.map(a=>a.type+' '+(a.tagIds||[]).map(TN).join(','));o.updatedAt=g.updatedAt||g.lastModifiedAt;
+o.act=await act(RID);
+const t=await mkTicket('3058',{department:QAO,priority:'low'},'tag pick');await sleep(4000);
+const p=await api('PATCH',`/modules/${T}/records/${t.id}`,{data:[{field:'priority',value:enc('high')}]});o.patch=p.s;
+await sleep(20000);
+o.ex=(await execsRaw(t.id)).filter(e=>e.ruleId===RID).map(e=>e.outcome+' '+e.dispatches.map(d=>d.actionType+':'+d.status+(d.lastError?' '+d.lastError:'')).join(';'));
+const tt=(await api('GET',`/desk/tickets/${t.id}/tags`));o.ticketTags=tt.s+' '+JSON.stringify(arr(tt.j?.data).length?arr(tt.j?.data).map(x=>x.name||TN(x.id||x.tag_id)):tt.t.slice(0,300));
+o.deact=await deact(RID);o.tid=t.id;save('t2',o);return o;

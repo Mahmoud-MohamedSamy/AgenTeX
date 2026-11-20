@@ -1,0 +1,5 @@
+const J = JSON.parse(fs.readFileSync(RUN + '/scripts/bp/3065.json', 'utf8')); const o = {}; const MM = '7e5e7c27-46e4-4bf6-b021-7bd219d34472', DD = 'e04e88df-03e2-4a9f-8ccc-ff934cca500e';
+for (const [k, d] of [['cs', CS], ['mine', DD]]) { const r = await api('GET', '/desk/departments/' + d + '/eligible-owners'); const x = r.j?.data; const s = JSON.stringify(x || r.t); o[k] = { s: r.s, hasMM: s.includes(MM), hasCES2: s.includes(AG_A), sample: s.slice(0, 300).replace(/[\w.+-]+@[\w.-]+/g, '<mail>') }; }
+for (const k of ['k1', 'r3']) { const h = L((await api('GET', `/desk/tickets/${J[k]}/history`)).j?.data); o[k + 'hist'] = h.map(x => x.occurred_at.slice(11, 19) + ' ' + x.action + ' ' + (x.actor?.user_id === AG_A ? 'CES2' : x.actor?.user_id === OWNER ? 'OWNER' : x.actor?.kind)); o[k + 'desk'] = (await api('GET', '/desk/tickets/' + J[k])).j?.data?.status; }
+const fe = await feed(J.k1); o.k1feed = fe.slice(0, 6).map(x => (x.occurred_at || x.created_at || '').slice(11, 19) + ' ' + (x.type || x.kind || x.action) + ' ' + JSON.stringify(x.summary || x.title || '').slice(0, 80));
+return o;

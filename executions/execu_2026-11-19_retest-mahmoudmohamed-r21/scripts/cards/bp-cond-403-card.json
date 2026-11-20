@@ -1,0 +1,33 @@
+{
+ "out": "bp-cond-403-card.png",
+ "title": "Blueprint run refused for an unmet condition — agent CES2 (ticket owner) on #5117, 18 Nov 2026",
+ "host": "staging-desk.taviportal.com",
+ "who": "agent CES2 + owner (config read)",
+ "date": "18 Nov 2026",
+ "rows": [
+  [
+   "Step config",
+   "GET blueprint QA RT20 BS 3056 flow: transition \"QA end\" (Escalated → Closed)",
+   "before.visibilityCriteria priority = \"medium\"; NO allowedUserIds (anyone who can edit the ticket may run it)",
+   "info"
+  ],
+  [
+   "Ticket",
+   "#5117: state Escalated, priority Low, Ticket Owner = CES2",
+   "condition not met (Low ≠ medium); agent is the ticket owner",
+   "info"
+  ],
+  [
+   "Run the step",
+   "POST /desk/tickets/#5117/blueprint-transitions/end (as CES2)",
+   "403 BLUEPRINT_NOT_OWNER \"You are not an owner of this transition.\" — wrong reason: the step has no owner list, it is blocked by its condition",
+   "bad"
+  ],
+  [
+   "Control: owner-only step",
+   "POST …/#4869/blueprint-transitions/admin (allowedUserIds = owner only)",
+   "403 BLUEPRINT_NOT_OWNER — correct here",
+   "ok"
+  ]
+ ]
+}

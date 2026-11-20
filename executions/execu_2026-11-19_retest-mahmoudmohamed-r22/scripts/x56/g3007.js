@@ -1,0 +1,1 @@
+const r=await api('GET','/desk/tickets/4f632116-cc82-4644-b0c8-e7ea4727f88e');const g=await api('GET','/modules/'+TK+'/records/4f632116-cc82-4644-b0c8-e7ea4727f88e');return {desk:r.s+' '+JSON.stringify(r.j?.data||r.j?.error).slice(0,200),rec:g.s+' deleted='+g.j?.data?.is_deleted};

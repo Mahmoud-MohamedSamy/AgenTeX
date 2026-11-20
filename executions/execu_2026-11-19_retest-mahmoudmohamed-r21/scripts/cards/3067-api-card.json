@@ -1,0 +1,7 @@
+{"out":"3067-api-card.png","title":"NDC-3067 Audit Log source IP — GET /api/v1/audit/events, 17 Nov 00:17-09:35 UTC (682 rows)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Desk / CRM / metadata changes","user rows, app desk/crm/metadata-engine, node + browser clients","public IP on 499 rows (41.40.x.x, 41.44.x.x, 154.176.x.x, 197.x.x.x) — same as the sign-in rows; 0 internal","ok"],
+["2 Own changes (this lane)","department created/updated, blueprints created, tickets created","41.40.x.x / 41.44.x.x / 154.176.x.x (public)","ok"],
+["3 IAM user / permission updates from the browser","iam 'updated user' (e.g. CES2 permission GRANT desk:ticket:share 09:20, Test User 1 08:49, 08:56)","3 of 3 rows: IP 172.19.0.19 (internal)","bad"],
+["4 Blueprint transition runs, mass delete","desk record updates by a user via transition (#4807 owner 09:24, #4808 CES2 09:26), mass_delete 09:28/09:29","21 user rows with no IP at all (and no actor label in the API; UI line shows no IP)","bad"],
+["5 Developer curl sweep (ZZ sweep2997 workflow rules)","desk workflow_rule created/deleted, user-agent curl","22 rows 172.19.0.19 — likely sent from inside the cluster (other curl rows public)","info"]]}

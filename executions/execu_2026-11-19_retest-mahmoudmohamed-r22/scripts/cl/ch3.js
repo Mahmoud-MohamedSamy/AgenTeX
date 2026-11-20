@@ -1,0 +1,3 @@
+const NTF='8c6073ac-ba5f-4d17-9960-71a6850662a9';const mask=s=>String(s).replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}/g,'<email>');const o={};
+for(const p of ['/desk/channels/addresses','/desk/channels/from-addresses','/desk/channels/addresses?include_deleted=true']){const r=await api('GET',p);const d=r.j?.data;const L=Array.isArray(d)?d:(d?.addresses||d?.items||[]);o[p]=r.s+' n='+L.length+' '+L.filter(x=>JSON.stringify(x).includes(NTF)).map(x=>x.id.slice(0,8)+' '+mask(x.address||x.email||'')+' st='+(x.status||x.verification_status||'')).join(' | ');}
+const g=(await api('GET','/desk/departments/'+NTF)).j?.data;const d=g?.department||g;o.deptEmail=mask(JSON.stringify({e:d.email_addresses,c:d.channels,s:d.send_as_email_enabled}).slice(0,300));return o;

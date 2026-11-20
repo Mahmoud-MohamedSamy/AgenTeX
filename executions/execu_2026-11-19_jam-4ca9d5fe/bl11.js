@@ -1,0 +1,3 @@
+const ids = [], seen = []; let cur = null, n = 0;
+do { const r = await api('GET', '/audit/recycle-bin/items?app_key=desk&limit=200' + (cur ? '&cursor=' + cur : '')); for (const x of arr(r.j)) { n++; const s = JSON.stringify(x); if (x.record_id === 'a1532aaa-0014-40ff-9a1d-5478928aea87' || /QA BL/i.test(s)) { ids.push(x.id); seen.push((x.record_label || '').slice(0, 40) + ' @' + (x.deleted_at || '').slice(11, 19)); } } cur = r.j?.meta?.next_cursor; } while (cur);
+log({ total: n, seen }); if (ids.length) log({ purge: (await api('POST', '/audit/recycle-bin/delete', { ids: ids.slice(0, 25) })).s });

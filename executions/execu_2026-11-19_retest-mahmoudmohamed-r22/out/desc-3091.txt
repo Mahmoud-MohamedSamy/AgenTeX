@@ -1,0 +1,20 @@
+Summary
+The reassign endpoint is the one behind the Remove from Desk dialog. It takes a list of departments, each with a new owner (or "unassigned"). When it is called with only some of the agent's departments, it still removes the agent from every department, team and round-robin pool in the org, including the ones not in the request. The screen always sends every department, so screen users don't hit this. Any API client that sends a partial list (e.g. to hand over just one department) silently strips the agent everywhere. API only. Found while retesting NDC-2850 (item 6).
+Steps to Reproduce
+As an admin, pick an agent who belongs to several departments and teams and is in round-robin pools (e.g. Dev Team 2: 36 departments, 14 teams). Note their memberships.
+Call POST /api/v1/desk/agents/{agent id}/reassign with only 2 of those departments: department A → another agent, department B → unassigned, update_rules true.
+Read the agent's departments, teams, round-robin pools and references again.
+Expected Result
+Only departments A and B are handed over as requested (rules, pools, SLA escalations there pass to the chosen agent or are left unassigned).
+The agent's other department memberships, teams and pools stay as they were, or the call is refused if a partial list isn't allowed.
+Actual Result
+200 success. The response counts department_memberships 37, round_robin_pools 18, team_sources 14, sla_escalations 2.
+Afterwards the agent has 0 memberships, 0 pools, 0 teams, and left 33 departments that were not in the request (e.g. QA AO Dept A, QA NDC Accounting, QA NDC KSA Branch).
+Departments A and B were handled as asked (SLA levels → the chosen agent / left empty).
+Everything had to be restored by hand (35 memberships, main department, 14 teams, 18 pools), and some pool restores were refused because the agent was no longer a member.
+Environment
+staging-desk.taviportal.com (NDC-Staging), API as ndc-staging-owner, 16 Nov 2026 15:25Z. All memberships were restored and verified against the snapshot.
+Evidence
+BUG-agent-reassign-strips-all-FAIL.png
+Zoho Desk comparison
+Not compared. In Zoho, removing an agent from one department is a separate action from deactivating or deleting the agent, so there is no direct equivalent of a "partial reassign" call.

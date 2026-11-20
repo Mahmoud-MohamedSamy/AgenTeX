@@ -1,0 +1,4 @@
+const today = new Date().toISOString().slice(0, 10);
+const r = await api('POST', '/desk/assignment-rules', { type: 'direct', name: 'QA AR B08 probe', description: 'QA', is_active: false, execute_on: ['create'], targets: [{ criteria: { conditions: [{ field_key: 'subject', operator: 'contains', value: 'QA AR HOL t1' }, { field_key: 'execution_time', operator: 'on_holiday', value: 'x' }], pattern: '1 and 2' }, coming_to_department_id: IDS.DB, move_to_department_id: null, assign: AG(IDS.A1) }] });
+const lists = (await api('GET', '/desk/holiday-lists')).j; const FL = (await api('GET', '/desk/assignment-rules/criteria-fields')).j.data.fields; const ex = FL.find(f => f.key === 'execution_time');
+return { probe: r.s + ' ' + (E(r) || ''), lists: JSON.stringify(lists).slice(0, 500), op: JSON.stringify(ex).slice(0, 700) };

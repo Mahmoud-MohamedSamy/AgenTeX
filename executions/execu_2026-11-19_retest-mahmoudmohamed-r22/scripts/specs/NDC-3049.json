@@ -1,0 +1,84 @@
+{
+ "out": "NDC-3049-retest-PASS.png",
+ "ticket": "NDC-3049",
+ "priority": "medium",
+ "label": "RETEST PASS",
+ "verdict": "PASS",
+ "title": "Profiles | A custom profile cannot be deleted: \"Resolve the pending invitations\" although none exist",
+ "env": "NDC-Staging (tenant …0004) · IAM API · owner · Omnichannel (salesiq) profiles copied from Associate · invites to @example.com",
+ "date": "19 Nov 2026",
+ "panels": [
+  {
+   "img": "3049-r1-api-card.png",
+   "caption": "Delete refused only while an invitation is pending",
+   "crop": [
+    0,
+    0,
+    1600,
+    540
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      272
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      397,
+      1564,
+      455
+     ],
+     "n": 2,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      36,
+      465,
+      1564,
+      523
+     ],
+     "n": 4,
+     "kind": "INFO"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Delete while an invitation is pending",
+   "409 PROFILE_INVITED (correct)",
+   "409 \"Resolve the pending invitations…\"",
+   "PASS"
+  ],
+  [
+   2,
+   "Cancel the invitation, then delete",
+   "Profile deleted",
+   "Profile gone from the list",
+   "PASS"
+  ],
+  [
+   3,
+   "Delete the invited user, then delete",
+   "Profile deleted",
+   "Profile gone from the list",
+   "PASS"
+  ],
+  [
+   4,
+   "Notes",
+   "—",
+   "Accept-then-delete path not run (needs a real mailbox); IAM writes answered 504 after ~10 s on staging tonight but took effect, also for a never-invited profile",
+   "INFO"
+  ]
+ ]
+}

@@ -1,0 +1,10 @@
+{"out":"2807-r1-api-card.png","title":"Bulk operations as background jobs — owner, Leads (200 QA RT22 2807 leads), nobody watching the jobs, 19 Nov 2026","host":"staging-crm.taviportal.com","who":"owner","date":"19 Nov 2026",
+"rows":[
+["Mass update, page left after start","POST /modules/leads/records/mass-update-jobs (180 ids) → 202 queued; no polling","job completed 180/180, 0 failed (13:21 → 13:27 UTC); records: 180/180 updated (was 6/200 when the page was left)","ok"],
+["Second mass update while one runs","POST mass-update-jobs (other 20 ids)","409 MASS_UPDATE_JOB_ACTIVE \"A mass update is already running for this module…\"","ok"],
+["Mass delete","POST /modules/leads/records/mass-delete {background:true} (200 ids)","202; job completed 200/200 within 30 s; 0 of 200 still live","ok"],
+["Recycle Bin purge (selected items)","POST /audit/recycle-bin/run-jobs {action:purge, 199 ids}","202; completed 199/199; none of them left in the bin","ok"],
+["Second bin run while one runs","POST run-jobs","409 RECYCLE_BIN_RUN_ACTIVE \"A Recycle Bin run is already going in this bin…\"","ok"],
+["Speed","mass update job","about 20–30 records per minute (180 in 6 min); the old direct call did 200 in 26 s","info"],
+["Not run","Empty Bin (whole bin)","would purge other users' items; the same run-job mechanism is used","info"]
+]}

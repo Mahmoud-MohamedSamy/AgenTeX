@@ -1,0 +1,26 @@
+# NDC-2990 Layout Rules | No limit on actions per condition [Done]
+Summary
+No limit on actions per condition. All 500 are accepted (201).
+Environment
+- NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2; the same setup on Desk Tickets. Test data was deleted after the run.
+Steps to reproduce
+- Create a condition with 500 actions through the API.
+Expected result
+Zoho stops at 40 actions per condition (CRM) and 25 (Desk), with a message.
+Actual result
+- All 500 are accepted (201).
+Notes
+- Test cases I8, F27 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- CRM and Desk share the same rule engine, so this applies to both apps.
+
+== COMMENTS
+--- 2026-11-16T10:18:07.248306+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- CRM 41 actions → 422 "A condition may have at most 40 actions; this one has 41." (40 → 201) [PASS]
+- CRM 500 actions → 422 too_many [PASS]
+- Desk 26 actions → 422 "… at most 25 actions; this one has 26." (25 → 201) [PASS]
+Evidence: NDC-2990-retest-PASS.png (attached)

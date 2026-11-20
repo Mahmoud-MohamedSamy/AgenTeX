@@ -1,0 +1,25 @@
+Summary
+When the company currency is changed in Company Settings › Edit company details and saved, the save succeeds, but the Currencies section still shows the old home currency, even after the page is refreshed.
+Environment
+- App: TAVI CRM, ndc-crm.anyware.software › Settings › Company Settings
+- Account: org owner (ndc-owner)
+- Browser: Edge 156, Windows
+- Recording: Jam 926007f3 (17 Nov 2026)
+Steps to reproduce
+- Go to Settings › Company Settings.
+- Click Edit on the company details card.
+- Change Currency from United Arab Emirates Dirham to Egyptian Pound.
+- Click Save. The message "Company details saved" appears.
+- Look at the Currencies section on the same page, then refresh the page (F5) and look again.
+Expected result
+The Currencies section shows Home currency: EGP · Egyptian Pound, and the exchange rates are shown against EGP. If the home currency can't be changed while other currencies exist, the Edit dialog should say so and not allow the change.
+Actual result
+- The company details save with Currency = Egyptian Pound, and still show it after the refresh.
+- The Currencies section still shows Home currency: AED · United Arab Emirates Dirham, and the USD row still shows "1 USD = 50 AED".
+- So the page shows two different home currencies, and the user gets no warning.
+Evidence
+- Image 1: the Currency field set to Egyptian Pound just before Save (Jam 0:12).
+- Image 2: after the refresh, the Currencies section still shows AED (Jam 0:21).
+- The company profile save returns currency EGP, while the currencies list still returns home currency AED (Jam network, 0:13 and 0:18).
+Related
+NDC-2217 (Company currency and primary contact can't be cleared once set).

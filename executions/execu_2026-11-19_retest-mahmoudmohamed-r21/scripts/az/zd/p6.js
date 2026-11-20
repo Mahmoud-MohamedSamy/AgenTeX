@@ -1,0 +1,2 @@
+async (page) => { const R='D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20/screenshots/raw/';
+await page.mouse.click(465,302);await page.waitForTimeout(1200);await page.screenshot({path:R+'zd-az-11-prefs-restored.png'});await page.mouse.click(455,533);await page.waitForTimeout(4000);await page.screenshot({path:R+'zd-tmp.png'});return 'ok';}

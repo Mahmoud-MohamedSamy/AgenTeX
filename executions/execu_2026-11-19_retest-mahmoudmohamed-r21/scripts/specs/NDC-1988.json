@@ -1,0 +1,31 @@
+{
+ "out": "NDC-1988-retest-PARTIAL.png",
+ "ticket": "NDC-1988",
+ "priority": "medium",
+ "title": "Desk forms | Layout rules, validation rules and nested picklists work; per-layout picklist values, Help Center field access and field encryption are missing",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk · ndc-staging-owner · Edge headless + API · QA layout \"QA RT20 VR 1988 Layout\" (QA AO Dept A, now disabled) · fields qa_rt20vr_* · rules \"QA RT20 VR 1988 LR/VR\" (now disabled) · 12 Nov bugs NDC-2974..2992 all Done; gap list NDC-2996 still Bug",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "1988-1b-refund.png", "caption": "1 Layout rule: type = Refund shows the Refund section and makes the order field mandatory (hidden before)", "crop": [418, 420, 1024, 220],
+   "boxes": [{"b": [451, 508, 1409, 550], "n": 1, "kind": "PASS"}, {"b": [451, 570, 1409, 616], "n": 1, "kind": "PASS"}]},
+  {"img": "1988-2a-vr-refused.png", "caption": "2 Validation rule across two fields, own message under the field", "crop": [418, 420, 1024, 150],
+   "boxes": [{"b": [455, 494, 1411, 560], "n": 2, "kind": "PASS"}]},
+  {"img": "1988-3e-priority-options.png", "caption": "3 Layout set to Priority [low, medium] only: form still offers all four", "crop": [418, 440, 1024, 320],
+   "boxes": [{"b": [1106, 604, 1410, 754], "n": 3, "kind": "FAIL"}]},
+  {"img": "1988-5c-l7-options.png", "caption": "5 Nested picklists: after A1…A6 the 7th level offers only A7", "crop": [418, 380, 1024, 480],
+   "boxes": [{"b": [603, 448, 1409, 552], "n": 5, "kind": "PASS"}, {"b": [603, 762, 1409, 802], "n": 5, "kind": "PASS"}]},
+  {"img": "1988-p-permissions.png", "caption": "4 Field permissions: Read-only + profile Read/Edit only, nothing for Help Center customers", "crop": [1140, 0, 460, 650],
+   "boxes": [{"b": [1150, 130, 1590, 600], "n": 4, "kind": "FAIL"}]},
+  {"img": "1988-api-card.png", "caption": "API checks for all six items", "crop": [0, 0, 1600, 530],
+   "boxes": [{"b": [36, 99, 1564, 157], "n": 1, "kind": "PASS"}, {"b": [36, 167, 1564, 225], "n": 2, "kind": "PASS"}, {"b": [36, 235, 1564, 293], "n": 3, "kind": "FAIL"}, {"b": [36, 303, 1564, 382], "n": 4, "kind": "FAIL"}, {"b": [36, 392, 1564, 450], "n": 5, "kind": "PASS"}, {"b": [36, 460, 1564, 518], "n": 6, "kind": "FAIL"}]}
+ ],
+ "rows": [
+  [1, "Layout rules: show fields / sections, mandatory on condition", "Built and working", "Refund → section shown + field required on the form; API 422 \"… is required\" without it, 201 for Question. Department scope, HC switch and the 19 bugs NDC-2974..2992 are all Done. Open gaps in NDC-2996 (primary field types, layout move, suggest-value, manage permission) remain", "PASS"],
+  [2, "Validation rules across fields, own message (50 per department)", "Built and working", "\"when type = Refund\" + check on order → own message on form and API 422; Question + BAD saves. 50-per-department cap not exercised (no cap in the app; not creating 50 rules)", "PASS"],
+  [3, "Different picklist values per layout", "Each layout can use a subset", "Missing: no UI for it (options are module-wide); a subset stored on the layout by API is ignored by the form and by the server (urgent saved)", "FAIL"],
+  [4, "Help Center access per field (editable / read-only / hidden)", "Per-field customer access", "Missing: field permissions are profile Read/Edit + Read-only only; HC forms only have hidden/required/default per form field. Layout rules with \"Apply to Help Center\" work (12 Nov G17)", "FAIL"],
+  [5, "Nested picklists up to 6 levels", "Up to 6 levels", "7 levels chained (6 maps); form narrows each level, server refuses a wrong value at level 2 and level 7, cycles refused", "PASS"],
+  [6, "Field encryption with ePHI label", "Encrypt sensitive custom fields", "Missing: field API refuses \"encrypted\" (DATATYPE_OPTION_UNKNOWN); no encryption or ePHI option in the app", "FAIL"]
+ ]
+}

@@ -1,0 +1,2 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d';
+for (const p of ['/modules/' + TK + '/validation-rules/4e50a48f-3df1-4dc2-aefc-02d16e021283', '/modules/' + TK + '/validation-rules']) { const r = await api('GET', p); const d = r.j?.data; const x = Array.isArray(d) ? d.find(v => v.id === '4e50a48f-3df1-4dc2-aefc-02d16e021283') : (Array.isArray(d?.rules) ? d.rules.find(v => v.id === '4e50a48f-3df1-4dc2-aefc-02d16e021283') : d); log({ p: p.slice(-30), s: r.s, rule: JSON.stringify(x || r.t).slice(0, 1200) }); if (x) break; }

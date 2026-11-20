@@ -1,0 +1,1 @@
+const id=await mkT('3096','open while moved',{});await sleep(3000);const n=(await api('GET','/desk/tickets/'+id)).j?.data?.ticket_number;fs.writeFileSync(RUN+'/out/3096.json',JSON.stringify({id,n}));return {id,n};

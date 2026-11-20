@@ -1,0 +1,9 @@
+{"out":"3098-r1-api-card.png","title":"Per-agent ticket access — agent CES2 in Customer Support, tenant data sharing switched to Public for the test, 19 Nov 2026","host":"staging-desk.taviportal.com","who":"agent CES2 + owner","date":"19 Nov 2026",
+"rows":[
+["Setting","PUT /desk/agents/{CES2}/ticket-access","ticket_access: departments | own_and_unassigned (own_team_unassigned offered too)","info"],
+["CES2 = All tickets of their departments","GET / edit / comment CES1's ticket #5678; own #5677; unassigned #5676","200 · 200 · 201 — sees the whole department","ok"],
+["CES2 = Own and unassigned tickets","CES1's ticket #5678 · owner's #5675","GET 404, comment 404, edit 403 — hidden","ok"],
+["CES2 = Own and unassigned tickets","own #5677 · unassigned #5676","200 · 200 — still reachable","ok"],
+["Back to All tickets","same requests","#5675 and #5678 reachable again (200 / 201)","ok"],
+["Tenant","Setup › Ticket Access data sharing","Private (default here) → Public R/W/D for the test → restored to Private","info"]
+]}

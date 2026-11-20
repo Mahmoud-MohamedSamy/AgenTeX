@@ -1,0 +1,17 @@
+const main=()=>page.locator('main').last();const clk=l=>l.dispatchEvent('click');const R={};
+const reqs=[];page.on('response',async q=>{const u=q.url();if(/tag/i.test(u)&&q.request().method()!=='GET'){let b='';try{b=(await q.text()).slice(0,300);}catch(e){}reqs.push(q.request().method()+' '+u.replace(H,'')+' '+q.status()+' '+(q.request().postData()||'').slice(0,200)+' => '+b);}});
+await page.goto(H+'/settings/automation/workflow-rules/f7112914-17b5-4bd9-b7d9-84643e3aa3cf',{waitUntil:'domcontentloaded'});await page.getByText('Add Tags').first().waitFor({timeout:90000}).catch(()=>{});await sleep(6000);
+const hd=main().locator('button',{hasText:/^Add Tags$/}).first();if(await hd.count()&&!(await main().locator('input[placeholder^="Search"]').count()))await clk(hd);await sleep(1500);
+const ph=await main().locator('input[placeholder]').evaluateAll(a=>a.map(x=>x.placeholder));R.ph=ph;
+const inp=main().locator('input[placeholder*="tag" i]').first();
+await inp.click();await sleep(2000);R.optsEmpty=(await page.getByRole('option').allInnerTexts());
+await inp.scrollIntoViewIfNeeded();await shot('3058-r2-1-one-dept-options.png');
+await inp.fill('QA');await sleep(2000);R.optsQA=(await page.getByRole('option').allInnerTexts());
+await inp.fill('QA-1');await sleep(2500);R.optsInvalid=(await page.getByRole('option').allInnerTexts());R.nearInvalid=(await page.locator('body').innerText()).match(/.{0,80}(letters|digits|allowed|invalid|Invalid|Create).{0,100}/g)?.slice(0,5);
+await shot('3058-r2-2-invalid-name.png');
+await inp.fill('QA WF tag C');await sleep(2500);R.optsDup=(await page.getByRole('option').allInnerTexts());
+await shot('3058-r2-3-duplicate-name.png');
+await inp.fill('qa wf tag c');await sleep(2500);R.optsDupLower=(await page.getByRole('option').allInnerTexts());
+await inp.fill('QA RT20 W2 newtag');await sleep(2500);R.optsNew=(await page.getByRole('option').allInnerTexts());R.nearNew=(await page.locator('body').innerText()).match(/.{0,60}Create.{0,80}/g)?.slice(0,5);
+await shot('3058-r2-4-create-offered.png');
+return {R,reqs};

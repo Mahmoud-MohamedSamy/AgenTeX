@@ -1,0 +1,332 @@
+<title>Assignment Rules Full Run</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky run header (progress + filters) over area groups of case cards, one column, max 860px */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --fg:#17202b; --muted:#5d6876; --line:#dde1e7; --accent:#0f6e78; --accent-soft:#e2f1f2;
+  --pass:#1b7f45; --pass-bg:#e3f4ea; --fail:#c62f2f; --fail-bg:#fbe7e7; --block:#b45f06; --block-bg:#fcefdc; --skip:#3f5f9a; --skip-bg:#e7edf8;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12171d; --surface:#1a2129; --fg:#e6eaef; --muted:#9aa5b2; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --pass:#5fd18e; --pass-bg:#173326; --fail:#ff7b7b; --fail-bg:#3a1c1e; --block:#f0a54d; --block-bg:#3a2a16; --skip:#8fb0ee; --skip-bg:#1d2a42; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12171d; --surface:#1a2129; --fg:#e6eaef; --muted:#9aa5b2; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --pass:#5fd18e; --pass-bg:#173326; --fail:#ff7b7b; --fail-bg:#3a1c1e; --block:#f0a54d; --block-bg:#3a2a16; --skip:#8fb0ee; --skip-bg:#1d2a42; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+header .wrap{padding-block:14px 12px;display:grid;gap:10px}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+h1{font-size:20px;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.env{color:var(--muted);font-size:13px}
+.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--line)}
+.bar span{display:block;height:100%;transition:width .3s}
+.counts{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.counts b{color:var(--fg)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:13px;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.chip:focus-visible,.st button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sep{width:1px;background:var(--line);margin:2px 4px}
+main .wrap{padding-block:18px 60px;display:grid;gap:26px}
+.note{font-size:13px;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin:0}
+.pre{font-size:13px;color:var(--muted);margin:0;padding-left:18px}
+.pre li{margin:2px 0}
+section{display:grid;gap:10px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0;display:flex;justify-content:space-between;gap:10px}
+h2 small{font-weight:500;letter-spacing:0;text-transform:none;font-variant-numeric:tabular-nums;white-space:nowrap}
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:8px;min-width:0}
+.card[data-s="Pass"]{border-left-color:var(--pass)}.card[data-s="Fail"]{border-left-color:var(--fail)}
+.card[data-s="Blocked"]{border-left-color:var(--block)}.card[data-s="Skipped"]{border-left-color:var(--skip)}
+.head{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.id{font-family:var(--mono);font-size:12.5px;color:var(--accent)}
+.pri{font-family:var(--mono);font-size:11.5px;padding:0 6px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+.pri.P0{color:var(--fail);border-color:currentColor}
+.title{font-weight:600;flex:1 1 220px;min-width:0}
+.tk{font-family:var(--mono);font-size:12px;color:var(--muted)}
+ol{margin:0;padding-left:20px;color:var(--fg)}ol li{margin:1px 0}
+.exp{font-size:14px;color:var(--muted)}.exp b{color:var(--fg);font-weight:600}
+.st{display:flex;flex-wrap:wrap;gap:6px}
+.st button{font:inherit;font-size:13px;font-weight:500;padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;min-height:34px}
+.st button[aria-pressed="true"][data-v="Pass"]{background:var(--pass-bg);border-color:var(--pass);color:var(--pass)}
+.st button[aria-pressed="true"][data-v="Fail"]{background:var(--fail-bg);border-color:var(--fail);color:var(--fail)}
+.st button[aria-pressed="true"][data-v="Blocked"]{background:var(--block-bg);border-color:var(--block);color:var(--block)}
+.st button[aria-pressed="true"][data-v="Skipped"]{background:var(--skip-bg);border-color:var(--skip);color:var(--skip)}
+.st button:disabled{opacity:.5;cursor:default}
+textarea{font:inherit;font-size:14px;width:100%;box-sizing:border-box;min-height:40px;resize:vertical;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:var(--bg);color:var(--fg)}
+.meta{font-size:12px;color:var(--muted);min-height:16px}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+@media (prefers-reduced-motion:reduce){.bar span{transition:none}}
+</style>
+
+<header><div class="wrap">
+  <div class="top"><h1>Assignment Rules — Full Run</h1><span class="env">TAVI Desk · NDC-Staging · 19 Nov 2026 · Direct, Round Robin, Preferences, Skills</span></div>
+  <div class="bar" id="bar" aria-hidden="true"></div>
+  <div class="counts" id="counts"></div>
+  <div class="filters" id="filters"></div>
+</div></header>
+<main><div class="wrap">
+  <p class="note" id="note">Mark each case Pass, Fail, Blocked or Skip, and write what you saw in the comment box (ticket number, time, what the history showed). Results save as you go, and Claude can read them back.</p>
+  <ul class="pre">
+    <li><b>Run 19 Nov 2026, 16:10–17:45 UTC</b> by Claude, API + browser, Desk Administrator account. Agents: A1 Test User 1 and A2 Mahmoud Samy held online; A3 Dev Team 2 always offline (its sign-in fails). Departments QA AS6 Dept A / Dept B. The statuses and comments below are Claude's; change any of them and Claude can read them back.</li>
+    <li><b>Result:</b> 129 pass · 2 fail (F-08d and R-3137, both NDC-3137, already filed) · 1 blocked (R-2814: the positive holiday case needs the owner permission) · 4 not run (A-12, E-18, H-05, J-01).</li>
+    <li><b>Requirements doc out of date:</b> On Hold tickets are no longer counted in the threshold (NDC-2824), and skill-based rules now follow Zoho (NDC-2931, NDC-2932). F-15, E-14b and E-14c pass against Zoho, not against the doc.</li>
+    <li><b>B-06 update (19 Nov, 22:05–22:20 UTC):</b> "Is Escalated" is <b>not missing</b>. TAVI has it as "SLA Escalated". Tested with a 1-minute SLA: once the ticket escalated, an edit made the rule assign it in 5 s, and a ticket that was not escalated stayed unassigned. The earlier Fail came from Claude's check looking for the exact name. Minor note: the rule checks a ticket only when it is created or edited, so an escalated ticket waits until someone touches it (Zoho behaviour here not checked).</li>
+    <li><b>Other condition fields missing in TAVI</b> (compared with Zoho's live list, minor, not filed): Created By, Modified By, To Address, Is Response Overdue, Recent Comment, Recent Comment Type, Ticket On Hold Time, Locked Time, Layout; for contacts and accounts also Created/Modified By and Time, Layout and the happiness rating counts. Contacts: Zoho 26, TAVI 17.</li>
+    <li><b>Observations, not bugs yet:</b> a ticket gets no history entry when it enters the backlog; an owner set by a workflow on create has no history entry; "SLA Violated = false" does not match tickets that have no SLA; agents without the permission can read the master switches; the API accepts the agent-level threshold switched on with no rows (the UI blocks it); a ticket moved into a department is assigned by that department's round robin (trigger "moved").</li>
+    <li>All test data deleted and purged (205 tickets, 36 rules, 3 workflows, 25 skills, 1 skill type, 1 SLA policy, 1 contact, 1 account). Preferences, switches and department members restored.</li>
+  </ul>
+  <div id="list"></div>
+</div></main>
+
+<script>
+const CASES=[
+["A-01","P1","A · Page and rule form","Page layout",["Setup › Automation › Assignment Rules"],"Tabs Rules / Team Assignment / Notifications; Direct Assignment and Round Robin each with list, New Rule and master switch","GEN-1"],
+["A-02","P2","A · Page and rule form","New rule defaults",["New Rule"],"Active on, Ticket Create ticked, name 0/120 and description 0/1000 counters","GEN-2"],
+["A-03","P1","A · Page and rule form","Name required",["New Rule","Save with empty name"],"\"Enter a name for the Assignment Rule.\"; API 400 name required","MSG-1"],
+["A-04","P2","A · Page and rule form","Name and description limits",["Save name 121 / description 1001 (UI + API)"],"Stops at 120 / 1000; API too_long","GEN-2"],
+["A-05","P2","A · Page and rule form","Execute on required",["Untick Ticket Create and Ticket Update, save"],"Refused (API execute_on required)","GEN-3"],
+["A-06","P2","A · Page and rule form","Max 5 targets",["Add 5 targets, try a 6th (UI + API)"],"6th blocked; API too_many","GEN-4"],
+["A-07","P1","A · Page and rule form","At least one target",["Save a rule with no target"],"\"Add at least one target.\"","MSG-1"],
+["A-08","P1","A · Page and rule form","Reorder rules",["Two matching rules, reorder, create a ticket"],"Order saved; the rule now first acts","GEN-6"],
+["A-09","P1","A · Page and rule form","Activate / deactivate keeps targets",["Deactivate then activate a rule"],"Targets unchanged; inactive rule never acts","GEN-7"],
+["A-10","P1","A · Page and rule form","Master switches",["Turn the Direct / Round Robin list switch off, create matching tickets"],"No rule of that type acts; rules kept","GEN-7"],
+["A-11","P1","A · Page and rule form","Delete a rule",["Delete a rule that assigned a ticket"],"Rule gone; ticket keeps its owner","GEN-8"],
+["A-12","P2","A · Page and rule form","Save message",["Save a rule in the UI"],"\"Rule saved.\"","MSG-6"],
+["A-13","P1","A · Page and rule form","Two people edit the same rule",["Save with an old version"],"409 \"This rule was changed by someone else. Reload to see the latest version.\"","NF-5"],
+["A-14","P1","A · Page and rule form","Audit log",["Create, edit, delete rules; save preferences, skills"],"One audit entry each with who and when","GEN-11"],
+["A-15","P0","A · Page and rule form","No permission",["Sign in as a Desk agent without the assignment permission","Open the page / call the API"],"Page blocked; API 403","GEN-12"],
+["B-01","P1","B · Criteria","No criteria matches every ticket",["Direct rule with no criteria in one department","Create any ticket there"],"Assigned by the rule","GEN-5"],
+["B-02","P0","B · Criteria","Pattern 1 and (2 or 3)",["Rule: subject contains X and (priority low or urgent)","Create 4 tickets covering the truth table"],"Only matching tickets assigned","GEN-5"],
+["B-03","P2","B · Criteria","Condition without field or value",["Save a condition missing the field or value"],"Refused","MSG-2"],
+["B-04","P2","B · Criteria","Invalid pattern",["Patterns \"1 and (2\", \"1 and 4\", \"1 xor 2\", \"(1 or 2))\""],"Refused (syntax / unknown)","MSG-2"],
+["B-05","P2","B · Criteria","25 / 26 conditions",["Save 25, then 26 conditions"],"25 saved, 26 refused","GEN-5"],
+["B-06","P1","B · Criteria","Criteria field list",["Open the field picker / criteria-fields API"],"Ticket fields incl. Owner, Team, Tags, Skills, Contact, Account, Product, Due Date, Created/Modified/Closed Time, Is Overdue, Is Escalated; contact fields as Zoho (26)","GEN-5a"],
+["B-07","P2","B · Criteria","Date and number operators",["Check the operators of a date and a number field"],"is, isn't, after, before, between, not between, empty, not empty; =, ≠, <, >, between","GEN-5b"],
+["B-08a","P1","B · Criteria","Holiday criteria (detached list)",["Rule: on holiday / not on holiday of a list not linked to business hours","Create tickets"],"Matches according to today's date (NDC-2814)","GEN-5c"],
+["B-08b","P1","B · Criteria","Business hours criteria",["Rule: during / outside business hours (profile)","Create a ticket"],"Only the branch matching the current time acts","GEN-5c"],
+["B-09","P1","B · Criteria","Contact and account criteria",["Rules on contact last name / account name","Create tickets with that contact / account"],"Assigned by the matching rule","GEN-5"],
+["C-01","P1","C · Direct form","Department pick lists",["Add Target"],"\"Ticket coming to\": Any Department + departments; \"Move Ticket to\": Select Department + departments","DA-1"],
+["C-02","P1","C · Direct form","Assign-to list follows department",["Coming to Dept A, open Agents / Teams"],"Dept A agents and teams; Mark as Unassigned","DA-2"],
+["C-03","P1","C · Direct form","Move changes the list",["Move Ticket to Dept B"],"List shows Dept B agents","DA-2"],
+["C-04","P1","C · Direct form","Agent not in destination",["API: move to Dept B + agent outside Dept B"],"Refused (not_a_member)","DA-2"],
+["C-05","P2","C · Direct form","Any Department without move",["Coming to Any Department, no move, pick an agent"],"Only Unassigned allowed","DA-2"],
+["C-06","P2","C · Direct form","Mark as Unassigned",["Pick an agent, then Mark as Unassigned"],"Agent cleared","DA-3"],
+["C-07","P2","C · Direct form","Agent and team together",["API: target with both agent and team"],"Refused, or only one kept","DA-3"],
+["C-08","P1","C · Direct form","Team Assignment off",["Turn Team Assignment off for the department","Add a team target"],"Teams not offered; API refuses","TA-1"],
+["D-01","P0","D · Direct runtime","Direct rule assigns on create",["Rule: subject → A1","Create matching unassigned ticket"],"Owner A1 at once; history entry with rule","DA"],
+["D-02","P1","D · Direct runtime","Non-matching ticket",["Create a ticket that does not match"],"Untouched","DA"],
+["D-03","P0","D · Direct runtime","Existing owner kept",["Create a matching ticket with owner A2"],"Stays A2","DA-7"],
+["D-04","P1","D · Direct runtime","Ignores availability",["Rule → offline agent"],"Assigned anyway, no backlog","DA-5"],
+["D-05","P1","D · Direct runtime","Team target",["Rule → team"],"Ticket in team queue, no owner","DA-4"],
+["D-06","P1","D · Direct runtime","Move + assign",["Any Department → move to Dept B + A1"],"Ticket in Dept B, owner A1","DA-2"],
+["D-07","P1","D · Direct runtime","Move unassigned then round robin",["Coming to Dept B → move to Dept A unassigned; Dept A RR matches"],"Moved, then RR assigns","DA-2, EO"],
+["D-08","P1","D · Direct runtime","First rule wins (Unassigned)",["Rule 1 Mark as Unassigned, rule 2 → A2, both match"],"Ticket stays unassigned","GEN-6"],
+["D-09","P1","D · Direct runtime","Rule on update",["Rule executes on update","Edit an unowned ticket / an owned ticket to match"],"Unowned → assigned; owned stays","GEN-3"],
+["D-10","P1","D · Direct runtime","No loop",["Edit a ticket the rule already assigned"],"One assignment only","DA-8"],
+["D-11","P1","D · Direct runtime","Rule order",["Two matching rules; swap order"],"Higher rule acts; after swap the other","GEN-6"],
+["D-12","P1","D · Direct runtime","Inactive rule / switch off",["Deactivate rules; or switch Direct off"],"Nothing assigned","GEN-7"],
+["D-13","P1","D · Direct runtime","Agent removed from department",["Remove the target agent from the department","Create a matching ticket"],"Never assigned to that agent","GEN-9"],
+["D-13b","P2","D · Direct runtime","Removed agent shown in list",["Open the rule list"],"\"Assign to <agent> (no longer in <department>)\"","GEN-9"],
+["D-14","P1","D · Direct runtime","Ticket sources",["Create via API, New Ticket form, web form, import (automation on/off), email"],"Direct rule acts for each source as documented","GEN-13"],
+["D-15","P1","D · Direct runtime","Workflow sees the direct owner",["Direct → A1; workflow \"owner is A1 → set A2\""],"Final owner A2","EO-2"],
+["D-16","P1","D · Direct runtime","Workflow overrides direct",["Direct → A1; workflow sets A2"],"Final A2; history A1 then A2","EO-4"],
+["D-17","P1","D · Direct runtime","Owned by workflow → no round robin",["Workflow sets owner; RR rule also matches"],"RR does nothing","EO-3"],
+["E-01","P2","E · Round robin rules","Department picker",["Round Robin list"],"Department picker; rule belongs to one department","RR-1"],
+["E-02","P1","E · Round robin rules","Method required",["Save a target without method"],"\"Choose a round robin type.\"","RR-2"],
+["E-03","P2","E · Round robin rules","Method help texts",["Add Target"],"Zoho's three texts","RR-2"],
+["E-04","P1","E · Round robin rules","Pool required",["Save without agents or team; agent outside department"],"\"Pick at least one agent, or a team.\"; not_a_member","RR-3"],
+["E-05","P1","E · Round robin rules","Team pool with excluded agent",["Team pool, exclude one member"],"Excluded never gets tickets","RR-3"],
+["E-06","P2","E · Round robin rules","Form notes",["Rule form"],"\"will not re-assign…\" and \"will not assign more… threshold\"","RR-4"],
+["E-07","P2","E · Round robin rules","No backlog option on rule",["Rule form"],"No backlog / capacity fields","RR-14"],
+["E-08","P0","E · Round robin rules","Round robin on create",["Create unowned matching tickets (API + New Ticket form)"],"Assigned by RR","RR"],
+["E-09","P0","E · Round robin rules","Sequential order",["Pool A1,A2,A3, 6 tickets"],"A1,A2,A3,A1,A2,A3","RR-5"],
+["E-10","P1","E · Round robin rules","Team pool sequential",["Team pool, 4 tickets"],"Members take turns (alphabetical)","RR-5"],
+["E-11","P1","E · Round robin rules","Pool change mid-sequence",["Remove an agent from the pool, create tickets"],"Restarts at the first agent","RR-6"],
+["E-12","P0","E · Round robin rules","Offline agent skipped",["Offline agents off; one agent offline"],"Skipped; history skipped_user_ids","RR-7"],
+["E-13","P1","E · Round robin rules","Load based",["Load based pool with unequal loads"],"Least loaded first","RR-8"],
+["E-14a","P1","E · Round robin rules","Skill based: one skill",["Ticket with skill sk1 / sk2"],"Agent holding that skill","RR-9"],
+["E-14b","P1","E · Round robin rules","Skill based: no skills",["Ticket with no skills"],"Stays unassigned (Zoho, NDC-2932)","RR-9"],
+["E-14c","P1","E · Round robin rules","Skill based: several skills",["Ticket with sk1 + sk2, no agent holds both"],"Agent with any of the skills (Zoho, NDC-2931)","RR-9"],
+["E-15","P1","E · Round robin rules","Two RR rules match",["Two rules match the same ticket"],"First in list assigns, second nothing","EO-6"],
+["E-16","P0","E · Round robin rules","Everyone full or offline",["All agents at threshold / offline"],"Unassigned backlog ticket","RR-14"],
+["E-17","P1","E · Round robin rules","RR master switch off",["Turn Round Robin off, create matching ticket"],"No RR, no backlog","GEN-7"],
+["E-18","P2","E · Round robin rules","30-day backlog limit",["Backlog ticket whose last customer reply is older than 30 days"],"Not assigned","RR-19"],
+["E-19","P1","E · Round robin rules","History entry",["Read history of an RR-assigned ticket"],"Rule name, type, strategy, owner, skipped agents","GEN-10"],
+["E-20","P1","E · Round robin rules","RR rule on update",["RR rule executes on update; edit ticket to match"],"Assigned on update","GEN-3"],
+["E-21","P2","E · Round robin rules","Ticket moved into department",["Move an unassigned ticket into a department with an RR rule"],"Record behaviour","—"],
+["F-01a","P0","F · Round Robin Preferences","Offline agents off",["Pool with an offline agent, offline agents off"],"Offline agent skipped","RR-11"],
+["F-01b","P0","F · Round Robin Preferences","Offline agents on",["Same, offline agents on"],"Offline agent gets its turn","RR-11"],
+["F-02","P1","F · Round Robin Preferences","Value validation",["Department threshold 0 / 201 / 1.5 / blank; backlog limit 0 / 51; unknown order / mode"],"Refused with messages; 1 / 200 / 50 accepted","RR-12"],
+["F-03","P0","F · Round Robin Preferences","Department threshold reached",["Department threshold below every agent's load","Create a matching ticket"],"Backlog (unassigned, in_backlog)","RR-12"],
+["F-04","P1","F · Round Robin Preferences","Agent rows validation",["Agent row without agent / threshold 0 / duplicate / outside department"],"\"Pick an agent.\"; refused","RR-13"],
+["F-05","P0","F · Round Robin Preferences","Agent threshold overrides department",["Department 1, A1 agent threshold above load"],"Only A1 gets the ticket","RR-13"],
+["F-06","P1","F · Round Robin Preferences","Agent level off keeps rows",["Switch agent level off"],"Rows kept; department threshold applies again","RR-13"],
+["F-07a","P0","F · Round Robin Preferences","Assign backlogs: limit and created-time order",["Backlog tickets, limit 1, 2 free slots"],"Oldest first, one per cycle (~1 min), stops at threshold","RR-15"],
+["F-07b","P0","F · Round Robin Preferences","Assign backlogs: due-date order",["3 backlog tickets with due dates, 1 free slot"],"Soonest due assigned","RR-15"],
+["F-07c","P0","F · Round Robin Preferences","Backlog slot freed by close",["Close a ticket of a full agent"],"Next backlog ticket assigned","RR-15"],
+["F-07d","P0","F · Round Robin Preferences","Backlog: agent comes online",["Free slot while agent offline, then online"],"Nothing while offline; assigned when online","RR-15"],
+["F-07e","P1","F · Round Robin Preferences","Backlog slot freed by move",["Move a ticket of a full agent to another department"],"Next backlog ticket assigned","RR-15"],
+["F-08a","P0","F · Round Robin Preferences","Closure: agent closes own ticket",["Closure on, backlogs off; online full agent closes own ticket"],"Backlog ticket to that agent at once","RR-16"],
+["F-08b","P0","F · Round Robin Preferences","Closure: admin closes agent ticket",["Admin closes an online agent's ticket"],"Backlog ticket to that agent","RR-16"],
+["F-08c","P0","F · Round Robin Preferences","Closure: 5 repetitions",["Repeat F-08a five times"],"Every time","RR-16"],
+["F-08d","P0","F · Round Robin Preferences","Closure: offline agent, offline agents on",["Agent offline, offline agents on; admin closes their ticket"],"Backlog ticket to that agent (NDC-3137)","RR-16"],
+["F-08e","P1","F · Round Robin Preferences","Closure of an unowned ticket",["Close a ticket with no owner"],"Nothing assigned","RR-16"],
+["F-09","P0","F · Round Robin Preferences","Both backlog options off",["Free slots with both options off"],"Backlog stays unassigned","RR-14"],
+["F-10a","P1","F · Round Robin Preferences","Backlog first + Assign backlogs",["Incoming = push into backlog first, agents free"],"Waits in backlog, then assigned by the backlog run","RR-17"],
+["F-10b","P1","F · Round Robin Preferences","Backlog first + closure only",["Incoming = backlog first, only closure on"],"Waits until an agent closes a ticket","RR-17"],
+["F-11","P1","F · Round Robin Preferences","in_backlog cleared",["Assign a backlog ticket by hand; move one to another department"],"in_backlog false","RR-14"],
+["F-12","P1","F · Round Robin Preferences","Team Assignment off",["Turn Team Assignment off","Team rule target, RR team pool, manual team assign"],"All refused (NDC-2812)","TA-1"],
+["F-13","P2","F · Round Robin Preferences","Team ticket without RR",["Ticket assigned to a team, no RR team rule"],"Stays in team queue","TA-1"],
+["F-14","P0","F · Round Robin Preferences","Threshold counts this department only",["Agent threshold = this department's open + 1"],"Ticket assigned (NDC-2824)","RR-12"],
+["F-15","P1","F · Round Robin Preferences","On Hold not counted",["Move an agent ticket to On Hold at threshold"],"Agent gets one more (Zoho, NDC-2824)","RR-12"],
+["F-16","P1","F · Round Robin Preferences","Unassigned is not backlog",["Unassigned ticket matching no RR rule"],"in_backlog false","RR-14"],
+["G-01","P1","G · Notifications","Agent notified",["Rule assigns A1"],"A1 one notification, others none","NOT-1"],
+["G-02","P2","G · Notifications","Self pick-up",["Agent picks up a ticket"],"No notification","NOT-1"],
+["G-03","P1","G · Notifications","Team notified",["Rule assigns a team"],"Members once, others none","NOT-2"],
+["G-04","P2","G · Notifications","Per-department notification rules",["Setup › Notifications"],"Per department, email / mobile, template","NOT-3"],
+["G-05","P2","G · Notifications","Unassigned ticket alert",["Setup › Notifications"],"Present","NOT-4"],
+["G-06","P2","G · Notifications","No owner change",["Edit a ticket without changing owner"],"No assignment notification","EO-5"],
+["G-07","P1","G · Notifications","Only final owner notified",["Direct → A1, workflow → A2 same event"],"Only A2 notified","EO-5"],
+["H-01","P1","H · Skills","Skills per department",["Switch department on Skills"],"Each department has its own skills and types","2752-1"],
+["H-02","P1","H · Skills","Skill validation",["Blank name, no type, duplicate, 101 characters"],"Refused","2752-3"],
+["H-03","P1","H · Skills","Inactive skill",["Inactive skill whose criteria match"],"Never added","2752-2"],
+["H-04","P2","H · Skills","Skill agents both ways",["Set agents on skill; read Agent Skills"],"Same data","2752-4"],
+["H-05","P2","H · Skills","Search and filters",["Skills page search and filters"],"Work","2752-5"],
+["H-06","P2","H · Skills","Order follows list",["Ticket matches two skills; reorder skills"],"Ticket skills follow list order","2752-6"],
+["H-07","P0","H · Skills","Auto-add on create and update",["Ticket matching skill criteria"],"Skill added","RR-18"],
+["H-08","P1","H · Skills","Recalculate",["Ticket no longer matches; recalculate"],"Stale skill removed","RR-18"],
+["H-09","P2","H · Skills","Assign by skills",["Ticket ⋯ › Assign by Skills"],"Assigned to a matching agent","2752-7"],
+["H-10","P2","H · Skills","Skill usage",["Skill usage"],"Lists rules using it","2752-8"],
+["H-11","P1","H · Skills","Limits",["11 skills on a ticket; 31 active skills in a department"],"Refused","2752-9"],
+["H-12","P0","H · Skills","Skill then skill RR same event",["Create ticket matching skill + skill-based RR"],"Assigned to agent with the skill","EO-1"],
+["H-13","P2","H · Skills","Skill type create / rename / delete",["Manage a skill type"],"Works","—"],
+["H-14","P1","H · Skills","Script in skill name",["Skill name with <img onerror>"],"Shown as text","I-05"],
+["I-01","P2","I · Non-functional","Arabic",["Switch to العربية"],"Translated, right-to-left","NF-1"],
+["I-02","P2","I · Non-functional","Keyboard and screen readers",["Switches, drag handles"],"Named controls","NF-2"],
+["I-03","P0","I · Non-functional","20 tickets at once",["Pool 2, 5 free slots each, 20 tickets in parallel"],"5 + 5 + 10 backlog, no double assignment","NF-3"],
+["I-04","P1","I · Non-functional","Speed",["10 tickets, time to owner"],"≤ 5 s","NF-4"],
+["I-05","P1","I · Non-functional","Script in names",["Rule / skill names with markup"],"Escaped","—"],
+["J-01","P2","J · Migration","Pre-existing rules after release",["Check converted rules"],"Same order and state","MIG"],
+["R-2811","P1","R · Regression","NDC-2811 email channel off",["Agent with Email channel off"],"Treated as offline",""],
+["R-2812","P1","R · Regression","NDC-2812 team assign with TA off",["Team Assignment off, assign to team"],"Refused",""],
+["R-2813","P1","R · Regression","NDC-2813 New Ticket form owner",["Open New Ticket form"],"Owner shows Unassigned",""],
+["R-2814","P1","R · Regression","NDC-2814 detached holiday list",["Holiday criteria with a detached list"],"Matches",""],
+["R-2821","P2","R · Regression","NDC-2821 skill types per department",["Skill types"],"Per department",""],
+["R-2824","P1","R · Regression","NDC-2824 threshold counting",["Threshold"],"This department, Open only",""],
+["R-2931","P1","R · Regression","NDC-2931 any-skill assignment",["Ticket with two skills"],"Agent with any skill",""],
+["R-2932","P1","R · Regression","NDC-2932 no-skill ticket",["Ticket without skills"],"Unassigned",""],
+["R-3046","P1","R · Regression","NDC-3046 RR with SLA condition",["RR rule with SLA name condition"],"Assigns on create",""],
+["R-3137","P0","R · Regression","NDC-3137 closure with offline agent",["See F-08d"],"Assigned",""]
+];
+const STATES=["Pass","Fail","Blocked","Skipped"];
+const LABEL={Pass:"Pass",Fail:"Fail",Blocked:"Blocked",Skipped:"Skip"};
+const COLOR={Pass:"var(--pass)",Fail:"var(--fail)",Blocked:"var(--block)",Skipped:"var(--skip)"};
+const FILTERS=[["all","All"],["P0","P0"],["P1","P1"],["P2","P2"],["|"],["Not run","Not run"],["Fail","Fail"],["Blocked","Blocked"],["Skipped","Skipped"]];
+let results={}, filter="all", db=null, canWrite=true;
+const pending={};
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function statusOf(id){return (results[id]&&results[id].status)||"Not run"}
+function fmt(t){if(!t)return"";try{return new Date(t).toLocaleString([], {day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return""}}
+
+function renderFilters(){
+  document.getElementById("filters").innerHTML=FILTERS.map(f=>f[0]==="|"?'<span class="sep"></span>':
+    `<button class="chip" data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("");
+}
+function renderSummary(){
+  const n=CASES.length,c={Pass:0,Fail:0,Blocked:0,Skipped:0};
+  CASES.forEach(k=>{const s=statusOf(k[0]);if(c[s]!==undefined)c[s]++});
+  const done=c.Pass+c.Fail+c.Blocked+c.Skipped;
+  document.getElementById("bar").innerHTML=STATES.map(s=>`<span style="width:${c[s]/n*100}%;background:${COLOR[s]}"></span>`).join("");
+  document.getElementById("counts").innerHTML=`<span><b>${done}/${n}</b> run</span>`+
+    STATES.map(s=>`<span><i class="dot" style="background:${COLOR[s]}"></i>${LABEL[s]} <b>${c[s]}</b></span>`).join("")+
+    `<span>Not run <b>${n-done}</b></span>`;
+}
+function matches(k){
+  if(filter==="all")return true;
+  if(/^P\d$/.test(filter))return k[1]===filter;
+  return statusOf(k[0])===filter;
+}
+function tkHTML(tk){return tk?`<span class="tk">${esc(tk)}</span>`:""}
+function cardHTML(k){
+  const [id,pri,area,title,steps,exp,tk]=k, r=results[id]||{}, s=statusOf(id);
+  return `<article class="card" data-id="${id}" data-s="${s}">
+    <div class="head"><span class="id">${id}</span><span class="pri ${pri}">${pri}</span><span class="title">${esc(title)}</span></div>
+    ${tkHTML(tk)}
+    <ol>${steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+    <div class="exp"><b>Expected:</b> ${esc(exp)}</div>
+    <div class="st" role="group" aria-label="Result for ${id}">${STATES.map(v=>`<button data-v="${v}" aria-pressed="${s===v}" ${canWrite?"":"disabled"}>${LABEL[v]}</button>`).join("")}</div>
+    <textarea id="c-${id}" placeholder="What you saw (ticket number, time, History order…)" aria-label="Comment for ${id}" ${canWrite?"":"disabled"}>${esc(r.comment||"")}</textarea>
+    <div class="meta" id="m-${id}">${r.updatedAt?"Saved "+fmt(r.updatedAt):""}</div>
+  </article>`;
+}
+function renderList(){
+  const groups=[];CASES.forEach(k=>{if(!matches(k))return;let g=groups.find(x=>x.a===k[2]);if(!g)groups.push(g={a:k[2],items:[]});g.items.push(k)});
+  const el=document.getElementById("list");
+  if(!groups.length){el.innerHTML='<p class="empty">No cases match this filter.</p>';return}
+  el.innerHTML=groups.map(g=>{const d=g.items.filter(k=>statusOf(k[0])!=="Not run").length;
+    return `<section><h2>${esc(g.a)}<small>${d}/${g.items.length} run</small></h2>${g.items.map(cardHTML).join("")}</section>`}).join("");
+  el.style.display="grid";el.style.gap="26px";
+}
+function updateCard(id){
+  const card=document.querySelector(`.card[data-id="${id}"]`);if(!card)return;
+  const r=results[id]||{},s=statusOf(id);card.dataset.s=s;
+  card.querySelectorAll(".st button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===s));
+  const ta=document.getElementById("c-"+id);if(ta&&document.activeElement!==ta&&!pending[id])ta.value=r.comment||"";
+  const m=document.getElementById("m-"+id);if(m&&!pending[id])m.textContent=r.updatedAt?"Saved "+fmt(r.updatedAt):"";
+}
+function groupCounts(){
+  document.querySelectorAll("#list section").forEach(sec=>{const ids=[...sec.querySelectorAll(".card")].map(c=>c.dataset.id);
+    const area=(CASES.find(k=>k[0]===ids[0])||[])[2];const all=CASES.filter(k=>k[2]===area&&matches(k));
+    const sm=sec.querySelector("h2 small");if(sm)sm.textContent=all.filter(k=>statusOf(k[0])!=="Not run").length+"/"+all.length+" run"});
+}
+function renderAll(){renderFilters();renderSummary();renderList()}
+
+const queue={};
+async function save(id,patch){
+  const cur=results[id]||{};const next={id,status:cur.status||"Not run",comment:cur.comment||"",...patch,updatedAt:new Date().toISOString()};
+  results[id]=next;renderSummary();updateCard(id);groupCounts();
+  if(!db){const m=document.getElementById("m-"+id);if(m)m.textContent="Not saved: storage is not available here";return}
+  queue[id]=(queue[id]||Promise.resolve()).then(async()=>{
+    const m=document.getElementById("m-"+id);
+    try{await db.collection("results").doc(id).set(results[id]);if(m)m.textContent="Saved "+fmt(results[id].updatedAt)}
+    catch(e){if(e&&e.code==="invalid_argument"){canWrite=false;renderList();document.getElementById("note").textContent="You can view this run, but only its owner can record results."}
+      else if(m)m.textContent="Could not save. Check your connection and try again."}
+  });
+}
+
+document.addEventListener("click",e=>{
+  const f=e.target.closest(".chip");if(f){filter=f.dataset.f;renderFilters();renderList();return}
+  const b=e.target.closest(".st button");if(b&&!b.disabled){const id=b.closest(".card").dataset.id;
+    const v=statusOf(id)===b.dataset.v?"Not run":b.dataset.v;
+    save(id,{status:v});}
+});
+document.addEventListener("input",e=>{
+  if(e.target.tagName!=="TEXTAREA")return;const id=e.target.id.slice(2);
+  const m=document.getElementById("m-"+id);if(m)m.textContent="Typing…";
+  clearTimeout(pending[id]);pending[id]=setTimeout(()=>{delete pending[id];save(id,{comment:e.target.value})},900);
+});
+document.addEventListener("focusout",e=>{
+  if(e.target.tagName!=="TEXTAREA")return;const id=e.target.id.slice(2);
+  if(pending[id]){clearTimeout(pending[id]);delete pending[id];save(id,{comment:e.target.value})}
+});
+
+renderAll();
+(async()=>{
+  try{db=await window.claude?.use?.("db")}catch(e){db=null}
+  if(!db){document.getElementById("note").textContent="Results can't be saved in this view. Open the artifact signed in to claude.ai to record them.";return}
+  try{const u=await window.claude.use("user");if(u&&u.can){const w=await u.can("data.write");if(w===false){canWrite=false;renderList();document.getElementById("note").textContent="You can view this run, but only its owner can record results."}}}catch(e){}
+  db.collection("results").onSnapshot(snap=>{
+    snap.docChanges().forEach(ch=>{const id=ch.doc.id;
+      if(ch.type==="removed")delete results[id];else results[id]=ch.doc.data();
+      updateCard(id)});
+    renderSummary();groupCounts();
+  },err=>{document.getElementById("note").textContent="Lost the live connection to saved results. Reload the page."});
+})();
+</script>

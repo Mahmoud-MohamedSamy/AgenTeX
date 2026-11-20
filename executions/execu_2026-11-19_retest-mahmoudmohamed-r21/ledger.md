@@ -1,0 +1,19 @@
+# Ledger r21 (QA RT21 data)
+- 2026-11-19T07:35:47Z X56 lane: blueprint QA RT20 BS 3056 flow 23339d62-fecf-4324-8950-5fa1bfdef0df ACTIVATED for r21 3118 (restore: deactivate)
+- 2026-11-19T07:35:50Z X56 lane: ticket created 3bfc4061-4394-41a0-85d9-303fc7f3e53c #undefined "QA RT20 BS 3056 flow r21 t4"
+- 2026-11-19T07:38:07Z X56 lane: blueprint 23339d62-fecf-4324-8950-5fa1bfdef0df deactivated again (r21 3118 done)
+- 2026-11-19T07:38:21Z X56 lane: #5117 priority low→medium→low for 3117 stale-screen check (restored low)
+- 2026-11-19T07:39:54Z W2 lane r21: workflow rule "QA RT21 W2 3105 all" 228c9676-0fc1-4b8c-a649-bde4a614746a (active)
+- 2026-11-19T07:39:56Z W2 lane r21: workflow rule "QA RT21 W2 3105 part" 1a704422-e849-4321-94ea-51177b6d1850 (active)
+- 2026-11-19T07:39:57Z W2 lane r21: ticket "QA RT21 W2 3105 all qao" 04271d1a-1a13-4166-8ad2-08ff96dd45a8 #undefined
+- 2026-11-19T07:39:58Z W2 lane r21: ticket "QA RT21 W2 3105 part qao" 24663872-8f69-4cc7-ac34-fed55fbaf2c4 #undefined
+- 2026-11-19T07:40:18Z W2 lane r21: workflow rule 228c9676-0fc1-4b8c-a649-bde4a614746a deactivated
+- 2026-11-19T07:40:19Z W2 lane r21: workflow rule 1a704422-e849-4321-94ea-51177b6d1850 deactivated
+- 2026-11-19T07:47:15Z W2 lane r21: ticket "QA RT21 W2 3115 rapid t1" 45419067-6cbe-4862-8ab2-77b1f1e51d93 #undefined
+- 2026-11-19T07:47:16Z W2 lane r21: ticket "QA RT21 W2 3115 rapid t2" 7a167813-530b-41c0-acb7-1b326943b7c9 #undefined
+- 2026-11-19T07:47:17Z W2 lane r21: ticket "QA RT21 W2 3115 rapid t3" ff011cb3-f479-41cd-b45a-6186e2960b2a #undefined
+- 2026-11-19T07:47:26Z W2 lane r21: workflow rule "QA RT21 W2 3115 rapid" 8421e150-a5fe-49a6-9631-88ece1182122 (active)
+- 2026-11-19T07:48:45Z W2 lane r21: workflow rule 8421e150-a5fe-49a6-9631-88ece1182122 deactivated
+- 2026-11-19T08:50:33Z 3116: skill "QA RT21 SK 3116 ok" 8fca04c5-dc04-4da0-932b-978d90bb2117 in Customer Support
+- 2026-11-19T08:58:03Z 3116: CES1 set VIEW-ONLY in Customer Support (200) — restore right after
+- 2026-11-19T08:58:29Z 3116: Customer Support members restored (200, match=true)

@@ -1,0 +1,31 @@
+# NDC-2980 Layout Rules | "Is empty" condition rows never match [Done]
+Summary
+"Is empty" condition rows never match. reason stays hidden in every state.
+Environment
+- NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2; the same setup on Desk Tickets. Test data was deleted after the run.
+Steps to reproduce
+- Rule row: email2 is empty (with radio = No), then show reason.
+- Open the form with email2 empty; type something and clear it.
+Expected result
+Zoho's "is empty" and "is not empty" rows apply on the form.
+Actual result
+- reason stays hidden in every state.
+- The API also saves op "isEmpty" as "isNull" without saying so.
+Notes
+- Test cases D6 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- CRM and Desk share the same rule engine, so this applies to both apps.
+- Evidence: crm-D6.png (attached).
+
+== COMMENTS
+--- 2026-11-16T10:10:57.683751+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- email2 empty at start → reason visible [PASS]
+- Type an email → reason hidden [PASS]
+- Clear it → reason visible [PASS]
+- "is not empty" row → tmp shown only while email2 has a value [PASS]
+- API op "isEmpty" → still stored as "isNull" / "isNotNull" (editor shows "is empty" / "is not empty"); works the same [INFO]
+Evidence: NDC-2980-retest-PASS.png (attached)

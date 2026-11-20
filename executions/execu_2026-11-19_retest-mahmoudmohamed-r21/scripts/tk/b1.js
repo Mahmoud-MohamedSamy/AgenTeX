@@ -1,0 +1,2 @@
+for(const k of ['C1','C2']){ if(C['con'+k]) continue; const r=await api('POST','/modules/'+CON+'/records',{data:fields({first_name:'QA RT20 TK',last_name:'Contact '+k,email:'qa-rt20-tk-'+k.toLowerCase()+'@example.com'})});log(k,E(r));const id=r.j?.data?.id;if(id){C['con'+k]=id;saveC();LED('contact created '+id+' "QA RT20 TK Contact '+k+'" (example.com address)');}}
+const t=await mkT('3064 edit contact',{priority:'Low'});log(t);if(t.id){C.t3064=t.id;saveC();LED('ticket created '+t.id+' "QA RT20 TK 3064 edit contact" (no contact)');}

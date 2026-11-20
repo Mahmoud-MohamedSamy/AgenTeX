@@ -1,0 +1,7 @@
+{"out":"3018-a11y-card.png","title":"NDC-3018 CRM refused save: what assistive technology gets (Playwright ARIA snapshot + DOM)","host":"staging-crm.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["Create Lead: ARIA snapshot of the field","locator('[data-rule-field=qa_rt18v_text]').ariaSnapshot() after Save with \"BAD-rt20\"","textbox \"QA RT18 v text\" [invalid]: BAD-rt20\n  alert: QA RT18 text cannot start with BAD","ok"],
+["Create Lead: input attributes","input aria-invalid / aria-describedby","aria-invalid=\"true\"; aria-describedby → <p id=…-error role=\"alert\"> \"QA RT18 text cannot start with BAD\"; getByRole('textbox',{description:/cannot start with BAD/}) = 1","ok"],
+["Create Lead: announcement","MutationObserver on live regions during Save; getByRole('alert')","added alert \"Please fix the field highlighted below.\" (top banner) + added alert \"QA RT18 text cannot start with BAD\" (field message) — both inserted as role=alert after Save (was: no role, no live region)","ok"],
+["Create Lead: focus","document.activeElement after Save","the refused input (qa_rt18v_text)","ok"],
+["Edit Lead (record QA RT20 VR 3018 edit)","Edit › \"BAD-edit\" › Save","Same: [invalid], describedby → role=alert message, alert inserted, focus on the input; no field-level request sent (client check). Server PATCH → 422 same message","ok"]]}

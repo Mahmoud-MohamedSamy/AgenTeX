@@ -1,0 +1,13 @@
+{"out":"BUG-wf-editor-contact-placeholder-not-found-FAIL.png","ticket":"NEW BUG","label":"BUG","priority":"low",
+"title":"Workflow Rules | Opening a rule whose Create Record sets Contact Name to ${contact_id} shows \"The requested resource was not found.\"","verdict":"FAIL",
+"env":"NDC-Staging · staging-desk · Setup › Automation › Workflow Rules › \"QA RT21 W2 3105 part\" (Create Record › Calls) vs \"QA RT21 W2 3115 rapid\" (no Create Record) · Edge · owner","date":"19 Nov 2026",
+"panels":[
+ {"img":"sn3119-b-create-record.png","caption":"Rule with Create Record (Contact Name = ${contact_id}): error toast as soon as it opens","crop":[240,60,1360,840],"boxes":[{"b":[1212,820,1574,874],"n":1,"kind":"FAIL"}]},
+ {"img":"sn3119-c-contact-field.png","caption":"Same rule, Field Values: Contact Name shows \"Contacts ${contac\" in a record search box","crop":[380,230,480,360],"boxes":[{"b":[594,458,800,498],"n":2,"kind":"FAIL"}]},
+ {"img":"sn3119-a-no-create-record.png","caption":"Control: a rule without Create Record opens with no toast","crop":[240,60,1360,840],"boxes":[{"b":[1212,820,1574,874],"n":3,"kind":"INFO"}]}
+],
+"rows":[
+ [1,"Open a saved rule with Create Record","Opens with no error","Toast \"The requested resource was not found.\" with no click; the editor requests GET /modules/{Contacts}/records/${contact_id} → 404","FAIL"],
+ [2,"Contact Name value","Shows the placeholder as a placeholder (e.g. \"${contact_id}\" or \"Ticket › Contact\")","Record search box showing \"Contacts ${contac\" — the placeholder is treated as a record id","FAIL"],
+ [3,"Control: rule without Create Record","No error","No toast; only GET /agents/tia/status answers 404 on both pages (silent)","INFO"]
+]}

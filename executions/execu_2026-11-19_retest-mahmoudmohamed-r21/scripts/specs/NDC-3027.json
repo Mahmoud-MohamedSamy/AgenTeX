@@ -1,0 +1,22 @@
+{
+ "out": "NDC-3027-retest-PARTIAL.png",
+ "ticket": "NDC-3027",
+ "priority": "low",
+ "title": "Audit Log | Entries show the internal field name EngineDeletedAt and name a deleted ticket by the contact's email",
+ "verdict": "PARTIAL",
+ "env": "NDC-Staging · staging-desk › Setup › Audit Log · owner ndc-staging-owner · ticket 'QA RT20 BP-3027 delete restore' deleted + restored from Recycle Bin; department QA RT20 BP Dept B disabled with transfer · public IPs masked",
+ "date": "17 Nov 2026",
+ "panels": [
+  {"img": "3027-1-audit.png", "caption": "Delete and restore are named by the ticket subject; no EngineDeletedAt, no email", "crop": [400, 490, 1000, 210],
+   "boxes": [{"b": [540, 498, 1052, 520], "n": 1, "kind": "PASS"}, {"b": [540, 650, 1046, 672], "n": 2, "kind": "PASS"}, {"b": [540, 520, 630, 538], "n": 5, "kind": "INFO"}]},
+  {"img": "3027-2-audit-dept.png", "caption": "System department move now readable; but field names IsActive / Version are still the internal names", "crop": [400, 290, 1000, 440],
+   "boxes": [{"b": [540, 468, 1275, 490], "n": 3, "kind": "PASS"}, {"b": [540, 682, 1024, 704], "n": 4, "kind": "FAIL"}, {"b": [540, 294, 1070, 316], "n": 4, "kind": "FAIL"}, {"b": [540, 351, 1042, 373], "n": 4, "kind": "FAIL"}]}
+ ],
+ "rows": [
+  [1, "Restore a deleted ticket", "Readable, names the ticket", "\"restored a Ticket named QA RT20 BP-3027 delete restore\" (was \"cleared Ticket's EngineDeletedAt\")", "PASS"],
+  [2, "Delete a ticket", "Named by ticket, not contact email", "\"deleted a Ticket named QA RT20 BP-3027 delete restore\" (no #number: the number was assigned ~50 s after create, after the delete)", "PASS"],
+  [3, "Department change made by the system (department disabled with transfer)", "Readable fields and values", "\"System updated … transfer ticket's department from QA RT20 BP Dept B to Customer Support\" (15 Nov: raw ids, actor shown as an id)", "PASS"],
+  [4, "Other field names", "Readable", "\"QA RT20 BP Dept B's IsActive from yes to no\"; assignment rules \"IsActive\", \"Version from 1 to 2\" — internal names", "FAIL"],
+  [5, "Original case: ticket created by import", "-", "Not re-imported (API ticket used, as on 15 Nov); restore line shows IP 172.19.0.36 (see NDC-3067)", "INFO"]
+ ]
+}

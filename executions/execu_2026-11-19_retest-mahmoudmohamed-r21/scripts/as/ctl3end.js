@@ -1,0 +1,3 @@
+var __AS="D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-17_retest-mahmoudmohamed-r20/scripts/as/";eval(fs.readFileSync(__AS+'lib.js','utf8'));
+const AOB='4853562a-0b4d-45cb-ba34-9f2118fcd32c';const R=JSON.parse(fs.readFileSync(OUT+'ctl3.json','utf8'));const PB=JSON.parse(fs.readFileSync(OUT+'ctl3-prefs-orig.json','utf8'));
+R.final=[await own(R.t),(await feed(R.t)).map(e=>e.action)];await patch(R.t,{status:'Closed'});R.off=await setA(R.rid,false);R.same=E(await setPrefs(PB,AOB))+' '+(JSON.stringify(await prefs(AOB))===JSON.stringify(PB));LED('ctl3: QA AO Dept B RR prefs changed and restored '+R.same);save('ctl3.json',R);return R;

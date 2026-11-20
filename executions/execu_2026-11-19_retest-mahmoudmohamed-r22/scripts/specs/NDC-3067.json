@@ -1,0 +1,10 @@
+{"out":"NDC-3067-retest-PARTIAL.png","ticket":"NDC-3067","priority":"medium","label":"RETEST PARTIAL","verdict":"PARTIAL",
+"title":"Audit Log | Changes made in the web app show the server's internal address ::ffff:172.19.0.19 instead of the user's IP",
+"env":"NDC-Staging · staging-desk · Setup › Audit Log + GET /audit/events (last 400 events, 09:33–10:58 UTC) · owner · ticket #5686 (QA RT22 BS 3077 burst 10)","date":"19 Nov 2026",
+"panels":[
+ {"img":"3067-r1-a-audit-log-m.png","caption":"Same ticket, same user, seconds apart: \"deleted\" shows the user's public IP (masked here), \"permanently deleted\" (purge) shows the internal 172.19.0.36","crop":[414,380,1050,520],"boxes":[{"b":[540,386,1140,424],"n":2,"kind":"FAIL"},{"b":[540,443,1056,482],"n":1,"kind":"PASS"},{"b":[540,596,1176,635],"n":1,"kind":"PASS"}]}
+],
+"rows":[
+ [1,"Change lines from the web app (add, update, delete)","User's IP, same as the sign-in line","Public IP on 153 of 154 user change events (tickets, records, rules, SLA, round robin, settings); one event had no IP","PASS"],
+ [2,"Recycle Bin purge and restore","User's IP","Internal ::ffff:172.19.0.x on all 67 purge events (two users), incl. #5686 purged by the owner at 12:58 PM; a Recycle Bin restore (#5717, 1:47 PM) also shows 172.19.0.36","FAIL"]
+]}

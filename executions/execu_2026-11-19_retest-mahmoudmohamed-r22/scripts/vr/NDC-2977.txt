@@ -1,0 +1,29 @@
+# NDC-2977 Layout Rules | Blueprint transition ignores the layout rule's mandatory field [Done]
+Summary
+Blueprint transition ignores the layout rule's mandatory field. The transition form asks only for message, attachment and note.
+Environment
+- NDC-Staging (staging-crm.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2. Test data was deleted after the run.
+Steps to reproduce
+- Blueprint on the QA layout moves type Question to Refund.
+- Rule: Refund makes order mandatory.
+- Run the transition with order empty.
+Expected result
+Zoho shows the layout rule's mandatory fields inside the transition form.
+Actual result
+- The transition form asks only for message, attachment and note.
+- The record moves to Refund with order empty.
+Notes
+- Test cases G10 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- Evidence: crm-G10-dialog.png (attached).
+
+== COMMENTS
+--- 2026-11-16T10:10:36.446379+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Open transition Question → Refund (rule: Refund makes order mandatory) → Form shows message, QA RT18 order*, attachment, note [PASS]
+- Execute with order empty → "This field is required."; no request sent, dialog stays [PASS]
+- Fill order, Execute → POST …/blueprint 200; API: Refund / "QA RT18 G10 order" [PASS]
+Evidence: NDC-2977-retest-PASS.png (attached)

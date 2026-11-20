@@ -1,0 +1,9 @@
+{"out":"3099-r1-api-card.png","title":"Follower after a department move — agent CES2 (Customer Support only) + owner, ticket #5711, 19 Nov 2026","host":"staging-desk.taviportal.com","who":"agent CES2 + owner","date":"19 Nov 2026",
+"rows":[
+["CES2 follows the ticket","PUT /desk/tickets/#5711/follow (as CES2)","200; following = true; followers = [CES2]","info"],
+["Owner moves it to Sales","POST /desk/tickets/#5711/move","200; department Sales","info"],
+["Followers after the move","GET /desk/tickets/#5711/followers","[] — CES2 removed (was still listed)","ok"],
+["Owner adds a comment","POST …/comments","201; followers still []","ok"],
+["CES2's bell","GET /notifications (as CES2)","only \"New ticket #5711\" (before following) — no \"moved\" or \"New comment\" for #5711 (was both)","ok"],
+["CES2 opens the ticket","GET /desk/tickets/#5711 (as CES2)","404 — no access, as expected","ok"]
+]}

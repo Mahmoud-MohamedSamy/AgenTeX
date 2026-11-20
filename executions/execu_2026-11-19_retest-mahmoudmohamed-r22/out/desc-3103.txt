@@ -1,0 +1,21 @@
+Summary
+The CRM Audit Log shows actions taken in Desk, mixed in with CRM activity. Desk profile permission changes and Desk ticket settings appear in CRM, so CRM admins see changes made in an app they may not manage. This is the reverse of NDC-2809, where the Desk Audit Log showed CRM entries (fixed and retested on 10 Nov).
+Environment
+App: TAVI CRM › Settings › Security Control › Audit Log (ndc-crm.anyware.software/settings/security/audit-log)
+Account: ndc-owner
+Browser: Edge, Windows
+Seen: 17 Nov 2026, entries 14:44–14:51
+Steps to reproduce
+In Desk, change a Desk profile permission (for example grant all departments to Desk Administrator) or change the Tickets record visibility.
+Open CRM and go to Settings › Security Control › Audit Log.
+Look at today's entries.
+Expected result
+The CRM Audit Log lists only actions taken in CRM, plus shared account activity such as sign-ins and security settings. Desk actions appear only in the Desk Audit Log.
+Actual result
+14:50: "ndc-owner updated Desk Administrator's permission from blank value to GRANT desk:ticket:all_departments".
+14:49: the same change for Desk Reviewer.
+14:44: "ndc-owner updated Tickets' RecordVisibility from hierarchy to public", a Desk Tickets setting.
+Evidence
+Annotated screenshot attached: box 1 marks the Desk permission changes and box 2 marks the Tickets visibility change.
+Related
+NDC-2809 (Desk Audit Log shows activity from CRM and Omnichannel). In the NDC-2809 retest, the audit API still returned CRM entries when called without the app filter, so the separation was done on the Desk screen only.
