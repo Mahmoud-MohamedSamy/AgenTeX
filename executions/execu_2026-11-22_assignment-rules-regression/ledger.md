@@ -1,0 +1,638 @@
+- 2026-11-21T22:09:52 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-21T22:10:03 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-21T22:18:20 skillType "QA AR XSS type 782b4" 9b290672-1ce2-4ffc-b8c5-ca9b573960da
+- 2026-11-21T22:18:20 skill "QA AR <img src=x onerror=alert(1)> 5770d" d27f74a3-33a9-4cee-bad5-04f2ecaf2cae
+- 2026-11-21T22:18:24 rule "QA AR <b>bold</b> fd399" 4eb2b353-a092-40de-8eae-472896573466
+- 2026-11-21T22:18:54 cleanup: 3/3 removed
+- 2026-11-21T22:21:14 rule "QA AR D13b 850dc" 03f85c1c-f3c2-426b-bb40-aa809a15e1f1
+- 2026-11-21T22:21:24 cleanup: 1/1 removed
+- 2026-11-21T22:24:57 sla "QA AR ESC 90274 SLA" 23828ea7-3256-473f-86dc-23267bc4a2a8
+- 2026-11-21T22:24:58 rule "QA AR ESC 90274 rule" b71e8ed0-c99d-4fda-ae72-1fe9a4af280f
+- 2026-11-21T22:24:59 ticket "QA AR ESC 90274 Y 1" 9b5e2e0c-1931-42c9-883f-f7c125133a7b
+- 2026-11-21T22:25:02 ticket "QA AR ESC 90274 N 1" 3995cc10-fa9f-4c44-9bd2-de6f4b7eca23
+- 2026-11-21T22:32:26 cleanup: 4/4 removed
+- 2026-11-21T22:32:31 rule "QA AR D11 8a327 a A1" 812dcc16-9798-4e68-95ac-492e917926f4
+- 2026-11-21T22:32:31 rule "QA AR D11 8a327 b A2" 86a63531-7797-46bb-8c31-c58288f16bd0
+- 2026-11-21T22:32:32 ticket "QA AR D11 8a327 first" 3a9fb4fc-75ec-4d26-a72c-ad734b817e8e
+- 2026-11-21T22:32:35 ticket "QA AR D11 8a327 after" 159d3f22-05c4-45ee-a8b9-0a933381a06f
+- 2026-11-21T22:32:44 cleanup: 4/4 removed
+- 2026-11-21T22:32:47 rule "QA AR I04 5895e" 8ba31094-0e07-4814-84b3-13deffe61578
+- 2026-11-21T22:32:50 ticket "QA AR I04 5895e timing 1" 0b86fdbf-81cd-42a6-aaba-27ae525db786
+- 2026-11-21T22:32:52 ticket "QA AR I04 5895e timing 2" 57d05862-6b91-49b7-8fc6-35bc8e3c0348
+- 2026-11-21T22:32:55 ticket "QA AR I04 5895e timing 3" 3a7f81ae-2e21-4e45-8fa3-2b5ae6d394b5
+- 2026-11-21T22:32:58 ticket "QA AR I04 5895e timing 4" f9c725f1-14f1-4a25-a0d6-13109c23d1f1
+- 2026-11-21T22:33:00 ticket "QA AR I04 5895e timing 5" f7f373c1-03b7-4851-96b6-86f55e813528
+- 2026-11-21T22:33:04 ticket "QA AR I04 5895e timing 6" 740c790c-a94f-4bcf-8df5-cb3eb04da3d7
+- 2026-11-21T22:33:07 ticket "QA AR I04 5895e timing 7" f35e9689-9041-4e5f-9d21-d0d1f1dbaac0
+- 2026-11-21T22:33:13 ticket "QA AR I04 5895e timing 8" 7dbf8584-19ac-4e6f-b51d-0ef28cf8fc9b
+- 2026-11-21T22:33:17 ticket "QA AR I04 5895e timing 9" 7e1aad6a-9824-4638-8920-874906f7ba30
+- 2026-11-21T22:33:21 ticket "QA AR I04 5895e timing 10" 198dce8b-f8d8-4087-8604-d8207b1521e8
+- 2026-11-21T22:33:22 I-04 create->owner ms: [2092, 2158, 2901, 3324, 3442, 3822, 3856, 4193, 4345, 4950]
+- 2026-11-21T22:33:32 cleanup: 11/11 removed
+- 2026-11-21T22:33:36 rule "QA AR G01 b19c2" 6c02bf9f-1a16-48df-89de-f26d4cee6b40
+- 2026-11-21T22:33:38 ticket "QA AR G01 b19c2 notify" f721cc02-28b0-42bb-aab0-46cf2a0fe1a6
+- 2026-11-21T22:34:02 cleanup: 2/2 removed
+- 2026-11-21T22:34:06 ticket "QA AR G06 1c6d5 plain" 2d73e59b-5a1c-4cbf-87cb-3eea487b7150
+- 2026-11-21T22:34:50 cleanup: 1/1 removed
+- 2026-11-21T22:34:56 rule "QA AR G07 38d30" 7bce9332-f8d4-44cc-afaa-a08648cf267a
+- 2026-11-21T22:34:57 workflow "QA AR G07 38d30 WF" 4e462653-3a58-4e65-96f0-2501c7f21031
+- 2026-11-21T22:34:58 ticket "QA AR G07 38d30 x" fb3337f0-1811-4bb9-9fdc-49d6a5c606c5
+- 2026-11-21T22:35:39 cleanup: 3/3 removed
+- 2026-11-21T22:35:45 ticket "QA AR G02 d761b pickup" 8305fd8c-0e48-4395-ba28-efba82ca765a
+- 2026-11-21T22:36:11 cleanup: 1/1 removed
+- 2026-11-21T22:36:14 rule "QA AR G03 0c933" 6b598533-a6d7-4755-8d85-36dfde2e6b52
+- 2026-11-21T22:36:17 ticket "QA AR G03 0c933 team" d04e0860-a4cf-4298-8a39-4d992e294c3e
+- 2026-11-21T22:36:48 cleanup: 2/2 removed
+- 2026-11-21T22:36:59 ticket "QA AR E16 fill A2 0" e2888b6e-c593-4449-8b02-745e7a83c880
+- 2026-11-21T22:37:08 rule "QA AR E16 59f36" 4ff83580-5883-47ec-9d15-836838417a1e
+- 2026-11-21T22:37:10 ticket "QA AR E16 59f36 x" 4811099e-6c69-49d9-aa98-1e27df4eab28
+- 2026-11-21T22:37:33 cleanup: 3/3 removed
+- 2026-11-21T22:37:54 ticket "QA AR F12 6bf32 manual" 3f29ac4f-4f61-4236-bfc0-3965b7f793cf
+- 2026-11-21T22:38:00 cleanup: 1/1 removed
+- 2026-11-21T22:38:21 rule "QA AR A14 38950" 70be5b49-e1a7-4440-9067-7750d1a743a5
+- 2026-11-21T22:38:28 cleanup: 1/1 removed
+- 2026-11-21T22:38:33 rule "QA AR nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn…" 15a7800f-6160-4dbd-824b-93c73a9ac1dc
+- 2026-11-21T22:38:34 cleanup: 1/1 removed
+- 2026-11-21T22:38:44 skillType "QA AR Type 48868" c91cf55c-3b4f-4cdf-a56c-401bbbe2dd54
+- 2026-11-21T22:38:44 skill "QA AR sk1 48868" 748bf7a8-1071-43a4-8c0d-f1af8a7b94d4
+- 2026-11-21T22:38:45 skill "QA AR sk2 48868" 8364ef16-4b3a-432e-9589-790e07bf3819
+- 2026-11-21T22:38:45 skill "QA AR sk3 48868" a18176da-19ad-408b-aff6-d8b1bbc3e966
+- 2026-11-21T22:38:48 skill "QA AR pad 48868 7" 22bc2213-56c8-4774-8d25-1978a36f1aca
+- 2026-11-21T22:38:50 skill "QA AR pad 48868 8" efd93d1f-6de1-47cf-9531-8ba051377ffc
+- 2026-11-21T22:38:51 skill "QA AR pad 48868 9" 1fc4f136-9b69-4d1a-b6d2-9978f4998d81
+- 2026-11-21T22:38:51 skill "QA AR pad 48868 10" e9e28463-e378-4d8b-b8ec-cf363de42308
+- 2026-11-21T22:38:54 ticket "QA AR limit 48868" 8a3a33d9-169f-457d-af27-a38efe1a0dbb
+- 2026-11-21T22:38:57 skill "QA AR cap 48868 9" 3284ef6f-379f-42ce-b263-5b3191e10e63
+- 2026-11-21T22:38:59 skill "QA AR cap 48868 10" f60f237f-4406-47ca-aa24-d23086c486fb
+- 2026-11-21T22:38:59 skill "QA AR cap 48868 11" 4cefd184-d3eb-48a2-8db2-4f4a3ec4f9ac
+- 2026-11-21T22:39:00 skill "QA AR cap 48868 12" 4b9b4bd9-4da9-453e-a009-2baefbfcf855
+- 2026-11-21T22:39:00 skill "QA AR cap 48868 13" 31ad979c-6570-4252-8c9f-337d3e38b367
+- 2026-11-21T22:39:02 skill "QA AR cap 48868 14" d604e7d3-513d-4692-a4e2-f99553e3da46
+- 2026-11-21T22:39:03 skill "QA AR cap 48868 15" 22f7104c-ca2c-41fa-971d-19d29f0bdb7e
+- 2026-11-21T22:39:03 skill "QA AR cap 48868 16" 39b2556d-7829-4445-9ef6-7805dfb6398d
+- 2026-11-21T22:39:03 skill "QA AR cap 48868 17" b093f733-cd19-4897-ac9a-5b423f46e2ea
+- 2026-11-21T22:39:05 skill "QA AR cap 48868 18" be4dd99b-e3d2-4a15-806e-fa8c6a6067bf
+- 2026-11-21T22:39:07 skill "QA AR cap 48868 19" 229ed224-5140-4d0d-9abe-3498341e21b6
+- 2026-11-21T22:39:08 skill "QA AR cap 48868 20" 19a8343d-b551-46f5-97e9-5cdecc76768a
+- 2026-11-21T22:39:08 skill "QA AR cap 48868 21" 814cccd9-cd6b-41a5-8a57-591b56e849ed
+- 2026-11-21T22:39:09 skill "QA AR cap 48868 22" cb363dc4-5b21-4d39-9988-22b426994899
+- 2026-11-21T22:39:09 skill "QA AR cap 48868 23" 713e880d-4dd7-4b7f-8799-c444b45664e6
+- 2026-11-21T22:39:09 skill "QA AR cap 48868 24" fe2513bb-3d95-4398-8bd8-86c40da7ed1b
+- 2026-11-21T22:39:12 skill "QA AR cap 48868 25" af720aea-7dee-411d-8563-9ac6ff98daf7
+- 2026-11-21T22:39:12 skill "QA AR cap 48868 26" ccddc649-3302-4187-986f-97e0fbb8ea52
+- 2026-11-21T22:39:15 skill "QA AR cap 48868 27" 34a8dcfb-49e2-4ada-a0c3-3f003b565b8d
+- 2026-11-21T22:39:15 skill "QA AR cap 48868 28" 975ae543-d20b-4b42-a4ed-ff2149caf9be
+- 2026-11-21T22:39:15 skill "QA AR cap 48868 29" 78e4998a-c1e6-4cf5-878d-3b972e4889df
+- 2026-11-21T22:39:36 cleanup: 26/26 removed
+- 2026-11-21T22:39:45 skillType "QA AR Type2 48868" db0029aa-1b89-4e3e-89ee-ad219350a96a
+- 2026-11-21T22:39:48 cleanup: 1/1 removed
+- 2026-11-21T22:39:55 cleanup: 4/4 removed
+- 2026-11-21T22:41:09 Recycle Bin purge: 24 QA AR items
+- 2026-11-21T22:41:09 RESTORE done, left: nothing
+- 2026-11-21T22:46:07 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-21T22:46:19 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-21T22:48:16 skillType "QA AR XSS type 57a9c" a9915332-4795-407f-9801-6797e607f8bd
+- 2026-11-21T22:48:17 skill "QA AR <img src=x onerror=alert(1)> c9e8e" 28f512f1-d0cc-4b87-911e-2c0e12f0619d
+- 2026-11-21T22:48:19 rule "QA AR <b>bold</b> dfcf8" d27b0802-9ef8-4a2a-a216-dd4185ad13d1
+- 2026-11-21T22:48:34 cleanup: 3/3 removed
+- 2026-11-21T22:50:01 rule "QA AR D13b f3241" 66d99cf2-8e68-4c51-b39b-8f19b119f0d6
+- 2026-11-21T22:50:19 cleanup: 1/1 removed
+- 2026-11-21T22:51:32 rule "QA AR A12 ui f7de3" f9686fac-57fc-4a07-90d1-a3eadefa9e54
+- 2026-11-21T22:51:32 cleanup: 1/1 removed
+- 2026-11-21T22:54:51 Recycle Bin purge: 0 QA AR items
+- 2026-11-21T22:54:51 RESTORE done, left: nothing
+- 2026-11-21T22:56:12 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-21T22:56:16 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-21T22:59:31 Recycle Bin purge: 0 QA AR items
+- 2026-11-21T22:59:31 RESTORE done, left: nothing
+- 2026-11-22T11:07:45 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-22T11:09:56 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-22T11:17:01 Recycle Bin purge: 0 QA AR items
+- 2026-11-22T11:17:01 RESTORE done, left: nothing
+- 2026-11-22T11:19:08 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-22T11:19:16 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-22T11:22:28 F-07f A2 offline after 173 s: {876ce871-2b02-4854-89a7-68050391c62b=on+mail, d23fb4e0-248d-41f6-af60-d28885a7007e=off}
+- 2026-11-22T11:22:31 rule "QA AR F07f 51eff" d7d3abb4-358d-45f4-98c9-0f5ec7d57a65
+- 2026-11-22T11:22:32 ticket "QA AR F07f 51eff A1 fill 0" 1f3baf02-eccf-4c9c-a8c8-c1bd6a83c5cc
+- 2026-11-22T11:22:42 ticket "QA AR F07f 51eff X1" 411b50e9-1092-4b43-b06e-14550290e251
+- 2026-11-22T11:22:44 ticket "QA AR F07f 51eff X2" f898e796-b658-4c00-8e47-48a366e5fc12
+- 2026-11-22T11:23:01 cleanup: 4/4 removed
+- 2026-11-22T11:24:17 Recycle Bin purge: 3 QA AR items
+- 2026-11-22T11:24:17 RESTORE done, left: nothing
+- 2026-11-22T11:25:45 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-22T11:25:51 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-22T11:29:20 F-07f A2 offline after 195 s: {876ce871-2b02-4854-89a7-68050391c62b=on+mail, d23fb4e0-248d-41f6-af60-d28885a7007e=off}
+- 2026-11-22T11:29:37 rule "QA AR F07f ee967" 7f092c95-ac7f-448e-a8cd-c586c15cdc1b
+- 2026-11-22T11:29:38 ticket "QA AR F07f ee967 A1 fill 0" 7e56763e-7588-4f8a-a219-e1576ce40ffe
+- 2026-11-22T11:30:52 ticket "QA AR F07f ee967 X1" a7c1c896-32c5-4ecc-87fb-6e852eb7cfca
+- 2026-11-22T11:30:53 ticket "QA AR F07f ee967 X2" 12322650-6899-4918-9145-5b9a512e5daa
+- 2026-11-22T11:31:18 F-07f precondition: X1 owner none backlog true, X2 owner none backlog true, A1 load 1, threshold 1, presence {876ce871-2b02-4854-89a7-68050391c62b=on+mail, d23fb4e0-248d-41f6-af60-d28885a7007e=off}, X1 activity []
+- 2026-11-22T11:32:47 F-07f A2 brought online: {876ce871-2b02-4854-89a7-68050391c62b=on+mail, d23fb4e0-248d-41f6-af60-d28885a7007e=on+mail}; threshold 1, loads A1 1 A2 1
+- 2026-11-22T11:32:48 F-07f X1 -> A2@0s after A2 came online (10 s)
+- 2026-11-22T11:32:51 cleanup: 4/4 removed
+- 2026-11-22T11:33:32 Recycle Bin purge: 3 QA AR items
+- 2026-11-22T11:33:32 RESTORE done, left: nothing
+- 2026-11-22T11:38:28 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-22T11:38:36 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-22T12:00:04 rule "QA AR BH bc8d6" 165607fc-ed04-4652-becc-85e311747c4f
+- 2026-11-22T12:00:16 ticket "QA AR BH bc8d6 x" d6f2da44-6498-4b4d-a995-3e37a9040842
+- 2026-11-22T12:00:34 cleanup: 2/2 removed
+- 2026-11-22T12:01:05 rule "QA AR Bv 00b00" dfe7a28b-42d0-4c1b-98ef-94a72e9efd43
+- 2026-11-22T12:01:07 cleanup: 1/1 removed
+- 2026-11-22T12:01:16 account "QA AR B09 541e3 Acct" e6f2f355-180b-4b29-9c2b-63710201cd61
+- 2026-11-22T12:01:17 contact "QA AR LB09 541e3" decf12d9-ede6-425c-b5a8-5765acb67ebe
+- 2026-11-22T12:01:18 rule "QA AR B09 541e3 contact" 8e9eed1d-34c4-4f26-a0f9-c517b3573994
+- 2026-11-22T12:01:19 rule "QA AR B09 541e3 account" 382901c2-c330-4d53-8a39-1478ab48341c
+- 2026-11-22T12:01:20 ticket "QA AR B09 541e3 with contact" 32d11c79-c010-474d-960b-4193c77570ca
+- 2026-11-22T12:01:21 ticket "QA AR B09 541e3 account only" e4299c4b-5d02-4c22-8102-789f804dae81
+- 2026-11-22T12:01:22 ticket "QA AR B09 541e3 none" 33df4023-a60b-44cf-9430-fe3475b91c01
+- 2026-11-22T12:01:33 cleanup: 7/7 removed
+- 2026-11-22T12:01:39 B-07 date qa_ndc_issue_date [equals, not_equal_to, is_after, is_before, between, not_between, is_empty, is_not_empty] | number first_response_time [equals, not_equal_to, less_than, greater_than, between, is_empty, is_not_empty]
+- 2026-11-22T12:01:42 rule "QA AR HOL 216bc" 81217fb2-2f15-4643-908f-ff62df9e6bd8
+- 2026-11-22T12:01:44 ticket "QA AR HOL 216bc t1" 3279b98b-4216-41f1-babe-75b26570bb9c
+- 2026-11-22T12:01:47 ticket "QA AR HOL 216bc t2" 496b6afc-790f-46c9-85c1-ab6028dd2763
+- 2026-11-22T12:01:59 cleanup: 3/3 removed
+- 2026-11-22T12:07:02 rule "QA AR B01 no criteria 2de7e" 12942b3d-358c-4e6d-a1ca-9a98eebb7c27
+- 2026-11-22T12:07:04 ticket "QA AR zq any subject B01 52934" ac66b85a-e08d-4b16-8169-a6972a129533
+- 2026-11-22T12:07:09 cleanup: 2/2 removed
+- 2026-11-22T12:07:11 rule "QA AR B02 01284" a147dff2-8f63-442a-844c-97176f65400b
+- 2026-11-22T12:07:13 ticket "QA AR B02 01284 a" 1bb7105e-c3a8-4b59-b0a1-0ade28b2c35d
+- 2026-11-22T12:07:14 ticket "QA AR B02 01284 b" ac3346ea-d0c3-4fe7-83c0-6acc869bfeda
+- 2026-11-22T12:07:15 ticket "QA AR B02 01284 c" d022847a-6333-419e-89b0-64152e58c7d6
+- 2026-11-22T12:07:17 ticket "QA AR other B02 e29cb" 0edd7de7-6645-4496-9b78-9bd4fc4629ab
+- 2026-11-22T12:07:28 cleanup: 5/5 removed
+- 2026-11-22T12:07:32 sla "QA AR ESC eaa70 SLA" 479b9c7b-f023-433d-8534-c2930072cfa8
+- 2026-11-22T12:07:34 rule "QA AR ESC eaa70 rule" 9ada4c61-6a24-44db-9ea4-b4fab93288d7
+- 2026-11-22T12:07:36 ticket "QA AR ESC eaa70 Y 1" 0c58d8ab-1f57-4912-a3e0-13f6a1e5ca5f
+- 2026-11-22T12:07:37 ticket "QA AR ESC eaa70 N 1" 3130cf18-db58-4d64-b759-e01afeb6b94c
+- 2026-11-22T12:15:22 cleanup: 4/4 removed
+- 2026-11-22T12:15:24 rule "QA AR D01 4d292" d66d1e4e-89f3-41e4-8d1a-2839773bca5f
+- 2026-11-22T12:15:25 ticket "QA AR D01 4d292 a" 5b1d03c0-11b3-4251-b3c1-4cc12a719aa3
+- 2026-11-22T12:15:29 cleanup: 2/2 removed
+- 2026-11-22T12:15:35 rule "QA AR D03 bec08" 037d77a1-0651-42a0-bd96-b781edf72303
+- 2026-11-22T12:15:39 ticket "QA AR D03 bec08 preset" 6b0f7b4c-d227-426c-967c-8ec8223fdf40
+- 2026-11-22T12:15:52 cleanup: 2/2 removed
+- 2026-11-22T12:15:54 rule "QA AR D08 bd0bb a" 5326bf9b-73cd-4f94-a953-618a845702ea
+- 2026-11-22T12:15:54 rule "QA AR D08 bd0bb b" 76cc4335-15d0-4db9-9b6f-d5b67afc126c
+- 2026-11-22T12:15:56 ticket "QA AR D08 bd0bb x" 0ef08714-8b80-4295-9c34-af6713d40104
+- 2026-11-22T12:16:43 cleanup: 3/3 removed
+- 2026-11-22T12:17:33 rule "QA AR D04 36fb9" 83163d46-1725-4dc3-aa16-762ae290ab84
+- 2026-11-22T12:17:36 ticket "QA AR D04 36fb9 offline" 86af739a-c8a4-4a5b-8e92-9be45fe48d92
+- 2026-11-22T12:17:38 cleanup: 2/2 removed
+- 2026-11-22T12:17:41 rule "QA AR D12 73751" b4d16e2c-b382-45fd-aba0-36b4d8ed98dc
+- 2026-11-22T12:17:44 ticket "QA AR D12 73751 inactive" 08a9c9d2-0b9a-4e1c-b255-fa8db362ef7c
+- 2026-11-22T12:17:57 ticket "QA AR D12 73751 master off" 6bd2959d-d493-4da0-944c-f26e7b7b36e5
+- 2026-11-22T12:18:14 cleanup: 3/3 removed
+- 2026-11-22T12:18:16 rule "QA AR D06 55a38" 16194245-8185-488b-a212-59e70d0bec0a
+- 2026-11-22T12:18:19 ticket "QA AR D06 55a38 move" 4aaf5ea5-8e26-43ae-8359-d97746d26152
+- 2026-11-22T12:18:25 cleanup: 2/2 removed
+- 2026-11-22T12:18:28 rule "QA AR D07 7c5df rr" 6b96df75-6877-4efb-aec1-c3923b06dffe
+- 2026-11-22T12:18:29 rule "QA AR D07 7c5df" 6c17f5fe-4b6b-4116-a368-976b5d8e0fc0
+- 2026-11-22T12:18:31 ticket "QA AR D07 7c5df move-unassigned" 34891cd8-69d1-4aee-93f1-82d9420ce978
+- 2026-11-22T12:20:25 cleanup: 3/3 removed
+- 2026-11-22T12:20:30 rule "QA AR D02 14c65" 8599a4bd-636a-4de9-b44e-f99a4aa59361
+- 2026-11-22T12:20:33 ticket "QA AR D02 14c65 nomatch" 30c06a92-2230-43df-8b74-bdacf9f07999
+- 2026-11-22T12:20:53 cleanup: 2/2 removed
+- 2026-11-22T12:21:02 rule "QA AR D13 7db2b" d3223b99-fe4a-4d07-a64b-98f74de57ce6
+- 2026-11-22T12:21:08 ticket "QA AR D13 7db2b x" 6f4b6971-e52a-44ec-a133-3221b8b454da
+- 2026-11-22T12:21:25 cleanup: 2/2 removed
+- 2026-11-22T12:21:29 rule "QA AR D09 07ab2" c8c8cb17-f1d3-4587-a37e-add75793a473
+- 2026-11-22T12:21:31 ticket "QA AR D09 07ab2 unowned" 59f99f50-4503-46d0-ab2f-66bcbb48d3c7
+- 2026-11-22T12:21:36 ticket "QA AR D09 07ab2 owned" e426eba9-1fa2-4b44-80e7-cf091e2cd424
+- 2026-11-22T12:23:54 cleanup: 3/3 removed
+- 2026-11-22T12:24:44 rule "QA AR D11 a3a87 a A1" 6db5b643-522e-4392-ab07-20215a2fd115
+- 2026-11-22T12:24:46 rule "QA AR D11 a3a87 b A2" 08d5fae2-1fcc-47a9-93ee-c4a7341616b9
+- 2026-11-22T12:24:47 ticket "QA AR D11 a3a87 first" b591190f-4b30-4bf7-9b8b-421bf623f4cc
+- 2026-11-22T12:27:08 ticket "QA AR D11 a3a87 after" 8e960701-3175-4334-9c19-cd3ef2b72746
+- 2026-11-22T12:28:58 cleanup: 4/4 removed
+- 2026-11-22T12:29:01 rule "QA AR D05 15848" f93cfd82-b4b0-41ad-95fe-e9f712b7e2d0
+- 2026-11-22T12:29:03 ticket "QA AR D05 15848 team" 87a8a857-72dd-43dc-8b14-0bb474c1f05e
+- 2026-11-22T12:29:25 cleanup: 2/2 removed
+- 2026-11-22T12:29:32 rule "QA AR D14 95f62" 301b9867-9c74-4e62-a1af-27e6424b48a4
+- 2026-11-22T12:29:35 ticket "QA AR D14 95f62 api" f3e1fe43-0699-44e2-bb42-8fd1c6bcafba
+- 2026-11-22T12:29:37 cleanup: 2/2 removed
+- 2026-11-22T12:29:41 rule "QA AR EO5 586a0" 65fbe5bb-b4df-4d83-930f-931779663450
+- 2026-11-22T12:29:43 workflow "QA AR EO5 586a0 WF" 1a26e57c-5bdb-48c5-9d93-a0e187acdfd5
+- 2026-11-22T12:29:45 ticket "QA AR EO5 586a0 x" 98bb8ebd-4e5a-4980-9ca2-8ed2ec15a60f
+- 2026-11-22T12:30:01 cleanup: 3/3 removed
+- 2026-11-22T12:30:34 rule "QA AR EO3 01607 rr" dc37071f-fc5c-48bf-8369-df9906b66f29
+- 2026-11-22T12:30:35 workflow "QA AR EO3 01607 WF" bfe9e40a-e41d-49b4-8031-a2e0f815e52c
+- 2026-11-22T12:30:37 ticket "QA AR EO3 01607 x" 7391ba32-3082-49b4-9745-877cf14251f3
+- 2026-11-22T12:30:54 cleanup: 3/3 removed
+- 2026-11-22T12:30:57 rule "QA AR EO2 8617d" 027e3967-869e-4d00-98a2-20e38edd83f7
+- 2026-11-22T12:30:58 workflow "QA AR EO2 8617d WF" 6675ca78-84e7-4f2e-8c80-618991c2ed02
+- 2026-11-22T12:30:59 ticket "QA AR EO2 8617d x" b90e04f9-25cd-4074-9592-0319a1754639
+- 2026-11-22T12:31:37 cleanup: 3/3 removed
+- 2026-11-22T12:31:39 rule "QA AR I04 ce286" 1ae595d0-cc33-4ab8-bad2-0000e878d372
+- 2026-11-22T12:31:41 ticket "QA AR I04 ce286 timing 1" b76716ab-01a7-47d4-870a-f4b329deef59
+- 2026-11-22T12:31:47 ticket "QA AR I04 ce286 timing 2" 06fc3bb1-8406-4200-bc1c-f0d9d7bcf524
+- 2026-11-22T12:31:53 ticket "QA AR I04 ce286 timing 3" 14eeabe2-4360-4e5f-99d3-5959f1bde6ea
+- 2026-11-22T12:31:57 ticket "QA AR I04 ce286 timing 4" 95b2fa60-88ba-42d4-a51f-47556be23f11
+- 2026-11-22T12:32:02 ticket "QA AR I04 ce286 timing 5" e5ab59e1-37c7-429a-8a63-9338219eccb6
+- 2026-11-22T12:32:08 ticket "QA AR I04 ce286 timing 6" 223e906b-19a0-40f9-8343-42f19703564a
+- 2026-11-22T12:32:24 ticket "QA AR I04 ce286 timing 7" 5cb3b5cd-38b8-44bf-ab32-c96443058754
+- 2026-11-22T12:32:26 ticket "QA AR I04 ce286 timing 8" b7c03faa-a40e-4d59-9492-d3ac15bcdb23
+- 2026-11-22T12:32:46 ticket "QA AR I04 ce286 timing 9" 68ec116c-14ba-4c2f-8567-cbd5cc80a662
+- 2026-11-22T12:32:50 ticket "QA AR I04 ce286 timing 10" e4429a9b-1004-45d7-bad9-9d8238e41549
+- 2026-11-22T12:32:58 I-04 create->owner ms: [3604, 3630, 4169, 4827, 5229, 5971, 6829, 9103, 15073, 20103]
+- 2026-11-22T12:33:09 cleanup: 11/11 removed
+- 2026-11-22T12:33:23 rule "QA AR I03 32438" fd515478-bf3b-4f90-b0c5-8d305a51e232
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 16" e256fd67-d960-4850-a0c5-f41c8de2880d
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 1" de47631a-c959-4a8b-a083-6ac3a2513e31
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 17" 94a586dc-e19d-415c-8be7-4550f0e212a3
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 3" f4385b2f-3151-4173-9c34-fef41b0df6ec
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 15" 6b73b036-9372-419b-9662-3e904a625400
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 12" 0e2b3e0f-8c13-489c-bd89-442a1eb4dce5
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 18" 6f9d29c8-2c5a-4e8a-86c2-1f4a796a3da6
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 20" 6ff36fdb-213c-4e61-aff4-f9f5419ae912
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 8" da72edbd-02f9-432a-8e2f-69e01633d0e8
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 10" 749b43ab-3617-418d-b5fe-0f2f54a21df4
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 11" 84c22496-3a1f-48ef-aef1-2c4edd9fccf2
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 5" 19268165-c823-4222-9367-bb86799b89df
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 2" 2fb6a430-029d-4a23-8578-84a03b3b9db6
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 4" a4e3bea8-9dbc-4da1-80ea-df7c9f2cacf7
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 19" c8de8746-8894-419b-a917-1d963ee64f32
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 7" 20aa7017-2229-4873-9867-c1e99ea868ab
+- 2026-11-22T12:33:26 ticket "QA AR I03 32438 burst 14" d9957ff4-52b9-48c1-8ca9-7141f4936e5f
+- 2026-11-22T12:33:27 ticket "QA AR I03 32438 burst 9" a0ac1386-839d-45af-a4c0-847103aa847e
+- 2026-11-22T12:33:27 ticket "QA AR I03 32438 burst 13" b98648c3-cd8d-4310-8660-66677a832f04
+- 2026-11-22T12:33:27 ticket "QA AR I03 32438 burst 6" 20545e8d-53ed-4d4b-b9f0-6acc905d8bdf
+- 2026-11-22T12:34:54 cleanup: 21/21 removed
+- 2026-11-22T12:34:58 rule "QA AR G01 4c792" 6d458ee0-856c-4a68-a095-9eb376573591
+- 2026-11-22T12:35:00 ticket "QA AR G01 4c792 notify" fc317f47-194e-45f2-9b54-910040ef1ba3
+- 2026-11-22T12:35:26 cleanup: 2/2 removed
+- 2026-11-22T12:35:31 ticket "QA AR G06 e77a7 plain" dc945fa7-63a4-4a23-a2d7-b492aca136dd
+- 2026-11-22T12:36:18 cleanup: 1/1 removed
+- 2026-11-22T12:36:20 rule "QA AR G07 ef578" 4fee2a51-429e-488e-a25d-6d17254656be
+- 2026-11-22T12:36:21 workflow "QA AR G07 ef578 WF" cfa2c7a2-e847-47fb-87ea-79d4c0d6e67f
+- 2026-11-22T12:36:22 ticket "QA AR G07 ef578 x" dd16b96c-bd81-4274-8e44-379206c97d92
+- 2026-11-22T12:36:58 cleanup: 3/3 removed
+- 2026-11-22T12:37:00 ticket "QA AR G02 28b75 pickup" 50c21aa5-f21c-441b-b59a-7ca3a1b83e50
+- 2026-11-22T12:37:27 cleanup: 1/1 removed
+- 2026-11-22T12:37:29 rule "QA AR G03 7c623" 6ab6abf7-cf82-45c9-927e-27d9c47c7dd5
+- 2026-11-22T12:37:31 ticket "QA AR G03 7c623 team" 6d3cab01-4162-4053-8e5e-5a2a0142d87b
+- 2026-11-22T12:37:59 cleanup: 2/2 removed
+- 2026-11-22T12:38:06 sla "QA AR SLA c3425 policy" 1c15564a-8a4b-4910-89f6-5cbb6a523a62
+- 2026-11-22T12:38:06 rule "QA AR SLA c3425 sla name" d768d413-e2f4-49f9-9188-dadc53374ef0
+- 2026-11-22T12:38:10 ticket "QA AR SLA c3425 N 1" e774f690-f50b-4e1c-919b-2505c12fef57
+- 2026-11-22T12:38:17 cleanup: 3/3 removed
+- 2026-11-22T12:38:19 rule "QA AR E08 82b7c" 0cf8ea9e-205f-4e65-94cc-d51874194e71
+- 2026-11-22T12:38:21 ticket "QA AR E08 82b7c x" 2ece3c57-33da-4d35-8bb2-49642ed4a669
+- 2026-11-22T12:38:28 cleanup: 2/2 removed
+- 2026-11-22T12:38:43 ticket "QA AR E16 fill A1 0" 33db74c8-106f-4980-8b32-0e12a4fd8fca
+- 2026-11-22T12:38:49 ticket "QA AR E16 fill A2 0" fc085974-3b8b-439a-a5be-b6a3737c593e
+- 2026-11-22T12:38:55 rule "QA AR E16 16a76" 4d90e58c-35ea-4053-9560-31a66703e7c5
+- 2026-11-22T12:38:56 ticket "QA AR E16 16a76 x" ebdaf088-81b3-40bf-a521-0d289d42d3f6
+- 2026-11-22T12:39:16 cleanup: 4/4 removed
+- 2026-11-22T12:39:18 rule "QA AR E15 26b7f first A1" fd6bf628-c64e-4e0c-9976-a748a4dceffe
+- 2026-11-22T12:39:19 rule "QA AR E15 26b7f second A2" 0d5c00e4-244e-444e-85a4-e700b7943717
+- 2026-11-22T12:39:20 ticket "QA AR E15 26b7f 1" 458c1b55-d2cd-4283-91f7-9e2615e7593a
+- 2026-11-22T12:39:49 ticket "QA AR E15 26b7f 2" 1b3fb86c-77c1-4c29-82c3-a75516cca6a0
+- 2026-11-22T12:40:01 cleanup: 4/4 removed
+- 2026-11-22T12:40:06 rule "QA AR E13 e7c45" ad36d695-efb8-4ca9-9f87-b34fd3badb36
+- 2026-11-22T12:40:08 ticket "QA AR E13 e7c45 1" df63360a-d5a3-477c-b228-78498d2c4df7
+- 2026-11-22T12:40:15 cleanup: 2/2 removed
+- 2026-11-22T12:40:20 rule "QA AR E21 0e4b1" 078f7a00-3366-4e43-aa71-8f0d9690f503
+- 2026-11-22T12:40:21 ticket "QA AR E21 0e4b1 in B" 8f779abf-6f9b-413b-99fe-2b825d767353
+- 2026-11-22T12:40:31 E-21 moved ticket history: [ticket.auto_assigned {"kind":"round_robin","rule_id":"078f7a00-3366-4e43-aa71-8f0d9690f503","team_id":null,"trigger":"moved","owner_id":"876ce871-2b02-4854-89a7-68050391c62b","strategy":"sequence","rule_name":"QA AR E21 0e4b1","rule_type":"round_robin","skipped_user_ids":[]}]
+- 2026-11-22T12:40:33 cleanup: 2/2 removed
+- 2026-11-22T12:40:35 rule "QA AR E12 e9de8" bb384b31-33de-49ec-ad2c-e5c97ede1ca3
+- 2026-11-22T12:40:36 ticket "QA AR E12 e9de8 1" 22b65423-bb71-4378-8d85-4f5475969cda
+- 2026-11-22T12:40:41 ticket "QA AR E12 e9de8 2" 2a7abff6-5021-472a-8516-0055999643ec
+- 2026-11-22T12:40:47 ticket "QA AR E12 e9de8 3" e731b7d4-faaf-4ec8-b0de-0d3b3b9d9b54
+- 2026-11-22T12:42:53 cleanup: 4/4 removed
+- 2026-11-22T12:42:55 rule "QA AR E11 8a19a" 066acf20-b048-4d81-94e3-86ba220ac715
+- 2026-11-22T12:42:58 ticket "QA AR E11 8a19a a 1" 47dedebe-c90d-4faa-a252-05b88a538fb1
+- 2026-11-22T12:43:07 ticket "QA AR E11 8a19a a 2" 09a4b50e-e62a-446b-b8f2-42b6a3f37180
+- 2026-11-22T12:43:17 ticket "QA AR E11 8a19a b 1" 40c99f4a-61ac-4613-9109-528a1b771bf2
+- 2026-11-22T12:43:26 cleanup: 4/4 removed
+- 2026-11-22T12:43:31 rule "QA AR E17 4aaa9" b364e847-7b9b-4a10-8086-21e4346e8e21
+- 2026-11-22T12:43:35 ticket "QA AR E17 4aaa9 x" f7825f06-693c-410d-9a16-4ca8a051eb18
+- 2026-11-22T12:44:03 cleanup: 2/2 removed
+- 2026-11-22T12:44:07 rule "QA AR E20 ae64b" fdbd0d47-7178-4533-af9b-dd33bbc342a2
+- 2026-11-22T12:44:09 ticket "QA AR E20 ae64b start" f130fac5-ca2e-43df-b68c-3647fa6dfddd
+- 2026-11-22T12:44:29 cleanup: 2/2 removed
+- 2026-11-22T12:44:35 rule "QA AR E09 cdd31" 9edd8321-b7bf-4a27-bc77-3b0944ac5c7c
+- 2026-11-22T12:44:36 ticket "QA AR E09 cdd31 1" 98409d3b-d5f4-4122-94bf-200b54e94dc8
+- 2026-11-22T12:44:44 ticket "QA AR E09 cdd31 2" 28cc5e73-d921-4851-addc-8aa4224bdc90
+- 2026-11-22T12:44:54 ticket "QA AR E09 cdd31 3" eace28aa-71fe-43df-a8ec-d69ac5821c40
+- 2026-11-22T12:45:04 ticket "QA AR E09 cdd31 4" d8f947e5-8c87-40ed-94b1-e8bca2af5472
+- 2026-11-22T12:45:12 ticket "QA AR E09 cdd31 5" e32724d8-6755-4bea-9950-731406101a9d
+- 2026-11-22T12:45:19 ticket "QA AR E09 cdd31 6" 9467ab72-8330-4075-a2a2-ed5457e5e888
+- 2026-11-22T12:45:33 cleanup: 7/7 removed
+- 2026-11-22T12:45:37 rule "QA AR E05 c1612" c3439b90-7636-4679-a113-a3735f1ecaaa
+- 2026-11-22T12:45:38 ticket "QA AR E05 c1612 1" 47aa84bf-422b-4eb5-a99e-87bce15d766c
+- 2026-11-22T12:45:47 ticket "QA AR E05 c1612 2" 182b742b-a2e3-491a-9d27-c7f353c5ce20
+- 2026-11-22T12:45:55 ticket "QA AR E05 c1612 3" 26e97342-3c50-4e84-b7b1-28aec17216fb
+- 2026-11-22T12:46:05 cleanup: 4/4 removed
+- 2026-11-22T12:46:07 rule "QA AR E10 607f4" 03466ee0-2ab4-4691-8154-cb02ca344d0e
+- 2026-11-22T12:46:09 ticket "QA AR E10 607f4 1" d653edc2-145d-4357-a4c9-f14a40d3e41b
+- 2026-11-22T12:46:19 ticket "QA AR E10 607f4 2" 63851925-4ae5-419a-99b7-66ca74b73370
+- 2026-11-22T12:46:30 ticket "QA AR E10 607f4 3" 8242c270-e36c-4422-b575-65c861d154b7
+- 2026-11-22T12:46:39 ticket "QA AR E10 607f4 4" 14f3c02e-3e43-4560-8fdf-1fa161f0dfa3
+- 2026-11-22T12:47:18 cleanup: 5/5 removed
+- 2026-11-22T12:47:37 ticket "QA AR F05 fill A1 0" e8f5f088-7948-4aeb-88e5-a15be285b338
+- 2026-11-22T12:47:43 ticket "QA AR F05 fill A2 0" f2571013-b07d-41bf-a9f3-232ef53c9a2a
+- 2026-11-22T12:48:51 rule "QA AR F05 c9683" b1e03125-c76f-481d-b6c8-e5efbccf6276
+- 2026-11-22T12:48:53 ticket "QA AR F05 c9683 agent override" c4378458-1c41-4430-aa5b-4d6c60beea77
+- 2026-11-22T12:51:46 ticket "QA AR F05 c9683 agent off" f2ea063d-2f95-4c82-b0ed-a5c030d7767d
+- 2026-11-22T12:52:37 cleanup: 5/5 removed
+- 2026-11-22T12:52:59 ticket "QA AR F07d fill A1 0" 9b7ee2f1-e0c3-4aae-9f5e-877042b8f436
+- 2026-11-22T12:53:05 ticket "QA AR F07d fill A2 0" e677f8a7-ba39-4d6d-a57b-5a47d9623325
+- 2026-11-22T12:53:14 rule "QA AR F07d 5ce37" 877c8fd1-81a3-431d-bd72-793574fa39fb
+- 2026-11-22T12:53:16 ticket "QA AR F07d 5ce37 X" 3e558227-0108-4bf2-9b64-5b5dea0cf4e9
+- 2026-11-22T12:55:07 cleanup: 4/4 removed
+- 2026-11-22T12:55:13 ticket "QA AR F07a fill A1 0" 55836d2e-aecf-4f9c-b734-3b73a9d392f5
+- 2026-11-22T12:55:19 ticket "QA AR F07a fill A2 0" bbdfccc3-dfc1-40a9-b0ea-e5b8b829a2ca
+- 2026-11-22T12:55:49 rule "QA AR F07a 9413f" 1014e82e-b5b4-4548-b1ec-4a3c93c35938
+- 2026-11-22T12:55:50 ticket "QA AR F07a 9413f L1" 790a43c8-a8ca-418c-8a98-2b9839c3c615
+- 2026-11-22T12:55:53 ticket "QA AR F07a 9413f L2" 6a01c807-fe9f-4bc8-9d43-acb649fea66e
+- 2026-11-22T12:55:56 ticket "QA AR F07a 9413f L3" 76fccd80-998c-44a0-ad9b-bcb8e69c369c
+- 2026-11-22T12:58:58 cleanup: 6/6 removed
+- 2026-11-22T13:02:39 F-07f A2 offline after 189 s: {876ce871-2b02-4854-89a7-68050391c62b=on+mail, d23fb4e0-248d-41f6-af60-d28885a7007e=off}
+- 2026-11-22T13:02:43 rule "QA AR F07f 4d602" 9a287d27-bcfa-4553-ad39-b90593d5feb1
+- 2026-11-22T13:02:44 ticket "QA AR F07f 4d602 A1 fill 0" d174b179-876b-467c-9cda-20a5c382bbb4
+- 2026-11-22T13:02:52 ticket "QA AR F07f 4d602 X1" 308e129a-e433-4ab6-97b7-230ec9ecc007
+- 2026-11-22T13:02:53 ticket "QA AR F07f 4d602 X2" 77ef333c-8df2-475d-baa6-2212c45de0ac
+- 2026-11-22T13:03:46 F-07f precondition: X1 owner none backlog true, X2 owner none backlog true, A1 load 1, threshold 1, presence {876ce871-2b02-4854-89a7-68050391c62b=on+mail, d23fb4e0-248d-41f6-af60-d28885a7007e=off}, X1 activity []
+- 2026-11-22T13:05:35 F-07f A2 brought online: {876ce871-2b02-4854-89a7-68050391c62b=on+mail, d23fb4e0-248d-41f6-af60-d28885a7007e=on+mail}; threshold 1, loads A1 1 A2 1
+- 2026-11-22T13:05:36 F-07f X1 -> A2@0s after A2 came online (27 s)
+- 2026-11-22T13:06:07 cleanup: 4/4 removed
+- 2026-11-22T13:06:12 ticket "QA AR F07b fill A1 0" d0551b5b-a416-48ca-be99-7fa6575cbda8
+- 2026-11-22T13:06:18 ticket "QA AR F07b fill A2 0" 64b1866a-de34-4c16-b13a-0aeaa57492b6
+- 2026-11-22T13:06:34 rule "QA AR F07b dd2dc" ab9a5071-5d6c-4b1f-8e2a-395eef5fc029
+- 2026-11-22T13:06:36 ticket "QA AR F07b dd2dc X1 due+3" 6de089e8-819a-4837-a424-1826f5882574
+- 2026-11-22T13:06:37 ticket "QA AR F07b dd2dc X2 due+1" eb0c48bc-93e6-4d9c-896f-8826d51b753d
+- 2026-11-22T13:06:38 ticket "QA AR F07b dd2dc X3 due+2" 77f3f695-94c5-44ae-a283-f54bfb7856a8
+- 2026-11-22T13:07:44 ticket "QA AR F07c own A1 0ae1a" e264a612-dab8-48e3-85ea-c261fab4e5c3
+- 2026-11-22T13:08:08 cleanup: 7/7 removed
+- 2026-11-22T13:08:15 rule "QA AR F10a ae4da" 88fc8776-8818-43dd-96b3-ea31fbc8dc04
+- 2026-11-22T13:08:16 ticket "QA AR F10a ae4da N1" e455f13b-1c5c-40a1-b167-fca15686a1c8
+- 2026-11-22T13:10:25 cleanup: 2/2 removed
+- 2026-11-22T13:10:29 ticket "QA AR F10b own A1 49e67" 177961b3-f5f9-44a8-bb67-75f18321dd69
+- 2026-11-22T13:10:33 rule "QA AR F10b 491f9" 2b7d8d42-f17b-4680-a396-0938c97cd39d
+- 2026-11-22T13:10:35 ticket "QA AR F10b 491f9 N2" ee2bdde4-c01c-4932-9ebb-f3aeaf99ba0d
+- 2026-11-22T13:11:28 cleanup: 3/3 removed
+- 2026-11-22T13:11:32 ticket "QA AR F07e fill A1 0" 177c43b8-1256-423b-baa9-dfd3914f9330
+- 2026-11-22T13:11:39 ticket "QA AR F07e fill A2 0" 39b2773d-7c49-4c22-99ff-8aa7ca9c5d91
+- 2026-11-22T13:11:46 ticket "QA AR F07e own A1 0690c" 127b677a-d0c5-4aae-a752-509a54d01324
+- 2026-11-22T13:11:54 rule "QA AR F07e 47397" 445949a4-8031-40b2-a6a5-b4983324ac05
+- 2026-11-22T13:11:56 ticket "QA AR F07e 47397 Y1" 346587a9-48a5-41c2-8319-cb17e48c0239
+- 2026-11-22T13:12:58 cleanup: 5/5 removed
+- 2026-11-22T13:13:17 ticket "QA AR F09 fill A1 0" 95d10569-738c-447a-adad-6170039906dd
+- 2026-11-22T13:13:43 ticket "QA AR F09 fill A2 0" dc7712dc-77fe-48a2-81e9-b8571233eb70
+- 2026-11-22T13:14:44 rule "QA AR F09 16d9a" 2767e10e-2802-4ea7-a507-2d49a3334cfd
+- 2026-11-22T13:14:46 ticket "QA AR F09 16d9a Z" 86094c12-a0b4-4fa2-9955-3b014039aff3
+- 2026-11-22T13:17:19 cleanup: 4/4 removed
+- 2026-11-22T13:17:25 ticket "QA AR F08b fill A1 0" bbbba77e-feee-471c-aa15-a990b48c328c
+- 2026-11-22T13:17:31 ticket "QA AR F08b fill A2 0" f0f18c59-d6bc-40d7-a6ef-8f3bcb72e9ac
+- 2026-11-22T13:17:53 ticket "QA AR F08b own A2 14c8c" b4e82d6e-a5ed-48af-a99f-6cbd7d9f93ee
+- 2026-11-22T13:18:25 rule "QA AR F08b 7bb07" 571eccf6-19a3-46b5-b84b-e79a1345ff6b
+- 2026-11-22T13:18:26 ticket "QA AR F08b 7bb07 Z2" 512e9e9e-7224-490f-94cd-71ea66e122aa
+- 2026-11-22T13:18:55 cleanup: 5/5 removed
+- 2026-11-22T13:22:51 ticket "QA AR F08c fill A1 0" 9de4205c-ab39-49c5-af8e-fe9b3828b071
+- 2026-11-22T13:23:11 ticket "QA AR F08c fill A2 0" bd63e3ee-70d1-48fb-a8b8-e6a23334bb72
+- 2026-11-22T13:23:16 ticket "QA AR F08c own A1 bc35f" 33af90e9-67de-41eb-83fb-2013e47b18f2
+- 2026-11-22T13:23:24 ticket "QA AR F08c own A1 c8e73" a75e7183-9136-40d5-856b-b0645b9ccbf6
+- 2026-11-22T13:23:28 ticket "QA AR F08c own A1 0e4c5" 111086dc-ab43-49fd-98e1-8bb62cc89541
+- 2026-11-22T13:23:32 ticket "QA AR F08c own A1 9cdac" 0cfb6c87-b5c7-4bd7-ac71-9663702bfada
+- 2026-11-22T13:23:36 ticket "QA AR F08c own A1 5f74d" 4d7760f7-805a-4110-8738-d0398b485b0a
+- 2026-11-22T13:23:39 rule "QA AR F08c 4ab61" c9e74a24-ffd5-4745-a057-029dff854d82
+- 2026-11-22T13:23:44 ticket "QA AR F08c 4ab61 ZR1" 715ce031-ba5a-40ac-ba61-21fdf45fe8cd
+- 2026-11-22T13:24:10 ticket "QA AR F08c 4ab61 ZR2" 3544b48a-abe4-43b3-873f-ebb8d664a733
+- 2026-11-22T13:24:27 ticket "QA AR F08c 4ab61 ZR3" 42fd7786-64de-4d9f-8870-3c77db05be29
+- 2026-11-22T13:24:45 ticket "QA AR F08c 4ab61 ZR4" cd6d1229-9c5b-4537-83f7-82eaa1ecd68d
+- 2026-11-22T13:26:18 ticket "QA AR F08c 4ab61 ZR5" 62bb00e7-1467-4db2-ad05-43016c71e5cd
+- 2026-11-22T13:26:45 cleanup: 13/13 removed
+- 2026-11-22T13:26:51 ticket "QA AR F08d fill A1 0" 85c9577f-9c10-429e-a513-56edaf676418
+- 2026-11-22T13:26:58 ticket "QA AR F08d fill A2 0" 7a84bcf4-46dc-4e00-b7cb-b474f72e753a
+- 2026-11-22T13:28:10 ticket "QA AR F08d own A2 3c1a1" b607c151-92d0-4932-abff-4d92ec7a60cf
+- 2026-11-22T13:28:18 rule "QA AR F08d 05e4c" 3151f115-6073-4186-ac69-988036b1cd79
+- 2026-11-22T13:28:23 ticket "QA AR F08d 05e4c Z3" 47452fe9-e76b-41fb-8f39-8e132eaced33
+- 2026-11-22T13:30:29 cleanup: 5/5 removed
+- 2026-11-22T13:31:06 ticket "QA AR F08a fill A1 0" d91b75e7-2c29-4082-859e-12154fb4d09f
+- 2026-11-22T13:31:13 ticket "QA AR F08a fill A2 0" c18bfa50-db80-4013-928f-9dd173638507
+- 2026-11-22T13:31:23 ticket "QA AR F08a own A1 ce2c2" 1e77fc97-aed3-407b-a217-435852c1df5c
+- 2026-11-22T13:31:28 rule "QA AR F08a 930dc" f5b2349b-0c13-4156-8c3d-74f45f971593
+- 2026-11-22T13:31:30 ticket "QA AR F08a 930dc Z1" 44d4743a-cc4e-484f-8730-99ade5003a76
+- 2026-11-22T13:34:22 cleanup: 5/5 removed
+- 2026-11-22T13:34:30 ticket "QA AR F08e fill A1 0" 76943239-b485-4aef-afc6-bac8aca3bded
+- 2026-11-22T13:34:38 ticket "QA AR F08e fill A2 0" c90c5ed4-a974-4c06-b18a-4fb1015eaacd
+- 2026-11-22T13:34:50 rule "QA AR F08e 925b2" 31a8c314-71d9-4ff9-a582-b537436630ef
+- 2026-11-22T13:34:51 ticket "QA AR F08e 925b2 Z" 9cfa505b-eb0e-40e3-9220-9aaa42f9a5be
+- 2026-11-22T13:34:52 ticket "QA AR F08e unowned 18050" 8f9edfec-6fb2-4034-9042-85f67ad6cef6
+- 2026-11-22T13:35:40 cleanup: 5/5 removed
+- 2026-11-22T13:35:45 ticket "QA AR F03 fill A1 0" bb99779a-8f19-4f95-906b-01a33c50f68a
+- 2026-11-22T13:35:51 ticket "QA AR F03 fill A2 0" 5f30c632-371c-451b-8175-f56691e17334
+- 2026-11-22T13:35:56 rule "QA AR F03 e6191" 4925bc30-dc2d-4e3f-8d3a-c052b7620170
+- 2026-11-22T13:35:57 ticket "QA AR F03 e6191 dept full" d6ea78c4-5792-4262-9ae3-88fefcd12843
+- 2026-11-22T13:36:24 cleanup: 4/4 removed
+- 2026-11-22T13:36:29 ticket "QA AR F11 fill A1 0" 25d6d5cf-a55f-408a-9d85-1012ec9d4b79
+- 2026-11-22T13:36:38 ticket "QA AR F11 fill A2 0" 5646abcf-2b7c-4395-bb35-9fa997c37395
+- 2026-11-22T13:36:45 rule "QA AR F11 17cd7" 4aec0101-0545-4b21-8647-da28f793b4e5
+- 2026-11-22T13:36:47 ticket "QA AR F11 17cd7 Y2 manual" 9da39825-8f9c-4eb2-96be-7727aad93e55
+- 2026-11-22T13:36:49 ticket "QA AR F11 17cd7 Y3 move" 93cb150f-f93a-430f-81d0-878bb3a59b16
+- 2026-11-22T13:37:13 cleanup: 5/5 removed
+- 2026-11-22T13:37:16 rule "QA AR F01 fcc0d" dbe200c7-7179-44e8-bb07-9247834e4d56
+- 2026-11-22T13:37:18 ticket "QA AR F01 fcc0d off 1" 97eaffa1-fbd7-441a-8385-68b5d57b6707
+- 2026-11-22T13:37:24 ticket "QA AR F01 fcc0d off 2" 70d256fa-4a23-43ed-89f3-06c425be16a2
+- 2026-11-22T13:37:29 ticket "QA AR F01 fcc0d off 3" beaf6026-c028-4d12-bed2-24622bf02706
+- 2026-11-22T13:37:35 ticket "QA AR F01 fcc0d off 4" 1a4feaf2-30ea-4b25-9cbd-2a63035d3c13
+- 2026-11-22T13:37:43 ticket "QA AR F01 fcc0d on 1" 8edf114b-0c47-4242-8202-68206c570140
+- 2026-11-22T13:37:48 ticket "QA AR F01 fcc0d on 2" 8412d682-d271-4960-8d96-d6d6449d503e
+- 2026-11-22T13:37:54 ticket "QA AR F01 fcc0d on 3" 6afde084-44c4-49a0-91c2-41c78afd2a30
+- 2026-11-22T13:38:07 cleanup: 8/8 removed
+- 2026-11-22T13:38:12 ticket "QA AR F15 fill A1 0" 87191a0f-ad49-41e3-aa23-8935c3dd9c54
+- 2026-11-22T13:38:17 ticket "QA AR F15 own A2 9e5ce" a2525682-425f-4a26-85d5-f4e1c188bb88
+- 2026-11-22T13:38:22 rule "QA AR F15 f4ad5" 815c4f2a-d11e-4553-8f8e-b3f5a54c1ee2
+- 2026-11-22T13:38:23 ticket "QA AR F15 f4ad5 before hold" 74c16c45-0d82-45f9-8fb6-81900f84cdaa
+- 2026-11-22T13:39:37 ticket "QA AR F15 f4ad5 after hold" ff1f10b1-0f58-4f40-b8b6-6e4ac8415b0d
+- 2026-11-22T13:39:50 cleanup: 5/5 removed
+- 2026-11-22T13:39:54 ticket "QA AR F12 27198 manual" 278f3e1b-bbfa-4b1f-9f98-0ca100c16dc1
+- 2026-11-22T13:41:46 cleanup: 1/1 removed
+- 2026-11-22T13:41:50 ticket "QA AR F14 fill A1 0" ff9bf670-5792-4d4c-9e4e-3a5c344ee2d5
+- 2026-11-22T13:41:52 ticket "QA AR F14 fill A1 1" 550242f4-c628-4730-b11a-35dadfa63bae
+- 2026-11-22T13:42:01 ticket "QA AR F14 fill A1 0" 00b5ac8a-99fe-4a27-a341-052251501bbd
+- 2026-11-22T13:42:11 ticket "QA AR F14 fill A2 0" d165ced6-a04c-4d0d-b230-e357482f96c4
+- 2026-11-22T13:42:26 rule "QA AR F14 8e0a0" 31cc058f-e8b3-4402-bc8b-844b47ea70f2
+- 2026-11-22T13:42:27 ticket "QA AR F14 8e0a0 count" 5c3c1730-8962-44f6-9999-22a6fe59dcd0
+- 2026-11-22T13:42:39 cleanup: 6/6 removed
+- 2026-11-22T13:42:43 ticket "QA AR NOMATCH 14e1d" 431048dd-7948-41f4-bc0c-56ccbba222e5
+- 2026-11-22T13:42:55 cleanup: 1/1 removed
+- 2026-11-22T13:43:34 rule "QA AR A09 1d944" 1d6ea1b1-339c-4bbd-9c63-ea9b646b1792
+- 2026-11-22T13:43:46 cleanup: 1/1 removed
+- 2026-11-22T13:43:52 rule "QA AR C07 9bd3d" 24d55de2-7a78-4496-bd73-f39a7d91acff
+- 2026-11-22T13:43:54 cleanup: 1/1 removed
+- 2026-11-22T13:46:54 rule "QA AR A14 3a074" a245303f-dcd9-4216-80cf-ca1c5d2ec812
+- 2026-11-22T13:47:10 cleanup: 1/1 removed
+- 2026-11-22T13:47:13 rule "QA AR A11 20825" b2c14a99-055d-4740-a938-a215f34456b3
+- 2026-11-22T13:47:15 ticket "QA AR A11 20825 x" facabd8a-4a08-4f1a-b388-75a6fe8cf6b4
+- 2026-11-22T13:47:27 cleanup: 2/2 removed
+- 2026-11-22T13:47:33 rule "QA AR A06 727f0 five" 70da92e6-ff0e-4147-bf10-e9736103fb70
+- 2026-11-22T13:47:36 cleanup: 1/1 removed
+- 2026-11-22T13:47:43 rule "QA AR nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn…" 728189dc-12b1-411a-885d-0b952a8f0c63
+- 2026-11-22T13:47:45 cleanup: 1/1 removed
+- 2026-11-22T13:48:19 rule "QA AR A13 84362" f2d158ce-840c-4028-a2c0-6eaad7196563
+- 2026-11-22T13:48:21 cleanup: 1/1 removed
+- 2026-11-22T13:48:25 skillType "QA AR Type aa729" 9e2b8989-0163-4ea5-8a45-fc53b0ab6d96
+- 2026-11-22T13:48:27 skill "QA AR sk1 aa729" 0ede01a7-57ea-41e6-9a4e-ee590a2da9ae
+- 2026-11-22T13:48:27 skill "QA AR sk2 aa729" b413f37a-f4ed-4c89-a0cb-1d544c5011c9
+- 2026-11-22T13:48:29 skill "QA AR sk3 aa729" 533f0d40-ae24-478c-b74c-3df4404160a6
+- 2026-11-22T13:48:32 rule "QA AR E14c a62e8" 69798933-b75b-4571-bb32-9d343bfb5e79
+- 2026-11-22T13:48:34 ticket "QA AR E14c a62e8 QA AR SKaaa729 QA AR SKbaa729" 36cb0397-09f3-4770-8337-bde5fe716fe0
+- 2026-11-22T13:48:41 cleanup: 2/2 removed
+- 2026-11-22T13:48:47 ticket "QA AR SKbaa729 assign by skills" 920aef65-55f5-4041-a4d7-3d94ec5cc0d5
+- 2026-11-22T13:48:56 cleanup: 1/1 removed
+- 2026-11-22T13:48:59 ticket "QA AR SKaaa729 auto" 643dbd62-3722-433f-8d51-feec77087105
+- 2026-11-22T13:49:08 ticket "QA AR plain aa729" 24eaa812-4078-4485-a6ff-6cd95fe23250
+- 2026-11-22T13:49:22 cleanup: 2/2 removed
+- 2026-11-22T13:49:25 ticket "QA AR SKcaa729 inactive" 81e13a82-3b42-434e-b287-532fc1faac0f
+- 2026-11-22T13:49:33 cleanup: 1/1 removed
+- 2026-11-22T13:49:37 skill "QA AR pad aa729 7" b90cd918-49fa-479b-b422-7d9c00d0b395
+- 2026-11-22T13:49:39 skill "QA AR pad aa729 8" 92315006-0721-4ee9-8905-f6e30666f949
+- 2026-11-22T13:49:40 skill "QA AR pad aa729 9" 61ddcbae-5ce8-4940-a97d-7e2250c1f297
+- 2026-11-22T13:49:40 skill "QA AR pad aa729 10" a628e4c2-3142-4e2d-9bd9-dc2d7b1ef042
+- 2026-11-22T13:49:42 ticket "QA AR limit aa729" e4387ace-5d24-42c2-b2b2-53fbab466dc3
+- 2026-11-22T13:49:44 skill "QA AR cap aa729 9" 6b1426a4-9ff1-4acf-b6d7-6783a0a542c9
+- 2026-11-22T13:49:45 skill "QA AR cap aa729 10" 82f76b2c-d4b6-45ea-b7d5-c6fab79b1ceb
+- 2026-11-22T13:49:46 skill "QA AR cap aa729 11" fa671beb-206c-49df-a8e2-10f2081e2c91
+- 2026-11-22T13:49:47 skill "QA AR cap aa729 12" 6a413194-d767-4b57-a1bc-965823808106
+- 2026-11-22T13:49:48 skill "QA AR cap aa729 13" fd7c08b2-a5e5-48d3-b7da-c7d0f4257523
+- 2026-11-22T13:49:49 skill "QA AR cap aa729 14" 2a4dcd86-800a-4c4c-92f5-27c84f21048e
+- 2026-11-22T13:49:50 skill "QA AR cap aa729 15" 77a74e3c-ac54-4d65-8f58-e02e7ead2736
+- 2026-11-22T13:49:51 skill "QA AR cap aa729 16" 97041975-80b0-4614-ba76-92b45a95d5ba
+- 2026-11-22T13:49:53 skill "QA AR cap aa729 17" 0ca827a6-2d2b-4866-aaec-c801180d1b21
+- 2026-11-22T13:49:53 skill "QA AR cap aa729 18" 35d48bdf-28d1-416b-ae5f-8f9b4549fdb8
+- 2026-11-22T13:49:55 skill "QA AR cap aa729 19" 4d9624ef-417a-4982-bcc1-c347ca1ecc2a
+- 2026-11-22T13:49:56 skill "QA AR cap aa729 20" 7242d3d9-e8fa-469a-82a8-b48784344583
+- 2026-11-22T13:49:56 skill "QA AR cap aa729 21" 81e3e39d-1d88-41ca-a120-cdb8eb010579
+- 2026-11-22T13:49:57 skill "QA AR cap aa729 22" 1f195a20-0867-4e7f-a54f-838ce354a0a2
+- 2026-11-22T13:49:58 skill "QA AR cap aa729 23" 9297906a-f98e-47f4-9437-967d84207a84
+- 2026-11-22T13:49:59 skill "QA AR cap aa729 24" 550aff66-baa8-44b5-9c9b-78106f6c6698
+- 2026-11-22T13:50:00 skill "QA AR cap aa729 25" 2ace0294-08d3-4be8-8d69-7a0e55094dfe
+- 2026-11-22T13:50:01 skill "QA AR cap aa729 26" 386b6b05-a875-4866-9cc0-46441602e342
+- 2026-11-22T13:50:02 skill "QA AR cap aa729 27" 62d8a096-a4c2-4fc7-aa25-2190647183af
+- 2026-11-22T13:50:03 skill "QA AR cap aa729 28" 51a9cf68-b2a0-4f69-bcd5-d75b75707762
+- 2026-11-22T13:50:04 skill "QA AR cap aa729 29" e95404f8-d7bb-49cc-938f-8a51759b80b6
+- 2026-11-22T13:52:36 cleanup: 26/26 removed
+- 2026-11-22T13:52:40 rule "QA AR E14b 31aff" 1eab7a0a-d246-48f8-8ebf-d36d246e49bf
+- 2026-11-22T13:52:41 ticket "QA AR E14b 31aff none" 65a40017-55fb-434c-9466-1db851e61213
+- 2026-11-22T13:53:00 cleanup: 2/2 removed
+- 2026-11-22T13:53:19 ticket "QA AR SKbaa729 and QA AR SKaaa729" 1af2b060-b8cb-42c0-af5a-81369085119a
+- 2026-11-22T13:53:30 ticket "QA AR SKbaa729 and QA AR SKaaa729 after" 9f187d19-f7e6-4f41-bae5-fd574882b32d
+- 2026-11-22T13:53:38 cleanup: 2/2 removed
+- 2026-11-22T13:53:45 ticket "QA AR SKaaa729 recalc" 85c7414e-b4a0-4091-a5f0-189a853c1673
+- 2026-11-22T13:54:01 cleanup: 1/1 removed
+- 2026-11-22T13:54:06 rule "QA AR H12 ab309" 9ea83c77-9553-46ea-9a93-7db8cfa51d0c
+- 2026-11-22T13:54:07 ticket "QA AR H12 ab309 QA AR SKbaa729" 00725091-6ce6-4d6b-98d0-b067e511c6dd
+- 2026-11-22T13:54:07 ticket "QA AR H12 ab309 QA AR SKaaa729" 3457e230-4fa7-49cb-8980-4d8dc3a84396
+- 2026-11-22T13:54:15 cleanup: 3/3 removed
+- 2026-11-22T13:54:17 skillType "QA AR Type2 aa729" f57c24a7-349f-483d-a7fa-348d7988a517
+- 2026-11-22T13:54:18 cleanup: 1/1 removed
+- 2026-11-22T13:54:20 rule "QA AR H10 71e8e" dd68e17a-3710-4fce-9cd0-dcf465064a73
+- 2026-11-22T13:54:24 cleanup: 1/1 removed
+- 2026-11-22T13:54:33 cleanup: 4/4 removed
+- 2026-11-22T13:55:31 Recycle Bin purge: 199 QA AR items
+- 2026-11-22T13:55:31 RESTORE done, left: nothing
+- 2026-11-22T13:57:17 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-22T13:57:25 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-22T13:57:32 skillType "QA AR GType 2b15d" 3c7de30c-29f0-4da5-a9bf-867a1e2ea0f5
+- 2026-11-22T13:57:33 skill "QA AR skX 2b15d" 846974e7-646a-4a29-aedb-760d31e3da0d
+- 2026-11-22T13:57:34 skill "QA AR skY 2b15d" 310437fa-cbf0-48ca-83ca-ce6eea6679eb
+- 2026-11-22T13:57:37 cleanup: 3/3 removed
+- 2026-11-22T13:58:27 Recycle Bin purge: 0 QA AR items
+- 2026-11-22T13:58:27 RESTORE done, left: nothing
+- 2026-11-22T13:59:35 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-22T13:59:44 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-22T14:03:52 skillType "QA AR XSS type 26cc9" 96c75c7d-7add-4ca4-b147-386a8972d290
+- 2026-11-22T14:03:53 skill "QA AR <img src=x onerror=alert(1)> 24b71" 8ba6c130-a6f1-4da6-a28f-c55956d0e84d
+- 2026-11-22T14:03:53 rule "QA AR <b>bold</b> 98cae" 5287f644-222b-4877-a5d4-6554814908c6
+- 2026-11-22T14:04:10 cleanup: 3/3 removed
+- 2026-11-22T14:05:53 rule "QA AR D13b d740d" 3b2ca07f-d21b-474b-ac43-cd140bb0c61c
+- 2026-11-22T14:06:03 cleanup: 1/1 removed
+- 2026-11-22T14:07:31 rule "QA AR A12 ui c55b2" 7546be99-be4c-4980-a0c1-e554e219811c
+- 2026-11-22T14:07:33 cleanup: 1/1 removed
+- 2026-11-22T14:09:01 rule "QA AR D01 51f4e" 05d14ece-c885-447f-9ab3-6d2dd4e874df
+- 2026-11-22T14:09:02 ticket "QA AR D01 51f4e a" dd27b0ab-c717-4031-bb5a-11ffa074c19d
+- 2026-11-22T14:09:05 cleanup: 2/2 removed
+- 2026-11-22T14:09:08 rule "QA AR EO3 45ad0 rr" 53ef5b1c-b1bc-4075-af00-cec326ee5ca6
+- 2026-11-22T14:09:09 workflow "QA AR EO3 45ad0 WF" 27e9cc93-761d-4410-b654-a5ebfa63dc81
+- 2026-11-22T14:09:10 ticket "QA AR EO3 45ad0 x" 34905fc0-85e8-401d-9bf4-cc3079b15552
+- 2026-11-22T14:09:28 cleanup: 3/3 removed
+- 2026-11-22T14:09:29 rule "QA AR I04 27564" 819cbb12-c6c5-4619-b92a-16aecb3b1848
+- 2026-11-22T14:09:30 ticket "QA AR I04 27564 timing 1" bbc852b0-9662-42d6-8193-d8e3b691ec5f
+- 2026-11-22T14:09:33 ticket "QA AR I04 27564 timing 2" e919f01d-76f0-4bb4-992a-ce88d343ac7e
+- 2026-11-22T14:09:37 ticket "QA AR I04 27564 timing 3" d964b29c-20da-4802-acb9-1d874a187303
+- 2026-11-22T14:09:40 ticket "QA AR I04 27564 timing 4" c5d52233-fe83-47a0-be7c-bb6f10e9f222
+- 2026-11-22T14:09:42 ticket "QA AR I04 27564 timing 5" 8125dd91-f02f-4eb9-a0ef-ab621bcb2cd4
+- 2026-11-22T14:09:45 ticket "QA AR I04 27564 timing 6" a6f2ffd3-86d2-4cd1-a233-9b08885d4854
+- 2026-11-22T14:09:51 ticket "QA AR I04 27564 timing 7" 4b9cacdb-049f-480f-a8df-b416be1215d8
+- 2026-11-22T14:09:53 ticket "QA AR I04 27564 timing 8" b631318b-7e46-4d3e-9a35-52894d9ffcc9
+- 2026-11-22T14:11:07 ticket "QA AR I04 27564 timing 9" af467c0b-0177-4365-b7fa-4a7a48f3d301
+- 2026-11-22T14:11:11 ticket "QA AR I04 27564 timing 10" 0fc687d1-72ef-4db0-bbc8-756a5cb96869
+- 2026-11-22T14:11:13 I-04 create->owner ms: [1653, 1702, 1758, 2644, 2838, 2981, 3180, 4028, 6593, 76043]
+- 2026-11-22T14:11:22 cleanup: 11/11 removed
+- 2026-11-22T14:11:25 skillType "QA AR GType 2957a" 0e88b749-122b-4454-86cf-a46536eeb125
+- 2026-11-22T14:11:26 skill "QA AR skX 2957a" 41c38f60-d8f4-461a-b150-1f79d19ad9de
+- 2026-11-22T14:11:27 skill "QA AR skY 2957a" 4666813c-15aa-42c3-a752-b1a6845f5bb0
+- 2026-11-22T14:11:32 ticket "QA AR G03 fill A1 0" dfe0d469-d64d-442c-a00f-6c904bf377b8
+- 2026-11-22T14:11:38 ticket "QA AR G03 fill A2 0" 09e27ce0-1809-42d1-9251-38688c27819c
+- 2026-11-22T14:11:45 rule "QA AR G03 7768e" e7972279-4b0e-43a7-b774-f430ea9a83f6
+- 2026-11-22T14:11:46 ticket "QA AR G03 7768e 1" 6b0cdf60-3df9-487e-85fc-7999493a4b8b
+- 2026-11-22T14:12:15 cleanup: 4/4 removed
+- 2026-11-22T14:12:19 ticket "QA AR G04 fill A1 0" 6a7f8d58-0290-49fc-9452-994f1d2db838
+- 2026-11-22T14:12:25 ticket "QA AR G04 fill A2 0" 433b4cdf-1452-4438-93d7-4260a0d61ddd
+- 2026-11-22T14:12:34 rule "QA AR G04 de79a" 5452f16c-1338-41a1-be1b-12c7eefde0e7
+- 2026-11-22T14:12:35 ticket "QA AR G04 de79a X" 500a0043-57a9-49ac-9880-985f21e407c5
+- 2026-11-22T14:14:30 cleanup: 4/4 removed
+- 2026-11-22T14:14:35 rule "QA AR G01 4eecd" ffe4ad72-dacb-4a67-9f1e-81dadf95583b
+- 2026-11-22T14:14:36 ticket "QA AR G01 4eecd 1" a40ca379-82c0-4c98-8f11-32b73678d417
+- 2026-11-22T14:17:12 cleanup: 2/2 removed
+- 2026-11-22T14:17:22 ticket "QA AR G05 fill A1 0" 71a016ac-4e1b-43d7-859f-d81b383ab818
+- 2026-11-22T14:17:28 ticket "QA AR G05 fill A2 0" 1c65a8fa-41fe-44fb-add1-64a8d42cf7c1
+- 2026-11-22T14:17:39 rule "QA AR G05 2f87d" 10364c18-672b-44c7-b41b-e835386ec658
+- 2026-11-22T14:17:41 ticket "QA AR G05 2f87d 1" 7befe1c3-f559-4a26-a98f-ad65eea92195
+- 2026-11-22T14:17:46 ticket "QA AR G05 2f87d 2" 1755b502-667a-4e0e-9ca3-c5aa164a95cc
+- 2026-11-22T14:18:17 cleanup: 5/5 removed
+- 2026-11-22T14:18:23 ticket "QA AR G08 fill A1 0" 3a0145f8-a74b-4ecd-bae2-fb841fce9950
+- 2026-11-22T14:18:30 rule "QA AR G08 9e9c6" b767e4d1-d2ce-42f9-8d25-ec6777ffb671
+- 2026-11-22T14:18:31 ticket "QA AR G08 9e9c6 QA AR SXb 2957a" 328847be-0629-41ac-94c4-c65c424b3359
+- 2026-11-22T14:18:39 ticket "QA AR G08 9e9c6 QA AR SXa 2957a" 04b63515-4bc2-456d-9d58-0d5e82726fde
+- 2026-11-22T14:18:58 cleanup: 4/4 removed
+- 2026-11-22T14:19:18 ticket "QA AR G09 fill A1 0" 721f85c0-d1ef-4b7b-a770-fb49b5fa1adb
+- 2026-11-22T14:19:26 rule "QA AR G09 70e69" 045f4051-43e4-44b5-9eeb-35a5c68ebbd2
+- 2026-11-22T14:19:27 ticket "QA AR G09 70e69 QA AR SXa 2957a" e4ac2d8f-8cb0-4032-ab40-15664c8aac5d
+- 2026-11-22T14:20:39 cleanup: 3/3 removed
+- 2026-11-22T14:21:04 rule "QA AR G06 695ae" 2b50d498-457f-427b-8e9b-ffaffd52434b
+- 2026-11-22T14:21:05 ticket "QA AR G06 695ae QA AR SXa 2957a 1" 79bddc22-9638-406c-8c9b-6f03f8db0f36
+- 2026-11-22T14:21:14 cleanup: 2/2 removed
+- 2026-11-22T14:21:16 rule "QA AR G07 fe911" d7c491cf-ca9a-4e0f-b3a9-5f069b825c95
+- 2026-11-22T14:21:18 ticket "QA AR G07 fe911 QA AR SXa 2957a 1" 7f1a0ff7-f1d1-427d-8193-018cb8a0f180
+- 2026-11-22T14:21:23 ticket "QA AR G07 fe911 QA AR SXa 2957a 2" 815e1e21-a45a-4894-8dcb-d5754930943e
+- 2026-11-22T14:21:27 ticket "QA AR G07 fe911 QA AR SXa 2957a 3" a32f30bd-cb18-4adc-9934-7876170f41d8
+- 2026-11-22T14:21:34 ticket "QA AR G07 fe911 QA AR SXa 2957a 4" 5c979e6b-1392-4c97-8c8a-593c21545efa
+- 2026-11-22T14:21:41 cleanup: 5/5 removed
+- 2026-11-22T14:21:50 cleanup: 3/3 removed
+- 2026-11-22T14:22:33 Recycle Bin purge: 34 QA AR items
+- 2026-11-22T14:22:33 RESTORE done, left: nothing
+- 2026-11-22T14:23:29 BASELINE saved: switches {notify_agent_on_assignment=true, notify_team_on_assignment=true, direct_rules_enabled=false, round_robin_rules_enabled=true}, members A 3, B 2
+- 2026-11-22T14:23:36 SETUP: A2 added to Dept A + B, Direct switch ON, clean RR prefs on A + B (restore at the end)
+- 2026-11-22T14:23:41 rule "QA AR D01 91dfe" 2aa5d4d0-fb3e-40d4-b6d9-384563624701
+- 2026-11-22T14:23:42 ticket "QA AR D01 91dfe a" ac7af1ad-8cf6-4c0a-be00-bb0efdd4a398
+- 2026-11-22T14:23:47 cleanup: 2/2 removed
+- 2026-11-22T14:23:52 skillType "QA AR GType 376be" aa51ac04-fd54-4388-b2bd-7f79140603fa
+- 2026-11-22T14:24:06 skill "QA AR skX 376be" e48ab744-85df-4f33-bebf-2c43b196e61c
+- 2026-11-22T14:24:06 skill "QA AR skY 376be" c00f770f-709b-4def-9c98-240374ba9b34
+- 2026-11-22T14:24:12 ticket "QA AR G02 fill A1 0" 8894db69-17a4-4539-b28f-c4285c2f8fae
+- 2026-11-22T14:24:17 ticket "QA AR G02 fill A2 0" 212fbb37-66f0-48db-858d-d67cc57aa301
+- 2026-11-22T14:24:25 rule "QA AR G02 16273" e9cfaa8c-08da-4d90-8fd8-c3929d2bf915
+- 2026-11-22T14:24:26 ticket "QA AR G02 16273 1" 5e8d0807-01bb-42c8-9789-12b31621d925
+- 2026-11-22T14:24:35 cleanup: 4/4 removed
+- 2026-11-22T14:24:38 rule "QA AR G06 02d62" 9cf7cc22-f64b-494e-9e9f-37e56c21687e
+- 2026-11-22T14:24:40 ticket "QA AR G06 02d62 QA AR SXa 376be 1" ae59d97a-e9d7-471a-9348-e8f7c37a6324
+- 2026-11-22T14:24:51 ticket "QA AR G06 02d62 QA AR SXa 376be 2" 4a24055e-a8b8-4b18-973e-0b3b2097733d
+- 2026-11-22T14:25:05 ticket "QA AR G06 02d62 QA AR SXa 376be 3" 0bb40d49-875f-4986-aae6-b24769a2f475
+- 2026-11-22T14:25:13 cleanup: 4/4 removed
+- 2026-11-22T14:25:17 cleanup: 3/3 removed
+- 2026-11-22T14:26:22 Recycle Bin purge: 7 QA AR items
+- 2026-11-22T14:26:22 RESTORE done, left: nothing
