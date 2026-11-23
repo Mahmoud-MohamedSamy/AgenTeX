@@ -1,0 +1,50 @@
+{
+ "out": "3137-api-card.png",
+ "host": "staging-desk.taviportal.com",
+ "date": "21 Nov 2026",
+ "title": "NDC-3137 · Round Robin \"Assign tickets on closure\" with an offline agent · QA AO Dept B · Test User 1 offline (last active 19 Nov 17:50 UTC) · 21 Nov 2026",
+ "rows": [
+  [
+   "A1 Preferences",
+   "PUT round-robin-preferences: offline agents ON, agent threshold Test User 1 = 1, closure ON, backlogs OFF",
+   "200",
+   "info"
+  ],
+  [
+   "A2 Setup tickets",
+   "rule \"QA RT24 3137 closure\" (pool: Test User 1) · create #5971, then #5972",
+   "#5971 → Test User 1 (at threshold) · #5972 → backlog (unassigned)",
+   "info"
+  ],
+  [
+   "A3 Admin closes #5971",
+   "PATCH status Closed 13:47:25 UTC (agent still offline)",
+   "#5972 → Test User 1 within 12 s, in_backlog false",
+   "ok"
+  ],
+  [
+   "A4 History #5972",
+   "GET history",
+   "\"Assigned automatically\" · Rule QA RT24 3137 closure · Round robin (Sequence) · Taken from the backlog",
+   "ok"
+  ],
+  [
+   "B1 Control: offline agents OFF",
+   "same threshold (2), create #5973 (→ Test User 1), switch offline OFF, create #5974",
+   "#5974 → backlog",
+   "info"
+  ],
+  [
+   "B2 Admin closes #5973",
+   "PATCH status Closed 13:48:30 UTC",
+   "#5974 still unassigned after 148 s (closure assigns only online agents when the setting is off)",
+   "ok"
+  ],
+  [
+   "C Restore",
+   "PUT preferences back to the saved copy",
+   "200, identical to before",
+   "info"
+  ]
+ ]
+}

@@ -1,0 +1,10 @@
+const path=require('path');const {chromium}=require(path.join('D:/Software Testing/Automation/Agentex Installation/Agentex Installation','node_modules/playwright-core'));const RAW=path.join(__dirname,'..','screenshots','raw');
+(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});const page=await (await b.newContext({viewport:{width:1280,height:1300}})).newPage();
+await page.goto('http://127.0.0.1:5500/fA24.html');for(let w=0;w<20&&!page.frames().find(f=>/taviportal/.test(f.url()));w++)await page.waitForTimeout(1500);await page.waitForTimeout(5000);
+const fr=page.frames().find(f=>/taviportal/.test(f.url()));const T=async()=>(await fr.locator('body').innerText()).replace(/\s+/g,' ');const R={};
+const inp=fr.locator('input[type=file]').first();
+await inp.setInputFiles({name:'x.html',mimeType:'text/html',buffer:Buffer.from('<p>x</p>')});await page.waitForTimeout(4000);R.html=(await T()).slice(0,500);
+await page.screenshot({path:path.join(RAW,'2822-A24-file-html.png'),fullPage:true});
+const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==','base64');
+await inp.setInputFiles([0,1,2,3,4,5].map(i=>({name:'qa'+i+'.png',mimeType:'image/png',buffer:png})));await page.waitForTimeout(8000);R.six=(await T()).slice(0,700);
+await page.screenshot({path:path.join(RAW,'2822-A24-file-six.png'),fullPage:true});console.log(JSON.stringify(R,null,1));await b.close();})();

@@ -1,0 +1,165 @@
+{
+ "out": "NDC-3137-retest-PASS.png",
+ "ticket": "NDC-3137",
+ "priority": "urgent",
+ "label": "RETEST PASS",
+ "verdict": "PASS",
+ "title": "Assignment Rules | \"Assign tickets on closure\" skips offline agents even when \"Assign tickets to offline agents\" is on",
+ "env": "NDC-Staging · staging-desk.taviportal.com · Edge + API · owner (administrator) · QA AO Dept B · Test User 1 offline",
+ "date": "21 Nov 2026",
+ "panels": [
+  {
+   "img": "3137-d-preferences.png",
+   "caption": "QA AO Dept B › Round Robin Preferences as tested: offline agents ON, agent threshold, backlogs OFF, closure ON",
+   "crop": [
+    464,
+    45,
+    672,
+    700
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      1070,
+      138,
+      1116,
+      162
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      486,
+      428,
+      1112,
+      470
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      1070,
+      538,
+      1116,
+      562
+     ],
+     "n": 3
+    },
+    {
+     "b": [
+      1070,
+      610,
+      1116,
+      636
+     ],
+     "n": 4
+    }
+   ]
+  },
+  {
+   "img": "3137-a-backlog-ticket-history.png",
+   "caption": "Backlog ticket #5972 › History: assigned to the offline agent right after the administrator closed #5971",
+   "crop": [
+    664,
+    150,
+    936,
+    560
+   ],
+   "w": 1600,
+   "h": 900,
+   "boxes": [
+    {
+     "b": [
+      700,
+      282,
+      1000,
+      450
+     ],
+     "n": 5
+    },
+    {
+     "b": [
+      706,
+      484,
+      900,
+      554
+     ],
+     "n": 6
+    }
+   ]
+  },
+  {
+   "img": "3137-api-card.png",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    520
+   ],
+   "w": 1600,
+   "h": 900,
+   "caption": "API run: closure with the setting on and off"
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Assign tickets to offline agents",
+   "ON",
+   "ON",
+   "INFO"
+  ],
+  [
+   2,
+   "Agent level threshold",
+   "Test User 1 at threshold",
+   "1 (A), 2 (B)",
+   "INFO"
+  ],
+  [
+   3,
+   "Assign backlogs",
+   "OFF, so only closure can assign",
+   "OFF",
+   "INFO"
+  ],
+  [
+   4,
+   "Assign tickets on closure",
+   "ON",
+   "ON",
+   "INFO"
+  ],
+  [
+   5,
+   "Admin closes the offline agent's ticket (A)",
+   "Backlog ticket assigned straight away; History shows it",
+   "#5972 → Test User 1 in ≤12 s; \"Assigned automatically … Taken from the backlog\"",
+   "PASS"
+  ],
+  [
+   6,
+   "Owner shown on the backlog ticket",
+   "Test User 1",
+   "Test User 1",
+   "PASS"
+  ],
+  [
+   "B",
+   "Control: offline agents OFF (dev note)",
+   "Closure assigns only online agents",
+   "#5974 stayed in the backlog 148 s",
+   "PASS"
+  ],
+  [
+   "—",
+   "Online agent paths / the 19 Nov 10:44 one-off miss",
+   "—",
+   "Not run (needs Test User 1 signed in)",
+   "INFO"
+  ]
+ ]
+}

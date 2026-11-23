@@ -1,0 +1,18 @@
+const out = {}; const R = {}; const TK = {};
+const DEV2 = '5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4', TU1 = '876ce871-2b02-4854-89a7-68050391c62b';
+const disp = async (t, r) => (await execs(TK[t], R[r])).map(e => outcome(e) + ':' + (e.dispatches || []).map(d => d.actionType + '=' + d.status + (d.lastError ? '(' + String(d.lastError).slice(0, 160) + ')' : '')).join(','));
+const tk = async (k, tag, vals, suf) => { const t = await mkTicket(tag, { department: DEPT2, ...(vals || {}) }, suf); TK[k] = t.id; return t.id; };
+out.skill1 = JSON.stringify(arr((await api('GET', '/desk/skills?department_id=' + DEPT2)).j?.data?.skills).find(s => s.name === 'QA WF skill1')).slice(0, 500);
+R.rc = (await mkRule('RCx', { kind: 'RecordUpdated' }, [{ type: 'RecalculateTicketSkills' }], { noGuard: true, criteria: guard('QA WF RCx') })).id;
+R.ad = (await mkRule('ADx', { kind: 'RecordCreated' }, [{ type: 'AddTicketSkills', skillKeys: ['QA WF skill1'] }], { noGuard: true, criteria: guard('QA WF RAx') })).id;
+R.ra = (await mkRule('RAx', { kind: 'RecordUpdated' }, [{ type: 'ReassignTicketBySkills' }], { noGuard: true, criteria: guard('QA WF RAx') })).id;
+await tk('rc', 'RCx', {}, 'QA WF SK1 match'); await tk('rc2', 'RCx', {}, 'plain');
+await tk('ra', 'RAx', {}, 'reassign');
+await sleep(12000);
+out.before = { rc: (await getTicket(TK.rc)).skills, ra: (await getTicket(TK.ra)).skills, raOwner: (await getTicket(TK.ra)).owner };
+await patchTicket(TK.rc, { classification: 'problem' }); await patchTicket(TK.rc2, { skills: ['QA WF skill1'] });
+await patchTicket(TK.ra, { classification: 'problem' });
+await sleep(25000);
+out.v = { rcMatch: { skills: (await getTicket(TK.rc)).skills, run: await disp('rc', 'rc') }, rcStale: { skills: (await getTicket(TK.rc2)).skills, run: await disp('rc2', 'rc') }, ra: { owner: (await getTicket(TK.ra)).owner, skills: (await getTicket(TK.ra)).skills, run: await disp('ra', 'ra') } };
+out.presence = (await api('POST', '/desk/agents/presence/query', { user_ids: [DEV2, TU1] })).t.slice(0, 300);
+return out;

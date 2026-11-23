@@ -1,0 +1,25 @@
+- 2026-11-23T14:38:42 CRM leads "QA TIA Lead 1" 3194489d-7bdb-4457-8990-188623499035
+- 2026-11-23T14:38:43 CRM leads "QA TIA Lead 2" 53d0ab98-53ef-42d4-b913-d4c36d0e990c
+- 2026-11-23T14:38:44 CRM leads "QA TIA Lead 3" 40e26fe0-0eaa-48c3-9fdd-9d313b7824df
+- 2026-11-23T14:38:45 CRM accounts "QA TIA Account" 38c15c30-4aac-4e48-b1b0-0652a45d0cfc
+- 2026-11-23T14:38:46 CRM contacts "QA TIA Contact A" 954ed190-fbd8-4b4d-907e-05c613f861d0
+- 2026-11-23T14:38:48 CRM contacts "QA TIA Contact B" d4d2313f-ab0c-4efe-b348-ec573385f64b
+- 2026-11-23T14:38:50 CRM deals "QA TIA Deal 1000" 16ac4306-b91e-4c0f-933b-237daf692556
+- 2026-11-23T14:38:52 CRM deals "QA TIA Deal 2500" 635b88eb-5c19-4792-9063-38e9706b31ae
+- 2026-11-23T14:38:53 CRM deals "QA TIA Deal 4000" 642cbf1d-8fe8-497e-98fd-68ad79d1ef22
+- 2026-11-23T14:40:48 Desk dept "QA AO Dept A" 93949fbd-f9df-4e2e-ae45-00b8dc38385b: added RST (before 3 agents: ["5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4","876ce871-2b02-4854-89a7-68050391c62b","97be04b6-0a08-4883-aa51-e1650b11cab7"])
+- 2026-11-23T14:40:52 Desk ticket "QA TIA T1" c13edb67-987c-444e-a414-9f8e06410b4f
+- 2026-11-23T14:40:54 Desk ticket "QA TIA T2" c4e00bbf-c64d-44f3-b2a5-2570c94dc32e
+- 2026-11-23T14:40:55 Desk ticket "QA TIA T3" ea2e80d7-9cd9-4d97-b13d-1eab9471d37c
+- 2026-11-23T14:41:01 Desk ticket "QA TIA T4" 30609fe6-2255-48a2-b087-bb9f93af5352
+- 2026-11-23T14:41:03 Desk ticket "QA TIA Closed" 07746d5a-5a56-4049-83d8-6361126cdf7d
+- 2026-11-23T14:41:04 Desk ticket "QA TIA Other-Dept" 4c3acb65-1103-4195-af3b-b140c3cb7872
+- 2026-11-23T14:44:08 Tia definition restored to baseline after B api cases → draft 200, deploy 200, v9
+- 2026-11-23T14:45:03 restored after B-10/E-16: 200/200 v12
+- 2026-11-23T14:46:00 restored after E-16b: 200/200
+- 2026-11-23T14:52:36 restored Tia after C apps: 200/200 v19
+- 2026-11-23T14:55:28 restored Tia after D: 200/200 v25
+- 2026-11-23T15:00:10 CRM workflow rule "New record: Call the lead" b4170de0-0058-4e9c-bbcc-29c32536bb5b (from J-09, active=false)
+- 2026-11-23T15:02:28 restored Tia after E: 200/200 v29
+- 2026-11-23T15:07:51 restored Tia after F: 200/200 v33
+- 2026-11-23T15:20:58 AI policy tia restored to {enabled:true,daily_credit_cap:1e8} → 200 v13

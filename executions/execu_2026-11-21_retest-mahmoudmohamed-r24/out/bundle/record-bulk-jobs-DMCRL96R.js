@@ -1,0 +1,1 @@
+function e(e){return`records:mass-delete:${e}`}function t(e){return`records:mass-update:${e}`}export{t as n,e as t};

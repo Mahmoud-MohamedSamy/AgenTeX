@@ -1,0 +1,33 @@
+{
+ "out": "F07-card.png",
+ "title": "Return type is not enforced",
+ "host": "staging-crm / staging-desk.taviportal.com",
+ "who": "owner",
+ "date": "23 Nov 2026",
+ "rows": [
+  [
+   "Number formula, text result",
+   "return_kind number · upper(qa_text) · \"ab\"",
+   "201 · stored \"AB\" in a number field",
+   "bad"
+  ],
+  [
+   "Date formula, number result",
+   "return_kind date · qa_num + 1 · 4",
+   "201 · stored 5 in a date field",
+   "bad"
+  ],
+  [
+   "Control: unknown return kind",
+   "return_kind currency / datetime / xyz",
+   "400 \"must be one of: string, number, boolean, date\" ✓",
+   "ok"
+  ],
+  [
+   "Builder",
+   "Formula saved from the layout builder",
+   "no return_kind stored (no control in the screen)",
+   "info"
+  ]
+ ]
+}

@@ -1,0 +1,13 @@
+const out = { req: [] };
+page.on('response', r => { if (/scoring-rules|\/me\b|users\/me/.test(r.url())) out.req.push(r.request().method() + ' ' + r.url().replace(/.*\/api\/v1/, '').replace(/[0-9a-f-]{36}/g, '{id}') + ' ' + r.status()); });
+await page.goto(H + '/settings/automation/scoring-rules?module=841043e1-c078-41f9-8d6e-dfd61bee45c3', { waitUntil: 'domcontentloaded' }); await sleep(10000);
+out.url = page.url().replace(/[0-9a-f-]{36}/g, '{id}');
+out.main = (await page.locator('main').innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 500);
+out.newBtn = await page.getByRole('button', { name: /New Scoring Rule/ }).count();
+out.runBtn = await page.getByRole('button', { name: /Run scoring rules/ }).count();
+await shot('1483-18-nonadmin-rules.png');
+await page.goto(H + '/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3', { waitUntil: 'domcontentloaded' }); await sleep(9000);
+await page.getByRole('button', { name: 'Sort by Score' }).count().then(n => out.sortScore = n);
+out.leadHeaders = (await page.locator('th, [role=columnheader]').allInnerTexts()).map(s => s.trim()).filter(Boolean).join('|');
+const av = await page.locator('header button').last().innerText().catch(() => ''); out.avatar = av.slice(0, 4);
+await shot('1483-19-nonadmin-leads.png'); return out;

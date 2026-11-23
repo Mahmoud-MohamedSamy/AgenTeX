@@ -1,0 +1,2 @@
+const r=await api('POST','/desk/tickets/'+C.t3073B+'/comments',{body_html:'<p>QA RT20 TK 3073 control private comment (not spam)</p>',is_public:false});log('control comment B',E(r));if(r.s<300)LED('comment added on ticket '+C.t3073B+' (3073 control, private)');
+const r2=await api('POST','/desk/tickets/'+C.t3073A+'/comments',{body_html:'<p>QA RT20 TK 3073 private comment after Not Spam</p>',is_public:false});log('A after not spam comment',E(r2));if(r2.s<300)LED('comment added on ticket '+C.t3073A+' (after Not Spam, private)');

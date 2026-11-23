@@ -1,0 +1,2 @@
+const r = await api('POST', '/teamspaces/a641f1df-f2c6-450e-a881-857776dacf70/modules', { moduleKey: 'qa_fx_desk', labels: { en: 'QA FX Desk' }, pluralForm: 'QA FX Desk', singularForm: 'QA FX Desk record', description: 'QA FX formula-field test run 23 Nov 2026 - delete afterwards' });
+log('create desk module', E(r)); if (r.s === 201) { made.deskMod = r.j.data.id; keep(); led('Desk module QA FX Desk created ' + made.deskMod); }

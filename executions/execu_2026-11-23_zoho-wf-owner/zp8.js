@@ -1,0 +1,6 @@
+await page.goto('https://desk.zoho.com/agent/techegysolutions/tech/tickets/list/all-cases', { waitUntil: 'domcontentloaded', timeout: 90000 }); await sleep(12000);
+const api = (m, p, b) => page.evaluate(async ([m, p, b]) => { const csrf = (document.cookie.match(/crmcsr=([^;]+)/) || [])[1]; const r = await fetch(p, { method: m, headers: { 'X-ZCSRF-TOKEN': 'crmcsrfparam=' + csrf, orgId: '946801013', 'Content-Type': 'application/json' }, body: b ? JSON.stringify(b) : undefined, credentials: 'include' }); return { s: r.status, t: await r.text() }; }, [m, p, b]);
+const B = '/supportapi/zd/techegysolutions/api/v1/', D = '1499272000000432293';
+const base = { name: 'QA ZWF probe', module: 'tickets', departmentId: D, status: 'INACTIVE' }; out.v = {};
+for (const ev of ['Create', 'CREATE', 'create', 'TICKET_CREATE', 'CREATE_TICKET', 'ADD', 'Add', 'ON_CREATE', 'onCreate', 'INSERT']) { const r = await api('POST', B + 'workflows', { ...base, executeOn: { events: [ev] } }); out.v[ev] = r.s + ' ' + r.t.slice(0, 250); let j = {}; try { j = JSON.parse(r.t); } catch {} if (!/does not match the allowed values/.test(r.t)) { out.winner = ev; if (j.id) out.deleted = (await api('DELETE', B + 'workflows/' + j.id)).s; break; } }
+require('fs').writeFileSync('zp8.json', JSON.stringify(out, null, 1));

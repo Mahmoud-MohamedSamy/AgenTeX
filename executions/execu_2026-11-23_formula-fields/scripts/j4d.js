@@ -1,0 +1,3 @@
+const id = fs.readFileSync(RUN + '/out/j4-id.txt', 'utf8').trim(); const r = await api('GET', `/modules/7267b791-47cc-479c-aa79-c35acbdeff4c/records/${id}`);
+const v = flat(r.j?.data?.data); log('user sees: formula', v.qa_fx_ui_double === undefined ? '(absent)' : v.qa_fx_ui_double, 'qa_num', v.qa_num === undefined ? '(absent)' : v.qa_num, 'fx_e7 (qa_num*2, visible)', v.fx_e7);
+const p = await api('PATCH', `/modules/7267b791-47cc-479c-aa79-c35acbdeff4c/records/${id}`, { data: data({ qa_text: 'user edit' }) }); const v2 = flat((await api('GET', `/modules/7267b791-47cc-479c-aa79-c35acbdeff4c/records/${id}`)).j?.data?.data); log('user edit', E(p), 'fx_e7 after user save', v2.fx_e7);

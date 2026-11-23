@@ -1,0 +1,10 @@
+const DD='6d68dc90-7ecf-4829-bf51-9beb87282b87';const o={};const T=JSON.parse(fs.readFileSync(RUN+'/out/3097.json','utf8'));
+const snap=async()=>{const q=(await api('POST','/desk/agents/departments/query',{agent_user_ids:[AG_A]})).j?.data;const d=(q?.departments_by_agent?.[AG_A]||[]).map(x=>x.name||x.department_name||x.id||x);const tm=(await api('GET','/desk/teams/'+T.tid)).j?.data?.member_user_ids||[];const sk=(await api('GET','/desk/agent-skills?department_id='+CS)).j?.data;return {depts:JSON.stringify(d).slice(0,200),inTeamDD:tm.includes(AG_A),csSkills:JSON.stringify((sk?.agents||[]).find?.(a=>a.user_id===AG_A)?.skills||'').slice(0,120)};};
+const g0=(await api('GET','/desk/departments/'+DD)).j?.data;const csd=(await api('GET','/desk/departments/'+CS)).j?.data;
+fs.writeFileSync(RUN+'/out/3091-before.json',JSON.stringify({dd:{name:g0.name,agent_user_ids:g0.agent_user_ids,view_only_agent_user_ids:g0.view_only_agent_user_ids},cs:{name:csd.name,agent_user_ids:csd.agent_user_ids,view_only_agent_user_ids:csd.view_only_agent_user_ids}}));
+o.addDD=(await api('PATCH','/desk/departments/'+DD,{name:g0.name,agent_user_ids:[...new Set([...g0.agent_user_ids,AG_A])],view_only_agent_user_ids:g0.view_only_agent_user_ids})).s;LED('3091: CES2 added to '+g0.name+' (restore from out/3091-before.json)');
+const tg=(await api('GET','/desk/teams/'+T.tid)).j?.data?.team;o.addTeam=E(await api('PUT','/desk/teams/'+T.tid,{name:tg.name,description:tg.description,department_id:tg.department_id,sources:[{kind:'agent',ref_id:OWNER},{kind:'agent',ref_id:AG_A}],color:tg.color,icon:tg.icon}));
+o.before=await snap();
+const r=await api('POST','/desk/agents/'+AG_A+'/reassign',{departments:[{department_id:DD,target:{kind:'unassigned'}}],update_rules:false});o.reassign=r.s+' '+JSON.stringify(r.j?.data||r.j?.error).slice(0,400);
+await sleep(3000);o.after=await snap();o.csStillMember=((await api('GET','/desk/departments/'+CS)).j?.data?.agent_user_ids||[]).includes(AG_A);
+return o;

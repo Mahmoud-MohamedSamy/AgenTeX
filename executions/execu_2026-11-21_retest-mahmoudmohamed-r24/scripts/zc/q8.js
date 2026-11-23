@@ -1,0 +1,1 @@
+module.exports=async(page,z)=>{const o={};for(const d of ['1499272000000006907','1499272000000432293']){const r=await z('GET','/api/v1/sla?departmentId='+d);o[d.slice(-4)]=(r.j?.data||[]).map(x=>x.id+' '+x.name+' '+(x.status||x.isActive));}return o;};

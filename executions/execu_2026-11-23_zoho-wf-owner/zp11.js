@@ -1,0 +1,8 @@
+await page.goto('https://desk.zoho.com/agent/techegysolutions/tech/tickets/list/all-cases', { waitUntil: 'domcontentloaded', timeout: 90000 }); await sleep(12000);
+const api = (m, p, b) => page.evaluate(async ([m, p, b]) => { const csrf = (document.cookie.match(/crmcsr=([^;]+)/) || [])[1]; const r = await fetch(p, { method: m, headers: { 'X-ZCSRF-TOKEN': 'crmcsrfparam=' + csrf, orgId: '946801013', 'Content-Type': 'application/json' }, body: b ? JSON.stringify(b) : undefined, credentials: 'include' }); return { s: r.status, t: await r.text() }; }, [m, p, b]);
+const B = '/supportapi/zd/techegysolutions/api/v1/', D = '1499272000000432293';
+const fu = JSON.parse((await api('POST', B + 'automationFieldUpdates', { name: 'QA ZWF fu t', departmentId: D, module: 'tickets', fields: { classification: 'Problem' } })).t); const FU = fu.id; out.fu = FU;
+const base = { name: 'QA ZWF probe', module: 'tickets', departmentId: D, status: 'INACTIVE', executeOn: { events: ['CREATE'] } }; out.t = {};
+for (const ty of ['FIELDUPDATE', 'FIELD_UPDATES', 'FieldUpdate', 'FIELDUPDATES', 'fieldUpdates', 'UPDATE', 'FIELD', 'FIELD_UPDATE_ACTION', 'AUTOMATION_FIELD_UPDATE', 'FIELD UPDATE']) { const r = await api('POST', B + 'workflows', { ...base, actions: [{ type: ty, id: FU }] }); out.t[ty] = r.s + ' ' + r.t.slice(0, 200); let j = {}; try { j = JSON.parse(r.t); } catch {} if (!/allowed values/.test(r.t)) { out.winner = ty; out.body = r.t.slice(0, 1500); if (j.id) out.wfDel = (await api('DELETE', B + 'workflows/' + j.id)).s; break; } }
+out.fuDel = (await api('DELETE', B + 'automationFieldUpdates/' + FU)).s;
+require('fs').writeFileSync('zp11.json', JSON.stringify(out, null, 1));

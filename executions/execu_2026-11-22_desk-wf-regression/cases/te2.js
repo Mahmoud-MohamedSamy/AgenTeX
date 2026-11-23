@@ -1,0 +1,12 @@
+const mark = v => FU({ qa_ndc_company_name: v });
+const ev = (events, extra) => ({ kind: 'TicketEvent', ticketEvents: { events, ...(extra || {}) } });
+const rid = n => (fs.readFileSync(RUN + '/ledger.md', 'utf8').split('\n').filter(l => l.includes(`rule "QA WF ${n}"`)).pop() || '').split(' ').pop();
+const R = { any: rid('TEany'), pub: rid('TEpub'), priv: rid('TEpriv') };
+const ta = await mkTicket('TEany', {}, 'c'), tp = await mkTicket('TEpub', {}, 'c'), tq = await mkTicket('TEpriv', {}, 'c');
+await sleep(10000);
+const s = [];
+s.push((await comment(ta.id, false)).s); await sleep(6000); s.push((await comment(ta.id, true)).s);
+s.push((await comment(tp.id, false)).s); await sleep(15000); const pubAfterPriv = await fired(tp.id, R.pub); s.push((await comment(tp.id, true)).s);
+s.push((await comment(tq.id, true)).s); await sleep(15000); const privAfterPub = await fired(tq.id, R.priv); s.push((await comment(tq.id, false)).s);
+await sleep(30000);
+return { posts: s, any_2comments: await fired(ta.id, R.any), publicOnly: { afterPrivate: pubAfterPriv, afterPublic: await fired(tp.id, R.pub) }, privateOnly: { afterPublic: privAfterPub, afterPrivate: await fired(tq.id, R.priv) } };

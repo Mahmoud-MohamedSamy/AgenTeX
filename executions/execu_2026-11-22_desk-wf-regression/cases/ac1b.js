@@ -1,0 +1,20 @@
+const t1 = 'd3139b2c-1702-4b51-8ff9-c143a1e7f0f0', t2 = 'd1ac990b-9e83-491c-b00c-ca6c5ed6c349', t4 = '3c5539d0-0dd8-43c5-9638-428114547752';
+const TASKS = 'd120a6c2-2596-4254-968b-a1bcd3a000bf', CM = '43004ce2-577f-4eda-b00a-0750fe40c3d4';
+const tagC = '7397b50e-30dd-4ebb-9abf-7e9468a7cc82', tagD = 'ba388a87-99b7-491e-ab91-2bba95ccd60a';
+const out = {};
+const rules = arr((await api('GET', '/workflow/rules?moduleId=' + T + '&take=200')).j.data);
+const r1 = rules.find(r => r.name === 'QA WF AC1');
+const ex1 = arr((await api('GET', '/workflow/executions?ruleId=' + r1.id)).j.data).find(e => e.recordId === t1);
+out.dispatch = (ex1.dispatches || []).filter(d => ['Webhook', 'RunCustomAction', 'Task'].includes(d.actionType)).map(d => ({ t: d.actionType, st: d.status, att: d.attempts, http: d.responseStatus, err: String(d.lastError || '').slice(0, 200), target: d.target, body: String(d.responseBodyTruncated || '').slice(0, 200) }));
+const tr = await api('GET', `/modules/${TASKS}/records?take=50`); out.taskList = tr.s + ' n=' + arr(tr.j?.data).length;
+const tasks = arr(tr.j?.data).map(r => { const o = { id: r.id }; for (const x of (r.data || [])) o[x.field] = dec(x.value); return o; }).filter(o => JSON.stringify(o).includes('QA WF task'));
+out.task = tasks.map(o => JSON.stringify(o).slice(0, 500));
+const cm = await api('GET', `/desk/tickets/${t1}/comments`); out.comment = JSON.stringify(arr(cm.j?.data)[0] || cm.t).slice(0, 400);
+const fo = await api('GET', `/desk/tickets/${t1}/followers`); out.followers = fo.s + ' ' + fo.t.slice(0, 300);
+out.history = arr((await api('GET', `/desk/tickets/${t1}/history`)).j?.data).map(x => JSON.stringify({ a: x.action, f: x.field_key, actor: x.actor, src: x.source, sum: x.summary }).slice(0, 300));
+const lay = await api('GET', `/modules/${T}/layouts`); out.layouts = arr(lay.j?.data).map(l => l.name + ' active=' + (l.isActive ?? l.is_active ?? l.status)).join(' | ');
+// contact created by CreateRecord
+const c = arr((await api('GET', `/modules/${CM}/records?take=30`)).j?.data).map(r => { const o = { id: r.id }; for (const x of (r.data || [])) o[x.field] = dec(x.value); return o; }).filter(o => String(o.name || o.last_name || '').includes('QA WF created contact'));
+out.createdContact = c.map(o => o.id + ' ' + o.name + ' ' + o.email);
+fs.writeFileSync(RUN + '/out/ac1b.json', JSON.stringify(out, null, 1));
+return out;

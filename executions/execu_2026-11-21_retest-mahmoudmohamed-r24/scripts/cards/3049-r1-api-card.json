@@ -1,0 +1,51 @@
+{
+ "out": "3049-r1-api-card.png",
+ "title": "NDC-3049 · Omnichannel (salesiq) custom profile delete · /iam/profiles, /iam/users/invite · NDC-Staging owner · 19 Nov 2026",
+ "rows": [
+  [
+   "1 Create profile",
+   "POST /iam/profiles {name:\"QA RT22 3049 cancel2\", parent Associate}  (and \"deluser2\")",
+   "201 profile_id returned (x2)",
+   "ok"
+  ],
+  [
+   "2 Invite a user with it",
+   "POST /iam/users/invite {email: qa.rt22.3049.*@example.com, profile_id}",
+   "200 invitation pending (x2)",
+   "info"
+  ],
+  [
+   "3 Delete while invitation pending",
+   "DELETE /iam/profiles/{id}",
+   "409 PROFILE_INVITED \"Resolve the pending invitations…\" — correct, one is pending",
+   "ok"
+  ],
+  [
+   "4a Resolve: cancel the invitation",
+   "POST /iam/users/invitations/{id}/cancel",
+   "gateway 504 after ~10 s, but it took effect (see 5)",
+   "info"
+  ],
+  [
+   "4b Resolve: delete the invited user",
+   "DELETE /iam/users/{id}",
+   "gateway 504 after ~10 s, but it took effect (see 5)",
+   "info"
+  ],
+  [
+   "5 Delete the profile again",
+   "DELETE /iam/profiles/{id}  then GET /iam/profiles?take=500",
+   "no 409 any more; both profiles gone from the list (49 profiles, no QA RT22 3049)",
+   "ok"
+  ],
+  [
+   "6 Control: profile never invited",
+   "POST then DELETE /iam/profiles/{id}",
+   "also 504 after 10.3 s and also gone: the 504 is general IAM slowness on staging tonight, not this fix",
+   "info"
+  ]
+ ],
+ "host": "staging-omnichannel.taviportal.com",
+ "who": "owner account",
+ "date": "19 Nov 2026"
+}

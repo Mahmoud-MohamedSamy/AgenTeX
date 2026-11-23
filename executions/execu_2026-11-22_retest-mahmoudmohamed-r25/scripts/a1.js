@@ -1,0 +1,1 @@
+for (const p of ['/desk/channels/inbound-health','/desk/channels/inbound-health?department_id=7e1ac409-58b0-41ab-97e1-0e7d5c8c5158','/desk/channels/sending-overview','/desk/channels/addresses']) { const r = await api('GET', p); log(p, r.s, r.t.slice(0,600)); }

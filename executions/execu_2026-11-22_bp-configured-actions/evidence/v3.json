@@ -1,0 +1,278 @@
+{
+ "id": "2b8bf287-ff67-45cf-b63d-31a5cb67899c",
+ "blueprintId": "82eee361-e3c5-41a3-9a40-7432e58ac3b3",
+ "version": 3,
+ "definition": {
+  "id": "82eee361-e3c5-41a3-9a40-7432e58ac3b3",
+  "name": "Tickets from Mail",
+  "states": [
+   {
+    "id": "Open",
+    "name": "Open",
+    "position": {
+     "x": 140,
+     "y": 80
+    },
+    "slaClock": "business",
+    "isTerminal": false,
+    "onReplyTransitionId": "t_mw0od5ak_3",
+    "onRatingTransitionId": "t_mw0od5ak_3"
+   },
+   {
+    "id": "On Hold",
+    "name": "On Hold",
+    "position": {
+     "x": 418,
+     "y": 80
+    },
+    "slaClock": "calendar",
+    "isTerminal": false,
+    "slaMinutes": 3,
+    "slaEscalation": [
+     {
+      "body": "Escalation Notification Body",
+      "kind": "sendNotification",
+      "title": "Escalation Notification Title",
+      "notifyOwner": true
+     }
+    ],
+    "autoTransitionId": "t_mw0od3no_1",
+    "onReplyTransitionId": "t_mw0od5ak_3",
+    "slaPreExpiryMinutes": 1,
+    "onRatingTransitionId": "t_mw0od5ak_3",
+    "slaPreExpiryEscalation": [
+     {
+      "body": "Escalation Warning Notification Body",
+      "kind": "sendNotification",
+      "title": "Escalation Warning Notification Title",
+      "notifyOwner": true
+     }
+    ],
+    "autoTransitionAfterMinutes": 3
+   },
+   {
+    "id": "Escalated",
+    "name": "Escalated",
+    "position": {
+     "x": 773,
+     "y": 80
+    },
+    "slaClock": "business",
+    "isTerminal": false,
+    "onReplyTransitionId": "t_mw0od5ak_3",
+    "onRatingTransitionId": "t_mw0od5ak_3"
+   },
+   {
+    "id": "Closed",
+    "name": "Closed",
+    "position": {
+     "x": 140,
+     "y": 220
+    },
+    "slaClock": "business",
+    "isTerminal": true
+   },
+   {
+    "id": "Reopened",
+    "name": "Reopened",
+    "position": {
+     "x": 144.54832272471262,
+     "y": -58.28730490820821
+    },
+    "slaClock": "business",
+    "isTerminal": false
+   }
+  ],
+  "layoutId": "",
+  "moduleKey": "desk_tickets",
+  "continuous": false,
+  "layoutName": "",
+  "strictMode": null,
+  "description": "",
+  "targetField": "status",
+  "transitions": [
+   {
+    "id": "t_mw0od33o_0",
+    "name": "Move to On Hold",
+    "after": {
+     "actions": [
+      {
+       "kind": "setField",
+       "field": "description",
+       "value": "Open to On Hold"
+      },
+      {
+       "body": "Open to On Hold Notification Body",
+       "kind": "sendNotification",
+       "title": "Open to On Hold Notification Title",
+       "notifyOwner": true
+      },
+      {
+       "kind": "createTask",
+       "fields": {
+        "status": "In Progress",
+        "subject": "Open to On Hold Task",
+        "category": "email",
+        "due_date": "2026-11-04T14:44",
+        "priority": "low"
+       },
+       "targetModuleKey": "desk_tasks"
+      },
+      {
+       "kind": "deskEmail",
+       "owner": true,
+       "contact": true,
+       "teamIds": [],
+       "userIds": [],
+       "templateId": "fc07bc74-f076-41e7-9a3b-b4d1871ffa02",
+       "roleTreeIds": []
+      }
+     ]
+    },
+    "color": "#2563eb",
+    "before": {
+     "allowOwner": true,
+     "visibilityCriteria": {
+      "op": "eq",
+      "field": "language",
+      "value": "english"
+     }
+    },
+    "during": {
+     "messages": [
+      {
+       "id": "msg-mw0ohj8j-1",
+       "text": "test message"
+      }
+     ],
+     "checklist": [
+      {
+       "id": "check-mw0ohf7f-0",
+       "label": "checklist",
+       "mandatory": true
+      }
+     ],
+     "deskItems": [
+      {
+       "kind": "reply",
+       "mandatory": true
+      },
+      {
+       "kind": "comment",
+       "mandatory": true
+      },
+      {
+       "kind": "attachment",
+       "mandatory": true
+      },
+      {
+       "kind": "resolution",
+       "mandatory": true
+      },
+      {
+       "kind": "approval",
+       "mandatory": true,
+       "approverUserIds": [
+        "d23fb4e0-248d-41f6-af60-d28885a7007e"
+       ]
+      }
+     ],
+     "itemOrder": [
+      "field:status",
+      "checklist",
+      "message:msg-mw0ohj8j-1",
+      "desk:reply",
+      "desk:comment",
+      "desk:attachment",
+      "desk:resolution",
+      "desk:approval"
+     ],
+     "requiredFields": [
+      {
+       "name": "status",
+       "datatype": {
+        "key": "status"
+       },
+       "required": true
+      }
+     ],
+     "instructionalMessage": null
+    },
+    "toStateId": "On Hold",
+    "fromStateId": "Open"
+   },
+   {
+    "id": "t_mw0od3no_1",
+    "name": "Escalate Ticket",
+    "after": {
+     "actions": []
+    },
+    "color": "#2563eb",
+    "before": {
+     "allowOwner": true,
+     "visibilityCriteria": {
+      "op": "eq",
+      "field": "channel",
+      "value": "phone"
+     }
+    },
+    "during": {},
+    "toStateId": "Escalated",
+    "fromStateId": "On Hold"
+   },
+   {
+    "id": "t_mw0od3ys_2",
+    "name": "Close Ticket",
+    "after": {
+     "actions": []
+    },
+    "color": "#2563eb",
+    "before": {
+     "visibilityCriteria": {
+      "op": "eq",
+      "field": "channel",
+      "value": "chat"
+     }
+    },
+    "during": {},
+    "isCommon": true,
+    "toStateId": "Closed",
+    "fromStateId": "Open"
+   },
+   {
+    "id": "t_mw0od5ak_3",
+    "name": "Reopen Ticket",
+    "after": {
+     "actions": []
+    },
+    "color": "#2563eb",
+    "before": {
+     "visibilityCriteria": {
+      "op": "eq",
+      "field": "channel",
+      "value": "web"
+     }
+    },
+    "during": {},
+    "isCommon": true,
+    "toStateId": "Reopened",
+    "fromStateId": "On Hold"
+   }
+  ],
+  "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "dynamicOwners": false,
+  "entryCriteria": {
+   "op": "eq",
+   "field": "channel",
+   "value": "email"
+  },
+  "transitionOwners": null
+ },
+ "includesDefinition": true,
+ "isPublished": false,
+ "publishedAt": null,
+ "publishedBy": null,
+ "createdAt": "2026-11-15T09:06:16.870218+00:00",
+ "createdBy": "97be04b6-0a08-4883-aa51-e1650b11cab7",
+ "revision": null
+}

@@ -1,0 +1,16 @@
+const F = () => page.frames().find(f => /ShowHomePage/.test(f.url()));
+const until = async (re, sec = 60) => { for (let k = 0; k < sec; k++) { const f = F(); if (f && re.test(await body(f))) return true; await sleep(1000); } return false; };
+const notNow = async () => { const nn = page.getByText('Not Now', { exact: true }); if (await nn.count()) await nn.first().click().catch(() => {}); };
+await page.goto('https://desk.zoho.com/agent/techegysolutions/tech/setup', { waitUntil: 'domcontentloaded', timeout: 90000 });
+const wf = page.getByText('Workflows', { exact: true }); await wf.first().waitFor({ timeout: 120000 }); await sleep(3000); await notNow();
+await wf.first().click(); out.list = await until(/Create Rule|Workflow Rules/);
+const box = await page.getByText('Rules', { exact: true }).first().boundingBox(); await page.mouse.click(181, box.y + box.height / 2);
+out.form = await until(/Basic Information/); await sleep(2000);
+await page.mouse.click(497, 325); await page.keyboard.type('QA tmp owner check'); await sleep(800);
+await page.mouse.click(324, 842); out.s2 = await until(/Execute on/); await sleep(2000);
+await page.mouse.click(333, 168); await sleep(1000); await page.mouse.click(324, 842); out.s3 = await until(/3 Criteria/); await sleep(2000);
+await page.mouse.click(324, 842); out.s4 = await until(/All Actions/); await sleep(3000); await notNow(); await sleep(1000);
+const plus = F().locator('text=All Actions'); out.plusVisible = await plus.count();
+await page.mouse.click(1297, 526); out.menu = await until(/Assign Ticket/, 20); await shot('8-action-menu');
+await F().getByText('Assign Ticket', { exact: true }).first().click(); await sleep(5000); await notNow(); await shot('9-assign-ticket');
+out.assign = (await body(F())).replace(/^.*?4 Actions/, '4 Actions').slice(0, 1200);

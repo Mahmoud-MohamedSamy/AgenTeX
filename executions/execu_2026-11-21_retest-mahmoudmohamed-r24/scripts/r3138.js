@@ -1,0 +1,2 @@
+const TK='88e8ea44-1658-4df3-9930-d0902b91073d';const r=await api('GET','/modules/'+TK+'/records?page_size=10&search='+encodeURIComponent('QA RT24 3138'));
+const val=x=>!x?undefined:x.kind==='array'?(x.items||[]).map(val):x.value;log('desk',r.s,arr(r.j?.data||r.j).map(x=>{const d=Object.fromEntries((x.data||[]).map(f=>[f.field,val(f.value)]));return x.id+' #'+d.ticket_number+' '+d.subject+' ch='+d.channel}));

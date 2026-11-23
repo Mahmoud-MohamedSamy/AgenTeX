@@ -1,0 +1,1 @@
+const rb=arr((await api('GET','/audit/recycle-bin/items?app_key=crm&app_key=workflow&limit=200')).j?.data?.items);return {crmBin:rb.filter(x=>/QA RT26/.test(x.record_label||'')).map(x=>x.id+' '+x.record_label)};

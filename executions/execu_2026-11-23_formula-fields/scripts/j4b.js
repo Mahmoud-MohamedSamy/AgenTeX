@@ -1,0 +1,2 @@
+const us = L((await api('GET', '/iam/users?limit=200')).j?.data).filter(u => /samy/i.test(JSON.stringify(u))); log(us.map(u => ({ id: u.userId, name: u.displayName || u.fullName || u.firstName, profiles: u.profileNames, profileIds: u.profileIds || u.profiles })));
+const ps = L((await api('GET', '/iam/profiles')).j?.data).filter(p => p.appKey === 'crm'); log(ps.map(p => p.profileId + ' ' + p.name));

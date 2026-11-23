@@ -1,0 +1,11 @@
+const LG = fs.readFileSync(RUN + '/ledger.md', 'utf8').split('\n');
+const id = n => (LG.filter(l => l.includes(`"QA WF ${n} ticket"`)).pop() || '').split(' ').pop();
+const rid = n => (LG.filter(l => l.includes(`rule "QA WF ${n}"`)).pop() || '').split(' ').pop();
+const t = id('TEany'), r = rid('TEany');
+const c = await comment(t, false, 'QA WF probe comment');
+await sleep(25000);
+const cm = arr((await api('GET', `/desk/tickets/${t}/comments`)).j?.data).map(x => (x.is_public ? 'pub ' : 'priv ') + x.body_html + ' by ' + x.author_user_id.slice(0, 8));
+const exr = (await execs(t, r)).map(e => outcome(e) + ' ' + e.triggerKind);
+const all = arr((await api('GET', '/workflow/executions?take=60')).j.data).filter(e => e.recordId === t).map(e => e.ruleId.slice(0, 8) + ' ' + e.triggerKind + ' ' + e.outcome);
+const rule = arr((await api('GET', '/workflow/rules?moduleId=' + T + '&take=300')).j.data).find(x => x.id === r);
+return { post: c.s + ' ' + (errOf(c) || ''), comments: cm, execsForRule: exr, anyRuleOnTicket: all, trigger: rule && rule.trigger.ticketEvents };

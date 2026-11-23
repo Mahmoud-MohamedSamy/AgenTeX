@@ -1,0 +1,45 @@
+{
+ "out": "3138-api-card.png",
+ "host": "staging-crm / staging-desk.taviportal.com (public web-form API, signed out)",
+ "who": "website visitor + owner for setup",
+ "date": "21 Nov 2026",
+ "title": "NDC-3138 · Forms with no website listed (\"Allow hosted link / iframe\" on) vs a form that lists 127.0.0.1:5500",
+ "rows": [
+  [
+   "1 CRM \"QA RT24 3138 crm empty\"",
+   "POST /session from 127.0.0.1:5500, example.com, localhost:5500",
+   "200 · 200 · 200 (CORS allows each origin)",
+   "ok"
+  ],
+  [
+   "2 Desk \"QA RT24 3138 desk empty\"",
+   "POST /session from the same 3 origins",
+   "200 · 200 · 200",
+   "ok"
+  ],
+  [
+   "3 Empty submit (CRM / Desk)",
+   "POST /submissions {} from each origin",
+   "422 \"Full Name is required.\" / \"Last Name, Email, Subject is required.\" — not 404",
+   "ok"
+  ],
+  [
+   "4 Form that lists 127.0.0.1:5500",
+   "POST /session from 127.0.0.1 / example.com / localhost",
+   "200 / 404 / 404 — the website list still applies",
+   "ok"
+  ],
+  [
+   "5 Save: no website and share link off",
+   "POST /web-forms",
+   "422 \"List the websites this form is on, or turn the share link on…\"",
+   "ok"
+  ],
+  [
+   "6 Records from the browser test",
+   "lead + Desk ticket",
+   "Lead \"QA RT24 3138 crm\" · Desk ticket #5980 (channel web)",
+   "ok"
+  ]
+ ]
+}

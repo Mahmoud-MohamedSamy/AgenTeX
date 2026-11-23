@@ -1,0 +1,3 @@
+const RE=/QA RT(1[89]|2[0-3])/;const out=[];const mods=arr((await api('GET','/modules?app_key='+process.env.APP)).j?.data);
+for(const m of mods)for(const k of ['list','kanban','split']){const r=await api('GET','/modules/'+m.id+'/views?kind='+k);const d=r.j?.data;const L=Array.isArray(d)?d:(d?.views||[]);for(const v of L)if(RE.test(v.name||''))out.push([m.apiName,m.id,v.id,v.name,k,v.visibility||v.scope||'',v.ownerId||v.owner_id||v.created_by||'']);}
+const u=[...new Map(out.map(x=>[x[2],x])).values()];fs.writeFileSync('../out/inv-views-'+process.env.APP+'.json',JSON.stringify(u,null,1));return u.map(x=>x[0]+' '+x[3]+' ('+x[4]+')');

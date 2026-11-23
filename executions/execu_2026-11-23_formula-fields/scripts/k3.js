@@ -1,0 +1,1 @@
+const M = made.mod; for (const q of ['group_by=qa_pick&aggregate_field=fx_e7', 'group_by=qa_pick&aggregate=sum&field=fx_e7', `group_by=qa_pick&view_id=${made.kanban}`]) { const c = await api('GET', `/modules/${M}/records/board-summary?${q}`); log(q, E(c).slice(0, 200), JSON.stringify(c.j?.data).slice(0, 500)); }

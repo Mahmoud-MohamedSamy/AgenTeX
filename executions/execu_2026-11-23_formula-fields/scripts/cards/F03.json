@@ -1,0 +1,45 @@
+{
+ "out": "F03-card.png",
+ "title": "A field used by a formula can be deleted; the formula then gives wrong values and cannot be saved",
+ "host": "staging-crm / staging-desk.taviportal.com",
+ "who": "owner",
+ "date": "23 Nov 2026",
+ "rows": [
+  [
+   "Setup",
+   "qa_k4 (number) + fx_k4 = \"qa_k4 + 1\"\nrecord { qa_k4: 5 }",
+   "fx_k4 = 6 ✓",
+   "ok"
+  ],
+  [
+   "Usage check",
+   "GET /fields/{qa_k4}/usage",
+   "200 · workflow_rules [], custom_views [], layout_rules [], validation_rules [] … no \"formulas\" entry",
+   "bad"
+  ],
+  [
+   "Delete the input",
+   "DELETE /fields/{qa_k4}",
+   "204 — no warning, no block",
+   "bad"
+  ],
+  [
+   "New record after delete",
+   "POST record { name }",
+   "201 · fx_k4 = 1   (blank + 1, silently wrong)",
+   "bad"
+  ],
+  [
+   "Save the formula again",
+   "PUT /fields/{fx_k4} (label change only)",
+   "422 DATATYPE_FORMULA_FIELD_UNKNOWN \"references 'qa_k4', which is not a field on this module\"",
+   "bad"
+  ],
+  [
+   "Desk",
+   "Same steps on QA FX Desk",
+   "Same: 204, then fx_k4 = 1, then 422",
+   "bad"
+  ]
+ ]
+}

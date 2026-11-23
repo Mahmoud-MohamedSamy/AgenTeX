@@ -1,0 +1,14 @@
+const V=JSON.parse(fs.readFileSync(RUN+'/scripts/k/vo.json','utf8'));const o={};const id=V.t1,id2=V.t2;
+const D=async id=>{const t=(await api('GET','/desk/tickets/'+id)).j?.data||{};return {status:t.status,priority:t.priority,due:t.due_date,phone:t.phone,access:t.access||t.viewer_access};};
+o.read=E(await api('GET','/desk/tickets/'+id));o.before=await D(id);o.before2=await D(id2);
+o.patchDeskPriority=E(await api('PATCH','/desk/tickets/'+id,{priority:'High'}));
+o.patchDeskStatus=E(await api('PATCH','/desk/tickets/'+id,{status:'On Hold'}));
+o.patchRecPhone=E(await api('PATCH','/modules/'+TK+'/records/'+id,{data:fields({phone:'0100000026'})}));
+o.patchRecClosedDue=E(await api('PATCH','/modules/'+TK+'/records/'+id2,{data:fields({due_date:'2026-11-30'})}));
+o.patchRecResolution=E(await api('PATCH','/modules/'+TK+'/records/'+id,{data:fields({resolution:'QA RT26 3059 resolution'})}));
+o.reply=E(await api('POST','/desk/tickets/'+id+'/replies',{mode:'reply',to:['qa-rt26@example.com'],subject:'Re: QA RT26',body_html:'<p>QA RT26 3059 reply</p>'}));
+o.draft=E(await api('POST','/desk/tickets/'+id+'/drafts',{mode:'reply',to:['qa-rt26@example.com'],body_html:'<p>QA RT26 3059 draft</p>'}));
+o.close=E(await api('POST','/desk/tickets/'+id+'/close',{}));
+o.publicComment=E(await api('POST','/desk/tickets/'+id+'/comments',{body_html:'<p>QA RT26 3059 public comment</p>',is_public:true}));
+o.privateComment=E(await api('POST','/desk/tickets/'+id+'/comments',{body_html:'<p>QA RT26 3059 private comment</p>',is_public:false}));
+o.after=await D(id);o.after2=await D(id2);return o;

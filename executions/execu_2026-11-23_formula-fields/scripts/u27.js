@@ -1,0 +1,3 @@
+await page.goto(H + `/modules/${made.mod}`, { waitUntil: 'domcontentloaded' }); for (let i = 0; i < 25; i++) { await sleep(2000); if (/QA FX/.test(await text('main'))) break; }
+for (const q of ['High value', 'Standard', 'qafx h12']) { await page.keyboard.press('Control+K'); await sleep(1200); await page.keyboard.insertText(q); let t = ''; for (let i = 0; i < 12; i++) { await sleep(1500); t = (await page.locator('[role=dialog]').allInnerTexts()).join(' | ').replace(/\n+/g, ' | '); if (!/Searching…/.test(t)) break; }
+  log(JSON.stringify(q), '→', t.slice(0, 220)); if (q === 'High value') await shot('I4-global-search'); await page.keyboard.press('Escape'); await sleep(600); }

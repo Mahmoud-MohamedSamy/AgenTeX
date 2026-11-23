@@ -1,0 +1,8 @@
+const M = made.mod; const mk = async (n, v) => { const r = await api('POST', `/modules/${M}/records`, { layout_id: made.layouts[0], data: data({ name: n, ...v }) }); made.recs.push(r.j.data.id); keep(); return r.j.data.id; };
+const out = { blank: await mk('QA FX B11 blank', {}), ar: await mk('QA FX M2 عميل', { qa_text: 'أحمد', qa_text2: 'Ali', qa_num: 3 }), clone: await mk('QA FX H10 source', { qa_num: 9 }) };
+const f = await api('POST', `/modules/${M}/fields`, { fields: [fdef('fx_m2', 'QA FX M2', 'formula', { expression: 'concat(qa_text, " - ", "عميل", " - ", qa_text2)', return_kind: 'string' })] }); if (f.s < 300) { made.fx.push('fx_m2'); keep(); }
+await api('PATCH', `/modules/${M}/records/${out.ar}`, { data: data({ qa_num: 3 }) });
+const lay = (await api('GET', `/modules/${M}/layouts/${made.layouts[0]}`)).j.data; const fx = L((await api('GET', `/modules/${M}/fields`)).j?.data).find(x => x.fieldName === 'fx_m2');
+const views = JSON.parse(JSON.stringify(lay.views)); for (const v of ['CREATE', 'DETAIL']) { const s = views[v].layout.sections.find(s => s.label.en === 'QA FX Checks'); s.columns[1].fields.push({ id: fx.id, fieldName: 'fx_m2', apiName: 'fx_m2', labels: fx.labels, datatypeKey: 'formula', fieldOrder: 0, config: { required: false, unique: false, ...fx.datatypeOptions } }); }
+log('layout', E(await api('PUT', `/modules/${M}/layouts/${made.layouts[0]}`, { name: lay.name, views, assignedProfiles: lay.assignedProfiles, status: lay.status, accessMode: lay.accessMode, rowVersion: lay.rowVersion, description: lay.description })));
+log('M2 value', (await getRec(M, out.ar)).fx_m2); fs.writeFileSync(RUN + '/out/ui-ids.json', JSON.stringify(out));

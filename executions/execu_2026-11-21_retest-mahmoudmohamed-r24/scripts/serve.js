@@ -1,0 +1,2 @@
+const http=require('http'),fs=require('fs'),path=require('path');const D='C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/80892755-c224-4832-ad5c-37bc74a2be02/scratchpad/site';
+http.createServer((q,r)=>{const f=path.join(D,decodeURIComponent(q.url.split('?')[0]).replace(/\.\./g,''));fs.readFile(f,(e,b)=>{if(e){r.writeHead(404);return r.end('nf')}r.writeHead(200,{'content-type':'text/html; charset=utf-8'});r.end(b)})}).listen(5500,'127.0.0.1',()=>console.log('up 5500'));

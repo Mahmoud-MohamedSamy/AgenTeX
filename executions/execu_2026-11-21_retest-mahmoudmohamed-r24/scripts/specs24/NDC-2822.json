@@ -1,0 +1,212 @@
+{
+ "out": "NDC-2822-retest-PASS.png",
+ "ticket": "NDC-2822",
+ "priority": "medium",
+ "label": "RETEST PASS",
+ "verdict": "PASS",
+ "title": "Web Forms | Form fields need their own validation, in the Front-End and in the Back-End",
+ "env": "NDC-Staging · signed-out Edge on http://127.0.0.1:5500 (local test site) + public API · CRM form \"QA RT24 2822 A\" (Leads) · owner for setup",
+ "date": "21 Nov 2026",
+ "panels": [
+  {
+   "img": "2822-A24-r24-55-send.png",
+   "w": 1280,
+   "h": 1300,
+   "crop": [
+    0,
+    0,
+    620,
+    440
+   ],
+   "caption": "Front-End: 5.5 refused on blur and on Send; focus on Number 2; nothing sent",
+   "boxes": [
+    {
+     "b": [
+      22,
+      196,
+      594,
+      266
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      22,
+      360,
+      516,
+      408
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "2822-A24-r24-4-send.png",
+   "w": 1280,
+   "h": 1300,
+   "crop": [
+    0,
+    0,
+    620,
+    440
+   ],
+   "caption": "Front-End: Number 2 = 4 → sent (200), thank-you message",
+   "boxes": [
+    {
+     "b": [
+      8,
+      80,
+      608,
+      280
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "img": "2822-A24-file-html.png",
+   "w": 1280,
+   "h": 1300,
+   "crop": [
+    0,
+    0,
+    620,
+    440
+   ],
+   "caption": "Front-End: x.html refused with a message under Attach files",
+   "boxes": [
+    {
+     "b": [
+      22,
+      330,
+      422,
+      350
+     ],
+     "n": 4
+    }
+   ]
+  },
+  {
+   "img": "2822-A24-file-six.png",
+   "w": 1280,
+   "h": 1300,
+   "crop": [
+    0,
+    0,
+    620,
+    640
+   ],
+   "caption": "Front-End: 6 files chosen → 5 kept + limit message",
+   "boxes": [
+    {
+     "b": [
+      22,
+      330,
+      594,
+      545
+     ],
+     "n": 5
+    }
+   ]
+  },
+  {
+   "img": "2822-api-card.png",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    560
+   ],
+   "w": 1600,
+   "h": 900,
+   "caption": "Back-End: the same rules on direct API calls"
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Number field (whole number) = 5.5 in the browser",
+   "Refused with a message, Send blocked (old fail: accepted)",
+   "\"Number 2 must be a whole number.\"; no POST; focus Number 2",
+   "PASS"
+  ],
+  [
+   2,
+   "Send with an invalid field",
+   "Blocked, focus to the first invalid field, values kept",
+   "Blocked; Full Name + 5.5 kept",
+   "PASS"
+  ],
+  [
+   3,
+   "Valid value 4",
+   "Accepted",
+   "200, thank-you; lead created",
+   "PASS"
+  ],
+  [
+   4,
+   "File of the wrong type (browser + API)",
+   "Refused",
+   "\"x.html cannot be attached\" / 422 FILE_TYPE_REFUSED",
+   "PASS"
+  ],
+  [
+   5,
+   "More than 5 files (browser + API)",
+   "Refused",
+   "5 kept + message / 6th 422 ATTACHMENT_LIMIT",
+   "PASS"
+  ],
+  [
+   "A1",
+   "Number 2 = 5.5 and \"5.5\" sent to the API",
+   "422 per field, no record",
+   "422 FIELD_DECIMALS, no lead",
+   "PASS"
+  ],
+  [
+   "A3",
+   "\"4.0\" sent to the API",
+   "Saved as 4",
+   "lead number_2 = 4",
+   "PASS"
+  ],
+  [
+   "A4",
+   "Visitor sends a hidden field",
+   "Refused one defined way, never saved",
+   "422 FIELD_UNKNOWN; leads keep default 2.5",
+   "PASS"
+  ],
+  [
+   "A6",
+   "25 MB file",
+   "Refused",
+   "422 FILE_TOO_LARGE (20 MB)",
+   "PASS"
+  ],
+  [
+   "A8",
+   "Hidden default that breaks the rule",
+   "Form save refused",
+   "5.5 and 500 → 422 DEFAULT_INVALID; 4 → saved",
+   "PASS"
+  ],
+  [
+   "—",
+   "Rules checked on 19 Nov (length, email, phone, dates, Arabic, Desk)",
+   "—",
+   "Not repeated; passed on 19 Nov",
+   "INFO"
+  ],
+  [
+   "—",
+   "Number field outside web forms (record page, import, API)",
+   "—",
+   "Can still hold decimals (dev note, out of scope)",
+   "INFO"
+  ]
+ ]
+}

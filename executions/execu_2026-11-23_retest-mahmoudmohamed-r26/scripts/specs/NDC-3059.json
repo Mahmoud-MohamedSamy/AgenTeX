@@ -1,0 +1,15 @@
+{"out":"NDC-3059-retest-PASS.png","ticket":"NDC-3059","priority":"high","label":"RETEST PASS","verdict":"PASS",
+"title":"Departments | An agent with \"View only\" access to a department can still edit that department's tickets",
+"env":"NDC-Staging · staging-desk · Edge + API · agent CES2 (Desk Administrator profile) View only in \"QA RT26 VO Dept\" · #7132 (Open), #7133 (Closed)","date":"23 Nov 2026",
+"panels":[
+ {"img":"3059-api-card.png","full":true,"caption":"API as the View-only agent: every write is refused; a private comment is allowed","crop":[20,20,1560,390],"boxes":[{"b":[36,99,1564,157],"n":1,"kind":"PASS"},{"b":[36,167,1564,225],"n":2,"kind":"PASS"},{"b":[36,235,1564,293],"n":3,"kind":"PASS"}]},
+ {"img":"3059-open.png","caption":"#7132 as CES2: read-only banner; no Reply All, no Edit, no Close; Status / Owner / Due Date are not editable","crop":[364,60,1236,520],"boxes":[{"b":[680,147,1584,195],"n":4,"kind":"PASS"},{"b":[1390,78,1552,116],"n":5,"kind":"PASS"},{"b":[388,404,640,530],"n":4,"kind":"PASS"}]},
+ {"img":"3059-closed.png","caption":"#7133 (Closed) as CES2: same read-only view","crop":[364,60,1236,520],"boxes":[{"b":[680,147,1584,195],"n":4,"kind":"PASS"}]}
+],
+"rows":[
+ [1,"Edit fields (open and Closed ticket)","Refused","403 PERMISSION_DENIED; values unchanged","PASS"],
+ [2,"Reply / Close (server)","Refused","403 \"You can view this ticket but not change it.\"","PASS"],
+ [3,"Comments","Private comment allowed; nothing else","Private 201; public 403","PASS"],
+ [4,"Edit, Close, Status, Resolution, Attachment controls","Hidden or disabled","Read-only banner; no Edit / Close; Status, Owner, Due Date, Tags not clickable; Resolution and Attachment have nothing to edit","PASS"],
+ [5,"Reply control (still failing on 19 Nov)","Hidden or disabled","Reply All is gone; only the comment button (Private only) and Actions remain","PASS"]
+]}

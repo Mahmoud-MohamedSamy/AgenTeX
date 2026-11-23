@@ -1,0 +1,2 @@
+module.exports=async(page,z)=>{const o=[];for(const D of ['1499272000000006907','1499272000000432293']){for(let f=0;f<4;f++){const r=await z('GET','/api/v1/templates?departmentId='+D+'&limit=50&from='+(f*50));const L=Array.isArray(r.j)?r.j:(r.j?.data||[]);for(const t of L)o.push(D.slice(-4)+' | '+t.folder?.folderName+' | '+t.templateName+' | '+t.subject+' | '+t.templateId);if(L.length<50)break;}}
+return o.join('\n').replace(/[\w.+-]+@[\w.-]+/g,'<email>');};

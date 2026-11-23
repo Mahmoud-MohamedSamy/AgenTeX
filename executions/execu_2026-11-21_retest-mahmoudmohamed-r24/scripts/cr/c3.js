@@ -1,0 +1,4 @@
+eval(fs.readFileSync('cr/lib.js','utf8'));const o={ex:{}};const c1=JSON.parse(fs.readFileSync(OUTD+'c1.json','utf8'));
+for(const [k,l] of Object.entries(c1.leads)){const ex=arr((await api('GET',`/workflow/executions?recordId=${l.id}`)).j?.data).filter(e=>e.ruleId===l.rule);o.ex[k]=ex.map(e=>({id:e.id,out:e.outcome,d:(e.dispatches||[]).map(d=>({type:d.actionType,st:d.status,err:d.lastError,target:d.target}))}));}
+const L=arr((await api('GET','/modules/a9d87b62-b704-4c2e-b2d5-1b745d7c2065/records?take=40&sort=-created_at')).j?.data);o.tasks=[];for(const c of L){if((c.created_at||c.createdAt||'')<c1.start)continue;const x={};for(const f of c.data||[])x[f.field]=val(f.value);o.tasks.push({id:c.id,subject:x.subject,related_to:x.related_to,created:c.created_at||c.createdAt});}
+save('c3',o);return o;

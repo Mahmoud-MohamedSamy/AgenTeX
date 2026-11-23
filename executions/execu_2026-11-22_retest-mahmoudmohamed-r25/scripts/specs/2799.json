@@ -1,0 +1,15 @@
+{"out":"NDC-2799-retest-FAIL.png","ticket":"NDC-2799","title":"Blueprint: Zoho Desk features still missing after NDC-2754 — item 10 reply filter","verdict":"FAIL","date":"22 Nov 2026","env":"staging-desk.taviportal.com · NDC-Staging · Edge + API + real Gmail replies · ndc-staging-owner",
+"panels":[
+{"img":"2799-r25-6252-CPRIV-history.png","caption":"#6252, state set to Private thread answers: a customer reply took the ticket On Hold → Open","crop":[664,60,936,670],"boxes":[{"b":[676,135,1345,205],"n":1},{"b":[700,555,1000,640],"n":2},{"b":[700,660,1000,712],"n":3}]},
+{"img":"2799-r25-6255-FPRIV.png","caption":"#6255, Private thread answers: the Gmail answer to the private Forward joined the ticket and ran the transition","crop":[664,60,936,470],"boxes":[{"b":[676,420,1590,500],"n":4},{"b":[676,135,1345,205],"n":5}]},
+{"img":"2799-r25-api-card.png","caption":"All 7 Gmail replies (API)","full":true,"crop":[0,0,1600,580],"boxes":[{"b":[36,99,1564,157],"n":6},{"b":[36,439,1564,497],"n":7}]}
+],
+"rows":[
+[1,"Private thread answers + customer reply (#6252)","Nothing runs, ticket stays On Hold (dev note 22 Nov)","Blueprint step now Open, no transition run","FAIL"],
+[2,"Status after the customer reply","On Hold","On Hold → Open at 11:17 (system), 18 s after the mail","FAIL"],
+[3,"Customer reply reaches the ticket","Email on #6252","Email received on #6252 (HeaderChain)","PASS"],
+[4,"Private Forward answered from Gmail (#6255)","Answer on same ticket as private thread","Private thread on #6255, no new ticket","PASS"],
+[5,"Private thread answers → transition","QA back runs → Escalated","Escalated 09:18:00Z","PASS"],
+[6,"Customer replies / Both / default","Customer: Customer + Both run; private: Private + Both run","#6253, #6254, #6257 → Escalated; #6256, #6258 stay On Hold","PASS"],
+[7,"No new tickets from answers","0 new tickets","0 (21 Nov: 4 new tickets)","PASS"]
+]}

@@ -1,0 +1,2 @@
+await page.goto(H+'/settings',{waitUntil:'commit'});await page.getByText('Departments',{exact:true}).first().waitFor({timeout:120000});await page.getByText('Departments',{exact:true}).first().click();await sleep(7000);
+await shot('3123-r1-z-list.png',{timeout:90000});const t=(await page.locator('main').first().innerText()).replace(/\s+/g,' ');return {url:page.url().replace(H,''),has:t.includes('QA RT20 B2'),t:t.slice(0,700)};

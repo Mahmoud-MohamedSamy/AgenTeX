@@ -1,0 +1,28 @@
+// Reruns: U7 owner changed (via Desk assign), O7 department changed (via move), R2 account related field; remove auto-tag noise first.
+const TU1 = '876ce871-2b02-4854-89a7-68050391c62b', DEV2 = '5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4', AM = '784400e1-4a2a-42c2-b4f3-7ca56e79828a';
+const mark = FU({ qa_ndc_company_name: 'WFHIT' });
+const out = {};
+for (const id of ['a41004d3-79e9-42bb-acd5-ad7fb363389b', '0fc9d573-2de6-4fc1-8400-ab8cb5092b2d']) out['deltag ' + id.slice(0, 8)] = (await api('DELETE', '/desk/tags/' + id)).s;
+ledger('deleted tags QA WF tagA/tagB (auto-tag noise)');
+const acc = await api('POST', `/modules/${AM}/records`, { data: [{ field: 'name', value: enc('QA WF Account') }, { field: 'account_name', value: enc('QA WF Account') }, { field: 'country', value: enc('Egypt') }] });
+const accId = acc.j && acc.j.data && acc.j.data.id; if (accId) ledger('account "QA WF Account" ' + accId); out.acc = acc.s + ' ' + (errOf(acc) || '');
+const rU = await mkRule('COU7b', { kind: 'RecordUpdated' }, [mark], { criteria: changed('owner') });
+const rFC = await mkRule('COU7fc', { kind: 'SpecificFieldChanged', fieldName: 'owner', fieldNames: ['owner'], fieldMatch: 'any', alsoOnCreate: false }, [mark]);
+const rO = await mkRule('COO7b', { kind: 'RecordUpdated' }, [mark], { criteria: changed('department') });
+const rE = await mkRule('COO7e', { kind: 'RecordUpdated' }, [mark]);
+const rR = accId ? await mkRule('COR2b', { kind: 'RecordCreated' }, [mark], { criteria: cmp('account_id.country', 'Equal', S('Egypt')) }) : { id: null };
+const tU = await mkTicket('COU7b', { department: DEPT2, owner: TU1 }); const tF = await mkTicket('COU7fc', { department: DEPT2, owner: TU1 });
+const tO = await mkTicket('COO7b', { department: DEPT2 }); const tE = await mkTicket('COO7e', { department: DEPT2 });
+const tRm = rR.id ? await mkTicket('COR2b', { department: DEPT2, account_id: accId }, 'M') : {}; const tRn = rR.id ? await mkTicket('COR2b', { department: DEPT2 }, 'N') : {};
+await sleep(15000);
+const base = { u: await fired(tU.id, rU.id), f: await fired(tF.id, rFC.id), o: await fired(tO.id, rO.id), e: await fired(tE.id, rE.id) };
+const a1 = await api('POST', `/desk/tickets/${tU.id}/assign`, { owner_id: DEV2 }); const a2 = await api('POST', `/desk/tickets/${tF.id}/assign`, { owner_id: DEV2 });
+const m1 = await api('POST', `/desk/tickets/${tO.id}/move`, { department_id: DEPT }); const m2 = await api('POST', `/desk/tickets/${tE.id}/move`, { department_id: DEPT });
+await sleep(35000);
+out.base = base;
+out.U7 = { assign: a1.s + ' ' + (errOf(a1) || ''), ownerNow: (await getTicket(tU.id)).owner === DEV2, changedOwnerFired: await fired(tU.id, rU.id) };
+out.U7fc = { assign: a2.s, fieldChangedOwnerFired: await fired(tF.id, rFC.id) };
+out.O7 = { move: m1.s + ' ' + (errOf(m1) || ''), deptNow: (await getTicket(tO.id)).department === DEPT, changedDeptFired: await fired(tO.id, rO.id) };
+out.moveAnyEdit = { move: m2.s, onEditFired: await fired(tE.id, rE.id) };
+if (rR.id) out.R2 = { M: await fired(tRm.id, rR.id), N: await fired(tRn.id, rR.id) };
+return out;

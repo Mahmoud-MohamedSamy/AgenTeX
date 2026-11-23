@@ -1,0 +1,7 @@
+{"out":"3062-api-card.png","title":"NDC-3062 — server checks for the layout-rule mandatory checkbox (layout \"Test Layout Rules\", rule: Category = technical → Checkbox Mandatory by Technical required)","host":"staging-desk.taviportal.com","who":"owner account","date":"23 Nov 2026",
+"rows":[
+["Create, checkbox false","POST /modules/{tickets}/records layout_id=Test Layout Rules, category technical, checkbox_mandatory_by_layout_rules=false","201 — ticket saved with the box unticked","bad"],
+["Create, checkbox missing","POST … category technical, no checkbox value","201 — saved","bad"],
+["Edit, untick","PATCH /modules/{tickets}/records/{id} checkbox true → false","200 — false saved","bad"],
+["Edit, category → technical","PATCH … category general → technical, no checkbox","200 — saved","bad"],
+["Control","POST … category technical, checkbox=true","201 (expected)","ok"]]}

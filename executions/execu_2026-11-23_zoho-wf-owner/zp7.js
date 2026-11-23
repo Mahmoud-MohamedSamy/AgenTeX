@@ -1,0 +1,6 @@
+await page.goto('https://desk.zoho.com/agent/techegysolutions/tech/tickets/list/all-cases', { waitUntil: 'domcontentloaded', timeout: 90000 }); await sleep(12000);
+const api = (m, p, b) => page.evaluate(async ([m, p, b]) => { const csrf = (document.cookie.match(/crmcsr=([^;]+)/) || [])[1]; const r = await fetch(p, { method: m, headers: { 'X-ZCSRF-TOKEN': 'crmcsrfparam=' + csrf, orgId: '946801013', 'Content-Type': 'application/json' }, body: b ? JSON.stringify(b) : undefined, credentials: 'include' }); return { s: r.status, t: await r.text() }; }, [m, p, b]);
+const B = '/supportapi/zd/techegysolutions/api/v1/', D = '1499272000000432293';
+const base = { name: 'QA ZWF probe', module: 'tickets', departmentId: D }; out.v = {};
+for (const [k, b] of [['statusEnum', { ...base, status: 'x', executeOn: {} }], ['execEmpty', { ...base, status: 'ACTIVE', executeOn: {} }], ['execEvents', { ...base, status: 'ACTIVE', executeOn: { events: ['create'] } }], ['execType', { ...base, status: 'ACTIVE', executeOn: { type: 'create' } }]]) { const r = await api('POST', B + 'workflows', b); out.v[k] = r.s + ' ' + r.t.slice(0, 600); let j = {}; try { j = JSON.parse(r.t); } catch {} if (j.id) { out.v[k + ' deleted'] = (await api('DELETE', B + 'workflows/' + j.id)).s; } }
+require('fs').writeFileSync('zp7.json', JSON.stringify(out, null, 1));

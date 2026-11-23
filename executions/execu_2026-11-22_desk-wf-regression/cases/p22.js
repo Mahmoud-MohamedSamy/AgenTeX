@@ -1,0 +1,2 @@
+const q = async p => { const r = await api('GET', p); return { n: arr(r.j?.data).length, meta: JSON.stringify(r.j?.meta).slice(0, 200) }; };
+return { take300: await q('/workflow/rules?moduleId=' + T + '&take=300'), skip0: await q('/workflow/rules?moduleId=' + T + '&take=100&skip=0'), skip100: await q('/workflow/rules?moduleId=' + T + '&take=100&skip=100'), skip200: await q('/workflow/rules?moduleId=' + T + '&take=100&skip=200'), page2: await q('/workflow/rules?moduleId=' + T + '&page=2&page_size=100'), noTake: await q('/workflow/rules?moduleId=' + T) };

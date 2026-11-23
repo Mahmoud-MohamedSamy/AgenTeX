@@ -1,0 +1,18 @@
+const a = await api('GET', `/agents/${AGENT}`);
+const def = a.j?.data?.draft_definition;
+const w1 = await api('PATCH', `/agents/${AGENT}`, { description: 'QA TIA hack by ADM' });
+const w2 = await api('PUT', `/agents/${AGENT}`, { name: 'Tia', draft_definition: { ...(def||{}), description: 'QA TIA hack by ADM' } });
+const w3 = await api('POST', `/agents/${AGENT}/deploy`, {});
+const pol = await api('GET', '/ai/policy');
+const w4 = await api('PUT', '/ai/policy', { version: pol.j?.data?.version, descriptor: pol.j?.data?.descriptor });
+const after = (await api('GET', `/agents/${AGENT}`)).j?.data;
+const changed = after && after.draft_definition?.description !== 'Helps your team find answers, run reports and get things done across your apps.';
+result('A-09', [w1.s, w2.s, w3.s].every(s => s === 403 || s === 404 || s === 405) && !changed ? 'Pass' : 'Fail', `ADM GET agent ${a.s}; PATCH ${w1.s} ${w1.j?.error?.code||''}; PUT ${w2.s} ${w2.j?.error?.code||''}; deploy ${w3.s} ${w3.j?.error?.code||''}; description changed=${changed}`);
+result('A-11', (w4.s === 403) ? 'Pass' : (w4.s >= 400 ? 'Pass' : 'Fail'), `ADM GET policy ${pol.s}; PUT policy ${w4.s} ${w4.j?.error?.code||''} ${w4.j?.error?.message||''}`);
+const OWNCHAT = 'e282805d-d90c-521b-80d7-be855a48480d';
+const c1 = await api('GET', `/agents/tia/conversations/${OWNCHAT}/messages`);
+const c2 = await api('PATCH', `/agents/tia/conversations/${OWNCHAT}`, { title: 'QA TIA hijack' });
+const c3 = await api('DELETE', `/agents/tia/conversations/${OWNCHAT}x`);
+const rnd = await api('GET', `/agents/tia/conversations/00000000-0000-0000-0000-000000000000/messages`);
+result('A-17', [c1.s, c2.s].every(s => s === 404 || s === 403) ? 'Pass' : 'Fail', `ADM on OWN chat: messages ${c1.s}, rename ${c2.s} (delete not tried on the real id); random id ${rnd.s}`);
+return { agentGet: a.s, w: [w1.s, w2.s, w3.s, w4.s], errs: [w1.j?.error, w2.j?.error, w3.j?.error, w4.j?.error], c: [c1.s, c2.s, c3.s, rnd.s] };

@@ -1,0 +1,11 @@
+{"out":"NDC-3062-retest-PARTIAL.png","ticket":"NDC-3062","priority":"medium","label":"RETEST PARTIAL","verdict":"PARTIAL",
+"title":"Layout Rules | A checkbox made mandatory by a layout rule can be saved unticked after it is ticked and unticked",
+"env":"NDC-Staging · staging-desk · Edge + API · owner · Create Ticket, layout \"Test Layout Rules\", Category Technical · rule \"Test Layout Rules\"","date":"19 Nov 2026",
+"panels":[
+ {"img":"3062-r1-c-after-save.png","caption":"Form: after tick → untick the message stays and Save does not create the ticket","crop":[418,100,1030,460],"boxes":[{"b":[948,505,1210,550],"n":1,"kind":"PASS"},{"b":[1390,108,1444,142],"n":1,"kind":"PASS"}]},
+ {"img":"3062-r1-api-card.png","caption":"Server: the same ticket with the checkbox unticked or missing is still created","crop":[20,20,1560,310],"boxes":[{"b":[36,167,1564,272],"n":2,"kind":"FAIL"},{"b":[36,282,1564,319],"n":2,"kind":"INFO"}]}
+],
+"rows":[
+ [1,"Form: tick then untick, Save","\"This field is required\" stays; Save blocked","Message stays under the unticked box; Save keeps the form open, no ticket created","PASS"],
+ [2,"Server refuses an unticked mandatory checkbox","422","POST with checkbox false → 201; checkbox missing → 201 (layout_id Test Layout Rules, category technical)","FAIL"]
+]}

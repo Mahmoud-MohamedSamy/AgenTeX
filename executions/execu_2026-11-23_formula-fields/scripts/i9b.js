@@ -1,0 +1,1 @@
+const r = await api('GET', '/mail/templates'); const t = L(r.j?.data); log('templates', r.s, t.length); const body = JSON.stringify(t).match(/(\$\{[^}]{1,40}\}|\{\{[^}]{1,40}\}\}|\[[A-Za-z_. ]{3,40}\])/g); log('tokens seen', [...new Set(body || [])].slice(0, 15));

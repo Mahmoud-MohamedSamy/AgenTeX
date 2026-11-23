@@ -1,0 +1,1 @@
+const DD='6d68dc90-7ecf-4829-bf51-9beb87282b87';const b=JSON.parse(fs.readFileSync(RUN+'/out/dd-before.json','utf8'));const r=await api('PATCH','/desk/departments/'+DD,b);LED('3059: '+b.name+' members restored ('+r.s+')');return r.s;

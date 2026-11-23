@@ -1,0 +1,2 @@
+const M = made.mod; const recs = []; for (let p = 1; p <= 5; p++) { const r = await api('GET', `/modules/${M}/records?limit=100&page=${p}`); const d = L(r.j?.data); recs.push(...d.map(x => flat(x.data))); if (!r.j?.meta?.more_records) break; }
+const by = {}; for (const v of recs) { const k = v.fx_d1 ?? '(null)'; by[k] = (by[k] || 0) + (v.fx_e7 || 0); } log('records', recs.length, JSON.stringify(by));

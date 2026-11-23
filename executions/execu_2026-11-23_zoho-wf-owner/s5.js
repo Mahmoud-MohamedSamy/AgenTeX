@@ -1,0 +1,13 @@
+const F = () => page.frames().find(f => /ShowHomePage/.test(f.url()));
+const until = async (re, sec = 60) => { for (let k = 0; k < sec; k++) { const f = F(); if (f && re.test(await body(f))) return true; await sleep(1000); } return false; };
+const notNow = async () => { const nn = page.getByText('Not Now', { exact: true }); if (await nn.count()) await nn.first().click().catch(() => {}); };
+const next = async () => { const b = F().locator('button:has-text("Next"), input[value="Next"], span:text-is("Next")').locator('visible=true'); out['nextCount' + Object.keys(out).length] = await b.count(); await b.first().click(); };
+const wf = page.getByText('Workflows', { exact: true }); out.tries = 0; for (let a = 0; a < 3; a++) { out.tries++; await page.goto('https://desk.zoho.com/agent/techegysolutions/tech/setup', { waitUntil: 'domcontentloaded', timeout: 90000 }).catch(() => {}); try { await wf.first().waitFor({ timeout: 70000 }); break; } catch (e) { await shot('load-fail-' + a); } } await sleep(3000); await notNow();
+await wf.first().click(); out.list = await until(/Create Rule|Workflow Rules/);
+const box = await page.getByText('Rules', { exact: true }).first().boundingBox(); await page.mouse.click(181, box.y + box.height / 2);
+out.form = await until(/Basic Information/); await sleep(2000);
+await page.mouse.click(497, 325); await page.keyboard.type('QA tmp owner check'); await sleep(800);
+await next(); out.s2 = await until(/Execute on/); await sleep(2500);
+await F().getByText('Create', { exact: true }).first().click(); await sleep(1000); await shot('5b-create-ticked');
+await next(); out.s3 = await until(/3 Criteria/); await sleep(2500); await shot('6b-criteria');
+await next(); out.s4 = await until(/All Actions/); await sleep(3000); await notNow(); await shot('7b-actions');

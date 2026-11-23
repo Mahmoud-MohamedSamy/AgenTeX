@@ -1,0 +1,30 @@
+# NDC-2974 Layout Rules | Mass update of the primary field skips rule-mandatory fields [Done]
+Summary
+Mass update of the primary field skips rule-mandatory fields. Both records are saved as Refund with order empty (200).
+Environment
+- NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2; the same setup on Desk Tickets. Test data was deleted after the run.
+Steps to reproduce
+- Set up a rule: type = Refund makes "order" mandatory.
+- In the list, select 2 records and mass-update type to Refund, leaving order empty.
+Expected result
+Zoho blocks mass update of a field that is the primary field of a layout rule.
+Actual result
+- Both records are saved as Refund with order empty (200).
+- The single-record API refuses the same change (422).
+Notes
+- Test cases G7, Z6 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- CRM and Desk share the same rule engine, so this applies to both apps.
+
+== COMMENTS
+--- 2026-11-16T10:10:18.596285+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Mass Update field list → "QA RT18 type" disabled: "Drives a layout rule — edit these records one at a time" [PASS]
+- Another rule primary field in the list → "QA RT18 filter" (primary of rule QA RT18 filter) disabled too [PASS]
+- POST records/mass-update type = Refund (order empty) → 422 LAYOUT_RULE_PRIMARY_FIELD "QA RT18 type cannot be mass updated: it is the primary field of the layout rule 'QA RT18 basic'" [PASS]
+- Records after the call → Both still Question, order empty [PASS]
+- Mass update of a normal field (control) → qa_rt18_note → 200, saved [INFO]
+Evidence: NDC-2974-retest-PASS.png (attached)

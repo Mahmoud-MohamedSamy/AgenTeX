@@ -1,0 +1,30 @@
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-23_tia-assistant';
+const RES = RUN + '/out/results.jsonl';
+const stamp = () => new Date().toISOString().slice(0, 19);
+const result = (id, verdict, note, extra) => { fs.appendFileSync(RES, JSON.stringify({ id, verdict, note, at: stamp(), ...(extra || {}) }) + '\n'); log(id, verdict, note); };
+const ledger = line => fs.appendFileSync(RUN + '/ledger.md', `- ${stamp()} ${line}\n`);
+const CRMIDS = JSON.parse(fs.readFileSync(RUN + '/out/p07-crm-ids.json', 'utf8')).ids;
+const DESK = JSON.parse(fs.readFileSync(RUN + '/out/p07-desk-ids.json', 'utf8'));
+const AGENT = '014e511f-cbc5-5fd8-b939-f58a84beef15';
+const ask = async (message, extra) => { const r = await stream('/agents/tia/turn/stream', { turn_id: (globalThis.crypto?.randomUUID?.() || ('qa-' + Date.now())), message, ...(extra || {}) }, 120000); if (r.final?.conversation_id) fs.appendFileSync(RUN + '/out/convs.txt', (process.env.WHO || '?') + ' ' + r.final.conversation_id + '\n'); return r; };
+const short = r => ({ s: r.status, err: r.error || r.j?.error?.code, ms: r.totalMs, first: r.firstMs, text: (r.text || r.final?.text || '').slice(0, 600), actions: (r.final?.pending_actions || []).map(a => ({ id: a.id, kind: a.kind, title: a.title || a.summary })), refs: (r.final?.refs || []).length, cards: (r.final?.cards || []).length });
+const getAgent = async () => (await api('GET', `/agents/${AGENT}`)).j?.data;
+const BASEDEF = JSON.parse(fs.readFileSync(RUN + '/out/baseline-run-desk.json', 'utf8'))['/agents/014e511f-cbc5-5fd8-b939-f58a84beef15'].body.data;
+const saveDraft = async (mut, o = {}) => { const a = await getAgent(); const def = JSON.parse(JSON.stringify(a.draft_definition)); const nd = mut(def) || def;
+  const body = { name: o.name || a.name, definition: nd, ...(o.description !== undefined ? { description: o.description } : {}), ...(o.noExpected ? {} : { expected_updated_at: o.expected ?? a.updated_at }) };
+  const r = await api('PUT', `/agents/${AGENT}/draft`, body); return { s: r.s, err: r.j?.error, data: r.j?.data }; };
+const deploy = async () => { const r = await api('POST', `/agents/${AGENT}/deploy`, {}); return { s: r.s, err: r.j?.error, v: r.j?.data?.deployed_version_no ?? r.j?.data?.version_no }; };
+const getPol = async () => (await api('GET', '/ai/policy')).j?.data;
+const setPol = async (mut, o = {}) => { const p = await getPol(); const d = JSON.parse(JSON.stringify(p.descriptor)); mut(d); const r = await api('PUT', '/ai/policy', { expected_version: o.version ?? p.version, descriptor: d }); return { s: r.s, err: r.j?.error, v: r.j?.data?.version }; };
+const Q = [
+ ['I-01', 'How many leads whose name starts with QA TIA have lead source web?'],
+ ['I-02', 'List the deals whose name starts with QA TIA, with their amounts and stages.'],
+ ['I-09', 'In one answer: how many leads, how many contacts and how many deals have names starting with QA TIA?'],
+ ['I-24', 'Show my QA TIA deal.'],
+ ['I-04', 'How is my pipeline this month? Give totals by stage.'],
+ ['I-05', 'What should I follow up on today?'],
+];
+const out = {};
+for (const [id, q] of Q) { const r = await ask(q); out[id] = { q, ...short(r) }; }
+fs.writeFileSync(RUN + '/out/i-crm2.json', JSON.stringify(out, null, 1));
+return Object.fromEntries(Object.entries(out).map(([k, v]) => [k, (v.err ? '[' + v.err + '] ' : '') + v.text.slice(0, 420) + (v.refs ? ` (refs ${v.refs})` : '')]));

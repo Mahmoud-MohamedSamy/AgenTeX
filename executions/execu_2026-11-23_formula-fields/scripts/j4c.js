@@ -1,0 +1,5 @@
+const M = made.mod; const P = L((await api('GET', '/iam/profiles')).j?.data).find(p => p.appKey === 'crm' && p.name === 'User'); log('User profile', P?.profileId);
+const fl = L((await api('GET', `/modules/${M}/fields`)).j?.data); const F = fl.find(f => f.fieldName === 'qa_fx_ui_double'), N = fl.find(f => f.fieldName === 'qa_num');
+const a = await api('POST', `/modules/${M}/field-permissions`, { fieldId: F.id, profileId: P.profileId, permission: 'hidden' }); const b = await api('POST', `/modules/${M}/field-permissions`, { fieldId: N.id, profileId: P.profileId, permission: 'hidden' });
+log('hide formula', E(a), 'hide qa_num', E(b)); made.perms = [a.j?.data?.id, b.j?.data?.id].filter(Boolean); keep(); led('CRM field permissions (User profile hidden) ' + made.perms.join(','));
+const r = await api('POST', `/modules/${M}/records`, { layout_id: made.layouts[0], data: data({ name: 'QA FX J4', qa_num: 9 }) }); if (r.j?.data?.id) { made.recs.push(r.j.data.id); keep(); fs.writeFileSync(RUN + '/out/j4-id.txt', r.j.data.id); } log('owner record', flat(r.j?.data?.data).qa_fx_ui_double);

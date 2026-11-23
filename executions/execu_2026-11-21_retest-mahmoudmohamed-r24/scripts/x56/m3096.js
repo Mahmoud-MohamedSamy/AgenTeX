@@ -1,0 +1,1 @@
+const T=JSON.parse(fs.readFileSync(RUN+'/out/3096.json','utf8'));const r=await api('POST','/desk/tickets/'+T.id+'/move',{department_id:'ef8dc91f-1d30-491d-a1fc-9b62b96eca94'});LED('3096: #'+T.n+' moved to Sales');return r.s;

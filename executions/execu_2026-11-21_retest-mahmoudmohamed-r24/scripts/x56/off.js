@@ -1,0 +1,2 @@
+const BP = '23339d62-fecf-4324-8950-5fa1bfdef0df'; const g = await getBp(BP); if (!g.isActive) return 'already off';
+const r = await api('PUT', `/modules/${TK}/blueprints/${BP}`, { definition: g.definition, isActive: false, revision: g.revision }); const a = (await getBp(BP)).isActive; LED('blueprint switched OFF ' + BP + ' "QA RT20 BS 3056 flow": ' + E(r) + ' active=' + a); return { r: E(r), active: a };

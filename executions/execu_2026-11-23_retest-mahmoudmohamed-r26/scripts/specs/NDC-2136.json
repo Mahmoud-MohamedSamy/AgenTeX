@@ -1,0 +1,110 @@
+{
+ "out": "NDC-2136-retest-FAIL.png",
+ "ticket": "NDC-2136",
+ "priority": "low",
+ "label": "RETEST FAIL",
+ "verdict": "FAIL",
+ "title": "Custom Views | List first page p95 far above 1.5 s (Leads 9.1 s, Deals 3.3 s)",
+ "env": "NDC-Staging · staging-crm · Edge (Chromium) headless · owner · list mode, navigation → first row · Leads 10 loads, Transactions 2 × 20 loads",
+ "date": "23 Nov 2026",
+ "panels": [
+  {
+   "img": "2136-perf-card.png",
+   "full": true,
+   "caption": "Much faster than 19 Nov, but p95 still above 1.5 s on both lists",
+   "crop": [
+    20,
+    20,
+    1560,
+    350
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      136
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      146,
+      1564,
+      204
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      214,
+      1564,
+      251
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      36,
+      308,
+      1564,
+      345
+     ],
+     "n": 3,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "img": "crm-p3-leads-list.png",
+   "caption": "The measured screen: All Leads in list mode (first page)",
+   "crop": [
+    260,
+    60,
+    1340,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      647,
+      322,
+      885,
+      535
+     ],
+     "kind": "MASK",
+     "label": "emails hidden"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "All Leads first page, p95",
+   "≤ 1.5 s",
+   "9.2 s (median 4.3 s) — was 31.3 s on 19 Nov",
+   "FAIL"
+  ],
+  [
+   2,
+   "All Transactions first page, p95",
+   "≤ 1.5 s",
+   "3.2 s / 5.3 s in two runs (median 2.3 / 3.1 s) — was 19.1 s",
+   "FAIL"
+  ],
+  [
+   3,
+   "Staging speed",
+   "—",
+   "Unauthenticated API answers took 2.8–4.9 s on CRM today; part of the time is the environment",
+   "INFO"
+  ]
+ ]
+}

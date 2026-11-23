@@ -1,0 +1,1 @@
+const us = L((await api('GET', '/iam/users?limit=300')).j?.data).filter(u => /customer experience/i.test(JSON.stringify(u))); log(us.map(u => ({ name: u.displayName || u.fullName || u.firstName, profiles: u.profileNames, status: u.status })));

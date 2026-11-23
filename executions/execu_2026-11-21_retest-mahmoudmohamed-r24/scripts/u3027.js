@@ -1,0 +1,2 @@
+await page.goto(H+'/settings',{waitUntil:'commit'});await page.getByText('Audit Log',{exact:true}).first().waitFor({timeout:120000});await page.getByText('Audit Log',{exact:true}).first().click();await sleep(8000);
+await shot('3027-r1-a-audit-log.png',{timeout:90000});const t=(await page.locator('main').first().innerText()).replace(/\s+/g,' ');const k=t.indexOf('3027 deleted');return t.slice(Math.max(0,k-300),k+500);

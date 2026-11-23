@@ -1,0 +1,46 @@
+# NDC-2996 Layout Rules: features Zoho CRM and Zoho Desk have that TAVI is missing [Bug]
+Summary
+We compared TAVI's Layout Rules (CRM and Desk) with Zoho CRM and Zoho Desk layout rules. This ticket lists what Zoho has and TAVI does not have yet. The feature is NDC-1988 (Desk Phase 3 "Layout rules, validation rules, nested picklists"); none of the items below is listed there as a later phase or a non-goal. The 19 bugs found in the same run are filed separately (NDC-2974 to NDC-2992).
+Already done in TAVI
+- Rules per layout with a primary field, several conditions per rule, and AND/OR sub-conditions.
+- CRM actions: show fields, show sections, mandatory, read-only (with profile exceptions), filter options, set value, suggest value, show message, show related lists, buttons and links, and verify fields.
+- Desk actions: show fields, show sections and mandatory, limited to departments, with an "Apply to Help Center" switch.
+- Rules run on the create and edit forms, on clone and on the Desk web form; import, workflow field updates and lead conversion skip them, the same as Zoho.
+- Rule list with search and filters (layout, status, department on Desk), on/off switch, rule order, and the check "one active rule per primary field".
+- Writes need the admin permission (403 for CRM User and Desk Agent); another tenant cannot read or change the rules.
+- TAVI also has a full API for rules, drag-to-reorder, one Desk rule for several departments, messages in English and Arabic, field-usage warnings and a "Rule not applied" flag, which Zoho does not have.
+Missing — primary field
+- CRM primary field can be any field type except owner, multi-select, lookups, auto number, formula, file and multi-line. Today TAVI CRM allows only pick list, radio, checkbox, status and user fields (checked live in Zoho with Designation, Annual Revenue and Email). NDC-1988.
+- Desk primary field can also be a text, number, date or email field. Today TAVI Desk allows only pick list, checkbox, status, user, department and team. NDC-1988.
+Missing — where rules run
+- Move a record to another layout from the edit page (Layout dropdown), with the new layout's rules applied. Today the edit page has no layout picker and PATCH with layout_id is ignored.
+- Blueprint transition form shows the fields a layout rule makes mandatory. Today the transition ignores them (bug NDC-2977).
+- Suggest-value and verify-field pop-ups are remembered once a user acts on them. Today TAVI shows them again to every user after someone pressed Ignore.
+Missing — permissions
+- A profile permission that lets a non-admin manage layout rules (Zoho: Customize / Manage Layouts and Fields). Today metadata.modules.manage still gives 403; only metadata.acl.manage (global Admin) works.
+Environment
+NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account. Zoho CRM and Zoho Desk test orgs.
+
+== COMMENTS
+--- 2026-11-16T10:13:56.823430+02:00
+Retest PARTIAL — 15 Nov 2026 → moved to Bug
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Blueprint transition shows rule-mandatory fields → QA RT18 order* in the form, Execute blocked while empty (NDC-2977) [PASS]
+- Z9 (comment): Help Center form must include the primary field → Not checked this round (needs a Desk Help Center form fixture) [INFO]
+Still failing:
+- CRM primary field: text, number, email, phone …: expected Any type except owner, multi-select, lookups, auto number, formula, file, multi-line; actual 422 "cannot be the primary field of a layout rule" for text, number, email, phone, Company
+- Desk primary field: text, number, date, email: expected Allowed; actual 422 for Email, Due Date, Phone, Description
+- Move a record to another layout: expected Layout picker on Edit; new layout's rules apply; actual No picker; PATCH layout_id 200 but created_with_layout_id unchanged
+- Suggest-value pop-up remembered after Ignore: expected Not shown again; actual Shown again on reopen (owner)
+- Profile permission for a non-admin to manage rules: expected A Customize / Manage layouts permission; actual No such key among 354 permissions; runtime check with a CRM User not run (no User-profile account in this lane)
+Evidence: NDC-2996-retest-PARTIAL.png, NDC-2996-retest-PARTIAL-vs-zoho.png (attached)
+
+--- 2026-11-12T23:46:37.359717+02:00
+Update: Help Center cases now checked (12 November 2026)
+The Help Center access mode was set to "open" for the test and set back to "sign in to submit" right after. A test Help Center form for Customer Support was built on a QA layout and then deleted.
+- Works: a rule with "Apply to Help Center" on shows and hides fields on the Help Center form and makes fields required there. A rule with the switch off has no effect on the Help Center.
+- New missing item (Z9): the Help Center form does not need to include the rule's primary field. A form without it saves with no warning, and the rule silently does nothing there. Zoho Desk requires the primary field to be visible in the Help Center when "Apply to Help Center" is on.
+- A full customer submit could not be finished because of the captcha. The form blocked the submit on the missing required field before that.
+This replaces the Help Center line under "Could not be checked".

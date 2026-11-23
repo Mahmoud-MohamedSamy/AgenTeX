@@ -1,0 +1,13 @@
+{"out":"NDC-2837-retest-FAIL.png","ticket":"NDC-2837","title":"Email | Setup says \"Mail is arriving\" even when customer mail does not reach Desk","verdict":"FAIL","date":"22 Nov 2026","env":"staging-desk.taviportal.com · NDC-Staging · Edge + API · ndc-staging-owner",
+"panels":[
+{"img":"2837-overview.png","caption":"Setup › Channels › Email › Overview, reloaded 08:47 UTC (7 min after a customer mail arrived)","crop":[440,180,990,480],"boxes":[{"b":[460,208,1010,258],"n":1},{"b":[1330,440,1410,464],"n":2}]},
+{"img":"2837-ticket-6235.png","caption":"Ticket #6235: customer reply threaded onto the ticket","crop":[664,270,936,440],"boxes":[{"b":[676,412,1590,495],"n":3}]},
+{"img":"2837-api-card.png","caption":"API: inbound status endpoint and the 9 Nov reply","full":true,"crop":[0,0,1600,400],"boxes":[{"b":[36,99,1564,204],"n":4},{"b":[36,282,1564,387],"n":5}]}
+],
+"rows":[
+[1,"Overview warns or confirms from real inbound data","Status from actual mail (dev: \"Mail is arriving\" / red when mail waits)","\"We could not check — the check itself failed\" every load","FAIL"],
+[2,"Page shows when the last email was received","\"Last email received <time>\"","Not shown anywhere (after a mail arrived at 08:40 UTC)","FAIL"],
+[3,"Customer reply reaches Desk (ticket steps 2–4)","Reply on the ticket","Reply on #6235 within ~5 min, no new ticket","PASS"],
+[4,"Inbound status endpoint","200 with last-received + waiting count","GET /desk/channels/inbound-health → 404 (page + 6 calls, 08:15–08:47 UTC)","FAIL"],
+[5,"9 Nov reply saved on its ticket (dev claim)","Reply on #1 \"Check-in\"","Became NEW ticket #5992 (match None), not on #1","FAIL"]
+]}

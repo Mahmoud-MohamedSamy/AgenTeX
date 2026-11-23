@@ -1,0 +1,315 @@
+{
+ "meta": {
+  "project": "NDC",
+  "projectId": "efce4d84-5876-4015-b472-2efca7ad73f3",
+  "state": "Bug",
+  "stateId": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+  "cycle": "Sprint 17",
+  "cycleId": "8347595f-5728-4093-bb08-f451e7faa47b",
+  "modules": {
+   "CRM": "dea98455-e533-4b49-8a48-6fb88f3249a3",
+   "Desk": "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+  },
+  "assignees": [
+   [
+    "Mahmoud Mohamed",
+    "e1364b0b-d3cd-4167-8261-6194577a480a"
+   ],
+   [
+    "Eslam Ahmed",
+    "9529016b-e67d-42b9-815c-263f673b8252"
+   ],
+   [
+    "Ahmed Hegazy",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ]
+  ],
+  "plan": "docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields"
+ },
+ "bugs": [
+  {
+   "id": "F01",
+   "name": "Formula field | Typing in the formula Expression box removes every space, so text in quotes is saved wrong",
+   "priority": "high",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F01-typed-spaces-dropped-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>In the layout builder, the Space key does nothing in a formula field's Expression box. Every space the admin types is lost, also inside quotes. A formula like concat(first_name, &quot; &quot;, last_name) is saved as concat(first_name,&quot;&quot;,last_name), so the result has no space. Pasting text keeps spaces; other text boxes in the app are not affected.</p><h2>Steps to reproduce</h2><ol><li><p>Open Settings › Modules and Fields › any module (e.g. Leads) › Layouts › open a layout.</p></li><li><p>Drag &quot;Formula&quot; from New Fields into a section. The Field Properties panel opens on ADVANCED.</p></li><li><p>Click in the Expression box and type: concat(qa_text, &quot; &quot;, &quot;High value&quot;)</p></li><li><p>Look at the box.</p></li></ol><h2>Expected result</h2><ul><li><p>The text is kept exactly as typed, with its spaces: concat(qa_text, &quot; &quot;, &quot;High value&quot;).</p></li></ul><h2>Actual result</h2><ul><li><p>The box shows concat(qa_text,&quot;&quot;,&quot;Highvalue&quot;). Every space is gone, including the ones inside quotes.</p></li><li><p>Typing a, Space, b gives &quot;ab&quot;.</p></li><li><p>Pasting &quot;x y&quot; keeps the space; typing &quot;a b c&quot; in a record form keeps spaces (control).</p></li><li><p>Same in CRM and Desk.</p></li></ul><h2>Notes</h2><ul><li><p>Formulas without text still work (qa_num*2), which hides the problem; any text joined with spaces or compared with a value containing a space gives a wrong result.</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F01-typed-spaces-dropped-FAIL.png (attached)</p></li><li><p>Test cases: new (found while running M4) — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F02",
+   "name": "Formula field | Formulas are not recalculated when a workflow rule or a blueprint transition changes a field they use",
+   "priority": "high",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F02-automation-no-recalc-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>When automation changes a field that a formula reads, the formula keeps its old value. A workflow field update and a blueprint transition both leave the formula stale. The same change made by a user (form, inline edit), the API, import or mass update does recalculate.</p><h2>Steps to reproduce</h2><ol><li><p>Create a formula field &quot;Double&quot; = qa_num * 2 on a module.</p></li><li><p>Create a workflow rule on that module: when a record is created, Field Update qa_num = 7.</p></li><li><p>Create a record with QA Num = 1 and open it.</p></li><li><p>Blueprint: add a transition that asks for QA Num (CRM) or Priority (Desk Tickets, formula priority = &quot;High&quot;) and run it with 7 / High.</p></li></ol><h2>Expected result</h2><ul><li><p>After the rule: QA Num 7, Double 14.</p></li><li><p>After the transition: the formula shows the new result (14 / true).</p></li></ul><h2>Actual result</h2><ul><li><p>CRM workflow: QA Num 7, Double still 2.</p></li><li><p>CRM blueprint: status Closed, QA Num 7, Double still 2.</p></li><li><p>Desk workflow on QA FX Desk: QA Num 7, Double still 2.</p></li><li><p>Desk Tickets blueprint: status On Hold, Priority High, formula priority = &quot;High&quot; still false.</p></li><li><p>Controls: API edit 4 → 10 gives 15; mass update gives 6 on all three records.</p></li></ul><h2>Notes</h2><ul><li><p>Rechecked after a wait: the values stay wrong until someone saves the record again.</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F02-automation-no-recalc-FAIL.png (attached)</p></li><li><p>Test cases: H8, H9 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F03",
+   "name": "Formula field | A field used in a formula can be deleted without warning; the formula then gives wrong values and cannot be saved",
+   "priority": "high",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F03-delete-used-field-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>Deleting a field that a formula reads is allowed with no warning. The field usage check does not list formulas. After the delete, new records get a silently wrong formula value (the deleted field counts as blank), and the formula field itself can no longer be saved.</p><h2>Steps to reproduce</h2><ol><li><p>Create a number field &quot;QA K4&quot; and a formula &quot;QA FX K4&quot; = qa_k4 + 1.</p></li><li><p>Create a record with QA K4 = 5 (formula shows 6).</p></li><li><p>Open the field QA K4 and check where it is used, then delete it permanently.</p></li><li><p>Create a new record.</p></li><li><p>Open the formula field QA FX K4 and save it (e.g. change its label).</p></li></ol><h2>Expected result</h2><ul><li><p>The usage check lists the formula, and the delete is blocked or warns that QA FX K4 uses this field.</p></li><li><p>If allowed, the formula is clearly marked as broken.</p></li></ul><h2>Actual result</h2><ul><li><p>Usage lists no formulas (workflow rules, views, layout rules, validation rules … all empty).</p></li><li><p>DELETE answers 204 with no warning.</p></li><li><p>New record: QA FX K4 = 1 (blank + 1), no error.</p></li><li><p>Saving the formula field: 422 &quot;Formula for field 'fx_k4' references 'qa_k4', which is not a field on this module.&quot;</p></li><li><p>Same on Desk.</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F03-delete-used-field-FAIL.png (attached)</p></li><li><p>Test cases: K4 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F04",
+   "name": "Formula field | Existing records keep the old result after the expression is changed, and stay empty when a formula is added",
+   "priority": "medium",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F04-existing-records-not-updated-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>Formulas are only worked out when a record is saved. Changing a formula's expression does not update records that already exist, and a new formula field stays empty on all existing records, until each record is saved again.</p><h2>Steps to reproduce</h2><ol><li><p>Create a formula &quot;Double&quot; = qa_num * 2 and a record with QA Num = 4 (Double 8).</p></li><li><p>Change the expression to qa_num * 3 and save the layout.</p></li><li><p>Open the record again after a minute.</p></li><li><p>Add a new formula &quot;Times5&quot; = qa_num * 5 and open the same record.</p></li></ol><h2>Expected result</h2><ul><li><p>The record shows 12 for the changed formula and 20 for the new one (Zoho recalculates existing records).</p></li></ul><h2>Actual result</h2><ul><li><p>Still 8 after 20 seconds and after about one hour; 12 only after an unrelated edit is saved.</p></li><li><p>The new formula is empty on the existing record.</p></li><li><p>Same on Desk.</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F04-existing-records-not-updated-FAIL.png (attached)</p></li><li><p>Test cases: K1, H15 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F05",
+   "name": "Formula field | Lookup, user and department fields give the record id in a formula instead of the name",
+   "priority": "medium",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F05-lookup-user-id-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>When a formula reads a lookup, a user field or the Desk department field, it gets the internal id (a long code) instead of the name shown on screen.</p><h2>Steps to reproduce</h2><ol><li><p>Create a formula concat(qa_account) where QA Account is a lookup to Accounts.</p></li><li><p>Create a record with QA Account = &quot;QA FX Acc&quot;.</p></li><li><p>Do the same with a user field (concat(qa_user)) and, on Desk Tickets, concat(department).</p></li></ol><h2>Expected result</h2><ul><li><p>&quot;QA FX Acc&quot;, the user's name, and the department name (&quot;Customer Service&quot;).</p></li></ul><h2>Actual result</h2><ul><li><p>&quot;59fab8eb-fc45-40a1-9d61-b16fa097f998&quot; (account id), &quot;97be04b6-…&quot; (user id), &quot;7e1ac409-…&quot; (department id).</p></li><li><p>Same on Desk (account cbcc038a-…).</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F05-lookup-user-id-FAIL.png (attached)</p></li><li><p>Test cases: E20, E22, E23 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F06",
+   "name": "Formula field | Multi-select, multi-select lookup, address and location fields read as empty in a formula",
+   "priority": "medium",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F06-values-read-empty-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>A formula that reads a multi-select, a multi-select lookup, an address or a location field always gets an empty value, with no error, even when the record has a value.</p><h2>Steps to reproduce</h2><ol><li><p>Create formulas concat(qa_msel), len(qa_msel), concat(qa_accs), concat(qa_address), concat(qa_loc).</p></li><li><p>Create a record with QA MSel = A, C; QA Accounts = QA FX Acc; an address (1 Nile St, Cairo, Egypt); a location (30.04, 31.23).</p></li></ol><h2>Expected result</h2><ul><li><p>Readable values (e.g. &quot;A; C&quot;, the account name, the address text), or the field is refused when the formula is saved.</p></li></ul><h2>Actual result</h2><ul><li><p>All return &quot;&quot; (len 0). The values are stored on the record.</p></li><li><p>Same on Desk.</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F06-values-read-empty-FAIL.png (attached)</p></li><li><p>Test cases: E17, E21, E24, E26 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F07",
+   "name": "Formula field | The formula return type is not enforced, and the layout builder does not save one",
+   "priority": "medium",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F07-return-type-not-enforced-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>A formula can be saved with return type &quot;number&quot; and an expression that returns text, or &quot;date&quot; with an expression that returns a number. The result is stored anyway. The layout builder has no return-type control and saves none.</p><h2>Steps to reproduce</h2><ol><li><p>Create a formula with return type number and expression upper(qa_text); record QA Text = &quot;ab&quot;.</p></li><li><p>Create a formula with return type date and expression qa_num + 1; record QA Num = 4.</p></li><li><p>Add a formula from the layout builder and read the field definition.</p></li></ol><h2>Expected result</h2><ul><li><p>The mismatch is refused when the formula is saved, or the result is empty.</p></li><li><p>The admin chooses the return type (Zoho asks for it first).</p></li></ul><h2>Actual result</h2><ul><li><p>&quot;AB&quot; stored in the number formula; 5 stored in the date formula.</p></li><li><p>Builder: no return type saved (only the expression).</p></li><li><p>Unknown return types (currency, datetime) are correctly refused (control).</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F07-return-type-not-enforced-FAIL.png (attached)</p></li><li><p>Test cases: B6, B7, B1 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F08",
+   "name": "Formula field | Created Time and Created By are blank in formulas when the record is created",
+   "priority": "medium",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F08-created-fields-blank-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>Formulas that read created_at or created_by return empty on the first save. They only get a value after the record is edited.</p><h2>Steps to reproduce</h2><ol><li><p>Create formulas text(created_at) and concat(created_by).</p></li><li><p>Create a record.</p></li><li><p>Edit the record and save.</p></li></ol><h2>Expected result</h2><ul><li><p>Both formulas filled on create.</p></li></ul><h2>Actual result</h2><ul><li><p>Both empty on create (&quot;Name&quot; works).</p></li><li><p>After an edit the timeline shows the formula updated &quot;from empty to 2026-11-23T12:48:57.400Z&quot;.</p></li><li><p>Same on Desk.</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F08-created-fields-blank-FAIL.png (attached)</p></li><li><p>Test cases: E30 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F09",
+   "name": "Formula field | text() of a date-time shows UTC instead of the organisation time",
+   "priority": "low",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F09-datetime-utc-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>text() of a date-time field returns the raw UTC value in ISO form instead of the organisation's time zone and date format.</p><h2>Steps to reproduce</h2><ol><li><p>Create a formula text(qa_dt).</p></li><li><p>Create a record with QA DT = 23 Nov 2026 23:30 (Cairo).</p></li></ol><h2>Expected result</h2><ul><li><p>23 Nov 2026 23:30 (org time zone, readable form).</p></li></ul><h2>Actual result</h2><ul><li><p>&quot;2026-11-23T21:30:00Z&quot;. text() of a date field is fine (&quot;2026-11-23&quot;).</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F09-datetime-utc-FAIL.png (attached)</p></li><li><p>Test cases: E19 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F10",
+   "name": "Formula field | min() treats an empty field as 0, while avg() skips empty fields",
+   "priority": "low",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F10-min-blank-zero-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>min() counts a blank field as 0, so the result is 0 whenever any input is empty. avg() skips blanks, as its help text says.</p><h2>Steps to reproduce</h2><ol><li><p>Create min(qa_num, qa_num2) and avg(qa_num, qa_dec, qa_num2).</p></li><li><p>Record: QA Num 4, QA Dec 2, QA Num2 empty.</p></li></ol><h2>Expected result</h2><ul><li><p>min = 4 (blank skipped, like avg).</p></li></ul><h2>Actual result</h2><ul><li><p>min = 0; avg = 3 (correct).</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F10-min-blank-zero-FAIL.png (attached)</p></li><li><p>Test cases: D8 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F11",
+   "name": "Formula field | Layout builder shows raw server messages for broken formulas and names only the first one",
+   "priority": "low",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F11-builder-messages-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>The builder lets an empty or broken formula be applied, then the Save fails with the raw API message. With two broken formulas only the first is named. concat(,&quot;a&quot;) is not marked invalid while typing.</p><h2>Steps to reproduce</h2><ol><li><p>Drop a Formula field, leave the expression empty, Apply, Save.</p></li><li><p>Add two formulas: qa_num # 2 and (qa_num, Apply both, Save.</p></li><li><p>Type concat(,&quot;a&quot;) in the Expression box.</p></li></ol><h2>Expected result</h2><ul><li><p>&quot;A formula field needs an expression before the layout can be saved.&quot; in the panel; both broken formulas named; concat(,&quot;a&quot;) marked invalid.</p></li></ul><h2>Actual result</h2><ul><li><p>Toast &quot;Field 'formula': Option 'expression' is required.&quot;</p></li><li><p>Toast names only the first formula (&quot;Unexpected character '#' at position 7.&quot;).</p></li><li><p>concat(,&quot;a&quot;) not flagged (the server refuses it).</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F11-builder-messages-FAIL.png (attached)</p></li><li><p>Test cases: A7, G5, G13 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F12",
+   "name": "Formula field | Formulas break silently when a pick-list option is renamed; same-version layout saves are both accepted",
+   "priority": "low",
+   "modules": [
+    "CRM",
+    "Desk"
+   ],
+   "moduleIds": [
+    "dea98455-e533-4b49-8a48-6fb88f3249a3",
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F12-minor-silent-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>Three smaller issues: renaming a pick-list option used in a formula leaves the old text in the formula, so the result silently turns false; two saves of the same layout version are both accepted (the last one wins); the Expression box error is not linked for screen readers.</p><h2>Steps to reproduce</h2><ol><li><p>Formula qa_pick = &quot;Blue&quot;; rename the option Blue to Navy; create a record with Navy.</p></li><li><p>Save the same layout twice from two tabs without reloading.</p></li><li><p>Inspect the Expression box while it shows an error.</p></li></ol><h2>Expected result</h2><ul><li><p>Warning or the formula updated to &quot;Navy&quot;; the second save gets a conflict; aria-describedby points to the message.</p></li></ul><h2>Actual result</h2><ul><li><p>Formula still &quot;Blue&quot;, result false, no warning; both saves 200; no aria-describedby.</p></li></ul><h2>Environment</h2><ul><li><p>TAVI CRM web (staging-crm.taviportal.com) and TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account</p></li><li><p>Test modules QA FX (CRM) and QA FX Desk (Desk); Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F12-minor-silent-FAIL.png (attached)</p></li><li><p>Test cases: K7, K11, M5 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  },
+  {
+   "id": "F13",
+   "name": "Formula field | Desk assignment rules do not accept formula fields in their conditions",
+   "priority": "medium",
+   "modules": [
+    "Desk"
+   ],
+   "moduleIds": [
+    "274a73de-564a-4b8c-8b51-74fe8304e7c2"
+   ],
+   "state": "34a7f4b6-7207-4955-b927-0d8d1dd3c666",
+   "cycle": "8347595f-5728-4093-bb08-f451e7faa47b",
+   "assignees": [
+    "e1364b0b-d3cd-4167-8261-6194577a480a",
+    "9529016b-e67d-42b9-815c-263f673b8252",
+    "9c2ff309-bbdb-4be3-b819-3022d9cf3c3b"
+   ],
+   "image": "F13-assignment-rule-criteria-FAIL.png",
+   "description_html": "<h2>Summary</h2><p>A Desk ticket formula field cannot be used in an assignment rule condition: the rule is refused with &quot;unknown_field&quot;. Other custom fields, Priority and Channel are accepted, and workflow rules do accept formula fields.</p><h2>Steps to reproduce</h2><ol><li><p>Add a formula field to Tickets, e.g. &quot;QA FX High&quot; = priority = &quot;High&quot;.</p></li><li><p>Open Settings › Automation › Assignment Rules › new direct rule.</p></li><li><p>Add a condition on &quot;QA FX High&quot; equals true and save.</p></li></ol><h2>Expected result</h2><ul><li><p>The formula field is offered and the rule saves, as for other custom fields.</p></li></ul><h2>Actual result</h2><ul><li><p>400 VALIDATION_ERROR &quot;targets[0].criteria.conditions[1].field_key: unknown_field&quot;. A custom email field, Priority and Channel save fine.</p></li></ul><h2>Environment</h2><ul><li><p>TAVI Desk web (staging-desk.taviportal.com), org NDC-Staging, owner account; Tickets module, department Customer Service</p></li><li><p>Edge (Chromium) on Windows 10; checked 23 Nov 2026</p></li></ul><h2>Evidence</h2><ul><li><p>F13-assignment-rule-criteria-FAIL.png (attached)</p></li><li><p>Test cases: I8 — docs/formula-fields (192 cases); run executions/execu_2026-11-23_formula-fields</p></li></ul>"
+  }
+ ]
+}

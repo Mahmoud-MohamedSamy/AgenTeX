@@ -1,0 +1,1 @@
+const LAY='913b2c84-f235-404d-b563-c2cfa9566b6a';const lr=await api('GET','/modules/'+TK+'/layout-rules?layout_id='+LAY);const r=arr(lr.j?.data?.rules||lr.j).find(x=>x.name==='Test Layout Rules');return JSON.stringify(r).slice(0,1800);

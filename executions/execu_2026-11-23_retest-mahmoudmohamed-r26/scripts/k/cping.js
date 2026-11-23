@@ -1,0 +1,1 @@
+const o={};for(const p of ['/iam/me','/modules','/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/records?page_size=20']){const t0=Date.now();const r=await api('GET',p);o[p]=r.s+' '+(Date.now()-t0)+'ms';}return o;

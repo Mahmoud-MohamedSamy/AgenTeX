@@ -1,0 +1,45 @@
+{
+ "out": "F04-card.png",
+ "title": "Changing an expression or adding a formula does not update existing records",
+ "host": "staging-crm / staging-desk.taviportal.com",
+ "who": "owner",
+ "date": "23 Nov 2026",
+ "rows": [
+  [
+   "Before",
+   "record { qa_num: 4 }, fx_e7 = \"qa_num * 2\"",
+   "fx_e7 = 8",
+   "info"
+  ],
+  [
+   "Edit expression",
+   "PUT /fields/{fx_e7} expression \"qa_num * 3\"",
+   "200",
+   "info"
+  ],
+  [
+   "Same record after 20 s",
+   "GET record",
+   "fx_e7 = 8   ← expected 12",
+   "bad"
+  ],
+  [
+   "Earlier record after ~1 h",
+   "fx_probe edited *2 → *3 at 10:16",
+   "still 8   ← expected 12",
+   "bad"
+  ],
+  [
+   "After an unrelated save",
+   "PATCH { qa_text: \"touch\" }",
+   "fx_e7 = 12 (only now)",
+   "info"
+  ],
+  [
+   "New formula, old record",
+   "record saved, then POST fx_h15 = \"qa_num * 5\", wait 20 s",
+   "fx_h15 absent on the old record   ← expected 20",
+   "bad"
+  ]
+ ]
+}

@@ -1,0 +1,16 @@
+AC-10 UI check by reading the Desk web app code (23 Nov 2026, staging-desk.taviportal.com, main bundle index-B00Ax7qm.js, editor chunk pages-CrqX1eAS.js).
+
+1) Owner Assignment form (pages-CrqX1eAS.js): the 'Assign by' switch (person/role vs assignment rule) renders only when ownerAssignmentOptions is true:
+{teamTargets:o=!1,ownerAssignmentOptions:s=!1}=V(),c=s&&!r,l=e.ownerTargetKind===`AssignmentRule`?`rule`:`principal`
+c&&(0,X.jsx)(q,{value:l,onChange:e=>f(e),options:[{value:`principal`,label:i(`owner.byPrincipal`)},{value:`rule`,label:i(`owner.byAssignmentRule`)}]
+
+2) Desk's workflow editor settings (index-B00Ax7qm.js) set teamTargets but not ownerAssignmentOptions:
+orgUnitTerm:`roles`,currentTimeCondition:!0,teamTargets:!0,useTeamMemberIds
+Occurrences of ownerAssignmentOptions: main bundle 0, editor chunk 1 (the read above).
+
+Result: in Desk the form shows only 'Assign to' (user, team, role, profile, user field). 'An assignment rule' cannot be chosen in the editor or in the saved-actions library (c = s && !inLibrary). The user checked the editor manually and did not find it either.
+
+Zoho Desk live check (23 Nov 2026, portal techegysolutions, admin, Enterprise trial; read-only, nothing saved):
+Setup > Workflows > Rules > new Tickets rule > Execute on Create > Actions "+": Alerts, Field Updates, Assign Ticket, Add Comment, Send Email Reply, Reply via Instant Messaging, Notify via Instant Messaging, Add Tags, Remove Tags, Add Followers, Mark Ticket as spam, Share Ticket, Add Skills, Remove Skills, Recalculate Skills, Reassign ticket based on Skills, Change Layout, Tasks, Custom Functions; external: Send Cliq Notification.
+Assign Ticket form: Name, Record ID (${deskPlaceHolders.tickets.id}), Assignee = Agent / Team / Agent in a Team. No "assignment rule" choice anywhere. Screenshots AC10-zoho-assign-ticket-form.png, AC10-zoho-assign-ticket-options.png.
+Conclusion: Zoho has no "assign through an assignment rule" workflow action either. TAVI's editor matches Zoho (and offers more: role / profile round robin, user field). The AssignmentRule owner kind exists only in TAVI's API and never assigns.

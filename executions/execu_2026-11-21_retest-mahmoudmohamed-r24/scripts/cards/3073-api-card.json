@@ -1,0 +1,8 @@
+{"out":"3073-api-card.png","title":"NDC-3073 spam ticket #4838 (shared with QA RT20 TK Dept B, full): API writes after Mark as Spam","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["Mark as Spam (UI)","POST /desk/tickets/{id}/spam {mark_contact:false}","200 \"Ticket marked as spam.\"; is_spam true","ok"],
+["Shares","GET /desk/tickets/{id}/shares before / after","before: QA RT20 TK Dept B, full → after spam: [] (revoked); still [] after Not Spam","ok"],
+["Private + public comment","POST /desk/tickets/{id}/comments","422 \"Ticket has been marked as spam, so you are not able to add conversation. Mark it as Not Spam first.\" (was 201); 0 comments stored","ok"],
+["Reply to contact","POST /desk/tickets/{id}/replies to the contact (user's own plus-address) 09:51:30 UTC","422 same message; nothing sent","ok"],
+["Re-share while spam","PUT /desk/tickets/{id}/shares Dept B full","422 same message (text speaks of \"conversation\" for a share)","info"],
+["Controls","comment on not-spam ticket #4839; comment on #4838 after Not Spam","201 / 201; Reply All back after Not Spam","ok"]]}

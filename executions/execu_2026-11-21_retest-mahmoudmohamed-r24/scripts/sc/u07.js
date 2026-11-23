@@ -1,0 +1,22 @@
+const out = { req: [] };
+page.on('request', r => { if (/views/.test(r.url()) && r.method() !== 'GET') out.req.push(r.method() + ' ' + r.url().replace(/.*\/api\/v1/, '').replace(/[0-9a-f-]{36}/g, '{id}') + ' ' + (r.postData() || '').slice(0, 500)); });
+page.on('response', async r => { if (/views/.test(r.url()) && r.request().method() === 'POST') { out.req.push('<- ' + r.status()); try { const j = await r.json(); if (j.data && j.data.id) out.viewId = j.data.id; } catch (e) { } } });
+await go('/modules/' + MID, 9000);
+await page.getByRole('button', { name: 'Custom views' }).first().click(); await sleep(1200);
+await page.getByText(/New custom view/i).first().click(); await sleep(3000);
+await page.getByPlaceholder('Enter custom view name').fill('QA RT20 SC hot leads');
+await page.getByText('Filter by criteria').click(); await sleep(1500);
+const pick = async (lbl, txt) => { const c = page.getByLabel(lbl).first(); const tag = await c.evaluate(e => e.tagName); if (tag === 'SELECT') { const opts = await c.locator('option').allInnerTexts(); const o = opts.find(x => txt.test(x)); await c.selectOption({ label: o }); return o; } await c.click(); await sleep(700); const opt = page.locator('[role=option]').filter({ hasText: txt }).first(); const t = await opt.innerText(); await opt.click(); await sleep(600); return t; };
+out.f = await pick('Criteria field', /^Score$/);
+await sleep(800);
+out.opOpts = await page.getByLabel(/Operator for/).first().evaluate(e => e.tagName === 'SELECT' ? [...e.options].map(o => o.text) : 'combobox');
+out.op = await pick(/Operator for/, /greater than or equal|≥|>=|at least/i).catch(e => 'op err ' + e.message.slice(0, 80));
+const vin = page.locator('main input[type=number], main input[inputmode=numeric]').first(); if (await vin.count()) await vin.fill('30'); else { const vi = page.getByLabel(/Value/).first(); out.vlabel = await vi.count(); if (out.vlabel) await vi.fill('30'); }
+await page.keyboard.press('Escape'); await sleep(600);
+await shot('1483-16-view-filled.png');
+await page.getByRole('button', { name: /^Save$/ }).last().click(); await sleep(6000);
+out.url = page.url().replace(/[0-9a-f-]{36}/g, '{id}');
+out.rows = (await page.locator('tbody tr').allInnerTexts()).map(s => s.replace(/\s+/g, ' ').slice(0, 120)).slice(0, 10);
+out.count = await page.locator('tbody tr').count();
+await shot('1483-17-view-result.png');
+return out;

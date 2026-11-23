@@ -1,0 +1,63 @@
+# r25 data ledger (22 Nov 2026) — clean once at end of round
+## Desk (staging-desk, NDC-Staging)
+- Ticket "QA RT25 2837 mail round trip" (see out/2837-made.json) — delete + purge (plus any ticket created from the customer reply)
+- 2026-11-22T08:24:01Z W2 lane: ticket "QA RT25 W2 2997 ouCS t1" 47950b1c-c0d2-4d5b-b14f-3b02fb3b17b8 #undefined
+- 2026-11-22T08:24:04Z W2 lane: ticket "QA RT25 W2 2997 ouCS t2" 3c30ad0c-5873-4627-8dfb-b0f2c72ee95c #undefined
+- 2026-11-22T08:24:07Z W2 lane: ticket "QA RT25 W2 2997 ouCS t3" 419b2928-8d78-4eca-a9fa-c5ba515d3a60 #undefined
+- 2026-11-22T08:24:17Z W2 lane: workflow rule "QA RT25 W2 2997 ouCS" 0db882d2-bd4f-4567-8f84-365c08c32937 (active)
+- 2026-11-22T08:25:03Z W2 lane: workflow rule 0db882d2-bd4f-4567-8f84-365c08c32937 deactivated
+- 2026-11-22T08:25:06Z W2 lane: ticket "QA RT25 W2 2997 ouQAO t1" 2941f7ab-ff8f-488a-a4a5-77f2d43cd7f9 #undefined
+- 2026-11-22T08:25:08Z W2 lane: ticket "QA RT25 W2 2997 ouQAO t2" d8cd935c-af88-44b2-bfc9-f7fa662e625b #undefined
+- 2026-11-22T08:25:18Z W2 lane: workflow rule "QA RT25 W2 2997 ouQAO" 0395ee86-8249-4b38-9519-95147f598f2e (active)
+- 2026-11-22T08:25:53Z W2 lane: workflow rule 0395ee86-8249-4b38-9519-95147f598f2e deactivated
+- 2026-11-22T08:25:55Z W2 lane: ticket "QA RT25 W2 2997 prEmpty t1" b0038733-bd1c-48d9-aa6e-50fdd84c40d9 #undefined
+- 2026-11-22T08:26:05Z W2 lane: workflow rule "QA RT25 W2 2997 prEmpty" b5746fbd-82a3-4cee-800e-297f3e678dbd (active)
+- 2026-11-22T08:26:34Z W2 lane: workflow rule b5746fbd-82a3-4cee-800e-297f3e678dbd deactivated
+- 2026-11-22T08:26:36Z W2 lane: ticket "QA RT25 W2 2997 prQAO t1" 8029b141-7c09-4bad-a1fa-3256423eed73 #undefined
+- 2026-11-22T08:26:37Z W2 lane: ticket "QA RT25 W2 2997 prQAO t2" 3f814e3b-cb57-4132-a14d-f26eeb59c247 #undefined
+- 2026-11-22T08:26:40Z W2 lane: ticket "QA RT25 W2 2997 prQAO t3" 114ee338-9648-4141-bc19-f97c190c4b83 #undefined
+- 2026-11-22T08:26:49Z W2 lane: workflow rule "QA RT25 W2 2997 prQAO" 9f9db7d8-c494-4390-93b1-859478fa7ecd (active)
+- 2026-11-22T08:27:33Z W2 lane: workflow rule 9f9db7d8-c494-4390-93b1-859478fa7ecd deactivated
+- 2026-11-22T08:27:35Z W2 lane: ticket "QA RT25 W2 2997 mgrQAO t1" d229755f-84c2-4692-a84d-a85c975dbe15 #undefined
+- 2026-11-22T08:27:37Z W2 lane: ticket "QA RT25 W2 2997 mgrQAO t2" 9d7f8842-cb0a-49d3-b96f-7573ed00201a #undefined
+- 2026-11-22T08:27:39Z W2 lane: ticket "QA RT25 W2 2997 mgrQAO t3" 5bd8986b-fc81-4b83-946f-70aa9c39c8c1 #undefined
+- 2026-11-22T08:27:40Z W2 lane: ticket "QA RT25 W2 2997 mgrQAO t4" 2b8237d7-a580-413c-8256-6c344faa993a #undefined
+- 2026-11-22T08:27:49Z W2 lane: workflow rule "QA RT25 W2 2997 mgrQAO" 9db85d30-e291-4f82-96da-98d4782f0954 (active)
+- 2026-11-22T08:28:34Z W2 lane: workflow rule 9db85d30-e291-4f82-96da-98d4782f0954 deactivated
+- 2026-11-22T08:29:10Z W2 lane: ticket "QA RT25 W2 2997 seq t1" 1b37d6b5-ba69-4c80-8590-6401cf8c665b #undefined
+- 2026-11-22T08:29:12Z W2 lane: ticket "QA RT25 W2 2997 seq t2" d786dede-cf6f-41f4-9342-fef66cecd005 #undefined
+- 2026-11-22T08:29:13Z W2 lane: ticket "QA RT25 W2 2997 seq t3" efbe5ea8-9521-488e-bcd2-11fd0e9f52f3 #undefined
+- 2026-11-22T08:29:22Z W2 lane: workflow rule "QA RT25 W2 2997 seq" c72e099c-b742-4eee-a2c1-763c2cafc003 (active)
+- 2026-11-22T08:31:55Z W2 lane: workflow rule c72e099c-b742-4eee-a2c1-763c2cafc003 deactivated
+- Ticket "QA RT25 2837 mail round trip 2" (second; #6213 was deleted by another session) — delete + purge
+- 2997 regression: rules QA RT25 W2 2997 ouCS/ouQAO/prEmpty/prQAO/mgrQAO/seq (deactivated) + tickets #6214-#6219, #6221-#6223, #6225-#6228, #6230-#6232 — delete + purge (ids in w2/out/*.json and ../ledger.md W2 lines)
+
+## CLEANUP 22 Nov 2026 (~08:55 UTC) — DONE
+- Desk tickets QA RT25: #6217-6219, #6221-6223, #6225-6228, #6230-6232, #6235 → 204 each; #6213, #6214-6216 had already been deleted by another session.
+- Workflow rules QA RT25 W2 2997 ouCS/ouQAO/prEmpty/prQAO/mgrQAO/seq → 204 each (GET after = 404).
+- Recycle bin: 17 + 6 QA RT25 items purged → 0 left; 0 QA RT25 tickets, 0 rules.
+- Keeper stopped; scratchpad sign-in state deleted.
+- 2026-11-22T09:11:36Z 2799: blueprint bf878700-1be1-4179-8a1d-d2bcd6b26985 QA RT25 BP PRIV
+- 2026-11-22T09:11:37Z 2799: blueprint 3fa966a2-f81b-4ac1-ab5a-03c44995f0e7 QA RT25 BP PUB
+- 2026-11-22T09:11:38Z 2799: blueprint bd5374bc-27ab-4680-8480-c6b8ed4119af QA RT25 BP ALL
+- 2026-11-22T09:11:38Z 2799: blueprint 48059404-18ce-45c2-b610-8384c712a8d3 QA RT25 BP DEF
+- 2026-11-22T09:11:39Z 2799: contact eb268638-2c04-46c9-9fa0-2f9c461b2998 QA RT25 BP customer
+- 2026-11-22T09:11:40Z 2799: contact a83d9b84-3223-4bca-9564-1163c6133c1c QA RT25 BP customer2
+- 2026-11-22T09:11:42Z 2799: ticket 41b5c753-ea42-4d0f-9c9a-e74649da29eb CPRIV
+- 2026-11-22T09:11:45Z 2799: ticket af667961-b100-40a4-81d8-51456e6994c8 CPUB
+- 2026-11-22T09:11:48Z 2799: ticket 9eef1830-27ea-4382-a136-ffe41c3ece2f CALL
+- 2026-11-22T09:11:51Z 2799: ticket c3a82648-7deb-4847-b16f-12fe8dd8b01c FPRIV
+- 2026-11-22T09:11:54Z 2799: ticket 3e77509f-f779-4115-9ba5-a96e9fcb8ddb FPUB
+- 2026-11-22T09:11:59Z 2799: ticket b0da5269-8ef9-435c-ad9d-bc758904ffa3 FALL
+- 2026-11-22T09:12:02Z 2799: ticket 08d42707-9e5f-4ad7-a503-106676fbf92f FDEF
+- 2026-11-22T09:14:22Z 2799: 7 mails sent (customer reply x3, private forward x4) to Gmail; expect 7 Gmail answers on #6252-#6258
+- 2026-11-22T09:18:10Z 2799: owner of #6252-#6258 set to ndc-staging-owner (user request)
+- 2026-11-22T09:21:05Z 2799: owner of #6252-#6258 set to ndc-staging-owner via /assign (user request)
+- 2026-11-22 09:3xZ 2799 CLEANUP: 7 tickets #6252-#6258, 2 contacts, 4 blueprints QA RT25 BP PRIV/PUB/ALL/DEF deleted (GET → 404 all); recycle bin purged (QA RT25 items 0). Keeper stopped, sign-in state deleted.
+- 2026-11-22T10:32:34Z 2799: blueprint 1f851a93-f821-439d-b4ac-399166354280 QA RT25 BP PRIV
+- 2026-11-22T10:32:37Z 2799: blueprint 4e435a03-7cff-4123-ac50-2d0f5af524bf QA RT25 BP PUB
+- 2026-11-22T10:32:45Z 2799: contact aeec6ab0-2608-4b8a-a401-7ad613d4e09c QA RT25B BP customer
+- 2026-11-22T10:32:50Z 2799: ticket 4117e21e-3fce-4293-b728-6861fa6c2b77 CPRIV
+- 2026-11-22T10:32:53Z 2799: ticket b3cc1421-3c55-4dd2-b7d3-967f5a2b11c8 CPUB
+- 2026-11-22T10:33:56Z 2799 r25b: blueprints QA RT25B BP PRIV/PUB, contact QA RT25B BP customer, tickets #6300 CPRIV, #6301 CPUB (owner ndc-staging-owner); 2 agent mails to Gmail
+- 2026-11-22T10:51:51Z r25b CLEANUP: tickets #6300/#6301, contact QA RT25B BP customer, blueprints QA RT25B BP PRIV/PUB deleted (204, GET 404); bin purged 5, recheck 0. Keeper stopped, sign-in state deleted.

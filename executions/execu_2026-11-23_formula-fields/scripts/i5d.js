@@ -1,0 +1,1 @@
+const r = await api('GET', '/reporting/semantic-layer/datasets'); const d = L(r.j?.data?.data ?? r.j?.data); log(r.s, d.length, JSON.stringify(d.filter(x => /qa fx/i.test(JSON.stringify(x))).map(x => ({ id: x.id, name: x.name || x.display_name, module: x.module_id || x.source_id }))).slice(0, 600));

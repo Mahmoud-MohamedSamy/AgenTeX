@@ -1,0 +1,10 @@
+const TK='88e8ea44-1658-4df3-9930-d0902b91073d',CS='7e1ac409-58b0-41ab-97e1-0e7d5c8c5158',CT='de7195a2-369e-48c5-b03f-b8e37d6c5fb2',TO='mmohamed@anyware.software';
+const v=x=>({kind:'string',value:String(x)});const E=r=>r.s+(r.s>=300?' '+r.t.slice(0,300):'');
+const r=await api('POST','/modules/'+TK+'/records',{data:Object.entries({subject:'QA RT25 2837 mail round trip',status:'Open',department:CS,contact_id:CT,email:TO,channel:'email'}).map(([f,x])=>({field:f,value:v(x)}))});
+const id=r.j?.data?.id; log('create',E(r),id); await sleep(2000);
+const o={};((await api('GET','/modules/'+TK+'/records/'+id)).j.data.data).forEach(f=>o[f.field]=f.value&&f.value.value);
+const num=o.ticket_number;
+const m=await api('POST','/desk/tickets/'+id+'/replies',{mode:'reply',to:[TO],subject:'QA RT25 2837 mail round trip [#'+num+']',body_html:'<p>QA RT25 NDC-2837 retest (#'+num+'), 22 Nov 2026. Please REPLY to this email with any short text. Keep the subject as it is.</p>'});
+log('reply',E(m)); await sleep(8000);
+const rs=arr((await api('GET','/desk/tickets/'+id+'/replies')).j?.data).map(x=>[x.created_at,x.direction,x.status,x.subject]);
+fs.writeFileSync('../out/2837-made.json',JSON.stringify({id,num,sentAt:new Date().toISOString(),rs},null,1)); log(num,rs);

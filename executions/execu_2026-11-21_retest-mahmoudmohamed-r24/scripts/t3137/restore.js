@@ -1,0 +1,2 @@
+const DB='4853562a-0b4d-45cb-ba34-9f2118fcd32c';const b=JSON.parse(fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-21_retest-mahmoudmohamed-r24/out/3137-base.json','utf8'));
+log((await api('PUT','/desk/departments/'+DB+'/round-robin-preferences',b.prefsBefore)).s);const n=(await api('GET','/desk/departments/'+DB+'/round-robin-preferences')).j?.data;log({same:JSON.stringify(n)===JSON.stringify(b.prefsBefore)});

@@ -1,0 +1,57 @@
+{
+ "out": "2822-api-card.png",
+ "host": "staging-crm.taviportal.com (public web-form API, signed out, origin http://127.0.0.1:5500)",
+ "who": "website visitor",
+ "date": "21 Nov 2026",
+ "title": "NDC-2822 · CRM form \"QA RT24 2822 A\" (Leads) · Number 2 whole 1–100 · hidden Decimal default 2.5 · attachments on",
+ "rows": [
+  [
+   "1 Number 2 = 5.5 (number)",
+   "POST /submissions",
+   "422 WEB_FORM_INVALID · number_2: FIELD_DECIMALS \"Number 2 must be a whole number.\" · no lead",
+   "ok"
+  ],
+  [
+   "2 Number 2 = \"5.5\" (text)",
+   "POST /submissions",
+   "422 FIELD_DECIMALS (same) · no lead",
+   "ok"
+  ],
+  [
+   "3 Number 2 = \"4.0\"",
+   "POST /submissions",
+   "200 · lead \"QA RT24 c3\" number_2 = 4",
+   "ok"
+  ],
+  [
+   "4 Visitor sends the hidden field",
+   "values.decimal = \"9\"",
+   "422 decimal: FIELD_UNKNOWN \"This form has no such field.\" · leads keep the default 2.5",
+   "ok"
+  ],
+  [
+   "5 File type",
+   "POST /uploads x.html text/html",
+   "422 FILE_TYPE_REFUSED \"x.html is not a type this form accepts…\"",
+   "ok"
+  ],
+  [
+   "6 File size",
+   "POST /uploads 25 MB png",
+   "422 FILE_TOO_LARGE \"Each file can be at most 20 MB.\"",
+   "ok"
+  ],
+  [
+   "7 File count",
+   "6 × POST /uploads (same submission)",
+   "5 accepted · 6th 422 ATTACHMENT_LIMIT \"at most 5 files, screenshots included\"",
+   "ok"
+  ],
+  [
+   "8 Hidden default on save",
+   "POST /web-forms number_2 hidden, default 5.5 / 500 / 4",
+   "422 DEFAULT_INVALID \"must be a whole number\" / \"must be at most 100\" / 201",
+   "ok"
+  ]
+ ]
+}

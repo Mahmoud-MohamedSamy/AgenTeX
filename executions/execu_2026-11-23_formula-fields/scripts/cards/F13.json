@@ -1,0 +1,39 @@
+{
+ "out": "F13-card.png",
+ "title": "Desk assignment rules refuse formula fields in criteria",
+ "host": "staging-crm / staging-desk.taviportal.com",
+ "who": "owner",
+ "date": "23 Nov 2026",
+ "rows": [
+  [
+   "Formula on Tickets",
+   "qa_fx_hi = priority = \"High\" (boolean), qa_fx_chan = concat(channel)",
+   "values worked out on tickets (API + web form) ✓",
+   "ok"
+  ],
+  [
+   "Rule with formula (boolean)",
+   "POST /desk/assignment-rules · condition qa_fx_hi equals true",
+   "400 VALIDATION_ERROR · conditions[1].field_key: unknown_field",
+   "bad"
+  ],
+  [
+   "Rule with formula (text)",
+   "condition qa_fx_chan equals \"web\"",
+   "400 · unknown_field",
+   "bad"
+  ],
+  [
+   "Control: custom email field",
+   "condition qa_ndc_agent_email equals \"x\"",
+   "201 ✓",
+   "ok"
+  ],
+  [
+   "Control: priority / channel",
+   "condition priority / channel equals \"x\"",
+   "201 ✓",
+   "ok"
+  ]
+ ]
+}

@@ -1,0 +1,16 @@
+# TIA Assistant run — progress (step 3)
+
+Spec: docs/tia-assistant/spec-tia-assistant.md · Results: out/results.jsonl · Data: ledger.md
+
+## Accounts used
+- OWN ndc-staging-owner · ADM QA Team 1 · CRA Mahmoud Mohamed · RST Customer Experience Specialists 2 (Desk Agent, NO CRM app access) · RSC mahmoud.mahamed1515 (CRM Manager: sees deals, owner's leads 403) · NOP Test User 1
+
+## Preflight (23 Nov)
+- P-01/P-02 PASS: Tia v7 deployed, active, 28 tools, wallet ok (baseline-run-desk/crm.json)
+- P-03 saved out/p03-profiles.json
+- P-04 RST: no Desk departments at start; no CRM app (APP_KEY_NOT_ENTITLED); Tia caps for RST still list crm/all modules, 26 tools, 73 setup areas
+- P-06 DONE: ai:tia:use GRANT on Desk Agent 44444444-4444-4444-4444-444444444402 (only CES 2 on it) → R-03 must DELETE it
+- P-07 DONE: CRM ids out/p07-crm-ids.json; Desk ids out/p07-desk-ids.json; RST added to QA AO Dept A (restore in R-02)
+
+## Cleanup owed
+- see ledger.md; also Tia chats created by our accounts (not OWN's Arabic chat e282805d…)

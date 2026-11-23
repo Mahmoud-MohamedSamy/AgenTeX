@@ -1,0 +1,1 @@
+const r=await api('GET','/desk/data/backups');const L=arr(r.j?.data||r.j);log(r.s,'total',r.j?.meta?.total_count??L.length,L.map(b=>({id:b.id?.slice(0,8),status:b.status,restorable:b.restorable,reason:b.restore_unavailable_reason,expires:b.expires_at,scope:b.scope?.kind||b.scope})));

@@ -1,0 +1,34 @@
+- 2026-11-23T08:07:26Z r26: department QA RT26 VO Dept created ff2611f5-4c5b-4cd2-8853-dd8767f401b6 (owner + CES2 view-only)
+- 2026-11-23T08:07:35Z r26: ticket created 6bbe4825-2566-41f2-b3ef-9bf00e47325d #7132 "QA RT26 vo T1 open"
+- 2026-11-23T08:07:40Z r26: ticket created ad18277e-a89c-43d4-947a-ce647cddbcea #7133 "QA RT26 vo T2 closed"
+- 2026-11-23 r26: dept QA RT26 VO Dept ff2611f5 (CES2 view-only), tickets #7132, #7133; private comment by CES2 on #7132; custom action run QA RT18 CA echo on #7132; LEFTOVER from r18: custom action QA RT18 CA echo ce1a9907 + inactive WF rule e1198023 (delete at cleanup)
+- 2026-11-23T08:16:09Z r26: ticket created b86d3cee-1ef0-47d8-a605-3dea75a3b68e #7134 "QA RT26 st S1"
+- 2026-11-23T08:16:23Z r26: ticket created 6914b6be-34c9-4cd5-9e6f-2bc0f68a98a9 #7135 "QA RT26 st S2"
+- 2026-11-23T08:16:32Z r26: ticket created f1f13e3b-a1c2-496e-bbab-d95acd4a9a18 #7136 "QA RT26 st S3"
+- 2026-11-23T08:16:39Z r26: ticket created 009e53f7-b008-47c6-ad9c-555627dd7f47 #7137 "QA RT26 st S4"
+- 2026-11-23T08:17:12Z r26: ticket created d8725663-cba0-4b74-8e42-7db901f3c0cc #7138 "QA RT26 st S5"
+- 2026-11-23T08:17:30Z r26: ticket created 8426d636-d7a7-441e-9c39-efc5a434d992 #7139 "QA RT26 st S6"
+- 2026-11-23T08:26:23Z r26: SLA policy QA RT26 SLA ff68b8b4-e45e-4693-aa74-cd215957db84 in QA RT26 VO Dept
+- 2026-11-23T08:26:26Z r26: ticket created a1f78f86-6f29-49b5-b083-1b1e1387d537 #7140 "QA RT26 sla C1"
+- 2026-11-23T08:26:31Z r26: ticket created 80a4d7a8-21f9-423c-9e34-1b7d9f1dc631 #7141 "QA RT26 tc M1"
+- 2026-11-23T08:26:37Z r26: ticket created 0d25de82-5156-495d-b742-b2e3b84bffc4 #7142 "QA RT26 tc M2"
+- 2026-11-23T08:28:23Z r26: ticket created 0b69c0c7-33b0-4c9c-a0e5-0307e440c904 #7143 "QA RT26 sla C2 CS"
+- 2026-11-23T08:29:46Z r26: ticket created abdffcd1-e483-43a7-8311-52e8e00a16f3 #7144 "QA RT26 sla C3 fresh"
+- 2026-11-23T08:31:27Z r26: tickets QA RT26 sla AO probe 5c472bcd-5846-45c9-b134-c8cf2d5729fd, ACC probe 90446f78-c2ab-4976-8784-7ebde4e105ca
+- 2026-11-23 r26: 3135 tickets #7134-#7139; 3136 SLA policy QA RT26 SLA ff68b8b4 (VO dept), tickets C1/M1/M2/C3 in VO dept, C2 in Customer Support, AO probe (QA AO Dept A), ACC probe (QA NDC Accounting) — ids in out/3136.json; C1/M1/M2 moved to QA NDC Distributor
+- 2026-11-23T08:33:12Z r26: 3067: ticket #7139 8426d636-d7a7-441e-9c39-efc5a434d992 deleted, restored, deleted, purged
+- 2026-11-23T08:37:05Z r26: 3062: ticket tech false 06905cae-0e8b-4560-b387-db1f5f39cf15
+- 2026-11-23T08:37:06Z r26: 3062: ticket tech missing 4dfd322c-7cb5-4905-b80a-4d0ad2450dc3
+- 2026-11-23T08:37:08Z r26: 3062: ticket tech true 78680aee-8237-4b48-a83f-dc83e1c22bd1
+- 2026-11-23T08:37:10Z r26: 3062: ticket general missing f9c84bfa-552b-472b-88ab-cb1007fd36bc
+- 2026-11-23 r26: 3062 tickets QA RT26 3062 tech false/missing/true/general missing (CS, layout Test Layout Rules) — ids in scripts/k/made.json; 3067 #7139 deleted+purged; 3132 import wizard opened, CSV out/qa-rt26-3132.csv uploaded (not run)
+- 2026-11-23T08:58:43Z r26: 3007: user question topic 0c626758 "New Question NDC-3007" -> ticket #7152 1dc9f6e3-6899-4e1c-af5c-50019b5f77d7
+- 2026-11-23T09:26:30Z r26: SLA check: UI ticket QA RT26 sla UI ticket 1ced98ce-cbb8-482b-8ca9-f8572628c223
+- r26: CRM validation rule QA RT26 VR (Leads, inactive, Last Name is empty) created via UI — delete at cleanup
+- 2026-11-23T10:11:25Z r26: ticket created 7c41fc8e-a633-439a-981b-bafe5dd265a2 #7170 "QA RT26 sla C4 recheck"
+- 2026-11-23T11:33:27Z cleanup: {"t":["#7152 204","#7150 204","#7149 204","#7148 204","#7147 204","#7138 204","#7137 204","#7136 204","#7135 204","#7134 204","#7133 204","#7132 204"],"topics":["New Question NDC-3007 204","QA RT22 3007 customer question 204","test00 204","QA RT19 HC 3007 agent question 204","QA RT18 3007 agent question 204"],"other":{"ca":"204","src":"204","deptCES2":"200"},"rbFound":["QA RT18 3007 agent question","QA RT19 HC 3007 agent question","test00","QA RT22 3007 customer question","New Question NDC-3007","#7132 QA RT26 vo T1 open","#7133 QA RT26 vo T2 closed","#7134 QA RT26 st S1","#7135 QA RT26 st S2","#7136 QA RT26 st S3","#7137 QA RT26 st S4","#7138 QA RT26 st S5","#7147 QA RT26 3062 tech false","#7148 QA RT26 3062 tech missing","#7149 QA RT26 3062 tech true","#7150 QA RT26 3062 general missing","#7152 New Question NDC-3007"],"purge0":"200"}
+- 2026-11-23T12:56:08Z r26: ticket created 727a722f-bce8-493a-9f97-4278b1728b42 #7225 "QA RT26 sla A"
+- 2026-11-23T12:56:11Z r26: ticket created b9870327-7e2e-402d-8597-423612372254 #7226 "QA RT26 wl B"
+- 2026-11-23T12:56:15Z r26: ticket created cd8f5d59-3891-4e5d-8a4c-2e085f4c230b #7227 "QA RT26 wl C"
+- 2026-11-23T12:58:52Z r26: ticket created f66c3edf-1d34-436b-a85e-92f102d8189c #7228 "QA RT26 sla A2 with contact"
+- r26 3136 retest: tickets #7225 (A), #7226 (B), #7227 (C), A2 (with contact) in QA RT26 VO Dept — ids in out/3136b.json; keep with SLA evidence

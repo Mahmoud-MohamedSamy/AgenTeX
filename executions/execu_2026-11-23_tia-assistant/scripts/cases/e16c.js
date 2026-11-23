@@ -1,0 +1,2 @@
+result('E-16', 'Finding', 'Custom instructions ("Always end every answer with QA-END") saved and deployed (v13) but not followed in 4 answers over 2 tries. The Tia setup page has no instructions field (tia-setup locale has none), so only the API can set them: they are accepted and ignored. Also "What is 2 plus 2?" got "Sorry, I\'m not able to help with that topic here. Your workspace admin decides what I can discuss." with no topic rules set. Restored.');
+return 'ok';

@@ -1,0 +1,12 @@
+const a = await getAgent(); const d = a.draft_definition.tia.denied_topics || [];
+const lens = d.map(x => x.length); const dup = d.filter(x => x === 'topic 2').length; const blank = d.filter(x => !x.trim()).length;
+result('F-04', d.length <= 30 ? 'Pass' : 'Finding', `API draft with 31 topics (+1 blank +1 duplicate) stored ${d.length} topics; UI says the most is 30`);
+result('F-05', Math.max(...lens) <= 150 ? 'Pass' : 'Finding', `151-character topic stored with length ${lens[0]}; UI says 150 characters each`);
+result('F-06', blank === 0 && dup <= 1 ? 'Pass' : 'Finding', `blank lines kept: ${blank}; "topic 2" kept ${dup} time(s)`);
+result('F-01', 'Pass', 'Never: salaries (v30) → English ask refused "Sorry, I\'m not able to help with that topic here. Your workspace admin decides what I can discuss."');
+result('F-07', 'Pass', 'Never: الرواتب → Arabic ask refused in Arabic');
+result('F-02', 'Pass', 'Only tickets, leads (v31): weather refused; deal question refused (RST has no CRM app); ticket question allowed (but see I-12: it failed to count)');
+result('F-03', 'Pass', 'Never: tickets (v32): ticket count refused with the topic message');
+const rs = await saveDraft(() => JSON.parse(JSON.stringify(BASEDEF.draft_definition)), { description: BASEDEF.description }); const rd = await deploy(); const b = await getAgent();
+ledger(`restored Tia after F: ${rs.s}/${rd.s} v${b.deployed_version_no}`);
+return { n: d.length, maxLen: Math.max(...lens), blank, dup, v: b.deployed_version_no, same: JSON.stringify(b.draft_definition) === JSON.stringify(BASEDEF.draft_definition) };

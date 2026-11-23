@@ -1,0 +1,14 @@
+const o={};const LED=m=>fs.appendFileSync('../ledger.md','- '+new Date().toISOString().slice(0,19)+'Z: '+m+'\n');
+const ps=arr((await api('GET','/iam/profiles?app_key=desk&take=500')).j?.data);
+const deskQA=ps.filter(x=>/^QA /.test(x.name||''));
+const p0=deskQA.find(x=>x.appKey==='desk')||deskQA[0];const p=p0&&{...p0,id:p0.profileId,app_key:p0.appKey};
+if(!p)return {err:'no QA profile',n:ps.length,deskNames:ps.filter(x=>x.app_key==='desk').map(x=>x.name).slice(0,30)};
+o.profile=p.name+' '+p.id+' app='+p.app_key;const t0=new Date().toISOString();
+const g=await api('POST','/iam/profiles/'+p.id+'/permissions',{permission_key:'desk:macros:manage',effect:'grant'});o.grant=g.s+' '+String(g.t).slice(0,150);LED('3103: profile '+p.name+' granted desk:macros:manage (revert)');
+await sleep(4000);const d=await api('DELETE','/iam/profiles/'+p.id+'/permissions/desk:macros:manage');o.revoke=d.s+' '+String(d.t).slice(0,150);LED('3103: permission revoked ('+d.s+')');await sleep(5000);
+const q='app_key=iam&app_key=crm&app_key=workflow&app_key=mail&app_key=metadata-engine&app_key=settings-gateway&app_key=timeline&app_key=metadata&app_key=notify&app_key=billing&app_key=messaging&app_key=audit';
+const crmFeed=arr((await api('GET','/audit/events?limit=50&'+q)).j?.data).filter(x=>x.occurred_at>=t0);
+const all=arr((await api('GET','/audit/events?limit=50')).j?.data).filter(x=>x.occurred_at>=t0);
+const fmt=x=>x.occurred_at.slice(11,19)+' app='+x.app_key+' '+x.action.replace('audit.action.','')+' '+String(x.target_label).slice(0,30)+' '+(x.changes||[]).map(c=>c.field+':'+String(c.new_value||c.old_value).slice(0,30)).join(',');
+o.inCrmFeed=crmFeed.filter(x=>x.target_id===p.id).map(fmt);o.allEvents=all.filter(x=>x.target_id===p.id).map(fmt);
+fs.writeFileSync('../out/3103.json',JSON.stringify({t0,pid:p.id},null,1));return o;

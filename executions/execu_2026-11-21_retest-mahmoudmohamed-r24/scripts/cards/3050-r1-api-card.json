@@ -1,0 +1,51 @@
+{
+ "out": "3050-r1-api-card.png",
+ "title": "NDC-3050 · Omnichannel lead scoring rules · POST/PATCH /salesiq/people/scoring/rules · NDC-Staging owner · 19 Nov 2026",
+ "rows": [
+  [
+   "1 Name only (the ticket step)",
+   "POST {name:\"QA RT22 3050 name only\"}",
+   "400 VALIDATION_ERROR \"criteria must have at least one condition.\" — nothing saved (was 200, points 0, conditions [], enabled)",
+   "ok"
+  ],
+  [
+   "2 Empty body",
+   "POST {}",
+   "400 \"name is required.\" (unchanged)",
+   "ok"
+  ],
+  [
+   "3 Points 0 with a condition",
+   "POST {name, points:0, criteria:{pageurl CONTAINS qa-rt22-3050}}",
+   "400 \"points is required: give the rule a positive or a negative value (not 0).\"",
+   "ok"
+  ],
+  [
+   "4 No points",
+   "POST {name, criteria:{1 condition}}",
+   "400 same points message",
+   "ok"
+  ],
+  [
+   "5 Empty criteria, 5 points",
+   "POST {name, points:5, criteria:{conditions:[]}}",
+   "400 \"criteria must have at least one condition.\"",
+   "ok"
+  ],
+  [
+   "6 Valid rule",
+   "POST {name:\"QA RT22 3050 valid\", points:10, 1 condition}",
+   "200 saved: points 10, 1 condition, enabled true",
+   "ok"
+  ],
+  [
+   "7 Edit to empty / to 0",
+   "PATCH criteria:{conditions:[]}  ·  PATCH points:0",
+   "400 / 400 — rule stays points 10, 1 condition",
+   "ok"
+  ]
+ ],
+ "host": "staging-omnichannel.taviportal.com",
+ "who": "owner account",
+ "date": "19 Nov 2026"
+}

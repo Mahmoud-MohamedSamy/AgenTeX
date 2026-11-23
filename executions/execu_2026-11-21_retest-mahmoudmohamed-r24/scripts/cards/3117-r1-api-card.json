@@ -1,0 +1,10 @@
+{"out":"3117-r1-api-card.png","title":"Blueprint step refused for an unmet condition — agent CES2 (ticket owner), 19 Nov 2026 (after metadata-engine #247)","host":"staging-desk.taviportal.com","who":"agent CES2 + owner","date":"19 Nov 2026",
+"rows":[
+["Step config","Blueprint QA RT20 BS 3056 flow, step \"QA end\" (Escalated → Closed)","Shown when Priority = medium; no owner list","info"],
+["Ticket","#5117: Escalated, Priority Low, Ticket Owner CES2","condition not met","info"],
+["Run the step (CES2)","POST /desk/tickets/#5117/blueprint-transitions/end","422 BLUEPRINT_CRITERIA_NOT_MET \"This ticket does not meet the conditions for this step yet.\" (was 403 BLUEPRINT_NOT_OWNER)","ok"],
+["Ticket after","GET blueprint-state #5117","still Escalated","ok"],
+["Control: owner-only step","POST …/#4869/blueprint-transitions/admin (CES2 not an owner)","403 BLUEPRINT_NOT_OWNER \"You are not an owner of this transition.\"","ok"],
+["Stale screen","#5117 opened at Priority medium (QA end offered), owner sets Low, CES2 runs QA end","Dialog: \"This ticket doesn't meet this step's conditions yet. Open View configured actions to see what it needs.\"","ok"],
+["After reload","GET blueprint-transitions #5117","[] — step not offered; \"No transitions you can run\"","ok"]
+]}

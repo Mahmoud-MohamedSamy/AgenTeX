@@ -1,0 +1,1 @@
+const M = made.mod; for (const q of ['group_by=qa_pick&aggregate=fx_e7', 'group_by=qa_pick&aggregate=qa_num']) { const c = await api('GET', `/modules/${M}/records/board-summary?${q}`); log(q, E(c).slice(0, 220), JSON.stringify(c.j?.data?.columns || c.j?.data).slice(0, 300)); }

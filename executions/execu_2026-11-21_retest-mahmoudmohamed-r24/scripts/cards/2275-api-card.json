@@ -1,0 +1,8 @@
+{"out":"2275-api-card.png","title":"NDC-2275 round robin on 17 Nov: 13 tickets that should have been assigned in two departments, none assigned (round_robin_rules_enabled = true)","host":"staging-desk.taviportal.com","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["Counts the threshold should use (dev claim)","Records API: not Closed / not On Hold in QA AO Dept B; GET /desk/agents/{id}/workload","Test User 1: #4281-#4283, #4285 = 4, workload 4; Dev Team 2: #4284 = 1, workload 1 (phantoms gone)","ok"],
+["Threshold probe, one-agent rule, dept threshold = count+1 .. count+3","QA AO Dept B, offline allowed; Test User 1 thr 5,6,7 (#4825 #4827 #4830); Dev Team 2 thr 2,3,4 (#4836 #4837 #4841); Desk had each ticket within 1-3 s","All stay Unassigned, no assignment entry, even at 3 above the count","bad"],
+["Skill rule, QA AS6 Dept A, thresholds off, offline allowed","S2 held by Test User 1: #4828 #4831 #4835 skills S1+S2; edit adds skill on #4826","All Unassigned (expected Test User 1)","bad"],
+["Plain controls, thresholds off","Sequential rule, pool = owner (online, Email on): #4844, #4851 (also on update); pool Dev Team 2: #4846; Test User 1 (online) + Dev Team 2, QA AS6 Dept A: #4847","All Unassigned after 90-180 s; History only 'Ticket was created'","bad"],
+["Assignment switches","GET /desk/assignment/notification-settings","round_robin_rules_enabled: true (direct_rules_enabled false, not touched)","info"],
+["Import, automation ticked (GEN-13)","2 rows: no owner / Ticket Owner 'Mahmoud Samy' mapped","#4849 and #4848 both -> importer; no rule entry (as decided); mapped owner still ignored","info"]]}

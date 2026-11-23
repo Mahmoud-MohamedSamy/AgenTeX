@@ -1,0 +1,9 @@
+const G='bffe3175-a1fa-4ef7-9da3-f89117f9b922',L='841043e1-c078-41f9-8d6e-dfd61bee45c3',F='qa_rt19_gs_tier';const s=v=>({kind:'string',value:v});const o={};const LED=m=>fs.appendFileSync('../ledger.md','- '+new Date().toISOString().slice(0,19)+'Z CRM: '+m+'\n');
+const ids=[];for(const [n,v] of [['a','Bronze'],['b','Silver'],['c','Platinum']]){const r=await api('POST','/modules/'+L+'/records',{data:[{field:'first_name',value:s('QA RT22')},{field:'last_name',value:s('3088 '+n)},{field:F,value:s(v)}]});ids.push(r.j?.data?.id||r.s+' '+r.t.slice(0,120));}
+LED('3088: leads QA RT22 3088 a/b/c '+ids.join(','));fs.writeFileSync('../out/3088.json',JSON.stringify(ids));await sleep(3000);
+const list=async dir=>{const r=await api('GET','/modules/'+L+'/records?q='+encodeURIComponent('QA RT22 3088')+'&sort_by='+F+'&sort_dir='+dir+'&page_size=20');return r.s+' '+arr(r.j?.data?.items||r.j?.data).map(x=>(x.data||[]).find(z=>z.field===F)?.value?.value).join(' > ');};
+o.entered_asc=await list('asc');o.entered_desc=await list('desc');
+const g=(await api('GET','/global-sets/'+G)).j?.data;const u=await api('PUT','/global-sets/'+G,{name:g.name,description:g.description,colors_enabled:g.colors_enabled,values:g.values,row_version:g.row_version,sort_order:'alphabetical'});o.setAlpha=u.s+' '+(u.s>=300?u.t.slice(0,150):'');LED('3088: QA RT19 GS Tier sort_order alphabetical (revert to entered)');
+await sleep(2000);o.alpha_asc=await list('asc');
+const g2=(await api('GET','/global-sets/'+G)).j?.data;o.revert=(await api('PUT','/global-sets/'+G,{name:g2.name,description:g2.description,colors_enabled:g2.colors_enabled,values:g2.values,row_version:g2.row_version,sort_order:'entered'})).s;o.sortNow=(await api('GET','/global-sets/'+G)).j?.data?.sort_order;LED('3088: sort_order reverted ('+o.sortNow+')');
+return o;

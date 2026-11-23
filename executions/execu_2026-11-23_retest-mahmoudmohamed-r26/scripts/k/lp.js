@@ -1,0 +1,2 @@
+const r=await api('GET','/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/list-preferences');const p=r.j?.data;fs.writeFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-23_retest-mahmoudmohamed-r26/out/leads-prefs-now.json',JSON.stringify(p,null,1));
+const s=JSON.stringify(p);return {s:r.s,version:p?.version,keys:Object.keys(p?.prefs||p||{}).join(','),mode:(s.match(/"(viewMode|mode|layoutMode|displayMode|view_type)":"[^"]+"/g)||[]).slice(0,6)};

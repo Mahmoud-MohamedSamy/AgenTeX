@@ -1,0 +1,1 @@
+const id=made.tickets[made.tickets.length-4];const g=(await api('GET','/modules/'+TK+'/records/'+id)).j?.data;return {top:Object.keys(g||{}).join(','),layout:g?.layoutId||g?.layout_id,fields:(g?.data||[]).map(x=>x.field).filter(f=>/layout|checkbox|category/.test(f)).join(','),cb:JSON.stringify((g?.data||[]).find(x=>x.field==='checkbox_mandatory_by_layout_rules'))};

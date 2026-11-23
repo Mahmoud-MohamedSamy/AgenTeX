@@ -1,0 +1,3 @@
+const items=[];let cur='';for(let i=0;i<60;i++){const r=await api('GET','/audit/recycle-bin/items?app_key='+(process.env.RBAPP||'desk')+'&limit=200'+(cur?'&cursor='+encodeURIComponent(cur):''));if(r.s>=300){return 'err '+r.s+' '+String(r.t).slice(0,200);}const L=arr(r.j?.data?.items||r.j?.data);items.push(...L);cur=r.j?.meta?.next_cursor;if(!cur||!L.length)break;}
+fs.writeFileSync('../out/rb-'+(process.env.RBAPP||'desk')+'.json',JSON.stringify(items));const RE=/QA RT(1[89]|2[0-3])/;
+return {total:items.length,keys:Object.keys(items[0]||{}).join(','),qaLabel:items.filter(x=>RE.test(x.record_label||'')).length,sample:items.slice(0,2).map(x=>JSON.stringify(x).slice(0,300))};

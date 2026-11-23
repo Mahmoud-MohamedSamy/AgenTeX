@@ -1,0 +1,13 @@
+const ID = '9ec8bdc5-2362-4386-a4cd-e5bee332d0c7'; const out = {};
+await page.goto(H + '/views/all/tickets/' + ID, { waitUntil: 'commit' }); await page.evaluate(() => localStorage.setItem('anyware_language', 'en')); await page.reload({ waitUntil: 'domcontentloaded' });
+for (let i = 0; i < 40; i++) { await sleep(3000); if (/View configured actions/.test(await text())) break; } await sleep(3000);
+const t = (await text()).replace(/\s+/g, ' '); const i = t.indexOf('QA RT20 BS 3056 flow /'); out.header = t.slice(i, i + 200);
+out.hdrBtns = await page.getByRole('button').evaluateAll(es => es.map(e => e.innerText.trim()).filter(x => /^QA /.test(x)));
+await shot('3056-r3-owner-open-ticket.png');
+await page.getByText('View configured actions', { exact: true }).last().click(); await sleep(3000);
+const d = page.getByRole('dialog').first(); out.popup = (await d.innerText().catch(() => '')).replace(/\s+/g, ' ');
+out.marks = await d.evaluate(e => [...e.querySelectorAll('[class*=primary-light]')].map(x => x.innerText.replace(/\s+/g, ' ').slice(0, 60)));
+await shot('3056-r3-owner-open-popup.png');
+await d.evaluate(e => { [e, ...e.querySelectorAll('*')].filter(x => x.scrollHeight > x.clientHeight + 20 && getComputedStyle(x).overflowY !== 'visible').forEach(x => x.scrollTop = x.scrollHeight); }); await sleep(700); await shot('3056-r3-owner-open-popup-bottom.png');
+await page.keyboard.press('Escape'); await sleep(1000); out.closed = (await page.getByRole('dialog').count()) === 0;
+return out;

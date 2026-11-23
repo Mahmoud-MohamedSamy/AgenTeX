@@ -1,0 +1,7 @@
+{"out":"3059-api-card.png","title":"NDC-3059 — writes as the View-only agent (CES2) on #7132 (Open) and #7133 (Closed), QA RT26 VO Dept","host":"staging-desk.taviportal.com","who":"agent Customer Experience Specialists 2 (View only in QA RT26 VO Dept)","date":"23 Nov 2026",
+"rows":[
+["Edit fields","PATCH /modules/{tickets}/records/#7132 phone · resolution\nPATCH /modules/{tickets}/records/#7133 (Closed) due_date","403 PERMISSION_DENIED (all three)\nvalues after: phone, resolution, due date still empty","ok"],
+["Reply / Close","POST /desk/tickets/#7132/replies\nPOST /desk/tickets/#7132/close","403 FORBIDDEN \"You can view this ticket but not change it.\" (TICKET_WRITE_FORBIDDEN)","ok"],
+["Comments","POST /desk/tickets/#7132/comments is_public:true\nPOST … is_public:false","public 403 COMMENT_PUBLIC_FORBIDDEN\nprivate 201 (allowed, as the settings text says)","ok"],
+["Status after","GET /desk/tickets/#7132 · #7133","Open · Closed (unchanged)","ok"],
+["Info","PATCH /desk/tickets/#7132 {priority} / {status}","200 but nothing changes (same no-op as for the owner; noted in r22)","info"]]}

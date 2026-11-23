@@ -1,0 +1,134 @@
+{
+ "out": "BUG-wf-empty-website-list-vs-zoho.png",
+ "ticket": "NEW BUG",
+ "priority": "medium",
+ "label": "TAVI vs ZOHO",
+ "verdict": "FAIL",
+ "title": "Web Forms | A form with no website listed shows on no website, although the Embed dialog says any website can show it",
+ "env": "NDC-Staging (CRM + Desk) vs Zoho Desk live (techegysolutions) · signed-out Edge on a local test website http://127.0.0.1:5500 · 19 Nov 2026",
+ "date": "19 Nov 2026",
+ "panels": [
+  {
+   "img": "2751-side-desk-dialog2.png",
+   "caption": "TAVI Embed code dialog: \"No website is listed … so any website can show it\"",
+   "crop": [
+    489,
+    400,
+    622,
+    230
+   ],
+   "boxes": [
+    {
+     "b": [
+      505,
+      516,
+      1095,
+      560
+     ],
+     "n": 1,
+     "kind": "INFO"
+    }
+   ]
+  },
+  {
+   "w": 1280,
+   "h": 720,
+   "img": "2751-side-crm-empty.png",
+   "caption": "TAVI: same code on the test website → blank (session 404)",
+   "crop": [
+    0,
+    0,
+    640,
+    300
+   ],
+   "boxes": [
+    {
+     "b": [
+      6,
+      70,
+      630,
+      290
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  },
+  {
+   "w": 1280,
+   "h": 900,
+   "img": "2751-side-zoho-site-open.png",
+   "caption": "Zoho Desk live: no website setting at all; the form shows on the same outside page",
+   "crop": [
+    0,
+    0,
+    1280,
+    680
+   ],
+   "boxes": [
+    {
+     "b": [
+      160,
+      175,
+      1120,
+      656
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "wf-empty-list-card.png",
+   "caption": "Requests and results",
+   "crop": [
+    0,
+    0,
+    1600,
+    470
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      99,
+      1564,
+      157
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "What TAVI tells the admin",
+   "Empty list = any website",
+   "\"No website is listed in the form's settings, so any website can show it.\" (CRM and Desk)",
+   "INFO"
+  ],
+  [
+   2,
+   "TAVI form with an empty list on a website",
+   "Form shows (as the dialog says)",
+   "Nothing shows: /session 404, \"This form is not available.\" (CRM and Desk)",
+   "FAIL"
+  ],
+  [
+   3,
+   "Zoho Desk (live)",
+   "Reference",
+   "No website list exists; the pasted widget shows and opens on any website",
+   "PASS"
+  ],
+  [
+   4,
+   "TAVI with the website listed",
+   "—",
+   "Works (form shows and submits) — only the empty-list case is broken",
+   "INFO"
+  ]
+ ]
+}

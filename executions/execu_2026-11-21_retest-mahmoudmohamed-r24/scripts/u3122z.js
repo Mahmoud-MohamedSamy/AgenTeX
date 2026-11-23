@@ -1,0 +1,1 @@
+await page.goto(H+'/views/all/tickets/902a9bc5-56a9-4061-9694-01d9291f6f32',{waitUntil:'commit'});await sleep(15000);await shot('3122-r1-z.png',{timeout:90000});return (await page.locator('body').innerText()).replace(/\s+/g,' ').slice(0,400);

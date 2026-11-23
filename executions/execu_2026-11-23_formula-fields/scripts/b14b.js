@@ -1,0 +1,3 @@
+const M = made.mod; const recs = L((await api('GET', `/modules/${M}/records?limit=20&sort_by=created_at&sort_dir=desc`)).j?.data); const id = recs.find(r => flat(r.data).name === 'QA FX H9 rec').id;
+for (const body of [{ qa_num: 7 }, { fields: { qa_num: 7 } }, { data: data({ qa_num: 7 }) }]) { const x = await api('POST', `/modules/${M}/records/${id}/blueprint-transitions/t1`, body); log(JSON.stringify(body).slice(0, 50), E(x).slice(0, 220)); if (x.s < 300) break; }
+await sleep(3000); const v = await getRec(M, id); log('after', JSON.stringify({ qa_status: v.qa_status, qa_num: v.qa_num, fx_e7: v.fx_e7, ui: v.qa_fx_ui_double }));

@@ -1,0 +1,29 @@
+# NDC-2976 Layout Rules | Deal stage bar refuses a stage change with no way to fill the mandatory field [Done]
+Summary
+Deal stage bar refuses a stage change with no way to fill the mandatory field. TAVI refuses with "approval note is required" and opens no form.
+Environment
+- NDC-Staging (staging-crm.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2. Test data was deleted after the run.
+Steps to reproduce
+- Rule on a Deals layout: Stage = Negotiation and discount > 20 makes the approval note mandatory.
+- On the deal page click the Negotiation stage.
+Expected result
+Zoho asks for the mandatory field in a pop-up before moving the stage.
+Actual result
+- TAVI refuses with "approval note is required" and opens no form.
+- The deal stays in Qualification.
+- Same pattern as B-02.
+Notes
+- Test cases G9 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- Evidence: crm-G9.png (attached).
+
+== COMMENTS
+--- 2026-11-16T10:10:31.599946+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Click Negotiation (rule: stage Negotiation and discount > 20 → approval note mandatory) → "Review details" with QA RT18 approval note*, Cancel, Save (the first PATCH 422 is caught by the pop-up) [PASS]
+- Fill note, Save → PATCH 200; stage bar on Negotiation [PASS]
+- Record read back → API: negotiation / discount 30 / "QA RT18 approved" [PASS]
+Evidence: NDC-2976-retest-PASS.png (attached)

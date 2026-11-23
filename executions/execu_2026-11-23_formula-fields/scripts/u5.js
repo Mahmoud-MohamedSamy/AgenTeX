@@ -1,0 +1,12 @@
+await page.goto(H + `/modules/${made.mod}/records/new`, { waitUntil: 'domcontentloaded' });
+for (let i = 0; i < 40; i++) { await sleep(2000); if (/QA FX UI Double/.test(await text())) break; } await sleep(1500);
+await shot('J1-create-form');
+const row = page.locator('div').filter({ hasText: /^QA FX UI Double/ }).last();
+log('formula inputs', await page.locator('input[placeholder="Computed value"], input[readonly], [aria-readonly=true]').count());
+const name = page.getByPlaceholder('Name').first(); await name.fill('QA FX UI H1');
+const num = page.getByLabel('QA Num', { exact: true }); log('num inputs', await num.count()); await num.first().fill('4'); await sleep(1500);
+await shot('H2-before-save'); log('fx box before save', await page.locator('input[placeholder="Computed value"]').first().inputValue().catch(() => '?'));
+await page.getByRole('button', { name: /^Save$/ }).first().click(); await sleep(6000);
+log('url after save', page.url()); await shot('H1-after-save');
+const t = await text('main'); const i = t.indexOf('QA FX UI Double'); log('record page around formula', t.slice(Math.max(0, i - 50), i + 120));
+fs.writeFileSync(RUN + '/out/h1-url.txt', page.url());

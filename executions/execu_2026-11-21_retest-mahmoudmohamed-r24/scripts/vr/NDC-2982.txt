@@ -1,0 +1,31 @@
+# NDC-2982 Layout Rules | Removing one target field from the layout switches off the whole rule [Done]
+Summary
+Removing one target field from the layout switches off the whole rule. The whole rule stops: note is no longer mandatory.
+Environment
+- NDC-Staging (staging-crm.taviportal.com and staging-desk.taviportal.com), Chromium, 12 November 2026, admin account.
+- Leads layout "QA LR1112 Layout" with test fields type (Refund, Question, Partner, Other), tier, filter (pick lists), order, note, reason (text), vip (checkbox), radio, date and email2; the same setup on Desk Tickets. Test data was deleted after the run.
+Steps to reproduce
+- Remove "date" (a target of the vip rule) from the layout.
+- Tick vip.
+Expected result
+Only the missing target is flagged. The rest of the rule keeps working.
+Actual result
+- The whole rule stops: note is no longer mandatory.
+- Other rules that mention date in one row stop too.
+- The same happens when a section is deleted (J6) or an option is deleted (J8).
+Notes
+- Test cases J3 in the Layout Rules test sheet (https://claude.ai/artifact/PUdj9axtAjCR8UQpegu5qC).
+- CRM and Desk share the same rule engine, so this applies to both apps.
+- Evidence: crm-J3.png, crm-J3-editor.png, crm-J6.png, crm-J8.png (attached).
+
+== COMMENTS
+--- 2026-11-16T10:11:09.731892+02:00
+Retest PASS — 15 Nov 2026 → moved to Done
+Environment: staging-crm.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)
+Method: Manual browser + API
+Checked:
+- Remove date (vip rule: show date + require note) from the layout, tick vip → note mandatory (aria-required true); Save blocked "This field is required" [PASS]
+- Rule list / editor → Banner: "Parts of this rule no longer exist — they are skipped, the rest of the rule still applies: 'QA RT18 date' is no longer on this layout"; API staleTargets lists only date [PASS]
+- Other rules that mention date in one row (basic) → basic still active; Refund → order shown + mandatory [PASS]
+- J6 section deleted / J8 option deleted → staleTargets section_unknown / option_retired; Refund → order mandatory, radio Yes → email2 mandatory, vip → note mandatory [PASS]
+Evidence: NDC-2982-retest-PASS.png (attached)

@@ -1,0 +1,7 @@
+const fs=require('fs');const V=JSON.parse(fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-23_retest-mahmoudmohamed-r26/scripts/k/vo.json','utf8'));const R={reqs:[]};
+page.on('response',async r=>{const u=r.url();if(/\/api\/v1\//.test(u)&&!/heartbeat|summaries|read$|resolved-batch|realtime|lookups/.test(u)&&r.request().method()!=='GET')R.reqs.push(r.request().method()+' '+u.replace(/^https:\/\/[^/]+/,'').replace(/[0-9a-f-]{36}/g,'ID')+' → '+r.status()+' '+(await r.text().catch(()=>'')).slice(0,200));});
+await page.goto(H+'/views/all/tickets/'+V.t1,{waitUntil:'commit'});await page.getByText('#7132').first().waitFor({timeout:120000});await sleep(7000);
+await page.getByRole('button',{name:/^Actions/}).first().click();await sleep(1500);await shot('3059-d-actions.png');
+await page.getByText('QA RT18 CA echo').first().click();await sleep(2500);R.dlg=(await page.locator('body').innerText()).replace(/\s+/g,' ').match(/.{0,80}(echo|run|confirm|can view|not change).{0,200}/gi)?.slice(0,4);await shot('3059-d-after.png');
+const b=page.getByRole('button',{name:/^(Run|Execute|Confirm)/});if(await b.count()){await b.first().click();await sleep(4000);await shot('3059-d-run.png');R.after=(await page.locator('body').innerText()).replace(/\s+/g,' ').match(/.{0,80}(fail|error|success|not change|can view|ran).{0,160}/gi)?.slice(0,4);}
+return R;

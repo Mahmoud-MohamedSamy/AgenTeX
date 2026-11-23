@@ -1,0 +1,2 @@
+const R={reqs:[]};page.on('response',async r=>{const u=r.url();if(/\/api\/v1\/.*view/i.test(u)&&r.request().method()==='GET'){let n='';try{const j=await r.json();const t=JSON.stringify(j);n=' len='+t.length+' qa='+((t.match(/QA RT(1[89]|2[0-3])[^"]{0,30}/g)||[]).length);}catch(e){}R.reqs.push(u.replace(/^https:\/\/[^/]+/,'').replace(/[0-9a-f-]{36}/g,'ID').slice(0,110)+' '+r.status()+n);}});
+await page.goto(H+'/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/records',{waitUntil:'commit'});await sleep(20000);return R;

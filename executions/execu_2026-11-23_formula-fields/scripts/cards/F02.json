@@ -1,0 +1,45 @@
+{
+ "out": "F02-card.png",
+ "title": "Workflow field update and blueprint transition do not recalculate formulas",
+ "host": "staging-crm / staging-desk.taviportal.com",
+ "who": "owner",
+ "date": "23 Nov 2026",
+ "rows": [
+  [
+   "Workflow rule (CRM)",
+   "Rule \"QA FX H8 set num\": on create, FieldUpdate qa_num = 7\nPOST record { qa_num: 1 }",
+   "qa_num = 7 (rule ran)\nfx_e7 (qa_num * 2) = 2   ← expected 14",
+   "bad"
+  ],
+  [
+   "Blueprint transition (CRM)",
+   "POST /records/{id}/blueprint-transitions/t1\n{ qa_num: 7 }",
+   "200 · qa_status Closed · qa_num 7\nfx_e7 = 2   ← expected 14",
+   "bad"
+  ],
+  [
+   "Workflow rule (Desk)",
+   "Same rule on QA FX Desk, record { qa_num: 1 }",
+   "qa_num = 7 · fx_e7 = 2   ← expected 14",
+   "bad"
+  ],
+  [
+   "Blueprint transition (Desk Tickets)",
+   "QA FX H9 ticket: transition asks Priority, set High\nformula qa_fx_hi = priority = \"High\"",
+   "200 · status On Hold · priority High\nqa_fx_hi = false   ← expected true",
+   "bad"
+  ],
+  [
+   "Control: API edit",
+   "PATCH record { qa_num: 10 }",
+   "fx_b2 (qa_num * 1.5) = 15 ✓",
+   "ok"
+  ],
+  [
+   "Control: mass update",
+   "POST /records/mass-update-jobs { qa_num: 3 } on 3 records",
+   "fx_e7 = 6 on all 3 ✓",
+   "ok"
+  ]
+ ]
+}

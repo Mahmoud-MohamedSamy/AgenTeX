@@ -1,0 +1,1 @@
+const r = await api('GET', '/web-forms'); const d = L(r.j?.data); log('web forms', r.s, d.length, JSON.stringify(d.slice(0, 5).map(w => ({ id: w.id, name: w.name, status: w.status || w.isActive, module: w.moduleId || w.module_key, slug: w.slug || w.publicId || w.public_id }))).slice(0, 900));

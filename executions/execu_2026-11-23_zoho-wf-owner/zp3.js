@@ -1,0 +1,6 @@
+await page.goto('https://desk.zoho.com/agent/techegysolutions/tech/tickets/list/all-cases', { waitUntil: 'domcontentloaded', timeout: 90000 }); await sleep(12000);
+const api = (m, p, b) => page.evaluate(async ([m, p, b]) => { const csrf = (document.cookie.match(/crmcsr=([^;]+)/) || [])[1]; const r = await fetch(p, { method: m, headers: { 'X-ZCSRF-TOKEN': 'crmcsrfparam=' + csrf, orgId: '946801013', 'Content-Type': 'application/json' }, body: b ? JSON.stringify(b) : undefined, credentials: 'include' }); return { s: r.status, t: await r.text() }; }, [m, p, b]);
+const B = '/supportapi/zd/techegysolutions/api/v1/', D = '1499272000000432293';
+for (const [p, b] of [['workflows?departmentId=' + D + '&module=tickets', {}], ['workflows', { departmentId: D, module: 'tickets' }], ['fieldUpdates?departmentId=' + D + '&module=tickets', {}]]) { const r = await api('POST', B + p, b); out['POST ' + p] = r.s + ' ' + r.t.slice(0, 700); }
+for (const p of ['fieldUpdates?module=tickets&departmentId=' + D, 'automationAlerts?module=tickets&departmentId=' + D, 'workflows/actions?module=tickets&departmentId=' + D, 'workflows/criteriaFields?module=tickets&departmentId=' + D]) { const r = await api('GET', B + p); out['GET ' + p] = r.s + ' ' + r.t.slice(0, 400); }
+require('fs').writeFileSync('zp3.json', JSON.stringify(out, null, 1));

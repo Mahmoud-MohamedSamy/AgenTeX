@@ -1,0 +1,177 @@
+{
+ "out": "NDC-3138-retest-PASS.png",
+ "ticket": "NDC-3138",
+ "priority": "medium",
+ "label": "RETEST PASS",
+ "verdict": "PASS",
+ "title": "Web Forms | A form with no website listed shows on no website, although the Embed dialog says any website can show it",
+ "env": "NDC-Staging · signed-out Edge on http://localhost:5500 (no form lists it) · \"Add it to your website\" script code · CRM (Leads) + Desk (Customer Support) forms",
+ "date": "21 Nov 2026",
+ "panels": [
+  {
+   "img": "3138-localhost-crm24-sent.png",
+   "w": 1280,
+   "h": 1000,
+   "crop": [
+    0,
+    0,
+    720,
+    300
+   ],
+   "caption": "CRM form with no website: shown on localhost:5500 and sent (200)",
+   "boxes": [
+    {
+     "b": [
+      8,
+      80,
+      608,
+      272
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "3138-localhost-desk24-sent.png",
+   "w": 1280,
+   "h": 1000,
+   "crop": [
+    0,
+    0,
+    720,
+    300
+   ],
+   "caption": "Desk form with no website: shown on localhost:5500 and sent (200) → ticket #5980",
+   "boxes": [
+    {
+     "b": [
+      8,
+      80,
+      608,
+      272
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "3138-localhost-fA24.png",
+   "w": 1280,
+   "h": 1000,
+   "crop": [
+    0,
+    0,
+    720,
+    300
+   ],
+   "caption": "Control: a form that lists 127.0.0.1:5500 shows nothing on localhost (session 404)",
+   "boxes": [
+    {
+     "b": [
+      8,
+      70,
+      608,
+      280
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "img": "3138-crm-embed-howto.png",
+   "w": 1600,
+   "h": 900,
+   "crop": [
+    464,
+    45,
+    672,
+    650
+   ],
+   "caption": "Embed code dialog (no website listed): step 3 now matches what happens",
+   "boxes": [
+    {
+     "b": [
+      510,
+      576,
+      1090,
+      616
+     ],
+     "n": 4
+    },
+    {
+     "b": [
+      506,
+      396,
+      1092,
+      432
+     ],
+     "n": 5
+    }
+   ]
+  },
+  {
+   "img": "3138-api-card.png",
+   "full": true,
+   "crop": [
+    0,
+    0,
+    1600,
+    480
+   ],
+   "w": 1600,
+   "h": 900,
+   "caption": "Public API from three origins"
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "CRM form, empty website list, on another website",
+   "Form appears and submits",
+   "Shown on localhost:5500 + 127.0.0.1:5500; sent 200; lead created",
+   "PASS"
+  ],
+  [
+   2,
+   "Desk form, empty website list",
+   "Same as CRM",
+   "Shown and sent 200; ticket #5980",
+   "PASS"
+  ],
+  [
+   3,
+   "Form that lists a website, on another site",
+   "Still refused (unchanged)",
+   "Nothing shown; session 404 from localhost / example.com",
+   "PASS"
+  ],
+  [
+   4,
+   "Embed dialog \"How to use it\" step 3",
+   "Says any website can show it, and that is true",
+   "\"No website is listed … so any website can show it\" — confirmed",
+   "PASS"
+  ],
+  [
+   5,
+   "Hosted link / iframe note",
+   "Any website",
+   "Unchanged, works",
+   "INFO"
+  ],
+  [
+   "A5",
+   "Save with no website and share link off",
+   "Refused (dev note)",
+   "422 with a clear message",
+   "PASS"
+  ],
+  [
+   "—",
+   "\"Add it to your website\" card subtitle",
+   "—",
+   "Still says \"shows the form on the websites listed in its settings\" (no website listed) — wording only",
+   "INFO"
+  ]
+ ]
+}

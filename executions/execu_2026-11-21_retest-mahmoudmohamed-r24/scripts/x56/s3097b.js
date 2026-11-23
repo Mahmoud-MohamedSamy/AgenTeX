@@ -1,0 +1,7 @@
+const DD='6d68dc90-7ecf-4829-bf51-9beb87282b87',LA='51666421-12cb-426e-b91e-3003a2a1f923';const o={};
+const g0=(await api('GET','/desk/departments/'+DD)).j?.data;fs.writeFileSync(RUN+'/out/dd-before-3097.json',JSON.stringify({name:g0.name,agent_user_ids:g0.agent_user_ids,view_only_agent_user_ids:g0.view_only_agent_user_ids}));
+let r=await api('PATCH','/desk/departments/'+DD,{name:g0.name,agent_user_ids:[...g0.agent_user_ids,LA],view_only_agent_user_ids:g0.view_only_agent_user_ids});o.addLightToDept=E(r);if(r.s<300)LED('3097: light agent test user 2 added to '+g0.name+' (restore from out/dd-before-3097.json)');
+const r1=await api('POST','/desk/teams',{name:'QA RT22 3097 light team',description:'QA RT22 retest, delete after',department_id:DD,sources:[{kind:'agent',ref_id:LA}],color:'blue',icon:'star'});o.createWithLight=E(r1);if(r1.j?.data?.id){made.other.push('team '+r1.j.data.id);keep();LED('3097: team (UNEXPECTED) '+r1.j.data.id);}
+const r2=await api('POST','/desk/teams',{name:'QA RT22 3097 full team',description:'QA RT22 retest, delete after',department_id:DD,sources:[{kind:'agent',ref_id:OWNER}],color:'blue',icon:'star'});o.createFull=E(r2);const tid=r2.j?.data?.id;
+if(tid){made.other.push('team '+tid);keep();LED('3097: team QA RT22 3097 full team '+tid);o.patchAddLight=E(await api('PATCH','/desk/teams/'+tid,{sources:[{kind:'agent',ref_id:OWNER},{kind:'agent',ref_id:LA}]}));o.members=JSON.stringify((await api('GET','/desk/teams/'+tid)).j?.data?.member_user_ids||'');}
+fs.writeFileSync(RUN+'/out/3097.json',JSON.stringify({tid}));return o;

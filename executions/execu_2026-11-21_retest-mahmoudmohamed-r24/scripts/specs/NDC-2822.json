@@ -1,0 +1,183 @@
+{
+ "out": "NDC-2822-retest-PARTIAL.png",
+ "ticket": "NDC-2822",
+ "priority": "medium",
+ "label": "RETEST PARTIAL",
+ "verdict": "PARTIAL",
+ "title": "Web Forms | Form fields need their own validation, in the Front-End and in the Back-End",
+ "env": "NDC-Staging · CRM Leads forms \"QA RT22 2822 A\" (text/number/decimal/date/lists) and \"B\" (email/phone/text, also Arabic) + Desk Tech Webform · signed-out Edge on 127.0.0.1:5500 + direct API",
+ "date": "19 Nov 2026",
+ "panels": [
+  {
+   "w": 1280,
+   "h": 1300,
+   "img": "2822-A-bad-blur.png",
+   "caption": "Front-End: a message under each bad field on leaving it; Send blocked, focus on Full Name, values kept",
+   "crop": [
+    0,
+    80,
+    620,
+    740
+   ],
+   "boxes": [
+    {
+     "b": [
+      22,
+      118,
+      594,
+      190
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      22,
+      218,
+      594,
+      290
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      22,
+      318,
+      594,
+      390
+     ],
+     "n": 1,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      22,
+      418,
+      594,
+      490
+     ],
+     "n": 1,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "w": 1280,
+   "h": 1100,
+   "img": "2822-B-ar-blur.png",
+   "caption": "Arabic form: right-to-left, Arabic messages",
+   "crop": [
+    672,
+    80,
+    600,
+    460
+   ],
+   "boxes": [
+    {
+     "b": [
+      686,
+      196,
+      1258,
+      266
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      686,
+      296,
+      1258,
+      366
+     ],
+     "n": 3,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      686,
+      396,
+      1258,
+      466
+     ],
+     "n": 3,
+     "kind": "PASS"
+    }
+   ]
+  },
+  {
+   "img": "2822-r1-api-card.png",
+   "caption": "Back-End: direct submissions (no form page)",
+   "crop": [
+    0,
+    0,
+    1600,
+    600
+   ],
+   "boxes": [
+    {
+     "b": [
+      36,
+      471,
+      1564,
+      529
+     ],
+     "n": 6,
+     "kind": "FAIL"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Front-End rules (text min/max, spaces, number, decimal, date range, email, phone)",
+   "Message under the field, Send blocked, focus first invalid, values kept",
+   "All shown; Send blocked; focus Full Name; values kept; max length also stops typing at 10",
+   "PASS"
+  ],
+  [
+   2,
+   "Builder save refuses bad rules",
+   "Refused with a per-field error",
+   "422: max below min, bad date, latest before earliest, rule the field can't take, length outside 1–255",
+   "PASS"
+  ],
+  [
+   3,
+   "Arabic",
+   "Messages in Arabic, RTL",
+   "dir=rtl, Arabic messages in the browser and from the server",
+   "PASS"
+  ],
+  [
+   4,
+   "Back-End direct API, CRM + Desk",
+   "4xx, per-field error, no record",
+   "422 WEB_FORM_INVALID with path/type/message per field; unknown field refused; no record created",
+   "PASS"
+  ],
+  [
+   5,
+   "Valid submission",
+   "Record with correct values",
+   "Lead saved: name trimmed, 42.0 → 42, decimal 2.5, date 2026-11-20",
+   "PASS"
+  ],
+  [
+   6,
+   "Whole number (Number field) with decimals",
+   "Refused in both layers (dev note lists a whole-number message)",
+   "\"5.5\" accepted by the browser and the server (200); lead e51e9372 has number_2 = 5.5",
+   "FAIL"
+  ],
+  [
+   7,
+   "Not checked",
+   "—",
+   "File type/size/count rules and hidden fields (not in the dev note)",
+   "INFO"
+  ]
+ ]
+}

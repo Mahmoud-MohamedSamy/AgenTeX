@@ -1,0 +1,14 @@
+const ids = Array.from({ length: 501 }, (_, i) => '00000000-0000-4000-8000-' + String(i).padStart(12, '0'));
+const s = await saveDraft(d => { d.tia = { ...(d.tia || {}), allowed_profile_ids: [], allowed_user_ids: ids }; });
+const a = await getAgent();
+const n = (a.draft_definition.tia.allowed_user_ids || []).length;
+result('D-07', s.s >= 400 || n <= 500 ? 'Pass' : 'Finding', `API draft with 501 user ids → ${s.s} ${s.err?.code||''} ${s.err?.message||''}; stored ${n}. UI cut warning at 500 is UI-only.`);
+result('D-08', 'Pass', 'Unknown profile + user UUIDs accepted (draft 200, deploy 200), no crash; nobody matches. UI chip "Unknown" to see in UI pass. Note: no validation of ids.');
+result('D-02', 'Pass', 'Only user RST (v20): RST OK; ADM + OWN TIA_NOT_IN_AUDIENCE / reason not_in_audience; NOP forbidden');
+result('D-03', 'Pass', 'Only profile Desk Administrator (v21): ADM OK; RST + OWN not_in_audience');
+result('D-04', 'Pass', 'Only user NOP (no ai:tia:use) (v22): NOP still 403 forbidden — audience does not grant the permission');
+result('D-05', 'Pass', 'p:[] u:[] (v23): everyone incl. owner not_in_audience');
+result('D-06', 'Finding', 'Owner is not exempt: with an audience that does not list the owner, ndc-staging-owner gets TIA_NOT_IN_AUDIENCE (D-02, D-03, D-05). The admin who set it can lock themselves out of the chat; recorded, not necessarily wrong.');
+const rs = await saveDraft(() => JSON.parse(JSON.stringify(BASEDEF.draft_definition)), { description: BASEDEF.description }); const rd = await deploy(); const b = await getAgent();
+ledger(`restored Tia after D: ${rs.s}/${rd.s} v${b.deployed_version_no}`);
+return { s: s.s, n, v: b.deployed_version_no, same: JSON.stringify(b.draft_definition) === JSON.stringify(BASEDEF.draft_definition) };

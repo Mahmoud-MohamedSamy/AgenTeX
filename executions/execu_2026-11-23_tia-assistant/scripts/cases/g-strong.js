@@ -1,0 +1,14 @@
+const g0 = (await api('GET', '/agents/runtime-settings')).j?.data;
+const tries = [];
+const put = async b => { const r = await api('PUT', '/agents/runtime-settings/tia-strong-steps', b); tries.push(JSON.stringify(b) + ' → ' + r.s + ' ' + (r.j?.error?.code || '') + ' ' + (r.j?.error?.message || '').slice(0, 80)); return r; };
+await put({ tia_strong_steps_per_user_daily: 5, tia_strong_steps_per_workspace_daily: 50, expected_version: g0.version });
+const g1 = (await api('GET', '/agents/runtime-settings')).j?.data;
+await put({ tia_strong_steps_per_user_daily: 11, tia_strong_steps_per_workspace_daily: 50, expected_version: g1.version });
+await put({ tia_strong_steps_per_user_daily: -1, tia_strong_steps_per_workspace_daily: 50, expected_version: g1.version });
+await put({ tia_strong_steps_per_user_daily: 1.5, tia_strong_steps_per_workspace_daily: 50, expected_version: g1.version });
+await put({ tia_strong_steps_per_user_daily: 4, tia_strong_steps_per_workspace_daily: 101, expected_version: g1.version });
+await put({ tia_strong_steps_per_user_daily: 4, tia_strong_steps_per_workspace_daily: 50, expected_version: g0.version });
+const g2 = (await api('GET', '/agents/runtime-settings')).j?.data;
+const back = await put({ tia_strong_steps_per_user_daily: g0.tia_strong_steps_per_user_daily, tia_strong_steps_per_workspace_daily: g0.tia_strong_steps_per_workspace_daily, expected_version: g2.version });
+const g3 = (await api('GET', '/agents/runtime-settings')).j?.data; const st = (await api('GET', '/agents/runtime-settings/tia-strong-steps')).j?.data;
+return { tries, after1: [g1.tia_strong_steps_per_user_daily, g1.tia_strong_steps_per_workspace_daily, g1.version], final: [g3.tia_strong_steps_per_user_daily, g3.tia_strong_steps_per_workspace_daily, g3.version], st };

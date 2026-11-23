@@ -1,0 +1,10 @@
+{"out":"2275-zoho-api-card.png","title":"Zoho Desk LIVE — Round Robin behaviour (QA RT20 AZ, 17 Nov 2026 12:09-12:24 UTC)","host":"desk.zoho.com portal techegysolutions (org 946801013)","who":"Zoho admin (online) + test agent 1 (offline)","date":"17 Nov 2026",
+"rows":[
+["1 RR on create","Rule 'QA RT20 AZ RR' (TechEgySolutions, Ticket Create, Subject starts with QA RT20 AZ, Sequential, test agent 1); offline ON, dept threshold 1","#140 assigned to test agent 1 at create (agent had 0 Open)","ok"],
+["2 At threshold","Next ticket while test agent 1 has 1 Open (= threshold 1)","#141 stays Unassigned (waits); #142, #143 also wait","ok"],
+["3 Count = Open in THIS dept only","Rule 'QA RT20 AZ RR Tech' (Tech dept, admin online); Tech threshold 1; admin has 0 Open in Tech, 2 Open in TechEgySolutions","#145 assigned to admin -> tickets in other departments are not counted; #146 waits (admin now 1 Open in Tech)","ok"],
+["4 On Hold not counted","#145 set On Hold (Tech has no blueprint); new ticket","#147 assigned to admin (On Hold ticket not counted)","ok"],
+["5 Backlog (everyone full)","Tech: Assign backlogs ON; #146 waiting; slot freed by On Hold","#146 still Unassigned after 60 s and at cleanup: backlog runs on a schedule, 'every 30 minutes' (Preferences text); new tickets go first","info"],
+["6 Offline agent","TechEgySolutions prefs restored: offline OFF; test agent 1 offline, 1 Open < 40","#144 stays Unassigned (offline agents skipped unless the option is on)","ok"],
+["7 Skill based","Tech rule -> Skill Based; SkA (Subject contains SKA, admin), SkC (contains SKC, nobody)","#148 SKA+SKC -> admin (ANY one skill is enough); #149 SKC only -> Unassigned; #150 no skill -> Unassigned","ok"],
+["Cleanup","rules deleted (UI), prefs restored (both depts), 11 tickets + contact trashed and purged, skills + type deleted","verified 0 QA RT20 rules / tickets / skills / bin items","info"]]}

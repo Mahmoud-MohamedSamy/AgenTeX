@@ -1,0 +1,1 @@
+const o={};for(const p of ['/desk/community/settings','/desk/community/statuses','/desk/community/topic-statuses','/desk/community/meta']){const r=await api('GET',p);o[p]=r.s+' '+r.t.slice(0,900);}return o;

@@ -1,0 +1,8 @@
+const fs=require('fs');const V=JSON.parse(fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-23_retest-mahmoudmohamed-r26/scripts/k/vo.json','utf8'));const R={reqs:[]};
+page.on('response',async r=>{const u=r.url();if(/\/api\/v1\//.test(u)&&!/heartbeat|summaries|read$|resolved-batch|realtime|lookups/.test(u)&&r.request().method()!=='GET')R.reqs.push(r.request().method()+' '+u.replace(/^https:\/\/[^/]+/,'').replace(/[0-9a-f-]{36}/g,'ID')+' → '+r.status()+' '+(await r.text().catch(()=>'')).slice(0,200));});
+await page.goto(H+'/views/all/tickets/'+V.t1,{waitUntil:'commit'});await page.getByText('#7132').first().waitFor({timeout:120000});await sleep(7000);
+await page.getByRole('button',{name:/^Actions/}).first().click();await sleep(1500);
+R.item=await page.evaluate(()=>{const e=[...document.querySelectorAll('[role=menuitem], button, div')].filter(x=>x.innerText&&x.innerText.trim()==='QA RT18 CA echo').pop();if(!e)return null;const m=e.closest('[role=menuitem]')||e;return {tag:m.tagName,role:m.getAttribute('role'),dis:m.getAttribute('aria-disabled'),ddis:m.getAttribute('data-disabled'),title:m.getAttribute('title'),html:m.outerHTML.slice(0,400)};});
+await page.mouse.move(1440,140);await sleep(1500);R.tooltip=(await page.locator('[role=tooltip]:visible').allInnerTexts()).join('|');await shot('3059-e-hover.png');
+await page.mouse.click(1440,140);await sleep(4000);R.body=(await page.locator('body').innerText()).replace(/\s+/g,' ').match(/.{0,80}(echo|confirm|can view|not change|failed|network).{0,160}/gi)?.slice(0,5);await shot('3059-e-click.png');
+return R;

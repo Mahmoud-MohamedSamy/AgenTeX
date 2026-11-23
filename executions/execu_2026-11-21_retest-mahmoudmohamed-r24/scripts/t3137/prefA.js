@@ -1,0 +1,2 @@
+const DB='4853562a-0b4d-45cb-ba34-9f2118fcd32c',TU1='876ce871-2b02-4854-89a7-68050391c62b';const b=JSON.parse(fs.readFileSync('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-21_retest-mahmoudmohamed-r24/out/3137-base.json','utf8'));
+log((await api('PUT','/desk/departments/'+DB+'/round-robin-preferences',{...b.prefsBefore,assign_to_offline_agents:true,agent_threshold_enabled:true,agent_thresholds:[{user_id:TU1,threshold:2}],assign_on_closure:true,assign_backlogs:false})).s);

@@ -1,0 +1,8 @@
+const RID = '88639ae2-d25d-4495-978b-673ebcba32a3';
+const orgs = arr((await api('GET', '/iam/org-units?take=500')).j?.data).filter(o => /^desk/.test(o.path || '')); const us = arr((await api('GET', '/iam/users?take=200')).j?.data); const id = o => o.orgUnitId || o.id;
+const nm = uid => uid ? (us.find(u => u.userId === uid)?.displayName || uid.slice(0, 8)) : null; const role = uid => { const u = us.find(x => x.userId === uid); return u ? (orgs.find(o => id(o) === u.orgUnitId)?.name || u.orgUnitId) : '?'; };
+const rule = (await allRules()).find(r => r.id === RID); const act = rule.actions.find(a => a.type === 'OwnerAssignment');
+const out = { rule: { version: rule.version, updatedAt: rule.updatedAt, active: rule.isActive, role: orgs.find(o => id(o) === act.ownerValue)?.name, kind: act.ownerTargetKind, criteria: JSON.stringify(rule.criteria.value || rule.criteria).slice(0, 80) }, tree: orgs.map(o => o.name + ':' + us.filter(u => u.orgUnitId === id(o)).map(u => u.displayName).join('/')) };
+const depts = arr((await api('GET', '/desk/departments')).j?.data);
+out.runs = []; for (const e of arr((await api('GET', `/workflow/executions?ruleId=${RID}&take=100`)).j?.data).slice(0, 12)) { const g = await getTicket(e.recordId); out.runs.push([(e.evaluatedAt || '').slice(11, 19), g.ticket_number, (g.subject || '(deleted)').slice(0, 18), g.priority, (depts.find(d => d.id === g.department) || {}).name, nm(g.owner) + (g.owner ? ' [' + role(g.owner) + ']' : ''), (e.dispatches || []).map(x => x.status + (x.lastError ? ' ' + String(x.lastError).slice(0, 70) : '')).join(';')].join(' | ')); }
+return out;

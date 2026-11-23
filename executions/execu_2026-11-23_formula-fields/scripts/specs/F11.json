@@ -1,0 +1,16 @@
+{ "out": "F11-builder-messages-FAIL.png", "ticket": "FX-F11", "priority": "low", "label": "FORMULA FAIL", "verdict": "FAIL",
+  "title": "Formula field | Builder save shows raw server text and names only the first broken formula",
+  "env": "NDC-Staging · staging-crm (Desk same) · Edge headless · owner · Settings › Modules › QA FX › Layout builder", "date": "23 Nov 2026",
+  "panels": [
+   { "img": "A7-save-empty.png", "caption": "Empty expression → Apply accepted, Save → raw API text", "crop": [360, 640, 1240, 260],
+     "boxes": [ { "b": [366, 688, 958, 734], "n": 1, "kind": "INFO" }, { "b": [1178, 822, 1576, 872], "n": 2, "kind": "FAIL" } ] },
+   { "img": "G13-save-two-bad.png", "caption": "Two broken formulas (qa_num # 2 and (qa_num) → Save names only the first", "crop": [360, 280, 1240, 620],
+     "boxes": [ { "b": [366, 288, 958, 334], "n": 3, "kind": "FAIL" }, { "b": [366, 866, 958, 900], "n": 4, "kind": "FAIL" }, { "b": [1156, 812, 1576, 876], "n": 5, "kind": "FAIL" } ] }
+  ],
+  "rows": [
+   [1, "Formula field with an empty expression", "Blocked in the panel with the builder's own text", "Apply accepted; the field is placed", "INFO"],
+   [2, "Save the layout", "\"A formula field needs an expression before the layout can be saved.\"", "Raw API text: \"Field 'formula': Option 'expression' is required.\"", "FAIL"],
+   [3, "First broken formula (qa_num # 2)", "Named in the message", "Named (raw API text)", "INFO"],
+   [4, "Second broken formula ((qa_num)", "Also named", "Not mentioned", "FAIL"],
+   [5, "concat(,\"a\") typed in the editor", "Marked invalid while typing", "Not flagged (server refuses it)", "FAIL"]
+  ] }

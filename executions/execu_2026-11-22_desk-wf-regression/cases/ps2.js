@@ -1,0 +1,14 @@
+const RID = '1c39d2eb-8ddd-4505-825d-f4b8eac02c19', TID = '5f5cb71f-184a-4a97-8d54-20d750e72081'; const o = {};
+const sh = r => r.s + (r.s >= 300 ? ' ' + ((r.j && r.j.error && r.j.error.message) || r.t).slice(0, 120) : '');
+o.me = ((await api('GET', '/iam/me')).j?.data || {}).displayName;
+const LR = await api('GET', '/workflow/rules?moduleId=' + T + '&take=5'); o.listRules = sh(LR) + ' n=' + arr(LR.j?.data).length;
+o.createRule = sh(await api('POST', '/workflow/rules', { moduleId: T, name: 'QA WF PS perm probe', isActive: false, mode: 'Recurring', trigger: { kind: 'RecordCreated' }, criteria: guard('QA WF PSperm '), actions: [{ order: 0, delaySeconds: 0, ...FU({ qa_ndc_agency_code: 'x' }) }], departmentIds: [DEPT2] }));
+o.deactivate = sh(await api('POST', '/workflow/rules/' + RID + '/deactivate', {}));
+if (o.deactivate.startsWith('2')) await api('POST', '/workflow/rules/' + RID + '/activate', {});
+o.deleteRule = 'not tried (would delete)';
+o.testRule = sh(await api('POST', '/workflow/rules/' + RID + '/execute', { recordId: TID, triggerKind: 'RecordCreated', fields: {} }));
+o.listActions = sh(await api('GET', '/workflow/actions'));
+o.createAction = sh(await api('POST', '/workflow/actions', { name: 'QA WF PS perm action', moduleId: T, type: 'AddTags' }));
+o.executions = sh(await api('GET', '/workflow/executions?ruleId=' + RID + '&take=5'));
+o.settings = sh(await api('GET', '/workflow/settings'));
+return o;

@@ -1,0 +1,14 @@
+{"out":"BUG-sla-not-applied-on-create.png","ticket":"NEW BUG","priority":"high","label":"BUG","verdict":"FAIL",
+"title":"SLA | No SLA starts on new tickets: matching SLA policies are ignored when a ticket is created",
+"env":"NDC-Staging · staging-desk · Edge + API · owner · 23 Nov 2026 08:28–13:00 UTC","date":"23 Nov 2026",
+"panels":[
+ {"img":"sla-bug-card.png","full":true,"caption":"Every ticket that matches an active policy stays at SLA state none; the same steps started an SLA on 19 Nov","crop":[20,20,1560,450],"boxes":[{"b":[36,99,1564,157],"n":2,"kind":"FAIL"},{"b":[36,167,1564,204],"n":2,"kind":"FAIL"},{"b":[36,214,1564,251],"n":2,"kind":"FAIL"},{"b":[36,261,1564,345],"n":3,"kind":"FAIL"},{"b":[36,355,1564,392],"n":4,"kind":"FAIL"},{"b":[36,402,1564,439],"n":5,"kind":"INFO"}]},
+ {"img":"sla-settings-QA-RT26-VO-Dept.png","caption":"Setup › Automation › SLA & Escalation: QA RT26 SLA is Active in QA RT26 VO Dept","crop":[260,56,1340,560],"boxes":[{"b":[270,120,1600,520],"n":1,"kind":"INFO"}]},
+ {"img":"3136-A-sla2.png","caption":"#7225 \"QA RT26 sla A\" in QA RT26 VO Dept: No SLA applies to this ticket","crop":[364,60,1236,560],"boxes":[{"b":[380,480,650,520],"n":2,"kind":"FAIL"}]}
+],
+"rows":[
+ [1,"Active policy that matches","Policy exists and is active","QA RT26 SLA: Ticket Create + Update, Subject contains \"QA RT26 sla\", 1 h / 4 h, calendar hours","INFO"],
+ [2,"New matching ticket (API or form, with or without contact)","SLA starts (response + resolution running)","\"No SLA applies to this ticket\"; GET …/sla state none, policy null","FAIL"],
+ [3,"Other active policies (description / priority conditions)","SLA starts","state none","FAIL"],
+ [4,"Reapply SLA","Matching policy is applied","200 but state stays none","FAIL"],
+ [5,"Same steps on 19 Nov","—","SLA started (first response 3,582 s, resolution 14,382 s)","INFO"]]}

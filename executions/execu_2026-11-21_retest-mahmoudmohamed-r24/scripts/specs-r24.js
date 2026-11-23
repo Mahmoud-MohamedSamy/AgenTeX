@@ -1,0 +1,76 @@
+// Round 24 (21 Nov 2026): specs + API cards for NDC-3137, 2822, 3138, 3051.
+const fs=require('fs'),path=require('path');const D=__dirname;const W=s=>fs.writeFileSync(path.join(D,'specs24',s.ticket+'.json'),JSON.stringify(s,null,1));const C=c=>fs.writeFileSync(path.join(D,'cards24',c.out.replace('.png','.json')),JSON.stringify(c,null,1));
+C({out:'3137-api-card.png',host:'staging-desk.taviportal.com',date:'21 Nov 2026',title:'NDC-3137 · Round Robin "Assign tickets on closure" with an offline agent · QA AO Dept B · Test User 1 offline (last active 19 Nov 17:50 UTC) · 21 Nov 2026',rows:[
+['A1 Preferences','PUT round-robin-preferences: offline agents ON, agent threshold Test User 1 = 1, closure ON, backlogs OFF','200','info'],
+['A2 Setup tickets','rule "QA RT24 3137 closure" (pool: Test User 1) · create #5971, then #5972','#5971 → Test User 1 (at threshold) · #5972 → backlog (unassigned)','info'],
+['A3 Admin closes #5971','PATCH status Closed 13:47:25 UTC (agent still offline)','#5972 → Test User 1 within 12 s, in_backlog false','ok'],
+['A4 History #5972','GET history','"Assigned automatically" · Rule QA RT24 3137 closure · Round robin (Sequence) · Taken from the backlog','ok'],
+['B1 Control: offline agents OFF','same threshold (2), create #5973 (→ Test User 1), switch offline OFF, create #5974','#5974 → backlog','info'],
+['B2 Admin closes #5973','PATCH status Closed 13:48:30 UTC','#5974 still unassigned after 148 s (closure assigns only online agents when the setting is off)','ok'],
+['C Restore','PUT preferences back to the saved copy','200, identical to before','info']]});
+W({out:'NDC-3137-retest-PASS.png',ticket:'NDC-3137',priority:'urgent',label:'RETEST PASS',verdict:'PASS',title:'Assignment Rules | "Assign tickets on closure" skips offline agents even when "Assign tickets to offline agents" is on',
+ env:'NDC-Staging · staging-desk.taviportal.com · Edge + API · owner (administrator) · QA AO Dept B · Test User 1 offline',date:'21 Nov 2026',
+ panels:[{img:'3137-d-preferences.png',caption:'QA AO Dept B › Round Robin Preferences as tested: offline agents ON, agent threshold, backlogs OFF, closure ON',crop:[464,45,672,700],w:1600,h:900,boxes:[{b:[1070,138,1116,162],n:1},{b:[486,428,1112,470],n:2},{b:[1070,538,1116,562],n:3},{b:[1070,610,1116,636],n:4}]},
+  {img:'3137-a-backlog-ticket-history.png',caption:'Backlog ticket #5972 › History: assigned to the offline agent right after the administrator closed #5971',crop:[664,150,936,560],w:1600,h:900,boxes:[{b:[700,282,1000,450],n:5},{b:[706,484,900,554],n:6}]},
+  {img:'3137-api-card.png',full:true,crop:[0,0,1600,520],w:1600,h:900,caption:'API run: closure with the setting on and off'}],
+ rows:[[1,'Assign tickets to offline agents','ON','ON','INFO'],[2,'Agent level threshold','Test User 1 at threshold','1 (A), 2 (B)','INFO'],[3,'Assign backlogs','OFF, so only closure can assign','OFF','INFO'],[4,'Assign tickets on closure','ON','ON','INFO'],
+ [5,'Admin closes the offline agent\'s ticket (A)','Backlog ticket assigned straight away; History shows it','#5972 → Test User 1 in ≤12 s; "Assigned automatically … Taken from the backlog"','PASS'],
+ [6,'Owner shown on the backlog ticket','Test User 1','Test User 1','PASS'],
+ ['B','Control: offline agents OFF (dev note)','Closure assigns only online agents','#5974 stayed in the backlog 148 s','PASS'],
+ ['—','Online agent paths / the 19 Nov 10:44 one-off miss','—','Not run (needs Test User 1 signed in)','INFO']]});
+C({out:'2822-api-card.png',host:'staging-crm.taviportal.com (public web-form API, signed out, origin http://127.0.0.1:5500)',who:'website visitor',date:'21 Nov 2026',title:'NDC-2822 · CRM form "QA RT24 2822 A" (Leads) · Number 2 whole 1–100 · hidden Decimal default 2.5 · attachments on',rows:[
+['1 Number 2 = 5.5 (number)','POST /submissions','422 WEB_FORM_INVALID · number_2: FIELD_DECIMALS "Number 2 must be a whole number." · no lead','ok'],
+['2 Number 2 = "5.5" (text)','POST /submissions','422 FIELD_DECIMALS (same) · no lead','ok'],
+['3 Number 2 = "4.0"','POST /submissions','200 · lead "QA RT24 c3" number_2 = 4','ok'],
+['4 Visitor sends the hidden field','values.decimal = "9"','422 decimal: FIELD_UNKNOWN "This form has no such field." · leads keep the default 2.5','ok'],
+['5 File type','POST /uploads x.html text/html','422 FILE_TYPE_REFUSED "x.html is not a type this form accepts…"','ok'],
+['6 File size','POST /uploads 25 MB png','422 FILE_TOO_LARGE "Each file can be at most 20 MB."','ok'],
+['7 File count','6 × POST /uploads (same submission)','5 accepted · 6th 422 ATTACHMENT_LIMIT "at most 5 files, screenshots included"','ok'],
+['8 Hidden default on save','POST /web-forms number_2 hidden, default 5.5 / 500 / 4','422 DEFAULT_INVALID "must be a whole number" / "must be at most 100" / 201','ok']]});
+W({out:'NDC-2822-retest-PASS.png',ticket:'NDC-2822',priority:'medium',label:'RETEST PASS',verdict:'PASS',title:'Web Forms | Form fields need their own validation, in the Front-End and in the Back-End',
+ env:'NDC-Staging · signed-out Edge on http://127.0.0.1:5500 (local test site) + public API · CRM form "QA RT24 2822 A" (Leads) · owner for setup',date:'21 Nov 2026',
+ panels:[{img:'2822-A24-r24-55-send.png',w:1280,h:1300,crop:[0,0,620,440],caption:'Front-End: 5.5 refused on blur and on Send; focus on Number 2; nothing sent',boxes:[{b:[22,196,594,266],n:1},{b:[22,360,516,408],n:2}]},
+  {img:'2822-A24-r24-4-send.png',w:1280,h:1300,crop:[0,0,620,440],caption:'Front-End: Number 2 = 4 → sent (200), thank-you message',boxes:[{b:[8,80,608,280],n:3}]},
+  {img:'2822-A24-file-html.png',w:1280,h:1300,crop:[0,0,620,440],caption:'Front-End: x.html refused with a message under Attach files',boxes:[{b:[22,330,422,350],n:4}]},
+  {img:'2822-A24-file-six.png',w:1280,h:1300,crop:[0,0,620,640],caption:'Front-End: 6 files chosen → 5 kept + limit message',boxes:[{b:[22,330,594,545],n:5}]},
+  {img:'2822-api-card.png',full:true,crop:[0,0,1600,560],w:1600,h:900,caption:'Back-End: the same rules on direct API calls'}],
+ rows:[[1,'Number field (whole number) = 5.5 in the browser','Refused with a message, Send blocked (old fail: accepted)','"Number 2 must be a whole number."; no POST; focus Number 2','PASS'],
+ [2,'Send with an invalid field','Blocked, focus to the first invalid field, values kept','Blocked; Full Name + 5.5 kept','PASS'],
+ [3,'Valid value 4','Accepted','200, thank-you; lead created','PASS'],
+ [4,'File of the wrong type (browser + API)','Refused','"x.html cannot be attached" / 422 FILE_TYPE_REFUSED','PASS'],
+ [5,'More than 5 files (browser + API)','Refused','5 kept + message / 6th 422 ATTACHMENT_LIMIT','PASS'],
+ ['A1','Number 2 = 5.5 and "5.5" sent to the API','422 per field, no record','422 FIELD_DECIMALS, no lead','PASS'],
+ ['A3','"4.0" sent to the API','Saved as 4','lead number_2 = 4','PASS'],
+ ['A4','Visitor sends a hidden field','Refused one defined way, never saved','422 FIELD_UNKNOWN; leads keep default 2.5','PASS'],
+ ['A6','25 MB file','Refused','422 FILE_TOO_LARGE (20 MB)','PASS'],
+ ['A8','Hidden default that breaks the rule','Form save refused','5.5 and 500 → 422 DEFAULT_INVALID; 4 → saved','PASS'],
+ ['—','Rules checked on 19 Nov (length, email, phone, dates, Arabic, Desk)','—','Not repeated; passed on 19 Nov','INFO'],
+ ['—','Number field outside web forms (record page, import, API)','—','Can still hold decimals (dev note, out of scope)','INFO']]});
+C({out:'3138-api-card.png',host:'staging-crm / staging-desk.taviportal.com (public web-form API, signed out)',who:'website visitor + owner for setup',date:'21 Nov 2026',title:'NDC-3138 · Forms with no website listed ("Allow hosted link / iframe" on) vs a form that lists 127.0.0.1:5500',rows:[
+['1 CRM "QA RT24 3138 crm empty"','POST /session from 127.0.0.1:5500, example.com, localhost:5500','200 · 200 · 200 (CORS allows each origin)','ok'],
+['2 Desk "QA RT24 3138 desk empty"','POST /session from the same 3 origins','200 · 200 · 200','ok'],
+['3 Empty submit (CRM / Desk)','POST /submissions {} from each origin','422 "Full Name is required." / "Last Name, Email, Subject is required." — not 404','ok'],
+['4 Form that lists 127.0.0.1:5500','POST /session from 127.0.0.1 / example.com / localhost','200 / 404 / 404 — the website list still applies','ok'],
+['5 Save: no website and share link off','POST /web-forms','422 "List the websites this form is on, or turn the share link on…"','ok'],
+['6 Records from the browser test','lead + Desk ticket','Lead "QA RT24 3138 crm" · Desk ticket #5980 (channel web)','ok']]});
+W({out:'NDC-3138-retest-PASS.png',ticket:'NDC-3138',priority:'medium',label:'RETEST PASS',verdict:'PASS',title:'Web Forms | A form with no website listed shows on no website, although the Embed dialog says any website can show it',
+ env:'NDC-Staging · signed-out Edge on http://localhost:5500 (no form lists it) · "Add it to your website" script code · CRM (Leads) + Desk (Customer Support) forms',date:'21 Nov 2026',
+ panels:[{img:'3138-localhost-crm24-sent.png',w:1280,h:1000,crop:[0,0,720,300],caption:'CRM form with no website: shown on localhost:5500 and sent (200)',boxes:[{b:[8,80,608,272],n:1}]},
+  {img:'3138-localhost-desk24-sent.png',w:1280,h:1000,crop:[0,0,720,300],caption:'Desk form with no website: shown on localhost:5500 and sent (200) → ticket #5980',boxes:[{b:[8,80,608,272],n:2}]},
+  {img:'3138-localhost-fA24.png',w:1280,h:1000,crop:[0,0,720,300],caption:'Control: a form that lists 127.0.0.1:5500 shows nothing on localhost (session 404)',boxes:[{b:[8,70,608,280],n:3}]},
+  {img:'3138-crm-embed-howto.png',w:1600,h:900,crop:[464,45,672,650],caption:'Embed code dialog (no website listed): step 3 now matches what happens',boxes:[{b:[510,576,1090,616],n:4},{b:[506,396,1092,432],n:5}]},
+  {img:'3138-api-card.png',full:true,crop:[0,0,1600,480],w:1600,h:900,caption:'Public API from three origins'}],
+ rows:[[1,'CRM form, empty website list, on another website','Form appears and submits','Shown on localhost:5500 + 127.0.0.1:5500; sent 200; lead created','PASS'],
+ [2,'Desk form, empty website list','Same as CRM','Shown and sent 200; ticket #5980','PASS'],
+ [3,'Form that lists a website, on another site','Still refused (unchanged)','Nothing shown; session 404 from localhost / example.com','PASS'],
+ [4,'Embed dialog "How to use it" step 3','Says any website can show it, and that is true','"No website is listed … so any website can show it" — confirmed','PASS'],
+ [5,'Hosted link / iframe note','Any website','Unchanged, works','INFO'],
+ ['A5','Save with no website and share link off','Refused (dev note)','422 with a clear message','PASS'],
+ ['—','"Add it to your website" card subtitle','—','Still says "shows the form on the websites listed in its settings" (no website listed) — wording only','INFO']]});
+C({out:'3051-api-card.png',host:'staging-desk.taviportal.com',who:'owner account',date:'21 Nov 2026',title:'NDC-3051 · Desk Data Backup · GET /api/v1/desk/data/backups · NDC-Staging · 21 Nov 2026',rows:[
+['1 Backups on NDC-Staging','GET /desk/data/backups','200 · 1 backup: 01a1f83b custom, completed, restorable true, reason null, expires 27 Nov 2026 09:14 UTC','info'],
+['2 Expired backup needed','an expired full backup','none yet — 01a1f83b expires in 6 days; no developer comment since 20 Nov','bad'],
+['3 Result','—','BLOCKED again: retest after 27 Nov 09:14 UTC; state not changed','info']]});
+W({out:'NDC-3051-retest-BLOCKED.png',ticket:'NDC-3051',priority:'low',label:'RETEST BLOCKED',verdict:'BLOCKED',title:'Data Backup | An expired backup gives "not finished" as the reason it cannot be restored',env:'NDC-Staging · staging-desk.taviportal.com · API · owner',date:'21 Nov 2026',
+ panels:[{img:'3051-api-card.png',full:true,crop:[0,0,1600,330],w:1600,h:900,caption:'Backups on NDC-Staging'}],
+ rows:[[1,'Expired full backup → status expired, restorable false, reason BACKUP_EXPIRED','BACKUP_EXPIRED (not BACKUP_NOT_FINISHED)','No expired backup exists yet (01a1f83b expires 27 Nov 09:14 UTC)','INFO']]});

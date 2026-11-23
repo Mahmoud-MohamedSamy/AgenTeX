@@ -1,0 +1,6 @@
+const t=await api('GET','/desk/community/topics?limit=50');const x=arr(t.j?.data?.items||t.j?.data).find(x=>/New Question NDC-3007/i.test(x.title));if(!x)return {s:t.s,titles:arr(t.j?.data?.items||t.j?.data).map(x=>x.title)};
+const d=(await api('GET','/desk/community/topics/'+x.id)).j?.data;const o={topic:x.id,created:d.created_at,type:d.type,author:d.author?.name||d.author?.display_name,ticket:d.ticket,can:d.can};
+if(d.ticket?.id){const tk=(await api('GET','/desk/tickets/'+d.ticket.id)).j?.data||{};o.tk={n:tk.ticket_number,status:tk.status,channel:tk.channel,subject:tk.subject,created:tk.created_at,contact:tk.contact_name||tk.contact_id,keys:Object.keys(tk).filter(k=>/forum|topic|community|channel/i.test(k)).map(k=>k+'='+JSON.stringify(tk[k]).slice(0,150))};
+ const rr=(await api('GET','/modules/'+TK+'/records/'+d.ticket.id)).j?.data?.data||[];o.recFields=rr.filter(f=>/forum|topic|community|channel/i.test(f.field)).map(f=>f.field+'='+JSON.stringify(f.value?.value));
+ const lay=arr((await api('GET','/modules/'+TK+'/fields')).j?.data?.fields||(await api('GET','/modules/'+TK+'/fields')).j);o.fieldDefs=lay.filter(f=>/forum/i.test((f.key||f.api_name||'')+' '+(f.label||''))).map(f=>(f.key||f.api_name)+':'+f.label);}
+fs.writeFileSync(RUN+'/out/3007.json',JSON.stringify(o,null,1));return o;

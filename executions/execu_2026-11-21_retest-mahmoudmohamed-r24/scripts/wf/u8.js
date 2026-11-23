@@ -1,0 +1,21 @@
+const wiz=async(name)=>{
+await page.goto(H+'/settings/automation/workflow-rules',{waitUntil:'domcontentloaded'});
+await page.getByRole('row').nth(2).waitFor({timeout:90000}).catch(()=>{});await sleep(2000);
+await page.evaluate(()=>Object.keys(localStorage).filter(k=>k.startsWith('workflow-rule-draft')).forEach(k=>localStorage.removeItem(k)));
+await page.getByRole('button',{name:'New Rule'}).click();const dlg=page.getByRole('dialog').first();await dlg.waitFor();
+await dlg.getByRole('button',{name:'Select a module'}).click();await page.getByRole('option',{name:'Tickets'}).click();
+await dlg.getByText('Selected departments').click();await sleep(500);await dlg.getByText('QA RT19 WF Dept',{exact:true}).click();await sleep(300);
+await dlg.getByPlaceholder('e.g. High-Value Lead Notification').fill(name);
+await dlg.getByRole('button',{name:'Next'}).click();await sleep(1000);
+await dlg.getByRole('group').getByRole('button',{name:'Create',exact:true}).click().catch(e=>log('trig err',String(e.message).slice(0,100)));
+await dlg.getByRole('button',{name:'Create',exact:true}).last().click();await sleep(4000);
+};
+const main=page.locator('main').last();const clk=l=>l.dispatchEvent('click');
+await wiz('QA RT19 WF 2997 ui probe');
+await clk(main.getByRole('button',{name:'Add action'}).first());await sleep(600);
+await clk(main.getByRole('button',{name:/^Owner Assignment/}).first());await sleep(1500);
+const sec=(await main.innerText()).replace(/\s+/g,' ');const i=sec.lastIndexOf('Owner Assignment');log('sec',sec.slice(i-100,i+900));
+await shot('2997-x-owner-ui.png',{fullPage:true});
+log('buttons',JSON.stringify((await main.getByRole('button').allInnerTexts()).filter(x=>x.trim()).slice(-30)));
+log('radios',JSON.stringify(await main.getByRole('radio').evaluateAll(a=>a.map(x=>x.getAttribute('aria-label')||x.value||x.parentElement.innerText))));
+return {};

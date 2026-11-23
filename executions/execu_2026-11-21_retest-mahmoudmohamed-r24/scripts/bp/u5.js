@@ -1,0 +1,11 @@
+const out = {}; const net = []; page.on('request', r => { if (/\/api\/v1\//.test(r.url()) && !/notification|presence|unread/.test(r.url())) net.push(r.method() + ' ' + r.url().split('/api/v1')[1].replace(/[0-9a-f-]{36}/g, '{id}').slice(0, 90)); });
+await page.goto(H + '/views/all/tickets/7ba77b0d-9a39-4448-b532-2a391ffc5ceb', { waitUntil: 'domcontentloaded' });
+await page.getByText('QA RT20 BP 3065 role T2').first().waitFor({ timeout: 120000 }).catch(() => {}); await sleep(5000);
+net.length = 0;
+await page.locator('button[aria-haspopup]').last().click().catch(() => {}); await sleep(1500);
+out.kebab = (await page.locator('[role=menuitem], [role=menu] button').allInnerTexts()).join(' | ');
+await page.keyboard.press('Escape');
+await page.getByText('View configured actions').first().click(); await sleep(3000);
+let t = (await text()).replace(/\s+/g, ' '); const i = t.search(/configured actions/i); out.vca = t.slice(i, i + 900); await shot('3065-9-vca.png');
+const ao = page.getByText(/Assign owner|Change owner|Owners/i); out.aoN = await ao.count(); out.aoTxt = (await ao.allInnerTexts()).slice(0, 6);
+out.net = net.slice(0, 15); return out;

@@ -1,0 +1,30 @@
+// Read-only discovery for run 2.
+const g = async p => { const r = await api('GET', p); return { s: r.s, d: r.j && r.j.data !== undefined ? r.j.data : null, t: (r.t || '').slice(0, 300) }; };
+const out = {};
+out.ticketFields = arr((await g(`/modules/${T}/fields`)).d).map(f => f.fieldName + ':' + f.datatypeKey + (f.isSystem ? '*' : '')).join(' ');
+const d1 = (await g('/desk/departments/' + DEPT)).d; const d2 = (await g('/desk/departments/' + DEPT2)).d;
+out.dept1 = d1 && Object.fromEntries(Object.entries(d1).filter(([k]) => !/description|logo/.test(k)).map(([k, v]) => [k, typeof v === 'object' ? JSON.stringify(v).slice(0, 120) : v]));
+out.dept2keys = d2 && { agents: d2.agent_user_ids, bh: d2.business_hour_profile_id || d2.business_hours_profile_id, hc: d2.display_in_help_center };
+out.teams = (await g('/desk/teams')).s + ' ' + arr((await g('/desk/teams')).d).filter(x => [DEPT, DEPT2].includes(x.department_id)).map(x => x.id + ' ' + x.name).join('|');
+out.skillTypes = arr((await g('/desk/skill-types?department_id=' + DEPT2)).d).map(x => x.id + ' ' + x.name).slice(0, 5);
+out.skills2 = arr((await g('/desk/skills?department_id=' + DEPT2)).d).map(x => x.id + ' ' + x.name).slice(0, 5);
+out.ar = { direct: arr((await g('/desk/assignment-rules?type=direct&department_id=' + DEPT2)).d).length, rr: arr((await g('/desk/assignment-rules?type=round_robin&department_id=' + DEPT2)).d).length };
+out.bhTenant = JSON.stringify((await g('/iam/tenant/business-hours')).d || '').slice(0, 400);
+out.bhProfiles = (await g('/iam/tenant/business-hours/profiles')).s + ' ' + JSON.stringify((await g('/iam/tenant/business-hours/profiles')).d || '').slice(0, 500);
+out.deskBH = (await g('/desk/business-hours')).s + ' ' + JSON.stringify((await g('/desk/business-hours')).d || '').slice(0, 300);
+out.holidays = arr((await g('/desk/holiday-lists')).d).map(x => x.id + ' ' + x.name).slice(0, 5);
+const hp = await g('/desk/customer-happiness/settings'); out.happiness = hp.s + ' ' + JSON.stringify(hp.d || hp.t).slice(0, 300);
+for (const p of ['/integrations/connections', '/desk/integrations', '/desk/channels', '/omnichannel/connections', '/desk/im/connections', '/desk/slack/workspaces', '/desk/notifications/webhooks']) { const r = await g(p); out['conn ' + p] = r.s + ' ' + JSON.stringify(r.d || '').slice(0, 200); }
+out.customActions = arr((await g('/workflow/custom-actions')).d).map(x => x.id + ' ' + x.name + ' ' + x.status + ' ' + (x.targetApps || []).join('/')).slice(0, 10);
+out.audit = (await g('/audit/events?limit=3')).s + ' ' + JSON.stringify((await g('/audit/events?limit=3')).d || '').slice(0, 600);
+out.layouts = arr((await g(`/modules/${T}/layouts`)).d).map(x => x.id + ' ' + x.name + ' ' + (x.status || x.isActive)).slice(0, 15);
+out.profiles = arr((await g('/iam/profiles')).d).filter(p => /desk|agent|view|QA/i.test(p.name)).map(p => p.id + ' ' + p.name).slice(0, 20);
+const tu = (await g('/iam/users/876ce871-2b02-4854-89a7-68050391c62b')).d; out.tu1 = tu && { profile: tu.profileId, org: tu.orgUnitId, st: tu.status, name: tu.displayName };
+const dv = (await g('/iam/users/5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4')).d; out.dev2 = dv && { profile: dv.profileId, org: dv.orgUnitId, st: dv.status, name: dv.displayName };
+out.wfSettings = JSON.stringify((await g('/workflow/settings')).d || (await g('/workflow/settings')).t).slice(0, 300);
+out.actionsLib = (await g('/workflow/actions')).s;
+out.emailTpl = arr((await g('/desk/email-templates')).d).filter(x => !x.is_system).map(x => x.id + ' ' + x.name + ' ' + x.notification_type).slice(0, 8);
+out.statuses = arr((await g('/desk/ticket-statuses')).d).map(x => x.key || x.name).join(',');
+out.rulesTotal = (await allRules()).length;
+fs.writeFileSync(RUN + '/out/d3.json', JSON.stringify(out, null, 1));
+return out;

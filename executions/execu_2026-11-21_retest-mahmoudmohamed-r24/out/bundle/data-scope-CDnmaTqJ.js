@@ -1,0 +1,1 @@
+var e=null,t=null;function n(t){e=t}function r(){return e}function i(){let n=e??`*`;return t?`${n}|f:${t}`:n}export{r as n,n as r,i as t};

@@ -1,0 +1,12 @@
+module.exports=async(page)=>{const R={muts:[]};const RAW='../screenshots/raw/';
+page.on('request',q=>{if(!['GET','OPTIONS'].includes(q.method())&&/desk\.zoho\.com\/support/.test(q.url())&&!/getbadge|getresource/.test(q.url()))R.muts.push(q.method()+' '+q.url().replace(/^https:\/\/[^/]+/,'').replace(/\?.*/,'').slice(0,90));});
+page.on('dialog',d=>{R.dialog=d.message().slice(0,120);d.accept();});
+const findF=async(re,ms)=>{for(let w=0;w<ms/1500;w++){for(const f of page.frames()){if(await f.getByText(re).count().catch(()=>0))return f;}await page.waitForTimeout(1500);}return null;};
+await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/setup',{waitUntil:'commit',timeout:90000});await page.waitForTimeout(15000);
+await page.getByText('Not Now').first().click().catch(()=>{});
+await page.getByText(/^Feedback Widget$/).first().click({timeout:20000}).catch(async()=>{await page.getByText(/^Web Forms?$/).first().click();await page.waitForTimeout(3000);await page.getByText(/^Feedback Widget$/).first().click();});
+let f=await findF(/Created by|haven't configured/,90000);if(!f){await page.reload({waitUntil:'commit',timeout:90000});await page.waitForTimeout(15000);await page.getByText(/^Feedback Widget$/).first().click().catch(()=>{});f=await findF(/Created by|haven't configured/,90000);}
+await page.screenshot({path:RAW+'z2751-del-0.png'});if(!f)return {err:'list not loaded'};
+R.list=(await f.locator('body').innerText()).replace(/\s+/g,' ').split('Sign Out').pop().slice(0,600);
+await page.mouse.move(900,180);await page.waitForTimeout(1500);await page.screenshot({path:RAW+'z2751-del-h.png'});const del=f.locator('[title*=Delete i], [data-title*=Delete i], .delete, [class*=delete]');R.delN=await del.count();R.boxes=[];for(let i=0;i<R.delN;i++){const bb=await del.nth(i).boundingBox();R.boxes.push(bb&&[Math.round(bb.x),Math.round(bb.y),Math.round(bb.width)]);}{await page.mouse.move(1400,175);await page.waitForTimeout(800);await page.mouse.click(1487,175);await page.waitForTimeout(3000);await page.screenshot({path:RAW+'z2751-del-c.png'});for(const g of page.frames()){const ok=g.locator('button, input[type=button], a, span').filter({hasText:/^s*(Delete|Yes|OK|Confirm)s*$/});if(await ok.count().catch(()=>0)){R.ok=await ok.last().innerText();await ok.last().click().catch(()=>{});break;}}await page.waitForTimeout(8000);}
+await page.screenshot({path:RAW+'z2751-del-1.png'});R.after=(await f.locator('body').innerText().catch(()=>'')).replace(/\s+/g,' ').split('Sign Out').pop().slice(0,400);return R;};

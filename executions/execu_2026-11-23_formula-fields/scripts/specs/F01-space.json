@@ -1,0 +1,23 @@
+{
+ "out": "F01-typed-spaces-dropped-FAIL.png",
+ "ticket": "FX-F01",
+ "priority": "high",
+ "label": "FORMULA FAIL",
+ "verdict": "FAIL",
+ "title": "Formula field | Typing in the Expression box drops every space (CRM + Desk layout builder)",
+ "env": "NDC-Staging · staging-crm + staging-desk · Edge (Chromium) headless · owner · Settings › Modules › QA FX / QA FX Desk › Layout › Formula › ADVANCED",
+ "date": "23 Nov 2026",
+ "panels": [
+  { "img": "SPACE-string-literal.png", "caption": "CRM — typed: concat(qa_text, \" \", \"High value\")", "crop": [1140, 130, 460, 140],
+    "boxes": [ { "b": [1162, 164, 1578, 196], "n": 1, "kind": "FAIL" } ] },
+  { "img": "desk-SPACE-string-literal.png", "caption": "Desk — same keys typed, same result", "crop": [1140, 130, 460, 140],
+    "boxes": [ { "b": [1162, 164, 1578, 196], "n": 2, "kind": "FAIL" } ] }
+ ],
+ "rows": [
+  [1, "CRM: type concat(qa_text, \" \", \"High value\") with the keyboard", "Text kept as typed", "concat(qa_text,\"\",\"Highvalue\") — every space gone, also inside quotes", "FAIL"],
+  [2, "Desk: same keys", "Text kept as typed", "concat(qa_text,\"\",\"Highvalue\")", "FAIL"],
+  [3, "Keys a, Space, b in the Expression box", "a b", "ab", "FAIL"],
+  [4, "Paste \"x y\" into the Expression box", "x y", "x y (paste keeps spaces)", "INFO"],
+  [5, "Type \"a b c\" in a record form text box (control)", "a b c", "a b c", "PASS"]
+ ]
+}

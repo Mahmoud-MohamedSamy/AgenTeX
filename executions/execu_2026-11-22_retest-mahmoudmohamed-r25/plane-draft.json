@@ -1,0 +1,30 @@
+{
+ "round": "r25",
+ "date": "2026-11-22",
+ "items": [
+  {
+   "ticket": "NDC-2837",
+   "workitem_id": "3de3c037-4a7b-455c-92b6-c20859ecfc43",
+   "verdict": "FAIL",
+   "state_from": "Ready For Test",
+   "state_to": "Bug",
+   "comment_html": "<p><strong>Retest FAIL — 22 Nov 2026</strong> → moved to Bug<br>Environment: staging-desk.taviportal.com, tenant NDC-Staging, Edge + API; account: ndc-staging-owner (owner)<br>Method: Manual browser + API; customer reply sent from mmohamed@anyware.software</p>\n<p>Checked:</p><ul>\n<li>Customer reply reaches Desk (steps 2–4): agent mail from #6235 at 08:35 UTC → customer reply on #6235 at 08:40:30 UTC (match HeaderChain), no new ticket [PASS]</li>\n<li>Overview after a real mail arrived (reloaded 08:47 UTC) [FAIL, see below]</li></ul>\n<p>Still failing:</p><ul>\n<li><strong>Overview status</strong>: expected a headline from real inbound mail (\"Mail is arriving\", or a warning when mail waits); actual \"We could not check — the check itself failed\" on every load.</li>\n<li><strong>Last email received</strong>: expected \"Last email received &lt;time&gt;\" (here 22 Nov, 10:40 AM Cairo); actual not shown anywhere on the page.</li>\n<li><strong>Endpoint</strong>: GET /api/v1/desk/channels/inbound-health → 404 NOT_FOUND, on page load and 6 direct calls between 08:15 and 08:47 UTC. The page calls it, but staging does not serve it, so the desk part of the fix (desk #272) looks missing or rolled back on staging.</li></ul>\n<p>Differs from the developer's note (not the reason for the FAIL):</p><ul>\n<li>The 9 Nov reply \"Re: Check-in\" was saved on 21 Nov 18:50 UTC as a new ticket #5992 (message.received match None), not as a reply on #1 \"Check-in\", which sent the agent mail on 9 Nov 12:50 UTC. #1 had been moved to Marketing and closed on 9 Nov, so this may be by design. Both tickets were later deleted by another tester's cleanup.</li></ul>\n<p>Not checked: the red \"Customer mail is not reaching tickets\" state (needs an email stuck for over an hour; developer-only check).</p>\n<p>Evidence: NDC-2837-retest-FAIL.png (attached)</p>",
+   "attachments": [
+    "NDC-2837-retest-FAIL.png"
+   ]
+  }
+ ],
+ "already_posted": [
+  {
+   "ticket": "NDC-2997",
+   "note": "Regression PASS comment + NDC-2997-retest-PASS.png posted 22 Nov 10:37 Cairo (stays Done)"
+  }
+ ],
+ "cleanup": [
+  "Desk tickets QA RT25 W2 2997 (#6217-6219, #6221-6223, #6225-6228, #6230-6232) + QA RT25 2837 #6235 → delete + purge from Recycle Bin",
+  "#6214-6216 already deleted by another session 08:32 UTC → purge from bin",
+  "6 workflow rules QA RT25 W2 2997 (ouCS, ouQAO, prEmpty, prQAO, mgrQAO, seq; all deactivated) → delete",
+  "#6213 (first mail ticket) already gone",
+  "Stop keeper, delete scratchpad sign-in state"
+ ]
+}

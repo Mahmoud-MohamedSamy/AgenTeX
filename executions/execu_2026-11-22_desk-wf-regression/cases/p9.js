@@ -1,0 +1,12 @@
+const TU1 = '876ce871-2b02-4854-89a7-68050391c62b', DEV2 = '5491656d-4d92-4ba2-bd2b-6ee98ba1e2b4';
+const r = await mkRule('P9edit', { kind: 'RecordUpdated' }, [FU({ qa_ndc_company_name: 'WFHIT' })], { });
+const rc = await mkRule('P9chg', { kind: 'RecordUpdated' }, [FU({ qa_ndc_company_name: 'WFHIT' })], { criteria: changed('owner') });
+const fc = await mkRule('P9fc', { kind: 'SpecificFieldChanged', fieldName: 'owner', fieldNames: ['owner'], fieldMatch: 'any', alsoOnCreate: false }, [FU({ qa_ndc_company_name: 'WFHIT' })]);
+const t = await mkTicket('P9edit', { department: DEPT2, owner: TU1 });
+const t2 = await mkTicket('P9chg', { department: DEPT2, owner: TU1 });
+const t3 = await mkTicket('P9fc', { department: DEPT2, owner: TU1 });
+await sleep(6000);
+const p = await patchTicket(t.id, { owner: DEV2 }); const p2 = await patchTicket(t2.id, { owner: DEV2 }); const p3 = await patchTicket(t3.id, { owner: DEV2 });
+await sleep(30000);
+const mv = await api('POST', `/desk/tickets/${t.id}/move`, { department_id: DEPT }); await sleep(25000);
+return { patch: [p.s, p2.s, p3.s], ownerNow: (await getTicket(t2.id)).owner === DEV2, plainEditFired: await fired(t.id, r.id), changedOwnerFired: await fired(t2.id, rc.id), fieldChangedOwner: await fired(t3.id, fc.id), move: mv.s + ' ' + (errOf(mv) || ''), afterMove: await fired(t.id, r.id), deptNow: (await getTicket(t.id)).department === DEPT };

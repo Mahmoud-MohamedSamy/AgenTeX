@@ -1,0 +1,4 @@
+await page.goto(H + `/modules/${made.mod}`, { waitUntil: 'domcontentloaded' }); for (let i = 0; i < 25; i++) { await sleep(2000); if (/QA FX/.test(await text('main'))) break; }
+const run = async (q) => { await page.keyboard.press('Control+K'); await sleep(1200); await page.keyboard.insertText(q); await sleep(4000); const t = (await page.locator('[role=dialog], [role=listbox]').allInnerTexts()).join(' | ').replace(/\n+/g, ' | '); await page.keyboard.press('Escape'); await sleep(500); return t; };
+const a = await run('High value'); log('formula text "High value" → D1 found', /QA FX D1/.test(a), a.slice(0, 250)); await page.keyboard.press('Control+K'); await sleep(800); await page.keyboard.insertText('High value'); await sleep(3500); await shot('I4-global-search'); await page.keyboard.press('Escape');
+const b = await run('QA FX D1'); log('control: name "QA FX D1" found', /QA FX D1/.test(b), b.slice(0, 200));

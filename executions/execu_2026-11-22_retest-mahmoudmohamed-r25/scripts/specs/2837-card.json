@@ -1,0 +1,6 @@
+{"out":"2837-api-card.png","title":"NDC-2837 retest 22 Nov 2026 — inbound mail status and the 9 Nov reply (API)","host":"staging-desk.taviportal.com (NDC-Staging)","who":"ndc-staging-owner","date":"22 Nov 2026","rows":[
+["Inbound status behind the Overview","GET /api/v1/desk/channels/inbound-health (page load + 6 direct calls, 08:15–08:47 UTC)","404 NOT_FOUND \"The requested resource was not found.\" every time","bad"],
+["Last email received on the page","Overview text after reload (08:47 UTC, reply received 08:40 UTC)","No \"Last email received\" anywhere; headline \"We could not check\"","bad"],
+["Customer reply, new round trip","Agent mail from #6235 08:35 UTC → customer replies","Reply on #6235 at 08:40:30 UTC, match HeaderChain (untrusted: DKIM not aligned); no new ticket","ok"],
+["9 Nov customer reply \"Re: Check-in\"","GET /desk/tickets/{#5992}/activity (read 08:20 UTC)","message.received 09 Nov 13:30:20Z match None → NEW ticket #5992 created 21 Nov 18:50Z","bad"],
+["Where the agent mail came from","GET /desk/tickets/{#1 Check-in}/activity","reply.sent 09 Nov 12:50:14Z to mmohamed@ — the 9 Nov reply is not on #1","bad"]]}

@@ -1,0 +1,1 @@
+for (const p of ['/reporting/datasets', '/reporting/datasets?limit=200', '/reporting/catalog', '/reporting/folders']) { const r = await api('GET', p); const d = L(r.j?.data?.data ?? r.j?.data); log(p, r.s, Array.isArray(d) ? d.length : '', JSON.stringify(d.find?.(x => /qa fx|qa_fx/i.test(JSON.stringify(x).slice(0, 400))) || d[0] || r.j).slice(0, 500)); }

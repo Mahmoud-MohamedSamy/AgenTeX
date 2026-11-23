@@ -1,0 +1,8 @@
+const TK = '88e8ea44-1658-4df3-9930-d0902b91073d', CS = '7e1ac409-58b0-41ab-97e1-0e7d5c8c5158', OWNER = '97be04b6-0a08-4883-aa51-e1650b11cab7';
+const crit = { conditions: [{ field_key: 'subject', operator: 'starts_with', value: 'QA FX I8' }, { field_key: 'qa_fx_hi', operator: 'equals', value: true }], pattern: '1 and 2' };
+const body = { type: 'direct', name: 'QA FX I8 formula criteria', description: 'QA FX run - delete', is_active: true, execute_on: ['create'], targets: [{ criteria: crit, coming_to_department_id: CS, move_to_department_id: null, assign: { kind: 'agent', user_id: OWNER, team_id: null } }] };
+const r = await api('POST', '/desk/assignment-rules', body); log('rule', E(r).slice(0, 400)); const rid = r.j?.data?.id || r.j?.data?.rule?.id; if (rid) { made.tickets.rules = [rid]; keep(); led('Desk assignment rule ' + rid); }
+if (r.s >= 300) { const r2 = await api('POST', '/desk/assignment-rules', { ...body, targets: [{ ...body.targets[0], criteria: { conditions: [crit.conditions[0], { field_key: 'qa_fx_chan', operator: 'equals', value: 'web' }], pattern: '1 and 2' } }] }); log('rule with text formula', E(r2).slice(0, 300)); return; }
+const out = {}; for (const [k, p] of [['a', 'High'], ['b', 'Low']]) { const t = await api('POST', `/modules/${TK}/records`, { data: data({ subject: 'QA FX I8 ' + k, description: 'QA FX run - delete', status: 'Open', department: CS, priority: p }) }); made.tickets.tickets.push(t.j.data.id); keep();
+  await sleep(8000); const v = await getRec(TK, t.j.data.id); out[k] = { priority: v.priority, qa_fx_hi: v.qa_fx_hi, owner: v.owner || v.ticket_owner || v.assignee }; }
+log(JSON.stringify(out)); log('verdict', out.a.owner === OWNER && out.b.owner !== OWNER ? 'PASS' : 'CHECK');

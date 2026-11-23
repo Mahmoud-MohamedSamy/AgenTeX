@@ -1,0 +1,2 @@
+const o={};for(const [n,id] of [['5992','105927e1-32ea-45a0-97b8-ba4f314d99ce'],['1','33dfd714-5b9e-4c51-86f4-f33dd1fe9504'],['6235','8bef574a-1faa-4a30-99e0-55dd53e4738c'],['6230','1b37d6b5-ba69-4c80-8590-6401cf8c665b']]){o[n]=(await api('GET','/modules/88e8ea44-1658-4df3-9930-d0902b91073d/records/'+id)).s;}
+const b=await api('GET','/audit/recycle-bin/items?app_key=desk&limit=50');o.bin=arr(b.j?.data).slice(0,8).map(x=>[x.record_label,x.deleted_at,x.deleted_by]);return o;

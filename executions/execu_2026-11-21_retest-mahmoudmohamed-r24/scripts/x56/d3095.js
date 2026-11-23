@@ -1,0 +1,1 @@
+const T=JSON.parse(fs.readFileSync(RUN+'/out/3096.json','utf8'));const r=await api('GET','/modules/'+TK+'/records/'+T.id);const d=(r.j?.data?.data||[]).find(x=>x.field==='department')?.value?.value;return {s:r.s,dept:d==='ef8dc91f-1d30-491d-a1fc-9b62b96eca94'?'Sales':d===CS?'Customer Support':d};

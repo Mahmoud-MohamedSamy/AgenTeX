@@ -1,0 +1,7 @@
+{"out":"3135-api-card.png","title":"NDC-3135 — status saved on the ticket record vs. the Desk ticket (6 tickets #7134–#7139, QA RT26 VO Dept)","host":"staging-desk.taviportal.com","who":"owner account","date":"23 Nov 2026",
+"rows":[
+["42 moves, one by one","PATCH /modules/{tickets}/records/{id} status = QA NDC Pending (closed) › On Hold › QA NDC Approved E-Top-Up Manager (open) › Closed › Open › QA NDC Closed Duplicated (closed) › Reopened\n× 6 tickets","42 × 200; 4 s later GET /desk/tickets/{id}: Desk status = record status 42/42; closed_at set only for closed types","ok"],
+["Agent workload","GET /desk/agents/{owner}/workload (QA RT26 VO Dept)","6 → 0 (closed type) → 6 (on hold) → 6 → 0 (Closed) → 6 (Open) → 0 → 6","ok"],
+["Parallel burst","6 tickets at once × 3 rounds (QA NDC Pending, Escalated, Closed)","6 s later 2/6 Desk still Escalated; 08:20:40 (~10 s) all 6 Closed + closed_at — caught up by itself","info"],
+["Ticket page","#7134 Status → QA NDC Pending in Ticket Properties","Desk QA NDC Pending, closed_at 08:25:50","ok"],
+["Tenant scan","80 tickets: record status vs GET /desk/tickets/{id}","0 mismatches","ok"]]}

@@ -1,0 +1,7 @@
+const M = made.mod; const DS = '32f179c7-98b8-4e02-ad22-e49517f58cbf';
+const base = (ds) => ({ ir_version: 14, base_dataset_id: ds, dimensions: [{ dataset_id: ds, field_key: 'name' }, { dataset_id: ds, field_key: 'fx_e7' }, { dataset_id: ds, field_key: 'fx_d1' }], measures: [], filters: [{ dataset_id: ds, field_key: 'name', operator: 'starts_with', value: 'QA FX I2 sort' }], sort: [{ dataset_id: ds, field_key: 'fx_e7', direction: 'asc' }], limit: 50, show_detail_rows: true });
+let q = await api('POST', '/reporting/query', { query_spec: base(DS) }); log('detail', E(q), JSON.stringify(q.j?.data).slice(0, 700));
+const g = { ir_version: 14, base_dataset_id: DS, dimensions: [{ dataset_id: DS, field_key: 'fx_d1' }], measures: [{ dataset_id: DS, field_key: 'fx_e7', aggregation: 'sum' }, { dataset_id: M, field_key: 'name', aggregation: 'count' }], filters_x: 1, limit: 50 };
+q = await api('POST', '/reporting/query', { query_spec: g }); log('grouped', E(q), JSON.stringify(q.j?.data).slice(0, 900));
+const recs = []; let cur = ''; for (let i = 0; i < 10; i++) { const r = await api('GET', `/modules/${M}/records?limit=200${cur}`); recs.push(...L(r.j?.data).map(x => flat(x.data))); const n = r.j?.meta?.next_cursor; if (!n) break; cur = '&cursor=' + n; }
+const by = {}; for (const v of recs.filter(v => /^QA FX/.test(v.name || ''))) { const k = v.fx_d1 ?? '(blank)'; by[k] = by[k] || { sum: 0, n: 0 }; by[k].sum += v.fx_e7 || 0; by[k].n++; } log('expected from records API', JSON.stringify(by), 'records', recs.length);

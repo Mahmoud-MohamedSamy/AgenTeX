@@ -1,0 +1,12 @@
+const DB='8e286b60-3137-43bd-8859-98da8e5efcba';const o={};
+const mk=i=>api('POST',`/modules/${TK}/records`,{data:fields({subject:'QA RT22 BS 3077 burst '+i,description:'QA RT22 3077',status:'Open',department:DB})});
+const t0=Date.now();const rs=await Promise.all([...Array(10)].map((_,i)=>mk(i+1)));const ids=rs.map(r=>r.j?.data?.id).filter(Boolean);o.created=rs.map(r=>r.s).join(',');
+for(const id of ids){made.tickets.push(id);}keep();LED('3077: 10 burst tickets in QA AO Dept B: '+ids.join(','));
+const one=await mk('single');const sid=one.j?.data?.id;made.tickets.push(sid);keep();LED('3077: single ticket '+sid);
+const num=async id=>(await rec(id)).ticket_number;
+const snap=async()=>{const a=[];for(const id of ids)a.push(await num(id)??null);return a;};
+await sleep(5000);o.at5s=await snap();o.single5s=await num(sid);
+await sleep(15000);o.at20s=await snap();
+o.closeSingle=E(await api('PATCH',`/modules/${TK}/records/${sid}`,{data:fields({status:'Closed'})}));await sleep(5000);
+o.singleNum=await num(sid);
+fs.writeFileSync(RUN+'/out/3077.json',JSON.stringify({ids,sid,o},null,1));return o;

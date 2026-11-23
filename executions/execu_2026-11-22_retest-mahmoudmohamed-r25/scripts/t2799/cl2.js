@@ -1,0 +1,2 @@
+let items=[],cur='';for(let i=0;i<20;i++){const r=await api('GET','/audit/recycle-bin/items?app_key=desk&app_key=crm&app_key=iam&app_key=workflow&app_key=mail&limit=200'+(cur?'&cursor='+encodeURIComponent(cur):''));items=items.concat(arr(r.j?.data));cur=r.j?.meta?.next_cursor;if(!cur)break;}
+const q=items.filter(x=>/QA RT25/i.test(x.record_label||''));return {total:items.length,qa25:q.map(x=>[x.record_label,x.deleted_at])};

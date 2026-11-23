@@ -1,0 +1,10 @@
+{"out":"3052-api-card.png","title":"NDC-3052 Create Record / Create Connected Record at run time — QA RT20 CR rules (Desk QA RT19 WF Dept + CRM Leads/Customers), GET /workflow/executions?recordId=","host":"staging-desk + staging-crm","who":"ndc-staging-owner","date":"17 Nov 2026",
+"rows":[
+["1 Desk Calls, Contact Name = ${contact_id} (x2)","ticket without contact, then with contact; repeated twice","no contact: Cancelled, HTTP 422 \"Not created: Calls needs Contact Name.\" no Call (x2); with contact: Succeeded 201, Call created with the ticket's contact (x2)","ok"],
+["2a Desk Calls, Subject = empty custom placeholder","${qa_ndc_tkt_pnr_no} empty / set","empty: Cancelled \"Not created: Calls needs Subject.\" no Call; set: Succeeded, Call subject \"QA RT20 CR PNR 3052\"","ok"],
+["2b System fills itself","Create Record in Tickets: subject + status only (no department, no layout)","Succeeded; child ticket in default dept Customer Support, status Open — not blocked","ok"],
+["3 Desk Create Connected Record (Calls.ticket_id)","Contact Name = ${contact_id}","no contact: Cancelled \"Not created: Calls needs Contact Name.\" no Call; with contact: Succeeded, Call linked to the ticket","ok"],
+["4 CRM Create Record (Leads -> Tasks)","Subject = ${company}","no company: Cancelled \"Not created: Tasks needs Subject.\" no Task; with company: Succeeded, Task \"QA RT20 CR Co 3052\"","ok"],
+["4b CRM Create Connected Record (Customers -> Tasks.contact_name)","Subject = ${phone}; 2 without, 1 with","without: Cancelled \"Not created: Tasks needs Subject.\" (x2), no Task; with phone: Succeeded, Task linked to the customer","ok"],
+["5 Pre-fix saved action on own QA rule","saved \"Create Event => Tickets Module\" (no Contact Name, Department) attached to QA rule (save accepted)","Cancelled \"Not created: Events needs Contact Name, Department.\" no Event created","ok"],
+["6 Status wording","Execution History detail","Outcome Fired; action Status \"Cancelled\", HTTP 422, Details red text truncated (full text only on hover); never \"Failed\"","info"]]}

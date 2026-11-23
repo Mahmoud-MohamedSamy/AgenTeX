@@ -1,0 +1,11 @@
+eval(require('fs').readFileSync('zlib.js', 'utf8'));
+for (let a = 0; a < 3; a++) { try { await page.goto('https://desk.zoho.com/agent/techegysolutions/tech/tickets/list/all-cases', { waitUntil: 'domcontentloaded', timeout: 120000 }); break; } catch (e) {} } await sleep(12000);
+const L = JSON.parse(require('fs').readFileSync('zledger2.json', 'utf8'));
+out.rule = (await api('DELETE', B + 'directAssignmentRules/' + L.rules[0])).s;
+out.tickets = (await api('POST', B + 'tickets/moveToTrash', { ticketIds: L.tickets })).s; out.contacts = (await api('POST', B + 'contacts/moveToTrash', { contactIds: L.contacts })).s;
+out.tagDel = (await api('DELETE', B + 'tags/1499272000000573421')).s;
+await sleep(5000); const items = (JSON.parse((await api('GET', B + 'recycleBin?limit=50')).t).data || []).filter(x => /QA ZWF|qa zwf/i.test(JSON.stringify(x))); if (items.length) out.purge = (await api('POST', B + 'recycleBin/delete', { ids: items.map(x => x.id) })).s;
+out.binLeft = (JSON.parse((await api('GET', B + 'recycleBin?limit=50')).t).data || []).filter(x => /QA ZWF|qa zwf/i.test(JSON.stringify(x))).length;
+out.da = JSON.parse((await api('GET', B + 'directAssignmentRules?departmentId=' + D)).t).data.map(r => r.name);
+out.tagLeft = (await api('GET', B + 'tags/search?searchString=qazwf')).t.slice(0, 160);
+require('fs').writeFileSync('zclean2.json', JSON.stringify(out, null, 1));

@@ -1,4 +1,4 @@
-await page.goto(H + '/settings/customization/skills', { waitUntil: 'commit' }); await page.locator('button[aria-label="Department"]').first().waitFor({ timeout: 60000 }); await sleep(2000);
+await page.goto(H + '/settings/customization/skills', { waitUntil: 'commit' }); await page.getByText('Agent Skills', { exact: true }).last().waitFor({ timeout: 60000 }); await sleep(3000); log('tab default', (await text()).includes('Search agents'));
 await page.getByText('Agent Skills', { exact: true }).last().click(); await sleep(3000);
 await page.locator('button[aria-label="Department"]').first().click(); await sleep(900); await page.getByRole('option', { name: 'QA AS6 Dept A', exact: true }).click(); await sleep(3000);
 const A = page.getByPlaceholder('Search agents'); const who = async () => { const t = (await text()).replace(/\s+/g, ' '); return ['Test User 1', 'Dev Team 2', 'ndc-staging-owner'].filter(n => t.includes(n)).join(', ') + (/No agents? (match|found)[^.]*\.?/i.exec(t)?.[0] ? ' | ' + /No agents? (match|found)[^.]*\.?/i.exec(t)[0] : ''); };

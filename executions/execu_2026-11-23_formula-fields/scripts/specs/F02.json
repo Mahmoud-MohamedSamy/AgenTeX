@@ -1,0 +1,122 @@
+{
+ "out": "F02-automation-no-recalc-FAIL.png",
+ "ticket": "FX-F02",
+ "priority": "high",
+ "label": "FORMULA FAIL",
+ "verdict": "FAIL",
+ "title": "Formula field | Workflow field update and blueprint transition do not recalculate formulas",
+ "env": "NDC-Staging · staging-crm + staging-desk · API /api/v1 · owner (Bearer from saved session, not shown) · module QA FX / QA FX Desk",
+ "date": "23 Nov 2026",
+ "panels": [
+  {
+   "img": "F02-card.png",
+   "full": true,
+   "caption": "Requests and responses (values from the run; tokens not shown)",
+   "crop": [
+    20,
+    20,
+    1560,
+    430
+   ],
+   "boxes": [
+    {
+     "b": [
+      32,
+      96,
+      1568,
+      160
+     ],
+     "n": 1,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      32,
+      164,
+      1568,
+      228
+     ],
+     "n": 2,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      32,
+      232,
+      1568,
+      275
+     ],
+     "n": 3,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      32,
+      279,
+      1568,
+      343
+     ],
+     "n": 4,
+     "kind": "FAIL"
+    },
+    {
+     "b": [
+      32,
+      347,
+      1568,
+      390
+     ],
+     "n": 5,
+     "kind": "PASS"
+    },
+    {
+     "b": [
+      32,
+      394,
+      1568,
+      437
+     ],
+     "n": 6,
+     "kind": "PASS"
+    }
+   ]
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Workflow FieldUpdate sets an input (CRM)",
+   "Formula 14 after the rule",
+   "Still 2 (value from before the rule)",
+   "FAIL"
+  ],
+  [
+   2,
+   "Blueprint transition sets an input (CRM)",
+   "Formula 14",
+   "Still 2",
+   "FAIL"
+  ],
+  [
+   3,
+   "Workflow on Desk",
+   "Formula 14",
+   "Still 2",
+   "FAIL"
+  ],
+  [
+   4,
+   "Blueprint transition on Desk Tickets (Priority → High)",
+   "qa_fx_hi true",
+   "Still false",
+   "FAIL"
+  ],
+  [
+   5,
+   "Same input changed by API edit / mass update",
+   "Recalculated",
+   "Recalculated (15, 6)",
+   "PASS"
+  ]
+ ]
+}
