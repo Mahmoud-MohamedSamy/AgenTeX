@@ -1,0 +1,13 @@
+const T = '88e8ea44-1658-4df3-9930-d0902b91073d', RSTID = '9d182dfa-05f3-4af7-9685-8615a2fbe537';
+const truth = async () => { const r = await api('GET', `/modules/${T}/records?page=1&page_size=100`); const rows = arr(r.j?.data).map(x => { const o = {}; for (const f of (x.data || [])) o[f.field] = f.value?.value ?? f.value; return o; }); return { total: rows.length, open: rows.filter(o => o.status === 'Open').length, openMine: rows.filter(o => o.status === 'Open' && (o.owner === RSTID || o.ticket_owner === RSTID || o.assignee === RSTID)).length, today: rows.filter(o => String(o.created_time || o.created_at || '').startsWith('2026-11-23')).length }; };
+const out = {};
+const t0 = await truth();
+out['I-12'] = short(await ask('How many open tickets do I have?')); const t1 = await truth();
+out['I-13'] = short(await ask('Summarise ticket QA TIA T1, including what happened in its conversation.'));
+out['I-26'] = short(await ask('How many tickets were created today?'));
+out['I-30'] = short(await ask('What did the customer say in ticket QA TIA T3 last week?'));
+out['I-28'] = short(await ask('كم عدد التذاكر المفتوحة لدي؟'));
+out['I-21'] = short(await ask('Is there a knowledge base article about resetting a password?'));
+out['I-17'] = short(await ask('Why was ticket QA TIA T2 assigned the way it is? Explain the assignment.'));
+fs.writeFileSync(RUN + '/out/i-desk-rst.json', JSON.stringify({ t0, t1, out }, null, 1));
+return { t0, t1, ans: Object.fromEntries(Object.entries(out).map(([k, v]) => [k, (v.err ? '[' + v.err + '] ' : '') + v.text.slice(0, 450) + ` (refs ${v.refs}, cards ${v.cards})`])) };

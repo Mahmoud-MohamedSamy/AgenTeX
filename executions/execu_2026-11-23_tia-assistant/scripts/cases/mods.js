@@ -1,0 +1,2 @@
+const m = await api('GET', '/agents/modules'); const L = arr(m.j?.data);
+return { s: m.s, n: L.length, keys: Object.keys(L[0] || {}), desk: L.filter(x => /desk/.test(x.key || x.module_key || x.app || '')).map(x => (x.key || x.module_key) + ':' + (x.label || x.name) + (x.writable === false ? '(ro)' : '')), tick: L.filter(x => /ticket/i.test(JSON.stringify(x))).map(x => JSON.stringify(x).slice(0, 200)) };

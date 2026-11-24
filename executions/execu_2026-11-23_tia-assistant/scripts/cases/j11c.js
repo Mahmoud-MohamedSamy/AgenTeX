@@ -1,0 +1,12 @@
+const c = JSON.parse(fs.readFileSync(RUN + '/out/j11b-card.json', 'utf8'));
+const now = new Date().toISOString();
+if (now < c.exp) return { wait: true, now, exp: c.exp };
+const x = await api('POST', `/agents/tia/actions/${c.id}/confirm`, {});
+const o = await api('GET', `/agents/tia/actions/${c.id}`);
+const M = '6f553963-01d6-4b68-9fb3-143d23044c41';
+const rows = arr((await api('GET', `/modules/${M}/records?page=1&page_size=100`)).j?.data).map(x => { const o = {}; for (const f of (x.data || [])) o[f.field] = f.value?.value ?? f.value; return { id: x.id, ...o }; });
+const made = rows.filter(r => /J11b/.test(r.last_name || r.name || ''));
+const qa = rows.filter(r => /^QA TIA/.test(r.name || ((r.first_name || '') + ' ' + (r.last_name || ''))));
+const L = arr((await api('GET', `/modules/841043e1-c078-41f9-8d6e-dfd61bee45c3/records?page=1&page_size=100`)).j?.data).map(x => { const o = {}; for (const f of (x.data || [])) o[f.field] = f.value?.value ?? f.value; return { id: x.id, ...o }; });
+const inj = L.filter(r => /Injected/i.test((r.name || '') + (r.last_name || '') + (r.first_name || '')));
+return { now, exp: c.exp, confirm: x.s + ' ' + (x.j?.data?.status || x.j?.error?.code) + ' ' + (x.j?.error?.message || x.j?.data?.message || ''), outcome: o.j?.data?.status, j11bMade: made.length, qaContacts: qa.map(r => r.id + ' ' + (r.name || r.last_name)), injectedLeads: inj.length };

@@ -1,0 +1,12 @@
+const fs = require('fs'); const path = require('path');
+const rows = fs.readFileSync(path.resolve('D:/Software Testing/Automation/Agentex Installation/Agentex Installation/docs/Credentials/TAVI Desk Credentials.csv'), 'utf8').split(/\r?\n/).slice(1).filter(Boolean).map(l => l.split(','));
+const r = rows.find(x => x[0] === 'Mahmoud Mohamed');
+await page.goto(H + '/', { waitUntil: 'domcontentloaded' }); await page.locator('input[type=email]').waitFor({ timeout: 90000 }); await page.waitForTimeout(1500);
+await page.locator('input[type=email]').fill(r[1].trim()); await page.locator('input[type=password]').fill(r.slice(2).join(',').trim());
+await page.waitForTimeout(500); log('submit disabled', await page.locator('button[type=submit]').isDisabled());
+await page.locator('button[type=submit]').click();
+await page.waitForTimeout(12000);
+log('url after', page.url(), 'pw still', await page.locator('input[type=password]').count());
+log('body', (await text()).replace(/\n+/g, ' / ').slice(0, 300));
+await shot('crm-signin-after');
+return 'ok';

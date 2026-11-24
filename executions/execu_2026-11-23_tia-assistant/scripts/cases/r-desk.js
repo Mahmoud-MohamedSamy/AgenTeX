@@ -1,0 +1,13 @@
+const T = '88e8ea44-1658-4df3-9930-d0902b91073d'; const out = {};
+const tids = [...Object.values(DESK.ids), '76442c31-75ab-48e9-a08f-0007b1a29261'];
+out.tickets = (await Promise.all(tids.map(id => api('DELETE', `/modules/${T}/records/${id}`)))).map(r => r.s).join(',');
+const kb = ['0bfa03fc-b10c-8fdb-a9d1-1e0621cbc25d', 'd6135730-5a08-8c07-899e-87a1d57cb54c'];
+const extra = arr((await api('GET', '/desk/kb/articles?limit=50&search=QA%20TIA')).j?.data).filter(a => /QA TIA/.test(a.title || '')).map(a => a.id);
+out.kb = (await Promise.all([...new Set([...kb, ...extra])].map(id => api('DELETE', `/desk/kb/articles/${id}`)))).map(r => r.s).join(',');
+const g = (await api('GET', '/desk/departments/' + DESK.deptA)).j.data;
+const p = await api('PATCH', '/desk/departments/' + DESK.deptA, { ...g, agent_user_ids: DESK.deptA_before });
+const g2 = (await api('GET', '/desk/departments/' + DESK.deptA)).j.data;
+out.dept = p.s + ' same=' + (JSON.stringify([...g2.agent_user_ids].sort()) === JSON.stringify([...DESK.deptA_before].sort()));
+const rows = arr((await api('GET', `/modules/${T}/records?page=1&page_size=100&search=QA%20TIA`)).j?.data); out.ticketsLeft = rows.filter(x => JSON.stringify(x).includes('QA TIA')).length;
+out.kbLeft = arr((await api('GET', '/desk/kb/articles?limit=50&search=QA%20TIA')).j?.data).filter(a => /QA TIA/.test(a.title || '')).length;
+return out;

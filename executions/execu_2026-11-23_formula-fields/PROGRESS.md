@@ -171,3 +171,7 @@ Pending P1: F9/F10 subform editor (screen), B11, M1/M2 Arabic, I5 reports, I9 em
 - Gap ticket filed: NDC-3229 "Formula field | Missing compared with Zoho …" (10 items, High, CRM + Desk, Sprint 17, state as NDC-3102).
 - Cleanup verified at zero on both apps: QA FX / QA FX Desk modules and child modules deleted; live Leads/Contacts formula fields + test lead/contact deleted; Desk Tickets 4 formula fields, 3 tickets, 3 assignment rules, blueprint deleted; web-form contact and both QA FX accounts deleted; workflow rules, blueprints, kanban view, field permissions gone; recycle bin has no QA FX items (CRM 257 + Desk 142 purged).
 - Interruptions: staging metadata-engine 503 for a few minutes; owner session lost once more → 3rd owner sign-in. Saved sign-in files deleted from the scratchpad.
+
+## NDC-3228 CRM follow-up (23 Nov evening)
+- CRM assignment rules accept a formula field in conditions (201). First check looked like "rules don't fire": cause = import did not select the rule (options.assignment_rule_id) and records-API creates are source=manual (never trigger rules) — both by design.
+- Re-run with the rule chosen at import: formula true → Fired (owner = rule user), formula false → SkippedNoMatch (unassigned fallback); control rule Fired. CRM works; NDC-3228 stays Desk only. Two comments posted on NDC-3228. Test field/rules/leads deleted, bin purged (out/crm-ar-check2.json). 4th owner sign-in; session files deleted.

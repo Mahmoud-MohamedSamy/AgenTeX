@@ -1,0 +1,13 @@
+result('I-12', 'Fail', 'Tia\'s own suggested question "How many open tickets do I have?" failed 3 times for RST (14:37, 15:2x, 15:4x): "I can\'t confirm that from our systems right now, and I don\'t want to guess. Would you like me to try again, or would you prefer to speak with one of our team?" (customer-bot wording). Rephrased "Count the tickets with status Open that I can see" → 40, correct (API truth 40).');
+result('I-13', 'Pass', 'Summary of QA TIA T1 covers the description and the 4 thread messages correctly (locked account, no reset email, unlocked, too many attempts…); ref 1');
+result('I-15', 'Fail', 'ADM "How is my team doing this week?" twice: "Sorry, I couldn\'t answer that just now…" then the internal error "The report_id must be a UUID copied exactly from the list above, but no UUID was provided…"');
+result('I-16', 'Fail', 'ADM "What did Customer Experience Specialists 2 work on today?" twice: customer-bot fallback, then internal error "Missing valid user_id in UUID format copied exactly from the list above; cannot correct without it."');
+result('I-17', 'Fail', 'RST "Why was ticket QA TIA T2 assigned…" twice: internal error "Missing valid UUID for \'ticket_id\'. Cannot correct without a valid UUID copied exactly from the list above."');
+result('I-21', 'Finding', '"Is there a KB article about resetting a password?" → "There are currently no knowledge base articles selected in this workspace". Tia definition has use_desk_articles=false and no kb documents; the Tia setup page has no option for this. So "Search the knowledge base" cannot find Desk KB articles.');
+result('I-22', 'Fail', 'ADM "How many chats are waiting right now?" twice → customer-bot fallback "…would you prefer to speak with one of our team?"');
+result('I-26', 'Fail', 'RST "How many tickets were created today?" twice → "No tickets were created today". 6 QA TIA tickets (5 in RST\'s department) were created today at 14:41 UTC.');
+result('I-27', 'Pass', 'CRA in CRM: "How many open Desk tickets does QA TIA Contact A have?" → 0 (true: the Desk test tickets use another customer email)');
+result('I-28', 'Fail', 'Arabic "كم عدد التذاكر المفتوحة لدي؟" → Arabic reply, but the same fallback ("لا أستطيع تأكيد ذلك من أنظمتنا الآن…") instead of the count (40). Language handling OK; answer failed like I-12.');
+result('I-30', 'Fail', 'RST "What did the customer say in ticket QA TIA T3 last week?" twice → "Sorry, I couldn\'t answer that just now. Please try rephrasing your question." (expected: there is no such message)');
+result('I-14', 'Blocked', 'Needs the panel on a ticket page (page context) — run in the UI pass');
+return 'ok';

@@ -1,0 +1,15 @@
+result('I-01', 'Fail', 'CRA (CRM Admin) asked twice "How many leads whose name starts with QA TIA have lead source web?" → "There are no leads whose name starts with \'QA TIA\'…". Truth (API as CRA): 3 QA TIA leads, 2 with source web.');
+result('I-02', 'Fail', 'Twice: "There are no deals whose name starts with \'QA TIA\'…". Truth: QA TIA Deal 1000 qualification, 2500 proposal, 4000 closed_won, all visible to CRA (I-03 found Deal 2500 by full name).');
+result('I-03', 'Pass', '"QA TIA Deal 2500 is currently in the proposal stage" with 1 reference — correct');
+result('I-04', 'Fail', 'Twice: the answer is the raw internal error "Missing required argument \'report_id\' for the tool call." (pipeline question)');
+result('I-05', 'Finding', 'Unstable: 1st "Sorry, I couldn\'t answer that just now. Please try rephrasing your question."; 2nd "You have no records to follow up on today…" (not verified against tasks)');
+result('I-06', 'Pass', 'Deals fields: Name, Deal name, Stage, Amount, Closing date, Account, Contact, Deal Owner… — labels, not keys; match the module');
+result('I-07', 'Pass', 'Modules listed = the 15 CRA can open, with their renamed labels (Customers, Transactions, Agency Code…)');
+result('I-08', 'Pass', 'Found QA TIA Contact A, email qa.tia.contacta@example.com, refs 5');
+result('I-09', 'Fail', 'Twice: "Sorry, I couldn\'t answer that just now. Please try rephrasing your question." for leads/contacts/deals counts in one answer (truth 3/2/3)');
+result('I-11', 'Pass', '"You currently have no reports available" — true for CRA (/reporting/reports 0 for CRA; owner has 3)');
+result('I-23', 'Pass', 'Nonexistent deal → "There is no deal named QA TIA Nonexistent in the CRM records you can access."');
+result('I-24', 'Fail', 'Twice: "Sorry, I couldn\'t answer that just now. Please try rephrasing your question." for "Show my QA TIA deal" (3 exist; expected a list or a question back)');
+result('I-25', 'Fail', 'Follow-up "which of them is closed?" → "There are no deals whose name starts with QA TIA…, so none of them are closed." (carries the I-02 error; truth: Deal 4000 closed_won)');
+result('I-29', 'Pass', '"There are 137 contacts in total. The first 10 are shown in the card" — total correct (137)');
+return 'ok';

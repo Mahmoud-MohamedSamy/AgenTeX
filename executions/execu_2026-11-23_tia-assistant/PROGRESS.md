@@ -14,3 +14,10 @@ Spec: docs/tia-assistant/spec-tia-assistant.md · Results: out/results.jsonl · 
 
 ## Cleanup owed
 - see ledger.md; also Tia chats created by our accounts (not OWN's Arabic chat e282805d…)
+
+## Step 3 DONE (23–24 Nov 2026)
+- 290 result rows (out/results-final.json, last verdict per id): Pass 186, Fail 27, Finding 23, Blocked 13, Inconclusive 19; Z: Gap 13, Partly 4, Not a gap 3, out of scope 2
+- 9 bug drafts + findings in bug-drafts.md — NOT filed
+- CRM browser checks blocked: CRA sign-in loops at org picker (Wonder Travel / Ashtar), owner CRM session expired; CRM covered by API
+- Cleanup R-01..R-05 PASS: data 0, chats 0 (owner Arabic chat kept), Desk Agent profile + Tia def + policy + runtime equal to baseline
+- Next: step 4 full execution report (waiting for the user)

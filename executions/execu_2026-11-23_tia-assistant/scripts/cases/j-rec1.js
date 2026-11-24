@@ -1,0 +1,10 @@
+result('I-01', 'Pass', 'Re-run after giving the test leads a Name (my test data had only first/last name): "There are 2 leads whose name starts with QA TIA and have lead source web" — correct. Earlier "none" was caused by the empty Name field. Note: Tia finds leads only by the Name field.');
+result('J-01', 'Finding', 'Create-lead card: kind create_record, target Lead, 4 lines, expiry ~10 min, side effect "Saving can run your automation rules." — but line labels are internal keys (first_name, last_name, company, email), not field labels');
+result('J-02', 'Pass', 'Confirm → "Done…"; lead QA TIA J01 bee14c37 created with company QA Co, email, owner = CRA (the person asking)');
+result('J-03', 'Pass', 'Reject → status rejected "Cancelled. Nothing was changed."; no lead J03');
+result('J-20', 'Pass', 'Confirm after reject → 409 TIA_ACTION_DECIDED "This request was already handled."');
+result('J-04', 'Finding', 'Update card for QA TIA Lead 1 (kind update_record) applied lead_source=referral on confirm. The card shows only the new value (lead_source: referral), not old → new.');
+result('J-05', 'Pass', 'Add-note card on QA TIA Contact A → confirm → note "QA TIA note J05" on the contact');
+result('J-19', 'Pass', 'All confirms/rejects in this run went through POST /agents/tia/actions/{id}/confirm|reject and match the UI flow');
+result('J-22', 'Pass', 'J01 card lines (QA TIA / J01 / QA Co / qa.tia.j01@example.com) equal the saved lead values');
+return 'ok';

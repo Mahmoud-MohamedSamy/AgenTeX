@@ -39,3 +39,11 @@
 - 2026-11-23T15:03:07Z desk cleanup: 7 problems
 - 2026-11-23T15:05:13Z desk cleanup: 1 problems
 - 2026-11-23T15:21:36Z crm cleanup: 0 problems
+- 2026-11-23T15:39:49Z CRM Leads formula qa_fx_ar (AR check)
+- 2026-11-23T15:40:03Z CRM AR check cleanup: field 204
+- 2026-11-23T15:40:38Z CRM Leads formula qa_fx_ar (AR check)
+- 2026-11-23T15:41:01Z CRM AR check cleanup: lead 204, lead 204, rule 204, rule 204, field 204, bin 200 (2)
+- 2026-11-23T15:44:26Z CRM Leads formula qa_fx_ar (AR check)
+- 2026-11-23T15:45:54Z CRM AR check cleanup: lead 204, lead 204, lead 204, rule 204, rule 204, field 204, bin 200 (3)
+- 2026-11-23T15:48:12Z CRM AR import check cleanup: lead 204, lead 204, lead 204, rule 204, rule 204, field 204, bin 200 (3)
+- 2026-11-23T16:06:09Z CRM AR import-with-rule check cleanup: lead 204, lead 204, lead 204, rule 204, rule 204, field 204, bin 200 (3)

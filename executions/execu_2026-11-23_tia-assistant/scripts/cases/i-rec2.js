@@ -1,0 +1,5 @@
+result('I-10', 'Fail', 'OWN asked to run a saved report twice: "QA RT19 GS Gold report" → "could not be run because the app rejected the request due to an invalid reporting definition"; "QA RT18 2917 Gold report" → "I can\'t confirm that from our systems right now… would you prefer to speak with one of our team?" (customer-bot wording in the staff assistant).');
+result('I-19', 'Finding', 'Round robin explanation is generic (order of direct rules then round robin) — it does not name any of this tenant\'s rules, departments or agents');
+result('I-20', 'Finding', 'Web form how-to: names the right page (/settings/channels/web-forms, route exists, "New advanced form") and the guide title, but starts with unrelated Help Center creation steps; no citation link returned (citations null)');
+result('I-18', 'Fail', 'Blueprint question twice: 1st (CRM, owner) "Sorry, I couldn\'t answer that just now…"; 2nd (Desk) "I need the specific module name or key to access the blueprint details" for a Desk ticket blueprint.');
+return 'ok';

@@ -55,6 +55,28 @@ const detail = (x, kind) => { const d = DR[x.id] || {}; const c = cases.find(k =
   <div><h4>Expected</h4><p>${esc(d.expected)}</p><h4>Actual</h4><p>${esc(d.actual)}</p><h4>System message</h4><p><code>${esc(x.message)}</code></p><h4>Impact</h4><p>${esc(x.impact)}</p>${d.check ? `<h4>Before filing</h4><p>${esc(d.check)}</p>` : ''}</div></div>
   <h4>Every attempt</h4><div class="scroll"><table><thead><tr><th>Run</th><th>Variant</th><th>Volume</th><th>Outcome</th></tr></thead><tbody>${x.attempts.map(a => `<tr><td class="run">${esc(a[0])}</td><td>${esc(a[1])}</td><td>${esc(a[2])}</td><td>${esc(a[3])}</td></tr>`).join('')}</tbody></table></div>
   <p class="sub">Environment: NDC-Staging, Desk → Tickets, owner account.${x.evidence ? ' Screenshot: ' + esc(x.evidence) + '.' : ''} Plane draft: ${esc(d.title || '—')} (not filed).</p></article>`; };
+const FILED = [
+  ['NDC-3186', 'TC-01', 'High', '"Field changed" condition matches when a ticket is created, so Create or Edit rules run on every new ticket', 'Jam 40183b6e'],
+  ['NDC-3196', 'OB-02', 'Medium', '"Test rule" on an unsaved rule fails with "Something went wrong" when the rule is limited to departments', 'Annotated image'],
+  ['NDC-3203', 'MR-07', 'High', 'Editing a rule cancels its pending scheduled actions', ''],
+  ['NDC-3204', 'AT-12', 'Medium', 'Reassign based on skills gives the ticket to an offline agent, and shows Succeeded when no agent qualifies', ''],
+  ['NDC-3205', 'AT-03', 'Medium', 'The ticket number cannot be put in a rule comment: not in Insert field, and ${ticket_number} comes out empty', ''],
+  ['NDC-3206', 'CF-11', 'Medium', '"SLA violated is false" does not match tickets without an SLA', ''],
+  ['NDC-3207', 'PF-03', 'Medium', 'Rules list takes about a minute to load with ~200 rules', ''],
+  ['NDC-3208', 'AC-25', 'Low', 'Update related record shows Succeeded when the ticket has no contact', ''],
+  ['NDC-3209', 'AC-03', 'Low', "Field Update saves a picklist value that is not one of the field's options", ''],
+  ['NDC-3210', 'CO-86', 'Low', 'Text conditions are case-sensitive ("is", "contains", "starts with", "ends with"); Zoho ignores case', 'Zoho screenshot'],
+  ['NDC-3211', 'CO-90', 'Low', 'Date "between" condition accepts From later than To', ''],
+  ['NDC-3212', 'CO-92', 'Low', 'Deleted tag stays in rule conditions with no warning', ''],
+  ['NDC-3213', 'MX-04', 'Low', 'API accepts Send happiness email on an On Delete rule', ''],
+  ['NDC-3214', 'UX-09', 'Low', 'Test rule sample data uses a CRM field ("revenue")', ''],
+  ['NDC-3215', 'RG-02', 'Low', 'API saves a CRM role as the owner role or email recipient of a Desk rule', ''],
+  ['NDC-3230', 'API-01', 'Medium', 'A rule update that leaves out the conditions clears them, so the rule runs on every ticket (Zoho keeps them)', ''],
+  ['NDC-3231', 'User report', 'Medium', 'The rules list has no pagination: every rule loads on one page', 'Screenshots'],
+  ['NDC-3232', 'User report', 'Low', 'No Execution History button on the Workflow Rules list page', 'Screenshots'],
+];
+const OPEN = [['AC-10', 'API-only owner type "assignment rule" never assigns; no such option in the editor or in Zoho', 'Decision later'], ['TD-11', 'Date-Time rule never runs when the date is already in the past (no Zoho equivalent)', 'User checking']];
+const CLOSED = [['TR-06', 'A save with no change runs On Edit rules', 'Not a bug: Zoho does the same (live)'], ['TR-12', 'Automatic tag edits run On Edit rules', 'Not a bug: Zoho does the same (live)'], ['AC-07 / NDC-2997', 'Role round robin', 'Withdrawn: works with Desk roles; NDC-2997 stays Done'], ['TD-13, L-10, L-09', 'Date-Time message, rules counter, >200 rules', 'Fixed on the 23 Nov re-check']];
 const stat = (n, label, k) => `<div class="stat ${k || ''}"><b>${n}</b><span>${label}</span></div>`;
 const row = c => `<tr data-v="${esc(c.r.verdict || '')}" data-g="${esc(c.group)}"><td class="id">${esc(c.id)}</td><td>${esc(c.title)}</td><td>${esc(c.pri)}</td><td>${pill(c.r.verdict || 'NOT RUN')}</td><td class="note">${esc(c.r.note)}</td><td class="run">${runOf(c.r)}</td></tr>`;
 const list = (cs, withNeed) => `<div class="scroll"><table><thead><tr><th>Case</th><th>What was tested</th><th>Result and note</th>${withNeed ? '<th>Needs</th>' : ''}</tr></thead><tbody>${cs.map(c => `<tr><td class="id">${esc(c.id)}</td><td>${esc(c.title)}</td><td>${pill(c.r.verdict)} ${esc(c.r.note)}</td>${withNeed ? `<td>${esc(blockedNeed[c.id] || '')}</td>` : ''}</tr>`).join('')}</tbody></table></div>`;
@@ -143,7 +165,7 @@ code { font-family:var(--mono); font-size:12.5px }
     <li><b>Biggest finding:</b> editing a rule silently cancels its pending scheduled actions (MR-07).</li>
     <li><b>Fixed:</b> TC-04 on the 23 Nov retest; AT-06, OB-03, OB-05, OB-06 since run 1; October B-1 … B-8.</li>
     <li><b>Details:</b> full write-ups of the 2 failures and the 11 detailed findings (incl. AC-10) are in the sections after the Findings table.</li>
-    <li><b>Drafts:</b> ${D.length} Plane drafts written — ${draftsBy('file').length} ready to file, ${draftsBy('check').length} need one check, ${draftsBy('decide').length} need a decision or Zoho check.</li>
+    <li><b>Filed in Plane:</b> ${FILED.length} tickets (NDC-3186, NDC-3196, NDC-3203 – NDC-3215, NDC-3230 – NDC-3232); ${OPEN.length} findings waiting for a decision (AC-10, TD-11). <a href="#filed">See the list</a>.</li>
   </ul>
 </section>
 
@@ -206,12 +228,17 @@ code { font-family:var(--mono); font-size:12.5px }
   <p class="sub" style="margin-top:8px">PS-06 (draft resume) and PS-08 (leave the editor with unsaved changes) could not be driven reliably by automation and need a short manual check.</p>
 </section>
 
-<section>
-  <h2>Plane drafts (${D.length}, not filed)</h2>
-  <p class="sub">Titles follow "Feature | Descriptive Bug Title". Priority is a suggestion. Full steps, expected and actual results are on the plan page and in <code>docs/desk-workflow-rules/regression/bug-drafts.md</code>.</p>
-  <div class="scroll"><table><thead><tr><th>Case</th><th>Type</th><th>Priority</th><th>Status</th><th>Title</th></tr></thead><tbody>
-  ${D.map(b => `<tr><td class="id">${esc(b.id)}${b.also ? ' + ' + esc(b.also) : ''}</td><td>${pill(b.kind)}</td><td>${esc(b.pri)}</td><td>${esc(recTxt[b.rec])}</td><td>${esc(b.title)}${b.check ? `<div class="sub">Before filing: ${esc(b.check)}</div>` : ''}</td></tr>`).join('')}
+<section id="filed">
+  <h2>Filed in Plane (${FILED.length})</h2>
+  <p class="sub">All are in project NDC, state Bug, label Workflow Rules, module Desk, Sprint 17, assigned to MahmoudMohamed, mfathy and Hegazy. Titles start with "Workflow Rules |". Filed 23 Nov 2026.</p>
+  <div class="scroll"><table><thead><tr><th>Ticket</th><th>Case</th><th>Priority</th><th>Title</th><th>Attached</th></tr></thead><tbody>
+  ${FILED.map(f => `<tr><td class="id">${esc(f[0])}</td><td class="id">${esc(f[1])}</td><td>${esc(f[2])}</td><td>${esc(f[3])}</td><td class="sub">${esc(f[4])}</td></tr>`).join('')}
   </tbody></table></div>
+  <h3>Not filed yet</h3>
+  <div class="scroll"><table><tbody>${OPEN.map(o => `<tr><td class="id">${esc(o[0])}</td><td>${esc(o[1])}</td><td class="sub">${esc(o[2])}</td></tr>`).join('')}</tbody></table></div>
+  <h3>Closed, withdrawn or fixed</h3>
+  <div class="scroll"><table><tbody>${CLOSED.map(o => `<tr><td class="id">${esc(o[0])}</td><td>${esc(o[1])}</td><td class="sub">${esc(o[2])}</td></tr>`).join('')}</tbody></table></div>
+  <p class="sub" style="margin-top:8px">Full write-ups: findings review page claude.ai/artifact/Qchhct9uoVf3CYEtWuhhiv.</p>
 </section>
 
 <div class="two">

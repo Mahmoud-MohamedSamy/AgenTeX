@@ -139,9 +139,9 @@ From the regression runs 1 + 2 (22–23 Nov 2026) and the fail retest (23 Nov), 
 
 **Environment:** NDC-Staging, Desk → Tickets. FILED as NDC-3208 (23 Nov). Run 2, 22 Nov.
 
-## Desk Workflow Rules | Saving a rule with only its actions changed removes its conditions
+## Desk Workflow Rules | A rule update that leaves out the conditions clears them, so the rule runs on every ticket (Zoho keeps them)
 
-*API-01 · FINDING · suggested priority Low · Decision / Zoho check first*
+*API-01 · FINDING · suggested priority Medium · Ready to file*
 
 **Steps**
 1. Take a rule with conditions (e.g. Subject starts with "QA").
@@ -152,9 +152,9 @@ From the regression runs 1 + 2 (22–23 Nov 2026) and the fail retest (23 Nov), 
 
 **Actual:** The conditions are cleared, the rule becomes "All tickets" and runs on every new ticket (6 unrelated tickets in the test).
 
-**Before filing:** What the UI does (captured 23 Nov): when you change only an action, the editor sends the whole rule with the conditions (criteria key present), so conditions are kept. When you remove all conditions, the editor sends the rule with NO criteria key, and the API stores criteria = null; the editor then shows "No conditions — actions run on every event of this trigger". So the API already matches the UI: a missing criteria means no conditions. Only an outside API client that leaves criteria out by mistake turns a rule into "all tickets". Options: keep as is (document it), or require an explicit criteria: null to clear (needs a matching editor change).
+**Before filing:** What the TAVI editor does (captured 23 Nov): an action-only edit sends the whole rule with its conditions; removing all conditions sends the rule with NO criteria key, and the API stores criteria = null (editor then shows "No conditions — actions run on every event"). Zoho (live, assignment rules): leaving the conditions out of an update KEEPS them; only an explicit criteria: null clears them. To match Zoho: the API should keep conditions when the key is missing and clear them only on an explicit null — and the editor must then send criteria: null when the user removes all conditions, or clearing in the editor will stop working.
 
-**Environment:** NDC-Staging, Desk → Tickets. Run 1, 22 Nov.
+**Environment:** NDC-Staging, Desk → Tickets. FILED as NDC-3230 (23 Nov). Full ticket draft (not filed): api-01-ticket-draft.md. Run 1, 22 Nov.
 
 ## Desk Workflow Rules | Field Update saves a picklist value that is not one of the field's options
 

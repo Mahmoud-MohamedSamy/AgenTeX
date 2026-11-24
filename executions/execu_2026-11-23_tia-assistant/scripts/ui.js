@@ -24,11 +24,14 @@ const state = path.join(P, 'automation/.auth', `staging-${process.env.APP || 'de
     await page.locator('input[type=email], input[name=email]').first().fill(em);
     await page.locator('input[type=password]').first().fill(pw);
     await page.locator('button[type=submit]').first().click();
+    await page.waitForTimeout(6000);
+    if ((await page.innerText('body').catch(() => '')).includes('Choose an organization')) { await page.locator('button, [role=button], li', { hasText: 'Wonder Travel' }).first().click(); log('org picked: Wonder Travel'); }
     await page.waitForURL(u => !/login|sign-in|auth/.test(u.pathname), { timeout: 60000 }).catch(() => {});
     await page.waitForTimeout(3000); log('signed in (form)');
   };
   const go = async p => {
     await page.goto(H + p, { waitUntil: 'domcontentloaded' }); await page.waitForTimeout(2500);
+    await page.waitForFunction(() => document.querySelector('input[type=password]') || document.querySelector('[data-testid="tia-launcher"]') || document.querySelector('nav, header'), null, { timeout: 90000 }).catch(() => {});
     await page.locator('input[type=password], nav, header').first().waitFor({ timeout: 20000 }).catch(() => {}); await page.waitForTimeout(1000);
     if (/login|sign-in|\/auth/.test(new URL(page.url()).pathname) || await page.locator('input[type=password]').count()) { await signIn(); await page.goto(H + p, { waitUntil: 'domcontentloaded' }); await page.waitForTimeout(2500); }
   };

@@ -50,8 +50,9 @@ const Z = {
   'TR-06': ['live (assignment rule)', 'same', 'Zoho treats a save with no change as an edit: an Edit-only rule ran when a ticket was saved with the same Priority (checked live 23 Nov with an Edit-only assignment rule; the workflow builder could not be opened under automation). So TAVI matches Zoho here.'],
   'TR-12': ['live (assignment rule)', 'same', 'Zoho treats adding a tag as an edit: an Edit-only rule ran when only a tag was added (checked live 23 Nov, assignment rule as stand-in). TAVI’s case is a tag added automatically by the system; Zoho’s test added it by API.'],
 };
+Z['API-01'] = ['live (assignment rule)', 'differs', 'Zoho keeps the conditions when an update leaves them out (rename only, or agent only: conditions unchanged) and clears them only when they are sent explicitly as empty (criteria: null). TAVI clears them whenever they are left out. Checked live 23 Nov with Zoho assignment rules, which use the same condition format (workflow rules could not be created by API).'];
 const ZB = { differs: 'TAVI differs from Zoho', same: 'Same as Zoho', 'n/a': 'No Zoho equivalent', '?': 'Zoho not checked' };
-const FILED = {"MR-07":3203,"AT-12":3204,"AT-03":3205,"CF-11":3206,"PF-03":3207,"AC-25":3208,"AC-03":3209,"CO-86":3210,"CO-90":3211,"CO-92":3212,"MX-04":3213,"UX-09":3214,"RG-02":3215};
+const FILED = {"MR-07":3203,"AT-12":3204,"AT-03":3205,"CF-11":3206,"PF-03":3207,"AC-25":3208,"AC-03":3209,"CO-86":3210,"CO-90":3211,"CO-92":3212,"MX-04":3213,"UX-09":3214,"RG-02":3215,"API-01":3230};
 const REC = { file: ['Filed in Plane', 'file'], check: ['Check one thing first', 'check'], decide: ['Decision needed', 'decide'] };
 const order = { file: 0, check: 1, decide: 2 }, pr = { High: 0, Medium: 1, Low: 2 };
 const items = [...D].sort((a, b) => order[a.rec] - order[b.rec] || pr[a.pri] - pr[b.pri]);

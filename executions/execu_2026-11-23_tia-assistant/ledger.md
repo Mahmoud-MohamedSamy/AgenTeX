@@ -23,3 +23,10 @@
 - 2026-11-23T15:02:28 restored Tia after E: 200/200 v29
 - 2026-11-23T15:07:51 restored Tia after F: 200/200 v33
 - 2026-11-23T15:20:58 AI policy tia restored to {enabled:true,daily_credit_cap:1e8} → 200 v13
+- 2026-11-23T15:43:29 CRM lead "QA TIA J01" bee14c37-77dd-4026-8b6a-13d8a8145489 (J-02, via Tia)
+- 2026-11-23T15:49:33 Desk KB draft "QA TIA How to reset your password" 0bfa03fc-b10c-8fdb-a9d1-1e0621cbc25d status draft by e82f62cb-9904-42c7-a13c-77a7449820b9
+- 2026-11-23T15:49:33 Desk KB draft "QA TIA How to reset your password" d6135730-5a08-8c07-899e-87a1d57cb54c status draft by 9d182dfa-05f3-4af7-9685-8615a2fbe537
+- 2026-11-23T15:51:16 CRM contact "QA TIA J11 Expiry" (created by early confirm, J-11 retry pending) and "QA TIA J13 Double" — from Tia; ids looked up in cleanup
+- 2026-11-23T15:57:13 CRM contact "QA TIA <img src=x onerror=alert(1)> XSS" ab3f227d-3d53-4cfb-ba5f-6ac9c6a7bea7 (K-16)
+- 2026-11-23T21:46:25 CRM contacts from Tia: J13 Double 800d345d-68dd-450f-b0ab-541a4f9d10af, J11 Expiry dea3784b-f478-4ed3-ae7c-9ec3d667166c; XSS contact ab3f227d-3d53-4cfb-ba5f-6ac9c6a7bea7
+- 2026-11-23T21:46:33 Desk ticket "QA TIA <img src=x onerror=alert(1)> T5" 76442c31-75ab-48e9-a08f-0007b1a29261 (K-16 UI)
