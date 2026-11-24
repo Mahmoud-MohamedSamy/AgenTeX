@@ -1,0 +1,298 @@
+<title>Tia Bug Drafts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; an index table, then one card per Plane draft, then lower findings. */
+:root { --bg:#f6f7f9; --panel:#ffffff; --fg:#1b2330; --muted:#5d6878; --line:#dde2e9; --accent:#2b5fab; --high:#c23b3b; --med:#b56d0c;
+  --sans:'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; --mono:'IBM Plex Mono', ui-monospace, Consolas, monospace; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#12161c; --panel:#1a2029; --fg:#e4e8ee; --muted:#9aa5b4; --line:#2d3542; --accent:#7aa7ec; --high:#e86b6b; --med:#e7a54a; color-scheme:dark } }
+:root[data-theme="dark"] { --bg:#12161c; --panel:#1a2029; --fg:#e4e8ee; --muted:#9aa5b4; --line:#2d3542; --accent:#7aa7ec; --high:#e86b6b; --med:#e7a54a; color-scheme:dark }
+body { background:var(--bg); color:var(--fg); font-family:var(--sans); font-size:15px; line-height:1.55; margin:0 }
+a { color:var(--accent) }
+.wrap { max-width:1080px; margin:0 auto; padding-block:28px 60px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); display:grid; gap:20px }
+.eyebrow { font:500 12px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--accent) }
+h1 { font-size:clamp(26px, 4vw, 34px); line-height:1.15; margin:6px 0 4px; text-wrap:balance }
+h2 { font-size:18px; line-height:1.35; margin:8px 0 6px; text-wrap:balance }
+h3 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:12px 0 4px }
+p { margin:0 0 6px; max-width:75ch }
+.meta { display:flex; flex-wrap:wrap; gap:6px 18px; color:var(--muted); font-size:13.5px } .meta b { color:var(--fg); font-weight:600 }
+.box, .bug { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 20px; min-width:0 }
+.bug { scroll-margin-top:12px }
+.bh { display:flex; flex-wrap:wrap; align-items:center; gap:8px }
+.num { font:600 13px var(--mono) }
+.sev { font:600 11px/1.7 var(--mono); padding:0 8px; border-radius:4px; border:1px solid currentColor } .sev-high { color:var(--high) } .sev-medium { color:var(--med) }
+.chip { font-size:12px; color:var(--muted); border:1px solid var(--line); border-radius:20px; padding:0 9px } .mono { font-family:var(--mono) }
+.copy { margin-left:auto; font:500 13px var(--sans); color:var(--accent); background:transparent; border:1px solid var(--line); border-radius:6px; padding:4px 10px; cursor:pointer }
+.copy:hover { border-color:var(--accent) } .copy:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:2px }
+.grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:4px 26px } .grid > * { min-width:0 }
+ol, ul { margin:0; padding-left:20px } li { margin:3px 0 }
+.scroll { overflow-x:auto } table { border-collapse:collapse; width:100%; font-size:13.5px }
+th, td { text-align:left; vertical-align:top; padding:7px 8px; border-bottom:1px solid var(--line) }
+th { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:600; white-space:nowrap }
+td.id { font-family:var(--mono); font-size:12.5px; white-space:nowrap } td.id a { text-decoration:none }
+.sub { color:var(--muted); font-size:13px }
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Plane drafts · not filed · CRM + Desk</div>
+  <h1>Tia Bug Drafts</h1>
+  <div class="meta"><span><b>Bugs</b> 9 (3 High, 6 Medium)</span><span><b>From</b> TIA Assistant run, 23–24 Nov 2026</span><span><b>Environment</b> NDC-Staging</span><span><b>Status</b> waiting for your go; nothing is in Plane</span></div>
+</header>
+
+<section class="box">
+  <p>Each draft is written to be filed in Plane as it stands: title in "Feature | Title" form, steps, expected and actual results, account and environment. "Copy draft" copies the plain text of one draft. Assignee, state, module, sprint and labels are left for you to choose when filing.</p>
+  <div class="scroll"><table><thead><tr><th>#</th><th>Priority</th><th>Title</th><th>App</th></tr></thead><tbody>
+  <tr><td class="id"><a href="#bug-1">1</a></td><td><span class="sev sev-high">High</span></td><td><a href="#bug-1">Simple questions fail with &quot;Sorry, I couldn't answer that just now&quot; or &quot;would you prefer to speak with one of our team?&quot;</a></td><td class="sub">Desk + CRM</td></tr><tr><td class="id"><a href="#bug-2">2</a></td><td><span class="sev sev-high">High</span></td><td><a href="#bug-2">Internal tool errors are shown to the user as the answer</a></td><td class="sub">Desk + CRM</td></tr><tr><td class="id"><a href="#bug-3">3</a></td><td><span class="sev sev-high">High</span></td><td><a href="#bug-3">A private ticket comment can never be proposed, although Tia offers &quot;Draft a private comment&quot; on ticket pages</a></td><td class="sub">Desk</td></tr><tr><td class="id"><a href="#bug-4">4</a></td><td><span class="sev sev-medium">Medium</span></td><td><a href="#bug-4">&quot;List the deals whose name starts with QA TIA&quot; says no such deals exist</a></td><td class="sub">CRM</td></tr><tr><td class="id"><a href="#bug-5">5</a></td><td><span class="sev sev-medium">Medium</span></td><td><a href="#bug-5">&quot;How many tickets were created today?&quot; says none when tickets were created today</a></td><td class="sub">Desk</td></tr><tr><td class="id"><a href="#bug-6">6</a></td><td><span class="sev sev-medium">Medium</span></td><td><a href="#bug-6">&quot;Propose a setup change&quot; only supports 4 fixed recipes; tags and blueprints cannot be proposed</a></td><td class="sub">Desk + CRM</td></tr><tr><td class="id"><a href="#bug-7">7</a></td><td><span class="sev sev-medium">Medium</span></td><td><a href="#bug-7">Changes to &quot;Agent Instruction&quot; have no effect</a></td><td class="sub">Desk + CRM</td></tr><tr><td class="id"><a href="#bug-8">8</a></td><td><span class="sev sev-medium">Medium</span></td><td><a href="#bug-8">Tia setup changes are not written to the audit log</a></td><td class="sub">Desk + CRM</td></tr><tr><td class="id"><a href="#bug-9">9</a></td><td><span class="sev sev-medium">Medium</span></td><td><a href="#bug-9">A change to two records gives one card and silently drops the second</a></td><td class="sub">CRM</td></tr>
+  </tbody></table></div>
+</section>
+
+<article class="bug" id="bug-1">
+  <div class="bh"><span class="num">Bug 1</span><span class="sev sev-high">High</span><span class="chip">Desk + CRM</span><span class="chip mono">I-12, I-28, I-22, I-24, I-09, I-30, I-10, I-18 (and I-05 unstable)</span><button type="button" class="copy" data-n="1" id="copy-1">Copy draft</button></div>
+  <h2>Tia | Simple questions fail with &quot;Sorry, I couldn't answer that just now&quot; or &quot;would you prefer to speak with one of our team?&quot;</h2>
+  <div class="grid"><div><h3>Steps to reproduce</h3><ol><li>Sign in to Desk as a Desk Agent who has &quot;Chat with Tia&quot;.</li><li>Open the Ask Tia panel and start a new chat.</li><li>Click the suggested question &quot;How many open tickets do I have?&quot;.</li><li>In a new chat, ask &quot;Count the tickets with status Open that I can see&quot;.</li></ol><h3>Account</h3><p>Desk Agent (Customer Experience Specialists 2, with &quot;Chat with Tia&quot;); Desk Administrator (QA Team 1); owner</p></div>
+  <div><h3>Expected result</h3><p>Both questions give the number of open tickets the agent can see (40 at the time of the test).</p><h3>Actual result</h3><p>The suggested question fails every time (3 of 3, at 14:37, about 15:20 and about 15:40 UTC) with: &quot;I can't confirm that from our systems right now, and I don't want to guess. Would you like me to try again, or would you prefer to speak with one of our team?&quot;. The reworded question returns 40, which is correct. The second sentence is wording for customers and does not belong in a staff assistant.</p><ul><li>Same result in Arabic: &quot;كم عدد التذاكر المفتوحة لدي؟&quot; gets the Arabic version of the same reply (I-28).</li><li>&quot;How many chats are waiting right now?&quot; (Desk admin), twice: the customer-bot reply (I-22).</li><li>&quot;Show my QA TIA deal&quot; (CRM), twice: &quot;Sorry, I couldn't answer that just now. Please try rephrasing your question.&quot; 3 such deals exist (I-24).</li><li>Leads, contacts and deals counted in one question, twice: the same &quot;Sorry…&quot; reply (I-09).</li><li>&quot;What did the customer say in ticket QA TIA T3 last week?&quot;, twice: the same &quot;Sorry…&quot; reply; expected &quot;there is no such message&quot; (I-30).</li><li>Run a saved report by name: &quot;invalid reporting definition&quot;, or the customer-bot reply (I-10).</li><li>Ask about a blueprint: &quot;Sorry…&quot;, or &quot;I need the specific module name or key…&quot; on a Desk ticket blueprint (I-18).</li></ul></div></div>
+  <textarea hidden id="txt-1">Tia | Simple questions fail with &quot;Sorry, I couldn't answer that just now&quot; or &quot;would you prefer to speak with one of our team?&quot;
+
+Priority: High · App: Desk + CRM · Cases: I-12, I-28, I-22, I-24, I-09, I-30, I-10, I-18 (and I-05 unstable)
+
+Steps to reproduce
+1. Sign in to Desk as a Desk Agent who has &quot;Chat with Tia&quot;.
+2. Open the Ask Tia panel and start a new chat.
+3. Click the suggested question &quot;How many open tickets do I have?&quot;.
+4. In a new chat, ask &quot;Count the tickets with status Open that I can see&quot;.
+
+Expected result
+Both questions give the number of open tickets the agent can see (40 at the time of the test).
+
+Actual result
+The suggested question fails every time (3 of 3, at 14:37, about 15:20 and about 15:40 UTC) with: &quot;I can't confirm that from our systems right now, and I don't want to guess. Would you like me to try again, or would you prefer to speak with one of our team?&quot;. The reworded question returns 40, which is correct. The second sentence is wording for customers and does not belong in a staff assistant.
+- Same result in Arabic: &quot;كم عدد التذاكر المفتوحة لدي؟&quot; gets the Arabic version of the same reply (I-28).
+- &quot;How many chats are waiting right now?&quot; (Desk admin), twice: the customer-bot reply (I-22).
+- &quot;Show my QA TIA deal&quot; (CRM), twice: &quot;Sorry, I couldn't answer that just now. Please try rephrasing your question.&quot; 3 such deals exist (I-24).
+- Leads, contacts and deals counted in one question, twice: the same &quot;Sorry…&quot; reply (I-09).
+- &quot;What did the customer say in ticket QA TIA T3 last week?&quot;, twice: the same &quot;Sorry…&quot; reply; expected &quot;there is no such message&quot; (I-30).
+- Run a saved report by name: &quot;invalid reporting definition&quot;, or the customer-bot reply (I-10).
+- Ask about a blueprint: &quot;Sorry…&quot;, or &quot;I need the specific module name or key…&quot; on a Desk ticket blueprint (I-18).
+
+Account: Desk Agent (Customer Experience Specialists 2, with &quot;Chat with Tia&quot;); Desk Administrator (QA Team 1); owner
+Environment: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API</textarea>
+</article>
+<article class="bug" id="bug-2">
+  <div class="bh"><span class="num">Bug 2</span><span class="sev sev-high">High</span><span class="chip">Desk + CRM</span><span class="chip mono">I-04, I-15, I-16, I-17, K-09, L-14</span><button type="button" class="copy" data-n="2" id="copy-2">Copy draft</button></div>
+  <h2>Tia | Internal tool errors are shown to the user as the answer</h2>
+  <div class="grid"><div><h3>Steps to reproduce</h3><ol><li>Sign in to CRM as a CRM admin and open Ask Tia.</li><li>Ask about the pipeline, for example &quot;How is my pipeline looking?&quot;.</li><li>In Desk, as a Desk admin, ask &quot;How is my team doing this week?&quot;.</li><li>Ask &quot;What did Customer Experience Specialists 2 work on today?&quot;.</li><li>As a Desk agent, ask why ticket QA TIA T2 was assigned the way it was.</li></ol><h3>Account</h3><p>CRM Admin (Mahmoud Mohamed); Desk Administrator (QA Team 1); Desk Agent (CES 2)</p></div>
+  <div><h3>Expected result</h3><p>Each question gets an answer, or a plain message such as &quot;I couldn't find that report&quot;. Internal tool messages are never shown.</p><h3>Actual result</h3><p>The answer is the internal tool error, every time (each question asked twice):</p><ul><li>Pipeline: &quot;Missing required argument 'report_id' for the tool call.&quot; (I-04)</li><li>Team performance: &quot;The report_id must be a UUID copied exactly from the list above, but no UUID was provided…&quot; (I-15)</li><li>User activity: &quot;Missing valid user_id in UUID format copied exactly from the list above; cannot correct without it.&quot; (I-16, also K-09)</li><li>Explain an assignment: &quot;Missing valid UUID for 'ticket_id'. Cannot correct without a valid UUID copied exactly from the list above.&quot; (I-17)</li><li>Setup proposals show the internal tool name &quot;tia_proposeSetupChange&quot; and recipe names (see bug 6).</li><li>A failed card shows the raw code &quot;RECORD_VALIDATION_FAILED&quot; (J-15).</li><li>Team performance, user activity, explain an assignment and pipeline did not work once in the run.</li></ul></div></div>
+  <textarea hidden id="txt-2">Tia | Internal tool errors are shown to the user as the answer
+
+Priority: High · App: Desk + CRM · Cases: I-04, I-15, I-16, I-17, K-09, L-14
+
+Steps to reproduce
+1. Sign in to CRM as a CRM admin and open Ask Tia.
+2. Ask about the pipeline, for example &quot;How is my pipeline looking?&quot;.
+3. In Desk, as a Desk admin, ask &quot;How is my team doing this week?&quot;.
+4. Ask &quot;What did Customer Experience Specialists 2 work on today?&quot;.
+5. As a Desk agent, ask why ticket QA TIA T2 was assigned the way it was.
+
+Expected result
+Each question gets an answer, or a plain message such as &quot;I couldn't find that report&quot;. Internal tool messages are never shown.
+
+Actual result
+The answer is the internal tool error, every time (each question asked twice):
+- Pipeline: &quot;Missing required argument 'report_id' for the tool call.&quot; (I-04)
+- Team performance: &quot;The report_id must be a UUID copied exactly from the list above, but no UUID was provided…&quot; (I-15)
+- User activity: &quot;Missing valid user_id in UUID format copied exactly from the list above; cannot correct without it.&quot; (I-16, also K-09)
+- Explain an assignment: &quot;Missing valid UUID for 'ticket_id'. Cannot correct without a valid UUID copied exactly from the list above.&quot; (I-17)
+- Setup proposals show the internal tool name &quot;tia_proposeSetupChange&quot; and recipe names (see bug 6).
+- A failed card shows the raw code &quot;RECORD_VALIDATION_FAILED&quot; (J-15).
+- Team performance, user activity, explain an assignment and pipeline did not work once in the run.
+
+Account: CRM Admin (Mahmoud Mohamed); Desk Administrator (QA Team 1); Desk Agent (CES 2)
+Environment: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API</textarea>
+</article>
+<article class="bug" id="bug-3">
+  <div class="bh"><span class="num">Bug 3</span><span class="sev sev-high">High</span><span class="chip">Desk</span><span class="chip mono">J-06, E2E-1, E2E-3 (blocks O-03)</span><button type="button" class="copy" data-n="3" id="copy-3">Copy draft</button></div>
+  <h2>Tia | A private ticket comment can never be proposed, although Tia offers &quot;Draft a private comment&quot; on ticket pages</h2>
+  <div class="grid"><div><h3>Steps to reproduce</h3><ol><li>As an admin, open Settings → Integrations → Tia → Edit → Tools. Look at the list of modules Tia may change.</li><li>Sign in to Desk as a Desk Agent with &quot;Chat with Tia&quot; and open a ticket in your department (QA TIA T1).</li><li>Open Ask Tia. Click the suggestion &quot;Draft a private comment&quot;, or ask &quot;Add a private comment to this ticket: checked by QA&quot;.</li></ol><h3>Account</h3><p>Desk Agent (CES 2), who has the &quot;add ticket comment&quot; permission (desk:ticket:comment)</p></div>
+  <div><h3>Expected result</h3><p>Tia shows an action card with the private comment. On Confirm, the comment is added to the ticket.</p><h3>Actual result</h3><p>Tia answers: &quot;I cannot add a private comment… because your workspace admin has not allowed me to make changes to Desk tickets.&quot; The module picker (GET /agents/modules) lists only 15 CRM modules, so an admin has no way to allow Desk tickets. The feature Tia suggests on every ticket page cannot work, and &quot;What Tia can see&quot; still lists &quot;Propose a ticket comment&quot;.</p><ul><li>The agent has desk:ticket:comment, so it is not a permission problem on the user's side.</li><li>This stops the Desk journeys E2E-1 and E2E-3 at the comment step.</li></ul></div></div>
+  <textarea hidden id="txt-3">Tia | A private ticket comment can never be proposed, although Tia offers &quot;Draft a private comment&quot; on ticket pages
+
+Priority: High · App: Desk · Cases: J-06, E2E-1, E2E-3 (blocks O-03)
+
+Steps to reproduce
+1. As an admin, open Settings → Integrations → Tia → Edit → Tools. Look at the list of modules Tia may change.
+2. Sign in to Desk as a Desk Agent with &quot;Chat with Tia&quot; and open a ticket in your department (QA TIA T1).
+3. Open Ask Tia. Click the suggestion &quot;Draft a private comment&quot;, or ask &quot;Add a private comment to this ticket: checked by QA&quot;.
+
+Expected result
+Tia shows an action card with the private comment. On Confirm, the comment is added to the ticket.
+
+Actual result
+Tia answers: &quot;I cannot add a private comment… because your workspace admin has not allowed me to make changes to Desk tickets.&quot; The module picker (GET /agents/modules) lists only 15 CRM modules, so an admin has no way to allow Desk tickets. The feature Tia suggests on every ticket page cannot work, and &quot;What Tia can see&quot; still lists &quot;Propose a ticket comment&quot;.
+- The agent has desk:ticket:comment, so it is not a permission problem on the user's side.
+- This stops the Desk journeys E2E-1 and E2E-3 at the comment step.
+
+Account: Desk Agent (CES 2), who has the &quot;add ticket comment&quot; permission (desk:ticket:comment)
+Environment: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API</textarea>
+</article>
+<article class="bug" id="bug-4">
+  <div class="bh"><span class="num">Bug 4</span><span class="sev sev-medium">Medium</span><span class="chip">CRM</span><span class="chip mono">I-02, I-25, E2E-2</span><button type="button" class="copy" data-n="4" id="copy-4">Copy draft</button></div>
+  <h2>Tia | &quot;List the deals whose name starts with QA TIA&quot; says no such deals exist</h2>
+  <div class="grid"><div><h3>Steps to reproduce</h3><ol><li>In CRM, create 3 deals: &quot;QA TIA Deal 1000&quot; (Qualification), &quot;QA TIA Deal 2500&quot; (Proposal), &quot;QA TIA Deal 4000&quot; (Closed Won).</li><li>Open Ask Tia and ask &quot;List the deals whose name starts with QA TIA&quot;.</li><li>Ask &quot;Which of them is closed?&quot;.</li><li>In a new chat, ask &quot;What stage is QA TIA Deal 2500 in?&quot;.</li></ol><h3>Account</h3><p>CRM Admin (Mahmoud Mohamed)</p></div>
+  <div><h3>Expected result</h3><p>Step 2 lists the 3 deals. Step 3 names QA TIA Deal 4000. Step 4 says Proposal.</p><h3>Actual result</h3><p>Step 2, twice: &quot;There are no deals whose name starts with 'QA TIA'…&quot;. Step 3 repeats it: &quot;…so none of them are closed.&quot; Step 4 is correct (&quot;QA TIA Deal 2500 is currently in the proposal stage&quot;), so the deals are visible to this user; only the starts-with search fails.</p><ul><li>The same starts-with question on leads works once the lead has a Name value (I-01).</li></ul></div></div>
+  <textarea hidden id="txt-4">Tia | &quot;List the deals whose name starts with QA TIA&quot; says no such deals exist
+
+Priority: Medium · App: CRM · Cases: I-02, I-25, E2E-2
+
+Steps to reproduce
+1. In CRM, create 3 deals: &quot;QA TIA Deal 1000&quot; (Qualification), &quot;QA TIA Deal 2500&quot; (Proposal), &quot;QA TIA Deal 4000&quot; (Closed Won).
+2. Open Ask Tia and ask &quot;List the deals whose name starts with QA TIA&quot;.
+3. Ask &quot;Which of them is closed?&quot;.
+4. In a new chat, ask &quot;What stage is QA TIA Deal 2500 in?&quot;.
+
+Expected result
+Step 2 lists the 3 deals. Step 3 names QA TIA Deal 4000. Step 4 says Proposal.
+
+Actual result
+Step 2, twice: &quot;There are no deals whose name starts with 'QA TIA'…&quot;. Step 3 repeats it: &quot;…so none of them are closed.&quot; Step 4 is correct (&quot;QA TIA Deal 2500 is currently in the proposal stage&quot;), so the deals are visible to this user; only the starts-with search fails.
+- The same starts-with question on leads works once the lead has a Name value (I-01).
+
+Account: CRM Admin (Mahmoud Mohamed)
+Environment: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API</textarea>
+</article>
+<article class="bug" id="bug-5">
+  <div class="bh"><span class="num">Bug 5</span><span class="sev sev-medium">Medium</span><span class="chip">Desk</span><span class="chip mono">I-26</span><button type="button" class="copy" data-n="5" id="copy-5">Copy draft</button></div>
+  <h2>Tia | &quot;How many tickets were created today?&quot; says none when tickets were created today</h2>
+  <div class="grid"><div><h3>Steps to reproduce</h3><ol><li>Create 5 tickets in a department the agent belongs to (done at 14:41 UTC on 23 Nov).</li><li>Sign in as that agent the same day and open Ask Tia.</li><li>Ask &quot;How many tickets were created today?&quot;.</li></ol><h3>Account</h3><p>Desk Agent (CES 2), member of QA AO Dept A</p></div>
+  <div><h3>Expected result</h3><p>Tia gives the number of tickets created today that the agent can see (at least 5).</p><h3>Actual result</h3><p>Twice: &quot;No tickets were created today.&quot;</p><ul><li>The workspace day starts at 22:00 UTC (00:00 Cairo time), so 14:41 UTC is clearly inside &quot;today&quot;.</li></ul></div></div>
+  <textarea hidden id="txt-5">Tia | &quot;How many tickets were created today?&quot; says none when tickets were created today
+
+Priority: Medium · App: Desk · Cases: I-26
+
+Steps to reproduce
+1. Create 5 tickets in a department the agent belongs to (done at 14:41 UTC on 23 Nov).
+2. Sign in as that agent the same day and open Ask Tia.
+3. Ask &quot;How many tickets were created today?&quot;.
+
+Expected result
+Tia gives the number of tickets created today that the agent can see (at least 5).
+
+Actual result
+Twice: &quot;No tickets were created today.&quot;
+- The workspace day starts at 22:00 UTC (00:00 Cairo time), so 14:41 UTC is clearly inside &quot;today&quot;.
+
+Account: Desk Agent (CES 2), member of QA AO Dept A
+Environment: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API</textarea>
+</article>
+<article class="bug" id="bug-6">
+  <div class="bh"><span class="num">Bug 6</span><span class="sev sev-medium">Medium</span><span class="chip">Desk + CRM</span><span class="chip mono">E-08, E-12, J-08, J-10 (blocks O-07)</span><button type="button" class="copy" data-n="6" id="copy-6">Copy draft</button></div>
+  <h2>Tia | &quot;Propose a setup change&quot; only supports 4 fixed recipes; tags and blueprints cannot be proposed</h2>
+  <div class="grid"><div><h3>Steps to reproduce</h3><ol><li>Open Settings → Integrations → Tia → Edit → Setup areas. Set &quot;Ticket tags&quot; and &quot;Blueprints&quot; to Propose. Deploy.</li><li>In Desk, ask Tia &quot;Create a new ticket tag named QA TIA Tag&quot;.</li><li>In CRM, ask Tia to propose a blueprint for Deals (3 tries, as the owner and the CRM admin).</li></ol><h3>Account</h3><p>Owner; CRM Admin (Mahmoud Mohamed)</p></div>
+  <div><h3>Expected result</h3><p>Each request gives a &quot;Setup change&quot; card the admin can confirm, for any area set to Propose.</p><h3>Actual result</h3><p>The tag request asks for a department, then refuses: &quot;tag name must be one of the predefined values: assignment_by_lead_source, approval_above_amount, task_on_lead_created, or sla_by_priority&quot;. The blueprint request never gives a card (3 tries): &quot;…not among the allowed recipe names for the tia_proposeSetupChange tool…&quot; or &quot;the blueprint tool requires specific valid inputs&quot;.</p><ul><li>The setup page offers Propose for 182 setup areas, but only these 4 recipes can be proposed.</li><li>The refusals show internal tool and recipe names (see bug 2).</li><li>For workflow rules (one of the 4 recipes), the requested rule name is replaced and the card shows raw JSON (finding E-07).</li></ul></div></div>
+  <textarea hidden id="txt-6">Tia | &quot;Propose a setup change&quot; only supports 4 fixed recipes; tags and blueprints cannot be proposed
+
+Priority: Medium · App: Desk + CRM · Cases: E-08, E-12, J-08, J-10 (blocks O-07)
+
+Steps to reproduce
+1. Open Settings → Integrations → Tia → Edit → Setup areas. Set &quot;Ticket tags&quot; and &quot;Blueprints&quot; to Propose. Deploy.
+2. In Desk, ask Tia &quot;Create a new ticket tag named QA TIA Tag&quot;.
+3. In CRM, ask Tia to propose a blueprint for Deals (3 tries, as the owner and the CRM admin).
+
+Expected result
+Each request gives a &quot;Setup change&quot; card the admin can confirm, for any area set to Propose.
+
+Actual result
+The tag request asks for a department, then refuses: &quot;tag name must be one of the predefined values: assignment_by_lead_source, approval_above_amount, task_on_lead_created, or sla_by_priority&quot;. The blueprint request never gives a card (3 tries): &quot;…not among the allowed recipe names for the tia_proposeSetupChange tool…&quot; or &quot;the blueprint tool requires specific valid inputs&quot;.
+- The setup page offers Propose for 182 setup areas, but only these 4 recipes can be proposed.
+- The refusals show internal tool and recipe names (see bug 2).
+- For workflow rules (one of the 4 recipes), the requested rule name is replaced and the card shows raw JSON (finding E-07).
+
+Account: Owner; CRM Admin (Mahmoud Mohamed)
+Environment: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API</textarea>
+</article>
+<article class="bug" id="bug-7">
+  <div class="bh"><span class="num">Bug 7</span><span class="sev sev-medium">Medium</span><span class="chip">Desk + CRM</span><span class="chip mono">E-16</span><button type="button" class="copy" data-n="7" id="copy-7">Copy draft</button></div>
+  <h2>Tia | Changes to &quot;Agent Instruction&quot; have no effect</h2>
+  <div class="grid"><div><h3>Steps to reproduce</h3><ol><li>Open Settings → Integrations → Tia → Edit.</li><li>In &quot;Agent Instruction&quot;, add: &quot;Always end every answer with the exact token QA-END.&quot; Save and Deploy (version 13).</li><li>Wait a minute. Ask Tia 4 different questions, in CRM and in Desk.</li></ol><h3>Account</h3><p>Owner</p></div>
+  <div><h3>Expected result</h3><p>Every answer ends with QA-END.</p><h3>Actual result</h3><p>0 of 4 answers end with QA-END. The field is required (up to 8000 characters) and is saved and deployed, but it does not change the answers.</p></div></div>
+  <textarea hidden id="txt-7">Tia | Changes to &quot;Agent Instruction&quot; have no effect
+
+Priority: Medium · App: Desk + CRM · Cases: E-16
+
+Steps to reproduce
+1. Open Settings → Integrations → Tia → Edit.
+2. In &quot;Agent Instruction&quot;, add: &quot;Always end every answer with the exact token QA-END.&quot; Save and Deploy (version 13).
+3. Wait a minute. Ask Tia 4 different questions, in CRM and in Desk.
+
+Expected result
+Every answer ends with QA-END.
+
+Actual result
+0 of 4 answers end with QA-END. The field is required (up to 8000 characters) and is saved and deployed, but it does not change the answers.
+
+Account: Owner
+Environment: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API</textarea>
+</article>
+<article class="bug" id="bug-8">
+  <div class="bh"><span class="num">Bug 8</span><span class="sev sev-medium">Medium</span><span class="chip">Desk + CRM</span><span class="chip mono">B-21</span><button type="button" class="copy" data-n="8" id="copy-8">Copy draft</button></div>
+  <h2>Tia | Tia setup changes are not written to the audit log</h2>
+  <div class="grid"><div><h3>Steps to reproduce</h3><ol><li>Open Settings → Integrations → Tia. Edit the description and save. Deploy.</li><li>Deactivate Tia, then activate it. Turn the AI &quot;Tia&quot; switch off and on, and change the daily credit cap.</li><li>Read the audit log (GET /audit/events, latest 100, also filtered to app_key=agents) and look for these changes.</li></ol><h3>Account</h3><p>Owner</p></div>
+  <div><h3>Expected result</h3><p>Each save, deploy, deactivate, delete, restore and AI policy change is in the audit log, with the user and the time.</p><h3>Actual result</h3><p>None of them is there. Between 14:15 and 14:48 UTC the owner made 9 draft saves, 7 deploys, a deactivate, a delete and a restore. The only agent entry is &quot;agent_principal created Tia&quot; by ai-agents at 14:48:22 (from the restore). AI policy changes (Tia switch and caps) are missing too.</p><ul><li>Records that Tia creates through action cards are logged correctly, with channel &quot;tia&quot;.</li></ul></div></div>
+  <textarea hidden id="txt-8">Tia | Tia setup changes are not written to the audit log
+
+Priority: Medium · App: Desk + CRM · Cases: B-21
+
+Steps to reproduce
+1. Open Settings → Integrations → Tia. Edit the description and save. Deploy.
+2. Deactivate Tia, then activate it. Turn the AI &quot;Tia&quot; switch off and on, and change the daily credit cap.
+3. Read the audit log (GET /audit/events, latest 100, also filtered to app_key=agents) and look for these changes.
+
+Expected result
+Each save, deploy, deactivate, delete, restore and AI policy change is in the audit log, with the user and the time.
+
+Actual result
+None of them is there. Between 14:15 and 14:48 UTC the owner made 9 draft saves, 7 deploys, a deactivate, a delete and a restore. The only agent entry is &quot;agent_principal created Tia&quot; by ai-agents at 14:48:22 (from the restore). AI policy changes (Tia switch and caps) are missing too.
+- Records that Tia creates through action cards are logged correctly, with channel &quot;tia&quot;.
+
+Account: Owner
+Environment: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API</textarea>
+</article>
+<article class="bug" id="bug-9">
+  <div class="bh"><span class="num">Bug 9</span><span class="sev sev-medium">Medium</span><span class="chip">CRM</span><span class="chip mono">J-24</span><button type="button" class="copy" data-n="9" id="copy-9">Copy draft</button></div>
+  <h2>Tia | A change to two records gives one card and silently drops the second</h2>
+  <div class="grid"><div><h3>Steps to reproduce</h3><ol><li>In CRM, have two leads, &quot;QA TIA Lead 2&quot; and &quot;QA TIA Lead 3&quot;.</li><li>Ask Tia &quot;Change the lead source of QA TIA Lead 2 and QA TIA Lead 3 to other&quot;.</li></ol><h3>Account</h3><p>CRM Admin (Mahmoud Mohamed)</p></div>
+  <div><h3>Expected result</h3><p>Two action cards, one for each lead. Or one card that lists both, or a message that only one record can be changed at a time.</p><h3>Actual result</h3><p>The answer says the change was prepared for both leads, but there is only one card, for Lead 2. Lead 3 is dropped with no message, so the user believes both will change.</p></div></div>
+  <textarea hidden id="txt-9">Tia | A change to two records gives one card and silently drops the second
+
+Priority: Medium · App: CRM · Cases: J-24
+
+Steps to reproduce
+1. In CRM, have two leads, &quot;QA TIA Lead 2&quot; and &quot;QA TIA Lead 3&quot;.
+2. Ask Tia &quot;Change the lead source of QA TIA Lead 2 and QA TIA Lead 3 to other&quot;.
+
+Expected result
+Two action cards, one for each lead. Or one card that lists both, or a message that only one record can be changed at a time.
+
+Actual result
+The answer says the change was prepared for both leads, but there is only one card, for Lead 2. Lead 3 is dropped with no message, so the user believes both will change.
+
+Account: CRM Admin (Mahmoud Mohamed)
+Environment: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API</textarea>
+</article>
+
+<section class="box">
+  <h2>Lower findings (not drafted as bugs)</h2>
+  <p class="sub">The feature works, but these read badly or carry a risk. Tell me which, if any, should become bugs.</p>
+  <div class="scroll"><table><thead><tr><th>Case</th><th>Area</th><th>Finding</th></tr></thead><tbody>
+  <tr><td class="id">B-13</td><td class="sub">Setup API</td><td>Saving a draft with only some fields wipes the rest (tools, write modules, instructions) and returns 200.</td></tr><tr><td class="id">B-12b</td><td class="sub">Setup API</td><td>A draft save without expected_updated_at is accepted, so two admins can overwrite each other.</td></tr><tr><td class="id">C-10</td><td class="sub">Setup API</td><td>enabled_apps [] is accepted and treated as all apps; the page blocks it.</td></tr><tr><td class="id">G-05 / G-16</td><td class="sub">Setup API</td><td>Out-of-range values are clamped silently: per-user limit -1 saved as 0 (blocks everyone); strong steps 11 → 10, -1 → 0, 101 → 100.</td></tr><tr><td class="id">G-12</td><td class="sub">Setup page</td><td>Cap changes sometimes take about 45 s, although the page says &quot;It applies at once&quot;.</td></tr><tr><td class="id">D-06</td><td class="sub">Setup page</td><td>The owner is locked out of the chat when the audience does not list them.</td></tr><tr><td class="id">A-07</td><td class="sub">Permissions</td><td>Removing &quot;Chat with Tia&quot; takes effect only after the next token refresh (up to about 2.5 min).</td></tr><tr><td class="id">B-01b</td><td class="sub">Setup page</td><td>The Settings menu shows both &quot;Tia Assistant&quot; and &quot;Tia&quot; for the same page.</td></tr><tr><td class="id">E-01b</td><td class="sub">Setup page</td><td>The Knowledge Base tab shows the raw key &quot;agents.wizard.kb.uploadTitle&quot;.</td></tr><tr><td class="id">B-16</td><td class="sub">Chat panel</td><td>A deactivated Tia says &quot;Tia has not been set up…&quot; (reason not_configured).</td></tr><tr><td class="id">E-02</td><td class="sub">Chat panel</td><td>&quot;What Tia can see&quot; lists CRM, Analytics and &quot;Propose a ticket comment&quot; to a Desk agent with no CRM app.</td></tr><tr><td class="id">M-06</td><td class="sub">Chat panel</td><td>The panel is a dialog, but keyboard focus is not kept inside it.</td></tr><tr><td class="id">L-03</td><td class="sub">Chat panel</td><td>After a cut stream the reply is lost (turn not_found), and asking again is charged again.</td></tr><tr><td class="id">E-07</td><td class="sub">Answers</td><td>Workflow card ignores the requested rule name and shows raw JSON; a false &quot;no permission&quot; message when the cause is the module list.</td></tr><tr><td class="id">E-10</td><td class="sub">Answers</td><td>When Explain is off for an area, the reason given is wrong (&quot;requires the account ID&quot;).</td></tr><tr><td class="id">J-01 / J-04</td><td class="sub">Action cards</td><td>Cards show field keys (first_name) instead of labels; update cards show only the new value.</td></tr><tr><td class="id">J-15</td><td class="sub">Action cards</td><td>A card is offered for an invalid record and fails with the raw code RECORD_VALIDATION_FAILED.</td></tr><tr><td class="id">I-19 / I-20</td><td class="sub">Answers</td><td>Setup explanations are generic, mix in unrelated steps and give no help link.</td></tr><tr><td class="id">I-21</td><td class="sub">Answers</td><td>Desk KB articles are not used until KB sync is set up in the Desk integration settings (not set up on this tenant).</td></tr>
+  </tbody></table></div>
+</section>
+<p class="sub">Environment for every draft: NDC-Staging (staging-crm / staging-desk.taviportal.com), Tia v7–36, 23 Nov 2026, Edge + API. Full results: TIA Assistant Execution Report. Source: docs/tia-assistant/bug-drafts.js.</p>
+</div>
+<script>
+document.querySelectorAll('.copy').forEach(b => b.addEventListener('click', () => {
+  const t = document.getElementById('txt-' + b.dataset.n);
+  const done = () => { b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy draft', 1500); };
+  const fallback = () => { t.hidden = false; t.select(); try { document.execCommand('copy'); done(); } catch (e) { b.textContent = 'Select the text and copy'; } t.hidden = true; };
+  try { navigator.clipboard.writeText(t.value).then(done, fallback); } catch (e) { fallback(); }
+}));
+</script>

@@ -21,3 +21,6 @@ Spec: docs/tia-assistant/spec-tia-assistant.md · Results: out/results.jsonl · 
 - CRM browser checks blocked: CRA sign-in loops at org picker (Wonder Travel / Ashtar), owner CRM session expired; CRM covered by API
 - Cleanup R-01..R-05 PASS: data 0, chats 0 (owner Arabic chat kept), Desk Agent profile + Tia def + policy + runtime equal to baseline
 - Next: step 4 full execution report (waiting for the user)
+
+## Step 4 DONE (24 Nov 2026)
+- Report https://claude.ai/artifact/59X6Vi1tLWAeetA81a5iSF (docs/tia-assistant/report/execution-report.html, generator docs/tia-assistant/make-exec-report.js)
