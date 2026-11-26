@@ -1,0 +1,83 @@
+{
+ "key": "BP-R1",
+ "leftHead": "TAVI Desk (what happens)",
+ "rightHead": "Expected",
+ "rightLabel": "Expected",
+ "date": "TAVI 24 Nov 2026 (17:01 Cairo) · Zoho not checked live",
+ "env": "staging-desk.taviportal.com (NDC-Staging) · Customer Support · Edge + API",
+ "label": "BUG",
+ "verdict": "FAIL",
+ "out": "BP-R1-transition-form-skips-field-checks.png",
+ "ticket": "Blueprint · TU-06 / TU-12 / TU-18",
+ "title": "A value typed in a transition form skips the field's own checks (text length, pick-list option, contact exists)",
+ "panels": [
+  {
+   "img": "executions/execu_2026-11-24_desk-bp-regression/evidence/ui/EV1-history.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "Ticket #7614, History after transition \"QA go\": Category changed blank → \"zzz-not-an-option\" (not an option); Ticket Information shows Category = zzz-not-an-option",
+   "crop": [
+    370,
+    300,
+    1230,
+    560
+   ],
+   "boxes": [
+    {
+     "b": [
+      710,
+      495,
+      1100,
+      565
+     ],
+     "n": 2
+    },
+    {
+     "b": [
+      380,
+      778,
+      640,
+      818
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "img": "executions/execu_2026-11-24_desk-bp-regression/evidence/ui/EV1-api.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "Same values: the normal edit refuses all three (422), the transition saves all three (200)",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": []
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Text field (max 255) gets 400 characters",
+   "Refused: \"QA NDC TKT/PNR NO is too long: 400 characters, the maximum is 255.\" (as in a normal edit)",
+   "Saved through the transition (400 characters stored)",
+   "BUG"
+  ],
+  [
+   2,
+   "Category gets \"zzz-not-an-option\"",
+   "Refused: \"Category: 'zzz-not-an-option' is not one of the allowed values\"",
+   "Saved; shown in Ticket Information and History",
+   "BUG"
+  ],
+  [
+   3,
+   "Contact gets an id of no contact",
+   "Refused: \"Contact: no record exists with id …\"",
+   "Saved (contact_id = id of nothing)",
+   "BUG"
+  ]
+ ]
+}

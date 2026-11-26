@@ -1,0 +1,90 @@
+// Fail / finding / partial drafts from the 24 Nov 2026 Desk Blueprint regression (NDC-Staging). Rendered by make-issues-report.js.
+module.exports = {
+  fails: [
+    {
+      ids: ['TU-06', 'TU-12', 'TU-18'], pri: 'High', title: 'Blueprint | A value typed in a transition form skips the field\'s own checks (text length, pick-list option, contact exists)',
+      steps: [
+        'Setup → Automation → Blueprints: create a blueprint with a transition that asks for the field "QA NDC TKT/PNR NO" (single line, max 255) and publish it.',
+        'Open a ticket that is in the blueprint and click the transition button.',
+        'Paste 400 characters into "QA NDC TKT/PNR NO" and click Run.',
+        'Repeat with a transition that asks for Category and send the value "zzz-not-an-option" (through the API — the form only offers real options).',
+        'Repeat with a transition that asks for Contact and send a contact id that does not exist (API).',
+      ],
+      expected: 'Each value is refused with the same message a normal ticket edit gives: "QA NDC TKT/PNR NO is too long: … the maximum is 255", "Category: \'zzz-not-an-option\' is not one of the allowed values (general, technical, billing, account, feature_request, other)", "Contact: no record exists with id …". The ticket stays in its state.',
+      actual: 'All three runs succeed (200), the ticket moves on, and the invalid value is stored: 400 characters in a 255 field, Category = "zzz-not-an-option", Contact = an id of no contact. The same values in a normal edit are refused (TEXT_TOO_LONG, PICKLIST_VALUE_INVALID, LOOKUP_RECORD_NOT_FOUND).',
+      notes: 'Number, decimal, date, date-time, email and phone fields ARE checked inside the transition. Validation rules are also applied (NDC-3012 still fixed). Related: NDC-3012 (validation rules), NDC-3060 (contact field in the form).',
+      evidence: 'results TU-06 / TU-12 / TU-18 in executions/execu_2026-11-24_desk-bp-regression/out/results.jsonl (fresh tickets per run, normal edit compared on the same field).',
+    },
+    {
+      ids: ['API-07'], pri: 'Low', title: 'Blueprint API | A blueprint body of the wrong shape returns internal .NET type names',
+      steps: [
+        'Save a blueprint through the API (POST /modules/{tickets}/blueprints) where a transition has "requiredFor": {"comment": ["x"]} (a list instead of an object).',
+        'Read the error message.',
+      ],
+      expected: 'A readable message naming the field, e.g. "Required-for of transition \'go\' has the wrong format", like the fix made for owner ids in NDC-3069.',
+      actual: '422 with "The JSON value could not be converted to MetadataEngine.Modules.Records.Application.Blueprint.RequiredForRule. Path: $.transitions[0].during.requiredFor.comment | LineNumber: 0 | BytePositionInLine: 698." — internal namespace, class name and parser position are shown to the user.',
+      notes: 'Owner ids now give "Blueprint definition does not match the expected schema." (NDC-3069 fixed), so the fix covers only that path. Related: NDC-3069.',
+      evidence: 'results API-07.',
+    },
+  ],
+  findings: [
+    {
+      ids: ['E2E-01'], pri: 'Medium', rec: 'File', title: 'Blueprint | A named transition owner who cannot edit the ticket is told "You are not an owner of this transition"',
+      steps: ['Blueprint transition "Approve" with owner = Agent A (Desk Agent profile).', 'Assign the ticket to Agent B (or to the admin).', 'Sign in as Agent A and open the ticket.'],
+      expected: 'Either A can run the step they own, or the message says why not (e.g. "You can\'t edit this ticket, so you can\'t run Approve"), and the designer warns that A cannot edit tickets owned by others.',
+      actual: 'A is not offered the step; running it returns 403 BLUEPRINT_NOT_OWNER "You are not an owner of this transition" although A is the named owner. Cause: the Desk Agent profile edits only own / unassigned tickets (A\'s normal edit of the same ticket → 403). On an unassigned ticket A runs it fine.',
+      notes: 'Same class as NDC-3117 (wrong refusal message). Zoho: transition owners need ticket access too — check whether Zoho shows a clearer reason before filing.',
+    },
+    {
+      ids: ['IN-01'], pri: 'Low', rec: 'File', title: 'Workflow Rules | Execution history says "Fired" when a status change was skipped because the ticket is in a blueprint',
+      steps: ['Workflow rule On Edit, Field Update Status = Closed (instant) and another with a 60 s delay, department QA.', 'Edit a ticket that is in a blueprint (state Escalated).', 'Open Execution History for both rules.'],
+      expected: 'The ticket stays in its blueprint state (it does) and the history says the status update was skipped because a blueprint controls the field.',
+      actual: 'Ticket stays Escalated in the blueprint (NDC-2764 / NDC-2730 still fixed) but all 8 executions are logged as "Fired", with no sign the field update was skipped.',
+      notes: 'Seen before on 14 Nov (side finding L6 in the automation-order run) — not filed then.',
+    },
+    {
+      ids: ['TB-12'], pri: 'Low', rec: 'File', title: 'Blueprint | A transition owner listed under another department is saved even if they are not an agent of that department',
+      steps: ['In a transition, Before → Another department: Tech, Full access, agent "Test User 1" (not a Tech agent).', 'Save and publish.', 'Ticket enters the state; it is shared with Tech; sign in as Test User 1.'],
+      expected: 'Save is refused or warns ("Test User 1 is not an agent of Tech"), like other invalid owners (unknown user, view-only member are refused).',
+      actual: 'Saved with no warning; the ticket is shared with Tech at Full, but Test User 1 never sees the step (403 BLUEPRINT_NOT_OWNER). With a real Tech agent the same setup works.',
+      notes: 'Not in the case list — found while setting up TB-05.',
+    },
+    {
+      ids: ['ST-05', 'ST-07'], pri: 'Low', rec: 'Decide (API only)', title: 'Blueprint API | A state can be saved with a business-hours set or escalation template that does not exist',
+      steps: ['Save a blueprint through the API with a state "slaBusinessHoursId" = a random id.', 'Save another with an escalation level "templateId" = a random id.'],
+      expected: 'Refused like other unknown ids (owners, custom actions, approver teams are all refused).',
+      actual: 'Both saved (201). The designer later shows "Deleted business hours (the default hours count)" / "This email template was deleted". At runtime the level with the unknown template still sent its in-app notifications.',
+      notes: 'The designer cannot create this by itself — only the API or a later deletion. Decide whether the API should refuse it.',
+    },
+    {
+      ids: ['CV-06', 'API-01'], pri: 'Low', rec: 'Decide (API only)', title: 'Blueprint API | A transition with no name and a 2,000-item checklist are saved',
+      steps: ['Save through the API a transition with name "".', 'Save a transition whose checklist has 2,000 items.'],
+      expected: 'Refused with a clear message (the designer shows "The transition from Open to Escalated needs a name"); a sensible checklist limit.',
+      actual: 'Both saved (201). Every other broken shape tested (strings for numbers, objects for arrays, unknown action kinds) is refused with 422, never 500.',
+      notes: 'API-only; the designer blocks the empty name.',
+    },
+    {
+      ids: ['TF-X1'], pri: 'Low', rec: 'Decide (API only)', title: 'Blueprint API | Create-task action with an unknown assignee mode is saved and silently assigns the ticket owner',
+      steps: ['Save a transition with after-action createTask and "assigneeMode": "specific" (valid values are owner / performer / user / team).', 'Run the transition.'],
+      expected: 'Save refused: unknown assignee mode.',
+      actual: 'Saved; the task is created and assigned to the ticket owner. With mode "user" + an agent the task goes to that agent correctly (TF-04 pass).',
+      notes: 'Not in the case list — found while writing TF-04.',
+    },
+    {
+      ids: ['EN-13'], pri: 'Medium', rec: 'Decide (Zoho differs)', title: 'Blueprint | A ticket created in a middle status enters at the start state and its status is reset to Open',
+      steps: ['Blueprint with states Open → Escalated → Closed, criteria matching the new ticket.', 'Create a ticket with status Escalated (New Ticket or API).'],
+      expected: 'Zoho (checked live 18 Nov): the ticket enters the blueprint at Escalated and keeps its status.',
+      actual: 'The ticket enters at Open and its status is changed to Open, with no history line for the status change.',
+      notes: 'Same as the 18 Nov live check. An existing ticket edited to match while Escalated does enter at Escalated.',
+    },
+  ],
+  partials: [
+    { id: 'UX-01', bug: true, title: 'Arabic UI', passed: 'Blueprints list, designer, dashboard and ticket page are translated and right-to-left; no raw translation keys.', missing: '—', issue: 'On an Arabic ticket the progress bar shows the status names "Open" / "Closed" in English, while the ticket list shows them translated ("مفتوحة"). The left navigation item "Approvals" also stays English (shared navigation).', draft: 'Ticket | In Arabic the blueprint progress bar shows status names untranslated (Low)' },
+    { id: 'TF-09', bug: true, title: 'Order of after-actions', passed: 'Field update and webhooks run in the configured order.', missing: '—', issue: 'A custom action placed between two webhooks arrives about 3 s after the second webhook, because it runs separately in Workflow — the order shown in the designer ("Run in this order once the ticket moves") is not kept for custom actions.', draft: 'Blueprint | Custom actions in after-actions do not run in the order shown (Low) — or document it in the hint' },
+    { id: 'TM-13', bug: false, title: 'Rating trigger filters', passed: 'With filter [Bad]: a Bad rating moved the ticket to Escalated, a Good rating left it in Open.', missing: 'No-filter branch: the rating link could not be created on the retry; "Okay" cannot be tested because Okay is switched off in this tenant\'s Customer Happiness.', issue: 'None seen.', draft: '' },
+    { id: 'E2E-02', bug: false, title: 'Waiting for customer journey', passed: 'Required reply sent; with no answer the ticket closed itself after 2 min and left the blueprint.', missing: 'The customer-answer branch needs a real reply from the Help Center or the mailbox.', issue: 'None seen.', draft: '' },
+    { id: 'TB-11', bug: false, title: 'Step conditions on other fields', passed: 'AND condition on Channel + Priority shows the step only on matching tickets.', missing: 'Related (Contact) fields in step conditions were not tested.', issue: 'None seen.', draft: '' },
+    { id: 'TF-08', bug: false, title: 'Custom action refused reasons', passed: '"does not exist" is refused with reason custom_action_missing.', missing: 'Inactive / not for Desk / record-bound / per-agent variable / run denied need extra custom actions that were not created.', issue: 'None seen.', draft: '' },
+    { id: 'UX-06', bug: false, title: 'Visual pass by width', passed: '1600 px and 390 px: no clipped text; phone width shows "Draw states and connectors on a larger screen".', missing: '1366 px and 1920 px not captured.', issue: 'None seen.', draft: '' },
+  ],
+};

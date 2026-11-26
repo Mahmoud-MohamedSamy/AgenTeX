@@ -1,0 +1,15 @@
+const tag = 'PR' + uid();
+const t = await mkT(tag);
+const r = await rec(t);
+const out = { recordTopKeys: Object.keys(r || {}) };
+const fields = L((await api('GET', `/modules/${T}/fields`)).j?.data);
+const pick = n => { const f = fields.find(x => (x.fieldName || x.name) === n); return f ? { type: f.datatypeKey || f.datatype?.key, vals: JSON.stringify(f.datatypeOptions?.allowed_values || f.datatypeOptions?.options || '').slice(0, 300) } : 'none'; };
+out.priority = pick('priority'); out.channel = pick('channel'); out.layoutish = fields.filter(f => /layout/i.test(f.fieldName || f.name || '')).map(f => f.fieldName || f.name);
+out.fieldTypes = [...new Set(fields.map(f => f.datatypeKey || f.datatype?.key))];
+out.fieldCount = fields.length;
+out.sampleFields = fields.slice(0, 80).map(f => (f.fieldName || f.name) + ':' + (f.datatypeKey || f.datatype?.key)).join(' ');
+const bh = (await api('GET', '/desk/business-hours')).j?.data; out.bhShape = bh && !Array.isArray(bh) ? Object.keys(bh) : 'array';
+const lays = L((await api('GET', `/modules/${T}/layouts`)).j?.data); out.layouts = lays.slice(0, 5).map(l => l.id.slice(0, 8) + ' ' + l.name + (l.isDefault ? ' (default)' : ''));
+out.layoutCount = lays.length;
+await cleanup();
+return out;

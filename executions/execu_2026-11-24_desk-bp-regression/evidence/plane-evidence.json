@@ -1,0 +1,178 @@
+{
+ "bug1": {
+  "ticket": "29df35dc-0d5e-46dc-8110-b6576afc9dfb",
+  "no": "7614",
+  "fake": "a38c3217-16ad-40b6-a577-44c5047e1168",
+  "normalEdit": {
+   "tooLong": {
+    "status": 422,
+    "body": {
+     "error": {
+      "code": "RECORD_VALIDATION_FAILED",
+      "message": "Invalid value for: QA NDC TKT/PNR NO.",
+      "details": [
+       {
+        "path": "qa_ndc_tkt_pnr_no",
+        "type": "TEXT_TOO_LONG",
+        "message": "QA NDC TKT/PNR NO is too long: 400 characters, the maximum is 255."
+       }
+      ]
+     }
+    }
+   },
+   "badOption": {
+    "status": 422,
+    "body": {
+     "error": {
+      "code": "RECORD_VALIDATION_FAILED",
+      "message": "Invalid value for: Category.",
+      "details": [
+       {
+        "path": "category",
+        "type": "PICKLIST_VALUE_INVALID",
+        "message": "Category: 'zzz-not-an-option' is not one of the allowed values (general, technical, billing, account, feature_request, other)."
+       }
+      ]
+     }
+    }
+   },
+   "missingContact": {
+    "status": 422,
+    "body": {
+     "error": {
+      "code": "RECORD_VALIDATION_FAILED",
+      "message": "Invalid value for: Contact.",
+      "details": [
+       {
+        "path": "contact_id",
+        "type": "LOOKUP_RECORD_NOT_FOUND",
+        "message": "Contact: no record exists with id 'a38c3217-16ad-40b6-a577-44c5047e1168'."
+       }
+      ]
+     }
+    }
+   }
+  },
+  "transitionRun": {
+   "status": 200,
+   "body": {
+    "data": "{\"run_id\":\"4f24c463-31c5-4453-8e87-facd150fe01e\",\"from_state\":\"Open\",\"to_state\":\"Escalated\",\"reply_id\":null,\"comment_id\":null,\"resolution_set\":false,\"approval_id\":null}"
+   }
+  },
+  "stored": {
+   "pnrLength": 400,
+   "category": "zzz-not-an-option",
+   "contact_id": "a38c3217-16ad-40b6-a577-44c5047e1168",
+   "status": "Escalated"
+  }
+ },
+ "bug2": {
+  "request": "POST /api/v1/modules/{tickets}/blueprints  …\"during\": { \"requiredFor\": { \"comment\": [\"x\"] } }",
+  "response": {
+   "status": 422,
+   "body": {
+    "error": {
+     "code": "BLUEPRINT_DEFINITION_INVALID",
+     "message": "Blueprint definition does not match the expected schema.",
+     "details": [
+      {
+       "path": "definition",
+       "type": "BLUEPRINT_DEFINITION_FIELD_INVALID",
+       "message": "The JSON value could not be converted to MetadataEngine.Modules.Records.Application.Blueprint.RequiredForRule. Path: $.transitions[0].during.requiredFor.comment | LineNumber: 0 | BytePositionInLine: 696."
+      }
+     ]
+    }
+   }
+  },
+  "ownerCase": {
+   "status": 422,
+   "body": {
+    "error": {
+     "code": "BLUEPRINT_DEFINITION_INVALID",
+     "message": "Blueprint definition does not match the expected schema.",
+     "details": [
+      {
+       "path": "transitions[0].before.allowedUserIds[0]",
+       "type": "BLUEPRINT_DEFINITION_FIELD_INVALID",
+       "message": "Transition QA go: 'not-a-uuid' is not a valid user id."
+      }
+     ]
+    }
+   }
+  }
+ },
+ "bug3": {
+  "ticket": "7b8dcfa1-9ac8-43a6-8c1b-961280aff9e6",
+  "no": "7615",
+  "aEdit": {
+   "status": 403,
+   "body": {
+    "error": {
+     "code": "PERMISSION_DENIED",
+     "message": "Permission denied."
+    }
+   }
+  },
+  "aOffered": [],
+  "aRun": {
+   "status": 403,
+   "body": {
+    "error": {
+     "code": "BLUEPRINT_NOT_OWNER",
+     "message": "You are not an owner of this transition.",
+     "details": {
+      "transition_id": "approve"
+     }
+    }
+   }
+  }
+ },
+ "bug4": {
+  "rule": "de8a63b9-97eb-4967-9301-3cef71d653a4",
+  "ruleName": "QA BP R EV4xhtyp set Closed",
+  "ticket": "a9294cf0-c876-4268-a30d-04dd3589c2e5",
+  "no": "7616",
+  "executions": [
+   {
+    "outcome": "Fired",
+    "actions": "\"\""
+   },
+   {
+    "outcome": "Fired",
+    "actions": "\"\""
+   },
+   {
+    "outcome": "Fired",
+    "actions": "\"\""
+   }
+  ],
+  "statusAfter": "Escalated",
+  "stateAfter": "Escalated"
+ },
+ "bug5": {
+  "save": {
+   "status": 201,
+   "body": {
+    "data": "{\"id\":\"75bd4142-da67-431c-a422-8631e3ecf284\",\"moduleId\":\"88e8ea44-1658-4df3-9930-d0902b91073d\",\"isActive\":true,\"definition\":{\"name\":\"QA BP R EV5nxwy4\",\"description\":\"QA BP regression\",\"moduleKey\":\"desk_tickets\",\"targetField\":\"status\",\"departmentId\":\"7e1ac409-58b0-41ab-97e1-0e7d5c8c5158\",\"entryCriter"
+   }
+  },
+  "userIsTechAgent": false,
+  "shares": [
+   "Tech:full"
+  ],
+  "offered": [],
+  "run": {
+   "status": 403,
+   "body": {
+    "error": {
+     "code": "BLUEPRINT_NOT_OWNER",
+     "message": "You are not an owner of this transition.",
+     "details": {
+      "transition_id": "review"
+     }
+    }
+   }
+  },
+  "ticket": "2602b84f-1dd7-4ad7-8758-dd7d257546ce"
+ }
+}

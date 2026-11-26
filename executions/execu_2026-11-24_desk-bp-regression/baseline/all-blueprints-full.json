@@ -1,0 +1,8407 @@
+[
+ {
+  "id": "76691548-e922-4cee-81e6-a57188d5d733",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "76691548-e922-4cee-81e6-a57188d5d733",
+   "name": "QA NDC ADM",
+   "states": [
+    {
+     "id": "QA NDC HR Escalation",
+     "name": "QA NDC HR Escalation",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC System Admin",
+     "name": "QA NDC System Admin",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Governance",
+     "name": "QA NDC Governance",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Dep Manager",
+     "name": "QA NDC Dep Manager",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 0,
+      "y": 200
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 300,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Distributor",
+     "name": "QA NDC Distributor",
+     "position": {
+      "x": 600,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Finance team after Validation",
+     "name": "QA NDC Finance team after Validation",
+     "position": {
+      "x": 900,
+      "y": 200
+     },
+     "slaClock": "business"
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "NDC mimic of blueprint \"ADM\" (Accounting)",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "not-valid-escalation-0",
+     "name": "Not Valid Escalation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "9d63a88b-c2e7-409c-9ead-a0204f75d902"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Distributor",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "dispute-financial-lose-ndc-1",
+     "name": "dispute-financial lose NDC",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b1726dcb-7d1c-492a-a099-953def93698e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition dispute-financial lose NDC",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Finance team after Validation",
+     "fromStateId": "QA NDC System Admin"
+    },
+    {
+     "id": "2nd-line-validation-2",
+     "name": "2nd line validation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "4ef99cc4-3987-435b-88cf-21461cebfe4c"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition 2nd line validation",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Governance",
+     "fromStateId": "QA NDC Finance team after Validation"
+    },
+    {
+     "id": "close-the-case-3",
+     "name": "close the case",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "QA NDC Finance team after Validation"
+    },
+    {
+     "id": "need-s-for-revalidation-4",
+     "name": "Need's for revalidation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b1726dcb-7d1c-492a-a099-953def93698e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Finance team after Validation",
+     "fromStateId": "QA NDC HR Escalation"
+    },
+    {
+     "id": "system-mistake-5",
+     "name": "System mistake",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "de6c2951-7c17-40b0-a4d9-5d7e84534f7f"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition System mistake",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "teamIds": [
+       "9d63a88b-c2e7-409c-9ead-a0204f75d902"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC System Admin",
+     "fromStateId": "QA NDC Distributor"
+    },
+    {
+     "id": "human-mistake-6",
+     "name": "Human Mistake",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "8c6d8651-2fff-4b78-8306-e300133bd8bd"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition Human Mistake",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "teamIds": [
+       "9d63a88b-c2e7-409c-9ead-a0204f75d902"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC Dep Manager",
+     "fromStateId": "QA NDC Distributor"
+    },
+    {
+     "id": "supplier-mistake-dispute-7",
+     "name": "Supplier Mistake  dispute",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b1726dcb-7d1c-492a-a099-953def93698e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition Supplier Mistake  dispute",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Finance team after Validation",
+     "fromStateId": "QA NDC Distributor"
+    },
+    {
+     "id": "closed-after-hr-investigation-8",
+     "name": "closed after HR investigation",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "QA NDC HR Escalation"
+    },
+    {
+     "id": "violates-distribution-rules-9",
+     "name": "Violates Distribution rules",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "9d63a88b-c2e7-409c-9ead-a0204f75d902"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Distributor",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "hr-escalation-10",
+     "name": "HR Escalation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "581e4120-c3a4-4acb-8b58-9d08daf8da08"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC HR Escalation",
+     "fromStateId": "QA NDC Finance team after Validation"
+    },
+    {
+     "id": "valid-debit-dispute-11",
+     "name": "Valid Debit-dispute",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b1726dcb-7d1c-492a-a099-953def93698e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition Valid Debit-dispute",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Finance team after Validation",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "close-the-case-12",
+     "name": "Close the case",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "teamIds": [
+       "b1726dcb-7d1c-492a-a099-953def93698e"
+      ],
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "escalated-waiting-feedback-13",
+     "name": "Escalated waiting feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b1726dcb-7d1c-492a-a099-953def93698e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "teamIds": [
+       "b1726dcb-7d1c-492a-a099-953def93698e"
+      ],
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "QA NDC Finance team after Validation"
+    },
+    {
+     "id": "settlement-financial-lose-14",
+     "name": "settlement/Financial lose",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "4ef99cc4-3987-435b-88cf-21461cebfe4c"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition settlement/Financial lose",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Governance",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "human-mistake-2nd-validation-15",
+     "name": "Human Mistake 2nd validation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "8c6d8651-2fff-4b78-8306-e300133bd8bd"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition Human Mistake 2nd validation",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Dep Manager",
+     "fromStateId": "QA NDC System Admin"
+    },
+    {
+     "id": "system-mistake-ops-feedback-16",
+     "name": "System mistake Ops feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "de6c2951-7c17-40b0-a4d9-5d7e84534f7f"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition System mistake Ops feedback",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC System Admin",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "close-the-deal-from-ops-side-17",
+     "name": "Close the deal from ops side",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b1726dcb-7d1c-492a-a099-953def93698e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"alert\" on transition Close the deal from ops side",
+        "kind": "sendNotification",
+        "title": "QA NDC alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Finance team after Validation",
+     "fromStateId": "QA NDC Governance"
+    }
+   ],
+   "departmentId": "c0e05c3e-aa51-47ef-be50-53fd4c6edcb1"
+  },
+  "createdAt": "2026-11-03T10:12:44.885229+00:00",
+  "updatedAt": "2026-11-03T10:12:44.885229+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "c0e05c3e-aa51-47ef-be50-53fd4c6edcb1",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "89c30dd4-cc01-4d4a-835f-a5f3fe4e5d2f",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "89c30dd4-cc01-4d4a-835f-a5f3fe4e5d2f",
+   "name": "QA NDC Rejection Flow",
+   "states": [
+    {
+     "id": "QA NDC Rejected Audit",
+     "name": "QA NDC Rejected Audit",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Review Audit Manager",
+     "name": "QA NDC Review Audit Manager",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "NDC mimic of blueprint \"Rejection Flow\" (NDC Finance)",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "need-to-review-from-the-agents-0",
+     "name": "Need to review from the agents",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "teamIds": [
+       "485a7732-c380-428a-a9aa-e14e76efff14"
+      ],
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Review Audit Manager",
+     "fromStateId": "QA NDC Rejected Audit"
+    }
+   ],
+   "departmentId": "14130980-b62e-4398-a879-93e4dbe9c790"
+  },
+  "createdAt": "2026-11-03T10:12:45.435855+00:00",
+  "updatedAt": "2026-11-03T10:12:45.435855+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "14130980-b62e-4398-a879-93e4dbe9c790",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "f877b370-1621-4a55-82a4-621465e69fdf",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "f877b370-1621-4a55-82a4-621465e69fdf",
+   "name": "QA NDC 2nd check",
+   "states": [
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Supervisor check",
+     "name": "QA NDC Supervisor check",
+     "position": {
+      "x": 0,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Reject",
+     "name": "QA NDC Reject",
+     "position": {
+      "x": 300,
+      "y": 200
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Closed Duplicated",
+     "name": "QA NDC Closed Duplicated",
+     "position": {
+      "x": 600,
+      "y": 200
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "NDC mimic of blueprint \"2nd check\" (Manual Invoice)",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "close-after-validation-0",
+     "name": "Close After Validation",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {
+      "requiredFields": [
+       {
+        "name": "qa_ndc_supervisor_review",
+        "datatype": {
+         "key": "pick_list"
+        },
+        "required": true
+       }
+      ]
+     },
+     "toStateId": "Closed",
+     "fromStateId": "QA NDC Supervisor check"
+    },
+    {
+     "id": "close-after-escalation-1",
+     "name": "Close After Escalation",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "rejected-2",
+     "name": "Rejected",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Reject",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "supervisor-check-3",
+     "name": "Supervisor check,",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b71c2f3f-4b57-4e54-8ed3-65f79f9c68c5"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Supervisor check",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "wrong-transaction-4",
+     "name": "Wrong Transaction",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "e8ceb065-2b9a-4b68-8844-3a98ce5d9996"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"Wrong Transaction\" on transition Wrong Transaction",
+        "kind": "sendNotification",
+        "title": "QA NDC Wrong Transaction",
+        "notifyOwner": false
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {
+      "requiredFields": [
+       {
+        "name": "qa_ndc_supervisor_review",
+        "datatype": {
+         "key": "pick_list"
+        },
+        "required": true
+       }
+      ]
+     },
+     "toStateId": "Open",
+     "fromStateId": "QA NDC Supervisor check"
+    },
+    {
+     "id": "closed-duplicate-5",
+     "name": "Closed Duplicate",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Closed Duplicated",
+     "fromStateId": "QA NDC Supervisor check"
+    },
+    {
+     "id": "waiting-escalation-feedback-6",
+     "name": "Waiting escalation feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b71c2f3f-4b57-4e54-8ed3-65f79f9c68c5"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "close-the-case-7",
+     "name": "Close the case",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "rejected-request-8",
+     "name": "Rejected Request",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Reject",
+     "fromStateId": "QA NDC Supervisor check"
+    },
+    {
+     "id": "supervisor-check-9",
+     "name": "Supervisor check",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b71c2f3f-4b57-4e54-8ed3-65f79f9c68c5"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"Supervisor check\" on transition Supervisor check",
+        "kind": "sendNotification",
+        "title": "QA NDC Supervisor check",
+        "notifyOwner": false
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Supervisor check",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "hold-case-10",
+     "name": "Hold Case",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b71c2f3f-4b57-4e54-8ed3-65f79f9c68c5"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "QA NDC Supervisor check"
+    }
+   ],
+   "departmentId": "95a6fd64-b877-435e-8e23-62c75717f95f"
+  },
+  "createdAt": "2026-11-03T10:12:46.791788+00:00",
+  "updatedAt": "2026-11-03T10:12:46.791788+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "95a6fd64-b877-435e-8e23-62c75717f95f",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "2f217888-6927-46a7-874f-99b740f0473c",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "2f217888-6927-46a7-874f-99b740f0473c",
+   "name": "QA NDC Clients' Financial Investigations ",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC HR Escalation",
+     "name": "QA NDC HR Escalation",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Dep Manager",
+     "name": "QA NDC Dep Manager",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC BSP Investigation",
+     "name": "QA NDC BSP Investigation",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 0,
+      "y": 200
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Email Approval Sector",
+     "name": "QA NDC Email Approval Sector",
+     "position": {
+      "x": 300,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Banking sector investigation",
+     "name": "QA NDC Banking sector investigation",
+     "position": {
+      "x": 600,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 900,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC higher Level escalation",
+     "name": "QA NDC higher Level escalation",
+     "position": {
+      "x": 0,
+      "y": 400
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC AR Team",
+     "name": "QA NDC AR Team",
+     "position": {
+      "x": 300,
+      "y": 400
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Needs NDC Finance investigation",
+     "name": "QA NDC Needs NDC Finance investigation",
+     "position": {
+      "x": 600,
+      "y": 400
+     },
+     "slaClock": "business"
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "NDC mimic of blueprint \"Clients' Financial Investigations \" (Clients' Financial Investigations)",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "email-approval-investigation-0",
+     "name": "Email Approval investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "6d0e0d73-f1e4-4421-bd7b-c9067aa5c33c"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "teamIds": [
+       "3b8c65aa-e35d-489c-a8a5-137ee7fd02d1"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC Email Approval Sector",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "ndc-finance-investigation-1",
+     "name": "NDC Finance investigation.",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "694caefc-c371-4ca2-bf80-e93452d1e909"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true,
+      "allowedUserIds": [
+       "3445ec4a-020e-4f12-b156-dd2de7610164"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC Needs NDC Finance investigation",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "closeed-2",
+     "name": "Closeed",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "banking-sector-feedback-3",
+     "name": "Banking sector Feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC Banking sector investigation"
+    },
+    {
+     "id": "close-the-case-4",
+     "name": "Close the case",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "banking-sector-investigation-5",
+     "name": "banking sector investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "86c42b05-8456-4c05-9b8f-c4ae35dd1bf2"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "teamIds": [
+       "3b8c65aa-e35d-489c-a8a5-137ee7fd02d1"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC Banking sector investigation",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "ops-feedback-6",
+     "name": "Ops feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true,
+      "allowedUserIds": [
+       "3445ec4a-020e-4f12-b156-dd2de7610164"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "needs-ops-feedback-7",
+     "name": "Needs Ops Feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bdfa3ef9-7177-4574-afdb-ce3766707b9e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Dep Manager",
+     "fromStateId": "QA NDC Needs NDC Finance investigation"
+    },
+    {
+     "id": "needs-investigation-8",
+     "name": "Needs Investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "2ded02fc-b481-4fbf-8d4a-c525a0ac1cc4"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC BSP Investigation",
+     "fromStateId": "QA NDC HR Escalation"
+    },
+    {
+     "id": "ops-manager-escalation-9",
+     "name": "Ops Manager escalation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "d2c41509-2f0a-4d3a-8f7e-77c32c80ca39"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC higher Level escalation",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "higher-level-feedback-10",
+     "name": "Higher level feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "d2c41509-2f0a-4d3a-8f7e-77c32c80ca39"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC higher Level escalation",
+     "fromStateId": "QA NDC Needs NDC Finance investigation"
+    },
+    {
+     "id": "waiting-escalation-feedback-11",
+     "name": "Waiting escalation feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "3137359c-3a97-4cba-b41c-56822c3759c1"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "QA NDC BSP Investigation"
+    },
+    {
+     "id": "bsp-investigation-feedback-12",
+     "name": "BSP investigation Feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC BSP Investigation"
+    },
+    {
+     "id": "closed-after-hr-investigation-13",
+     "name": "closed after HR investigation",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "QA NDC HR Escalation"
+    },
+    {
+     "id": "email-approval-sector-feedback-14",
+     "name": "Email Approval sector feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC Email Approval Sector"
+    },
+    {
+     "id": "ops-manager-feedback-15",
+     "name": "Ops Manager feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC higher Level escalation"
+    },
+    {
+     "id": "bsp-investigation-request-16",
+     "name": "BSP investigation request",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "3137359c-3a97-4cba-b41c-56822c3759c1"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC BSP Investigation",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "ar-after-hr-investigation-17",
+     "name": "AR after hr investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC HR Escalation"
+    },
+    {
+     "id": "escalated-internally-18",
+     "name": "Escalated internally",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {
+      "requiredFields": [
+       {
+        "name": "qa_ndc_airline_gds",
+        "datatype": {
+         "key": "pick_list"
+        },
+        "required": true
+       }
+      ]
+     },
+     "toStateId": "Escalated",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "ndc-finance-investigation-19",
+     "name": "NDC Finance investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "694caefc-c371-4ca2-bf80-e93452d1e909"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "teamIds": [
+       "3b8c65aa-e35d-489c-a8a5-137ee7fd02d1"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC Needs NDC Finance investigation",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "higher-level-escalation-20",
+     "name": "higher level escalation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "d2c41509-2f0a-4d3a-8f7e-77c32c80ca39"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true,
+      "allowedUserIds": [
+       "3445ec4a-020e-4f12-b156-dd2de7610164"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC higher Level escalation",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "hr-escalation-21",
+     "name": "HR Escalation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "2ded02fc-b481-4fbf-8d4a-c525a0ac1cc4"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC HR Escalation",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "ndc-finance-feedback-22",
+     "name": "NDC Finance Feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "27848629-8d75-40c7-bbb2-56ae6eff4670"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC Needs NDC Finance investigation"
+    },
+    {
+     "id": "needs-ops-investigation-23",
+     "name": "Needs Ops Investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bdfa3ef9-7177-4574-afdb-ce3766707b9e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"Ops comment alert\" on transition Needs Ops Investigation",
+        "kind": "sendNotification",
+        "title": "QA NDC Ops comment alert",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "teamIds": [
+       "3b8c65aa-e35d-489c-a8a5-137ee7fd02d1"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC Dep Manager",
+     "fromStateId": "Open"
+    }
+   ],
+   "departmentId": "a026f008-f6a1-49b7-b4a3-dce33c6b36b7"
+  },
+  "createdAt": "2026-11-03T10:22:43.703911+00:00",
+  "updatedAt": "2026-11-03T10:22:43.703911+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "a026f008-f6a1-49b7-b4a3-dce33c6b36b7",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "55eb8a1d-9460-4baf-844f-03fea2def9f8",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "55eb8a1d-9460-4baf-844f-03fea2def9f8",
+   "name": "QA NDC Financial approvals",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC AR Team",
+     "name": "QA NDC AR Team",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC KSA accounting team",
+     "name": "QA NDC KSA accounting team",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Refund approved",
+     "name": "QA NDC Refund approved",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC BSP",
+     "name": "QA NDC BSP",
+     "position": {
+      "x": 0,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC UAE Accounting Team",
+     "name": "QA NDC UAE Accounting Team",
+     "position": {
+      "x": 300,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 600,
+      "y": 200
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Operation Management",
+     "name": "QA NDC Operation Management",
+     "position": {
+      "x": 900,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Bank deposit request",
+     "name": "QA NDC Bank deposit request",
+     "position": {
+      "x": 0,
+      "y": 400
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Refund rejected",
+     "name": "QA NDC Refund rejected",
+     "position": {
+      "x": 300,
+      "y": 400
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Refund amount request",
+     "name": "QA NDC Refund amount request",
+     "position": {
+      "x": 600,
+      "y": 400
+     },
+     "slaClock": "business"
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "NDC mimic of blueprint \"Financial approvals\" (Financial approval)",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "deposit-added-0",
+     "name": "deposit added",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund approved",
+     "fromStateId": "QA NDC Bank deposit request"
+    },
+    {
+     "id": "refund-approval-requst-1",
+     "name": "Refund approval requst",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"send approval requst\" on transition Refund approval requst",
+        "kind": "sendNotification",
+        "title": "QA NDC send approval requst",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "teamIds": [
+       "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+      ],
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "uae-investigation-2",
+     "name": "UAE Investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "40eb518f-dfa2-49ca-96a5-d493180bc9c5"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"UAE Investigation\" on transition UAE Investigation",
+        "kind": "sendNotification",
+        "title": "QA NDC UAE Investigation",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC UAE Accounting Team",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "approved-request-3",
+     "name": "Approved Request",
+     "after": {
+      "actions": [
+       {
+        "body": "NDC mimic of alert \"Approved request\" on transition Approved Request",
+        "kind": "sendNotification",
+        "title": "QA NDC Approved request",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund approved",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "operation-investigation-4",
+     "name": "Operation Investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "36edeced-9bf2-4fd0-87fa-e6c2cf0ab6ec"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"Operation Investigation\" on transition Operation Investigation",
+        "kind": "sendNotification",
+        "title": "QA NDC Operation Investigation",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Operation Management",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "ksa-investigation-5",
+     "name": "KSA Investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "51f027c0-87bc-417b-911e-04ed20866fea"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"KSA Investigation\" on transition KSA Investigation",
+        "kind": "sendNotification",
+        "title": "QA NDC KSA Investigation",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC KSA accounting team",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "uae-feedback-6",
+     "name": "UAE Feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"UAE Feedback\" on transition UAE Feedback",
+        "kind": "sendNotification",
+        "title": "QA NDC UAE Feedback",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "QA NDC UAE Accounting Team"
+    },
+    {
+     "id": "ksa-feedback-7",
+     "name": "KSA Feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"KSA Feedback\" on transition KSA Feedback",
+        "kind": "sendNotification",
+        "title": "QA NDC KSA Feedback",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "QA NDC KSA accounting team"
+    },
+    {
+     "id": "rejected-request-8",
+     "name": "Rejected Request",
+     "after": {
+      "actions": [
+       {
+        "body": "NDC mimic of alert \"Rejected Request\" on transition Rejected Request",
+        "kind": "sendNotification",
+        "title": "QA NDC Rejected Request",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund rejected",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "bsp-feedback-9",
+     "name": "BSP Feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"BSP Feedback\" on transition BSP Feedback",
+        "kind": "sendNotification",
+        "title": "QA NDC BSP Feedback",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "QA NDC BSP"
+    },
+    {
+     "id": "bsp-investigation-10",
+     "name": "BSP investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "fd909d6c-9567-45cb-860a-206a03e9d639"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"BSP investigation\" on transition BSP investigation",
+        "kind": "sendNotification",
+        "title": "QA NDC BSP investigation",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC BSP",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "operation-feedback-11",
+     "name": "Operation Feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "QA NDC Operation Management"
+    },
+    {
+     "id": "ar-feedback-12",
+     "name": "AR Feedback",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"AR Feedback\" on transition AR Feedback",
+        "kind": "sendNotification",
+        "title": "QA NDC AR Feedback",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "bank-deposit-request-13",
+     "name": "Bank deposit request",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "09b67738-ac36-47c3-9702-2bdead607999"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"Bank deposit request\" on transition Bank deposit request",
+        "kind": "sendNotification",
+        "title": "QA NDC Bank deposit request",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Bank deposit request",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "closed-after-investigation-14",
+     "name": "Closed After investigation",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "ar-investigation-request-15",
+     "name": "AR investigation request",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "b2ac3c73-747b-40b1-a7a4-8f2191722a3e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "wrong-direction-16",
+     "name": "Wrong Direction",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "bb430e3a-7431-4206-86c9-0615d1c72c7a"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"Wrong Direction\" on transition Wrong Direction",
+        "kind": "sendNotification",
+        "title": "QA NDC Wrong Direction",
+        "notifyOwner": true
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "QA NDC Bank deposit request"
+    }
+   ],
+   "departmentId": "77fca069-39a4-4ff9-835d-a12c12c7d5f2"
+  },
+  "createdAt": "2026-11-03T10:22:46.428391+00:00",
+  "updatedAt": "2026-11-03T10:22:46.428391+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "77fca069-39a4-4ff9-835d-a12c12c7d5f2",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "08ed15e6-bf5d-46d5-8bb8-eaf429a9b810",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "08ed15e6-bf5d-46d5-8bb8-eaf429a9b810",
+   "name": "QA NDC flywt-refund",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Need exception",
+     "name": "QA NDC Need exception",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC AR after exception",
+     "name": "QA NDC AR after exception",
+     "position": {
+      "x": 0,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC AR Approval",
+     "name": "QA NDC AR Approval",
+     "position": {
+      "x": 300,
+      "y": 200
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "QA NDC Follow up",
+     "name": "QA NDC Follow up",
+     "position": {
+      "x": 600,
+      "y": 200
+     },
+     "slaClock": "business"
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "NDC mimic of blueprint \"flywt-refund\" (FLY-WT Refund)",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "approved-missing-info-0",
+     "name": "Approved/missing info",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "054c8f63-d27f-45d9-ba86-b4dc048ccad6"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"follow up\" on transition Approved/missing info",
+        "kind": "sendNotification",
+        "title": "QA NDC follow up",
+        "notifyOwner": false
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {
+      "requiredFields": [
+       {
+        "name": "qa_ndc_refund_status",
+        "datatype": {
+         "key": "pick_list"
+        },
+        "required": true
+       },
+       {
+        "name": "qa_ndc_transaction_reference_number_from_custome",
+        "datatype": {
+         "key": "single_line"
+        },
+        "required": true
+       },
+       {
+        "name": "qa_ndc_refund_method",
+        "datatype": {
+         "key": "pick_list"
+        },
+        "required": true
+       }
+      ]
+     },
+     "toStateId": "QA NDC Follow up",
+     "fromStateId": "QA NDC AR Approval"
+    },
+    {
+     "id": "exception-rejected-1",
+     "name": "Exception rejected",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "054c8f63-d27f-45d9-ba86-b4dc048ccad6"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"follow up\" on transition Exception rejected",
+        "kind": "sendNotification",
+        "title": "QA NDC follow up",
+        "notifyOwner": false
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC Follow up",
+     "fromStateId": "QA NDC Need exception"
+    },
+    {
+     "id": "closed-successfully-2-2",
+     "name": "closed successfully 2",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "ar-approval-3",
+     "name": "AR Approval",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "58ad55d7-677b-49cb-870d-a4151e47d54e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "teamIds": [
+       "58ad55d7-677b-49cb-870d-a4151e47d54e"
+      ]
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Approval",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "ops-managment-approval-4",
+     "name": "Ops Managment Approval",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "16a5aa46-e44e-44cb-a533-b91278d19918"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"Ops m\" on transition Ops Managment Approval",
+        "kind": "sendNotification",
+        "title": "QA NDC Ops m",
+        "notifyOwner": false
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {
+      "requiredFields": [
+       {
+        "name": "qa_ndc_refund_status",
+        "datatype": {
+         "key": "pick_list"
+        },
+        "required": true
+       }
+      ]
+     },
+     "toStateId": "QA NDC Need exception",
+     "fromStateId": "QA NDC AR Approval"
+    },
+    {
+     "id": "exception-approved-5",
+     "name": "Exception Approved",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "58ad55d7-677b-49cb-870d-a4151e47d54e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"ar team\" on transition Exception Approved",
+        "kind": "sendNotification",
+        "title": "QA NDC ar team",
+        "notifyOwner": false
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC AR after exception",
+     "fromStateId": "QA NDC Need exception"
+    },
+    {
+     "id": "exceptional-approval-6",
+     "name": "Exceptional Approval",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "054c8f63-d27f-45d9-ba86-b4dc048ccad6"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"follow up\" on transition Exceptional Approval",
+        "kind": "sendNotification",
+        "title": "QA NDC follow up",
+        "notifyOwner": false
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {
+      "requiredFields": [
+       {
+        "name": "qa_ndc_refund_status",
+        "datatype": {
+         "key": "pick_list"
+        },
+        "required": true
+       },
+       {
+        "name": "qa_ndc_refund_method",
+        "datatype": {
+         "key": "pick_list"
+        },
+        "required": true
+       },
+       {
+        "name": "qa_ndc_transaction_reference_number_from_custome",
+        "datatype": {
+         "key": "single_line"
+        },
+        "required": true
+       }
+      ]
+     },
+     "toStateId": "QA NDC Follow up",
+     "fromStateId": "QA NDC AR after exception"
+    },
+    {
+     "id": "provide-missing-info-7",
+     "name": "Provide Missing info",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "58ad55d7-677b-49cb-870d-a4151e47d54e"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "QA NDC AR Approval",
+     "fromStateId": "QA NDC Follow up"
+    },
+    {
+     "id": "closed-successfully-8",
+     "name": "closed successfully",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "QA NDC Follow up"
+    },
+    {
+     "id": "customer-not-reached-9",
+     "name": "Customer not reached",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "team",
+        "value": "054c8f63-d27f-45d9-ba86-b4dc048ccad6"
+       },
+       {
+        "kind": "setField",
+        "field": "owner",
+        "value": null
+       },
+       {
+        "body": "NDC mimic of alert \"follow up\" on transition Customer not reached",
+        "kind": "sendNotification",
+        "title": "QA NDC follow up",
+        "notifyOwner": false
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "QA NDC Follow up"
+    }
+   ],
+   "departmentId": "3abf4280-94e5-49f8-b948-b8920dfc1e53"
+  },
+  "createdAt": "2026-11-03T10:22:46.629358+00:00",
+  "updatedAt": "2026-11-03T10:22:46.629358+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "3abf4280-94e5-49f8-b948-b8920dfc1e53",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "82eee361-e3c5-41a3-9a40-7432e58ac3b3",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "82eee361-e3c5-41a3-9a40-7432e58ac3b3",
+   "name": "Tickets from Mail",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 140,
+      "y": 80
+     },
+     "slaClock": "business",
+     "isTerminal": false,
+     "onReplyTransitionId": "t_mw0od5ak_3",
+     "onRatingTransitionId": "t_mw0od5ak_3"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 418,
+      "y": 80
+     },
+     "slaClock": "calendar",
+     "isTerminal": false,
+     "slaMinutes": 3,
+     "slaEscalation": [
+      {
+       "body": "Escalation Notification Body",
+       "kind": "sendNotification",
+       "title": "Escalation Notification Title",
+       "notifyOwner": true
+      }
+     ],
+     "autoTransitionId": "t_mw0od3no_1",
+     "onReplyTransitionId": "t_mw0od5ak_3",
+     "slaPreExpiryMinutes": 1,
+     "onRatingTransitionId": "t_mw0od5ak_3",
+     "slaPreExpiryEscalation": [
+      {
+       "body": "Escalation Warning Notification Body",
+       "kind": "sendNotification",
+       "title": "Escalation Warning Notification Title",
+       "notifyOwner": true
+      }
+     ],
+     "autoTransitionAfterMinutes": 3
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 773,
+      "y": 80
+     },
+     "slaClock": "business",
+     "isTerminal": false,
+     "onReplyTransitionId": "t_mw0od5ak_3",
+     "onRatingTransitionId": "t_mw0od5ak_3"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 140,
+      "y": 220
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "Reopened",
+     "name": "Reopened",
+     "position": {
+      "x": 144.54832272471262,
+      "y": -58.28730490820821
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    }
+   ],
+   "layoutId": "",
+   "moduleKey": "desk_tickets",
+   "continuous": false,
+   "layoutName": "",
+   "strictMode": null,
+   "description": "",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "t_mw0od33o_0",
+     "name": "Move to On Hold",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "description",
+        "value": "Open to On Hold"
+       },
+       {
+        "body": "Open to On Hold Notification Body",
+        "kind": "sendNotification",
+        "title": "Open to On Hold Notification Title",
+        "notifyOwner": true
+       },
+       {
+        "kind": "createTask",
+        "fields": {
+         "status": "In Progress",
+         "subject": "Open to On Hold Task",
+         "category": "email",
+         "due_date": "2026-11-04T14:44",
+         "priority": "low"
+        },
+        "targetModuleKey": "desk_tasks"
+       },
+       {
+        "kind": "deskEmail",
+        "owner": true,
+        "contact": true,
+        "teamIds": [],
+        "userIds": [],
+        "templateId": "fc07bc74-f076-41e7-9a3b-b4d1871ffa02",
+        "roleTreeIds": []
+       }
+      ]
+     },
+     "color": "#2563eb",
+     "before": {
+      "allowOwner": true,
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "language",
+       "value": "english"
+      }
+     },
+     "during": {
+      "messages": [
+       {
+        "id": "msg-mw0ohj8j-1",
+        "text": "test message"
+       }
+      ],
+      "checklist": [
+       {
+        "id": "check-mw0ohf7f-0",
+        "label": "checklist",
+        "mandatory": true
+       }
+      ],
+      "deskItems": [
+       {
+        "kind": "reply",
+        "mandatory": true
+       },
+       {
+        "kind": "comment",
+        "mandatory": true
+       },
+       {
+        "kind": "attachment",
+        "mandatory": true
+       },
+       {
+        "kind": "resolution",
+        "mandatory": true
+       },
+       {
+        "kind": "approval",
+        "mandatory": true,
+        "approverUserIds": [
+         "d23fb4e0-248d-41f6-af60-d28885a7007e"
+        ]
+       }
+      ],
+      "itemOrder": [
+       "field:status",
+       "checklist",
+       "message:msg-mw0ohj8j-1",
+       "desk:reply",
+       "desk:comment",
+       "desk:attachment",
+       "desk:resolution",
+       "desk:approval"
+      ],
+      "requiredFields": [
+       {
+        "name": "status",
+        "datatype": {
+         "key": "status"
+        },
+        "required": true
+       }
+      ],
+      "instructionalMessage": null
+     },
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "t_mw0od3no_1",
+     "name": "Escalate Ticket",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {
+      "allowOwner": true,
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "channel",
+       "value": "phone"
+      }
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "t_mw0od3ys_2",
+     "name": "Close Ticket",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "channel",
+       "value": "chat"
+      }
+     },
+     "during": {},
+     "isCommon": true,
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "t_mw0od5ak_3",
+     "name": "Reopen Ticket",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "channel",
+       "value": "web"
+      }
+     },
+     "during": {},
+     "isCommon": true,
+     "toStateId": "Reopened",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "dynamicOwners": false,
+   "entryCriteria": {
+    "op": "eq",
+    "field": "channel",
+    "value": "email"
+   },
+   "transitionOwners": null
+  },
+  "createdAt": "2026-11-03T12:48:36.446349+00:00",
+  "updatedAt": "2026-11-03T13:14:56.358086+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": true,
+  "draftVersion": 3,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "801b318b-b5f1-469b-a4a5-7d92e2cb563f",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "801b318b-b5f1-469b-a4a5-7d92e2cb563f",
+   "name": "QA RT14 2754 share",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "strictMode": {
+    "scope": "all",
+    "fields": [],
+    "actions": []
+   },
+   "description": "QA retest NDC-2754 8 Nov - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "alt",
+     "name": "QA alt",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {
+      "messages": [],
+      "deskItems": [
+       {
+        "kind": "share",
+        "mandatory": true
+       }
+      ],
+      "itemOrder": [
+       "desk:share"
+      ],
+      "requiredFields": [],
+      "fieldValidations": [],
+      "instructionalMessage": null
+     },
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "go",
+     "name": "QA go",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    }
+   ],
+   "departmentId": "31feced6-4027-4a6b-9dc3-8b5f934e0609",
+   "dynamicOwners": true,
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT14 2754F"
+   }
+  },
+  "createdAt": "2026-11-08T12:33:15.111388+00:00",
+  "updatedAt": "2026-11-08T12:33:15.111388+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "31feced6-4027-4a6b-9dc3-8b5f934e0609",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "c2da4020-5b62-4f6c-969a-95f32108b91e",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "c2da4020-5b62-4f6c-969a-95f32108b91e",
+   "name": "test blueprint",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 22.274501560492183,
+      "y": 79.15910358257494
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 360,
+      "y": 80
+     },
+     "slaClock": "calendar",
+     "isTerminal": false,
+     "slaMinutes": 3,
+     "slaEscalation": [
+      {
+       "body": "Ticket Moved to Escalated Body",
+       "kind": "sendNotification",
+       "title": "Ticket Moved to Escalated Title",
+       "userIds": [
+        "97be04b6-0a08-4883-aa51-e1650b11cab7"
+       ],
+       "orgUnitId": null,
+       "notifyOwner": false,
+       "recipientMode": "users",
+       "notifyPerformer": false
+      }
+     ],
+     "autoTransitionId": "t_mwhofnk6_1",
+     "slaPreExpiryMinutes": 1,
+     "slaPreExpiryEscalation": [
+      {
+       "body": "Ticket is about to Move to Escalated Body",
+       "kind": "sendNotification",
+       "title": "Ticket is about to Move to Escalated Title",
+       "userIds": [
+        "97be04b6-0a08-4883-aa51-e1650b11cab7"
+       ],
+       "orgUnitId": null,
+       "notifyOwner": false,
+       "recipientMode": "users",
+       "notifyPerformer": false
+      }
+     ],
+     "autoTransitionAfterMinutes": 3
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 695,
+      "y": 75
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 346.8829291221901,
+      "y": 209.68479925309953
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "Reopened",
+     "name": "Reopened",
+     "position": {
+      "x": 600.4963753835659,
+      "y": 219.15910358257497
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    }
+   ],
+   "layoutId": "",
+   "moduleKey": "desk_tickets",
+   "continuous": false,
+   "layoutName": "",
+   "strictMode": null,
+   "description": "",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "t_mwhofn7i_0",
+     "name": "Move to On Hold",
+     "after": {
+      "actions": [
+       {
+        "body": "Ticket Moved to On Hold",
+        "kind": "sendNotification",
+        "title": "Ticket Moved to On Hold",
+        "userIds": [
+         "d23fb4e0-248d-41f6-af60-d28885a7007e",
+         "7e5e7c27-46e4-4bf6-b021-7bd219d34472",
+         "3445ec4a-020e-4f12-b156-dd2de7610164",
+         "97be04b6-0a08-4883-aa51-e1650b11cab7"
+        ],
+        "orgUnitId": null,
+        "notifyOwner": false,
+        "recipientMode": "users",
+        "notifyPerformer": false
+       },
+       {
+        "kind": "deskEmail",
+        "owner": true,
+        "contact": true,
+        "teamIds": [],
+        "userIds": [
+         "3445ec4a-020e-4f12-b156-dd2de7610164"
+        ],
+        "templateId": "fc07bc74-f076-41e7-9a3b-b4d1871ffa02",
+        "roleTreeIds": []
+       },
+       {
+        "kind": "setField",
+        "field": "email",
+        "value": "mmohamed@anyware.software"
+       },
+       {
+        "via": "contact_id",
+        "kind": "setField",
+        "field": "description",
+        "value": "new description 01"
+       },
+       {
+        "kind": "createTask",
+        "fields": {
+         "status": "Not Started",
+         "subject": "hjghjghjghj",
+         "category": "follow_up",
+         "priority": "highest"
+        },
+        "assigneeMode": "user",
+        "assigneeUserId": "7e5e7c27-46e4-4bf6-b021-7bd219d34472",
+        "targetModuleKey": "desk_tasks"
+       }
+      ]
+     },
+     "color": "#2563eb",
+     "before": {
+      "allowOwner": true,
+      "allowedUserIds": [
+       "97be04b6-0a08-4883-aa51-e1650b11cab7"
+      ],
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "sub_category",
+       "value": "refund"
+      }
+     },
+     "during": {
+      "messages": [
+       {
+        "id": "msg-mwhuvth1-2",
+        "text": "do you love me? do you? do you?"
+       }
+      ],
+      "checklist": [
+       {
+        "id": "check-mwhuv9k6-0",
+        "label": "make your choice",
+        "mandatory": true
+       }
+      ],
+      "deskItems": [
+       {
+        "kind": "reply",
+        "mandatory": false
+       },
+       {
+        "kind": "attachment",
+        "mandatory": false
+       }
+      ],
+      "itemOrder": [
+       "field:contact_id",
+       "checklist",
+       "message:msg-mwhuvth1-2",
+       "desk:reply",
+       "desk:attachment"
+      ],
+      "requiredFields": [
+       {
+        "name": "contact_id",
+        "datatype": {
+         "key": "lookup"
+        },
+        "required": false
+       }
+      ],
+      "instructionalMessage": null
+     },
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "t_mwhofnk6_1",
+     "name": "Move to Escalated",
+     "after": {
+      "actions": [
+       {
+        "kind": "createTask",
+        "fields": {
+         "status": "In Progress",
+         "subject": "test asdzxcaseaqweqweaszxc",
+         "category": "email",
+         "due_date": "2026-11-24T15:19",
+         "priority": "normal",
+         "completed_time": "2026-11-25T15:19"
+        },
+        "assigneeMode": "owner",
+        "assigneeUserId": null,
+        "targetModuleKey": "desk_tasks"
+       }
+      ]
+     },
+     "color": "#2563eb",
+     "before": {
+      "allowOwner": true,
+      "allowedUserIds": [
+       "97be04b6-0a08-4883-aa51-e1650b11cab7"
+      ],
+      "visibilityCriteria": null
+     },
+     "during": {
+      "messages": [],
+      "deskItems": [],
+      "itemOrder": [],
+      "instructionalMessage": null
+     },
+     "toStateId": "Escalated",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "t_mwhold23_4",
+     "name": "Move to Closed",
+     "after": {
+      "actions": [
+       {
+        "kind": "createTask",
+        "fields": {
+         "status": "Not Started",
+         "subject": "12312123123",
+         "category": "follow_up",
+         "priority": "highest"
+        },
+        "assigneeMode": "performer",
+        "assigneeUserId": null,
+        "targetModuleKey": "desk_tasks"
+       }
+      ]
+     },
+     "color": "#2563eb",
+     "before": {
+      "allowOwner": true,
+      "allowedUserIds": [
+       "97be04b6-0a08-4883-aa51-e1650b11cab7"
+      ],
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "sub_category",
+       "value": "access"
+      }
+     },
+     "during": {},
+     "isCommon": true,
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "t_mwholik3_5",
+     "name": "Move to Reopened",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {
+      "allowOwner": true,
+      "allowedUserIds": [
+       "97be04b6-0a08-4883-aa51-e1650b11cab7"
+      ],
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "sub_category",
+       "value": "subscription"
+      }
+     },
+     "during": {},
+     "isCommon": true,
+     "toStateId": "Reopened",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "19510fdc-91f3-4a7a-8888-153f1318b765",
+   "dynamicOwners": false,
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA"
+   },
+   "transitionOwners": null
+  },
+  "createdAt": "2026-11-15T10:18:45.416972+00:00",
+  "updatedAt": "2026-11-22T14:16:27.545214+00:00",
+  "revision": 15,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "19510fdc-91f3-4a7a-8888-153f1318b765",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "f0e7024d-77dd-4b73-a7d8-e1634eb3d936",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "f0e7024d-77dd-4b73-a7d8-e1634eb3d936",
+   "name": "QA RT18 3012 BP",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 80,
+      "y": 80
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 340,
+      "y": 80
+     },
+     "slaClock": "business"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 600,
+      "y": 80
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "qa rt18 lane3",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "t_qa_1",
+     "name": "QA to Hold",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {
+      "messages": [
+       {
+        "id": "instructions",
+        "text": "qa"
+       }
+      ],
+      "requiredFields": [
+       {
+        "name": "subject",
+        "datatype": {
+         "key": "single_line"
+        },
+        "required": true
+       }
+      ],
+      "instructionalMessage": "qa"
+     },
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "t_qa_2",
+     "name": "QA to Close",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "93949fbd-f9df-4e2e-ae45-00b8dc38385b",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT18 3012"
+   }
+  },
+  "createdAt": "2026-11-15T15:10:27.510397+00:00",
+  "updatedAt": "2026-11-15T15:17:47.446353+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "93949fbd-f9df-4e2e-ae45-00b8dc38385b",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "cca267b4-989c-47e8-8fa2-70b9d5935626",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "cca267b4-989c-47e8-8fa2-70b9d5935626",
+   "name": "QA BP RT19 3030 RENAMED BY B run4",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": false
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": false
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "layoutId": "",
+   "moduleKey": "desk_tickets",
+   "continuous": false,
+   "layoutName": "",
+   "strictMode": null,
+   "description": "QA RT19 D5 desc from stale B (no revision)",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "go",
+     "name": "QA go",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "finish",
+     "name": "QA finish",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "dynamicOwners": false,
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3030 two editors "
+   },
+   "transitionOwners": null
+  },
+  "createdAt": "2026-11-16T09:03:10.771865+00:00",
+  "updatedAt": "2026-11-16T10:06:22.645221+00:00",
+  "revision": 14,
+  "sortOrder": null,
+  "hasDraft": true,
+  "draftVersion": 5,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "05ae1c2f-cb79-4621-8e1a-00405c7db4a9",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "05ae1c2f-cb79-4621-8e1a-00405c7db4a9",
+   "name": "QA BP RT19 3031 A cont devshape",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "continuous": true,
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "first",
+     "name": "QA first",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {
+      "checklist": [
+       {
+        "id": "k",
+        "label": "QA check",
+        "mandatory": true
+       }
+      ]
+     },
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "auto",
+     "name": "QA auto",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {
+      "checklist": [
+       {
+        "id": "k",
+        "label": "QA check",
+        "mandatory": true
+       }
+      ]
+     },
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3031 A cont devshape "
+   }
+  },
+  "createdAt": "2026-11-16T09:09:09.906527+00:00",
+  "updatedAt": "2026-11-16T10:05:45.22355+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "16d28ff1-5473-48ed-94ef-4726b9b8f93d",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "16d28ff1-5473-48ed-94ef-4726b9b8f93d",
+   "name": "QA BP RT19 3031 B cont ticketshape",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "continuous": true,
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "first",
+     "name": "QA first",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {
+      "checklist": [
+       {
+        "id": "k",
+        "label": "QA check",
+        "mandatory": true
+       }
+      ]
+     },
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "auto",
+     "name": "QA auto",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3031 B cont ticketshape "
+   }
+  },
+  "createdAt": "2026-11-16T09:09:10.96967+00:00",
+  "updatedAt": "2026-11-16T10:05:45.908057+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "3530069f-e746-408d-8f4e-58e1067bf860",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "3530069f-e746-408d-8f4e-58e1067bf860",
+   "name": "QA BP RT19 3031 C not cont",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "continuous": false,
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "first",
+     "name": "QA first",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {
+      "checklist": [
+       {
+        "id": "k",
+        "label": "QA check",
+        "mandatory": true
+       }
+      ]
+     },
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "auto",
+     "name": "QA auto",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3031 C not cont "
+   }
+  },
+  "createdAt": "2026-11-16T09:09:11.692601+00:00",
+  "updatedAt": "2026-11-16T10:05:46.602216+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "98536d5d-6d96-4d28-ab90-83b301d9a70e",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "98536d5d-6d96-4d28-ab90-83b301d9a70e",
+   "name": "QA BP RT19 3031 D cont auto owned by A",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "continuous": true,
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "first",
+     "name": "QA first",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {
+      "checklist": [
+       {
+        "id": "k",
+        "label": "QA check",
+        "mandatory": true
+       }
+      ]
+     },
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "auto",
+     "name": "QA auto",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+      ]
+     },
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3031 D cont auto owned by A "
+   }
+  },
+  "createdAt": "2026-11-16T09:09:12.457147+00:00",
+  "updatedAt": "2026-11-16T10:05:48.081629+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "ee0d9bf5-dc88-4f27-9b14-47b03cf2fbd0",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "ee0d9bf5-dc88-4f27-9b14-47b03cf2fbd0",
+   "name": "tseserser",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 140,
+      "y": 80
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 360,
+      "y": 80
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 580,
+      "y": 80
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 140,
+      "y": 220
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC System Admin",
+     "name": "QA NDC System Admin",
+     "position": {
+      "x": 360,
+      "y": 220
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Dep Manager",
+     "name": "QA NDC Dep Manager",
+     "position": {
+      "x": 580,
+      "y": 220
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Finance team after Validation",
+     "name": "QA NDC Finance team after Validation",
+     "position": {
+      "x": 140,
+      "y": 360
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Distributor",
+     "name": "QA NDC Distributor",
+     "position": {
+      "x": 360,
+      "y": 360
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Reject",
+     "name": "QA NDC Reject",
+     "position": {
+      "x": 580,
+      "y": 360
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Rejected Audit",
+     "name": "QA NDC Rejected Audit",
+     "position": {
+      "x": 140,
+      "y": 500
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Governance",
+     "name": "QA NDC Governance",
+     "position": {
+      "x": 360,
+      "y": 500
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Review Audit Manager",
+     "name": "QA NDC Review Audit Manager",
+     "position": {
+      "x": 580,
+      "y": 500
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Needs NDC Finance investigation",
+     "name": "QA NDC Needs NDC Finance investigation",
+     "position": {
+      "x": 140,
+      "y": 640
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Banking sector investigation",
+     "name": "QA NDC Banking sector investigation",
+     "position": {
+      "x": 360,
+      "y": 640
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC AR Team",
+     "name": "QA NDC AR Team",
+     "position": {
+      "x": 580,
+      "y": 640
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC higher Level escalation",
+     "name": "QA NDC higher Level escalation",
+     "position": {
+      "x": 140,
+      "y": 780
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Email Approval Sector",
+     "name": "QA NDC Email Approval Sector",
+     "position": {
+      "x": 360,
+      "y": 780
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC BSP Investigation",
+     "name": "QA NDC BSP Investigation",
+     "position": {
+      "x": 580,
+      "y": 780
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Refund amount request",
+     "name": "QA NDC Refund amount request",
+     "position": {
+      "x": 140,
+      "y": 920
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Refund approved",
+     "name": "QA NDC Refund approved",
+     "position": {
+      "x": 360,
+      "y": 920
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC AR after exception",
+     "name": "QA NDC AR after exception",
+     "position": {
+      "x": 580,
+      "y": 920
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Follow up",
+     "name": "QA NDC Follow up",
+     "position": {
+      "x": 140,
+      "y": 1060
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Need exception",
+     "name": "QA NDC Need exception",
+     "position": {
+      "x": 360,
+      "y": 1060
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC AR Approval",
+     "name": "QA NDC AR Approval",
+     "position": {
+      "x": 580,
+      "y": 1060
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Refund rejected",
+     "name": "QA NDC Refund rejected",
+     "position": {
+      "x": 140,
+      "y": 1200
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Bank deposit request",
+     "name": "QA NDC Bank deposit request",
+     "position": {
+      "x": 360,
+      "y": 1200
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Operation Management",
+     "name": "QA NDC Operation Management",
+     "position": {
+      "x": 580,
+      "y": 1200
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC KSA accounting team",
+     "name": "QA NDC KSA accounting team",
+     "position": {
+      "x": 140,
+      "y": 1340
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC UAE Accounting Team",
+     "name": "QA NDC UAE Accounting Team",
+     "position": {
+      "x": 360,
+      "y": 1340
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC BSP",
+     "name": "QA NDC BSP",
+     "position": {
+      "x": 580,
+      "y": 1340
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Closed Duplicated",
+     "name": "QA NDC Closed Duplicated",
+     "position": {
+      "x": 140,
+      "y": 1480
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Supervisor check",
+     "name": "QA NDC Supervisor check",
+     "position": {
+      "x": 360,
+      "y": 1480
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC HR Escalation",
+     "name": "QA NDC HR Escalation",
+     "position": {
+      "x": 580,
+      "y": 1480
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "Reopened",
+     "name": "Reopened",
+     "position": {
+      "x": 140,
+      "y": 1620
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Pending",
+     "name": "QA NDC Pending",
+     "position": {
+      "x": 360,
+      "y": 1620
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Approved E-Top-Up Manager",
+     "name": "QA NDC Approved E-Top-Up Manager",
+     "position": {
+      "x": 580,
+      "y": 1620
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Pass Audit",
+     "name": "QA NDC Pass Audit",
+     "position": {
+      "x": 140,
+      "y": 1760
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Rejected",
+     "name": "QA NDC Rejected",
+     "position": {
+      "x": 360,
+      "y": 1760
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Not Approved E-Top-Up Manager",
+     "name": "QA NDC Not Approved E-Top-Up Manager",
+     "position": {
+      "x": 580,
+      "y": 1760
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    },
+    {
+     "id": "QA NDC Waiting Top-Up Manager",
+     "name": "QA NDC Waiting Top-Up Manager",
+     "position": {
+      "x": 140,
+      "y": 1900
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC Email Approval issues",
+     "name": "QA NDC Email Approval issues",
+     "position": {
+      "x": 360,
+      "y": 1900
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "QA NDC UAE",
+     "name": "QA NDC UAE",
+     "position": {
+      "x": 580,
+      "y": 1900
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    }
+   ],
+   "layoutId": "",
+   "moduleKey": "desk_tickets",
+   "continuous": false,
+   "layoutName": "",
+   "strictMode": null,
+   "description": "",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "t_mwj1jboi_3",
+     "name": "asdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "t_mwj1jbzn_4",
+     "name": "asdasda",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "t_mwj1jcbe_5",
+     "name": "asdasda",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "t_mwj1jckr_6",
+     "name": "asdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC System Admin",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "t_mwj1jcv7_7",
+     "name": "asdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Dep Manager",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "t_mwj1jd4q_8",
+     "name": "asdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Finance team after Validation",
+     "fromStateId": "Closed"
+    },
+    {
+     "id": "t_mwj1jdf6_9",
+     "name": "asdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Distributor",
+     "fromStateId": "QA NDC System Admin"
+    },
+    {
+     "id": "t_mwj1jdnu_10",
+     "name": "asdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Reject",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "t_mwj1jdze_11",
+     "name": "asdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Rejected Audit",
+     "fromStateId": "QA NDC Finance team after Validation"
+    },
+    {
+     "id": "t_mwj1jehu_12",
+     "name": "asdasda",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Governance",
+     "fromStateId": "QA NDC Distributor"
+    },
+    {
+     "id": "t_mwj1jev8_13",
+     "name": "asasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Review Audit Manager",
+     "fromStateId": "QA NDC Reject"
+    },
+    {
+     "id": "t_mwj1jf2y_14",
+     "name": "asdasdas",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Needs NDC Finance investigation",
+     "fromStateId": "QA NDC Rejected Audit"
+    },
+    {
+     "id": "t_mwj1jfde_15",
+     "name": "asdasdas",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Banking sector investigation",
+     "fromStateId": "QA NDC Governance"
+    },
+    {
+     "id": "t_mwj1jfma_16",
+     "name": "asasda",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC Review Audit Manager"
+    },
+    {
+     "id": "t_mwj1jfwa_17",
+     "name": "asdasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC higher Level escalation",
+     "fromStateId": "QA NDC Needs NDC Finance investigation"
+    },
+    {
+     "id": "t_mwj1jg56_18",
+     "name": "asdasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Email Approval Sector",
+     "fromStateId": "QA NDC Banking sector investigation"
+    },
+    {
+     "id": "t_mwj1jgeq_19",
+     "name": "asdasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC BSP Investigation",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "t_mwj1jgpu_20",
+     "name": "asdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "QA NDC higher Level escalation"
+    },
+    {
+     "id": "t_mwj1jh1e_21",
+     "name": "asdasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Refund approved",
+     "fromStateId": "QA NDC Email Approval Sector"
+    },
+    {
+     "id": "t_mwj1jhne_22",
+     "name": "asdasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC AR after exception",
+     "fromStateId": "QA NDC BSP Investigation"
+    },
+    {
+     "id": "t_mwj1ji1v_23",
+     "name": "asdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Follow up",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "t_mwj1ji8i_24",
+     "name": "asdasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Need exception",
+     "fromStateId": "QA NDC Refund approved"
+    },
+    {
+     "id": "t_mwj1jig2_25",
+     "name": "asdasdas",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC AR Approval",
+     "fromStateId": "QA NDC AR after exception"
+    },
+    {
+     "id": "t_mwj1jipe_26",
+     "name": "123123123",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Refund rejected",
+     "fromStateId": "QA NDC Follow up"
+    },
+    {
+     "id": "t_mwj1jixu_27",
+     "name": "asdasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Bank deposit request",
+     "fromStateId": "QA NDC Need exception"
+    },
+    {
+     "id": "t_mwj1jj62_28",
+     "name": "asdasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Operation Management",
+     "fromStateId": "QA NDC AR Approval"
+    },
+    {
+     "id": "t_mwj1jjdu_29",
+     "name": "1231231",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC KSA accounting team",
+     "fromStateId": "QA NDC Refund rejected"
+    },
+    {
+     "id": "t_mwj1jjlf_30",
+     "name": "12123123",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC UAE Accounting Team",
+     "fromStateId": "QA NDC Bank deposit request"
+    },
+    {
+     "id": "t_mwj1jjt6_31",
+     "name": "3453454",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC BSP",
+     "fromStateId": "QA NDC Operation Management"
+    },
+    {
+     "id": "t_mwj1jkka_32",
+     "name": "24124124",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Closed Duplicated",
+     "fromStateId": "QA NDC KSA accounting team"
+    },
+    {
+     "id": "t_mwj1jkrn_33",
+     "name": "4523243",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Supervisor check",
+     "fromStateId": "QA NDC UAE Accounting Team"
+    },
+    {
+     "id": "t_mwj1jl4i_34",
+     "name": "456456",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC HR Escalation",
+     "fromStateId": "QA NDC BSP"
+    },
+    {
+     "id": "t_mwj1jlea_35",
+     "name": "asdaqe21",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "Reopened",
+     "fromStateId": "QA NDC Closed Duplicated"
+    },
+    {
+     "id": "t_mwj1jm2y_36",
+     "name": "1233123",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Pending",
+     "fromStateId": "QA NDC Supervisor check"
+    },
+    {
+     "id": "t_mwj1jm8q_37",
+     "name": "sdasdasd",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Approved E-Top-Up Manager",
+     "fromStateId": "QA NDC HR Escalation"
+    },
+    {
+     "id": "t_mwj1jnpe_38",
+     "name": "123123",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Pass Audit",
+     "fromStateId": "Reopened"
+    },
+    {
+     "id": "t_mwj1jo5e_39",
+     "name": "12123123",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Rejected",
+     "fromStateId": "QA NDC Pending"
+    },
+    {
+     "id": "t_mwj1joeq_40",
+     "name": "123123123",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Not Approved E-Top-Up Manager",
+     "fromStateId": "QA NDC Approved E-Top-Up Manager"
+    },
+    {
+     "id": "t_mwj1joma_41",
+     "name": "123123",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Waiting Top-Up Manager",
+     "fromStateId": "QA NDC Pass Audit"
+    },
+    {
+     "id": "t_mwj1joui_42",
+     "name": "12312323",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Email Approval issues",
+     "fromStateId": "QA NDC Rejected"
+    },
+    {
+     "id": "t_mwj1jp2a_43",
+     "name": "123123",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC UAE",
+     "fromStateId": "QA NDC Not Approved E-Top-Up Manager"
+    }
+   ],
+   "departmentId": "08fd8684-c5c0-4d4d-86f9-2be70cf61e53",
+   "dynamicOwners": false,
+   "entryCriteria": null,
+   "transitionOwners": null
+  },
+  "createdAt": "2026-11-16T09:09:59.646903+00:00",
+  "updatedAt": "2026-11-16T09:09:59.915199+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "08fd8684-c5c0-4d4d-86f9-2be70cf61e53",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "1eb735cb-8d23-4641-bd91-be9c0eec500a",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "1eb735cb-8d23-4641-bd91-be9c0eec500a",
+   "name": "QA BP RT19 3032 fieldupd",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "escalate",
+     "name": "QA escalate",
+     "after": {
+      "actions": [
+       {
+        "kind": "setField",
+        "field": "description",
+        "value": "QA RT19 set by blueprint"
+       },
+       {
+        "kind": "setField",
+        "field": "priority",
+        "value": "high"
+       }
+      ]
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "finish",
+     "name": "QA finish",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3032 fieldupd "
+   }
+  },
+  "createdAt": "2026-11-16T09:11:46.252628+00:00",
+  "updatedAt": "2026-11-16T10:05:48.936508+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "478a28c6-16eb-4aec-8ad4-dcdf5278fdd0",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "478a28c6-16eb-4aec-8ad4-dcdf5278fdd0",
+   "name": "QA BP RT19 3036 onlyA",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "onlyA",
+     "name": "QA onlyA",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+      ]
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3036 onlyA "
+   }
+  },
+  "createdAt": "2026-11-16T09:18:21.60522+00:00",
+  "updatedAt": "2026-11-16T10:05:50.887213+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "e439d624-c9a9-4560-801d-6049338b1c38",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "e439d624-c9a9-4560-801d-6049338b1c38",
+   "name": "QA BP RT19 3037 valid",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 400,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "ghost",
+     "name": "QA ghost",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "97be04b6-0a08-4883-aa51-e1650b11cab7"
+      ]
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3037 valid "
+   }
+  },
+  "createdAt": "2026-11-16T09:24:07.119681+00:00",
+  "updatedAt": "2026-11-16T09:24:07.119681+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "d03c1921-889a-40bb-b8d4-55b269e595f8",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "d03c1921-889a-40bb-b8d4-55b269e595f8",
+   "name": "QA BP RT19 3038 large",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 260,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 520,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Pending",
+     "name": "QA NDC Pending",
+     "position": {
+      "x": 780,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Rejected",
+     "name": "QA NDC Rejected",
+     "position": {
+      "x": 1040,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC System Admin",
+     "name": "QA NDC System Admin",
+     "position": {
+      "x": 1300,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Dep Manager",
+     "name": "QA NDC Dep Manager",
+     "position": {
+      "x": 0,
+      "y": 160
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Finance team after Validation",
+     "name": "QA NDC Finance team after Validation",
+     "position": {
+      "x": 260,
+      "y": 160
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Distributor",
+     "name": "QA NDC Distributor",
+     "position": {
+      "x": 520,
+      "y": 160
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Governance",
+     "name": "QA NDC Governance",
+     "position": {
+      "x": 780,
+      "y": 160
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Reject",
+     "name": "QA NDC Reject",
+     "position": {
+      "x": 1040,
+      "y": 160
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Approved E-Top-Up Manager",
+     "name": "QA NDC Approved E-Top-Up Manager",
+     "position": {
+      "x": 1300,
+      "y": 160
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Not Approved E-Top-Up Manager",
+     "name": "QA NDC Not Approved E-Top-Up Manager",
+     "position": {
+      "x": 0,
+      "y": 320
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Pass Audit",
+     "name": "QA NDC Pass Audit",
+     "position": {
+      "x": 260,
+      "y": 320
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Rejected Audit",
+     "name": "QA NDC Rejected Audit",
+     "position": {
+      "x": 520,
+      "y": 320
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Review Audit Manager",
+     "name": "QA NDC Review Audit Manager",
+     "position": {
+      "x": 780,
+      "y": 320
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Waiting Top-Up Manager",
+     "name": "QA NDC Waiting Top-Up Manager",
+     "position": {
+      "x": 1040,
+      "y": 320
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Needs NDC Finance investigation",
+     "name": "QA NDC Needs NDC Finance investigation",
+     "position": {
+      "x": 1300,
+      "y": 320
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Banking sector investigation",
+     "name": "QA NDC Banking sector investigation",
+     "position": {
+      "x": 0,
+      "y": 480
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC AR Team",
+     "name": "QA NDC AR Team",
+     "position": {
+      "x": 260,
+      "y": 480
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC higher Level escalation",
+     "name": "QA NDC higher Level escalation",
+     "position": {
+      "x": 520,
+      "y": 480
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Email Approval issues",
+     "name": "QA NDC Email Approval issues",
+     "position": {
+      "x": 780,
+      "y": 480
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Email Approval Sector",
+     "name": "QA NDC Email Approval Sector",
+     "position": {
+      "x": 1040,
+      "y": 480
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC BSP Investigation",
+     "name": "QA NDC BSP Investigation",
+     "position": {
+      "x": 1300,
+      "y": 480
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Refund amount request",
+     "name": "QA NDC Refund amount request",
+     "position": {
+      "x": 0,
+      "y": 640
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC Refund approved",
+     "name": "QA NDC Refund approved",
+     "position": {
+      "x": 260,
+      "y": 640
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC BSP",
+     "name": "QA NDC BSP",
+     "position": {
+      "x": 520,
+      "y": 640
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC UAE Accounting Team",
+     "name": "QA NDC UAE Accounting Team",
+     "position": {
+      "x": 780,
+      "y": 640
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "QA NDC KSA accounting team",
+     "name": "QA NDC KSA accounting team",
+     "position": {
+      "x": 1040,
+      "y": 640
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 1300,
+      "y": 640
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "t0_1",
+     "name": "QA t0_1",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "t1_2",
+     "name": "QA t1_2",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "t2_3",
+     "name": "QA t2_3",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Pending",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "t3_4",
+     "name": "QA t3_4",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Rejected",
+     "fromStateId": "QA NDC Pending"
+    },
+    {
+     "id": "t4_5",
+     "name": "QA t4_5",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC System Admin",
+     "fromStateId": "QA NDC Rejected"
+    },
+    {
+     "id": "t5_6",
+     "name": "QA t5_6",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Dep Manager",
+     "fromStateId": "QA NDC System Admin"
+    },
+    {
+     "id": "t6_7",
+     "name": "QA t6_7",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Finance team after Validation",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "t7_8",
+     "name": "QA t7_8",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Distributor",
+     "fromStateId": "QA NDC Finance team after Validation"
+    },
+    {
+     "id": "t8_9",
+     "name": "QA t8_9",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Governance",
+     "fromStateId": "QA NDC Distributor"
+    },
+    {
+     "id": "t9_10",
+     "name": "QA t9_10",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Reject",
+     "fromStateId": "QA NDC Governance"
+    },
+    {
+     "id": "t10_11",
+     "name": "QA t10_11",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Approved E-Top-Up Manager",
+     "fromStateId": "QA NDC Reject"
+    },
+    {
+     "id": "t11_12",
+     "name": "QA t11_12",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Not Approved E-Top-Up Manager",
+     "fromStateId": "QA NDC Approved E-Top-Up Manager"
+    },
+    {
+     "id": "t12_13",
+     "name": "QA t12_13",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Pass Audit",
+     "fromStateId": "QA NDC Not Approved E-Top-Up Manager"
+    },
+    {
+     "id": "t13_14",
+     "name": "QA t13_14",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Rejected Audit",
+     "fromStateId": "QA NDC Pass Audit"
+    },
+    {
+     "id": "t14_15",
+     "name": "QA t14_15",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Review Audit Manager",
+     "fromStateId": "QA NDC Rejected Audit"
+    },
+    {
+     "id": "t15_16",
+     "name": "QA t15_16",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Waiting Top-Up Manager",
+     "fromStateId": "QA NDC Review Audit Manager"
+    },
+    {
+     "id": "t16_17",
+     "name": "QA t16_17",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Needs NDC Finance investigation",
+     "fromStateId": "QA NDC Waiting Top-Up Manager"
+    },
+    {
+     "id": "t17_18",
+     "name": "QA t17_18",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Banking sector investigation",
+     "fromStateId": "QA NDC Needs NDC Finance investigation"
+    },
+    {
+     "id": "t18_19",
+     "name": "QA t18_19",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC Banking sector investigation"
+    },
+    {
+     "id": "t19_20",
+     "name": "QA t19_20",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC higher Level escalation",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "t20_21",
+     "name": "QA t20_21",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Email Approval issues",
+     "fromStateId": "QA NDC higher Level escalation"
+    },
+    {
+     "id": "t21_22",
+     "name": "QA t21_22",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Email Approval Sector",
+     "fromStateId": "QA NDC Email Approval issues"
+    },
+    {
+     "id": "t22_23",
+     "name": "QA t22_23",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC BSP Investigation",
+     "fromStateId": "QA NDC Email Approval Sector"
+    },
+    {
+     "id": "t23_24",
+     "name": "QA t23_24",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "QA NDC BSP Investigation"
+    },
+    {
+     "id": "t24_25",
+     "name": "QA t24_25",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Refund approved",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "t25_26",
+     "name": "QA t25_26",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC BSP",
+     "fromStateId": "QA NDC Refund approved"
+    },
+    {
+     "id": "t26_27",
+     "name": "QA t26_27",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC UAE Accounting Team",
+     "fromStateId": "QA NDC BSP"
+    },
+    {
+     "id": "t27_28",
+     "name": "QA t27_28",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC KSA accounting team",
+     "fromStateId": "QA NDC UAE Accounting Team"
+    },
+    {
+     "id": "t28_29",
+     "name": "QA t28_29",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "QA NDC KSA accounting team"
+    },
+    {
+     "id": "t0_2",
+     "name": "QA t0_2",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "t1_3",
+     "name": "QA t1_3",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Pending",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "t2_4",
+     "name": "QA t2_4",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Rejected",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "t3_5",
+     "name": "QA t3_5",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC System Admin",
+     "fromStateId": "QA NDC Pending"
+    },
+    {
+     "id": "t4_6",
+     "name": "QA t4_6",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Dep Manager",
+     "fromStateId": "QA NDC Rejected"
+    },
+    {
+     "id": "t5_7",
+     "name": "QA t5_7",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Finance team after Validation",
+     "fromStateId": "QA NDC System Admin"
+    },
+    {
+     "id": "t6_8",
+     "name": "QA t6_8",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Distributor",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "t7_9",
+     "name": "QA t7_9",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Governance",
+     "fromStateId": "QA NDC Finance team after Validation"
+    },
+    {
+     "id": "t8_10",
+     "name": "QA t8_10",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Reject",
+     "fromStateId": "QA NDC Distributor"
+    },
+    {
+     "id": "t9_11",
+     "name": "QA t9_11",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Approved E-Top-Up Manager",
+     "fromStateId": "QA NDC Governance"
+    },
+    {
+     "id": "t10_12",
+     "name": "QA t10_12",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Not Approved E-Top-Up Manager",
+     "fromStateId": "QA NDC Reject"
+    },
+    {
+     "id": "t11_13",
+     "name": "QA t11_13",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Pass Audit",
+     "fromStateId": "QA NDC Approved E-Top-Up Manager"
+    },
+    {
+     "id": "t12_14",
+     "name": "QA t12_14",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Rejected Audit",
+     "fromStateId": "QA NDC Not Approved E-Top-Up Manager"
+    },
+    {
+     "id": "t13_15",
+     "name": "QA t13_15",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Review Audit Manager",
+     "fromStateId": "QA NDC Pass Audit"
+    },
+    {
+     "id": "t14_16",
+     "name": "QA t14_16",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Waiting Top-Up Manager",
+     "fromStateId": "QA NDC Rejected Audit"
+    },
+    {
+     "id": "t15_17",
+     "name": "QA t15_17",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Needs NDC Finance investigation",
+     "fromStateId": "QA NDC Review Audit Manager"
+    },
+    {
+     "id": "t16_18",
+     "name": "QA t16_18",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Banking sector investigation",
+     "fromStateId": "QA NDC Waiting Top-Up Manager"
+    },
+    {
+     "id": "t17_19",
+     "name": "QA t17_19",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC Needs NDC Finance investigation"
+    },
+    {
+     "id": "t18_20",
+     "name": "QA t18_20",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC higher Level escalation",
+     "fromStateId": "QA NDC Banking sector investigation"
+    },
+    {
+     "id": "t19_21",
+     "name": "QA t19_21",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Email Approval issues",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "t20_22",
+     "name": "QA t20_22",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Email Approval Sector",
+     "fromStateId": "QA NDC higher Level escalation"
+    },
+    {
+     "id": "t21_23",
+     "name": "QA t21_23",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC BSP Investigation",
+     "fromStateId": "QA NDC Email Approval issues"
+    },
+    {
+     "id": "t22_24",
+     "name": "QA t22_24",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Refund amount request",
+     "fromStateId": "QA NDC Email Approval Sector"
+    },
+    {
+     "id": "t23_25",
+     "name": "QA t23_25",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Refund approved",
+     "fromStateId": "QA NDC BSP Investigation"
+    },
+    {
+     "id": "t24_26",
+     "name": "QA t24_26",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC BSP",
+     "fromStateId": "QA NDC Refund amount request"
+    },
+    {
+     "id": "t25_27",
+     "name": "QA t25_27",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC UAE Accounting Team",
+     "fromStateId": "QA NDC Refund approved"
+    },
+    {
+     "id": "t26_28",
+     "name": "QA t26_28",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC KSA accounting team",
+     "fromStateId": "QA NDC BSP"
+    },
+    {
+     "id": "t27_29",
+     "name": "QA t27_29",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "QA NDC UAE Accounting Team"
+    },
+    {
+     "id": "b2",
+     "name": "QA b2",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Open",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "b3",
+     "name": "QA b3",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "QA NDC Pending"
+    },
+    {
+     "id": "b4",
+     "name": "QA b4",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "QA NDC Rejected"
+    },
+    {
+     "id": "b5",
+     "name": "QA b5",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Pending",
+     "fromStateId": "QA NDC System Admin"
+    },
+    {
+     "id": "b6",
+     "name": "QA b6",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Rejected",
+     "fromStateId": "QA NDC Dep Manager"
+    },
+    {
+     "id": "b7",
+     "name": "QA b7",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC System Admin",
+     "fromStateId": "QA NDC Finance team after Validation"
+    },
+    {
+     "id": "b8",
+     "name": "QA b8",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Dep Manager",
+     "fromStateId": "QA NDC Distributor"
+    },
+    {
+     "id": "b9",
+     "name": "QA b9",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Finance team after Validation",
+     "fromStateId": "QA NDC Governance"
+    },
+    {
+     "id": "b10",
+     "name": "QA b10",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Distributor",
+     "fromStateId": "QA NDC Reject"
+    },
+    {
+     "id": "b11",
+     "name": "QA b11",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Governance",
+     "fromStateId": "QA NDC Approved E-Top-Up Manager"
+    },
+    {
+     "id": "b12",
+     "name": "QA b12",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Reject",
+     "fromStateId": "QA NDC Not Approved E-Top-Up Manager"
+    },
+    {
+     "id": "b13",
+     "name": "QA b13",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Approved E-Top-Up Manager",
+     "fromStateId": "QA NDC Pass Audit"
+    },
+    {
+     "id": "b14",
+     "name": "QA b14",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Not Approved E-Top-Up Manager",
+     "fromStateId": "QA NDC Rejected Audit"
+    },
+    {
+     "id": "b15",
+     "name": "QA b15",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Pass Audit",
+     "fromStateId": "QA NDC Review Audit Manager"
+    },
+    {
+     "id": "b16",
+     "name": "QA b16",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Rejected Audit",
+     "fromStateId": "QA NDC Waiting Top-Up Manager"
+    },
+    {
+     "id": "b17",
+     "name": "QA b17",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Review Audit Manager",
+     "fromStateId": "QA NDC Needs NDC Finance investigation"
+    },
+    {
+     "id": "b18",
+     "name": "QA b18",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Waiting Top-Up Manager",
+     "fromStateId": "QA NDC Banking sector investigation"
+    },
+    {
+     "id": "b19",
+     "name": "QA b19",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Needs NDC Finance investigation",
+     "fromStateId": "QA NDC AR Team"
+    },
+    {
+     "id": "b20",
+     "name": "QA b20",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Banking sector investigation",
+     "fromStateId": "QA NDC higher Level escalation"
+    },
+    {
+     "id": "b21",
+     "name": "QA b21",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC AR Team",
+     "fromStateId": "QA NDC Email Approval issues"
+    },
+    {
+     "id": "b22",
+     "name": "QA b22",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC higher Level escalation",
+     "fromStateId": "QA NDC Email Approval Sector"
+    },
+    {
+     "id": "b23",
+     "name": "QA b23",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Email Approval issues",
+     "fromStateId": "QA NDC BSP Investigation"
+    },
+    {
+     "id": "b24",
+     "name": "QA b24",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "QA NDC Email Approval Sector",
+     "fromStateId": "QA NDC Refund amount request"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3038 large "
+   }
+  },
+  "createdAt": "2026-11-16T09:27:29.933822+00:00",
+  "updatedAt": "2026-11-16T09:27:30.350753+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "93d32ad8-6d7a-4bbd-abe7-eb4e2c2a31ee",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "93d32ad8-6d7a-4bbd-abe7-eb4e2c2a31ee",
+   "name": "QA BP RT19 3054 close",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 400,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "close",
+     "name": "QA close",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    }
+   ],
+   "departmentId": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3054 bpclose"
+   }
+  },
+  "createdAt": "2026-11-16T09:48:41.281379+00:00",
+  "updatedAt": "2026-11-16T10:05:53.685653+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "a22043bb-35b7-4066-a22d-7275c5d9fd39",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "a22043bb-35b7-4066-a22d-7275c5d9fd39",
+   "name": "QA BP RT19 3056 cond",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 150
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 400,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 400,
+      "y": 150
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 800,
+      "y": 150
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "go",
+     "name": "QA go",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "urgent",
+     "name": "QA urgent",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "priority",
+       "value": "high"
+      }
+     },
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "admin",
+     "name": "QA admin",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "97be04b6-0a08-4883-aa51-e1650b11cab7"
+      ]
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "holdend",
+     "name": "QA hold end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 3056 cond "
+   }
+  },
+  "createdAt": "2026-11-16T09:57:14.988392+00:00",
+  "updatedAt": "2026-11-16T10:05:57.357114+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "ed0078d1-4081-45f1-ae11-5089e75e736f",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "ed0078d1-4081-45f1-ae11-5089e75e736f",
+   "name": "QA BP RT19 HC 3060",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 150
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 400,
+      "y": 150
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 800,
+      "y": 150
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "hold",
+     "name": "QA hold",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {
+      "messages": [],
+      "checklist": [],
+      "deskItems": [],
+      "itemOrder": [
+       "field:contact_id",
+       "field:account_id",
+       "field:product_id"
+      ],
+      "requiredFields": [
+       {
+        "name": "contact_id",
+        "datatype": {
+         "key": "lookup"
+        },
+        "required": false
+       },
+       {
+        "name": "account_id",
+        "datatype": {
+         "key": "lookup"
+        },
+        "required": false
+       },
+       {
+        "name": "product_id",
+        "datatype": {
+         "key": "lookup"
+        },
+        "required": false
+       }
+      ],
+      "instructionalMessage": null
+     },
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 HC 3060 "
+   }
+  },
+  "createdAt": "2026-11-16T12:17:48.030481+00:00",
+  "updatedAt": "2026-11-16T12:29:49.702555+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "b3cd7c28-7879-42b1-b7a9-06bc9bf64aa6",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "44f7305d-bfb3-4961-a4c4-6c3184f8f1c9",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "44f7305d-bfb3-4961-a4c4-6c3184f8f1c9",
+   "name": "QA BP RT19 NTF 3061 hold",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 400,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 800,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 NTF retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "hold",
+     "name": "QA Move to On Hold",
+     "after": {
+      "actions": [
+       {
+        "body": "QA RT19 NTF 3061 blueprint notification body",
+        "kind": "sendNotification",
+        "title": "QA RT19 NTF 3061 moved to On Hold {{subject}}",
+        "userIds": [
+         "d23fb4e0-248d-41f6-af60-d28885a7007e",
+         "97be04b6-0a08-4883-aa51-e1650b11cab7",
+         "876ce871-2b02-4854-89a7-68050391c62b"
+        ],
+        "orgUnitId": null,
+        "notifyOwner": false,
+        "recipientMode": "users",
+        "notifyPerformer": false
+       },
+       {
+        "kind": "setField",
+        "field": "description",
+        "value": "QA RT19 NTF 3061 set by blueprint"
+       }
+      ]
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "close",
+     "name": "QA close",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowOwner": true
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "8c6073ac-ba5f-4d17-9960-71a6850662a9",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 NTF 3061 "
+   }
+  },
+  "createdAt": "2026-11-16T13:11:21.682038+00:00",
+  "updatedAt": "2026-11-16T13:18:13.655265+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "8c6073ac-ba5f-4d17-9960-71a6850662a9",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "ff6ef3d5-76c4-4b03-891a-42940a4b1214",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "ff6ef3d5-76c4-4b03-891a-42940a4b1214",
+   "name": "QA BP RT19 D3 3070 renamed by A",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 D3 current-rev save",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "x",
+     "name": "QA x",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 D3 3070 rev "
+   }
+  },
+  "createdAt": "2026-11-16T14:57:00.052525+00:00",
+  "updatedAt": "2026-11-16T14:57:07.346701+00:00",
+  "revision": 3,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "6d5c648b-f119-43d6-b1f3-bfece7bc04ec",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "6d5c648b-f119-43d6-b1f3-bfece7bc04ec",
+   "name": "QA BP RT19 D3 3066 cont",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "continuous": true,
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "first",
+     "name": "QA first",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {
+      "checklist": [
+       {
+        "id": "k",
+        "label": "QA check",
+        "mandatory": true
+       }
+      ]
+     },
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "auto",
+     "name": "QA auto",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 D3 3066 cont "
+   }
+  },
+  "createdAt": "2026-11-16T14:57:29.93792+00:00",
+  "updatedAt": "2026-11-16T14:59:11.910976+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "60003670-0d5c-4cc1-a1ca-d618936229ef",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "60003670-0d5c-4cc1-a1ca-d618936229ef",
+   "name": "QA BP RT19 D3 3069 type",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": "abc",
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT19 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "x",
+     "name": "QA x",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA BP RT19 D3 3069 type "
+   }
+  },
+  "createdAt": "2026-11-16T15:06:07.698405+00:00",
+  "updatedAt": "2026-11-16T15:06:07.698405+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "f2b2c1f5-56fd-4098-91e8-8a8704f78898",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "f2b2c1f5-56fd-4098-91e8-8a8704f78898",
+   "name": "QA RT20 BP 3065 role",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 BP retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "onlyA",
+     "name": "QA onlyA",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+      ]
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "shared",
+     "name": "QA shared",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537",
+       "97be04b6-0a08-4883-aa51-e1650b11cab7"
+      ]
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "e04e88df-03e2-4a9f-8ccc-ff934cca500e",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 BP 3065 role "
+   }
+  },
+  "createdAt": "2026-11-17T09:19:30.167089+00:00",
+  "updatedAt": "2026-11-17T10:07:40.049787+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "e04e88df-03e2-4a9f-8ccc-ff934cca500e",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "f85fde0c-1152-4743-95f6-801f19e99b33",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "f85fde0c-1152-4743-95f6-801f19e99b33",
+   "name": "QA RT20 BP 3065 tk",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 BP retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "onlyA",
+     "name": "QA onlyA",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+      ]
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 BP 3065 tk "
+   }
+  },
+  "createdAt": "2026-11-17T09:19:31.45954+00:00",
+  "updatedAt": "2026-11-17T10:07:41.703401+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "6deb60c8-5329-41dc-b237-622a6bfd0a09",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "6deb60c8-5329-41dc-b237-622a6bfd0a09",
+   "name": "QA RT20 BP 3065 dyn",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 BP retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "go",
+     "name": "QA go",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "dynamicOwners": true,
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 BP 3065 dyn "
+   }
+  },
+  "createdAt": "2026-11-17T09:45:43.604806+00:00",
+  "updatedAt": "2026-11-17T10:07:43.159802+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "3f8f8148-a453-4929-ac7b-9d1d16275141",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "3f8f8148-a453-4929-ac7b-9d1d16275141",
+   "name": "QA RT20 BP 3065 dynmine",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 BP retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "go",
+     "name": "QA go",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "e04e88df-03e2-4a9f-8ccc-ff934cca500e",
+   "dynamicOwners": true,
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 BP 3065 dynmine "
+   }
+  },
+  "createdAt": "2026-11-17T09:45:45.635864+00:00",
+  "updatedAt": "2026-11-17T10:07:44.402277+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "e04e88df-03e2-4a9f-8ccc-ff934cca500e",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "23339d62-fecf-4324-8950-5fa1bfdef0df",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "23339d62-fecf-4324-8950-5fa1bfdef0df",
+   "name": "QA RT20 BS 3056 flow",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 150
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 400,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 400,
+      "y": 300
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 800,
+      "y": 150
+     },
+     "slaClock": "calendar"
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 BS retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "go",
+     "name": "QA go",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "urgent",
+     "name": "QA urgent",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "priority",
+       "value": "high"
+      }
+     },
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "admin",
+     "name": "QA admin",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "97be04b6-0a08-4883-aa51-e1650b11cab7"
+      ]
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "priority",
+       "value": "medium"
+      }
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    },
+    {
+     "id": "holdend",
+     "name": "QA holdend",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "reopen",
+     "name": "QA reopen",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {
+      "checklist": [
+       {
+        "id": "k",
+        "label": "QA reopen check",
+        "mandatory": true
+       }
+      ]
+     },
+     "toStateId": "Open",
+     "fromStateId": "Closed"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 BS 3056 flow "
+   }
+  },
+  "createdAt": "2026-11-17T11:41:09.362495+00:00",
+  "updatedAt": "2026-11-19T07:38:07.613952+00:00",
+  "revision": 6,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "5392f456-66f9-4bc7-aa95-99bad990f4d5",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "5392f456-66f9-4bc7-aa95-99bad990f4d5",
+   "name": "QA RT20 BS 3063 units",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": false,
+     "slaMinutes": 20,
+     "slaPreExpiryMinutes": 10
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 300,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": false,
+     "slaMinutes": 4320,
+     "slaPreExpiryMinutes": 120
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 600,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": false,
+     "slaMinutes": 90,
+     "autoTransitionId": "a3",
+     "slaPreExpiryMinutes": 60,
+     "autoTransitionAfterMinutes": 1440
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 900,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": false,
+     "slaMinutes": 2160,
+     "slaPreExpiryMinutes": 45
+    }
+   ],
+   "layoutId": "",
+   "moduleKey": "desk_tickets",
+   "continuous": false,
+   "layoutName": "",
+   "strictMode": null,
+   "description": "QA RT20 BS retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "a1",
+     "name": "QA a1",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "a2",
+     "name": "QA a2",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "On Hold"
+    },
+    {
+     "id": "a3",
+     "name": "QA a3",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "dynamicOwners": false,
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 BS 3063 units "
+   },
+   "transitionOwners": null
+  },
+  "createdAt": "2026-11-17T11:55:06.40919+00:00",
+  "updatedAt": "2026-11-17T12:19:30.966432+00:00",
+  "revision": 24,
+  "sortOrder": null,
+  "hasDraft": true,
+  "draftVersion": 1,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "0614fde2-9b91-4ef2-9cca-b161abfeacbf",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "0614fde2-9b91-4ef2-9cca-b161abfeacbf",
+   "name": "QA RT20 B2 tk",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 B2 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "onlyA",
+     "name": "QA onlyA",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+      ]
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 B2 tk "
+   }
+  },
+  "createdAt": "2026-11-17T15:50:45.589821+00:00",
+  "updatedAt": "2026-11-17T16:09:51.939383+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "135573ba-c401-4c32-a598-81795a5d4180",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "135573ba-c401-4c32-a598-81795a5d4180",
+   "name": "QA RT20 B2 sh",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 B2 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "onlyA",
+     "name": "QA onlyA",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+      ]
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 B2 sh "
+   }
+  },
+  "createdAt": "2026-11-17T15:50:45.99503+00:00",
+  "updatedAt": "2026-11-17T16:09:54.645902+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "bde3d039-eb3b-4045-b540-5344b29a8b45",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "bde3d039-eb3b-4045-b540-5344b29a8b45",
+   "name": "QA RT20 B2 xdf",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 B2 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "xd",
+     "name": "QA xd",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "departmentOwners": [
+       {
+        "access": "full",
+        "teamIds": [],
+        "userIds": [
+         "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+        ],
+        "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158"
+       }
+      ]
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 B2 xdf "
+   }
+  },
+  "createdAt": "2026-11-17T15:50:46.412438+00:00",
+  "updatedAt": "2026-11-17T16:09:57.0886+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "7fdfadd8-0bb1-4928-bc93-9c99dec8f16c",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "7fdfadd8-0bb1-4928-bc93-9c99dec8f16c",
+   "name": "QA RT20 B2 xdr",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 B2 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "xd",
+     "name": "QA xd",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "departmentOwners": [
+       {
+        "access": "read_only",
+        "teamIds": [],
+        "userIds": [
+         "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+        ],
+        "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158"
+       }
+      ]
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 B2 xdr "
+   }
+  },
+  "createdAt": "2026-11-17T15:50:47.403497+00:00",
+  "updatedAt": "2026-11-17T16:10:01.161541+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "933564d7-5d22-4e27-8907-d721c1bb983d",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "933564d7-5d22-4e27-8907-d721c1bb983d",
+   "name": "QA RT20 B2 vo",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 B2 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "onlyA",
+     "name": "QA onlyA",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+      ]
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "shared",
+     "name": "QA shared",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537",
+       "97be04b6-0a08-4883-aa51-e1650b11cab7"
+      ]
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 B2 vo "
+   }
+  },
+  "createdAt": "2026-11-17T16:05:47.333713+00:00",
+  "updatedAt": "2026-11-17T16:10:02.087125+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "a51e8df8-ec0f-4cfc-88d9-c40dd79002e3",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "a51e8df8-ec0f-4cfc-88d9-c40dd79002e3",
+   "name": "QA RT20 B2 dyn",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 B2 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "go",
+     "name": "QA go",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+   "dynamicOwners": true,
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 B2 dyn "
+   }
+  },
+  "createdAt": "2026-11-17T16:05:50.577272+00:00",
+  "updatedAt": "2026-11-17T16:10:04.250655+00:00",
+  "revision": 2,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "3066223c-1a18-41d6-a149-968080594c27",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": false,
+  "definition": {
+   "id": "3066223c-1a18-41d6-a149-968080594c27",
+   "name": "QA RT20 B2 vo-bad",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 0,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Escalated",
+     "name": "Escalated",
+     "position": {
+      "x": 350,
+      "y": 0
+     },
+     "slaClock": "calendar"
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 700,
+      "y": 0
+     },
+     "slaClock": "calendar",
+     "isTerminal": true
+    }
+   ],
+   "moduleKey": "desk_tickets",
+   "description": "QA RT20 B2 retest - safe to delete",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "x",
+     "name": "QA x",
+     "after": {
+      "actions": []
+     },
+     "before": {
+      "allowedUserIds": [
+       "9d182dfa-05f3-4af7-9685-8615a2fbe537"
+      ]
+     },
+     "during": {},
+     "toStateId": "Escalated",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "end",
+     "name": "QA end",
+     "after": {
+      "actions": []
+     },
+     "before": {},
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "Escalated"
+    }
+   ],
+   "departmentId": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+   "entryCriteria": {
+    "op": "contains",
+    "field": "subject",
+    "value": "QA RT20 B2 vo-bad "
+   }
+  },
+  "createdAt": "2026-11-17T16:06:09.053614+00:00",
+  "updatedAt": "2026-11-17T16:06:09.053614+00:00",
+  "revision": 1,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "6d68dc90-7ecf-4829-bf51-9beb87282b87",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ },
+ {
+  "id": "8626391a-066a-4b39-a847-6379e56972ba",
+  "moduleId": "88e8ea44-1658-4df3-9930-d0902b91073d",
+  "isActive": true,
+  "definition": {
+   "id": "8626391a-066a-4b39-a847-6379e56972ba",
+   "name": "test blueprint",
+   "states": [
+    {
+     "id": "Open",
+     "name": "Open",
+     "position": {
+      "x": 140,
+      "y": 80
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "On Hold",
+     "name": "On Hold",
+     "position": {
+      "x": 379,
+      "y": 81
+     },
+     "slaClock": "business",
+     "isTerminal": false
+    },
+    {
+     "id": "Closed",
+     "name": "Closed",
+     "position": {
+      "x": 613,
+      "y": 81
+     },
+     "slaClock": "business",
+     "isTerminal": true
+    }
+   ],
+   "layoutId": "",
+   "moduleKey": "desk_tickets",
+   "continuous": false,
+   "layoutName": "",
+   "strictMode": null,
+   "description": "",
+   "targetField": "status",
+   "transitions": [
+    {
+     "id": "t_mwrye01s_0",
+     "name": "move to on hold",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "language",
+       "value": "arabic"
+      }
+     },
+     "during": {},
+     "toStateId": "On Hold",
+     "fromStateId": "Open"
+    },
+    {
+     "id": "t_mwrye0fg_1",
+     "name": "move to closed",
+     "after": {
+      "actions": []
+     },
+     "color": "#2563eb",
+     "before": {
+      "visibilityCriteria": {
+       "op": "eq",
+       "field": "classification",
+       "value": "question"
+      }
+     },
+     "during": {},
+     "toStateId": "Closed",
+     "fromStateId": "On Hold"
+    }
+   ],
+   "departmentId": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+   "dynamicOwners": false,
+   "entryCriteria": {
+    "op": "eq",
+    "field": "channel",
+    "value": "web"
+   },
+   "transitionOwners": null
+  },
+  "createdAt": "2026-11-22T14:51:20.845785+00:00",
+  "updatedAt": "2026-11-22T14:54:49.602729+00:00",
+  "revision": 7,
+  "sortOrder": null,
+  "hasDraft": false,
+  "draftVersion": null,
+  "department_id": "7e1ac409-58b0-41ab-97e1-0e7d5c8c5158",
+  "in_progress_count": null,
+  "ownerIssues": [],
+  "transitionsWithoutActiveOwner": []
+ }
+]

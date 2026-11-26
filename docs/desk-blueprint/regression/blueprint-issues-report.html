@@ -1,0 +1,159 @@
+<title>Desk Blueprint Regression Issues</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one 900px reading column; fail drafts, finding drafts, then a partials table. Same palette as the regression plan page. */
+:root{
+  --bg:#f4f6f8; --surface:#ffffff; --fg:#16202a; --muted:#5b6774; --line:#dbe0e6; --accent:#0f6e78; --accent-soft:#e1f0f1;
+  --no:#b42a2a; --no-bg:#fbe8e8; --warn:#a85a05; --warn-bg:#fcefdc; --info:#3f5f9a; --info-bg:#e7edf8;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11161c; --surface:#1a2129; --fg:#e5e9ee; --muted:#98a3b0; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --no:#ff7b7b; --no-bg:#3a1c1e; --warn:#f0a54d; --warn-bg:#3a2a16; --info:#8fb0ee; --info-bg:#1d2a42; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11161c; --surface:#1a2129; --fg:#e5e9ee; --muted:#98a3b0; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --no:#ff7b7b; --no-bg:#3a1c1e; --warn:#f0a54d; --warn-bg:#3a2a16; --info:#8fb0ee; --info-bg:#1d2a42; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px;display:grid;gap:22px}
+h1{font-size:24px;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:18px;margin:0;text-wrap:balance}
+h3{font-size:16px;margin:4px 0 10px;text-wrap:balance}
+h4{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 4px}
+p{margin:0 0 10px;max-width:72ch}
+ol{margin:0 0 10px;padding-left:20px}
+li{margin:3px 0}
+.sub{color:var(--muted);font-size:13px}
+header{display:grid;gap:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+section{display:grid;gap:12px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-bottom:2px solid var(--line);padding-bottom:6px}
+.item{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:6px;padding:14px 16px;min-width:0}
+.item.fail{border-left-color:var(--no)}
+.item-h{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ids{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cols>div{min-width:0}
+.note{background:var(--info-bg);color:var(--fg);border-radius:4px;padding:8px 10px;font-size:13px;margin-top:4px}
+.pill{font-size:11px;padding:1px 8px;border-radius:10px;white-space:nowrap;font-weight:600}
+.p-high{background:var(--no-bg);color:var(--no)}
+.p-med{background:var(--warn-bg);color:var(--warn)}
+.p-low{background:var(--accent-soft);color:var(--accent)}
+.rec{background:var(--bg);color:var(--fg);border:1px solid var(--line);font-weight:500}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+td,th{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+code{font-family:var(--mono);font-size:12px}
+@media (max-width:640px){.cols{grid-template-columns:1fr}}
+</style>
+<div class="wrap">
+<header>
+  <h1>Desk Blueprint regression — fails, findings and partials</h1>
+  <div class="sub">Run of 24 Nov 2026 on NDC-Staging (department QA BP Reg Dept, since removed). Drafts only — nothing is filed in Plane. Titles follow &quot;Feature | Title&quot;; priorities are suggestions.</div>
+</header>
+<div class="stats">
+  <div class="stat"><b>2</b><span>bug drafts from 4 failed cases</span></div>
+  <div class="stat"><b>8</b><span>findings (10 cases)</span></div>
+  <div class="stat"><b>7</b><span>partial cases (2 with an issue)</span></div>
+</div>
+<section><div class="sec-h"><h2>Fail — bug drafts</h2><span class="sub">ready to file</span></div><article class="item fail" id="TU-06">
+  <div class="item-h"><span class="ids">TU-06 · TU-12 · TU-18</span><span class="pill p-high">High</span></div>
+  <h3>Blueprint | A value typed in a transition form skips the field's own checks (text length, pick-list option, contact exists)</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Setup → Automation → Blueprints: create a blueprint with a transition that asks for the field &quot;QA NDC TKT/PNR NO&quot; (single line, max 255) and publish it.</li><li>Open a ticket that is in the blueprint and click the transition button.</li><li>Paste 400 characters into &quot;QA NDC TKT/PNR NO&quot; and click Run.</li><li>Repeat with a transition that asks for Category and send the value &quot;zzz-not-an-option&quot; (through the API — the form only offers real options).</li><li>Repeat with a transition that asks for Contact and send a contact id that does not exist (API).</li></ol></div>
+    <div><h4>Expected</h4><p>Each value is refused with the same message a normal ticket edit gives: &quot;QA NDC TKT/PNR NO is too long: … the maximum is 255&quot;, &quot;Category: 'zzz-not-an-option' is not one of the allowed values (general, technical, billing, account, feature_request, other)&quot;, &quot;Contact: no record exists with id …&quot;. The ticket stays in its state.</p><h4>Actual</h4><p>All three runs succeed (200), the ticket moves on, and the invalid value is stored: 400 characters in a 255 field, Category = &quot;zzz-not-an-option&quot;, Contact = an id of no contact. The same values in a normal edit are refused (TEXT_TOO_LONG, PICKLIST_VALUE_INVALID, LOOKUP_RECORD_NOT_FOUND).</p></div>
+  </div>
+  <p class="note">Number, decimal, date, date-time, email and phone fields ARE checked inside the transition. Validation rules are also applied (NDC-3012 still fixed). Related: NDC-3012 (validation rules), NDC-3060 (contact field in the form).</p>
+  <p class="sub">Evidence: results TU-06 / TU-12 / TU-18 in executions/execu_2026-11-24_desk-bp-regression/out/results.jsonl (fresh tickets per run, normal edit compared on the same field).</p>
+</article><article class="item fail" id="API-07">
+  <div class="item-h"><span class="ids">API-07</span><span class="pill p-low">Low</span></div>
+  <h3>Blueprint API | A blueprint body of the wrong shape returns internal .NET type names</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Save a blueprint through the API (POST /modules/{tickets}/blueprints) where a transition has &quot;requiredFor&quot;: {&quot;comment&quot;: [&quot;x&quot;]} (a list instead of an object).</li><li>Read the error message.</li></ol></div>
+    <div><h4>Expected</h4><p>A readable message naming the field, e.g. &quot;Required-for of transition 'go' has the wrong format&quot;, like the fix made for owner ids in NDC-3069.</p><h4>Actual</h4><p>422 with &quot;The JSON value could not be converted to MetadataEngine.Modules.Records.Application.Blueprint.RequiredForRule. Path: $.transitions[0].during.requiredFor.comment | LineNumber: 0 | BytePositionInLine: 698.&quot; — internal namespace, class name and parser position are shown to the user.</p></div>
+  </div>
+  <p class="note">Owner ids now give &quot;Blueprint definition does not match the expected schema.&quot; (NDC-3069 fixed), so the fix covers only that path. Related: NDC-3069.</p>
+  <p class="sub">Evidence: results API-07.</p>
+</article></section>
+<section><div class="sec-h"><h2>Findings — drafts to decide</h2><span class="sub">recommendation on each</span></div><article class="item finding" id="E2E-01">
+  <div class="item-h"><span class="ids">E2E-01</span><span class="pill p-med">Medium</span><span class="pill rec">File</span></div>
+  <h3>Blueprint | A named transition owner who cannot edit the ticket is told &quot;You are not an owner of this transition&quot;</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Blueprint transition &quot;Approve&quot; with owner = Agent A (Desk Agent profile).</li><li>Assign the ticket to Agent B (or to the admin).</li><li>Sign in as Agent A and open the ticket.</li></ol></div>
+    <div><h4>Expected</h4><p>Either A can run the step they own, or the message says why not (e.g. &quot;You can't edit this ticket, so you can't run Approve&quot;), and the designer warns that A cannot edit tickets owned by others.</p><h4>Actual</h4><p>A is not offered the step; running it returns 403 BLUEPRINT_NOT_OWNER &quot;You are not an owner of this transition&quot; although A is the named owner. Cause: the Desk Agent profile edits only own / unassigned tickets (A's normal edit of the same ticket → 403). On an unassigned ticket A runs it fine.</p></div>
+  </div>
+  <p class="note">Same class as NDC-3117 (wrong refusal message). Zoho: transition owners need ticket access too — check whether Zoho shows a clearer reason before filing.</p>
+  
+</article><article class="item finding" id="IN-01">
+  <div class="item-h"><span class="ids">IN-01</span><span class="pill p-low">Low</span><span class="pill rec">File</span></div>
+  <h3>Workflow Rules | Execution history says &quot;Fired&quot; when a status change was skipped because the ticket is in a blueprint</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Workflow rule On Edit, Field Update Status = Closed (instant) and another with a 60 s delay, department QA.</li><li>Edit a ticket that is in a blueprint (state Escalated).</li><li>Open Execution History for both rules.</li></ol></div>
+    <div><h4>Expected</h4><p>The ticket stays in its blueprint state (it does) and the history says the status update was skipped because a blueprint controls the field.</p><h4>Actual</h4><p>Ticket stays Escalated in the blueprint (NDC-2764 / NDC-2730 still fixed) but all 8 executions are logged as &quot;Fired&quot;, with no sign the field update was skipped.</p></div>
+  </div>
+  <p class="note">Seen before on 14 Nov (side finding L6 in the automation-order run) — not filed then.</p>
+  
+</article><article class="item finding" id="TB-12">
+  <div class="item-h"><span class="ids">TB-12</span><span class="pill p-low">Low</span><span class="pill rec">File</span></div>
+  <h3>Blueprint | A transition owner listed under another department is saved even if they are not an agent of that department</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>In a transition, Before → Another department: Tech, Full access, agent &quot;Test User 1&quot; (not a Tech agent).</li><li>Save and publish.</li><li>Ticket enters the state; it is shared with Tech; sign in as Test User 1.</li></ol></div>
+    <div><h4>Expected</h4><p>Save is refused or warns (&quot;Test User 1 is not an agent of Tech&quot;), like other invalid owners (unknown user, view-only member are refused).</p><h4>Actual</h4><p>Saved with no warning; the ticket is shared with Tech at Full, but Test User 1 never sees the step (403 BLUEPRINT_NOT_OWNER). With a real Tech agent the same setup works.</p></div>
+  </div>
+  <p class="note">Not in the case list — found while setting up TB-05.</p>
+  
+</article><article class="item finding" id="ST-05">
+  <div class="item-h"><span class="ids">ST-05 · ST-07</span><span class="pill p-low">Low</span><span class="pill rec">Decide (API only)</span></div>
+  <h3>Blueprint API | A state can be saved with a business-hours set or escalation template that does not exist</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Save a blueprint through the API with a state &quot;slaBusinessHoursId&quot; = a random id.</li><li>Save another with an escalation level &quot;templateId&quot; = a random id.</li></ol></div>
+    <div><h4>Expected</h4><p>Refused like other unknown ids (owners, custom actions, approver teams are all refused).</p><h4>Actual</h4><p>Both saved (201). The designer later shows &quot;Deleted business hours (the default hours count)&quot; / &quot;This email template was deleted&quot;. At runtime the level with the unknown template still sent its in-app notifications.</p></div>
+  </div>
+  <p class="note">The designer cannot create this by itself — only the API or a later deletion. Decide whether the API should refuse it.</p>
+  
+</article><article class="item finding" id="CV-06">
+  <div class="item-h"><span class="ids">CV-06 · API-01</span><span class="pill p-low">Low</span><span class="pill rec">Decide (API only)</span></div>
+  <h3>Blueprint API | A transition with no name and a 2,000-item checklist are saved</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Save through the API a transition with name &quot;&quot;.</li><li>Save a transition whose checklist has 2,000 items.</li></ol></div>
+    <div><h4>Expected</h4><p>Refused with a clear message (the designer shows &quot;The transition from Open to Escalated needs a name&quot;); a sensible checklist limit.</p><h4>Actual</h4><p>Both saved (201). Every other broken shape tested (strings for numbers, objects for arrays, unknown action kinds) is refused with 422, never 500.</p></div>
+  </div>
+  <p class="note">API-only; the designer blocks the empty name.</p>
+  
+</article><article class="item finding" id="TF-X1">
+  <div class="item-h"><span class="ids">TF-X1</span><span class="pill p-low">Low</span><span class="pill rec">Decide (API only)</span></div>
+  <h3>Blueprint API | Create-task action with an unknown assignee mode is saved and silently assigns the ticket owner</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Save a transition with after-action createTask and &quot;assigneeMode&quot;: &quot;specific&quot; (valid values are owner / performer / user / team).</li><li>Run the transition.</li></ol></div>
+    <div><h4>Expected</h4><p>Save refused: unknown assignee mode.</p><h4>Actual</h4><p>Saved; the task is created and assigned to the ticket owner. With mode &quot;user&quot; + an agent the task goes to that agent correctly (TF-04 pass).</p></div>
+  </div>
+  <p class="note">Not in the case list — found while writing TF-04.</p>
+  
+</article><article class="item finding" id="EN-13">
+  <div class="item-h"><span class="ids">EN-13</span><span class="pill p-med">Medium</span><span class="pill rec">Decide (Zoho differs)</span></div>
+  <h3>Blueprint | A ticket created in a middle status enters at the start state and its status is reset to Open</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Blueprint with states Open → Escalated → Closed, criteria matching the new ticket.</li><li>Create a ticket with status Escalated (New Ticket or API).</li></ol></div>
+    <div><h4>Expected</h4><p>Zoho (checked live 18 Nov): the ticket enters the blueprint at Escalated and keeps its status.</p><h4>Actual</h4><p>The ticket enters at Open and its status is changed to Open, with no history line for the status change.</p></div>
+  </div>
+  <p class="note">Same as the 18 Nov live check. An existing ticket edited to match while Escalated does enter at Escalated.</p>
+  
+</article><article class="item finding" id="ZP-01">
+  <div class="item-h"><span class="ids">ZP-01</span><span class="pill p-med">Medium</span><span class="pill rec">Keep on NDC-2799</span></div>
+  <h3>Blueprint | Widgets / extensions in the transition form are still missing</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Open any transition → During → Add item.</li></ol></div>
+    <div><h4>Expected</h4><p>Zoho Desk lets a transition show an extension widget in the form.</p><h4>Actual</h4><p>Items offered: reply, comment, attachment, resolution, field, checklist, message, approval, share — no widget item. All other Zoho gaps from NDC-2754 / NDC-2799 (Z1–Z15) are built and working.</p></div>
+  </div>
+  <p class="note">No new ticket needed if NDC-2799 still lists it.</p>
+  
+</article></section>
+<section><div class="sec-h"><h2>Partial — what passed and what is left</h2><span class="sub">7 cases</span></div>
+<div class="scroll"><table><thead><tr><th>Case</th><th>Coverage</th><th>Issue</th></tr></thead><tbody><tr><td class="ids">UX-01</td><td><b>Arabic UI</b><div class="sub">Passed: Blueprints list, designer, dashboard and ticket page are translated and right-to-left; no raw translation keys.</div><div class="sub">Not covered: —</div></td><td><span class="pill p-low">Issue</span> On an Arabic ticket the progress bar shows the status names &quot;Open&quot; / &quot;Closed&quot; in English, while the ticket list shows them translated (&quot;مفتوحة&quot;). The left navigation item &quot;Approvals&quot; also stays English (shared navigation).<div class="sub">Draft: Ticket | In Arabic the blueprint progress bar shows status names untranslated (Low)</div></td></tr><tr><td class="ids">TF-09</td><td><b>Order of after-actions</b><div class="sub">Passed: Field update and webhooks run in the configured order.</div><div class="sub">Not covered: —</div></td><td><span class="pill p-low">Issue</span> A custom action placed between two webhooks arrives about 3 s after the second webhook, because it runs separately in Workflow — the order shown in the designer (&quot;Run in this order once the ticket moves&quot;) is not kept for custom actions.<div class="sub">Draft: Blueprint | Custom actions in after-actions do not run in the order shown (Low) — or document it in the hint</div></td></tr><tr><td class="ids">TM-13</td><td><b>Rating trigger filters</b><div class="sub">Passed: With filter [Bad]: a Bad rating moved the ticket to Escalated, a Good rating left it in Open.</div><div class="sub">Not covered: No-filter branch: the rating link could not be created on the retry; &quot;Okay&quot; cannot be tested because Okay is switched off in this tenant's Customer Happiness.</div></td><td><span class="sub">None seen.</span></td></tr><tr><td class="ids">E2E-02</td><td><b>Waiting for customer journey</b><div class="sub">Passed: Required reply sent; with no answer the ticket closed itself after 2 min and left the blueprint.</div><div class="sub">Not covered: The customer-answer branch needs a real reply from the Help Center or the mailbox.</div></td><td><span class="sub">None seen.</span></td></tr><tr><td class="ids">TB-11</td><td><b>Step conditions on other fields</b><div class="sub">Passed: AND condition on Channel + Priority shows the step only on matching tickets.</div><div class="sub">Not covered: Related (Contact) fields in step conditions were not tested.</div></td><td><span class="sub">None seen.</span></td></tr><tr><td class="ids">TF-08</td><td><b>Custom action refused reasons</b><div class="sub">Passed: &quot;does not exist&quot; is refused with reason custom_action_missing.</div><div class="sub">Not covered: Inactive / not for Desk / record-bound / per-agent variable / run denied need extra custom actions that were not created.</div></td><td><span class="sub">None seen.</span></td></tr><tr><td class="ids">UX-06</td><td><b>Visual pass by width</b><div class="sub">Passed: 1600 px and 390 px: no clipped text; phone width shows &quot;Draw states and connectors on a larger screen&quot;.</div><div class="sub">Not covered: 1366 px and 1920 px not captured.</div></td><td><span class="sub">None seen.</span></td></tr></tbody></table></div></section>
+<p class="sub">Full results on every case: regression plan page (artifact S214dEfyWD2d8fTL1tPwFD). Source: executions/execu_2026-11-24_desk-bp-regression/out/results.jsonl.</p>
+</div>

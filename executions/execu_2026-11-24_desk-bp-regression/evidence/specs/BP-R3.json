@@ -1,0 +1,76 @@
+{
+ "key": "BP-R3",
+ "leftHead": "TAVI Desk (what happens)",
+ "rightHead": "Expected",
+ "rightLabel": "Expected",
+ "date": "TAVI 24 Nov 2026 (17:01 Cairo) · Zoho not checked live",
+ "env": "staging-desk.taviportal.com (NDC-Staging) · Customer Support · Edge + API",
+ "label": "BUG",
+ "verdict": "FAIL",
+ "out": "BP-R3-owner-without-edit-access-told-not-owner.png",
+ "ticket": "Blueprint · E2E-01",
+ "title": "A named transition owner who cannot edit the ticket is told \"You are not an owner of this transition\"",
+ "panels": [
+  {
+   "img": "executions/execu_2026-11-24_desk-bp-regression/evidence/ui/EV3-ticket-as-agent-A.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "Agent A (named owner of \"QA Approve\") opens ticket #7615 owned by Agent B: read-only banner, \"No transitions you can run\", Steps card says only owners can run it",
+   "crop": [
+    664,
+    60,
+    936,
+    360
+   ],
+   "boxes": [
+    {
+     "b": [
+      1230,
+      163,
+      1428,
+      190
+     ],
+     "n": 1
+    },
+    {
+     "b": [
+      680,
+      222,
+      1584,
+      264
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "img": "executions/execu_2026-11-24_desk-bp-regression/evidence/ui/EV3-api.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "Through the API: edit refused (PERMISSION_DENIED), no transitions offered, run → BLUEPRINT_NOT_OWNER \"You are not an owner of this transition\"",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": []
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Agent A is the named owner of \"QA Approve\"; ticket owned by Agent B",
+   "Refusal names the real reason (\"You can't change this ticket, so you can't run QA Approve\"); the designer warns that a Desk Agent owner can't act on colleagues' tickets",
+   "Run refused with \"You are not an owner of this transition\" although A is the owner",
+   "BUG"
+  ],
+  [
+   2,
+   "Same ticket unassigned",
+   "A runs the step",
+   "A runs the step (200)",
+   "INFO"
+  ]
+ ]
+}

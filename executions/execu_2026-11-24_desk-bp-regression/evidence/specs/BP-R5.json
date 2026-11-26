@@ -1,0 +1,44 @@
+{
+ "key": "BP-R5",
+ "leftHead": "TAVI Desk (what happens)",
+ "rightHead": "Expected",
+ "rightLabel": "Expected",
+ "date": "TAVI 24 Nov 2026 (17:01 Cairo) · Zoho not checked live",
+ "env": "staging-desk.taviportal.com (NDC-Staging) · Customer Support · Edge + API",
+ "label": "BUG",
+ "verdict": "FAIL",
+ "out": "BP-R5-other-department-owner-not-agent-saved.png",
+ "ticket": "Blueprint · TB-12",
+ "title": "A transition owner listed under another department is saved even though they are not an agent of that department",
+ "panels": [
+  {
+   "img": "executions/execu_2026-11-24_desk-bp-regression/evidence/ui/EV5-api.png",
+   "w": 1600,
+   "h": 900,
+   "caption": "Owner of \"QA Review\" = Tech, agent Test User 1 (not a Tech agent): saved; ticket shared to Tech at Full; Test User 1 is offered nothing and gets BLUEPRINT_NOT_OWNER",
+   "crop": [
+    0,
+    0,
+    1600,
+    900
+   ],
+   "boxes": []
+  }
+ ],
+ "rows": [
+  [
+   1,
+   "Save the transition",
+   "Refused or warned: \"Test User 1 is not an agent of Tech\" (unknown and view-only owners are already refused)",
+   "Saved (201), no warning",
+   "BUG"
+  ],
+  [
+   2,
+   "Ticket enters the state; Test User 1 opens it",
+   "n/a once the save is refused",
+   "Ticket shared with Tech (Full), but Test User 1 never sees the step",
+   "BUG"
+  ]
+ ]
+}

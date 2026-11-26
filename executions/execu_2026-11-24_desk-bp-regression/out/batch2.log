@@ -1,0 +1,91 @@
+==== checks/94-notes.js
+TM-14    BLOCKED      department SLA does not start on any ticket in QA BP Reg Dept — a control ticket with no blueprint also stays "none" after create and after reapply (open bug NDC-3202, SLA not starting). State timer in the On Hold state 
+TM-15    BLOCKED      needs a department SLA that starts (NDC-3202 open)
+==== checks/95-automation.js
+TF-05    PASS         webhook after-action arrives with the ticket data (recordId, transition, state); internal / cloud-metadata URLs (169.254.169.254, localhost, 10.x, [::1], metadata.google.internal) are refused at save (NDC-2537 fixed)
+TF-X1    FINDING      create-task after-action with an unknown assignee mode (e.g. "specific") is saved and silently treated as "ticket owner"; valid modes are owner / performer / user / team
+TF-11    PASS         On Edit rule 201: after a transition with no items → ran true; after a transition with a required field → ran true
+RG-03    PASS         NDC-2420: On Edit rule 201: after a transition with no items → ran true; after a transition with a required field → ran true
+IN-01    FINDING      rules setting Status (instant + 60 s delay) on a ticket in Escalated: blueprint state Escalated, status Escalated; execution outcomes [Fired, Fired, Fired, Fired, Fired, Fired, Fired, Fired]
+RG-16    PASS         NDC-2764: ticket stays in its blueprint state (Escalated/Escalated)
+RG-07    PASS         NDC-2730: workflow cannot change the blueprint-locked field
+EN-16    PASS         ticket created Low; On Create rule sets Urgent; blueprint needs Urgent → entered true (priority now urgent)
+IN-02    INCONCLUSIVE department round robin gave the ticket to nobody (no agent online); that owner can run the Ticket-owner step: n/a
+IN-05    PASS         ticket approval requested → 201; edit → 200; still in blueprint at Open
+no RG case for NDC-2334
+RG-05    N/A          NDC-2707: Desk has no record approval process that gates creation; CRM-only (out of scope)
+IN-08    FAIL         12 moves on 4 tickets: record status vs Desk ticket status mismatches 5 0:go record Escalated desk Open; 1:go record Escalated desk Open; 1:back record Escalated desk On Hold; 2:back record Escalated desk On Hold; 3:back
+RG-53    FAIL         NDC-3135: 12 moves on 4 tickets: record status vs Desk ticket status mismatches 5 0:go record Escalated desk Open; 1:go record Escalated desk Open; 1:back record Escalated desk On Hold; 2:back record Escalated desk On Ho
+SM-03    PASS         control reply → 201; Restrict Specified [replies] reply → 403 FORBIDDEN QA BP R SM31x4h0 allows this only through a transition. [{"field":"reply","issue":"BLUEPRINT_STRICT_MODE"},{"field":"blueprint_name","issue":"QA BP 
+IN-03    NOT RUN      direct-assignment switch is OFF tenant-wide; order direct → workflow → SLA → RR → blueprint was proven 14 Nov (OR-22) and not changed since
+IN-04    NOT RUN      macro status change: checked on screen in Phase 3 (macro skipped reason "a blueprint controls the ticket's status")
+IN-06    NOT RUN      global-set value removal (NDC-2919) changes a shared global set; not run in this pass
+IN-07    NOT RUN      layout rule (NDC-2977) needs a layout rule on a shared ticket layout; not run in this pass
+{
+ "t": 12,
+ "b": 8,
+ "x": 0,
+ "fail": []
+}
+==== checks/96-canvas-api.js
+CV-02    PASS         Add State "QA BP R Hold" type On Hold → 200; ticket status type on_hold
+CV-03    FAIL         "open" → 200; "Open" (Closed type) → 409 "Open" is already a Status of type open.
+CV-04    PASS         Arabic / HTML / 100-char state names: {"QA BP R عربي i4wjn":"200","QA BP R <b>x</b> i4wjn":"200","QA BP R LLLLLLLLLLLLLLLL":"400 name must be 1 to 100 characters."} (shown as text on screen — Phase 3)
+CV-05    PASS         a state marked as exit (isTerminal) ends the blueprint: ticket leaves with history "Completed blueprint" (EN-20); flag icon on canvas in Phase 3
+CV-12    PASS         remove "On Hold" while a ticket is in it → 409 BLUEPRINT_STATE_OCCUPIED State "On Hold" has 1 record(s) in it, so "QA BP R CV12xahec" cannot drop it. Revoke those records first. {"blueprint_id":"f7c86c29-b1e8-49cc-a255-2
+CV-13    PASS         remove status "QA BP Verify" while a live blueprint uses it (no tickets inside) → 422 FIELD_OPTION_IN_BLUEPRINT "QA BP Verify" is a state of the active blueprint "QA BP R CV13dyf4t", so it cannot be removed or merged. Re
+RG-18    PASS         NDC-2775: remove status "QA BP Verify" while a live blueprint uses it (no tickets inside) → 422 FIELD_OPTION_IN_BLUEPRINT "QA BP Verify" is a state of the active blueprint "QA BP R CV13dyf4t", so it cannot be removed or 
+CV-16    FAIL         30 states / 80 transitions saved → 422 BLUEPRINT_DEFINITION_INVALID Blueprint definition validation failed. [{"path":"states","type":"BLUEPRINT_DEFINITION_FIELD_INVALID","message":"State 'QA NDC KSA accounting team' is u
+PF-01    FAIL         API create 298 ms; draft + publish null; designer open time measured in Phase 3
+PI-06    PASS         auto-move naming a transition that does not exist → refused (ST-09 "missing")
+PI-07    PASS         customer trigger naming a parallel-step transition → BLUEPRINT_DEFINITION_INVALID; other-state and missing transitions refused (ST-10)
+PI-08    PASS         more than 10 default approvers → refused (TU-27)
+PI-09    PASS         department owner with no agent or team → refused (DT-11)
+PI-11    PASS         unknown entry-criteria operator → refused 422 (DT-08); NDC-2758 fixed
+API-01   FINDING      save: {"statesObject":422,"transitionsString":422,"unknownAction":422,"minutesString":422,"hugeChecklist":"SAVED"}; run with wrong types → 400
+API-03   PASS         transition name / checklist / message / notification with an HTML payload → 201 (blueprint names refuse special characters, DT-02/DT-03); rendering as text checked on screen in Phase 3
+API-04   FAIL         /modules/…/blueprint-transitions → 422 BLUEPRINT_VALIDATION_FAILED Transition payload validation failed. [{"path":"run_id","type":"BLUEPRINT_FIELD_INVALID","message":"Unknown field; not part of this transition."},{"path"
+API-06   FAIL         blueprint-history → 200, 1 entries: [null]
+TU-23    PASS         validation rule 201; normal edit with the bad value → 422 RECORD_VALIDATION_FAILED Validation failed. [{"path":"qa_ndc_agency_code","type":"VALIDATION_RULE_FAILED","message":"QA BP R agency code not allowed","ruleId":"4e
+RG-24    PASS         NDC-3012: validation rule 201; normal edit with the bad value → 422 RECORD_VALIDATION_FAILED Validation failed. [{"path":"qa_ndc_agency_code","type":"VALIDATION_RULE_FAILED","message":"QA BP R agency code not allowed","r
+vr delete 204
+TM-16    PASS         reapply SLA → 200; blueprint state kept Escalated (TAVI extra: Zoho has no reapply)
+{
+ "t": 5,
+ "b": 7,
+ "x": 0,
+ "fail": []
+}
+==== checks/100-shared.js
+happiness on 200
+TM-13    FAIL         filter [Bad]: Bad rating (200) → Escalated; Good rating (200) → Open; no filter: Okay rating (0) → Open; history rating
+TM-17    FAIL         close through the blueprint → 200; outbound mails on the ticket 0 []; ticket.closed in history false
+RG-39    FAIL         NDC-3054: close through the blueprint → 200; outbound mails on the ticket 0 []; ticket.closed in history false
+RG-38    FAIL         NDC-3053: closed mail with Customer Happiness on: false
+TF-06    FAIL         email after-action → run 200; outbound on the ticket: none (inbox delivery of +qae1 not opened)
+P4-RESTORE-HAPPINESS PASS         Customer Happiness restored → 200; enabled false, scope false, depts ["19510fdc-91f3-4a7a-8888-153f1318b765","2a73bbc0-efb3-4250-bf9b-2fdc98236794","7e1ac409-58b0-41ab-97e1-0e7d5c8c5158"]
+bh Mon-Fri 405 METHOD_NOT_ALLOWED That operation is not available on this resource.
+TM-06    BLOCKED      could not switch default business hours to Mon–Fri: 405 METHOD_NOT_ALLOWED That operation is not available on this resource.
+P4-RESTORE-BH PASS         business hours restored → 405 METHOD_NOT_ALLOWED That operation is not available on this resource.; preset 24_7, days ["mon","tue","wed","thu","fri","sat","sun"], holiday lists 5 (was 5)
+{
+ "t": 5,
+ "b": 4,
+ "x": 0,
+ "fail": []
+}
+==== checks/110-e2e.js
+E2E-01   FAIL         entered Open; B verifies → 200; B tries Approve → 403 BLUEPRINT_NOT_OWNER You are not an owner of this transition. {"transition_id":"approve"}; A approves → 403; B pays → 409; final status QA BP Verify, left blueprint fa
+E2E-04   FAIL         by hand: edit 403, comment 400, resolution 400 (all should be refused); through steps: go 200, end 200; left blueprint true
+E2E-05   PASS         admin sets Tech (Full) as owner of "review" on this ticket → 200; A (blueprint owner) still sees false; Tech agent sees true and runs → 200; shares after the step none
+E2E-07   PASS         deactivate with 2 inside → 200, new ticket entered false; v2 publish → 200 (old ticket now offered [go,hold,fast]); restore v1 → 200, publish → 200; delete with tickets inside → 409; revoke all → 200; delete → 204
+E2E-08   PASS         blueprint with an unreachable state → BLUEPRINT_DEFINITION_INVALID; remove On Hold with a ticket inside → 409 BLUEPRINT_STATE_OCCUPIED State "On Hold" has 1 record(s) in it, so "QA BP R E8owm26" cannot drop it. Revoke th
+E2E-06   BLOCKED      needs a live chat conversation from the Omni Channel widget (visitor side); not created in this run — NDC-3047 not re-verified (RG-37)
+RG-37    BLOCKED      NDC-3047: chat-created ticket entry needs a visitor chat (widget); not run
+E2E-02   PARTIAL      agent asked for documents (required reply) → 200; no customer answer → auto-closed after 2 min: status Closed, in blueprint false. Customer-answer branch not run (needs a customer reply from the Help Center / mailbox)
+E2E-03   PASS         warning webhook 1×, run-out webhook 1×, level notifications 10, state after the limit Escalated
+{
+ "t": 9,
+ "b": 6,
+ "x": 0,
+ "fail": []
+}

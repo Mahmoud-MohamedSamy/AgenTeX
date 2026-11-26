@@ -1,0 +1,131 @@
+<title>Desk Blueprint Unfiled Findings</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one 900px reading column; fail drafts, finding drafts, then a partials table. Same palette as the regression plan page. */
+:root{
+  --bg:#f4f6f8; --surface:#ffffff; --fg:#16202a; --muted:#5b6774; --line:#dbe0e6; --accent:#0f6e78; --accent-soft:#e1f0f1;
+  --no:#b42a2a; --no-bg:#fbe8e8; --warn:#a85a05; --warn-bg:#fcefdc; --info:#3f5f9a; --info-bg:#e7edf8;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11161c; --surface:#1a2129; --fg:#e5e9ee; --muted:#98a3b0; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --no:#ff7b7b; --no-bg:#3a1c1e; --warn:#f0a54d; --warn-bg:#3a2a16; --info:#8fb0ee; --info-bg:#1d2a42; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11161c; --surface:#1a2129; --fg:#e5e9ee; --muted:#98a3b0; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --no:#ff7b7b; --no-bg:#3a1c1e; --warn:#f0a54d; --warn-bg:#3a2a16; --info:#8fb0ee; --info-bg:#1d2a42; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px;display:grid;gap:22px}
+h1{font-size:24px;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:18px;margin:0;text-wrap:balance}
+h3{font-size:16px;margin:4px 0 10px;text-wrap:balance}
+h4{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 4px}
+p{margin:0 0 10px;max-width:72ch}
+ol{margin:0 0 10px;padding-left:20px}
+li{margin:3px 0}
+.sub{color:var(--muted);font-size:13px}
+header{display:grid;gap:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+section{display:grid;gap:12px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-bottom:2px solid var(--line);padding-bottom:6px}
+.item{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:6px;padding:14px 16px;min-width:0}
+.item.fail{border-left-color:var(--no)}
+.item-h{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ids{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cols>div{min-width:0}
+.note{background:var(--info-bg);color:var(--fg);border-radius:4px;padding:8px 10px;font-size:13px;margin-top:4px}
+.pill{font-size:11px;padding:1px 8px;border-radius:10px;white-space:nowrap;font-weight:600}
+.p-high{background:var(--no-bg);color:var(--no)}
+.p-med{background:var(--warn-bg);color:var(--warn)}
+.p-low{background:var(--accent-soft);color:var(--accent)}
+.rec{background:var(--bg);color:var(--fg);border:1px solid var(--line);font-weight:500}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+td,th{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+code{font-family:var(--mono);font-size:12px}
+@media (max-width:640px){.cols{grid-template-columns:1fr}}
+</style>
+<div class="wrap">
+<header>
+  <h1>Desk Blueprint regression — unfiled findings (drafts)</h1>
+  <div class="sub">Findings from the 24 Nov 2026 run that were not filed with NDC-3277..NDC-3281. Drafts only — nothing is in Plane. Titles follow &quot;Feature | Title&quot;; priority and labels are suggestions. Environment for all: NDC-Staging (staging-desk.taviportal.com), Desk → Tickets. No images yet: each is built when you choose to file it.</div>
+</header>
+<div class="stats">
+  
+  <div class="stat"><b>7</b><span>findings (9 cases)</span></div>
+  
+</div>
+
+<section><div class="sec-h"><h2>Drafts</h2><span class="sub">recommendation on each</span></div><article class="item finding" id="EN-13">
+  <div class="item-h"><span class="ids">EN-13</span><span class="pill p-med">Medium</span><span class="pill rec">File (differs from Zoho)</span></div>
+  <h3>Blueprint | A ticket created in a middle status enters at the start state and its status is reset to Open</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Blueprint with states Open → Escalated → Closed whose criteria match a new ticket (e.g. Subject contains &quot;QA&quot;).</li><li>Create a ticket with Status = Escalated (New Ticket screen or API).</li><li>Open the ticket: Steps card, Status and History.</li></ol></div>
+    <div><h4>Expected</h4><p>Like Zoho Desk (checked live 18 Nov 2026): the ticket enters the blueprint at Escalated and keeps Status = Escalated.</p><h4>Actual</h4><p>The ticket enters at Open and its Status is changed to Open, with no History line for that status change. An existing ticket edited to match while Escalated does enter at Escalated, so create and edit behave differently.</p></div>
+  </div>
+  <p class="note">Labels: Blueprint. Zoho evidence: 18 Nov live check (ticket created in Escalated entered at Escalated). Case EN-13.</p>
+  
+</article><article class="item finding" id="UX-01">
+  <div class="item-h"><span class="ids">UX-01</span><span class="pill p-low">Low</span><span class="pill rec">File</span></div>
+  <h3>Ticket | In Arabic the blueprint progress bar shows status names in English</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Switch Desk to Arabic.</li><li>Open a ticket that is in a blueprint.</li><li>Compare the progress bar under the subject with the status chip in the ticket list.</li></ol></div>
+    <div><h4>Expected</h4><p>The progress bar shows the translated status names, the same as the ticket list (&quot;مفتوحة&quot; for Open, &quot;مغلقة&quot; for Closed).</p><h4>Actual</h4><p>The progress bar shows &quot;Open&quot; and &quot;Closed&quot; in English (and &quot;Closed&quot; next to the flag), while the ticket list beside it shows &quot;مفتوحة&quot;. The rest of the page (Steps card, buttons, tabs, footer) is translated and right-to-left.</p></div>
+  </div>
+  <p class="note">Labels: Blueprint, i18n. Evidence screenshot already taken: evidence/ui/P3-UX-ar-ticket.png. Side note: the left navigation item &quot;Approvals&quot; also stays English in Arabic (not blueprint-specific).</p>
+  
+</article><article class="item finding" id="TF-09">
+  <div class="item-h"><span class="ids">TF-09</span><span class="pill p-low">Low</span><span class="pill rec">File or document</span></div>
+  <h3>Blueprint | A custom action in After-transition actions does not run in the order shown</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Transition with After actions in this order: Webhook 1 → Run Custom Action → Webhook 2 (all to a request receiver).</li><li>Run the transition.</li><li>Compare arrival times at the receiver.</li></ol></div>
+    <div><h4>Expected</h4><p>Actions run in the order shown — the designer says &quot;Run in this order once the ticket moves.&quot;</p><h4>Actual</h4><p>Webhook 1 and Webhook 2 arrive in the same second; the custom action placed between them arrives about 3 s after Webhook 2, because it is handed to Workflow and runs separately.</p></div>
+  </div>
+  <p class="note">Labels: Blueprint. Either keep the order (wait for the custom action) or change the hint to say custom actions run after the others. Case TF-09.</p>
+  
+</article><article class="item finding" id="ST-05">
+  <div class="item-h"><span class="ids">ST-05 · ST-07</span><span class="pill p-low">Low</span><span class="pill rec">Decide (API only)</span></div>
+  <h3>Blueprint API | A state can be saved with a business-hours set or an escalation email template that does not exist</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>POST /api/v1/modules/{tickets}/blueprints with a state whose &quot;slaBusinessHoursId&quot; is a random id.</li><li>Save another blueprint whose state has an escalation level with &quot;templateId&quot; = a random id.</li><li>Open both in the designer; let a ticket reach the escalation level.</li></ol></div>
+    <div><h4>Expected</h4><p>Both saves are refused, as other unknown ids already are (owners, teams, custom actions, approver teams).</p><h4>Actual</h4><p>Both saved (201). The designer then shows &quot;Deleted business hours (the default hours count)&quot; / &quot;This email template was deleted&quot;. At runtime the level with the unknown template still sent its in-app notifications (4 to the owner); the email part cannot be confirmed.</p></div>
+  </div>
+  <p class="note">Labels: Blueprint, API &amp; Platform. The designer cannot create this on its own; it only happens through the API or when a set / template is deleted later (then the designer's message is the right behaviour). Cases ST-05, ST-07.</p>
+  
+</article><article class="item finding" id="CV-06">
+  <div class="item-h"><span class="ids">CV-06 · API-01</span><span class="pill p-low">Low</span><span class="pill rec">Decide (API only)</span></div>
+  <h3>Blueprint API | A transition with no name and a 2,000-item checklist are saved</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>POST /api/v1/modules/{tickets}/blueprints with a transition whose &quot;name&quot; is &quot;&quot;.</li><li>Save another with a transition checklist of 2,000 items.</li></ol></div>
+    <div><h4>Expected</h4><p>Empty name refused (the designer shows &quot;The transition from Open to Escalated needs a name&quot;); a sensible checklist limit with a clear message.</p><h4>Actual</h4><p>Both saved (201). All other wrong shapes tested (strings for numbers, objects for arrays, unknown action kinds) are refused with 422, never 500.</p></div>
+  </div>
+  <p class="note">Labels: Blueprint, API &amp; Platform. The designer blocks the empty name, so this is API-only. Cases CV-06, API-01.</p>
+  
+</article><article class="item finding" id="TF-X1">
+  <div class="item-h"><span class="ids">TF-X1</span><span class="pill p-low">Low</span><span class="pill rec">Decide (API only)</span></div>
+  <h3>Blueprint API | Create-task action with an unknown assignee mode is saved and assigns the ticket owner</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Save a transition whose After action is createTask with &quot;assigneeMode&quot;: &quot;specific&quot; (valid values: owner, performer, user, team).</li><li>Run the transition.</li><li>Open the created task.</li></ol></div>
+    <div><h4>Expected</h4><p>The save is refused: unknown assignee mode.</p><h4>Actual</h4><p>Saved (201); the task is created and assigned to the ticket owner. With mode &quot;user&quot; + an agent the task goes to that agent (correct).</p></div>
+  </div>
+  <p class="note">Labels: Blueprint, API &amp; Platform. Found while testing TF-04.</p>
+  
+</article><article class="item finding" id="RS-01 note">
+  <div class="item-h"><span class="ids">RS-01 note</span><span class="pill p-low">Low</span><span class="pill rec">Check first</span></div>
+  <h3>Ticket History | One owner change is shown as two lines (&quot;Ticket Owner was updated&quot; and &quot;Ticket owner was changed&quot;)</h3>
+  <div class="cols">
+    <div><h4>Steps</h4><ol><li>Assign a ticket in a blueprint to an agent.</li><li>Open the ticket's History tab.</li></ol></div>
+    <div><h4>Expected</h4><p>One line for the owner change.</p><h4>Actual</h4><p>Two lines with the same time and values: &quot;Ticket Owner was updated — Old blank, New Customer Experience Specialists 1&quot; and &quot;Ticket owner was changed — Old blank, New Customer Experience Specialists 1&quot;.</p></div>
+  </div>
+  <p class="note">Labels: Ticket History. Seen on ticket #7562 (P3-RS-history-esc.png). Not blueprint-specific — check whether it happens on a ticket outside any blueprint before filing; may be a duplicate of an existing History ticket.</p>
+  
+</article></section>
+
+<p class="sub">Full results on every case: regression plan page (artifact S214dEfyWD2d8fTL1tPwFD). Source: executions/execu_2026-11-24_desk-bp-regression/out/results.jsonl.</p>
+</div>
