@@ -1,0 +1,555 @@
+<title>Zoho Social Study</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a reference manual. A sticky contents rail on wide screens and a single reading column; tables carry the detail. */
+:root{
+  --bg:#f6f7fb; --surface:#ffffff; --fg:#1b1f2e; --muted:#5b6275; --line:#dfe2ec;
+  --accent:#3346c4; --accent-soft:#e8ebfb; --ok:#1d7a4f; --ok-soft:#e3f4ea; --warn:#9a5b00; --warn-soft:#fdf0d9; --bad:#b0332b; --bad-soft:#fbe6e4;
+  --code-bg:#eef0f7;
+  --f-display:"Manrope",system-ui,sans-serif; --f-body:"Source Sans 3",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11131b; --surface:#191c27; --fg:#e7e9f2; --muted:#a0a6b8; --line:#2c3142;
+  --accent:#8f9dff; --accent-soft:#252b4d; --ok:#6fd3a0; --ok-soft:#173327; --warn:#f0b75a; --warn-soft:#3a2b12; --bad:#ff8f86; --bad-soft:#3d1d1b; --code-bg:#222636; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11131b; --surface:#191c27; --fg:#e7e9f2; --muted:#a0a6b8; --line:#2c3142;
+  --accent:#8f9dff; --accent-soft:#252b4d; --ok:#6fd3a0; --ok-soft:#173327; --warn:#f0b75a; --warn-soft:#3a2b12; --bad:#ff8f86; --bad-soft:#3d1d1b; --code-bg:#222636; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:40px}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14px}
+nav.toc b{display:block;font-family:var(--f-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+nav.toc a{display:block;color:var(--fg);text-decoration:none;padding:4px 8px;border-radius:6px}
+nav.toc a:hover,nav.toc a:focus-visible{background:var(--accent-soft);color:var(--accent);outline:none}
+main{min-width:0}
+header.top{padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.eyebrow{font-family:var(--f-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4vw,40px);line-height:1.15;margin:6px 0 10px;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:800;font-size:24px;margin:44px 0 10px;text-wrap:balance;scroll-margin-top:16px}
+h3{font-family:var(--f-display);font-weight:700;font-size:18px;margin:26px 0 8px}
+p,li{max-width:72ch}
+.lede{font-size:18px;color:var(--muted);max-width:70ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.chip.ok{background:var(--ok-soft);color:var(--ok)} .chip.warn{background:var(--warn-soft);color:var(--warn)} .chip.bad{background:var(--bad-soft);color:var(--bad)}
+code,.mono{font-family:var(--f-mono);font-size:.86em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+.tbl{overflow-x:auto;margin:10px 0 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:8px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-display);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:var(--bg);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600}
+.note{border-left:3px solid var(--warn);background:var(--warn-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0;max-width:80ch}
+.note.info{border-color:var(--accent);background:var(--accent-soft)}
+.note.ok{border-color:var(--ok);background:var(--ok-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:12px 0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.panel h4{font-family:var(--f-display);margin:0 0 6px;font-size:15px}
+.panel p,.panel li{font-size:14.5px;margin:4px 0}
+.panel ul{padding-left:18px;margin:4px 0}
+figure{margin:14px 0}
+figure img{border:1px solid var(--line);border-radius:10px;display:block}
+figcaption{font-size:13.5px;color:var(--muted);margin-top:6px}
+.diagram{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.diagram svg{display:block;min-width:640px;width:100%;height:auto}
+.diagram text{font-family:var(--f-body);fill:var(--fg)}
+.diagram .sub{fill:var(--muted);font-size:12px}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+.flow span{padding:4px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--line);font-size:14px}
+.flow i{font-style:normal;color:var(--muted)}
+ol.phases{padding-left:20px} ol.phases li{margin:8px 0}
+a{color:var(--accent)}
+small.src{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)} nav.toc{position:static;max-height:none;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface)} nav.toc a{display:inline-block}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <b>Contents</b>
+  <a href="#overview">What Zoho Social is</a>
+  <a href="#live">What we saw live</a>
+  <a href="#model">Data model</a>
+  <a href="#channels">Channels (networks)</a>
+  <a href="#roles">Users, roles, clients</a>
+  <a href="#home">Home dashboard</a>
+  <a href="#publish">Publishing</a>
+  <a href="#approvals">Approvals</a>
+  <a href="#posts">Posts, calendar, drafts</a>
+  <a href="#media">Media, links, AI</a>
+  <a href="#inbox">Inbox</a>
+  <a href="#messages">Messages</a>
+  <a href="#monitor">Monitor &amp; Live Stream</a>
+  <a href="#connections">Connections</a>
+  <a href="#collab">Collaborate &amp; notifications</a>
+  <a href="#reports">Reports</a>
+  <a href="#integrations">CRM / Desk integration</a>
+  <a href="#settings">Settings &amp; audit log</a>
+  <a href="#plans">Plans &amp; feature gates</a>
+  <a href="#api">Public API v2</a>
+  <a href="#build">Suggested build order</a>
+  <a href="#open">Open questions</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<main>
+<header class="top">
+  <div class="eyebrow">Product study for the dev team · 25 Nov 2026</div>
+  <h1>Zoho Social: how it works, module by module</h1>
+  <p class="lede">A functional walkthrough of Zoho Social (social.zoho.com), written so the team can start building our version. It covers the data model, every module, the business rules and limits, and the integration points with CRM and Desk.</p>
+  <div class="meta">
+    <span class="chip">Live trial portal opened 25 Nov</span>
+    <span class="chip">~280 official Zoho help / API pages read</span>
+    <span class="chip warn">Items marked "unconfirmed" need a live check</span>
+  </div>
+</header>
+
+<section id="overview">
+<h2>What Zoho Social is</h2>
+<p>Zoho Social is a social-media management tool. A company connects its business accounts on networks such as Facebook, Instagram, X, LinkedIn and YouTube, then works on all of them from one screen:</p>
+<div class="grid2">
+  <div class="panel"><h4>Publish</h4><p>Write one post, adjust it per network, and publish now, schedule it, queue it, or send it for approval. Calendar, drafts, bulk CSV upload, RSS curation.</p></div>
+  <div class="panel"><h4>Engage</h4><p>A unified <b>Inbox</b> of comments, DMs, mentions and reviews from every network, with assignment, statuses, saved replies and automation rules.</p></div>
+  <div class="panel"><h4>Listen</h4><p><b>Monitor</b> columns that track keywords, hashtags, mentions and other pages, plus a real-time <b>Live Stream</b> of engagement.</p></div>
+  <div class="panel"><h4>Measure</h4><p><b>Reports</b> per network (audience, posts, engagement, reach), per-post stats, hashtag reports, custom dashboards, scheduled report emails.</p></div>
+  <div class="panel"><h4>Collaborate</h4><p>Team roles, approvals, discussions on any post or report, team chat, and an audit log.</p></div>
+  <div class="panel"><h4>Connect to CRM / Desk</h4><p>Turn a social user into a CRM lead or contact, or turn a post or comment into a Desk ticket, by hand or by rule.</p></div>
+</div>
+<p>The top navigation in the live app is: <b>Home · Posts · Messages · Inbox · Monitor · Connections · Collaborate · Reports</b>, plus a <b>New Post</b> button (with a dropdown for <i>Customize Content</i>, <i>Create Bulk Message</i> and <i>Bulk Schedule</i>), notifications, team notifications, Settings and the profile menu.</p>
+</section>
+
+<section id="live">
+<h2>What we saw live</h2>
+<p>On 25 Nov we started a Zoho Social trial on our Zoho test account (an Enterprise trial, 15 days). These are the facts from the real product:</p>
+<ol>
+  <li><b>Sign-up creates a portal at once.</b> The URL is <code>social.zoho.com/social/&lt;portal-name&gt;/&lt;brand-id&gt;/Home.do</code>. The portal name comes from the account name, and a numeric brand ID is assigned before any brand is set up.</li>
+  <li><b>A mandatory onboarding form comes first.</b> It asks for the main objective (Publishing/Scheduling, Reporting/Analytics, Social Monitoring), company size, and a <b>mandatory phone number</b>. The app does not load until it is submitted.</li>
+  <li><b>Nothing works until one channel is connected.</b> Every tab (Posts, Inbox, Monitor, Reports and the rest) shows the same "Get started by setting up a Brand" wall. The wall shows <b>15 network tabs</b>, each with its own "Connect &lt;network&gt;" button that opens that network's sign-in. The only other option is <b>Manage → Delete Portal</b>.</li>
+</ol>
+<figure>
+  <img src="{{IMG_BRAND}}" alt="Zoho Social 'Get started by setting up a Brand' screen with 15 network icons and a Connect Facebook button" width="1600" height="1000">
+  <figcaption>Live, 25 Nov 2026: the brand set-up wall. The tabs are Facebook, X, LinkedIn, Instagram, Google Business Profile, YouTube, Pinterest, TikTok, Mastodon, Threads, Telegram, WhatsApp, Bluesky, Snapchat and Arattai.</figcaption>
+</figure>
+<div class="note">We did <b>not</b> connect a real social account, so we could not open the inner screens (composer, Inbox, Reports). Their details come from Zoho's official help center and API docs. Exploring them live needs a test Facebook Page or X account that the team owns. See <a href="#open">Open questions</a>.</div>
+<p>Text shown on the connect wall for each network (live):</p>
+<div class="tbl"><table>
+<tr><th>Network</th><th>Prompt shown</th></tr>
+<tr><td>Facebook</td><td>Connect a Facebook account associated with the Business Page you'd like to add.</td></tr>
+<tr><td>X</td><td>Connect a X account you'd like to add. (+ "Follow @ZohoSocial")</td></tr>
+<tr><td>LinkedIn</td><td>Connect a LinkedIn account associated with the Profile and/or Company Page you'd like to add.</td></tr>
+<tr><td>Instagram</td><td>Connect an Instagram Professional Account you'd like to add.</td></tr>
+<tr><td>Google Business Profile</td><td>Connect a Google Business Profile account associated with the business listing… + <b>NEW: Create a new Google Business Profile</b></td></tr>
+<tr><td>YouTube / Threads / Telegram / TikTok / Arattai</td><td>Connect the &lt;network&gt; account/channel you'd like to add.</td></tr>
+<tr><td>Snapchat</td><td>Connect a Snapchat Professional Account you'd like to add.</td></tr>
+</table></div>
+</section>
+
+<section id="model">
+<h2>Data model</h2>
+<p>Four objects hold everything else. Getting these right first matters most, because every screen is filtered by the current <b>brand</b>.</p>
+<div class="diagram" role="img" aria-label="Portal contains Brands; a Brand contains Channels (one per network type) and Members with a role and channel access; posts, interactions, monitor columns and reports all belong to a Brand.">
+<svg viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
+  <rect x="10" y="90" width="170" height="70" rx="10" fill="var(--accent-soft)" stroke="var(--accent)"/>
+  <text x="95" y="120" text-anchor="middle" font-weight="700">Portal</text>
+  <text x="95" y="140" text-anchor="middle" class="sub">the company account</text>
+  <rect x="260" y="90" width="170" height="70" rx="10" fill="var(--accent-soft)" stroke="var(--accent)"/>
+  <text x="345" y="120" text-anchor="middle" font-weight="700">Brand</text>
+  <text x="345" y="140" text-anchor="middle" class="sub">1..n per portal (plan limit)</text>
+  <rect x="520" y="10" width="190" height="64" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+  <text x="615" y="38" text-anchor="middle" font-weight="700">Channel</text>
+  <text x="615" y="58" text-anchor="middle" class="sub">max 1 per network type</text>
+  <rect x="520" y="93" width="190" height="64" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+  <text x="615" y="121" text-anchor="middle" font-weight="700">Member</text>
+  <text x="615" y="141" text-anchor="middle" class="sub">role + channel access + approver</text>
+  <rect x="520" y="176" width="190" height="64" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+  <text x="615" y="204" text-anchor="middle" font-weight="700">Brand content</text>
+  <text x="615" y="224" text-anchor="middle" class="sub">posts, inbox, columns, reports</text>
+  <rect x="770" y="10" width="120" height="64" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+  <text x="830" y="38" text-anchor="middle" font-weight="700">OAuth token</text>
+  <text x="830" y="58" text-anchor="middle" class="sub">expires (60 d)</text>
+  <line x1="180" y1="125" x2="258" y2="125" stroke="var(--muted)" marker-end="url(#ar)"/>
+  <line x1="430" y1="115" x2="518" y2="45" stroke="var(--muted)" marker-end="url(#ar)"/>
+  <line x1="430" y1="125" x2="518" y2="125" stroke="var(--muted)" marker-end="url(#ar)"/>
+  <line x1="430" y1="135" x2="518" y2="205" stroke="var(--muted)" marker-end="url(#ar)"/>
+  <line x1="710" y1="42" x2="768" y2="42" stroke="var(--muted)" marker-end="url(#ar)"/>
+</svg></div>
+<div class="tbl"><table>
+<tr><th>Object</th><th>Rules</th></tr>
+<tr><td>Portal</td><td>Created at sign-up and named after the company. The first user becomes <b>Portal Owner</b> and <b>Portal Admin</b>. One Zoho login can belong to several portals (switch under <i>My Portals</i>). Portal settings: Portal Info (company name, portal name, owner, Delete Portal), My Settings (time zone), Customization (Agency plans), Email Authentication (DKIM). Deleting a portal erases all brands, posts, drafts, columns and reports for good, and is only allowed on the Free plan.</td></tr>
+<tr><td>Brand</td><td>A group of channels for one business or business unit. The first brand is created automatically when the first channel is connected. <b>Only one channel of each type per brand</b> (one Facebook Page, one X profile, one LinkedIn Page, one LinkedIn Profile, …). A second Facebook Page needs a second brand. Fields: name, image, description, time zone. Deleting a brand deletes its scheduled posts; posts already on the networks stay. A brand switcher sits top-left.</td></tr>
+<tr><td>Channel</td><td>One connected network account, holding an OAuth token. <b>Facebook, Instagram and LinkedIn tokens expire after 60 days</b>, and the admin must then <b>Reconnect</b> (email alert plus a Brand Health alert). <b>Disconnect</b> removes the channel's drafts, scheduled and pending posts, Inbox history, Monitor columns, automation rules and dashboard cards. The first Facebook connection imports the last 30 days of data.</td></tr>
+<tr><td>Member</td><td>A user in a brand with a <b>role</b>, a set of <b>channels</b> they may use (checkbox per channel), and an optional <b>approver</b> flag. Removing a member keeps their scheduled posts (they still publish), but their Monitor columns are deleted.</td></tr>
+</table></div>
+</section>
+
+<section id="channels">
+<h2>Channels (networks)</h2>
+<p>15 networks appear in the live app. What each supports depends on that network's API. Publishing and scheduling work on all of them; Inbox, Monitor and Reports do not.</p>
+<div class="tbl"><table>
+<tr><th>Network</th><th>How it connects</th><th>Publish</th><th>Inbox / DMs</th><th>Monitor</th><th>Reports</th><th>Plan</th></tr>
+<tr><td>Facebook Page</td><td>Facebook OAuth; must be Page admin. Pages only; no Groups or personal profiles</td><td>Posts, Reels, Stories</td><td>Comments, DMs, reviews, mentions, ad comments</td><td>Yes</td><td>Full</td><td>All</td></tr>
+<tr><td>Instagram</td><td>Through Facebook, or directly through Instagram. Professional account only</td><td>Posts, carousels, Reels, trial Reels, Stories</td><td>Comments, DMs, mentions</td><td>Hashtag, tagged</td><td>Full (no Stories via direct login)</td><td>All</td></tr>
+<tr><td>X</td><td>X OAuth</td><td>Posts, threads, polls, DM link</td><td>Replies, mentions, DMs</td><td>Mentions, timeline, likes, keyword, user, lists</td><td>Full</td><td>All</td></tr>
+<tr><td>LinkedIn Page / Profile</td><td>LinkedIn OAuth; super admin on the page</td><td>Posts, polls, documents (PDF/PPT/DOC)</td><td>Page messages (last 60 days)</td><td>Page mentions</td><td>Full</td><td>All</td></tr>
+<tr><td>Google Business Profile</td><td>Google OAuth, or create a new profile in-app (call/SMS verification)</td><td>What's New + button, Event, Offer</td><td>Reviews, questions</td><td>Reviews, questions</td><td>Search/map impressions, actions</td><td>All</td></tr>
+<tr><td>YouTube</td><td>Google OAuth</td><td>Video, Shorts (title, description, visibility, category, tags)</td><td>Comments + moderation</td><td>Likes, playlists, moderated comments</td><td>Full</td><td>Premium+</td></tr>
+<tr><td>Pinterest</td><td>Pinterest login; give board access</td><td>Pins to a board (title, link, alt text)</td><td>–</td><td>–</td><td>Summary</td><td>Standard+</td></tr>
+<tr><td>TikTok</td><td>Business account; blocked in India</td><td>Video ≤10 min, images</td><td>Yes</td><td>–</td><td>Yes</td><td>Standard+</td></tr>
+<tr><td>Threads</td><td>Through Instagram</td><td>Text 500, media, carousel, poll</td><td>Yes</td><td>Mentions, keyword, user</td><td>Yes</td><td>Standard+</td></tr>
+<tr><td>Bluesky</td><td>Username + <b>app password</b> (no OAuth)</td><td>Posts, threads, alt text</td><td>DMs if allowed</td><td>Timeline, likes, keyword, user</td><td>Estimated time series</td><td>Standard+</td></tr>
+<tr><td>Mastodon</td><td>Pick a server (or type a domain), then authorize</td><td>Posts (limits per server)</td><td>–</td><td>–</td><td>Yes</td><td>Standard+</td></tr>
+<tr><td>Snapchat</td><td>Public Profile set as Professional</td><td>Posts, Spotlight, Stories</td><td>–</td><td>–</td><td>unconfirmed</td><td>Standard+</td></tr>
+<tr><td>WhatsApp Business</td><td>Through Facebook (Meta business portfolio, phone number)</td><td>Template + bulk messages (1:1)</td><td>Inbox, 24 h window</td><td>–</td><td>–</td><td>Premium+</td></tr>
+<tr><td>Telegram</td><td>Bot token from BotFather + bot username</td><td>–</td><td>Inbox, quick replies</td><td>–</td><td>–</td><td>Premium+</td></tr>
+<tr><td>Arattai</td><td>Phone number + OTP</td><td>Channel posts, Stories</td><td>–</td><td>–</td><td>unconfirmed</td><td>Paid</td></tr>
+</table></div>
+<div class="note info"><b>Build note (ours, not Zoho's):</b> each network needs our own registered developer app, and Meta (Facebook, Instagram, WhatsApp, Threads), LinkedIn, TikTok and Google require app review before production use. This is the longest lead-time item. Start the developer-app registrations at the same time as the coding.</div>
+<h3>Network posting limits (set by the networks, enforced by Zoho)</h3>
+<div class="tbl"><table>
+<tr><th>Network</th><th>Text max</th><th>Images / post</th><th>Posts per window</th></tr>
+<tr><td>Facebook Page</td><td>63,206</td><td>10 (1 video)</td><td>40 / 24 h</td></tr>
+<tr><td>Instagram</td><td>2,200 · 30 hashtags</td><td>10 mixed carousel</td><td>50 / 24 h</td></tr>
+<tr><td>X</td><td>280 (Premium 25,000)</td><td>4 or 1 GIF</td><td>200 / 15 min or 300 / 2 h</td></tr>
+<tr><td>LinkedIn</td><td>3,000</td><td>9–10 · 1 document</td><td>50 / 24 h</td></tr>
+<tr><td>GBP</td><td>1,500</td><td>1</td><td>50 / 24 h</td></tr>
+<tr><td>Threads</td><td>500</td><td>10</td><td>250 / 24 h</td></tr>
+<tr><td>Pinterest</td><td>800 (title 100)</td><td>1</td><td>30 requests / min</td></tr>
+<tr><td>YouTube</td><td>title 100</td><td>1 video</td><td>20 / 24 h</td></tr>
+<tr><td>TikTok</td><td>unconfirmed</td><td>10 or 1 video</td><td>6 / min, 15 / 24 h</td></tr>
+<tr><td>Bluesky</td><td>300</td><td>4 or 1 GIF</td><td>100 / 24 h</td></tr>
+</table></div>
+<p>Media specs per network (formats, size, duration, aspect ratio) are long. They are listed in full in the research notes; the API offers them as <code>GET /networkproperties</code>, and the composer uses them to validate before posting.</p>
+</section>
+
+<section id="roles">
+<h2>Users, roles, clients</h2>
+<div class="tbl"><table>
+<tr><th>Role</th><th>Scope</th><th>Can do</th></tr>
+<tr><td>Portal Owner</td><td>Portal</td><td>Owns the subscription; must also be a Portal Admin. Ownership can be transferred to another Portal Admin.</td></tr>
+<tr><td>Portal Admin</td><td>All brands</td><td>Everything: add or delete brands, invite, remove or deactivate members, create roles, portal settings, audit log. An approver by default.</td></tr>
+<tr><td>Brand Admin</td><td>One brand</td><td>Everything inside the brand, including connecting channels, inviting members and notification settings. Cannot manage billing.</td></tr>
+<tr><td>User</td><td>One brand</td><td>All features except managing channels and people. No Inbox by default.</td></tr>
+<tr><td>Limited Publisher</td><td>One brand</td><td>Cannot publish directly; can only draft and <b>Send for Approval</b>.</td></tr>
+<tr><td>Client Member</td><td>One brand (Agency plans)</td><td>A free external login: sees Home, Posts, Collaborate and the reports shared with them. Can be an approver. Cannot tag team members.</td></tr>
+<tr><td>Custom role</td><td>One brand (Premium+)</td><td>Settings › Roles and Permissions › Create New Role, then tick permissions.</td></tr>
+</table></div>
+<p><b>The seven permission switches</b> a role is built from:</p>
+<div class="tbl"><table>
+<tr><th>Permission</th><th>When off</th><th>P. Admin</th><th>B. Admin</th><th>User</th><th>Ltd Publisher</th></tr>
+<tr><td>Publishing</td><td>Posts must go for approval</td><td>✓</td><td>✓</td><td>✓</td><td>–</td></tr>
+<tr><td>Messages</td><td>Messages tab hidden</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td>Comment / Reply</td><td>Read-only on interactions</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td>Advanced Reports</td><td>Summary reports only</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td>Leads Data</td><td>Sees lead set-up, not lead records</td><td>✓</td><td>✓</td><td>✓</td><td>–</td></tr>
+<tr><td>Zia (AI)</td><td>No AI compose or reply</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td>Inbox</td><td>No Inbox module</td><td>✓</td><td>✓</td><td>–</td><td>–</td></tr>
+</table></div>
+<small class="src">The User and Limited Publisher columns come from Zoho's text; the help page shows the matrix as an image. Verify live.</small>
+<p><b>Invite form:</b> Email, Role, Channels (one checkbox per connected channel), <i>Add as an approver</i>, plus "+ Add more" rows. A Portal Admin can also invite with "invite as Portal Admin" and pick several brands. Members can be added straight from Zoho CRM users. <b>Deactivate</b> keeps the user in the list with no access; reactivating re-sends the invite.</p>
+<p><b>Drafts ownership:</b> only the creator and Portal Admins can edit or delete a draft. Brand Admins can edit drafts of Brand Admins and Users. Ownership moves to whoever last edits, schedules or publishes the draft.</p>
+</section>
+
+<section id="home">
+<h2>Home dashboard</h2>
+<ul>
+  <li><b>Brand Health</b> card: last 30 days per channel: Total followers, New followers, No. of posts, Reach, Engagement (likes + comments + shares). Green means up and red means down. It also holds "Add more channels" icons and "needs reconnecting" alerts. X and TikTok have no Reach; GBP has no follower or post counts.</li>
+  <li><b>Recent Posts</b>: latest published posts with their audience response.</li>
+  <li><b>Live Stream</b> (right panel): a real-time feed of likes, comments, shares and mentions (Facebook, X, Instagram, Bluesky). Each item allows Reply, Like, Retweet, DM, Follow, +Add to CRM, Convert to Ticket and Discuss. It cannot be filtered.</li>
+  <li>The layout is fixed and cannot be customized.</li>
+</ul>
+</section>
+
+<section id="publish">
+<h2>Publishing</h2>
+<h3>Compose window</h3>
+<p><b>New Post</b> sends the same content to every selected channel (default limit: 4 images or 1 video). <b>Customize Content</b> opens on "Original Content" and lets you override the caption, hashtags, mentions, tags and media <i>per network</i>, with higher media limits. A preview panel shows each network's look (only when the screen is wider than 1380 px). At most <b>30 channels per post</b>, across brands; channels can be pinned and grouped.</p>
+<div class="tbl"><table>
+<tr><th>Composer option</th><th>Networks</th></tr>
+<tr><td>Attach media: Desktop, Media Library (Pixabay / Pexels / Giphy), Cloud Picker, Design on Canva</td><td>All</td></tr>
+<tr><td>Image editor (crop presets, rotate, text, stickers, 10 filters, adjust), custom video thumbnail, add audio to video</td><td>All (thumbnail per API)</td></tr>
+<tr><td>Alt text per image</td><td>Facebook, LinkedIn, X, Pinterest, Mastodon, Bluesky</td></tr>
+<tr><td>@Mentions with suggestions</td><td>X, Facebook (max 10), LinkedIn, Bluesky; Instagram exact username only</td></tr>
+<tr><td>Hashtags: popular (top 10 by past engagement) + hashtag groups (max 10 groups × 30 tags)</td><td>All</td></tr>
+<tr><td>Location</td><td>Facebook, Instagram, Threads</td></tr>
+<tr><td>First comment</td><td>Facebook, LinkedIn, Instagram, YouTube</td></tr>
+<tr><td>Poll: 2–4 options (≤25 chars), question ≤140, duration 1/3/7 days</td><td>X, LinkedIn, Threads</td></tr>
+<tr><td>Thread composer: split long text, max 15 posts, post all at once or at an interval</td><td>X, Threads, Bluesky</td></tr>
+<tr><td>Target audience (countries; LinkedIn: location + job function, ≥300 followers) + TimeWarp</td><td>Facebook Page, LinkedIn Page</td></tr>
+<tr><td>Instagram: tag accounts (max 20), collaborators (max 5), trial reel, share reel to feed, grid preview</td><td>Instagram</td></tr>
+<tr><td>GBP: button (Learn more, Sign up, Order online, Book, Buy, Call), Event, Offer</td><td>GBP</td></tr>
+<tr><td>YouTube: title, description, visibility, category, tags, "Post as Shorts"</td><td>YouTube</td></tr>
+<tr><td>Pinterest: board (or create one), title, destination link, alt text</td><td>Pinterest</td></tr>
+<tr><td>LinkedIn document (≤300 pages, 100 MB), or convert images into one PDF</td><td>LinkedIn</td></tr>
+<tr><td>URL properties: shorten, UTM tracking, domain, vanity name</td><td>All</td></tr>
+<tr><td>Compose with Zia (AI): category, tone, language, prompt</td><td>All</td></tr>
+<tr><td>Send for Approval toggle</td><td>All</td></tr>
+</table></div>
+
+<h3>Five ways to send a post</h3>
+<div class="tbl"><table>
+<tr><th>Action</th><th>Behaviour</th></tr>
+<tr><td>Publish Now</td><td>Goes out at once.</td></tr>
+<tr><td>Custom Schedule</td><td>Date and time (one time for all selected channels). Shows the % of the audience likely online. Optional <b>Repeat</b>: weekly (one weekday) or monthly (day of month, within 6 months; day 31 = "last day" or "whenever available"), until an end date. No daily repeat.</td></tr>
+<tr><td>Add to Queue (CustomQ)</td><td>Takes the next free slot of the brand's queue. Admins define slots per weekday (max 25 per day; slots can be cloned to other days). One post per slot. Changing slots does not move posts already queued.</td></tr>
+<tr><td>SmartQ</td><td>Suggests best times for the next 7 days, sorted by engagement or time, from ≥7 days of history (Facebook, Instagram, X only). Premium+.</td></tr>
+<tr><td>Save as Draft / Send for Approval</td><td>A draft is also kept if the window is closed before scheduling. Approval: see the next section.</td></tr>
+</table></div>
+<h3>Bulk Scheduler</h3>
+<ul>
+  <li>Upload <b>CSV, XLS or XLSX</b>, max <b>350 posts per file</b>. A sample file is offered.</li>
+  <li>Columns: <code>Schedule Time, Post Content, Link, Media, GMB Button Name, GMB Link</code>, plus an optional channels column (in CSV the channel list goes in quotes: <code>"Facebook, X, Instagram"</code>). Pinterest uses <code>IMAGE URL 1…n</code>.</li>
+  <li>The date format is chosen in the upload window and must match exactly. Each post must be <b>≥1 hour</b> after upload. Media are public URLs (.jpg/.jpeg), max 10 per post.</li>
+  <li>Flow: Upload › date format › shortener on/off › channels › Pinterest board › confirm column order › approval toggle › <b>Proceed to Review</b> (each row is "completed" or "with errors"; error rows can be fixed, moved to drafts or deleted) › Preview › <b>Schedule</b>.</li>
+</ul>
+<h3>Pause / resume (brand-wide)</h3>
+<p>Settings › Publishing Preferences › <b>Pause Posts</b> (admins; asks for a team message). Banner: "All scheduled posts for this Brand are currently paused." Users can still schedule. On resume, posts whose time has passed go to <b>Unpublished › Unattempted</b> for rescheduling.</p>
+<h3>RSS feeds</h3>
+<p>Posts › Content Library › RSS Feeds › +New Feed (site search, feed URL, or OPML upload). 10 feeds on Professional, 20 on Premium+. Each feed has default channels plus a prefix and suffix text. Each article can be composed into a post, marked read, moved to drafts, hidden or discussed. Auto-publishing from RSS is <i>not</i> documented.</p>
+</section>
+
+<section id="approvals">
+<h2>Approvals</h2>
+<div class="flow"><span>Yet to Review</span><i>⇄</i><span>Under Review</span><i>→</i><span>Approved</span><i>or</i><span>Rejected (reason required)</span><i>·</i><span>Time Elapsed (auto)</span></div>
+<ul>
+  <li>Approvers are set in Brand Settings › Publishing Preferences › <b>Add Approver</b>. An approver must have publishing rights on <b>all</b> channels of the brand. Portal and Brand Admins are approvers by default. Clients can be approvers.</li>
+  <li><b>Single level</b>: any one approver decides. All approvers get an email. Only single-brand posts can go for approval.</li>
+  <li>Approve dropdown: <b>Approve and Publish Now</b>, <b>Approve and Add to Queue</b>; otherwise the sender's schedule is kept. Approved and Rejected are final.</li>
+  <li><b>Time Elapsed</b> is set automatically when the scheduled time passes unapproved; the post can still be approved and rescheduled.</li>
+  <li>Editing an approved post sends it back for a new approval. A rejected post can be edited and resubmitted.</li>
+  <li>Bulk <b>Approve All / Reject All</b>, max 200. A Post Activity panel logs submissions, comments and status changes.</li>
+</ul>
+</section>
+
+<section id="posts">
+<h2>Posts, calendar, drafts</h2>
+<div class="tbl"><table>
+<tr><th>Posts view</th><th>Content and actions</th></tr>
+<tr><td>Published</td><td>Per channel: date, content, engagement rate, interactions; sort by date, likes or comments; data up to 400 days. ⋯ menu: Edit (YouTube, Mastodon, GBP only), Delete (not Instagram), Discuss, Embed, Edit as New Post, Copy URL, Retweet.</td></tr>
+<tr><td>Scheduled</td><td>Edit, reschedule, publish now, discuss, delete.</td></tr>
+<tr><td>Approvals</td><td>Status, reviewers, approve or reject, bulk actions.</td></tr>
+<tr><td>Unpublished</td><td><b>Failed</b> (duplicate post, channel needs reconnect, wrong image size) and <b>Unattempted</b> (time passed while paused). Retry, reschedule, edit.</td></tr>
+<tr><td>Drafts</td><td>Edit (Update draft), discuss, schedule, publish.</td></tr>
+<tr><td>Calendar</td><td>Month (default), week and day views. Colours: blue scheduled, orange failed, green published, grey draft. Drag to another day to reschedule. Add notes and events (1 day to 6 months). Filters: type, status, created by, network, schedule type (custom, bulk, queue, SmartQ, repeat, RSS, story). Posts made directly on the network do not show.</td></tr>
+</table></div>
+<p><b>Post details:</b> content, likes and comments; <b>Post Stats</b> per network (reactions, reach, impressions, video views); <b>URL stats</b> for short links (clicks, location, device). <b>Export</b> of scheduled, draft, unpublished and pending posts as PDF or CSV (Premium+); the CSV can be reused in the Bulk Scheduler.</p>
+</section>
+
+<section id="media">
+<h2>Media, links, AI</h2>
+<div class="grid2">
+  <div class="panel"><h4>Social Library</h4><p>A shared brand store of images, GIFs and videos (images ≤36 MB, video ≤5 GB). Upload from desktop, cloud picker, stock library or Canva.</p></div>
+  <div class="panel"><h4>Cloud Picker</h4><p>Zoho WorkDrive, Google Drive, Box, OneDrive, Dropbox, Evernote, Zoho Notebook. Single posts cannot take images by URL; only the Bulk Scheduler can.</p></div>
+  <div class="panel"><h4>Link shortener</h4><p>Built-in <code>zurl</code> (default), Bit.ly (Professional+), or a custom domain (A record or CNAME). Short links can have a title, expiry, fallback URL and UTM tags.</p></div>
+  <div class="panel"><h4>UTM tracking</h4><p>Auto-adds UTM tags to every link when turned on: source (auto = network name, or custom), medium, campaign (≤20 chars), content, term, custom; max 6 parameters.</p></div>
+  <div class="panel"><h4>Zia AI</h4><p>Compose (social post, hashtags, IG captions, X threads, rephrase; tone, language, prompt) and Inbox reply drafts. Monthly credits: Free 5, Standard/Pro 40, Premium+ 80. Customers can bring their own OpenAI key instead.</p></div>
+  <div class="panel"><h4>Optimization</h4><p>Optional auto-conversion of video and images to each network's specs (re-encode, scale, bitrate). Image fit: black background or skew.</p></div>
+</div>
+</section>
+
+<section id="inbox">
+<h2>Inbox (unified interactions)</h2>
+<p>One list of every <b>interaction</b>, which is a comment, DM, review, mention, reply, question or ad ("dark") comment. Networks: Facebook, Instagram, LinkedIn, X, GBP, YouTube, TikTok, WhatsApp, Telegram, Threads, Bluesky. Premium+.</p>
+<h3>Threading rules</h3>
+<div class="tbl"><table>
+<tr><th>Situation</th><th>Result</th></tr>
+<tr><td>New message, previous interaction closed less than 24 h ago</td><td>The closed interaction reopens</td></tr>
+<tr><td>New message after 24 h, interaction Open or Under Review</td><td>Added to the same interaction; its time moves to the newest message</td></tr>
+<tr><td>New message after 24 h, interaction Closed</td><td>A <b>new</b> interaction is created; the old one can no longer be replied to</td></tr>
+<tr><td>Your own comments</td><td>Never create interactions</td></tr>
+<tr><td>"Reply and Close" setting on</td><td>Replying closes the interaction. For messages this counts only after 24 h; for other types it applies at once</td></tr>
+</table></div>
+<h3>Interaction panel and fields</h3>
+<ul>
+  <li><b>Status:</b> Open, Under Review, Closed (one page also names "On Hold": unconfirmed). <b>Priority:</b> Low, Medium, High. <b>Assignee</b> (called "DRI" for LinkedIn). <b>Sentiment:</b> Positive, Neutral, Negative.</li>
+  <li>Tabs: Reply box (with Zia), <b>Activity</b> (status changes, internal comments, @mentions), <b>User Info</b> (editable email, contact, website, location, description), <b>History</b> (all past interactions with that user).</li>
+  <li>Actions: Copy link, Follow, Archive, Mute user, Mark as spam, Delete; bulk mark read, spam or archive.</li>
+  <li>Views: All, Open, Archived, Spam, plus <b>custom views</b> (name, channels, assignee, type, priority, status, period; can be shared and pinned). Filters: channel, type, assignee, priority, status, date, unread.</li>
+  <li><b>Saved replies:</b> max 280 chars, in groups. Not for WhatsApp, which uses its approved templates.</li>
+  <li><b>Private reply</b> to a public comment (Facebook, Instagram): one per comment, within 7 days.</li>
+</ul>
+<h3>Automation rules</h3>
+<p>Settings › Inbox Preferences › Automation › Create New Rule: name, description, <b>Match ANY / ALL</b>, conditions, actions.</p>
+<div class="grid2">
+<div class="panel"><h4>Conditions (13)</h4><ul>
+<li>Channel · Interaction type · Content (exact, contains, starts/ends with…)</li>
+<li>Content type (image, video, text) · Sentiment · Verified user</li>
+<li>Followers count (&gt;, &lt;, =, between) · Creation time (days/hours)</li>
+<li>Sender · First-time interaction · Language</li>
+<li>CRM contact (known/unknown) · CRM lead</li></ul></div>
+<div class="panel"><h4>Actions (10)</h4><ul>
+<li>Set priority · Change status · Set assignee</li>
+<li>Round robin (all, selected or role-based members)</li>
+<li>Send a reply · Send a private reply</li>
+<li>Move to archive · Mark as spam · Close</li>
+<li>Send alert (email or in-app, optional delay)</li></ul></div>
+</div>
+<p><b>Inbox preferences:</b> Reply and Close, muted users, auto-spam keywords, auto-archive closed items after 90 or 120 days, purge archived items after 15 or 30 days, Facebook and Instagram ad accounts for ad comments.</p>
+<h3>WhatsApp and Telegram</h3>
+<ul>
+  <li><b>WhatsApp:</b> messages are paid with credits (1 conversation = a 24 h thread). Outside the 24 h window only an <b>approved template</b> can be sent. Template fields: category (utility or marketing), name, group, header (text or image), body, footer, buttons (call-to-action or quick reply). WhatsApp approves templates, usually within an hour. <b>Bulk messaging</b>: lists of up to 200 contacts (manual or CSV/XLS), sent as separate 1:1 messages, now or scheduled.</li>
+  <li><b>Telegram:</b> a bot token; users are reached by username; quick replies.</li>
+</ul>
+</section>
+
+<section id="messages">
+<h2>Messages tab</h2>
+<p>A simpler DM-only view, separate from Inbox and available from Professional: Facebook Pages, X, Instagram, LinkedIn Pages and Bluesky. Attachments: Facebook and Instagram take 1 audio (WAV/MP4) or 1 video (MOV/MP4) up to 25 MB, and voice notes can be recorded up to 2 min; X takes video up to 512 MB. Network rules: Facebook cannot start a conversation (reply only); X can start a DM only if the user allows DMs from anyone; Instagram needs "Allow access to messages" turned on; LinkedIn shows the last 60 days only.</p>
+</section>
+
+<section id="monitor">
+<h2>Monitor &amp; Live Stream</h2>
+<p>Monitor is a board of <b>columns</b>, each a live feed. Professional: 5 columns per brand; Premium+: 15; Free and Standard: none.</p>
+<div class="tbl"><table>
+<tr><th>Network</th><th>Column types</th></tr>
+<tr><td>X</td><td>Mentions, Timeline, Likes, Keyword search, User search, Lists (create and manage X lists)</td></tr>
+<tr><td>Facebook Page</td><td>Reviews, Page search, Page mentions, Visitor posts</td></tr>
+<tr><td>Instagram</td><td>Hashtag search, Tagged posts</td></tr>
+<tr><td>LinkedIn Page</td><td>Mentions</td></tr>
+<tr><td>GBP</td><td>Reviews, Questions</td></tr>
+<tr><td>YouTube</td><td>Likes, Dislikes, Playlists, Moderate comments</td></tr>
+<tr><td>Threads / Bluesky</td><td>Mentions, keyword, username / Timeline, likes, user, keyword</td></tr>
+<tr><td>Zoho CRM</td><td>CRM interactions: leads / contacts</td></tr>
+</table></div>
+<ul>
+  <li>Columns are shared at brand level; only admins and the column's creator can delete one, and deleting removes it for everyone. <b>Order</b> and <b>groups</b> are per user.</li>
+  <li>A badge shows the count of new items (click to refresh). Filters (language, media, exclude retweets, words, user, place) work on X columns only.</li>
+  <li>On each item: like, reply, retweet, view conversation, +Add to CRM, Convert to Ticket, Discuss.</li>
+  <li>New brands get default columns: Facebook visitor posts, X mentions, and CRM leads/contacts.</li>
+</ul>
+</section>
+
+<section id="connections">
+<h2>Connections</h2>
+<p>People who interacted with the brand are created automatically. Views: All, Recently Engaged, Most Engaged, X Followers and Following, Restricted (muted or blocked), CRM Leads, CRM Contacts. Profile panel: contact details, social profiles, interaction history, <b>CRM Info</b> (with a Ping chat to the CRM owner), <b>Desk Info</b>, and <b>Add a Note</b> with files.</p>
+</section>
+
+<section id="collab">
+<h2>Collaborate &amp; notifications</h2>
+<ul>
+  <li><b>Discuss</b> exists on drafts, scheduled, published and failed posts, Monitor items, connections and report cards. Visibility: Everyone, Team Members (default) or Custom Share. Up to 10 images per discussion. @tag members, and clients too. The Collaborate feed filters: Discussions, Drafts, Posts, Scheduled, Unpublished, Connections, Reports.</li>
+  <li><b>Team chat and audio/video calls</b> from any member's avatar (Premium+).</li>
+  <li><b>Social notifications</b> (bell): Facebook visitor posts, comments, messages, likes; X mentions, messages, retweets, likes, replies; Instagram comments. Per type, an admin picks which members get them.</li>
+  <li><b>Email notifications:</b> scheduled post published, scheduled post failed, channel disconnected, @mention in a discussion, approval requests and status changes.</li>
+  <li><b>Team notifications:</b> user joined, discussion started or updated, item shared, posts paused or resumed.</li>
+</ul>
+</section>
+
+<section id="reports">
+<h2>Reports</h2>
+<div class="tbl"><table>
+<tr><th>Report group</th><th>What it shows</th></tr>
+<tr><td>Summary</td><td>Followers, new and lost followers, posts, engagement, top post, profile views</td></tr>
+<tr><td>Audience</td><td>Follower growth; demographics by country, city, language, gender and age (Instagram); industry, function, seniority, company size (LinkedIn)</td></tr>
+<tr><td>Posts &amp; Engagement</td><td>Posts vs engagement, posts by type, top posts, top connections, posts by app, <b>best time to post</b> heat map, reactions breakdown</td></tr>
+<tr><td>Performance / Reach / Views</td><td>Profile views and clicks, reach and impressions (Facebook moves from Reach to Views on 15 Jun 2026)</td></tr>
+<tr><td>Network-specific</td><td>Reels and Stories (Instagram), Messenger (Facebook), Video Performance and Cards &amp; End Screen (YouTube), Reviews &amp; Questions (GBP), Career page (LinkedIn)</td></tr>
+<tr><td>Hashtag reports</td><td>Hashtags from the brand's own posts: word cloud, per-hashtag stats, compare up to 4</td></tr>
+<tr><td>Custom dashboards</td><td>Pick cards from any standard report (Premium+)</td></tr>
+<tr><td>CRM / Desk</td><td>Leads and contacts created, potentials, revenue; tickets created from Social</td></tr>
+</table></div>
+<ul>
+  <li>Two counting modes: <b>Lifetime</b> (all engagement on posts published in the range) and <b>Time-series</b> (engagement received in the range).</li>
+  <li>Date range: Standard 15 days, Professional 3 months, Premium+ 1 year. View by day, week, month or quarter. Data starts when the channel was connected (no backfill). Reports always use GMT.</li>
+  <li>Each card or section can be exported (PDF, PNG), emailed (optional password ≥6 chars) or scheduled (weekly or monthly). <b>Bulk CSV</b> export covers up to 90 days.</li>
+</ul>
+</section>
+
+<section id="integrations">
+<h2>CRM / Desk integration</h2>
+<div class="note ok">This is the part closest to our existing TAVI CRM and Desk, and probably the main reason to build Social inside our suite.</div>
+<div class="grid2">
+<div class="panel"><h4>Zoho CRM</h4><ul>
+<li>Brands sync both ways between Social and CRM's Social tab; the same Facebook Page and X profile must be connected in both.</li>
+<li><b>+Add to CRM</b> from Live Stream, Monitor, Messages, Connections: <i>Associate to Existing</i> (search a lead or contact) or <i>Add New</i> (lead or contact, choose CRM layout, fill fields).</li>
+<li><b>Lead generation rules</b> per channel: Social Action (like, comment, mention, DM…) + keyword criteria → add as Lead or Contact, with an on/off toggle.</li>
+<li>Connection profile shows CRM info, owner (Ping chat) and CRM notes. Inbox rules can test "is a CRM contact / lead".</li>
+<li>Only Facebook Page and X (network API limits).</li></ul></div>
+<div class="panel"><h4>Zoho Desk</h4><ul>
+<li><b>Convert to Ticket</b> from Monitor, Live Stream and Posts: pick a <b>Department</b> › Convert. A ticket ID is shown and links to Desk.</li>
+<li><b>Automatic ticket creation</b> (Settings › Ticket Creation) per Facebook and X: post and message types, <b>append interval</b> (replies inside it join the same ticket), keyword → department routing.</li>
+<li>Connection profile shows Desk info: tickets, owner, average response and resolution time, happiness rating.</li>
+<li>Reports › Desk Tickets lists all tickets created from Social.</li>
+<li>Only Facebook and X.</li></ul></div>
+</div>
+<p><b>Zoho Social Lite</b> comes free with paid Zoho CRM or Desk: 1 brand, 2 members, 6 core channels, CRM/Desk integration, mobile apps. Other integrations: Canva, cloud storage, Bit.ly, Zoho Flow (draft, schedule and publish actions; no triggers), a browser extension (zShare), iOS and Android apps, and Zoho MCP (31 AI-assistant tools).</p>
+</section>
+
+<section id="settings">
+<h2>Settings &amp; audit log</h2>
+<div class="tbl"><table>
+<tr><th>Area</th><th>Contents</th></tr>
+<tr><td>Brand Settings</td><td>Brand Information · Social Channels (connect, reconnect, disconnect) · Brand Members (team, clients) · Roles and Permissions · Notifications · Publishing Preferences (approvers, pause, CustomQ slots, hashtag groups, publishing groups) · Inbox Preferences · Lead Generation · Ticket Creation · Audit log</td></tr>
+<tr><td>General Settings</td><td>All Members · Portal Settings · Preference (URL shortener, UTM, media optimization, Zia) · Integrations (Canva, WhatsApp, Telegram, MCP) · Email Authentication (DKIM)</td></tr>
+<tr><td>Time zone</td><td>Per user: account, browser, brand or custom. Each brand has its own time zone. Posts schedule in the selected zone; Reports use GMT.</td></tr>
+<tr><td>Audit log</td><td>Portal Admins. Logs: roles created and changed, users invited and removed, brands added and deleted, time zone changes, posts paused and resumed, channels authenticated. Shows 1 month online; archive kept 1 year. Inbox actions are not audited.</td></tr>
+<tr><td>White-label (Agency)</td><td>Logo (≤20 KB, 200×40), favicon, company name, custom client domain (CNAME, SSL in 5–6 days), branded reports and client invites.</td></tr>
+</table></div>
+</section>
+
+<section id="plans">
+<h2>Plans &amp; feature gates</h2>
+<div class="tbl"><table>
+<tr><th>Plan</th><th>Brands</th><th>Members incl.</th><th>Key adds</th></tr>
+<tr><td>Free</td><td>1</td><td>1</td><td>6 core channels, publish now only, zShare, mobile</td></tr>
+<tr><td>Standard</td><td>1</td><td>1</td><td>Scheduling, drafts, calendar, media library, summary reports (15 days), 10–11 channels</td></tr>
+<tr><td>Professional</td><td>1 (+5 add-on)</td><td>1 (+ add-ons)</td><td>Bulk scheduler, CustomQ, pause, polls, first comment, Messages, Monitor (5 cols), 3-month reports, Live Stream</td></tr>
+<tr><td>Premium</td><td>1 (+ add-ons)</td><td>3</td><td>Inbox, approvals, custom roles, SmartQ, UTM, 15 Monitor cols, 1-year and custom reports, CRM/Desk, WhatsApp, Telegram, YouTube</td></tr>
+<tr><td>Agency / Agency Plus</td><td>10 / 20</td><td>5</td><td>Client logins, white-label, branded and scheduled client reports</td></tr>
+</table></div>
+<small class="src">Zoho's pricing page and plan-comparison page disagree by one tier on some features. The table follows the comparison page. Add-ons: member $12/month ($10 yearly); brand $17–23/month, or $92 per 5 brands on Agency plans.</small>
+</section>
+
+<section id="api">
+<h2>Public API v2 (useful as a reference design)</h2>
+<p>Base <code>https://social.zoho.com/social/v2</code>, Zoho OAuth 2.0, headers <code>portal_id</code> and <code>brand_id</code>. Zoho support must enable it for each portal. Times are Unix ms. There are no webhooks.</p>
+<div class="tbl"><table>
+<tr><th>Group</th><th>Endpoints</th></tr>
+<tr><td>Org</td><td><code>GET /socialportals</code> · <code>GET /socialbrands</code> · <code>GET /channels</code> · <code>GET /users</code></td></tr>
+<tr><td>Posts</td><td><code>POST /posts/publish</code> · <code>GET /posts/publish/{id}</code> · <code>GET /posts/published</code> (cursor)</td></tr>
+<tr><td>Schedules</td><td><code>GET|POST /posts/schedules</code> · <code>GET|PUT|DELETE /posts/schedules/{id}</code></td></tr>
+<tr><td>Drafts</td><td><code>GET|POST /posts/drafts</code> · <code>GET|PUT|DELETE /posts/drafts/{id}</code></td></tr>
+<tr><td>Approval</td><td><code>GET|POST /posts/activities</code> · <code>POST /posts/activities/status</code> (yet_to_review, in_review, approved, rejected)</td></tr>
+<tr><td>Media</td><td><code>GET /medialibrary</code> · <code>POST /medias/upload</code> · <code>POST /attachments/upload</code> (from URL)</td></tr>
+<tr><td>Helpers</td><td><code>GET /networkproperties</code> (limits) · <code>POST /posts/validate</code> · <code>GET /posts/count</code> · <code>GET /posts/mentions</code> · <code>GET /posts/geolocations</code> · <code>GET|POST /pinterest/boards</code></td></tr>
+</table></div>
+<p><b>Post payload:</b> <code>post.messages[]</code>, each with <code>channels[]</code> (network, brand_id, mentions, geo_location, first_comment, poll, has_dm, call_to_action, board_id), <code>message</code>, <code>link_preview</code>, <code>medias[]</code> (path, type, size, width, height, alt_text). Schedule: <code>schedule_time</code>, <code>type</code> = schedule | repeat, <code>repetition</code> {weekly|monthly, start, end, day}. Network keys: <code>facebookpage, twitter, linkedinprofile, linkedinpage, instagram, googlemybusiness, youtube, pinterest, tiktok, mastodon, threadsbyig, bluesky, arattai</code>. Errors: <code>INVALID_PARAM, INSUFFICIENT_PERMISSION, CHANNEL_NOT_ALLOWED, PLAN_NOT_SUPPORTED, BRAND_NOT_ALLOWED, API_NOT_ALLOWED</code>.</p>
+</section>
+
+<section id="build">
+<h2>Suggested build order</h2>
+<p>This is a recommendation from the study, not a Zoho fact. Each phase is usable on its own, and the later ones reuse the data model from phase 1.</p>
+<ol class="phases">
+  <li><b>Foundation:</b> portal, brand, channel and member model; roles with the 7 permissions and per-channel access; OAuth connect, reconnect and disconnect for Facebook Page, Instagram, X and LinkedIn first; token-expiry job and alerts; audit log.</li>
+  <li><b>Publishing core:</b> composer with per-network customization and validation against network limits; media upload and library; publish now, schedule, repeat, drafts; a publishing worker with retry, Failed and Unattempted states; Posts lists and calendar.</li>
+  <li><b>Team workflow:</b> approvals (5 states, single level), queue slots (CustomQ), pause and resume, bulk CSV scheduler, notifications (email + in-app), discussions.</li>
+  <li><b>Engagement:</b> webhook or polling ingestion per network; Inbox with the threading rules, statuses, assignment, saved replies, custom views, automation rules; Messages; Connections.</li>
+  <li><b>CRM / Desk link:</b> Add to CRM (associate or create), lead-generation rules, Convert to Ticket, auto ticket rules with append interval, CRM and Desk info on profiles. Reuse TAVI CRM and Desk APIs.</li>
+  <li><b>Insights:</b> metrics collection jobs per network; Brand Health; per-network reports, post stats, export, scheduled report emails; then Monitor columns and Live Stream.</li>
+  <li><b>Later:</b> SmartQ (needs history), hashtag reports, custom dashboards, more networks (YouTube, GBP, TikTok, Threads, Bluesky, Pinterest, WhatsApp, Telegram), AI compose and reply, agency client portal.</li>
+</ol>
+</section>
+
+<section id="open">
+<h2>Open questions</h2>
+<ul>
+  <li><b>Live check of the inner screens:</b> needs a test Facebook Page and/or X account that we own, to connect to the trial portal and walk the composer, Inbox, Monitor and Reports. The trial portal stays open for that (15-day trial from 25 Nov).</li>
+  <li>Not stated in Zoho's docs: whether "On Hold" is an Inbox status; whether sentiment is automatic; automation rule limits and order; post templates; RSS auto-publish; the exact role matrix for User and Limited Publisher; media-library quotas; API rate limits.</li>
+  <li>Scope decisions for the product owner: which networks are in v1, whether we need agency/client features, and which plan tiers (if any) gate features in TAVI.</li>
+</ul>
+</section>
+
+<section id="sources">
+<h2>Sources</h2>
+<ul>
+  <li>Live: Zoho Social trial portal on the Zoho test account, 25 Nov 2026 (onboarding form, brand set-up wall, 15 network tabs, Manage menu).</li>
+  <li>Zoho Social help center: <a href="https://help.zoho.com/portal/en/kb/social">help.zoho.com/portal/en/kb/social</a> (about 280 articles and FAQs).</li>
+  <li>Plans: <a href="https://www.zoho.com/social/plan-comparison.html">zoho.com/social/plan-comparison.html</a>, <a href="https://www.zoho.com/social/pricing.html">pricing.html</a>.</li>
+  <li>API v2: <a href="https://www.zoho.com/social/api/introduction.html">zoho.com/social/api/introduction.html</a>.</li>
+  <li>The full research notes (≈2,500 lines with a source URL per fact) are kept with the study files in <code>executions/execu_2026-11-25_zoho-social-study</code>.</li>
+</ul>
+</section>
+</main>
+</div>

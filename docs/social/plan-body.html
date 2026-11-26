@@ -1,0 +1,55 @@
+<header><div class="wrap">
+  <div class="top"><h1>TAVI Social — Test Plan</h1><span class="env">Social module (Zoho Social parity) · TAVI CRM + Desk · plan 25 Nov 2026 · {{N}} cases</span></div>
+  <div class="bar" id="bar" aria-hidden="true"></div>
+  <div class="counts" id="counts"></div>
+  <div class="filters" id="filters"></div>
+</div></header>
+<main><div class="wrap">
+  <p class="note" id="note">Mark each case Pass, Fail, Blocked or Skip, and write what you saw in the comment box. Results save as you go, and Claude can read them back.</p>
+  <details class="plan" open><summary>Test plan: scope, approach, environments, criteria, risks</summary>
+    <h3>Objective</h3>
+    <p>Check that the TAVI Social module does what Zoho Social does for the features in scope, works with TAVI CRM and Desk, and is secure, reliable and usable before go-live. The reference is the Zoho Social study page (25 Nov 2026). Extra capability beyond Zoho is a plus, not a bug.</p>
+    <h3>Scope</h3>
+    <ul>
+      <li><b>In:</b> portal, brands and onboarding; channel connection; roles and permissions; composer; scheduling, queue, repeat, pause; bulk scheduler; approvals; posts, calendar and drafts; media, links and AI; publishing engine; Inbox; Messages; Monitor and Live Stream; Connections; Collaborate and notifications; Reports; CRM and Desk integration; settings and audit log; public API; security; performance; UI, Arabic/RTL, accessibility; end-to-end journeys.</li>
+      <li><b>Networks:</b> cases are written for Facebook Page, Instagram, X and LinkedIn first. Run network-specific cases only for the networks the product owner puts in v1; mark the rest Skipped.</li>
+      <li><b>Out until confirmed:</b> agency client portal and white-label, mobile apps, browser extension, MCP, link-in-bio, billing and plan purchase. C-12 and the plan-limit cases run only if those parts are built.</li>
+    </ul>
+    <h3>Approach</h3>
+    <ul>
+      <li><b>Expected results</b> follow Zoho Social's documented behaviour. Where TAVI's requirements differ, the requirement wins and the case gets a comment.</li>
+      <li><b>Order:</b> P0 cases of each area as features land (smoke), then P1, then P2. End-to-end journeys (area X) last, before sign-off.</li>
+      <li><b>Methods:</b> manual in the browser for UI and network-side checks; API calls for permissions, validation and state machines; Selenium automation for regression (composer validation, approvals, inbox rules) once screens are stable.</li>
+      <li><b>Network-side proof:</b> for every publish or reply case, confirm on the real network page, not only in TAVI.</li>
+      <li><b>Bugs:</b> filed in Plane as "Social | &lt;title&gt;" with the case ID and evidence images; the case here is set to Fail with the ticket number.</li>
+    </ul>
+    <h3>Test types</h3>
+    <div class="ptbl"><table><tr><th>Type</th><th>Cases</th></tr>{{TYPES}}</table></div>
+    <h3>Coverage by area</h3>
+    <div class="ptbl"><table><tr><th>Area</th><th>Cases</th><th>P0</th></tr>{{AREAS}}</table></div>
+    <p>Priority: P0 {{P0}} · P1 {{P1}} · P2 {{P2}}. P0 blocks go-live; P1 must pass or have an agreed workaround; P2 can ship with a known issue.</p>
+    <h3>Environments and test data</h3>
+    <ul>
+      <li>TAVI NDC-Staging with Social, CRM and Desk on one tenant, plus a second tenant for isolation cases.</li>
+      <li><b>Team-owned test accounts on each network:</b> a Facebook Page with Business Manager and an ad account, an Instagram Professional account linked to it, an X account, a LinkedIn Company Page with a super-admin profile, and a second "customer" account per network to comment, DM and mention. Never a real customer page.</li>
+      <li>Users: Portal Admin, Brand Admin, User, Limited Publisher, one custom role, one approver, one user limited to a single channel.</li>
+      <li>Reference: the Zoho Social trial portal opened 25 Nov 2026, for side-by-side checks once a test channel is connected.</li>
+      <li>Test data names start with <code>QA SOC</code>; a ledger lists everything created; test posts are deleted from TAVI and the networks after each round.</li>
+    </ul>
+    <h3>Entry criteria</h3>
+    <ul><li>Feature deployed to staging with release notes; requirements available.</li><li>Network developer apps registered and test accounts connected.</li><li>P0 smoke of the area passes, otherwise the area is reported as blocked.</li></ul>
+    <h3>Exit criteria</h3>
+    <ul><li>All P0 cases pass; no open Urgent or High bugs.</li><li>At least 95% of P1 cases pass; the rest have agreed workarounds.</li><li>All end-to-end journeys (X-01 to X-05) pass.</li><li>Report numbers match the networks' own insights within the agreed tolerance.</li><li>Test data cleaned on TAVI and on the networks.</li></ul>
+    <h3>Risks</h3>
+    <div class="ptbl"><table><tr><th>Risk</th><th>Effect</th><th>Mitigation</th></tr>
+      <tr><td>Network app review (Meta, LinkedIn, TikTok, Google) not done</td><td>Only developer-mode test users can connect; some permissions missing</td><td>Start reviews early; add the test accounts as developer-app testers</td></tr>
+      <tr><td>Network rate limits and spam checks</td><td>Posts refused or test accounts locked</td><td>Spread publishing tests; separate accounts for load cases (J-01, J-02)</td></tr>
+      <tr><td>Insights delay on the networks</td><td>Report numbers lag 24–48 h</td><td>Compare reports a day after posting; agree a tolerance</td></tr>
+      <tr><td>Time-based rules (24 h threading, repeat, append interval, token expiry)</td><td>Slow to test in real time</td><td>Ask devs for a test clock or short intervals on staging</td></tr>
+      <tr><td>Webhooks need a public callback URL</td><td>Inbox items never arrive on staging</td><td>Confirm staging is registered with each network before Inbox testing</td></tr>
+    </table></div>
+    <h3>Deliverables</h3>
+    <ul><li>This checklist with results and comments.</li><li>Plane bugs with evidence.</li><li>An execution report per round: pass rate by area, open bugs, blocked items.</li><li>A Selenium feature folder for regression.</li></ul>
+  </details>
+  <div id="list"></div>
+</div></main>

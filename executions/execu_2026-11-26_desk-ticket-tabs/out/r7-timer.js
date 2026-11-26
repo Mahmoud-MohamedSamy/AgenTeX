@@ -1,0 +1,10 @@
+const out = {}; const SA = 'ef8dc91f-1d30-491d-a1fc-9b62b96eca94';
+const cur = await api.O('GET', '/desk/timers/current'); out.currentBefore = cur.s + ' ' + short(cur.j?.data && { t: cur.j.data.ticket_number, state: cur.j.data.state }, 100);
+if (cur.s === 200 && cur.j?.data?.ticket_id) out.discardLeftover = E(await api.O('DELETE', TK(cur.j.data.ticket_id) + '/timer'));
+const e = await mkTicket('O', 'QA TT R timer-notify', { department: SA, email: QA_EMAIL }); ST.RN.e = e.id; saveState();
+out.start = E(await api.O('POST', TK(e.id) + '/timer/start', {}));
+const r = await api.O('PUT', TK(e.id) + '/resolution', { content: '<p>QA TT notify while timer runs (you can ignore this email)</p>', notify_contact: true }); await sleep(4000);
+out.save = E(r) + ' notif=' + short(r.j?.data?.notification, 120); out.statusWithTimer = (await getTicket(e.id)).status;
+const h = await api.O('GET', TK(e.id) + '/history'); out.hist = arr(h.j?.data?.items || h.j?.data).map(x => x.action + (x.new_value ? '=' + String(JSON.stringify(x.new_value)).slice(0, 20) : '')).join(' | ');
+out.discard = E(await api.O('DELETE', TK(e.id) + '/timer'));
+return out;

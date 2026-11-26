@@ -1,0 +1,17 @@
+[{ "out": "NDC-3136-retest-BLOCKED.png", "card": { "lines": [
+  "# Needed: a ticket with a running SLA, to change its status type (Open -> Closed -> On Hold -> Open) and watch the SLA",
+  "POST /desk/sla/policies  \"QA RT27 SLA\" (QA PA Dept 1, active, triggers create + update, Subject contains \"QA RT27 sla\", response 1 h, resolution 4 h)  -> 201",
+  "create ticket \"QA RT27 sla A\" in QA PA Dept 1  -> 201",
+  "> GET /desk/tickets/{id}/sla every 8 s for 64 s -> state none, policy null",
+  "> POST /desk/tickets/{id}/sla/reapply -> 200, then state still none",
+  "# Same as 23 Nov. Blocker NDC-3202 (SLA | No SLA starts on new tickets) is still in Bug.",
+  "Not run: the status type change. No status was changed." ] },
+  "verdict": "BLOCKED · NDC-3136 retest 25 Nov", "title": "Ticket Statuses | Cannot retest: no SLA starts on new tickets (NDC-3202)", "notes": [] },
+ { "out": "NDC-3051-retest-BLOCKED.png", "card": { "lines": [
+  "GET /desk/data/backups (NDC-Staging, 25 Nov 09:45 UTC):",
+  "01a1f83b  custom 14-19 Nov  completed  restorable true  expires 27 Nov 2026 09:14 UTC   (not expired yet)",
+  "01a2121b  custom 24-26 Nov  completed  restorable true  expires 2 Dec 2026 09:48 UTC    (made today for NDC-2863)",
+  "> no expired backup exists, so the \"expired\" reason cannot be checked",
+  "# Pass bar (unchanged): an expired backup shows status expired, restorable false, reason BACKUP_EXPIRED (not BACKUP_NOT_FINISHED)",
+  "Retest after 27 Nov 09:14 UTC, when 01a1f83b expires." ] },
+  "verdict": "BLOCKED · NDC-3051 retest 25 Nov", "title": "Data Backup | Cannot retest yet: no expired backup on NDC-Staging", "notes": [] }]

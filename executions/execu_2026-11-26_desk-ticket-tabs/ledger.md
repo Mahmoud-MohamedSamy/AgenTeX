@@ -1,0 +1,68 @@
+- 2026-11-26T14:46:09 ticket "QA TT R main" 88767baa-4d20-4c33-bdf2-4031b45a69c9
+- 2026-11-26T14:46:10 ticket "QA TT R noemail" 47e5b0cd-f9fa-49ba-b1da-c19528b1bf40
+- 2026-11-26T14:46:11 ticket "QA TT R mkt" 6ab56b34-e10e-4d13-9ede-e4e42dad5517
+- 2026-11-26T14:46:58 ticket "QA TT T main" e2e56dde-aaf4-40c4-a7e6-52a4048591d3
+- 2026-11-26T14:48:37 ticket "QA TT T second" 97adf8f6-8fc4-437d-8b92-5a8d68e7a1df
+- 2026-11-26T14:49:12 ticket "QA TT P P" 5908e990-18d0-4554-a60b-0ee190a2038d
+- 2026-11-26T14:49:13 ticket "QA TT P C1" 9600c44f-845c-41ef-990a-ab3e48d27c0f
+- 2026-11-26T14:49:14 ticket "QA TT P C2" 5495be96-bc7b-46a4-b044-3c59d5701dab
+- 2026-11-26T14:49:15 ticket "QA TT P C3" d1ad183f-6794-4bc4-aaf7-804858d620b0
+- 2026-11-26T14:49:16 ticket "QA TT P X" f4a2428d-db99-4f78-a806-53957173a255
+- 2026-11-26T14:49:17 ticket "QA TT P MKT child" 8da5a6c1-e820-4020-909f-a4daa8574089
+- 2026-11-26T14:49:46 ticket "QA TT PC none parent" b9d3c251-f0b5-4176-b1b8-8050e776c147
+- 2026-11-26T14:49:47 ticket "QA TT PC none c1" 127dc0fc-e21d-47f2-b13c-13f3381ae25c
+- 2026-11-26T14:49:47 ticket "QA TT PC none c2" aae105fa-dcff-4f2d-aff7-122bf508e921
+- 2026-11-26T14:49:50 ticket "QA TT PC cc parent" 4032d1cd-a9bd-4433-9ec5-761c0d726d3b
+- 2026-11-26T14:49:51 ticket "QA TT PC cc c1" fb446a1b-b7e7-4ed6-9c6f-e2671c517656
+- 2026-11-26T14:49:52 ticket "QA TT PC cc c2" 09d858a5-103c-4e91-9c04-e71db4931b55
+- 2026-11-26T14:50:00 ticket "QA TT PC blk parent" d54cf791-473c-447e-9925-6c4a35c351aa
+- 2026-11-26T14:50:01 ticket "QA TT PC blk c1" 1fff7db0-6b58-4af4-bd06-c7bbaa47aa3a
+- 2026-11-26T14:50:02 ticket "QA TT PC blk c2" f13c4ee7-115b-4219-b8d8-cc209a4df08e
+- 2026-11-26T14:50:08 ticket "QA TT PC blk2 parent" b3b76262-ec16-4430-80ce-64fe5641f685
+- 2026-11-26T14:50:10 ticket "QA TT PC blk2 c1" 0934d97b-43cc-4b8c-9edb-6c7baf616ba5
+- 2026-11-26T14:50:11 ticket "QA TT PC blk2 c2" 4e78740e-a2b8-4a9d-8cab-889b2e4c31c3
+- 2026-11-26T14:50:16 ticket "QA TT PC auto parent" 84be737e-67d1-4323-9fe2-05ad5c046e9d
+- 2026-11-26T14:50:16 ticket "QA TT PC auto c1" 7ab46f2c-7205-4d05-bace-78f5ea4f165a
+- 2026-11-26T14:50:18 ticket "QA TT PC auto c2" 310fd4d5-6529-4a2b-b60b-c37f15103d88
+- 2026-11-26T14:50:49 ticket "QA TT probe Sales" e8a30063-a06b-4345-aa48-24cecd8cc4f4
+- 2026-11-26T14:50:55 ticket "QA TT probe Tech" 2c4254cd-c3df-4142-82b2-5c6928b8d495
+- 2026-11-26T14:51:00 ticket "QA TT probe HR" 50e4597b-d284-440d-95dd-dc251cb7b552
+- 2026-11-26T14:51:06 ticket "QA TT probe QA RT26 VO Dept" 40f53491-6335-41f0-bb70-06ee8eee0aa6
+- 2026-11-26T14:51:18 ticket "QA TT PC none parent" a6d32c26-0624-4125-9dbc-cafe857a02f9
+- 2026-11-26T14:51:19 ticket "QA TT PC none c1" 44552633-c621-4e00-b56f-852564592ee1
+- 2026-11-26T14:51:20 ticket "QA TT PC none c2" e8750ad6-812c-4d2a-b961-bac92f411483
+- 2026-11-26T14:51:25 ticket "QA TT PC cc parent" 283d1fdf-2a70-4267-b388-e1da42edf950
+- 2026-11-26T14:51:27 ticket "QA TT PC cc c1" 98ccce18-c7e9-457e-878d-d9e6d4f82e05
+- 2026-11-26T14:51:28 ticket "QA TT PC cc c2" a4c05039-02fa-4af2-812c-1c12bcb49fee
+- 2026-11-26T14:51:38 ticket "QA TT PC blk parent" 7f0863e8-19bf-4f7b-938d-2ac35b2f534f
+- 2026-11-26T14:51:39 ticket "QA TT PC blk c1" 4e310dfd-45e4-471d-887a-e0fa45b1354a
+- 2026-11-26T14:51:41 ticket "QA TT PC blk c2" 00405716-d066-4539-8948-52bf21aa608e
+- 2026-11-26T14:51:55 ticket "QA TT PC blk2 parent" eb34d498-d2e5-4729-ac5f-accbae75e689
+- 2026-11-26T14:51:57 ticket "QA TT PC blk2 c1" 6003b849-bec7-4278-a22d-95300068bad3
+- 2026-11-26T14:51:57 ticket "QA TT PC blk2 c2" 87764c33-5eb0-40c9-bcbc-d5548cac4334
+- 2026-11-26T14:52:00 ticket "QA TT PC auto parent" 1ed66bd2-fb9d-4dab-9432-74fde2aacae7
+- 2026-11-26T14:52:00 ticket "QA TT PC auto c1" b714dc8b-f625-40bb-82b9-080c875528f8
+- 2026-11-26T14:52:01 ticket "QA TT PC auto c2" 3ebda516-09aa-46d2-9df6-0c508c94d577
+- 2026-11-26T14:52:41 ticket "QA TT R accept" c0f618dd-e7c0-4ed3-8571-76b046c97d11
+- 2026-11-26T14:52:43 ticket "QA TT R decline" fe569fdb-3afb-49b1-bff2-989f8ff046d2
+- 2026-11-26T14:55:42 ticket "QA TT R edit-then-notify" 49695d87-0ced-404e-a342-659c45fc9d22
+- 2026-11-26T14:55:43 ticket "QA TT R edit-then-notify2" cc865f9b-8d40-4017-9904-92014d161921
+- 2026-11-26T14:56:13 ticket "QA TT R timer-notify" f4f59b16-c861-4e13-9f7f-b46678e16979
+- 2026-11-26T14:56:46 ticket "QA TT UI main" eb3ce385-637e-44f3-96fa-cff40b53a7de
+- 2026-11-26T14:56:48 ticket "QA TT UI parent" 1e5ed998-2dfe-47bf-a986-87bce1d37cb8
+- 2026-11-26T14:56:49 ticket "QA TT UI child 1" fd534c36-d1bc-42e5-a6a8-b6be70022987
+- 2026-11-26T14:56:50 ticket "QA TT UI child 2" 91c6bf2b-8b64-4f90-89ff-c25005df00fb
+- 2026-11-26T14:56:50 ticket "QA TT UI loose" 0475fecb-d285-4abd-aefe-71cc61e71e49
+- 2026-11-26T14:56:51 ticket "QA TT UI mkt child" 68b0b557-3126-4350-9f0d-850646846bdd
+- 2026-11-26T14:56:52 ticket "QA TT UI bulk 1" 58fcd1e2-b6f9-4e10-b789-49cec9d69b1a
+- 2026-11-26T14:56:53 ticket "QA TT UI bulk 2" f2a7009a-f5a7-4401-bb6d-723e586e898f
+- 2026-11-26T14:56:53 ticket "QA TT UI xss" 1c1027c5-69d8-43f1-8f99-44d0c6854a04
+- 2026-11-26T15:10:01 ticket "QA TT P merge target" 64a2655d-a448-44ab-b953-dea481a0392f
+- 2026-11-26T15:11:24 ticket "QA TT V bp" 3b49fd53-c67a-49ca-9c0d-16f302e92513
+- 2026-11-26T15:11:25 ticket "QA TT V bc1" 298793c1-03ba-4efc-8cb7-027220a8c44e
+- 2026-11-26T15:11:26 ticket "QA TT V bc2" a4cd4a53-7e27-45ec-bc96-6eb2905a79db
+- 2026-11-26T15:11:26 ticket "QA TT V ap" 80c81f6b-e53e-4979-a3ba-68b59b06b1a0
+- 2026-11-26T15:11:27 ticket "QA TT V ac1" 08dd974e-9037-4101-b1c9-2eb8402370ac
+- 2026-11-26T15:11:28 ticket "QA TT V ac2" 5bed78ab-5026-4538-b647-a17f62bf62a4
+- 2026-11-26T15:18:11 ticket "QA TT W parent" 979be277-06e3-449e-829d-968449cc9837
+- 2026-11-26T15:18:12 ticket "QA TT W c1" c3f9fa13-c562-481f-87f8-6f35b0c37f0c

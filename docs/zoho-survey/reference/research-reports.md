@@ -1,0 +1,27 @@
+# Reports/integrations/admin research (agent, condensed)
+
+Responses grid (Responses tab): one row per respondent; show/hide/pin columns; filter; tag; notes; view in submitted language; bulk select -> trash; export; custom views (columns from Response fields / Configured Variables / Survey Pages / Merged Documents / Notes); print; permanent delete. Metadata columns: Response ID, IP, User agent, Response Status, Response link, Survey URL accessed, Start time, Completion time, Time taken, Collector, Total rating, CSAT Score, Average rating, Quotas, Tags, Respondent location, Respondent Variables, Notes. Default visible: Response ID, Status, Start Time, questions, Notes.
+Individual Responses: prev/next, date filter, scores (total rating, NPS, CSAT, average rating, score, grade), Skipped markers, variables by source; actions Timeline (Pro), Edit, Delete, Export PDF, Print.
+Statuses: Completed, Partial, Disqualified, Over quota. Counters: Survey visits, Total, Completed, Partial.
+Respondent edit: no updates / same browser until completion / at any time; submission frequency one-time/daily/weekly/monthly/quarterly/yearly.
+Trash responses (excluded from reports; restore; custom view "Trashed"); Delete Responses: all (+visits), by period, by filter.
+Tags on responses (single/bulk, shared with survey tags). Notes: title<=100, rich msg<=5000, many per response, exported.
+Summary report: per question chart and/or data table, percentage bar; metrics Average Rating, NPS, CSAT; analysis Sentiment, Word Cloud, TURF.
+Filters: defaults All/Completed/Partial/Today; custom: date range fixed or relative, status, collector, tags, language, logic on questions/variables/scores (=, !=, <, >, between, answered, not answered), match all/any.
+Cross-tab: banner row question vs column questions; eligible rows choice/rating/NPS types; metrics avg rating, distribution, NPS score, NPS category dist, CSAT; charts bar/pie/line/arc/donut/spider/area/stacked/grouped/radar/spline.
+Trend: interval day/week/month/quarter; NPS, avg rating, CSAT over time.
+Custom report: chosen questions + variables. Text analysis: sentiment (long answer, English; Anger, Disappointment, Neutral, Sarcasm, Happy, Extremely Happy), word cloud, TURF (MC many, up to 6).
+CSAT: positive/answered*100; eligible NPS, Likert, Star, matrix likert/star, image star; positive options per scale size 3:3,4:3-4,5:4-5,6:4-6,7:5-7,8:5-8,9:5-9,10:6-10,11:6-11, NPS 9-10. NPS standard promoters-detractors.
+Quiz: score statistics, stats table, question difficulty, certificates.
+Dashboards: default + custom per survey; widgets charts, tables, open-ended summary/list, word cloud, sentiment, TURF, stats, crosstab, trend; filters; share.
+Share report: name, Summary/Individual/both, allow text responses, filter all/completed/partial; access private emails / org / SAML org / public / password -> URL.
+Schedule report: once/daily/weekly/monthly, scope, filter, summary (PDF/sheet) or individual (CSV/SPSS/sheet), recipients.
+Export individual: XLS/XLSX, CSV, SPSS, PDF (orientation, paper, all/shown/answered, range), ZIP, Tableau WDC, Zoho Sheet; password option; async Exports list. Summary: sheet/PDF; chart as image/PDF.
+Integrations pattern: connect once in Manage Portal > Apps and Services; enable per survey in Hub > Integrations; responses before integration need manual sync; Sync Status (Successful/Untried/Failed, sync all, retry).
+CRM: Production/Sandbox, modules incl custom, Add / Update (record id) / Add-Update (duplicate-check field), question->field or direct value, attach response PDF/files.
+Desk: create ticket per response (portal, department, module, layout, map fields, attach PDF), custom script condition; Desk-side extension (templates per dept, links w/ email+ticket id+agent, agent/contact reports, ticket subtab).
+Google Sheets, Salesforce (Add/Update by URL param id/Add-Update by external id), Slack (/zsurvey commands, notifications), Teams, Zapier (Survey Response Submission trigger), Zoho Flow (triggers Response completed, Response added or updated; actions create/update/fetch survey, report, send invitation, share), Analytics connector, Power BI, HubSpot, Recruit, SalesIQ.
+Hub > Triggers: Trigger Emails (from verified sender, to/cc incl email question, subject/body with variables incl scores, attach response PDF, conditions with pattern); Trigger SMS; Trigger Functions (Deluge, connections); Webhooks (name, POST URL, body form-data/JSON, key/value from response/variable/direct, query params, headers; Sync Status).
+API (unofficial, from Pipedream): OAuth, base /survey/api/v1/private, GET /portals, surveys list, webhooks create/delete (event response_completed), collectors metainfo, email distributions, sendinvitation, integration/trigger/variables.
+Admin: Portal users (add, portal admin, dept+role pairs, activate/deactivate/delete, statuses active/inactive/pending). Departments Enterprise. Roles: Department Admin, User, Contractor, Report Viewer + custom (Allow/Deny/Read Only per permission). Audit logs Enterprise: date/time, user, activity; Create/Update/Delete/Download; filter user/date/action; 365 days; export.
+Security: AES-256 field encryption (Encrypt answer; filters only =,!=,answered); ePHI/HIPAA; data deleted 6 months after closure; free inactive 365 days. White label CNAME, Pro 1 domain, Enterprise 10, SSL by Zoho; default domain per portal/dept/survey. SAML Enterprise (report viewers, response links, participants).

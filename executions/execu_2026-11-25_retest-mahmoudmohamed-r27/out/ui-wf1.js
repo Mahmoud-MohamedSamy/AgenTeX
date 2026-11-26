@@ -1,0 +1,10 @@
+const o = { utc: new Date().toISOString() };
+const time = async label => { const t0 = Date.now(); await page.goto(H + '/settings/automation/workflow-rules', { waitUntil: 'commit' }); await page.locator('tbody tr').first().waitFor({ timeout: 240000 }); o[label] = Date.now() - t0; o[label + '_rows'] = await page.locator('tbody tr').count(); };
+await go('/'); await sleep(2000);
+await time('firstVisitMs'); await sleep(3000); await shot('3207-first-visit');
+o.footer = ((await text()).match(/\d+\s*[–-]\s*\d+\s+of\s+\d+[^\n]{0,80}/) || [null])[0];
+o.header = (await page.locator('main').first().innerText()).slice(0, 700);
+o.buttons = (await page.locator('main').getByRole('button').allInnerTexts()).filter(Boolean).slice(0, 40);
+await time('reloadMs'); await sleep(1500);
+await time('thirdMs');
+return o;

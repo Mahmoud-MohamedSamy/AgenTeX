@@ -1,0 +1,17 @@
+[{ "out": "NDC-3230-retest-PASS.png", "card": { "lines": [
+  "# Rule \"QA RT27 3230 rule\" (On Create, QA PA Dept 1, active), condition: Subject starts with \"QA RT27 3230\", action: set QA NDC Agency code",
+  "PATCH /workflow/rules/{id}  { actions: [...] }   (no criteria)  -> 200   criteria kept: Subject starts with \"QA RT27 3230\", action changed to A2",
+  "PATCH /workflow/rules/{id}  { name: \"... renamed\" }             -> 200   criteria kept",
+  "# Behaviour after the partial updates",
+  "ticket \"Other subject RT27 3230 nomatch\" -> rule not fired, field empty",
+  "ticket \"QA RT27 3230 match\"               -> rule fired once, field = A2   (control)",
+  "PATCH /workflow/rules/{id}  { criteria: null }                  -> 200   criteria cleared (explicit null still clears)",
+  "# Editor (Settings > Workflow Rules > rule)",
+  "change only the action value and Save -> sends the whole rule incl. criteria -> condition kept, action = \"A3 editor\"",
+  "open the condition, Remove condition, Save -> sends criteria: null -> rule reopens with \"No conditions - actions run on every event of this trigger\"",
+  "# Ticket expected: conditions kept when left out; cleared only by explicit criteria: null -> met" ] },
+  "verdict": "PASS · NDC-3230 retest 25 Nov", "title": "Workflow Rules | A rule update that leaves out the conditions keeps them; explicit null clears them", "notes": [] },
+ { "out": "NDC-3230-editor-remove-condition.png", "src": "screenshots/raw/3230-editor-reopened.png", "verdict": "PASS · NDC-3230 editor", "title": "Editor: removing the last condition and saving still saves \"no conditions\"",
+  "crop": [230, 60, 1160, 430], "boxes": [[370, 416, 1004, 54]],
+  "notes": [["1", "After Remove condition + Save the editor sent criteria: null; reopened rule shows \"No conditions — actions run on every event of this trigger\" (so the editor still works with the new API rule)."],
+            ["–", "Side note (not part of this ticket): the diagram still reads \"CONDITION 1\" when there are no conditions."]] }]

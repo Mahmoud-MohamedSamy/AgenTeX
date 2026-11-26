@@ -1,0 +1,426 @@
+<title>Social Test Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky run header (progress + filters) over area groups of case cards, one column, max 860px */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --fg:#17202b; --muted:#5d6876; --line:#dde1e7; --accent:#0f6e78; --accent-soft:#e2f1f2;
+  --pass:#1b7f45; --pass-bg:#e3f4ea; --fail:#c62f2f; --fail-bg:#fbe7e7; --block:#b45f06; --block-bg:#fcefdc; --skip:#3f5f9a; --skip-bg:#e7edf8;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12171d; --surface:#1a2129; --fg:#e6eaef; --muted:#9aa5b2; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --pass:#5fd18e; --pass-bg:#173326; --fail:#ff7b7b; --fail-bg:#3a1c1e; --block:#f0a54d; --block-bg:#3a2a16; --skip:#8fb0ee; --skip-bg:#1d2a42; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12171d; --surface:#1a2129; --fg:#e6eaef; --muted:#9aa5b2; --line:#2c3540; --accent:#4fc0c9; --accent-soft:#16343a;
+  --pass:#5fd18e; --pass-bg:#173326; --fail:#ff7b7b; --fail-bg:#3a1c1e; --block:#f0a54d; --block-bg:#3a2a16; --skip:#8fb0ee; --skip-bg:#1d2a42; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+header .wrap{padding-block:14px 12px;display:grid;gap:10px}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+h1{font-size:20px;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.env{color:var(--muted);font-size:13px}
+.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--line)}
+.bar span{display:block;height:100%;transition:width .3s}
+.counts{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.counts b{color:var(--fg)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:13px;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.chip:focus-visible,.st button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sep{width:1px;background:var(--line);margin:2px 4px}
+main .wrap{padding-block:18px 60px;display:grid;gap:26px}
+.note{font-size:13px;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin:0}
+.pre{font-size:13px;color:var(--muted);margin:0;padding-left:18px}
+.pre li{margin:2px 0}
+section{display:grid;gap:10px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0;display:flex;justify-content:space-between;gap:10px}
+h2 small{font-weight:500;letter-spacing:0;text-transform:none;font-variant-numeric:tabular-nums;white-space:nowrap}
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:8px;min-width:0}
+.card[data-s="Pass"]{border-left-color:var(--pass)}.card[data-s="Fail"]{border-left-color:var(--fail)}
+.card[data-s="Blocked"]{border-left-color:var(--block)}.card[data-s="Skipped"]{border-left-color:var(--skip)}
+.head{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.id{font-family:var(--mono);font-size:12.5px;color:var(--accent)}
+.pri{font-family:var(--mono);font-size:11.5px;padding:0 6px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+.pri.P0{color:var(--fail);border-color:currentColor}
+.title{font-weight:600;flex:1 1 220px;min-width:0}
+.tk{font-family:var(--mono);font-size:12px;color:var(--muted)}
+ol{margin:0;padding-left:20px;color:var(--fg)}ol li{margin:1px 0}
+.exp{font-size:14px;color:var(--muted)}.exp b{color:var(--fg);font-weight:600}
+.st{display:flex;flex-wrap:wrap;gap:6px}
+.st button{font:inherit;font-size:13px;font-weight:500;padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;min-height:34px}
+.st button[aria-pressed="true"][data-v="Pass"]{background:var(--pass-bg);border-color:var(--pass);color:var(--pass)}
+.st button[aria-pressed="true"][data-v="Fail"]{background:var(--fail-bg);border-color:var(--fail);color:var(--fail)}
+.st button[aria-pressed="true"][data-v="Blocked"]{background:var(--block-bg);border-color:var(--block);color:var(--block)}
+.st button[aria-pressed="true"][data-v="Skipped"]{background:var(--skip-bg);border-color:var(--skip);color:var(--skip)}
+.st button:disabled{opacity:.5;cursor:default}
+textarea{font:inherit;font-size:14px;width:100%;box-sizing:border-box;min-height:40px;resize:vertical;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:var(--bg);color:var(--fg)}
+.meta{font-size:12px;color:var(--muted);min-height:16px}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+@media (prefers-reduced-motion:reduce){.bar span{transition:none}}
+
+details.plan{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+details.plan>summary{cursor:pointer;font-weight:600}
+details.plan h3{font-size:14px;margin:14px 0 4px}
+details.plan p,details.plan li{font-size:14px;max-width:75ch}
+details.plan ul{padding-left:18px;margin:4px 0}
+.ptbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;margin:6px 0}
+.ptbl table{border-collapse:collapse;width:100%;font-size:13.5px}
+.ptbl th,.ptbl td{text-align:left;vertical-align:top;padding:6px 10px;border-bottom:1px solid var(--line)}
+.ptbl th{color:var(--muted);font-weight:600;background:var(--bg)}
+.ptbl tr:last-child td{border-bottom:0}
+</style>
+<header><div class="wrap">
+  <div class="top"><h1>TAVI Social — Test Plan</h1><span class="env">Social module (Zoho Social parity) · TAVI CRM + Desk · plan 25 Nov 2026 · 187 cases</span></div>
+  <div class="bar" id="bar" aria-hidden="true"></div>
+  <div class="counts" id="counts"></div>
+  <div class="filters" id="filters"></div>
+</div></header>
+<main><div class="wrap">
+  <p class="note" id="note">Mark each case Pass, Fail, Blocked or Skip, and write what you saw in the comment box. Results save as you go, and Claude can read them back.</p>
+  <details class="plan" open><summary>Test plan: scope, approach, environments, criteria, risks</summary>
+    <h3>Objective</h3>
+    <p>Check that the TAVI Social module does what Zoho Social does for the features in scope, works with TAVI CRM and Desk, and is secure, reliable and usable before go-live. The reference is the Zoho Social study page (25 Nov 2026). Extra capability beyond Zoho is a plus, not a bug.</p>
+    <h3>Scope</h3>
+    <ul>
+      <li><b>In:</b> portal, brands and onboarding; channel connection; roles and permissions; composer; scheduling, queue, repeat, pause; bulk scheduler; approvals; posts, calendar and drafts; media, links and AI; publishing engine; Inbox; Messages; Monitor and Live Stream; Connections; Collaborate and notifications; Reports; CRM and Desk integration; settings and audit log; public API; security; performance; UI, Arabic/RTL, accessibility; end-to-end journeys.</li>
+      <li><b>Networks:</b> cases are written for Facebook Page, Instagram, X and LinkedIn first. Run network-specific cases only for the networks the product owner puts in v1; mark the rest Skipped.</li>
+      <li><b>Out until confirmed:</b> agency client portal and white-label, mobile apps, browser extension, MCP, link-in-bio, billing and plan purchase. C-12 and the plan-limit cases run only if those parts are built.</li>
+    </ul>
+    <h3>Approach</h3>
+    <ul>
+      <li><b>Expected results</b> follow Zoho Social's documented behaviour. Where TAVI's requirements differ, the requirement wins and the case gets a comment.</li>
+      <li><b>Order:</b> P0 cases of each area as features land (smoke), then P1, then P2. End-to-end journeys (area X) last, before sign-off.</li>
+      <li><b>Methods:</b> manual in the browser for UI and network-side checks; API calls for permissions, validation and state machines; Selenium automation for regression (composer validation, approvals, inbox rules) once screens are stable.</li>
+      <li><b>Network-side proof:</b> for every publish or reply case, confirm on the real network page, not only in TAVI.</li>
+      <li><b>Bugs:</b> filed in Plane as "Social | &lt;title&gt;" with the case ID and evidence images; the case here is set to Fail with the ticket number.</li>
+    </ul>
+    <h3>Test types</h3>
+    <div class="ptbl"><table><tr><th>Type</th><th>Cases</th></tr><tr><td>Functional</td><td>96</td></tr><tr><td>Negative</td><td>28</td></tr><tr><td>Security</td><td>15</td></tr><tr><td>Integration</td><td>13</td></tr><tr><td>Edge</td><td>11</td></tr><tr><td>E2E</td><td>5</td></tr><tr><td>UI</td><td>4</td></tr><tr><td>Performance</td><td>4</td></tr><tr><td>API</td><td>4</td></tr><tr><td>i18n</td><td>2</td></tr><tr><td>Reliability</td><td>2</td></tr><tr><td>Data</td><td>1</td></tr><tr><td>a11y</td><td>1</td></tr><tr><td>Compatibility</td><td>1</td></tr></table></div>
+    <h3>Coverage by area</h3>
+    <div class="ptbl"><table><tr><th>Area</th><th>Cases</th><th>P0</th></tr><tr><td>A · Portal, brands, onboarding</td><td>12</td><td>5</td></tr><tr><td>B · Channels</td><td>12</td><td>6</td></tr><tr><td>C · Roles & permissions</td><td>12</td><td>4</td></tr><tr><td>D · Composer</td><td>20</td><td>4</td></tr><tr><td>E · Scheduling</td><td>11</td><td>2</td></tr><tr><td>F · Bulk scheduler</td><td>7</td><td>2</td></tr><tr><td>G · Approvals</td><td>10</td><td>3</td></tr><tr><td>H · Posts, calendar, drafts</td><td>9</td><td>2</td></tr><tr><td>I · Media, links, AI</td><td>6</td><td>0</td></tr><tr><td>J · Publishing engine</td><td>5</td><td>3</td></tr><tr><td>K · Inbox</td><td>19</td><td>6</td></tr><tr><td>L · Messages</td><td>2</td><td>0</td></tr><tr><td>M · Monitor & Live Stream</td><td>6</td><td>0</td></tr><tr><td>N · Connections</td><td>2</td><td>0</td></tr><tr><td>O · Collaborate & notifications</td><td>5</td><td>0</td></tr><tr><td>P · Reports</td><td>9</td><td>2</td></tr><tr><td>Q · TAVI CRM integration</td><td>7</td><td>3</td></tr><tr><td>R · TAVI Desk integration</td><td>6</td><td>3</td></tr><tr><td>S · Settings & audit log</td><td>4</td><td>0</td></tr><tr><td>T · API</td><td>5</td><td>0</td></tr><tr><td>U · Security</td><td>5</td><td>2</td></tr><tr><td>V · Performance</td><td>3</td><td>0</td></tr><tr><td>W · UI, i18n, a11y</td><td>5</td><td>0</td></tr><tr><td>X · End-to-end journeys</td><td>5</td><td>3</td></tr></table></div>
+    <p>Priority: P0 50 · P1 88 · P2 49. P0 blocks go-live; P1 must pass or have an agreed workaround; P2 can ship with a known issue.</p>
+    <h3>Environments and test data</h3>
+    <ul>
+      <li>TAVI NDC-Staging with Social, CRM and Desk on one tenant, plus a second tenant for isolation cases.</li>
+      <li><b>Team-owned test accounts on each network:</b> a Facebook Page with Business Manager and an ad account, an Instagram Professional account linked to it, an X account, a LinkedIn Company Page with a super-admin profile, and a second "customer" account per network to comment, DM and mention. Never a real customer page.</li>
+      <li>Users: Portal Admin, Brand Admin, User, Limited Publisher, one custom role, one approver, one user limited to a single channel.</li>
+      <li>Reference: the Zoho Social trial portal opened 25 Nov 2026, for side-by-side checks once a test channel is connected.</li>
+      <li>Test data names start with <code>QA SOC</code>; a ledger lists everything created; test posts are deleted from TAVI and the networks after each round.</li>
+    </ul>
+    <h3>Entry criteria</h3>
+    <ul><li>Feature deployed to staging with release notes; requirements available.</li><li>Network developer apps registered and test accounts connected.</li><li>P0 smoke of the area passes, otherwise the area is reported as blocked.</li></ul>
+    <h3>Exit criteria</h3>
+    <ul><li>All P0 cases pass; no open Urgent or High bugs.</li><li>At least 95% of P1 cases pass; the rest have agreed workarounds.</li><li>All end-to-end journeys (X-01 to X-05) pass.</li><li>Report numbers match the networks' own insights within the agreed tolerance.</li><li>Test data cleaned on TAVI and on the networks.</li></ul>
+    <h3>Risks</h3>
+    <div class="ptbl"><table><tr><th>Risk</th><th>Effect</th><th>Mitigation</th></tr>
+      <tr><td>Network app review (Meta, LinkedIn, TikTok, Google) not done</td><td>Only developer-mode test users can connect; some permissions missing</td><td>Start reviews early; add the test accounts as developer-app testers</td></tr>
+      <tr><td>Network rate limits and spam checks</td><td>Posts refused or test accounts locked</td><td>Spread publishing tests; separate accounts for load cases (J-01, J-02)</td></tr>
+      <tr><td>Insights delay on the networks</td><td>Report numbers lag 24–48 h</td><td>Compare reports a day after posting; agree a tolerance</td></tr>
+      <tr><td>Time-based rules (24 h threading, repeat, append interval, token expiry)</td><td>Slow to test in real time</td><td>Ask devs for a test clock or short intervals on staging</td></tr>
+      <tr><td>Webhooks need a public callback URL</td><td>Inbox items never arrive on staging</td><td>Confirm staging is registered with each network before Inbox testing</td></tr>
+    </table></div>
+    <h3>Deliverables</h3>
+    <ul><li>This checklist with results and comments.</li><li>Plane bugs with evidence.</li><li>An execution report per round: pass rate by area, open bugs, blocked items.</li><li>A Selenium feature folder for regression.</li></ul>
+  </details>
+  <div id="list"></div>
+</div></main>
+
+<script>
+const CASES=[["A-01","P0","A · Portal, brands, onboarding","First sign-in creates the portal",["Sign in to Social with a new tenant user","Open Social for the first time"],"Portal created and named after the company; user is Portal Owner + Portal Admin; brand set-up screen shown","Functional"],
+["A-02","P1","A · Portal, brands, onboarding","No module opens without a channel",["New portal, no channel","Open Posts, Inbox, Monitor, Reports, Connections, Collaborate by menu and by direct URL"],"Each shows the brand set-up screen; nothing errors or shows another tenant's data","Functional"],
+["A-03","P0","A · Portal, brands, onboarding","First channel creates the first brand",["Connect one Facebook Page"],"Brand created automatically, named after the page; Home opens with Brand Health","Functional"],
+["A-04","P0","A · Portal, brands, onboarding","Add another brand (admin only)",["Brand switcher › Add another brand","Pick channels, Add"],"New brand listed in the switcher; at least one channel required; Brand Admin / User do not see the option","Functional"],
+["A-05","P0","A · Portal, brands, onboarding","One channel per network type per brand",["Brand already has a Facebook Page","Try to connect a second Facebook Page to the same brand"],"Refused with a clear message pointing to a new brand; first page unchanged","Negative"],
+["A-06","P1","A · Portal, brands, onboarding","Brand switcher scopes all data",["Two brands with posts, interactions and reports","Switch brand on every module"],"Every list, count and report shows only the selected brand","Functional"],
+["A-07","P1","A · Portal, brands, onboarding","Edit brand information",["Settings › Brand Information › Edit name, image, description, time zone","Save, reload"],"Values saved; switcher shows new name and image; audit log entry for time zone","Functional"],
+["A-08","P1","A · Portal, brands, onboarding","Brand name validation",["Save brand with empty name, 256+ chars, emoji, Arabic, HTML tags"],"Empty refused; max length enforced; Arabic and emoji kept; HTML shown as text","Negative"],
+["A-09","P0","A · Portal, brands, onboarding","Delete brand",["Brand with drafts, scheduled posts, published posts","Settings › Delete Brand › confirm"],"Brand gone; its scheduled posts never publish; posts already on the networks untouched; confirmation required","Functional"],
+["A-10","P1","A · Portal, brands, onboarding","Brand limit per plan",["Tenant on a plan with N brands","Try to add brand N+1"],"Blocked with upgrade / add-on message","Negative"],
+["A-11","P2","A · Portal, brands, onboarding","Delete portal",["Free / trial tenant","Portal Info › Delete Portal"],"Confirmation; all brands and data removed; paid tenant does not get the option","Functional"],
+["A-12","P2","A · Portal, brands, onboarding","User in two portals",["Invite a user to portal A and B","Switch via My Portals"],"Each portal shows only its own brands","Functional"],
+["B-01","P0","B · Channels","Connect Facebook Page (OAuth)",["Settings › Social Channels › Connect Facebook","Log in, pick a page where you are admin, Add"],"Channel listed with page name and picture; token stored encrypted; last 30 days imported","Functional"],
+["B-02","P0","B · Channels","Connect Instagram Professional",["Connect via Facebook, then directly via Instagram (two brands)"],"Both work; direct login shows no Stories stats; personal account refused with a message","Functional"],
+["B-03","P0","B · Channels","Connect X",["Connect X, authorize"],"Channel listed","Functional"],
+["B-04","P0","B · Channels","Connect LinkedIn Page and Profile",["Connect LinkedIn, pick page and profile"],"Both listed as separate channel types","Functional"],
+["B-05","P1","B · Channels","Connect other networks in scope",["Connect each network chosen for v1 (YouTube, GBP, TikTok, Threads, Bluesky app password, Mastodon server, Pinterest, WhatsApp, Telegram bot token)"],"Each connects using its own method; wrong Bluesky app password / bot token gives a clear error","Functional"],
+["B-06","P1","B · Channels","User cancels OAuth",["Start Connect, cancel on the network's page"],"Returns to Social with no channel added and no error page","Negative"],
+["B-07","P1","B · Channels","Account with no admin pages",["Connect Facebook with a user who manages no page"],"Message explains no pages were found and why","Negative"],
+["B-08","P0","B · Channels","Expired token → reconnect",["Expire / revoke the token on the network","Wait for the check"],"Channel marked 'needs reconnecting'; Brand Health alert; email to admins; Reconnect restores it without losing data","Functional"],
+["B-09","P0","B · Channels","Disconnect channel",["Channel with drafts, scheduled, pending-approval posts, inbox items, monitor columns","Disconnect › confirm"],"Channel's drafts / scheduled / pending posts removed (multi-channel posts keep other channels); inbox history, columns, rules and cards removed; scheduled reports drop its cards","Functional"],
+["B-10","P1","B · Channels","Only admins manage channels",["As User and Limited Publisher open Social Channels"],"Connect / Reconnect / Disconnect hidden; API calls refused 403","Security"],
+["B-11","P1","B · Channels","Channel limit per plan",["Plan allows N channel types","Try to connect a network outside the plan"],"Network shown disabled with upgrade message","Negative"],
+["B-12","P2","B · Channels","Same page in two portals",["Connect the same Facebook Page in two tenants"],"Both work independently; no data crosses tenants","Integration"],
+["C-01","P0","C · Roles & permissions","Invite a team member",["Brand Members › Invite: email, role, channels, approver"],"Email sent; user joins with that role and only those channels","Functional"],
+["C-02","P1","C · Roles & permissions","Invite validation",["Invalid email, existing member, empty role, no seats left"],"Each refused with a specific message","Negative"],
+["C-03","P0","C · Roles & permissions","Portal Admin invite to several brands",["All Members › Invite as Portal Admin"],"User sees every brand and settings","Functional"],
+["C-04","P0","C · Roles & permissions","Limited Publisher cannot publish",["Sign in as Limited Publisher","Compose a post"],"Only Save Draft and Send for Approval; API publish refused 403","Security"],
+["C-05","P0","C · Roles & permissions","Channel-level access",["User allowed only on X","Open composer, Inbox, Reports"],"Only X selectable and visible everywhere; API calls for other channels refused","Security"],
+["C-06","P1","C · Roles & permissions","Each of the 7 permissions off",["Custom role with one permission off at a time (Publishing, Messages, Comment/Reply, Advanced Reports, Leads Data, AI, Inbox)"],"Matching feature hidden or read-only, exactly as in the plan's permission table; API agrees with UI","Security"],
+["C-07","P1","C · Roles & permissions","Create / edit / delete custom role",["Create role, assign, change permissions while user is signed in","Delete role in use"],"Changes apply on next action; deleting a role in use asks for a replacement role","Functional"],
+["C-08","P1","C · Roles & permissions","Remove member from brand",["Member with scheduled posts and monitor columns","Remove"],"Access lost at once; scheduled posts still publish; their monitor columns deleted","Functional"],
+["C-09","P1","C · Roles & permissions","Deactivate and reactivate",["Deactivate member, try to sign in","Reactivate"],"No access while deactivated; reactivation re-sends invite","Functional"],
+["C-10","P2","C · Roles & permissions","Transfer portal ownership",["Portal Info › Edit › new owner (a Portal Admin)"],"Ownership moves; non-admin users not offered","Functional"],
+["C-11","P1","C · Roles & permissions","Drafts ownership rules",["Drafts by Portal Admin, Brand Admin, User","Each role tries to edit the others' drafts"],"Matches rules: only creator + Portal Admins; Brand Admin edits Brand Admin/User drafts; ownership moves to last editor","Security"],
+["C-12","P2","C · Roles & permissions","Client member (if agency in scope)",["Invite client","Client signs in"],"Sees Home, Posts, Collaborate, shared reports only; cannot tag team members","Security"],
+["D-01","P0","D · Composer","Publish now to one channel",["New Post, pick Facebook, text, Publish Now"],"Post on Facebook within seconds; appears in Published with permalink","Functional"],
+["D-02","P0","D · Composer","Publish to several channels",["Pick Facebook, X, LinkedIn, Instagram with an image","Publish Now"],"Published on all four; one post record with a result per channel","Functional"],
+["D-03","P0","D · Composer","Customize content per network",["Customize Content › change caption for X and hashtags for Instagram","Publish"],"Each network gets its own text; original text used for the rest","Functional"],
+["D-04","P0","D · Composer","Character limit per network",["Type 281 chars with X selected; 2,201 with Instagram; 3,001 LinkedIn"],"Counter turns red; publish blocked naming the network; other networks fine","Negative"],
+["D-05","P1","D · Composer","Media count limits",["Attach 5 images with X; 11 with Instagram; 2 videos anywhere"],"Blocked with per-network message","Negative"],
+["D-06","P1","D · Composer","Media spec validation",["Image > network max size, wrong format (BMP to IG), video too long, wrong aspect ratio"],"Validation before publish names the rule broken","Negative"],
+["D-07","P1","D · Composer","Network preview",["Compose with link and image on a screen > 1380 px"],"Preview per network resembles the network's layout; hidden on narrow screens","UI"],
+["D-08","P1","D · Composer","Link preview",["Paste a URL"],"Preview card fetched (title, description, image); can be removed and restored; none for Instagram / GBP","Functional"],
+["D-09","P1","D · Composer","@mentions",["Type @ on X, Facebook, LinkedIn","Pick a suggestion, publish"],"Mention is a real tag on the network; Facebook max 10","Functional"],
+["D-10","P2","D · Composer","Hashtag suggestions and groups",["Type #","Insert a saved hashtag group"],"Top 10 past hashtags by engagement; group inserted; Instagram 30-hashtag limit enforced","Functional"],
+["D-11","P1","D · Composer","First comment",["Add first comment on Facebook, LinkedIn, Instagram post"],"Comment posted right after the post; option hidden for X / GBP","Functional"],
+["D-12","P1","D · Composer","Poll",["Poll on X with 2–4 options and duration","Try 1 option, 5 options, option > 25 chars, poll + image on X"],"Valid poll published; invalid ones blocked","Functional"],
+["D-13","P2","D · Composer","Thread composer",["Write 900 chars for X, split into thread","Publish all at once, then with interval"],"Posts published in order as a thread; max 15 parts","Functional"],
+["D-14","P2","D · Composer","Location and alt text",["Add location (FB/IG) and alt text per image"],"Both visible on the published post","Functional"],
+["D-15","P2","D · Composer","Network-specific fields",["GBP button/event/offer; YouTube title, visibility, Shorts; Pinterest board, title, link; LinkedIn document"],"Each published with its fields; required fields enforced (GBP event title, start before end)","Functional"],
+["D-16","P1","D · Composer","Close composer keeps a draft",["Type content, close the window"],"Draft saved (or a confirm asks); nothing lost","Functional"],
+["D-17","P1","D · Composer","Empty / whitespace post",["Publish with no text and no media; only spaces"],"Blocked","Negative"],
+["D-18","P1","D · Composer","Special content",["Arabic text, emoji, line breaks, RTL + LTR mixed, URLs with Arabic"],"Published exactly as typed on every network","i18n"],
+["D-19","P2","D · Composer","Max 30 channels per post",["Select 31 channels across brands"],"31st blocked","Negative"],
+["D-20","P2","D · Composer","Duplicate post refused by network",["Publish the same text twice to X quickly"],"Second goes to Failed with the network's reason","Negative"],
+["E-01","P0","E · Scheduling","Schedule a post",["Schedule 10 min ahead"],"Listed in Scheduled and calendar; publishes at the time (±1 min)","Functional"],
+["E-02","P1","E · Scheduling","Schedule in the past",["Pick a past date/time"],"Blocked","Negative"],
+["E-03","P0","E · Scheduling","Time zone",["Brand TZ Cairo, user TZ UTC","Schedule 09:00 in the shown TZ"],"Publishes at the intended instant; all screens show the user's chosen TZ; DST handled","Functional"],
+["E-04","P1","E · Scheduling","Edit / reschedule / delete scheduled",["Change text and time","Delete another"],"Changes apply; deleted post never publishes","Functional"],
+["E-05","P1","E · Scheduling","Repeat weekly",["Repeat every Tuesday until a date"],"Publishes each Tuesday, stops after the end date","Functional"],
+["E-06","P2","E · Scheduling","Repeat monthly on day 31",["Monthly day 31, 'last day of month' vs 'when available'"],"February/30-day months follow the chosen option; max 6 months","Edge"],
+["E-07","P1","E · Scheduling","Queue slots (CustomQ)",["Admin sets slots Mon 09:00, 13:00","Add 3 posts to queue"],"Posts take next free slots in order; one post per slot; max 25 slots/day","Functional"],
+["E-08","P2","E · Scheduling","Changing slots keeps queued posts",["Delete a slot that has a queued post"],"Queued post keeps its time","Edge"],
+["E-09","P1","E · Scheduling","Pause and resume brand",["Pause Posts with a team message","Let a scheduled time pass","Resume"],"Banner shown; nothing publishes while paused; passed posts go to Unpublished › Unattempted; later ones publish; team notified","Functional"],
+["E-10","P2","E · Scheduling","Best-time suggestion (SmartQ)",["Brand with ≥7 days history vs new brand"],"Suggestions with % reach; none for new brand with an explanation","Functional"],
+["E-11","P1","E · Scheduling","Calendar drag to reschedule",["Drag a scheduled post to another day"],"New date saved; published posts cannot be dragged","Functional"],
+["F-01","P0","F · Bulk scheduler","Upload valid CSV",["Download sample, fill 20 rows, upload, review, Schedule"],"20 scheduled posts created with correct times, text, links, media","Functional"],
+["F-02","P1","F · Bulk scheduler","XLS / XLSX",["Upload the same rows as .xlsx and .xls"],"Same result","Functional"],
+["F-03","P0","F · Bulk scheduler","Row errors",["Rows with bad date format, time \u003c 1 h ahead, bad channel, non-public image URL, text over limit"],"Rows marked 'with errors' with the reason; fix, move to draft or delete; good rows unaffected","Negative"],
+["F-04","P1","F · Bulk scheduler","350 row limit",["Upload 351 rows"],"Refused with the limit","Negative"],
+["F-05","P2","F · Bulk scheduler","CSV quoting and line breaks",["Channels in quotes, \\n in text, commas inside text, UTF-8 Arabic"],"Parsed correctly","Edge"],
+["F-06","P1","F · Bulk scheduler","Bulk with approval on",["Approval toggle on during upload"],"All posts go to Approvals, none scheduled directly","Functional"],
+["F-07","P2","F · Bulk scheduler","Wrong file type / empty file",["Upload .pdf, empty CSV, header only"],"Clear refusal","Negative"],
+["G-01","P0","G · Approvals","Send for approval",["Limited Publisher sends a scheduled post"],"Status Yet to Review; all approvers emailed + notified; post not published","Functional"],
+["G-02","P0","G · Approvals","Approve",["Approver approves (keep schedule / publish now / add to queue)"],"Post follows the chosen option; sender notified","Functional"],
+["G-03","P0","G · Approvals","Reject needs reason",["Reject without reason, then with reason"],"Without: blocked; with: Rejected, sender sees reason, can edit and resubmit","Functional"],
+["G-04","P1","G · Approvals","Status transitions",["Toggle Yet to Review ⇄ Under Review","Try to change Approved / Rejected"],"Only the allowed transitions work; Approved and Rejected final (UI + API)","Negative"],
+["G-05","P1","G · Approvals","Time Elapsed",["Pending post passes its scheduled time"],"Status Time Elapsed; can still be approved and rescheduled","Functional"],
+["G-06","P1","G · Approvals","Edit approved post",["Edit an approved, not yet published post"],"Goes back to approval","Functional"],
+["G-07","P1","G · Approvals","Approver rules",["Try to make an approver who lacks publishing on all channels"],"Refused","Negative"],
+["G-08","P2","G · Approvals","Bulk approve / reject",["Select 200, then 201 pending posts"],"200 processed; 201 refused","Edge"],
+["G-09","P1","G · Approvals","Multi-brand post",["Send a cross-brand post for approval"],"Refused (single-brand only)","Negative"],
+["G-10","P2","G · Approvals","Two approvers at once",["Two approvers act on the same post at the same time"],"First wins; second sees the updated status, no double publish","Edge"],
+["H-01","P0","H · Posts, calendar, drafts","Published list",["Open Posts › Published per channel"],"Date, content, engagement, interactions; sort by date / likes / comments","Functional"],
+["H-02","P1","H · Posts, calendar, drafts","Published post actions",["Delete (not Instagram), Edit (where network allows), Copy URL, Edit as New Post"],"Each works on the network; unsupported actions hidden","Functional"],
+["H-03","P0","H · Posts, calendar, drafts","Failed posts",["Force a failure (revoked token, bad media)"],"Post in Unpublished › Failed with the network's reason; Retry and Reschedule work; failure email sent","Functional"],
+["H-04","P1","H · Posts, calendar, drafts","Drafts",["Save, edit (Update draft), schedule, publish, delete a draft"],"Each works; drafts never publish by themselves","Functional"],
+["H-05","P1","H · Posts, calendar, drafts","Calendar views and colours",["Month / week / day; posts in each state"],"Correct colours (scheduled, failed, published, draft); notes and events can be added","UI"],
+["H-06","P2","H · Posts, calendar, drafts","Calendar filters",["Filter by type, status, creator, network, schedule type"],"Only matching items","Functional"],
+["H-07","P1","H · Posts, calendar, drafts","Post details and stats",["Open a published post"],"Content, comments, per-network stats, short-link clicks","Functional"],
+["H-08","P2","H · Posts, calendar, drafts","Export posts",["Export scheduled + drafts as CSV and PDF"],"Files have the listed fields; CSV re-imports in Bulk Scheduler","Functional"],
+["H-09","P2","H · Posts, calendar, drafts","Native posts not shown",["Post directly on Facebook"],"Not in the calendar (as designed); appears in Published list only if the design says so","Functional"],
+["I-01","P1","I · Media, links, AI","Media library upload",["Upload image ≤36 MB, video ≤5 GB, then over the limits"],"Within limits stored and reusable; over-limit refused","Functional"],
+["I-02","P2","I · Media, links, AI","Image editor",["Crop to preset, add text, filter, save"],"Edited copy attached; original kept","Functional"],
+["I-03","P2","I · Media, links, AI","Cloud pickers / stock library",["Attach from Google Drive / WorkDrive and stock search"],"File attached; stock credit added to caption","Integration"],
+["I-04","P1","I · Media, links, AI","Link shortener",["Auto-shorten on; paste a URL; publish"],"Short link in post; redirects; clicks counted","Functional"],
+["I-05","P1","I · Media, links, AI","UTM tags",["Enable UTM with source = network","Publish to FB and X"],"Each link gets the right utm_source; max 6 parameters; campaign ≤20 chars","Functional"],
+["I-06","P2","I · Media, links, AI","AI compose",["Generate a post with tone + Arabic language","Use credits until exhausted"],"Text added to compose; credits shown and decremented; clear message when exhausted; hidden without permission","Functional"],
+["J-01","P0","J · Publishing engine","Many posts at the same minute",["Schedule 50 posts for one minute across brands"],"All publish within the agreed window; none duplicated","Performance"],
+["J-02","P0","J · Publishing engine","Network rate limit",["Exceed a network's posting limit (e.g. Facebook 40/24 h in a test page)"],"Extra posts fail or wait with a clear reason; others unaffected","Negative"],
+["J-03","P0","J · Publishing engine","Network outage / timeout",["Block the network API during a scheduled publish"],"Retries per policy; final Failed state with reason; no duplicate post when the network was slow but succeeded","Reliability"],
+["J-04","P1","J · Publishing engine","Worker restart",["Restart the publishing service while posts are due"],"Due posts publish once after restart","Reliability"],
+["J-05","P1","J · Publishing engine","Partial multi-channel failure",["One of 3 channels fails"],"Two published, one Failed; retry only the failed one","Functional"],
+["K-01","P0","K · Inbox","Interactions arrive",["Comment on a FB post, DM the page, mention on X, GBP review"],"Each appears in Inbox within the agreed delay, with correct type and channel","Functional"],
+["K-02","P0","K · Inbox","Reply from Inbox",["Reply to a comment and to a DM"],"Reply posted on the network; shown in the thread","Functional"],
+["K-03","P0","K · Inbox","Threading: new message within 24 h of close",["Close an interaction","User messages again within 24 h"],"Same interaction reopens","Functional"],
+["K-04","P0","K · Inbox","Threading: after 24 h",["Interaction Open, message after 24 h","Interaction Closed, message after 24 h"],"Open: added to same one; Closed: new interaction, old one not replyable","Functional"],
+["K-05","P1","K · Inbox","Own comments ignored",["Brand comments on its own post"],"No interaction created","Functional"],
+["K-06","P1","K · Inbox","Reply and Close",["Turn setting on, reply to comment and to DM"],"Comment closes at once; DM closes after 24 h rule","Functional"],
+["K-07","P0","K · Inbox","Status, priority, assignee",["Change each; filter by each"],"Saved, logged in Activity, filters work","Functional"],
+["K-08","P1","K · Inbox","Custom view",["Create view (channel + status + assignee), share and pin"],"Shared members see it; counts right","Functional"],
+["K-09","P1","K · Inbox","Saved replies",["Create one (280 chars max), insert in a reply","Try 281 chars"],"Inserted; over-limit refused","Functional"],
+["K-10","P0","K · Inbox","Automation rule: assign by keyword",["Rule: content contains 'refund' → assign A, priority High","Send matching and non-matching comments"],"Only matching one assigned with High; Activity shows the rule","Functional"],
+["K-11","P1","K · Inbox","Automation: ANY vs ALL and each condition",["Rules using each of the 13 conditions with ANY and ALL"],"Matches exactly as defined","Functional"],
+["K-12","P1","K · Inbox","Automation: each action",["Rules for each action incl. round robin, auto reply, private reply, archive, spam, alert with delay"],"Each action runs once per interaction","Functional"],
+["K-13","P1","K · Inbox","Archive, spam, mute, delete",["Apply each, then open the system views"],"Items in Archived / Spam; muted user creates no new items or notifications","Functional"],
+["K-14","P2","K · Inbox","Auto-spam keywords and auto-archive",["Set keyword list; set auto-archive 90 days (time-shifted data)"],"Matching items to Spam; old closed items archived","Functional"],
+["K-15","P1","K · Inbox","Private reply to comment",["Reply privately to an FB comment; try twice; try after 7 days"],"One private reply only; refused after 7 days","Negative"],
+["K-16","P1","K · Inbox","WhatsApp 24 h window",["Reply after 24 h with free text, then with an approved template"],"Free text blocked; template sent","Negative"],
+["K-17","P2","K · Inbox","Interaction user info and history",["Edit user email/phone; open History"],"Saved; history shows all past interactions with that user","Functional"],
+["K-18","P1","K · Inbox","Inbox hidden without permission",["User role (no Inbox) opens Inbox URL and API"],"Hidden in UI; API 403","Security"],
+["K-19","P2","K · Inbox","Two agents reply at once",["Two agents reply to the same interaction"],"Both replies posted or second warned; no lost reply","Edge"],
+["L-01","P1","L · Messages","DM list and reply",["Open Messages; filter by channel; reply with text, image, audio"],"Thread shown; reply delivered; attachment limits enforced (25 MB FB/IG)","Functional"],
+["L-02","P1","L · Messages","Network rules",["Try to start a DM on Facebook; on X to a user who blocks DMs"],"Not allowed with a clear message","Negative"],
+["M-01","P1","M · Monitor & Live Stream","Add columns",["Add X keyword, FB visitor posts, IG hashtag columns"],"Columns fill with matching posts; already-added types marked","Functional"],
+["M-02","P1","M · Monitor & Live Stream","Column limit per plan",["Add column 6 on a 5-column plan"],"Blocked with message","Negative"],
+["M-03","P1","M · Monitor & Live Stream","Delete and reorder rules",["Creator deletes; other user tries; reorder by drag"],"Only admin/creator delete (removes for all); order is per user","Security"],
+["M-04","P2","M · Monitor & Live Stream","X filters",["Language, exclude retweets, has media, user, place"],"Column narrows correctly; filters absent on other networks","Functional"],
+["M-05","P1","M · Monitor & Live Stream","Actions on monitored item",["Like, reply, retweet, Add to CRM, Convert to Ticket, Discuss"],"Each works","Functional"],
+["M-06","P1","M · Monitor & Live Stream","Live Stream",["Like and comment on brand posts from a test account"],"Items appear in real time with actions; respects brand notification settings","Functional"],
+["N-01","P2","N · Connections","Connections created and views",["Users interact with the brand"],"Listed in All / Recently / Most engaged; filters work","Functional"],
+["N-02","P2","N · Connections","Profile panel and notes",["Open a connection, add a note with file"],"Contact, history, CRM / Desk info, note saved for the team","Functional"],
+["O-01","P1","O · Collaborate & notifications","Discuss a post",["Discuss a draft with visibility Team, then Custom Share","@tag a member"],"Only allowed members see it; tagged member notified (in-app + email)","Functional"],
+["O-02","P2","O · Collaborate & notifications","Discussion limits",["Attach 11 images"],"Blocked at 10","Negative"],
+["O-03","P1","O · Collaborate & notifications","Email notifications",["Trigger: post published, post failed, channel disconnected, @mention, approval request"],"One email per event to the configured members; links open the right item","Functional"],
+["O-04","P2","O · Collaborate & notifications","Social notifications per member",["Assign comment notifications to member A only"],"Only A gets them","Functional"],
+["O-05","P2","O · Collaborate & notifications","Team notifications",["User joins, posts paused, report shared"],"Each appears in Team Notifications","Functional"],
+["P-01","P0","P · Reports","Brand Health",["Open Home after 30 days of data"],"Followers, new followers, posts, reach, engagement per channel match the network's own insights (± agreed tolerance)","Functional"],
+["P-02","P0","P · Reports","Network report numbers",["Compare Summary / Audience / Posts & Engagement with Facebook Insights, X analytics, LinkedIn analytics for the same range"],"Numbers match within tolerance; lifetime vs time-series explained","Data"],
+["P-03","P1","P · Reports","Date range per plan",["Pick a range beyond the plan limit"],"Limited with message","Negative"],
+["P-04","P1","P · Reports","No data before connection",["Range before the channel was connected"],"Empty state, not zeros presented as data","Edge"],
+["P-05","P1","P · Reports","Export, email, schedule",["Export card PDF/PNG; email with password; schedule weekly"],"Files correct; password works; scheduled mail arrives","Functional"],
+["P-06","P2","P · Reports","Bulk CSV 90 days",["Export 90 then 91 days"],"91 refused","Edge"],
+["P-07","P2","P · Reports","Custom dashboard",["Create dashboard, add cards from 3 networks, share"],"Saved and visible to shared members","Functional"],
+["P-08","P2","P · Reports","Hashtag report",["Compare 4 hashtags, try a 5th"],"4 compared; 5th blocked","Functional"],
+["P-09","P1","P · Reports","Report time zone",["Check the day boundary of a daily chart"],"Uses the documented zone (Zoho: GMT); label shows it","Edge"],
+["Q-01","P0","Q · TAVI CRM integration","Add social user as new lead",["Live Stream / Monitor › Add to CRM › Add as lead, choose layout, fill fields"],"Lead created in TAVI CRM with the social profile link and source = channel; required CRM fields enforced","Integration"],
+["Q-02","P0","Q · TAVI CRM integration","Associate with existing contact",["Add to CRM › Associate to Existing, search, pick"],"Social profile linked to that contact; no duplicate created","Integration"],
+["Q-03","P0","Q · TAVI CRM integration","Auto lead rule",["Rule: X mention containing 'demo' → add as Lead","Mention brand with and without the keyword"],"Only the matching one creates a lead; rule off stops it","Integration"],
+["Q-04","P1","Q · TAVI CRM integration","CRM info in Social",["Open a linked connection"],"CRM owner, status, notes shown; Lead/Contact badge in Live Stream","Integration"],
+["Q-05","P1","Q · TAVI CRM integration","CRM permissions respected",["Social user without CRM create rights adds a lead; user without Leads Data permission"],"Refused / records hidden","Security"],
+["Q-06","P1","Q · TAVI CRM integration","Inbox rule on CRM contact",["Rule: CRM Contact is known → assign VIP team"],"Known contacts routed; unknown not","Integration"],
+["Q-07","P2","Q · TAVI CRM integration","CRM record deleted",["Delete the linked lead in CRM, open the connection in Social"],"Link shown as removed; Add to CRM offered again; no error","Edge"],
+["R-01","P0","R · TAVI Desk integration","Convert to ticket",["Convert a FB comment to a ticket in department D"],"Ticket created in TAVI Desk (channel Social, contact linked); ticket number shown and opens the ticket","Integration"],
+["R-02","P0","R · TAVI Desk integration","Auto ticket rule with keyword",["Rule: FB message with 'broken' → department D"],"Matching messages create tickets in D; others do not","Integration"],
+["R-03","P0","R · TAVI Desk integration","Append interval",["Interval 12 h; user replies at 1 h and at 13 h"],"First reply joins the same ticket; second makes a new ticket","Integration"],
+["R-04","P1","R · TAVI Desk integration","Desk rules run on the ticket",["Desk assignment / SLA / workflow rules for channel Social"],"Rules apply as for any new ticket","Integration"],
+["R-05","P1","R · TAVI Desk integration","Desk info in Social",["Open the connection"],"Tickets, owner, response and resolution times shown","Integration"],
+["R-06","P2","R · TAVI Desk integration","Agent reply from Desk",["Agent replies on the ticket"],"Behaviour as designed (reply sent to the network, or Social only) and documented","Integration"],
+["S-01","P1","S · Settings & audit log","Audit log events",["Create role, invite, change TZ, pause posts, reconnect channel, delete brand"],"Each logged with who, what, when; only Portal Admins can open it","Functional"],
+["S-02","P2","S · Settings & audit log","Audit log retention",["Entries older than 1 month"],"Follows the agreed retention","Edge"],
+["S-03","P2","S · Settings & audit log","Hashtag groups limits",["Create 11th group; 31 tags in a group"],"Blocked at 10 groups / 30 tags","Negative"],
+["S-04","P2","S · Settings & audit log","Publishing groups",["Create a group of channels across brands, use it in compose"],"All its channels selected","Functional"],
+["T-01","P1","T · API","Auth and tenant isolation",["Call every endpoint without token, with another tenant's brand_id, with an expired token"],"401 / 403 with error codes; never another tenant's data","Security"],
+["T-02","P1","T · API","Create / update / delete schedule and draft",["POST, GET, PUT, DELETE schedules and drafts"],"Same rules and validation as the UI (limits, roles, approval)","API"],
+["T-03","P1","T · API","Validation endpoint",["POST /posts/validate with over-limit text and media"],"Lists every broken rule per network","API"],
+["T-04","P2","T · API","Pagination and fields",["List published posts with cursor and limit"],"No duplicates or gaps across pages","API"],
+["T-05","P1","T · API","Approval status by API",["Move status by API including illegal transitions"],"Same state machine as UI","API"],
+["U-01","P0","U · Security","Tokens never exposed",["Inspect UI network traffic, API responses, logs, exports"],"Network access tokens never returned or logged; stored encrypted","Security"],
+["U-02","P0","U · Security","Tenant isolation",["Change portal / brand / post IDs in URLs and API calls"],"403 / 404; no cross-tenant read or write","Security"],
+["U-03","P1","U · Security","XSS through social content",["Comment / DM / username with \u003cscript> and HTML on the network"],"Shown as text in Inbox, Monitor, Live Stream, reports, exports","Security"],
+["U-04","P1","U · Security","Webhook / callback authenticity",["Send a forged network webhook"],"Rejected (signature check)","Security"],
+["U-05","P2","U · Security","OAuth state / CSRF",["Replay or tamper the OAuth callback"],"Rejected; no channel attached to the wrong brand","Security"],
+["V-01","P1","V · Performance","Inbox with large volume",["Brand with 50k interactions"],"List and filters load within the agreed time; scrolling smooth","Performance"],
+["V-02","P2","V · Performance","Reports load",["1-year range, 5 channels"],"Loads within the agreed time","Performance"],
+["V-03","P2","V · Performance","Media upload",["Upload 1 GB video"],"Progress shown; resumable or clear failure","Performance"],
+["W-01","P1","W · UI, i18n, a11y","Arabic UI and RTL",["Switch UI to Arabic; walk composer, Inbox, calendar, reports"],"Fully translated; layout mirrored; dates and numbers formatted","i18n"],
+["W-02","P2","W · UI, i18n, a11y","Keyboard and screen reader",["Use composer, Inbox and approvals with keyboard only"],"All actions reachable; focus visible; labels read","a11y"],
+["W-03","P2","W · UI, i18n, a11y","Browsers and sizes",["Chrome, Edge, Firefox, Safari; 1366 px, 1920 px, tablet"],"No broken layout; composer preview rules hold","Compatibility"],
+["W-04","P2","W · UI, i18n, a11y","Dark mode",["Switch theme"],"All screens readable","UI"],
+["W-05","P2","W · UI, i18n, a11y","Messages and empty states",["Visit every module empty, loading and with error"],"Clear wording, no raw codes","UI"],
+["X-01","P0","X · End-to-end journeys","Campaign week",["Admin connects FB, IG, X, LinkedIn","Limited Publisher drafts 5 posts for the week and sends for approval","Approver approves 4, rejects 1 with reason","Publisher fixes and resubmits; approved","All publish on time; reports show the posts"],"Whole flow works with correct notifications at each step","E2E"],
+["X-02","P0","X · End-to-end journeys","Complaint to ticket to closure",["Customer comments a complaint on FB","Auto rule creates Desk ticket; Inbox assigns agent","Agent replies; ticket solved","Customer writes again after 13 h"],"New ticket per append interval; inbox thread rules hold; history consistent across Social and Desk","E2E"],
+["X-03","P0","X · End-to-end journeys","Lead from social to deal",["Prospect mentions the brand with 'demo' on X","Auto lead created in CRM","Sales owner converts lead, creates deal","Social connection shows CRM status"],"Lead source = X; CRM status visible in Social; CRM reports count it","E2E"],
+["X-04","P1","X · End-to-end journeys","Token expiry during the week",["Scheduled posts for 3 days","Token expires on day 2","Admin reconnects on day 3"],"Day-2 posts Failed with reason + email; after reconnect future posts publish; Retry works for failed","E2E"],
+["X-05","P1","X · End-to-end journeys","Bulk month plan",["Upload 120-row XLSX for next month with approval","Approver bulk-approves","Calendar shows all"],"All 120 publish as planned","E2E"]];
+const STATES=["Pass","Fail","Blocked","Skipped"];
+const LABEL={Pass:"Pass",Fail:"Fail",Blocked:"Blocked",Skipped:"Skip"};
+const COLOR={Pass:"var(--pass)",Fail:"var(--fail)",Blocked:"var(--block)",Skipped:"var(--skip)"};
+const FILTERS=[["all","All"],["P0","P0"],["P1","P1"],["P2","P2"],["|"],["Not run","Not run"],["Fail","Fail"],["Blocked","Blocked"],["Skipped","Skipped"]];
+let results={}, filter="all", db=null, canWrite=true;
+const pending={};
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function statusOf(id){return (results[id]&&results[id].status)||"Not run"}
+function fmt(t){if(!t)return"";try{return new Date(t).toLocaleString([], {day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return""}}
+
+function renderFilters(){
+  document.getElementById("filters").innerHTML=FILTERS.map(f=>f[0]==="|"?'<span class="sep"></span>':
+    `<button class="chip" data-f="${f[0]}" aria-pressed="${filter===f[0]}">${f[1]}</button>`).join("");
+}
+function renderSummary(){
+  const n=CASES.length,c={Pass:0,Fail:0,Blocked:0,Skipped:0};
+  CASES.forEach(k=>{const s=statusOf(k[0]);if(c[s]!==undefined)c[s]++});
+  const done=c.Pass+c.Fail+c.Blocked+c.Skipped;
+  document.getElementById("bar").innerHTML=STATES.map(s=>`<span style="width:${c[s]/n*100}%;background:${COLOR[s]}"></span>`).join("");
+  document.getElementById("counts").innerHTML=`<span><b>${done}/${n}</b> run</span>`+
+    STATES.map(s=>`<span><i class="dot" style="background:${COLOR[s]}"></i>${LABEL[s]} <b>${c[s]}</b></span>`).join("")+
+    `<span>Not run <b>${n-done}</b></span>`;
+}
+function matches(k){
+  if(filter==="all")return true;
+  if(/^P\d$/.test(filter))return k[1]===filter;
+  return statusOf(k[0])===filter;
+}
+function tkHTML(tk){return tk?`<span class="tk">${esc(tk)}</span>`:""}
+function cardHTML(k){
+  const [id,pri,area,title,steps,exp,tk]=k, r=results[id]||{}, s=statusOf(id);
+  return `<article class="card" data-id="${id}" data-s="${s}">
+    <div class="head"><span class="id">${id}</span><span class="pri ${pri}">${pri}</span><span class="title">${esc(title)}</span></div>
+    ${tkHTML(tk)}
+    <ol>${steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+    <div class="exp"><b>Expected:</b> ${esc(exp)}</div>
+    <div class="st" role="group" aria-label="Result for ${id}">${STATES.map(v=>`<button data-v="${v}" aria-pressed="${s===v}" ${canWrite?"":"disabled"}>${LABEL[v]}</button>`).join("")}</div>
+    <textarea id="c-${id}" placeholder="What you saw (post link, time, network result, ticket number…)" aria-label="Comment for ${id}" ${canWrite?"":"disabled"}>${esc(r.comment||"")}</textarea>
+    <div class="meta" id="m-${id}">${r.updatedAt?"Saved "+fmt(r.updatedAt):""}</div>
+  </article>`;
+}
+function renderList(){
+  const groups=[];CASES.forEach(k=>{if(!matches(k))return;let g=groups.find(x=>x.a===k[2]);if(!g)groups.push(g={a:k[2],items:[]});g.items.push(k)});
+  const el=document.getElementById("list");
+  if(!groups.length){el.innerHTML='<p class="empty">No cases match this filter.</p>';return}
+  el.innerHTML=groups.map(g=>{const d=g.items.filter(k=>statusOf(k[0])!=="Not run").length;
+    return `<section><h2>${esc(g.a)}<small>${d}/${g.items.length} run</small></h2>${g.items.map(cardHTML).join("")}</section>`}).join("");
+  el.style.display="grid";el.style.gap="26px";
+}
+function updateCard(id){
+  const card=document.querySelector(`.card[data-id="${id}"]`);if(!card)return;
+  const r=results[id]||{},s=statusOf(id);card.dataset.s=s;
+  card.querySelectorAll(".st button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===s));
+  const ta=document.getElementById("c-"+id);if(ta&&document.activeElement!==ta&&!pending[id])ta.value=r.comment||"";
+  const m=document.getElementById("m-"+id);if(m&&!pending[id])m.textContent=r.updatedAt?"Saved "+fmt(r.updatedAt):"";
+}
+function groupCounts(){
+  document.querySelectorAll("#list section").forEach(sec=>{const ids=[...sec.querySelectorAll(".card")].map(c=>c.dataset.id);
+    const area=(CASES.find(k=>k[0]===ids[0])||[])[2];const all=CASES.filter(k=>k[2]===area&&matches(k));
+    const sm=sec.querySelector("h2 small");if(sm)sm.textContent=all.filter(k=>statusOf(k[0])!=="Not run").length+"/"+all.length+" run"});
+}
+function renderAll(){renderFilters();renderSummary();renderList()}
+
+const queue={};
+async function save(id,patch){
+  const cur=results[id]||{};const next={id,status:cur.status||"Not run",comment:cur.comment||"",...patch,updatedAt:new Date().toISOString()};
+  results[id]=next;renderSummary();updateCard(id);groupCounts();
+  if(!db){const m=document.getElementById("m-"+id);if(m)m.textContent="Not saved: storage is not available here";return}
+  queue[id]=(queue[id]||Promise.resolve()).then(async()=>{
+    const m=document.getElementById("m-"+id);
+    try{await db.collection("results").doc(id).set(results[id]);if(m)m.textContent="Saved "+fmt(results[id].updatedAt)}
+    catch(e){if(e&&e.code==="invalid_argument"){canWrite=false;renderList();document.getElementById("note").textContent="You can view this run, but only its owner can record results."}
+      else if(m)m.textContent="Could not save. Check your connection and try again."}
+  });
+}
+
+document.addEventListener("click",e=>{
+  const f=e.target.closest(".chip");if(f){filter=f.dataset.f;renderFilters();renderList();return}
+  const b=e.target.closest(".st button");if(b&&!b.disabled){const id=b.closest(".card").dataset.id;
+    const v=statusOf(id)===b.dataset.v?"Not run":b.dataset.v;
+    save(id,{status:v});}
+});
+document.addEventListener("input",e=>{
+  if(e.target.tagName!=="TEXTAREA")return;const id=e.target.id.slice(2);
+  const m=document.getElementById("m-"+id);if(m)m.textContent="Typing…";
+  clearTimeout(pending[id]);pending[id]=setTimeout(()=>{delete pending[id];save(id,{comment:e.target.value})},900);
+});
+document.addEventListener("focusout",e=>{
+  if(e.target.tagName!=="TEXTAREA")return;const id=e.target.id.slice(2);
+  if(pending[id]){clearTimeout(pending[id]);delete pending[id];save(id,{comment:e.target.value})}
+});
+
+renderAll();
+(async()=>{
+  try{db=await window.claude?.use?.("db")}catch(e){db=null}
+  if(!db){document.getElementById("note").textContent="Results can't be saved in this view. Open the artifact signed in to claude.ai to record them.";return}
+  try{const u=await window.claude.use("user");if(u&&u.can){const w=await u.can("data.write");if(w===false){canWrite=false;renderList();document.getElementById("note").textContent="You can view this run, but only its owner can record results."}}}catch(e){}
+  db.collection("results").onSnapshot(snap=>{
+    snap.docChanges().forEach(ch=>{const id=ch.doc.id;
+      if(ch.type==="removed")delete results[id];else results[id]=ch.doc.data();
+      updateCard(id)});
+    renderSummary();groupCounts();
+  },err=>{document.getElementById("note").textContent="Lost the live connection to saved results. Reload the page."});
+})();
+</script>

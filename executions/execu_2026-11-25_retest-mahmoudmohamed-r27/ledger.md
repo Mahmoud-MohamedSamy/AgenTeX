@@ -1,0 +1,10 @@
+- 2026-11-25T09:48:27 backup 01a2121b-4a8d-7d11-8ac9-717228453d74
+- 2026-11-25T09:49:13 sandbox a8b4da7e-8445-4a95-8bd6-dbe5f5ea1bde
+- 2026-11-25T09:56:38 created 166 inactive QA RT27 list rules
+- 2026-11-25T10:03:20 rule QA RT27 3230 rule 8c218015-630e-4f71-bc81-d902029863db
+- 2026-11-25T10:03:27 ticket "Other subject RT27 3230 nomatch" 32011832-3da1-4915-acb3-cd18b00853a5
+- 2026-11-25T10:03:30 ticket "QA RT27 3230 match" 45ac895a-a346-4a8c-b8ef-6d72ee4ce4e2
+- 2026-11-25T10:10:36 deleted rule QA RT27 3230 early (no conditions after editor test) 204
+- 2026-11-25T10:11:46 sla policy QA RT27 SLA f137acca-d824-45f9-a47e-4ef84c648c46
+- 2026-11-25T10:11:50 ticket "QA RT27 sla A" 223b0ea0-deb7-4bb4-8e3a-d2a74a793f2f
+- 2026-11-25T10:27:59 CLEANUP r27 {"rules":166,"tickets":3,"sla":204,"sandbox":"202","backup":"204","purged":170,"left":{"qaRules":0,"totalRules":56,"sla":0,"sandboxes":1,"backups":["01a1f83b completed"],"bin":0},"errors":[]}

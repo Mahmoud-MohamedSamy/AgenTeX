@@ -1,0 +1,15 @@
+const out = {}; const SA = 'ef8dc91f-1d30-491d-a1fc-9b62b96eca94'; const day = new Date().toISOString().slice(0, 10);
+const u1 = await mkTicket('O', 'QA TT UI main', { department: SA, email: QA_EMAIL });
+const u2 = await mkTicket('O', 'QA TT UI parent', { department: SA });
+const c1 = await mkTicket('O', 'QA TT UI child 1', { department: SA }); const c2 = await mkTicket('O', 'QA TT UI child 2', { department: SA });
+const x = await mkTicket('O', 'QA TT UI loose', { department: SA });
+const m = await mkTicket('O', 'QA TT UI mkt child', { department: ST.MK });
+const bl = await mkTicket('O', 'QA TT UI bulk 1', { department: SA }); const b2 = await mkTicket('O', 'QA TT UI bulk 2', { department: SA });
+const xss = await mkTicket('O', 'QA TT UI xss', { department: SA });
+await api.O('PUT', TK(xss.id) + '/resolution', { content: '<p>QA TT xss test</p><script>window.__qa_xss=1;alert("qa")</script><img src=x onerror="window.__qa_xss2=1">' });
+await api.O('POST', TK(u2.id) + '/children', { child_ticket_ids: [c1.id, c2.id, m.id] });
+await api.O('POST', TK(u1.id) + '/time-entries', { hours: 0, minutes: 30, billing_type: 'billable', work_date: day, description: 'QA TT UI billable' });
+await api.O('POST', TK(u1.id) + '/time-entries', { hours: 0, minutes: 10, billing_type: 'non_billable', agent_user_id: ST.C_ID, work_date: day, description: 'QA TT UI by C' });
+ST.U = { u1: u1.id, u2: u2.id, c1: c1.id, c2: c2.id, x: x.id, m: m.id, b1: bl.id, b2: b2.id, xss: xss.id }; saveState();
+for (const [k, v] of Object.entries(ST.U)) { const d = (await api.O('GET', TK(v))).j?.data; ST.U[k + 'n'] = (d?.ticket || d)?.ticket_number; } saveState();
+return ST.U;

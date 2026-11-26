@@ -1,0 +1,508 @@
+<title>TAVI Surveys Test Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: sticky contents on the left, reading column on the right; the case catalogue is a filterable table. */
+:root{
+  --bg:#f6f8f8; --surface:#ffffff; --fg:#17201f; --muted:#5a6866; --line:#d9e1e0;
+  --accent:#0f7a6c; --accent-soft:#e2f2ef; --p0:#9a2f2f; --p0-soft:#fbe6e4; --p1:#7a4b0f; --p1-soft:#fbefdc; --p2:#3d5a80; --p2-soft:#e4ecf6;
+  --font-display:"Space Grotesk",system-ui,sans-serif; --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --font-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1615; --surface:#162120; --fg:#e4ecea; --muted:#9aaba8; --line:#2a3836; --accent:#4cc3b1; --accent-soft:#16332f;
+  --p0:#ef8f86; --p0-soft:#3b1d1b; --p1:#e7b46a; --p1-soft:#3a2b16; --p2:#9dbbe6; --p2-soft:#1c2a3d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1615; --surface:#162120; --fg:#e4ecea; --muted:#9aaba8; --line:#2a3836; --accent:#4cc3b1; --accent-soft:#16332f;
+  --p0:#ef8f86; --p0-soft:#3b1d1b; --p1:#e7b46a; --p1-soft:#3a2b16; --p2:#9dbbe6; --p2-soft:#1c2a3d; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;font-size:13px}
+nav.toc p{font-family:var(--font-display);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:11px;color:var(--muted);margin:0 0 8px}
+nav.toc ol{margin:0;padding-left:20px;display:grid;gap:4px}
+nav.toc a{color:var(--fg);text-decoration:none}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);text-decoration:underline}
+main{min-width:0}
+header.top{border-bottom:1px solid var(--line);padding-bottom:22px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+h1{font-family:var(--font-display);font-size:2.2rem;line-height:1.15;margin:6px 0 12px;text-wrap:balance}
+h2{font-family:var(--font-display);font-size:1.4rem;margin:44px 0 10px;scroll-margin-top:16px;text-wrap:balance}
+h3{font-family:var(--font-display);font-size:1.05rem;margin:22px 0 6px}
+p,li{max-width:76ch}
+a{color:var(--accent)}
+code{font-family:var(--font-mono);font-size:.88em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13px;color:var(--muted);margin-top:10px}
+.tbl{overflow-x:auto;margin:12px 0 4px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;vertical-align:top;padding:8px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--font-display);font-weight:600;font-size:12.5px;background:var(--accent-soft);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:12px 0}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 16px;min-width:0}
+.box h4{margin:0 0 6px;font-family:var(--font-display);font-size:.96rem}
+.box ul{margin:0;padding-left:18px}
+.pill{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:500;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.pill.P0{background:var(--p0-soft);color:var(--p0)} .pill.P1{background:var(--p1-soft);color:var(--p1)} .pill.P2{background:var(--p2-soft);color:var(--p2)}
+.pill.t{background:var(--accent-soft);color:var(--accent)}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:14px 0 8px;padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+.filters label{display:grid;gap:3px;font-size:12px;color:var(--muted)}
+.filters input,.filters select{font:inherit;font-size:13.5px;padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);min-width:0}
+.filters input{width:220px;max-width:100%}
+.filters input:focus-visible,.filters select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.count{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);margin-left:auto}
+#cases td:nth-child(1){font-family:var(--font-mono);font-size:12.5px;white-space:nowrap}
+#cases td:nth-child(3){min-width:260px}
+#cases td:nth-child(4){min-width:280px;color:var(--fg)}
+#cases td.exp{color:var(--muted)}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);padding:12px 16px;border-radius:6px;margin:14px 0;max-width:80ch}
+footer{margin-top:52px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr);gap:16px}nav.toc{position:static;border:1px solid var(--line);border-radius:6px;padding:12px;background:var(--surface)}h1{font-size:1.75rem}.count{margin-left:0}}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#scope">Scope</a></li>
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#types">Test types</a></li>
+    <li><a href="#env">Environment and data</a></li>
+    <li><a href="#criteria">Entry and exit criteria</a></li>
+    <li><a href="#phases">Coverage by phase</a></li>
+    <li><a href="#catalogue">Case catalogue</a></li>
+    <li><a href="#e2e">End-to-end journeys</a></li>
+    <li><a href="#risks">Risks</a></li>
+    <li><a href="#deliver">Deliverables and defects</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="top">
+  <div class="eyebrow">QA · TEST PLAN · DRAFT FOR REVIEW · 25 NOV 2026</div>
+  <h1>TAVI Surveys test plan</h1>
+  <p>This plan covers the TAVI Surveys module, which is modelled on Zoho Survey. It goes with the explainer page <a href="https://claude.ai/artifact/Xoa6RapV4SRd7k14jKFnXd">Zoho Survey, explained for the build team</a>. It is written before the build starts, so each case states Zoho's behaviour as the expected result. When the PRD or the build differs, we update the case and do not raise a bug.</p>
+  <div class="meta"><span>Reference: Zoho Survey (live trial + help centre)</span><span>Target: NDC-Staging (CRM + Desk + Surveys)</span><span>Plane: no ticket or PRD yet</span></div>
+</header>
+
+<section id="scope">
+<h2>1. Scope</h2>
+<div class="cols">
+<div class="box"><h4>In scope</h4><ul>
+<li>Survey list and lifecycle: draft, published, closed, trash</li>
+<li>Builder: pages, 28 question types, validation, logic, variables</li>
+<li>Settings, themes, languages (Arabic RTL first)</li>
+<li>Publishing: link, embed, pop-up, QR, email invites, unique links</li>
+<li>Restrictions and quotas</li>
+<li>Respondent pages on desktop and mobile</li>
+<li>Responses, reports, NPS/CSAT maths, exports</li>
+<li>CRM and Desk hooks, trigger email, webhook</li>
+<li>Roles, sharing, audit log, encryption</li>
+<li>Survey API (whatever TAVI exposes)</li>
+</ul></div>
+<div class="box"><h4>Out of scope for now</h4><ul>
+<li>Buying panel responses (Zoho "Buy Responses")</li>
+<li>Native offline/kiosk mobile apps, until the PRD includes them</li>
+<li>Third-party apps outside TAVI (Mailchimp, Salesforce, Slack…)</li>
+<li>Zoho plan gating. TAVI licensing gets its own cases once defined</li>
+<li>AI survey creation, unless it is in the PRD</li>
+</ul></div>
+<div class="box"><h4>Questions for product</h4><ul>
+<li>Standalone app, or a module inside CRM/Desk?</li>
+<li>Which question types are in release 1?</li>
+<li>Limits: questions per survey, answer length, file size, responses</li>
+<li>Do respondents need a login for internal surveys?</li>
+<li>Which languages ship first (Arabic, English)?</li>
+</ul></div>
+</div>
+</section>
+
+<section id="approach">
+<h2>2. Approach</h2>
+<ul>
+<li><b>Follow the build phases.</b> The catalogue below is tagged with the six phases from the explainer. Each phase is tested when the devs hand it over, and earlier phases get a regression run.</li>
+<li><b>Zoho is the oracle.</b> Where the PRD says nothing, we compare against Zoho Survey in the trial portal (read and write allowed there, with cleanup). A parity difference is filed only if the PRD asks for parity. TAVI extras are not bugs.</li>
+<li><b>Two layers: builder and respondent.</b> Each builder feature gets a builder case (can I set it up?) and a runtime case (does the respondent see the right thing?). Most survey bugs show up at runtime.</li>
+<li><b>Data checks.</b> Every runtime case confirms the stored response through the response view or the API: status, answers, metadata, variables.</li>
+<li><b>Automation.</b> P0 and P1 runtime and API cases go into the Selenium/TestNG framework as a new <code>surveys</code> feature (page objects for builder, respondent page and responses). The respondent page is public and needs no sign-in, so it is the cheapest place to automate first.</li>
+<li><b>Priorities.</b> <span class="pill P0">P0</span> blocks release (core flow, data loss, security). <span class="pill P1">P1</span> is main functionality. <span class="pill P2">P2</span> covers edge cases, cosmetics and rare paths.</li>
+</ul>
+</section>
+
+<section id="types">
+<h2>3. Test types</h2>
+<div class="tbl"><table>
+<thead><tr><th>Type</th><th>What we check</th></tr></thead>
+<tbody>
+<tr><td>Functional</td><td>Every builder option and every runtime behaviour in the catalogue</td></tr>
+<tr><td>Negative</td><td>Bad input, missing required answers, invalid regex/email/number, expired links, wrong password, blocked IP</td></tr>
+<tr><td>Boundary</td><td>Limits: page title 100, description 5,000, short answer 255, long answer 5,000, file 10 MB, quota exactly reached, end date at the minute</td></tr>
+<tr><td>Logic matrix</td><td>Every operator × question family, AND/OR patterns, chained skips, hidden mandatory questions, logic after a question is deleted</td></tr>
+<tr><td>Data integrity</td><td>Answers stored per question; edits after publish do not corrupt old responses; partial save on every Next; exports match the grid</td></tr>
+<tr><td>Calculation</td><td>NPS, CSAT, average rating, weighted and quiz scores, continuous sum, cross-tab counts, checked against a hand-made spreadsheet</td></tr>
+<tr><td>UI / i18n / RTL</td><td>Arabic and English, RTL layout of every question type, mixed-direction text, dates and numbers per locale</td></tr>
+<tr><td>Usability / a11y</td><td>Keyboard-only answering, screen reader labels, focus order, error messages tied to fields, colour contrast of themes</td></tr>
+<tr><td>Compatibility</td><td>Respondent page on Chrome, Edge, Firefox, Safari (iOS), Android Chrome; widths 360 / 768 / 1440; embed inside a third-party page</td></tr>
+<tr><td>Security</td><td>Roles and sharing, unauthenticated access to builder/report APIs, tampering with hidden variables or hashed links, XSS in question text and answers, CSV injection in exports, encryption of marked fields</td></tr>
+<tr><td>Performance</td><td>Survey with 200 questions / 20 pages; 10k responses in reports; 200 people answering at once; export of 10k rows</td></tr>
+<tr><td>Integration</td><td>CRM record send / write-back, Desk ticket survey and ticket creation, trigger emails, webhooks, audit log</td></tr>
+<tr><td>API</td><td>Contract, auth, pagination, error codes, rate limits for whatever endpoints TAVI ships</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="env">
+<h2>4. Environment and test data</h2>
+<div class="cols">
+<div class="box"><h4>Environments</h4><ul>
+<li>NDC-Staging: CRM, Desk and the Surveys app</li>
+<li>Zoho Survey trial (portal 948695391) for comparison. The trial ends early December 2026; ask for a new trial before Phase 3</li>
+<li>A plain static test page for embed and pop-up tests</li>
+<li>Test mailboxes for invites, reminders, resume links and trigger emails</li>
+</ul></div>
+<div class="box"><h4>Accounts</h4><ul>
+<li>Owner/admin</li>
+<li>Department admin, user, contractor, report viewer (or the TAVI equivalents)</li>
+<li>A user with no Surveys access</li>
+<li>Anonymous respondent (fresh browser profile)</li>
+</ul></div>
+<div class="box"><h4>Seed surveys</h4><ul>
+<li><b>QA-ALL</b>: one of every question type</li>
+<li><b>QA-LOGIC</b>: 6 pages with skip, display, answer display and disqualify rules</li>
+<li><b>QA-NPS</b>: NPS + Likert + star, for metric maths</li>
+<li><b>QA-AR</b>: Arabic default with an English translation</li>
+<li><b>QA-BIG</b>: 200 questions, plus a response generator for 10k rows</li>
+</ul></div>
+</div>
+<p>All test records are prefixed <code>QA SV</code>. A ledger is kept in the run folder, and everything is deleted (and purged from trash) after each run.</p>
+</section>
+
+<section id="criteria">
+<h2>5. Entry and exit criteria</h2>
+<div class="cols">
+<div class="box"><h4>Entry (per phase)</h4><ul>
+<li>PRD or ticket for the phase exists, or product confirms "match Zoho"</li>
+<li>Build deployed on NDC-Staging with release notes</li>
+<li>Devs' smoke check passed: create survey, add question, open link, submit</li>
+<li>Test accounts and seed data ready</li>
+</ul></div>
+<div class="box"><h4>Exit (per phase)</h4><ul>
+<li>100% of P0 and 90%+ of P1 cases run</li>
+<li>No open P0 bug; P1 bugs have an agreed fix date</li>
+<li>Calculation cases match the hand-made spreadsheet exactly</li>
+<li>Earlier phases' P0 regression passes</li>
+<li>Results report published; test data cleaned (ledger at zero)</li>
+</ul></div>
+<div class="box"><h4>Suspension</h4><ul>
+<li>Respondent page cannot submit</li>
+<li>Responses are lost or attached to the wrong survey</li>
+<li>Builder cannot save</li>
+<li>Staging down for more than half a day</li>
+</ul></div>
+</div>
+</section>
+
+<section id="phases">
+<h2>6. Coverage by phase</h2>
+<div class="tbl"><table id="phaseTable">
+<thead><tr><th>Phase</th><th>Scope</th><th class="num">Cases</th><th class="num">P0</th><th class="num">P1</th><th class="num">P2</th></tr></thead>
+<tbody></tbody>
+</table></div>
+</section>
+
+<section id="catalogue">
+<h2>7. Case catalogue</h2>
+<p>Each case lists what to do and what should happen. "Ref" says where the expected behaviour comes from: <b>Live</b> (seen in Zoho on 25 Nov) or <b>Docs</b> (Zoho help centre). Use the filters to cut the list for a phase or a run.</p>
+<div class="filters" role="search">
+  <label for="fq">Search<input id="fq" type="search" placeholder="e.g. NPS, quota, RTL"></label>
+  <label for="fa">Area<select id="fa"><option value="">All areas</option></select></label>
+  <label for="fp">Priority<select id="fp"><option value="">All</option><option>P0</option><option>P1</option><option>P2</option></select></label>
+  <label for="fph">Phase<select id="fph"><option value="">All</option><option value="1">1 Core</option><option value="2">2 Logic and settings</option><option value="3">3 Distribution</option><option value="4">4 Analytics</option><option value="5">5 Integrations</option><option value="6">6 Advanced</option></select></label>
+  <label for="ft">Type<select id="ft"><option value="">All</option></select></label>
+  <span class="count" id="count"></span>
+</div>
+<div class="tbl"><table id="cases">
+<thead><tr><th>ID</th><th>Pri</th><th>Case</th><th>Expected</th><th>Type</th><th class="num">Ph</th><th>Ref</th></tr></thead>
+<tbody></tbody>
+</table></div>
+</section>
+
+<section id="e2e">
+<h2>8. End-to-end journeys</h2>
+<div class="tbl"><table>
+<thead><tr><th>ID</th><th>Journey</th><th>Checks</th></tr></thead>
+<tbody>
+<tr><td>E2E-01</td><td>Admin builds a customer satisfaction survey from a template, sets an Arabic translation, publishes a public link, three people answer (one stops on page 1), admin reads the summary and exports CSV</td><td>Counts 3 visits / 2 complete / 1 partial; NPS and CSAT match the sheet; CSV matches the grid; Arabic responses show their language</td></tr>
+<tr><td>E2E-02</td><td>Desk agent closes a ticket with the survey link; customer answers; result shows on the ticket and in the agent report</td><td>Ticket ID, requester and agent carried in the link; response linked to the ticket; agent report counts it</td></tr>
+<tr><td>E2E-03</td><td>CRM user sends a survey from a Contact; contact answers; answers write back to Contact fields; trigger email to the owner on a low NPS score</td><td>Related list status changes from "Yet to respond" to responded; mapped fields updated; email received only when NPS ≤ 6</td></tr>
+<tr><td>E2E-04</td><td>Email campaign to 50 contacts with a reminder after 1 day to non-responders; one bounce; one unsubscribe</td><td>Invite statuses correct; reminder only to non-responders; bounced and unsubscribed not reminded; one response per email enforced</td></tr>
+<tr><td>E2E-05</td><td>Quiz with grades, timer and certificate on the end page</td><td>Score and grade correct; timeout auto-submits; end page shows score variables</td></tr>
+<tr><td>E2E-06</td><td>Quota-balanced market survey (60% male / 40% female) on an embedded pop-up</td><td>Over-quota respondents see the Over Quota page; counts stop at the targets; pop-up trigger and "do not show again" work</td></tr>
+<tr><td>E2E-07</td><td>Survey edited after 100 responses (question added, choice renamed, question deleted)</td><td>Old responses intact; reports show the renamed choice; deleted question's data handled as the PRD says; type change blocked</td></tr>
+<tr><td>E2E-08</td><td>Report viewer opens shared and scheduled reports; contractor tries to open another user's survey</td><td>Viewer sees reports only; contractor blocked in UI and API; audit log records each action</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="risks">
+<h2>9. Risks</h2>
+<div class="tbl"><table>
+<thead><tr><th>Risk</th><th>Effect</th><th>What we do</th></tr></thead>
+<tbody>
+<tr><td>No PRD yet</td><td>Expected results may change</td><td>Mark every case "Zoho behaviour"; review with product before Phase 1 testing</td></tr>
+<tr><td>Editing a live survey</td><td>Old responses lost or shifted</td><td>Dedicated P0 data-integrity cases and E2E-07</td></tr>
+<tr><td>Logic combinations explode</td><td>Missed branch bugs</td><td>Pairwise logic matrix plus the QA-LOGIC seed survey run on every build</td></tr>
+<tr><td>Metric maths</td><td>Wrong NPS/CSAT shown to managers</td><td>Spreadsheet oracle for every metric case</td></tr>
+<tr><td>Public respondent page</td><td>Abuse, spam, XSS, data leaks</td><td>Security cases, CAPTCHA, rate limit, headers</td></tr>
+<tr><td>Email delivery on staging</td><td>Invite and reminder cases blocked</td><td>Agree a test sender and mailbox early</td></tr>
+<tr><td>Zoho trial expiry</td><td>No live oracle</td><td>Capture screenshots now; request a new trial before Phase 3</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="deliver">
+<h2>10. Deliverables and defects</h2>
+<ul>
+<li>Per phase: a test-run checklist page with status per case, a results report with evidence screenshots (failed cases shown next to Zoho), and a cleanup ledger.</li>
+<li>Bug titles follow <code>Surveys | Descriptive title</code>. Bugs are drafted first and filed to Plane only after your go.</li>
+<li>Automation: a <code>surveys</code> feature in the Selenium framework with a feature map, so retests reuse it.</li>
+<li>A gap list against Zoho after Phase 1, filed as one "missing functions" item if you want it.</li>
+</ul>
+</section>
+
+<footer>Draft by QA, 25 Nov 2026. Expected results come from Zoho Survey (live trial and help centre) until a TAVI PRD exists.</footer>
+</main>
+</div>
+
+<script>
+// [id, priority, phase, type, case, expected, ref]
+const C = [
+// SL survey list and lifecycle
+["SL-01","P0",1,"Functional","Create a survey from scratch with name, category and tags","Survey opens in the builder as Draft; appears in My Surveys with created/modified dates","Live"],
+["SL-02","P0",1,"Negative","Create a survey with an empty name","Blocked with a clear message; nothing created","Live"],
+["SL-03","P2",1,"Boundary","Survey name at max length, with Arabic and emoji","Saved and shown in full; list does not break","Docs"],
+["SL-04","P1",1,"Functional","My Surveys counters and filters: All, Published, Drafts, Closed, Shared by Me, Trashed","Counts and lists match each state","Live"],
+["SL-05","P1",1,"Functional","Search surveys by name and filter by tag","Only matching surveys listed","Docs"],
+["SL-06","P0",1,"Functional","Delete a survey from its card","Moves to Trash at once; leaves the main lists","Live"],
+["SL-07","P0",1,"Functional","Restore a survey from Trash","Back in its previous state with questions, settings and responses","Live"],
+["SL-08","P0",1,"Functional","Delete permanently from Trash","Confirm dialog \"can't restore it\"; survey, links and responses gone","Live"],
+["SL-09","P1",1,"Functional","Duplicate a survey","New draft with all pages, questions, logic and settings; no responses copied; new links","Docs"],
+["SL-10","P0",1,"Functional","Close a published survey, then reopen it","Respondents see the Closed page while closed; can answer again after reopen","Docs"],
+["SL-11","P1",1,"Functional","Rename a survey and edit its category and tags","Saved and shown everywhere, including reports and audit log","Docs"],
+["SL-12","P2",6,"Functional","Transfer a survey to another user","Recipient must accept; survey and reports move; sender loses it","Docs"],
+// CR create methods
+["CR-01","P1",1,"Functional","Create from a template category","Survey created with the template's pages and questions, fully editable","Live"],
+["CR-02","P1",1,"Functional","Quick editor: paste a list of questions with choices","Each line becomes the right question and choices","Live"],
+["CR-03","P2",1,"Boundary","Quick editor / import above the question limit","Clear limit message; nothing half-created","Docs"],
+["CR-04","P2",6,"Functional","Question bank: add questions from an existing survey","Copies, not links; editing the copy does not change the source","Live"],
+// PG pages
+["PG-01","P0",1,"Functional","Add a page with title and description","Page added after the current one; title shown in the header","Live"],
+["PG-02","P1",1,"Boundary","Page title 100 chars and description 5,000 chars; then one more character","Limits enforced with counters","Live"],
+["PG-03","P1",1,"Functional","Reorder pages by drag and by Move Page","Order saved; respondent sees the new order","Docs"],
+["PG-04","P1",1,"Functional","Clone a page","Copy with all questions; logic references handled (no pointer to the old page)","Docs"],
+["PG-05","P0",1,"Functional","Delete a page that has questions","Confirmation; questions go to builder Trash; logic that pointed to it is flagged or cleared","Docs"],
+["PG-06","P2",1,"Functional","Insert Variable in a page title","Variable value shown to respondent","Live"],
+// QT question types
+["QT-01","P0",1,"Functional","Multiple Choice (One Answer): add, type choices one per line, save","Radio list shown in the builder and to respondents","Live"],
+["QT-02","P1",1,"Functional","MC display formats: vertical 1/2/3 columns, horizontal","Layout matches on desktop; stacks on mobile","Live"],
+["QT-03","P0",1,"Functional","Multiple Choice (Many Answers) with at least/at most/exactly/between","Count enforced on Next with the error message","Docs"],
+["QT-04","P1",1,"Functional","Exclusive choice (\"None of the above\")","Selecting it clears and disables the others","Docs"],
+["QT-05","P0",1,"Functional","Dropdown one and many","Search in long lists; selection saved","Live"],
+["QT-06","P1",6,"Functional","Image Selection one/many with labels","Images render; selection saved by choice","Docs"],
+["QT-07","P2",6,"Boundary","Image choice larger than 1050 KB","Rejected with a size message","Docs"],
+["QT-08","P0",1,"Functional","Rating Scale Likert 1–5 with end labels","Scale and labels render; value stored","Docs"],
+["QT-09","P1",6,"Functional","Rating Scale Weighted Choice with weights and \"show weightage\"","Weights used in average; shown only when set","Docs"],
+["QT-10","P0",1,"Functional","Star Rating 3–10 stars and N/A","Stars render; N/A stored separately","Docs"],
+["QT-11","P0",1,"Functional","NPS 0–10 with end labels and representations","11 options; labels at 0 and 10","Live"],
+["QT-12","P1",6,"Functional","Slider: start, end, step, initial position, %","Respondent can only pick valid steps; value stored","Docs"],
+["QT-13","P1",6,"Functional","Continuous Sum with \"validate sum equal to 100\"","Total shown; Next blocked until sum valid","Docs"],
+["QT-14","P1",6,"Functional","Ranking by drag and by keyboard","Every item gets a unique rank","Docs"],
+["QT-15","P1",1,"Functional","Boolean Yes/No toggle and checkbox","Default No; stored as yes/no","Docs"],
+["QT-16","P0",1,"Functional","Matrix Choice one answer per row","One radio per row; required rows enforced","Live"],
+["QT-17","P2",1,"Functional","Matrix force ranking (one answer per column)","Column reuse blocked","Docs"],
+["QT-18","P1",1,"Functional","Matrix Choice many answers","Checkbox grid; required counts per row","Live"],
+["QT-19","P1",6,"Functional","Matrix Rating Scale and Matrix Star","Scale per row; stored per row","Live"],
+["QT-20","P1",6,"Functional","Matrix Dropdown, Matrix Grid, Matrix Textbox","Per-column formats validated (number, email, date, dropdown)","Live"],
+["QT-21","P0",1,"Functional","Short Answer with regex, contains, length validation","Invalid input blocked with the custom message","Docs"],
+["QT-22","P1",1,"Boundary","Short Answer 255 and 256 characters","255 accepted; 256 blocked or cut as the PRD says","Docs"],
+["QT-23","P0",1,"Functional","Long Answer with min/max length up to 5,000","Limits enforced; line breaks kept","Docs"],
+["QT-24","P0",1,"Negative","Number with min, max and decimals","Text, out-of-range and wrong decimals blocked","Docs"],
+["QT-25","P0",1,"Negative","Email question with bad formats","Bad addresses blocked","Docs"],
+["QT-26","P1",1,"Functional","Date/Time with format, range and time","Out-of-range dates blocked; stored as a date, shown per locale","Docs"],
+["QT-27","P1",1,"Functional","Multiple Textboxes with per-field formats","Each field validated separately","Live"],
+["QT-28","P1",1,"Functional","Full Name and Contact Information","Sub-fields and labels editable; stored separately","Live"],
+["QT-29","P1",6,"Functional","Signature on mouse and touch","Image stored; redo works; viewable in the response","Live"],
+["QT-30","P0",6,"Functional","File Upload with type, size and count rules","Allowed files upload; others blocked; files downloadable from the response","Docs"],
+["QT-31","P1",6,"Boundary","File Upload at 10 MB and just over","10 MB accepted; over rejected","Docs"],
+["QT-32","P1",1,"Functional","Heading/Description block","Shown as text; not counted as a question; no answer stored","Live"],
+["QT-33","P1",1,"Functional","Change question type within its family before publish","Allowed; choices kept","Docs"],
+["QT-34","P0",1,"Negative","Change question type after publish","Blocked","Docs"],
+// QS common settings
+["QS-01","P0",1,"Functional","Mark as Mandatory with a custom error message","Respondent cannot go on without answering; message shown at the question","Live"],
+["QS-02","P1",1,"Functional","Add \"Other\" field with custom label","Text box appears when Other is picked; text stored","Live"],
+["QS-03","P1",1,"Functional","Not applicable option on rating types","N/A excluded from averages and NPS","Docs"],
+["QS-04","P1",2,"Functional","Choice order: randomise, flip, rotate, keep last N","Order changes per respondent; fixed choices stay last","Live"],
+["QS-05","P2",1,"Functional","Comments field and question hint","Shown and stored","Live"],
+["QS-06","P1",1,"Functional","Predefined choice lists (countries, ages…)","List inserted and editable","Live"],
+["QS-07","P1",1,"Functional","Clone, move (to page, before/after) and trash a question","Works; trashed question restorable from builder Trash","Docs"],
+["QS-08","P0",1,"Security","Rich text question with script/HTML injection","Rendered safely in builder, respondent page, reports and exports","Docs"],
+["QS-09","P2",6,"Functional","Validate with JavaScript snippet","Custom rule blocks invalid answers; script sandboxed","Live"],
+// LG logic
+["LG-01","P0",2,"Functional","Page skip: if NPS less than 7, skip to Survey End Page","Detractors end the survey after page 1; others continue","Live"],
+["LG-02","P0",2,"Functional","Page skip to a specific later page","Pages in between are skipped and not required","Live"],
+["LG-03","P0",2,"Functional","Page skip to Disqualification Page","Respondent sees the disqualification page; status Disqualified","Live"],
+["LG-04","P1",2,"Functional","Several skip conditions on one page; first match wins","Order of conditions decides the target","Live"],
+["LG-05","P1",2,"Functional","Default flow when no condition matches","Goes where Default Flow says","Live"],
+["LG-06","P0",2,"Functional","Display logic: display only if / hide only if","Question shows and hides live on the same page and across pages","Live"],
+["LG-07","P0",2,"Functional","Hidden mandatory question","Not required when hidden; no answer stored","Docs"],
+["LG-08","P1",2,"Functional","AND/OR with 3 conditions and an edited condition pattern","Evaluates as the pattern says, e.g. (C1 and C2) or C3","Docs"],
+["LG-09","P1",2,"Functional","All operators per family: equal, not equal, less, greater, between, answered, not answered, contains, starts, ends","Each behaves correctly; check on choice, number, NPS and text","Live"],
+["LG-10","P1",6,"Functional","Answer display logic hides choices","Hidden choices not offered; question hides if too few remain","Live"],
+["LG-11","P0",2,"Data integrity","Delete a question used in logic","Warning or cleanup; survey never breaks at runtime","Docs"],
+["LG-12","P1",2,"Functional","Back button after a skip","Previous returns to the page actually seen, not the skipped one","Docs"],
+["LG-13","P1",2,"Functional","Change an answer that drove a skip, then go forward again","New path taken; answers on now-skipped pages cleared or ignored as the PRD says","Docs"],
+["LG-14","P2",2,"Functional","Question randomisation: all and selected","Order changes per respondent; logic-linked questions stay put","Live"],
+["LG-15","P1",2,"Functional","Conditional end pages (End Page Logic)","Each group sees its own end page","Docs"],
+["LG-16","P2",6,"Security","Custom script condition tries window/document/eval","Blocked by the sandbox","Docs"],
+// VR variables
+["VR-01","P0",2,"Functional","Custom variable from a URL parameter","Value stored with the response and shown in reports under its label","Live"],
+["VR-02","P1",2,"Negative","Variable type Number/Email with a bad value in the URL","Rejected or stored as the PRD says; no crash","Docs"],
+["VR-03","P1",2,"Functional","Piping an earlier answer into a question","Text shows the answer; question hidden when the value is empty","Docs"],
+["VR-04","P1",2,"Functional","Prefill from a URL parameter, editable and locked","Value pre-set; locked value cannot be changed","Docs"],
+["VR-05","P2",2,"Functional","Skip first page when all its questions are prefilled","Respondent starts on page 2","Docs"],
+["VR-06","P1",6,"Functional","Carry forward: answered / not answered / all choices","Correct subset offered","Live"],
+["VR-07","P0",2,"Security","Tamper with a hidden variable in the URL","Only allowed if the PRD says; hashed links reject changed values","Docs"],
+// ST settings
+["ST-01","P1",2,"Functional","Introduction page with title, description and Begin label","Shown before page 1","Live"],
+["ST-02","P1",2,"Functional","Terms and Conditions checkbox","Next disabled until accepted","Live"],
+["ST-03","P0",1,"Functional","Default thank-you end page","Shown after submit","Live"],
+["ST-04","P1",2,"Functional","End page: custom message with variables; show submitted answers; redirect with parameters","Each option works; redirect carries the parameters","Docs"],
+["ST-05","P1",2,"Functional","Preferences: progress bar, question numbers, previous button, button labels","Each switch changes the respondent page","Live"],
+["ST-06","P1",2,"Functional","Header logo and title, footer","Shown on every page","Live"],
+["ST-07","P1",2,"Functional","Save and Continue Later","Resume link emailed; reopens on the right page with answers","Live"],
+["ST-08","P1",6,"Functional","Survey timer and page timer","Countdown shown; auto-submit at zero; Previous disabled","Live"],
+["ST-09","P1",2,"Functional","Custom Closed / Over Quota / Disqualification / IP Restriction / Editing Restriction pages","Each shows its own text in the right situation","Live"],
+["ST-10","P2",3,"Functional","Social media preview title, description and image","Shown when the link is shared","Live"],
+["ST-11","P1",2,"Functional","CAPTCHA switch","Challenge on submit; bots blocked","Docs"],
+// TH look
+["TH-01","P1",2,"Functional","Apply a ready theme and a custom theme (colours, font, background, buttons)","Respondent page uses it; builder preview matches","Docs"],
+["TH-02","P2",2,"Functional","Delete the theme in use","Survey falls back to the default theme","Docs"],
+["TH-03","P2",2,"Accessibility","Theme with low-contrast text","Warning or blocked if the PRD asks; contrast checked","Docs"],
+// LN language
+["LN-01","P0",2,"i18n/RTL","Survey with Arabic as default language","Whole respondent page right-to-left: text, choices, matrices, sliders, buttons, errors","Docs"],
+["LN-02","P1",2,"i18n/RTL","Add English as a second language; translate","Respondent can switch; untranslated strings fall back clearly","Docs"],
+["LN-03","P1",2,"i18n/RTL","Response language stored and filterable","Each response shows its language; reports filter by it","Docs"],
+["LN-04","P2",2,"i18n/RTL","Mixed Arabic/English and numbers in one answer","Displayed and exported in the right order","Docs"],
+["LN-05","P1",2,"i18n/RTL","Builder UI in Arabic","Labels translated; layout RTL; no clipped text","Docs"],
+// PB collectors
+["PB-01","P0",1,"Functional","Publish with a public web link","Survey status Published; link opens the survey for anonymous users","Docs"],
+["PB-02","P1",3,"Functional","Several collectors on one survey","Each has its own link; responses tagged with the collector","Docs"],
+["PB-03","P1",3,"Functional","Stop and restart a collector","Its link shows Closed while stopped; others keep working","Docs"],
+["PB-04","P1",3,"Functional","Embed with iframe on a third-party page","Loads, resizes, submits; thank-you inside the frame or whole window as set","Docs"],
+["PB-05","P1",3,"Functional","Pop-up: after N seconds, on scroll %, on exit intent, by script call","Appears at the right moment and position","Docs"],
+["PB-06","P2",3,"Functional","Pop-up minimise and \"do not show again\"","Remembered for that visitor","Docs"],
+["PB-07","P1",3,"Functional","QR code copy and download","QR opens the same collector","Docs"],
+["PB-08","P1",3,"Functional","Unique links from a CSV","One link per row; variables from the CSV stored with the response","Docs"],
+["PB-09","P2",3,"Functional","Social share buttons","Open share dialogs with the survey link","Docs"],
+// EM email invites
+["EM-01","P0",3,"Functional","Send invites to 10 contacts now","Each gets a personal link; statuses Sent","Docs"],
+["EM-02","P1",3,"Functional","Email template: logo, colours, variables, button label","Variables filled per contact","Docs"],
+["EM-03","P1",3,"Functional","Schedule a send and a recurring send","Sent at the set times in the right time zone","Docs"],
+["EM-04","P1",3,"Functional","Invite statuses: opened, responded, partial, bounced, unsubscribed, failed","Counts and filters correct","Docs"],
+["EM-05","P0",3,"Functional","Reminder to non-responders and partial responders only","Responders not emailed","Docs"],
+["EM-06","P1",3,"Negative","Import with bad emails and duplicates","Bad rows reported; duplicate rule follows the PRD (Zoho sends twice)","Docs"],
+["EM-07","P1",3,"Functional","Unsubscribe link","Contact not emailed again for this survey","Docs"],
+// RS restrictions
+["RS-01","P0",2,"Functional","End date and time","Closed page after the minute passes, in the owner's time zone","Docs"],
+["RS-02","P0",2,"Boundary","Response limit reached exactly","Last allowed response saves; next visitor sees Closed","Docs"],
+["RS-03","P0",3,"Functional","One response per email (unique link)","Second visit shows the editing restriction page or resumes as set","Docs"],
+["RS-04","P1",3,"Functional","One response per device (cookie) and per IP","Second attempt blocked; clearing cookies behaves as documented","Docs"],
+["RS-05","P1",3,"Functional","Respondent edit modes: never / until complete / any time","Each mode behaves as named","Docs"],
+["RS-06","P0",2,"Security","Password-protected collector","Wrong password refused with message; right password opens","Docs"],
+["RS-07","P1",3,"Security","IP allow and deny rules","Blocked IPs see the IP restriction page","Docs"],
+["RS-08","P1",3,"Functional","Collector quota with each \"when full\" action","Close / over-quota page / continue as over quota","Docs"],
+["RS-09","P1",6,"Functional","Conditional and balanced quotas","Stops each group at its target","Docs"],
+["RS-10","P2",3,"Functional","Turn off IP, user agent and location capture","Those fields empty in responses and exports","Docs"],
+// RT runtime
+["RT-01","P0",1,"Functional","Answer a 3-page survey and submit","Status Completed; all answers stored correctly","Live"],
+["RT-02","P0",1,"Data integrity","Leave after page 1","Status Partial; page 1 answers stored","Docs"],
+["RT-03","P0",1,"Functional","Required answers checked per page","Error shown at the question; page does not advance","Live"],
+["RT-04","P1",1,"Functional","Previous keeps answers","Going back and forward keeps all answers","Docs"],
+["RT-05","P0",1,"Compatibility","Mobile respondent page (360 px) for every question type","Usable without horizontal scroll; touch works","Docs"],
+["RT-06","P1",1,"Compatibility","Chrome, Edge, Firefox, Safari iOS, Android Chrome","Same behaviour","Docs"],
+["RT-07","P1",1,"Negative","Network drops while submitting","Clear error; retry works; no duplicate response","Docs"],
+["RT-08","P1",1,"Negative","Double click on Submit","One response only","Docs"],
+["RT-09","P1",1,"Negative","Open the link of a deleted or draft survey","Friendly not-available page; no data shown","Docs"],
+["RT-10","P1",1,"Functional","Preview mode","Looks like the live survey; preview answers not saved","Live"],
+["RT-11","P1",1,"Accessibility","Answer every question type using only the keyboard","Possible with visible focus","Docs"],
+["RT-12","P1",1,"Accessibility","Screen reader labels and errors","Questions, choices and errors announced","Docs"],
+// RP responses
+["RP-01","P0",1,"Functional","Responses list with default columns","Response ID, status, start time, questions shown","Docs"],
+["RP-02","P0",1,"Functional","Individual response view with Previous/Next","All answers, skipped markers, metadata","Docs"],
+["RP-03","P1",4,"Functional","Show, hide and pin columns; custom views","Saved per user","Docs"],
+["RP-04","P1",4,"Functional","Tags and notes on a response","Saved; tag filter works; notes exported","Docs"],
+["RP-05","P1",1,"Functional","Owner edits a response","Change saved and tracked in the timeline/audit","Docs"],
+["RP-06","P0",1,"Functional","Delete a response; restore from trash","Leaves and returns to reports and counts","Docs"],
+["RP-07","P1",4,"Functional","Bulk delete by filter and by date range","Only matching responses deleted","Docs"],
+["RP-08","P0",1,"Data integrity","Responses after editing the survey (add question, rename choice, delete question)","Old answers intact and readable","Docs"],
+["RP-09","P1",1,"Functional","Metadata: start, end, duration, collector, IP, user agent, language","Values correct","Docs"],
+// AN reports
+["AN-01","P0",1,"Functional","Summary report per question with counts and %","Matches the hand count","Docs"],
+["AN-02","P0",4,"Calculation","NPS score","% promoters − % detractors; N/A excluded","Docs"],
+["AN-03","P0",4,"Calculation","CSAT score on 5-point, 10-point and NPS questions","Positive = 4–5 / 6–10 / 9–10, ÷ answered × 100","Docs"],
+["AN-04","P1",4,"Calculation","Average rating with N/A answers","N/A not counted","Docs"],
+["AN-05","P0",4,"Functional","Filters: status, date (fixed and relative), collector, tag, language, answer","Report and counts follow the filter","Docs"],
+["AN-06","P1",4,"Functional","Saved filters with match all / match any","Saved and reused","Docs"],
+["AN-07","P1",4,"Calculation","Cross-tab of two choice questions","Cell counts and % match the sheet","Docs"],
+["AN-08","P1",4,"Calculation","Trend of NPS by week","Each point equals that week's NPS","Docs"],
+["AN-09","P1",4,"Functional","Dashboard with widgets and a filter","Widgets update with the filter","Docs"],
+["AN-10","P1",4,"Security","Shared report link: specific people, organisation, public, password","Each access level enforced; text answers hidden if set","Docs"],
+["AN-11","P1",4,"Functional","Scheduled report email","Arrives at the set time with the right format","Docs"],
+["AN-12","P0",1,"Data integrity","Export CSV and XLSX","Rows and columns match the grid; Arabic text intact (UTF-8)","Docs"],
+["AN-13","P0",4,"Security","Export with answers starting with = + - @","Cells escaped (no CSV formula injection)","Docs"],
+["AN-14","P1",4,"Functional","PDF export of one response and of the summary","Readable, RTL correct","Docs"],
+["AN-15","P2",4,"Functional","Word cloud and sentiment on long answers","Shown for English text as the PRD says","Docs"],
+// HB integrations
+["HB-01","P0",5,"Integration","Send survey from a CRM Contact","Link carries the record ID; related list shows sent, then responded","Docs"],
+["HB-02","P0",5,"Integration","Write answers back to CRM fields (add / update / add-or-update)","Fields updated on the right record; formats correct","Docs"],
+["HB-03","P0",5,"Integration","Desk: survey link in a ticket reply and on close","Link carries ticket ID, requester, agent; response linked to the ticket","Docs"],
+["HB-04","P1",5,"Integration","Desk: create a ticket from each response","Ticket in the chosen department with mapped fields and PDF","Docs"],
+["HB-05","P0",5,"Integration","Trigger email with conditions and variables","Sent only when conditions match; variables filled; PDF attached when set","Docs"],
+["HB-06","P1",5,"Integration","Webhook POST (JSON and form data) with headers","Payload has the chosen keys; failures listed with retry","Docs"],
+["HB-07","P1",5,"Integration","Responses received before an integration was set up","Need manual sync, as documented","Docs"],
+["HB-08","P1",5,"Integration","Integration sync status list","Successful / untried / failed with retry","Docs"],
+// AD admin
+["AD-01","P0",6,"Security","Roles: admin, user, contractor, report viewer","Each sees and does only what the role allows, in UI and API","Docs"],
+["AD-02","P1",6,"Functional","Share a survey with Read/Write and Read Only co-owners","Permissions enforced","Docs"],
+["AD-03","P1",6,"Functional","Audit log records create, update, delete, download","Entries show who, what, when; filter by user/date/action","Live"],
+["AD-04","P1",6,"Functional","Reviewer link for comments on a draft","Reviewer can comment, not edit; link expires","Docs"],
+["AD-05","P0",6,"Security","Encrypted answer fields","Stored encrypted; filters limited to equal / not equal / answered","Docs"],
+["AD-06","P0",1,"Security","Builder and report APIs without a session or with another org's IDs","401/403; no data leak","Docs"],
+// API
+["API-01","P1",5,"API","List surveys, get a survey, list responses with paging","Contract matches the spec; paging stable","Docs"],
+["API-02","P1",5,"API","Send invitations through the API","Recipients receive links; error codes for limits and bad input","Docs"],
+["API-03","P2",5,"API","Rate limit","Over-limit calls get a clear error","Docs"],
+// PF performance
+["PF-01","P1",4,"Performance","Builder with 200 questions / 20 pages","Opens and saves within the agreed time","Docs"],
+["PF-02","P1",4,"Performance","Reports and filters on 10k responses","Load within the agreed time","Docs"],
+["PF-03","P1",4,"Performance","200 respondents submitting at once","No errors, no lost or duplicate responses","Docs"],
+["PF-04","P2",4,"Performance","Export 10k responses","Runs in the background and completes","Docs"]
+];
+const PH = {1:"Core builder and runtime",2:"Logic and settings",3:"Distribution",4:"Analytics",5:"TAVI integrations",6:"Advanced"};
+const AREA = {SL:"Survey list",CR:"Create methods",PG:"Pages",QT:"Question types",QS:"Question settings",LG:"Logic",VR:"Variables",ST:"Settings",TH:"Themes",LN:"Languages / RTL",PB:"Publishing",EM:"Email invites",RS:"Restrictions",RT:"Respondent page",RP:"Responses",AN:"Reports",HB:"Integrations",AD:"Admin / roles",API:"API",PF:"Performance"};
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+Object.entries(AREA).forEach(([k,v]) => $("fa").insertAdjacentHTML("beforeend", `<option value="${k}">${esc(v)}</option>`));
+[...new Set(C.map(c => c[3]))].sort().forEach(t => $("ft").insertAdjacentHTML("beforeend", `<option>${esc(t)}</option>`));
+const ptb = $("phaseTable").querySelector("tbody");
+Object.entries(PH).forEach(([n,name]) => {
+  const r = C.filter(c => c[2] == n), k = p => r.filter(c => c[1] === p).length;
+  ptb.insertAdjacentHTML("beforeend", `<tr><td>${n}</td><td>${esc(name)}</td><td class="num">${r.length}</td><td class="num">${k("P0")}</td><td class="num">${k("P1")}</td><td class="num">${k("P2")}</td></tr>`);
+});
+const k = p => C.filter(c => c[1] === p).length;
+ptb.insertAdjacentHTML("beforeend", `<tr><td></td><td><b>Total</b></td><td class="num"><b>${C.length}</b></td><td class="num">${k("P0")}</td><td class="num">${k("P1")}</td><td class="num">${k("P2")}</td></tr>`);
+function render(){
+  const q = $("fq").value.trim().toLowerCase(), a = $("fa").value, p = $("fp").value, ph = $("fph").value, t = $("ft").value;
+  const rows = C.filter(c => (!a || c[0].split("-")[0] === a) && (!p || c[1] === p) && (!ph || c[2] == ph) && (!t || c[3] === t) && (!q || c.join(" ").toLowerCase().includes(q)));
+  $("cases").querySelector("tbody").innerHTML = rows.map(c => `<tr><td>${c[0]}</td><td><span class="pill ${c[1]}">${c[1]}</span></td><td>${esc(c[4])}</td><td class="exp">${esc(c[5])}</td><td><span class="pill t">${esc(c[3])}</span></td><td class="num">${c[2]}</td><td>${c[6]}</td></tr>`).join("") || `<tr><td colspan="7">No cases match these filters.</td></tr>`;
+  $("count").textContent = `${rows.length} of ${C.length} cases`;
+}
+["fq","fa","fp","fph","ft"].forEach(id => $(id).addEventListener("input", render));
+render();
+</script>

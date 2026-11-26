@@ -1283,3 +1283,19 @@
 - 2026-11-23T12:39:33 CLEANUP rerun {"skill":204,"skillType":204,"rules":149,"tickets":4,"purged":174,"qaRulesLeft":0,"totalRules":55,"binLeft":0,"skillsLeft":0}
 - 2026-11-23T14:24:02 rule "QA WF API01ui" b768aedf-448c-4d09-9e8d-5755574747cf
 - 2026-11-23T14:31:17 CLEANUP api01 {"storedCriteria":"null","active":false,"actions":1,"deleted":204,"qaRulesLeft":0}
+- 2026-11-24T14:05:58 rule "QA WF R24C" e9769344-4112-406c-bf76-800d03df69c9
+- 2026-11-24T14:06:02 rule "QA WF R24S" c9fc2c18-5e4d-4357-987e-a7ca525d9b47
+- 2026-11-24T14:06:02 rule "QA WF R24E" 569d5e93-a124-4276-93ee-6da8282a9104
+- 2026-11-24T14:06:02 rule "QA WF R24B" 79312adc-9192-4476-8362-362f102fa232
+- 2026-11-24T14:06:07 ticket "QA WF R24C high" e599dd80-a5fb-41e3-adaa-b4d4cf107c76
+- 2026-11-24T14:06:08 ticket "QA WF R24C default" df22010e-c61a-433b-a03b-c002ce0300e8
+- 2026-11-24T14:06:09 ticket "QA WF R24C low" 091a4a94-08e8-4f6f-854b-2798665532da
+- 2026-11-24T14:06:10 ticket "QA WF R24S x" 70285118-7c5b-4e8f-9f5d-5a7a01062300
+- 2026-11-24T14:06:11 ticket "QA WF R24E prio" fb4f928b-ee01-4db1-a001-7589e16fdeef
+- 2026-11-24T14:06:12 ticket "QA WF R24E other" 9dc9cdb9-d38c-4f05-9562-67a21622a041
+- 2026-11-24T14:06:13 ticket "QA WF R24B x" 72b8fa7f-933f-4fca-b75e-0e85e780ec38
+- 2026-11-24T14:07:36 rule "QA WF R24K" 0ce790ca-51dc-43d2-a6a0-cae133cf16f6
+- 2026-11-24T14:07:36 rule "QA WF R24B2" f15e429d-0fd3-459e-9d09-177bf756b078
+- 2026-11-24T14:07:40 ticket "QA WF R24K ctl" 18e7cfd0-1726-459c-bcdb-163bef6537b1
+- 2026-11-24T14:07:41 ticket "QA WF R24B2 x" 30acf8b2-54a4-4c96-a50b-d60321865e22
+- 2026-11-24T14:09:31 CLEANUP NDC-3186 retest {"rules":6,"tickets":9,"purged":15,"qaRulesLeft":0,"binLeft":0}

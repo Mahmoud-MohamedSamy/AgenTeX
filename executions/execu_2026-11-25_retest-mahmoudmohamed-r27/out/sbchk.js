@@ -1,0 +1,1 @@
+for (let i = 0; i < 12; i++) { const s = arr((await api.O('GET', '/desk/data/sandboxes')).j?.data); if (!s.length) return { sandboxes: 0, after_s: i * 10 }; if (i === 11) return { sandboxes: s.map(x => x.name + ' ' + x.status) }; await sleep(10000); }

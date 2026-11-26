@@ -1,0 +1,563 @@
+<title>Zoho Survey Study</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: sticky table of contents on the left, one reading column on the right; stacks to one column on phones. */
+:root{
+  --bg:#f6f8f8; --surface:#ffffff; --fg:#17201f; --muted:#5a6866; --line:#d9e1e0;
+  --accent:#0f7a6c; --accent-soft:#e2f2ef; --live:#7a4b0f; --live-soft:#fbefdc; --warn:#9a2f2f; --warn-soft:#fbe6e4;
+  --font-display:"Space Grotesk",system-ui,sans-serif; --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --font-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1615; --surface:#162120; --fg:#e4ecea; --muted:#9aaba8; --line:#2a3836;
+  --accent:#4cc3b1; --accent-soft:#16332f; --live:#e7b46a; --live-soft:#3a2b16; --warn:#ef8f86; --warn-soft:#3b1d1b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1615; --surface:#162120; --fg:#e4ecea; --muted:#9aaba8; --line:#2a3836;
+  --accent:#4cc3b1; --accent-soft:#16332f; --live:#e7b46a; --live-soft:#3a2b16; --warn:#ef8f86; --warn-soft:#3b1d1b; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:13px}
+nav.toc p{font-family:var(--font-display);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:11px;color:var(--muted);margin:0 0 8px}
+nav.toc ol{margin:0;padding-left:20px;display:grid;gap:4px}
+nav.toc a{color:var(--fg);text-decoration:none}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);text-decoration:underline}
+main{min-width:0}
+header.top{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:8px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+h1{font-family:var(--font-display);font-size:2.3rem;line-height:1.15;margin:6px 0 12px;text-wrap:balance}
+h2{font-family:var(--font-display);font-size:1.45rem;margin:48px 0 10px;text-wrap:balance;scroll-margin-top:16px}
+h3{font-family:var(--font-display);font-size:1.08rem;margin:26px 0 6px}
+p,li{max-width:72ch}
+a{color:var(--accent)}
+code,.mono{font-family:var(--font-mono);font-size:.88em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+.lede{font-size:1.06rem;color:var(--fg)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--muted);margin-top:12px}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:500;padding:1px 7px;border-radius:999px;vertical-align:1px;white-space:nowrap}
+.tag.live{background:var(--live-soft);color:var(--live)}
+.tag.doc{background:var(--accent-soft);color:var(--accent)}
+.tag.gap{background:var(--warn-soft);color:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;font-size:13px;color:var(--muted);margin-top:14px}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);padding:12px 16px;border-radius:6px;margin:16px 0;max-width:80ch}
+.note.warn{border-left-color:var(--warn)}
+.tbl{overflow-x:auto;margin:12px 0 4px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;vertical-align:top;padding:8px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--font-display);font-weight:600;font-size:12.5px;letter-spacing:.02em;background:var(--accent-soft);color:var(--fg);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:500;white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:12px 0}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 16px;min-width:0}
+.box h4{margin:0 0 6px;font-family:var(--font-display);font-size:.98rem}
+.box ul{margin:0;padding-left:18px}
+pre.mermaid{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;overflow-x:auto}
+.shot{font-family:var(--font-mono);font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow-x:auto;white-space:pre;line-height:1.5}
+ol.steps li,ul li{margin:3px 0}
+footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr);gap:16px}nav.toc{position:static;max-height:none;border:1px solid var(--line);border-radius:6px;padding:12px;background:var(--surface)}h1{font-size:1.8rem}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#what">What Zoho Survey is</a></li>
+    <li><a href="#model">Object model</a></li>
+    <li><a href="#lifecycle">Survey lifecycle</a></li>
+    <li><a href="#builder">The builder screen</a></li>
+    <li><a href="#qtypes">Question types</a></li>
+    <li><a href="#qsettings">Question settings</a></li>
+    <li><a href="#logic">Logic and branching</a></li>
+    <li><a href="#vars">Variables, piping, prefill</a></li>
+    <li><a href="#settings">Survey settings</a></li>
+    <li><a href="#look">Themes and languages</a></li>
+    <li><a href="#publish">Publishing (collectors)</a></li>
+    <li><a href="#restrict">Restrictions and quotas</a></li>
+    <li><a href="#runtime">Respondent experience</a></li>
+    <li><a href="#responses">Responses</a></li>
+    <li><a href="#reports">Reports and analytics</a></li>
+    <li><a href="#hub">Hub: integrations and triggers</a></li>
+    <li><a href="#admin">Admin, roles, security</a></li>
+    <li><a href="#plans">Plans and limits</a></li>
+    <li><a href="#datamodel">Suggested data model</a></li>
+    <li><a href="#phases">Suggested build phases</a></li>
+    <li><a href="#open">Open points</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="top">
+  <div class="eyebrow">QA STUDY · REFERENCE PRODUCT · 25 NOV 2026</div>
+  <h1>Zoho Survey, explained for the build team</h1>
+  <p class="lede">Zoho Survey is Zoho's standalone survey and feedback app. You build a questionnaire, publish it through one or more channels, collect answers and analyse them. This page explains how it is organised and what each part does, in enough detail to plan and build an equivalent module for TAVI.</p>
+  <div class="meta"><span>Reference: survey.zoho.com (Enterprise trial portal)</span><span>Sources: Zoho help centre + a hands-on session in the live app</span><span>Test plan: <a href="https://claude.ai/artifact/19wFdBfZa849Lt3dTzft2q">TAVI Surveys test plan</a></span></div>
+  <div class="legend">
+    <span><span class="tag live">SEEN LIVE</span> checked in the live app on 25 Nov 2026</span>
+    <span><span class="tag doc">DOCS</span> from Zoho's help centre, not yet seen live</span>
+    <span><span class="tag gap">OPEN</span> unclear or conflicting, needs a decision</span>
+  </div>
+</header>
+
+<section id="what">
+<h2>1. What Zoho Survey is</h2>
+<p>It is a separate Zoho product, not a module inside CRM or Desk. It has its own portal, users and billing. It connects to CRM, Desk and other apps through integrations. The work splits into five stages, and the app's tabs follow them:</p>
+<div class="tbl"><table>
+<thead><tr><th>Stage</th><th>Where in the app</th><th>What happens</th></tr></thead>
+<tbody>
+<tr><td>Build</td><td>Builder › Editor</td><td>Pages, questions, choices, logic</td></tr>
+<tr><td>Configure</td><td>Builder › Settings, Themes</td><td>Intro and end pages, variables, timer, quotas, look, languages</td></tr>
+<tr><td>Connect</td><td>Builder › Hub</td><td>Integrations (CRM, Desk, Sheets…), trigger emails, webhooks, functions</td></tr>
+<tr><td>Publish</td><td>Builder › Publish</td><td>Collectors: links, email, SMS, embed, pop-up, QR, offline; restrictions</td></tr>
+<tr><td>Analyse</td><td>Summary (left rail) › Reports, Responses</td><td>Summary charts, individual responses, filters, cross-tab, trend, dashboards, exports</td></tr>
+</tbody></table></div>
+<p>When a survey is open, the left rail shows <b>Summary</b>, <b>Builder</b> and <b>Audit Logs</b>. The top tabs are <b>Editor · Settings · Themes · Hub · Publish</b>, with <b>Advanced Options</b> and <b>Preview</b> on the right. <span class="tag live">SEEN LIVE</span></p>
+</section>
+
+<section id="model">
+<h2>2. Object model</h2>
+<pre class="mermaid">
+flowchart TD
+  P[Portal / organisation] --> D[Department<br/>Enterprise only]
+  P --> U[Portal users]
+  D --> S[Survey]
+  S --> PG[Page]
+  PG --> Q[Question]
+  Q --> CH[Choice / row / column]
+  S --> V[Custom variables]
+  S --> T[Theme + settings]
+  S --> C[Collector<br/>one per channel]
+  C --> R[Response]
+  R --> A[Answers]
+  R --> MD[Metadata + variables]
+  S --> RP[Reports, filters, dashboards]
+  S --> H[Hub: integrations, triggers, webhooks]
+</pre>
+<ul>
+<li><b>Portal</b>: the organisation. It holds users, custom domains, sender addresses, connected apps and hash keys. One login can own several portals ("My Portals"). <span class="tag doc">DOCS</span></li>
+<li><b>Department</b>: a workspace inside the portal. Users get a role per department. Enterprise only. Our trial portal has one, "My Department", picked from a dropdown in the header. <span class="tag live">SEEN LIVE</span></li>
+<li><b>Survey</b>: name, category and tags (there are no folders; tags do that job). The URL pattern is <code>#/portal/{portalId}/department/{deptId}/survey/{surveyId}/buildersurvey</code>. <span class="tag live">SEEN LIVE</span></li>
+<li><b>Page</b>: title (max 100 chars) and description (max 5,000 chars). No page limit. <span class="tag live">SEEN LIVE</span></li>
+<li><b>Question</b>: internal IDs are letters (A, B, C…), used by scripts and piping. <span class="tag doc">DOCS</span></li>
+<li><b>Collector</b>: one distribution channel with its own link, settings and response stream. A survey can have many. Responses always record which collector they came through. <span class="tag doc">DOCS</span></li>
+</ul>
+</section>
+
+<section id="lifecycle">
+<h2>3. Survey lifecycle</h2>
+<h3>Creating a survey</h3>
+<p>The create screen has four tabs: <b>Create New Survey</b>, <b>Create Survey Using AI</b>, <b>Import Survey</b> and <b>Choose From Template</b>. <span class="tag live">SEEN LIVE</span></p>
+<ul>
+<li><b>Create New Survey</b> offers three ways: <i>Create from scratch</i> (builder), <i>Create with Quick Editor</i> (paste many questions at once or copy from a document), and <i>Create using AI</i>. <span class="tag live">SEEN LIVE</span></li>
+<li>The create form asks for <b>Survey name</b>, <b>Category</b> (dropdown) and <b>Tags</b> (space-separated). <span class="tag live">SEEN LIVE</span></li>
+<li>Template categories: Customer Satisfaction, Human Resources, Education, Marketing, Events, Healthcare, Non Profit, Govt and Political, Business, eCommerce. Zoho claims 250–300+ templates. <span class="tag live">SEEN LIVE</span></li>
+<li>Import: up to 10 questions on Free, 50 on paid plans. <span class="tag doc">DOCS</span></li>
+</ul>
+<h3>States</h3>
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Draft: create
+  Draft --> Published: first collector created
+  Published --> Closed: Close Survey / end date / response limit / plan limit
+  Closed --> Published: Reopen
+  Draft --> Trash: delete
+  Published --> Trash: delete
+  Closed --> Trash: delete
+  Trash --> Draft: restore
+  Trash --> [*]: delete permanently
+</pre>
+<ul>
+<li>The My Surveys filters are All, Published, Drafts, Closed, Shared by Me and Trashed, plus tag filters and a search box. <span class="tag live">SEEN LIVE</span></li>
+<li>Delete is two steps. The trash icon on a survey card moves it to Trash at once, with no confirmation. The Trashed filter then shows <b>Restore</b> and <b>Delete</b>; Delete asks "Once deleted permanently, you can't restore it" and needs <i>Yes, Delete This Survey</i>. Survey cards also have Edit, Duplicate, Preview and Publish buttons. <span class="tag live">SEEN LIVE</span></li>
+<li>Close works per survey or per collector, and can be reopened. A closed survey shows a "Closed Survey Page" message you can edit. <span class="tag doc">DOCS</span></li>
+<li>After publishing, question <b>type</b> can no longer be changed. Before publishing, it can only change to a type in the same family (for example single to multi choice). <span class="tag doc">DOCS</span></li>
+<li>Other actions on a survey: Duplicate, Transfer (to another user or department; the recipient must accept), Send Copy, Export as PDF, Print, Share (co-owners). <span class="tag doc">DOCS</span></li>
+</ul>
+</section>
+
+<section id="builder">
+<h2>4. The builder screen</h2>
+<p>This is what we saw after creating "QA Survey Study 1". <span class="tag live">SEEN LIVE</span></p>
+<div class="shot">┌ Left panel ──────────────┐ ┌ Canvas ─────────────────────────────┐ ┌ Pages ┐
+│ QUESTION TYPES (28)      │ │ Page 1 ▾      Untitled        Logic │ │ P1    │
+│  click or drag to add    │ │  Drag and drop a question here      │ │ P2    │
+│ QUESTION BANK            │ │  OR  [Paste your questions here]    │ │  +    │
+│  Template Gallery        │ ├─────────────────────────────────────┤ └───────┘
+│  Existing Surveys        │ │ Page 2 ▾      Details         Logic │
+│  Bulk Question Builder   │ │  …                                  │
+│ TRASHED ITEMS            │ └─────────────────────────────────────┘
+│  Trash (questions, vars) │
+└──────────────────────────┘</div>
+<ul>
+<li>Clicking a question type adds it and opens a right-hand <b>editor drawer</b> with tabs <b>Editor · Validation · Display Logic · Answer Display Logic</b>, then CANCEL / SAVE. Text-only types (for example Short Answer) have no Answer Display Logic tab. <span class="tag live">SEEN LIVE</span></li>
+<li>Each page header has a page menu (<i>Page 1 ▾</i>: edit info, clone, move, delete), the page title, and <b>Logic</b> (<i>Page Skip Logic</i>, <i>Question Randomization</i>). <span class="tag live">SEEN LIVE</span></li>
+<li>The <b>+</b> under the page list opens "Page Information": Page title (max 100), Page description (max 5,000), both with <i>Insert Variable</i>, then CREATE PAGE. <span class="tag live">SEEN LIVE</span></li>
+<li>Question actions: Edit, Clone, Move (to a page, before or after a question), Move to Trash. Deleted questions and variables go to the builder Trash and can be restored. <span class="tag doc">DOCS</span></li>
+<li>The question editor saves straight to the survey. There is no separate "Save survey" button. <span class="tag live">SEEN LIVE</span></li>
+</ul>
+</section>
+
+<section id="qtypes">
+<h2>5. Question types</h2>
+<p>The live builder lists exactly these 28 types, in this order. <span class="tag live">SEEN LIVE</span></p>
+<div class="tbl"><table>
+<thead><tr><th>Type</th><th>Family</th><th>Key settings beyond the common ones</th></tr></thead>
+<tbody>
+<tr><td>Multiple Choice (One Answer)</td><td>Choice</td><td>Display format: Vertical 1/2/3 columns or Horizontal 1 row <span class="tag live">SEEN LIVE</span>; Other field; carry forward</td></tr>
+<tr><td>Multiple Choice (Many Answers)</td><td>Choice</td><td>Required number of choices (at least / at most / exactly / between); exclusive choices ("None of the above")</td></tr>
+<tr><td>Dropdown (One Answer)</td><td>Choice</td><td>Like MC; can switch only to the other dropdown</td></tr>
+<tr><td>Dropdown (Many Answers)</td><td>Choice</td><td>Required count, exclusive choices</td></tr>
+<tr><td>Image Selection</td><td>Choice</td><td>Image per choice (gallery or URL, ≤1050 KB), optional label, one or many answers, image star variant</td></tr>
+<tr><td>Rating Scale</td><td>Rating</td><td>Likert (range 0–10, end labels) or Weighted Choice (label + weight, "show weightage"); shown as numbers, smileys or custom images</td></tr>
+<tr><td>Star Rating</td><td>Rating</td><td>Number of stars (3–10), N/A option</td></tr>
+<tr><td>NPS</td><td>Rating</td><td>Fixed 0–10; representation Numbers / Smileys / Boxes / Circles / Rectangle / Images; labels for the 0 and 10 ends; N/A option <span class="tag live">SEEN LIVE</span>. Buckets: detractor 0–6, passive 7–8, promoter 9–10</td></tr>
+<tr><td>Slider Scale</td><td>Rating</td><td>Number or %, start, end, initial position, step, left/middle/right labels</td></tr>
+<tr><td>Continuous Sum</td><td>Numeric</td><td>Fields shown as textboxes or sliders; validate total (equal / less / greater / between); hide total; decimals</td></tr>
+<tr><td>Ranking</td><td>Order</td><td>Drag to rank; N/A option</td></tr>
+<tr><td>Boolean (Yes/No)</td><td>Choice</td><td>On/off labels, toggle or checkbox, default answer is No</td></tr>
+<tr><td>Matrix Choice (One Answer)</td><td>Matrix</td><td>Rows × columns radio; "force ranking" (one answer per column); required rows</td></tr>
+<tr><td>Matrix Choice (Many Answers)</td><td>Matrix</td><td>Checkbox grid; required rows/columns; exclusive columns</td></tr>
+<tr><td>Matrix Rating Scale</td><td>Matrix</td><td>Likert or weighted per row</td></tr>
+<tr><td>Matrix Star Rating</td><td>Matrix</td><td>Stars per row</td></tr>
+<tr><td>Matrix Dropdown</td><td>Matrix</td><td>A dropdown list per column</td></tr>
+<tr><td>Matrix Grid</td><td>Matrix</td><td>Per-column format: short answer, number, email, date or dropdown</td></tr>
+<tr><td>Matrix Textbox</td><td>Matrix</td><td>Text cells; one format for all columns or per column</td></tr>
+<tr><td>Short Answer</td><td>Text</td><td>Max 255 chars; validation by type, contains, length or custom regex; can be encrypted</td></tr>
+<tr><td>Long Answer</td><td>Text</td><td>Box size; length between min and max (cap 5,000)</td></tr>
+<tr><td>Number</td><td>Text</td><td>Min, max, decimals</td></tr>
+<tr><td>Email</td><td>Text</td><td>Email format check</td></tr>
+<tr><td>Date/Time</td><td>Text</td><td>Format, allowed date range, include time</td></tr>
+<tr><td>Multiple Textboxes</td><td>Text</td><td>Several labelled fields, each with its own format</td></tr>
+<tr><td>Full Name</td><td>Contact</td><td>First and last name fields</td></tr>
+<tr><td>Contact Information</td><td>Contact</td><td>Address / phone style sub-fields with editable labels</td></tr>
+<tr><td>Signature</td><td>Special</td><td>Draw signature; optionally ask for the signer's name</td></tr>
+<tr><td>File Upload</td><td>Special</td><td>Allowed types (document, image, spreadsheet, media, custom), size limits, file count; 10 MB per file</td></tr>
+<tr><td>Heading/Description</td><td>Display</td><td>Rich text block, not a question (intros, section headings)</td></tr>
+</tbody></table></div>
+<p class="note">There are no separate CSAT, CES, address or heat-map types. CSAT is calculated in reports from rating, star and NPS questions. CAPTCHA is a survey setting, not a question.</p>
+</section>
+
+<section id="qsettings">
+<h2>6. Settings every question shares</h2>
+<div class="cols">
+<div class="box"><h4>Editor tab <span class="tag live">SEEN LIVE</span></h4><ul>
+<li>Rich-text question (bold, italic, underline, size, colours, link, image, video, lists, alignment); 65,535 character counter</li>
+<li><b>Insert Variable</b>: pipe earlier answers or variables into the text</li>
+<li>Choices typed one per line, or as <i>Individual Textboxes</i>, or from <i>Predefined Choices</i> (ready lists)</li>
+<li>Carry forward choices from previous questions</li>
+<li>Add "Other" field</li>
+<li>Advanced options: choice display format, choice order (randomise / flip / rotate / sort, keep last N fixed), prepopulate answer, "Comments" field, question hint</li>
+</ul></div>
+<div class="box"><h4>Validation tab <span class="tag live">SEEN LIVE</span></h4><ul>
+<li><b>Mark as Mandatory</b>, with its own error message</li>
+<li><b>Validate Answers</b>: per type (required count, length, number range, regex…)</li>
+<li><b>Validate with Javascript Snippet</b>: custom script rule</li>
+</ul></div>
+<div class="box"><h4>Display Logic tab <span class="tag live">SEEN LIVE</span></h4><ul>
+<li>Default "Always display this question"</li>
+<li>Other modes: never display, display only if, hide only if (conditions)</li>
+<li>A hidden mandatory question is not required</li>
+</ul></div>
+<div class="box"><h4>Answer Display Logic tab <span class="tag live">SEEN LIVE</span></h4><ul>
+<li>Show or hide single choices based on conditions</li>
+<li>If too few choices remain, the whole question hides</li>
+</ul></div>
+</div>
+<p>Also available: a "Not applicable" option on rating types (left out of averages), <b>Encrypt answer</b> and <b>Mark as health information (ePHI)</b> on text and date types, and exclusive choices on multi-answer types. <span class="tag doc">DOCS</span></p>
+</section>
+
+<section id="logic">
+<h2>7. Logic and branching</h2>
+<h3>Page Skip Logic <span class="tag live">SEEN LIVE</span></h3>
+<p>Set per page from the page header › Logic › Page Skip Logic. A test rule was built and saved: <i>If "How likely are you to recommend us?" is less than 7, skip to Survey End Page</i>.</p>
+<ul>
+<li>Conditions are rows numbered <b>C1, C2…</b>: <code>If [subject] [operator] [operand]  skip to [target]</code>. <b>+ Add Condition</b> adds more rows.</li>
+<li><b>Subject</b>: any question on the page, or a <b>Custom Script › Javascript Snippet</b> (locked behind a plan).</li>
+<li><b>Operators</b> for a numeric/NPS question: Equal to, Not equal to, Less than, Greater than, In Between, Answered, Not answered. The operand for NPS is a 0–10 picker.</li>
+<li><b>Targets</b>: Go to next page (Default), Survey End Page, Disqualification Page, or any later page ("Page 2 : Details").</li>
+<li><b>Default Flow</b> ("After this page, go to …") applies when no condition matches.</li>
+<li>Confirmation toast: "The logic has been saved".</li>
+</ul>
+<h3>Other logic <span class="tag doc">DOCS</span></h3>
+<ul>
+<li><b>Question display logic</b> and <b>answer display logic</b> (above). Several conditions join with And/Or. With more than two, an editable <i>condition pattern</i> such as <code>(C1 and C2) or C3</code> appears.</li>
+<li>Text operators: Equal to, Not equal to, Contains, Doesn't contain, Starts with, Ends with, Answered, Not answered.</li>
+<li>Condition subjects can also be variables (URL parameters, CRM, HubSpot), scores, or a collector.</li>
+<li><b>Disqualification</b>: sends the respondent to the Disqualification page. The response is stored with status <i>Disqualified</i>.</li>
+<li><b>Question Randomization</b> (page Logic menu): same order, all questions, or selected questions. Questions linked by logic or piping on the same page are left out.</li>
+<li><b>End Page Logic</b>: a different end page per condition.</li>
+<li><b>Custom script</b> (JavaScript or Deluge): reads <code>application.survey.question.A.response</code> and <code>application.survey.urlparam["x"]</code> and returns true or false. It runs in a sandbox that blocks window, document and eval.</li>
+</ul>
+<h3>Scoring and quizzes <span class="tag doc">DOCS</span></h3>
+<ul>
+<li>Two methods: <b>Correct Answer Scoring</b> (quiz, with a grading scale such as Pass/Fail or A/B/C) and <b>Weighted Scoring</b> (a value per choice, summed). Negative values are allowed.</li>
+<li>Score values (total, %, per page) can be shown on the end page, used in logic and sent in trigger emails.</li>
+<li>Not scorable: ranking, email, contact, name, file upload, heading.</li>
+</ul>
+</section>
+
+<section id="vars">
+<h2>8. Variables, piping and prefill</h2>
+<ul>
+<li><b>Custom variables</b> (Settings › Variables › Create Variable, "Capture and store values from URLs or external sources"): URL parameter name, label shown in reports, type Text / Email / Number / Choice / Date, optional encryption. Example link: <code>…/survey?email=a@b.com&amp;region=cairo</code>. <span class="tag live">SEEN LIVE</span> (screen) <span class="tag doc">DOCS</span> (fields)</li>
+<li><b>Respondent variables</b> come in automatically from email or SMS invites, CRM, Desk, unique-URL CSVs and so on (email, first name, last name, phone, up to six extra variables).</li>
+<li><b>Piping</b>: <i>Insert Variable</i> in a question, page title or end page puts in an earlier answer or variable. If the value is empty, the question is hidden.</li>
+<li><b>Prefill</b> (prepopulate): from an initial value or a source (URL parameter, CRM record, HubSpot). It can be locked or left editable. An option skips page 1 if every question on it is prefilled.</li>
+<li><b>Carry forward</b>: reuse the choices of an earlier question. Take all of them, or only those displayed, not displayed, answered or not answered.</li>
+</ul>
+</section>
+
+<section id="settings">
+<h2>9. Survey settings (Settings tab)</h2>
+<p>The full left menu as shown in the live app: <span class="tag live">SEEN LIVE</span></p>
+<div class="tbl"><table>
+<thead><tr><th>Item</th><th>What it controls</th></tr></thead>
+<tbody>
+<tr><td>Variables</td><td>Custom (hidden) variables from URL or external sources</td></tr>
+<tr><td>Header / Footer</td><td>Logo (JPEG/PNG, 250×85 recommended), title (survey name or custom text), footer text</td></tr>
+<tr><td>Preferences</td><td>Progress bar, question numbers, CAPTCHA, Previous button, skip prefilled first page, button labels (Submit / Next / Previous), message language, response links, accessibility mode, default domain</td></tr>
+<tr><td>Languages</td><td>Default plus additional languages; translate manually, with Google Translate, or by spreadsheet</td></tr>
+<tr><td>Introduction Page</td><td>Title, description, "Begin Survey" button label</td></tr>
+<tr><td>Terms and Conditions</td><td>Text plus a checkbox label; Next is blocked until it is accepted</td></tr>
+<tr><td>Timer</td><td>Survey or page time limits; auto-submit on timeout; turns off Previous</td></tr>
+<tr><td>Save and Continue Later</td><td>Resume-by-email (sender, subject, message, button label); allow edits after submit</td></tr>
+<tr><td>Scoring</td><td>Correct-answer or weighted scoring, grades</td></tr>
+<tr><td>Quota</td><td>Survey Quota, Collector Quota, Conditional Quota</td></tr>
+<tr><td>Document Merge</td><td>Fill a document template from the answers (certificates, PDFs)</td></tr>
+<tr><td>Survey End Page</td><td>Thank-you page, response summary, submitted answers, custom message, or redirect URL with parameters; per-condition end pages</td></tr>
+<tr><td>Survey Over Quota Page</td><td>Shown when a quota is full</td></tr>
+<tr><td>Survey Disqualification Page</td><td>Shown to disqualified respondents</td></tr>
+<tr><td>Response Editing Restriction Page</td><td>Shown when a respondent may not edit again</td></tr>
+<tr><td>IP Address Restriction Page</td><td>Shown to blocked IPs</td></tr>
+<tr><td>Closed Survey Page</td><td>Shown after close, end date or limit</td></tr>
+<tr><td>Social Media Preview</td><td>Title, description and image when the link is shared</td></tr>
+<tr><td>Track</td><td>Tracking settings (details not opened)</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="look">
+<h2>10. Themes, branding and languages</h2>
+<ul>
+<li><b>Themes</b>: ready themes plus "My Themes". The editor has General (colours, font, corners, shadow, border, form size), Background (image or pattern), Header (logo, title, alignment), Body (question and answer fonts, answer field colours, buttons) and Footer tabs. No custom CSS was found. <span class="tag doc">DOCS</span></li>
+<li><b>White label</b>: your own subdomain (CNAME, SSL provided by Zoho), custom favicon, removal of Zoho branding. Paid plans only. <span class="tag doc">DOCS</span></li>
+<li><b>Languages</b>: one default and any number of extra languages (Zoho says 135, with 91 having built-in system messages). Each response stores its language, and reports can filter by it. <b>RTL is supported</b> (Arabic, Hebrew, Urdu, Persian). This matters for TAVI's Arabic users. <span class="tag doc">DOCS</span></li>
+<li><b>Accessibility</b>: an "Advanced Accessibility" switch, tested with screen readers. <span class="tag doc">DOCS</span></li>
+</ul>
+</section>
+
+<section id="publish">
+<h2>11. Publishing: collectors</h2>
+<p>Publishing means adding at least one <b>collector</b>. Each collector is one channel with its own link, its own restrictions and its own response count, so you can compare channels in reports. <span class="tag doc">DOCS</span></p>
+<div class="cols">
+<div class="box"><h4>Public access</h4><ul>
+<li><b>Public link</b>: copy URL, short link, share to Facebook / X / LinkedIn / WhatsApp / Telegram</li>
+<li><b>Website embed</b>: iframe; posts <code>surveySize</code> and completion events to the parent page</li>
+<li><b>Pop-up</b>: show on all or chosen pages; trigger on load, after N seconds, on exit intent, after N% scroll, or from a script call; position, height, minimise, "do not show again"</li>
+<li><b>QR code</b>: copy or download</li>
+<li><b>Offline / kiosk</b>: mobile app or browser; admin password, auto-restart, auto-upload when back online</li>
+<li><b>Buy responses</b>: paid panel targeted by country, age, gender and so on</li>
+</ul></div>
+<div class="box"><h4>Private audience</h4><ul>
+<li><b>Email invites</b>: template (logo, colours, variables, "Begin Survey" button or the first question inside the email), sender name and address, recipients from CSV / XLS / manual or trigger, send now / scheduled / recurring</li>
+<li><b>Reminders</b> to people who did not answer or only partly answered</li>
+<li><b>Tracking</b>: sent, opened, unopened, responded, partial, bounced, unsubscribed, failed</li>
+<li><b>Unique URLs</b>: upload a CSV and get one personal link per row back</li>
+<li><b>SMS invites</b>: Zoho SMS, Twilio, Clickatell, SMS Magic</li>
+<li><b>Other services</b>: links for Mailchimp, HubSpot and similar, with identity parameters and an optional HMAC hash against tampering</li>
+<li><b>Zoho services</b>: CRM, Desk, Campaigns contact lists</li>
+</ul></div>
+<div class="box"><h4>Organisation</h4><ul>
+<li>Invite members of the organisation; they answer while signed in (Zoho account or SAML)</li>
+</ul></div>
+</div>
+<p>Per collector you can rename it, stop collecting responses, edit it or delete it. An invitation API exists: <code>POST …/collectors/{id}/distributions/{id}/email/sendinvitation</code> with a <code>contactsList</code> array (60 calls per minute). <span class="tag doc">DOCS</span></p>
+</section>
+
+<section id="restrict">
+<h2>12. Restrictions and quotas (per collector)</h2>
+<div class="tbl"><table>
+<thead><tr><th>Control</th><th>Options</th></tr></thead>
+<tbody>
+<tr><td>End date</td><td>Date and time (in the survey owner's time zone); the survey then shows the Closed page</td></tr>
+<tr><td>Response limit</td><td>Maximum number of responses</td></tr>
+<tr><td>One response per…</td><td>Email (unique link), unique URL parameter (optionally block links without it), IP address, device (cookie)</td></tr>
+<tr><td>Editing by respondent</td><td>Can't update · can update until they complete · can update at any time</td></tr>
+<tr><td>Password</td><td>At least 6 characters; editable labels and messages</td></tr>
+<tr><td>IP restriction</td><td>Allow or deny; equal to, in between, or any of a list</td></tr>
+<tr><td>Metadata capture</td><td>Switches for IP address, user agent, name/email, geolocation (asks for consent)</td></tr>
+<tr><td>Quotas</td><td>Survey quota, collector quota, conditional quotas (question + answer, can be balanced by %). When full: close, send to the Over Quota page, or keep collecting marked as over quota. Optional email alert.</td></tr>
+</tbody></table></div>
+<p class="note">Anonymous mode is not a single switch. A public link is anonymous as long as the survey asks no personal questions and IP, user-agent and geolocation capture are off.</p>
+</section>
+
+<section id="runtime">
+<h2>13. Respondent experience</h2>
+<pre class="mermaid">
+flowchart LR
+  L[Open link] --> G{Allowed?<br/>open, password, IP,<br/>one-per rules, quota}
+  G -- no --> X[Closed / restriction page]
+  G -- yes --> I[Intro page + T&amp;C]
+  I --> P1[Page 1]
+  P1 -- Next: answers saved = partial --> SK{Page skip logic}
+  SK -- next / chosen page --> P2[Page N]
+  SK -- end --> E[End page]
+  SK -- disqualify --> DQ[Disqualification page]
+  P2 -- Submit --> Q{Quota full?}
+  Q -- no --> E
+  Q -- yes --> OQ[Over quota page]
+</pre>
+<ul>
+<li>Each <b>Next</b> saves the page. A respondent who stops after page 1 leaves a <b>Partial</b> response. Submitting the last page makes it <b>Completed</b>.</li>
+<li>Required questions are checked page by page, with the question's own error message.</li>
+<li>Display logic is re-checked on every change, so questions appear and disappear live.</li>
+<li>Save and Continue Later emails a resume link (from page 2 onward).</li>
+<li>End page options: thank you, summary, submitted answers, custom message or redirect. Scores and variables can be shown.</li>
+<li>Preview mode lets authors test. Preview answers are not saved as responses.</li>
+</ul>
+</section>
+
+<section id="responses">
+<h2>14. Responses</h2>
+<ul>
+<li><b>Statuses</b>: Completed, Partial, Disqualified, Over quota. Counters: survey visits, total, completed, partial. <span class="tag doc">DOCS</span></li>
+<li><b>Response grid</b>: one row per response, one column per question or field. Show, hide and pin columns, custom views, filters, bulk select, move to trash, export, print. <span class="tag doc">DOCS</span></li>
+<li><b>Metadata columns</b>: Response ID, IP address, user agent, status, response link, survey URL used, start time, completion time, time taken, collector, total rating, CSAT score, average rating, quota, tags, location, respondent variables, notes. <span class="tag doc">DOCS</span></li>
+<li><b>Individual response view</b>: Previous/Next, answers with "Skipped" markers, scores and variables. Actions: Timeline, Edit, Delete, Export PDF, Print. <span class="tag doc">DOCS</span></li>
+<li><b>Tags and notes</b> on responses (note title ≤100 chars, rich body ≤5,000 chars). <span class="tag doc">DOCS</span></li>
+<li><b>Trash</b>: deleted responses leave the reports and can be restored for a limited time. Bulk delete works by all, by date range or by filter. <span class="tag doc">DOCS</span></li>
+</ul>
+</section>
+
+<section id="reports">
+<h2>15. Reports and analytics</h2>
+<div class="tbl"><table>
+<thead><tr><th>Report</th><th>What it shows</th></tr></thead>
+<tbody>
+<tr><td>Summary</td><td>Per question: chart and/or table with counts and %. Metric switch: average rating, NPS, CSAT. Text analysis: sentiment, word cloud, TURF</td></tr>
+<tr><td>Filters</td><td>Ready filters (All, Completed, Partial, Today) and saved custom filters: date (fixed or relative), status, collector, tags, language, answer / variable / score conditions; match all or any</td></tr>
+<tr><td>Cross-tab</td><td>One question (row) against others (columns); bar, pie, line, donut, stacked, grouped, radar charts</td></tr>
+<tr><td>Trend</td><td>NPS, average rating or CSAT by day / week / month / quarter</td></tr>
+<tr><td>Custom report</td><td>Chosen questions and variables only</td></tr>
+<tr><td>Dashboards</td><td>Default plus custom dashboards of widgets (charts, tables, word cloud, sentiment, cross-tab, trend), with filters</td></tr>
+<tr><td>Share report</td><td>Summary and/or individual answers via a link: specific people, organisation, public or password</td></tr>
+<tr><td>Scheduled report</td><td>Emailed once, daily, weekly or monthly as PDF, spreadsheet, CSV or SPSS</td></tr>
+<tr><td>Export</td><td>XLS(X), CSV, SPSS, PDF (all / shown / answered questions), ZIP, Zoho Sheet, Tableau; optional password; runs in the background</td></tr>
+</tbody></table></div>
+<h3>Formulas the build needs</h3>
+<ul>
+<li><b>NPS</b> = % promoters (9–10) − % detractors (0–6), range −100 to +100.</li>
+<li><b>CSAT</b> = positive answers ÷ answered × 100. "Positive" depends on scale size: 5-point → 4–5, 10-point → 6–10, NPS → 9–10 (Zoho publishes the full table: 3→3, 4→3–4, 6→4–6, 7→5–7, 8→5–8, 9→5–9, 11→6–11).</li>
+<li><b>Average rating</b> excludes "Not applicable" answers.</li>
+<li><b>Sentiment</b> (English, long answers): Anger, Disappointment, Neutral, Sarcasm, Happy, Extremely Happy.</li>
+</ul>
+</section>
+
+<section id="hub">
+<h2>16. Hub: integrations and triggers</h2>
+<p>The Hub tab holds what happens <i>after</i> a response arrives. <span class="tag doc">DOCS</span></p>
+<div class="cols">
+<div class="box"><h4>Triggers (run on submit)</h4><ul>
+<li><b>Trigger email</b>: from a verified sender; to fixed addresses or an email answer; subject and body with variables and scores; attach the response PDF; send only if conditions match</li>
+<li><b>Trigger SMS</b></li>
+<li><b>Webhook</b>: POST to a URL as form data or JSON; you choose the key/value pairs (answers, variables, fixed values); query parameters and headers</li>
+<li><b>Function</b>: server script (Deluge) with connections to other apps</li>
+</ul></div>
+<div class="box"><h4>Zoho CRM</h4><ul>
+<li>Map questions to fields of any module (Leads, Contacts, Deals, Cases, custom…)</li>
+<li>Action: Add record, Update record (by record ID in the link) or Add/Update (match on the duplicate-check field)</li>
+<li>Attach the response PDF and uploaded files</li>
+<li>CRM side: "Zoho Survey" related list with Send Survey, sent-by, source, View Response / "Yet to respond", Take Survey</li>
+</ul></div>
+<div class="box"><h4>Zoho Desk</h4><ul>
+<li>Create a ticket from each response (department, layout, field mapping)</li>
+<li>Desk side: map up to 20 surveys per department; agents insert a survey link in a reply or "Send and Close"; the link carries the requester email, ticket ID and agent name</li>
+<li>Reports per agent and per contact, plus a tab on the ticket</li>
+</ul></div>
+<div class="box"><h4>Others</h4><ul>
+<li>Google Sheets, Salesforce, Slack, Microsoft Teams, Zapier, Zoho Flow, Zoho Analytics, Power BI, HubSpot, Mailchimp, Shopify, Zendesk</li>
+<li>Every integration has a sync-status list (successful, untried, failed) with retry</li>
+<li>Responses received before the integration was set up need a manual sync</li>
+</ul></div>
+</div>
+</section>
+
+<section id="admin">
+<h2>17. Admin, roles and security</h2>
+<ul>
+<li><b>Portal users</b>: add by email, statuses active / inactive / pending, optional portal admin. <span class="tag doc">DOCS</span></li>
+<li><b>Department roles</b> (Enterprise): Department Admin (everything in the department), User (all surveys), Contractor (only own surveys), Report Viewer (reports only). Custom roles set Allow / Deny / Read-only on: other users' surveys, tags, themes, images, builder, launch, response actions, export, share, transfer, reports, individual responses, report export and share, delete responses. <span class="tag doc">DOCS</span></li>
+<li><b>Sharing one survey</b>: co-owners with Read/Write or Read Only. <span class="tag doc">DOCS</span></li>
+<li><b>Reviewers</b>: invite people by email to comment on a draft (link valid up to 7 days, no account needed). <span class="tag doc">DOCS</span></li>
+<li><b>Audit log</b>: left rail "Audit Logs" on every survey <span class="tag live">SEEN LIVE</span>. Records date/time, user and action (create / update / delete / download) for builder, settings, distribution, responses, reports and setup. Filter by user, date and action; kept 365 days. <span class="tag doc">DOCS</span></li>
+<li><b>Security</b>: per-question answer encryption (AES-256; encrypted fields support only equal / not equal / answered filters), health-data (ePHI) flag, SAML for report viewers and respondents, custom domains. <span class="tag doc">DOCS</span></li>
+</ul>
+</section>
+
+<section id="plans">
+<h2>18. Plans and limits</h2>
+<p>Zoho gates many features by plan. TAVI does not need to copy the gating, but the table shows which features Zoho treats as basic and which as advanced. That is useful for ordering the build. <span class="tag doc">DOCS</span></p>
+<div class="tbl"><table>
+<thead><tr><th>Plan</th><th class="num">Users</th><th>Responses</th><th>Adds</th></tr></thead>
+<tbody>
+<tr><td>Free</td><td class="num">1</td><td>100 per survey, 10 questions per survey</td><td>Core types, public link, embed, QR, password, end date</td></tr>
+<tr><td>Basic</td><td class="num">1</td><td>12,000 / year</td><td>Display + page logic, piping, prefill, custom end page, quotas, CAPTCHA, unique URLs, offline, filters, exports</td></tr>
+<tr><td>Plus</td><td class="num">1</td><td>Unlimited (annual)</td><td>Answer display logic, scoring, file upload, signature, SMS, cross-tab, trend, scheduled reports, Desk integration</td></tr>
+<tr><td>Pro</td><td class="num">1</td><td>Unlimited (annual)</td><td>Custom script, carry forward, timer, document merge, conditional quota, translations, white label, CRM, webhooks, triggers, encryption</td></tr>
+<tr><td>Enterprise</td><td class="num">3+</td><td>Unlimited (annual)</td><td>Departments, custom roles, audit logs, SSO / SAML, several domains</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="datamodel">
+<h2>19. Suggested data model for TAVI</h2>
+<p>A starting point derived from the behaviour above, not Zoho's real schema.</p>
+<div class="tbl"><table>
+<thead><tr><th>Entity</th><th>Key fields</th></tr></thead>
+<tbody>
+<tr><td>survey</td><td>id, org_id, department_id, name, category, tags[], status (draft/published/closed/trashed), default_language, theme_id, settings (json: progress bar, numbering, captcha, previous button, labels…), intro_page, end_pages, created_by, timestamps</td></tr>
+<tr><td>survey_page</td><td>id, survey_id, order, title, description, skip_rules[] (condition tree + target page / end / disqualify), default_target</td></tr>
+<tr><td>question</td><td>id, survey_id, page_id, order, code (A, B…), type, text (rich), required, error_message, settings (json per type), validation (json), display_logic (json), randomize_choices, encrypted</td></tr>
+<tr><td>question_choice</td><td>id, question_id, kind (choice / row / column), order, label, value, weight, score, image_url, is_other, is_exclusive, is_na, display_logic</td></tr>
+<tr><td>survey_variable</td><td>id, survey_id, url_param, label, type, choices, encrypted</td></tr>
+<tr><td>translation</td><td>survey_id, language, key (question/choice/page/message id), text</td></tr>
+<tr><td>collector</td><td>id, survey_id, type (link / email / sms / embed / popup / qr / offline / unique_url), name, status (open/closed), slug, restrictions (json: end date, limit, one-per rule, edit mode, password hash, ip rules, captures), quota</td></tr>
+<tr><td>invitation</td><td>id, collector_id, contact (email, phone, names, vars), token, status (scheduled / sent / opened / responded / partial / bounced / unsubscribed / failed), sent_at, reminders</td></tr>
+<tr><td>response</td><td>id, survey_id, collector_id, invitation_id, status (partial / completed / disqualified / over_quota), language, ip, user_agent, location, started_at, completed_at, duration, last_page, score, grade, variables (json), tags[], trashed_at</td></tr>
+<tr><td>answer</td><td>response_id, question_id, row_id, column_id, choice_id, value_text, value_number, value_date, file_ref, other_text, comment</td></tr>
+<tr><td>response_note</td><td>id, response_id, title, body, author, timestamps</td></tr>
+<tr><td>quota</td><td>id, survey_id, collector_id?, conditions, limit, on_full action, count</td></tr>
+<tr><td>report / filter / dashboard</td><td>saved definitions (json) per survey and owner, share settings</td></tr>
+<tr><td>action (hub)</td><td>id, survey_id, type (email / webhook / crm / desk / function), conditions, config, sync log</td></tr>
+<tr><td>audit_log</td><td>survey_id, user_id, action, object, details, at</td></tr>
+</tbody></table></div>
+<p class="note">Two design rules matter early. First, once a survey has responses, editing it must not break old answers: keep question and choice IDs stable and block type changes after publish, as Zoho does. Second, store answers per question (not as one big JSON) so filters, cross-tabs and trends can query them.</p>
+</section>
+
+<section id="phases">
+<h2>20. Suggested build phases</h2>
+<ol class="steps">
+<li><b>Core builder and runtime</b>: survey list (draft/published/closed/trash, tags, search), pages, the most-used question types (choice, dropdown, rating, star, NPS, matrix choice, text, number, email, date, heading), required + validation, public link collector, respondent page with partial save, thank-you page, response list and individual view, summary report, CSV/XLSX export.</li>
+<li><b>Logic and settings</b>: display logic, page skip logic, disqualification, piping, URL variables, prefill, intro / T&amp;C / end pages, close / reopen, end date, response limit, one-per rules, password, themes and logo, Arabic (RTL) and multiple languages.</li>
+<li><b>Distribution</b>: email invites with tracking and reminders, unique links, embed, pop-up, QR, several collectors per survey, quotas.</li>
+<li><b>Analytics</b>: filters, cross-tab, trend, NPS/CSAT metrics, dashboards, shared reports, scheduled reports, PDF export, notes and tags.</li>
+<li><b>TAVI integrations</b>: send from CRM and Desk records, write answers back to CRM fields, survey after ticket close in Desk, trigger emails, webhooks, workflow hooks.</li>
+<li><b>Advanced</b>: scoring/quiz, remaining question types (ranking, slider, continuous sum, matrix grid/dropdown/textbox, file upload, signature, image choice), answer display logic, carry forward, timer, roles and audit log, encryption, offline kiosk.</li>
+</ol>
+</section>
+
+<section id="open">
+<h2>21. Open points</h2>
+<ul>
+<li><span class="tag gap">OPEN</span> <b>Product decision</b>: there is no PRD or Plane ticket for Surveys yet. Is this a standalone TAVI app, like Zoho, or a module inside CRM/Desk? That changes the org/department model and the permissions.</li>
+<li><span class="tag gap">OPEN</span> Zoho's own docs conflict on some limits (Short Answer 100 vs 255 characters; 250+ vs 300+ templates; 75+ vs 90+ vs 135 languages). Pick our own limits.</li>
+<li><span class="tag gap">OPEN</span> Zoho publishes no official public Survey API reference. If TAVI needs an API, design it fresh.</li>
+<li><span class="tag gap">OPEN</span> Not yet seen live: Publish tab screens, Themes editor, Hub, reports with real data, response grid. The live session was cut short by a network outage on this machine. A second pass can capture these with screenshots.</li>
+<li><span class="tag gap">OPEN</span> Not documented by Zoho: page randomisation, one-question-at-a-time mode, custom CSS, folders, trash retention days, and whether partial responses fire triggers.</li>
+</ul>
+</section>
+
+<footer>
+Prepared by QA from Zoho's help centre (help.zoho.com/portal/en/kb/survey, zoho.com/survey) and a hands-on session in a Zoho Survey Enterprise trial portal on 25 Nov 2026. Test survey used: "QA Survey Study 1" (2 pages, 3 questions, 1 skip rule), deleted permanently on the same day.
+</footer>
+</main>
+</div>

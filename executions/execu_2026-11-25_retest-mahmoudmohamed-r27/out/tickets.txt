@@ -1,0 +1,198 @@
+
+===== NDC-2863 Data Backup: a backup made today cannot be restored ("made before restore was available")
+Summary
+A custom backup created today finishes normally but is marked as not restorable, and restoring it into a sandbox is refused with a reason that cannot be true for a backup made minutes earlier.
+Steps to reproduce
+- Sign in to Desk as the account owner.
+- Go to Setup, Data Administration, Data Backup, and create a custom backup for yesterday to tomorrow, without attachments.
+- Wait until the backup shows as completed.
+- Choose Restore into a sandbox for that backup.
+Expected result
+The backup can be restored into a new sandbox.
+Actual result
+The backup completes but has restorable = false. Restore is refused (422, BACKUP_NOT_RESTORABLE) with "This backup cannot be restored: it was made before restore was available, or it has expired." The backup was made the same day and expires on 18 November.
+Additional notes
+Reproduced twice on 11 November 2026. A full backup, which might be restorable, is blocked until 23 November by the one-per-30-days rule, so no backup on this company can be restored at the moment. This blocks the backup-restore part of NDC-2012. The test backup was deleted afterwards.
+Environment
+staging-desk.taviportal.com, API, 11 November 2026, owner account.
+--- comments:
+  [2026-11-15T10:33] Retested 15 November 2026 — partly fixed: the backup can now be restored, but the restore never finishes.
+What I did
+On staging-desk.taviportal.com (tenant …0004, owner), I made a custom backup for 14–16 November without attachments, then restored it into a new sandbox.
+Already fixed
+The backup completed with 2,176 records and is marked restorable, with no "made before restore was available" message. Starting the restore was accepted with 202, not refused as before.
+What actually happened
+The sandbox stayed at "creating" for more than 32 minutes (07:52 to 08:26 UTC). Its log shows provisioning done, identity copied, then "copying_metadata — waiting — metadata-engine has not set the sandbox up yet." at 07:54. There were no further steps and no error.
+What should happen
+The backup is restored into the new sandbox and the sandbox becomes ready.
+Not covered
+Whether a blank sandbox, not made from a backup, gets stuck the same way. The test sandbox and the backup were deleted afterwards, and the sandbox list is empty.
+Moving back to Bug.
+
+===== NDC-3051 Data Backup | An expired backup gives "not finished" as the reason it cannot be restored
+Summary
+On the Data Backup page, a full backup that has expired gives "backup not finished" as the reason it cannot be restored, instead of saying it has expired.
+Steps to reproduce
+- Sign in to Desk as the owner and open Setup › Data Administration › Data Backup.
+- Look at the full backup made on 1 November, which expired on 8 November.
+Expected result
+The backup is shown as expired, and the reason it cannot be restored is that it has expired. The app already has a separate "expired" message.
+Actual result
+The backup has status "expired" and restorable false, but its reason is BACKUP_NOT_FINISHED, so the user is told the backup is not finished.
+Additional notes
+Seen during the NDC-2012 retest and checked again on 15 November 2026. Nothing was changed.
+Environment
+staging-desk.taviportal.com, API, 15 November 2026, owner account, tenant …0002.
+--- comments:
+  [2026-11-20T11:18] Retest BLOCKED — 20 Nov 2026
+Environment: staging-desk.taviportal.com, NDC-Staging (tenant …0004); account: ownerMethod: API (GET /api/v1/desk/data/backups and /desk/data/backups/{id})
+Checked:
+- 19 Nov: NDC-Staging had no backups at all (total_count 0).
+- 20 Nov: one new backup 01a1f83b (custom scope 14–19 Nov, made 20 Nov 09:13 UTC) → status completed, restorable true, restore_unavailable_reason null, expires_at 27 Nov 2026 09:14 UTC. It is not expired, so the bug's case cannot be reached yet.
+- The Desk app already maps BACKUP_EXPIRED to its own "expired" message; it shows the reason the server sends, so the fix can only be checked with an expired backup on the server.
+- The backup in the ticket is on tenant …0002, which is not used for testing now.
+Pass bar for the next retest: an expired full backup shows status expired, restorable false and reason BACKUP_EXPIRED (not BACKUP_NOT_FINISHED), and the Data Backup page shows the expired message.
+To unblock: set an NDC-Staging backup's expiry to the past, or retest after 27 Nov 09:14 UTC when backup 01a1f83b expires.
+State not changed.
+
+===== NDC-3136 Ticket Statuses | Changing a status type updates closed time and workload of tickets in it, but not their SLA
+Summary
+On Setup > Ticket Access > Ticket statuses, changing the type of a status that already has tickets updates their closed time and the agent workload at once, but their SLA does not follow: it keeps running after the status becomes closed, pauses late (and with more time left than before) when it becomes on hold, and stays paused when the status goes back to open.
+Steps to Reproduce
+- Put a ticket with a running SLA (QA SLA, response 1 h, resolution 4 h, Customer Support) and two tickets owned by an agent (Marketing) in a status of type Open (e.g. QA NDC Distributor).
+- In Ticket statuses, change that status to type Closed. Read the tickets’ closed time, the agent workload and GET /desk/tickets/{id}/sla after 20 s and 2 min.
+- Change the type to On Hold and read again after 20 s and 2 min.
+- Change the type back to Open and read again after 90 s and 4 min.
+Expected Result
+Tickets already in the status behave exactly like tickets moved into it: Closed stops the SLA (resolution met), On Hold pauses it at once keeping the time left, Open resumes it from where it paused.
+Actual Result
+Closed (10:05 UTC): closed_at set to 10:05:18 and workload 4 -> 2, but the SLA kept running (first response 3,542 s -> 3,441 s left). On Hold: closed_at cleared, workload back to 4; the SLA still ran 20 s later and was paused after 2 min with first response 3,586 s left, up from 3,407 s (about 3 minutes of elapsed time lost). Open again: the SLA was still paused 4 minutes later (3,586 s / 14,386 s unchanged). The status list was restored after the test.
+Environment
+staging-desk.taviportal.com, NDC-Staging, API with the Desk Administrator account (mahmoud.mahamed1515), 19 Nov 2026; QA tickets in Marketing and Customer Support, QA SLA policy in Customer Support; test data deleted and the status list restored after.
+Attachment
+Annotated evidence: ST-3-type-change-sla.png.
+--- comments:
+  [2026-11-23T15:06] Blocker filed as NDC-3202 (SLA | No SLA starts on new tickets: matching SLA policies are ignored when a ticket is created). This ticket will be retested after NDC-3202 is fixed.
+  [2026-11-23T15:02] Retest BLOCKED — 23 Nov 2026 (state not changed)Environment: staging-desk.taviportal.com, NDC-Staging, Edge + API; account: ownerMethod: Manual browser + API
+Why blocked: this retest needs a ticket with a running SLA, and today no new ticket gets an SLA on NDC-Staging, so the status-type change could not be checked.
+- Policy "QA RT26 SLA" in department "QA RT26 VO Dept" is shown as Active in Setup › Automation › SLA & Escalation. Execute on: Ticket Create, Ticket Update. Target: Subject contains "QA RT26 sla", Response 1 h, Resolution 4 h, calendar hours.
+- Ticket #7225 "QA RT26 sla A" in that department (and a second one with a contact): the SLA panel shows "No SLA applies to this ticket", and GET /desk/tickets/{id}/sla returns state none after 60 s.
+- Same result this morning for #7140–#7146 and #7157, with policies "QA AO SL40d01ql" (QA AO Dept A) and "QA NDC Priority based SLAs" (QA NDC Accounting), tickets created by API and by the ticket form. Reapply SLA returns 200 but the state stays none.
+- The same steps started an SLA on 19 Nov.
+Not run: the status type change of "QA NDC Distributor" (Closed → On Hold → Open). Its type is unchanged (Open).
+Will retest once SLAs start on new tickets again.
+
+===== NDC-3207 Workflow Rules | Rules list takes about a minute to load with ~200 rules
+Steps to Reproduce
+- Have about 220 workflow rules on Tickets (the limit is 200 per department).
+- Open Settings → Automation → Workflow Rules.
+Expected Result
+The list shows within a few seconds (paged or virtualised).
+Actual Result
+With 227 rules the first row appeared after 49 s (74 s on 22 Nov with 217); all rows render at once. A second load in the same session took over 3 minutes.
+Environment
+- App: Anyware Desk (staging) — staging-desk.taviportal.com (NDC-Staging), owner account
+- Microsoft Edge, Windows 10
+- Dates: 22–23 Nov 2026
+Evidence
+Regression case PF-03: run 2 (22 Nov) and re-run 23 Nov with 165 temporary inactive rules (deleted after).
+--- comments:
+  [2026-11-25T03:45] Merged (anyware.workflow #153, client-engine #928) and deployed to tavi on 24 Nov.
+The list now draws 50 rules a page instead of all of them, checked in the browser on tavi, 25 Nov. The slow load itself was never reproduced on tavi. If it comes back, please note the time and whether it was the first visit after signing in.
+  [2026-11-24T14:15] Still not reproduced on tavi, 24 Nov: with 56 rules the first row appeared after 2.8 s, and 0.9 s on a second load (headless Chromium, 1440 px).
+The "all rows render at once" part is fixed with NDC-3231 in client-engine #928 (open, not merged): the list now draws 50 rules a page. It still reads every rule from the server, because the tab counts, the rule limit and reorder need them. If a slow load comes back after this ships, please note the time and whether it was the first visit after signing in.
+  [2026-11-24T03:31] Not reproduced on tavi, 23 Nov 16:00 UTC: with about 230 Tickets rules (170 temporary inactive ones, deleted after) the list showed its first row after 2.3 to 3.2 s and 1.4 s on a second load (headless Chromium, 1440 px). The rules API answered in under 1 s.
+Your runs (49 s and 74 s) may have hit a time when tavi was busy; teammates' deploys were pushing the box to a load of 30 to 40 on 4 cores that afternoon. Could you note the time of a slow load next time, and whether it was the first visit after signing in?
+
+===== NDC-3230 Workflow Rules | A rule update that leaves out the conditions clears them, so the rule runs on every ticket (Zoho keeps them)
+Summary
+When a workflow rule is updated and the request does not include the rule's conditions, TAVI clears them. The rule then runs on every ticket of its trigger in its departments, with no warning. Zoho Desk keeps the conditions in that case and clears them only when they are sent explicitly as empty. The TAVI editor relies on the current behaviour, so the fix needs a matching editor change.
+Steps to Reproduce
+- Create an active On Create rule on Tickets with the condition Subject starts with "QA" and any action (e.g. Add Tags).
+- Update the rule through the API with only its actions: PATCH /api/v1/workflow/rules/{id} with body { "actions": [ … ] }.
+- Open the rule in the editor (or read it with GET /api/v1/workflow/rules).
+- Create a ticket whose subject does not start with "QA".
+Expected Result
+- The conditions are kept (Subject starts with "QA"); only the actions change.
+- Conditions are cleared only when the request says so explicitly ("criteria": null).
+Actual Result
+- The update is accepted (200) and the conditions are gone (criteria: null). The editor shows "No conditions — actions run on every event of this trigger".
+- The rule runs on every new ticket — in the test it fired on 6 unrelated tickets at once.
+Impact
+- Who can trigger it: any caller of the workflow API that sends a partial update — an integration, a script, an admin tool, or a future TAVI feature that edits rules (bulk edit, import, copy). People using the TAVI editor are not affected today (see below).
+- What happens: one call silently turns a rule into "every ticket". If the rule is active, all its actions run on every matching event across its departments: fields, owners or status changed on all tickets; emails sent to customers or agents; webhooks fired to outside systems; tags, tasks or comments added everywhere.
+- Detection and recovery: no warning; the only signs are "No conditions" in the editor and a burst of runs in Execution History. Field changes and sent emails cannot be rolled back.
+- Parity: an integration written against Zoho's behaviour (conditions kept on partial update) will hit this.
+What the TAVI editor does today (captured 23 Nov)
+- Change only an action and save → the editor sends the whole rule, conditions included. Conditions kept.
+- Remove all conditions and save → the editor sends the rule with no conditions field at all; the API stores criteria: null. So the editor relies on "conditions left out = no conditions".
+Zoho Desk (checked live 23 Nov)
+Tested with Zoho assignment rules, which use the same conditions format (Zoho workflow rules cannot be created through its API):
+- Rename only, no conditions in the request → conditions kept.
+- Change the assigned agent only, no conditions in the request → conditions kept.
+- criteria: null sent explicitly → conditions cleared.
+Environment
+- App: Anyware Desk (staging) — staging-desk.taviportal.com (NDC-Staging), owner account
+- API + Microsoft Edge, Windows 10; Zoho Desk test portal for the comparison
+- Dates: 22–23 Nov 2026
+--- comments:
+  [2026-11-25T03:45] Merged (anyware.workflow #153, client-engine #928) and deployed to tavi on 24 Nov.
+Checked on tavi through the API, 25 Nov: a probe rule with Subject starts with "QA" kept its condition after an update that sent only its actions, and after one that sent only its name. Sending "criteria": null still cleared it. The probe rule is deleted and purged.
+Not checked live: removing the last condition in the editor and saving. Tests cover it.
+  [2026-11-24T14:15] Reproduced on tavi (NDC Staging), 24 Nov: a probe rule with Subject starts with "QA" read back with no conditions (criteria: null) after an update that sent only its actions, and again after one that sent only its name.
+Fixed in anyware.workflow #153 and client-engine #928 (both open, not merged). An update that leaves the conditions out now keeps them, as Zoho does. Sending "criteria": null still clears them. The editor now sends null when the last condition is removed, so removing all conditions still saves. An update that could leave two conditions identical is refused.
+Checked with tests and in the browser against tavi's API. Not deployed yet.
+
+===== NDC-3231 Workflow Rules | The rules list has no pagination: every rule loads on one page
+Summary
+The Workflow Rules list shows every rule on one long page. There are no page numbers, no next/previous, no rows-per-page choice and no "load more". With the limit of 200 rules per department, a tenant can have several hundred rules, so the page becomes very long and slow to load (NDC-3207).
+Steps to Reproduce
+- Go to Settings › Automation › Workflow Rules.
+- Scroll to the bottom of the list.
+Expected Result
+- The list is paged (for example 25 or 50 rules per page) with page controls and a total count, or it loads more rules as you scroll.
+- Search, filters and the All / Active / Inactive tabs keep working with the paging.
+Actual Result
+- All 56 rules are shown on one page; there is no paging control at the bottom.
+- With 227 rules the first row took 49 seconds to appear and all rows rendered at once (NDC-3207).
+Note
+- The app already loads the rules from the server page by page (200 per request), then shows them all together.
+- Reordering rules is offered only with a module filter; paging should keep that working.
+Environment
+- App: Anyware Desk (staging) — staging-desk.taviportal.com (NDC-Staging), owner account
+- Microsoft Edge, Windows 10
+- 23 Nov 2026
+Attachment
+Screenshots of the top and bottom of the list attached (U19-list-top.png, U19-list-bottom.png).
+--- comments:
+  [2026-11-25T03:45] Merged (anyware.workflow #153, client-engine #928) and deployed to tavi on 24 Nov.
+Checked in the browser on tavi (NDC Staging, 1440 px), 25 Nov: page 1 shows 50 rules and the pager reads "1–50 of 56", with 25, 50 and 100 rows per page. Page 2 shows 6 rules. Opening a rule and going back returns to page 2. The Inactive tab goes back to page 1. Arabic shows the list right to left.
+  [2026-11-24T14:15] Reproduced on tavi, 24 Nov: the list showed all 56 rules on one page with no paging.
+Fixed in client-engine #928 (open, not merged). The list shows 50 rules a page (25, 50 or 100 on offer), with a pager and the total ("1–50 of 56"). Search, the module and department filters and the All / Active / Inactive tabs work with it and go back to page 1. The tab counts still count every rule. Reordering with a module filter moves rules within the page in view. The page and filters are kept in the address, so going back from a rule returns to the same page.
+Checked with tests, and in the browser at 1440 px (light, dark, Arabic) running this branch against tavi's API. Not deployed yet.
+
+===== NDC-3232 Workflow Rules | No Execution History button on the Workflow Rules list page
+Summary
+The Workflow Rules list page has no button to open Execution History. To see the runs of all rules, the admin has to leave the page and find Execution History in the Setup sidebar. From the list, only one rule's history can be opened, through that rule's ⋯ menu.
+Steps to Reproduce
+- Go to Settings › Automation › Workflow Rules.
+- Look at the page header and the toolbar above the list.
+- Open the ⋯ menu of any rule.
+Expected Result
+The list page has an Execution History button (for example next to New Rule) that opens the history of all workflow rules, ideally keeping the module and department filters already chosen on the list.
+Actual Result
+- The header has only New Rule; the toolbar has search, the module and department filters, and the All / Active / Inactive tabs.
+- Execution History for all rules is only in the Setup sidebar (Automation › Execution History).
+- Each rule's ⋯ menu has Execution history, which shows that one rule's runs only.
+Environment
+- App: Anyware Desk (staging) — staging-desk.taviportal.com (NDC-Staging), owner account
+- Microsoft Edge, Windows 10
+- 23 Nov 2026
+Attachment
+Screenshots of the list header and a rule's ⋯ menu attached (U19-list-top.png, U19-row-menu.png).
+--- comments:
+  [2026-11-25T03:45] Merged (anyware.workflow #153, client-engine #928) and deployed to tavi on 24 Nov.
+Checked in the browser on tavi, 25 Nov: "Execution history" sits next to New Rule (Arabic: "سجل التنفيذ") and opens Execution History. It shows the runs of every rule; the list's module and department filters are not carried over.
+  [2026-11-24T14:15] Reproduced on tavi, 24 Nov: the list header had only New Rule.
+Fixed in client-engine #928 (open, not merged). An "Execution history" button now sits next to New Rule for anyone allowed to see runs, and opens the runs of every rule. Execution History has no module or department filter today, so the filters chosen on the list are not carried over. That is listed as a follow-up.
+Checked with tests and in the browser against tavi's API. Not deployed yet.
