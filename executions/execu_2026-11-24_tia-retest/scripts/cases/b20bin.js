@@ -1,0 +1,2 @@
+const out = {}; for (const p of ['/audit/recycle-bin/items?take=50', '/audit/recycle-bin/items?app_key=agents&take=50', '/audit/recycle-bin/items?entity_type=agent&take=50', '/audit/recycle-bin/items?search=Tia&take=50']) { const r = await api('GET', p); const d = arr(r.j?.data); out[p] = r.s + ' n=' + d.length + ' ' + JSON.stringify(d.filter(x => /tia|agent/i.test(JSON.stringify(x))).slice(0, 2)).slice(0, 600); }
+return out;

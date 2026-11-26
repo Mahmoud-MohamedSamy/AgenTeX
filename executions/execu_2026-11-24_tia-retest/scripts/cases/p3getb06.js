@@ -1,0 +1,1 @@
+const x = await askCard('Change the company of the lead "QA-P3-X" to QA P3 B06 Late.'); const I2 = JSON.parse(fs.readFileSync(RUN + '/out/p3-ids.json', 'utf8')); I2['B-06'] = { action: x.acts[0]?.id || null, text: x.text.slice(0, 200) }; fs.writeFileSync(RUN + '/out/p3-ids.json', JSON.stringify(I2, null, 1)); return I2['B-06'];

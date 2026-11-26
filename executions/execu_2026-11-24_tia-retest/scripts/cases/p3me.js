@@ -1,0 +1,1 @@
+const o={};for(const p of ['/iam/me','/iam/me/permissions','/iam/me/profiles']){const r=await api('GET',p);o[p]=r.s+' '+JSON.stringify(r.j?.data||'').replace(/"[^"]*@[^"]*"/g,'"<email>"').slice(0,700)}return o;

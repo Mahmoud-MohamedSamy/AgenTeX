@@ -1,0 +1,1 @@
+const { id } = JSON.parse(fs.readFileSync(RUN + '/out/acc-ts.json', 'utf8')); const d = await api('DELETE', `/teamspaces/${id}`); const g = await api('GET', `/teamspaces/${id}`); ledger('ACC teamspace QA TIA ACC TS deleted ' + d.s + ' get ' + g.s); return { del: d.s, get: g.s };

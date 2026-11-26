@@ -1,0 +1,1 @@
+const s=await api('GET','/agents/tia/status?app=crm');const t=await ask('hi',{page:{app:'crm'}});return {status:s.s+' '+JSON.stringify(s.j?.data||s.j?.error).slice(0,120), turn:t.status+' '+(t.error||'')}

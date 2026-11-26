@@ -1,0 +1,1 @@
+const p=(await api('GET','/ai/policy')).j?.data;const a=await getAgent();return {ver:p.version,tia:p.descriptor.features.tia,agentsEnabled:p.descriptor.features.agents,defaults:p.descriptor.defaults,agentStatus:a.status,deployed:a.deployed_version_no}

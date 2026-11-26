@@ -1,0 +1,13 @@
+const areas = arr((await api('GET', '/agents/tia-setup-areas')).j?.data);
+const a = await getAgent(); if (a.has_undeployed_changes) return { stop: 'undeployed changes exist' };
+const def = JSON.parse(JSON.stringify(a.draft_definition));
+const before = (def.tia?.setup_areas?.propose || []).slice();
+const all = areas.filter(x => !x.read_only).map(x => x.key);
+def.tia.setup_areas = { ...(def.tia.setup_areas || {}), propose: all };
+const s = await api('PUT', `/agents/${AGENT}/draft`, { name: a.name, ...(a.description !== undefined ? { description: a.description } : {}), definition: def, expected_updated_at: a.updated_at });
+if (s.s !== 200) return { save: s.s, err: s.j?.error };
+const d = await api('POST', `/agents/${AGENT}/deploy`, {});
+const b = await getAgent();
+const now = b.draft_definition?.tia?.setup_areas?.propose || [];
+ledger(`Tia ${AGENT}: Propose changes turned on for all ${all.length} non-read-only setup areas (was ${before.length}); deployed v${b.deployed_version_no} (user request). Before list saved in out/pa-agent-before.json`);
+return { save: s.s, deploy: d.s, deployErr: d.j?.error, version: b.deployed_version_no, undeployed: b.has_undeployed_changes, proposeBefore: before.length, proposeNow: now.length, readOnlySkipped: areas.filter(x => x.read_only).length, otherKeysSame: Object.keys(def).every(k => k === 'tia' || JSON.stringify(def[k]) === JSON.stringify(b.draft_definition[k])) };

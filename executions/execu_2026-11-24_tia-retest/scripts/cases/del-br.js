@@ -1,0 +1,2 @@
+const all = arr((await api('GET', '/agents/tia/conversations?limit=200')).j?.data); const del = all.filter(c => /^How many leads are there in CRM\?$/.test(c.title || '') && String(c.updated_at) >= '2026-11-26T12');
+const o = { n: del.length, s: {} }; for (const c of del) { const s = (await api('DELETE', `/agents/tia/conversations/${c.id}`)).s; o.s[s] = (o.s[s] || 0) + 1; } ledger('BR chats deleted ' + JSON.stringify(o)); return o;

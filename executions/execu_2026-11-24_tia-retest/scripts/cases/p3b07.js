@@ -1,0 +1,10 @@
+const L = M.leads; const S = v => ({ kind: 'string', value: String(v) });
+const r = await api('POST', `/modules/${L}/records`, { data: [{ field: 'name', value: S('QA TIA P3 B07') }, { field: 'first_name', value: S('QA TIA P3') }, { field: 'last_name', value: S('B07') }, { field: 'company', value: S('QA P3 Co') }] }); const id = r.j?.data?.id; ledger('P3: lead QA TIA P3 B07 ' + id + ' — delete in R'); const I2 = JSON.parse(fs.readFileSync(RUN + '/out/p3-ids.json', 'utf8')); (I2.extraLeads = I2.extraLeads || []).push(id); fs.writeFileSync(RUN + '/out/p3-ids.json', JSON.stringify(I2, null, 1));
+const x = await askCard('Change the company of the lead "QA TIA P3 B07" to QA P3 B07 Card.');
+const pol = (await api('GET', '/ai/policy')).j.data; const d = JSON.parse(JSON.stringify(pol.descriptor)); d.features.tia.enabled = false;
+const off = await api('PUT', '/ai/policy', { expected_version: pol.version, descriptor: d }); ledger('P3 B-07: Tia switched OFF (' + off.s + ') — switch back on');
+await sleep(4000); const c = x.acts[0] ? await confirmA(x.acts[0]) : null;
+const pol2 = (await api('GET', '/ai/policy')).j.data; const d2 = JSON.parse(JSON.stringify(pol2.descriptor)); d2.features.tia.enabled = true; const on = await api('PUT', '/ai/policy', { expected_version: pol2.version, descriptor: d2 }); ledger('P3 B-07: Tia switched back ON (' + on.s + ')');
+const v = val((await getRec(L, id)).rec, 'company'); const pol3 = (await api('GET', '/ai/policy')).j.data;
+p3rec('B-07', '?', `card=${x.card || 'none'}; Tia off=${off.s}; confirm while off=${JSON.stringify(c)}; back on=${on.s} (enabled=${pol3.descriptor.features.tia.enabled}, cap=${pol3.descriptor.features.tia.daily_credit_cap}); company now=${v}`, { conv: x.conv });
+return { off: off.s, c, on: on.s, enabled: pol3.descriptor.features.tia.enabled, v };

@@ -1,0 +1,13 @@
+const RUN = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation/executions/execu_2026-11-24_tia-retest';
+const RES = RUN + '/out/results.jsonl';
+const stamp = () => new Date().toISOString().slice(0, 19);
+const result = (id, verdict, note, extra) => { fs.appendFileSync(RES, JSON.stringify({ id, verdict, note, at: stamp(), ...(extra || {}) }) + '\n'); log(id, verdict, note); };
+const ledger = line => fs.appendFileSync(RUN + '/ledger.md', `- ${stamp()} ${line}\n`);
+let AGENT = '014e511f-cbc5-5fd8-b939-f58a84beef15';
+const M = { leads:'841043e1-c078-41f9-8d6e-dfd61bee45c3', contacts:'6f553963-01d6-4b68-9fb3-143d23044c41', accounts:'b2398920-2914-4836-be53-81bd960effea', deals:'f42cbafd-ab4e-4a6b-a40c-02c1d0ecb430', tickets:'88e8ea44-1658-4df3-9930-d0902b91073d' };
+const DEPT_A = '93949fbd-f9df-4e2e-ae45-00b8dc38385b';
+const DESK_AGENT_PROFILE = '44444444-4444-4444-4444-444444444402';
+const ids = () => { try { return JSON.parse(fs.readFileSync(RUN + '/out/ids.json', 'utf8')); } catch (e) { return {}; } };
+const ask = async (message, extra) => { const r = await stream('/agents/tia/turn/stream', { turn_id: (globalThis.crypto?.randomUUID?.() || ('qa-' + Date.now())).replace(/-/g,''), message, ...(extra || {}) }, 120000); if (r.final?.conversation_id) fs.appendFileSync(RUN + '/out/convs.txt', (process.env.WHO || '?') + ' ' + process.env.APP + ' ' + r.final.conversation_id + '\n'); return r; };
+const short = r => ({ s: r.status, err: r.error || r.j?.error?.code, ms: r.totalMs, text: (r.text || r.final?.text || '').slice(0, 700), cards: (r.final?.cards || []).map(c => c.type + ':' + (c.header || '')), actions: (r.final?.pending_actions || []).map(a => ({ id: a.id, kind: a.kind, summary: (a.summary || '').slice(0, 200), lines: a.lines })) });
+const getAgent = async () => { let r = await api('GET', `/agents/${AGENT}`); if (r.s === 404) { const l = arr((await api('GET', '/agents')).j?.data); const t = l.find(x => /^tia/i.test(x.name || '') || x.kind === 'tia') || l[0]; AGENT = t.id; r = await api('GET', `/agents/${AGENT}`); } return r.j?.data; };

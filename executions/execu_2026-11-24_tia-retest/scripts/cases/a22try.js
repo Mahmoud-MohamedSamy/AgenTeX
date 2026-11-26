@@ -1,0 +1,1 @@
+const st = await api('GET', '/agents/tia/status'); const r = await ask('QA TIA A22 hello'); return { status: st.s + ' ' + (st.j?.error?.code || JSON.stringify(st.j?.data)), turn: (r.status || '') + ' ' + (r.error || r.j?.error?.code || '') + ' ' + (r.text || '').slice(0, 80) };

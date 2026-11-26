@@ -1,0 +1,4 @@
+const cnt = async () => (await api('GET', '/agents/runtime-status')).j?.data?.tia?.strong_steps_today;
+const Q = (process.env.QS || '').split('||').filter(Boolean); const o = [];
+for (const q of Q) { const c0 = await cnt(); const r = await ask(q, { page: { app: 'crm' } }); await sleep(3000); const c1 = await cnt(); if (r.final?.conversation_id) await api('DELETE', `/agents/tia/conversations/${r.final.conversation_id}`); for (const a of r.final?.pending_actions || []) await api('POST', `/agents/tia/actions/${a.id}/reject`, {}); o.push({ q: q.slice(0, 50), strong: c1 - c0, err: r.error ? String(r.error).slice(0, 60) : null, ms: r.totalMs, text: (r.text || r.final?.text || '').slice(0, 140) }); }
+fs.appendFileSync(RUN + '/out/cr-results.jsonl', JSON.stringify({ id: 'SS-' + (process.env.TAG || ''), o }) + '\n'); return o;

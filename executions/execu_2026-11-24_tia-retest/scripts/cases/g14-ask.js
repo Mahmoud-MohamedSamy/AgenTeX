@@ -1,0 +1,1 @@
+const r = await ask('QA TIA G14 hello'); return { s: r.status, err: r.error || r.j?.error?.code, msg: r.j?.error?.message, text: (r.text || r.final?.text || '').slice(0, 200), notStream: r.notStream };

@@ -1,0 +1,1 @@
+const { id } = JSON.parse(fs.readFileSync(RUN + '/out/acc-ts.json', 'utf8')); return { inList: arr((await api('GET', '/teamspaces')).j?.data).some(t => t.id === id), get: (await api('GET', `/teamspaces/${id}`)).s };

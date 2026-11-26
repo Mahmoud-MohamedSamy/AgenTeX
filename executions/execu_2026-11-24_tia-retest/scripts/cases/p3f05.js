@@ -1,0 +1,5 @@
+let lc = null, lastOk = 0, notes = []; for (let i = 1; i <= 33; i++) { let x = await ask(`QA P3 long chat ${i}: reply with just the number ${i}.`, { page: { app: 'crm' }, ...(lc ? { conversation_id: lc } : {}) }); if (/RATE_LIMIT|BUSY/.test(String(x.error))) { await sleep(30000); x = await ask(`QA P3 long chat ${i}: reply with just the number ${i}.`, { page: { app: 'crm' }, ...(lc ? { conversation_id: lc } : {}) }); }
+  lc = x.final?.conversation_id || lc; if (x.error) { notes.push(`turn ${i}: ${x.error}`); break; } lastOk = i; if (i >= 28) notes.push(`${i}: ${tiaText(x).slice(0, 100)}`); await sleep(3500); }
+const s = await ask('What was the first number I asked you to reply with in this chat?', { page: { app: 'crm' }, conversation_id: lc });
+p3rec('F-05', '?', `turns answered=${lastOk}; ${notes.join(' | ').slice(0, 700)}; memory question after: ${s.error || ''} ${tiaText(s).slice(0, 160)}`, { conv: lc });
+const d = await api('DELETE', `/agents/tia/conversations/${lc}`); return { lastOk, notes, mem: tiaText(s).slice(0, 160), err: s.error, del: d.s };

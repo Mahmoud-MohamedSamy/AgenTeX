@@ -1,0 +1,2 @@
+const o = {}; for (const p of ['/reporting/reports?limit=100', '/reporting/reports', '/reports?limit=100', '/reporting/v1/reports']) { const r = await api('GET', p); const l = arr(r.j?.data?.items || r.j?.data?.reports || r.j?.data); o[p] = { s: r.s, n: l.length, names: l.slice(0, 40).map(x => (x.name || x.title) + ' [' + (x.moduleApiName || x.module || x.primaryModule || x.baseModule || x.source?.module || '') + '] ' + String(x.id).slice(0, 8)) }; if (r.s === 200 && l.length) break; }
+return o;

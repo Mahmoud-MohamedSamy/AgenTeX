@@ -1,0 +1,386 @@
+[
+ {
+  "id": "P-01",
+  "verdict": "Pass",
+  "note": "GET /agents/tia/status 200, available:true in CRM and Desk (OWN)",
+  "at": "2026-11-24T11:38:05"
+ },
+ {
+  "id": "P-02",
+  "verdict": "Pass",
+  "note": "Baseline saved (out/baseline-desk.json, baseline-crm.json): Tia v37 deployed, no undeployed changes, AI policy v15 (tia enabled, daily cap 1e8), Desk Agent profile 52 permissions without ai:tia:use. Note: Tia was v36 at the end of the 23 Nov run, so someone deployed once since.",
+  "at": "2026-11-24T11:38:05"
+ },
+ {
+  "id": "P-03",
+  "verdict": "Pass",
+  "note": "ai:tia:use GRANT on Desk Agent (204); RST added to QA AO Dept A (200). Both in ledger for R-02.",
+  "at": "2026-11-24T11:38:05"
+ },
+ {
+  "id": "P-04",
+  "verdict": "Pass",
+  "note": "Created Desk ticket QA TIA RT T1, CRM lead QA TIA RT Lead, CRM deal QA TIA RT Deal 1500 (Qualification). Note: Leads now require a custom field single_line_3_9 (label \"Single Line Permission\") added by someone else; filled with QA.",
+  "at": "2026-11-24T11:38:05"
+ },
+ {
+  "id": "P-05",
+  "verdict": "Pass",
+  "note": "CRM browser sign-in as OWN through the form worked (no organisation picker); /settings shows the CRM nav and the Tia launcher. Session saved.",
+  "at": "2026-11-24T11:38:05"
+ },
+ {
+  "id": "N1-01",
+  "verdict": "Pass",
+  "note": "CRM (OWN): Tia launcher present on Home, Leads list, a lead record and Settings.",
+  "at": "2026-11-24T11:44:18"
+ },
+ {
+  "id": "N1-02",
+  "verdict": "Pass",
+  "note": "CRM Settings → Integrations → Tia Assistant (/settings/integrations/tia) loads: Deployed, Edit, Deploy changes (disabled), Deactivate, Tia switch, Workspace allowance, Who can use Tia, Apps. Same agent as Desk (API).",
+  "at": "2026-11-24T11:44:19"
+ },
+ {
+  "id": "N1-03",
+  "verdict": "Pass",
+  "note": "CRM Settings menu shows one entry, \"Tia Assistant\" (between AI Features and AI Health). The duplicate \"Tia\" entry seen in Desk (B-01b) is not in CRM.",
+  "at": "2026-11-24T11:44:19"
+ },
+ {
+  "id": "N1-04",
+  "verdict": "Pass",
+  "note": "CRM Settings → AI Features (/settings/integrations/ai) has the row \"Tia, the assistant for your team\" with its switch on, matching the setup page. Not changed.",
+  "at": "2026-11-24T11:44:19"
+ },
+ {
+  "id": "N1-05",
+  "verdict": "Pass",
+  "note": "Launcher opens the panel with focus in the input (Your message); Minimise hides it and reopening shows the same chat; Close returns focus to the launcher. Buttons: What Tia can see, Past chats, New chat, Minimise, Close, Send.",
+  "at": "2026-11-24T11:44:19"
+ },
+ {
+  "id": "N1-06",
+  "verdict": "Pass",
+  "note": "Dragged the panel 340 px left; after reload it stays at the new position (localStorage tia.panel.offset.crm). Desk keeps its own key on its own site.",
+  "at": "2026-11-24T11:44:19"
+ },
+ {
+  "id": "N1-07",
+  "verdict": "Pass",
+  "note": "New chat in CRM: \"Hi, I'm Tia…\", disclaimer \"Tia only sees what you can see, and can make mistakes.\"; CRM suggestions: How is my pipeline this month? / What should I follow up on today? / What can you help me with? (also covers H-07b)",
+  "at": "2026-11-24T11:44:19"
+ },
+ {
+  "id": "N1-08",
+  "verdict": "Pass",
+  "note": "On a lead record the suggestions add \"Summarise this record\". Report page not checked: no report link was found on /reports in the browser run.",
+  "at": "2026-11-24T11:44:19"
+ },
+ {
+  "id": "N1-09",
+  "verdict": "Finding",
+  "note": "\"Summarise this record\" on QA TIA RT Lead: correct name, company, email and source, with a reference chip that opens the lead. But the owner is given as a raw ID (\"identified by the ID 97be04b6-…\") and the details card lists internal keys and values (approval_status not_submitted, auto_number_2 … auto_number_2_7 = 8614) instead of field labels.",
+  "at": "2026-11-24T11:44:20"
+ },
+ {
+  "id": "N1-10",
+  "verdict": "Fail",
+  "note": "CRM suggestion \"How is my pipeline this month?\" answered \"Missing required argument 'report_id' for tool tia_runReport.\" Confirms NDC-3245 (still failing 24 Nov 11:5x UTC).",
+  "at": "2026-11-24T11:44:20"
+ },
+ {
+  "id": "N1-11",
+  "verdict": "Finding",
+  "note": "Create card shown in the CRM panel: Needs your confirmation, \"CreateLead: New record\", field lines, automation note, expiry, Confirm/Cancel; nothing created before Confirm. Line labels are internal keys (name, company, single_line_3_9) and the card title is \"CreateLead\" (same as Finding J-01).",
+  "at": "2026-11-24T11:44:20"
+ },
+ {
+  "id": "N1-12",
+  "verdict": "Fail",
+  "note": "Confirm on \"Create a lead QA TIA RT J01, company QA Co, Single Line Permission QA\" → \"This was refused: The app refused this request (RECORD_VALIDATION_FAILED).\" The card filled \"name\" but not the required First Name, so it could never save; the raw code is shown (NDC-3245 pattern, earlier Finding J-15). A request naming the first name (J04) confirmed and saved correctly.",
+  "at": "2026-11-24T11:44:20"
+ },
+ {
+  "id": "N1-13",
+  "verdict": "Pass",
+  "note": "Cancel on a create card → \"Cancelled. Nothing was changed.\"; no lead J02 exists.",
+  "at": "2026-11-24T11:44:20"
+ },
+ {
+  "id": "N1-14",
+  "verdict": "Finding",
+  "note": "Update card \"Change the lead source of QA TIA RT Lead to referral\": the answer text says from web to referral, but the card shows only the new value (lead_source: referral) with the internal key. Confirm → Done; the lead now has referral (checked with the API).",
+  "at": "2026-11-24T11:44:20"
+ },
+ {
+  "id": "N1-15",
+  "verdict": "Pass",
+  "note": "Reloaded with a create card waiting: the card is still shown with Confirm, Cancel and its expiry; cancelled afterwards.",
+  "at": "2026-11-24T11:44:20"
+ },
+ {
+  "id": "N1-16",
+  "verdict": "Pass",
+  "note": "CRM in Arabic: page dir rtl; panel buttons in Arabic (ما يمكن أن يراه Tia | المحادثات السابقة | محادثة جديدة | تصغير | إغلاق | إرسال) and the Arabic disclaimer; Tia setup page in Arabic. English left on the page is data (module names, the agent's description) and a few CRM menu items (Partner Access, Your Partner, Pipelines, Web Forms), not Tia text. The switch back to English needed a second try (menu item is \"EN English\"); verified ltr after reload.",
+  "at": "2026-11-24T11:47:43"
+ },
+ {
+  "id": "N1-18",
+  "verdict": "Finding",
+  "note": "CRM panel has role=dialog without aria-modal; Tab leaves the panel after 5 stops and Shift+Tab from the input leaves at once; Esc did not close it once focus had left. Same as Finding M-06 in Desk.",
+  "at": "2026-11-24T11:47:43"
+ },
+ {
+  "id": "N2-04",
+  "verdict": "Pass",
+  "note": "Arabic question in CRM \"ما هي مرحلة الصفقة QA TIA RT Deal 1500؟\" → Arabic answer \"مرحلة الصفقة \\\"QA TIA RT Deal 1500\\\" هي \\\"qualification\\\" (التأهيل).\" Correct stage; the English deal name shows correctly inside the right-to-left text (dir auto, rtl). Minor: the stage is given as the raw value qualification plus the Arabic word.",
+  "at": "2026-11-24T11:47:43"
+ },
+ {
+  "id": "N1-17",
+  "verdict": "Pass",
+  "note": "Same user, two apps at once (API): while a CRM question was running, a Desk question returned TIA_BUSY at once (858 ms); nothing hung. Side note: the CRM answer itself was another internal tool error: \"The tool tia_countRecords does not support the argument 'items'…\" (more evidence for NDC-3245).",
+  "at": "2026-11-24T11:48:02"
+ },
+ {
+  "id": "N2-01",
+  "verdict": "Finding",
+  "note": "The built-in CRM Admin profile (11111111-…105, system) has 135 permissions and these AI ones: ai:credits:manage, ai:credits:view, ai:policy:manage, ai:reply:use, ai:summary:view, ai:translate:use — but NOT ai:tia:use (Chat with Tia). The setup page says \"admin profiles have the Chat with Tia permission\". Users whose only CRM profile is CRM Admin: Mohamed Fathy, Mahmoud Mohamed, Ahmed Hegazy NDC (Mahmoud Mohamed can chat only because his Desk Admin profile has it). Not signed in as a CRM-Admin-only user.",
+  "at": "2026-11-24T11:53:14"
+ },
+ {
+  "id": "N2-02",
+  "verdict": "Inconclusive",
+  "note": "Changed since 23 Nov: custom actions now exist. Edit → Tools → Add Tools offers \"List allowed actions\" and \"Propose running an action\"; adding the second (28 → 29 tools) shows \"Allowed custom actions — Select which custom actions this agent may run.\" with each action marked \"AI can't use this action. Turn on Allow AI to use this action…\". With none chosen, Save Draft stays enabled; the deploy-block message could not be checked because the spec forbids saving. Cancelled; Tia still v37, no undeployed changes.",
+  "at": "2026-11-24T11:53:14"
+ },
+ {
+  "id": "N2-03",
+  "verdict": "Pass",
+  "note": "Topics help text is in Edit → Additional Settings → \"What Tia can talk about\": \"Topic rules are checked by AI, so they are strong but not absolute. Permissions are what protect your data.\" (Not on the summary page, which has no topics card.)",
+  "at": "2026-11-24T11:53:14"
+ },
+ {
+  "id": "N2-05",
+  "verdict": "Pass",
+  "note": "Setup page by keyboard (Desk, OWN): 160 Tab presses reach Edit, Deactivate, Versions link, Tia switch, caps inputs, strong-step inputs, audience, apps checkboxes and every Explain/Propose checkbox in the setup areas (the report-access card was not reached within 160 stops, because of the long areas list). Edit opens with Enter and keeps focus inside the dialog for 40 Tab presses.",
+  "at": "2026-11-24T11:53:15"
+ },
+ {
+  "id": "C-01",
+  "verdict": "Fail",
+  "note": "NDC-3246 CHANGED: as RST on ticket QA TIA RT T1, the suggestion \"Draft a private comment\" now gives the Private comment card at once (1 message) — but the card's comment text is a placeholder: \"Please provide the details or content for the private comment to be added.\" Confirm saved exactly that text as a private comment (is_public:false, 11:54:16 UTC, checked with the API). Tia never wrote or asked for real content before showing the card.",
+  "at": "2026-11-24T11:55:08"
+ },
+ {
+  "id": "C-02",
+  "verdict": "Fail",
+  "note": "NDC-3246 CHANGED: typed \"draft a private comment on this ticket\" → card at the first message with comment text \"Draft private comment on ticket\" (the request itself, not a comment). Asked \"you suggest a private comment\", Tia said \"I have not suggested a specific private comment yet. Please tell me what you want to include…\" while that card was still waiting. Cancelled. Different from the 24 Nov Jam (refusal at \"go ahead\"): the card now comes too early, with meaningless text that is saved as-is on Confirm.",
+  "at": "2026-11-24T11:55:08"
+ },
+ {
+  "id": "C-03",
+  "verdict": "Fail",
+  "note": "NDC-3244 CHANGED: RST's suggested question \"How many open tickets do I have?\" no longer gets the customer-bot reply; it now says, twice, \"You currently have no open tickets assigned to you\". True count (API, owner = RST, status Open): 5 (Meeting, Meeting, Demo, Send email, test 48). The reworded \"Count the tickets with status Open that I can see\" gives 37, which is correct (API 37).",
+  "at": "2026-11-24T11:56:35"
+ },
+ {
+  "id": "C-04",
+  "verdict": "Fail",
+  "note": "NDC-3254 CHANGED: Owner no longer gets \"no access to the tickets module\" or a chat \"Conversations\" card. But \"How many open tickets do I have?\" → \"no open tickets assigned to you\" (twice) and \"how many tickets are assigned to me\" → \"0 tickets assigned to you\" (twice). True counts (API): 7 open and 10 in total assigned to the owner (e.g. Send quote, QA RT26 sla A, …).",
+  "at": "2026-11-24T11:56:35"
+ },
+ {
+  "id": "C-05",
+  "verdict": "Finding",
+  "note": "Now one shared symptom (inference): any \"assigned to me\" ticket count returns 0 for both the agent and the Owner, while a plain status count is right (37). Every turn ended status done with no error code. So NDC-3244 (the customer-bot reply) and NDC-3254 (\"no access\", chat counts) are no longer seen as described; what remains for both is a wrong count when the question means tickets owned by me. Suggest one comment on each ticket saying so; not posted.",
+  "at": "2026-11-24T11:56:35"
+ },
+ {
+  "id": "R-01",
+  "verdict": "Pass",
+  "note": "Deleted: CRM leads QA TIA RT Lead and QA TIA RT J04 (2), deal QA TIA RT Deal 1500, Desk ticket QA TIA RT T1 (with the placeholder private comment from C-01). Search for QA TIA RT in leads, deals and tickets: 0 left. Deleted this run's Tia chats only (updated after 11:36 UTC): 6 for RST, 12 for OWN; OWN's 11 older chats from the Jam recordings (10:11–11:07) were kept.",
+  "at": "2026-11-24T11:58:57"
+ },
+ {
+  "id": "R-02",
+  "verdict": "Pass",
+  "note": "Desk Agent profile: ai:tia:use removed; 52 permissions, no ai:tia:use (same as P-02). QA AO Dept A members restored to the original 3.",
+  "at": "2026-11-24T11:58:57"
+ },
+ {
+  "id": "R-03",
+  "verdict": "Pass",
+  "note": "OWN's CRM interface switched back to English (EN, ltr after reload). Desk was never switched.",
+  "at": "2026-11-24T11:58:58"
+ },
+ {
+  "id": "R-04",
+  "verdict": "Finding",
+  "note": "Final check: Tia deployed and available in both apps; AI policy v15 unchanged (Tia on, daily cap 1e8). Tia is now v38, not v37: at 11:54:14 UTC someone signed in as ndc-staging-owner added the guardrail Don't \"create record in leads\" and deployed. Not done by this run (it was running as RST at that moment and never edits guardrails), so it was left in place. No other definition changes.",
+  "at": "2026-11-24T11:58:58"
+ },
+ {
+  "id": "A-03",
+  "verdict": "Pass",
+  "note": "First-run Inconclusive, now run (24 Nov): Test User 1 (no Chat with Tia) in Desk: no launcher and no Tia element on the page.",
+  "at": "2026-11-24T13:33:08"
+ },
+ {
+  "id": "A-12",
+  "verdict": "Pass",
+  "note": "First-run Inconclusive, now run: Test User 1 opens /settings/integrations/tia directly → \"You don't have permission to view this page\" and \"Only people with the Manage AI agents permission can set up Tia…\"; no setup data, no Edit.",
+  "at": "2026-11-24T13:33:08"
+ },
+ {
+  "id": "B-06",
+  "verdict": "Pass",
+  "note": "First-run Inconclusive, now run: OWN changes the daily cap (500→507) without saving. Reload → the browser's beforeunload prompt (dismissed: the value 507 is kept). Back → in-app guard \"Leave without saving? You have changes on this page that are not saved…\" with Keep editing / Leave and discard. Discard returned the field to 500; nothing saved.",
+  "at": "2026-11-24T13:34:16"
+ },
+ {
+  "id": "H-21",
+  "verdict": "Pass",
+  "note": "First-run Inconclusive, now run (QA Team 1, Desk): chat started in tab A, deleted from Past chats in tab B; sending again in tab A shows \"That chat no longer exists, so your message started a new one.\" and answers in a new chat.",
+  "at": "2026-11-24T13:35:48"
+ },
+ {
+  "id": "H-25",
+  "verdict": "Inconclusive",
+  "note": "Re-tried again: on a Desk ticket page (Send quote #7243) neither Actions (only one custom action), the more menu nor Properties → Edit opened a dialog through automation. The Tia panel stays on top of the page (z-index 190) and takes focus. Panel-over-dialog layering still not checked.",
+  "at": "2026-11-24T14:05:01"
+ },
+ {
+  "id": "N-05",
+  "verdict": "Pass",
+  "note": "First-run Inconclusive, now run (QA Team 1, Desk): a chat with 40 messages (20 questions + 20 answers) opens from Past chats in about 50 ms with every message shown; typing works; no freeze. No \"Load earlier messages\" button appeared because 40 messages fit on one page.",
+  "at": "2026-11-24T13:42:31"
+ },
+ {
+  "id": "L-08",
+  "verdict": "Finding",
+  "note": "First-run Inconclusive (limit not reached), now reached: 20 messages in one chat within about 50 s, then the 21st was refused with TIA_RATE_LIMITED (QA Team 1, Desk API). The limit exists; its wording in the panel was not checked.",
+  "at": "2026-11-24T13:42:31"
+ },
+ {
+  "id": "O-03",
+  "verdict": "Finding",
+  "note": "First-run Blocked (J-06), now possible: a private comment confirmed through Tia appears on the ticket as a private comment (C-01, is_public false). But its text was Tia's placeholder, not a real comment (NDC-3246).",
+  "at": "2026-11-24T13:42:31"
+ },
+ {
+  "id": "PA-ALL",
+  "verdict": "Fail",
+  "note": "Propose changes for every area (134 setup areas with Propose on, OWN, 24 Nov 12:30–13:50 UTC, every card rejected): only 1 area produced a Setup change card (CRM Workflow rules). 66 answered \"I couldn't build this. Here's what is missing: … You can finish it yourself on this page: …\" (several links point to the wrong page), 19 refused with the 4-recipe message, 33 said the area is not supported, 10 asked for more details, 5 gave the fallback / not-responding reply. Details: out/pa-final.json. Confirms and extends NDC-3250.",
+  "at": "2026-11-24T13:42:31"
+ },
+ {
+  "id": "B-09",
+  "verdict": "Finding",
+  "note": "Run 24 Nov (with the user's OK). Draft saved with \"Propose running an action\" on and 0 custom actions (the API accepts the draft). The setup page does NOT disable Deploy changes beforehand: the button stays enabled with no warning. Only after pressing it does the page show \"Tia can propose running actions, so choose which actions before you deploy.\" and nothing is deployed. The API refuses the deploy: 422 AGENT_CUSTOM_ACTION_REQUIRED \"Choose at least one custom action Tia may run.\" Live Tia stayed v6 during the test.",
+  "at": "2026-11-24T14:16:52"
+ },
+ {
+  "id": "B-08",
+  "verdict": "Finding",
+  "note": "Run 24 Nov (with the user's OK). Draft saved with the write tools on and 0 write modules (accepted). Deploy changes stays enabled with no warning; after pressing it the page shows \"Tia can propose record changes, so choose the modules it may change before you deploy.\" and nothing is deployed. The API refuses: 422 AGENT_WRITE_MODULE_REQUIRED \"Choose at least one module Tia may make changes in.\" Restore: the original draft was saved back (identical), but the page still counted it as \"changes not live yet\", so it was deployed as v7 with the same setup as v6 — saving an unchanged setup creates a new version.",
+  "at": "2026-11-24T14:16:52"
+ },
+ {
+  "id": "C-12",
+  "verdict": "Pass",
+  "note": "First-run Inconclusive (out of scope), now run: the Tia launcher is on Omnichannel (/chats) and Analytics (/workspaces) for the Owner, and the panel shows the same chat history as CRM and Desk (\"Mark all tasks as done\").",
+  "at": "2026-11-24T14:05:00"
+ },
+ {
+  "id": "L-11",
+  "verdict": "Pass",
+  "note": "First-run Inconclusive, now run (QA Team 1, Desk): sent a long question and reloaded while Tia was still thinking. After reload the panel came back to the same chat and, within 5 s, showed the question and its reply. The reply itself was the fallback \"Sorry, I couldn't answer that just now…\" (NDC-3244 pattern), not the answer.",
+  "at": "2026-11-24T14:05:00"
+ },
+ {
+  "id": "L-12",
+  "verdict": "Blocked",
+  "note": "Re-checked 24 Nov: the AI policy (v20) has no language setting (keys: version, defaults, features); there is no way to turn an AI language off, so the message cannot be shown.",
+  "at": "2026-11-24T14:05:01"
+ },
+ {
+  "id": "O-07",
+  "verdict": "Fail",
+  "note": "First-run Blocked, now covered by the propose test: Desk Ticket tags → \"I couldn't build this. Here's what is missing: areas, department…\"; CRM Record tags → \"…missing: filter\". No setup-change card for tags (NDC-3250).",
+  "at": "2026-11-24T14:05:01"
+ },
+ {
+  "id": "L-07",
+  "verdict": "Finding",
+  "note": "First-run Inconclusive, partly seen: during the propose test the stream ended with error AI_ALL_PROVIDERS_DOWN for 5 areas (API). The panel's wording for this case was not seen.",
+  "at": "2026-11-24T14:05:01"
+ },
+ {
+  "id": "G-14",
+  "verdict": "Pass",
+  "note": "Run with the user's OK: workspace Tia allowance set to 0 for about 4 minutes. Status still said available, but every question was refused with TIA_TENANT_DAILY_CAP and the panel said \"Your workspace has reached today's limit for Tia. It resets tomorrow.\" (Owner and Desk agent). Restored to 200,000 (identical policy) and Tia answered again. The separate \"needs AI credits\" screen (empty wallet) was not produced: the wallet still has credits.",
+  "at": "2026-11-24T14:24:05"
+ },
+ {
+  "id": "A-20",
+  "verdict": "Finding",
+  "note": "Same message for the Owner (who can raise the allowance and buy credits) and for the Desk agent: \"Your workspace has reached today's limit for Tia. It resets tomorrow.\" No link to the allowance setting or Billing & Credits for the person who can fix it, and no \"ask your admin\" hint for the agent.",
+  "at": "2026-11-24T14:24:05"
+ },
+ {
+  "id": "K-03",
+  "verdict": "Pass",
+  "note": "Run with the user's OK. The CRM Manager profile (user mahmoud.mahamed1515) has the Leads field \"Single Line\" (single_line) hidden by field permission. A test lead owned by that user had single_line = QA-TIA-SECRET-K03; the user's own API read does not return it. \"Chat with Tia\" was added to the CRM Manager profile for the test. Three questions (all details; the Single Line value; summarise this record) never returned the hidden value. Side notes: asked for \"the Single Line field\", Tia answered \"QA\" — the value of a different, visible field (Single Line Permission) — and gave the owner as a raw ID. From the Desk app (no CRM Tia permission) Tia could not read the lead and wrongly said \"the Desk module is not open to you\". Reverted: grant removed (profile identical to before), lead deleted.",
+  "at": "2026-11-24T14:27:51"
+ },
+ {
+  "id": "J-18",
+  "verdict": "Pass",
+  "note": "Run with the user's OK: temporary active CRM workflow rule \"QA TIA J18 rule\" (On create, first name starts with QA TIA J18 → create a task). The Owner asked Tia to create lead QA TIA J18; the card warned \"Saving can run your automation rules.\"; after Confirm the rule ran (execution history: RecordCreated, criteria matched, outcome Fired) and its task was created. Rule, lead and task deleted afterwards.",
+  "at": "2026-11-24T14:29:36"
+ },
+ {
+  "id": "O-02",
+  "verdict": "Pass",
+  "note": "The rule's execution history shows the run for the lead created by Tia (outcome Fired, 14:28:58 UTC).",
+  "at": "2026-11-24T14:29:36"
+ },
+ {
+  "id": "O-08",
+  "verdict": "Inconclusive",
+  "note": "No new notification arrived after the Tia-created lead (unread count stayed 28). The rule's only action was a task assigned to the same user who created the lead, which normally does not notify; an alert action to another user was refused by the API (recipient format), so notifications to others were not checked.",
+  "at": "2026-11-24T14:29:36"
+ },
+ {
+  "id": "A-10",
+  "verdict": "Pass",
+  "note": "Run with the user's OK: \"Manage AI agents\" added temporarily to the Desk Supervisor profile (Test User 1, no Manage AI policy). Test User 1 sees the Tia setup page with Edit; the switch card shows \"Tia is switched on — Only people with the Manage AI policy permission can change it.\" and no toggle. Grant removed afterwards (profile identical, 74 permissions).",
+  "at": "2026-11-24T14:32:46"
+ },
+ {
+  "id": "A-13",
+  "verdict": "Finding",
+  "note": "Same temporary setup: Test User 1 (can edit Tia, profile has no right to list profiles — only iam.company.profile.view and view_self) opens Who can use Tia → Only these profiles and users → Choose profiles and users: the picker lists every profile in the workspace (Admin, AI Agent, Analytics Admin, Archive…). The expected \"Seeing the list of profiles needs…\" message does not appear, so the picker shows profiles the user's own permissions do not allow. Nothing saved; Discard used.",
+  "at": "2026-11-24T14:32:46"
+ },
+ {
+  "id": "A-22",
+  "verdict": "Pass",
+  "note": "Run with the user's OK: QA Team 1 (Desk Administrator, can use Tia) suspended by the Owner (PATCH /iam/users/{id} status Suspended, as the app does). The user's existing session was refused at once: GET /agents/tia/status and a Tia question both returned 401 SESSION_REVOKED. Reactivated (status Active) straight after; the user signed in again and Tia was available.",
+  "at": "2026-11-24T14:35:56"
+ },
+ {
+  "id": "L-10",
+  "verdict": "Inconclusive",
+  "note": "Re-tried: the most multi-step question (counts and newest records for 10 kinds of items plus a comparison table) got the general fallback \"Sorry, I couldn't answer that just now…\" after 9 s, not the app's own message for this case (errors.turnBudget: \"This needed more steps than one answer allows. Try asking for less at a time.\"). The step limit may be hidden behind the fallback; not proven.",
+  "at": "2026-11-24T14:36:39"
+ },
+ {
+  "id": "B-20",
+  "verdict": "Finding",
+  "note": "Run with the user's OK: Tia deleted (Recycle Bin) for about 3–4 minutes. Status: available false, reason not_configured; no launcher. The setup page shows the \"Create Tia\" screen (\"Tia answers your staff from your apps…\", Create Tia button) even though Tia is still in the Recycle Bin, with no hint to restore it — an admin could create a second Tia. Restored from the Recycle Bin: same id 075044c6…, deployed v7, identical definition, available again. See NDC-3261 (Tia should not be deletable).",
+  "at": "2026-11-24T14:38:25"
+ }
+]

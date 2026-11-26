@@ -1,0 +1,2 @@
+const l = arr((await api('GET', '/workflow/custom-actions?limit=100')).j?.data?.items || (await api('GET', '/workflow/custom-actions?limit=100')).j?.data);
+return l.map(x => [x.name, 'effect=' + x.effect, 'ai=' + x.aiEnabled, 'confirm=' + x.requireConfirmation, 'apps=' + JSON.stringify(x.targetApps), 'access=' + JSON.stringify(x.access).slice(0, 90), x.method + ' ' + String(x.path).slice(0, 40), 'inputs=' + arr(x.inputBindings).map(i => i.name || i.key || i.inputName).join(',').slice(0, 60)].join(' | '));

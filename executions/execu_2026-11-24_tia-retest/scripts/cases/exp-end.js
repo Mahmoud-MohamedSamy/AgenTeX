@@ -1,0 +1,9 @@
+const E = JSON.parse(fs.readFileSync(RUN + '/out/exp-card.json', 'utf8')); const F = JSON.parse(fs.readFileSync(RUN + '/out/fresh-card.json', 'utf8'));
+const c = await api('POST', `/agents/tia/actions/${E.action}/confirm`, {}); const o = { expiredConfirm: c.s + ' ' + (c.j?.error?.code || c.j?.data?.status || '') };
+o.leads = (await api('GET', `/modules/${M.leads}/records?page=1&per_page=1&filters=${encodeURIComponent(JSON.stringify([{ field: 'first_name', operator: 'starts_with', value: 'QA TIA EXP' }]))}`)).j?.meta?.total_count;
+o.freshLeads = (await api('GET', `/modules/${M.leads}/records?page=1&per_page=1&filters=${encodeURIComponent(JSON.stringify([{ field: 'first_name', operator: 'starts_with', value: 'QA TIA FRESH' }]))}`)).j?.meta?.total_count;
+const RX = /^(How many leads are there in CRM\?|Write a detailed 600-word explanation|Create a workflow rule on Leads that creates a|Create a lead with first name "QA TIA (CR|EXP|FRESH) card"|Explain this report|What is the grand total|Which dashboards can I see|How many chats are there in Omnichannel|Show me the transcript of the most recent|What did the visitor Karim|Search everything for Karim|Create a lead with first name "QA TIA AUD)/;
+const all = arr((await api('GET', '/agents/tia/conversations?limit=200')).j?.data); const del = all.filter(x => RX.test(x.title || '') && String(x.updated_at) >= '2026-11-26');
+o.deleted = 0; for (const d of del) { await api('DELETE', `/agents/tia/conversations/${d.id}`); o.deleted++; }
+o.todayLeft = arr((await api('GET', '/agents/tia/conversations?limit=200')).j?.data).filter(x => String(x.updated_at) >= '2026-11-26').map(x => (x.updated_at || '').slice(11, 16) + ' ' + x.title.slice(0, 40));
+ledger('P7 expiry: ' + JSON.stringify({ c: o.expiredConfirm, leads: o.leads, fresh: o.freshLeads, deleted: o.deleted })); return o;

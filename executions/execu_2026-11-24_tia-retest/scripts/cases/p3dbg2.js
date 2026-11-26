@@ -1,0 +1,1 @@
+const r = await ask('Change the lead source of the lead "QA TIA P3 B08" to Referral. Prepare it as a card for me to confirm.', { page: { app: 'crm' } }); return { s: r.status, err: r.error, types: r.types, text: (r.text || r.final?.text || '').slice(0, 300), acts: (r.final?.pending_actions || []).length, raw0: r.raw0 };

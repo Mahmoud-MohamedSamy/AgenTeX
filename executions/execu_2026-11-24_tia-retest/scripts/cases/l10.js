@@ -1,0 +1,2 @@
+const q = 'For each of these, give me a separate count and then list the 5 newest records with their owner and status: leads, contacts, deals, accounts, tasks, calls, meetings, tickets, chats, and reports; then compare them all in one table.';
+const r = await ask(q); return { err: r.error || r.j?.error?.code, progress: (r.progress || []).length, types: r.types, text: (r.text || r.final?.text || '').slice(0, 400), ms: r.totalMs };

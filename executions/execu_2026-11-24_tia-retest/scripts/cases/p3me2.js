@@ -1,0 +1,1 @@
+const r=await api('GET','/iam/me/permissions');const d=r.j?.data;const s=JSON.stringify(d);return {hasTia:s.includes('ai:tia:use'),len:s.length,keys:Object.keys(d||{}),ctx:(s.match(/.{0,200}ai:tia:use.{0,200}/)||[''])[0]};

@@ -1,0 +1,1 @@
+const r = await ask('hi', { page: { app: process.env.APP } }); if (r.final?.conversation_id) await api('DELETE', `/agents/tia/conversations/${r.final.conversation_id}`); return { s: r.status, notStream: r.notStream, t: (r.t || '').slice(0, 250), err: r.error, text: (r.text || r.final?.text || '').slice(0, 80) };

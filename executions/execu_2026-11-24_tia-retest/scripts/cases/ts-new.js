@@ -1,0 +1,3 @@
+const o = {}; const r = await api('POST', '/teamspaces', { name: 'QA TIA ACC TS', accessMode: 'private', appKey: 'crm' }); const id = r.j?.data?.id; o.create = { s: r.s, mode: r.j?.data?.accessMode, err: r.s >= 300 ? r.t.slice(0, 250) : undefined };
+if (id) { ledger('ACC created teamspace QA TIA ACC TS ' + id + ' — delete'); const g = (await api('GET', `/teamspaces/${id}`)).j?.data; o.readBack = g?.accessMode; const u = await api('PUT', `/teamspaces/${id}`, { name: 'QA TIA ACC TS', accessMode: 'private' }); o.put = { s: u.s, now: (await api('GET', `/teamspaces/${id}`)).j?.data?.accessMode }; o.mahmoudSeesIt = null; o.id = id; fs.writeFileSync(RUN + '/out/acc-ts.json', JSON.stringify({ id })); }
+return o;
