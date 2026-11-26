@@ -1,0 +1,49 @@
+- 2026-11-24T08:45:35Z SIGN-IN owner once (login-r12) -> scratchpad fx-o.json
+- 2026-11-24T08:45:44Z CRM module QA FX Matrix created 29d53ef5-1212-4478-81c4-4acd0a2528ee
+- 2026-11-24T08:50:38Z CRM QA FX Matrix: 25 inputs, 425 formula fields placed, layout ada8939c-d0a1-4aba-85c6-97be5115817d 200
+- 2026-11-24T08:55:30Z CRM QA FX Matrix: 35 inputs, 627 formula fields placed, layout ada8939c-d0a1-4aba-85c6-97be5115817d 400
+- 2026-11-24T09:02:16Z CRM QA FX Matrix layout 2 created 437af0a8-d4cf-4e87-840f-04bb6e88dca9
+- 2026-11-24T09:12:00Z CRM account QA FX Matrix Acc fd5cc62c-8bd1-42fa-810c-d0f1738f043c
+- 2026-11-24T09:12:08Z CRM QA FX Matrix record all filled 4c282ba0-8ed7-406a-841d-4e30e72c21f9
+- 2026-11-24T09:12:11Z CRM QA FX Matrix record all empty 8e0fcaa8-e58f-4a3a-98a1-88932fee4080
+- 2026-11-24T10:27:49Z SIGN-IN owner 2nd (session lost) -> scratchpad fx-o.json
+- 2026-11-24T10:29:40Z CRM QA FX Matrix: daysbetween/hoursbetween wrapped in round() {"200":66}
+- 2026-11-24T10:53:08Z SIGN-IN owner 3rd (field test run) -> scratchpad fx-o.json
+- 2026-11-24T10:58:11Z CRM files uploaded {"doc":{"id":"bf041f2a-5e0c-403d-abf0-6ddadf9d045f","put":200,"confirm":"200"},"img":{"id":"912530cc-d1ee-4e09-a993-dfcc24066873","put":200,"confirm":"200"},"cam":{"id":"65d0b5cf-3de1-44c1-9925-887ca5f04dee","put":200,"confirm":"200"}}
+- 2026-11-24T10:59:35Z CRM QA FX Matrix record L2 all filled 2df83ade-26ae-4428-a5d7-883c4b17e9a0
+- 2026-11-24T10:59:37Z CRM QA FX Matrix record L2 all empty 27bc7599-8702-467a-a2b6-b4686350053d
+- 2026-11-24T10:59:41Z CRM QA FX Matrix record child -> filled f5a6ff86-673e-4b42-9ba8-6f5e765555a1
+- 2026-11-24T10:59:44Z CRM QA FX Matrix record child -> L2 filled f5d208be-01ac-4e2e-9b59-c379a7968399
+- 2026-11-24T11:15:39Z field test run done; owner session file deleted
+- 2026-11-24T11:40:45Z SIGN-IN owner 4th (full formula test) -> scratchpad fx-o.json
+- 2026-11-24T11:40:55Z CRM module QA FX Matrix Ops created 631dc87f-edc9-47e8-99d1-e437bc4e08ea
+- 2026-11-24T11:54:51Z SIGN-IN owner 5th (session lost during ops build) -> scratchpad fx-o.json
+- 2026-11-24T11:56:22Z crm matrix record QA FX matrix - all filled 13f21919-99e8-40d7-a9cf-08bd6000cae7
+- 2026-11-24T11:56:25Z crm matrix record QA FX matrix - all empty 32bf6739-4a06-4ad3-83f3-588a162b084e
+- 2026-11-24T11:56:31Z crm matrix record QA FX matrix - edge values 6b74628b-6ec6-479a-8d5b-038de0b25c1a
+- 2026-11-24T11:56:34Z crm matrix record QA FX matrix 2 - all filled e923b0aa-d0d8-4a4b-835b-46f683706809
+- 2026-11-24T11:56:36Z crm matrix record QA FX matrix - edited (recalc) b1e5d1f4-346a-491d-826c-b61db1b0f8be
+- 2026-11-24T11:57:10Z crm ops record QA FX ops - all filled 4b57d3cb-40f6-4d3b-8268-697b611a4c57
+- 2026-11-24T11:57:14Z crm ops record QA FX ops - all empty d23ef5b1-7a25-404e-ac1f-072c185c4b81
+- 2026-11-24T11:57:25Z crm ops record QA FX ops - edge values f976f9ff-82c8-4b51-92d0-789d3ba32dd9
+- 2026-11-24T11:57:30Z crm ops record QA FX ops - edited (recalc) 2ec7006e-e80d-4241-b7e3-222dbfa981d3
+- 2026-11-24T12:00:45Z CRM QA FX Matrix import session c55d5b79-b51e-478b-82d9-b05c875a7f10
+- 2026-11-24T12:00:53Z CRM workflow rule QA FX Matrix WF recalc a638a5eb-e7e6-46ad-8f38-ec0cacfa585f
+- 2026-11-24T12:01:11Z Desk module QA FX Matrix Desk created 1c0925e7-709f-4277-ae69-b2153ab6aa00
+- 2026-11-24T12:16:16Z CRM QA FX Matrix layout 2 created 19f69a58-8936-4509-9a95-36325c531505
+- 2026-11-24T12:16:27Z desk account QA FX Matrix Acc c6a149e4-fa43-4d0f-97ca-d831935ebf5e
+- 2026-11-24T12:17:10Z desk matrix record QA FX matrix - all filled 11ce44f0-16f9-4890-8879-30d053b09e67
+- 2026-11-24T12:17:15Z desk matrix record QA FX matrix - all empty 02412eb5-d48a-494a-877e-3c0aa136624a
+- 2026-11-24T12:17:24Z desk matrix record QA FX matrix - edge values 2aac40b9-edf1-4c33-8ad8-bbf5d89e00ec
+- 2026-11-24T12:17:30Z desk matrix record QA FX matrix 2 - all filled 16cb4c94-3d0f-454b-b4c6-a0eb240438dc
+- 2026-11-24T12:17:38Z desk matrix record QA FX matrix - edited (recalc) 85717d50-0e65-4af3-ab70-5c8dc8b6b5d4
+- 2026-11-24T12:22:07Z CRM QA FX Matrix import qa-fx-matrix-import2 e0b88117-7f3a-41e4-a0c8-04746ea7b7c8
+- 2026-11-24T12:22:20Z CRM QA FX Matrix import qa-fx-matrix-import-lookup a038b54f-55bd-4c51-828e-e1a63e3568fa
+- 2026-11-24T12:39:01Z CRM QA FX Matrix import lookup2 665008b7-5d9d-48b2-b1f3-8be0790b303d
+- 2026-11-24T12:42:38Z full test done; report.html; owner session file deleted
+- 2026-11-24T12:49:23Z Zoho sign-in (CSV 14-11 row 2) -> scratchpad zstate.json
+- 2026-11-24T13:20:48Z Zoho comparison done and cleaned (2 non-deletable helper modules left); Zoho session deleted
+- 2026-11-24T13:37:19Z Zoho sign-in 2 (behaviour comparison) -> scratchpad zstate.json
+- 2026-11-24T14:02:14Z Zoho sign-in 3 (remaining comparisons) -> scratchpad zstate.json
+- 2026-11-24T14:44:10Z findings.html built (non-filed findings B1-B4, A1-A2, G1-G4, S1-S4, O1-O4)
+- 2026-11-24T14:51:20Z Plane: filed NDC-3273..3276, 6 comments, 16 images

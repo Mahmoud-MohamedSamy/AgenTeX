@@ -1,0 +1,12 @@
+const path = require('path'); const P = 'D:/Software Testing/Automation/Agentex Installation/Agentex Installation'; const RUN = P + '/executions/execu_2026-11-24_formula-matrix';
+const ST = 'C:/Users/Dell/AppData/Local/Temp/claude/f6c7cad13fb47571/ba925bc2-8d6e-462c-ad67-a1b38d88f7f1/scratchpad/zstate.json';
+const { chromium } = require(path.join(P, 'node_modules/playwright-core')); const fs = require('fs');
+(async () => { const b = await chromium.launch({ headless: true, channel: 'msedge' }); const ctx = await b.newContext({ storageState: ST }); const page = await ctx.newPage();
+  const hdrs = []; page.on('request', r => { const u = r.url(); if (/desk\.zoho\.com\/(api|supportapi)/.test(u) && hdrs.length < 4) { const h = r.headers(); hdrs.push({ u: u.slice(0, 110), keys: Object.keys(h).filter(k => /org|csrf|x-/i.test(k)) }); } });
+  setTimeout(() => process.exit(3), 240000).unref();
+  await page.goto('https://desk.zoho.com/agent/techegysolutions/techegysolutions/tickets/list/all-cases', { waitUntil: 'domcontentloaded', timeout: 120000 }); await page.waitForTimeout(15000);
+  console.log(JSON.stringify(hdrs));
+  let H = null; page.on('request', r => { if (!H && /desk\.zoho\.com\/(api|supportapi)/.test(r.url())) H = r.headers(); }); await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForTimeout(10000);
+  const out = await page.evaluate(async (H) => { const h = {}; for (const [k, v] of Object.entries(H || {})) if (/orgid|csrf|x-zcsrf|x-za/i.test(k)) h[k] = v;
+    const res = {}; for (const u of ['/api/v1/organizationFields?module=tickets', '/supportapi/zd/techegysolutions/api/v1/organizationFields?module=tickets', '/api/v1/layouts?module=tickets']) { const r = await fetch(u, { headers: h, credentials: 'include' }); const t = await r.text(); res[u] = r.status + ' ' + t.slice(0, 200); try { const j = JSON.parse(t); const types = [...new Set((j.data || []).map(f => f.type))]; res[u + ' types'] = types.join(','); } catch (e) { } } return res; }, H);
+  console.log(JSON.stringify(out, null, 1)); await b.close(); })();

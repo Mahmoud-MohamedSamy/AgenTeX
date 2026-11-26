@@ -1,0 +1,1 @@
+const v = await getRec(made.mod, made.matrix.rEdge1); log({ in_url: JSON.stringify(v.in_url), in_email: JSON.stringify(v.in_email), isblank_url: v.fx_isblank_url, sum_url: v.fx_sum_url, min_url: v.fx_min_url, len_url: v.fx_len_url, sum_email: v.fx_sum_email });

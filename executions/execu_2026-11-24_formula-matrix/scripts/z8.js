@@ -1,0 +1,6 @@
+const made = JSON.parse(fs.readFileSync(RUN + '/zoho/made.json', 'utf8'));
+const tries = { lookup: [{ data_type: 'lookup', lookup: { module: { api_name: 'Accounts' }, display_label: 'QA FX Leads' } }],
+  multi_select_lookup: [{ data_type: 'multiselectlookup', multiselectlookup: { connected_details: { module: { api_name: 'Accounts' }, field: { field_label: 'QA FX MSL Leads' } }, linking_details: { module: { plural_label: 'QA FX MSL Links', singular_label: 'QA FX MSL Link' } } } }] };
+for (const [t, list] of Object.entries(tries)) { if (made.inputs[t]) continue; for (const d of list) { const r = await zf('POST', '/crm/v8/settings/fields?module=Leads', { fields: [{ field_label: 'QA FX In ' + t, ...d }] }); const f0 = r.j?.fields?.[0]; log(t, r.s, f0?.code, (f0?.message || r.t).slice(0, 200), JSON.stringify(f0?.details || {}).slice(0, 200)); if (f0?.details?.id) { made.inputs[t] = { id: f0.details.id }; break; } } }
+const fl = (await zf('GET', '/crm/v8/settings/fields?module=Leads')).j.fields; for (const [t, v] of Object.entries(made.inputs)) { const f = fl.find(x => x.id === v.id); if (f) v.api = f.api_name; }
+fs.writeFileSync(RUN + '/zoho/made.json', JSON.stringify(made, null, 1)); log(made.inputs.lookup, made.inputs.multi_select_lookup);

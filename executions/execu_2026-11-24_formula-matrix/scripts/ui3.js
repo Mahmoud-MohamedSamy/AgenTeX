@@ -1,0 +1,21 @@
+const out = {};
+await page.goto(H + `/modules/${made.mod}/records/new`, { waitUntil: 'domcontentloaded' });
+for (let i = 0; i < 60; i++) { await sleep(2000); if (/Inputs \(one field per type\)/i.test(await text())) break; } await sleep(3000);
+const sec = page.getByText('fx if()', { exact: true }).first(); await sec.scrollIntoViewIfNeeded(); await sleep(1500); await shot('create-form-L1-fx-if');
+const lab = page.getByText('if() · Single Line', { exact: true }).first(); const row = lab.locator('xpath=ancestor::*[self::div][2]');
+out.fxRow = (await row.innerText().catch(() => '')).replace(/\n/g, ' | ').slice(0, 200);
+out.fxRowHtml = (await row.innerHTML().catch(() => '')).replace(/class="[^"]*"/g, '').slice(0, 600);
+await page.evaluate(() => window.scrollTo(0, 0)); await sleep(800);
+await page.getByRole('button', { name: /QA FX Formula Matrix 1/ }).first().click().catch(e => out.pickErr = e.message.split('\n')[0]); await sleep(1500);
+await shot('create-form-layout-menu');
+const opt = page.getByRole('option', { name: /QA FX Formula Matrix 2/ }).first();
+if (await opt.isVisible().catch(() => false)) await opt.click(); else await page.getByText('QA FX Formula Matrix 2', { exact: true }).last().click().catch(e => out.optErr = e.message.split('\n')[0]);
+await sleep(6000); out.header = (await text()).match(/Create QA FX Matrix record[\s\S]{0,60}/)?.[0]?.replace(/\n/g, ' | ');
+const meta = JSON.parse(fs.readFileSync(RUN + '/out/fieldmeta.json', 'utf8')); const L1 = ['if', 'concat', 'coalesce', 'min', 'max', 'sum', 'avg', 'count', 'upper', 'lower'];
+for (let i = 0; i < 40; i++) { await page.mouse.wheel(0, 1500); await sleep(200); }
+const U = (await page.innerText('body')).split('\n').map(s => s.trim().toUpperCase());
+const w2 = meta.filter(f => /^fx_/.test(f.n) && !L1.includes(f.n.split('_')[1])), w1 = meta.filter(f => /^fx_/.test(f.n) && L1.includes(f.n.split('_')[1]));
+out.layout2 = { expectedFx: w2.length, present: w2.filter(f => U.includes(f.label.toUpperCase())).length, layout1FxShown: w1.filter(f => U.includes(f.label.toUpperCase())).length, inputsPresent: meta.filter(f => /^in_/.test(f.n) && U.includes(f.label.toUpperCase())).length };
+const s2 = page.getByText('fx daysbetween()', { exact: true }).first(); await s2.scrollIntoViewIfNeeded().catch(() => {}); await sleep(1200); await shot('create-form-L2-fx-daysbetween');
+log(out); fs.writeFileSync(RUN + '/out/ui-create2.json', JSON.stringify(out, null, 1));
+await page.goto(H + '/', { waitUntil: 'domcontentloaded' }).catch(() => {});
