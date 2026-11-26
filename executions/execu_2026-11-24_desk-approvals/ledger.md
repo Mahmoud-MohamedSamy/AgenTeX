@@ -1,0 +1,149 @@
+- 2026-11-24T14:24:37 department QA PA Dept 1 a373cfd1-85e8-495d-af9a-1a003d2a08a3
+- 2026-11-24T14:24:38 department QA PA Dept 2 0dddca46-46c0-40a4-9650-f8d85f371014
+- 2026-11-24T14:24:39 team QA PA Team 48ebdc17-e3fc-4fd1-9854-518d6979dc12
+- 2026-11-24T14:24:44 web form QA PA Form 40659016-4d1e-43bc-a254-2113cdb876b8
+- 2026-11-24T14:24:46 ticket "QA PA T01" 3d4a733f-ae39-405f-9de2-653ecbc2553a
+- 2026-11-24T14:24:47 ticket "QA PA T02" 4a1269c6-2b35-4076-8efc-80390f313bcb
+- 2026-11-24T14:24:48 ticket "QA PA T03" 8dcfbd44-5d8a-49a9-80f4-97eb821858eb
+- 2026-11-24T14:24:50 ticket "QA PA T04" 4d6722cf-7b96-4c6b-9b5f-24fd0dd063e6
+- 2026-11-24T14:24:51 ticket "QA PA T05" 265e3289-3f34-4cce-873c-67a5fbff9f45
+- 2026-11-24T14:24:53 ticket "QA PA T06" de8e0406-aeb5-4f3d-83ea-4ad6181358e7
+- 2026-11-24T14:24:54 ticket "QA PA T07" edd74f09-5992-4b65-a383-7d0954bd9c0d
+- 2026-11-24T14:24:57 ticket "QA PA T08" c7236a9e-9a7a-4291-9e1b-18d76613c71e
+- 2026-11-24T14:24:59 ticket "QA PA T09" 0c2a06b4-fa60-407c-9fe8-df8351070a5d
+- 2026-11-24T14:25:02 ticket "QA PA T10" 28cb34c2-6da3-47c4-947a-d7cb293c2da8
+- 2026-11-24T14:25:03 ticket "QA PA T11" a8dfd85b-d334-4902-bce3-a6746e46e50d
+- 2026-11-24T14:25:04 ticket "QA PA T12" 3ad3f4c2-5f7c-4957-911a-eb545cd11b6f
+- 2026-11-24T14:25:06 ticket "QA PA T21" f0d67698-aa41-449d-b9e9-c297be64e9cb
+- 2026-11-24T14:25:07 ticket "QA PA T22" efd76de9-2c05-4d48-b36d-2ccffc1fe3fd
+- 2026-11-24T14:31:24 ticket "QA PA T13" 05ce9e26-f5b1-46e2-8de6-af0f6eec5e24
+- 2026-11-24T14:31:29 ticket "QA PA T14" da20a784-18b8-4c9a-ac18-a4be6dae2112
+- 2026-11-24T14:31:31 ticket "QA PA T15" fb3a2fd4-dbea-46a3-8a5c-bd4ad335e1ac
+- 2026-11-24T14:31:32 ticket "QA PA T16" 928e975c-f055-4264-b1cf-a0e389d15d2b
+- 2026-11-24T14:31:33 ticket "QA PA T17" 41b88b33-f687-4e08-8ff8-c2689c8972e7
+- 2026-11-24T14:31:35 ticket "QA PA T18 عربي طلب استرداد" f819f5d3-2dca-4cc4-b398-87e098a781c8
+- 2026-11-24T14:31:36 ticket "QA PA T23" 0818e9ba-b99d-4dd6-87b1-7908730bdcc0
+- 2026-11-24T14:31:40 approval R2 d36056c5-caf6-441a-9101-be30f56050ad on QA PA T02
+- 2026-11-24T14:31:41 approval R4 61efceec-9aa9-4b3d-b5b7-e3dcdd5b4dbd on QA PA T04
+- 2026-11-24T14:31:42 approval R5 55dd2242-4711-40fb-965f-088b079d4ca2 on QA PA T05
+- 2026-11-24T14:31:43 approval R6 78d2a006-9d2e-4b6b-b7fa-04cf4ee4b529 on QA PA T06
+- 2026-11-24T14:31:45 approval R7 0019508c-9934-499b-8897-ba7b410471f5 on QA PA T07
+- 2026-11-24T14:31:47 approval R8 3f567fbd-97cc-4dbe-a597-195f1aed72f1 on QA PA T08
+- 2026-11-24T14:31:49 approval R9 9f01f993-bf3c-4603-a396-279b350e7f3a on QA PA T09
+- 2026-11-24T14:31:53 approval R10 07a3848d-4e1d-4b66-b570-6b4dfdfe7268 on QA PA T10
+- 2026-11-24T14:31:54 approval R11 57083470-3afa-42f2-84e9-eefff1d14c53 on QA PA T11
+- 2026-11-24T14:32:00 approval R12 669bd5ba-66e8-4b19-b480-21ba2ff685f9 on QA PA T12
+- 2026-11-24T14:32:08 approval R13 a0a53c8d-8b24-4704-974a-40509e063635 on QA PA T13
+- 2026-11-24T14:32:12 approval R14 b3e033b4-4754-4453-bd18-6626d4973037 on QA PA T14
+- 2026-11-24T14:32:17 approval R3 ec110fdf-5485-4456-ae75-86ae4d12a26b on QA PA T03
+- 2026-11-24T14:32:22 approval R15 6063431f-fc77-4dbf-aa58-2574ec4f9d54 on QA PA T15
+- 2026-11-24T14:32:27 approval R16 32735622-1479-4312-96e8-da585b21e3a4 on QA PA T16
+- 2026-11-24T14:32:30 approval R17 4247038a-4c9e-4260-b90d-bc8ee8261905 on QA PA T17
+- 2026-11-24T14:32:34 approval R18 fc99e360-425e-4452-bee8-b9f0ee0447c5 on QA PA T18 عربي طلب استرداد
+- 2026-11-24T14:32:38 approval R21 056760a8-0abc-4901-8f1e-14e68bcae030 on QA PA T21
+- 2026-11-24T14:32:41 approval R23 25755b20-fc9e-4400-a065-ff7d3ca65718 on QA PA T23
+- 2026-11-24T14:36:09 approval X1 1254e39c-2823-4813-9322-9fb2f2c68379
+- 2026-11-24T14:36:13 approval X2 f3d55b95-5365-4342-bf7f-3344d30bd374
+- 2026-11-24T14:36:18 approval X3 87aeb836-445f-4070-8193-6808832c4de0
+- 2026-11-24T14:36:22 approval X4 f0e61202-a4f4-446b-a7c3-89fb7a9c9e41
+- 2026-11-24T14:36:49 approval page 42a46379-7b5e-41e7-9738-93b77760989e
+- 2026-11-24T14:36:53 approval page 0f30faa8-8b33-48c9-b349-b869e32160df
+- 2026-11-24T14:36:56 approval page 12a37f10-6280-479a-9bfb-560aa601369f
+- 2026-11-24T14:36:59 approval page c3008862-f9c4-4f3e-bd66-f71104782d77
+- 2026-11-24T14:37:02 approval page 33e0d979-aab2-40b6-be6b-5ee858173248
+- 2026-11-24T14:37:05 approval page bb716120-9d04-4903-bb4f-21ec02704f0b
+- 2026-11-24T14:37:09 approval page 22a3c5b8-eebb-4562-a010-ce40c729629d
+- 2026-11-24T14:37:12 approval page b962c74a-38b4-4408-b65e-bb99c6bbe1d5
+- 2026-11-24T14:37:15 approval page 06e69d9b-edb2-4803-8f5b-7103d12b4eb7
+- 2026-11-24T14:37:18 approval page 73058944-26ea-452f-9a9e-8afdc9e120d6
+- 2026-11-24T14:37:21 approval page ed6cdb9e-397b-4f49-9351-ed7cdb50c077
+- 2026-11-24T14:37:25 approval page b40a4ba2-29d9-439f-bb12-7f0349e7a1f8
+- 2026-11-24T14:37:28 approval page f2ed29a4-3985-45ff-b782-346136add082
+- 2026-11-24T14:37:32 approval page 9f4fa6dc-3f12-440e-bf3e-a624260b295b
+- 2026-11-24T14:37:35 approval page 2ac51c0a-907f-4d91-882e-67114fd47982
+- 2026-11-24T14:37:38 approval page 36f93774-50bc-4cee-9bab-f2cab99fd13e
+- 2026-11-24T14:37:41 approval page bb619ba1-cb17-44b1-8c2b-15658b69b591
+- 2026-11-24T14:37:44 approval page 6006fc40-9208-47f0-94e9-bcc092121786
+- 2026-11-24T14:37:47 approval page dbb65c9d-ec4a-4491-ad51-889253444f49
+- 2026-11-24T14:37:50 approval page 63e68749-40dc-4903-b90d-f30d0113d259
+- 2026-11-24T14:37:54 approval page 190b7771-d59a-4b55-9e9a-34e4ec0a0bc9
+- 2026-11-24T14:37:56 approval page 9782e86b-6e37-49c2-b114-38ac4843053e
+- 2026-11-24T14:37:59 approval page 240f5ba9-1fd0-458d-8d0d-db95d702e689
+- 2026-11-24T14:38:24 approval Y1 2f654028-ee30-4cc3-97b3-1d357decfc89
+- 2026-11-24T14:38:28 approval Y2 58f154c3-e442-493a-9c54-0d71c4f7a304
+- 2026-11-24T14:38:31 approval Y3 05d8a68b-d075-4376-a3c9-1bcefed8d9af
+- 2026-11-24T14:40:51 web form submit QA PA WF G1A -> 200
+- 2026-11-24T14:40:52 web form submit QA PA WF G4 -> 200
+- 2026-11-24T14:40:54 web form submit QA PA WF G7 -> 200
+- 2026-11-24T14:40:56 web form submit QA PA WF G8 -> 200
+- 2026-11-24T14:41:09 web form submit QA PA WF G9 -> 200
+- 2026-11-24T14:41:10 web form submit QA PA WF G11 -> 200
+- 2026-11-24T14:41:11 web form submit QA PA WF G12A -> 200
+- 2026-11-24T14:41:13 web form submit QA PA WF G12B -> 200
+- 2026-11-24T14:41:14 web form submit QA PA WF G3 -> 200
+- 2026-11-24T14:41:16 web form submit QA PA WF GX -> 200
+- 2026-11-24T14:43:48 ticket from G9 2b1aa271-bb5b-417a-b9d8-063ca3fdd75f
+- 2026-11-24T14:43:53 ticket from G11 9219b57e-1266-4674-b329-3fd28089cf3d
+- 2026-11-24T14:44:34 web form submit QA PA WF G5 -> 200
+- 2026-11-24T14:45:10 web form submit QA PA WF G1N -> 200
+- 2026-11-24T14:45:37 web form submit QA PA WF G1S -> 200
+- 2026-11-24T14:46:59 web form submit QA PA WF G7B -> 200
+- 2026-11-24T14:47:35 ticket from G1A f01abc27-6eac-4203-baca-a7a610243719
+- 2026-11-24T14:47:38 web form submit QA PA WF G5B -> 200
+- 2026-11-24T14:48:02 ticket from GX 9f26eb97-d3ce-4298-b994-7f20dbbc5c78
+- 2026-11-24T14:48:04 web form submit QA PA WF G1N -> 200
+- 2026-11-24T14:48:37 web form submit QA PA WF G1S -> 200
+- 2026-11-24T14:49:31 web form submit QA PA WF G7B -> 200
+- 2026-11-24T14:50:07 ticket from G1A f01abc27-6eac-4203-baca-a7a610243719
+- 2026-11-24T14:50:10 web form submit QA PA WF G5B -> 200
+- 2026-11-24T14:50:28 ticket from GX 9f26eb97-d3ce-4298-b994-7f20dbbc5c78
+- 2026-11-24T14:50:30 web form submit QA PA WF G1N -> 200
+- 2026-11-24T14:50:31 ticket from G1N 5ddfa144-227a-4cb9-8ee2-a9585fdee1f5
+- 2026-11-24T14:50:35 web form submit QA PA WF G1S -> 200
+- 2026-11-24T14:50:39 ticket from G1S c412b389-f66b-40f2-8ced-d7c64e4de1a2
+- 2026-11-24T14:51:12 web form submit QA PA WF G3R -> 200
+- 2026-11-24T14:51:14 web form submit QA PA WF G3A -> 200
+- 2026-11-24T14:51:30 ticket from G3A 0976b047-f463-424e-bafb-1f88f7a3e86c
+- 2026-11-24T14:51:31 web form submit QA PA WF G14 -> 200
+- 2026-11-24T14:54:06 blueprint QA PA Refund c6597257-3dce-4f71-859e-660f350cc798
+- 2026-11-24T14:54:10 ticket "QA PA bp 1" cc56adef-6c8b-4013-b0eb-79a1ff66a558
+- 2026-11-24T14:54:11 ticket "QA PA bp 2" 022283b6-675f-4b49-b8fc-bfb29131333c
+- 2026-11-24T14:54:12 ticket "QA PA bp 3" 677cb3e6-0559-4c5b-9530-955c5899604f
+- 2026-11-24T14:54:12 ticket "QA PA bp 4" 50ad2fb5-59f9-43da-ace8-3bc1a38dc961
+- 2026-11-24T14:54:14 ticket "QA PA bp 5" d01ab880-f083-4784-a0e4-ec8b42cf559e
+- 2026-11-24T14:54:15 ticket "QA PA bp 6" 7bf42235-107d-4130-a6f6-174e0d74fe8c
+- 2026-11-24T14:59:53 ticket "QA PA bp 7" 6d9633bc-4e3f-4ef9-86dd-0dc51ca1b3fc
+- 2026-11-24T14:59:54 ticket "QA PA bp 8" 47ee5d52-c0e1-4b29-9045-5e4ee71216d9
+- 2026-11-24T15:01:33 approval K1 default 357e7a3b-9bbc-4147-a052-a73d00b9a092
+- 2026-11-24T15:01:42 approval K3 remind 56a92d16-a876-476f-a04a-95a5e20318d9
+- 2026-11-24T15:04:04 ticket "QA PA L 2a" ed575239-a67f-4844-8ff7-bcd205cd7791
+- 2026-11-24T15:04:05 ticket "QA PA L 2r" 59273ba1-1e06-4793-bbc1-838633ca9286
+- 2026-11-24T15:04:45 ticket "QA PA L 5 source" a7f053c8-d895-4ed3-b39a-bea6fba63a73
+- 2026-11-24T15:04:46 ticket "QA PA L 5 target" c0e408da-94ab-45b2-b725-469746056417
+- 2026-11-24T15:04:54 ticket "QA PA L 6 delete" 85d3338a-1cc8-43ca-9547-d8e6f5bb88f4
+- 2026-11-24T15:05:17 ticket "QA PA L 7 move" ac350d24-b4d8-4598-ac66-d044cf338ce5
+- 2026-11-24T15:06:48 workflow rule QA PA WF approved b9fb1f1d-0273-4dca-aeca-e2ddda55745b
+- 2026-11-24T15:06:50 ticket "QA PA L 2a2" 54252d81-df50-4d91-89b2-25b85e9ae649
+- 2026-11-24T15:06:51 ticket "QA PA L 2r2" e67b9a89-a51c-46ae-b767-2211fd6f47fb
+- 2026-11-24T17:07:41 CLEANUP {"cancelled":30,"rejected":9,"wfrule":204,"tickets":"44/44","bpOff":200,"bpDel":204,"formDisable":200,"formDel":204,"team":204,"delD1":"422 UNPROCESSABLE This department still has 4 agents and 39 tickets. Choose an active department to transfer them to. [{\"field\":\"transfer_to_department_id\",\"issue\":\"required\"},{\"field\":\"agent_count\",\"issue\":\"4\"},{\"field\":\"ticket_count\",\"issue\":\"39\"}]","delD2":"422 UNPROCESSABLE This department still has 2 agents and 5 tickets. Choose an active department to transfer them to. [{\"field\":\"transfer_to_department_id\",\"issue\":\"required\"},{\"field\":\"agent_count\",\"issue\":\"2\"},{\"field\":\"ticket_count\",\"issue\":\"5\"}]","settings":"200","settingsNow":{"default_limit_hours":24,"escalation_enabled":true},"purged":48,"left":{"approvals":0,"depts":2,"forms":0,"bin":0,"rules":0,"protectedStillPending":["pending","pending"]},"errors":[]}
+- 2026-11-24T17:08:46 delete QA PA Dept 2 (transfer to Tech) -> 200
+- 2026-11-25T07:48:11 A13 profile Desk Supervisor removed desk:approvals:view_department -> 204
+- 2026-11-25T07:48:22 A13 profile Desk Supervisor restored desk:approvals:view_department -> 400
+- 2026-11-25T07:48:36 A13 restore GRANT -> 204
+- 2026-11-25T07:50:02 ticket "QA PA N manual" 8d2c995d-f7fe-4185-870d-7d9323a0e19c
+- 2026-11-25T07:50:20 web form QA PA Form N e52ea764-13fb-48b6-91a8-e9366ba96787
+- 2026-11-25T07:50:27 ticket "QA PA bpN 1" 9a590e62-bf87-4117-85a8-6ca40320a820
+- 2026-11-25T07:50:52 blueprint QA PA Refund N 22a5e25f-a229-4bd6-9f53-c3e980f551ea
+- 2026-11-25T07:50:54 ticket "QA PA bpN 2" 49b5d472-09df-45fc-9a51-b474141ccf32
+- 2026-11-25T07:57:25 B timezone -> Asia/Dubai 200
+- 2026-11-25T07:58:04 B locale timezone restored "Asia/Dubai" -> null (200)
+- 2026-11-25T07:58:05 B locale language restored "ar" -> "en" (200)
+- 2026-11-25T07:58:06 B locale date_format restored "YYYY-MM-DD" -> "DD/MM/YYYY" (200)
+- 2026-11-25T07:58:07 B locale time_format restored "12h" -> "24h" (200)
+- 2026-11-25T07:59:26 CLEANUP not-run cases {"k7cancel":"200","pendingLeft":0,"tickets":"4/4","bp":204,"form":204,"purged":7,"binLeft":0,"formsLeft":0,"pendingAfter":0,"supervisorPerm":true,"protected":["pending","pending"],"errors":[]}
+- 2026-11-25T08:13:54 ticket "QA PA HI ticket" 8e2176f3-4bb0-4e18-883e-9eb5ffdbcb20
+- 2026-11-25T08:15:01 rule QA WF 3186 Create or Edit + Priority changed f135e4d2-83c7-4256-b0a8-5772a3424f95
+- 2026-11-25T08:15:02 rule QA WF 3186 On Create + Priority changed 3eb55e58-c5d5-4e77-b774-6b6a0558f264
+- 2026-11-25T08:15:04 rule QA WF 3186 Control On Create d7aa26f3-cf32-46e2-8c4d-4c0873c63234
+- 2026-11-25T08:15:08 ticket "QA WF 3186 ticket" 6d605816-c4d4-4a9f-b470-484f9fcbf8b2
+- 2026-11-25T08:30:40 CLEANUP HI + 3186 evidence {"cancel":"200","rule_ce":204,"rule_cr":204,"rule_ctl":204,"t1":204,"t2":204,"purged":5,"left":{"rules":0,"pending":0,"bin":0}}

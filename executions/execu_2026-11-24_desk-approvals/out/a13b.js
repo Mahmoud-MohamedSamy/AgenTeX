@@ -1,0 +1,11 @@
+const o = {}; const SUP = '44444444-4444-4444-4444-444444444404', KEY = 'desk:approvals:view_department';
+o.before = (await api.O('GET', `/iam/profiles/${SUP}/permissions`)).t.includes(KEY);
+o.listBefore = (await inbox('A', { list: 'all_pending' })).s;
+const del = await api.O('DELETE', `/iam/profiles/${SUP}/permissions/${encodeURIComponent(KEY)}`); o.del = E(del); ledger('A13 profile Desk Supervisor removed ' + KEY + ' -> ' + del.s);
+await sleep(5000);
+const after = await inbox('A', { list: 'all_pending' }); o.listAfter = after.s + ' ' + (after.err || '') + ' perms ' + JSON.stringify(after.d?.permissions);
+const cnt = (await inbox('A', {})).d; o.permsOnDefault = JSON.stringify(cnt?.permissions) + ' all_pending count ' + cnt?.counts?.all_pending;
+const add = await api.O('POST', `/iam/profiles/${SUP}/permissions`, { permission_key: KEY, effect: 'allow' }); o.restore = E(add); ledger('A13 profile Desk Supervisor restored ' + KEY + ' -> ' + add.s);
+await sleep(4000); o.restored = (await api.O('GET', `/iam/profiles/${SUP}/permissions`)).t.includes(KEY); o.listRestored = (await inbox('A', { list: 'all_pending' })).s;
+result('A13', o.before && del.s < 300 && after.s === 403 && o.restored && o.listRestored === 200 ? 'PASS' : 'FAIL', `remove "${KEY}" from Desk Supervisor -> ${o.del}; A All pending -> ${o.listAfter}; default list perms ${o.permsOnDefault}; restored ${o.restore} (${o.restored}), All pending -> ${o.listRestored}`);
+return o;

@@ -1,0 +1,10 @@
+const o = {}; const R = ST.R; const TK = ST.tickets;
+const nr = async (key, tk) => { const r = await api.A('POST', `/desk/tickets/${TK[tk]}/approvals`, { subject: `QA PA ${key} request`, approver_user_ids: [U.B] }); R[key] = { id: r.j.data.id, t: TK[tk] }; ledger(`approval ${key} ${r.j.data.id}`); saveState(); return R[key]; };
+const y1 = await nr('Y1', 'QA PA T05'), y2 = await nr('Y2', 'QA PA T05'), y3 = await nr('Y3', 'QA PA T05');
+const two = await decide('B', y1.t, y1.id, 'reject', { comment: 'ab' }); const sp = await decide('B', y2.t, y2.id, 'reject', { comment: '     ' });
+const three = await decide('B', y3.t, y3.id, 'reject', { comment: 'abc' });
+const LL = (await ticketApprovals('A', y1.t)).list; const s = id => { const a = LL.find(x => x.id === id); return a?.status + ' "' + a?.decision_comment + '"'; };
+o.two = E(two) + ' -> ' + s(y1.id); o.spaces = E(sp) + ' -> ' + s(y2.id); o.three = E(three) + ' -> ' + s(y3.id);
+result('E3', 'FAIL', `server accepts reject without a reason: no comment field 200, null 200, "" 200 (item rejected, reason null); "ab" ${o.two}; spaces ${o.spaces}. UI requires 3-2000 chars (bundle), API does not`);
+result('E5', three.s < 300 ? 'PASS' : 'FAIL', `reject with "abc" ${o.three}; reason shown on ticket Approval tab`);
+return o;

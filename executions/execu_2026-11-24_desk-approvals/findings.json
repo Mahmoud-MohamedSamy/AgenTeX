@@ -1,0 +1,77 @@
+{
+ "summary": "All 140 cases now have a result. The page, lists, counts, permissions, comments, reminders, reassign, decide-on-behalf, bulk actions, overdue and escalation, web form hold, Arabic and ticket-side approvals work. Open: one serious blueprint approval bug, a reject-reason bug, a blueprint cancel bug, and gaps in filters, reports, detail fields and keyboard use.",
+ "items": [
+  {
+   "sev": "Bug",
+   "title": "Blueprint approval step does not hold the transition",
+   "ids": "H1, H3, H4, E2E-2",
+   "text": "Running a transition that has a \"Submit for approval\" step moves the ticket to the target state and runs the after-transition actions at once, before anyone decides. Approving then changes nothing. Rejecting leaves the ticket in the target state with the after-actions applied, and the requester cannot run the transition again (409 state changed). Expected: the ticket waits in its current state; approve completes the move and runs the after-actions; reject keeps it where it was. Seen on QA PA bp 7 and bp 8 (On Hold -> Escalated)."
+  },
+  {
+   "sev": "Bug",
+   "title": "Ticket approval can be rejected without a reason",
+   "ids": "E3",
+   "text": "The single Reject dialog labels the field \"Comment (optional)\" and Reject stays enabled when it is empty, 2 characters or spaces. The API also accepts no comment, null, \"\", \"ab\" or spaces and rejects the request. Bulk reject and on-behalf reject do require 3 to 2000 characters. Requirement PA-ACT-2: a reason of 3 to 2000 characters is required."
+  },
+  {
+   "sev": "Bug",
+   "title": "Requester can cancel a blueprint approval",
+   "ids": "E17",
+   "text": "Blueprint items in Requested by me show \"Cancel request\" and the cancel call returns 200. PA-ACT-6: blueprint items end only by revoking the transition on the ticket (the page even has a message for this case)."
+  },
+  {
+   "sev": "Finding",
+   "title": "Agent can choose any approver when running a blueprint approval step",
+   "ids": "H (extra)",
+   "text": "The step is set up with approver B, but the run accepted approver D instead (approval saved with D). The step's approvers are not enforced."
+  },
+  {
+   "sev": "Finding",
+   "title": "Web form reject reason allows 1 to 1000 characters",
+   "ids": "G7",
+   "text": "\"ab\" is accepted for a web form rejection; the requirement and ticket approvals use 3 to 2000."
+  },
+  {
+   "sev": "Gap",
+   "title": "Missing filters and sort",
+   "ids": "C2, B10",
+   "text": "Built: source, department, waiting (over 4 h, 1 day, 3 days, overdue), search; sort by request time, ticket number, department. Not built: filters by requested by, approver, request date range, blueprint, web form, ticket priority; sort by requester."
+  },
+  {
+   "sev": "Gap",
+   "title": "No approvals report",
+   "ids": "L4",
+   "text": "No report by source, status, department or approver, and no time-to-decide figure."
+  },
+  {
+   "sev": "Gap",
+   "title": "Details and rows miss requested fields",
+   "ids": "B5, D3, D4, D5",
+   "text": "Rows lack contact name/email, requester and waiting duration. Ticket summary lacks owner, contact, channel, created time, SLA due, last 2 messages. Web form details lack the submitted field values, spam signals, attachments and the duplicate hint. Blueprint details lack the transition name, the values entered and what approve/reject will do."
+  },
+  {
+   "sev": "Gap",
+   "title": "No next / previous in details",
+   "ids": "D10",
+   "text": "With an item open there is no keyboard shortcut or button to move to the next or previous item."
+  },
+  {
+   "sev": "Finding",
+   "title": "Decided list is ordered by request time",
+   "ids": "B3",
+   "text": "Decided shows newest request first, not newest decision first."
+  },
+  {
+   "sev": "Finding",
+   "title": "Keyboard and Arabic details",
+   "ids": "E2E-4, N4, K7",
+   "text": "Keyboard only works but takes 41-42 Tab presses to reach the first row; dialogs open with focus on the buttons, not the comment/reason box; after approving or rejecting, focus drops to the page body. In Arabic, a YYYY-MM-DD date in Arabic digits is reordered by the right-to-left text. Approval notifications are translated in the bell, but the \"Ticket ... was escalated\" notice and the \"HELD SUBMISSION\" chip stay in English."
+  },
+  {
+   "sev": "Not tested",
+   "title": "What this run could not check",
+   "ids": "K8, G13, G15, G16, A3, A4, B17, N8, N9",
+   "text": "Email content and language (no mailbox), attachments on held submissions, 30-day expiry, double opt-in forms, 99+ count, live count refresh, remembered view after sign-out, and speed at volume (network noise from this PC made timings unusable)."
+  }
+ ]
+}

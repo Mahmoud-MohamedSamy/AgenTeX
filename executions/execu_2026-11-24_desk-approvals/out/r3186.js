@@ -1,0 +1,16 @@
+const o = {}; const G = 'QA WF 3186 ';
+const crit = c => ({ kind: 'Logical', operator: 'And', operands: [{ kind: 'StringMatch', field: 'subject', operator: 'StartsWith', stringValue: G, caseInsensitive: false }, ...(c ? [c] : [])] });
+const ch = { kind: 'Changed', field: 'priority' };
+const mk = async (name, trig, c, val) => { const r = await api.O('POST', '/workflow/rules', { moduleId: T, name, isActive: true, mode: 'Recurring', trigger: { kind: trig }, criteria: crit(c), actions: [{ order: 0, delaySeconds: 0, type: 'FieldUpdate', fieldUpdates: { qa_ndc_agency_code: { kind: 'string', stringValue: val } } }], departmentIds: [ST.D1] }); ledger('rule ' + name + ' ' + r.j?.data?.id); return r.j?.data?.id; };
+const R = {};
+R.ce = await mk('QA WF 3186 Create or Edit + Priority changed', 'RecordCreatedOrUpdated', ch, 'CE');
+R.cr = await mk('QA WF 3186 On Create + Priority changed', 'RecordCreated', ch, 'CR');
+R.ctl = await mk('QA WF 3186 Control On Create', 'RecordCreated', null, 'CTL');
+await sleep(3000);
+const t = (await mkTicket('O', G + 'ticket', { priority: 'low' })).id; R.t = t;
+await sleep(20000);
+o.afterCreate = await (async () => { const x = {}; for (const [k, id] of Object.entries(R)) if (k !== 't') x[k] = arr((await api.O('GET', `/workflow/executions?ruleId=${id}&take=20`)).j?.data).filter(e => e.recordId === t).map(e => (e.outcome || e.status) + ' ' + e.triggerKind); return x; })();
+const p = await api.O('PATCH', `/modules/${T}/records/${t}`, { data: [{ field: 'priority', value: enc('high') }] }); o.patch = p.s;
+await sleep(25000);
+o.afterEdit = await (async () => { const x = {}; for (const [k, id] of Object.entries(R)) if (k !== 't') x[k] = arr((await api.O('GET', `/workflow/executions?ruleId=${id}&take=20`)).j?.data).filter(e => e.recordId === t).map(e => (e.outcome || e.status) + ' ' + e.triggerKind + ' ' + (e.createdAt || e.startedAt || '').slice(11, 19)); return x; })();
+ST.R3186 = R; saveState(); return o;

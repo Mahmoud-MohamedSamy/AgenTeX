@@ -1,0 +1,12 @@
+const a = await inbox('O', { list: 'all_pending', source: 'web_form', waiting: '4h', page_size: 100 }); const b = await inbox('O', { list: 'all_pending', source: 'web_form', page_size: 100 }); const c = await inbox('O', { list: 'all_pending', waiting: '4h', page_size: 100 });
+const ok = (a.d?.approvals || []).every(x => x.source === 'web_form' && (Date.now() - Date.parse(x.requested_at)) > 4 * 3600e3);
+result('C4', ok ? 'PASS' : 'FAIL', `web_form + over 4h -> ${(a.d?.approvals || []).length} (all web form and older than 4 h: ${ok}); web_form alone ${(b.d?.approvals || []).length}; 4h alone ${(c.d?.approvals || []).length}`);
+result('C5', 'PARTIAL', 'filters show as active controls (Source / Waiting time buttons show the chosen value, e.g. "Manual"); "Clear" in the no-match state clears all; no separate chip list');
+result('A12', 'PASS', 'profile permissions desk:approvals:manage + desk:approvals:view_department exist; Desk Administrator has both, Desk Supervisor has view_department, Desk Agent none; owner permissions.manage true');
+result('B13', 'PARTIAL', 'with the list open, an item cancelled from another session is not marked live; acting on it reports "already cancelled by Test User 1" (E9); API refuses with who/when (E20)');
+result('E7', 'NOT IN RELEASE', '"All approvers" mode not built (no mode field); every request is "any one" (requirement allows this)');
+result('E12', 'NOT IN RELEASE', 'approval step has no "approver must fill fields" option, so no blueprint item needs a form');
+result('K2', 'INCONCLUSIVE', 'department business hours not set on QA PA Dept 1 (24x7); not tested');
+result('K7', 'NOT RUN', 'needs changing B language to Arabic (user preference)');
+result('K8', 'INCONCLUSIVE', 'email preference not tested (no mailbox)');
+return { a: (a.d?.approvals || []).length };

@@ -1,0 +1,18 @@
+const r = (id, v, n) => result(id, v, n);
+r('E3', 'FAIL', 'reject without a reason is accepted. API: no comment field / null / "" / "ab" / spaces -> 200 (item rejected). UI: single Reject dialog labels the field "Comment (optional)" and Reject stays enabled when empty, 2 chars or spaces (bulk reject does require 3-2000). Requirement PA-ACT-2: reason required, 3-2000');
+r('A1', 'PASS', 'Approvals entry in Desk navigation with count; opens /approvals (B; A/O/S checked in owner pass)');
+r('A2', 'PASS', 'nav count = Waiting for me total (B 43 = list 43); A count 0');
+r('A5', 'PASS', '/approvals?item={id} opens that item details directly');
+r('B5', 'PARTIAL', 'row shows ticket subject + number, approval subject, approvers, source, department, requested time, status, actions. Missing in row: contact name/email, requested by (only in details), waiting time as a duration (shows the request date)');
+r('B8', 'PASS', 'team approver shown as "QA PA Team (team)"; no mode shown (only "any one" exists, as the requirement allows)');
+r('B12', 'PASS', 'row opens details panel; ticket number is a link');
+r('B15', 'PARTIAL', 'no-match state "No approvals match these filters" + Clear works; empty and load-error states not forced');
+r('C9', 'PASS', 'typing "QA PA R16" sends one list request after typing stops');
+r('D1', 'PASS', 'details header: kind, title, status chip, ticket link (manual)');
+r('D3', 'PARTIAL', 'ticket summary shows ticket status, priority, department, decide-by. Missing: owner, contact, channel, created time, SLA due, last 2 messages');
+r('E8', 'PASS', 'bulk approve 2 with one comment -> "2 approved"');
+r('E9', 'PASS', 'bulk approve 3 with one cancelled meanwhile -> "2 approved, 1 failed: #7586 was already cancelled by Test User 1"');
+r('E10', 'PASS', 'select-all works per page (25 max per page), so 51 cannot be selected; limit message key exists');
+r('E11', 'PASS', 'bulk reject: Reason* required, button disabled when empty or 2 chars ("Enter at least 3 characters.")');
+r('N10', 'PASS', '400 px wide: list readable, no sideways scrolling');
+return 'ok';

@@ -1,0 +1,25 @@
+[
+{ "out": "P1-page-lists-counts.png", "src": "evidence/ui/ui1-B-page.png", "verdict": "PASS · A1 A2 B1 B12 B18", "title": "Approvals page as approver B: navigation count, lists, overdue tile, department scope, row actions",
+  "boxes": [[10, 326, 240, 40], [286, 146, 384, 30], [680, 146, 124, 30], [1336, 96, 240, 32], [1370, 308, 192, 34]],
+  "notes": [["1", "Approvals in Desk navigation with the count of items waiting for me (43 = Waiting for me total)."], ["2", "Lists Waiting for me / Requested by me / Decided by me with counts (All pending appears only for supervisors and admins; agents get 403)."], ["3", "Overdue tile with count; clicking it filters the list (waiting=overdue) and clicking again clears it."], ["4", "Department scope: changes the list and all counts; kept in the URL."], ["5", "Approve / Reject per row, only for items where the user is an approver (server-side can_decide)."]] },
+{ "out": "P2-bulk-result.png", "src": "evidence/ui/ui3-B-bulk-partial.png", "verdict": "PASS · E8 E9", "title": "Bulk approve: one item cancelled meanwhile by the requester",
+  "crop": [270, 60, 1330, 300], "boxes": [[286, 186, 1288, 54]],
+  "notes": [["1", "\"2 approved, 1 failed: #7586 was already cancelled by Test User 1\" - partial success reported item by item; the late decision is refused by the server (409)."]] },
+{ "out": "P3-ticket-tab-marker.png", "src": "evidence/ui/ui8-A-ticket-approvals.png", "verdict": "PASS · F1 F4", "title": "Ticket side: \"Approval pending\" marker and Approval tab with remind / reassign / cancel",
+  "crop": [664, 56, 936, 560], "boxes": [[1132, 110, 124, 24], [1336, 158, 84, 30], [678, 334, 266, 36], [1482, 378, 96, 24]],
+  "notes": [["1", "\"Approval pending\" marker on the ticket while a request is pending (ticket field ticket_approval_status)."], ["2", "Approval tab lists the ticket's requests with status, requester and approvers."], ["3", "Remind approvers / Reassign."], ["4", "Cancel request (manual requests). Decisions made on the page show here and the other way round."]] },
+{ "out": "P4-arabic.png", "src": "evidence/ui/ui12-B-approvals-ar.png", "verdict": "PASS · N4 N5", "title": "Arabic: page right-to-left and translated; date and time follow the user's format",
+  "boxes": [[1180, 80, 140, 30], [1200, 146, 116, 30], [1040, 258, 260, 26], [440, 308, 130, 34]],
+  "notes": [["1", "Title, description and all labels in Arabic; dir=rtl."], ["2", "Lists translated (بانتظار قراري، طلباتي، قراراتي)."], ["3", "Column headers translated; ticket numbers kept as #7626."], ["4", "Date in the user's format (YYYY-MM-DD, 12-hour) in Arabic digits; with time zone Asia/Dubai the same item moved from 9:50 to 11:50."]] },
+{ "out": "P5-permissions-matrix.png", "card": { "lines": [
+  "# Who can see and act on an approval assigned to another agent (same department, QA PA Dept 1). Request \"QA PA HI for D only\": approver QA Team 1 (D), requested by the owner",
+  "                         lists                         details   decide   on behalf   remind   reassign   comment",
+  "B  Desk Agent           not in any list; All pending 403   404       403      403         403      403        403",
+  "A  Desk Supervisor      All pending only               200       403      403         yes      yes        no",
+  "D  approver (Admin)     Waiting for me                 200       yes      -           yes      yes        yes",
+  "O  owner (requester)    Requested by me, All pending   200       no own request, even on behalf (self-approval guard)",
+  "Admin on behalf: D rejected B's request on behalf of B with a reason -> 200; owner on behalf of B on A's request (E14) -> 200; without reason -> 400",
+  "Supervisor S of Dept 2 only: never sees Dept 1 items or counts (A8, A10, B4); removing \"View department approvals\" from the profile -> All pending 403 (A13)",
+  "> Gap: the ticket's Approval tab shows every request on the ticket to any agent who can open it (NDC-3304)" ] },
+  "verdict": "PASS · A6-A15 D9 E14 E15", "title": "Approval hierarchy: agent sees only own approvals; owner / Manage approvals act on others'", "notes": [] }
+]

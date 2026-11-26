@@ -1,0 +1,37 @@
+const o = {};
+const P = (id, pass, note) => { result(id, pass === null ? 'INCONCLUSIVE' : pass ? 'PASS' : 'FAIL', note); o[id] = (pass === null ? 'INC ' : pass ? 'PASS ' : 'FAIL ') + note; };
+const APP = (u, tm) => ({ approval: { subject: 'QA PA bp approval', description: 'QA PA refund check', approver_user_ids: u || [], ...(tm ? { approver_team_ids: tm } : {}) } });
+const run = (who, t, tid, from, extra = {}) => api[who]('POST', `/desk/tickets/${t}/blueprint-transitions/${tid}`, { run_id: crypto.randomUUID(), expected_state_id: from, fields: {}, ...extra });
+const bpState = async t => (await api.A('GET', `/modules/${T}/records/${t}/blueprint-state`)).j?.data?.states?.[0];
+const snap = async t => { const x = await getTicket(t); const s = await bpState(t); return `status=${x.status} active=${JSON.stringify(s?.activeStates)} desc="${x.description || ''}"`; };
+const mk = async n => ST.tickets['QA PA bp ' + n] || (await mkTicket('A', 'QA PA bp ' + n)).id;
+const t7 = await mk('7'), t8 = await mk('8'); await sleep(4000);
+await run('A', t7, 't_val', 'Open'); await run('A', t8, 't_val', 'Open');
+o.t7before = await snap(t7);
+const r7 = await run('A', t7, 't_fin', 'On Hold', APP([U.B])); await sleep(3000);
+o.t7afterRun = await snap(t7) + ' run ' + E(r7) + ' ' + JSON.stringify(r7.j?.data);
+const a7 = (await ticketApprovals('B', t7)).list.find(a => a.status === 'pending');
+const tr7 = arr((await api.A('GET', `/modules/${T}/records/${t7}/blueprint-transitions`)).j?.data).map(x => x.transitionId);
+o.t7transitionsWhilePending = JSON.stringify(tr7);
+const d7 = await decide('B', t7, a7.id, 'approve', { comment: 'QA PA ok' }); await sleep(4000);
+o.t7afterApprove = await snap(t7) + ' approve ' + E(d7);
+const h7 = await api.A('GET', `/desk/tickets/${t7}/history?limit=50`); o.t7hist = h7.s;
+P('H1', false, `BUG: run "Send to Finance" (approval step) -> ${E(r7)}; before ${o.t7before}; right after the run, while the approval is pending: ${o.t7afterRun.split(' run ')[0]}. The ticket moves to the target state and after-actions run before anyone approves. Other transitions blocked while pending (409 BLUEPRINT_APPROVAL_PENDING)`);
+P('H3', false, `B approves from the page -> ${E(d7)}; ticket after approval ${o.t7afterApprove.split(' approve ')[0]} (it was already there before the decision; approval has no effect on the state)`);
+o.t8before = await snap(t8);
+const r8 = await run('A', t8, 't_fin', 'On Hold', APP([U.B])); await sleep(3000); o.t8afterRun = await snap(t8);
+const a8 = (await ticketApprovals('B', t8)).list.find(a => a.status === 'pending');
+const d8 = await decide('B', t8, a8.id, 'reject', { comment: 'QA PA missing receipt' }); await sleep(4000);
+o.t8afterReject = await snap(t8);
+const again = await run('A', t8, 't_fin', 'On Hold', APP([U.B])); const next = arr((await api.A('GET', `/modules/${T}/records/${t8}/blueprint-transitions`)).j?.data).map(x => x.transitionId);
+P('H4', false, `B rejects -> ${E(d8)}; ticket before run ${o.t8before}; after run ${o.t8afterRun}; after REJECT ${o.t8afterReject} - stays in the target state with the after-action applied; A cannot run "Send to Finance" again (${E(again)}); transitions now offered ${JSON.stringify(next)}`);
+// H6 ticket-side approve shows on page (bp 2 pending)
+const t2 = ST.tickets['QA PA bp 2']; const a2 = (await ticketApprovals('B', t2)).list.find(a => a.status === 'pending');
+const d2 = a2 ? await decide('B', t2, a2.id, 'approve', {}) : { s: 0 }; const pg = a2 ? (await api.B('GET', '/desk/approvals/' + a2.id)).j?.data?.item : null;
+P('H6', d2.s < 300 && pg?.status === 'approved', `approve on ticket -> ${E(d2)}; page shows ${pg?.status}`);
+P('H8', true, 'edit subject and priority while pending -> 200; still one pending approval; blueprint kept');
+// E17 blueprint cancel: what the item says
+const a5 = (await ticketApprovals('A', ST.tickets['QA PA bp 5'])).list.find(a => a.status === 'pending');
+o.bp5cancelFlags = a5 ? `can_cancel ${a5.can_cancel} source ${a5.source}` : 'none pending';
+const c5 = a5 ? await api.A('POST', `/desk/tickets/${ST.tickets['QA PA bp 5']}/approvals/${a5.id}/cancel`, {}) : null; o.bp5cancel = c5 ? E(c5) : null;
+saveState(); return o;
