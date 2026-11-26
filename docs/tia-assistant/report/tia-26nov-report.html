@@ -1,0 +1,355 @@
+<title>Tia Go-Live Checks, 26 Nov</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: single reading column, summary tiles, then one section per test area with result tables. */
+:root {
+  --bg: #f6f7fb; --surface: #ffffff; --fg: #1b2030; --muted: #5d6578; --line: #dde1ea;
+  --accent: #3b5bdb; --pass: #1f7a4d; --pass-bg: #e3f4ea; --fail: #b4232c; --fail-bg: #fbe5e6; --warn: #8a5a00; --warn-bg: #fdf1d8; --info-bg: #e8edfd;
+  --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif; --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; --mono: "IBM Plex Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12151d; --surface: #1a1f2a; --fg: #e6e9f0; --muted: #9aa3b5; --line: #2c3342;
+  --accent: #8ea6ff; --pass: #6fd39c; --pass-bg: #173326; --fail: #ff8a90; --fail-bg: #3a1c20; --warn: #f2c26b; --warn-bg: #382c14; --info-bg: #1f2a47; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12151d; --surface: #1a1f2a; --fg: #e6e9f0; --muted: #9aa3b5; --line: #2c3342;
+  --accent: #8ea6ff; --pass: #6fd39c; --pass-bg: #173326; --fail: #ff8a90; --fail-bg: #3a1c20; --warn: #f2c26b; --warn-bg: #382c14; --info-bg: #1f2a47; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: 2rem; line-height: 1.15; }
+h2 { font-size: 1.35rem; padding-top: 8px; border-top: 1px solid var(--line); }
+h3 { font-size: 1.05rem; }
+p { margin: 0; max-width: 72ch; }
+.eyebrow { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.meta { color: var(--muted); font-size: .9rem; }
+section { display: grid; gap: 14px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 2px; }
+.tile b { font-family: var(--display); font-size: 1.7rem; font-variant-numeric: tabular-nums; }
+.tile span { color: var(--muted); font-size: .85rem; }
+.tbl { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.id { font-family: var(--mono); font-size: .85rem; white-space: nowrap; }
+.pill { display: inline-block; font-size: .75rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.pass { background: var(--pass-bg); color: var(--pass); } .fail { background: var(--fail-bg); color: var(--fail); } .warn { background: var(--warn-bg); color: var(--warn); } .info { background: var(--info-bg); color: var(--accent); }
+.note { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 12px 16px; display: grid; gap: 6px; }
+.note.bad { border-left-color: var(--fail); }
+ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-width: 76ch; }
+code { font-family: var(--mono); font-size: .85em; background: var(--info-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.two > * { min-width: 0; }
+.draft { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 8px; }
+.draft .dh { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.draft ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-width: 76ch; }
+.lbl { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-top: 4px; }
+</style>
+
+<div class="wrap">
+<header style="display:grid;gap:8px">
+  <div class="eyebrow">TIA Assistant · NDC-Staging · 26 November 2026</div>
+  <h1>Tia go-live checks: limits, access, accuracy and the remaining untested areas</h1>
+  <p class="meta">CRM, Desk and Omnichannel Tia on NDC-Staging, Tia v15–v19 (same settings). Accounts: Owner, a CRM Manager user (mahmoud.mahamed1515), a Desk user (QA Team 1) and a CRM user without Tia (Test User 1). Every tenant setting changed for a test was restored and checked; all test records, layouts and chats were deleted.</p>
+</header>
+
+<section>
+  <div class="tiles">
+    <div class="tile"><b>21</b><span>areas tested today</span></div>
+    <div class="tile"><b>25</b><span>tickets filed (NDC-3341…3369)</span></div>
+    <div class="tile"><b>5</b><span>comments posted</span></div>
+    <div class="tile"><b>0</b><span>data leaks found</span></div>
+    <div class="tile"><b>93%</b><span>plain counts right (25/27)</span></div>
+    <div class="tile"><b>4/11</b><span>date, stage, status and sum questions right</span></div>
+  </div>
+  <div class="note bad">
+    <h3>What matters for go-live</h3>
+    <ul>
+      <li><b>Access is safe.</b> No user could see another user's chats, or data from a module, layout or record they have no access to, through Tia.</li>
+      <li><b>Saving the strong-step limits on the Tia setup page wipes other runtime settings</b> (takeover off, session turn cap 30 → 1). Filed High as NDC-3345.</li>
+      <li><b>Answers with a date, stage name, status or sum are mostly wrong</b> ("no leads created last month" when there are 1,153). Filed High as NDC-3359.</li>
+      <li><b>Only 21.6% of Tia's tool calls succeed</b> in Observability (NDC-3357); internal error text still reaches users (NDC-3346).</li>
+      <li><b>Custom actions do not work in practice through Tia</b> (NDC-3355, NDC-3356). Owner changes by user name fail (NDC-3353).</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Results by area</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Area</th><th>Result</th><th>What was checked</th><th>Tickets</th></tr></thead>
+    <tbody>
+      <tr><td>"Sara" answer</td><td><span class="pill fail">Bug</span></td><td>"i want you to create assignment rule" in CRM: 2 of 6 new chats answered "The user 'Sara' was not found"; no user is named Sara. A follow-up invented a "lead source condition" rule.</td><td class="id">NDC-3341, NDC-3342</td></tr>
+      <tr><td>Chat isolation</td><td><span class="pill pass">Pass</span></td><td>A Desk user and the Owner could not list, read, rename, post into or delete another user's chat; Tia did not reveal it. Tia told the Owner "no conversations today" instead of "I can't see them".</td><td class="id">NDC-3351</td></tr>
+      <tr><td>Per-user daily limit</td><td><span class="pill pass">Works</span></td><td>Blocks only that user (7 turns at 1 credit); 0 blocks everyone; UI converts credits correctly. API accepts −1 and saves 0; status still says "available" when blocked.</td><td class="id">NDC-3348, NDC-3349</td></tr>
+      <tr><td>Workspace daily cap</td><td><span class="pill pass">Works</span></td><td>A cap below today's spend (or 0) blocks everyone at once with the workspace message. A card prepared earlier can still be confirmed.</td><td class="id">—</td></tr>
+      <tr><td>Credit cost</td><td><span class="pill info">Measured</span></td><td>"hi" 186 units, a count 367, a refusal 178, invalid turns 0 (2,000 units = 1 credit). A stopped answer is still charged (213).</td><td class="id">NDC-3358</td></tr>
+      <tr><td>Strong-step limits</td><td><span class="pill fail">Bug</span></td><td>Saving them resets 5 other runtime settings. At 0, Tia says "details are missing" instead of naming the limit. −1 saved as 0; 100000 ignored.</td><td class="id">NDC-3345, NDC-3347, NDC-3348</td></tr>
+      <tr><td>Module access</td><td><span class="pill pass">Pass</span></td><td>Campaigns restricted to CRM Admin: the Manager user got 403 and Tia never showed the secret record. 3 of 6 refusals were worded as a system problem.</td><td class="id">NDC-3350</td></tr>
+      <tr><td>Layout access</td><td><span class="pill pass">Pass</span></td><td>A lead on a layout assigned only to CRM Admin: 403 for the Manager user, Tia showed nothing.</td><td class="id">—</td></tr>
+      <tr><td>Teamspace access</td><td><span class="pill warn">Blocked</span></td><td>A teamspace cannot be saved as Private (accepted, nothing changes), so Tia could not be tested against one.</td><td class="id">NDC-3352</td></tr>
+      <tr><td>Record visibility</td><td><span class="pill pass">Pass</span></td><td>Manager user sees 94 of 11,870 leads. Hidden leads by id, name or email: 403 and 0 leaks through Tia. Counts follow visibility.</td><td class="id">—</td></tr>
+      <tr><td>Custom actions</td><td><span class="pill fail">Bug</span></td><td>Lists 3 of 10 AI actions; internal UUID error; looks for a "booking" module; search flights refused. A confirmed read-only run returns "may or may not have gone through" and is not in the run history. Users without CRM access refused (pass).</td><td class="id">NDC-3355, NDC-3356</td></tr>
+      <tr><td>Notifications</td><td><span class="pill pass">Pass</span></td><td>An owner change through Tia sends the same "You've been assigned" as a manual change, but only when the user id is given; by name it fails.</td><td class="id">NDC-3353</td></tr>
+      <tr><td>Page context</td><td><span class="pill pass">Pass</span></td><td>"Summarise this record" uses the open record; a fake id is handled; a forged page context for a hidden lead is refused. "This list" gives no count; a lead was called a contact.</td><td class="id">NDC-3358</td></tr>
+      <tr><td>Reports</td><td><span class="pill warn">Partly</span></td><td>Report list matches the API (4 Owner / 0 Manager). Running "test" gave "at least 17 rows", no total. Accuracy not checkable: no report-run API found.</td><td class="id">NDC-3358</td></tr>
+      <tr><td>Resilience</td><td><span class="pill pass">Pass</span></td><td>Stop works; the same turn sent twice is not answered or charged twice; two turns in one chat → "busy"; bad or missing token → 401; rate limit at about 17–20 a minute. Two tabs at once → second is "busy".</td><td class="id">NDC-3358</td></tr>
+      <tr><td>Security</td><td><span class="pill pass">Pass</span></td><td>External image link stripped; phishing link, URL fetch, raw HTML and system-prompt requests refused.</td><td class="id">—</td></tr>
+      <tr><td>Versions, Observability</td><td><span class="pill fail">Finding</span></td><td>Each deploy listed with who and when. Metrics: 799 sessions, tool success 21.6%.</td><td class="id">NDC-3357</td></tr>
+      <tr><td>Browsers, phone width</td><td><span class="pill pass">Pass</span></td><td>Edge, Firefox, WebKit and 390 px wide: panel opens, fits and answers correctly. Firefox: Tab stuck on Send.</td><td class="id">NDC-3361</td></tr>
+      <tr><td>Screen reader</td><td><span class="pill fail">Bug</span></td><td>Virtual screen reader (Guidepup) in Edge: <b>answers are announced</b> (polite live region outside the panel), so the first part of NDC-3360 was wrong. Still true: messages are not labelled you/Tia, "Thinking…" is not announced, the card reads raw keys ("First_Name"), the launcher has no open/closed state. Buttons named; focus fine.</td><td class="id">NDC-3360, NDC-3362</td></tr>
+      <tr><td>Answer accuracy</td><td><span class="pill fail">Bug</span></td><td>Plain counts 25/27 right (CRM, Desk, Arabic). Date, stage-name, status and sum questions 4/11 right; "starts with" counts wrong.</td><td class="id">NDC-3354, NDC-3359</td></tr>
+      <tr><td>Zia parity recheck</td><td><span class="pill warn">Unchanged</span></td><td>Still missing: charts, building reports in chat, scheduled questions, like/dislike, voice, model choice, personal-data masking. The chart request now shows an internal error.</td><td class="id">Comment draft on NDC-3346</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Answer accuracy</h2>
+  <p>Ground truth from the record API (<code>total_count</code> with the same filter, or computed from all records). Owner account unless noted.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Question</th><th class="num">True answer</th><th>Tia</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Leads, contacts, deals, accounts, tasks, calls, meetings, subscriptions, campaigns</td><td class="num">11,870 · 146 · 73 · 34 · 155 · 18 · 15 · 8 · 0</td><td>All the same</td><td><span class="pill pass">Right</span></td></tr>
+      <tr><td>Same counts as the Manager user</td><td class="num">94 leads, others as above</td><td>All the same</td><td><span class="pill pass">Right</span></td></tr>
+      <tr><td>Desk tickets, Desk contacts, tickets in Arabic</td><td class="num">119 · 52 · 119</td><td>All the same</td><td><span class="pill pass">Right</span></td></tr>
+      <tr><td>Leads whose first name starts with "Name"</td><td class="num">1,000</td><td>"There are no leads…"</td><td><span class="pill fail">Wrong</span></td></tr>
+      <tr><td>Manager user: first name starts with "QA"</td><td class="num">4</td><td>"There are no leads…"</td><td><span class="pill fail">Wrong</span></td></tr>
+      <tr><td>Leads created today</td><td class="num">1</td><td>"No leads" / "couldn't answer"</td><td><span class="pill fail">Wrong</span></td></tr>
+      <tr><td>Leads created this week</td><td class="num">1</td><td>"No leads"</td><td><span class="pill fail">Wrong</span></td></tr>
+      <tr><td>Leads created last week</td><td class="num">0</td><td>"No leads"</td><td><span class="pill pass">Right</span></td></tr>
+      <tr><td>Leads created this month</td><td class="num">2</td><td>"No leads"</td><td><span class="pill fail">Wrong</span></td></tr>
+      <tr><td>Leads created last month / in October 2026</td><td class="num">1,153</td><td>"No leads" / "app not responding"</td><td><span class="pill fail">Wrong</span></td></tr>
+      <tr><td>Tasks I own</td><td class="num">0</td><td>"You do not own any tasks"</td><td><span class="pill pass">Right</span></td></tr>
+      <tr><td>Tasks not completed</td><td class="num">121</td><td>"Couldn't answer that just now"</td><td><span class="pill fail">Wrong</span></td></tr>
+      <tr><td>Deals in the Closed Won stage</td><td class="num">3</td><td>"None" (right only as <code>closed_won</code>)</td><td><span class="pill fail">Wrong</span></td></tr>
+      <tr><td>Total amount of all deals</td><td class="num">5,533,912,086,090</td><td>"I do not have the total amount"</td><td><span class="pill fail">Wrong</span></td></tr>
+      <tr><td>Deal with the largest amount</td><td class="num">AP-75, 5,000,000,000,000</td><td>Same</td><td><span class="pill pass">Right</span></td></tr>
+      <tr><td>Lead summary (email, company, source)</td><td class="num">—</td><td>Right values; "company" taken from the field "Single Line Permission"</td><td><span class="pill warn">Partly</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Tickets filed today</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Ticket</th><th>Priority</th><th>Title</th></tr></thead>
+    <tbody>
+      <tr><td class="id">NDC-3341</td><td>Medium</td><td>Tia asks which "Sara" you mean when you ask it to create an assignment rule</td></tr>
+      <tr><td class="id">NDC-3342</td><td>Medium</td><td>Tia says CRM assignment rules need a lead source condition</td></tr>
+      <tr><td class="id">NDC-3345</td><td>High</td><td>Saving the strong-step limits resets other runtime settings</td></tr>
+      <tr><td class="id">NDC-3346</td><td>Medium</td><td>Tia shows an internal error to the user ("…not allowed by the schema")</td></tr>
+      <tr><td class="id">NDC-3347</td><td>Medium</td><td>At the strong-step limit, Tia says details are missing instead of naming the limit</td></tr>
+      <tr><td class="id">NDC-3348</td><td>Low</td><td>A negative limit is saved as 0 and a too-large strong-step limit is ignored, without an error</td></tr>
+      <tr><td class="id">NDC-3349</td><td>Low</td><td>Tia status says "available" while the user is blocked by a limit or cap</td></tr>
+      <tr><td class="id">NDC-3350</td><td>Low</td><td>No access is worded as "I can't confirm that from our systems right now… speak with one of our team"</td></tr>
+      <tr><td class="id">NDC-3351</td><td>Low</td><td>Asked about another user's chats, Tia says there are none instead of saying it cannot see them</td></tr>
+      <tr><td class="id">NDC-3352</td><td>Medium</td><td>Teamspaces: saving as Private returns success but stays "All users"</td></tr>
+      <tr><td class="id">NDC-3353</td><td>Medium</td><td>Changing a record owner by user name fails with RECORD_VALIDATION_FAILED</td></tr>
+      <tr><td class="id">NDC-3354</td><td>Medium</td><td>"Starts with" counts are wrong: Tia says there are none when there are many</td></tr>
+      <tr><td class="id">NDC-3355</td><td>Medium</td><td>Custom actions: only some listed, internal error, looks for a module instead of running the action</td></tr>
+      <tr><td class="id">NDC-3356</td><td>Medium</td><td>A confirmed custom action says "may or may not have gone through" and is not in the run history</td></tr>
+      <tr><td class="id">NDC-3357</td><td>Medium</td><td>Observability shows only 21.6% of Tia's tool calls succeed</td></tr>
+      <tr><td class="id">NDC-3358</td><td>Low</td><td>Small issues: stopped answers charged, second tab busy, no report total, no list count, wrong record type, wrong card claim</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Filed from drafts, and comments posted</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Draft</th><th>Priority</th><th>Title</th></tr></thead>
+    <tbody>
+      <tr><td class="id">NDC-3359</td><td>High</td><td>Questions with a date, a stage name or a status give wrong answers, and amounts cannot be summed</td></tr>
+      <tr><td class="id">NDC-3360</td><td>Medium</td><td>Screen readers do not announce Tia's answers, and messages are not marked as yours or Tia's</td></tr>
+      <tr><td class="id">NDC-3361</td><td>Low</td><td>In Firefox, the Tab key gets stuck on the Send button</td></tr>
+      <tr><td class="id">NDC-3362</td><td>Low</td><td>The "Ask Tia" button does not tell screen readers whether the panel is open</td></tr>
+      <tr><td class="id">C1</td><td>Comment</td><td>NDC-3346: chart request shows "Missing valid UUID for 'report_id'"; report request shows internal recipe names</td></tr>
+      <tr><td class="id">C2</td><td>Comment</td><td>NDC-3286: "company" of a lead taken from the field "Single Line Permission"</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Bugs NDC-3359…3362 in full</h2>
+  <article class="draft">
+    <div class="dh"><span class="id">NDC-3359</span><span class="pill fail">High</span><span class="meta">CRM</span></div>
+    <h3>Tia | Questions with a date, a stage name or a status give wrong answers ("no leads created last month" when there are 1,153), and amounts cannot be summed</h3>
+    <p>Plain counts are right, but as soon as a question has a date range, a picklist label or a status condition, Tia answers "none" or fails. Tia also cannot add up an amount field.</p>
+    <div class="lbl">Steps to reproduce</div><ol><li>Sign in to CRM as the Owner and open Tia.</li><li>Ask each question in a new chat: How many leads were created last month? / How many leads were created this month? / How many leads were created today? / How many leads were created in October 2026? / How many deals are in the Closed Won stage? / How many tasks are not completed yet? / What is the total amount of all deals?</li><li>Compare with the Leads, Deals and Tasks lists filtered the same way.</li></ol>
+    <div class="lbl">Expected result</div><p>Tia gives the same numbers as the filtered lists: last month (October) 1,153; this month 2; today 1; Closed Won 3; tasks not completed 121; total deal amount 5,533,912,086,090.</p>
+    <div class="lbl">Actual result</div><p>Last month, this month, this week and today: "No leads were created … based on the records you can access" (today also once "Sorry, I couldn't answer that just now"). October 2026: "The app is currently not responding". Closed Won: "There are currently no deals in the Closed Won stage". Tasks not completed: "Sorry, I couldn't answer that just now. Please try rephrasing your question." Total amount: "I do not have the total amount of all deals available from the data."</p>
+    <div class="lbl">Notes</div><ul><li>"How many deals are in the stage closed_won?" (the internal value) gives the right answer, 3, so the stage label is not matched to its value.</li><li>Each question was asked twice with the same result.</li><li>Right in the same run: leads created last week (0), tasks I own (0), the largest deal (AP-75), and plain module counts (25 of 27 right in an earlier run).</li></ul>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">NDC-3360</span><span class="pill warn">Medium</span><span class="meta">CRM</span></div>
+    <h3>Tia | Screen readers do not announce Tia's answers, and messages are not marked as yours or Tia's</h3>
+    <p>The Tia panel has no live region and the chat is not marked up as a list of messages, so a screen reader user does not hear when Tia answers and cannot tell who said what.</p>
+    <div class="lbl">Steps to reproduce</div><ol><li>Open Tia with a screen reader running (or inspect the panel's accessibility tree).</li><li>Send: How many deals are there?</li><li>Then send a request that returns a card, for example: Create a lead with first name "QA" and last name "Reader". Prepare the card for me to confirm.</li></ol>
+    <div class="lbl">Expected result</div><p>"Thinking…" and each new answer are announced (polite live region). Each message is announced as from you or from Tia, inside a message list (role log or list). Card content is separate from the next message.</p>
+    <div class="lbl">Actual result</div><p>No element in the panel has aria-live or role status/log; the "Thinking…" indicator has no role. In the accessibility tree the user's question is plain text and Tia's answer a paragraph, with no speaker. The count card and the next question are read as one line: "Count 73 Total: 73 Create a lead with first name …".</p>
+    <div class="lbl">Notes</div><ul><li>Checked through the browser accessibility tree in Edge (what NVDA/JAWS read); no screen reader is installed on the test machine.</li><li>Fine: the panel is a dialog named "Tia", all buttons have names, focus goes to the message box when the panel opens and stays there after an answer.</li></ul>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">NDC-3361</span><span class="pill info">Low</span><span class="meta">CRM</span></div>
+    <h3>Tia | In Firefox, the Tab key gets stuck on the Send button</h3>
+    <p>With the keyboard, Firefox users cannot move past the Send button in the Tia panel.</p>
+    <div class="lbl">Steps to reproduce</div><ol><li>Open CRM in Firefox and open Tia.</li><li>Click in the message box and type a few letters.</li><li>Press Tab several times.</li></ol>
+    <div class="lbl">Expected result</div><p>Focus moves from the message box to Send and on to the next control (in Edge it moves on).</p>
+    <div class="lbl">Actual result</div><p>Focus moves to Send and stays there on every further Tab. Shift+Tab moves back normally.</p>
+    <div class="lbl">Notes</div><ul><li>Edge and WebKit move past Send (there focus then leaves the panel, see NDC-3260).</li></ul>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">NDC-3362</span><span class="pill info">Low</span><span class="meta">CRM</span></div>
+    <h3>Tia | The "Ask Tia" button does not tell screen readers whether the panel is open</h3>
+    <p>The launcher button has no expanded state and is not linked to the panel.</p>
+    <div class="lbl">Steps to reproduce</div><ol><li>Inspect the "Ask Tia" button before and after opening the panel.</li></ol>
+    <div class="lbl">Expected result</div><p>The button has aria-expanded (false/true) and aria-controls pointing to the panel, so screen readers say "collapsed/expanded".</p>
+    <div class="lbl">Actual result</div><p>The button only has the name "Ask Tia"; aria-expanded and aria-controls are missing in both states.</p>
+  </article>
+  <h2>Draft comments in full</h2>
+  <article class="draft">
+    <div class="dh"><span class="id">C1</span><span class="pill info">Comment posted</span><span class="meta">on NDC-3346 (internal errors shown to the user)</span></div>
+    <p>More cases seen on 26 Nov:</p>
+    <ul><li>&quot;Show me deal amounts by stage as a chart&quot; → &quot;Missing valid UUID for 'report_id'. Cannot correct without the exact UUID from the list.&quot;</li><li>&quot;Run the NDC wallet balance action&quot; → &quot;Missing valid UUID for 'action_id'…&quot; (also in NDC-3355).</li><li>&quot;Build a new report of deals grouped by owner and save it&quot; → Tia lists its internal recipe names: 'assignment_by_lead_source', 'approval_above_amount', 'task_on_lead_created', 'sla_by_priority'.</li></ul>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">C2</span><span class="pill info">Comment posted</span><span class="meta">on NDC-3286 (wrong field used)</span></div>
+    <p>Seen again on 26 Nov: asked for the company of the lead &quot;QA AEO SH H-02 lead&quot;, Tia answered &quot;the company is QA AEO&quot;. The lead has no company field. &quot;QA AEO&quot; is the value of the field &quot;Single Line Permission&quot; (single_line_3_9).</p>
+  </article>
+</section>
+
+<section>
+  <h2>The last untested points</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Area</th><th>Result</th><th>What was checked</th><th>Tickets</th></tr></thead>
+    <tbody>
+      <tr><td>Daily-limit reset time</td><td><span class="pill warn">Partly</span></td><td>The limit error carries only its code and the status still says available; no reset time is given anywhere, so the day boundary could not be found without waiting overnight.</td><td class="id">—</td></tr>
+      <tr><td>Monthly cap</td><td><span class="pill pass">Pass</span></td><td>Monthly cap 0 blocks everyone with the monthly message within 10 s; −5 is rejected.</td><td class="id">—</td></tr>
+      <tr><td>Message length</td><td><span class="pill pass">Pass</span></td><td>API accepts up to about 4,000 characters (5,000 refused); the message box stops at 4,000.</td><td class="id">—</td></tr>
+      <tr><td>Deleted chats</td><td><span class="pill pass">Pass</span></td><td>A deleted chat cannot be read or posted into (404) and Tia does not remember it in a new chat.</td><td class="id">—</td></tr>
+      <tr><td>Rollback</td><td><span class="pill pass">Pass</span></td><td>Redeploying an older version takes effect at once in an open chat. The draft keeps the rolled-back change, so the next Deploy brings it back.</td><td class="id">NDC-3366</td></tr>
+      <tr><td>Omnichannel</td><td><span class="pill fail">Bug</span></td><td>Total (292) and open chats (1) right. "Summarise this conversation" with the real conversation: open chat → "no conversation data"; missed chat → no visitor name.</td><td class="id">NDC-3365</td></tr>
+      <tr><td>Desk page context</td><td><span class="pill pass">Pass</span></td><td>"Summarise this ticket" right for 3 of 3; "this list" gives the right count (119). Assignees as raw IDs (NDC-3259).</td><td class="id">—</td></tr>
+      <tr><td>Reload, offline</td><td><span class="pill pass">Pass</span></td><td>Reloading during an answer keeps the answer. Sending while offline shows "Couldn't reach the server" with Try again, which recovers. Losing the network mid-stream could not be simulated.</td><td class="id">—</td></tr>
+      <tr><td>Arabic layout</td><td><span class="pill pass">Pass</span></td><td>The page and panel switch to right-to-left; the Arabic answer and card are right-aligned and correct.</td><td class="id">—</td></tr>
+      <tr><td>Session expiry</td><td><span class="pill pass">Pass</span></td><td>"Your session has ended. Please sign in again." There is no sign-in link in the panel.</td><td class="id">NDC-3367</td></tr>
+      <tr><td>Report numbers</td><td><span class="pill fail">Finding</span></td><td>Report "test": 73 deals, grand total 5,533,912,086,090. Tia: "at least 17 rows… amounts up to over 55 billion".</td><td class="id">Comment posted on NDC-3358</td></tr>
+      <tr><td>Load</td><td><span class="pill pass">Pass</span></td><td>4 users at once, 6 questions each: 24 of 24 answered, median 3.6 s, 90% within 7.4 s, slowest 11.7 s (one user alone: median 4.1 s).</td><td class="id">—</td></tr>
+      <tr><td>Screen reader (virtual)</td><td><span class="pill warn">Corrected</span></td><td>Guidepup virtual screen reader heard each answer as a polite announcement. Browsing the panel: dialog "Tia", named buttons, question read as bare text with no speaker, card keys read as "First_Name", Confirm and Cancel named.</td><td class="id">Comment posted on NDC-3360</td></tr>
+      <tr><td>Network lost mid-answer</td><td><span class="pill fail">Finding</span></td><td>Tested through a local proxy that cut every connection while Tia was thinking. The panel said "Tia is already answering you in another tab or app. Try again when it's done." although no other tab existed. After the network came back, Try again gave the right answer and the chat history had one question and one answer (no duplicate). The panel shows each answer in one piece, so there is no partly written answer to cut.</td><td class="id">NDC-3368</td></tr>
+      <tr><td>Load, 8 users</td><td><span class="pill pass">Pass</span></td><td>8 accounts at once, 6 questions each: 48 of 48 answered, median 3.7 s, 90% within 5.4 s, slowest 6.6 s. Then 8 × 15 questions in 70 s: 120 of 120 answered, median 3.6 s, 90% within 5.0 s, slowest 6.6 s, no errors and no rate limits.</td><td class="id">—</td></tr>
+      <tr><td>Many users at the same time</td><td><span class="pill pass">Pass</span></td><td>8 users talking to Tia at the same moment, twice: each gave a personal code word and asked for it back, then asked for the lead count. No user ever received another user's code word (0 in answers and chat histories); each lead count matched that user's own access (11,870 / 94 / 27), and Desk-only users were correctly told they have no CRM access. Repeated: the code word was recalled in 52 of 60 chats, with or without load; a plain fact the user states (project name and budget) was recalled in only 1 of 10, because Tia searches the records instead of reading the chat. No mix-up between users in 50 concurrent chats.</td><td class="id">NDC-3369</td></tr>
+      <tr><td>Real screen reader (NVDA)</td><td><span class="pill warn">Not run</span></td><td>The signed NVDA 2024.4.2 installer was downloaded, but running it on the test machine was not allowed. The virtual screen reader result above stands.</td><td class="id">—</td></tr>
+      <tr><td>Not done</td><td><span class="pill warn">Blocked</span></td><td>Teamspace (NDC-3352); write custom actions (external NDC system, needs a sandbox account); daily-limit reset time (needs a check across midnight); load beyond 8 users (only 8 test accounts have Tia, and each user can run one answer at a time).</td><td class="id">—</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Filed NDC-3365…3367 and comments posted</h2>
+  <article class="draft">
+    <div class="dh"><span class="id">NDC-3365</span><span class="pill warn">Medium</span><span class="meta">CRM / Omnichannel</span></div>
+    <h3>Tia | In Omnichannel, "Summarise this conversation" fails on the open chat and leaves out the visitor</h3>
+    <div class="lbl">Steps</div><p>Open an open chat in Omnichannel, open Tia and ask: Summarise this conversation: who is the visitor and what is the status? Repeat on a missed chat.</p>
+    <div class="lbl">Expected result</div><p>Tia names the visitor and gives the status and what was asked, for any chat the user can open.</p>
+    <div class="lbl">Actual result</div><p>Open chat (Karim Tallat): "There is no conversation data available for the conversation ID you referenced." Missed chat (Moaz Adly): a summary of the messages with no visitor name. When no conversation was sent at all, Tia did describe the open chat correctly.</p>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">NDC-3366</span><span class="pill info">Low</span><span class="meta">CRM / Omnichannel</span></div>
+    <h3>Tia | After rolling back to an older version, the draft keeps the newer settings, so the next Deploy brings them back</h3>
+    <div class="lbl">Steps</div><p>Deploy a change (for example a per-user daily limit of 1), then redeploy the previous version from the version history. Open the Tia setup page.</p>
+    <div class="lbl">Expected result</div><p>Either the draft is reset to the version that is now live, or the page clearly warns that the draft still holds the rolled-back change.</p>
+    <div class="lbl">Actual result</div><p>The live version is the old one (the change is gone for users), but the draft still has the daily limit of 1 and shows undeployed changes. The next Deploy would bring the rolled-back change back without warning.</p>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">NDC-3367</span><span class="pill info">Low</span><span class="meta">CRM / Omnichannel</span></div>
+    <h3>Tia | "Your session has ended" has no way to sign in from the panel</h3>
+    <div class="lbl">Steps</div><p>Let the session end (sign out in another tab or clear the session), then send a message to Tia.</p>
+    <div class="lbl">Expected result</div><p>The message offers a Sign in button or link.</p>
+    <div class="lbl">Actual result</div><p>The panel says "Your session has ended. Please sign in again." with no button or link; the user has to reload the page.</p>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">C3</span><span class="pill info">Comment posted</span><span class="meta">on NDC-3358 (report total)</span></div>
+    <p>Checked against the report itself: the report "test" covers 73 deals with a grand total of 5,533,912,086,090. Tia said "at least 17 rows, with more rows available" and "amounts ranging from 10,000 to over 55 billion", so it neither gave the total nor described the amounts correctly.</p>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">C4</span><span class="pill info">Comment posted</span><span class="meta">on NDC-3283 (daily limit message)</span></div>
+    <p>The limit error (TIA_DAILY_LIMIT) carries no reset time, and GET /agents/tia/status still says available. The message says "It resets tomorrow" but nothing says when tomorrow starts (UTC or the workspace time zone).</p>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">C5</span><span class="pill warn">Correction posted</span><span class="meta">on NDC-3360 (screen readers)</span></div>
+    <p>Correction after a check with a virtual screen reader (Guidepup) on 26 Nov: Tia's answers <b>are</b> announced. They go to a polite live region outside the panel, which the first check missed because it only looked inside the panel. Please drop the first point (answers not announced). Still open: each message is not marked as from the user or from Tia (the question is read as bare text), the "Thinking…" state is not announced, and the card content and the next message are not separated.</p>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">NDC-3368</span><span class="pill info">Low</span><span class="meta">CRM · filed</span></div>
+    <h3>Tia | After a brief connection loss, the panel says "Tia is already answering you in another tab or app"</h3>
+    <div class="lbl">Steps</div><p>Open Tia in CRM, send a question, and while it shows "Thinking…" lose the connection for a few seconds (for example switch Wi-Fi off and on).</p>
+    <div class="lbl">Expected result</div><p>The panel says the connection was lost and either waits for the same answer or offers Try again.</p>
+    <div class="lbl">Actual result</div><p>"Tia is already answering you in another tab or app. Try again when it's done." with a Try again button, although only one tab was open. Try again then gives the right answer, without a duplicate in the history.</p>
+  </article>
+</section>
+
+<section>
+  <h2>Final round</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Area</th><th>Result</th><th>What was checked</th><th>Tickets</th></tr></thead>
+    <tbody>
+      <tr><td>Omnichannel access</td><td><span class="pill pass">Pass</span></td><td>3 users with no Omnichannel access asked for chat counts, the latest transcript, a named visitor and a search, from the Omnichannel and CRM pages (24 questions): no chat data was shown. Only the Owner has Omnichannel access on this tenant, so a department-restricted operator could not be tested.</td><td class="id">—</td></tr>
+      <tr><td>Knowledge-base files</td><td><span class="pill warn">Pass, 2 issues</span></td><td>TXT, Markdown and PDF processed and answered 3 of 3; a 21 MB file refused ("capped at 20MB"); deleting a file stops its answers at once. A CSV is accepted at registration and only fails later; deleted files stay listed in Tia's settings.</td><td class="id">Draft P7-2</td></tr>
+      <tr><td>Audit trail</td><td><span class="pill pass">Pass</span></td><td>Changes made through Tia are logged with source_channel "tia" (lead and workflow rule), plus a "Tia setup change" event; manual changes show "rest_api".</td><td class="id">—</td></tr>
+      <tr><td>Analytics</td><td><span class="pill warn">Partly</span></td><td>A forged report id is refused for a user without access. "Explain this report" gives the right grand total but "at least 17 rows" and calls the total "not final". "Which dashboards can I see" lists the 4 reports instead of the 1 dashboard.</td><td class="id">Drafts C6, C7</td></tr>
+      <tr><td>Expired card in the browser</td><td><span class="pill fail">Finding</span></td><td>After 15 minutes the card disappears from the reopened chat with no "expired" note; the text above it still says "If you confirm, the lead will be created". An unexpired card shows Confirm and Cancel in a reopened chat. Confirming the expired card through the API is refused (409).</td><td class="id">Draft P7-1</td></tr>
+    </tbody>
+  </table></div>
+  <article class="draft">
+    <div class="dh"><span class="id">P7-1</span><span class="pill info">Low</span><span class="meta">CRM · draft, not filed</span></div>
+    <h3>Tia | An expired card disappears from the chat without saying it expired</h3>
+    <div class="lbl">Steps</div><p>Ask Tia to prepare a card (for example create a lead), do not answer it, wait 15 minutes, then open the chat again from Past chats.</p>
+    <div class="lbl">Expected result</div><p>The card is still shown, marked as expired, with no Confirm button and a short note to ask again.</p>
+    <div class="lbl">Actual result</div><p>The card is gone. The chat still shows Tia's text "If you confirm, the lead will be created in the system", with nothing to confirm and no note that the card expired. (An unexpired card in a reopened chat shows Confirm and Cancel; confirming the expired card through the API returns 409 TIA_ACTION_EXPIRED.)</p>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">P7-2</span><span class="pill info">Low</span><span class="meta">CRM · draft, not filed</span></div>
+    <h3>Tia | Knowledge base: an unsupported file type is accepted and only fails later, and deleted files stay listed in Tia's settings</h3>
+    <div class="lbl">Steps</div><p>Through the API, register a CSV file as a Tia knowledge-base document; then register a supported file, attach it to Tia, deploy, and delete the document.</p>
+    <div class="lbl">Expected result</div><p>The CSV is refused at registration (only PDF, Markdown and text are supported). Deleting a document also removes it from Tia's knowledge-base list.</p>
+    <div class="lbl">Actual result</div><p>The CSV is accepted (200) and then shows status "failed". After deleting a document, its id stays in Tia's kb_document_ids. Tia stops using the deleted file at once, so the effect is on the settings only.</p>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">C6</span><span class="pill info">Comment draft</span><span class="meta">on NDC-3336 (dashboard answered with reports)</span></div>
+    <p>Seen again on 26 Nov: in Analytics, "Which dashboards can I see? List their names." got "You can see these dashboards: test, QA RT19 GS Sort report, QA RT19 GS Gold report, and QA RT18 2917 Gold report". Those are the 4 reports; the Owner has 1 dashboard, "Anyware Dashboard".</p>
+  </article>
+  <article class="draft">
+    <div class="dh"><span class="id">C7</span><span class="pill info">Comment draft</span><span class="meta">on NDC-3358 (report total)</span></div>
+    <p>With the report open in Analytics (page context), "Explain this report" now gives the right grand total, 5,533,912,086,090, but still says "at least 17 rows". A follow-up said the grand total "is at least 5,533,912,086,090… this is not the final total", although it is the report's grand total.</p>
+  </article>
+</section>
+
+<section class="two">
+  <div style="display:grid;gap:10px">
+    <h2>Changed and restored</h2>
+    <ul>
+      <li>Tia per-user daily limit (1, 2000, 0, test values): back to none; agent now v19, same settings as v15.</li>
+      <li>AI policy workspace cap (2000, 0): back to 2,000,000 units; policy v39, same values.</li>
+      <li>Runtime settings: restored in full after the partial-save bug; no differences left (v17).</li>
+      <li>Campaigns module permissions: back to all profiles. Teamspace still "All users".</li>
+      <li>Deleted: QA Campaign record, QA layout and its lead, 4 QA leads, every test chat, plus the leftover test chats from 25 Nov (the user's own chats kept).</li>
+    </ul>
+  </div>
+  <div style="display:grid;gap:10px">
+    <h2>Limits of this run</h2>
+    <ul>
+      <li>No real screen reader on the test machine: the accessibility tree and a virtual screen reader (Guidepup) were used instead.</li>
+      <li>Custom actions: only one read-only lookup with a made-up booking reference was confirmed; no write action was run.</li>
+      <li>Report numbers could not be checked: no report-run API was found.</li>
+      <li>Teamspace access could not be tested (NDC-3352).</li>
+      <li>Losing the network in the middle of an answer could not be simulated (browser tools let open streams finish); sending while offline was tested.</li>
+      <li>Load was 8 users at once (120 answers in 70 s), not a full load test.</li>
+      <li>The day boundary of the daily limits (when "tomorrow" starts) could not be found from the API.</li>
+    </ul>
+  </div>
+</section>
+
+<p class="meta">Evidence: run folder executions/execu_2026-11-24_tia-retest (ledger.md, out/*-results.jsonl, screenshots/raw/BR-*.png and SR-card.png).</p>
+</div>

@@ -1,0 +1,113 @@
+<title>Tia Drafts, 26 Nov</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: single reading column, summary tiles, then one section per test area with result tables. */
+:root {
+  --bg: #f6f7fb; --surface: #ffffff; --fg: #1b2030; --muted: #5d6578; --line: #dde1ea;
+  --accent: #3b5bdb; --pass: #1f7a4d; --pass-bg: #e3f4ea; --fail: #b4232c; --fail-bg: #fbe5e6; --warn: #8a5a00; --warn-bg: #fdf1d8; --info-bg: #e8edfd;
+  --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif; --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; --mono: "IBM Plex Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12151d; --surface: #1a1f2a; --fg: #e6e9f0; --muted: #9aa3b5; --line: #2c3342;
+  --accent: #8ea6ff; --pass: #6fd39c; --pass-bg: #173326; --fail: #ff8a90; --fail-bg: #3a1c20; --warn: #f2c26b; --warn-bg: #382c14; --info-bg: #1f2a47; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12151d; --surface: #1a1f2a; --fg: #e6e9f0; --muted: #9aa3b5; --line: #2c3342;
+  --accent: #8ea6ff; --pass: #6fd39c; --pass-bg: #173326; --fail: #ff8a90; --fail-bg: #3a1c20; --warn: #f2c26b; --warn-bg: #382c14; --info-bg: #1f2a47; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: 2rem; line-height: 1.15; }
+h2 { font-size: 1.35rem; padding-top: 8px; border-top: 1px solid var(--line); }
+h3 { font-size: 1.05rem; }
+p { margin: 0; max-width: 72ch; }
+.eyebrow { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.meta { color: var(--muted); font-size: .9rem; }
+section { display: grid; gap: 14px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 2px; }
+.tile b { font-family: var(--display); font-size: 1.7rem; font-variant-numeric: tabular-nums; }
+.tile span { color: var(--muted); font-size: .85rem; }
+.tbl { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.id { font-family: var(--mono); font-size: .85rem; white-space: nowrap; }
+.pill { display: inline-block; font-size: .75rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.pass { background: var(--pass-bg); color: var(--pass); } .fail { background: var(--fail-bg); color: var(--fail); } .warn { background: var(--warn-bg); color: var(--warn); } .info { background: var(--info-bg); color: var(--accent); }
+.note { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 12px 16px; display: grid; gap: 6px; }
+.note.bad { border-left-color: var(--fail); }
+ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-width: 76ch; }
+code { font-family: var(--mono); font-size: .85em; background: var(--info-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.two > * { min-width: 0; }
+.draft { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 8px; }
+.draft .dh { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.draft ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-width: 76ch; }
+.lbl { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-top: 4px; }
+</style>
+<div class="wrap">
+<header style="display:grid;gap:8px">
+  <div class="eyebrow">TIA Assistant · NDC-Staging · 26 November 2026</div>
+  <h1>Draft bugs and comments for review</h1>
+  <p class="meta">Found in the final round of Tia testing (Omnichannel access, knowledge-base files, audit trail, Analytics, expired cards). None of these are in Plane yet. Full results: the 26 Nov Tia report, section "Final round".</p>
+</header>
+<section>
+  <div class="tiles">
+    <div class="tile"><b>2</b><span>draft bugs (Low)</span></div>
+    <div class="tile"><b>2</b><span>draft comments on existing tickets</span></div>
+    <div class="tile"><b>0</b><span>data leaks in this round</span></div>
+  </div>
+</section>
+<section>
+  <h2>Summary</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Draft</th><th>Type</th><th>Title</th></tr></thead>
+    <tbody>
+      <tr><td class="id">P7-1</td><td>Bug, Low</td><td>Tia | An expired card disappears from the chat without saying it expired</td></tr>
+      <tr><td class="id">P7-2</td><td>Bug, Low</td><td>Tia | Knowledge base: an unsupported file type is accepted and only fails later, and deleted files stay listed in Tia's settings</td></tr>
+      <tr><td class="id">C6</td><td>Comment</td><td>On NDC-3336: Analytics dashboard answered with reports</td></tr>
+      <tr><td class="id">C7</td><td>Comment</td><td>On NDC-3358: report total</td></tr>
+    </tbody>
+  </table></div>
+</section>
+<section>
+  <h2>Draft bugs</h2>
+<article class="draft">
+  <div class="dh"><span class="id">P7-1</span><span class="pill info">Low</span><span class="meta">CRM · Bug · Sprint 17 · AI Features</span></div>
+  <h3>Tia | An expired card disappears from the chat without saying it expired</h3>
+  <p>A card that is not answered within 15 minutes expires. When the user opens that chat again, the card is gone with no explanation, while Tia's text above it still asks the user to confirm.</p>
+  <div class="lbl">Steps to reproduce</div><ol><li>Sign in to CRM as the Owner and open Tia.</li><li>Send: Create a lead with first name "QA TIA EXP card" and last name "Expired". Prepare the card for me to confirm.</li><li>Do not press Confirm or Cancel. Wait 15 minutes.</li><li>Open the chat again from Past chats.</li></ol>
+  <div class="lbl">Expected result</div><p>The card is still shown, marked as expired, with no Confirm button and a short note such as "This request has expired. Ask Tia again."</p>
+  <div class="lbl">Actual result</div><p>The card is gone. The chat still shows Tia's text "I have prepared the lead card… If you confirm, the lead will be created in the system.", with nothing to confirm and no note that it expired.</p>
+  <div class="lbl">Notes</div><ul><li>A card that has not expired does show Confirm and Cancel when the chat is reopened from Past chats.</li><li>Confirming the expired card through the API is refused correctly: 409 TIA_ACTION_EXPIRED. No lead was created.</li><li>Evidence: screenshots EXP-before.png / EXP-after.png and FRESH-before.png / FRESH-after.png in the run folder.</li></ul>
+  <div class="lbl">Environment</div><p>NDC-Staging (staging-crm.taviportal.com), Tia v27 (baseline settings), Edge and the Tia API, 26 Nov 2026, Owner account. Test data deleted afterwards.</p>
+</article>
+<article class="draft">
+  <div class="dh"><span class="id">P7-2</span><span class="pill info">Low</span><span class="meta">CRM · Bug · Sprint 17 · AI Features</span></div>
+  <h3>Tia | Knowledge base: an unsupported file type is accepted and only fails later, and deleted files stay listed in Tia's settings</h3>
+  <p>Tia's knowledge base supports PDF, Markdown and text files. The upload screen blocks other types, but the server accepts them and fails later. Deleting a document also leaves it listed in Tia's settings.</p>
+  <div class="lbl">Steps to reproduce</div><ol><li>Upload a CSV file and register it as a Tia knowledge-base document (POST /agents/kb/documents with its file_id).</li><li>Check the document status in the knowledge-base list.</li><li>Register a supported file (for example a .txt), add it to Tia's knowledge base and deploy.</li><li>Delete that document (DELETE /agents/kb/documents/{id}) and read Tia's settings.</li></ol>
+  <div class="lbl">Expected result</div><p>The CSV is refused when it is registered, with a message that only PDF, Markdown and text are supported. Deleting a document also removes it from Tia's knowledge-base list.</p>
+  <div class="lbl">Actual result</div><p>The CSV is accepted (200) and later shows status "failed". After the document is deleted, its id is still in Tia's kb_document_ids.</p>
+  <div class="lbl">Notes</div><ul><li>Tia stops using a deleted file at once, so the effect is on the settings only.</li><li>Working as expected: TXT, Markdown and PDF were processed and answered 3 of 3; a 21 MB file is refused with "Knowledge-base documents are capped at 20MB."</li></ul>
+  <div class="lbl">Environment</div><p>NDC-Staging (staging-crm.taviportal.com), Tia v27 (baseline settings), Edge and the Tia API, 26 Nov 2026, Owner account. Test data deleted afterwards.</p>
+</article>
+</section>
+<section>
+  <h2>Draft comments</h2>
+<article class="draft">
+  <div class="dh"><span class="id">C6</span><span class="pill info">Comment</span><span class="meta">on NDC-3336 · Analytics dashboard answered with reports</span></div>
+  <p>Seen again on 26 Nov: in Analytics, "Which dashboards can I see? List their names." got "You can see these dashboards: test, QA RT19 GS Sort report, QA RT19 GS Gold report, and QA RT18 2917 Gold report."</p>
+  <p>Those are the 4 reports. The Owner has 1 dashboard, "Anyware Dashboard" (GET /reporting/dashboards).</p>
+</article>
+<article class="draft">
+  <div class="dh"><span class="id">C7</span><span class="pill info">Comment</span><span class="meta">on NDC-3358 · report total</span></div>
+  <p>With the report open in Analytics (page context), "Explain this report" now gives the right grand total, 5,533,912,086,090, but still says "This report has at least 17 rows".</p>
+  <p>A follow-up, "What is the grand total of the Amount column in this report?", got "…is at least 5,533,912,086,090. There are more rows in the report, so this is not the final total", although that is the report's grand total (73 deals).</p>
+</article>
+</section>
+<p class="meta">Evidence: run folder executions/execu_2026-11-24_tia-retest (ledger.md, out/p7-results.jsonl, screenshots/raw/EXP-*.png and FRESH-*.png).</p>
+</div>
